@@ -1,6 +1,8 @@
+
+@use '../partials/mixin' as mx;
+
 .bookmark_form {
     background-color: var(--color-extralight-grey);
-    width: 420px;
     border-radius: 6px;
     border: 1px solid var(--color-light-grey);
     display: flex;
@@ -39,7 +41,7 @@
       }
 
       &_buttons {
-        margin-top: -10px;
+        margin-top: 20px;
         margin-bottom: 5px;
         // margin: 5px 0;
         display: flex;
@@ -50,6 +52,9 @@
           min-width: unset;
           width: fit-content;
           height: 25px;
+          text-wrap: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
 
           &.button_primary_blue {
             color: var(--color-secondary);
@@ -73,3 +78,326 @@
     }
   }
 
+.bookmarks_filter {
+  &_container {
+    background-color: var(--color-extralight-grey);
+    width: 290px;
+    // border: 1px solid var(--color-light-grey);
+    padding: 15px;
+    padding-right: 5px;
+    padding-bottom: 0;
+    box-shadow: 0 0 5px var(--color-light-grey);
+    z-index: 1000;
+    border-radius: 5px;
+    overflow-y: scroll;
+
+    .annotations_checkbox {
+      color: var(--color-primary);
+    }
+
+    .button_primary_blue:hover {
+      // color: var(--color-secondary);
+      background-color: var(--color-blue);
+    }
+
+    @include mx.scrollbar_styling;
+
+    &::-webkit-scrollbar-track {
+      background-color: var(--color-extralight-grey);
+    }
+  }
+
+  &_nbOfFilters {
+    position: absolute;
+    color: var(--color-secondary);
+    width: 10px;
+    height: 10px;
+    padding: 4px;
+    border-radius: 50px;
+    background-color: var(--color-blue);
+    top: -8px;
+    right: -8px;
+    margin: 0;
+    line-height: 0.9;
+  }
+
+  &_button {
+    border: 1px solid var(--color-primary);
+    border-radius: 5px;
+    padding: 0 10px;
+  }
+
+  &_line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: calc(100%);
+    gap: 20px;
+    padding-right: 10px;
+  }
+
+  &_trigger_button {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    padding: 5px;
+
+    svg {
+      width: 20px;
+      height: 20px;
+      color: var(--color-blue);
+      cursor: pointer;
+    }
+  }
+
+  &_taglist {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+  }
+
+  &_tagGroup {
+    font-family: inherit;
+    background-color: var(--color-secondary);
+    border-radius: 5px;
+    padding: 0 20px;
+    height: 45px;
+    font-size: 15px;
+    line-height: 1;
+    box-shadow: 0 3px 3px var(--color-verylight-grey-alt2);
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--color-primary);
+
+    &:hover {
+      background-color: var(--color-light-blue);
+    }
+  }
+
+  &_tag {
+    font-size: 13px;
+    padding: 2px 4px;
+    border-radius: 5px;
+    border: 1px solid var(--color-blue);
+    background-color: var(--color-light-blue);
+    color: var(--color-blue);
+
+    &[data-selected], &:has(input:checked), &[data-state="checked"] {
+      color: var(--color-secondary);
+      background-color: var(--color-blue);
+    }
+  }
+
+  &_color {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--color-extralight-grey);
+
+    &[data-selected] {
+      outline: 2px solid;
+      outline-offset: 2px;
+    }
+  }
+
+  &_drawtype {
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+    border-radius: 5px;
+
+    svg {
+      width: 20px;
+      height: 20px;
+      color: var(--color-primary);
+    }
+
+    &[data-selected] {
+      background-color: var(--color-blue);
+
+      svg {
+        color: var(--color-secondary);
+      }
+    }
+  }
+}
+
+.bookmarks_sorting {
+  &_container {
+    background-color: var(--color-extralight-grey);
+    width: fit-content;
+    // border: 1px solid var(--color-light-grey);
+    padding: 15px 5px;
+    box-shadow: 0 0 5px var(--color-light-grey);
+    z-index: 1000;
+    border-radius: 5px;
+
+    @include mx.scrollbar_styling;
+
+    &::-webkit-scrollbar-track {
+      background-color: var(--color-extralight-grey);
+    }
+
+    & .my_item {
+      font-weight: 600;
+      outline: solid 2px transparent !important;
+      border-radius: 4px;
+
+      &::before {
+        background-color: var(--color-blue) !important;
+      }
+    }
+  }
+}
+
+.bookmarksTitle_form {
+  &_container {
+    width: fit-content;
+    height: fit-content;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 0 15px;
+    color: var(--color-primary);
+
+    .form_group {
+      width: unset;
+    }
+
+    input {
+      width: 100%;
+      padding: 0;
+      height: 25px;
+      margin-left: 5px;
+    }
+
+    label {
+      background-color: var(--color-extralight-grey);
+    }
+
+    button {
+      width: 100%;
+      height: 25px;
+    }
+
+    p {
+      margin: 0;
+    }
+
+  }
+}
+
+.bookmarks_actions {
+&_container {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+
+    .react_aria_ComboBox {
+      margin: 0;
+      padding: 0;
+      width: inherit;
+
+      .react_aria_Label {
+        width: 100%;
+        text-align: left;
+      }
+
+      .my_combobox_container {
+        background-color: var(--color-secondary);
+        width: inherit;
+
+        input {
+          padding: 0 10px 0 30px !important;
+          width: 100%;
+        }
+
+        button {
+          margin-left: 0;
+          padding-left: 0 !important;
+        }
+      }
+    }
+  }
+
+  >div {
+    display: inherit;
+
+    >div {
+      display: flex;
+      // gap: 5px;
+      align-items: center;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+
+  &_buttons {
+    button:disabled {
+      border-radius: 5px;
+      background-color: var(--color-verylight-grey-alt);
+
+      svg {
+        fill: var(--color-primary);
+        color: var(--color-primary);
+      }
+    }
+
+    svg {
+      fill: var(--color-blue-alt);
+      color: var(--color-blue-alt);
+    }
+  }
+}
+
+.colorPicker {
+  display: flex;
+  background-color: var(--color-button-hover);
+  padding: 2px;
+  gap: 1px;
+  border: 1px solid var(--color-dark-grey);
+  border-radius: 6px;
+  width: fit-content;
+
+  &:has(input:focus) {
+    @include mx.R2_MIXIN_FOCUS_OUTLINE;
+  }
+
+  div {
+    input {
+      position: absolute;
+      z-index: -1;
+    }
+
+    label {
+      z-index: 20;
+      width: 25px;
+      height: 25px;
+      margin: 0;
+      border: 1px solid var(--color-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  }
+
+  svg {
+    color: #4d4d4d;
+  }
+}

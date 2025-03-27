@@ -149,6 +149,8 @@
         "cancel": "取消",
         "deleteAnnotations": "刪除註解？",
         "deleteAnnotationsText": "您確定要刪除 {{-annotationListLength}} 條註解嗎？",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "你真的要刪除此出版目錄嗎？",
         "deletePublication": "你真的要刪除此出版物嗎？",
         "import": "你真的要匯入這些文件嗎：",
@@ -208,6 +210,7 @@
         "import": {
             "alreadyImport": "{{- title}} 已被匯入",
             "fail": "匯入 [{{- path}}] 失敗：[{{- err}}]",
+            "seeInLibrary": "",
             "success": "匯入 [{{- title}}] 完成。"
         },
         "open": {
@@ -385,6 +388,9 @@
                 "underline": "下底線"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "靜音",
             "unmute": "取消靜音"
@@ -400,7 +406,6 @@
             "edit": "編輯",
             "goTo": "前往到頁面",
             "landmarks": "地標",
-            "progression": "進展",
             "saveMark": "儲存書籤",
             "search": "搜尋",
             "searchResult": "搜尋 [{{- searchText}}]",

@@ -149,6 +149,8 @@
         "cancel": "취소",
         "deleteAnnotations": "",
         "deleteAnnotationsText": "",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "카탈로그를 제거하겠습니까?",
         "deletePublication": "출판물을 제거하겠습니까?",
         "import": "파일들을 열겠습니까:",
@@ -208,6 +210,7 @@
         "import": {
             "alreadyImport": "{{- title}}는 이미 추가된 도서입니다",
             "fail": "{{- path}} 열기를 실패하였습니다. {{- err}}",
+            "seeInLibrary": "",
             "success": "{{- title}} 열기를 성공하였습니다."
         },
         "open": {
@@ -385,6 +388,9 @@
                 "underline": ""
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "오디오 음소거",
             "unmute": "오디오 음소거 해제"
@@ -400,7 +406,6 @@
             "edit": "수정",
             "goTo": "",
             "landmarks": "랜드마크",
-            "progression": "",
             "saveMark": "",
             "search": "검색",
             "searchResult": "",

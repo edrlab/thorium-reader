@@ -30,7 +30,6 @@ export const FONT_LIST: Font[] =
 }, {
     id: "SANS",
     label: "Sans",
-    // tslint:disable-next-line:max-line-length
     fontFamily: "-apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
 }, {
     id: "HUMAN",

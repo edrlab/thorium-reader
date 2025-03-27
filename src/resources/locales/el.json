@@ -149,6 +149,8 @@
         "cancel": "Ακύρωση",
         "deleteAnnotations": "Διαγραφή σημειώσεων;",
         "deleteAnnotationsText": "Είσαι σίγουρος/η για τη διαγραφή σημειώσεων {{- annotationListLength}};",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Διαγραφή καταλόγου;",
         "deletePublication": "Διαγραφή βιβλίου;",
         "import": "Επιβεβαίωση εισαγωγής:",
@@ -208,6 +210,7 @@
         "import": {
             "alreadyImport": "{{- title}} έχει ήδη εισαχθεί.",
             "fail": "Η εισαγωγή του {{- path}} απέτυχε. {{- err}}",
+            "seeInLibrary": "",
             "success": "Η εισαγωγή του {{- title}} έχει ολοκληρωθεί."
         },
         "open": {
@@ -385,6 +388,9 @@
                 "underline": "Υπογράμμιση"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "σίγαση ήχου",
             "unmute": "ενεργοποίηση ήχου"
@@ -400,7 +406,6 @@
             "edit": "Επεξεργασία",
             "goTo": "Μετάβαση σε σελίδα",
             "landmarks": "Ορόσημα",
-            "progression": "Εξέλιξη",
             "saveMark": "Αποθήκευση σελιδοδείκτη",
             "search": "Αναζήτηση",
             "searchResult": "Αναζήτηση [{{- searchText}}]",

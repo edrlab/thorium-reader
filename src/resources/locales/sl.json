@@ -149,6 +149,8 @@
         "cancel": "Prekliči",
         "deleteAnnotations": "Želiš izbrisati opombe?",
         "deleteAnnotationsText": "Ali si prepričan, da želiš izbrisati {{- annotationListLength}} opombe?",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Ali res želiš izbrisati katalog?",
         "deletePublication": "Ali res želiš izbrisati publikacijo?",
         "import": "Ali res želiš uvoziti te datoteke:",
@@ -208,6 +210,7 @@
         "import": {
             "alreadyImport": "{{- title}} je že uvožena",
             "fail": "Uvoz {{- path}} ni uspel. {{- err}}",
+            "seeInLibrary": "",
             "success": "Uvoz {{- title}} je končan."
         },
         "open": {
@@ -385,6 +388,9 @@
                 "underline": "Podčrtaj"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "izklopi zvok",
             "unmute": "vklopi zvok"
@@ -400,7 +406,6 @@
             "edit": "Uredi",
             "goTo": "Pojdi na stran",
             "landmarks": "Mejniki",
-            "progression": "Napredek",
             "saveMark": "Shrani zaznamek",
             "search": "Iskanje",
             "searchResult": "Iskanje [{{- searchText}}]",

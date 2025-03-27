@@ -18,12 +18,12 @@ export const ID = "READER_ANNOTATIONS_MODE_ENABLE";
 // type IPayload = {} & IAnnotationModeState;
 type IPayload = IAnnotationModeState;
 
-export function build(enable: false, locatorExtended: undefined): Action<typeof ID, IPayload>;
-export function build(enable: true, locatorExtended: MiniLocatorExtended): Action<typeof ID, IPayload>;
-export function build(enable: boolean, locatorExtended: MiniLocatorExtended | undefined): Action<typeof ID, IPayload> {
+export function build(enable: false, locatorExtended: undefined, fromKeyboard: undefined): Action<typeof ID, IPayload>;
+export function build(enable: true, locatorExtended: MiniLocatorExtended, fromKeyboard: boolean): Action<typeof ID, IPayload>;
+export function build(enable: boolean, locatorExtended: MiniLocatorExtended | undefined, fromKeyboard: boolean | undefined): Action<typeof ID, IPayload> {
     return {
         type: ID,
-        payload: enable === true ? { enable: true, locatorExtended } : { enable: false, locatorExtended: undefined },
+        payload: enable === true ? { enable: true, locatorExtended, fromKeyboard } : { enable: false, locatorExtended: undefined, fromKeyboard: undefined },
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator

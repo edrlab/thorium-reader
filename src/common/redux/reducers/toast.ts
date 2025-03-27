@@ -20,6 +20,8 @@ const initialState: ToastState = {
     type: ToastType.Success,
     data: undefined,
     publicationIdentifier: undefined,
+    publicationTitle: undefined,
+    publicationHash: undefined,
 };
 
 function toastReducer_(
@@ -36,6 +38,8 @@ function toastReducer_(
                     type: action.payload.type,
                     data: action.payload.data,
                     publicationIdentifier: action.payload.publicationIdentifier,
+                    publicationTitle: action.payload.publicationTitle,
+                    publicationHash: action.payload.publicationHash,
                 },
             );
         case toastActions.closeRequest.ID:

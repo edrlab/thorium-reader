@@ -149,6 +149,8 @@
         "cancel": "Avbryt",
         "deleteAnnotations": "Radera anteckningar?",
         "deleteAnnotationsText": "Vill du radera {{- annotationListLength}} anteckning(ar)?",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Vill du ta bort den här katalogen?",
         "deletePublication": "Vill du ta bort den här publikationen?",
         "import": "Vill du importera följande filer:",
@@ -208,6 +210,7 @@
         "import": {
             "alreadyImport": "{{- title}} var redan importerad.",
             "fail": "Importen av {{- path}} misslyckades. {{- err}}",
+            "seeInLibrary": "",
             "success": "Importen av {{- title}} är slutförd."
         },
         "open": {
@@ -385,6 +388,9 @@
                 "underline": "Understrykning"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "stäng av ljud",
             "unmute": "slå på ljud"
@@ -400,7 +406,6 @@
             "edit": "Redigera",
             "goTo": "Gå till sida",
             "landmarks": "Landmärken",
-            "progression": "Läsförlopp",
             "saveMark": "Spara bokmärke",
             "search": "Sök",
             "searchResult": "Sök [{{- searchText}}]",

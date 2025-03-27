@@ -102,6 +102,14 @@ class Cover extends React.Component<IProps, IState> {
     public render() {
         const { publicationViewMaybeOpds } = this.props;
 
+        let needsSpinner = false;
+
+        const { identifier } = this.props.publicationViewMaybeOpds;
+
+        if (this.props.lcp?.publicationFileLocks[identifier]) {
+            needsSpinner = true;
+        }
+
         // let tagString = "";
         // for (const tag of publicationViewMaybeOpds.tags) {
         //     if (typeof tag === "string") {
@@ -130,7 +138,13 @@ class Cover extends React.Component<IProps, IState> {
                 {/* {tagString === "/finished/"  ?
                 <div className={stylesPublications.corner}><SVG ariaHidden svg={ValidateIcon} /></div>
                 : <></>} */}
+                {
+                needsSpinner
+                ?
+                (<div className={stylesPublications.spinner_container}><div className={stylesPublications.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>)
+                :
                 <div className={stylesPublications.gradient}></div>
+                }
                 </>
             );
         }
@@ -149,6 +163,7 @@ class Cover extends React.Component<IProps, IState> {
         const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
 
         return (
+            <>
             <div style={backgroundStyle} className={stylesPublications.no_img_wrapper}>
                 <div className={stylesPublications.no_img}>
                     <p aria-hidden
@@ -157,11 +172,18 @@ class Cover extends React.Component<IProps, IState> {
                     </p>
                     <p aria-hidden>{authors}</p>
                 </div>
-                {/* {!this.props.publicationViewMaybeOpds.lastReadTimeStamp ?
-                <div className={stylesPublications.corner}></div>
-                : <></>} */}
-                <div className={stylesPublications.gradient}></div>
             </div>
+            {/* {!this.props.publicationViewMaybeOpds.lastReadTimeStamp ?
+            <div className={stylesPublications.corner}></div>
+            : <></>} */}
+            {
+            needsSpinner
+            ?
+            (<div className={stylesPublications.spinner_container}><div className={stylesPublications.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>)
+            :
+            <div className={stylesPublications.gradient}></div>
+            }
+            </>
         );
 
     }
@@ -178,6 +200,7 @@ class Cover extends React.Component<IProps, IState> {
 
 const mapStateToProps = (state: IRendererCommonRootState) => ({
     locale: state.i18n.locale, // refresh
+    lcp: state.lcp,
 });
 
 

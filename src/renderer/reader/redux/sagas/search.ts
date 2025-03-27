@@ -49,7 +49,16 @@ function createLocatorLink(href: string, rangeInfo: IRangeInfo): R2Locator {
         href,
         locations: {
             cssSelector: rangeInfo.startContainerElementCssSelector,
-            rangeInfo,
+            caretInfo: {
+                rangeInfo,
+                textFragment: undefined,
+                cleanBefore: "",
+                cleanText: "",
+                cleanAfter: "",
+                rawBefore: "",
+                rawText: "",
+                rawAfter: "",
+            },
         },
     };
 }

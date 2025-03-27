@@ -13,13 +13,14 @@ export const ID = "READER_BOOKMARKS_UPDATE";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Payload extends IBookmarkState {
 }
+export type IPayload = [IBookmarkState, IBookmarkState];
 
-export function build(param: IBookmarkState):
-    Action<typeof ID, Payload> {
+export function build(oldBookmark: IBookmarkState, newBookmark: IBookmarkState):
+    Action<typeof ID, IPayload> {
 
     return {
         type: ID,
-        payload: param,
+        payload: [oldBookmark, newBookmark],
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator

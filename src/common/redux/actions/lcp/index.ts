@@ -9,10 +9,12 @@ import * as userKeyCheckRequest from "./user-key-check-request";
 import * as renewPublicationLicense from "./renewPublicationLicense";
 import * as returnPublication from "./returnPublication";
 import * as unlockPublicationWithPassphrase from "./unlockPublicationWithPassphrase";
+import * as publicationFileLock from "./publicationFileLock";
 
 export {
     userKeyCheckRequest,
     renewPublicationLicense,
     returnPublication,
     unlockPublicationWithPassphrase,
+    publicationFileLock,
 };

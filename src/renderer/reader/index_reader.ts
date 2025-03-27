@@ -65,7 +65,7 @@ ipcRenderer.on(readerIpc.CHANNEL,
 
                 const annotationList = data.payload.reader.annotation || [];
                 for (const [_createdTimestampFromAnno,anno] of annotationList) {
-                    
+
                     // TODO? why do not used the _createdTimestampFromAnno instead !?
                     if (!anno.created && anno.modified) {
                         anno.created = anno.modified;
@@ -74,11 +74,11 @@ ipcRenderer.on(readerIpc.CHANNEL,
                         anno.created = (new Date()).getTime();
                     }
                 }
-                const annotationTagsList = [];
+                const noteTagList = [];
                 for (const [_, {tags}] of annotationList) {
-                    annotationTagsList.push(...(tags || []));
+                    noteTagList.push(...(tags || []));
                 }
-                data.payload.annotationTagsIndex = pushTags({}, annotationTagsList);
+                data.payload.annotationTagsIndex = pushTags({}, noteTagList);
 
 
                 const bookmarkList = data.payload.reader.bookmark || [];
@@ -104,6 +104,11 @@ ipcRenderer.on(readerIpc.CHANNEL,
                         bookmark.index = bookmarkIndex;
                     }
                 }
+                
+                for (const [_, { tags }] of bookmarkList) {
+                    noteTagList.push(...(tags || []));
+                }
+                data.payload.annotationTagsIndex = pushTags({}, noteTagList);
 
                 const store = createStoreFromDi(data.payload);
                 const locale = store.getState().i18n.locale;
@@ -130,7 +135,6 @@ if (IS_DEV) {
         reloadLink.setAttribute("onClick", "javascript:window.location.reload();");
         const reloadText = document.createTextNode("REACT AXE A11Y CHECKER RUNNING (CLICK TO RESET)");
         reloadLink.appendChild(reloadText);
-        // tslint:disable-next-line: max-line-length
         reloadLink.setAttribute("style", "background-color: #e2f9fe; cursor: pointer; display: flex; align-items: center; justify-content: center; text-decoration: underline; padding: 0; margin: 0; height: 100%; font-size: 120%; font-weight: bold; font-family: arial; color: blue;");
         parent.appendChild(reloadLink);
 

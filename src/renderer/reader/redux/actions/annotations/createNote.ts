@@ -5,8 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { Action } from "readium-desktop/common/models/redux";
-import { IAnnotationState, IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
+import { IAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 
 export const ID = "READER_ANNOTATIONS_CREATE_NOTE";
 

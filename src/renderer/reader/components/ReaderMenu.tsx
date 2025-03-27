@@ -16,11 +16,10 @@ import * as stylesDropDown from "readium-desktop/renderer/assets/styles/componen
 import * as stylesTags from "readium-desktop/renderer/assets/styles/components/tags.scss";
 import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
 import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
-import { v4 as uuidv4 } from "uuid";
+import * as stylesBookmarks from "readium-desktop/renderer/assets/styles/components/bookmarks.scss";
 import classNames from "classnames";
 import * as React from "react";
 import FocusLock from "react-focus-lock";
-import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 
 import SVG from "readium-desktop/renderer/common/components/SVG";
 
@@ -62,7 +61,7 @@ import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import * as Dialog from "@radix-ui/react-dialog";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { MySelectProps, Select, SelectItem } from "readium-desktop/renderer/common/components/Select";
-import { ListBox, ListBoxItem, TextArea } from "react-aria-components";
+import { ListBox, ListBoxItem  } from "react-aria-components";
 import type { Selection } from "react-aria-components";
 import { AnnotationEdit } from "./AnnotationEdit";
 import { TagGroup, TagList, Tag, Label } from "react-aria-components";
@@ -82,18 +81,22 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { Locator } from "@r2-shared-js/models/locator";
-import { annotationsColorsLight, IAnnotationState, IColor, TAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
+import { IAnnotationState, TAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { dialogActions, dockActions, readerActions } from "readium-desktop/common/redux/actions";
-import { readerLocalActionExportAnnotationSet, readerLocalActionHighlights, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
+import { readerLocalActionExportAnnotationSet, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
 import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 import { IReaderDialogOrDockSettingsMenuState, ReaderConfig } from "readium-desktop/common/models/reader";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { rgbToHex } from "readium-desktop/common/rgb";
 import { ImportAnnotationsDialog } from "readium-desktop/renderer/common/components/ImportAnnotationsDialog";
-import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
+import { IBookmarkState, TBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { DockTypeName } from "readium-desktop/common/models/dock";
+import { BookmarkEdit } from "./BookmarkEdit";
+import { BookmarkLocatorInfo } from "./BookmarkLocatorInfo";
+import { IColor } from "@r2-navigator-js/electron/common/highlight";
+import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/note";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderMenuProps {
@@ -394,8 +397,13 @@ const renderLinkTree = (currentLocation: MiniLocatorExtended, isRTLfn: (_link: I
     return RenderLinkTree;
 };
 
-const HardWrapComment: React.FC<{ comment: string }> = (props) => {
+const HardWrapComment: React.FC<{ comment: string | undefined }> = (props) => {
     const { comment } = props;
+    if (!comment) {
+        return (
+            <p> </p>
+        );
+    }
     const splittedComment = comment.split("\n");
 
     const strListComponent = [];
@@ -512,7 +520,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                 }, 100);
             }
         } : undefined}
-        aria-label={__("reader.annotations.note", {color: __(Object.entries(annotationsColorsLight).find(([colorHex]) => colorHex === annotationColor)?.[1])})}
+        aria-label={__("reader.annotations.note", {color: __(Object.entries(noteColorCodeToColorTranslatorKeySet).find(([colorHex]) => colorHex === annotationColor)?.[1])})}
     >
         {/* <SVG ariaHidden={true} svg={BookmarkIcon} /> */}
         <div className={stylesAnnotations.annnotation_container}>
@@ -559,7 +567,17 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                 isEdited
                     ?
                     <FocusLock disabled={false} autoFocus={true}>
-                        <AnnotationEdit uuid={uuid} save={save} cancel={() => triggerEdition(false)} dockedMode={dockedMode} btext={dockedEditAnnotation && btext} />
+                        <AnnotationEdit
+                            uuid={uuid}
+                            save={save}
+                            cancel={() => triggerEdition(false)}
+                            dockedMode={dockedMode}
+                            drawType={annotation.drawType}
+                            color={annotation.color}
+                            tags={annotation.tags}
+                            comment={annotation.comment}
+                            locatorExtended={annotation.locatorExtended}
+                        />
                     </FocusLock>
                     :
                     <>
@@ -711,6 +729,280 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
     </li>);
 };
 
+const BookmarkCard: React.FC<{ timestamp: number, bookmark: IBookmarkState, isEdited: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void, setCreatorFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+
+    const { goToLocator, setCreatorFilter, setTagFilter } = props;
+    const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
+    const dockingMode = useReaderConfig("readerDockingMode");
+    const dockedMode = dockingMode !== "full";
+    const { timestamp, bookmark, isEdited, triggerEdition } = props;
+    const { uuid, color, tags } = bookmark;
+    const tag = Array.isArray(tags) ? tags[0] || "" : "";
+    const dockedEditBookmark = isEdited && dockedMode;
+    const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
+
+    const dispatch = useDispatch();
+    const [__] = useTranslator();
+    const save = React.useCallback((name: string, color: IColor, tag: string | undefined) => {
+        dispatch(readerActions.bookmark.update.build(
+            {
+                ...bookmark,
+            },
+            {
+                ...bookmark,
+                name,
+                color,
+                tags: tag ? [tag] : undefined,
+                modified: (new Date()).getTime(),
+            },
+        ));
+        triggerEdition(false);
+    }, [dispatch, bookmark, triggerEdition]);
+
+    const date = new Date(timestamp);
+    const dateStr = `${(`${date.getDate()}`.padStart(2, "0"))}/${(`${date.getMonth() + 1}`.padStart(2, "0"))}/${date.getFullYear()}`;
+
+    const { percentRounded } = React.useMemo(() => {
+        if (r2Publication.Spine && bookmark.locatorExtended?.locator) {
+            const percent = computeProgression(r2Publication.Spine || [], bookmark.locatorExtended.locator);
+            const percentRounded = Math.round(percent);
+            return { style: { width: `${percent}%` }, percentRounded };
+        }
+        return { style: { width: "100%" }, percentRounded: 100 };
+    }, [r2Publication, bookmark]);
+
+    const bprogression = (percentRounded >= 0 ? `${percentRounded}% ` : "");
+
+    if (!uuid) {
+        return <></>;
+    }
+
+    const creatorName = (getUuidFromUrn(bookmark.creator?.id) !== getUuidFromUrn(creatorMyself.id) ? (bookmark.creator?.name) : creatorMyself.name) || "";
+    // const creatorId = (getUuidFromUrn(annotation.creator?.id) !== getUuidFromUrn(creatorMyself.id) ? getUuidFromUrn(annotation.creator?.id) : getUuidFromUrn(creatorMyself.id)) || "";
+
+    return (<li
+        className={stylesAnnotations.annotations_line}
+        style={{ backgroundColor: dockedEditBookmark ? "var(--color-extralight-grey)" : "", borderLeft: dockedEditBookmark ? "none" : `4px solid ${rgbToHex(color)}` }}
+        onKeyDown={isEdited ? (e) => {
+            if (e.key === "Escape") {
+                e.preventDefault();
+                e.stopPropagation();
+                triggerEdition(false);
+                setTimeout(() => {
+                    const el = document.getElementById(`${uuid}_edit_button`);
+                    el?.blur();
+                    el?.focus();
+                }, 100);
+            }
+        } : undefined}
+    >
+        {/* <SVG ariaHidden={true} svg={BookmarkIcon} /> */}
+        <div className={stylesAnnotations.annnotation_container}>
+            {isEdited ?
+                <></>
+                : <div>
+                    <button className={classNames(stylesAnnotations.annotation_name, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
+                    // title={bname}
+                    aria-label={`${__("reader.goToContent")} (${__("reader.bookmarks.index", {index: bookmark.index})})`}
+                    style={{ borderLeft: dockedEditBookmark && "2px solid var(--color-blue)" }}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        const closeNavAnnotation = !dockedMode && !(e.shiftKey && e.altKey);
+                        goToLocator(bookmark.locatorExtended.locator, closeNavAnnotation);
+                        // dispatch(readerLocalActionAnnotations.focus.build(annotation));
+                    }}
+
+                    // does not work on button (works on 'a' link)
+                    // onDoubleClick={(_e) => {
+                    //     e.preventDefault();
+                    //     goToLocator(annotation.locatorExtended.locator, false);
+                    //     dispatch(readerLocalActionAnnotations.focus.build(annotation));
+                    // }}
+
+                    // not necessary (onClick works)
+                    // onKeyUp=
+                    // {
+                    //     (e) => {
+                    //         // SPACE does not work (only without key mods on button)
+                    //         // || e.key === "Space"
+                    //         if (e.key === "Enter") {
+                    ///            e.preventDefault();
+                    //             const closeNavAnnotation = !dockedMode && !(e.shiftKey && e.altKey);
+                    //             goToLocator(annotation.locatorExtended.locator, closeNavAnnotation);
+                    //             dispatch(readerLocalActionAnnotations.focus.build(annotation));
+                    //         }
+                    //     }
+                    // }
+                    id={uuid}
+                >
+                        <p><BookmarkLocatorInfo fallback={__("reader.bookmarks.index", { index: bookmark.index })} locatorExtended={bookmark.locatorExtended} /></p>
+                </button>
+                </div>
+            }
+            {
+                isEdited
+                    ?
+                    <FocusLock disabled={false} autoFocus={true}>
+                        <BookmarkEdit
+                            locatorExtended={bookmark.locatorExtended}
+                            name={bookmark.name}
+                            uuid={bookmark.uuid}
+                            color={bookmark.color}
+                            tags={bookmark.tags}
+                            save={save}
+                            cancel={() => triggerEdition(false)}
+                            dockedMode={dockedMode} />
+                    </FocusLock>
+                    :
+                    <>
+                        <HardWrapComment comment={bookmark.name} />
+                        {tag ? <div className={stylesTags.tags_wrapper} aria-label={__("catalog.tags")}>
+                            <div className={stylesTags.tag}>
+                                <a onClick={() => setTagFilter(tag)}
+
+                                    onKeyDown={(e) => {
+                                        // if (e.code === "Space") {
+                                        if (e.key === " " || e.altKey || e.ctrlKey) {
+                                            e.preventDefault(); // prevent scroll
+                                        }
+                                    }}
+                                    onKeyUp={(e) => {
+                                        // Includes screen reader tests:
+                                        // if (e.code === "Space") { WORKS
+                                        // if (e.key === "Space") { DOES NOT WORK
+                                        // if (e.key === "Enter") { WORKS
+                                        if (e.key === " " || e.key === "Enter") { // WORKS
+                                            e.preventDefault();
+                                            e.currentTarget.click();
+                                        }
+                                    }}
+                                    className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
+                                    tabIndex={0}>
+                                    {tag}
+                                </a>
+                            </div>
+                        </div>
+                            : <></>}
+                    </>
+            }
+        </div>
+        <div className={stylesAnnotations.annotation_edit}>
+            <div>
+                <div aria-label={__("reader.annotations.date")}>
+                    <SVG ariaHidden svg={CalendarIcon} />
+                    <p>{dateStr}</p>
+                </div>
+                <div aria-label={__("publication.progression.title")}>
+                    <SVG ariaHidden svg={BookOpenIcon} />
+                    <p>{bprogression}</p>
+                </div>
+                {creatorName
+                    ?
+                    <div>
+                        <SVG ariaHidden svg={AvatarIcon} />
+                        <a onClick={() => setCreatorFilter(creatorName)}
+
+                            onKeyDown={(e) => {
+                                // if (e.code === "Space") {
+                                if (e.key === " " || e.altKey || e.ctrlKey) {
+                                    e.preventDefault(); // prevent scroll
+                                }
+                            }}
+                            onKeyUp={(e) => {
+                                // Includes screen reader tests:
+                                // if (e.code === "Space") { WORKS
+                                // if (e.key === "Space") { DOES NOT WORK
+                                // if (e.key === "Enter") { WORKS
+                                if (e.key === " " || e.key === "Enter") { // WORKS
+                                    e.preventDefault();
+                                    e.currentTarget.click();
+                                }
+                            }}
+                            tabIndex={0}>
+                            <p style={{ overflow: "hidden", textOverflow: "ellipsis", padding: "0" }} title={creatorName}>{creatorName}</p>
+                        </a>
+                    </div>
+                    : <></>
+                }
+            </div>
+            <div className={stylesBookmarks.bookmarks_actions_buttons}>
+                <button
+                    id={`${uuid}_edit_button`}
+                    title={__("reader.marks.edit")}
+                    disabled={isEdited}
+                    onClick={() => triggerEdition(true)}
+                >
+                    <SVG ariaHidden={true} svg={EditIcon} />
+                </button>
+
+                {/* <button>
+                    <SVG ariaHidden={true} svg={DuplicateIcon} />
+                </button> */}
+                {/* <DialogTriggerReactAria>
+                    <button title={__("reader.marks.delete")}
+                    >
+                        <SVG ariaHidden={true} svg={DeleteIcon} />
+                    </button>
+                    <PopoverReactAria>
+                        <DialogReactAria>
+                            <button onClick={() => {
+                                // setItemToEdit(-1);
+                                dispatch(readerActions.annotation.pop.build(annotation));
+                            }}
+                                title={__("reader.marks.delete")}
+                            >
+                                <SVG ariaHidden={true} svg={DeleteIcon} />
+                                {__("reader.marks.delete")}
+                            </button>
+                        </DialogReactAria>
+                    </PopoverReactAria>
+                </DialogTriggerReactAria> */}
+                {isEdited ?
+                <button title={__("reader.marks.delete")}
+                className={stylesPopoverDialog.delete_item_edition}
+                onClick={() => {
+                    triggerEdition(false);
+                    dispatch(readerActions.bookmark.pop.build(bookmark));
+                    // alert("deleted");
+                }}
+                >
+                    <SVG ariaHidden={true} svg={DeleteIcon} />
+                    {__("reader.marks.delete")}
+                </button> :
+                <Popover.Root>
+                    <Popover.Trigger asChild>
+                        <button
+                        title={__("reader.marks.delete")}
+                        >
+                            <SVG ariaHidden={true} svg={DeleteIcon} />
+                        </button>
+                    </Popover.Trigger>
+                    <Popover.Portal>
+                        <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesPopoverDialog.delete_item}>
+                            <Popover.Close
+                                onClick={() => {
+                                    triggerEdition(false);
+                                    dispatch(readerActions.bookmark.pop.build(bookmark));
+                                }}
+                                title={__("reader.marks.delete")}
+                            >
+                                <SVG ariaHidden={true} svg={DeleteIcon} />
+                                {__("reader.marks.delete")}
+                            </Popover.Close>
+                            <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                        </Popover.Content>
+                    </Popover.Portal>
+
+                </Popover.Root>
+                }
+            </div>
+        </div>
+        {/* <div className={stylesPopoverDialog.gauge}>
+            <div className={stylesPopoverDialog.fill} style={style}></div>
+        </div> */}
+    </li>);
+};
+
 const selectionIsSet = (a: Selection): a is Set<string> => typeof a === "object";
 const MAX_MATCHES_PER_PAGE = 5;
 
@@ -762,7 +1054,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
 
             const colorHex = rgbToHex(color);
 
-            return (!selectionIsSet(tagArrayFilter) || !tagArrayFilter.size || tags.some((tagsValueName) => tagArrayFilter.has(tagsValueName))) &&
+            return (!selectionIsSet(tagArrayFilter) || !tagArrayFilter.size || tags?.some((tagsValueName) => tagArrayFilter.has(tagsValueName))) &&
                 (!selectionIsSet(colorArrayFilter) || !colorArrayFilter.size || colorArrayFilter.has(colorHex)) &&
                 (!selectionIsSet(drawTypeArrayFilter) || !drawTypeArrayFilter.size || drawTypeArrayFilter.has(drawType)) &&
                 (!selectionIsSet(creatorArrayFilter) || !creatorArrayFilter.size || creatorArrayFilter.has(getUuidFromUrn(creator.id) !== getUuidFromUrn(creatorMyself.id) ? creator.name : creatorMyself.name));
@@ -901,14 +1193,14 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
 
     const selectCreatorOptions = Object.entries(creatorSet).map(([k, v]) => ({ id: k, name: v }));
 
-    const annotationsColors = React.useMemo(() => Object.entries(annotationsColorsLight).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
+    const annotationsColors = React.useMemo(() => Object.entries(noteColorCodeToColorTranslatorKeySet).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
 
     // I'm disable this feature for performance reason, push new Colors from incoming publicaiton annotation, not used for the moment. So let's commented it for the moment.
     // Need to be optimised in the future.
     // annotationsQueue.forEach(([, annotation]) => {
     //     const colorHex = rgbToHex(annotation.color);
-    //     if (!annotationsColorsLight.find((annotationColor) => annotationColor.hex === colorHex)) {
-    //         annotationsColorsLight.push({ hex: colorHex, name: colorHex });
+    //     if (!noteColorCodeToColorTranslatorKeySet.find((annotationColor) => annotationColor.hex === colorHex)) {
+    //         noteColorCodeToColorTranslatorKeySet.push({ hex: colorHex, name: colorHex });
     //     }
     // });
 
@@ -1243,10 +1535,10 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                     </AlertDialog.Cancel>
                                     <AlertDialog.Action asChild>
                                         <button className={stylesButtons.button_primary_blue} onClick={() => {
+                                            updateDialogOrDockDataInfo({id: "", edit: false});
                                             for (const [, annotation] of annotationListFiltered) {
 
                                                 dispatch(readerActions.annotation.pop.build(annotation));
-                                                updateDialogOrDockDataInfo({id: "", edit: false});
                                             }
 
                                             // reset filters
@@ -1510,354 +1802,586 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
     );
 };
 
-const BookmarkItem: React.FC<{ bookmark: IBookmarkState; i: number }> = (props) => {
+const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnChange: () => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
-    const { r2Publication, goToLocator, dockedMode: _dockedMode, setItemToEdit, itemEdited, dockedMode } = React.useContext(bookmarkCardContext);
-    const { bookmark, i } = props;
-    const { uuid } = bookmark;
-    const isEdited = itemEdited === i;
-    const [__] = useTranslator();
+    const readerConfig = useSelector((state: IReaderRootState) => state.reader.config);
+
+    const { goToLocator, popoverBoundary, hideBookmarkOnChange } = props;
 
     const dispatch = useDispatch();
-    const isAudioBook = isAudiobookFn(r2Publication);
-    const deleteBookmark = (bookmark: IBookmarkState) => {
-        dispatch(readerActions.bookmark.pop.build(bookmark));
-        // if (bookmark.locator.locations.rangeInfo)
-        dispatch(readerLocalActionHighlights.handler.pop.build([
-            {
-                uuid: bookmark.uuid,
-            },
-        ]));
-    };
-    let percent = 100;
-    let p = -1;
-    if (r2Publication.Spine?.length && bookmark.locator?.href) {
-        const index = r2Publication.Spine.findIndex((item: any) => item.Href === bookmark.locator.href);
-        if (index >= 0) {
-            if (typeof bookmark.locator?.locations?.progression === "number") {
-                percent = 100 * ((index + bookmark.locator.locations.progression) / r2Publication.Spine.length);
-            } else {
-                percent = 100 * (index / r2Publication.Spine.length);
-            }
-            percent = Math.round(percent * 100) / 100;
-            p = Math.round(percent);
-        }
-    }
-    const style = { width: `${percent}%` };
-    const bprogression = (p >= 0 && !isAudioBook ? `${p}% ` : "");
+    const dockedMode = useSelector((state: IReaderRootState) => state.reader.config.readerDockingMode !== "full");
+    const dialogOrDockDataInfo = useSelector((state: IReaderRootState): IReaderDialogOrDockSettingsMenuState =>
+        (state.dialog.open && state.dialog.type === DialogTypeName.ReaderMenu) ?
+            state.dialog.data as IReaderDialogOrDockSettingsMenuState : (state.dock.open && state.dock.type === DockTypeName.ReaderMenu) ?
+                state.dock.data : {} as unknown as IReaderDialogOrDockSettingsMenuState);
+    const updateDialogOrDockDataInfo = React.useCallback((data: IReaderDialogOrDockSettingsMenuState) => {
+        dispatch(dockedMode ? dockActions.updateRequest.build(data) : dialogActions.updateRequest.build(data));
+    }, [dockedMode, dispatch]);
+    const { id: bookmarkId, edit: bookmarkEdit } = dialogOrDockDataInfo;
 
-    const textearearef = React.useRef<HTMLTextAreaElement>();
+    const paginatorBookmarksRef = React.useRef<HTMLSelectElement>();
 
-    const submitBookmark = (textValue: string) => {
-
-        // dispatch(readerActions.bookmark.update.build({ ...bookmark, name: textValue }));
-
-        dispatch(readerActions.bookmark.pop.build(bookmark));
-        dispatch(readerLocalActionHighlights.handler.pop.build([
-            {
-                uuid: bookmark.uuid,
-            },
-        ]));
-
-        const b = { ...bookmark, uuid: uuidv4(), name: textValue } satisfies IBookmarkState;
-
-        dispatch(readerActions.bookmark.push.build(b));
-        dispatch(readerLocalActionHighlights.handler.push.build([
-            {
-                uuid: b.uuid,
-                href: bookmark.locator.href,
-                def: {
-                    textPopup: b.name ? {
-                        text: b.name, // multiline
-                        dir: "ltr", // TODO
-                        lang: "en", // TODO
-                    } : undefined,
-                    selectionInfo: {
-                        textFragment: undefined,
-                        rangeInfo: bookmark.locator.locations.rangeInfo || {
-                            startContainerElementCssSelector: bookmark.locator.locations.cssSelector,
-                            startContainerElementCFI: undefined,
-                            startContainerElementXPath: undefined,
-                            startContainerChildTextNodeIndex: -1,
-                            startOffset: -1,
-                            endContainerElementCssSelector: bookmark.locator.locations.cssSelector,
-                            endContainerElementCFI: undefined,
-                            endContainerElementXPath: undefined,
-                            endContainerChildTextNodeIndex: -1,
-                            endOffset: -1,
-                            cfi: undefined,
-                        },
-                        cleanBefore: bookmark.locator.text?.before || "",
-                        cleanText: bookmark.locator.text?.highlight || bookmark.locator.title || b.name,
-                        cleanAfter: bookmark.locator.text?.after || "",
-                        rawBefore: bookmark.locator.text?.beforeRaw || "",
-                        rawText: bookmark.locator.text?.highlightRaw || bookmark.locator.title || b.name,
-                        rawAfter: bookmark.locator.text?.afterRaw || "",
-                    },
-                    color: {red:  52, green: 152, blue: 219},
-                    group: "bookmark",
-                    drawType: 6,
-                },
-            },
-        ]));
-
-        // const currentLocation = yield* selectTyped((state: IReaderRootState) => state.reader.locator);
-        // const href1 = currentLocation?.locator?.href;
-        // const href2 = currentLocation?.secondWebViewHref;
-        // dispatch(readerLocalActionLocatorHrefChanged.build(href1, href1, href2, href2));
-
-        setItemToEdit(-1);
-    };
-
-    const bname = (bookmark.name ? `${bookmark.name}` : `${__("reader.navigation.bookmarkTitle")} ${i}`);
-
-    React.useEffect(() => {
-        if (isEdited && textearearef.current) {
-            textearearef.current.style.height = "auto";
-            textearearef.current.style.height = `${textearearef.current.scrollHeight + 3}px`;
-            textearearef.current.focus();
-        }
-    }, [isEdited]);
-
-    return (
-        <li
-            className={stylesPopoverDialog.bookmarks_line}
-            key={i}
-            onKeyDown={isEdited ? (e) => {
-                if (e.key === "Escape") {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setItemToEdit(-1);
-                    setTimeout(() => {
-                        const el = document.getElementById(`${uuid}_edit_button`);
-                        el?.blur();
-                        el?.focus();
-                    }, 100);
-                }
-            } : undefined}
-            aria-label={__("reader.navigation.bookmarkTitle")}
-        >
-            <div
-                className={stylesPopoverDialog.bookmark_infos}
-            >
-
-                <div className={stylesPopoverDialog.chapter_marker}>
-                    {isEdited ?
-                        // <FocusLock disabled={dockedMode} autoFocus={true}>
-                        // TODO fix issue with focusLock on modal not docked
-                        <FocusLock disabled={true} autoFocus={true}>
-                            <form className={stylesPopoverDialog.update_form}>
-                                <TextArea id={`${uuid}_edit`} name="editBookmark" wrap="hard" ref={textearearef}
-                                    defaultValue={bname}
-                                    className={stylesPopoverDialog.bookmark_textArea}
-                                />
-                                <div style={{ display: "flex", gap: "5px" }}>
-                                    <button className={stylesButtons.button_secondary_blue} aria-label={__("dialog.cancel")} type="button" onClick={() => { setItemToEdit(-1); }}>{__("dialog.cancel")}</button>
-                                    <button type="submit"
-                                        className={stylesButtons.button_primary_blue}
-                                        aria-label={__("reader.marks.saveMark")}
-                                        onClick={(e) => { 
-                                            e.preventDefault();
-                                            const textareaValue = textearearef?.current?.value || "";
-                                            const textareaNormalize = textareaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
-                                            // if (textareaNormalize) { // empty bookmark name allowed
-                                            submitBookmark(textareaNormalize); 
-                                            // }
-                                        }}
-                                    >
-                                        <SVG ariaHidden svg={SaveIcon} />
-                                        {__("reader.marks.saveMark")}
-                                    </button>
-                                </div>
-                            </form>
-                        </FocusLock>
-                        :
-                        <button
-                            id={uuid}
-                            className={stylesReader.bookmarkList_button}
-                            onClick={(e) => {
-                                // e.stopPropagation();
-                                e.preventDefault();
-                                const closeNavBookmark = !dockedMode && !(e.shiftKey && e.altKey);
-                                goToLocator(bookmark.locator, closeNavBookmark);
-                            }}
-                            aria-label={`${__("reader.goToContent")} (${bname})`}
-
-                        // does not work on button (works on 'a' link)
-                        // onDoubleClick={(_e) => goToLocator(bookmark.locator, false)}
-
-                        // not necessary (onClick works)
-                        // onKeyUp=
-                        // {
-                        //     (e) => {
-                        //         // SPACE does not work (only without key mods on button)
-                        //         // || e.key === "Space"
-                        //         if (e.key === "Enter") {
-                        //             // e.stopPropagation();
-                        //             e.preventDefault();
-                        //             const closeNavBookmark = !dockedMode && !(e.shiftKey && e.altKey);
-                        //             goToLocator(bookmark.locator, closeNavBookmark);
-                        //         }
-                        //     }
-                        // }
-                        >
-                            <HardWrapComment comment={bname} />
-                        </button>
-                    }
-                    <div className={stylesPopoverDialog.bookmark_actions}>
-                        <div aria-label={__("reader.marks.progression")}>
-                            <SVG ariaHidden svg={BookOpenIcon} />
-                            <p>{bprogression}</p>
-                        </div>
-                        <div className={stylesPopoverDialog.bookmark_actions_buttons}>
-                            <button
-                                id={`${uuid}_edit_button`}
-                                title={__("reader.marks.edit")}
-                                onClick={() => { setItemToEdit(i); }}
-                                disabled={isEdited}
-                            >
-                                <SVG ariaHidden={true} svg={EditIcon} />
-                            </button>
-                            <Popover.Root>
-                                <Popover.Trigger asChild>
-                                    <button title={__("reader.marks.delete")}
-                                    >
-                                        <SVG ariaHidden={true} svg={DeleteIcon} />
-                                    </button>
-                                </Popover.Trigger>
-                                <Popover.Portal>
-                                    <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} hideWhenDetached sideOffset={5} className={stylesPopoverDialog.delete_item}>
-                                        <Popover.Close
-                                            onClick={() => { setItemToEdit(-1); deleteBookmark(bookmark); }}
-                                            title={__("reader.marks.delete")}
-                                        >
-                                            <SVG ariaHidden={true} svg={DeleteIcon} />
-                                            {__("reader.marks.delete")}
-                                        </Popover.Close>
-                                        <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                                    </Popover.Content>
-                                </Popover.Portal>
-
-                            </Popover.Root>
-                        </div>
-                    </div>
-                    <div className={stylesPopoverDialog.gauge}>
-                        <div className={stylesPopoverDialog.fill} style={style}></div>
-                    </div>
-                </div>
-            </div>
-        </li>
-    );
-};
-
-
-const bookmarkCardContext = React.createContext<{
-    itemEdited: number;
-    setItemToEdit: (i: number) => void;
-    goToLocator: (locator: Locator, closeNavPanel?: boolean) => void;
-    dockedMode: boolean;
-    r2Publication: R2Publication;
-}>(undefined);
-
-const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
-
-    const { r2Publication, goToLocator, dockedMode } = props;
     const [__] = useTranslator();
-    const bookmarks = useSelector((state: IReaderRootState) => state.reader.bookmark).map(([, v]) => v);
+    const bookmarkListAll = useSelector((state: IReaderRootState) => state.reader.bookmark);
+    const publicationView = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
+    const winId = useSelector((state: IReaderRootState) => state.win.identifier);
+    const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
+    const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
 
-    // const sortedBookmarks = bookmarks;
-    // WARNING: .sort() is in-place same-array mutation! (not a new array)
-    const sortedBookmarks = React.useMemo(() => bookmarks.sort((a, b) => {
-        // -1 : a < b
-        // 0 : a === b
-        // 1 : a > b
-        if (!a.locator?.href || !b.locator?.href) {
-            return -1;
-        }
-        const indexA = r2Publication.Spine.findIndex((item) => item.Href === a.locator.href);
-        const indexB = r2Publication.Spine.findIndex((item) => item.Href === b.locator.href);
-        if (indexA < indexB) {
-            return -1;
-        }
-        if (indexA > indexB) {
-            return 1;
-        }
-        if (typeof a.locator?.locations?.progression === "number" && typeof b.locator?.locations?.progression === "number") {
-            if (a.locator.locations.progression < b.locator.locations.progression) {
-                return -1;
+    const [colorArrayFilter, setColorArrayFilter] = React.useState<Selection>(new Set([]));
+    const [creatorArrayFilter, setCreatorArrayFilter] = React.useState<Selection>(new Set([]));
+    const [tagArrayFilter, setTagArrayFilter] = React.useState<Selection>(new Set([]));
+
+    let bookmarkListFiltered: TBookmarkState = [];
+    let startPage = 1;
+    const [pageNumber, setPageNumber] = React.useState(startPage);
+    const changePageNumber = React.useCallback((cb: (n: number) => number) => {
+        setTimeout(() => paginatorBookmarksRef.current?.focus(), 100);
+        updateDialogOrDockDataInfo({id: "", edit: false});
+        setPageNumber(cb);
+    }, [setPageNumber, updateDialogOrDockDataInfo]);
+
+    bookmarkListFiltered =
+        ((selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size) ||
+        (selectionIsSet(colorArrayFilter) && colorArrayFilter.size)) ||
+        (selectionIsSet(tagArrayFilter) && tagArrayFilter.size)
+        ? bookmarkListAll.filter(([, { creator, color, tags }]) => {
+
+            const colorHex = rgbToHex(color);
+
+            return (!selectionIsSet(creatorArrayFilter) || !creatorArrayFilter.size || creatorArrayFilter.has(getUuidFromUrn(creator.id) !== getUuidFromUrn(creatorMyself.id) ? creator.name : creatorMyself.name)) &&
+                (!selectionIsSet(colorArrayFilter) || !colorArrayFilter.size || colorArrayFilter.has(colorHex)) &&
+                (!selectionIsSet(tagArrayFilter) || !tagArrayFilter.size || tags?.some((tagsValueName) => tagArrayFilter.has(tagsValueName)));
+
+        })
+        : bookmarkListAll;
+
+    if (bookmarkId) {
+
+        const annotationFocusItemFindIndex = bookmarkListFiltered.findIndex(([, annotationItem]) => annotationItem.uuid === bookmarkId);
+        if (annotationFocusItemFindIndex > -1) {
+            const annotationFocusItemPageNumber = Math.ceil((annotationFocusItemFindIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
+            startPage = annotationFocusItemPageNumber;
+            if (startPage !== pageNumber)
+                setPageNumber(startPage);
+
+        } else if (bookmarkListFiltered !== bookmarkListAll) {
+            bookmarkListFiltered = bookmarkListAll;
+            const annotationFocusItemFindIndex = bookmarkListFiltered.findIndex(([, annotationItem]) => annotationItem.uuid === bookmarkId);
+            if (annotationFocusItemFindIndex > -1) {
+                const annotationFocusItemPageNumber = Math.ceil((annotationFocusItemFindIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
+                startPage = annotationFocusItemPageNumber;
+                if (startPage !== pageNumber)
+                    setPageNumber(startPage);
+
+                const [, annotationFound] = bookmarkListFiltered[annotationFocusItemFindIndex];
+
+                // reset filters
+                if (creatorArrayFilter !== "all" && !creatorArrayFilter.has(annotationFound.creator?.name) && creatorArrayFilter.size !== 0) {
+                    setCreatorArrayFilter(new Set([]));
+                }
+                if (colorArrayFilter !== "all" && !colorArrayFilter.has(rgbToHex(annotationFound.color)) && colorArrayFilter.size !== 0) {
+                    setColorArrayFilter(new Set([]));
+                }
+                if (tagArrayFilter !== "all" && !tagArrayFilter.has((annotationFound.tags || [])[0]) && tagArrayFilter.size !== 0) {
+                    setTagArrayFilter(new Set([]));
+                }
             }
-            if (a.locator.locations.progression > b.locator.locations.progression) {
-                return 1;
-            }
         }
-        return 0;
-    }), [bookmarks, r2Publication.Spine]);
 
-    const MAX_MATCHES_PER_PAGE = 5;
+    }
 
-    const pageTotal = Math.ceil(sortedBookmarks.length / MAX_MATCHES_PER_PAGE) || 1;
+    const [sortType, setSortType] = React.useState<Selection>(new Set(["lastCreated"]));
+    if (sortType !== "all" && sortType.has("progression")) {
 
-    const [pageNumber, setPageNumber] = React.useState(1);
+        bookmarkListFiltered.sort((a, b) => {
+            const [, { locatorExtended: la }] = a;
+            const [, { locatorExtended: lb }] = b;
+            const pcta = computeProgression(r2Publication.Spine, la.locator);
+            const pctb = computeProgression(r2Publication.Spine, lb.locator);
+            return pcta - pctb;
+        });
+    } else if (sortType !== "all" && sortType.has("lastCreated")) {
+        bookmarkListFiltered.sort((a, b) => {
+            const [ta] = a;
+            const [tb] = b;
+            return tb - ta;
+        });
+    } else if (sortType !== "all" && sortType.has("lastModified")) {
+        bookmarkListFiltered.sort((a, b) => {
+            const [, { modified: ma }] = a;
+            const [, { modified: mb }] = b;
+            return ma && mb ? mb - ma : ma ? -1 : mb ? 1 : 0;
+        });
+    }
+
+    const pageTotal = Math.ceil(bookmarkListFiltered.length / MAX_MATCHES_PER_PAGE) || 1;
+
     if (pageNumber <= 0) {
-        setPageNumber(1);
+        setPageNumber(startPage);
     } else if (pageNumber > pageTotal) {
         setPageNumber(pageTotal);
     }
 
     const startIndex = (pageNumber - 1) * MAX_MATCHES_PER_PAGE;
-
-    const bookmarksPagedArray = sortedBookmarks.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE); // catch the end of the array
+    const bookmarksPagedArray = bookmarkListFiltered.slice(startIndex, startIndex + MAX_MATCHES_PER_PAGE);
 
     const isLastPage = pageTotal === pageNumber;
     const isFirstPage = pageNumber === 1;
     const isPaginated = pageTotal > 1;
-    const pageOptions = Array(pageTotal).fill(undefined).map((_, i) => i + 1).map((v) => ({ id: v, name: `${v} / ${pageTotal}` }));
+    const pageOptions = Array.from({ length: pageTotal }, (_k, v) => (v += 1, ({ id: v, name: `${v} / ${pageTotal}` })));
+
 
     const begin = startIndex + 1;
-    const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, sortedBookmarks.length);
+    const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, bookmarkListFiltered.length);
 
-    const [itemEdited, setItemToEdit] = React.useState(-1);
+    const triggerEdition = (bookmarkItem: IBookmarkState) =>
+        (value: boolean) => value ? updateDialogOrDockDataInfo({id: bookmarkItem.uuid, edit: true}) : updateDialogOrDockDataInfo({id: "", edit: false});
 
-    const paginatorBookmarksRef = React.useRef<HTMLSelectElement>();
+    const tagsIndexList = useSelector((state: IReaderRootState) => state.annotationTagsIndex);
+    const selectTagOption = ObjectKeys(tagsIndexList).map((v, i) => ({ id: i, name: v }));
+
+    // if tagArrayFilter value not include in the selectTagOption then take only the intersection between tagArrayFilter and selectTagOption
+    const selectTagOptionFilteredNameArray = selectTagOption.map((v) => v.name);
+    const tagArrayFilterArray = selectionIsSet(tagArrayFilter) ? Array(...tagArrayFilter) : [];
+    if (tagArrayFilterArray.filter((tagValue) => !selectTagOptionFilteredNameArray.includes(tagValue)).length) {
+        const tagArrayFilterArrayDifference = tagArrayFilterArray.filter((tagValue) => selectTagOptionFilteredNameArray.includes(tagValue));
+        setTagArrayFilter(new Set(tagArrayFilterArrayDifference));
+    }
+
+    const creatorList = bookmarkListAll.map(([, { creator }]) => creator).filter(v => v);
+    const creatorSet = creatorList.reduce<Record<string, string>>((acc, { id, name }) => {
+        if (!acc[id]) {
+            const _name = (getUuidFromUrn(id) !== getUuidFromUrn(creatorMyself.id) ? name : creatorMyself.name);
+            if (_name) {
+                return { ...acc, [_name]: _name };
+            } else {
+                return acc;
+            }
+        }
+        return acc;
+    }, {});
+
+    const bookmarksColors = React.useMemo(() => Object.entries(noteColorCodeToColorTranslatorKeySet).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
+
+    const selectCreatorOptions = Object.entries(creatorSet).map(([k, v]) => ({ id: k, name: v }));
+
+    const nbOfFilters = ((tagArrayFilter === "all") ?
+        selectTagOption.length : tagArrayFilter.size) + (creatorArrayFilter === "all" ?
+            selectCreatorOptions.length : creatorArrayFilter.size) + ((colorArrayFilter === "all") ?
+                bookmarksColors.length : colorArrayFilter.size);
+
+    const bookmarkTitleRef = React.useRef<HTMLInputElement>();
 
     return (
         <>
-            <bookmarkCardContext.Provider value={{
-                goToLocator,
-                dockedMode,
-                r2Publication,
-                itemEdited,
-                setItemToEdit,
-            }}>
-                <ul style={{listStyleType: "none", padding: "0"}}>
-                {
-                    bookmarksPagedArray.map((bookmark, i) =>
-                        <BookmarkItem
-                            key={`bookmark_card-${i}`}
-                            bookmark={bookmark}
-                            i={i + 1 + ((pageNumber - 1) * MAX_MATCHES_PER_PAGE)}
-                        />,
-                    )
-                }
-                </ul>
-            </bookmarkCardContext.Provider>
+            <div className={stylesBookmarks.bookmarks_filter_line}>
+                <div style={{ display: "flex", gap: "10px" }}>
+                    <Popover.Root>
+                        <Popover.Trigger asChild>
+                            <button aria-label={__("reader.annotations.sorting.sortingOptions")} className={stylesBookmarks.bookmarks_filter_trigger_button}
+                                title={__("reader.annotations.sorting.sortingOptions")}>
+                                <SVG svg={SortIcon} />
+                            </button>
+                        </Popover.Trigger>
+                        <Popover.Portal>
+                            <Popover.Content collisionBoundary={popoverBoundary}
+                                avoidCollisions
+                                alignOffset={-10}
+                                align="end"
+                                hideWhenDetached
+                                sideOffset={5}
+                                className={stylesBookmarks.bookmarks_sorting_container}
+                                style={{ maxHeight: Math.round(window.innerHeight / 2) }}
+                            >
+                                <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
+                                <ListBox
+                                    selectedKeys={sortType}
+                                    onSelectionChange={setSortType}
+                                    selectionMode="multiple"
+                                    selectionBehavior="replace"
+                                    aria-label={__("reader.annotations.sorting.sortingOptions")}
+                                >
+                                    <ListBoxItem id="progression" key="progression" aria-label="progression" className={({ isFocused, isSelected }) =>
+                                        classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
+                                        style={{ marginBottom: "5px" }}
+                                    >
+                                        {__("reader.annotations.sorting.progression")}
+                                    </ListBoxItem>
+                                    <ListBoxItem id="lastCreated" key="lastCreated" aria-label="lastCreated" className={({ isFocused, isSelected }) =>
+                                        classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
+                                        style={{ marginBottom: "5px" }}
+                                    >
+                                        {__("reader.annotations.sorting.lastcreated")}
+                                    </ListBoxItem>
+                                    <ListBoxItem id="lastModified" key="lastModified" aria-label="lastModified" className={({ isFocused, isSelected }) =>
+                                        classNames(StylesCombobox.my_item, isFocused ? StylesCombobox.focused : "", isSelected ? StylesCombobox.selected : "")}
+                                    >
+                                        {__("reader.annotations.sorting.lastmodified")}
+                                    </ListBoxItem>
+                                </ListBox>
+                            </Popover.Content>
+                        </Popover.Portal>
+                    </Popover.Root>
+                    <Popover.Root>
+                        <Popover.Trigger asChild>
+                            <button aria-label={__("reader.annotations.filter.filterOptions")} className={stylesBookmarks.bookmarks_filter_trigger_button}
+                                title={__("reader.annotations.filter.filterOptions")}>
+                                <SVG svg={MenuIcon} />
+                                {nbOfFilters > 0 ?
+                                    <p className={stylesBookmarks.bookmarks_filter_nbOfFilters} style={{ fontSize: nbOfFilters > 9 ? "10px" : "12px", paddingLeft: nbOfFilters > 9 ? "3px" : "4px" }}>{nbOfFilters}</p>
+                                    : <></>
+                                }
+                            </button>
+                        </Popover.Trigger>
+                        <Popover.Portal>
+                            <Popover.Content
+                                collisionBoundary={popoverBoundary}
+                                avoidCollisions
+                                alignOffset={-10}
+                                align="end"
+                                hideWhenDetached
+                                sideOffset={5}
+                                className={stylesBookmarks.bookmarks_filter_container}
+                                style={{ maxHeight: Math.round(window.innerHeight / 2) }}
+                            >
+                                <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
+                                <FocusLock>
+                                    <TagGroup
+                                        selectionMode="multiple"
+                                        selectedKeys={tagArrayFilter}
+                                        onSelectionChange={setTagArrayFilter}
+                                        aria-label={__("reader.annotations.filter.filterByTag")}
+                                        style={{ marginBottom: "20px" }}
+                                    >
+                                        <details open id="bookmark-tags-list-details">
+                                            <summary className={stylesBookmarks.bookmarks_filter_tagGroup} style={{ pointerEvents: !selectTagOption.length ? "none" : "auto", opacity: !selectTagOption.length ? "0.5" : "1" }}
+                                                tabIndex={!selectTagOption.length ? -1 : 0}
+                                            >
+                                                <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByTag")}</Label>
+                                                <div style={{ display: "flex", gap: "10px" }}>
+                                                    <button
+                                                        disabled={!selectTagOption.length}
+                                                        style={{ width: "fit-content", minWidth: "unset" }}
+                                                        className={tagArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
+                                                        onClick={() => {
+                                                            setTagArrayFilter("all");
+                                                            const detailsElement = document.getElementById("bookmark-tags-list-details") as HTMLDetailsElement;
+                                                            if (detailsElement) {
+                                                                detailsElement.open = true;
+                                                            }
+
+                                                        }}>
+                                                        {__("reader.annotations.filter.all")}
+                                                    </button>
+                                                    <button
+                                                        disabled={!selectTagOption.length}
+                                                        style={{ width: "fit-content", minWidth: "unset" }}
+                                                        className={stylesButtons.button_secondary_blue}
+                                                        onClick={() => {
+                                                            setTagArrayFilter(new Set([]));
+
+                                                        }}>
+                                                        {__("reader.annotations.filter.none")}
+                                                    </button>
+                                                </div>
+                                            </summary>
+                                            {
+                                                selectTagOption.length ?
+                                                    <TagList items={selectTagOption} className={stylesBookmarks.bookmarks_filter_taglist} style={{ margin: !selectTagOption.length ? "0" : "20px 0" }}>
+                                                        {(item) => <Tag className={stylesBookmarks.bookmarks_filter_tag} id={item.name} textValue={item.name}>{item.name}</Tag>}
+                                                    </TagList>
+                                                    : <></>
+                                            }
+                                        </details>
+                                    </TagGroup>
+                                    <TagGroup
+                                        selectionMode="multiple"
+                                        selectedKeys={colorArrayFilter}
+                                        onSelectionChange={setColorArrayFilter}
+                                        aria-label={__("reader.annotations.filter.filterByColor")}
+                                        style={{ marginBottom: "20px" }}
+                                    >
+                                        <details open id="bookmark-color-list">
+                                            <summary className={stylesBookmarks.bookmarks_filter_tagGroup}>
+                                                <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByColor")}</Label>
+                                                <div style={{ display: "flex", gap: "10px" }}>
+                                                    <button
+                                                        style={{ width: "fit-content", minWidth: "unset" }}
+                                                        className={colorArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
+                                                        onClick={() => {
+                                                            setColorArrayFilter("all");
+                                                            const detailsElement = document.getElementById("bookmark-color-list") as HTMLDetailsElement;
+                                                            if (detailsElement) {
+                                                                detailsElement.open = true;
+                                                            }
+
+                                                        }}>
+                                                        {__("reader.annotations.filter.all")}
+                                                    </button>
+                                                    <button
+                                                        style={{ width: "fit-content", minWidth: "unset" }}
+                                                        className={stylesButtons.button_secondary_blue}
+                                                        onClick={() => {
+                                                            setColorArrayFilter(new Set([]));
+
+                                                        }}>
+                                                        {__("reader.annotations.filter.none")}
+                                                    </button>
+                                                </div>
+                                            </summary>
+                                            <TagList items={bookmarksColors} className={stylesBookmarks.bookmarks_filter_taglist}>
+                                                {(item) => <Tag className={stylesBookmarks.bookmarks_filter_color} style={{ backgroundColor: item.hex, outlineColor: item.hex }} id={item.hex} textValue={item.name} ref={(r) => { if (r && (r as unknown as HTMLDivElement).setAttribute) { (r as unknown as HTMLDivElement).setAttribute("title", item.name); } }}></Tag>}
+                                            </TagList>
+                                        </details>
+                                    </TagGroup>
+                                    <TagGroup
+                                        selectionMode="multiple"
+                                        selectedKeys={creatorArrayFilter}
+                                        onSelectionChange={setCreatorArrayFilter}
+                                        aria-label={__("reader.annotations.filter.filterByCreator")}
+                                        style={{ marginBottom: "20px" }}
+                                    >
+                                        <details id="bookmark-creator-list-details" open={!!selectCreatorOptions.length}>
+                                            <summary className={stylesBookmarks.bookmarks_filter_tagGroup} style={{ pointerEvents: !selectCreatorOptions.length ? "none" : "auto", opacity: !selectCreatorOptions.length ? "0.5" : "1" }}
+                                                tabIndex={!selectCreatorOptions.length ? -1 : 0}
+                                            >
+                                                <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByCreator")}</Label>
+                                                <div style={{ display: "flex", gap: "10px" }}>
+                                                    <button
+                                                        tabIndex={!selectCreatorOptions.length ? -1 : 0}
+                                                        style={{ width: "fit-content", minWidth: "unset" }}
+                                                        className={creatorArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
+                                                        onClick={() => {
+                                                            setCreatorArrayFilter("all");
+                                                            const detailsElement = document.getElementById("bookmark-creator-list-details") as HTMLDetailsElement;
+                                                            if (detailsElement) {
+                                                                detailsElement.open = true;
+                                                            }
+
+                                                        }}>
+                                                        {__("reader.annotations.filter.all")}
+                                                    </button>
+                                                    <button
+                                                        tabIndex={!selectCreatorOptions.length ? -1 : 0}
+                                                        style={{ width: "fit-content", minWidth: "unset" }}
+                                                        className={stylesButtons.button_secondary_blue}
+                                                        onClick={() => {
+                                                            setCreatorArrayFilter(new Set([]));
+
+                                                        }}>
+                                                        {__("reader.annotations.filter.none")}
+                                                    </button>
+                                                </div>
+                                            </summary>
+                                            <TagList items={selectCreatorOptions} className={stylesBookmarks.bookmarks_filter_taglist} style={{ margin: !selectCreatorOptions.length ? "0" : "20px 0" }}>
+                                                {(item) => <Tag className={stylesBookmarks.bookmarks_filter_tag} id={item.name} textValue={item.name}>{item.name}</Tag>}
+                                            </TagList>
+                                        </details>
+                                    </TagGroup>
+                                </FocusLock>
+                            </Popover.Content>
+                        </Popover.Portal>
+                    </Popover.Root>
+                </div>
+                <div style={{ display: "flex", gap: "10px" }}>
+                    <ImportAnnotationsDialog winId={winId} publicationView={publicationView}>
+                        <button style={{ display: "none" }} className={stylesBookmarks.bookmarks_filter_trigger_button}
+                            title={__("catalog.importAnnotation")}
+                            aria-label={__("catalog.importAnnotation")}>
+                            <SVG svg={ImportIcon} />
+                        </button>
+                    </ImportAnnotationsDialog>
+
+                    <Popover.Root>
+                        <Popover.Trigger asChild>
+                            <button style={{ display: "none" }} className={stylesBookmarks.bookmarks_filter_trigger_button} disabled={!bookmarkListFiltered.length}
+                                title={__("catalog.exportAnnotation")}
+                                aria-label={__("catalog.exportAnnotation")}>
+                                <SVG svg={SaveIcon} />
+                            </button>
+                        </Popover.Trigger>
+                        <Popover.Portal>
+                            <Popover.Content
+                                collisionBoundary={popoverBoundary}
+                                avoidCollisions
+                                alignOffset={-10}
+                                align="end"
+                                hideWhenDetached
+                                sideOffset={5}
+                                className={stylesBookmarks.bookmarks_sorting_container}
+                                style={{ maxHeight: Math.round(window.innerHeight / 2), padding: "15px 0" }}
+                            >
+                                <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
+                                <div
+                                    className={stylesBookmarks.bookmarksTitle_form_container}
+                                >
+                                    <p>{__("reader.annotations.annotationsExport.description")}</p>
+                                    <div className={stylesInputs.form_group}>
+                                        <label htmlFor="annotationsTitle">{__("reader.annotations.annotationsExport.title")}</label>
+                                        <input
+                                            type="text"
+                                            name="annotationsTitle"
+                                            id="annotationsTitle"
+                                            ref={bookmarkTitleRef}
+                                            className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" />
+                                    </div>
+
+                                    <Popover.Close aria-label={__("reader.annotations.export")} asChild>
+                                        <button onClick={() => {
+
+                                            //  TODO NEED TO IMPLEMENT BOOKMARK EXPORT
+                                            // const bookmarks = bookmarkListFiltered.map(([, anno]) => {
+                                            //     const { creator } = anno;
+                                            //     if (getUuidFromUrn(creator?.id) === getUuidFromUrn(creatorMyself.id)) {
+                                            //         if (!creatorMyself.name) {
+                                            //             return { ...anno, creator: undefined };
+                                            //         } else {
+                                            //             return { ...anno, creator: { ...creatorMyself, id: "urn:uuid:" + creatorMyself.id } };
+                                            //         }
+                                            //     }
+                                            //     return anno;
+                                            // });
+                                            // const title = bookmarkTitleRef?.current.value || "thorium-reader";
+
+                                            // let label = title;
+                                            // label = label.trim();
+                                            // label = label.replace(/[^a-z0-9_-]/gi, "_");
+                                            // label = label.replace(/^_+|_+$/g, ""); // leading and trailing underscore
+                                            // label = label.replace(/^\./, ""); // remove dot start
+                                            // label = label.toLowerCase();
+
+                                            // TODO
+                                            // dispatch(readerLocalActionExportAnnotationSet.build(bookmarks, publicationView, label));
+                                        }} className={stylesButtons.button_primary_blue}>
+                                            <SVG svg={SaveIcon} />
+                                            {__("reader.annotations.export")}
+                                        </button>
+                                    </Popover.Close>
+                                </div>
+                            </Popover.Content>
+                        </Popover.Portal>
+                    </Popover.Root>
+                    <AlertDialog.Root>
+                        <AlertDialog.Trigger className={stylesBookmarks.bookmarks_filter_trigger_button} disabled={!bookmarkListFiltered.length} title={__("dialog.deleteBookmarks")} aria-label={__("dialog.deleteBookmarks")}>
+                            <SVG svg={TrashIcon} ariaHidden />
+                        </AlertDialog.Trigger>
+                        <AlertDialog.Portal>
+                            <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay} />
+                            <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
+                                <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.deleteBookmarks")}</AlertDialog.Title>
+                                <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
+                                    {__("dialog.deleteBookmarksText", { bookmarkListLength: bookmarkListFiltered.length })}
+                                </AlertDialog.Description>
+                                <div className={stylesAlertModals.AlertDialogButtonContainer}>
+                                    <AlertDialog.Cancel asChild>
+                                        <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
+                                    </AlertDialog.Cancel>
+                                    <AlertDialog.Action asChild>
+                                        <button className={stylesButtons.button_primary_blue} onClick={() => {
+                                            updateDialogOrDockDataInfo({id: "", edit: false});
+                                            for (const [, bookmark] of bookmarkListFiltered) {
+
+                                                dispatch(readerActions.bookmark.pop.build(bookmark));
+                                            }
+
+                                            // reset filters
+                                            setCreatorArrayFilter(new Set([]));
+                                            setColorArrayFilter(new Set([]));
+                                            setTagArrayFilter(new Set([]));
+                                        }} type="button">
+                                            <SVG ariaHidden svg={TrashIcon} />
+                                            {__("dialog.yes")}</button>
+                                    </AlertDialog.Action>
+                                </div>
+                            </AlertDialog.Content>
+                        </AlertDialog.Portal>
+                    </AlertDialog.Root>
+                    <span style={{ height: "30px", width: "2px", borderRight: "2px solid var(--color-extralight-grey)" }}></span>
+                    <Popover.Root>
+                        <Popover.Trigger className={stylesAnnotations.annotations_filter_trigger_button} title={__("reader.annotations.annotationsOptions")} aria-label={__("reader.annotations.annotationsOptions")}>
+                            <SVG ariaHidden svg={OptionsIcon} />
+                        </Popover.Trigger>
+                        <Popover.Portal>
+                            <Popover.Content
+                                collisionBoundary={popoverBoundary}
+                                avoidCollisions
+                                alignOffset={-10}
+                                align="end"
+                                hideWhenDetached
+                                sideOffset={5}
+                                className={stylesBookmarks.bookmarks_filter_container}
+                                style={{ maxHeight: Math.round(window.innerHeight / 2), padding: "15px 0" }}
+                            >
+                                <div className={stylesAnnotations.annotations_checkbox}>
+                                    <input type="checkbox" id="hideBookmark" name="hideBookmark" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "hide"} onChange={hideBookmarkOnChange} />
+                                    <label htmlFor="hideBookmark" className={stylesGlobal.checkbox_custom_label} style={{ marginLeft: "10px" }}>
+                                        <div
+                                            tabIndex={0}
+                                            role="checkbox"
+                                            aria-checked={readerConfig.annotation_defaultDrawView === "hide"} // TODO: replace annotation_defaultDrawView with note_defaultDrawView, this is applicable both annotation and bookmark
+                                            aria-label={__("reader.annotations.hide")}
+                                            onKeyDown={(e) => {
+                                                // if (e.code === "Space") {
+                                                if (e.key === " ") {
+                                                    e.preventDefault(); // prevent scroll
+                                                }
+                                            }}
+                                            onKeyUp={(e) => {
+                                                // if (e.code === "Space") {
+                                                if (e.key === " ") {
+                                                    e.preventDefault();
+                                                    hideBookmarkOnChange();
+                                                }
+                                            }}
+                                            className={stylesGlobal.checkbox_custom}
+                                            style={{ border: readerConfig.annotation_defaultDrawView === "hide" ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "hide" ? "var(--color-blue)" : "transparent" }}>
+                                            {readerConfig.annotation_defaultDrawView === "hide" ?
+                                                <SVG ariaHidden svg={CheckIcon} />
+                                                :
+                                                <></>
+                                            }
+                                        </div>
+                                        <h4 aria-hidden>{__("reader.annotations.hide")}</h4></label>
+                                </div>
+                                <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
+                            </Popover.Content>
+                        </Popover.Portal>
+                    </Popover.Root>
+                </div>
+            </div>
+            <div className={stylesAnnotations.separator} />
+            <ol style={{ paddingLeft: "0px" }}>
+                {bookmarksPagedArray.map(([timestamp, bookmarkItem], _i) =>
+                    <BookmarkCard
+                        key={`bookmark-card_${bookmarkItem.uuid}`}
+                        timestamp={timestamp}
+                        bookmark={bookmarkItem}
+                        goToLocator={goToLocator}
+                        isEdited={bookmarkItem.uuid === bookmarkId && bookmarkEdit}
+                        triggerEdition={triggerEdition(bookmarkItem)}
+                        setCreatorFilter={(v) => setCreatorArrayFilter(new Set([v]))}
+                        setTagFilter={((v) => setTagArrayFilter(new Set([v])))}
+                    />,
+                )}
+            </ol>
             {
                 isPaginated ? <>
                     <div className={stylesPopoverDialog.navigation_container}>
-                        <button title={__("opds.firstPage")}
-                            onClick={() => { setPageNumber(1); setItemToEdit(-1); setTimeout(() => paginatorBookmarksRef.current?.focus(), 100); }}
+                        <button title={__("opds.firstPage")} // TODO: change i18n label
+                            onClick={() => { changePageNumber(() => 1); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowFirstIcon} />
                         </button>
 
-                        <button title={__("opds.previous")}
-                            onClick={() => { setPageNumber(pageNumber - 1); setItemToEdit(-1); setTimeout(() => paginatorBookmarksRef.current?.focus(), 100); }}
+                        <button title={__("opds.previous")} // TODO: change i18n label
+                            onClick={() => { changePageNumber((pageNumber) => pageNumber - 1); }}
                             disabled={isFirstPage}>
                             <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                         </button>
                         <div className={stylesPopoverDialog.pages}>
                             {/* <SelectRef
-                                id="paginatorBookmarks"
+                                ref={paginatorAnnotationsRef}
                                 aria-label={__("reader.navigation.page")}
                                 items={pageOptions}
                                 selectedKey={pageNumber}
@@ -1870,12 +2394,18 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                             </SelectRef> */}
                             <label htmlFor="paginatorBookmarks" style={{ margin: "0" }}>{__("reader.navigation.page")}</label>
-                            <select onChange={(e) => {
-                                setPageNumber(pageOptions.find((option) => option.id === parseInt(e.currentTarget.value, 10)).id);
-                                setTimeout(() => paginatorBookmarksRef.current?.focus(), 100);
+                            <select
+                             onChange={(e) => {
+                                if (!e.currentTarget?.value) {
+                                    // console.error("No select Page currentTarget !!! ", e.currentTarget);
+                                    return ;
+                                }
+                                const value = e.currentTarget.value;
+                                const cb = () => pageOptions.find((option) => option.id === parseInt(value, 10)).id;
+                                changePageNumber(cb);
                             }}
-                                id="paginatorBookmarks"
                                 ref={paginatorBookmarksRef}
+                                id="paginatorBookmarks"
                                 aria-label={__("reader.navigation.page")}
                                 // defaultValue={1}
                                 value={pageNumber}
@@ -1890,26 +2420,26 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                                 selectedKey={pageNumber}
                                 defaultSelectedKey={1}
                                 onSelectionChange={(id) => {
-                                    setPageNumber(id as number); setItemToEdit(-1);
+                                    changePageNumber(() => id as number); setItemToEdit(-1);
                                 }}
                             >
                                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
                             </ComboBox> */}
                         </div>
-                        <button title={__("opds.next")}
-                            onClick={() => { setPageNumber(pageNumber + 1); setItemToEdit(-1); setTimeout(() => paginatorBookmarksRef.current?.focus(), 100); }}
+                        <button title={__("opds.next")} // TODO: change i18n label
+                            onClick={() => { changePageNumber((pageNumber) => pageNumber + 1); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowRightIcon} />
                         </button>
 
-                        <button title={__("opds.lastPage")}
-                            onClick={() => { setPageNumber(pageTotal); setItemToEdit(-1); setTimeout(() => paginatorBookmarksRef.current?.focus(), 100); }}
+                        <button title={__("opds.lastPage")} // TODO: change i18n label
+                            onClick={() => { changePageNumber(() => pageTotal); }}
                             disabled={isLastPage}>
                             <SVG ariaHidden={true} svg={ArrowLastIcon} />
                         </button>
                     </div>
                     {
-                        sortedBookmarks.length &&
+                        bookmarkListFiltered.length &&
                         <p
                             style={{
                                 textAlign: "center",
@@ -1917,12 +2447,13 @@ const BookmarkList: React.FC<{ r2Publication: R2Publication, dockedMode: boolean
                                 margin: 0,
                                 marginTop: "-16px",
                                 marginBottom: "20px",
-                            }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${sortedBookmarks.length}`}</p>
+                            }}>{`[ ${begin === end ? `${end}` : `${begin} ... ${end}`} ] / ${bookmarkListFiltered.length}`}</p>
                     }
                 </>
                     : <></>
             }
-        </>);
+        </>
+    );
 };
 
 const GoToPageSection: React.FC<IBaseProps & { totalPages?: number }> = (props) => {
@@ -2166,7 +2697,6 @@ const GoToPageSection: React.FC<IBaseProps & { totalPages?: number }> = (props) 
                 {
                     currentPage ?
                         (parseInt(totalPages, 10)
-                            // tslint:disable-next-line: max-line-length
                             ? __("reader.navigation.currentPageTotal", { current: `${currentPage}`, total: `${totalPages}` })
                             : __("reader.navigation.currentPage", { current: `${currentPage}` })) :
                         ""
@@ -2265,8 +2795,6 @@ const GoToPageSection: React.FC<IBaseProps & { totalPages?: number }> = (props) 
 
     </div>;
 };
-
-
 
 const TabTitle = ({ value }: { value: string }) => {
     let title: string;
@@ -2631,7 +3159,6 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         <div className={stylesSettings.settings_tab}>
                             {(isPdf && pdfToc?.length && renderLinkTree_(__("reader.marks.toc"), pdfToc, 1, undefined)) ||
                                 (isPdf && !pdfToc?.length && <p>{__("reader.toc.publicationNoToc")}</p>) ||
-                                // tslint:disable-next-line: max-line-length
                                 (!isPdf && r2Publication.TOC && renderLinkTree_(__("reader.marks.toc"), r2Publication.TOC, 1, undefined)) ||
                                 (!isPdf && r2Publication.Spine && renderLinkList_(__("reader.marks.toc"), r2Publication.Spine))}
                         </div>
@@ -2648,7 +3175,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     <Tabs.Content value="tab-bookmark" tabIndex={-1} id={"reader-menu-tab-bookmark"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <TabHeader />
                         <div className={stylesSettings.settings_tab}>
-                            <BookmarkList r2Publication={r2Publication} goToLocator={goToLocator} dockedMode={dockedMode} />
+                            <BookmarkList  popoverBoundary={popoverBoundary.current} goToLocator={goToLocator} hideBookmarkOnChange={hideAnnotationOnChange} />
                         </div>
                     </Tabs.Content>
 

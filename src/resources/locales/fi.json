@@ -149,6 +149,8 @@
         "cancel": "Peru",
         "deleteAnnotations": "Poistetaanko muistiinpanot?",
         "deleteAnnotationsText": "Haluatko varmasti poistaa {{- annotationListLength}} muistiinpanoa?",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Haluatko poistaa tämän luettelon?",
         "deletePublication": "Haluatko poistaa tämän julkaisun?",
         "import": "Haluatko tuoda nämä tiedostot:",
@@ -208,6 +210,7 @@
         "import": {
             "alreadyImport": "Julkaisu {{- title}} on jo tuotu.",
             "fail": "Julkaisun {{- path}} tuonti epäonnistui. {{- err}}",
+            "seeInLibrary": "",
             "success": "Julkaisun {{- title}} tuonti on valmis."
         },
         "open": {
@@ -385,6 +388,9 @@
                 "underline": "Alleviivaus"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "mykistä",
             "unmute": "poista mykistys"
@@ -400,7 +406,6 @@
             "edit": "Muokkaa",
             "goTo": "Siirry sivulle",
             "landmarks": "Kiintopisteet",
-            "progression": "Eteneminen",
             "saveMark": "Tallenna kirjanmerkki",
             "search": "Hae",
             "searchResult": "Hae [{{- searchText}}]",

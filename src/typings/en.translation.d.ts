@@ -336,6 +336,8 @@ declare namespace typed_i18n {
   readonly "cancel": string,
   readonly "deleteAnnotations": string,
   readonly "deleteAnnotationsText": string,
+  readonly "deleteBookmarks": string,
+  readonly "deleteBookmarksText": string,
   readonly "deleteFeed": string,
   readonly "deletePublication": string,
   readonly "import": string,
@@ -369,6 +371,8 @@ declare namespace typed_i18n {
   (_: "dialog.cancel", __?: {}): string;
   (_: "dialog.deleteAnnotations", __?: {}): string;
   (_: "dialog.deleteAnnotationsText", __?: {}): string;
+  (_: "dialog.deleteBookmarks", __?: {}): string;
+  (_: "dialog.deleteBookmarksText", __?: {}): string;
   (_: "dialog.deleteFeed", __?: {}): string;
   (_: "dialog.deletePublication", __?: {}): string;
   (_: "dialog.import", __?: {}): string;
@@ -465,6 +469,7 @@ declare namespace typed_i18n {
   readonly "import": {
     readonly "alreadyImport": string,
     readonly "fail": string,
+    readonly "seeInLibrary": string,
     readonly "success": string
   },
   readonly "open": { readonly "error": string }
@@ -488,10 +493,12 @@ declare namespace typed_i18n {
   (_: "message.import", __?: {}): {
   readonly "alreadyImport": string,
   readonly "fail": string,
+  readonly "seeInLibrary": string,
   readonly "success": string
 };
   (_: "message.import.alreadyImport", __?: {}): string;
   (_: "message.import.fail", __?: {}): string;
+  (_: "message.import.seeInLibrary", __?: {}): string;
   (_: "message.import.success", __?: {}): string;
   (_: "message.open", __?: {}): { readonly "error": string };
   (_: "message.open.error", __?: {}): string;
@@ -826,6 +833,7 @@ declare namespace typed_i18n {
       readonly "underline": string
     }
   },
+  readonly "bookmarks": { readonly "index": string },
   readonly "divina": { readonly "mute": string, readonly "unmute": string },
   readonly "fxl": { readonly "fit": string },
   readonly "goToContent": string,
@@ -836,7 +844,6 @@ declare namespace typed_i18n {
     readonly "edit": string,
     readonly "goTo": string,
     readonly "landmarks": string,
-    readonly "progression": string,
     readonly "saveMark": string,
     readonly "search": string,
     readonly "searchResult": string,
@@ -1094,6 +1101,8 @@ declare namespace typed_i18n {
   (_: "reader.annotations.type.solid", __?: {}): string;
   (_: "reader.annotations.type.strikethrough", __?: {}): string;
   (_: "reader.annotations.type.underline", __?: {}): string;
+  (_: "reader.bookmarks", __?: {}): { readonly "index": string };
+  (_: "reader.bookmarks.index", __?: {}): string;
   (_: "reader.divina", __?: {}): { readonly "mute": string, readonly "unmute": string };
   (_: "reader.divina.mute", __?: {}): string;
   (_: "reader.divina.unmute", __?: {}): string;
@@ -1107,7 +1116,6 @@ declare namespace typed_i18n {
   readonly "edit": string,
   readonly "goTo": string,
   readonly "landmarks": string,
-  readonly "progression": string,
   readonly "saveMark": string,
   readonly "search": string,
   readonly "searchResult": string,
@@ -1119,7 +1127,6 @@ declare namespace typed_i18n {
   (_: "reader.marks.edit", __?: {}): string;
   (_: "reader.marks.goTo", __?: {}): string;
   (_: "reader.marks.landmarks", __?: {}): string;
-  (_: "reader.marks.progression", __?: {}): string;
   (_: "reader.marks.saveMark", __?: {}): string;
   (_: "reader.marks.search", __?: {}): string;
   (_: "reader.marks.searchResult", __?: {}): string;

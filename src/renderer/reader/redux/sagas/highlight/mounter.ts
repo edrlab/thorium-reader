@@ -15,7 +15,7 @@ import { eventChannel, SagaIterator } from "redux-saga";
 import { put } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
-import { IHighlight } from "@r2-navigator-js/electron/common/highlight";
+import { HighlightDrawTypeMarginBookmark, IHighlight, IHighlightDefinition } from "@r2-navigator-js/electron/common/highlight";
 import {
     highlightsCreate, highlightsDrawMargin, highlightsRemove,
 } from "@r2-navigator-js/electron/renderer";
@@ -24,6 +24,7 @@ import { readerLocalActionHighlights } from "../../actions";
 import {
     IHighlightHandlerState, IHighlightMounterState,
 } from "readium-desktop/common/redux/states/renderer/highlight";
+import Color from "color";
 
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:highlight:mounter");
 
@@ -66,7 +67,20 @@ export function* mountHighlight(href: string, handlerState: IHighlightHandlerSta
 
     debug(`mountHighlight CREATE ... -- href: [${href}] highlightDefinitions: [${highlightDefinitions ? highlightDefinitions.length : JSON.stringify(highlightDefinitions, null, 4)}]`);
 
-    const createdHighlights = yield* callTyped(highlightsCreate, href, highlightDefinitions);
+    const createdHighlights = yield* callTyped(highlightsCreate, href, highlightDefinitions.map((def) => {
+        if (def.drawType === HighlightDrawTypeMarginBookmark) { // TODO: this currently works ok in light/dark color themes, but could be applied more smartly? (user preference?)
+            const color = Color.rgb(def.color.red, def.color.green, def.color.blue).darken(0.3);
+            return {
+                ...def,
+                color: {
+                    red: color.red(),
+                    green: color.green(),
+                    blue: color.blue(),
+                },
+            } satisfies IHighlightDefinition;
+        }
+        return def;
+    }));
 
     debug(`mountHighlight CREATED -- href: [${href}] createdHighlights: [${createdHighlights ? createdHighlights.length : JSON.stringify(createdHighlights, null, 4)}]`);
 

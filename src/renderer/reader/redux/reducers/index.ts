@@ -52,6 +52,7 @@ import { imageClickReducer } from "./imageClick";
 import { dockReducer } from "readium-desktop/common/redux/reducers/dock";
 import { readerBookmarkTotalCountReducer } from "readium-desktop/common/redux/reducers/reader/bookmarkTotalCount";
 import { apiKeysReducer } from "readium-desktop/common/redux/reducers/api_key";
+import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 
 export const rootReducer = () => {
 
@@ -91,11 +92,13 @@ export const rootReducer = () => {
                         sortFct: (a, b) => b[0] - a[0],
                         update: {
                             type: readerActions.bookmark.update.ID,
-                            selector: (action, queue) =>
-                                [
-                                    queue.reduce<number>((pv, [k, v]) => v.uuid === action.payload.uuid ? k : pv, undefined),
-                                    action.payload,
-                                ],
+                            selector: (action, queue) => {
+                                const [_oldBookmark, newBookmark] = action.payload;
+                                return [
+                                    queue.reduce<number>((pv, [k, v]) => v.uuid === newBookmark.uuid ? k : pv, undefined),
+                                    newBookmark,
+                                ];
+                            },
                         },
                     },
                 ),
@@ -220,5 +223,6 @@ export const rootReducer = () => {
             },
         ),
         img: imageClickReducer,
+        lcp: lcpReducer,
     });
 };

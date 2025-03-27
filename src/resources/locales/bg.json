@@ -149,6 +149,8 @@
         "cancel": "Отказ",
         "deleteAnnotations": "",
         "deleteAnnotationsText": "",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Наистина ли искате да изтриете този каталог?",
         "deletePublication": "Наистина ли искате да изтриете тази книга?",
         "import": "Наистина ли искате да добавите тези файлове:",
@@ -208,6 +210,7 @@
         "import": {
             "alreadyImport": "{{- title}} вече е била добавена",
             "fail": "Добавянето на {{- path}} се провали. {{- err}}",
+            "seeInLibrary": "",
             "success": "Добавянето на {{- title}} завърши."
         },
         "open": {
@@ -385,6 +388,9 @@
                 "underline": ""
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "заглуши звука",
             "unmute": "включване на звука"
@@ -400,7 +406,6 @@
             "edit": "Edit",
             "goTo": "",
             "landmarks": "Landmarks",
-            "progression": "",
             "saveMark": "",
             "search": "Търси",
             "searchResult": "",

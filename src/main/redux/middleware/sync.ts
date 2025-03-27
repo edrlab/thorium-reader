@@ -97,6 +97,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     apiKeysActions.set.ID,
     apiKeysActions.removeKey.ID,
+    lcpActions.publicationFileLock.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware

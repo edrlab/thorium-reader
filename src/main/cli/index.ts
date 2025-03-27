@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { app, dialog } from "electron";
 import * as path from "path";
 import { lockInstance } from "readium-desktop/main/cli/lock";
-import { _APP_NAME, _APP_VERSION, _PACKAGING } from "readium-desktop/preprocessor-directives";
+import { IS_DEV, _APP_NAME, _APP_VERSION, _PACKAGING } from "readium-desktop/preprocessor-directives";
 import yargs from "yargs";
 import { closeProcessLock } from "../di";
 import { EOL } from "os";
@@ -261,6 +261,41 @@ export function commandLineMainEntry(
     processArgv = process.argv,
 ) {
 
+    debug("process.argv", process.argv);
+    if (!IS_DEV && _PACKAGING === "1") {
+        // https://nodejs.org/fr/docs/guides/debugging-getting-started/#enable-inspector
+        // SIGUSR1
+
+        // https://github.com/electron/fuses/issues/2
+        for (const arg of process.argv) {
+            debug("arg", arg);
+            if (arg.includes("--debug") ||
+                arg.includes("--remote") ||
+                // https://www.electronjs.org/docs/api/command-line-switches#--remote-debugging-portport
+                // arg.includes("--remote-debugging-port") ||
+                // https://github.com/electron/electron/blob/73a017577e6d8cf67c76acb8f6a199c2b64ccb5d/shell/browser/electron_browser_main_parts.cc#L457
+                // arg.includes("--remote-debugging-pipe") ||
+                // arg.includes("--remote-allow-origins") ||
+                // https://www.electronjs.org/docs/api/command-line-switches#--inspecthostport
+                arg.includes("--inspect") ||
+                // https://www.electronjs.org/docs/api/command-line-switches#--inspect-brkhostport
+                // arg.includes("--inspect-brk") ||
+                // https://github.com/nodejs/node/blob/fef180c8a20f680d246d5b109589e6a0370e7e77/src/node_options.cc#L314-L360
+                // arg.includes("--inspect-brk-node") ||
+                // https://www.electronjs.org/docs/api/command-line-switches#--inspect-porthostport
+                // arg.includes("--inspect-port") ||
+                // https://www.electronjs.org/docs/api/command-line-switches#--inspect-publish-uidstderrhttp
+                // arg.includes("--inspect-publish-uid") ||
+                // https://www.electronjs.org/docs/api/command-line-switches#--js-flagsflags
+                arg.includes("--js-flags")
+            ) {
+                // process.exit1);
+                app.exit(1);
+                return;
+            }
+        }
+    }
+
     const y = yargsInit();
 
     const argFormated = processArgv
@@ -283,7 +318,7 @@ const knownOption = (str: string) => [
 ].includes(str);
 
 
-// Catch all unhandled rejection promise from CLI command 
+// Catch all unhandled rejection promise from CLI command
 let __exitPhase = false;
 process.on("unhandledRejection", (err) => {
     if (__exitPhase) {

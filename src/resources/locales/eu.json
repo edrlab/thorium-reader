@@ -149,6 +149,8 @@
         "cancel": "Ezeztatu",
         "deleteAnnotations": "",
         "deleteAnnotationsText": "",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Ziur zaude katalogo hau ezabatu nahi duzula?",
         "deletePublication": "Ziur zaude argitalpen hau ezabatu nahi duzula?",
         "import": "Ziur zaude fitxategi hauek inportatu nahi dituzula?",
@@ -208,6 +210,7 @@
         "import": {
             "alreadyImport": "{- title}} inportatuta zegoen",
             "fail": "{- path}}-ren inportazioak huts egin du. {{- Err}}",
+            "seeInLibrary": "",
             "success": "{- title}}-ren inportazioa amaitu da."
         },
         "open": {
@@ -385,6 +388,9 @@
                 "underline": "Azpimarratu"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "isildu",
             "unmute": "isiltzeari utzi"
@@ -400,7 +406,6 @@
             "edit": "Editatu",
             "goTo": "Joan orrialdera",
             "landmarks": "Erreferentzia-puntuak",
-            "progression": "",
             "saveMark": "Gorde laster-marka",
             "search": "Bilatu",
             "searchResult": "Bilatu [{{- searchText}}]",

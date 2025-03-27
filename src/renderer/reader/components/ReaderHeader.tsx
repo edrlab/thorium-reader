@@ -49,6 +49,7 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 //     // stealFocusDisable
 // } from "@r2-navigator-js/electron/renderer/dom";
 import {
+    keyboardFocusRequest,
     MediaOverlaysStateEnum, TTSStateEnum,
 } from "@r2-navigator-js/electron/renderer/index";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
@@ -70,7 +71,7 @@ import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driv
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { readerLocalActionAnnotations, readerLocalActionSetConfig, readerLocalActionToggleMenu, readerLocalActionToggleSettings } from "../redux/actions";
-import { IColor, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
+import { TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { AnnotationEdit } from "./AnnotationEdit";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { VoiceSelection } from "./header/voiceSelection";
@@ -79,6 +80,7 @@ import { convertToSpeechSynthesisVoices, filterOnLanguage, getLanguages, getVoic
 import { BookmarkButton } from "./header/BookmarkButton";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { DockTypeName } from "readium-desktop/common/models/dock";
+import { IColor } from "@r2-navigator-js/electron/common/highlight";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -806,8 +808,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         <BookmarkButton shortcutEnable={this.props.shortcutEnable} isOnSearch={this.props.isOnSearch}/>
 
                         <Popover.Root open={this.props.isAnnotationModeEnabled} onOpenChange={(open) => {
-                            if (open === false) {
-                                setTimeout(() => this.props.closeAnnotationEditionMode(), 1); // trigger input onChange before the popover trigger
+                            if (!open) {
+                                setTimeout(() => this.props.closeAnnotationEditionMode(this.props.isAnnotationModeEnabledFromKeyboard), 1); // trigger input onChange before the popover trigger
                             }
                         }}>
                             <Popover.Trigger asChild>
@@ -816,7 +818,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         { style: { backgroundColor: "var(--color-blue" } })}
                                 >
                                     <input
-                                    disabled={this.props.isPdf || this.props.isDivina || isAudioBook}
+                                        disabled={this.props.isPdf || this.props.isDivina || isAudioBook}
                                         id="annotationButton"
                                         aria-label={__("reader.navigation.annotationTitle")}
                                         className={stylesReader.bookmarkButton}
@@ -824,11 +826,11 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         checked={this.props.isAnnotationModeEnabled}
                                         onKeyUp={(e) => {
                                             if (e.key === "Enter") {
-                                                this.props.triggerAnnotationBtn();
+                                                this.props.triggerAnnotationBtn(false);
                                             }
                                         }}
                                         onChange={() => {
-                                            this.props.triggerAnnotationBtn();
+                                            this.props.triggerAnnotationBtn(false);
                                         }}
                                     />
                                     {
@@ -847,11 +849,23 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             </Popover.Trigger>
                             <Popover.Portal>
                                 <Popover.Content sideOffset={this.props.isOnSearch ? 50 : 18} align="end" style={{ zIndex: 101 }}
-                                        // onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
-                                        // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
-                                        >
-                                            <AnnotationEdit save={this.props.saveAnnotation} cancel={this.props.closeAnnotationEditionMode} dockedMode={isDockedMode}/>
-                                    <Popover.Arrow style={{ fill: "var(--color-extralight-grey)"}} width={15} height={10} />
+                                // onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
+                                // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
+                                >
+                                    <AnnotationEdit
+                                        save={(color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
+                                            this.props.saveAnnotation(this.props.isAnnotationModeEnabledFromKeyboard, color, comment, drawType, tags);
+                                        }}
+                                        cancel={() => this.props.closeAnnotationEditionMode(this.props.isAnnotationModeEnabledFromKeyboard)}
+                                        dockedMode={isDockedMode}
+                                        uuid=""
+                                        color={this.props.readerConfig.annotation_defaultColor}
+                                        drawType={this.props.readerConfig.annotation_defaultDrawType}
+                                        tags={[]}
+                                        comment=""
+                                        locatorExtended={this.props.annotationLocatorExtended}
+                                    />
+                                    <Popover.Arrow style={{ fill: "var(--color-extralight-grey)" }} width={15} height={10} />
                                 </Popover.Content>
                             </Popover.Portal>
                         </Popover.Root>
@@ -1072,7 +1086,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         className={stylesReader.bookmarkButton}
                                         type="checkbox"
                                         checked={this.state.pdfScaleMode === "page-width"}
-                                        // tslint:disable-next-line: max-line-length
                                         onChange={() => createOrGetPdfEventBus().dispatch("scale", this.state.pdfScaleMode === "page-fit" ? "page-width" : "page-fit")}
                                         aria-label={__("reader.navigation.pdfscalemode")}
                                     />
@@ -1391,6 +1404,8 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         keyboardShortcuts: state.keyboard.shortcuts,
         annotationsDataArray: state.reader.annotation,
         isAnnotationModeEnabled: state.annotation.enable,
+        annotationLocatorExtended: state.annotation.locatorExtended,
+        isAnnotationModeEnabledFromKeyboard: state.annotation.fromKeyboard,
         publicationHasMediaOverlays: state.reader.info.navigator.r2PublicationHasMediaOverlays,
         mediaOverlaysState: state.reader.mediaOverlay.state,
         ttsState: state.reader.tts.state,
@@ -1403,6 +1418,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         locale: state.i18n.locale, // refresh
         menuOpen: state.dialog.open && state.dialog.type === DialogTypeName.ReaderMenu || state.dock.open && state.dock.type === DockTypeName.ReaderMenu,
         settingsOpen: state.dialog.open && state.dialog.type === DialogTypeName.ReaderSettings || state.dock.open && state.dock.type === DockTypeName.ReaderSettings,
+        locatorExtended: state.reader.locator,
     };
 };
 
@@ -1411,14 +1427,26 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         setConfig: (state: Partial<ReaderConfig>) => {
             dispatch(readerLocalActionSetConfig.build(state));
         },
-        triggerAnnotationBtn: () => {
-            dispatch(readerLocalActionAnnotations.trigger.build());
+        triggerAnnotationBtn: (fromKeyboard: boolean) => {
+            dispatch(readerLocalActionAnnotations.trigger.build(fromKeyboard));
         },
-        closeAnnotationEditionMode: () => {
-            dispatch(readerLocalActionAnnotations.enableMode.build(false, undefined));
+        closeAnnotationEditionMode: (fromKeyboard: boolean) => {
+            dispatch(readerLocalActionAnnotations.enableMode.build(false, undefined,  undefined));
+
+            if (fromKeyboard) {
+                setTimeout(() => {
+                    keyboardFocusRequest(true);
+                }, 200);
+            }
         },
-        saveAnnotation: (color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
+        saveAnnotation: (fromKeyboard: boolean, color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
             dispatch(readerLocalActionAnnotations.createNote.build(color, comment, drawType, tags));
+
+            if (fromKeyboard) {
+                setTimeout(() => {
+                    keyboardFocusRequest(true);
+                }, 200);
+            }
         },
         toggleMenu: (data: readerLocalActionToggleMenu.Payload) => {
             dispatch(readerLocalActionToggleMenu.build(data));

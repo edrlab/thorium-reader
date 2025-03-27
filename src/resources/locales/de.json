@@ -149,6 +149,8 @@
         "cancel": "Abbrechen",
         "deleteAnnotations": "Anmerkungen löschen?",
         "deleteAnnotationsText": "Sind Sie sicher, dass Sie {{- annotationListLength}} Notiz(en) löschen wollen?",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Willst du diesen Katalog wirklich löschen?",
         "deletePublication": "Willst du diese Publikation wirklich löschen?",
         "import": "Import bestätigen:",
@@ -208,6 +210,7 @@
         "import": {
             "alreadyImport": "Es scheint, dass Sie die Publikation [{{- title}}] bereits in Ihren Katalog aufgenommen haben.",
             "fail": "Der Import von {{- path}} ist fehlgeschlagen. {{- err}}",
+            "seeInLibrary": "",
             "success": "Der Import von {{- title}} ist abgeschlossen."
         },
         "open": {
@@ -385,6 +388,9 @@
                 "underline": "Unterstreichen"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "Audio stummschalten",
             "unmute": "Ton einschalten"
@@ -400,7 +406,6 @@
             "edit": "Bearbeiten",
             "goTo": "Gehe zu Seite",
             "landmarks": "Navigationspunkte",
-            "progression": "Fortschritt",
             "saveMark": "Lesezeichen speichern",
             "search": "Suche",
             "searchResult": "Suche [{{- searchText}}]",

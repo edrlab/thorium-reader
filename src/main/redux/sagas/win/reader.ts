@@ -49,6 +49,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const creator = yield* selectTyped((_state: RootState) => _state.creator);
     const annotationImportQueue = yield* selectTyped((_state: RootState) => _state.annotationImportQueue);
     const apiKeys = yield* selectTyped((_state: RootState) => _state.apiKeys);
+    const lcp = yield* selectTyped((state: RootState) => state.lcp);
 
     const publicationRepository = diMainGet("publication-repository");
     let tag: string[] = [];
@@ -111,6 +112,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
             },
             annotationImportQueue,
             apiKeys,
+            lcp,
         },
     } as readerIpc.EventPayload);
 }

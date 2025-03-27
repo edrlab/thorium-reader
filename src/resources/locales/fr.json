@@ -149,6 +149,8 @@
         "cancel": "Annuler",
         "deleteAnnotations": "Supprimer la note",
         "deleteAnnotationsText": "Voulez-vous supprimer {{- annotationListLength}} note(s) ?",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Supprimer ce catalogue ?",
         "deletePublication": "Supprimer ce livre ?",
         "import": "Confirmer l'ajout :",
@@ -208,6 +210,7 @@
         "import": {
             "alreadyImport": "{{- title}} a déjà été ajouté.",
             "fail": "L'ajout de {{- path}} a échoué. {{- err}}",
+            "seeInLibrary": "Voir dans la bibliothèque",
             "success": "L'ajout de {{- title}} est achevé."
         },
         "open": {
@@ -385,6 +388,9 @@
                 "underline": "Souligner"
             }
         },
+        "bookmarks": {
+            "index": "Bookmark N°{{- index}}"
+        },
         "divina": {
             "mute": "désactiver le son",
             "unmute": "activer le son"
@@ -400,7 +406,6 @@
             "edit": "Éditer",
             "goTo": "Aller à la page",
             "landmarks": "Repères",
-            "progression": "Progression",
             "saveMark": "Sauvegarder le marque-page",
             "search": "Rechercher",
             "searchResult": "Recherche - « {{- searchText}} »",

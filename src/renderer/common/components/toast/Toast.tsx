@@ -18,7 +18,9 @@ import * as ChevronDownIcon from "readium-desktop/renderer/assets/icons/chevron-
 import { TranslatorProps, withTranslator } from "../hoc/translator";
 import { connect } from "react-redux";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
+import { Link } from "react-router-dom";
 
+// import { PublicationView } from "readium-desktop/common/views/publication";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -31,6 +33,9 @@ interface IBaseProps extends TranslatorProps {
     message?: string;
     displaySystemNotification?: boolean;
     type?: ToastType;
+    publicationTitle?: string;
+    publicationHash?: string;
+    // openReader? : (publicationView: PublicationView) => void;
 }
 
 // IProps may typically extend:
@@ -85,7 +90,7 @@ export class Toast extends React.Component<IProps, IState> {
         this.timer = window.setTimeout(() => {
             this.timer = undefined;
             this.handleClose();
-        }, fast ? 500 : 5000);
+        }, fast ? 1000 : 6000);
     }
 
     public componentDidMount() {
@@ -97,7 +102,6 @@ export class Toast extends React.Component<IProps, IState> {
 
         // https://www.electronjs.org/docs/latest/tutorial/notifications
         if (this.props.displaySystemNotification) {
-            // tslint:disable-next-line: no-unused-expression
             new Notification(capitalizedAppName, {
                 body: this.props.message,
             });
@@ -175,7 +179,6 @@ export class Toast extends React.Component<IProps, IState> {
                             clipboard.writeText(this.props.message, clipBoardType);
 
                             // https://www.electronjs.org/docs/latest/tutorial/notifications
-                            // tslint:disable-next-line: no-unused-expression
                             new Notification(capitalizedAppName, {
                                 body: `${__("app.edit.copy")} [${this.props.message}]`,
                             });
@@ -185,7 +188,46 @@ export class Toast extends React.Component<IProps, IState> {
                             // ignore
                         }
                     }
-                }>{ this.props.message }</p>
+                }>{this.props.publicationTitle || this.props.publicationHash ?
+                    <span>
+                        {this.props.message}
+                        <br/>
+                        <Link
+                            style={{textDecoration: "underline", fontStyle:"italic", fontWeight: "bold", color: "var(--color-primary)"}}
+                            to={{
+                                ...location,
+                                pathname: "/library",
+                                search: `?focus=search${this.props.publicationHash ? "&searchPubHash=" + encodeURIComponent(this.props.publicationHash) : ""}${this.props.publicationTitle ? "&searchPubTitle=" + encodeURIComponent(this.props.publicationTitle) : ""}`,
+                            }}
+                            onClick={(e) => {
+                                if (e.altKey || e.shiftKey || e.ctrlKey) {
+                                    e.preventDefault();
+                                    e.currentTarget.click();
+                                }
+                            }}
+                            onKeyDown={(e) => {
+                                // if (e.code === "Space") {
+                                if (e.key === " " || e.altKey || e.ctrlKey) {
+                                    e.preventDefault(); // prevent scroll
+                                }
+                            }}
+                            onKeyUp={(e) => {
+                                // Includes screen reader tests:
+                                // if (e.code === "Space") { WORKS
+                                // if (e.key === "Space") { DOES NOT WORK
+                                // if (e.key === "Enter") { WORKS
+                                if (e.key === " ") { // WORKS
+                                    e.preventDefault();
+                                    e.currentTarget.click();
+                                }
+                            }}
+                        >
+                        {__("message.import.seeInLibrary")}
+                        </Link>
+                    </span>
+                    :
+                    (this.props.message)
+                    }</p>
                 {/*
                     onBlur={() => {
                         this.triggerTimer(true);

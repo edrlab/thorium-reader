@@ -19,7 +19,7 @@ import * as i18n from "./i18n";
 import * as ipc from "./ipc";
 import * as search from "./search";
 import * as winInit from "./win";
-import * as annotation from "./annotation";
+import * as annotation from "./note";
 import * as shareAnnotationSet from "./shareAnnotationSet";
 import * as img from "./img";
 import * as settingsOrMenuDialogOrDock from "./settingsOrMenu";

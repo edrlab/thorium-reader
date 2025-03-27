@@ -149,6 +149,8 @@
         "cancel": "Annulla",
         "deleteAnnotations": "Eliminare la nota?",
         "deleteAnnotationsText": "Si desidera eliminare {{- annotationListLength}} note?",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Vuoi davvero eliminare questo catalogo ?",
         "deletePublication": "Vuoi davvero eliminare questa pubblicazione ?",
         "import": "Vuoi davvero importare questi files:",
@@ -208,6 +210,7 @@
         "import": {
             "alreadyImport": "{{- title}} è già stato importato",
             "fail": "L'importazione di {{- path}} è fallita. {{- err}}",
+            "seeInLibrary": "",
             "success": "L'importazione di {{- title}} è terminata."
         },
         "open": {
@@ -385,6 +388,9 @@
                 "underline": "Sottolineatura"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "disattiva audio",
             "unmute": "riattiva audio"
@@ -400,7 +406,6 @@
             "edit": "Modifica",
             "goTo": "Vai alla pagina",
             "landmarks": "Punti di riferimento",
-            "progression": "Avanzamento",
             "saveMark": "Salva segnalibro",
             "search": "Ricerca",
             "searchResult": "Cerca [{{- searchText}}]",

@@ -240,6 +240,5 @@ test("publication to manifest", async () => {
         return undefined;
     });
 
-    // tslint:disable-next-line: max-line-length
     expect(JSON.stringify(TaJsonSerialize(res))).toStrictEqual(JSON.stringify(manifest));
 });

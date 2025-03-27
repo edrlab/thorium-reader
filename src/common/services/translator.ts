@@ -33,6 +33,7 @@ import daCatalog from "readium-desktop/resources/locales/da.json";
 import slCatalog from "readium-desktop/resources/locales/sl.json";
 import csCatalog from "readium-desktop/resources/locales/cs.json";
 import arCatalog from "readium-desktop/resources/locales/ar.json";
+import taCatalog from "readium-desktop/resources/locales/ta.json";
 
 // import { TFunction } from "readium-desktop/typings/en.translation";
 import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
@@ -146,6 +147,9 @@ i18nextInstance.init({
         "ar": {
             translation: arCatalog,
         },
+        "ta": {
+            translation: taCatalog,
+        },
     },
     // lng: undefined,
     fallbackLng: "en",
@@ -203,6 +207,7 @@ export const availableLanguages = {
     "sl": "Slovenščina (Slovene)",
     "cs": "čeština (Czech)",
     "ar": "عَرَبِيّ (Arabic)",
+    "ta": "தமிழ் (Tamil)",
 };
 
 export type I18nFunction = (_: TTranslatorKeyParameter, __?: {}) => string;

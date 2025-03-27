@@ -149,6 +149,8 @@
         "cancel": "Poništi",
         "deleteAnnotations": "",
         "deleteAnnotationsText": "",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Želiš li stvarno izbrisati ovaj katalog ?",
         "deletePublication": "Želiš li stvarno izbrisati ovu građu ?",
         "import": "Želiš li stvarno uvesti ove dokumente:",
@@ -208,6 +210,7 @@
         "import": {
             "alreadyImport": "{{- title}} je već uvezen",
             "fail": "Neuspjeli uvoz {{- path}}. {{- err}}",
+            "seeInLibrary": "",
             "success": "Uvoz {{- title}} je završen."
         },
         "open": {
@@ -385,6 +388,9 @@
                 "underline": ""
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "isključi zvuk",
             "unmute": "uključi zvuk"
@@ -400,7 +406,6 @@
             "edit": "Uredi",
             "goTo": "",
             "landmarks": "Smjerokaz",
-            "progression": "",
             "saveMark": "",
             "search": "Pretraži",
             "searchResult": "",

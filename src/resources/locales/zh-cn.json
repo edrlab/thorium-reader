@@ -149,6 +149,8 @@
         "cancel": "取消",
         "deleteAnnotations": "您要删除笔记吗？",
         "deleteAnnotationsText": "您确定要删除 {{- annotationListLength}} 条笔记吗？",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "您真的要删除此出版目录吗？",
         "deletePublication": "您真的要删除此出版物吗?",
         "import": "您真的要导入这些文件吗:",
@@ -208,6 +210,7 @@
         "import": {
             "alreadyImport": "{{- title}}已被导入",
             "fail": "导入{{- path}}失败。{{- err}}",
+            "seeInLibrary": "",
             "success": "导入{{- title}}完成。"
         },
         "open": {
@@ -385,6 +388,9 @@
                 "underline": "强调"
             }
         },
+        "bookmarks": {
+            "index": ""
+        },
         "divina": {
             "mute": "静音",
             "unmute": "取消静音"
@@ -400,7 +406,6 @@
             "edit": "编辑",
             "goTo": "转到页码",
             "landmarks": "结构",
-            "progression": "进度",
             "saveMark": "保存书签",
             "search": "检索",
             "searchResult": "检索 [{{- searchText}}]",

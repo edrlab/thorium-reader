@@ -16,6 +16,7 @@ import { I18NState } from "readium-desktop/common/redux/states/i18n";
 import { TFIFOState } from "readium-desktop/utils/redux-reducers/fifo.reducer";
 import { IAnnotationPreParsingState } from "./renderer/annotation";
 import { IApiKeysArray } from "readium-desktop/common/redux/states/api_key";
+import { ILcpState } from "./lcp";
 
 export interface ICommonRootState {
     i18n: I18NState;
@@ -30,4 +31,5 @@ export interface ICommonRootState {
     creator: INoteCreator;
     annotationImportQueue: TFIFOState<IAnnotationPreParsingState>;
     apiKeys: IApiKeysArray;
+    lcp: ILcpState;
 }

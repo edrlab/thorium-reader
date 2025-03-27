@@ -148,7 +148,9 @@
         },
         "cancel": "Nutraukti",
         "deleteAnnotations": "Šalinti pastabas?",
-        "deleteAnnotationsText": "Ar norite pašalinti {{- annotationListLength}} pastabą(-as, -ų)?",
+        "deleteAnnotationsText": "Ar tikrai norite pašalinti {{- annotationListLength}} pastabą(-as, -ų)?",
+        "deleteBookmarks": "Šalinti žymes?",
+        "deleteBookmarksText": "Ar tikrai norite pašalinti {{- bookmarkListLength}} žymę(-es, -ų)?",
         "deleteFeed": "Pašalinti katalogą?",
         "deletePublication": "Pašalinti leidinį?",
         "import": "Patvirtinkite importą:",
@@ -208,6 +210,7 @@
         "import": {
             "alreadyImport": "[{{- title}}] jau importuotas.",
             "fail": "[{{- path}}] importas nepavyko: [{{- err}}]",
+            "seeInLibrary": "",
             "success": "[{{- title}}] importas baigtas."
         },
         "open": {
@@ -385,6 +388,9 @@
                 "underline": "Pabraukimas"
             }
         },
+        "bookmarks": {
+            "index": "{{- index}} žymė"
+        },
         "divina": {
             "mute": "išjungti garsą",
             "unmute": "įjungti garsą"
@@ -400,8 +406,7 @@
             "edit": "Keisti",
             "goTo": "Eiti į puslapį",
             "landmarks": "Gairės",
-            "progression": "Eiga",
-            "saveMark": "Išsaugoti žymę",
+            "saveMark": "Išsaugoti",
             "search": "Paieška",
             "searchResult": "Ieškoti [{{- searchText}}]",
             "toc": "Turinys"
