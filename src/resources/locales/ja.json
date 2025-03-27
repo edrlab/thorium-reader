@@ -119,6 +119,20 @@
         "tags": "タグ",
         "update": "編集"
     },
+    "chatbot": {
+        "detailedDescTitle": "",
+        "detailedDescription": "",
+        "editorDescription": "",
+        "generateDescriptionTitle": "",
+        "inputPlaceholder": "",
+        "noDescription": "",
+        "reset": "",
+        "sendQuestion": "",
+        "shortDescTitle": "",
+        "shortDescription": "",
+        "systemPromptEditor": "",
+        "title": ""
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "{{- author}}によるもの",
@@ -549,6 +563,17 @@
             "organization": "団体",
             "person": "個人",
             "type": "タイプ："
+        },
+        "apiKey": {
+            "addKey": "",
+            "help": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "providerSelection": "",
+            "removeKey": "",
+            "title": "",
+            "validate": ""
         },
         "auth": {
             "help": "この操作により、すべてのOPDSログイン情報が削除されます。",

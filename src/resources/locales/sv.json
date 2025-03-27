@@ -119,6 +119,20 @@
         "tags": "Taggar",
         "update": "Redigera"
     },
+    "chatbot": {
+        "detailedDescTitle": "",
+        "detailedDescription": "",
+        "editorDescription": "",
+        "generateDescriptionTitle": "",
+        "inputPlaceholder": "",
+        "noDescription": "",
+        "reset": "",
+        "sendQuestion": "",
+        "shortDescTitle": "",
+        "shortDescription": "",
+        "systemPromptEditor": "",
+        "title": ""
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "av {{- author}}",
@@ -549,6 +563,17 @@
             "organization": "Organisation",
             "person": "Person",
             "type": "Typ:"
+        },
+        "apiKey": {
+            "addKey": "",
+            "help": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "providerSelection": "",
+            "removeKey": "",
+            "title": "",
+            "validate": ""
         },
         "auth": {
             "help": "Denna åtgärd raderar alla OPDS-inloggningsuppgifter.",

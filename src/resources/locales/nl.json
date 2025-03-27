@@ -119,6 +119,20 @@
         "tags": "Labels",
         "update": "Wijzig"
     },
+    "chatbot": {
+        "detailedDescTitle": "",
+        "detailedDescription": "",
+        "editorDescription": "",
+        "generateDescriptionTitle": "",
+        "inputPlaceholder": "",
+        "noDescription": "",
+        "reset": "",
+        "sendQuestion": "",
+        "shortDescTitle": "",
+        "shortDescription": "",
+        "systemPromptEditor": "",
+        "title": ""
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "door '{{- author}}'",
@@ -549,6 +563,17 @@
             "organization": "Organisatie",
             "person": "Persoon",
             "type": "Type:"
+        },
+        "apiKey": {
+            "addKey": "",
+            "help": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "providerSelection": "",
+            "removeKey": "",
+            "title": "",
+            "validate": ""
         },
         "auth": {
             "help": "Deze actie verwijdert alle OPDS aanmeldingsgegevens.",

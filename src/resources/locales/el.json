@@ -119,6 +119,20 @@
         "tags": "Ετικέτες",
         "update": "Επεξεργασία"
     },
+    "chatbot": {
+        "detailedDescTitle": "",
+        "detailedDescription": "",
+        "editorDescription": "",
+        "generateDescriptionTitle": "",
+        "inputPlaceholder": "",
+        "noDescription": "",
+        "reset": "",
+        "sendQuestion": "",
+        "shortDescTitle": "",
+        "shortDescription": "",
+        "systemPromptEditor": "",
+        "title": ""
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "από '{{- author}}'",
@@ -549,6 +563,17 @@
             "organization": "Οργανισμός",
             "person": "Πρόσωπο",
             "type": "Τύπος:"
+        },
+        "apiKey": {
+            "addKey": "",
+            "help": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "providerSelection": "",
+            "removeKey": "",
+            "title": "",
+            "validate": ""
         },
         "auth": {
             "help": "Αυτή η ενέργεια διαγράφει όλα τα OPDS διαπιστευτήρια σύνδεσης.",

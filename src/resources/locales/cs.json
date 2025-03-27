@@ -119,6 +119,20 @@
         "tags": "Štítky",
         "update": "Upravit"
     },
+    "chatbot": {
+        "detailedDescTitle": "",
+        "detailedDescription": "",
+        "editorDescription": "",
+        "generateDescriptionTitle": "",
+        "inputPlaceholder": "",
+        "noDescription": "",
+        "reset": "",
+        "sendQuestion": "",
+        "shortDescTitle": "",
+        "shortDescription": "",
+        "systemPromptEditor": "",
+        "title": ""
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "autor: {{- author}}",
@@ -549,6 +563,17 @@
             "organization": "Společnost",
             "person": "Osoba",
             "type": "Typ:"
+        },
+        "apiKey": {
+            "addKey": "",
+            "help": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "providerSelection": "",
+            "removeKey": "",
+            "title": "",
+            "validate": ""
         },
         "auth": {
             "help": "Tento krok odstraní všechny přihlašovací údaje OPDS.",

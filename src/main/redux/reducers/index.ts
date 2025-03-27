@@ -32,6 +32,7 @@ import { creatorReducer } from "readium-desktop/common/redux/reducers/creator";
 import { settingsReducer } from "readium-desktop/common/redux/reducers/settings";
 import { fifoReducer } from "readium-desktop/utils/redux-reducers/fifo.reducer";
 import { IAnnotationPreParsingState } from "readium-desktop/common/redux/states/renderer/annotation";
+import { apiKeysReducer } from "readium-desktop/common/redux/reducers/api_key";
 import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 
 export const rootReducer = combineReducers({ // RootState
@@ -122,5 +123,5 @@ export const rootReducer = combineReducers({ // RootState
             },
         },
     ),
-    
+    apiKeys: apiKeysReducer,
 });

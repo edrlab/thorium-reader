@@ -294,6 +294,32 @@ declare namespace typed_i18n {
   (_: "catalog.sort", __?: {}): string; (_: "catalog.tag", __?: {}): string;
   (_: "catalog.tags", __?: {}): string;
   (_: "catalog.update", __?: {}): string;
+  (_: "chatbot", __?: {}): {
+  readonly "detailedDescTitle": string,
+  readonly "detailedDescription": string,
+  readonly "editorDescription": string,
+  readonly "generateDescriptionTitle": string,
+  readonly "inputPlaceholder": string,
+  readonly "noDescription": string,
+  readonly "reset": string,
+  readonly "sendQuestion": string,
+  readonly "shortDescTitle": string,
+  readonly "shortDescription": string,
+  readonly "systemPromptEditor": string,
+  readonly "title": string
+};
+  (_: "chatbot.detailedDescTitle", __?: {}): string;
+  (_: "chatbot.detailedDescription", __?: {}): string;
+  (_: "chatbot.editorDescription", __?: {}): string;
+  (_: "chatbot.generateDescriptionTitle", __?: {}): string;
+  (_: "chatbot.inputPlaceholder", __?: {}): string;
+  (_: "chatbot.noDescription", __?: {}): string;
+  (_: "chatbot.reset", __?: {}): string;
+  (_: "chatbot.sendQuestion", __?: {}): string;
+  (_: "chatbot.shortDescTitle", __?: {}): string;
+  (_: "chatbot.shortDescription", __?: {}): string;
+  (_: "chatbot.systemPromptEditor", __?: {}): string;
+  (_: "chatbot.title", __?: {}): string;
   (_: "dialog", __?: {}): {
   readonly "annotations": {
     readonly "descAuthor": string,
@@ -1434,6 +1460,17 @@ declare namespace typed_i18n {
     readonly "person": string,
     readonly "type": string
   },
+  readonly "apiKey": {
+    readonly "addKey": string,
+    readonly "help": string,
+    readonly "keyLabel": string,
+    readonly "mistral": string,
+    readonly "openAi": string,
+    readonly "providerSelection": string,
+    readonly "removeKey": string,
+    readonly "title": string,
+    readonly "validate": string
+  },
   readonly "auth": {
     readonly "help": string,
     readonly "title": string,
@@ -1482,6 +1519,26 @@ declare namespace typed_i18n {
   (_: "settings.annotationCreator.organization", __?: {}): string;
   (_: "settings.annotationCreator.person", __?: {}): string;
   (_: "settings.annotationCreator.type", __?: {}): string;
+  (_: "settings.apiKey", __?: {}): {
+  readonly "addKey": string,
+  readonly "help": string,
+  readonly "keyLabel": string,
+  readonly "mistral": string,
+  readonly "openAi": string,
+  readonly "providerSelection": string,
+  readonly "removeKey": string,
+  readonly "title": string,
+  readonly "validate": string
+};
+  (_: "settings.apiKey.addKey", __?: {}): string;
+  (_: "settings.apiKey.help", __?: {}): string;
+  (_: "settings.apiKey.keyLabel", __?: {}): string;
+  (_: "settings.apiKey.mistral", __?: {}): string;
+  (_: "settings.apiKey.openAi", __?: {}): string;
+  (_: "settings.apiKey.providerSelection", __?: {}): string;
+  (_: "settings.apiKey.removeKey", __?: {}): string;
+  (_: "settings.apiKey.title", __?: {}): string;
+  (_: "settings.apiKey.validate", __?: {}): string;
   (_: "settings.auth", __?: {}): {
   readonly "help": string,
   readonly "title": string,

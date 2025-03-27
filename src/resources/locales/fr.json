@@ -119,6 +119,20 @@
         "tags": "Mots-clefs",
         "update": "Éditer"
     },
+    "chatbot": {
+        "detailedDescTitle": "description détaillée",
+        "detailedDescription": "Décris cette illustration en détail (nature de l'image, technique, format, symbolisme, personnages, scène, couleurs, style, période, etc..).",
+        "editorDescription": "Description de l'éditeur",
+        "generateDescriptionTitle": "Générer une description textuelle",
+        "inputPlaceholder": "Poser une question. Par example: peux-tu me décrire cette image ?",
+        "noDescription": "Aucune description n'a été fournie par l'éditeur. Vous pouvez demander à l'IA de générer soit une description courte, soit une description détaillée.",
+        "reset": "Réinitialiser",
+        "sendQuestion": "Envoyer la question",
+        "shortDescTitle": "description courte",
+        "shortDescription": "décris cette image en deux phrases.",
+        "systemPromptEditor": "Éditeur de prompt système",
+        "title": "Décrire l'image avec {{- title}}"
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "par {{- author}}",
@@ -549,6 +563,17 @@
             "organization": "Organisation",
             "person": "Personne",
             "type": "Type"
+        },
+        "apiKey": {
+            "addKey": "Ajouter une clé",
+            "help": "Ajoutez une clé d'API depuis le fournisseur de votre choix pour utiliser la fonctionnalité de description d'image.",
+            "keyLabel": "Clé d'API",
+            "mistral": "Mistral",
+            "openAi": "OpenAI",
+            "providerSelection": "Sélectionnez un fournisseur",
+            "removeKey": "Supprimer la clé",
+            "title": "Ajouter une clé API (fonctionnalité de description d'image)",
+            "validate": "Valider"
         },
         "auth": {
             "help": "Souhaitez-vous supprimer vos identifiants de connexion à l'OPDS ?",
