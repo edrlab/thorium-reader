@@ -20,7 +20,7 @@ export interface IArrayAction<
     V extends { uuid: string } = { uuid: string }
 > {
     type: T;
-    selector: (action: P) => V[];
+    selector: (action: P, state: V[]) => V[] | undefined;
 }
 
 // interface IArrayData<
@@ -44,8 +44,8 @@ export function arrayReducer<
     Value extends { uuid: string}
 >(
     data: {
-        add: IArrayAction<TActionAdd["type"], TActionAdd["payload"], Value>
-        remove: IArrayAction<TActionRemove["type"], TActionRemove["payload"], Value>
+        add: IArrayAction<TActionAdd["type"], TActionAdd["payload"], Value>[] | IArrayAction<TActionAdd["type"], TActionAdd["payload"], Value>,
+        remove?: IArrayAction<TActionRemove["type"], TActionRemove["payload"], Value>,
     },
 ) {
 
@@ -55,25 +55,32 @@ export function arrayReducer<
         action: UnknownAction,
     ): Value[] => {
 
+        const addArray = Array.isArray(data.add) ? data.add : [data.add];
+        if (addArray.some((el) => el.type === action.type)) {
+            
+            let _array = array;
+            for (const add of addArray) {
 
-        if (action.type === data.add.type) {
+                if (action.type === add.type) {
 
-            const items = data.add.selector(action.payload as unknown as TActionAdd["payload"]);
-            if (!items) {
-                return array;
+                    const items = add.selector(action.payload as unknown as TActionAdd["payload"], array);
+                    if (!items) {
+                        continue;
+                    }
+
+                    const needToBeUpdatedUUID = items.map((item) => item.uuid);
+                    _array = _array.filter((element) => !needToBeUpdatedUUID.includes(element.uuid));
+                    for (const item of items) {
+                        const clonedItem = clone(item);
+                        _array.push(clonedItem);
+                    }
+                }
             }
 
-            const needToBeUpdatedUUID = items.map((item) => item.uuid);
-            const newArray = array.filter((element) => !needToBeUpdatedUUID.includes(element.uuid));
-            for (const item of items) {
-                const clonedItem = clone(item);
-                newArray.push(clonedItem);
-            }
-            return newArray;
+            return _array;
+        } else if (action.type === data.remove?.type) {
 
-        } else if (action.type === data.remove.type) {
-
-            const items = data.remove.selector(action.payload as unknown as TActionRemove["payload"]);
+            const items = data.remove.selector(action.payload as unknown as TActionRemove["payload"], array);
             if (!items) {
                 return array;
             }

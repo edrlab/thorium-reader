@@ -26,7 +26,6 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { readerLocalActionSetConfig } from "../redux/actions";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
-import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 
 interface IProps {
@@ -57,8 +56,8 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
     const previousColorSelected = React.useRef<string>(colorSelected);
 
     const [tag, setTag] = React.useState<string>((tags || [])[0] || "");
-    const tagsIndexList = useSelector((state: IReaderRootState) => state.annotationTagsIndex);
-    const selectTagOption = ObjectKeys(tagsIndexList).map((v, i) => ({id: i, name: v}));
+    const tagsIndexList = useSelector((state: IReaderRootState) => state.noteTagsIndex);
+    const selectTagOption = tagsIndexList.map((v, i) => ({ id: i, name: v.uuid }));
 
     const saveConfig = React.useCallback(() => {
 

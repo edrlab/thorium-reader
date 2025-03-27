@@ -18,7 +18,7 @@ import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locator
 
 // import { TBookmarkState } from "../bookmark";
 import { IRTLFlipState } from "./rtlFlip";
-import { IAnnotationModeState, /*TAnnotationState,*/ TAnnotationTagsIndex } from "./annotation";
+import { IAnnotationModeState /*TAnnotationState,*/ } from "./annotation";
 import { ITTSState } from "readium-desktop/renderer/reader/redux/state/tts";
 import { IMediaOverlayState } from "readium-desktop/renderer/reader/redux/state/mediaOverlay";
 import { IAllowCustomConfigState } from "readium-desktop/renderer/reader/redux/state/allowCustom";
@@ -34,7 +34,7 @@ export interface IReaderRootState extends IRendererCommonRootState {
     resourceCache: ICacheDocument[];
     mode: ReaderMode;
     annotation: IAnnotationModeState;
-    annotationTagsIndex: TAnnotationTagsIndex;
+    noteTagsIndex: Array<{ uuid: string, index: number }>;
     img: IImageClickState; // TODO: replace by dock/dialog state
     dock: DockState;
     // cf dialog state in common
@@ -59,7 +59,7 @@ export interface IReaderStateReader {
     mediaOverlay: IMediaOverlayState;
     allowCustomConfig: IAllowCustomConfigState;
     transientConfig: ReaderConfigPublisher;
-    bookmarkTotalCount: IBookmarkTotalCountState; // TODO change this state to noteTotalCount
+    noteTotalCount: IBookmarkTotalCountState; // TODO change this state to noteTotalCount
 
 
     // got the lock

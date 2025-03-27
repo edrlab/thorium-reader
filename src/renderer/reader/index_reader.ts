@@ -20,7 +20,6 @@ import {
 } from "@r2-shared-js/init-globals";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { publicationHasMediaOverlays } from "@r2-navigator-js/electron/renderer";
-import { pushTags } from "./tags";
 import { getTranslator } from "readium-desktop/common/services/translator";
 
 // let devTron: any;
@@ -77,7 +76,11 @@ ipcRenderer.on(readerIpc.CHANNEL,
                         note.created = (new Date()).getTime();
                     }
                 }
-                data.payload.annotationTagsIndex = pushTags({}, noteTagList);
+                data.payload.noteTagsIndex = [];
+                for (const tag of noteTagList) {
+                    if (!tag) continue;
+                    data.payload.noteTagsIndex.push({ uuid: tag, index: (data.payload.noteTagsIndex.find(({ uuid }) => uuid === tag)?.index || 0) + 1 });
+                }
 
                 const store = createStoreFromDi(data.payload);
                 const locale = store.getState().i18n.locale;

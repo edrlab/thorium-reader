@@ -65,7 +65,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
     const previousDrawTypeSelected = React.useRef<TDrawType>(drawTypeSelected);
 
     const [tag, setTag] = React.useState<string>((tags || [])[0] || "");
-    const tagsIndexList = useSelector((state: IReaderRootState) => state.annotationTagsIndex);
+    const tagsIndexList = useSelector((state: IReaderRootState) => state.noteTagsIndex);
     const selectTagOption = ObjectKeys(tagsIndexList).map((v, i) => ({id: i, name: v}));
 
     const annotationMaxLength = 1500;

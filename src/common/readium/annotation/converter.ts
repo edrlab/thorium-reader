@@ -11,7 +11,6 @@ import { ICssSelector, IProgressionSelector, IReadiumAnnotation, IReadiumAnnotat
 import { v4 as uuidv4 } from "uuid";
 import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 import { rgbToHex } from "readium-desktop/common/rgb";
 import { ICacheDocument } from "readium-desktop/common/redux/states/renderer/resourceCache";
 import { getDocumentFromICacheDocument } from "readium-desktop/utils/xmlDom";
@@ -25,7 +24,7 @@ import { IRangeInfo, ISelectionInfo } from "@r2-navigator-js/electron/common/sel
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { availableLanguages } from "readium-desktop/common/services/translator";
-import { NOTE_DEFAULT_COLOR, noteColorCodeToColorSet } from "readium-desktop/common/redux/states/renderer/note";
+import { EDrawType, INoteState, NOTE_DEFAULT_COLOR, noteColorCodeToColorSet } from "readium-desktop/common/redux/states/renderer/note";
 
 // Logger
 const debug = debug_("readium-desktop:common:readium:annotation:converter");
@@ -200,7 +199,7 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
     return locatorExtended;
 }
 
-export type IAnnotationStateWithICacheDocument = IAnnotationState & { __cacheDocument?: ICacheDocument | undefined };
+export type INoteStateWithICacheDocument = INoteState & { __cacheDocument?: ICacheDocument | undefined };
 
 const describeCssSelectorWithTextPosition = async (range: Range, document: Document, root: HTMLElement): Promise<ICssSelector<ITextPositionSelector> | undefined> => {
     // normalizeRange can fundamentally alter the DOM Range by repositioning / snapping to Text boundaries, this is an internal implementation detail inside navigator when CREATING ranges from user document selections.
@@ -226,7 +225,7 @@ const describeCssSelectorWithTextPosition = async (range: Range, document: Docum
     };
 };
 
-export async function convertAnnotationStateToSelector(annotationWithCacheDoc: IAnnotationStateWithICacheDocument, isLcp: boolean): Promise<ISelector[]> {
+export async function convertAnnotationStateToSelector(annotationWithCacheDoc: INoteStateWithICacheDocument, isLcp: boolean): Promise<ISelector[]> {
 
     const selector: ISelector<any>[] = [];
 
@@ -294,16 +293,16 @@ export async function convertAnnotationStateToSelector(annotationWithCacheDoc: I
     return selector;
 }
 
-export async function convertAnnotationStateToReadiumAnnotation(annotation: IAnnotationStateWithICacheDocument, isLcp: boolean): Promise<IReadiumAnnotation> {
+export async function convertAnnotationStateToReadiumAnnotation(annotation: INoteStateWithICacheDocument, isLcp: boolean): Promise<IReadiumAnnotation> {
 
-    const { uuid, color, locatorExtended: def, tags, drawType, comment, creator, created, modified } = annotation;
+    const { uuid, color, locatorExtended: def, tags, drawType, textualValue, creator, created, modified } = annotation;
     const { locator, headings, epubPage/*, selectionInfo*/ } = def;
     const { href /*text, locations*/ } = locator;
     // const { afterRaw, beforeRaw, highlightRaw } = text || {};
     // const { rangeInfo: rangeInfoSelection } = selectionInfo || {};
     // const { progression } = locations;
 
-    const highlight: IReadiumAnnotation["body"]["highlight"] = drawType === "solid_background" ? "solid" : drawType;
+    const highlight = (drawType === EDrawType.solid_background ? "solid" : EDrawType[drawType]) as IReadiumAnnotation["body"]["highlight"];
 
     const selector = await convertAnnotationStateToSelector(annotation, isLcp);
 
@@ -315,7 +314,7 @@ export async function convertAnnotationStateToReadiumAnnotation(annotation: IAnn
         type: "Annotation",
         body: {
             type: "TextualBody",
-            value: comment || "",
+            value: textualValue || "",
             format: "text/plain",
             color: noteColorCodeToColorSet[rgbToHex(color)] || NOTE_DEFAULT_COLOR,
             tag: (tags || [])[0] || "",
@@ -335,7 +334,7 @@ export async function convertAnnotationStateToReadiumAnnotation(annotation: IAnn
     };
 }
 
-export async function convertAnnotationStateArrayToReadiumAnnotationSet(locale: keyof typeof availableLanguages, annotationArray: IAnnotationStateWithICacheDocument[], publicationView: PublicationView, label?: string): Promise<IReadiumAnnotationSet> {
+export async function convertAnnotationStateArrayToReadiumAnnotationSet(locale: keyof typeof availableLanguages, annotationArray: INoteStateWithICacheDocument[], publicationView: PublicationView, label?: string): Promise<IReadiumAnnotationSet> {
 
     const currentDate = new Date();
     const dateString: string = currentDate.toISOString();

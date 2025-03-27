@@ -40,7 +40,6 @@ import { readerMediaOverlayReducer } from "./mediaOverlay";
 import { readerTTSReducer } from "./tts";
 import { readerTransientConfigReducer } from "./readerTransientConfig";
 import { readerAllowCustomConfigReducer } from "readium-desktop/common/redux/reducers/reader/allowCustom";
-import { annotationTagsIndexReducer } from "./annotationTagsIndex";
 import { creatorReducer } from "readium-desktop/common/redux/reducers/creator";
 import { importAnnotationReducer } from "readium-desktop/renderer/common/redux/reducers/importAnnotation";
 import { tagReducer } from "readium-desktop/common/redux/reducers/tag";
@@ -66,7 +65,7 @@ export const rootReducer = () => {
             defaultConfig: readerDefaultConfigReducer,
             config: readerConfigReducer,
             allowCustomConfig: readerAllowCustomConfigReducer,
-            bookmarkTotalCount: readerBookmarkTotalCountReducer,
+            noteTotalCount: readerBookmarkTotalCountReducer,
             transientConfig: readerTransientConfigReducer,// ReaderConfigPublisher
             info: readerInfoReducer,
             locator: readerLocatorReducer,
@@ -210,7 +209,45 @@ export const rootReducer = () => {
         search: searchReducer,
         resourceCache: readerResourceCacheReducer,
         annotation: annotationModeEnableReducer,
-        annotationTagsIndex: annotationTagsIndexReducer,
+        noteTagsIndex: arrayReducer<readerActions.note.addUpdate.TAction | readerActions.note.remove.TAction, undefined, { uuid: string, index: number }>(
+            {
+                add: [
+                    {
+                        type: readerActions.note.addUpdate.ID,
+                        selector: (payload, state) => {
+                            const oldTags = (payload as readerActions.note.addUpdate.IPayload).previousNote.tags;
+                            const newTags = (payload as readerActions.note.addUpdate.IPayload).newNote.tags;
+
+                            if (oldTags && newTags && oldTags[0] === newTags[0]) {
+                                return undefined;
+                            }
+
+                            const items: Array<{ uuid: string, index: number }> = [];
+
+                            if (oldTags[0]) {
+                                items.push({uuid: oldTags[0], index: Math.max((state.find(({ uuid }) => uuid === oldTags[0])?.index || 0) - 1, 0)});
+                            }
+
+                            if (newTags[0]) {
+                                items.push({ uuid: newTags[0], index: (state.find(({ uuid }) => uuid === newTags[0])?.index || 0) + 1 });
+                            }
+                            return items;
+                        },
+                    },
+                    {
+                        type: readerActions.note.remove.ID,
+                        selector: (payload, state) => {
+                            const tags = (payload as readerActions.note.remove.IPayload).note.tags;
+                            if (tags && tags[0]) {
+                                return [{uuid: tags[0], index: Math.max((state.find(({ uuid }) => uuid === tags[0])?.index || 0) - 1, 0)}];
+                            }
+                            return undefined;
+                        },
+                    },
+                ],
+                remove: undefined,
+            },
+        ),
         win: winReducer,
         dialog: dialogReducer,
         dock: dockReducer,
@@ -222,7 +259,7 @@ export const rootReducer = () => {
         publication: combineReducers({
             tag: tagReducer,
         }),
-        noteImportQueue: fifoReducer
+        annotationImportQueue: fifoReducer
         <
             annotationActions.pushToAnnotationImportQueue.TAction,
             INotePreParsingState

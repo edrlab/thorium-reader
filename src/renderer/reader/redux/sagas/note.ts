@@ -222,12 +222,12 @@ function* newLocatorEditAndSaveTheNote(locatorExtended: MiniLocatorExtended, fro
         return;
     } else if (noteTakenAction) {
 
-        const { color, comment, drawType, tags } = noteTakenAction.payload;
-        debug(`annotation save the note with the color: ${color} , comment: ${comment.slice(0, 20)} , drawType: ${drawType} , tags: ${tags}`);
+        const { color, textualValue, drawType, tags } = noteTakenAction.payload;
+        debug(`annotation save the note with the color: ${color} , comment: ${textualValue.slice(0, 20)} , drawType: ${drawType} , tags: ${tags}`);
 
 
         // get color and comment and save the note
-        yield* callTyped(createAnnotation, locatorExtended, color, comment, drawType, tags);
+        yield* callTyped(createAnnotation, locatorExtended, color, textualValue, EDrawType[drawType] as TDrawType, tags);
 
     } else {
         debug("ERROR: second yield RACE not worked !!?!!");

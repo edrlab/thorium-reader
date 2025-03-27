@@ -6,19 +6,19 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
+import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
 export const ID = "READER_EXPORT_ANNOTATION_SET";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Payload   {
-    annotationArray: IAnnotationState[];
+    annotationArray: INoteState[];
     publicationView: PublicationView;
     label?: string;
 }
 
-export function build(annotationArray: IAnnotationState[], publicationView: PublicationView, label?: string):
+export function build(annotationArray: INoteState[], publicationView: PublicationView, label?: string):
     Action<typeof ID, Payload> {
 
     return {

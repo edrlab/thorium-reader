@@ -50,4 +50,4 @@ export type IAnnotationModeState = {
 
 // export type TDrawView = "annotation" | "margin" | "hide";
 
-export type TAnnotationTagsIndex = Record<string, number>;
+// export type TAnnotationTagsIndex = Record<string, number>;

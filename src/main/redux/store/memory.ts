@@ -354,14 +354,23 @@ export async function initStore()
                 }
             }
 
+            if ((state?.reduxState as any)?.bookmarkTotalCount !== undefined) {
+                if (!state.reduxState.noteTotalCount?.state) {
+                    state.reduxState.noteTotalCount = {
+                        state: 0,
+                    };
+                }
+                state.reduxState.noteTotalCount.state = (state?.reduxState as any)?.bookmarkTotalCount?.state || 0;
+            } 
+
             if ((state?.reduxState as any)?.bookmark) {
 
-                let bookmarkTotalCount = state.reduxState.bookmarkTotalCount?.state || 0;
+                let noteTotalCount = state.reduxState.noteTotalCount?.state || 0;
                 for (const [_timestamp, bookmark] of (state.reduxState as any).bookmark as TBookmarkState) {
 
                     const note: INoteState = {
                         uuid: bookmark.uuid,
-                        index: bookmark.index || ++bookmarkTotalCount,
+                        index: bookmark.index || ++noteTotalCount,
                         locatorExtended: bookmark.locatorExtended,
                         textualValue: bookmark.name,
                         color: bookmark.color,
@@ -377,22 +386,22 @@ export async function initStore()
                 }
                 (state.reduxState as any).bookmark = undefined;
 
-                if (!state.reduxState.bookmarkTotalCount?.state) {
-                    state.reduxState.bookmarkTotalCount = {
+                if (!state.reduxState.noteTotalCount?.state) {
+                    state.reduxState.noteTotalCount = {
                         state: 0,
                     };
                 }
-                state.reduxState.bookmarkTotalCount.state = bookmarkTotalCount;
+                state.reduxState.noteTotalCount.state = noteTotalCount;
             }
 
             if ((state?.reduxState as any)?.annotation ) {
 
-                let bookmarkTotalCount = state.reduxState.bookmarkTotalCount?.state || 0;
+                let noteTotalCount = state.reduxState.noteTotalCount?.state || 0;
                 for (const [_timestamp, annotation] of ((state.reduxState as any).annotation as TAnnotationState)) {
 
                     const note: INoteState = {
                         uuid: annotation.uuid,
-                        index: ++bookmarkTotalCount, // TODO total note index
+                        index: ++noteTotalCount, // TODO total note index
                         locatorExtended: annotation.locatorExtended,
                         textualValue: annotation.comment,
                         color: annotation.color,
@@ -408,12 +417,12 @@ export async function initStore()
                 }
                 (state.reduxState as any).annotation = undefined;
 
-                if (!state.reduxState.bookmarkTotalCount?.state) {
-                    state.reduxState.bookmarkTotalCount = {
+                if (!state.reduxState.noteTotalCount?.state) {
+                    state.reduxState.noteTotalCount = {
                         state: 0,
                     };
                 }
-                state.reduxState.bookmarkTotalCount.state = bookmarkTotalCount;
+                state.reduxState.noteTotalCount.state = noteTotalCount;
             }
 
 

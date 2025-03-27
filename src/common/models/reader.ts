@@ -8,10 +8,9 @@
 import { PublicationView } from "readium-desktop/common/views/publication";
 
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-import { TDrawType } from "../redux/states/renderer/annotation";
 
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
-import { TDrawView } from "../redux/states/renderer/note";
+import { TDrawType, TDrawView } from "../redux/states/renderer/note";
 
 export enum ReaderMode {
     Attached = "attached",

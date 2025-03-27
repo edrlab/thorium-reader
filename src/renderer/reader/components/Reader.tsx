@@ -108,8 +108,8 @@ import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/co
 import { translateContentFieldHelper } from "readium-desktop/common/services/translator";
 import { getStore } from "../createStore";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
-import { TDrawView } from "readium-desktop/common/redux/states/renderer/annotation";
 import { DockTypeName } from "readium-desktop/common/models/dock";
+import { TDrawView } from "readium-desktop/common/redux/states/renderer/note";
 
 const debug = debug_("readium-desktop:renderer:reader:components:Reader");
 debug("_");
