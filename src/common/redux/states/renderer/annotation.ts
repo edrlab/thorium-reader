@@ -11,8 +11,8 @@ import { IPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reduce
 import { INoteCreator } from "../creator";
 // import { IReadiumAnnotation } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
+import { TDrawType } from "./note";
 
-export type TDrawType = "solid_background" | "underline" | "strikethrough" | "outline" | "bookmark";
 
 // export const annotationDrawType: TDrawType[] = [
 //     "solid_background",

@@ -14,7 +14,6 @@ import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/m
 import { error } from "readium-desktop/main/tools/error";
 import { SagaGenerator } from "typed-redux-saga";
 import { call as callTyped, put as putTyped, select as selectTyped, take as takeTyped } from "typed-redux-saga/macro";
-import { IAnnotationPreParsingState, IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 import { hexToRgb } from "readium-desktop/common/rgb";
 import { isNil } from "readium-desktop/utils/nil";
 import { RootState } from "../states";
@@ -27,7 +26,7 @@ import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { v4 as uuidv4 } from "uuid";
 import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLatest";
 import { getTranslator } from "readium-desktop/common/services/translator";
-import { NOTE_DEFAULT_COLOR, noteColorCodeToColorSet, noteColorSetToColorCode } from "readium-desktop/common/redux/states/renderer/note";
+import { EDrawType, INotePreParsingState, INoteState, NOTE_DEFAULT_COLOR, noteColorCodeToColorSet, noteColorSetToColorCode } from "readium-desktop/common/redux/states/renderer/note";
 
 
 // Logger
@@ -123,18 +122,18 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
 
         // OK publication identified
 
-        let annotations: IAnnotationState[] = [];
+        let annotations: INoteState[] = [];
         const sessionReader = yield* selectTyped((state: RootState) => state.win.session.reader);
         const winSessionReaderStateArray = Object.values(sessionReader).filter((v) => v.publicationIdentifier === publicationIdentifier);
         if (winSessionReaderStateArray.length) {
             const winSessionReaderStateFirst = winSessionReaderStateArray[0]; // TODO: get the first only !?!
-            annotations = (winSessionReaderStateFirst?.reduxState?.annotation || []).map(([, v]) => v);
+            annotations = winSessionReaderStateFirst?.reduxState?.note || [];
 
             debug("current publication AnnotationsList come from the readerSession (there are one or many readerWin currently open)");
         } else {
             const sessionRegistry = yield* selectTyped((state: RootState) => state.win.registry.reader);
             if (Object.keys(sessionRegistry).find((v) => v === publicationIdentifier)) {
-                annotations = (sessionRegistry[publicationIdentifier]?.reduxState?.annotation || []).map(([, v]) => v);
+                annotations = sessionRegistry[publicationIdentifier]?.reduxState?.note || [];
 
                 debug("current publication AnnotationsList come from the readerRegistry (no readerWin currently open)");
             }
@@ -145,10 +144,10 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         }
 
 
-        const annotationsParsedNoConflictArray: IAnnotationPreParsingState[] = [];
-        const annotationsParsedConflictOlderArray: IAnnotationPreParsingState[] = [];
-        const annotationsParsedConflictNewerArray: IAnnotationPreParsingState[] = [];
-        const annotationsParsedAllArray: IAnnotationPreParsingState[] = [];
+        const annotationsParsedNoConflictArray: INotePreParsingState[] = [];
+        const annotationsParsedConflictOlderArray: INotePreParsingState[] = [];
+        const annotationsParsedConflictNewerArray: INotePreParsingState[] = [];
+        const annotationsParsedAllArray: INotePreParsingState[] = [];
 
         debug("There are", annotationsIncommingArray.length, "incomming annotations to be imported");
 
@@ -172,14 +171,14 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 continue;
             }
 
-            const annotationParsed: IAnnotationPreParsingState = {
+            const annotationParsed: INotePreParsingState = {
                 uuid,
                 target: incommingAnnotation.target,
-                comment: incommingAnnotation.body?.value,
+                textualValue: incommingAnnotation.body?.value,
                 color: hexToRgb(noteColorSetToColorCode[incommingAnnotation.body?.color] ||
                     noteColorSetToColorCode[noteColorCodeToColorSet[incommingAnnotation.body?.color] || NOTE_DEFAULT_COLOR],
                 ),
-                drawType: (isNil(incommingAnnotation.body?.highlight) || incommingAnnotation.body?.highlight === "solid") ? "solid_background" : incommingAnnotation.body.highlight,
+                drawType: EDrawType[(isNil(incommingAnnotation.body?.highlight) || incommingAnnotation.body?.highlight === "solid") ? "solid_background" : incommingAnnotation.body.highlight] || EDrawType.solid_background,
                 // TODO need to ask to user if the incomming tag is kept or the fileName is used
                 tags: [fileName], // incommingAnnotation.body?.tag ? [incommingAnnotation.body?.tag] : [],
                 modified: incommingAnnotation.modified ? tryCatchSync(() => new Date(incommingAnnotation.modified).getTime(), fileName) : undefined,

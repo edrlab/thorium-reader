@@ -9,7 +9,6 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 
 import * as React from "react";
-import { annotationDrawType, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
@@ -32,7 +31,7 @@ import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/componen
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
-import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/renderer/note";
+import { noteColorCodeToColorTranslatorKeySet, noteDrawType, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 // import { readiumCSSDefaults } from "@r2-navigator-js/electron/common/readium-css-settings";
@@ -152,7 +151,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
             <div className={stylesAnnotations.annotation_actions_container}>
                 <h4>{__("reader.annotations.highlight")}</h4>
                 <div role="radiogroup" className={stylesAnnotations.stylePicker}>
-                    {annotationDrawType.map((type, i) => (
+                    {noteDrawType.map((type, i) => (
                         <div key={type}>
                             <input type="radio" id={`${uuid}_drawtype-${type}`} name="drawtype" value={type}
                                 onChange={() => setDrawType(type)}

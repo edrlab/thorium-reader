@@ -68,6 +68,13 @@ export const convertDrawTypeToNumber = (drawType: EDrawType): number => {
     return Number(drawType) || 0;
 };
 
+export type TDrawType = "solid_background" | "underline" | "strikethrough" | "outline" | "bookmark";
+export const noteDrawType: TDrawType[] = [
+    "solid_background",
+    "underline",
+    "strikethrough",
+    "outline",
+];
 export enum EDrawType {
     "solid_background" = HighlightDrawTypeBackground,
     "underline" = HighlightDrawTypeUnderline,
@@ -89,6 +96,7 @@ export interface INoteState {
     modified?: number;
     created: number;
     creator?: INoteCreator;
+    group: "bookmark" | "annotation";
 }
 
 export type TDrawView = "annotation" | "margin" | "hide";

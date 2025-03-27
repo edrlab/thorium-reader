@@ -63,50 +63,19 @@ ipcRenderer.on(readerIpc.CHANNEL,
                     r2PublicationHasMediaOverlays: publicationHasMediaOverlays(r2Publication),
                 };
 
-                const annotationList = data.payload.reader.annotation || [];
-                for (const [_createdTimestampFromAnno,anno] of annotationList) {
-
-                    // TODO? why do not used the _createdTimestampFromAnno instead !?
-                    if (!anno.created && anno.modified) {
-                        anno.created = anno.modified;
-                    }
-                    if (!anno.created) {
-                        anno.created = (new Date()).getTime();
-                    }
-                }
-                const noteTagList = [];
-                for (const [_, {tags}] of annotationList) {
-                    noteTagList.push(...(tags || []));
-                }
-                data.payload.annotationTagsIndex = pushTags({}, noteTagList);
-
-
-                const bookmarkList = data.payload.reader.bookmark || [];
-                const bookmarkListLength = bookmarkList.length;
-
-                if (!data.payload.reader.bookmarkTotalCount) {
-                    data.payload.reader.bookmarkTotalCount = {
-                        state: bookmarkListLength,
-                    };
-                } else if (data.payload.reader.bookmarkTotalCount.state < bookmarkListLength) {
-                    data.payload.reader.bookmarkTotalCount.state = bookmarkListLength;
-                }
-                let bookmarkIndex = 0;
-                for (const [created, bookmark] of bookmarkList) {
-                    bookmarkIndex = bookmarkIndex + 1;
-                    if (!bookmark.created && created > bookmark.modified) {
-                        bookmark.created = bookmark.modified;
-                    }
-                    if (!bookmark.created) {
-                        bookmark.created = created;
-                    }
-                    if (!bookmark.index) {
-                        bookmark.index = bookmarkIndex;
-                    }
-                }
+                const notes = data.payload.reader.note || [];
                 
-                for (const [_, { tags }] of bookmarkList) {
-                    noteTagList.push(...(tags || []));
+                const noteTagList = [];
+                for (const note of notes) {
+                    noteTagList.push(...(note.tags || []));
+
+                    // already checked and migrated from main memory , just a double security for note import
+                    if (!note.created && note.modified) {
+                        note.created = note.modified;
+                    }
+                    if (!note.created) {
+                        note.created = (new Date()).getTime();
+                    }
                 }
                 data.payload.annotationTagsIndex = pushTags({}, noteTagList);
 

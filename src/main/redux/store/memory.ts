@@ -370,6 +370,7 @@ export async function initStore()
                         modified: bookmark.modified,
                         created: bookmark.created,
                         creator: bookmark.creator,
+                        group: "bookmark",
                     };
 
                     state.reduxState.note.push(clone(note));
@@ -400,6 +401,7 @@ export async function initStore()
                         modified: annotation.modified,
                         created: annotation.created,
                         creator: annotation.creator,
+                        group: "annotation",
                     };
 
                     state.reduxState.note.push(clone(note));
