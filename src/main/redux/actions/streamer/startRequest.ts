@@ -14,6 +14,7 @@ export function build():
 
     return {
         type: ID,
+        payload: {},
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator
