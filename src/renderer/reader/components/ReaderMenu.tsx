@@ -96,7 +96,7 @@ import { DockTypeName } from "readium-desktop/common/models/dock";
 import { BookmarkEdit } from "./BookmarkEdit";
 import { BookmarkLocatorInfo } from "./BookmarkLocatorInfo";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
-import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/note";
+import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/renderer/note";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderMenuProps {

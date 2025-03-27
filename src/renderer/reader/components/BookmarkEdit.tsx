@@ -19,7 +19,7 @@ import * as TagIcon from "readium-desktop/renderer/assets/icons/tag-icon.svg";
 import { TextArea } from "react-aria-components";
 import { BookmarkLocatorInfo } from "./BookmarkLocatorInfo";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
-import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/note";
+import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/renderer/note";
 import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";

@@ -16,9 +16,9 @@ import { TMapState } from "readium-desktop/utils/redux-reducers/map.reducer";
 
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
-import { TBookmarkState } from "../bookmark";
+// import { TBookmarkState } from "../bookmark";
 import { IRTLFlipState } from "./rtlFlip";
-import { IAnnotationModeState, TAnnotationState, TAnnotationTagsIndex } from "./annotation";
+import { IAnnotationModeState, /*TAnnotationState,*/ TAnnotationTagsIndex } from "./annotation";
 import { ITTSState } from "readium-desktop/renderer/reader/redux/state/tts";
 import { IMediaOverlayState } from "readium-desktop/renderer/reader/redux/state/mediaOverlay";
 import { IAllowCustomConfigState } from "readium-desktop/renderer/reader/redux/state/allowCustom";
@@ -26,6 +26,7 @@ import { ICacheDocument } from "./resourceCache";
 import { IImageClickState } from "readium-desktop/renderer/reader/redux/state/imageClick";
 import { DockState } from "../dock";
 import { IBookmarkTotalCountState } from "readium-desktop/renderer/reader/redux/state/bookmarkTotalCount";
+import { INoteState } from "./note";
 
 export interface IReaderRootState extends IRendererCommonRootState {
     reader: IReaderStateReader;
@@ -43,8 +44,9 @@ export interface IReaderStateReader {
     config: ReaderConfig;
     info: ReaderInfo;
     locator: MiniLocatorExtended;
-    bookmark: TBookmarkState;
-    annotation: TAnnotationState;
+    // bookmark: TBookmarkState;
+    // annotation: TAnnotationState;
+    note: INoteState[],
     highlight: {
         handler: TMapState<string, IHighlightHandlerState>;
         mounter: TMapState<string, IHighlightMounterState>;
@@ -57,7 +59,7 @@ export interface IReaderStateReader {
     mediaOverlay: IMediaOverlayState;
     allowCustomConfig: IAllowCustomConfigState;
     transientConfig: ReaderConfigPublisher;
-    bookmarkTotalCount: IBookmarkTotalCountState;
+    bookmarkTotalCount: IBookmarkTotalCountState; // TODO change this state to noteTotalCount
 
 
     // got the lock

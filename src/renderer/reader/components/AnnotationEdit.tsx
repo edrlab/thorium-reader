@@ -32,7 +32,7 @@ import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/componen
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
-import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/note";
+import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/renderer/note";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
 // import { readiumCSSDefaults } from "@r2-navigator-js/electron/common/readium-css-settings";

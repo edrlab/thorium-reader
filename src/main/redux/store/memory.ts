@@ -25,7 +25,10 @@ import { reduxPersistMiddleware } from "../middleware/persistence";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 import { minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
-import { NOTE_DEFAULT_COLOR_OBJ } from "readium-desktop/common/redux/states/note";
+import { convertDrawTypeToNumber, EDrawType, INoteState, NOTE_DEFAULT_COLOR_OBJ } from "readium-desktop/common/redux/states/renderer/note";
+import { clone } from "ramda";
+import { TAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
+import { TBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -274,8 +277,8 @@ export async function initStore()
                 }
             }
 
-            if (state?.reduxState?.annotation) {
-                for (const annotation of state.reduxState.annotation) {
+            if ((state?.reduxState as any)?.annotation) {
+                for (const annotation of (state.reduxState as any).annotation as TAnnotationState) {
                     if (annotation[1].locatorExtended) {
                         const locatorExtended = annotation[1].locatorExtended as LocatorExtended;
                         if (locatorExtended.followingElementIDs) {
@@ -300,8 +303,8 @@ export async function initStore()
                 }
             }
 
-            if (state?.reduxState?.bookmark) {
-                for (const bookmark of state.reduxState.bookmark) {
+            if ((state?.reduxState as any)?.bookmark) {
+                for (const bookmark of (state.reduxState as any).bookmark as TBookmarkState) {
                     if ((bookmark[1] as any)?.locator) {
                         bookmark[1].locatorExtended = {
                             locator: (bookmark[1] as any).locator,
@@ -344,6 +347,74 @@ export async function initStore()
                     }
                 }
             }
+
+            if (state?.reduxState) {
+                if (!state.reduxState.note) {
+                    state.reduxState.note = [];
+                }
+            }
+
+            if ((state?.reduxState as any)?.bookmark) {
+
+                let bookmarkTotalCount = state.reduxState.bookmarkTotalCount?.state || 0;
+                for (const [_timestamp, bookmark] of (state.reduxState as any).bookmark as TBookmarkState) {
+
+                    const note: INoteState = {
+                        uuid: bookmark.uuid,
+                        index: bookmark.index || ++bookmarkTotalCount,
+                        locatorExtended: bookmark.locatorExtended,
+                        textualValue: bookmark.name,
+                        color: bookmark.color,
+                        drawType: convertDrawTypeToNumber(EDrawType.bookmark),
+                        tags: bookmark.tags,
+                        modified: bookmark.modified,
+                        created: bookmark.created,
+                        creator: bookmark.creator,
+                    };
+
+                    state.reduxState.note.push(clone(note));
+                }
+                (state.reduxState as any).bookmark = undefined;
+
+                if (!state.reduxState.bookmarkTotalCount?.state) {
+                    state.reduxState.bookmarkTotalCount = {
+                        state: 0,
+                    };
+                }
+                state.reduxState.bookmarkTotalCount.state = bookmarkTotalCount;
+            }
+
+            if ((state?.reduxState as any)?.annotation ) {
+
+                let bookmarkTotalCount = state.reduxState.bookmarkTotalCount?.state || 0;
+                for (const [_timestamp, annotation] of ((state.reduxState as any).annotation as TAnnotationState)) {
+
+                    const note: INoteState = {
+                        uuid: annotation.uuid,
+                        index: ++bookmarkTotalCount, // TODO total note index
+                        locatorExtended: annotation.locatorExtended,
+                        textualValue: annotation.comment,
+                        color: annotation.color,
+                        drawType: convertDrawTypeToNumber(EDrawType[annotation.drawType]),
+                        tags: annotation.tags,
+                        modified: annotation.modified,
+                        created: annotation.created,
+                        creator: annotation.creator,
+                    };
+
+                    state.reduxState.note.push(clone(note));
+                }
+                (state.reduxState as any).annotation = undefined;
+
+                if (!state.reduxState.bookmarkTotalCount?.state) {
+                    state.reduxState.bookmarkTotalCount = {
+                        state: 0,
+                    };
+                }
+                state.reduxState.bookmarkTotalCount.state = bookmarkTotalCount;
+            }
+
+
         }
     }
 

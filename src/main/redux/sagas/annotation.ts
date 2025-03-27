@@ -27,7 +27,7 @@ import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { v4 as uuidv4 } from "uuid";
 import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLatest";
 import { getTranslator } from "readium-desktop/common/services/translator";
-import { NOTE_DEFAULT_COLOR, noteColorCodeToColorSet, noteColorSetToColorCode } from "readium-desktop/common/redux/states/note";
+import { NOTE_DEFAULT_COLOR, noteColorCodeToColorSet, noteColorSetToColorCode } from "readium-desktop/common/redux/states/renderer/note";
 
 
 // Logger

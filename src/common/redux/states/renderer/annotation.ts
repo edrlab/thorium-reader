@@ -9,19 +9,19 @@ import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locator
 
 import { IPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 import { INoteCreator } from "../creator";
-import { IReadiumAnnotation } from "readium-desktop/common/readium/annotation/annotationModel.type";
+// import { IReadiumAnnotation } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 
-export type TDrawType = "solid_background" | "underline" | "strikethrough" | "outline";
+export type TDrawType = "solid_background" | "underline" | "strikethrough" | "outline" | "bookmark";
 
-export const annotationDrawType: TDrawType[] = [
-    "solid_background",
-    "underline",
-    "strikethrough",
-    "outline",
-];
+// export const annotationDrawType: TDrawType[] = [
+//     "solid_background",
+//     "underline",
+//     "strikethrough",
+//     "outline",
+// ];
 
-export type IAnnotationPreParsingState = Pick<IAnnotationState, "uuid" | "comment" | "color" | "drawType" | "tags" | "modified" | "created" | "creator"> & { target: IReadiumAnnotation["target"] };
+// export type IAnnotationPreParsingState = Pick<IAnnotationState, "uuid" | "comment" | "color" | "drawType" | "tags" | "modified" | "created" | "creator"> & { target: IReadiumAnnotation["target"] };
 
 export interface IAnnotationState {
     uuid: string;
@@ -48,6 +48,6 @@ export type IAnnotationModeState = {
     fromKeyboard: undefined;
 };
 
-export type TDrawView = "annotation" | "margin" | "hide";
+// export type TDrawView = "annotation" | "margin" | "hide";
 
 export type TAnnotationTagsIndex = Record<string, number>;

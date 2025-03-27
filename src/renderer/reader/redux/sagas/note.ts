@@ -23,7 +23,7 @@ import { TDrawType } from "readium-desktop/common/redux/states/renderer/annotati
 import { highlightsDrawMargin, keyboardFocusRequest, MediaOverlaysStateEnum, TTSStateEnum } from "@r2-navigator-js/electron/renderer";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
-import { HighlightDrawTypeBackground, HighlightDrawTypeOutline, HighlightDrawTypeStrikethrough, HighlightDrawTypeUnderline, IColor } from "@r2-navigator-js/electron/common/highlight";
+import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { ISelectionInfo } from "@r2-navigator-js/electron/common/selection";
@@ -31,10 +31,6 @@ import { ISelectionInfo } from "@r2-navigator-js/electron/common/selection";
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:annotation");
 debug("_");
-
-const convertDrawTypeToNumber = (drawType: TDrawType) => {
-    return drawType === "solid_background" ? HighlightDrawTypeBackground : drawType === "outline" ? HighlightDrawTypeOutline : drawType === "strikethrough" ? HighlightDrawTypeStrikethrough : drawType === "underline" ? HighlightDrawTypeUnderline : HighlightDrawTypeBackground;
-};
 
 // click from highlight
 // function* annotationClick(action: readerLocalActionHighlights.click.TAction) {

@@ -25,8 +25,8 @@ import { readerInfoReducer } from "./info";
 import { readerConfigReducer } from "./readerConfig";
 import { readerLocatorReducer } from "./readerLocator";
 import { searchReducer } from "./search";
-import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
-import { priorityQueueReducer } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
+// import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
+// import { priorityQueueReducer } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 import { winModeReducer } from "readium-desktop/common/redux/reducers/winModeReducer";
 import { readerDivinaReducer } from "./divina";
 import { readerRTLFlipReducer } from "readium-desktop/common/redux/reducers/reader/rtlFlip";
@@ -34,7 +34,6 @@ import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
 import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducers/reader/defaultConfig";
 import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
 import { versionUpdateReducer } from "readium-desktop/common/redux/reducers/version-update";
-import { IAnnotationPreParsingState, IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 import { annotationModeEnableReducer } from "./annotationModeEnable";
 import { annotationActions, readerActions } from "readium-desktop/common/redux/actions";
 import { readerMediaOverlayReducer } from "./mediaOverlay";
@@ -52,6 +51,8 @@ import { imageClickReducer } from "./imageClick";
 import { dockReducer } from "readium-desktop/common/redux/reducers/dock";
 import { readerBookmarkTotalCountReducer } from "readium-desktop/common/redux/reducers/reader/bookmarkTotalCount";
 import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
+import { arrayReducer } from "readium-desktop/utils/redux-reducers/array.reducer";
+import { INotePreParsingState, INoteState } from "readium-desktop/common/redux/states/renderer/note";
 
 export const rootReducer = () => {
 
@@ -69,71 +70,87 @@ export const rootReducer = () => {
             transientConfig: readerTransientConfigReducer,// ReaderConfigPublisher
             info: readerInfoReducer,
             locator: readerLocatorReducer,
-            bookmark: priorityQueueReducer
-                <
-                    readerActions.bookmark.push.TAction,
-                    readerActions.bookmark.pop.TAction,
-                    number,
-                    IBookmarkState,
-                    string,
-                    readerActions.bookmark.update.TAction
-                >(
-                    {
-                        push: {
-                            type: readerActions.bookmark.push.ID,
-                            selector: (action) =>
-                                [(new Date()).getTime(), action.payload],
-                        },
-                        pop: {
-                            type: readerActions.bookmark.pop.ID,
-                            selector: (action, queue) => queue.find(([_, bookmarkState]) => action.payload.uuid === bookmarkState.uuid),
-                        },
-                        sortFct: (a, b) => b[0] - a[0],
-                        update: {
-                            type: readerActions.bookmark.update.ID,
-                            selector: (action, queue) => {
-                                const [_oldBookmark, newBookmark] = action.payload;
-                                return [
-                                    queue.reduce<number>((pv, [k, v]) => v.uuid === newBookmark.uuid ? k : pv, undefined),
-                                    newBookmark,
-                                ];
-                            },
+            note: arrayReducer<readerActions.note.addUpdate.TAction, readerActions.note.remove.TAction, INoteState>(
+                {
+                    add: {
+                        type: readerActions.note.addUpdate.ID,
+                        selector: (payload) => {
+                            return [payload.newNote];
                         },
                     },
-                ),
-            annotation: priorityQueueReducer
-                <
-                    readerActions.annotation.push.TAction,
-                    readerActions.annotation.pop.TAction,
-                    number,
-                    IAnnotationState,
-                    string,
-                    readerActions.annotation.update.TAction
-                >(
-                    {
-                        push: {
-                            type: readerActions.annotation.push.ID,
-                            selector: (action, _queue) => {
-                                return [(new Date()).getTime(), action.payload];
-                            },
-                        },
-                        pop: {
-                            type: readerActions.annotation.pop.ID,
-                            selector: (action, queue) => queue.find(([_, annotationState]) => action.payload.uuid === annotationState.uuid),
-                        },
-                        sortFct: (a, b) => b[0] - a[0],
-                        update: {
-                            type: readerActions.annotation.update.ID,
-                            selector: (action, queue) => {
-                                const [_, newAnnot] = action.payload;
-                                return [
-                                    queue.reduce<number>((pv, [k, v]) => v.uuid === newAnnot.uuid ? k : pv, undefined),
-                                    newAnnot,
-                                ];
-                            },
+                    remove: {
+                        type: readerActions.note.remove.ID,
+                        selector: (payload) => {
+                            return [payload.note];
                         },
                     },
-                ),
+                },
+            ),
+            // bookmark: priorityQueueReducer
+            //     <
+            //         readerActions.bookmark.push.TAction,
+            //         readerActions.bookmark.pop.TAction,
+            //         number,
+            //         IBookmarkState,
+            //         string,
+            //         readerActions.bookmark.update.TAction
+            //     >(
+            //         {
+            //             push: {
+            //                 type: readerActions.bookmark.push.ID,
+            //                 selector: (action) =>
+            //                     [(new Date()).getTime(), action.payload],
+            //             },
+            //             pop: {
+            //                 type: readerActions.bookmark.pop.ID,
+            //                 selector: (action, queue) => queue.find(([_, bookmarkState]) => action.payload.uuid === bookmarkState.uuid),
+            //             },
+            //             sortFct: (a, b) => b[0] - a[0],
+            //             update: {
+            //                 type: readerActions.bookmark.update.ID,
+            //                 selector: (action, queue) => {
+            //                     const [_oldBookmark, newBookmark] = action.payload;
+            //                     return [
+            //                         queue.reduce<number>((pv, [k, v]) => v.uuid === newBookmark.uuid ? k : pv, undefined),
+            //                         newBookmark,
+            //                     ];
+            //                 },
+            //             },
+            //         },
+            //     ),
+            // annotation: priorityQueueReducer
+            //     <
+            //         readerActions.annotation.push.TAction,
+            //         readerActions.annotation.pop.TAction,
+            //         number,
+            //         IAnnotationState,
+            //         string,
+            //         readerActions.annotation.update.TAction
+            //     >(
+            //         {
+            //             push: {
+            //                 type: readerActions.annotation.push.ID,
+            //                 selector: (action, _queue) => {
+            //                     return [(new Date()).getTime(), action.payload];
+            //                 },
+            //             },
+            //             pop: {
+            //                 type: readerActions.annotation.pop.ID,
+            //                 selector: (action, queue) => queue.find(([_, annotationState]) => action.payload.uuid === annotationState.uuid),
+            //             },
+            //             sortFct: (a, b) => b[0] - a[0],
+            //             update: {
+            //                 type: readerActions.annotation.update.ID,
+            //                 selector: (action, queue) => {
+            //                     const [_, newAnnot] = action.payload;
+            //                     return [
+            //                         queue.reduce<number>((pv, [k, v]) => v.uuid === newAnnot.uuid ? k : pv, undefined),
+            //                         newAnnot,
+            //                     ];
+            //                 },
+            //             },
+            //         },
+            //     ),
             highlight: combineReducers({
                 handler: mapReducer
                     <
@@ -205,10 +222,10 @@ export const rootReducer = () => {
         publication: combineReducers({
             tag: tagReducer,
         }),
-        annotationImportQueue: fifoReducer
+        noteImportQueue: fifoReducer
         <
             annotationActions.pushToAnnotationImportQueue.TAction,
-            IAnnotationPreParsingState
+            INotePreParsingState
         >(
             {
                 push: {

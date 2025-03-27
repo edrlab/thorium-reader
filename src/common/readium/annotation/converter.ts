@@ -25,7 +25,7 @@ import { IRangeInfo, ISelectionInfo } from "@r2-navigator-js/electron/common/sel
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { availableLanguages } from "readium-desktop/common/services/translator";
-import { NOTE_DEFAULT_COLOR, noteColorCodeToColorSet } from "readium-desktop/common/redux/states/note";
+import { NOTE_DEFAULT_COLOR, noteColorCodeToColorSet } from "readium-desktop/common/redux/states/renderer/note";
 
 // Logger
 const debug = debug_("readium-desktop:common:readium:annotation:converter");
