@@ -7,10 +7,10 @@
 
 import { Action as ReduxAction } from "redux";
 
-export interface Action<Type extends string = string, Payload = undefined, Meta = undefined>
+export interface Action<Type extends string = string, Payload = {}, Meta = undefined>
     extends ReduxAction<Type> {
 
-    payload?: Payload;
+    payload: Payload;
     meta?: Meta;
     error?: boolean;
 
