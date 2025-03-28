@@ -151,22 +151,24 @@ export const rootReducer = () => {
                     {
                         type: readerActions.note.addUpdate.ID,
                         selector: (payload, state) => {
-                            const oldTags = (payload as readerActions.note.addUpdate.IPayload).previousNote.tags;
+                            const oldTags = (payload as readerActions.note.addUpdate.IPayload).previousNote?.tags;
                             const newTags = (payload as readerActions.note.addUpdate.IPayload).newNote.tags;
 
                             if (oldTags && newTags && oldTags[0] === newTags[0]) {
                                 return undefined;
                             }
 
-                            const items: Array<{ tag: string, index: number }> = [];
-
-                            if (oldTags[0]) {
-                                items.push({tag: oldTags[0], index: Math.max((state.find(({ tag }) => tag === oldTags[0])?.index || 0) - 1, 0)});
+                            const items = [];
+                            if (oldTags && oldTags[0]) {
+                                const found = state.find(({ tag }) => tag === oldTags[0]);
+                                items.push({tag: oldTags[0], index: Math.max((found?.index || 0) - 1, 0)});
                             }
 
-                            if (newTags[0]) {
-                                items.push({ tag: newTags[0], index: (state.find(({ tag }) => tag === newTags[0])?.index || 0) + 1 });
+                            if (newTags && newTags[0]) {
+                                const found = state.find(({ tag }) => tag === newTags[0]);
+                                items.push({ tag: newTags[0], index: (found?.index || 0) + 1 });
                             }
+
                             return items;
                         },
                     },
