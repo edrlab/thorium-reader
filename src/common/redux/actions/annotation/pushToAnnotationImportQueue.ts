@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { INotePreParsingState } from "../../states/renderer/note";
+import { INotePreParsingState } from "readium-desktop/common/redux/states/renderer/note";
 
 export const ID = "ANNOTATION_PUSH_TO_ANNOTATION_IMPORT_QUEUE";
 

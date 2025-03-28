@@ -7,7 +7,7 @@
 
 import { Action } from "readium-desktop/common/models/redux";
 import { IReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
-import { INotePreParsingState } from "../../states/renderer/note";
+import { INotePreParsingState } from "readium-desktop/common/redux/states/renderer/note";
 
 export const ID = "ANNOTATION_IMPORT_TRIGGER_MODAL";
 
