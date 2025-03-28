@@ -66,7 +66,7 @@ export function arrayReducer<
 
                 if (action.type === add.type) {
 
-                    const items = add.selector(action.payload as unknown as TActionAdd["payload"], array);
+                    const items = add.selector(action.payload as unknown as TActionAdd["payload"], _array);
                     if (!items) {
                         continue;
                     }
