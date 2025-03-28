@@ -31,8 +31,8 @@ import { versionReducer } from "readium-desktop/common/redux/reducers/version";
 import { creatorReducer } from "readium-desktop/common/redux/reducers/creator";
 import { settingsReducer } from "readium-desktop/common/redux/reducers/settings";
 import { fifoReducer } from "readium-desktop/utils/redux-reducers/fifo.reducer";
-import { IAnnotationPreParsingState } from "readium-desktop/common/redux/states/renderer/annotation";
 import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
+import { INotePreParsingState } from "readium-desktop/common/redux/states/renderer/note";
 
 export const rootReducer = combineReducers({ // RootState
     versionUpdate: versionUpdateReducer,
@@ -110,7 +110,7 @@ export const rootReducer = combineReducers({ // RootState
     annotationImportQueue: fifoReducer
     <
         annotationActions.pushToAnnotationImportQueue.TAction,
-        IAnnotationPreParsingState
+        INotePreParsingState
     >(
         {
             push: {

@@ -71,7 +71,6 @@ import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driv
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { readerLocalActionAnnotations, readerLocalActionSetConfig, readerLocalActionToggleMenu, readerLocalActionToggleSettings } from "../redux/actions";
-import { TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { AnnotationEdit } from "./AnnotationEdit";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { VoiceSelection } from "./header/voiceSelection";
@@ -81,6 +80,7 @@ import { BookmarkButton } from "./header/BookmarkButton";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { DockTypeName } from "readium-desktop/common/models/dock";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
+import { TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -1402,7 +1402,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     return {
         keyboardShortcuts: state.keyboard.shortcuts,
-        annotationsDataArray: state.reader.annotation,
+        // notes: state.reader.note,
         isAnnotationModeEnabled: state.annotation.enable,
         annotationLocatorExtended: state.annotation.locatorExtended,
         isAnnotationModeEnabledFromKeyboard: state.annotation.fromKeyboard,

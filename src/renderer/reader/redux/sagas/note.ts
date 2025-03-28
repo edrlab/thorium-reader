@@ -12,29 +12,24 @@ import * as debug_ from "debug";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { SagaGenerator } from "typed-redux-saga";
 import { select as selectTyped, take as takeTyped, race as raceTyped, put as putTyped, all as allTyped, call as callTyped } from "typed-redux-saga/macro";
-import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig, readerLocalActionSetLocator } from "../actions";
+import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionLocatorHrefChanged, readerLocalActionReader, readerLocalActionSetConfig, readerLocalActionSetLocator } from "../actions";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 
 import { highlightsDrawMargin, keyboardFocusRequest, MediaOverlaysStateEnum, TTSStateEnum } from "@r2-navigator-js/electron/renderer";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
-import { HighlightDrawTypeBackground, HighlightDrawTypeOutline, HighlightDrawTypeStrikethrough, HighlightDrawTypeUnderline, IColor } from "@r2-navigator-js/electron/common/highlight";
+import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
 import { getTranslator } from "readium-desktop/common/services/translator";
-import { ISelectionInfo } from "@r2-navigator-js/electron/common/selection";
+import { EDrawType, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:annotation");
 debug("_");
-
-const convertDrawTypeToNumber = (drawType: TDrawType) => {
-    return drawType === "solid_background" ? HighlightDrawTypeBackground : drawType === "outline" ? HighlightDrawTypeOutline : drawType === "strikethrough" ? HighlightDrawTypeStrikethrough : drawType === "underline" ? HighlightDrawTypeUnderline : HighlightDrawTypeBackground;
-};
 
 // click from highlight
 // function* annotationClick(action: readerLocalActionHighlights.click.TAction) {
@@ -59,167 +54,95 @@ const convertDrawTypeToNumber = (drawType: TDrawType) => {
 //     // yield* putTyped(readerLocalActionAnnotations.focusMode.build({previousFocusUuid: currentFocusUuid || "", currentFocusUuid: uuid, editionEnable: false}));
 // }
 
-function* annotationUpdate(action: readerActions.annotation.update.TAction) {
-    debug(`annotationUpdate-- handlerState: [${JSON.stringify(action.payload, null, 4)}]`);
+function* noteAddUpdate(action: readerActions.note.addUpdate.TAction) {
 
-    const [_, newAnnot] = action.payload;
-    const { comment, uuid, locatorExtended: {locator: {href}, selectionInfo}, color: newColor, drawType, tags: _tags} = newAnnot;
+    const { previousNote: previousNote, newNote: note } = action.payload;
+    const item = yield* selectTyped((store: IReaderRootState) => store.reader.highlight.handler.find(([_, highlightState]) => highlightState.uuid === note.uuid));
 
-    const item = yield* selectTyped((store: IReaderRootState) => store.reader.highlight.handler.find(([_, highlightState]) => highlightState.uuid === uuid));
-
-    if (item) {
-        const { def: { textPopup, color: previousColor, drawType: previousDrawType } } = item[1];
-
-        if (comment && !textPopup?.text || !comment && textPopup?.text || comment !== textPopup?.text ||
-            previousColor.blue !== newColor.blue || previousColor.green !== newColor.green || previousColor.red !== newColor.red || convertDrawTypeToNumber(drawType) !== previousDrawType) {
-            yield* putTyped(readerLocalActionHighlights.handler.pop.build([{ uuid }]));
-            yield* putTyped(readerLocalActionHighlights.handler.push.build([
-                {
-                    uuid,
-                    href,
-                    def: {
-                        textPopup: comment ? {
-                            text: comment, // multiline
-                            dir: "ltr", // TODO
-                            lang: "en", // TODO
-                        } : undefined,
-                        selectionInfo,
-                        color: newColor,
-                        group: "annotation",
-                        drawType: convertDrawTypeToNumber(drawType),
-                    },
-                },
-            ]));
-        }
-    } else {
-        // error sync between hightlight data array and annotation array
-        yield* putTyped(readerLocalActionHighlights.handler.pop.build([{ uuid }]));
+    let update = false;
+    if (!previousNote) {
+        update = true;
     }
-}
-
-function* bookmarkUpdate(action: readerActions.bookmark.update.TAction) {
-    debug(`bookmarkUpdate-- handlerState: [${JSON.stringify(action.payload, null, 4)}]`);
-
-    const [_, bookmark] = action.payload;
-
-    const item = yield* selectTyped((store: IReaderRootState) => store.reader.highlight.handler.find(([_, highlightState]) => highlightState.uuid === bookmark.uuid));
-
-    if (item) {
-        const { def: { textPopup } } = item[1];
-
-        if (bookmark.name && !textPopup?.text || !bookmark.name && textPopup?.text || bookmark.name !== textPopup?.text) {
-            yield* putTyped(readerLocalActionHighlights.handler.pop.build([{ uuid: bookmark.uuid }]));
-            yield* putTyped(readerLocalActionHighlights.handler.push.build([
-                {
-                    uuid: bookmark.uuid,
-                    href: bookmark.locatorExtended.locator.href,
-                    def: {
-                        textPopup: bookmark.name ? {
-                            text: bookmark.name, // multiline
-                            dir: "ltr", // TODO
-                            lang: "en", // TODO
-                        } : undefined,
-                            selectionInfo: {
-                            textFragment: undefined,
-                            rangeInfo: bookmark.locatorExtended.locator.locations.caretInfo?.rangeInfo || {
-                                startContainerElementCssSelector: bookmark.locatorExtended.locator.locations.cssSelector,
-                                startContainerElementCFI: undefined,
-                                startContainerElementXPath: undefined,
-                                startContainerChildTextNodeIndex: -1,
-                                startOffset: -1,
-                                endContainerElementCssSelector: bookmark.locatorExtended.locator.locations.cssSelector,
-                                endContainerElementCFI: undefined,
-                                endContainerElementXPath: undefined,
-                                endContainerChildTextNodeIndex: -1,
-                                endOffset: -1,
-                                cfi: undefined,
-                            },
-                            cleanBefore: bookmark.locatorExtended.locator.locations.caretInfo?.cleanBefore || bookmark.locatorExtended.locator.text?.before || "",
-                            cleanText: bookmark.locatorExtended.locator.locations.caretInfo?.cleanText || bookmark.locatorExtended.locator.text?.highlight || bookmark.locatorExtended.locator.title || bookmark.name,
-                            cleanAfter: bookmark.locatorExtended.locator.locations.caretInfo?.cleanAfter || bookmark.locatorExtended.locator.text?.after || "",
-                            rawBefore: bookmark.locatorExtended.locator.locations.caretInfo?.rawBefore || bookmark.locatorExtended.locator.text?.beforeRaw || "",
-                            rawText: bookmark.locatorExtended.locator.locations.caretInfo?.rawText || bookmark.locatorExtended.locator.text?.highlightRaw || bookmark.locatorExtended.locator.title || bookmark.name,
-                            rawAfter: bookmark.locatorExtended.locator.locations.caretInfo?.rawAfter || bookmark.locatorExtended.locator.text?.afterRaw || "",
-                        },
-                        color: { ...bookmark.color },
-                        group: "bookmark",
-                        drawType: 6,
-                    },
-                },
-            ]));
-        }
-    } else {
-        // error sync between hightlight data array and annotation array
-        yield* putTyped(readerLocalActionHighlights.handler.pop.build([{ uuid: bookmark.uuid }]));
+    if (!update && previousNote && !item) {
+        update = true;
+        yield* putTyped(readerLocalActionHighlights.handler.pop.build([{ uuid: note.uuid }]));
     }
-}
+    if (!update && previousNote?.color.red !== note.color.red || previousNote?.color.blue !== note.color.blue || previousNote?.color.green !== note.color.green) {
+        update = true;
+    }
+    if (!update && item && item[1]?.def?.textPopup?.text !== note.textualValue) {
+        update = true;
+    }
+    if (!update && previousNote.drawType !== note.drawType) {
+        update = true;
+    }
+    if (!update) {
+        return ;
+    }
 
-function* annotationPush(action: readerActions.annotation.push.TAction) {
-
-    debug(`annotationPush : [${JSON.stringify(action.payload, null, 4)}]`);
-    const {payload: {comment, uuid, locatorExtended: {locator: {href}, selectionInfo}, color, drawType}} = action;
-
-    yield* putTyped(readerLocalActionHighlights.handler.push.build([{
-        uuid,
-        href,
-        def: {
-            textPopup: comment ? {
-                text: comment, // multiline
-                dir: "ltr", // TODO
-                lang: "en", // TODO
-            } : undefined,
-            selectionInfo,
-            color,
-            group: "annotation",
-            drawType: convertDrawTypeToNumber(drawType),
-        },
-    }]));
-}
-
-function* bookmarkPush(action: readerActions.bookmark.push.TAction) {
-
-    debug(`bookmarkPush : [${JSON.stringify(action.payload, null, 4)}]`);
-    const {payload: bookmark} = action;
-
+    // if (!textPopup?.text || !note.textualValue && textPopup?.text || note.textualValue !== textPopup?.text || color.blue !== note.color.blue || color.red !== note.color.red || color.green !== note.color.green || drawType !== note.drawType) {
+    yield* putTyped(readerLocalActionHighlights.handler.pop.build([{ uuid: note.uuid }]));
     yield* putTyped(readerLocalActionHighlights.handler.push.build([
-            {
-                uuid: bookmark.uuid,
-                href: bookmark.locatorExtended.locator.href,
-                def: {
-                    textPopup: bookmark.name ? {
-                        text: bookmark.name, // multiline
-                        dir: "ltr", // TODO
-                        lang: "en", // TODO
-                    } : undefined,
-                    selectionInfo: {
-                        textFragment: undefined,
-                        rangeInfo: bookmark.locatorExtended.locator.locations.caretInfo?.rangeInfo || {
-                            startContainerElementCssSelector: bookmark.locatorExtended.locator.locations.cssSelector,
-                            startContainerElementCFI: undefined,
-                            startContainerElementXPath: undefined,
-                            startContainerChildTextNodeIndex: -1,
-                            startOffset: -1,
-                            endContainerElementCssSelector: bookmark.locatorExtended.locator.locations.cssSelector,
-                            endContainerElementCFI: undefined,
-                            endContainerElementXPath: undefined,
-                            endContainerChildTextNodeIndex: -1,
-                            endOffset: -1,
-                            cfi: undefined,
-                        },
-                        cleanBefore: bookmark.locatorExtended.locator.locations.caretInfo?.cleanBefore || bookmark.locatorExtended.locator.text?.before || "",
-                        cleanText: bookmark.locatorExtended.locator.locations.caretInfo?.cleanText || bookmark.locatorExtended.locator.text?.highlight || bookmark.locatorExtended.locator.title || bookmark.name || "",
-                        cleanAfter: bookmark.locatorExtended.locator.locations.caretInfo?.cleanAfter || bookmark.locatorExtended.locator.text?.after || "",
-                        rawBefore: bookmark.locatorExtended.locator.locations.caretInfo?.rawBefore || bookmark.locatorExtended.locator.text?.beforeRaw || "",
-                        rawText: bookmark.locatorExtended.locator.locations.caretInfo?.rawText || bookmark.locatorExtended.locator.text?.highlightRaw || bookmark.locatorExtended.locator.title || bookmark.name || "",
-                        rawAfter: bookmark.locatorExtended.locator.locations.caretInfo?.rawAfter || bookmark.locatorExtended.locator.text?.afterRaw || "",
+        {
+            uuid: note.uuid,
+            href: note.locatorExtended.locator.href,
+            def: {
+                textPopup: note.textualValue ? {
+                    text: note.textualValue, // multiline
+                    dir: "ltr", // TODO
+                    lang: "en", // TODO
+                } : undefined,
+                selectionInfo: note.group === "bookmark" ? {
+                    textFragment: undefined,
+                    rangeInfo: note.locatorExtended.locator.locations.caretInfo?.rangeInfo || {
+                        startContainerElementCssSelector: note.locatorExtended.locator.locations.cssSelector,
+                        startContainerElementCFI: undefined,
+                        startContainerElementXPath: undefined,
+                        startContainerChildTextNodeIndex: -1,
+                        startOffset: -1,
+                        endContainerElementCssSelector: note.locatorExtended.locator.locations.cssSelector,
+                        endContainerElementCFI: undefined,
+                        endContainerElementXPath: undefined,
+                        endContainerChildTextNodeIndex: -1,
+                        endOffset: -1,
+                        cfi: undefined,
                     },
-                    color: { ...bookmark.color },
-                    group: "bookmark",
-                    drawType: 6,
+                    cleanBefore: note.locatorExtended.locator.locations.caretInfo?.cleanBefore || note.locatorExtended.locator.text?.before || "",
+                    cleanText: note.locatorExtended.locator.locations.caretInfo?.cleanText || note.locatorExtended.locator.text?.highlight || note.locatorExtended.locator.title || "",
+                    cleanAfter: note.locatorExtended.locator.locations.caretInfo?.cleanAfter || note.locatorExtended.locator.text?.after || "",
+                    rawBefore: note.locatorExtended.locator.locations.caretInfo?.rawBefore || note.locatorExtended.locator.text?.beforeRaw || "",
+                    rawText: note.locatorExtended.locator.locations.caretInfo?.rawText || note.locatorExtended.locator.text?.highlightRaw || note.locatorExtended.locator.title || "",
+                    rawAfter: note.locatorExtended.locator.locations.caretInfo?.rawAfter || note.locatorExtended.locator.text?.afterRaw || "",
+                } : {
+                    textFragment: undefined,
+                    rangeInfo: note.locatorExtended.selectionInfo?.rangeInfo || {
+                        startContainerElementCssSelector: note.locatorExtended.locator.locations.cssSelector,
+                        startContainerElementCFI: undefined,
+                        startContainerElementXPath: undefined,
+                        startContainerChildTextNodeIndex: -1,
+                        startOffset: -1,
+                        endContainerElementCssSelector: note.locatorExtended.locator.locations.cssSelector,
+                        endContainerElementCFI: undefined,
+                        endContainerElementXPath: undefined,
+                        endContainerChildTextNodeIndex: -1,
+                        endOffset: -1,
+                        cfi: undefined,
+                    },
+                    cleanBefore: note.locatorExtended.selectionInfo?.cleanBefore || note.locatorExtended.locator.text?.before || "",
+                    cleanText: note.locatorExtended.selectionInfo?.cleanText || note.locatorExtended.locator.text?.highlight || "",
+                    cleanAfter: note.locatorExtended.selectionInfo?.cleanAfter || note.locatorExtended.locator.text?.after || "",
+                    rawBefore: note.locatorExtended.selectionInfo?.rawBefore || note.locatorExtended.locator.text?.beforeRaw || "",
+                    rawText: note.locatorExtended.selectionInfo?.rawText || note.locatorExtended.locator.text?.highlightRaw || "",
+                    rawAfter: note.locatorExtended.selectionInfo?.rawAfter || note.locatorExtended.locator.text?.afterRaw || "",
                 },
+                color: { ...note.color },
+                group: note.group,
+                drawType: Number(note.drawType),
             },
-        ]));
+        },
+    ]));
 
+    if (note.group === "bookmark") { 
         const defaultDrawView = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_defaultDrawView);
         if (defaultDrawView === "hide"
             // SKIP ENTIRELY, see ABOVE
@@ -233,26 +156,15 @@ function* bookmarkPush(action: readerActions.bookmark.push.TAction) {
             const href2 = currentLocation?.secondWebViewHref;
             yield* putTyped(readerLocalActionLocatorHrefChanged.build(href1, href1, href2, href2));
         }
+    }
 }
 
-function* annotationPop(action: readerActions.annotation.pop.TAction) {
-    debug(`annotationPop : [${action.payload.uuid}]`);
+function* noteRemove(action: readerActions.note.remove.TAction) {
 
-    const {
-        uuid,
-    } = action.payload;
+    const { note } = action.payload;
+    debug(`noteRemove : [${note}]`);
 
-    yield* putTyped(readerLocalActionHighlights.handler.pop.build([{uuid}]));
-}
-
-function* bookmarkPop(action: readerActions.bookmark.pop.TAction) {
-    debug(`bookmarkPop : [${action.payload.uuid}]`);
-
-    const {
-        uuid,
-    } = action.payload;
-
-    yield* putTyped(readerLocalActionHighlights.handler.pop.build([{uuid}]));
+    yield* putTyped(readerLocalActionHighlights.handler.pop.build([{ uuid: note.uuid }]));
 }
 
 function* createAnnotation(locatorExtended: MiniLocatorExtended, color: IColor, comment: string, drawType: TDrawType, tags: string[]) {
@@ -263,18 +175,24 @@ function* createAnnotation(locatorExtended: MiniLocatorExtended, color: IColor, 
     const creator = yield* selectTyped((state: IReaderRootState) => state.creator);
 
     debug(`Create an annotation for, [${locatorExtended.selectionInfo.cleanText.slice(0, 10)}]`);
-    yield* putTyped(readerActions.annotation.push.build({
+
+    const noteTotalCount = yield* selectTyped((state: IReaderRootState) => state.reader.noteTotalCount.state);
+    yield* putTyped(readerActions.note.addUpdate.build({
         color,
-        comment,
+        textualValue: comment,
+        index: noteTotalCount + 1,
         locatorExtended,
-        drawType,
+        drawType: EDrawType[drawType] || EDrawType.solid_background,
         tags,
         creator: {
             id: creator.id,
             type: creator.type, // not used, only the id is used to target the self creator ,, but required in models : https://github.com/readium/annotations/?tab=readme-ov-file#11-creator
         },
         created: (new Date()).getTime(),
+        group: "annotation",
     }));
+
+    yield* putTyped(readerLocalActionReader.bookmarkTotalCount.build(noteTotalCount + 1));
 
     // sure! close the popover
     yield* putTyped(readerLocalActionAnnotations.enableMode.build(false, undefined, undefined));
@@ -308,12 +226,12 @@ function* newLocatorEditAndSaveTheNote(locatorExtended: MiniLocatorExtended, fro
         return;
     } else if (noteTakenAction) {
 
-        const { color, comment, drawType, tags } = noteTakenAction.payload;
-        debug(`annotation save the note with the color: ${color} , comment: ${comment.slice(0, 20)} , drawType: ${drawType} , tags: ${tags}`);
+        const { color, textualValue, drawType, tags } = noteTakenAction.payload;
+        debug(`annotation save the note with the color: ${color} , comment: ${textualValue.slice(0, 20)} , drawType: ${drawType} , tags: ${tags}`);
 
 
         // get color and comment and save the note
-        yield* callTyped(createAnnotation, locatorExtended, color, comment, drawType, tags);
+        yield* callTyped(createAnnotation, locatorExtended, color, textualValue, EDrawType[drawType] as TDrawType, tags);
 
     } else {
         debug("ERROR: second yield RACE not worked !!?!!");
@@ -428,92 +346,79 @@ function* readerStart() {
         highlightsDrawMargin(["bookmark"]);
     }
 
-    const annotations = yield* selectTyped((store: IReaderRootState) => store.reader.annotation);
-    const annotationsUuids = annotations.map(([_, annotationState]) => ({ uuid: annotationState.uuid }));
-    yield* putTyped(readerLocalActionHighlights.handler.pop.build(annotationsUuids));
+    const notes = yield* selectTyped((store: IReaderRootState) => store.reader.note);
+    const noteUUID = notes.map(({ uuid }) => ({ uuid }));
 
-    const annotationsHighlighted: IHighlightHandlerState[] = annotations.map(
-        ([_, { uuid, locatorExtended: { locator: { href }, selectionInfo }, color, drawType, comment }]) =>
-            (
-            {
-                uuid,
-                href,
-                def: {
-                    textPopup: comment ? {
-                        text: comment,
-                        dir: "ltr", // TODO
-                        lang: "en", // TODO
-                    } : undefined,
-                    selectionInfo,
-                    color,
-                    group: "annotation",
-                    drawType: convertDrawTypeToNumber(drawType),
-                },
-            } satisfies IHighlightHandlerState
-            ),
-        );
-    // yield* putTyped(readerLocalActionHighlights.handler.push.build(annotationsHighlighted));
+    // const annotations = yield* selectTyped((store: IReaderRootState) => store.reader.annotation);
+    // const annotationsUuids = annotations.map(([_, annotationState]) => ({ uuid: annotationState.uuid }));
+    yield* putTyped(readerLocalActionHighlights.handler.pop.build(noteUUID));
 
-    debug(`${annotationsHighlighted.length} annotation(s) to draw`);
+    const notesHighlighted = notes.map((note): IHighlightHandlerState => {
 
-    const bookmarks = yield* selectTyped((store: IReaderRootState) => store.reader.bookmark);
-    const bookmarksUuids = bookmarks.map(([_, bookmarkState]) => ({ uuid: bookmarkState.uuid }));
-    yield* putTyped(readerLocalActionHighlights.handler.pop.build(bookmarksUuids));
-
-    const bookmarksUuidsHighlighted: IHighlightHandlerState[] = bookmarks.map(
-        ([_, bookmark]) =>
-            (
-                {
-                    uuid: bookmark.uuid,
-                    href: bookmark.locatorExtended.locator.href,
-                    def: {
-                        textPopup: bookmark.name ? {
-                            text: bookmark.name, // multiline
-                            dir: "ltr", // TODO
-                            lang: "en", // TODO
-                        } : undefined,
-                        selectionInfo: {
-                            textFragment: undefined as ISelectionInfo["textFragment"],
-                            // textFragment: {
-                            //     prefix: "",
-                            //     textStart: "",
-                            //     textEnd: "",
-                            //     suffix: "",
-                            // },
-                            rangeInfo: bookmark.locatorExtended.locator.locations.caretInfo?.rangeInfo || {
-                                startContainerElementCssSelector: bookmark.locatorExtended.locator.locations.cssSelector,
-                                startContainerElementCFI: undefined,
-                                startContainerElementXPath: undefined,
-                                startContainerChildTextNodeIndex: -1,
-                                startOffset: -1,
-                                endContainerElementCssSelector: bookmark.locatorExtended.locator.locations.cssSelector,
-                                endContainerElementCFI: undefined,
-                                endContainerElementXPath: undefined,
-                                endContainerChildTextNodeIndex: -1,
-                                endOffset: -1,
-                                cfi: undefined,
-                            },
-                            cleanBefore: bookmark.locatorExtended.locator.locations.caretInfo?.cleanBefore || bookmark.locatorExtended.locator.text?.before || "",
-                            cleanText: bookmark.locatorExtended.locator.locations.caretInfo?.cleanText || bookmark.locatorExtended.locator.text?.highlight || bookmark.locatorExtended.locator.title || bookmark.name || "",
-                            cleanAfter: bookmark.locatorExtended.locator.locations.caretInfo?.cleanAfter || bookmark.locatorExtended.locator.text?.after || "",
-                            rawBefore: bookmark.locatorExtended.locator.locations.caretInfo?.rawBefore || bookmark.locatorExtended.locator.text?.beforeRaw || "",
-                            rawText: bookmark.locatorExtended.locator.locations.caretInfo?.rawText || bookmark.locatorExtended.locator.text?.highlightRaw || bookmark.locatorExtended.locator.title || bookmark.name || "",
-                            rawAfter: bookmark.locatorExtended.locator.locations.caretInfo?.rawAfter || bookmark.locatorExtended.locator.text?.afterRaw || "",
-                        },
-                        color: {...bookmark.color},
-                        group: "bookmark",
-                        drawType: 6,
+        return {
+            uuid: note.uuid,
+            href: note.locatorExtended.locator.href,
+            def: {
+                textPopup: note.textualValue ? {
+                    text: note.textualValue,
+                    dir: "ltr", // TODO
+                    lang: "en", // TODO
+                } : undefined,
+                selectionInfo: note.group === "bookmark" ? {
+                    textFragment: undefined,
+                    rangeInfo: note.locatorExtended.locator.locations.caretInfo?.rangeInfo || {
+                        startContainerElementCssSelector: note.locatorExtended.locator.locations.cssSelector,
+                        startContainerElementCFI: undefined,
+                        startContainerElementXPath: undefined,
+                        startContainerChildTextNodeIndex: -1,
+                        startOffset: -1,
+                        endContainerElementCssSelector: note.locatorExtended.locator.locations.cssSelector,
+                        endContainerElementCFI: undefined,
+                        endContainerElementXPath: undefined,
+                        endContainerChildTextNodeIndex: -1,
+                        endOffset: -1,
+                        cfi: undefined,
                     },
-                } satisfies IHighlightHandlerState
-            ),
-    );
-    // yield* putTyped(readerLocalActionHighlights.handler.push.build(bookmarksUuidsHighlighted));
+                    cleanBefore: note.locatorExtended.locator.locations.caretInfo?.cleanBefore || note.locatorExtended.locator.text?.before || "",
+                    cleanText: note.locatorExtended.locator.locations.caretInfo?.cleanText || note.locatorExtended.locator.text?.highlight || note.locatorExtended.locator.title || "",
+                    cleanAfter: note.locatorExtended.locator.locations.caretInfo?.cleanAfter || note.locatorExtended.locator.text?.after || "",
+                    rawBefore: note.locatorExtended.locator.locations.caretInfo?.rawBefore || note.locatorExtended.locator.text?.beforeRaw || "",
+                    rawText: note.locatorExtended.locator.locations.caretInfo?.rawText || note.locatorExtended.locator.text?.highlightRaw || note.locatorExtended.locator.title || "",
+                    rawAfter: note.locatorExtended.locator.locations.caretInfo?.rawAfter || note.locatorExtended.locator.text?.afterRaw || "",
+                } : {
+                    textFragment: undefined,
+                    rangeInfo: note.locatorExtended.selectionInfo?.rangeInfo || {
+                        startContainerElementCssSelector: note.locatorExtended.locator.locations.cssSelector,
+                        startContainerElementCFI: undefined,
+                        startContainerElementXPath: undefined,
+                        startContainerChildTextNodeIndex: -1,
+                        startOffset: -1,
+                        endContainerElementCssSelector: note.locatorExtended.locator.locations.cssSelector,
+                        endContainerElementCFI: undefined,
+                        endContainerElementXPath: undefined,
+                        endContainerChildTextNodeIndex: -1,
+                        endOffset: -1,
+                        cfi: undefined,
+                    },
+                    cleanBefore: note.locatorExtended.selectionInfo?.cleanBefore || note.locatorExtended.locator.text?.before || "",
+                    cleanText: note.locatorExtended.selectionInfo?.cleanText || note.locatorExtended.locator.text?.highlight || "",
+                    cleanAfter: note.locatorExtended.selectionInfo?.cleanAfter || note.locatorExtended.locator.text?.after || "",
+                    rawBefore: note.locatorExtended.selectionInfo?.rawBefore || note.locatorExtended.locator.text?.beforeRaw || "",
+                    rawText: note.locatorExtended.selectionInfo?.rawText || note.locatorExtended.locator.text?.highlightRaw || "",
+                    rawAfter: note.locatorExtended.selectionInfo?.rawAfter || note.locatorExtended.locator.text?.afterRaw || "",
+                },
+                color: { ...note.color },
+                group: note.group,
+                drawType: Number(note.drawType),
+            },
+        };
+    });
 
-    debug(`${bookmarksUuidsHighlighted.length} bookmark(s) to draw`);
+    debug(`${notesHighlighted.length} note(s) to draw`);
 
-    yield* putTyped(readerLocalActionHighlights.handler.push.build(annotationsHighlighted.concat(bookmarksUuidsHighlighted)));
+    yield* putTyped(readerLocalActionHighlights.handler.push.build(notesHighlighted));
 
-    debug(`${annotationsHighlighted.length + bookmarksUuidsHighlighted.length} bookmark(s) and annotation(s) drawn`);
+    debug(`${notesHighlighted.length} note(s) drawn`);
 }
 
 function* captureHightlightDrawMargin(action: readerLocalActionSetConfig.TAction) {
@@ -549,40 +454,14 @@ export const saga = () =>
             (e) => console.error("readerLocalActionSetConfig", e),
         ),
         takeSpawnEvery(
-            readerActions.annotation.update.ID,
-            annotationUpdate,
-            (e) => console.error("readerLocalActionAnnotations.update", e),
+            readerActions.note.addUpdate.ID,
+            noteAddUpdate,
+            (e) => console.error("readerLocalActionNoteUpdate", e),
         ),
         takeSpawnEvery(
-            readerActions.bookmark.update.ID,
-            bookmarkUpdate,
-            (e) => console.error("readerLocalActionBookmarks.update", e),
-        ),
-        // takeSpawnEvery(
-        //     readerLocalActionAnnotations.focus.ID,
-        //     annotationFocus,
-        //     (e) => console.error("readerLocalActionAnnotations.focus", e),
-        // ),
-
-        takeSpawnEvery(
-            readerActions.bookmark.push.ID,
-            bookmarkPush,
-            (e) => console.error("readerLocalActionBookmarks.push", e),
-        ),
-        takeSpawnEvery(
-            readerActions.annotation.push.ID,
-            annotationPush,
-            (e) => console.error("readerLocalActionAnnotations.push", e),
-        ),
-        takeSpawnEvery(
-            readerActions.bookmark.pop.ID,
-            bookmarkPop,
-            (e) => console.error("readerLocalActionBookmarks.pop", e),
-        ),
-        takeSpawnEvery(
-            readerActions.annotation.pop.ID,
-            annotationPop,
-            (e) => console.error("readerLocalActionAnnotations.pop", e),
+            readerActions.note.remove.ID,
+            noteRemove,
+            (e) => console.error("readerLocalActionNoteRemove", e),
         ),
         takeSpawnEvery(
             readerLocalActionSetLocator.ID,

@@ -8,7 +8,7 @@
 import { IAnnotationReaderConfigState, IReaderConfigSettingsMenuState, ReaderConfig, ReaderTTSMediaOverlay } from "readium-desktop/common/models/reader";
 import { FONT_ID_DEFAULT } from "readium-desktop/utils/fontList";
 import { HighlightDrawTypeBackground, HighlightDrawTypeUnderline } from "@r2-navigator-js/electron/common/highlight";
-import { NOTE_DEFAULT_COLOR_OBJ } from "./note";
+import { NOTE_DEFAULT_COLOR_OBJ } from "./renderer/note";
 
 
 export const readerConfigInitialStateTTSMediaOverlay: ReaderTTSMediaOverlay = {

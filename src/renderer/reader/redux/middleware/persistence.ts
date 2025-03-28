@@ -45,11 +45,6 @@ export const reduxPersistMiddleware: Middleware
                     readerState.locator = nextState.reader.locator;
                     dispatchFlag = true;
                 }
-                if (!ramda.equals(prevState.reader.bookmark, nextState.reader.bookmark)) {
-
-                    readerState.bookmark = nextState.reader.bookmark;
-                    dispatchFlag = true;
-                }
                 if (!ramda.equals(prevState.reader.divina, nextState.reader.divina)) {
 
                     readerState.divina = nextState.reader.divina;
@@ -60,9 +55,9 @@ export const reduxPersistMiddleware: Middleware
                     readerState.disableRTLFlip = nextState.reader.disableRTLFlip;
                     dispatchFlag = true;
                 }
-                if (!ramda.equals(prevState.reader.annotation, nextState.reader.annotation)) {
+                if (!ramda.equals(prevState.reader.note, nextState.reader.note)) {
 
-                    readerState.annotation = nextState.reader.annotation;
+                    readerState.note = nextState.reader.note;
                     dispatchFlag = true;
                 }
                 if (!ramda.equals(prevState.reader.allowCustomConfig, nextState.reader.allowCustomConfig)) {
@@ -70,9 +65,9 @@ export const reduxPersistMiddleware: Middleware
                     readerState.allowCustomConfig = nextState.reader.allowCustomConfig;
                     dispatchFlag = true;
                 }
-                if (!ramda.equals(prevState.reader.bookmarkTotalCount, nextState.reader.bookmarkTotalCount)) {
+                if (!ramda.equals(prevState.reader.noteTotalCount, nextState.reader.noteTotalCount)) {
 
-                    readerState.bookmarkTotalCount = nextState.reader.bookmarkTotalCount;
+                    readerState.noteTotalCount = nextState.reader.noteTotalCount;
                     dispatchFlag = true;
                 }
                 if (dispatchFlag) {

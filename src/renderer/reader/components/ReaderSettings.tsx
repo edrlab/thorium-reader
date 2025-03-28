@@ -64,7 +64,7 @@ import { HighlightDrawTypeBackground, HighlightDrawTypeUnderline, HighlightDrawT
 import { TTSStateEnum } from "@r2-navigator-js/electron/renderer/readaloud";
 import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
 import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
-import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/note";
+import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/renderer/note";
 
 const noteColorCodeToColorTranslatorKeySet_ = {
     [rgbToHex(readerConfigInitialState.ttsHighlightColor)]: "Dark Yellow" as TTranslatorKeyParameter,
