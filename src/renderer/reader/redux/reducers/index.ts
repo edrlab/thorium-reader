@@ -69,7 +69,7 @@ export const rootReducer = () => {
             transientConfig: readerTransientConfigReducer,// ReaderConfigPublisher
             info: readerInfoReducer,
             locator: readerLocatorReducer,
-            note: arrayReducer<readerActions.note.addUpdate.TAction, readerActions.note.remove.TAction, INoteState>(
+            note: arrayReducer<readerActions.note.addUpdate.TAction, readerActions.note.remove.TAction, INoteState, Pick<INoteState, "uuid">>(
                 {
                     add: {
                         type: readerActions.note.addUpdate.ID,
@@ -83,73 +83,9 @@ export const rootReducer = () => {
                             return [payload.note];
                         },
                     },
+                    getId: (item) => item.uuid,
                 },
             ),
-            // bookmark: priorityQueueReducer
-            //     <
-            //         readerActions.bookmark.push.TAction,
-            //         readerActions.bookmark.pop.TAction,
-            //         number,
-            //         IBookmarkState,
-            //         string,
-            //         readerActions.bookmark.update.TAction
-            //     >(
-            //         {
-            //             push: {
-            //                 type: readerActions.bookmark.push.ID,
-            //                 selector: (action) =>
-            //                     [(new Date()).getTime(), action.payload],
-            //             },
-            //             pop: {
-            //                 type: readerActions.bookmark.pop.ID,
-            //                 selector: (action, queue) => queue.find(([_, bookmarkState]) => action.payload.uuid === bookmarkState.uuid),
-            //             },
-            //             sortFct: (a, b) => b[0] - a[0],
-            //             update: {
-            //                 type: readerActions.bookmark.update.ID,
-            //                 selector: (action, queue) => {
-            //                     const [_oldBookmark, newBookmark] = action.payload;
-            //                     return [
-            //                         queue.reduce<number>((pv, [k, v]) => v.uuid === newBookmark.uuid ? k : pv, undefined),
-            //                         newBookmark,
-            //                     ];
-            //                 },
-            //             },
-            //         },
-            //     ),
-            // annotation: priorityQueueReducer
-            //     <
-            //         readerActions.annotation.push.TAction,
-            //         readerActions.annotation.pop.TAction,
-            //         number,
-            //         IAnnotationState,
-            //         string,
-            //         readerActions.annotation.update.TAction
-            //     >(
-            //         {
-            //             push: {
-            //                 type: readerActions.annotation.push.ID,
-            //                 selector: (action, _queue) => {
-            //                     return [(new Date()).getTime(), action.payload];
-            //                 },
-            //             },
-            //             pop: {
-            //                 type: readerActions.annotation.pop.ID,
-            //                 selector: (action, queue) => queue.find(([_, annotationState]) => action.payload.uuid === annotationState.uuid),
-            //             },
-            //             sortFct: (a, b) => b[0] - a[0],
-            //             update: {
-            //                 type: readerActions.annotation.update.ID,
-            //                 selector: (action, queue) => {
-            //                     const [_, newAnnot] = action.payload;
-            //                     return [
-            //                         queue.reduce<number>((pv, [k, v]) => v.uuid === newAnnot.uuid ? k : pv, undefined),
-            //                         newAnnot,
-            //                     ];
-            //                 },
-            //             },
-            //         },
-            //     ),
             highlight: combineReducers({
                 handler: mapReducer
                     <
@@ -209,7 +145,7 @@ export const rootReducer = () => {
         search: searchReducer,
         resourceCache: readerResourceCacheReducer,
         annotation: annotationModeEnableReducer,
-        noteTagsIndex: arrayReducer<readerActions.note.addUpdate.TAction | readerActions.note.remove.TAction, undefined, { uuid: string, index: number }>(
+        noteTagsIndex: arrayReducer<readerActions.note.addUpdate.TAction | readerActions.note.remove.TAction, undefined, { tag: string, index: number }, { tag: string }>(
             {
                 add: [
                     {
@@ -222,14 +158,14 @@ export const rootReducer = () => {
                                 return undefined;
                             }
 
-                            const items: Array<{ uuid: string, index: number }> = [];
+                            const items: Array<{ tag: string, index: number }> = [];
 
                             if (oldTags[0]) {
-                                items.push({uuid: oldTags[0], index: Math.max((state.find(({ uuid }) => uuid === oldTags[0])?.index || 0) - 1, 0)});
+                                items.push({tag: oldTags[0], index: Math.max((state.find(({ tag }) => tag === oldTags[0])?.index || 0) - 1, 0)});
                             }
 
                             if (newTags[0]) {
-                                items.push({ uuid: newTags[0], index: (state.find(({ uuid }) => uuid === newTags[0])?.index || 0) + 1 });
+                                items.push({ tag: newTags[0], index: (state.find(({ tag }) => tag === newTags[0])?.index || 0) + 1 });
                             }
                             return items;
                         },
@@ -239,13 +175,14 @@ export const rootReducer = () => {
                         selector: (payload, state) => {
                             const tags = (payload as readerActions.note.remove.IPayload).note.tags;
                             if (tags && tags[0]) {
-                                return [{uuid: tags[0], index: Math.max((state.find(({ uuid }) => uuid === tags[0])?.index || 0) - 1, 0)}];
+                                return [{tag: tags[0], index: Math.max((state.find(({ tag }) => tag === tags[0])?.index || 0) - 1, 0)}];
                             }
                             return undefined;
                         },
                     },
                 ],
                 remove: undefined,
+                getId: (item) => item.tag,
             },
         ),
         win: winReducer,

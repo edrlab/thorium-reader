@@ -79,7 +79,7 @@ ipcRenderer.on(readerIpc.CHANNEL,
                 data.payload.noteTagsIndex = [];
                 for (const tag of noteTagList) {
                     if (!tag) continue;
-                    data.payload.noteTagsIndex.push({ uuid: tag, index: (data.payload.noteTagsIndex.find(({ uuid }) => uuid === tag)?.index || 0) + 1 });
+                    data.payload.noteTagsIndex.push({ tag: tag, index: (data.payload.noteTagsIndex.find(({ tag: tagFromNote }) => tagFromNote === tag)?.index || 0) + 1 });
                 }
 
                 const store = createStoreFromDi(data.payload);

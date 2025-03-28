@@ -7,7 +7,7 @@
 
 import { Action } from "readium-desktop/common/models/redux";
 import { v4 as uuidv4 } from "uuid";
-import { INoteState } from "../../../states/renderer/note";
+import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 
 export const ID = "READER_NOTE_ADD_UPDATE";
 

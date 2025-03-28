@@ -25,10 +25,10 @@ import { reduxPersistMiddleware } from "../middleware/persistence";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 import { minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
-import { convertDrawTypeToNumber, EDrawType, INoteState, NOTE_DEFAULT_COLOR_OBJ } from "readium-desktop/common/redux/states/renderer/note";
+import { EDrawType, INoteState, NOTE_DEFAULT_COLOR_OBJ, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 import { clone } from "ramda";
-import { TAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 import { TBookmarkState } from "readium-desktop/common/redux/states/bookmark";
+import { TAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -361,6 +361,7 @@ export async function initStore()
                     };
                 }
                 state.reduxState.noteTotalCount.state = (state?.reduxState as any)?.bookmarkTotalCount?.state || 0;
+                (state.reduxState as any).bookmarkTotalCount = undefined;
             } 
 
             if ((state?.reduxState as any)?.bookmark) {
@@ -374,7 +375,7 @@ export async function initStore()
                         locatorExtended: bookmark.locatorExtended,
                         textualValue: bookmark.name,
                         color: bookmark.color,
-                        drawType: convertDrawTypeToNumber(EDrawType.bookmark),
+                        drawType: EDrawType.bookmark,
                         tags: bookmark.tags,
                         modified: bookmark.modified,
                         created: bookmark.created,
@@ -401,11 +402,11 @@ export async function initStore()
 
                     const note: INoteState = {
                         uuid: annotation.uuid,
-                        index: ++noteTotalCount, // TODO total note index
+                        index: ++noteTotalCount,
                         locatorExtended: annotation.locatorExtended,
                         textualValue: annotation.comment,
                         color: annotation.color,
-                        drawType: convertDrawTypeToNumber(EDrawType[annotation.drawType]),
+                        drawType: EDrawType[annotation.drawType as TDrawType] || EDrawType.solid_background,
                         tags: annotation.tags,
                         modified: annotation.modified,
                         created: annotation.created,

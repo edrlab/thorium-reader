@@ -66,7 +66,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
 
     const [tag, setTag] = React.useState<string>((tags || [])[0] || "");
     const tagsIndexList = useSelector((state: IReaderRootState) => state.noteTagsIndex);
-    const selectTagOption = ObjectKeys(tagsIndexList).map((v, i) => ({id: i, name: v}));
+    const selectTagOption = tagsIndexList.map((v, i) => ({ id: i, name: v.tag }));
 
     const annotationMaxLength = 1500;
     const [annotationLength, setAnnotationLength] = React.useState(comment.length);

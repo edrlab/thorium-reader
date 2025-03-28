@@ -1159,7 +1159,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
         (value: boolean) => value ? updateDialogOrDockDataInfo({id: annotationItem.uuid, edit: true}) : updateDialogOrDockDataInfo({id: "", edit: false});
 
     const tagsIndexList = useSelector((state: IReaderRootState) => state.noteTagsIndex);
-    const selectTagOption = tagsIndexList.map((v, i) => ({ id: i, name: v.uuid }));
+    const selectTagOption = tagsIndexList.map((v, i) => ({ id: i, name: v.tag }));
 
     // if tagArrayFilter value not include in the selectTagOption then take only the intersection between tagArrayFilter and selectTagOption
     const selectTagOptionFilteredNameArray = selectTagOption.map((v) => v.name);
@@ -1934,7 +1934,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
         (value: boolean) => value ? updateDialogOrDockDataInfo({id: bookmarkItem.uuid, edit: true}) : updateDialogOrDockDataInfo({id: "", edit: false});
 
     const tagsIndexList = useSelector((state: IReaderRootState) => state.noteTagsIndex);
-    const selectTagOption = tagsIndexList.map((v, i) => ({ id: i, name: v.uuid }));
+    const selectTagOption = tagsIndexList.map((v, i) => ({ id: i, name: v.tag }));
 
     // if tagArrayFilter value not include in the selectTagOption then take only the intersection between tagArrayFilter and selectTagOption
     const selectTagOptionFilteredNameArray = selectTagOption.map((v) => v.name);

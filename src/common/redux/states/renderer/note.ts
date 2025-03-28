@@ -63,11 +63,6 @@ export type TNoteColorSet = "pink" | "orange" | "yellow" | "green" | "blue" | "p
 export const NOTE_DEFAULT_COLOR: TNoteColorSet = "yellow";
 export const NOTE_DEFAULT_COLOR_OBJ: IColor = hexToRgb(noteColorSetToColorCode[NOTE_DEFAULT_COLOR]);
 
-// export type TDrawType = "solid_background" | "underline" | "strikethrough" | "outline" | "bookmark";
-export const convertDrawTypeToNumber = (drawType: EDrawType): number => {
-    return Number(drawType) || 0;
-};
-
 export type TDrawType = "solid_background" | "underline" | "strikethrough" | "outline" | "bookmark";
 export const noteDrawType: TDrawType[] = [
     "solid_background",

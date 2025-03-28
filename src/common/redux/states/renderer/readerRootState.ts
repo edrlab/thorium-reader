@@ -34,7 +34,7 @@ export interface IReaderRootState extends IRendererCommonRootState {
     resourceCache: ICacheDocument[];
     mode: ReaderMode;
     annotation: IAnnotationModeState;
-    noteTagsIndex: Array<{ uuid: string, index: number }>;
+    noteTagsIndex: Array<{ tag: string, index: number }>;
     img: IImageClickState; // TODO: replace by dock/dialog state
     dock: DockState;
     // cf dialog state in common
@@ -59,7 +59,7 @@ export interface IReaderStateReader {
     mediaOverlay: IMediaOverlayState;
     allowCustomConfig: IAllowCustomConfigState;
     transientConfig: ReaderConfigPublisher;
-    noteTotalCount: IBookmarkTotalCountState; // TODO change this state to noteTotalCount
+    noteTotalCount: IBookmarkTotalCountState;
 
 
     // got the lock

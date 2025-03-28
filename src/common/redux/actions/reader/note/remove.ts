@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { INoteState } from "../../../states/renderer/note";
+import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 
 export const ID = "READER_NOTE_REMOVE";
 

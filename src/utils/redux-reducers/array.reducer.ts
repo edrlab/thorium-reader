@@ -15,9 +15,10 @@ interface ActionWithPayload<Type extends string = string, Payload extends { } = 
 }
 
 export interface IArrayAction<
-    T extends string = string,
-    P extends {} = {},
-    V extends { uuid: string } = { uuid: string }
+    T extends string,
+    P extends {},
+    V extends Vid,
+    Vid extends { },
 > {
     type: T;
     selector: (action: P, state: V[]) => V[] | undefined;
@@ -41,11 +42,13 @@ export function arrayReducer<
     // TRemovePayload extends { },
     TActionAdd extends ActionWithPayload,
     TActionRemove extends ActionWithPayload,
-    Value extends { uuid: string}
+    Value extends Vid,
+    Vid extends { },
 >(
     data: {
-        add: IArrayAction<TActionAdd["type"], TActionAdd["payload"], Value>[] | IArrayAction<TActionAdd["type"], TActionAdd["payload"], Value>,
-        remove?: IArrayAction<TActionRemove["type"], TActionRemove["payload"], Value>,
+        add: IArrayAction<TActionAdd["type"], TActionAdd["payload"], Value, Vid>[] | IArrayAction<TActionAdd["type"], TActionAdd["payload"], Value, Vid>,
+        remove?: IArrayAction<TActionRemove["type"], TActionRemove["payload"], Value, Vid>,
+        getId: (obj: Vid) => string,
     },
 ) {
 
@@ -68,8 +71,8 @@ export function arrayReducer<
                         continue;
                     }
 
-                    const needToBeUpdatedUUID = items.map((item) => item.uuid);
-                    _array = _array.filter((element) => !needToBeUpdatedUUID.includes(element.uuid));
+                    const needToBeUpdatedUUID = items.map((item) => data.getId(item));
+                    _array = _array.filter((element) => !needToBeUpdatedUUID.includes(data.getId(element)));
                     for (const item of items) {
                         const clonedItem = clone(item);
                         _array.push(clonedItem);
@@ -84,8 +87,8 @@ export function arrayReducer<
             if (!items) {
                 return array;
             }
-            const needToBeRemovedUUID = items.map((item) => item.uuid);
-            const newArray = array.filter((element) => !needToBeRemovedUUID.includes(element.uuid));
+            const needToBeRemovedUUID = items.map((item) => data.getId(item));
+            const newArray = array.filter((element) => !needToBeRemovedUUID.includes(data.getId(element)));
             return newArray;
         }
 
