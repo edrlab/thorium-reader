@@ -28,7 +28,6 @@ import { readerLocalActionSetConfig } from "../redux/actions";
 import classNames from "classnames";
 import { TextArea } from "react-aria-components";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
-import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { noteColorCodeToColorTranslatorKeySet, noteDrawType, TDrawType } from "readium-desktop/common/redux/states/renderer/note";

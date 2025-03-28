@@ -57,7 +57,7 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
 
     const [tag, setTag] = React.useState<string>((tags || [])[0] || "");
     const tagsIndexList = useSelector((state: IReaderRootState) => state.noteTagsIndex);
-    const selectTagOption = tagsIndexList.map((v, i) => ({ id: i, name: v.uuid }));
+    const selectTagOption = tagsIndexList.map((v, i) => ({ id: i, name: v.tag }));
 
     const saveConfig = React.useCallback(() => {
 
