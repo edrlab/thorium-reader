@@ -196,10 +196,6 @@
         "import": {
             "alreadyImport": "Já tinha sido importado: {{- title}}.",
             "fail": "Falha ao importar {{- path}}. Erro: {{- err}}",
-<<<<<<< HEAD
-=======
-            "seeInLibrary": "Ver na biblioteca",
->>>>>>> a514e476 (Translated using Weblate (Portuguese (Portugal)))
             "success": "Foi concluída a importação de {{- title}}."
         },
         "open": {
