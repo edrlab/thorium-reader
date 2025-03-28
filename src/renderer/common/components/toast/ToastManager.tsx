@@ -71,6 +71,8 @@ export class ToastManager extends React.Component<IProps, IState> {
                                 close={ () => this.close(id) }
                                 type={toast.type}
                                 displaySystemNotification={false}
+                                publicationTitle={toast.publicationTitle}
+                                publicationHash={toast.publicationHash}
                             />;
                         case ToastType.Default:
                             return <Toast

@@ -196,6 +196,7 @@
         "import": {
             "alreadyImport": "تم استيراد [{{- title}}] من قبل.",
             "fail": "فشل استيراد [{{- path}}]: [{{- err}}]",
+            "seeInLibrary": "",
             "success": "اكتمل استيراد [{{- title}}]."
         },
         "open": {

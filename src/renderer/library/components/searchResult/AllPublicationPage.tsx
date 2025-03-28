@@ -88,7 +88,7 @@ import classNames from "classnames";
 import * as Popover from "@radix-ui/react-popover";
 
 // import { PublicationInfoLibWithRadix, PublicationInfoLibWithRadixContent, PublicationInfoLibWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 // import * as FilterIcon from "readium-desktop/renderer/assets/icons/filter-icon.svg";
 // import * as DeleteFilter from "readium-desktop/renderer/assets/icons/deleteFilter-icon.svg";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
@@ -397,6 +397,20 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
     // className={classNames(classThemeExample)}
     // className={classNames(classStyleExample)}
 
+    const navigate = useNavigate();
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const searchPubTitle = queryParams.get("searchPubTitle") || undefined;
+    const searchPubHash = queryParams.get("searchPubHash") || undefined;
+
+    React.useEffect(() => {
+        const val = searchPubHash ? `id:${searchPubHash}` : (searchPubTitle || "");
+        if (val && props.focusInputRef?.current && props.focusInputRef.current.value !== val) {
+            props.focusInputRef.current.value = val;
+            onInputChange(val);
+        }
+    }, [searchPubHash, searchPubTitle, onInputChange, props.focusInputRef, props.focusInputRef?.current?.value]);
+
     return (
         <div className={classNames(stylesInput.form_group, stylesInput.form_group_allPubSearch)}>
             <label
@@ -422,24 +436,35 @@ const CellGlobalFilter: React.FC<ITableCellProps_GlobalFilter> = (props) => {
 
                 onChange={(e) => {
                     // setValue(e.target.value);
+                    const val = (e.target.value || "").trim();
+                    if (queryParams.has("searchPubTitle") || queryParams.has("searchPubHash")) {
+                        // navigate(location.pathname + (val ? `?focus=search&searchPubTitle=${encodeURIComponent(val)}` : ""), {
+                        //     state: location.state,
+                        //     replace: true,
+                        // });
+                        navigate(location.pathname, {
+                            state: location.state,
+                            replace: true,
+                        });
+                    }
                     if (!props.accessibilitySupportEnabled) {
-                        onInputChange((e.target.value || "").trim() || undefined);
+                        onInputChange(val);
                     }
                 }}
                 onKeyUp={(e) => {
+                    const val = (props.focusInputRef?.current?.value || "").trim();
                     if (props.accessibilitySupportEnabled && e.key === "Enter") {
                         props.setShowColumnFilters(true);
-                        props.setGlobalFilter( // value
-                            (props.focusInputRef?.current?.value || "").trim() || undefined);
+                        props.setGlobalFilter(val);
                     }
                 }}
                 placeholder={`${props.__("header.searchTitle")}`}
             />
             {props.accessibilitySupportEnabled ? <button
                 onClick={() => {
+                    const val = (props.focusInputRef?.current?.value || "").trim();
                     props.setShowColumnFilters(true);
-                    props.setGlobalFilter( // value
-                        (props.focusInputRef?.current?.value || "").trim() || undefined);
+                    props.setGlobalFilter(val);
                 }}
             >{`${props.__("header.searchPlaceholder")}`}</button> : <></>}
         </div>
@@ -1362,6 +1387,8 @@ interface IColumns {
     // colIdentifier: string;
     // colPublicationType: string;
     // colProgression: string;
+
+    col_pubHash: string;
 }
 
 // https://gist.github.com/ggascoigne/646e14c9d54258e40588a13aabf0102d
@@ -1657,6 +1684,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 // colProgression: "Progression",
                 // colIdentifier: identifier,
                 // colPublicationType: publicationType,
+
+                col_pubHash: "id:" + publicationView.publicationHash,
             };
             return cols;
         });
@@ -1905,6 +1934,12 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 //     accessor: "colPublicationType",
                 // sortType: sortFunction,
                 // },
+
+                {
+                    Header: "Publication Hash",
+                    accessor: "col_pubHash",
+                    sortType: sortFunction,
+                },
             ];
         return arr;
     }, [__]);
@@ -1970,7 +2005,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     const initialState: UsePaginationState<IColumns> & TableState<IColumns> = {
         pageSize: PAGESIZE, // displayType === DisplayType.List ? 20 : 10;
         pageIndex: 0,
-        hiddenColumns: displayType === DisplayType.Grid ? ["colLanguages", "colPublishers", "colPublishedDate", "colLCP", "colDuration", "colDescription", "col_a11y_accessibilitySummary"] : [],
+        hiddenColumns: displayType === DisplayType.Grid ? ["colLanguages", "colPublishers", "colPublishedDate", "colLCP", "colDuration", "colDescription", "col_a11y_accessibilitySummary", "col_pubHash"] : ["col_pubHash"],
     };
     const opts:
         TableOptions<IColumns> &

@@ -296,6 +296,8 @@ export class PublicationViewConverter {
             // convertMultiLangStringToLangString()
             publicationSubTitle: r2Publication.Metadata.SubTitle, // string | IStringMap
 
+            publicationHash: document.hash,
+
             // convertMultiLangStringToLangString()
             publishersLangString,
             // convertMultiLangStringToLangString()
