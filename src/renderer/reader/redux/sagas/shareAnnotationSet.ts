@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { select as selectTyped, take as takeTyped, all as allTyped, call as callTyped, SagaGenerator, put as putTyped, delay as delayTyped } from "typed-redux-saga/macro";
 
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
-import { readerLocalActionExportAnnotationSet } from "../actions";
+import { readerLocalActionExportAnnotationSet, readerLocalActionReader } from "../actions";
 // import { delay } from "redux-saga/effects";
 import { getResourceCache } from "./resourceCache";
 import { ICacheDocument } from "readium-desktop/common/redux/states/renderer/resourceCache";
@@ -59,11 +59,12 @@ export function* importAnnotationSet(): SagaGenerator<void> {
         const cacheDocuments = yield* selectTyped((state: IReaderRootState) => state.resourceCache);
         const cacheDoc = getCacheDocumentFromLocator(cacheDocuments, source);
 
+        const noteTotalCount = yield* selectTyped((state: IReaderRootState) => state.reader.noteTotalCount.state);
         const noteStateFormated: INoteState = {
             ...noteState,
             locatorExtended: yield* callTyped(() => convertSelectorTargetToLocatorExtended(target, cacheDoc, undefined)),
-            index: 0,// TODO
-            group: "annotation", // TODO
+            index: noteTotalCount + 1,
+            group: "annotation", // TODO: parse note as a bookmark if the textInfo length is one character 
         };
         if (!noteStateFormated.locatorExtended) {
             debug("ERROR: no locator found !! for annotationState, doesn't import this note");
@@ -74,6 +75,7 @@ export function* importAnnotationSet(): SagaGenerator<void> {
 
         const previousNoteFound = notes.find(({ uuid }) => noteStateFormated.uuid === uuid);
         yield* putTyped(readerActions.note.addUpdate.build(noteStateFormated, previousNoteFound));
+        yield* putTyped(readerLocalActionReader.bookmarkTotalCount.build(noteTotalCount + 1));
 
         // wait 100ms to not overload event-loop
         yield* delayTyped(100);

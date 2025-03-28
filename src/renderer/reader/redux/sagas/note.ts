@@ -132,7 +132,7 @@ function* noteAddUpdate(action: readerActions.note.addUpdate.TAction) {
                     cleanText: note.locatorExtended.selectionInfo?.cleanText || note.locatorExtended.locator.text?.highlight || "",
                     cleanAfter: note.locatorExtended.selectionInfo?.cleanAfter || note.locatorExtended.locator.text?.after || "",
                     rawBefore: note.locatorExtended.selectionInfo?.rawBefore || note.locatorExtended.locator.text?.beforeRaw || "",
-                    rawText: note.locatorExtended.selectionInfo?.rawText || note.locatorExtended.locator.text?.beforeRaw || "",
+                    rawText: note.locatorExtended.selectionInfo?.rawText || note.locatorExtended.locator.text?.highlightRaw || "",
                     rawAfter: note.locatorExtended.selectionInfo?.rawAfter || note.locatorExtended.locator.text?.afterRaw || "",
                 },
                 color: { ...note.color },
@@ -182,7 +182,7 @@ function* createAnnotation(locatorExtended: MiniLocatorExtended, color: IColor, 
         textualValue: comment,
         index: noteTotalCount + 1,
         locatorExtended,
-        drawType: Number(EDrawType[drawType]) || EDrawType.solid_background,
+        drawType: EDrawType[drawType] || EDrawType.solid_background,
         tags,
         creator: {
             id: creator.id,
@@ -404,7 +404,7 @@ function* readerStart() {
                     cleanText: note.locatorExtended.selectionInfo?.cleanText || note.locatorExtended.locator.text?.highlight || "",
                     cleanAfter: note.locatorExtended.selectionInfo?.cleanAfter || note.locatorExtended.locator.text?.after || "",
                     rawBefore: note.locatorExtended.selectionInfo?.rawBefore || note.locatorExtended.locator.text?.beforeRaw || "",
-                    rawText: note.locatorExtended.selectionInfo?.rawText || note.locatorExtended.locator.text?.beforeRaw || "",
+                    rawText: note.locatorExtended.selectionInfo?.rawText || note.locatorExtended.locator.text?.highlightRaw || "",
                     rawAfter: note.locatorExtended.selectionInfo?.rawAfter || note.locatorExtended.locator.text?.afterRaw || "",
                 },
                 color: { ...note.color },
@@ -453,43 +453,6 @@ export const saga = () =>
             captureHightlightDrawMargin,
             (e) => console.error("readerLocalActionSetConfig", e),
         ),
-        // takeSpawnEvery(
-        //     readerActions.annotation.update.ID,
-        //     annotationUpdate,
-        //     (e) => console.error("readerLocalActionAnnotations.update", e),
-        // ),
-        // takeSpawnEvery(
-        //     readerActions.bookmark.update.ID,
-        //     bookmarkUpdate,
-        //     (e) => console.error("readerLocalActionBookmarks.update", e),
-        // ),
-        // takeSpawnEvery(
-        //     readerLocalActionAnnotations.focus.ID,
-        //     annotationFocus,
-        //     (e) => console.error("readerLocalActionAnnotations.focus", e),
-        // ),
-
-        // takeSpawnEvery(
-        //     readerActions.bookmark.push.ID,
-        //     bookmarkPush,
-        //     (e) => console.error("readerLocalActionBookmarks.push", e),
-        // ),
-        // takeSpawnEvery(
-        //     readerActions.annotation.push.ID,
-        //     annotationPush,
-        //     (e) => console.error("readerLocalActionAnnotations.push", e),
-        // ),
-        // takeSpawnEvery(
-        //     readerActions.bookmark.pop.ID,
-        //     bookmarkPop,
-        //     (e) => console.error("readerLocalActionBookmarks.pop", e),
-        // ),
-        // takeSpawnEvery(
-        //     readerActions.annotation.pop.ID,
-        //     annotationPop,
-        //     (e) => console.error("readerLocalActionAnnotations.pop", e),
-        // ),
-
         takeSpawnEvery(
             readerActions.note.addUpdate.ID,
             noteAddUpdate,
