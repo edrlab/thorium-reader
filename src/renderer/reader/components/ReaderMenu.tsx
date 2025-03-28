@@ -459,6 +459,7 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
 
     const dispatch = useDispatch();
     const [__] = useTranslator();
+    // const noteTotalCount = useSelector((state: IReaderRootState) => state.reader.noteTotalCount.state);
     const save = React.useCallback((color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
         dispatch(readerActions.note.addUpdate.build(
             {
@@ -470,14 +471,14 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
                 tags,
                 modified: (new Date()).getTime(),
                 created: annotation.created,
-                index: 0, // TODO
+                index: annotation.index,
                 group: "annotation",
+                creator: annotation.creator,
             },
-            {
-                ...annotation,
-            },
+            annotation,
         ));
         triggerEdition(false);
+        // dispatch(readerLocalActionReader.bookmarkTotalCount.build(noteTotalCount + 1));
     }, [dispatch, annotation, triggerEdition]);
 
     const date = new Date(annotation.modified || annotation.created);
@@ -742,22 +743,26 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
 
     const dispatch = useDispatch();
     const [__] = useTranslator();
+    // const noteTotalCount = useSelector((state: IReaderRootState) => state.reader.noteTotalCount.state);
     const save = React.useCallback((name: string, color: IColor, tag: string | undefined) => {
         dispatch(readerActions.note.addUpdate.build(
             {
-                ...bookmark,
+                uuid: bookmark.uuid,
+                locatorExtended: bookmark.locatorExtended,
+                drawType: bookmark.drawType,
                 textualValue: name,
                 color,
                 tags: tag ? [tag] : undefined,
                 modified: (new Date()).getTime(),
                 group: "bookmark",
-                index: 0, //TODO
+                created: bookmark.created,
+                index: bookmark.index,
+                creator: bookmark.creator,
             },
-            {
-                ...bookmark,
-            },
+            bookmark,
         ));
         triggerEdition(false);
+        // dispatch(readerLocalActionReader.bookmarkTotalCount.build(noteTotalCount + 1));
     }, [dispatch, bookmark, triggerEdition]);
 
     const date = new Date(bookmark.modified | bookmark.created);

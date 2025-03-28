@@ -12,7 +12,7 @@ import * as debug_ from "debug";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { SagaGenerator } from "typed-redux-saga";
 import { select as selectTyped, take as takeTyped, race as raceTyped, put as putTyped, all as allTyped, call as callTyped } from "typed-redux-saga/macro";
-import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig, readerLocalActionSetLocator } from "../actions";
+import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionLocatorHrefChanged, readerLocalActionReader, readerLocalActionSetConfig, readerLocalActionSetLocator } from "../actions";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
@@ -175,10 +175,12 @@ function* createAnnotation(locatorExtended: MiniLocatorExtended, color: IColor, 
     const creator = yield* selectTyped((state: IReaderRootState) => state.creator);
 
     debug(`Create an annotation for, [${locatorExtended.selectionInfo.cleanText.slice(0, 10)}]`);
+
+    const noteTotalCount = yield* selectTyped((state: IReaderRootState) => state.reader.noteTotalCount.state);
     yield* putTyped(readerActions.note.addUpdate.build({
         color,
         textualValue: comment,
-        index: 0, // TODO
+        index: noteTotalCount + 1,
         locatorExtended,
         drawType: Number(EDrawType[drawType]) || EDrawType.solid_background,
         tags,
@@ -189,6 +191,8 @@ function* createAnnotation(locatorExtended: MiniLocatorExtended, color: IColor, 
         created: (new Date()).getTime(),
         group: "annotation",
     }));
+
+    yield* putTyped(readerLocalActionReader.bookmarkTotalCount.build(noteTotalCount + 1));
 
     // sure! close the popover
     yield* putTyped(readerLocalActionAnnotations.enableMode.build(false, undefined, undefined));

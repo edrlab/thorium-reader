@@ -28,7 +28,7 @@ import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { registerKeyboardListener, unregisterKeyboardListener } from "readium-desktop/renderer/common/keyboard";
 import { DEBUG_KEYBOARD } from "readium-desktop/common/keyboard";
 import { ReadiumElectronBrowserWindow } from "@r2-navigator-js/electron/renderer/webview/state";
-import { readerLocalActionHighlights } from "../../redux/actions";
+import { readerLocalActionHighlights, readerLocalActionReader } from "../../redux/actions";
 import { BookmarkEdit } from "../BookmarkEdit";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { EDrawType, INoteState } from "readium-desktop/common/redux/states/renderer/note";
@@ -90,7 +90,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
     const { note: notes, locator: locatorExtended } = useSelector((state: IReaderRootState) => state.reader, equalFn);
     // const selectionIsNew = locatorExtended.selectionIsNew;
 
-    const bookmarkTotalCount = useSelector((state: IReaderRootState) => state.reader.noteTotalCount.state);
+    const noteTotalCount = useSelector((state: IReaderRootState) => state.reader.noteTotalCount.state);
 
     const ttsState = useSelector((state: IReaderRootState) => state.reader.tts.state);
     const mediaOverlaysState = useSelector((state: IReaderRootState) => state.reader.mediaOverlay.state);
@@ -187,8 +187,8 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
         }
 
         dispatch(readerActions.note.addUpdate.build(bookmark));
-
-    }, [dispatch, ttsState, mediaOverlaysState, __, toasty]);
+        dispatch(readerLocalActionReader.bookmarkTotalCount.build(noteTotalCount + 1));
+    }, [dispatch, ttsState, mediaOverlaysState, __, toasty, noteTotalCount]);
 
     const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
     const colorDefault = useSelector((state: IReaderRootState) => state.reader.config.annotation_defaultColor);
@@ -201,13 +201,13 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
             }
 
             if (bookmarkSelected) {
-                toasty(`${__("catalog.delete")} - ${bookmarkSelected.textualValue ? bookmarkSelected.textualValue : `${__("reader.marks.bookmarks")} [${bookmarkTotalCount}]`}`);
+                toasty(`${__("catalog.delete")} - ${bookmarkSelected.textualValue ? bookmarkSelected.textualValue : `${__("reader.marks.bookmarks")} [${noteTotalCount}]`}`);
                 deleteBookmark(bookmarkSelected);
                 return ;
             }
 
             if (!bookmarkSelected) {
-                const msg = `${__("catalog.addTagsButton")} - ${name ? name : `${__("reader.marks.bookmarks")} [${bookmarkTotalCount + 1}]`}`;
+                const msg = `${__("catalog.addTagsButton")} - ${name ? name : `${__("reader.marks.bookmarks")} [${noteTotalCount + 1}]`}`;
                 toasty(msg);
 
                 if (locatorExtended.locator.locations && !locatorExtended.locator.locations.caretInfo?.rangeInfo && locatorExtended.selectionInfo?.rangeInfo) {
@@ -219,7 +219,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                 addBookmark({
                     textualValue: name,
                     created: (new Date()).getTime(),
-                    index: bookmarkTotalCount + 1,
+                    index: noteTotalCount + 1,
                     locatorExtended: locatorExtended,
                     creator: creatorMyself,
                     color,
@@ -236,14 +236,14 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
             if (href) {
 
                 if (bookmarkSelected) {
-                    toasty(`${__("catalog.delete")} - ${bookmarkSelected.textualValue ? bookmarkSelected.textualValue : `${__("reader.marks.bookmarks")} [${bookmarkTotalCount}]`}`);
+                    toasty(`${__("catalog.delete")} - ${bookmarkSelected.textualValue ? bookmarkSelected.textualValue : `${__("reader.marks.bookmarks")} [${noteTotalCount}]`}`);
                     deleteBookmark(bookmarkSelected);
                 } else {
-                    toasty(`${__("catalog.addTagsButton")} - ${name ? name : `${__("reader.marks.bookmarks")} [${bookmarkTotalCount + 1}]`}`);
+                    toasty(`${__("catalog.addTagsButton")} - ${name ? name : `${__("reader.marks.bookmarks")} [${noteTotalCount + 1}]`}`);
                     addBookmark({
                         textualValue: name,
                         created: (new Date()).getTime(),
-                        index: bookmarkTotalCount + 1,
+                        index: noteTotalCount + 1,
                         locatorExtended: locatorExtended,
                         creator: creatorMyself,
                         color,
@@ -255,7 +255,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
             }
         }
     }, [
-        __, addBookmark, deleteBookmark, locatorExtended, isNavigator, toasty, bookmarkSelected, bookmarkTotalCount, creatorMyself, colorDefault,
+        __, addBookmark, deleteBookmark, locatorExtended, isNavigator, toasty, bookmarkSelected, noteTotalCount, creatorMyself, colorDefault,
     ],
     );
 
