@@ -29,7 +29,7 @@ import { EDrawType, INoteState, NOTE_DEFAULT_COLOR, noteColorCodeToColorSet } fr
 // Logger
 const debug = debug_("readium-desktop:common:readium:annotation:converter");
 
-export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnnotation["target"], cacheDoc: ICacheDocument, debugRangeInfo: IRangeInfo | undefined): Promise<MiniLocatorExtended | undefined> {
+export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnnotation["target"], cacheDoc: ICacheDocument, debugRangeInfo: IRangeInfo | undefined, isABookmark: boolean): Promise<MiniLocatorExtended | undefined> {
 
    const xmlDom = getDocumentFromICacheDocument(cacheDoc);
     if (!xmlDom) {
@@ -173,7 +173,9 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
     // need to check if the start/end ContainerElementCssSelector & start/end ContainerChildTextNodeIndex is equal and if the end - start offset equal 1
     let caretInfo: ISelectionInfo = undefined;
     let selectionInfo: ISelectionInfo = undefined;
-    if (rangeInfo.endContainerChildTextNodeIndex === rangeInfo.startContainerChildTextNodeIndex && rangeInfo.endContainerElementCssSelector === rangeInfo.startContainerElementCssSelector && rangeInfo.endOffset - rangeInfo.startOffset === 1) {
+    if (isABookmark ||
+        !selectionInfo?.rangeInfo && (rangeInfo.endContainerChildTextNodeIndex === rangeInfo.startContainerChildTextNodeIndex && rangeInfo.endContainerElementCssSelector === rangeInfo.startContainerElementCssSelector && rangeInfo.endOffset - rangeInfo.startOffset === 1)
+    ) {
         // IT's a bookmark: need to move this rangeInfo to the locations.caretInfo
 
         caretInfo = {
@@ -258,7 +260,7 @@ const describeCssSelectorWithTextPosition = async (range: Range, document: Docum
     };
 };
 
-export async function convertAnnotationStateToSelector(annotationWithCacheDoc: INoteStateWithICacheDocument, isLcp: boolean): Promise<ISelector[]> {
+export async function convertAnnotationStateToSelector(annotationWithCacheDoc: INoteStateWithICacheDocument, isLcp: boolean): Promise<[ISelector[], isABookmark: boolean]> {
 
     const selector: ISelector<any>[] = [];
 
@@ -266,7 +268,7 @@ export async function convertAnnotationStateToSelector(annotationWithCacheDoc: I
 
     const xmlDom = getDocumentFromICacheDocument(__cacheDocument);
     if (!xmlDom) {
-        return [];
+        return [[], false];
     }
 
     const document = xmlDom;
@@ -279,17 +281,18 @@ export async function convertAnnotationStateToSelector(annotationWithCacheDoc: I
 
     // the range start/end is guaranteed in document order (internally used in navigator whenever deserialising DOM Ranges from JSON expression) ... but DOM Ranges are always ordered anyway (only the user / document selection object can be reversed)
     const rangeInfo = selectionInfo?.rangeInfo || locator.locations.caretInfo?.rangeInfo;
+    const isABookmark = !selectionInfo?.rangeInfo && (rangeInfo.endContainerChildTextNodeIndex === rangeInfo.startContainerChildTextNodeIndex && rangeInfo.endContainerElementCssSelector === rangeInfo.startContainerElementCssSelector && rangeInfo.endOffset - rangeInfo.startOffset === 1);
     if (!rangeInfo) {
         debug("ERROR!! RangeInfo not defined !!!");
         debug(rangeInfo);
-        return selector;
+        return [selector, false];
     }
     const range = convertRangeInfo(xmlDom, rangeInfo);
     debug("Dump range memory found:", range);
 
     if (range.collapsed) {
         debug("RANGE COLLAPSED??! skipping...");
-        return selector;
+        return [selector, false];
     }
 
     // createTextPositionSelectorMatcher()
@@ -325,10 +328,10 @@ export async function convertAnnotationStateToSelector(annotationWithCacheDoc: I
     // this normally occurs at import time, but let's save debugging effort by checking immediately when exporting...
     // errors are non-fatal, just hunt for the "IRangeInfo DIFF" console logs
     if (IS_DEV) {
-        await convertSelectorTargetToLocatorExtended({ source: "", selector }, __cacheDocument, rangeInfo);
+        await convertSelectorTargetToLocatorExtended({ source: "", selector }, __cacheDocument, rangeInfo, isABookmark);
     }
 
-    return selector;
+    return [selector, isABookmark];
 }
 
 export async function convertAnnotationStateToReadiumAnnotation(annotation: INoteStateWithICacheDocument, isLcp: boolean): Promise<IReadiumAnnotation> {
@@ -342,7 +345,7 @@ export async function convertAnnotationStateToReadiumAnnotation(annotation: INot
 
     const highlight = (drawType === EDrawType.solid_background ? "solid" : EDrawType[drawType]) as IReadiumAnnotation["body"]["highlight"];
 
-    const selector = await convertAnnotationStateToSelector(annotation, isLcp);
+    const [selector, isABookmark] = await convertAnnotationStateToSelector(annotation, isLcp);
 
     return {
         "@context": "http://www.w3.org/ns/anno.jsonld",
@@ -373,6 +376,7 @@ export async function convertAnnotationStateToReadiumAnnotation(annotation: INot
             },
             selector,
         },
+        motivation: isABookmark ? "bookmarking" : undefined,
     };
 }
 

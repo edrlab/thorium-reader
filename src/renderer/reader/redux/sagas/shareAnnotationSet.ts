@@ -16,8 +16,9 @@ import { ICacheDocument } from "readium-desktop/common/redux/states/renderer/res
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { convertAnnotationStateArrayToReadiumAnnotationSet, convertSelectorTargetToLocatorExtended, INoteStateWithICacheDocument } from "readium-desktop/common/readium/annotation/converter";
 import { IReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
-import { annotationActions, readerActions } from "readium-desktop/common/redux/actions";
+import { annotationActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { EDrawType, INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import { ToastType } from "readium-desktop/common/models/toast";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:shareAnnotationSet");
@@ -60,13 +61,14 @@ export function* importAnnotationSet(): SagaGenerator<void> {
         const cacheDoc = getCacheDocumentFromLocator(cacheDocuments, source);
 
         const noteTotalCount = yield* selectTyped((state: IReaderRootState) => state.reader.noteTotalCount.state);
-        const locatorExtended = yield* callTyped(() => convertSelectorTargetToLocatorExtended(target, cacheDoc, undefined));
+        const isABookmark = noteState.group === "bookmark";
+        const locatorExtended = yield* callTyped(() => convertSelectorTargetToLocatorExtended(target, cacheDoc, undefined, isABookmark));
         const noteStateFormated: INoteState = {
             ...noteState,
             locatorExtended,
             index: noteTotalCount + 1,
-            drawType: locatorExtended.locator.locations?.caretInfo ? EDrawType.bookmark : noteState.drawType,
-            group: locatorExtended.locator.locations?.caretInfo ? "bookmark" : "annotation",
+            drawType: (locatorExtended.locator.locations?.caretInfo || isABookmark) ? EDrawType.bookmark : noteState.drawType,
+            group: (locatorExtended.locator.locations?.caretInfo || isABookmark) ? "bookmark" : noteState.group, // can be filed by https://www.w3.org/TR/annotation-model/#motivation-and-purpose
         };
         if (!noteStateFormated.locatorExtended) {
             debug("ERROR: no locator found !! for annotationState, doesn't import this note");
