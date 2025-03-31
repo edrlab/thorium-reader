@@ -19,9 +19,8 @@ import * as openError from "./openError";
 import * as openRequest from "./openRequest";
 import * as setReduxState from "./setReduxState";
 import * as disableRTLFlip from "./rtlFlip";
-import * as bookmark from "./bookmarks";
-import * as annotation from "./annotations";
 import * as setTheLock from "./setTheLock";
+import * as note from "./note";
 
 export {
     openRequest,
@@ -38,7 +37,6 @@ export {
     fullScreenRequest,
     clipboardCopy,
     disableRTLFlip,
-    bookmark,
-    annotation,
+    note,
     setTheLock,
 };

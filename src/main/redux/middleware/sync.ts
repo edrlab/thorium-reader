@@ -73,14 +73,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     versionUpdateActions.notify.ID,
 
     // needed to broadcast events to all reader windows,
-    readerActions.bookmark.pop.ID,
-    readerActions.bookmark.push.ID,
-    readerActions.bookmark.update.ID,
-
-    // needed to broadcast events to all reader windows,
-    readerActions.annotation.pop.ID,
-    readerActions.annotation.push.ID,
-    readerActions.annotation.update.ID,
+    readerActions.note.addUpdate.ID,
+    readerActions.note.remove.ID,
 
     sessionActions.save.ID,
 

@@ -6,22 +6,25 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
+import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 
-export const ID = "READER_ANNOTATIONS_POP";
+export const ID = "READER_NOTE_REMOVE";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-// interface IPayload extends Pick<IAnnotationState, "uuid"> {
-interface IPayload extends IAnnotationState {
+export interface IPayload {
+    note: INoteState;
 }
 
-export function build(param: IAnnotationState):
+export function build(note: INoteState):
     Action<typeof ID, IPayload> {
 
     return {
         type: ID,
-        payload: {...param},
+        payload: {
+            note,
+        },
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator
 export type TAction = ReturnType<typeof build>;
+

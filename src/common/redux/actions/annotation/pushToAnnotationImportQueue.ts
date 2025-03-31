@@ -6,14 +6,14 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { IAnnotationPreParsingState } from "../../states/renderer/annotation";
+import { INotePreParsingState } from "readium-desktop/common/redux/states/renderer/note";
 
 export const ID = "ANNOTATION_PUSH_TO_ANNOTATION_IMPORT_QUEUE";
 
 export interface Payload {
-    annotations: IAnnotationPreParsingState[];
+    annotations: INotePreParsingState[];
 }
-export function build(annotations: IAnnotationPreParsingState[]): Action<typeof ID, Payload> {
+export function build(annotations: INotePreParsingState[]): Action<typeof ID, Payload> {
     return {
         type: ID,
         payload: {
