@@ -17,7 +17,7 @@ import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/r
 import { convertAnnotationStateArrayToReadiumAnnotationSet, convertSelectorTargetToLocatorExtended, INoteStateWithICacheDocument } from "readium-desktop/common/readium/annotation/converter";
 import { IReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { annotationActions, readerActions } from "readium-desktop/common/redux/actions";
-import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import { EDrawType, INoteState } from "readium-desktop/common/redux/states/renderer/note";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:shareAnnotationSet");
@@ -60,11 +60,13 @@ export function* importAnnotationSet(): SagaGenerator<void> {
         const cacheDoc = getCacheDocumentFromLocator(cacheDocuments, source);
 
         const noteTotalCount = yield* selectTyped((state: IReaderRootState) => state.reader.noteTotalCount.state);
+        const locatorExtended = yield* callTyped(() => convertSelectorTargetToLocatorExtended(target, cacheDoc, undefined));
         const noteStateFormated: INoteState = {
             ...noteState,
-            locatorExtended: yield* callTyped(() => convertSelectorTargetToLocatorExtended(target, cacheDoc, undefined)),
+            locatorExtended,
             index: noteTotalCount + 1,
-            group: "annotation", // TODO: parse note as a bookmark if the textInfo length is one character 
+            drawType: locatorExtended.locator.locations?.caretInfo ? EDrawType.bookmark : noteState.drawType,
+            group: locatorExtended.locator.locations?.caretInfo ? "bookmark" : "annotation",
         };
         if (!noteStateFormated.locatorExtended) {
             debug("ERROR: no locator found !! for annotationState, doesn't import this note");
@@ -152,8 +154,15 @@ export const saga = () =>
                     throw new Error("unreachable!!!");
                 }
 
-                while (true) {
-                    yield* callTyped(importAnnotationSet);
+                try {
+
+                    while (true) {
+                        yield* callTyped(importAnnotationSet);
+                    }
+                } catch (e) {
+                    debug("ERROR IMPORT ANNOTATION SET :", e);
+                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, `${e}`));
+                    
                 }
 
             },

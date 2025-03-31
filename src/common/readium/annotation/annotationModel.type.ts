@@ -325,7 +325,7 @@ export const readiumAnnotationSetSchema = {
                         },
                         "highlight": {
                             "type": "string",
-                            "enum": ["solid", "underline", "strikethrough", "outline"],
+                            "enum": ["solid", "underline", "strikethrough", "outline", "bookmark"],
                             "nullable": true,
                         },
                         "format": {
