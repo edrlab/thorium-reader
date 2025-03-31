@@ -765,7 +765,7 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
         // dispatch(readerLocalActionReader.bookmarkTotalCount.build(noteTotalCount + 1));
     }, [dispatch, bookmark, triggerEdition]);
 
-    const date = new Date(bookmark.modified | bookmark.created);
+    const date = new Date(bookmark.modified || bookmark.created);
     const dateStr = `${(`${date.getDate()}`.padStart(2, "0"))}/${(`${date.getMonth() + 1}`.padStart(2, "0"))}/${date.getFullYear()}`;
 
     const { percentRounded } = React.useMemo(() => {
@@ -1011,7 +1011,7 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
 
 const selectionIsSet = (a: Selection): a is Set<string> => typeof a === "object";
 const MAX_MATCHES_PER_PAGE = 5;
-
+const START_PAGE = 1;
 
 const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotationUUID: () => void, doFocus: number,*/ popoverBoundary: HTMLDivElement, advancedAnnotationsOnChange: () => void, quickAnnotationsOnChange: () => void, marginAnnotationsOnChange: () => void, hideAnnotationOnChange: () => void, serialAnnotator: boolean } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
@@ -1028,8 +1028,24 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
     const updateDialogOrDockDataInfo = React.useCallback((data: IReaderDialogOrDockSettingsMenuState) => {
         dispatch(dockedMode ? dockActions.updateRequest.build(data) : dialogActions.updateRequest.build(data));
     }, [dockedMode, dispatch]);
-    const { id: annotationId, edit: annotationEdit } = dialogOrDockDataInfo;
 
+    const [sortingOpen, setSortingOpen] = React.useState(false);
+    const [filterOpen, setFilterOpen] = React.useState(false);
+    const [optionsOpen, setOptionsOpen] = React.useState(false);
+
+    const { id: needToFocusOnID, edit: annotationEdit } = dialogOrDockDataInfo;
+    const [annotationUUID, setAnnotationUUID] = React.useState(needToFocusOnID);
+    React.useEffect(() => {
+        setAnnotationUUID(needToFocusOnID);
+        setTagArrayFilter(new Set([]));
+        setColorArrayFilter(new Set([]));
+        setDrawTypeArrayFilter(new Set([]));
+        setCreatorArrayFilter(new Set([]));
+        setSortingOpen(false);
+        setFilterOpen(false);
+        setOptionsOpen(false);
+
+    }, [needToFocusOnID]);
 
     const [__] = useTranslator();
     const notes = useSelector((state: IReaderRootState) => state.reader.note);
@@ -1044,75 +1060,34 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
     const [drawTypeArrayFilter, setDrawTypeArrayFilter] = React.useState<Selection>(new Set([]));
     const [creatorArrayFilter, setCreatorArrayFilter] = React.useState<Selection>(new Set([]));
 
-    let annotationListFiltered: INoteState[] = [];
-    let startPage = 1;
-    const [pageNumber, setPageNumber] = React.useState(startPage);
+    const [pageNumber, setPageNumber] = React.useState(START_PAGE);
     const changePageNumber = React.useCallback((cb: (n: number) => number) => {
         setTimeout(() => paginatorAnnotationsRef.current?.focus(), 100);
         updateDialogOrDockDataInfo({id: "", edit: false});
         setPageNumber(cb);
     }, [setPageNumber, updateDialogOrDockDataInfo]);
 
-    annotationListFiltered = (selectionIsSet(tagArrayFilter) && tagArrayFilter.size) ||
-        (selectionIsSet(colorArrayFilter) && colorArrayFilter.size) ||
-        (selectionIsSet(drawTypeArrayFilter) && drawTypeArrayFilter.size) ||
-        (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size)
-        ? annotationsListAll.filter(({ tags, color, drawType: _drawType, creator }) => {
+    const annotationListFiltered = React.useMemo(() => {
 
-            const colorHex = rgbToHex(color);
-            const drawType = EDrawType[_drawType];
+        return (
+            (selectionIsSet(tagArrayFilter) && tagArrayFilter.size) ||
+            (selectionIsSet(colorArrayFilter) && colorArrayFilter.size) ||
+            (selectionIsSet(drawTypeArrayFilter) && drawTypeArrayFilter.size) ||
+            (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size)
+        ) 
+            ? annotationsListAll.filter(({ tags, color, drawType: _drawType, creator }) => {
 
-            return (!selectionIsSet(tagArrayFilter) || !tagArrayFilter.size || tags?.some((tagsValueName) => tagArrayFilter.has(tagsValueName))) &&
-                (!selectionIsSet(colorArrayFilter) || !colorArrayFilter.size || colorArrayFilter.has(colorHex)) &&
-                (!selectionIsSet(drawTypeArrayFilter) || !drawTypeArrayFilter.size || drawTypeArrayFilter.has(drawType)) &&
-                (!selectionIsSet(creatorArrayFilter) || !creatorArrayFilter.size || creatorArrayFilter.has(getUuidFromUrn(creator.id) !== getUuidFromUrn(creatorMyself.id) ? creator.name : creatorMyself.name));
+                const colorHex = rgbToHex(color);
+                const drawType = EDrawType[_drawType];
 
-        })
-        : annotationsListAll;
+                return (!selectionIsSet(tagArrayFilter) || !tagArrayFilter.size || tags?.some((tagsValueName) => tagArrayFilter.has(tagsValueName))) &&
+                    (!selectionIsSet(colorArrayFilter) || !colorArrayFilter.size || colorArrayFilter.has(colorHex)) &&
+                    (!selectionIsSet(drawTypeArrayFilter) || !drawTypeArrayFilter.size || drawTypeArrayFilter.has(drawType)) &&
+                    (!selectionIsSet(creatorArrayFilter) || !creatorArrayFilter.size || creatorArrayFilter.has(getUuidFromUrn(creator.id) !== getUuidFromUrn(creatorMyself.id) ? creator.name : creatorMyself.name));
 
-    if (annotationId) {
-
-        const annotationFocusItemFindIndex = annotationListFiltered.findIndex((annotationItem) => annotationItem.uuid === annotationId);
-        if (annotationFocusItemFindIndex > -1) {
-            const annotationFocusItemPageNumber = Math.ceil((annotationFocusItemFindIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
-            startPage = annotationFocusItemPageNumber;
-            if (startPage !== pageNumber)
-                setPageNumber(startPage);
-
-        } else if (annotationListFiltered !== annotationsListAll) {
-            annotationListFiltered = annotationsListAll;
-            const annotationFocusItemFindIndex = annotationListFiltered.findIndex((annotationItem) => annotationItem.uuid === annotationId);
-            if (annotationFocusItemFindIndex > -1) {
-                const annotationFocusItemPageNumber = Math.ceil((annotationFocusItemFindIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
-                startPage = annotationFocusItemPageNumber;
-                if (startPage !== pageNumber)
-                    setPageNumber(startPage);
-
-                const annotationFound = annotationListFiltered[annotationFocusItemFindIndex];
-
-                // reset filters
-                if (tagArrayFilter !== "all" && !tagArrayFilter.has((annotationFound.tags || [])[0]) && tagArrayFilter.size !== 0) {
-                    setTagArrayFilter(new Set([]));
-                }
-                if (colorArrayFilter !== "all" && !colorArrayFilter.has(rgbToHex(annotationFound.color)) && colorArrayFilter.size !== 0) {
-                    setColorArrayFilter(new Set([]));
-                }
-                if (drawTypeArrayFilter !== "all" && !drawTypeArrayFilter.has(EDrawType[annotationFound.drawType]) && drawTypeArrayFilter.size !== 0) {
-                    setDrawTypeArrayFilter(new Set([]));
-                }
-                if (creatorArrayFilter !== "all" && !creatorArrayFilter.has(annotationFound.creator?.name) && creatorArrayFilter.size !== 0) {
-                    setCreatorArrayFilter(new Set([]));
-                }
-            }
-        }
-
-    }
-
-    // React.useEffect(() => {
-    //     if (annotationUUIDFocused) {
-    //         resetAnnotationUUID();
-    //     }
-    // }, [annotationUUIDFocused, resetAnnotationUUID]);
+            })
+            : annotationsListAll;
+    }, [annotationsListAll, tagArrayFilter, colorArrayFilter, drawTypeArrayFilter, creatorArrayFilter, creatorMyself.id, creatorMyself.name]);
 
     const [sortType, setSortType] = React.useState<Selection>(new Set(["lastCreated"]));
     if (sortType !== "all" && sortType.has("progression")) {
@@ -1133,11 +1108,21 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
             return ma && mb ? mb - ma : ma ? -1 : mb ? 1 : 0;
         });
     }
+    
+    const annotationFocusFoundIndex = annotationUUID ? annotationListFiltered.findIndex(({uuid}) => annotationUUID === uuid) : -1;
+    React.useEffect(() => {
+        if (annotationUUID) {
+            setAnnotationUUID("");
+            const annotationFocusItemPageNumber = Math.ceil((annotationFocusFoundIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
+            setPageNumber((pageNumber) => annotationFocusItemPageNumber !== pageNumber ? annotationFocusItemPageNumber : pageNumber);
+
+        }
+    }, [annotationUUID, annotationFocusFoundIndex]);
 
     const pageTotal = Math.ceil(annotationListFiltered.length / MAX_MATCHES_PER_PAGE) || 1;
 
     if (pageNumber <= 0) {
-        setPageNumber(startPage);
+        setPageNumber(START_PAGE);
     } else if (pageNumber > pageTotal) {
         setPageNumber(pageTotal);
     }
@@ -1223,11 +1208,12 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
 
     const annotationTitleRef = React.useRef<HTMLInputElement>();
 
+
     return (
         <>
             <div className={stylesAnnotations.annotations_filter_line}>
                 <div style={{ display: "flex", gap: "10px" }}>
-                    <Popover.Root>
+                    <Popover.Root open={sortingOpen} onOpenChange={(open) => setSortingOpen(open)}>
                         <Popover.Trigger asChild>
                             <button aria-label={__("reader.annotations.sorting.sortingOptions")} className={stylesAnnotations.annotations_filter_trigger_button}
                                 title={__("reader.annotations.sorting.sortingOptions")}>
@@ -1265,7 +1251,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                             </Popover.Content>
                         </Popover.Portal>
                     </Popover.Root>
-                    <Popover.Root>
+                    <Popover.Root open={filterOpen} onOpenChange={(open) => setFilterOpen(open)}>
                         <Popover.Trigger asChild>
                             <button aria-label={__("reader.annotations.filter.filterOptions")} className={stylesAnnotations.annotations_filter_trigger_button}
                                 title={__("reader.annotations.filter.filterOptions")}>
@@ -1559,7 +1545,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                         </AlertDialog.Portal>
                     </AlertDialog.Root>
                     <span style={{height: "30px", width: "2px", borderRight: "2px solid var(--color-extralight-grey)"}}></span>
-                    <Popover.Root>
+                    <Popover.Root open={optionsOpen} onOpenChange={(open) => setOptionsOpen(open)}>
                         <Popover.Trigger className={stylesAnnotations.annotations_filter_trigger_button} title={__("reader.annotations.annotationsOptions")} aria-label={__("reader.annotations.annotationsOptions")}>
                             <SVG ariaHidden svg={OptionsIcon} />
                         </Popover.Trigger>
@@ -1707,7 +1693,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                         key={`annotation-card_${annotationItem.uuid}`}
                         annotation={annotationItem}
                         goToLocator={goToLocator}
-                        isEdited={annotationItem.uuid === annotationId && annotationEdit}
+                        isEdited={annotationItem.uuid === needToFocusOnID && annotationEdit}
                         triggerEdition={triggerEdition(annotationItem)}
                         setTagFilter={(v) => setTagArrayFilter(new Set([v]))}
                         setCreatorFilter={(v) => setCreatorArrayFilter(new Set([v]))}
@@ -1820,7 +1806,23 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
     const updateDialogOrDockDataInfo = React.useCallback((data: IReaderDialogOrDockSettingsMenuState) => {
         dispatch(dockedMode ? dockActions.updateRequest.build(data) : dialogActions.updateRequest.build(data));
     }, [dockedMode, dispatch]);
-    const { id: bookmarkId, edit: bookmarkEdit } = dialogOrDockDataInfo;
+
+    const [sortingOpen, setSortingOpen] = React.useState(false);
+    const [filterOpen, setFilterOpen] = React.useState(false);
+    const [optionsOpen, setOptionsOpen] = React.useState(false);
+
+    const { id: needToFocusOnID, edit: bookmarkEdit } = dialogOrDockDataInfo;
+    const [bookmarkUUID, setBookmarkUUID] = React.useState(needToFocusOnID);
+    React.useEffect(() => {
+        setBookmarkUUID(needToFocusOnID);
+        setTagArrayFilter(new Set([]));
+        setColorArrayFilter(new Set([]));
+        setCreatorArrayFilter(new Set([]));
+        setSortingOpen(false);
+        setFilterOpen(false);
+        setOptionsOpen(false);
+
+    }, [needToFocusOnID]);
 
     const paginatorBookmarksRef = React.useRef<HTMLSelectElement>();
 
@@ -1836,64 +1838,31 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
     const [creatorArrayFilter, setCreatorArrayFilter] = React.useState<Selection>(new Set([]));
     const [tagArrayFilter, setTagArrayFilter] = React.useState<Selection>(new Set([]));
 
-    let bookmarkListFiltered: INoteState[] = [];
-    let startPage = 1;
-    const [pageNumber, setPageNumber] = React.useState(startPage);
+    const [pageNumber, setPageNumber] = React.useState(START_PAGE);
     const changePageNumber = React.useCallback((cb: (n: number) => number) => {
         setTimeout(() => paginatorBookmarksRef.current?.focus(), 100);
         updateDialogOrDockDataInfo({id: "", edit: false});
         setPageNumber(cb);
     }, [setPageNumber, updateDialogOrDockDataInfo]);
 
-    bookmarkListFiltered =
-        ((selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size) ||
-        (selectionIsSet(colorArrayFilter) && colorArrayFilter.size)) ||
-        (selectionIsSet(tagArrayFilter) && tagArrayFilter.size)
-        ? bookmarkListAll.filter(({ creator, color, tags }) => {
+    const bookmarkListFiltered = React.useMemo(() => {
 
-            const colorHex = rgbToHex(color);
+        return (
+            (selectionIsSet(tagArrayFilter) && tagArrayFilter.size) ||
+            (selectionIsSet(colorArrayFilter) && colorArrayFilter.size) ||
+            (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size)
+        ) 
+            ? bookmarkListAll.filter(({ tags, color, creator }) => {
 
-            return (!selectionIsSet(creatorArrayFilter) || !creatorArrayFilter.size || creatorArrayFilter.has(getUuidFromUrn(creator.id) !== getUuidFromUrn(creatorMyself.id) ? creator.name : creatorMyself.name)) &&
-                (!selectionIsSet(colorArrayFilter) || !colorArrayFilter.size || colorArrayFilter.has(colorHex)) &&
-                (!selectionIsSet(tagArrayFilter) || !tagArrayFilter.size || tags?.some((tagsValueName) => tagArrayFilter.has(tagsValueName)));
+                const colorHex = rgbToHex(color);
 
-        })
-        : bookmarkListAll;
+                return (!selectionIsSet(tagArrayFilter) || !tagArrayFilter.size || tags?.some((tagsValueName) => tagArrayFilter.has(tagsValueName))) &&
+                    (!selectionIsSet(colorArrayFilter) || !colorArrayFilter.size || colorArrayFilter.has(colorHex)) &&
+                    (!selectionIsSet(creatorArrayFilter) || !creatorArrayFilter.size || creatorArrayFilter.has(getUuidFromUrn(creator.id) !== getUuidFromUrn(creatorMyself.id) ? creator.name : creatorMyself.name));
 
-    if (bookmarkId) {
-
-        const annotationFocusItemFindIndex = bookmarkListFiltered.findIndex((annotationItem) => annotationItem.uuid === bookmarkId);
-        if (annotationFocusItemFindIndex > -1) {
-            const annotationFocusItemPageNumber = Math.ceil((annotationFocusItemFindIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
-            startPage = annotationFocusItemPageNumber;
-            if (startPage !== pageNumber)
-                setPageNumber(startPage);
-
-        } else if (bookmarkListFiltered !== bookmarkListAll) {
-            bookmarkListFiltered = bookmarkListAll;
-            const annotationFocusItemFindIndex = bookmarkListFiltered.findIndex((annotationItem) => annotationItem.uuid === bookmarkId);
-            if (annotationFocusItemFindIndex > -1) {
-                const annotationFocusItemPageNumber = Math.ceil((annotationFocusItemFindIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
-                startPage = annotationFocusItemPageNumber;
-                if (startPage !== pageNumber)
-                    setPageNumber(startPage);
-
-                const annotationFound = bookmarkListFiltered[annotationFocusItemFindIndex];
-
-                // reset filters
-                if (creatorArrayFilter !== "all" && !creatorArrayFilter.has(annotationFound.creator?.name) && creatorArrayFilter.size !== 0) {
-                    setCreatorArrayFilter(new Set([]));
-                }
-                if (colorArrayFilter !== "all" && !colorArrayFilter.has(rgbToHex(annotationFound.color)) && colorArrayFilter.size !== 0) {
-                    setColorArrayFilter(new Set([]));
-                }
-                if (tagArrayFilter !== "all" && !tagArrayFilter.has((annotationFound.tags || [])[0]) && tagArrayFilter.size !== 0) {
-                    setTagArrayFilter(new Set([]));
-                }
-            }
-        }
-
-    }
+            })
+            : bookmarkListAll;
+    }, [bookmarkListAll, tagArrayFilter, colorArrayFilter, creatorArrayFilter, creatorMyself.id, creatorMyself.name]);
 
     const [sortType, setSortType] = React.useState<Selection>(new Set(["lastCreated"]));
     if (sortType !== "all" && sortType.has("progression")) {
@@ -1915,10 +1884,20 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
         });
     }
 
+    const annotationFocusFoundIndex = bookmarkUUID ? bookmarkListFiltered.findIndex(({uuid}) => bookmarkUUID === uuid) : -1;
+    React.useEffect(() => {
+        if (bookmarkUUID) {
+            setBookmarkUUID("");
+            const annotationFocusItemPageNumber = Math.ceil((annotationFocusFoundIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
+            setPageNumber((pageNumber) => annotationFocusItemPageNumber !== pageNumber ? annotationFocusItemPageNumber : pageNumber);
+
+        }
+    }, [bookmarkUUID, annotationFocusFoundIndex]);
+
     const pageTotal = Math.ceil(bookmarkListFiltered.length / MAX_MATCHES_PER_PAGE) || 1;
 
     if (pageNumber <= 0) {
-        setPageNumber(startPage);
+        setPageNumber(START_PAGE);
     } else if (pageNumber > pageTotal) {
         setPageNumber(pageTotal);
     }
@@ -1977,7 +1956,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
         <>
             <div className={stylesBookmarks.bookmarks_filter_line}>
                 <div style={{ display: "flex", gap: "10px" }}>
-                    <Popover.Root>
+                    <Popover.Root open={sortingOpen} onOpenChange={(open) => setSortingOpen(open)}>
                         <Popover.Trigger asChild>
                             <button aria-label={__("reader.annotations.sorting.sortingOptions")} className={stylesBookmarks.bookmarks_filter_trigger_button}
                                 title={__("reader.annotations.sorting.sortingOptions")}>
@@ -2023,7 +2002,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                             </Popover.Content>
                         </Popover.Portal>
                     </Popover.Root>
-                    <Popover.Root>
+                    <Popover.Root open={filterOpen} onOpenChange={(open) => setFilterOpen(open)}>
                         <Popover.Trigger asChild>
                             <button aria-label={__("reader.annotations.filter.filterOptions")} className={stylesBookmarks.bookmarks_filter_trigger_button}
                                 title={__("reader.annotations.filter.filterOptions")}>
@@ -2298,7 +2277,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                         </AlertDialog.Portal>
                     </AlertDialog.Root>
                     <span style={{ height: "30px", width: "2px", borderRight: "2px solid var(--color-extralight-grey)" }}></span>
-                    <Popover.Root>
+                    <Popover.Root open={optionsOpen} onOpenChange={(open) => setOptionsOpen(open)}>
                         <Popover.Trigger className={stylesAnnotations.annotations_filter_trigger_button} title={__("reader.annotations.annotationsOptions")} aria-label={__("reader.annotations.annotationsOptions")}>
                             <SVG ariaHidden svg={OptionsIcon} />
                         </Popover.Trigger>
@@ -2357,7 +2336,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                         key={`bookmark-card_${bookmarkItem.uuid}`}
                         bookmark={bookmarkItem}
                         goToLocator={goToLocator}
-                        isEdited={bookmarkItem.uuid === bookmarkId && bookmarkEdit}
+                        isEdited={bookmarkItem.uuid === needToFocusOnID && bookmarkEdit}
                         triggerEdition={triggerEdition(bookmarkItem)}
                         setCreatorFilter={(v) => setCreatorArrayFilter(new Set([v]))}
                         setTagFilter={((v) => setTagArrayFilter(new Set([v])))}
