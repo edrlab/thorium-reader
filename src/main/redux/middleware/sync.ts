@@ -95,8 +95,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     readerActions.setTheLock.ID,
 
-    apiKeysActions.set.ID,
-    apiKeysActions.removeKey.ID,
+    apiKeysActions.setKey.ID,
     lcpActions.publicationFileLock.ID,
 ];
 

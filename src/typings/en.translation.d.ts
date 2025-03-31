@@ -1496,6 +1496,7 @@ declare namespace typed_i18n {
   },
   readonly "session": { readonly "title": string },
   readonly "tabs": {
+    readonly "aiKeyManager": string,
     readonly "appearance": string,
     readonly "general": string,
     readonly "keyboardShortcuts": string
@@ -1576,10 +1577,12 @@ declare namespace typed_i18n {
   (_: "settings.session", __?: {}): { readonly "title": string };
   (_: "settings.session.title", __?: {}): string;
   (_: "settings.tabs", __?: {}): {
+  readonly "aiKeyManager": string,
   readonly "appearance": string,
   readonly "general": string,
   readonly "keyboardShortcuts": string
 };
+  (_: "settings.tabs.aiKeyManager", __?: {}): string;
   (_: "settings.tabs.appearance", __?: {}): string;
   (_: "settings.tabs.general", __?: {}): string;
   (_: "settings.tabs.keyboardShortcuts", __?: {}): string;

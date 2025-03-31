@@ -602,6 +602,7 @@
             "title": "Gorde saioa"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Itxura",
             "general": "Orokorra",
             "keyboardShortcuts": "Teklatuko lasterbideak"

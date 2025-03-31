@@ -602,6 +602,7 @@
             "title": "Salvar sessão"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Aparência",
             "general": "Geral",
             "keyboardShortcuts": "Atalhos do teclado"

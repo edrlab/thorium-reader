@@ -602,6 +602,7 @@
             "title": "保存登入狀態"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "外觀",
             "general": "一般",
             "keyboardShortcuts": "鍵盤快捷鍵"

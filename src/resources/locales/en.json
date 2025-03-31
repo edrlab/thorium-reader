@@ -602,6 +602,7 @@
             "title": "Enable session saving"
         },
         "tabs": {
+            "aiKeyManager": "AI Key Manager",
             "appearance": "Appearance",
             "general": "General",
             "keyboardShortcuts": "Keyboard shortcuts"

@@ -602,6 +602,7 @@
             "title": "Ativar guardar sessão"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Visual",
             "general": "Geral",
             "keyboardShortcuts": "Atalhos de teclado"

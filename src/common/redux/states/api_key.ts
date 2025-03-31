@@ -5,10 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+export enum AiProviderType {
+    openAI = "openAI",
+    mistralAI = "mistralAI"
+}
+
 export interface IApiKey {
     key: string,
-    provider: string,
-    submitted: boolean,
+    provider: AiProviderType,
 }
 
 export type IApiKeysArray = IApiKey[]

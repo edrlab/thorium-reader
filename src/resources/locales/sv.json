@@ -602,6 +602,7 @@
             "title": "Spara session"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Utseende",
             "general": "Allmänt",
             "keyboardShortcuts": "Kortkommandon"

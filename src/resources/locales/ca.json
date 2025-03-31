@@ -602,6 +602,7 @@
             "title": "Guardar sessió"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Aparença",
             "general": "General",
             "keyboardShortcuts": "Dreceres del teclat"

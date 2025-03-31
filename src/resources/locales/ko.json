@@ -602,6 +602,7 @@
             "title": "세션 저장"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "",
             "general": "",
             "keyboardShortcuts": ""

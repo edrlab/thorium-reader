@@ -602,6 +602,7 @@
             "title": "Sitzung speichern"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Erscheinungsbild",
             "general": "Allgemein",
             "keyboardShortcuts": "Tastaturkürzel"

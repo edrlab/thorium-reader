@@ -602,6 +602,7 @@
             "title": "Bewaar sessie"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Weergave",
             "general": "Algemeen",
             "keyboardShortcuts": "Toetsenbord sneltoetsen"

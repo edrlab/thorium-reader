@@ -43,6 +43,7 @@ import * as MinusIcon from "readium-desktop/renderer/assets/icons/Minus-Bold.svg
 import * as OpenAiIcon from "readium-desktop/renderer/assets/icons/open-ai-icon.svg";
 import * as MistralAiIcon from "readium-desktop/renderer/assets/icons/mistral-ai-icon.svg";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { AiProviderType } from "readium-desktop/common/redux/states/api_key";
 
 interface ControlsProps {
     chatEnabled: boolean;
@@ -82,7 +83,7 @@ const Controls: React.FC<ControlsProps> = ({ chatEnabled }) => {
     console.log(chatEnabled);
 
     return (
-        <div style={{ top: chatEnabled ? "unset" : "0", bottom: chatEnabled ? "20px" : "unset", right: chatEnabled ? "unset" : "50%", left: chatEnabled ? "17px" : "unset" }} className={stylesChatbot.chatbot_image_controls}>
+        <div style={{ bottom: "20px", right: chatEnabled ? "unset" : "50%", left: "50%" }} className={stylesChatbot.chatbot_image_controls}>
             <button onClick={() => zoomOut()}><SVG svg={MinusIcon} /></button>
             <button onClick={() => zoomIn()}><SVG svg={PlusIcon} /></button>
             <button onClick={() => resetTransform()}><SVG svg={ResetIcon} /></button>
@@ -113,7 +114,7 @@ const Chat = ({ imageHref, autoPrompt, setAutoPrompt }: { imageHref: string, ima
     const [__] = useTranslator();
 
     const apiList = useSelector((state: IReaderRootState) => state.apiKeys);
-    const modelSelected = aiSDKModelOptions.filter(e => apiList.map(item => item.provider).includes(e.name.split(" ")[0]))[0];
+    const modelSelected = aiSDKModelOptions.filter(e => apiList.some(item => AiProviderType[item.provider] === e.name.split(" ")[0]))[0];
 
     // const handleModelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     //     const selectedId = event.target.value;
@@ -412,7 +413,7 @@ export const ImageClickManager: React.FC = () => {
 
     const apiList = useSelector((state: IReaderRootState) => state.apiKeys);
 
-    const selectModelItems = aiSDKModelOptions.filter(e => apiList.map(item => item.provider).includes(e.name.split(" ")[0]));
+    const selectModelItems = aiSDKModelOptions.filter(e => apiList.some(item => AiProviderType[item.provider] === e.name.split(" ")[0]));
 
 
     return (
@@ -427,7 +428,7 @@ export const ImageClickManager: React.FC = () => {
         >
             <Dialog.Portal>
                 <div className={stylesModals.modal_dialog_overlay}></div>
-                <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined} style={{padding: "5px 10px", minHeight: "unset"}} >
+                <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined} style={{ minWidth: "776px", padding: "5px 10px", minHeight: "unset", width: "unset", maxWidth: "calc(100% - 200px)", maxHeight: "calc(100% - 100px)"}} >
                     <VisuallyHidden>
                         <Dialog.DialogTitle>{__("chatbot.title")}</Dialog.DialogTitle>
                     </VisuallyHidden>
@@ -495,11 +496,11 @@ export const ImageClickManager: React.FC = () => {
                             }
                             { /*  initialScale={scale} minScale={scale / 2} maxScale={4 * scale} */}
                             {showImage ?
-                                <>
+                                <div style={{ position: "relative"}}>
                                     <TransformWrapper>
                                         <TransformComponent wrapperStyle={{ display: "flex", width: "100%", height: "100%", minHeight: "inherit", alignItems: "center", flex: "1", position: "relative" }}>
                                             <img
-                                                style={{ width: "100%", height: "100%", maxHeight: chatEnabled ? "200px" : "calc(100vh - 250px)", backgroundColor: "white", color: "black", fill: "currentcolor", stroke: "currentcolor" }}
+                                                style={{height: "100%", width: "100%", maxHeight: chatEnabled ? "200px" : "calc(100vh - 250px)", backgroundColor: "white", color: "black", fill: "currentcolor", stroke: "currentcolor" }}
                                                 src={isSVGFragment ? ("data:image/svg+xml;base64," + Buffer.from(HTMLImgSrc_SVGImageHref_SVGFragmentMarkup).toString("base64")) : HTMLImgSrc_SVGImageHref_SVGFragmentMarkup}
                                                 alt={altAttributeOf_HTMLImg_SVGImage_SVGFragment}
                                                 title={titleAttributeOf_HTMLImg_SVGImage_SVGFragment}
@@ -512,7 +513,7 @@ export const ImageClickManager: React.FC = () => {
                                             : ""
                                         }
                                     </TransformWrapper>
-                                </>
+                                </div>
                                 : ""
                             }
                             {imageDescription ?

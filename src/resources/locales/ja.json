@@ -602,6 +602,7 @@
             "title": "セッションを保存"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "外観",
             "general": "一般",
             "keyboardShortcuts": "キーボード ショートカット"

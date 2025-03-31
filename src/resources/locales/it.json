@@ -602,6 +602,7 @@
             "title": "Salva sessione"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Aspetto",
             "general": "Generale",
             "keyboardShortcuts": "Scorciatoie da tastiera"

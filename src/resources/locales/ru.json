@@ -602,6 +602,7 @@
             "title": "Сохранение сеанса"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Внешний вид",
             "general": "Общие",
             "keyboardShortcuts": "Горячие клавиши"

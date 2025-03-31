@@ -602,6 +602,7 @@
             "title": "Povolit ukládání relací"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Vzhled",
             "general": "Obecné",
             "keyboardShortcuts": "Klávesové zkratky"

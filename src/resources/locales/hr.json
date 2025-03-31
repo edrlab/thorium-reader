@@ -602,6 +602,7 @@
             "title": "Spremi sesiju"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "",
             "general": "",
             "keyboardShortcuts": ""

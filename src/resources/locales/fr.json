@@ -602,6 +602,7 @@
             "title": "Sauvegarder la session"
         },
         "tabs": {
+            "aiKeyManager": "Gestionnaire de clé API",
             "appearance": "Apparence",
             "general": "Géneral",
             "keyboardShortcuts": "Raccourcis clavier"

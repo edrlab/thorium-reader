@@ -602,6 +602,7 @@
             "title": "Αποθήκευση συνεδρίας"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Εμφάνιση",
             "general": "Γενικά",
             "keyboardShortcuts": "Συντομεύσεις πληκτρολογίου"

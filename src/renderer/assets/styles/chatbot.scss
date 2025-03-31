@@ -371,33 +371,33 @@
     align-items: center;
     justify-content: center;
     z-index: 105;
-    border: 1px solid var(--color-light-grey);
-    border-radius: 6px;
-    transform: translate(50%, 50%);
+    transform: translate(-50%, 50%);
     display: flex;
     opacity: 0;
     transition: 200ms;
+    gap: 10px;
 
     button {
-        background-color: var(--color-secondary);
-        padding: 10px;
-        border-right: 1px solid var(--color-light-grey);
+        border-radius: 6px;
+        background-color: var(--color-light-blue);
+        padding: 0 5px;
+        color: var(--color-blue);
+        fill: var(--color-blue);
+        border: 1px solid var(--color-blue);
         filter: opacity(0.8);
         transition: 200ms;
+        width: 24px;
+        height: 24px;
 
         &:hover {
             filter: opacity(1);
-        }
-
-        &:last-child {
-            border-right: unset;
         }
     }
 
     svg {
         width: 15px;
         height: 15px;
-        fill: var(--color-primary);
+        fill: var(--color-blue);
     }
 }
 

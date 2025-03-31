@@ -925,26 +925,22 @@ div[data-radix-popper-content-wrapper] {
 
 .apiKey {
     &_container {
-        border: 1px dashed var(--color-light-grey);
+        border: 1px solid var(--color-light-grey);
+        background-color: var(--color-extralight-grey);
         border-radius: 6px;
         padding: 5px;
         position: relative;
+        margin-bottom: 10px;
 
         p {
             margin: 0;
 
-            span {
+            h4 {
                 display: flex;
                 align-items: center;
                 gap: 5px;
             }
         }
-    }
-
-    &_remove_button {
-        position: absolute;
-        top: 0;
-        right: 5px;
     }
 
     &_input_submitted {
@@ -975,22 +971,34 @@ div[data-radix-popper-content-wrapper] {
 
         .form_group {
             margin-top: 20px;
-            width: 360px;
+            width: 100%;
             display: flex;
+
+            label {
+                background-color: var(--color-extralight-grey);
+                top: -15px;
+                left: 0;
+            }
 
             input {
                 width: 100%;
-                margin-left: 10px;
+                margin: 0;
+                padding-left: 10px;
+                background-color: var(--color-annotations-txt-area);
+
+                &::placeholder {
+                    font-style: italic;
+                }
             }
 
             button {
-                padding: 0 5px;
+                padding: 2px;
             }
         }
 
-        button[type="submit"] {
-            width: 20px;
-            height: 20px;
+        button {
+            width: 15px;
+            height: 15px;
             margin-top: 20px;
         }
     }

@@ -10,27 +10,38 @@ import { type Reducer } from "redux";
 import { apiKeysActions } from "../actions";
 import { IApiKeysArray } from "../states/api_key";
 
-const initialState: IApiKeysArray = [];
+const initialState: IApiKeysArray = [
+];
 
 function apiKeysReducer_(
     state = initialState,
-    action: apiKeysActions.set.TAction | apiKeysActions.removeKey.TAction,
+    action: apiKeysActions.setKey.TAction,
 ): IApiKeysArray {
 
     switch (action.type) {
-        case apiKeysActions.set.ID:
-            return [
-                ...state,
-                {
-                    provider: action.payload.provider,
-                    key: action.payload.key,
-                    submitted: action.payload.submitted,
-                },
-            ];
-        case apiKeysActions.removeKey.ID:
-            return state.filter(
-                key => key.provider !== action.payload.provider || key.key !== action.payload.key,
+        case apiKeysActions.setKey.ID:
+            // Vérifiez si le fournisseur existe déjà
+            const existingIndex = state.findIndex(
+                key => key.provider === action.payload.provider,
             );
+
+            if (existingIndex !== -1) {
+                // Si le fournisseur existe, mettez à jour la clé
+                return state.map((key, index) =>
+                    index === existingIndex
+                        ? { ...key, key: action.payload.key }
+                        : key,
+                );
+            } else {
+                // Sinon, ajoutez une nouvelle entrée
+                return [
+                    ...state,
+                    {
+                        provider: action.payload.provider,
+                        key: action.payload.key,
+                    },
+                ];
+            };
         default:
             return state;
     }

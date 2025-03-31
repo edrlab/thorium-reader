@@ -6,10 +6,7 @@
 // ==LICENSE-END==
 
 // import * as enable from "./enable";
-import * as set from "./setKey";
-import * as removeKey from "./removeKey";
-
+import * as setKey from "./setKey";
 export {
-    set,
-    removeKey,
+    setKey,
 };

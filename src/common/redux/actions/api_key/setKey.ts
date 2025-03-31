@@ -6,21 +6,20 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { IApiKey } from "../../states/api_key";
+import { AiProviderType, IApiKey } from "../../states/api_key";
 
 export const ID = "API_KEY_SET";
 
 export interface Payload extends IApiKey {
 }
 
-export function build(key: string, provider: string, submitted: boolean): Action<typeof ID, Payload> {
+export function build(key: string, provider: AiProviderType): Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
             key,
             provider,
-            submitted,
         },
     };
 }

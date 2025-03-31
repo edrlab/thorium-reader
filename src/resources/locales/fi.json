@@ -602,6 +602,7 @@
             "title": "Tallenna istunto"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Ulkoasu",
             "general": "Yleiset",
             "keyboardShortcuts": "Pikanäppäimet"

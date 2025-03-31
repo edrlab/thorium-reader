@@ -602,6 +602,7 @@
             "title": "Gem session"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Udseende",
             "general": "Generelt",
             "keyboardShortcuts": "Tastaturgenveje"

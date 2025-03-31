@@ -602,6 +602,7 @@
             "title": "Guardar sesión"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Aspecto visual",
             "general": "General",
             "keyboardShortcuts": "Atajos de teclado"

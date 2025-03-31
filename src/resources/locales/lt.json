@@ -602,6 +602,7 @@
             "title": "Įgalinti sesijos išsaugojimą"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Išvaizda",
             "general": "Bendros",
             "keyboardShortcuts": "Spartieji klavišai"

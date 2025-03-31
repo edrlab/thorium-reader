@@ -59,8 +59,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     annotationActions.shiftFromAnnotationImportQueue.ID,
 
-    apiKeysActions.set.ID,
-    apiKeysActions.removeKey.ID,
+    apiKeysActions.setKey.ID,
 
 
 ];

@@ -602,6 +602,7 @@
             "title": "Запиши сесията"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "",
             "general": "",
             "keyboardShortcuts": ""

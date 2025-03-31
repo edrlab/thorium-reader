@@ -602,6 +602,7 @@
             "title": "حفظ الجلسة"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "المظهر",
             "general": "عام",
             "keyboardShortcuts": "اختصارات لوحة المفاتيح"

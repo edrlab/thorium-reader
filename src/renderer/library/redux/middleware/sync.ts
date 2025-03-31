@@ -65,8 +65,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     settingsActions.enableAPIAPP.ID,
 
-    apiKeysActions.set.ID,
-    apiKeysActions.removeKey.ID,
+    apiKeysActions.setKey.ID,
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);

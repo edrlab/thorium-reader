@@ -602,6 +602,7 @@
             "title": "Shrani sejo"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Izgled",
             "general": "Splošno",
             "keyboardShortcuts": "Bližnjice tipkovnice"
