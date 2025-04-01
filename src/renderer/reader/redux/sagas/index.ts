@@ -136,8 +136,8 @@ export function* rootSaga() {
 
             while(true) {
 
-                yield* takeTyped(readerActions.bookmark.push.ID);
-                const currentBookmarkTotalCount = yield* selectTyped((state: IReaderRootState) => state.reader.bookmarkTotalCount.state);
+                yield* takeTyped(readerActions.note.addUpdate.ID);
+                const currentBookmarkTotalCount = yield* selectTyped((state: IReaderRootState) => state.reader.noteTotalCount.state);
                 yield* putTyped(readerLocalActionReader.bookmarkTotalCount.build(currentBookmarkTotalCount + 1));
             }
         }),

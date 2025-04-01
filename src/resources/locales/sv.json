@@ -210,7 +210,6 @@
         "import": {
             "alreadyImport": "{{- title}} var redan importerad.",
             "fail": "Importen av {{- path}} misslyckades. {{- err}}",
-            "seeInLibrary": "",
             "success": "Importen av {{- title}} är slutförd."
         },
         "open": {
@@ -485,7 +484,7 @@
             "letterSpacing": "Teckenavstånd",
             "lineSpacing": "Radavstånd",
             "margin": "Marginaler",
-            "noFootnotes": "Inaktivera fotnoter",
+            "noFootnotes": "Inaktivera popup-fotnoter",
             "noRTLFlip": "Inaktivera vänster-till-höger-gränssnitt",
             "noRuby": "Dölj japanska ruby-tecken",
             "noTemporaryNavTargetOutline": "Inaktivera visuella hjälpmedel för navigering",

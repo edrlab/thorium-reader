@@ -5,9 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IColor } from "@r2-navigator-js/electron/common/highlight";
+import { HighlightDrawTypeBackground, HighlightDrawTypeMarginBookmark, HighlightDrawTypeOutline, HighlightDrawTypeStrikethrough, HighlightDrawTypeUnderline, IColor } from "@r2-navigator-js/electron/common/highlight";
 import { hexToRgb } from "readium-desktop/common/rgb";
 import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
+import { MiniLocatorExtended } from "../locatorInitialState";
+import { INoteCreator } from "../creator";
+import { IReadiumAnnotation } from "readium-desktop/common/readium/annotation/annotationModel.type";
 
 // DO NOT REMOVE THIS COMMENT BLOCK (USED FOR TRANSLATOR KEYS DETECTION DURING CODE SCANNING)
 // __("reader.notes.colors.red")
@@ -59,3 +62,40 @@ export const noteColorSetToColorCode: Record<string, string> = {
 export type TNoteColorSet = "pink" | "orange" | "yellow" | "green" | "blue" | "purple";
 export const NOTE_DEFAULT_COLOR: TNoteColorSet = "yellow";
 export const NOTE_DEFAULT_COLOR_OBJ: IColor = hexToRgb(noteColorSetToColorCode[NOTE_DEFAULT_COLOR]);
+
+export type TDrawType = "solid_background" | "underline" | "strikethrough" | "outline" | "bookmark";
+export const noteDrawType: TDrawType[] = [
+    "solid_background",
+    "underline",
+    "strikethrough",
+    "outline",
+];
+export enum EDrawType {
+    "solid_background" = HighlightDrawTypeBackground,
+    "underline" = HighlightDrawTypeUnderline,
+    "strikethrough" = HighlightDrawTypeStrikethrough,
+    "outline" = HighlightDrawTypeOutline,
+    // "opacity_mask" = HighlightDrawTypeOpacityMask,
+    // "opacity_mask_ruler" = HighlightDrawTypeOpacityMaskRuler,
+    "bookmark" = HighlightDrawTypeMarginBookmark,
+}
+
+export interface INoteState {
+    uuid: string;
+    index: number;
+    locatorExtended: MiniLocatorExtended;
+    textualValue?: string;
+    color: IColor;
+    drawType: EDrawType;
+    tags?: string[];
+    modified?: number;
+    created: number;
+    creator?: INoteCreator;
+    group: "bookmark" | "annotation";
+}
+
+export type TDrawView = "annotation" | "margin" | "hide";
+
+export type TnoteTagsIndex = Record<string, number>;
+
+export type INotePreParsingState = Pick<INoteState, "uuid" | "textualValue" | "color" | "drawType" | "tags" | "modified" | "created" | "creator"> & { target: IReadiumAnnotation["target"] };

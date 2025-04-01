@@ -210,7 +210,6 @@
         "import": {
             "alreadyImport": "{{- title}}는 이미 추가된 도서입니다",
             "fail": "{{- path}} 열기를 실패하였습니다. {{- err}}",
-            "seeInLibrary": "",
             "success": "{{- title}} 열기를 성공하였습니다."
         },
         "open": {

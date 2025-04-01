@@ -34,7 +34,7 @@ export interface IReadiumAnnotation {
         type: string;
         value: string;
         tag?: string;
-        highlight?: "solid" | "underline" | "strikethrough" | "outline";
+        highlight?: "solid" | "underline" | "strikethrough" | "outline" | "bookmark";
         color?: string;
         textDirection?: "ltr" | "rtl";
         language?: string;

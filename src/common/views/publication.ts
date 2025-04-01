@@ -51,8 +51,6 @@ export interface PublicationView extends Identifiable {
     publicationTitle: string | IStringMap; // convertMultiLangStringToLangString()
     publicationSubTitle: string | IStringMap; // convertMultiLangStringToLangString()
 
-    publicationHash: string;
-
     authorsLangString: (string | IStringMap)[]; // convertMultiLangStringToLangString()
     publishersLangString?: (string | IStringMap)[]; // convertMultiLangStringToLangString()
 

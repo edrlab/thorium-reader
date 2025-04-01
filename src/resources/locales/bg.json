@@ -210,7 +210,6 @@
         "import": {
             "alreadyImport": "{{- title}} вече е била добавена",
             "fail": "Добавянето на {{- path}} се провали. {{- err}}",
-            "seeInLibrary": "",
             "success": "Добавянето на {{- title}} завърши."
         },
         "open": {

@@ -9,15 +9,15 @@ import * as debug_ from "debug";
 import { select as selectTyped, take as takeTyped, all as allTyped, call as callTyped, SagaGenerator, put as putTyped, delay as delayTyped } from "typed-redux-saga/macro";
 
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
-import { readerLocalActionExportAnnotationSet } from "../actions";
+import { readerLocalActionExportAnnotationSet, readerLocalActionReader } from "../actions";
 // import { delay } from "redux-saga/effects";
 import { getResourceCache } from "./resourceCache";
 import { ICacheDocument } from "readium-desktop/common/redux/states/renderer/resourceCache";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { convertAnnotationStateArrayToReadiumAnnotationSet, convertSelectorTargetToLocatorExtended, IAnnotationStateWithICacheDocument } from "readium-desktop/common/readium/annotation/converter";
+import { convertAnnotationStateArrayToReadiumAnnotationSet, convertSelectorTargetToLocatorExtended, INoteStateWithICacheDocument } from "readium-desktop/common/readium/annotation/converter";
 import { IReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { annotationActions, readerActions } from "readium-desktop/common/redux/actions";
-import { IAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
+import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:shareAnnotationSet");
@@ -46,12 +46,12 @@ export function* importAnnotationSet(): SagaGenerator<void> {
     while (importQueue.length) {
 
         // start import routine
-        const { target, ...annotationState } = importQueue[0];
+        const { target, ...noteState } = importQueue[0];
 
         // not atomic : if the reader is closing during this import process it can forget data
         yield* putTyped(annotationActions.shiftFromAnnotationImportQueue.build());
 
-        debug("annotationState:", JSON.stringify(annotationState, null, 4));
+        debug("annotationState:", JSON.stringify(noteState, null, 4));
         debug("SelectorTarget from AnnotationState", JSON.stringify(target, null, 4));
 
 
@@ -59,25 +59,23 @@ export function* importAnnotationSet(): SagaGenerator<void> {
         const cacheDocuments = yield* selectTyped((state: IReaderRootState) => state.resourceCache);
         const cacheDoc = getCacheDocumentFromLocator(cacheDocuments, source);
 
-        const annotationStateFormated: IAnnotationState = {
-            ...annotationState,
+        const noteTotalCount = yield* selectTyped((state: IReaderRootState) => state.reader.noteTotalCount.state);
+        const noteStateFormated: INoteState = {
+            ...noteState,
             locatorExtended: yield* callTyped(() => convertSelectorTargetToLocatorExtended(target, cacheDoc, undefined)),
+            index: noteTotalCount + 1,
+            group: "annotation", // TODO: parse note as a bookmark if the textInfo length is one character 
         };
-        if (!annotationStateFormated.locatorExtended) {
+        if (!noteStateFormated.locatorExtended) {
             debug("ERROR: no locator found !! for annotationState, doesn't import this note");
             continue;
         }
 
-        const annotationsList = yield* selectTyped((state: IReaderRootState) => state.reader.annotation);
+        const notes = yield* selectTyped((state: IReaderRootState) => state.reader.note);
 
-        const found = annotationsList.find(([, {uuid}]) => annotationStateFormated.uuid === uuid);
-        if (found) {
-            const foundAnno = found[1];
-            yield* putTyped(readerActions.annotation.update.build(foundAnno, annotationStateFormated));
-        } else {
-            // push new annotation to reader and then sync it with main db process
-            yield* putTyped(readerActions.annotation.push.build(annotationStateFormated));
-        }
+        const previousNoteFound = notes.find(({ uuid }) => noteStateFormated.uuid === uuid);
+        yield* putTyped(readerActions.note.addUpdate.build(noteStateFormated, previousNoteFound));
+        yield* putTyped(readerLocalActionReader.bookmarkTotalCount.build(noteTotalCount + 1));
 
         // wait 100ms to not overload event-loop
         yield* delayTyped(100);
@@ -105,7 +103,7 @@ function* exportAnnotationSet(): SagaGenerator<void> {
 
     const cacheDocuments = yield* selectTyped((state: IReaderRootState) => state.resourceCache);
 
-    const annotationsWithCacheDocumentArray: IAnnotationStateWithICacheDocument[] = [];
+    const annotationsWithCacheDocumentArray: INoteStateWithICacheDocument[] = [];
 
     for (const anno of annotationArray) {
         annotationsWithCacheDocumentArray.push({

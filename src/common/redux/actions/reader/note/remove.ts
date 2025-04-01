@@ -6,15 +6,25 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
+import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 
-export const ID = "NET_ONLINE";
+export const ID = "READER_NOTE_REMOVE";
 
-export function build():
-    Action<typeof ID> {
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface IPayload {
+    note: INoteState;
+}
+
+export function build(note: INoteState):
+    Action<typeof ID, IPayload> {
 
     return {
         type: ID,
+        payload: {
+            note,
+        },
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator
 export type TAction = ReturnType<typeof build>;
+

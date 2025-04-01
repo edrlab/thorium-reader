@@ -43,14 +43,18 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     publicationActions.readingFinished.ID,
 
     // needed to forward event to other reader windows, already synchronised with persistence readerActions.setReduxState
-    readerActions.bookmark.pop.ID,
-    readerActions.bookmark.push.ID,
-    readerActions.bookmark.update.ID,
+    // readerActions.bookmark.pop.ID,
+    // readerActions.bookmark.push.ID,
+    // readerActions.bookmark.update.ID,
 
     // needed to forward event to other reader windows, already synchronised with persistence readerActions.setReduxState
-    readerActions.annotation.pop.ID,
-    readerActions.annotation.push.ID,
-    readerActions.annotation.update.ID,
+    // readerActions.annotation.pop.ID,
+    // readerActions.annotation.push.ID,
+    // readerActions.annotation.update.ID,
+
+    // needed to forward event to other reader windows, already synchronised with persistence readerActions.setReduxState
+    readerActions.note.addUpdate.ID,
+    readerActions.note.remove.ID,
 
     annotationActions.importAnnotationSet.ID,
     annotationActions.importConfirmOrAbort.ID,

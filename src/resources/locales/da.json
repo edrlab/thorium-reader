@@ -210,7 +210,6 @@
         "import": {
             "alreadyImport": "{{- title}} er allerede importeret.",
             "fail": "Import af {{- path}} fejlede. {{- err}}",
-            "seeInLibrary": "",
             "success": "{{- title}} er nu importeret."
         },
         "open": {
