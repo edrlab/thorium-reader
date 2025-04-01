@@ -28,7 +28,7 @@ import * as versionUpdateActions from "./version-update";
 import * as annotationActions from "./annotation";
 import * as creatorActions from "./creator";
 import * as settingsActions from "./settings";
-import * as apiKeysActions from "./api_key";
+import * as apiKeysActions from "./aiApiKey";
 
 export {
     historyActions,
