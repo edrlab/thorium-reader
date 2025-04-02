@@ -80,7 +80,7 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
                 publication: data.payload.publication,
                 session: data.payload.session,
                 creator: data.payload.creator,
-                apiKeys: data.payload.apiKeys,
+                aiApiKeys: data.payload.aiApiKeys,
                 lcp: data.payload.lcp,
             };
             const [store, _reduxHistory] = createStoreFromDi(preloadedState);

@@ -10,9 +10,7 @@ export enum AiProviderType {
     mistralAI = "mistralAI"
 }
 
-export interface IApiKey {
-    key: string,
+export interface IAiApiKey {
+    aiKey: string,
     provider: AiProviderType,
 }
-
-export type IApiKeysArray = IApiKey[]

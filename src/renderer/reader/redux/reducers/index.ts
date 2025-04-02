@@ -35,7 +35,7 @@ import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducer
 import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
 import { versionUpdateReducer } from "readium-desktop/common/redux/reducers/version-update";
 import { annotationModeEnableReducer } from "./annotationModeEnable";
-import { annotationActions, readerActions } from "readium-desktop/common/redux/actions";
+import { annotationActions, apiKeysActions, readerActions } from "readium-desktop/common/redux/actions";
 import { readerMediaOverlayReducer } from "./mediaOverlay";
 import { readerTTSReducer } from "./tts";
 import { readerTransientConfigReducer } from "./readerTransientConfig";
@@ -49,10 +49,11 @@ import { readerLockReducer } from "./lock";
 import { imageClickReducer } from "./imageClick";
 import { dockReducer } from "readium-desktop/common/redux/reducers/dock";
 import { readerBookmarkTotalCountReducer } from "readium-desktop/common/redux/reducers/reader/bookmarkTotalCount";
-import { apiKeysReducer } from "readium-desktop/common/redux/reducers/api_key";
+// import { apiKeysReducer } from "readium-desktop/common/redux/reducers/api_key";
 import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 import { arrayReducer } from "readium-desktop/utils/redux-reducers/array.reducer";
 import { INotePreParsingState, INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import { AiProviderType, IAiApiKey } from "readium-desktop/common/redux/states/ai_apiKey";
 
 export const rootReducer = () => {
 
@@ -199,7 +200,38 @@ export const rootReducer = () => {
         publication: combineReducers({
             tag: tagReducer,
         }),
-        apiKeys: apiKeysReducer,
+        aiApiKeys: arrayReducer<apiKeysActions.setKey.TAction, undefined, IAiApiKey, {provider: AiProviderType, aiKey: string}>(
+            {
+                add: 
+                {
+                    type: apiKeysActions.setKey.ID,
+                    selector: (payload, state) => {
+                    const existingIndex = state.findIndex(
+                        key => key.provider === payload.provider,
+                    );
+
+                    if (existingIndex !== -1) {
+                        // Si le fournisseur existe, mettez à jour la clé
+                        return state.map((key, index) =>
+                        index === existingIndex
+                            ? { ...key, key: payload.aiKey }
+                            : key,
+                        );
+                    } else {
+                        // Sinon, ajoutez une nouvelle entrée
+                        return [
+                        ...state,
+                        {
+                            provider: payload.provider,
+                            aiKey: payload.aiKey,
+                        },
+                        ];
+                    }
+                    },
+                },
+                getId: (item) => item.provider, // Ajoutez la fonction getId ici
+            },
+        ),
         annotationImportQueue: fifoReducer
         <
             annotationActions.pushToAnnotationImportQueue.TAction,

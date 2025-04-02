@@ -14,7 +14,7 @@ import { ITheme } from "./theme";
 import { INoteCreator } from "./creator";
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
 import { TFIFOState } from "readium-desktop/utils/redux-reducers/fifo.reducer";
-import { IApiKeysArray } from "readium-desktop/common/redux/states/api_key";
+import { IAiApiKey } from "readium-desktop/common/redux/states/ai_apiKey";
 import { ILcpState } from "./lcp";
 import { INotePreParsingState } from "./renderer/note";
 
@@ -29,7 +29,7 @@ export interface ICommonRootState {
     };
     theme: ITheme;
     creator: INoteCreator;
-    apiKeys: IApiKeysArray;
+    aiApiKeys: Array<IAiApiKey>;
     annotationImportQueue: TFIFOState<INotePreParsingState>;
     lcp: ILcpState;
 }

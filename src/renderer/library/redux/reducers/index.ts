@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { downloadActions } from "readium-desktop/common/redux/actions";
+import { apiKeysActions, downloadActions } from "readium-desktop/common/redux/actions";
 import { dialogReducer } from "readium-desktop/common/redux/reducers/dialog";
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard";
@@ -36,8 +36,9 @@ import { versionUpdateReducer } from "readium-desktop/common/redux/reducers/vers
 import { creatorReducer } from "readium-desktop/common/redux/reducers/creator";
 import { settingsReducer } from "readium-desktop/common/redux/reducers/settings";
 import { importAnnotationReducer } from "readium-desktop/renderer/common/redux/reducers/importAnnotation";
-import { apiKeysReducer } from "readium-desktop/common/redux/reducers/api_key";
 import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
+import { arrayReducer } from "readium-desktop/utils/redux-reducers/array.reducer";
+import { AiProviderType, IAiApiKey } from "readium-desktop/common/redux/states/ai_apiKey";
 
 export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reducer<Partial<ILibraryRootState>>
     return combineReducers({ // ILibraryRootState
@@ -94,7 +95,38 @@ export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reduc
         creator: creatorReducer,
         settings: settingsReducer,
         importAnnotations: importAnnotationReducer,
-        apiKeys: apiKeysReducer,
+        aiApiKeys: arrayReducer<apiKeysActions.setKey.TAction, undefined, IAiApiKey, {provider: AiProviderType, aiKey: string}>(
+                    {
+                        add: 
+                        {
+                            type: apiKeysActions.setKey.ID,
+                            selector: (payload, state) => {
+                            const existingIndex = state.findIndex(
+                                key => key.provider === payload.provider,
+                            );
+        
+                            if (existingIndex !== -1) {
+                                // Si le fournisseur existe, mettez à jour la clé
+                                return state.map((key, index) =>
+                                index === existingIndex
+                                    ? { ...key, key: payload.aiKey }
+                                    : key,
+                                );
+                            } else {
+                                // Sinon, ajoutez une nouvelle entrée
+                                return [
+                                ...state,
+                                {
+                                    provider: payload.provider,
+                                    aiKey: payload.aiKey,
+                                },
+                                ];
+                            }
+                            },
+                        },
+                        getId: (item) => item.provider, // Ajoutez la fonction getId ici
+                    },
+                ),
         lcp: lcpReducer,
     });
 };

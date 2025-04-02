@@ -43,7 +43,7 @@ import * as MinusIcon from "readium-desktop/renderer/assets/icons/Minus-Bold.svg
 import * as OpenAiIcon from "readium-desktop/renderer/assets/icons/open-ai-icon.svg";
 import * as MistralAiIcon from "readium-desktop/renderer/assets/icons/mistral-ai-icon.svg";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { AiProviderType } from "readium-desktop/common/redux/states/api_key";
+import { AiProviderType } from "readium-desktop/common/redux/states/ai_apiKey";
 
 interface ControlsProps {
     chatEnabled: boolean;
@@ -113,7 +113,7 @@ const Chat = ({ imageHref, autoPrompt, setAutoPrompt }: { imageHref: string, ima
     const { systemPrompt, setSystemPrompt  /*showImage*/ } = React.useContext(ChatContext);
     const [__] = useTranslator();
 
-    const apiList = useSelector((state: IReaderRootState) => state.apiKeys);
+    const apiList = useSelector((state: IReaderRootState) => state.aiApiKeys);
     const modelSelected = aiSDKModelOptions.filter(e => apiList.some(item => AiProviderType[item.provider] === e.name.split(" ")[0]))[0];
 
     // const handleModelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -411,7 +411,7 @@ export const ImageClickManager: React.FC = () => {
     const noDescription = __("chatbot.noDescription").split(__("chatbot.shortDescTitle"));
     const secondPartNoDescription = noDescription[1].split(__("chatbot.detailedDescTitle"));
 
-    const apiList = useSelector((state: IReaderRootState) => state.apiKeys);
+    const apiList = useSelector((state: IReaderRootState) => state.aiApiKeys);
 
     const selectModelItems = aiSDKModelOptions.filter(e => apiList.some(item => AiProviderType[item.provider] === e.name.split(" ")[0]));
 

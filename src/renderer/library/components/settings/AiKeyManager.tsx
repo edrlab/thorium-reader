@@ -27,7 +27,7 @@ import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import * as OpenAiIcon from "readium-desktop/renderer/assets/icons/open-ai-icon.svg";
 import * as LinkIcon from "readium-desktop/renderer/assets/icons/link-icon.svg";
 import * as MistralAiIcon from "readium-desktop/renderer/assets/icons/mistral-ai-icon.svg";
-import { AiProviderType } from "readium-desktop/common/redux/states/api_key";
+import { AiProviderType } from "readium-desktop/common/redux/states/ai_apiKey";
 
 const ApiKeyComponent2 = ({provider}:{provider: string}) => {
     const [__] = useTranslator();
@@ -38,8 +38,8 @@ const ApiKeyComponent2 = ({provider}:{provider: string}) => {
         [dispatch],
     );
 
-    const apiKeys = useSelector((state: ICommonRootState) => state.apiKeys);
-    const apiKey = apiKeys.find(v => v.provider === provider)?.key || "";
+    const apiKeys = useSelector((state: ICommonRootState) => state.aiApiKeys);
+    const apiKey = apiKeys.find(v => v.provider === provider)?.aiKey || "";
 
 
     const openAiLink = "https://platform.openai.com/api-keys";
