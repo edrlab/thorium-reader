@@ -246,8 +246,9 @@
         "AppImage"
       ],
       "desktop": {
-        "MimeType": "application/epub+zip",
-        "Keywords": "Audiobook;Book;Ebook;EPUB;Reader;Readium;Viewer;"
+        "entry": {
+          "MimeType": "application/epub+zip"
+        }
       },
       "executableName": "thorium",
       "category": "Office",
