@@ -209,6 +209,7 @@ jobs:
         (file node_modules/electron/dist/Electron.app/Contents/MacOS/Electron) && (node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --version || echo INVALID_ARCH || true) && (node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --abi || echo INVALID_ARCH || true)
     - run: npm list -g node-gyp || echo ok || true
     - run: npm list node-gyp || echo ok || true
+      continue-on-error: true
     - name: PR action (just build)
       if: ${{ github.event_name == 'pull_request' }}
       run: npm run build:prod
