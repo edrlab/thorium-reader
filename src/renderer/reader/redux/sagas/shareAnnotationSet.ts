@@ -156,15 +156,13 @@ export const saga = () =>
                     throw new Error("unreachable!!!");
                 }
 
-                try {
-
-                    while (true) {
+                while (true) {
+                    try {
                         yield* callTyped(importAnnotationSet);
+                    } catch (e) {
+                        debug("ERROR IMPORT ANNOTATION SET :", e);
+                        yield* putTyped(toastActions.openRequest.build(ToastType.Error, `${e}`));
                     }
-                } catch (e) {
-                    debug("ERROR IMPORT ANNOTATION SET :", e);
-                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, `${e}`));
-                    
                 }
 
             },
