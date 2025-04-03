@@ -1056,13 +1056,38 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
         setPageNumber(cb);
     }, [setPageNumber, updateDialogOrDockDataInfo]);
 
+    const tagsIndexList = useSelector((state: IReaderRootState) => state.noteTagsIndex);
+    const selectTagOption = React.useMemo(() => tagsIndexList.map((v, i) => ({ id: i, name: v.tag })), [tagsIndexList]);
+
+    // if tagArrayFilter value not include in the selectTagOption then take only the intersection between tagArrayFilter and selectTagOption
+    const selectTagOptionFilteredNameArray = React.useMemo(() => selectTagOption.map((v) => v.name), [selectTagOption]);
+    // const tagArrayFilterArray = selectionIsSet(tagArrayFilter) ? Array(...tagArrayFilter) : [];
+    // if (tagArrayFilterArray.filter((tagValue) => !selectTagOptionFilteredNameArray.includes(tagValue)).length) {
+    //     const tagArrayFilterArrayDifference = tagArrayFilterArray.filter((tagValue) => selectTagOptionFilteredNameArray.includes(tagValue));
+    //     setTagArrayFilter(new Set(tagArrayFilterArrayDifference));
+    // }
+
+    const creatorListName = React.useMemo(() => annotationsListAll.map(({ creator }) => creator?.name).filter(v => v), [annotationsListAll]);
+    const selectCreatorOptions = React.useMemo(() => [...(new Set(creatorListName))].map((name, index) => ({ id: `${index}_${name}`, name })), [creatorListName]);
+    const annotationsColors = React.useMemo(() => Object.entries(noteColorCodeToColorTranslatorKeySet).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
+    const selectDrawtypesOptions = React.useMemo(() => [
+        { name: "solid_background", svg: HighLightIcon, textValue: `${__("reader.annotations.type.solid")}` },
+        { name: "underline", svg: UnderLineIcon, textValue: `${__("reader.annotations.type.underline")}` },
+        { name: "strikethrough", svg: TextStrikeThroughtIcon, textValue: `${__("reader.annotations.type.strikethrough")}` },
+        { name: "outline", svg: TextOutlineIcon,  textValue: `${__("reader.annotations.type.outline")}` },
+    ], [__]);
+
     const annotationListFiltered = React.useMemo(() => {
 
         return (
             (selectionIsSet(tagArrayFilter) && tagArrayFilter.size) ||
+            (tagArrayFilter === "all") ||
             (selectionIsSet(colorArrayFilter) && colorArrayFilter.size) ||
+            (colorArrayFilter === "all") ||
             (selectionIsSet(drawTypeArrayFilter) && drawTypeArrayFilter.size) ||
-            (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size)
+            (drawTypeArrayFilter === "all") ||
+            (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size) ||
+            (creatorArrayFilter === "all")
         ) 
             ? annotationsListAll.filter(({ tags, color, drawType: _drawType, creator }) => {
 
@@ -1070,16 +1095,17 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                 const drawType = EDrawType[_drawType];
                 const creatorName = creator?.name || "";
 
-                return (!selectionIsSet(tagArrayFilter) || !tagArrayFilter.size || tags?.some((tagsValueName) => tagArrayFilter.has(tagsValueName))) &&
-                    (!selectionIsSet(colorArrayFilter) || !colorArrayFilter.size || colorArrayFilter.has(colorHex)) &&
-                    (!selectionIsSet(drawTypeArrayFilter) || !drawTypeArrayFilter.size || drawTypeArrayFilter.has(drawType)) &&
-                    (!selectionIsSet(creatorArrayFilter) || !creatorArrayFilter.size || creatorArrayFilter.has(creatorName));
+                return ((tagArrayFilter === "all" && tags?.some((tagsValueName) => selectTagOptionFilteredNameArray.includes(tagsValueName))) || (selectionIsSet(tagArrayFilter) && tagArrayFilter.size && tags?.some((tagsValueName) => tagArrayFilter.has(tagsValueName)))) ||
+                    ((colorArrayFilter === "all" && annotationsColors.some(({hex}) => hex === colorHex)) || (selectionIsSet(colorArrayFilter) && colorArrayFilter.size && colorArrayFilter.has(colorHex))) ||
+                    ((drawTypeArrayFilter === "all" && selectDrawtypesOptions.some(({name}) => drawType === name)) || (selectionIsSet(drawTypeArrayFilter) && drawTypeArrayFilter.size && drawTypeArrayFilter.has(drawType))) ||
+                    ((creatorArrayFilter === "all" && creatorListName.includes(creatorName)) || (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size && creatorArrayFilter.has(creatorName)));
 
             })
             : annotationsListAll;
-    }, [annotationsListAll, tagArrayFilter, colorArrayFilter, drawTypeArrayFilter, creatorArrayFilter]);
+    }, [annotationsListAll, tagArrayFilter, colorArrayFilter, drawTypeArrayFilter, creatorArrayFilter, annotationsColors, creatorListName, selectDrawtypesOptions, selectTagOptionFilteredNameArray]);
 
     const [sortType, setSortType] = React.useState<Selection>(new Set(["lastCreated"]));
+
     if (sortType !== "all" && sortType.has("progression")) {
 
         annotationListFiltered.sort((a, b) => {
@@ -1090,7 +1116,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
             return pcta - pctb;
         });
     } else if (sortType !== "all" && sortType.has("lastCreated")) {
-        annotationListFiltered.sort(({created: ca}, {created: cb}) => {
+        annotationListFiltered.sort(({ created: ca }, { created: cb }) => {
             return cb - ca;
         });
     } else if (sortType !== "all" && sortType.has("lastModified")) {
@@ -1098,8 +1124,8 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
             return ma && mb ? mb - ma : ma ? -1 : mb ? 1 : 0;
         });
     }
-    
-    const annotationFocusFoundIndex = annotationUUID ? annotationListFiltered.findIndex(({uuid}) => annotationUUID === uuid) : -1;
+
+    const annotationFocusFoundIndex = annotationUUID ? annotationListFiltered.findIndex(({ uuid }) => annotationUUID === uuid) : -1;
     React.useEffect(() => {
         if (annotationUUID) {
             setAnnotationUUID("");
@@ -1110,7 +1136,6 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
     }, [annotationUUID, annotationFocusFoundIndex]);
 
     const pageTotal = Math.ceil(annotationListFiltered.length / MAX_MATCHES_PER_PAGE) || 1;
-
     if (pageNumber <= 0) {
         setPageNumber(START_PAGE);
     } else if (pageNumber > pageTotal) {
@@ -1124,51 +1149,11 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
     const isFirstPage = pageNumber === 1;
     const isPaginated = pageTotal > 1;
     const pageOptions = Array.from({ length: pageTotal }, (_k, v) => (v += 1, ({ id: v, name: `${v} / ${pageTotal}` })));
-
-
     const begin = startIndex + 1;
     const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, annotationListFiltered.length);
 
-    // const [annotationItemEditedUUID, setannotationItemEditedUUID] = React.useState(annotationIdEdit ? annotationId : "");
-    // if (annotationIdEdit && annotationId !== annotationItemEditedUUID) {
-    //     setannotationItemEditedUUID(annotationId);
-    // }
-    const paginatorAnnotationsRef = React.useRef<HTMLSelectElement>();
-
     const triggerEdition = (annotationItem: INoteState) =>
         (value: boolean) => value ? updateDialogOrDockDataInfo({id: annotationItem.uuid, edit: true}) : updateDialogOrDockDataInfo({id: "", edit: false});
-
-    const tagsIndexList = useSelector((state: IReaderRootState) => state.noteTagsIndex);
-    const selectTagOption = tagsIndexList.map((v, i) => ({ id: i, name: v.tag }));
-
-    // if tagArrayFilter value not include in the selectTagOption then take only the intersection between tagArrayFilter and selectTagOption
-    const selectTagOptionFilteredNameArray = selectTagOption.map((v) => v.name);
-    const tagArrayFilterArray = selectionIsSet(tagArrayFilter) ? Array(...tagArrayFilter) : [];
-    if (tagArrayFilterArray.filter((tagValue) => !selectTagOptionFilteredNameArray.includes(tagValue)).length) {
-        const tagArrayFilterArrayDifference = tagArrayFilterArray.filter((tagValue) => selectTagOptionFilteredNameArray.includes(tagValue));
-        setTagArrayFilter(new Set(tagArrayFilterArrayDifference));
-    }
-
-    const creatorListName = annotationsListAll.map(({ creator }) => creator?.name).filter(v => v);
-    const selectCreatorOptions = [...(new Set(creatorListName))].map((name, index) => ({ id: `${index}_${name}`, name }));
-
-    const annotationsColors = React.useMemo(() => Object.entries(noteColorCodeToColorTranslatorKeySet).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
-
-    // I'm disable this feature for performance reason, push new Colors from incoming publicaiton annotation, not used for the moment. So let's commented it for the moment.
-    // Need to be optimised in the future.
-    // annotationsQueue.forEach(([, annotation]) => {
-    //     const colorHex = rgbToHex(annotation.color);
-    //     if (!noteColorCodeToColorTranslatorKeySet.find((annotationColor) => annotationColor.hex === colorHex)) {
-    //         noteColorCodeToColorTranslatorKeySet.push({ hex: colorHex, name: colorHex });
-    //     }
-    // });
-
-    const selectDrawtypesOptions = [
-        { name: "solid_background", svg: HighLightIcon, textValue: `${__("reader.annotations.type.solid")}` },
-        { name: "underline", svg: UnderLineIcon, textValue: `${__("reader.annotations.type.underline")}` },
-        { name: "strikethrough", svg: TextStrikeThroughtIcon, textValue: `${__("reader.annotations.type.strikethrough")}` },
-        { name: "outline", svg: TextOutlineIcon,  textValue: `${__("reader.annotations.type.outline")}` },
-    ];
 
     const nbOfFilters = ((tagArrayFilter === "all") ?
         selectTagOption.length : tagArrayFilter.size) + ((colorArrayFilter === "all") ?
@@ -1176,8 +1161,8 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                 selectDrawtypesOptions.length : drawTypeArrayFilter.size) + ((creatorArrayFilter === "all") ?
                     selectCreatorOptions.length : creatorArrayFilter.size);
 
+    const paginatorAnnotationsRef = React.useRef<HTMLSelectElement>();
     const annotationTitleRef = React.useRef<HTMLInputElement>();
-
 
     return (
         <>
@@ -1803,25 +1788,37 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
         setPageNumber(cb);
     }, [setPageNumber, updateDialogOrDockDataInfo]);
 
+    const creatorListName = bookmarkListAll.map(({ creator }) => creator?.name).filter(v => v);
+    const selectCreatorOptions = [...(new Set(creatorListName))].map((name, index) => ({ id: `${index}_${name}`, name }));
+
+    const bookmarksColors = React.useMemo(() => Object.entries(noteColorCodeToColorTranslatorKeySet).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
+
+    const tagsIndexList = useSelector((state: IReaderRootState) => state.noteTagsIndex);
+    const selectTagOption = React.useMemo(() => tagsIndexList.map((v, i) => ({ id: i, name: v.tag })), [tagsIndexList]);
+    const selectTagOptionFilteredNameArray = React.useMemo(() => selectTagOption.map((v) => v.name), [selectTagOption]);
+
     const bookmarkListFiltered = React.useMemo(() => {
 
         return (
             (selectionIsSet(tagArrayFilter) && tagArrayFilter.size) ||
+            (tagArrayFilter === "all") ||
             (selectionIsSet(colorArrayFilter) && colorArrayFilter.size) ||
-            (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size)
+            (colorArrayFilter === "all") ||
+            (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size) ||
+            (creatorArrayFilter === "all")
         ) 
-            ? bookmarkListAll.filter(({ tags, color, creator }) => {
+            ? bookmarkListAll.filter(({ tags, color, drawType: _drawType, creator }) => {
 
                 const colorHex = rgbToHex(color);
                 const creatorName = creator?.name || "";
 
-                return (!selectionIsSet(tagArrayFilter) || !tagArrayFilter.size || tags?.some((tagsValueName) => tagArrayFilter.has(tagsValueName))) &&
-                    (!selectionIsSet(colorArrayFilter) || !colorArrayFilter.size || colorArrayFilter.has(colorHex)) &&
-                    (!selectionIsSet(creatorArrayFilter) || !creatorArrayFilter.size || creatorArrayFilter.has(creatorName));
+                return ((tagArrayFilter === "all" && tags?.some((tagsValueName) => selectTagOptionFilteredNameArray.includes(tagsValueName))) || (selectionIsSet(tagArrayFilter) && tagArrayFilter.size && tags?.some((tagsValueName) => tagArrayFilter.has(tagsValueName)))) ||
+                    ((colorArrayFilter === "all" && bookmarksColors.some(({hex}) => hex === colorHex)) || (selectionIsSet(colorArrayFilter) && colorArrayFilter.size && colorArrayFilter.has(colorHex))) ||
+                    ((creatorArrayFilter === "all" && creatorListName.includes(creatorName)) || (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size && creatorArrayFilter.has(creatorName)));
 
             })
             : bookmarkListAll;
-    }, [bookmarkListAll, tagArrayFilter, colorArrayFilter, creatorArrayFilter]);
+    }, [bookmarkListAll, tagArrayFilter, colorArrayFilter, creatorArrayFilter, bookmarksColors, creatorListName, selectTagOptionFilteredNameArray]);
 
     const [sortType, setSortType] = React.useState<Selection>(new Set(["lastCreated"]));
     if (sortType !== "all" && sortType.has("progression")) {
@@ -1876,21 +1873,14 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
     const triggerEdition = (bookmarkItem: INoteState) =>
         (value: boolean) => value ? updateDialogOrDockDataInfo({id: bookmarkItem.uuid, edit: true}) : updateDialogOrDockDataInfo({id: "", edit: false});
 
-    const tagsIndexList = useSelector((state: IReaderRootState) => state.noteTagsIndex);
-    const selectTagOption = tagsIndexList.map((v, i) => ({ id: i, name: v.tag }));
 
     // if tagArrayFilter value not include in the selectTagOption then take only the intersection between tagArrayFilter and selectTagOption
-    const selectTagOptionFilteredNameArray = selectTagOption.map((v) => v.name);
-    const tagArrayFilterArray = selectionIsSet(tagArrayFilter) ? Array(...tagArrayFilter) : [];
-    if (tagArrayFilterArray.filter((tagValue) => !selectTagOptionFilteredNameArray.includes(tagValue)).length) {
-        const tagArrayFilterArrayDifference = tagArrayFilterArray.filter((tagValue) => selectTagOptionFilteredNameArray.includes(tagValue));
-        setTagArrayFilter(new Set(tagArrayFilterArrayDifference));
-    }
-    const creatorListName = bookmarkListAll.map(({ creator }) => creator?.name).filter(v => v);
-    const selectCreatorOptions = [...(new Set(creatorListName))].map((name, index) => ({ id: `${index}_${name}`, name }));
-
-    const bookmarksColors = React.useMemo(() => Object.entries(noteColorCodeToColorTranslatorKeySet).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
-
+    // const selectTagOptionFilteredNameArray = selectTagOption.map((v) => v.name);
+    // const tagArrayFilterArray = selectionIsSet(tagArrayFilter) ? Array(...tagArrayFilter) : [];
+    // if (tagArrayFilterArray.filter((tagValue) => !selectTagOptionFilteredNameArray.includes(tagValue)).length) {
+    //     const tagArrayFilterArrayDifference = tagArrayFilterArray.filter((tagValue) => selectTagOptionFilteredNameArray.includes(tagValue));
+    //     setTagArrayFilter(new Set(tagArrayFilterArrayDifference));
+    // }
     const nbOfFilters = ((tagArrayFilter === "all") ?
         selectTagOption.length : tagArrayFilter.size) + (creatorArrayFilter === "all" ?
             selectCreatorOptions.length : creatorArrayFilter.size) + ((colorArrayFilter === "all") ?
