@@ -435,6 +435,10 @@ export async function initStore()
         preloadedState.reader.defaultConfig = { ...readerConfigInitialState, ...preloadedState.reader.defaultConfig };
     }
 
+    if (preloadedState?.creator && !preloadedState.creator.urn) {
+        preloadedState.creator.urn = `urn:uuid:${preloadedState.creator.id}`;
+    }
+
     const sagaMiddleware = createSagaMiddleware();
 
     const mware = applyMiddleware(

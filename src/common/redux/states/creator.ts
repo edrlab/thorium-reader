@@ -7,6 +7,7 @@
 
 export interface INoteCreator {
     id: string,
+    urn: string,
     type: "Organization" | "Person",
     name?: string,
 }

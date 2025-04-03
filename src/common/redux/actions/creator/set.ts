@@ -16,10 +16,12 @@ export interface Payload extends INoteCreator {
 
 export function build(name: string, type: INoteCreator["type"]): Action<typeof ID, Payload> {
 
+    const uuid = uuidv4();
     return {
         type: ID,
         payload: {
-            id: uuidv4(),
+            id: uuid,
+            urn: `urn:uuid:${uuid}`,
             name,
             type,
         },

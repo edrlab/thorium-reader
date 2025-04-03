@@ -363,9 +363,9 @@ export async function convertAnnotationStateToReadiumAnnotation(annotation: INot
             //   textDirection: "ltr",
             //   language: "fr",
         },
-        creator: creator?.id ? {
-            id: creator.id.startsWith("urn:uuid:") ? creator.id : "urn:uuid:" + creator.id,
-            name: creator.name,
+        creator: creator?.urn ? {
+            id: creator.urn,
+            name: creator.name || "",
             type: creator.type,
         } : undefined,
         target: {

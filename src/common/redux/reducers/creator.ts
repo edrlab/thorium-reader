@@ -18,8 +18,10 @@ const username = "";
 //     // ignore
 // }
 
+const uuid = uuidv4();
 const initialState: INoteCreator = {
-    id: uuidv4(),
+    id: uuid,
+    urn: `urn:uuid:${uuid}`,
     type: "Organization",
     name: username,
 };
@@ -34,6 +36,7 @@ function creatorReducer_(
             return {
                 // state: state.state,
                 id: action.payload.id,
+                urn: action.payload.urn,
                 type: action.payload.type,
                 name: action.payload.name,
             };

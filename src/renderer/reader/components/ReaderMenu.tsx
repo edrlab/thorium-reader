@@ -437,8 +437,6 @@ export const computeProgression = (spineItemLinks: Link[], locator: Locator) => 
     return percent;
 };
 
-const getUuidFromUrn = (v: string | undefined): string => v?.startsWith("urn:uuid:") ? v.split("urn:uuid:")[1] : v || "";
-
 const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void, setCreatorFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
     const { goToLocator, setTagFilter, setCreatorFilter } = props;
@@ -451,7 +449,6 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
     const tagName = tagsStringArray[0] || "";
     const dockedEditAnnotation = isEdited && dockedMode;
     const annotationColor = rgbToHex(annotation.color);
-    const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
 
     const dispatch = useDispatch();
     const [__] = useTranslator();
@@ -498,8 +495,7 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
         return <></>;
     }
 
-    const creatorName = (getUuidFromUrn(annotation.creator?.id) !== getUuidFromUrn(creatorMyself.id) ? (annotation.creator?.name) : creatorMyself.name) || "";
-    // const creatorId = (getUuidFromUrn(annotation.creator?.id) !== getUuidFromUrn(creatorMyself.id) ? getUuidFromUrn(annotation.creator?.id) : getUuidFromUrn(creatorMyself.id)) || "";
+    const creatorName = annotation.creator?.name || "";
 
     return (<li
         className={stylesAnnotations.annotations_line}
@@ -735,7 +731,6 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
     const { uuid, color, tags } = bookmark;
     const tag = Array.isArray(tags) ? tags[0] || "" : "";
     const dockedEditBookmark = isEdited && dockedMode;
-    const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
 
     const dispatch = useDispatch();
     const [__] = useTranslator();
@@ -779,8 +774,7 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
         return <></>;
     }
 
-    const creatorName = (getUuidFromUrn(bookmark.creator?.id) !== getUuidFromUrn(creatorMyself.id) ? (bookmark.creator?.name) : creatorMyself.name) || "";
-    // const creatorId = (getUuidFromUrn(annotation.creator?.id) !== getUuidFromUrn(creatorMyself.id) ? getUuidFromUrn(annotation.creator?.id) : getUuidFromUrn(creatorMyself.id)) || "";
+    const creatorName = bookmark.creator?.name || "";
 
     return (<li
         className={stylesAnnotations.annotations_line}
@@ -1049,7 +1043,6 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
     const publicationView = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
     const winId = useSelector((state: IReaderRootState) => state.win.identifier);
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
-    const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
 
     const [tagArrayFilter, setTagArrayFilter] = React.useState<Selection>(new Set([]));
     const [colorArrayFilter, setColorArrayFilter] = React.useState<Selection>(new Set([]));
@@ -1075,15 +1068,16 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
 
                 const colorHex = rgbToHex(color);
                 const drawType = EDrawType[_drawType];
+                const creatorName = creator?.name || "";
 
                 return (!selectionIsSet(tagArrayFilter) || !tagArrayFilter.size || tags?.some((tagsValueName) => tagArrayFilter.has(tagsValueName))) &&
                     (!selectionIsSet(colorArrayFilter) || !colorArrayFilter.size || colorArrayFilter.has(colorHex)) &&
                     (!selectionIsSet(drawTypeArrayFilter) || !drawTypeArrayFilter.size || drawTypeArrayFilter.has(drawType)) &&
-                    (!selectionIsSet(creatorArrayFilter) || !creatorArrayFilter.size || creatorArrayFilter.has(getUuidFromUrn(creator.id) !== getUuidFromUrn(creatorMyself.id) ? creator.name : creatorMyself.name));
+                    (!selectionIsSet(creatorArrayFilter) || !creatorArrayFilter.size || creatorArrayFilter.has(creatorName));
 
             })
             : annotationsListAll;
-    }, [annotationsListAll, tagArrayFilter, colorArrayFilter, drawTypeArrayFilter, creatorArrayFilter, creatorMyself.id, creatorMyself.name]);
+    }, [annotationsListAll, tagArrayFilter, colorArrayFilter, drawTypeArrayFilter, creatorArrayFilter]);
 
     const [sortType, setSortType] = React.useState<Selection>(new Set(["lastCreated"]));
     if (sortType !== "all" && sortType.has("progression")) {
@@ -1155,28 +1149,8 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
         setTagArrayFilter(new Set(tagArrayFilterArrayDifference));
     }
 
-    const creatorList = annotationsListAll.map(({ creator }) => creator).filter(v => v);
-    // const creatorSet = creatorList.reduce<Record<string, string>>((acc, { id, name }) => {
-    //     if (!acc[id]) {
-    //         return { ...acc, [getUuidFromUrn(id)]: (getUuidFromUrn(id) !== getUuidFromUrn(creatorMyself.id) ? name : creatorMyself.name) || getUuidFromUrn(id) };
-    //     }
-    //     return acc;
-    // }, {});
-
-    // const selectCreatorOptions = Object.entries(creatorSet).map(([k, v]) => ({ id: k, name: v }));
-    const creatorSet = creatorList.reduce<Record<string, string>>((acc, { id, name }) => {
-        if (!acc[id]) {
-            const _name = (getUuidFromUrn(id) !== getUuidFromUrn(creatorMyself.id) ? name : creatorMyself.name);
-            if (_name) {
-                return { ...acc, [_name]: _name };
-            } else {
-                return acc;
-            }
-        }
-        return acc;
-    }, {});
-
-    const selectCreatorOptions = Object.entries(creatorSet).map(([k, v]) => ({ id: k, name: v }));
+    const creatorListName = annotationsListAll.map(({ creator }) => creator?.name).filter(v => v);
+    const selectCreatorOptions = [...(new Set(creatorListName))].map((name, index) => ({ id: `${index}_${name}`, name }));
 
     const annotationsColors = React.useMemo(() => Object.entries(noteColorCodeToColorTranslatorKeySet).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
 
@@ -1475,17 +1449,6 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
 
                                     <Popover.Close aria-label={__("reader.annotations.export")} asChild>
                                         <button onClick={() => {
-                                            const annotations = annotationListFiltered.map((anno) => {
-                                                const { creator } = anno;
-                                                if (getUuidFromUrn(creator?.id) === getUuidFromUrn(creatorMyself.id)) {
-                                                    if (!creatorMyself.name) {
-                                                        return { ...anno, creator: undefined };
-                                                    } else {
-                                                        return { ...anno, creator: { ...creatorMyself, id: "urn:uuid:" + creatorMyself.id } };
-                                                    }
-                                                }
-                                                return anno;
-                                            });
                                             const title = annotationTitleRef?.current.value || "thorium-reader";
                                             let label = title;
                                             label = label.trim();
@@ -1494,7 +1457,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                             label = label.replace(/^\./, ""); // remove dot start
                                             label = label.toLowerCase();
 
-                                            dispatch(readerLocalActionExportAnnotationSet.build(annotations, publicationView, label));
+                                            dispatch(readerLocalActionExportAnnotationSet.build(annotationListFiltered, publicationView, label));
                                         }} className={stylesButtons.button_primary_blue}>
                                             <SVG svg={SaveIcon} />
                                             {__("reader.annotations.export")}
@@ -1828,7 +1791,6 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
     const publicationView = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
     const winId = useSelector((state: IReaderRootState) => state.win.identifier);
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
-    const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
 
     const [colorArrayFilter, setColorArrayFilter] = React.useState<Selection>(new Set([]));
     const [creatorArrayFilter, setCreatorArrayFilter] = React.useState<Selection>(new Set([]));
@@ -1851,14 +1813,15 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
             ? bookmarkListAll.filter(({ tags, color, creator }) => {
 
                 const colorHex = rgbToHex(color);
+                const creatorName = creator?.name || "";
 
                 return (!selectionIsSet(tagArrayFilter) || !tagArrayFilter.size || tags?.some((tagsValueName) => tagArrayFilter.has(tagsValueName))) &&
                     (!selectionIsSet(colorArrayFilter) || !colorArrayFilter.size || colorArrayFilter.has(colorHex)) &&
-                    (!selectionIsSet(creatorArrayFilter) || !creatorArrayFilter.size || creatorArrayFilter.has(getUuidFromUrn(creator.id) !== getUuidFromUrn(creatorMyself.id) ? creator.name : creatorMyself.name));
+                    (!selectionIsSet(creatorArrayFilter) || !creatorArrayFilter.size || creatorArrayFilter.has(creatorName));
 
             })
             : bookmarkListAll;
-    }, [bookmarkListAll, tagArrayFilter, colorArrayFilter, creatorArrayFilter, creatorMyself.id, creatorMyself.name]);
+    }, [bookmarkListAll, tagArrayFilter, colorArrayFilter, creatorArrayFilter]);
 
     const [sortType, setSortType] = React.useState<Selection>(new Set(["lastCreated"]));
     if (sortType !== "all" && sortType.has("progression")) {
@@ -1923,23 +1886,10 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
         const tagArrayFilterArrayDifference = tagArrayFilterArray.filter((tagValue) => selectTagOptionFilteredNameArray.includes(tagValue));
         setTagArrayFilter(new Set(tagArrayFilterArrayDifference));
     }
-
-    const creatorList = bookmarkListAll.map(({ creator }) => creator).filter(v => v);
-    const creatorSet = creatorList.reduce<Record<string, string>>((acc, { id, name }) => {
-        if (!acc[id]) {
-            const _name = (getUuidFromUrn(id) !== getUuidFromUrn(creatorMyself.id) ? name : creatorMyself.name);
-            if (_name) {
-                return { ...acc, [_name]: _name };
-            } else {
-                return acc;
-            }
-        }
-        return acc;
-    }, {});
+    const creatorListName = bookmarkListAll.map(({ creator }) => creator?.name).filter(v => v);
+    const selectCreatorOptions = [...(new Set(creatorListName))].map((name, index) => ({ id: `${index}_${name}`, name }));
 
     const bookmarksColors = React.useMemo(() => Object.entries(noteColorCodeToColorTranslatorKeySet).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
-
-    const selectCreatorOptions = Object.entries(creatorSet).map(([k, v]) => ({ id: k, name: v }));
 
     const nbOfFilters = ((tagArrayFilter === "all") ?
         selectTagOption.length : tagArrayFilter.size) + (creatorArrayFilter === "all" ?
@@ -2204,20 +2154,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
 
                                     <Popover.Close aria-label={__("reader.annotations.export")} asChild>
                                         <button onClick={() => {
-
-                                            const bookmarks = bookmarkListFiltered.map((anno) => {
-                                                const { creator } = anno;
-                                                if (getUuidFromUrn(creator?.id) === getUuidFromUrn(creatorMyself.id)) {
-                                                    if (!creatorMyself.name) {
-                                                        return { ...anno, creator: undefined };
-                                                    } else {
-                                                        return { ...anno, creator: { ...creatorMyself, id: "urn:uuid:" + creatorMyself.id } };
-                                                    }
-                                                }
-                                                return anno;
-                                            });
                                             const title = bookmarkTitleRef?.current.value || "thorium-reader";
-
                                             let label = title;
                                             label = label.trim();
                                             label = label.replace(/[^a-z0-9_-]/gi, "_");
@@ -2225,7 +2162,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                             label = label.replace(/^\./, ""); // remove dot start
                                             label = label.toLowerCase();
 
-                                            dispatch(readerLocalActionExportAnnotationSet.build(bookmarks, publicationView, label));
+                                            dispatch(readerLocalActionExportAnnotationSet.build(bookmarkListFiltered, publicationView, label));
                                         }} className={stylesButtons.button_primary_blue}>
                                             <SVG svg={SaveIcon} />
                                             {__("reader.annotations.export")}
