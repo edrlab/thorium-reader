@@ -334,14 +334,6 @@
                 "title": "Título"
             },
             "annotationsOptions": "Opções de anotações",
-            "colors": {
-                "cyan": "Ciano",
-                "green": "Verde",
-                "orange": "Laranja",
-                "purple": "Roxo",
-                "red": "Vermelho",
-                "yellow": "Amarelo"
-            },
             "date": "Data de alteração",
             "export": "Guardar anotações como...",
             "filter": {
@@ -435,6 +427,16 @@
             "page": "Página",
             "pdfscalemode": "Ajustar à página ou largura",
             "settingsTitle": "Configurações"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "Ciano",
+                "green": "Verde",
+                "orange": "Laranja",
+                "purple": "Roxo",
+                "red": "Vermelho",
+                "yellow": "Amarelo"
+            }
         },
         "picker": {
             "search": {

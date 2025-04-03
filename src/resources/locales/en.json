@@ -334,14 +334,6 @@
                 "title": "Title"
             },
             "annotationsOptions": "Annotation Options",
-            "colors": {
-                "cyan": "Cyan",
-                "green": "Green",
-                "orange": "Orange",
-                "purple": "Purple",
-                "red": "Red",
-                "yellow": "Yellow"
-            },
             "date": "Modification date",
             "export": "Save notes as...",
             "filter": {
@@ -435,6 +427,16 @@
             "page": "Page",
             "pdfscalemode": "Page fit or width",
             "settingsTitle": "settings"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "Cyan",
+                "green": "Green",
+                "orange": "Orange",
+                "purple": "Purple",
+                "red": "Red",
+                "yellow": "Yellow"
+            }
         },
         "picker": {
             "search": {

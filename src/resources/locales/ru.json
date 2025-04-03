@@ -334,14 +334,6 @@
                 "title": ""
             },
             "annotationsOptions": "Параметры",
-            "colors": {
-                "cyan": "",
-                "green": "",
-                "orange": "",
-                "purple": "",
-                "red": "",
-                "yellow": ""
-            },
             "date": "",
             "export": "",
             "filter": {
@@ -435,6 +427,16 @@
             "page": "Страница",
             "pdfscalemode": "Размер или ширина страницы",
             "settingsTitle": "настройки"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "",
+                "green": "",
+                "orange": "",
+                "purple": "",
+                "red": "",
+                "yellow": ""
+            }
         },
         "picker": {
             "search": {

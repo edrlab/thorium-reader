@@ -765,14 +765,6 @@ declare namespace typed_i18n {
       readonly "title": string
     },
     readonly "annotationsOptions": string,
-    readonly "colors": {
-      readonly "cyan": string,
-      readonly "green": string,
-      readonly "orange": string,
-      readonly "purple": string,
-      readonly "red": string,
-      readonly "yellow": string
-    },
     readonly "date": string,
     readonly "export": string,
     readonly "filter": {
@@ -859,6 +851,16 @@ declare namespace typed_i18n {
     readonly "page": string,
     readonly "pdfscalemode": string,
     readonly "settingsTitle": string
+  },
+  readonly "notes": {
+    readonly "colors": {
+      readonly "cyan": string,
+      readonly "green": string,
+      readonly "orange": string,
+      readonly "purple": string,
+      readonly "red": string,
+      readonly "yellow": string
+    }
   },
   readonly "picker": {
     readonly "search": {
@@ -967,14 +969,6 @@ declare namespace typed_i18n {
     readonly "title": string
   },
   readonly "annotationsOptions": string,
-  readonly "colors": {
-    readonly "cyan": string,
-    readonly "green": string,
-    readonly "orange": string,
-    readonly "purple": string,
-    readonly "red": string,
-    readonly "yellow": string
-  },
   readonly "date": string,
   readonly "export": string,
   readonly "filter": {
@@ -1013,20 +1007,6 @@ declare namespace typed_i18n {
   (_: "reader.annotations.annotationsExport.description", __?: {}): string;
   (_: "reader.annotations.annotationsExport.title", __?: {}): string;
   (_: "reader.annotations.annotationsOptions", __?: {}): string;
-  (_: "reader.annotations.colors", __?: {}): {
-  readonly "cyan": string,
-  readonly "green": string,
-  readonly "orange": string,
-  readonly "purple": string,
-  readonly "red": string,
-  readonly "yellow": string
-};
-  (_: "reader.annotations.colors.cyan", __?: {}): string;
-  (_: "reader.annotations.colors.green", __?: {}): string;
-  (_: "reader.annotations.colors.orange", __?: {}): string;
-  (_: "reader.annotations.colors.purple", __?: {}): string;
-  (_: "reader.annotations.colors.red", __?: {}): string;
-  (_: "reader.annotations.colors.yellow", __?: {}): string;
   (_: "reader.annotations.date", __?: {}): string;
   (_: "reader.annotations.export", __?: {}): string;
   (_: "reader.annotations.filter", __?: {}): {
@@ -1178,6 +1158,30 @@ declare namespace typed_i18n {
   (_: "reader.navigation.page", __?: {}): string;
   (_: "reader.navigation.pdfscalemode", __?: {}): string;
   (_: "reader.navigation.settingsTitle", __?: {}): string;
+  (_: "reader.notes", __?: {}): {
+  readonly "colors": {
+    readonly "cyan": string,
+    readonly "green": string,
+    readonly "orange": string,
+    readonly "purple": string,
+    readonly "red": string,
+    readonly "yellow": string
+  }
+};
+  (_: "reader.notes.colors", __?: {}): {
+  readonly "cyan": string,
+  readonly "green": string,
+  readonly "orange": string,
+  readonly "purple": string,
+  readonly "red": string,
+  readonly "yellow": string
+};
+  (_: "reader.notes.colors.cyan", __?: {}): string;
+  (_: "reader.notes.colors.green", __?: {}): string;
+  (_: "reader.notes.colors.orange", __?: {}): string;
+  (_: "reader.notes.colors.purple", __?: {}): string;
+  (_: "reader.notes.colors.red", __?: {}): string;
+  (_: "reader.notes.colors.yellow", __?: {}): string;
   (_: "reader.picker", __?: {}): {
   readonly "search": {
     readonly "founds": string,

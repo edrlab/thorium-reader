@@ -334,14 +334,6 @@
                 "title": "Naslov"
             },
             "annotationsOptions": "Možnosti",
-            "colors": {
-                "cyan": "Cyan",
-                "green": "Zelena",
-                "orange": "Oranžna",
-                "purple": "Vijolična",
-                "red": "Rdeča",
-                "yellow": "Rumena"
-            },
             "date": "Datum spremembe",
             "export": "Shrani zapiske kot ...",
             "filter": {
@@ -435,6 +427,16 @@
             "page": "Stran",
             "pdfscalemode": "Prileganje strani ali širine",
             "settingsTitle": "nastavitve"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "Cyan",
+                "green": "Zelena",
+                "orange": "Oranžna",
+                "purple": "Vijolična",
+                "red": "Rdeča",
+                "yellow": "Rumena"
+            }
         },
         "picker": {
             "search": {
