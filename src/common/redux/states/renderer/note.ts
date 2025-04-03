@@ -98,4 +98,4 @@ export type TDrawView = "annotation" | "margin" | "hide";
 
 export type TnoteTagsIndex = Record<string, number>;
 
-export type INotePreParsingState = Pick<INoteState, "uuid" | "textualValue" | "color" | "drawType" | "tags" | "modified" | "created" | "creator"> & { target: IReadiumAnnotation["target"] };
+export type INotePreParsingState = Pick<INoteState, "uuid" | "textualValue" | "color" | "drawType" | "tags" | "modified" | "created" | "creator" | "group"> & { target: IReadiumAnnotation["target"] };

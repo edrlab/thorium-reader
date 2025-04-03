@@ -444,10 +444,6 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
     const { goToLocator, setTagFilter, setCreatorFilter } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const dockingMode = useReaderConfig("readerDockingMode");
-    // const setReaderConfig = useSaveReaderConfig();
-    // const setDockingMode = React.useCallback((value: ReaderConfig["readerDockingMode"]) => {
-    //     setReaderConfig({readerDockingMode: value});
-    // }, [setReaderConfig]);
     const dockedMode = dockingMode !== "full";
     const { annotation, isEdited, triggerEdition } = props;
     const { uuid, textualValue, tags: tagsStringArrayMaybeUndefined } = annotation;
@@ -2165,7 +2161,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                 </div>
                 <div style={{ display: "flex", gap: "10px" }}>
                     <ImportAnnotationsDialog winId={winId} publicationView={publicationView}>
-                        <button style={{ display: "none" }} className={stylesBookmarks.bookmarks_filter_trigger_button}
+                        <button className={stylesBookmarks.bookmarks_filter_trigger_button}
                             title={__("catalog.importAnnotation")}
                             aria-label={__("catalog.importAnnotation")}>
                             <SVG svg={ImportIcon} />
@@ -2174,7 +2170,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
 
                     <Popover.Root>
                         <Popover.Trigger asChild>
-                            <button style={{ display: "none" }} className={stylesBookmarks.bookmarks_filter_trigger_button} disabled={!bookmarkListFiltered.length}
+                            <button className={stylesBookmarks.bookmarks_filter_trigger_button} disabled={!bookmarkListFiltered.length}
                                 title={__("catalog.exportAnnotation")}
                                 aria-label={__("catalog.exportAnnotation")}>
                                 <SVG svg={SaveIcon} />
@@ -2209,29 +2205,27 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                     <Popover.Close aria-label={__("reader.annotations.export")} asChild>
                                         <button onClick={() => {
 
-                                            //  TODO NEED TO IMPLEMENT BOOKMARK EXPORT
-                                            // const bookmarks = bookmarkListFiltered.map(([, anno]) => {
-                                            //     const { creator } = anno;
-                                            //     if (getUuidFromUrn(creator?.id) === getUuidFromUrn(creatorMyself.id)) {
-                                            //         if (!creatorMyself.name) {
-                                            //             return { ...anno, creator: undefined };
-                                            //         } else {
-                                            //             return { ...anno, creator: { ...creatorMyself, id: "urn:uuid:" + creatorMyself.id } };
-                                            //         }
-                                            //     }
-                                            //     return anno;
-                                            // });
-                                            // const title = bookmarkTitleRef?.current.value || "thorium-reader";
+                                            const bookmarks = bookmarkListFiltered.map((anno) => {
+                                                const { creator } = anno;
+                                                if (getUuidFromUrn(creator?.id) === getUuidFromUrn(creatorMyself.id)) {
+                                                    if (!creatorMyself.name) {
+                                                        return { ...anno, creator: undefined };
+                                                    } else {
+                                                        return { ...anno, creator: { ...creatorMyself, id: "urn:uuid:" + creatorMyself.id } };
+                                                    }
+                                                }
+                                                return anno;
+                                            });
+                                            const title = bookmarkTitleRef?.current.value || "thorium-reader";
 
-                                            // let label = title;
-                                            // label = label.trim();
-                                            // label = label.replace(/[^a-z0-9_-]/gi, "_");
-                                            // label = label.replace(/^_+|_+$/g, ""); // leading and trailing underscore
-                                            // label = label.replace(/^\./, ""); // remove dot start
-                                            // label = label.toLowerCase();
+                                            let label = title;
+                                            label = label.trim();
+                                            label = label.replace(/[^a-z0-9_-]/gi, "_");
+                                            label = label.replace(/^_+|_+$/g, ""); // leading and trailing underscore
+                                            label = label.replace(/^\./, ""); // remove dot start
+                                            label = label.toLowerCase();
 
-                                            // TODO
-                                            // dispatch(readerLocalActionExportAnnotationSet.build(bookmarks, publicationView, label));
+                                            dispatch(readerLocalActionExportAnnotationSet.build(bookmarks, publicationView, label));
                                         }} className={stylesButtons.button_primary_blue}>
                                             <SVG svg={SaveIcon} />
                                             {__("reader.annotations.export")}

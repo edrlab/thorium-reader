@@ -80,7 +80,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         if (!isIReadiumAnnotationSet(readiumAnnotationFormat)) {
 
             debug("Error: ", __READIUM_ANNOTATION_AJV_ERRORS);
-            yield* putTyped(toastActions.openRequest.build(ToastType.Error, __("message.annotations.errorParsing"), readerPublicationIdentifier));
+            yield* putTyped(toastActions.openRequest.build(ToastType.Error, __("message.annotations.errorParsing") + __READIUM_ANNOTATION_AJV_ERRORS, readerPublicationIdentifier));
             return;
         }
 
@@ -188,6 +188,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                     type: creator.type,
                     name: creator.name,
                 } : undefined,
+                group: incommingAnnotation.motivation === "bookmarking" ? "bookmark" : "annotation",
             };
 
             if (annotationParsed.modified) {
