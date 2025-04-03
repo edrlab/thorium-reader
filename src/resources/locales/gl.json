@@ -119,6 +119,20 @@
         "tags": "Etiquetas",
         "update": "Edita"
     },
+    "chatbot": {
+        "detailedDescTitle": "",
+        "detailedDescription": "",
+        "editorDescription": "",
+        "generateDescriptionTitle": "",
+        "inputPlaceholder": "",
+        "noDescription": "",
+        "reset": "",
+        "sendQuestion": "",
+        "shortDescTitle": "",
+        "shortDescription": "",
+        "systemPromptEditor": "",
+        "title": ""
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "",
@@ -550,6 +564,20 @@
             "person": "",
             "type": ""
         },
+        "apiKey": {
+            "addKey": "",
+            "help": "",
+            "howTo1": "",
+            "howTo2": "",
+            "howTo3": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "providerSelection": "",
+            "removeKey": "",
+            "title": "",
+            "validate": ""
+        },
         "auth": {
             "help": "",
             "title": "",
@@ -576,6 +604,7 @@
             "title": "Gardar sesión"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Aspecto visual",
             "general": "General",
             "keyboardShortcuts": "Atallos de teclado"

@@ -119,6 +119,20 @@
         "tags": "Etiquetas",
         "update": "Editar"
     },
+    "chatbot": {
+        "detailedDescTitle": "",
+        "detailedDescription": "",
+        "editorDescription": "",
+        "generateDescriptionTitle": "",
+        "inputPlaceholder": "",
+        "noDescription": "",
+        "reset": "",
+        "sendQuestion": "",
+        "shortDescTitle": "",
+        "shortDescription": "",
+        "systemPromptEditor": "",
+        "title": ""
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "de {{- author}}",
@@ -550,6 +564,20 @@
             "person": "Persona",
             "type": "Tipo:"
         },
+        "apiKey": {
+            "addKey": "",
+            "help": "",
+            "howTo1": "",
+            "howTo2": "",
+            "howTo3": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "providerSelection": "",
+            "removeKey": "",
+            "title": "",
+            "validate": ""
+        },
         "auth": {
             "help": "Esta acción elimina todas las credenciales de inicio de sesión de OPDS.",
             "title": "Acceso a los catálogos de publicaciones",
@@ -576,6 +604,7 @@
             "title": "Guardar sesión"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Aspecto visual",
             "general": "General",
             "keyboardShortcuts": "Atajos de teclado"

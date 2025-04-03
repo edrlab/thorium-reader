@@ -119,6 +119,20 @@
         "tags": "Žymės",
         "update": "Keisti"
     },
+    "chatbot": {
+        "detailedDescTitle": "",
+        "detailedDescription": "",
+        "editorDescription": "",
+        "generateDescriptionTitle": "",
+        "inputPlaceholder": "",
+        "noDescription": "",
+        "reset": "",
+        "sendQuestion": "",
+        "shortDescTitle": "",
+        "shortDescription": "",
+        "systemPromptEditor": "",
+        "title": ""
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "'{{- author}}'",
@@ -550,6 +564,20 @@
             "person": "Asmuo",
             "type": "Tipas:"
         },
+        "apiKey": {
+            "addKey": "",
+            "help": "",
+            "howTo1": "",
+            "howTo2": "",
+            "howTo3": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "providerSelection": "",
+            "removeKey": "",
+            "title": "",
+            "validate": ""
+        },
         "auth": {
             "help": "Šis veiksmas pašalina visus OPDS prisijungimo duomenis.",
             "title": "Valdyti katalogų prieigą",
@@ -576,6 +604,7 @@
             "title": "Įgalinti sesijos išsaugojimą"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Išvaizda",
             "general": "Bendros",
             "keyboardShortcuts": "Spartieji klavišai"

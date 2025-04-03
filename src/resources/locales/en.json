@@ -119,6 +119,20 @@
         "tags": "Tags",
         "update": "Edit"
     },
+    "chatbot": {
+        "detailedDescTitle": "detailed description",
+        "detailedDescription": "Describe this illustration in detail (nature of the image, technique, format, symbolism, characters, scenery, colours, style, period, etc.)",
+        "editorDescription": "Editor's description",
+        "generateDescriptionTitle": "Generate a textual description",
+        "inputPlaceholder": "Ask something, For example: can you describe this image?",
+        "noDescription": "No description was provided by the author. You can ask the AI to generate either a short description or a detailed description.",
+        "reset": "Reset",
+        "sendQuestion": "Send the question",
+        "shortDescTitle": "short description",
+        "shortDescription": "Describe this image in two sentences",
+        "systemPromptEditor": "System prompt editor",
+        "title": "Describe the image with {{- title}}"
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "by '{{- author}}'",
@@ -550,6 +564,20 @@
             "person": "Person",
             "type": "Type:"
         },
+        "apiKey": {
+            "addKey": "Add a new key",
+            "help": "Add a personal API Key from a provider to use the chatbot image description feature.",
+            "howTo1": "Create an API key by visiting {{- provider }}'s console",
+            "howTo2": "Ensure your {{- provider }} account has credits",
+            "howTo3": "Paste your API key below to start using the assistant",
+            "keyLabel": "API Key",
+            "mistral": "Mistral",
+            "openAi": "OpenAI",
+            "providerSelection": "Choose a provider",
+            "removeKey": "Remove this key",
+            "title": "Add an API Key (Image Description feature)",
+            "validate": "Validate"
+        },
         "auth": {
             "help": "This action deletes all OPDS login credentials.",
             "title": "Access to publication catalogs",
@@ -576,6 +604,7 @@
             "title": "Enable session saving"
         },
         "tabs": {
+            "aiKeyManager": "AI Key Manager",
             "appearance": "Appearance",
             "general": "General",
             "keyboardShortcuts": "Keyboard shortcuts"

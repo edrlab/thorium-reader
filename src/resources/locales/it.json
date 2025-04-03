@@ -119,6 +119,20 @@
         "tags": "Tags",
         "update": "Modifica"
     },
+    "chatbot": {
+        "detailedDescTitle": "",
+        "detailedDescription": "",
+        "editorDescription": "",
+        "generateDescriptionTitle": "",
+        "inputPlaceholder": "",
+        "noDescription": "",
+        "reset": "",
+        "sendQuestion": "",
+        "shortDescTitle": "",
+        "shortDescription": "",
+        "systemPromptEditor": "",
+        "title": ""
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "di {{- author}}",
@@ -550,6 +564,20 @@
             "person": "Persona",
             "type": "Tipo:"
         },
+        "apiKey": {
+            "addKey": "",
+            "help": "",
+            "howTo1": "",
+            "howTo2": "",
+            "howTo3": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "providerSelection": "",
+            "removeKey": "",
+            "title": "",
+            "validate": ""
+        },
         "auth": {
             "help": "Questa azione cancella tutte le credenziali di accesso all'OPDS.",
             "title": "Gestire l'accesso ai cataloghi",
@@ -576,6 +604,7 @@
             "title": "Salva sessione"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Aspetto",
             "general": "Generale",
             "keyboardShortcuts": "Scorciatoie da tastiera"

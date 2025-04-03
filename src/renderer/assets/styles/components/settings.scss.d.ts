@@ -1,5 +1,10 @@
 export declare const advanced_trigger: string;
 export declare const allowCustom: string;
+export declare const apiKey_container: string;
+export declare const apiKey_input_edit_container: string;
+export declare const apiKey_input_submitted: string;
+export declare const apiKey_radiogroup: string;
+export declare const apiKey_remove_button: string;
 export declare const blink: string;
 export declare const btn_primary: string;
 export declare const button_transparency_icon: string;

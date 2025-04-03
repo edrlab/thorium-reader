@@ -19,6 +19,7 @@ import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg"
 import * as CogIcon from "readium-desktop/renderer/assets/icons/cog-icon.svg";
 import * as PaletteIcon from "readium-desktop/renderer/assets/icons/palette-icon.svg";
 import * as KeyReturnIcon from "readium-desktop/renderer/assets/icons/keyreturn-icon.svg";
+import * as AiIcon from "readium-desktop/renderer/assets/icons/ai-icon.svg";
 import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 import classNames from "classnames";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
@@ -44,6 +45,8 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import { ApiappHowDoesItWorkInfoBox } from "../dialog/ApiappAddForm";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { ApiKeysList } from "./AiKeyManager";
 
 interface ISettingsProps {};
 
@@ -228,6 +231,7 @@ const SaveCreatorSettings: React.FC<{}> = () => {
     );
 };
 
+
 const ManageAccessToCatalogSettings = () => {
 
     const [__] = useTranslator();
@@ -346,6 +350,11 @@ export const Settings: React.FC<ISettingsProps> = () => {
         <Dialog.Portal>
             <div className={stylesModals.modal_dialog_overlay}></div>
             <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined}>
+                <VisuallyHidden>
+                    <Dialog.Title>
+                        {__("header.settings")}
+                    </Dialog.Title>
+                </VisuallyHidden>
                 <Tabs.Root defaultValue="tab1" data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                     <Tabs.List className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
                         <Tabs.Trigger value="tab1">
@@ -359,6 +368,10 @@ export const Settings: React.FC<ISettingsProps> = () => {
                         <Tabs.Trigger value="tab4">
                             <SVG ariaHidden svg={KeyReturnIcon} />
                             <h3>{__("settings.tabs.keyboardShortcuts")}</h3>
+                        </Tabs.Trigger>
+                        <Tabs.Trigger value="tab5">
+                            <SVG ariaHidden svg={AiIcon} />
+                            <h3>{__("settings.tabs.aiKeyManager")}</h3>
                         </Tabs.Trigger>
                     </Tabs.List>
                     <div className={stylesSettings.settings_content} style={{marginTop: "70px"}}>
@@ -384,6 +397,13 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             </TabHeader>
                             <div className={stylesSettings.settings_tab}>
                                 <KeyboardSettings />
+                            </div>
+                        </Tabs.Content>
+                        <Tabs.Content value="tab5" tabIndex={-1}>
+                            <TabHeader title={__("settings.tabs.aiKeyManager")}>
+                            </TabHeader>
+                            <div className={stylesSettings.settings_tab}>
+                                <ApiKeysList />
                             </div>
                         </Tabs.Content>
                     </div>
