@@ -464,7 +464,7 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
         const fc = async () => {
             if (textualValue) {
                 let parsed = DOMPurify.sanitize(await marked.parse(textualValue.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, ""), {gfm: true}));
-                parsed = parsed.replace(/font-size:/g, "font-sizexx:");
+                parsed = parsed.replace(/style=/g, "stylexx=");
                 const regex = new RegExp(/href=\"(.*?)\"/, "gm");
                 const hrefSanitized = parsed.replace(regex, (substring) => {
 
