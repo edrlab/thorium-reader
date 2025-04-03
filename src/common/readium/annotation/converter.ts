@@ -159,7 +159,7 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
     let rangeInfo: IRangeInfo = undefined;
     let textInfo: ISelectedTextInfo = undefined;
     for (const convertedRange of convertedRangeArray) {
-        if (convertedRange[0]?.startContainerElementCssSelector && convertedRange[1].rawText) {
+        if (convertedRange[0]?.startContainerElementCssSelector && convertedRange[1]?.rawText) {
             rangeInfo = convertedRange[0];
             textInfo = convertedRange[1];
         }
