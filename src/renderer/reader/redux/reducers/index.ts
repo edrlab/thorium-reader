@@ -214,7 +214,7 @@ export const rootReducer = () => {
                         // Si le fournisseur existe, mettez à jour la clé
                         return state.map((key, index) =>
                         index === existingIndex
-                            ? { ...key, key: payload.aiKey }
+                            ? { ...key, aiKey: payload.aiKey }
                             : key,
                         );
                     } else {
