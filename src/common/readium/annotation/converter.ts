@@ -173,8 +173,9 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
     // need to check if the start/end ContainerElementCssSelector & start/end ContainerChildTextNodeIndex is equal and if the end - start offset equal 1
     let caretInfo: ISelectionInfo = undefined;
     let selectionInfo: ISelectionInfo = undefined;
-    if (isABookmark ||
-        !selectionInfo?.rangeInfo && (rangeInfo.endContainerChildTextNodeIndex === rangeInfo.startContainerChildTextNodeIndex && rangeInfo.endContainerElementCssSelector === rangeInfo.startContainerElementCssSelector && rangeInfo.endOffset - rangeInfo.startOffset === 1)
+    if (
+        isABookmark ||
+        (rangeInfo.endContainerChildTextNodeIndex === rangeInfo.startContainerChildTextNodeIndex && rangeInfo.endContainerElementCssSelector === rangeInfo.startContainerElementCssSelector && rangeInfo.endOffset - rangeInfo.startOffset === 1)
     ) {
         // IT's a bookmark: need to move this rangeInfo to the locations.caretInfo
 
@@ -274,14 +275,13 @@ export async function convertAnnotationStateToSelector(annotationWithCacheDoc: I
     const document = xmlDom;
     const root = xmlDom.body;
 
-    const { locatorExtended } = annotation;
+    const { locatorExtended, drawType } = annotation;
     const { selectionInfo, locator } = locatorExtended;
     const { locations } = locator;
     const { progression } = locations;
 
     // the range start/end is guaranteed in document order (internally used in navigator whenever deserialising DOM Ranges from JSON expression) ... but DOM Ranges are always ordered anyway (only the user / document selection object can be reversed)
     const rangeInfo = selectionInfo?.rangeInfo || locator.locations.caretInfo?.rangeInfo;
-    const isABookmark = !selectionInfo?.rangeInfo && (rangeInfo.endContainerChildTextNodeIndex === rangeInfo.startContainerChildTextNodeIndex && rangeInfo.endContainerElementCssSelector === rangeInfo.startContainerElementCssSelector && rangeInfo.endOffset - rangeInfo.startOffset === 1);
     if (!rangeInfo) {
         debug("ERROR!! RangeInfo not defined !!!");
         debug(rangeInfo);
@@ -327,10 +327,10 @@ export async function convertAnnotationStateToSelector(annotationWithCacheDoc: I
 
     // this normally occurs at import time, but let's save debugging effort by checking immediately when exporting...
     // errors are non-fatal, just hunt for the "IRangeInfo DIFF" console logs
+    const isABookmark = drawType === EDrawType.bookmark; // rangeInfo.endContainerChildTextNodeIndex === rangeInfo.startContainerChildTextNodeIndex && rangeInfo.endContainerElementCssSelector === rangeInfo.startContainerElementCssSelector && rangeInfo.endOffset - rangeInfo.startOffset === 1;
     if (IS_DEV) {
         await convertSelectorTargetToLocatorExtended({ source: "", selector }, __cacheDocument, rangeInfo, isABookmark);
     }
-
     return [selector, isABookmark];
 }
 
@@ -376,7 +376,7 @@ export async function convertAnnotationStateToReadiumAnnotation(annotation: INot
             },
             selector,
         },
-        motivation: isABookmark ? "bookmarking" : undefined,
+        motivation: isABookmark ? "bookmarking" : undefined, // isABookmark = drawType === EDrawType.bookmark
     };
 }
 
