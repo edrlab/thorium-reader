@@ -220,7 +220,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                         e.preventDefault();
 
                         const textareaValue = textAreaRef?.current?.value || "";
-                        const textareaNormalize = textareaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
+                        const textareaNormalize = textareaValue.trim(); // .replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
                         save(hexToRgb(colorSelected), textareaNormalize, drawTypeSelected, tag ? [tag] : []);
                         saveConfig();
                     }}
@@ -237,7 +237,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                         e.preventDefault();
 
                         const textareaValue = textAreaRef?.current?.value || "";
-                        const textareaNormalize = textareaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
+                        const textareaNormalize = textareaValue.trim(); // .replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
                         save(hexToRgb(colorSelected), textareaNormalize, drawTypeSelected, tag ? [tag] : []);
                         saveConfig();
                     }}

@@ -295,6 +295,7 @@
     "jsdom": "^26.0.0",
     "lunr": "^2.3.9",
     "lunr-languages": "^1.14.0",
+    "marked": "^15.0.7",
     "match-sorter": "^8.0.0",
     "mathjax": "^3.2.2",
     "mime-types": "^3.0.1",
