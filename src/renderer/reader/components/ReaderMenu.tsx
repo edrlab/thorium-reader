@@ -608,7 +608,7 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
                     </FocusLock>
                     :
                     <>
-                        <div style={{ userSelect: "text" }} dangerouslySetInnerHTML={{ __html: textParsed }} />
+                        <div className={stylesAnnotations.textValue} dangerouslySetInnerHTML={{ __html: textParsed }} />
                         {/* <HardWrapComment comment={textualValue} /> */}
                         {tagName ? <div className={stylesTags.tags_wrapper} aria-label={__("catalog.tags")}>
                             <div className={stylesTags.tag}>
@@ -915,7 +915,7 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
                     :
                     <>
                         {/* <HardWrapComment comment={bookmark.textualValue} /> */}
-                        <div style={{ userSelect: "text" }} dangerouslySetInnerHTML={{ __html: textParsed }} />
+                        <div className={stylesAnnotations.textValue} dangerouslySetInnerHTML={{ __html: textParsed }} />
                         {tag ? <div className={stylesTags.tags_wrapper} aria-label={__("catalog.tags")}>
                             <div className={stylesTags.tag}>
                                 <a onClick={() => setTagFilter(tag)}

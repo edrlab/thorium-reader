@@ -33,7 +33,7 @@ import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { noteColorCodeToColorTranslatorKeySet, noteDrawType, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
-import {subscribe} from '@github/paste-markdown'
+import {subscribe} from "@github/paste-markdown";
 
 // import { readiumCSSDefaults } from "@r2-navigator-js/electron/common/readium-css-settings";
 
