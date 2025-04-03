@@ -925,15 +925,15 @@ div[data-radix-popper-content-wrapper] {
 
 .apiKey {
     &_container {
-        border: 1px solid var(--color-light-grey);
         background-color: var(--color-extralight-grey);
-        border-radius: 6px;
         padding: 5px;
         position: relative;
         margin-bottom: 10px;
 
-        p {
+        > div {
             margin: 0;
+            display: flex;
+            align-items: center;
 
             h4 {
                 display: flex;
@@ -985,6 +985,7 @@ div[data-radix-popper-content-wrapper] {
                 margin: 0;
                 padding-left: 10px;
                 background-color: var(--color-annotations-txt-area);
+                color: var(--color-primary);
 
                 &::placeholder {
                     font-style: italic;

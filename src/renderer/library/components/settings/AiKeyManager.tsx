@@ -18,7 +18,6 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { apiKeysActions } from "readium-desktop/common/redux/actions";
-// import { AiProviderType } from "readium-desktop/common/redux/states/api_key";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 
 // import * as EyeOpenIcon from "readium-desktop/renderer/assets/icons/eye-icon.svg";
@@ -29,31 +28,36 @@ import * as LinkIcon from "readium-desktop/renderer/assets/icons/link-icon.svg";
 import * as MistralAiIcon from "readium-desktop/renderer/assets/icons/mistral-ai-icon.svg";
 import { AiProviderType } from "readium-desktop/common/redux/states/ai_apiKey";
 
-const ApiKeyComponent2 = ({provider}:{provider: string}) => {
+const AiKeyCard = ({provider}:{provider: string}) => {
     const [__] = useTranslator();
     const dispatch = useDispatch();
 
+    const apiKeys = useSelector((state: ICommonRootState) => state.aiApiKeys);
+    const apiKey = apiKeys.find(v => v.provider === provider)?.aiKey || "";
+    const inputRef = React.useRef(null);
+    const [isFocused, setIsFocused] = React.useState(false);
+
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === "Enter") {
+        inputRef.current.blur();
+      }
+    };
+
     const setKey = React.useMemo(() =>
-        debounce((key, provider) => dispatch(apiKeysActions.setKey.build(key, provider)), 200),
+        debounce((aiKey, provider) => dispatch(apiKeysActions.setKey.build(aiKey, provider)), 200),
         [dispatch],
     );
 
-    const apiKeys = useSelector((state: ICommonRootState) => state.aiApiKeys);
-    const apiKey = apiKeys.find(v => v.provider === provider)?.aiKey || "";
-
-
     const openAiLink = "https://platform.openai.com/api-keys";
     const mistralAiLink = "https://console.mistral.ai/api-keys";
-    const description = `Visit ${provider} website to create and manage your keys. `;
-
-    const openAiPlaceholder = "ex: sk-00000000000000000000000000000000000000000000000000000000000000";
+    const openAiPlaceholder = "ex: sk-0000000000000000000000000000000000000000000000";
     const mistralPLaceholder = "ex: aBCdef1234567890Abcdef1234567890abcDEf1234567890";
 
 
     return (
         <div className={stylesSettings.apiKey_container} key={provider}>
-            <p>
-                {provider === "openAI" ? (
+            <div>
+                {provider === AiProviderType.openAI ? (
                     <h4>
                         <SVG svg={OpenAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.openai)} />
                         {__("settings.apiKey.openAi")}
@@ -64,25 +68,21 @@ const ApiKeyComponent2 = ({provider}:{provider: string}) => {
                         {__("settings.apiKey.mistral")}
                     </h4>
                 )}
-            </p>
+            </div>
             <div>
                 <ul>
                     <li>
-                        {description}
-                        <a href={
-                            provider === AiProviderType.openAI ? openAiLink : 
-                            provider === AiProviderType.mistralAI ? mistralAiLink : 
-                            ""
-                            } 
-                            target="blank"
-                        >
+                        {__("settings.apiKey.howTo1", {provider: provider})} 
+                        <a href={ provider === AiProviderType.openAI ? openAiLink : provider === AiProviderType.mistralAI ? mistralAiLink : ""} target="blank" style={{marginLeft: "3px"}}>
                             <SVG svg={LinkIcon} ariaHidden style={{width: "10px", height: "10px"}} />
                         </a>
                     </li>
+                    <li>{__("settings.apiKey.howTo2", {provider: provider})}</li>
+                    <li>{__("settings.apiKey.howTo3", {provider: provider})}</li>
                 </ul>
             </div>
-            <form className={stylesSettings.apiKey_input_edit_container}>
-                <div className={stylesInput.form_group}>
+            <form className={stylesSettings.apiKey_input_edit_container} onSubmit={(e) => e.preventDefault()}>
+                <div className={stylesInput.form_group} style={{transition: "500ms", border: isFocused || !apiKey ? "1px solid var(--color-light-grey)" : "1px solid transparent", borderRadius: isFocused || !apiKey ? "6px" : "unset"}}>
                     <input
                         name="api-key"
                         className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
@@ -94,6 +94,11 @@ const ApiKeyComponent2 = ({provider}:{provider: string}) => {
                             provider === AiProviderType.mistralAI ? mistralPLaceholder : 
                             ""
                             }
+                        onFocus={() => setIsFocused(true)}
+                        onBlur={() => setIsFocused(false)}
+                        onKeyDown={handleKeyDown}
+                        ref={inputRef}
+                        style={{transition: "500ms", backgroundColor: isFocused || !apiKey ? "var(--color-annotations-txt-area)" : "inherit", borderBottom: isFocused || !apiKey ? "1px solid transparent" : "1px solid var(--color-light-grey)"}}
                     />
                     <label htmlFor="api-key">{__("settings.apiKey.keyLabel")}</label>
                 </div>      
@@ -102,7 +107,7 @@ const ApiKeyComponent2 = ({provider}:{provider: string}) => {
     );
 };
 
-export const ApiKeysList2 = () => {
+export const ApiKeysList = () => {
     const [__] = useTranslator();
     const allProviders = ["openAI", "mistralAI"];
 
@@ -116,7 +121,7 @@ export const ApiKeysList2 = () => {
             {allProviders.map((provider) => {
 
                 return (
-                    <ApiKeyComponent2
+                    <AiKeyCard
                         key={provider}
                         provider={provider}
                     />

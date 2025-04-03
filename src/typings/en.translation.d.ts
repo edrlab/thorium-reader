@@ -1466,6 +1466,9 @@ declare namespace typed_i18n {
     readonly "keyLabel": string,
     readonly "mistral": string,
     readonly "openAi": string,
+    readonly "howTo1": string,
+    readonly "howTo2": string,
+    readonly "howTo3": string,
     readonly "providerSelection": string,
     readonly "removeKey": string,
     readonly "title": string,
@@ -1526,6 +1529,9 @@ declare namespace typed_i18n {
   readonly "keyLabel": string,
   readonly "mistral": string,
   readonly "openAi": string,
+  readonly "howTo1": string,
+  readonly "howTo2": string,
+  readonly "howTo3": string,
   readonly "providerSelection": string,
   readonly "removeKey": string,
   readonly "title": string,
@@ -1536,6 +1542,9 @@ declare namespace typed_i18n {
   (_: "settings.apiKey.keyLabel", __?: {}): string;
   (_: "settings.apiKey.mistral", __?: {}): string;
   (_: "settings.apiKey.openAi", __?: {}): string;
+  (_: "settings.apiKey.howTo1", __?: {}): string;
+  (_: "settings.apiKey.howTo2", __?: {}): string;
+  (_: "settings.apiKey.howTo3", __?: {}): string;
   (_: "settings.apiKey.providerSelection", __?: {}): string;
   (_: "settings.apiKey.removeKey", __?: {}): string;
   (_: "settings.apiKey.title", __?: {}): string;

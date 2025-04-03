@@ -46,7 +46,7 @@ import { ApiappHowDoesItWorkInfoBox } from "../dialog/ApiappAddForm";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { ApiKeysList2 } from "./AiKeyManager";
+import { ApiKeysList } from "./AiKeyManager";
 
 interface ISettingsProps {};
 
@@ -403,7 +403,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             <TabHeader title={__("settings.tabs.aiKeyManager")}>
                             </TabHeader>
                             <div className={stylesSettings.settings_tab}>
-                                <ApiKeysList2 />
+                                <ApiKeysList />
                             </div>
                         </Tabs.Content>
                     </div>

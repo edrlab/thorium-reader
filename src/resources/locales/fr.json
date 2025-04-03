@@ -567,6 +567,9 @@
         "apiKey": {
             "addKey": "Ajouter une clé",
             "help": "Ajoutez une clé d'API depuis le fournisseur de votre choix pour utiliser la fonctionnalité de description d'image.",
+            "howTo1": "Créez une clé API sur la console de {{- provider}}",
+            "howTo2": "Assurez-vous que votre compte {{- provider}} a suffisament de crédits",
+            "howTo3": "Copiez votre clé d'API ci-dessous pour utilisez l'assistant",
             "keyLabel": "Clé d'API",
             "mistral": "Mistral",
             "openAi": "OpenAI",

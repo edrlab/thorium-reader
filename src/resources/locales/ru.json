@@ -567,6 +567,9 @@
         "apiKey": {
             "addKey": "",
             "help": "",
+            "howTo1": "",
+            "howTo2": "",
+            "howTo3": "",
             "keyLabel": "",
             "mistral": "",
             "openAi": "",

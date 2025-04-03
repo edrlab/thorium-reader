@@ -567,6 +567,9 @@
         "apiKey": {
             "addKey": "Add a new key",
             "help": "Add a personal API Key from a provider to use the chatbot image description feature.",
+            "howTo1": "Create an API key by visiting {{- provider }}'s console",
+            "howTo2": "Ensure your {{- provider }} account has credits",
+            "howTo3": "Paste your API key below to start using the assistant",
             "keyLabel": "API Key",
             "mistral": "Mistral",
             "openAi": "OpenAI",
