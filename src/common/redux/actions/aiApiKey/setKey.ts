@@ -10,7 +10,8 @@ import { AiProviderType, IAiApiKey } from "../../states/ai_apiKey";
 
 export const ID = "API_KEY_SET";
 
-export interface Payload extends IAiApiKey {
+export interface Payload {
+    aiKey: IAiApiKey,
 }
 
 export function build(aiKey: string, provider: AiProviderType): Action<typeof ID, Payload> {
@@ -18,8 +19,7 @@ export function build(aiKey: string, provider: AiProviderType): Action<typeof ID
     return {
         type: ID,
         payload: {
-            aiKey,
-            provider,
+            aiKey: {aiKey, provider},
         },
     };
 }

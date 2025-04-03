@@ -53,7 +53,7 @@ import { readerBookmarkTotalCountReducer } from "readium-desktop/common/redux/re
 import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 import { arrayReducer } from "readium-desktop/utils/redux-reducers/array.reducer";
 import { INotePreParsingState, INoteState } from "readium-desktop/common/redux/states/renderer/note";
-import { AiProviderType, IAiApiKey } from "readium-desktop/common/redux/states/ai_apiKey";
+import { IAiApiKey } from "readium-desktop/common/redux/states/ai_apiKey";
 
 export const rootReducer = () => {
 
@@ -200,33 +200,13 @@ export const rootReducer = () => {
         publication: combineReducers({
             tag: tagReducer,
         }),
-        aiApiKeys: arrayReducer<apiKeysActions.setKey.TAction, undefined, IAiApiKey, {provider: AiProviderType, aiKey: string}>(
+        aiApiKeys: arrayReducer<apiKeysActions.setKey.TAction, undefined, IAiApiKey, Pick<IAiApiKey, "provider">>(
             {
                 add: 
                 {
                     type: apiKeysActions.setKey.ID,
-                    selector: (payload, state) => {
-                    const existingIndex = state.findIndex(
-                        key => key.provider === payload.provider,
-                    );
-
-                    if (existingIndex !== -1) {
-                        // Si le fournisseur existe, mettez à jour la clé
-                        return state.map((key, index) =>
-                        index === existingIndex
-                            ? { ...key, aiKey: payload.aiKey }
-                            : key,
-                        );
-                    } else {
-                        // Sinon, ajoutez une nouvelle entrée
-                        return [
-                        ...state,
-                        {
-                            provider: payload.provider,
-                            aiKey: payload.aiKey,
-                        },
-                        ];
-                    }
+                    selector: (payload) => {
+                        return [payload.aiKey];
                     },
                 },
                 getId: (item) => item.provider, // Ajoutez la fonction getId ici

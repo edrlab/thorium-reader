@@ -34,7 +34,7 @@ import { fifoReducer } from "readium-desktop/utils/redux-reducers/fifo.reducer";
 import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 import { INotePreParsingState } from "readium-desktop/common/redux/states/renderer/note";
 import { arrayReducer } from "readium-desktop/utils/redux-reducers/array.reducer";
-import { AiProviderType, IAiApiKey } from "readium-desktop/common/redux/states/ai_apiKey";
+import { IAiApiKey } from "readium-desktop/common/redux/states/ai_apiKey";
 
 export const rootReducer = combineReducers({ // RootState
     versionUpdate: versionUpdateReducer,
@@ -124,36 +124,21 @@ export const rootReducer = combineReducers({ // RootState
             },
         },
     ),
-    aiApiKeys: arrayReducer<apiKeysActions.setKey.TAction, undefined, IAiApiKey, {provider: AiProviderType, aiKey: string}>(
+    aiApiKeys: arrayReducer<apiKeysActions.setKey.TAction, undefined, IAiApiKey, Pick<IAiApiKey, "provider">>(
                 {
                     add: 
                     {
                         type: apiKeysActions.setKey.ID,
-                        selector: (payload, state) => {
-                        const existingIndex = state.findIndex(
-                            key => key.provider === payload.provider,
-                        );
-    
-                        if (existingIndex !== -1) {
-                            // Si le fournisseur existe, mettez à jour la clé
-                            return state.map((key, index) =>
-                            index === existingIndex
-                                ? { ...key, aiKey: payload.aiKey }
-                                : key,
-                            );
-                        } else {
-                            // Sinon, ajoutez une nouvelle entrée
-                            return [
-                            ...state,
-                            {
-                                provider: payload.provider,
-                                aiKey: payload.aiKey,
-                            },
-                            ];
-                        }
+                        selector: (payload) => {
+                            if (payload.aiKey.provider === "openAI") {
+                                process.env["OPENAI_API_KEY"] = payload.aiKey.aiKey;
+                            } else if (payload.aiKey.provider === "mistralAI") {
+                                process.env["MISTRAL_API_KEY"] = payload.aiKey.aiKey;
+                            }
+                            return [payload.aiKey];
                         },
                     },
-                    getId: (item) => item.provider, // Ajoutez la fonction getId ici
+                    getId: (item) => item.provider,
                 },
             ),
 });

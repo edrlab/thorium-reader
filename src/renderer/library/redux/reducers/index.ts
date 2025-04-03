@@ -38,7 +38,7 @@ import { settingsReducer } from "readium-desktop/common/redux/reducers/settings"
 import { importAnnotationReducer } from "readium-desktop/renderer/common/redux/reducers/importAnnotation";
 import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 import { arrayReducer } from "readium-desktop/utils/redux-reducers/array.reducer";
-import { AiProviderType, IAiApiKey } from "readium-desktop/common/redux/states/ai_apiKey";
+import { IAiApiKey } from "readium-desktop/common/redux/states/ai_apiKey";
 
 export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reducer<Partial<ILibraryRootState>>
     return combineReducers({ // ILibraryRootState
@@ -95,38 +95,18 @@ export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reduc
         creator: creatorReducer,
         settings: settingsReducer,
         importAnnotations: importAnnotationReducer,
-        aiApiKeys: arrayReducer<apiKeysActions.setKey.TAction, undefined, IAiApiKey, {provider: AiProviderType, aiKey: string}>(
-                    {
-                        add: 
-                        {
-                            type: apiKeysActions.setKey.ID,
-                            selector: (payload, state) => {
-                            const existingIndex = state.findIndex(
-                                key => key.provider === payload.provider,
-                            );
-        
-                            if (existingIndex !== -1) {
-                                // Si le fournisseur existe, mettez à jour la clé
-                                return state.map((key, index) =>
-                                index === existingIndex
-                                    ? { ...key, aiKey: payload.aiKey }
-                                    : key,
-                                );
-                            } else {
-                                // Sinon, ajoutez une nouvelle entrée
-                                return [
-                                ...state,
-                                {
-                                    provider: payload.provider,
-                                    aiKey: payload.aiKey,
-                                },
-                                ];
-                            }
-                            },
-                        },
-                        getId: (item) => item.provider, // Ajoutez la fonction getId ici
+        aiApiKeys: arrayReducer<apiKeysActions.setKey.TAction, undefined, IAiApiKey, Pick<IAiApiKey, "provider">>(
+            {
+                add: 
+                {
+                    type: apiKeysActions.setKey.ID,
+                    selector: (payload) => {
+                        return [payload.aiKey];
                     },
-                ),
+                },
+                getId: (item) => item.provider, // Ajoutez la fonction getId ici
+            },
+        ),
         lcp: lcpReducer,
     });
 };
