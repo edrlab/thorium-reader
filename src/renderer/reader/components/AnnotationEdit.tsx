@@ -33,6 +33,8 @@ import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { noteColorCodeToColorTranslatorKeySet, noteDrawType, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
+import {subscribe} from '@github/paste-markdown'
+
 // import { readiumCSSDefaults } from "@r2-navigator-js/electron/common/readium-css-settings";
 
 interface IProps {
@@ -76,6 +78,11 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         TextStrikeThroughtIcon,
         TextOutlineIcon,
     ];
+
+    React.useEffect(() => {
+        const textAreaElement = document.getElementById(`${uuid}_edit`);
+        subscribe(textAreaElement);
+    }, [uuid]);
 
     const saveConfig = React.useCallback(() => {
 
