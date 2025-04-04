@@ -17,6 +17,7 @@ import * as stylesTags from "readium-desktop/renderer/assets/styles/components/t
 import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
 import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 import * as stylesBookmarks from "readium-desktop/renderer/assets/styles/components/bookmarks.scss";
+import * as stylesMarkdown from "readium-desktop/renderer/assets/styles/github-markdown.scss";
 import classNames from "classnames";
 import * as React from "react";
 import FocusLock from "react-focus-lock";
@@ -608,7 +609,7 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
                     </FocusLock>
                     :
                     <>
-                        <div className={stylesAnnotations.textValue} dangerouslySetInnerHTML={{ __html: textParsed }} />
+                        <div className={(stylesMarkdown as any)["markdown-body"]} dangerouslySetInnerHTML={{ __html: textParsed }} />
                         {/* <HardWrapComment comment={textualValue} /> */}
                         {tagName ? <div className={stylesTags.tags_wrapper} aria-label={__("catalog.tags")}>
                             <div className={stylesTags.tag}>
@@ -915,7 +916,7 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
                     :
                     <>
                         {/* <HardWrapComment comment={bookmark.textualValue} /> */}
-                        <div className={stylesAnnotations.textValue} dangerouslySetInnerHTML={{ __html: textParsed }} />
+                        <div className={(stylesMarkdown as any)["markdown-body"]} dangerouslySetInnerHTML={{ __html: textParsed }} />
                         {tag ? <div className={stylesTags.tags_wrapper} aria-label={__("catalog.tags")}>
                             <div className={stylesTags.tag}>
                                 <a onClick={() => setTagFilter(tag)}

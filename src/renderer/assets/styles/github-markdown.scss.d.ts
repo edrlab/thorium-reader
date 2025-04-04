@@ -1,0 +1,9 @@
+export declare const absent: string;
+export declare const anchor: string;
+export declare const emoji: string;
+export declare const enabled: string;
+export declare const footnotes: string;
+export declare const frame: string;
+export declare const handle: string;
+export declare const highlight: string;
+export declare const octicon: string;

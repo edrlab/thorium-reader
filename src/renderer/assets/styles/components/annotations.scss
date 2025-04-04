@@ -529,7 +529,7 @@
     // width: 100%;
     position: relative;
     text-align: left;
-    // font-size: 1rem;
+    font-size: 1rem;
     border-left: 2px solid var(--color-blue);
     padding-left: 10px;
     margin: 0;
@@ -561,18 +561,6 @@
       // margin-top: 10px;
       margin-right: 10px;
       padding-top: 10px;
-
-      .textValue  {
-        user-select: text;
-
-        p {
-          padding: 5px;
-        }
-
-        ol, ul {
-          padding-left: 20px;
-        }
-      }
 
       .tag a {
         font-size: 14px;
