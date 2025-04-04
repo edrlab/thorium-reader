@@ -97,6 +97,7 @@ $color-palette: (
 
 @media (prefers-color-scheme: light) {
   :root {
+    color-scheme: light;
     /* Colors */
     @each $key, $value in map.get($color-palette, light) {
       #{$key}: color(light, #{$key});
@@ -106,6 +107,7 @@ $color-palette: (
 
 @media (prefers-color-scheme: dark) {
   :root {
+    color-scheme: dark;
     /* Colors */
     @each $key, $value in map.get($color-palette, dark) {
       #{$key}: color(dark, #{$key});
@@ -114,6 +116,9 @@ $color-palette: (
 }
 
 [data-theme="light"] {
+  :root {
+    color-scheme: light;
+  }
 
   /* Colors */
   @each $key, $value in map.get($color-palette, light) {
@@ -122,6 +127,9 @@ $color-palette: (
 }
 
 [data-theme="dark"] {
+  :root {
+    color-scheme: dark;
+  }
 
   /* Colors */
   @each $key, $value in map.get($color-palette, dark) {
