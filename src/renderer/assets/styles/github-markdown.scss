@@ -23,7 +23,8 @@
 $markdown-color-palette: (
   light: (
     --focus-outlineColor: #1f6feb,
-    --fgColor-default: #f0f6fc,
+    --fgColor-default: var(--color-primary),
+    --fgColor-reverse: var(--color-secondary),
     --fgColor-muted: #9198a1,
     --fgColor-accent: #4493f8,
     --fgColor-success: #3fb950,
@@ -31,7 +32,7 @@ $markdown-color-palette: (
     --fgColor-danger: #f85149,
     --fgColor-done: #ab7df8,
     // --bgColor-default: #0d1117,
-    --bgColor-muted: #151b23,
+    --bgColor-muted: var(--color-mediumdark-grey),
     --bgColor-neutral-muted: #656c7633,
     --bgColor-attention-muted: #bb800926,
     --borderColor-default: #3d444d,
@@ -75,7 +76,8 @@ $markdown-color-palette: (
   ),
   dark: (
     --focus-outlineColor: #0969da,
-    --fgColor-default: #1f2328,
+    --fgColor-default: var(--color-primary),
+    --fgColor-reverse: var(--color-primary),
     --fgColor-muted: #59636e,
     --fgColor-accent: #0969da,
     --fgColor-success: #1a7f37,
@@ -83,7 +85,7 @@ $markdown-color-palette: (
     --fgColor-danger: #d1242f,
     --fgColor-done: #8250df,
     // --bgColor-default: #ffffff,
-    --bgColor-muted: #f6f8fa,
+    --bgColor-muted: #151b23,
     --bgColor-neutral-muted: #818b981f,
     --bgColor-attention-muted: #fff8c5,
     --borderColor-default: #d1d9e0,
@@ -254,7 +256,7 @@ $markdown-color-palette: (
   font-weight: var(--base-text-weight-semibold, 600);
   padding-bottom: .3em;
   font-size: 2em;
-  border-bottom: 1px solid var(--borderColor-muted);
+  // border-bottom: 1px solid var(--borderColor-muted);
 }
 
 .markdown-body mark {
@@ -459,7 +461,7 @@ $markdown-color-palette: (
   font-weight: var(--base-text-weight-semibold, 600);
   padding-bottom: .3em;
   font-size: 1.5em;
-  border-bottom: 1px solid var(--borderColor-muted);
+  // border-bottom: 1px solid var(--borderColor-muted);
 }
 
 .markdown-body h3 {
@@ -599,6 +601,7 @@ $markdown-color-palette: (
 .markdown-body details {
   margin-top: 0;
   margin-bottom: var(--base-size-16);
+  font-size: 12px;
 }
 
 .markdown-body blockquote>:first-child {
@@ -760,9 +763,9 @@ $markdown-color-palette: (
   border-top: 1px solid var(--borderColor-muted);
 }
 
-.markdown-body table tr:nth-child(2n) {
-  background-color: var(--bgColor-muted);
-}
+// .markdown-body table tr:nth-child(2n) {
+//   background-color: var(--bgColor-muted);
+// }
 
 .markdown-body table img {
   background-color: transparent;
@@ -874,7 +877,7 @@ $markdown-color-palette: (
 .markdown-body tt {
   padding: .2em .4em;
   margin: 0;
-  font-size: 85%;
+  // font-size: 85%;
   white-space: break-spaces;
   background-color: var(--bgColor-neutral-muted);
   border-radius: 6px;
@@ -893,9 +896,9 @@ $markdown-color-palette: (
   font-size: 85%;
 }
 
-.markdown-body pre code {
-  font-size: 100%;
-}
+// .markdown-body pre code {
+//   font-size: 100%;
+// }
 
 .markdown-body pre>code {
   padding: 0;
@@ -921,7 +924,7 @@ $markdown-color-palette: (
   overflow: auto;
   font-size: 85%;
   line-height: 1.45;
-  color: var(--fgColor-default);
+  color: var(--fgColor-reverse);
   background-color: var(--bgColor-muted);
   border-radius: 6px;
 }
