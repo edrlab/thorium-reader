@@ -574,6 +574,13 @@
             "enableAPIAPP": "Activer l'accès à l'API Dilicom PNB (Prêt Numérique en Bibliothèque)",
             "title": "Ajouter un compte bibliothèque"
         },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
+        },
         "session": {
             "title": "Sauvegarder la session"
         },

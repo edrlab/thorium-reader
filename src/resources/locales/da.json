@@ -574,6 +574,13 @@
             "enableAPIAPP": "Aktivér adgang til Dilicom PNB-API",
             "title": "Tilføj en bibliotekskonto"
         },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
+        },
         "session": {
             "title": "Gem session"
         },

@@ -574,6 +574,13 @@
             "enableAPIAPP": "Aktivieren Sie das 'PNB'-Bibliothekssystem",
             "title": "Zugang zu französischen Bibliothekskonten"
         },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
+        },
         "session": {
             "title": "Sitzung speichern"
         },

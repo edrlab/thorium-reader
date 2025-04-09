@@ -574,6 +574,13 @@
             "enableAPIAPP": "Įgalinti prieigą prie Dilicom PNB API",
             "title": "Prieiga prie Prancūzijos bibliotekų paskyrų"
         },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
+        },
         "session": {
             "title": "Įgalinti sesijos išsaugojimą"
         },

@@ -574,6 +574,13 @@
             "enableAPIAPP": "啟動 \"PNB\" 圖書館系統",
             "title": "訪問法國圖書館帳號"
         },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
+        },
         "session": {
             "title": "保存登入狀態"
         },
