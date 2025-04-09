@@ -27,6 +27,7 @@ import * as versionUpdateActions from "./version-update";
 import * as annotationActions from "./annotation";
 import * as creatorActions from "./creator";
 import * as settingsActions from "./settings";
+import * as noteExport from "./noteExport";
 
 export {
     historyActions,
@@ -51,4 +52,5 @@ export {
     annotationActions,
     creatorActions,
     settingsActions,
+    noteExport,
 };

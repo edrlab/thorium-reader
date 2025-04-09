@@ -1228,6 +1228,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
 
     const paginatorAnnotationsRef = React.useRef<HTMLSelectElement>();
     const annotationTitleRef = React.useRef<HTMLInputElement>();
+    const selectFileTypeRef = React.useRef<HTMLSelectElement & { value: "html" | "annotation" }>();
 
     return (
         <>
@@ -1494,20 +1495,26 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                             name="annotationsTitle"
                                             id="annotationsTitle"
                                             ref={annotationTitleRef}
-                                            className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" />
+                                            className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
+                                        />
+                                        <select style={{ height: "inherit", border: "none", marginLeft: "5px" }} ref={selectFileTypeRef} name="file_type">
+                                            <option selected value="annotation">.annotation</option>
+                                            <option value="html">.html</option>
+                                        </select>
                                     </div>
 
                                     <Popover.Close aria-label={__("reader.annotations.export")} asChild>
                                         <button onClick={() => {
-                                            const title = annotationTitleRef?.current.value || "thorium-reader";
-                                            let label = title;
+                                            const title = annotationTitleRef.current?.value || "thorium-reader";
+                                            let label = title.slice(0, 200);
                                             label = label.trim();
                                             label = label.replace(/[^a-z0-9_-]/gi, "_");
                                             label = label.replace(/^_+|_+$/g, ""); // leading and trailing underscore
                                             label = label.replace(/^\./, ""); // remove dot start
                                             label = label.toLowerCase();
+                                            const fileType = selectFileTypeRef.current?.value || "annotation";
 
-                                            dispatch(readerLocalActionExportAnnotationSet.build(annotationListFiltered, publicationView, label));
+                                            dispatch(readerLocalActionExportAnnotationSet.build(annotationListFiltered, publicationView, label, fileType));
                                         }} className={stylesButtons.button_primary_blue}>
                                             <SVG svg={SaveIcon} />
                                             {__("reader.annotations.export")}

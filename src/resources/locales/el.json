@@ -574,6 +574,13 @@
             "enableAPIAPP": "Ενεργοποίηση του 'PNB' συστήματος βιβλιοθήκης",
             "title": "Πρόσβαση σε γαλλικούς λογαριασμούς βιβλιοθήκης"
         },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
+        },
         "session": {
             "title": "Αποθήκευση συνεδρίας"
         },

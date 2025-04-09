@@ -19,6 +19,8 @@ import { IReadiumAnnotationSet } from "readium-desktop/common/readium/annotation
 import { annotationActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { EDrawType, INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import { ToastType } from "readium-desktop/common/models/toast";
+import * as Mustache from "mustache";
+import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/annotation/htmlTemplate";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:shareAnnotationSet");
@@ -93,10 +95,37 @@ export function* importAnnotationSet(): SagaGenerator<void> {
     debug("New annotation put in queue from import annotation routine. Start the import routine");
 }
 
+
+const __htmlMustacheViewConverterFn: (readiumAnnotation: IReadiumAnnotationSet) => object = (readiumAnnotation) => {
+    const view = readiumAnnotation;
+
+    return view;
+};
+const convertReadiumAnnotationSetToHtml = (
+    readiumAnnotation: IReadiumAnnotationSet,
+    viewConverterFn: (_: IReadiumAnnotationSet) => object = __htmlMustacheViewConverterFn,
+    htmlMustacheTemplate: string = noteExportHtmlMustacheTemplate,
+): string => {
+    const output = Mustache.render(htmlMustacheTemplate, viewConverterFn(readiumAnnotation));
+
+    return output;
+};
+const downloadAnnotationFile = (data: string, filename: string, extension: ".annotation" | ".html") => {
+
+    const blob = new Blob([data], { type: extension === ".annotation" ? "application/rd-annotations+json" : "text/html" });
+    const jsonObjectUrl = URL.createObjectURL(blob);
+    const anchorEl = document.createElement("a");
+    anchorEl.href = jsonObjectUrl;
+    anchorEl.download = filename + extension;
+    anchorEl.click();
+    URL.revokeObjectURL(jsonObjectUrl);
+};
 function* exportAnnotationSet(): SagaGenerator<void> {
 
     const exportAnnotationSetAction = yield* takeTyped(readerLocalActionExportAnnotationSet.build);
-    const { payload: { annotationArray, publicationView, label } } = exportAnnotationSetAction;
+    const { payload: { annotationArray, publicationView, label, fileType } } = exportAnnotationSetAction;
+    
+    const extension = fileType === "annotation" ? ".annotation" : ".html";
 
     yield* callTyped(getResourceCache);
 
@@ -121,20 +150,12 @@ function* exportAnnotationSet(): SagaGenerator<void> {
 
     debug("readiumAnnotationSet generated, prepare to download it");
 
-    const downloadAnnotationJSON = (contents: IReadiumAnnotationSet, filename: string) => {
+    const htmlMustacheTemplateContent = (yield* selectTyped((state: IReaderRootState) => state.noteExport.htmlContent)) || noteExportHtmlMustacheTemplate;
 
-        const data = JSON.stringify(contents, null, 2);
-        const blob = new Blob([data], { type: "application/rd-annotations+json" });
-        const jsonObjectUrl = URL.createObjectURL(blob);
-        const anchorEl = document.createElement("a");
-        anchorEl.href = jsonObjectUrl;
-        anchorEl.download = `${filename}.annotation`;
-        anchorEl.click();
-        URL.revokeObjectURL(jsonObjectUrl);
-    };
-
-    downloadAnnotationJSON(readiumAnnotationSet, label);
-
+    const stringData = extension === ".annotation" ?
+        JSON.stringify(readiumAnnotationSet, null, 2) :
+        convertReadiumAnnotationSetToHtml(readiumAnnotationSet, __htmlMustacheViewConverterFn, htmlMustacheTemplateContent);
+    downloadAnnotationFile(stringData, label, extension);
 }
 
 export const saga = () =>

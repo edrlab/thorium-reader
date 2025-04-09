@@ -574,6 +574,13 @@
             "enableAPIAPP": "激活“PNB”图书馆系统",
             "title": "访问法国图书馆帐户"
         },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
+        },
         "session": {
             "title": "保存登录状态"
         },

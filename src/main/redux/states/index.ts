@@ -51,4 +51,4 @@ export interface RootState extends ICommonRootState {
     settings: ISettingsState;
 }
 
-export type PersistRootState = Pick<RootState, "win" | "publication" | "reader" | "session" | "i18n" | "opds" | "version" | "theme" | "wizard" | "settings" | "creator" | "annotationImportQueue">;
+export type PersistRootState = Pick<RootState, "win" | "publication" | "reader" | "session" | "i18n" | "opds" | "version" | "theme" | "wizard" | "settings" | "creator" | "annotationImportQueue" | "noteExport">;

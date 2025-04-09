@@ -574,6 +574,13 @@
             "enableAPIAPP": "Aktivera åtkomst till Dilicom PNB API",
             "title": "Lägg till ett bibliotekskonto"
         },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
+        },
         "session": {
             "title": "Spara session"
         },

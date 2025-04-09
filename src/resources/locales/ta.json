@@ -574,6 +574,13 @@
             "enableAPIAPP": "'PNB' நூலக அமைப்பை செயல்படுத்தவும்",
             "title": "பிரஞ்சு நூலக கணக்குகளுக்கான அணுகல்"
         },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
+        },
         "session": {
             "title": "அமர்வு சேமிப்பை இயக்கவும்"
         },

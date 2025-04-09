@@ -574,6 +574,13 @@
             "enableAPIAPP": "Ota käyttöön PNB-kirjastojärjestelmä",
             "title": "Pääsy ranskalaisiin kirjastotileihin"
         },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
+        },
         "session": {
             "title": "Tallenna istunto"
         },

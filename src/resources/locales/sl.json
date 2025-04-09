@@ -574,6 +574,13 @@
             "enableAPIAPP": "Aktivirajte knjižnični sistem 'PNB'",
             "title": "Dostop do računov francoske knjižnice"
         },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
+        },
         "session": {
             "title": "Shrani sejo"
         },
