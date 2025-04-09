@@ -19,6 +19,7 @@ import { IReadiumAnnotationSet } from "readium-desktop/common/readium/annotation
 import { annotationActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { EDrawType, INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import { ToastType } from "readium-desktop/common/models/toast";
+import * as Mustache from "mustache";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:shareAnnotationSet");
@@ -93,10 +94,167 @@ export function* importAnnotationSet(): SagaGenerator<void> {
     debug("New annotation put in queue from import annotation routine. Start the import routine");
 }
 
+const __htmlMustacheTemplate = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{#title}}{{title}}{{/title}}{{^title}}Annotations{{/title}}</title>
+</head>
+<body>
+    <h1>{{#title}}{{title}}{{/title}}{{^title}}Annotations{{/title}}</h1>
+
+    <div class="metadata">
+        <p><strong>ID:</strong> <a href="{{id}}">{{id}}</a></p>
+        <p><strong>Type:</strong> {{type}}</p>
+
+        {{#generated}}
+        <p><strong>Generated:</strong> {{generated}}</p>
+        {{/generated}}
+    </div>
+
+    <div class="generator">
+        <h2>Generator</h2>
+        <p><strong>Name:</strong> {{generator.name}}</p>
+        <p><strong>ID:</strong> {{generator.id}}</p>
+        <p><strong>Type:</strong> {{generator.type}}</p>
+        {{#generator.homepage}}
+        <p><strong>Homepage:</strong> <a href="{{generator.homepage}}">{{generator.homepage}}</a></p>
+        {{/generator.homepage}}
+    </div>
+
+    <div class="about">
+        <h2>Publication Details</h2>
+
+        <p><strong>Identifiers:</strong></p>
+        <ul>
+        {{#about.dc:identifier}}
+        <li>{{.}}</li>
+        {{/about.dc:identifier}}
+        </ul>
+
+        {{#about.dc:title}}
+        <p><strong>Title:</strong> {{about.dc:title}}</p>
+        {{/about.dc:title}}
+
+        {{#about.dc:format}}
+        <p><strong>Format:</strong> {{about.dc:format}}</p>
+        {{/about.dc:format}}
+
+        {{#about.dc:date}}
+        <p><strong>Date:</strong> {{about.dc:date}}</p>
+        {{/about.dc:date}}
+
+        {{#about.dc:publisher}}
+        <p><strong>Publishers:</strong></p>
+        <ul>
+        {{#about.dc:publisher}}
+        <li>{{.}}</li>
+        {{/about.dc:publisher}}
+        </ul>
+        {{/about.dc:publisher}}
+
+        {{#about.dc:creator}}
+        <p><strong>Creators:</strong></p>
+        <ul>
+        {{#about.dc:creator}}
+        <li>{{.}}</li>
+        {{/about.dc:creator}}
+        </ul>
+        {{/about.dc:creator}}
+    </div>
+
+    <div class="annotation-set">
+        {{#items}}
+        <div class="annotation">
+            <h2>Annotation: {{id}}</h2>
+            <p>Created: {{created}}</p>
+            {{#modified}}<p>Modified: {{modified}}</p>{{/modified}}
+            
+            {{#creator}}
+            <div class="creator">
+                <h3>Creator</h3>
+                <p>ID: {{id}}</p>
+                <p>Type: {{type}}</p>
+                {{#name}}<p>Name: {{name}}</p>{{/name}}
+            </div>
+            {{/creator}}
+
+            {{#body}}
+            <div class="body-content">
+                <h3>Content</h3>
+                <p>{{value}}</p>
+                {{#tag}}<p>Tag: {{tag}}</p>{{/tag}}
+                {{#highlight}}<p>Highlight Style: {{highlight}}</p>{{/highlight}}
+                {{#color}}<p>Color: {{color}}</p>{{/color}}
+            </div>
+            {{/body}}
+
+            <div class="target">
+                <h3>Target</h3>
+                <p>Source: {{target.source}}</p>
+                
+                {{#target.meta}}
+                    {{#headings}}
+                    <div class="headings">
+                        <h4>Headings</h4>
+                        <ul>
+                            {{#.}}
+                            <li>Level {{level}}: {{txt}}</li>
+                            {{/.}}
+                        </ul>
+                    </div>
+                    {{/headings}}
+                    {{#page}}<p>Page: {{page}}</p>{{/page}}
+                {{/target.meta}}
+
+                {{#target.selector}}
+                <div class="selectors">
+                    <h4>Selectors</h4>
+                    <ul>
+                        {{#.}}
+                        <li>Type: {{type}}</li>
+                        {{/.}}
+                    </ul>
+                </div>
+                {{/target.selector}}
+            </div>
+        </div>
+        <hr/>
+        {{/items}}
+    </div>
+</body>
+</html>
+`;
+const __htmlMustacheViewConverterFn: (readiumAnnotation: IReadiumAnnotationSet) => object = (readiumAnnotation) => {
+    const view = readiumAnnotation;
+
+    return view;
+};
+const convertReadiumAnnotationSetToHtml = (
+    readiumAnnotation: IReadiumAnnotationSet,
+    viewConverterFn: (_: IReadiumAnnotationSet) => object = __htmlMustacheViewConverterFn,
+    htmlMustacheTemplate: string = __htmlMustacheTemplate,
+): string => {
+    const output = Mustache.render(htmlMustacheTemplate, viewConverterFn(readiumAnnotation));
+
+    return output;
+};
+const downloadAnnotationFile = (data: string, filename: string) => {
+
+    const blob = new Blob([data], { type: "application/rd-annotations+json" });
+    const jsonObjectUrl = URL.createObjectURL(blob);
+    const anchorEl = document.createElement("a");
+    anchorEl.href = jsonObjectUrl;
+    anchorEl.download = filename;
+    anchorEl.click();
+    URL.revokeObjectURL(jsonObjectUrl);
+};
 function* exportAnnotationSet(): SagaGenerator<void> {
 
     const exportAnnotationSetAction = yield* takeTyped(readerLocalActionExportAnnotationSet.build);
-    const { payload: { annotationArray, publicationView, label } } = exportAnnotationSetAction;
+    const { payload: { annotationArray, publicationView, label, fileType } } = exportAnnotationSetAction;
+    
+    const extension = fileType === "annotation" ? ".annotation" : ".html";
 
     yield* callTyped(getResourceCache);
 
@@ -121,20 +279,8 @@ function* exportAnnotationSet(): SagaGenerator<void> {
 
     debug("readiumAnnotationSet generated, prepare to download it");
 
-    const downloadAnnotationJSON = (contents: IReadiumAnnotationSet, filename: string) => {
-
-        const data = JSON.stringify(contents, null, 2);
-        const blob = new Blob([data], { type: "application/rd-annotations+json" });
-        const jsonObjectUrl = URL.createObjectURL(blob);
-        const anchorEl = document.createElement("a");
-        anchorEl.href = jsonObjectUrl;
-        anchorEl.download = `${filename}.annotation`;
-        anchorEl.click();
-        URL.revokeObjectURL(jsonObjectUrl);
-    };
-
-    downloadAnnotationJSON(readiumAnnotationSet, label);
-
+    const stringData = extension === ".annotation" ? JSON.stringify(readiumAnnotationSet, null, 2) : convertReadiumAnnotationSetToHtml(readiumAnnotationSet);
+    downloadAnnotationFile(stringData, label + extension);
 }
 
 export const saga = () =>
