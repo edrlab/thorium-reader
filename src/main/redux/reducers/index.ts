@@ -33,6 +33,7 @@ import { settingsReducer } from "readium-desktop/common/redux/reducers/settings"
 import { fifoReducer } from "readium-desktop/utils/redux-reducers/fifo.reducer";
 import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 import { INotePreParsingState } from "readium-desktop/common/redux/states/renderer/note";
+import { noteExportReducer } from "readium-desktop/common/redux/reducers/noteExport";
 
 export const rootReducer = combineReducers({ // RootState
     versionUpdate: versionUpdateReducer,
@@ -122,5 +123,5 @@ export const rootReducer = combineReducers({ // RootState
             },
         },
     ),
-    
+    noteExport: noteExportReducer,
 });

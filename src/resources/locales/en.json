@@ -588,6 +588,13 @@
             "description": "Application theme matches operating system.",
             "light": "Light",
             "title": "Application Theme"
+        },
+        "note": {
+            "export": {
+                "overrideHTMLTemplate": "Override the Mustache template when exporting the note to HTML",
+                "enableCheckbox": "Enable/disable mustache template override when exporting HTML notes",
+                "applyDefaultTemplate": "APPLY DEFAULT TEMPLATE"
+            }
         }
     },
     "tts": {
