@@ -240,10 +240,15 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
         dispatch(noteExport.overrideHTMLTemplate.build(!enableCheckbox, htmlContent));
     };
     const MAX_LEN = 100 * 1024;
-    const updateHtmlContent = (str: string) => {
+    const updateHtmlContent = React.useCallback((str: string) => {
         const slicedStr = str.slice(0, MAX_LEN);
         dispatch(noteExport.overrideHTMLTemplate.build(true, slicedStr));
-    };
+    }, [dispatch]);
+    const updateHtmlContentDebounced = React.useMemo(() =>
+        debounce(
+            updateHtmlContent
+            , 500)
+        , [updateHtmlContent]);
     const resetHtmlContent = () => {
         dispatch(noteExport.overrideHTMLTemplate.build(enableCheckbox, noteExportHtmlMustacheTemplate));
     };
@@ -290,7 +295,7 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
             </div>
             {
                 enableCheckbox ? <>
-                    <TextArea style={{ minWidth: "-webkit-fill-available", maxWidth: "-webkit-fill-available" }} name="htmlContent" wrap="hard" defaultValue={htmlContent} maxLength={MAX_LEN} onChange={(a) => updateHtmlContent(a.currentTarget.value)}></TextArea>
+                    <TextArea style={{ minWidth: "-webkit-fill-available", maxWidth: "-webkit-fill-available" }} name="htmlContent" wrap="hard" defaultValue={htmlContent} maxLength={MAX_LEN} onChange={(a) => updateHtmlContentDebounced(a.currentTarget.value)}></TextArea>
                     <button className={stylesSettings.btn_primary} onClick={resetHtmlContent}>{__("settings.note.export.applyDefaultTemplate")}</button>
                 </>
                     : <></>

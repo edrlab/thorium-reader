@@ -150,7 +150,11 @@ function* exportAnnotationSet(): SagaGenerator<void> {
 
     debug("readiumAnnotationSet generated, prepare to download it");
 
-    const stringData = extension === ".annotation" ? JSON.stringify(readiumAnnotationSet, null, 2) : convertReadiumAnnotationSetToHtml(readiumAnnotationSet);
+    const htmlMustacheTemplateContent = (yield* selectTyped((state: IReaderRootState) => state.noteExport.htmlContent)) || noteExportHtmlMustacheTemplate;
+
+    const stringData = extension === ".annotation" ?
+        JSON.stringify(readiumAnnotationSet, null, 2) :
+        convertReadiumAnnotationSetToHtml(readiumAnnotationSet, __htmlMustacheViewConverterFn, htmlMustacheTemplateContent);
     downloadAnnotationFile(stringData, label, extension);
 }
 
