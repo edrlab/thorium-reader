@@ -44,6 +44,7 @@ export const reduxPersistMiddleware: Middleware
                     settings: prevState.settings,
                     creator: prevState.creator,
                     annotationImportQueue: prevState.annotationImportQueue,
+                    noteExport: prevState.noteExport,
                 };
 
                 const persistNextState: PersistRootState = {
@@ -64,6 +65,7 @@ export const reduxPersistMiddleware: Middleware
                     settings: nextState.settings,
                     creator: nextState.creator,
                     annotationImportQueue: nextState.annotationImportQueue,
+                    noteExport: nextState.noteExport,
                 };
 
                 // RangeError: Maximum call stack size exceeded

@@ -16,9 +16,10 @@ export interface Payload   {
     annotationArray: INoteState[];
     publicationView: PublicationView;
     label?: string;
+    fileType?: "annotation" | "html";
 }
 
-export function build(annotationArray: INoteState[], publicationView: PublicationView, label?: string):
+export function build(annotationArray: INoteState[], publicationView: PublicationView, label?: string, fileType?: "annotation" | "html"):
     Action<typeof ID, Payload> {
 
     return {
@@ -27,6 +28,7 @@ export function build(annotationArray: INoteState[], publicationView: Publicatio
             annotationArray,
             publicationView,
             label,
+            fileType,
         },
     };
 }

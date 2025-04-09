@@ -1470,6 +1470,13 @@ declare namespace typed_i18n {
     readonly "description": string,
     readonly "light": string,
     readonly "title": string
+  },
+  readonly "note": {
+    readonly "export": {
+      readonly "overrideHTMLTemplate": string,
+      readonly "enableCheckbox": string,
+      readonly "applyDefaultTemplate": string
+    }
   }
 };
   (_: "settings.annotationCreator", __?: {}): {
@@ -1539,6 +1546,21 @@ declare namespace typed_i18n {
   (_: "settings.theme.description", __?: {}): string;
   (_: "settings.theme.light", __?: {}): string;
   (_: "settings.theme.title", __?: {}): string;
+  (_: "settings.note", __?: {}): {
+  readonly "export": {
+    readonly "overrideHTMLTemplate": string,
+    readonly "enableCheckbox": string,
+    readonly "applyDefaultTemplate": string
+  }
+};
+  (_: "settings.note.export", __?: {}): {
+  readonly "overrideHTMLTemplate": string,
+  readonly "enableCheckbox": string,
+  readonly "applyDefaultTemplate": string
+};
+  (_: "settings.note.export.overrideHTMLTemplate", __?: {}): string;
+  (_: "settings.note.export.enableCheckbox", __?: {}): string;
+  (_: "settings.note.export.applyDefaultTemplate", __?: {}): string;
   (_: "tts", __?: {}): {
   readonly "highlight": {
     readonly "mainColor": string,

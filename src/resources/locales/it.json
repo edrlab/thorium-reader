@@ -574,6 +574,13 @@
             "enableAPIAPP": "Attivare l'accesso al sistema bibliotecario francese (PNB)",
             "title": "Aggiungere un account a una biblioteca francese"
         },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
+        },
         "session": {
             "title": "Salva sessione"
         },

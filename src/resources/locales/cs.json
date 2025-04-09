@@ -574,6 +574,13 @@
             "enableAPIAPP": "Aktivovat knihovní systém „PNB“",
             "title": "Přístup k účtům francouzských knihoven"
         },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
+        },
         "session": {
             "title": "Povolit ukládání relací"
         },

@@ -574,6 +574,13 @@
             "enableAPIAPP": "「PNB」蔵書システムを有効にする",
             "title": "フランスの図書館アカウントへの接続"
         },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
+        },
         "session": {
             "title": "セッションを保存"
         },

@@ -574,6 +574,13 @@
             "enableAPIAPP": "Ativar API do sistema de bibliotecas PNB",
             "title": "Acesso a contas de bibliotecas francesas"
         },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
+        },
         "session": {
             "title": "Ativar guardar sessão"
         },
