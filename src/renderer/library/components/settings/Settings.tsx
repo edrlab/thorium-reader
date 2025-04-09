@@ -231,7 +231,8 @@ const SaveCreatorSettings: React.FC<{}> = () => {
 };
 
 const OverloadNoteExportToHtml: React.FC<{}> = () => {
-
+    
+    const MAX_LEN = 100 * 1024;
     const [__] = useTranslator();
     const dispatch = useDispatch();
     const enableCheckbox = useSelector((state: ILibraryRootState) => state.noteExport.overrideHTMLTemplate);
@@ -239,11 +240,10 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
     const toggleEnableCheckbox = () => {
         dispatch(noteExport.overrideHTMLTemplate.build(!enableCheckbox, htmlContent));
     };
-    const MAX_LEN = 100 * 1024;
     const updateHtmlContent = React.useCallback((str: string) => {
         const slicedStr = str.slice(0, MAX_LEN);
         dispatch(noteExport.overrideHTMLTemplate.build(true, slicedStr));
-    }, [dispatch]);
+    }, [dispatch, MAX_LEN]);
     const updateHtmlContentDebounced = React.useMemo(() =>
         debounce(
             updateHtmlContent
