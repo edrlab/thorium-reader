@@ -1432,7 +1432,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                             ref={annotationTitleRef}
                                             className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                                         />
-                                        <select ref={selectFileTypeRef} name="file_type">
+                                        <select style={{ height: "inherit", border: "none", marginLeft: "5px" }} ref={selectFileTypeRef} name="file_type">
                                             <option selected value="annotation">.annotation</option>
                                             <option value="html">.html</option>
                                         </select>

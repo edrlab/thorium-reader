@@ -110,13 +110,13 @@ const convertReadiumAnnotationSetToHtml = (
 
     return output;
 };
-const downloadAnnotationFile = (data: string, filename: string) => {
+const downloadAnnotationFile = (data: string, filename: string, extension: ".annotation" | ".html") => {
 
-    const blob = new Blob([data], { type: "application/rd-annotations+json" });
+    const blob = new Blob([data], { type: extension === ".annotation" ? "application/rd-annotations+json" : "text/html" });
     const jsonObjectUrl = URL.createObjectURL(blob);
     const anchorEl = document.createElement("a");
     anchorEl.href = jsonObjectUrl;
-    anchorEl.download = filename;
+    anchorEl.download = filename + extension;
     anchorEl.click();
     URL.revokeObjectURL(jsonObjectUrl);
 };
@@ -151,7 +151,7 @@ function* exportAnnotationSet(): SagaGenerator<void> {
     debug("readiumAnnotationSet generated, prepare to download it");
 
     const stringData = extension === ".annotation" ? JSON.stringify(readiumAnnotationSet, null, 2) : convertReadiumAnnotationSetToHtml(readiumAnnotationSet);
-    downloadAnnotationFile(stringData, label + extension);
+    downloadAnnotationFile(stringData, label, extension);
 }
 
 export const saga = () =>
