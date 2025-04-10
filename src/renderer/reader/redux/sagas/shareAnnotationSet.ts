@@ -15,12 +15,14 @@ import { getResourceCache } from "./resourceCache";
 import { ICacheDocument } from "readium-desktop/common/redux/states/renderer/resourceCache";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { convertAnnotationStateArrayToReadiumAnnotationSet, convertSelectorTargetToLocatorExtended, INoteStateWithICacheDocument } from "readium-desktop/common/readium/annotation/converter";
-import { IReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import { IReadiumAnnotation, IReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { annotationActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { EDrawType, INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import { ToastType } from "readium-desktop/common/models/toast";
 import * as Mustache from "mustache";
 import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/annotation/htmlTemplate";
+import { marked } from "marked";
+import DOMPurify from "dompurify";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:shareAnnotationSet");
@@ -96,18 +98,30 @@ export function* importAnnotationSet(): SagaGenerator<void> {
 }
 
 
-const __htmlMustacheViewConverterFn: (readiumAnnotation: IReadiumAnnotationSet) => object = (readiumAnnotation) => {
-    const view = readiumAnnotation;
+const __htmlMustacheViewConverterFn: (readiumAnnotation: IReadiumAnnotationSet) => Promise<object> = async (readiumAnnotation) => {
+
+    const view = {
+        ...readiumAnnotation,
+    };
+    const tmpItems = [];
+    for (const item of (view.items || [])) {
+
+        try {
+            tmpItems.push({ ...item, body: { ...item.body || {}, htmlValue: DOMPurify.sanitize(await marked.parse((item.body?.value || "").replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, ""), { gfm: true })) } });
+        } catch (_) {
+            tmpItems.push(item);
+        }
+    }
+    view.items = tmpItems as IReadiumAnnotation[];
 
     return view;
 };
-const convertReadiumAnnotationSetToHtml = (
+const convertReadiumAnnotationSetToHtml = async (
     readiumAnnotation: IReadiumAnnotationSet,
-    viewConverterFn: (_: IReadiumAnnotationSet) => object = __htmlMustacheViewConverterFn,
+    viewConverterFn: (_: IReadiumAnnotationSet) => Promise<object> = __htmlMustacheViewConverterFn,
     htmlMustacheTemplate: string = noteExportHtmlMustacheTemplate,
-): string => {
-    const output = Mustache.render(htmlMustacheTemplate, viewConverterFn(readiumAnnotation));
-
+): Promise<string> => {
+    const output = Mustache.render(htmlMustacheTemplate, await viewConverterFn(readiumAnnotation));
     return output;
 };
 const downloadAnnotationFile = (data: string, filename: string, extension: ".annotation" | ".html") => {
@@ -150,11 +164,12 @@ function* exportAnnotationSet(): SagaGenerator<void> {
 
     debug("readiumAnnotationSet generated, prepare to download it");
 
-    const htmlMustacheTemplateContent = (yield* selectTyped((state: IReaderRootState) => state.noteExport.htmlContent)) || noteExportHtmlMustacheTemplate;
+    const {htmlContent, overrideHTMLTemplate} = (yield* selectTyped((state: IReaderRootState) => state.noteExport));
+    const htmlMustacheTemplateContent = overrideHTMLTemplate ? htmlContent : noteExportHtmlMustacheTemplate || noteExportHtmlMustacheTemplate;
 
     const stringData = extension === ".annotation" ?
         JSON.stringify(readiumAnnotationSet, null, 2) :
-        convertReadiumAnnotationSetToHtml(readiumAnnotationSet, __htmlMustacheViewConverterFn, htmlMustacheTemplateContent);
+        yield* callTyped(() => convertReadiumAnnotationSetToHtml(readiumAnnotationSet, __htmlMustacheViewConverterFn, htmlMustacheTemplateContent));
     downloadAnnotationFile(stringData, label, extension);
 }
 
