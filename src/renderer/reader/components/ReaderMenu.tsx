@@ -893,7 +893,7 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
                     // }
                     id={uuid}
                 >
-                        <p><BookmarkLocatorInfo fallback={__("reader.bookmarks.index", { index: bookmark.index })} locatorExtended={bookmark.locatorExtended} /></p>
+                        <p style={{ userSelect: "text" }}><BookmarkLocatorInfo fallback={__("reader.bookmarks.index", { index: bookmark.index })} locatorExtended={bookmark.locatorExtended} /></p>
                 </button>
                 </div>
             }
@@ -937,7 +937,9 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
                                         }
                                     }}
                                     className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
-                                    tabIndex={0}>
+                                    tabIndex={0}
+                                    style={{ userSelect: "text" }}
+                                >
                                     {tag}
                                 </a>
                             </div>
@@ -950,11 +952,11 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
             <div>
                 <div aria-label={__("reader.annotations.date")}>
                     <SVG ariaHidden svg={CalendarIcon} />
-                    <p>{dateStr}</p>
+                    <p style={{userSelect: "text"}}>{dateStr}</p>
                 </div>
                 <div aria-label={__("publication.progression.title")}>
                     <SVG ariaHidden svg={BookOpenIcon} />
-                    <p>{bprogression}</p>
+                    <p style={{userSelect: "text"}}>{bprogression}</p>
                 </div>
                 {creatorName
                     ?
@@ -979,7 +981,7 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
                                 }
                             }}
                             tabIndex={0}>
-                            <p style={{ overflow: "hidden", textOverflow: "ellipsis", padding: "0" }} title={creatorName}>{creatorName}</p>
+                            <p style={{ overflow: "hidden", textOverflow: "ellipsis", padding: "0", userSelect: "text" }} title={creatorName} >{creatorName}</p>
                         </a>
                     </div>
                     : <></>
