@@ -113,6 +113,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
             textAreaRef.current.style.height = "auto";
             textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight + 3}px`;
             textAreaRef.current.focus();
+            textAreaRef.current.setSelectionRange(textAreaRef.current.value.length, textAreaRef.current.value.length);
         }
     }, []); // empty => runs once on mount (undefined => runs on every render)
 
