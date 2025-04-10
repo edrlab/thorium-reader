@@ -1458,6 +1458,13 @@ declare namespace typed_i18n {
     readonly "enableAPIAPP": string,
     readonly "title": string
   },
+  readonly "note": {
+    readonly "export": {
+      readonly "applyDefaultTemplate": string,
+      readonly "enableCheckbox": string,
+      readonly "overrideHTMLTemplate": string
+    }
+  },
   readonly "session": { readonly "title": string },
   readonly "tabs": {
     readonly "appearance": string,
@@ -1470,13 +1477,6 @@ declare namespace typed_i18n {
     readonly "description": string,
     readonly "light": string,
     readonly "title": string
-  },
-  readonly "note": {
-    readonly "export": {
-      readonly "overrideHTMLTemplate": string,
-      readonly "enableCheckbox": string,
-      readonly "applyDefaultTemplate": string
-    }
   }
 };
   (_: "settings.annotationCreator", __?: {}): {
@@ -1524,6 +1524,21 @@ declare namespace typed_i18n {
   (_: "settings.library", __?: {}): { readonly "enableAPIAPP": string, readonly "title": string };
   (_: "settings.library.enableAPIAPP", __?: {}): string;
   (_: "settings.library.title", __?: {}): string;
+  (_: "settings.note", __?: {}): {
+  readonly "export": {
+    readonly "applyDefaultTemplate": string,
+    readonly "enableCheckbox": string,
+    readonly "overrideHTMLTemplate": string
+  }
+};
+  (_: "settings.note.export", __?: {}): {
+  readonly "applyDefaultTemplate": string,
+  readonly "enableCheckbox": string,
+  readonly "overrideHTMLTemplate": string
+};
+  (_: "settings.note.export.applyDefaultTemplate", __?: {}): string;
+  (_: "settings.note.export.enableCheckbox", __?: {}): string;
+  (_: "settings.note.export.overrideHTMLTemplate", __?: {}): string;
   (_: "settings.session", __?: {}): { readonly "title": string };
   (_: "settings.session.title", __?: {}): string;
   (_: "settings.tabs", __?: {}): {
@@ -1546,21 +1561,6 @@ declare namespace typed_i18n {
   (_: "settings.theme.description", __?: {}): string;
   (_: "settings.theme.light", __?: {}): string;
   (_: "settings.theme.title", __?: {}): string;
-  (_: "settings.note", __?: {}): {
-  readonly "export": {
-    readonly "overrideHTMLTemplate": string,
-    readonly "enableCheckbox": string,
-    readonly "applyDefaultTemplate": string
-  }
-};
-  (_: "settings.note.export", __?: {}): {
-  readonly "overrideHTMLTemplate": string,
-  readonly "enableCheckbox": string,
-  readonly "applyDefaultTemplate": string
-};
-  (_: "settings.note.export.overrideHTMLTemplate", __?: {}): string;
-  (_: "settings.note.export.enableCheckbox", __?: {}): string;
-  (_: "settings.note.export.applyDefaultTemplate", __?: {}): string;
   (_: "tts", __?: {}): {
   readonly "highlight": {
     readonly "mainColor": string,
