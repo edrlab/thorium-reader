@@ -81,7 +81,11 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
 
     React.useEffect(() => {
         const textAreaElement = document.getElementById(`${uuid}_edit`);
-        subscribe(textAreaElement);
+        const { unsubscribe } = subscribe(textAreaElement);
+
+        return () => {
+            unsubscribe();
+        };
     }, [uuid]);
 
     const saveConfig = React.useCallback(() => {
