@@ -237,6 +237,7 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
     const dispatch = useDispatch();
     const enableCheckbox = useSelector((state: ILibraryRootState) => state.noteExport.overrideHTMLTemplate);
     const htmlContent = useSelector((state: ILibraryRootState) => state.noteExport.htmlContent);
+    const textAreaRef = React.useRef<HTMLTextAreaElement>();
     const toggleEnableCheckbox = () => {
         dispatch(noteExport.overrideHTMLTemplate.build(!enableCheckbox, htmlContent));
     };
@@ -251,6 +252,7 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
         , [updateHtmlContent]);
     const resetHtmlContent = () => {
         dispatch(noteExport.overrideHTMLTemplate.build(enableCheckbox, noteExportHtmlMustacheTemplate));
+        textAreaRef.current.value = noteExportHtmlMustacheTemplate;
     };
 
     return (<>
@@ -295,7 +297,7 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
             </div>
             {
                 enableCheckbox ? <>
-                    <TextArea style={{ minWidth: "-webkit-fill-available", maxWidth: "-webkit-fill-available" }} name="htmlContent" wrap="hard" defaultValue={htmlContent} maxLength={MAX_LEN} onChange={(a) => updateHtmlContentDebounced(a.currentTarget.value)}></TextArea>
+                    <TextArea style={{ minWidth: "-webkit-fill-available", maxWidth: "-webkit-fill-available" }} name="htmlContent" wrap="hard" ref={textAreaRef} defaultValue={htmlContent} maxLength={MAX_LEN} onChange={(a) => updateHtmlContentDebounced(a.currentTarget.value)}></TextArea>
                     <button className={stylesSettings.btn_primary} onClick={resetHtmlContent}>{__("settings.note.export.applyDefaultTemplate")}</button>
                 </>
                     : <></>
