@@ -42,7 +42,7 @@ interface IProps {
 
 export const BookmarkEdit: React.FC<IProps> = (props) => {
 
-    const { cancel, uuid, /*dockedMode,*/ save, locatorExtended, color, tags } = props;
+    const { cancel, uuid, /*dockedMode,*/ save, locatorExtended, color, tags, name } = props;
 
     const displayFromReaderMenu = !!uuid;
     const [__] = useTranslator();
@@ -50,7 +50,7 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
 
     const textAreaRef = React.useRef<HTMLTextAreaElement>();
     const bookmarkMaxLength = 1500;
-    const [textAreaValue, setTextAreaValue] = React.useState("");
+    const [textAreaValue, setTextAreaValue] = React.useState(name);
 
     const [colorSelected, setColor] = React.useState(() => rgbToHex(color));
     const previousColorSelected = React.useRef<string>(colorSelected);
@@ -72,6 +72,7 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
             textAreaRef.current.style.height = "auto";
             textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight + 3}px`;
             textAreaRef.current.focus();
+            textAreaRef.current.setSelectionRange(textAreaRef.current.value.length, textAreaRef.current.value.length);
         }
     }, []); // empty => runs once on mount (undefined => runs on every render)
 

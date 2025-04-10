@@ -847,7 +847,8 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
                             tags={bookmark.tags}
                             save={save}
                             cancel={() => triggerEdition(false)}
-                            dockedMode={dockedMode} />
+                            dockedMode={dockedMode}
+                        />
                     </FocusLock>
                     :
                     <>
