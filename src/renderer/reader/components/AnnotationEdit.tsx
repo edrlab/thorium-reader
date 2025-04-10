@@ -33,6 +33,8 @@ import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { noteColorCodeToColorTranslatorKeySet, noteDrawType, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
+import {subscribe} from "@github/paste-markdown";
+
 // import { readiumCSSDefaults } from "@r2-navigator-js/electron/common/readium-css-settings";
 
 interface IProps {
@@ -76,6 +78,15 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         TextStrikeThroughtIcon,
         TextOutlineIcon,
     ];
+
+    React.useEffect(() => {
+        const textAreaElement = document.getElementById(`${uuid}_edit`);
+        const { unsubscribe } = subscribe(textAreaElement);
+
+        return () => {
+            unsubscribe();
+        };
+    }, [uuid]);
 
     const saveConfig = React.useCallback(() => {
 
@@ -221,7 +232,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                         e.preventDefault();
 
                         const textareaValue = textAreaRef?.current?.value || "";
-                        const textareaNormalize = textareaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
+                        const textareaNormalize = textareaValue.trim(); // .replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
                         save(hexToRgb(colorSelected), textareaNormalize, drawTypeSelected, tag ? [tag] : []);
                         saveConfig();
                     }}
@@ -238,7 +249,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                         e.preventDefault();
 
                         const textareaValue = textAreaRef?.current?.value || "";
-                        const textareaNormalize = textareaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
+                        const textareaNormalize = textareaValue.trim(); // .replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
                         save(hexToRgb(colorSelected), textareaNormalize, drawTypeSelected, tag ? [tag] : []);
                         saveConfig();
                     }}

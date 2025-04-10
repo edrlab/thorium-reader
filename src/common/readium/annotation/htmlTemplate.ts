@@ -72,9 +72,21 @@ export const noteExportHtmlMustacheTemplate = `
                     {{#body.highlight}}<p>Highlight: {{body.highlight}}</p>{{/body.highlight}}
                     {{#body.textDirection}}<p>TextDirection: {{body.textDirection}}</p>{{/body.textDirection}}
 
-                    <p lang="{{body.language}}" {{#body.format}}data-format="{{body.format}}"{{/body.format}}>
-                        {{body.value}}
-                    </p>
+                    {{#body.htmlValue}}
+                    <article class="markdown-body">
+                        {{{body.htmlValue}}}
+                    </article>
+                    {{/body.htmlValue}}
+
+                    {{#body.value}}
+                    <details>
+                        <summary>Text Value</summary>
+                        <p lang="{{body.language}}" {{#body.format}}data-format="{{body.format}}"{{/body.format}}>
+                            {{body.value}}
+                        </p>
+                    </details>
+                    {{/body.value}}
+
                     {{#body.tag}}<p>Tag: {{body.tag}}</p>{{/body.tag}}
                 </div>
 

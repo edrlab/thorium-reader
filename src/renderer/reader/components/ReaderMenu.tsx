@@ -17,6 +17,7 @@ import * as stylesTags from "readium-desktop/renderer/assets/styles/components/t
 import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
 import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 import * as stylesBookmarks from "readium-desktop/renderer/assets/styles/components/bookmarks.scss";
+import * as stylesMarkdown from "readium-desktop/renderer/assets/styles/github-markdown.scss";
 import classNames from "classnames";
 import * as React from "react";
 import FocusLock from "react-focus-lock";
@@ -94,6 +95,14 @@ import { BookmarkEdit } from "./BookmarkEdit";
 import { BookmarkLocatorInfo } from "./BookmarkLocatorInfo";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { EDrawType, INoteState, noteColorCodeToColorTranslatorKeySet, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
+
+import DOMPurify from "dompurify";
+import { marked } from "marked";
+
+import { shell } from "electron";
+(window as any).__shell_openExternal = (url: string) => url.startsWith("http") ? shell.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
+
+console.log(window);
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderMenuProps {
@@ -394,30 +403,30 @@ const renderLinkTree = (currentLocation: MiniLocatorExtended, isRTLfn: (_link: I
     return RenderLinkTree;
 };
 
-const HardWrapComment: React.FC<{ comment: string | undefined }> = (props) => {
-    const { comment } = props;
-    if (!comment) {
-        return (
-            <p> </p>
-        );
-    }
-    const splittedComment = comment.split("\n");
+// const HardWrapComment: React.FC<{ comment: string | undefined }> = (props) => {
+//     const { comment } = props;
+//     if (!comment) {
+//         return (
+//             <p> </p>
+//         );
+//     }
+//     const splittedComment = comment.split("\n");
 
-    const strListComponent = [];
-    let n = 0;
-    for (const strline of splittedComment) {
-        strListComponent.push(<span key={++n}>{strline}</span>);
-        strListComponent.push(<br key={++n} />);
-    }
+//     const strListComponent = [];
+//     let n = 0;
+//     for (const strline of splittedComment) {
+//         strListComponent.push(<span key={++n}>{strline}</span>);
+//         strListComponent.push(<br key={++n} />);
+//     }
 
-    return (
-        <p>
-            {
-                strListComponent
-            }
-        </p>
-    );
-};
+//     return (
+//         <p>
+//             {
+//                 strListComponent
+//             }
+//         </p>
+//     );
+// };
 
 export const computeProgression = (spineItemLinks: Link[], locator: Locator) => {
 
@@ -449,6 +458,32 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
     const tagName = tagsStringArray[0] || "";
     const dockedEditAnnotation = isEdited && dockedMode;
     const annotationColor = rgbToHex(annotation.color);
+
+    const [textParsed, setTextParsed] = React.useState<string>();
+    React.useEffect(() => {
+
+        const fc = async () => {
+            if (textualValue) {
+                const parsed = DOMPurify.sanitize(await marked.parse(textualValue.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, ""), { gfm: true }), { FORBID_TAGS: ["style"], FORBID_ATTR: ["style"] });
+                const regex = new RegExp(/href=\"(.*?)\"/, "gm");
+                const hrefSanitized = parsed.replace(regex, (substring) => {
+
+                    let url = /href=\"(.*?)\"/.exec(substring)[1];
+                    if (!url.startsWith("http")) {
+                        url = "http://" + url;
+                    }
+
+                    return `href="" alt="${url}" onclick="return ((e) => {
+                                window.__shell_openExternal('${url}').catch(() => {});
+                                return false;
+                             })()"`;
+                });
+                setTextParsed(hrefSanitized);
+                console.log(parsed, hrefSanitized);
+            }
+        };
+        fc();
+    }, [textualValue]);
 
     const dispatch = useDispatch();
     const [__] = useTranslator();
@@ -573,7 +608,8 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
                     </FocusLock>
                     :
                     <>
-                        <HardWrapComment comment={textualValue} />
+                        <div className={(stylesMarkdown as any)["markdown-body"]} dangerouslySetInnerHTML={{ __html: textParsed }} />
+                        {/* <HardWrapComment comment={textualValue} /> */}
                         {tagName ? <div className={stylesTags.tags_wrapper} aria-label={__("catalog.tags")}>
                             <div className={stylesTags.tag}>
                                 <a onClick={() => setTagFilter(tagName)}
@@ -732,6 +768,32 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
     const tag = Array.isArray(tags) ? tags[0] || "" : "";
     const dockedEditBookmark = isEdited && dockedMode;
 
+    const [textParsed, setTextParsed] = React.useState<string>();
+    React.useEffect(() => {
+
+        const fc = async () => {
+            if (bookmark.textualValue) {
+                const parsed = DOMPurify.sanitize(await marked.parse(bookmark.textualValue.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, ""), { gfm: true }), { FORBID_TAGS: ["style"], FORBID_ATTR: ["style"] });
+                const regex = new RegExp(/href=\"(.*?)\"/, "gm");
+                const hrefSanitized = parsed.replace(regex, (substring) => {
+
+                    let url = /href=\"(.*?)\"/.exec(substring)[1];
+                    if (!url.startsWith("http")) {
+                        url = "http://" + url;
+                    }
+
+                    return `href="" alt="${url}" onclick="return ((e) => {
+                                window.__shell_openExternal('${url}').catch(() => {});
+                                return false;
+                             })()"`;
+                });
+                setTextParsed(hrefSanitized);
+                console.log(parsed, hrefSanitized);
+            }
+        };
+        fc();
+    }, [bookmark.textualValue]);
+
     const dispatch = useDispatch();
     const [__] = useTranslator();
     // const noteTotalCount = useSelector((state: IReaderRootState) => state.reader.noteTotalCount.state);
@@ -852,7 +914,8 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
                     </FocusLock>
                     :
                     <>
-                        <HardWrapComment comment={bookmark.textualValue} />
+                        {/* <HardWrapComment comment={bookmark.textualValue} /> */}
+                        <div className={(stylesMarkdown as any)["markdown-body"]} dangerouslySetInnerHTML={{ __html: textParsed }} />
                         {tag ? <div className={stylesTags.tags_wrapper} aria-label={__("catalog.tags")}>
                             <div className={stylesTags.tag}>
                                 <a onClick={() => setTagFilter(tag)}
