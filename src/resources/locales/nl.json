@@ -123,9 +123,9 @@
         "annotations": {
             "descAuthor": "door '{{- author}}'",
             "descCreator": "gemaakt door",
-            "descList": "{{- nb}} aantekening(en) {{- creator}} worden geïmporteerd naar '{{- title}}' {{- author}}",
-            "descNewer": "Conflict(en): {{- nb}} nieuwere aantekening(en)",
-            "descOlder": "Conflict(en): {{- nb}} oudere aantekening(en)",
+            "descList": "{{- count}} aantekening(en) {{- creator}} worden geïmporteerd naar '{{- title}}' {{- author}}",
+            "descNewer": "Conflict(en): {{- count}} nieuwere aantekening(en)",
+            "descOlder": "Conflict(en): {{- count}} oudere aantekening(en)",
             "descTitle": "Aantekeningen titel: ",
             "importAll": "Importeer alle aantekeningen",
             "importWithoutConflict": "Importeer alleen aantekeningen zonder conflicten",
@@ -134,7 +134,7 @@
         },
         "cancel": "Annuleer",
         "deleteAnnotations": "Verwijder aantekeningen?",
-        "deleteAnnotationsText": "Weet je zeker dat je {{- annotationListLength}} aantekening(en) wil verwijderen?",
+        "deleteAnnotationsText": "Weet je zeker dat je {{- count}} aantekening(en) wil verwijderen?",
         "deleteBookmarks": "",
         "deleteBookmarksText": "",
         "deleteFeed": "Wil je deze catalogus echt verwijderen ?",
@@ -440,7 +440,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} overeenkomst(en)",
+                "founds": "{{- count}} overeenkomst(en)",
                 "input": "zoektekst",
                 "next": "Volgende",
                 "notFound": "geen overeenkomst",
