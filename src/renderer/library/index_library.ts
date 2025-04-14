@@ -66,7 +66,7 @@ initGlobalConverters_GENERIC();
 //     }, 5000);
 // }
 
-ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
+ipcRenderer.on(winIpc.CHANNEL, async (_0: any, data: winIpc.EventPayload) => {
     switch (data.type) {
         case winIpc.EventType.IdResponse:
             // Initialize window
@@ -85,7 +85,7 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
             };
             const [store, _reduxHistory] = createStoreFromDi(preloadedState);
             const locale = store.getState().i18n.locale;
-            getTranslator().setLocale(locale);
+            await getTranslator().setLocale(locale);
 
             store.dispatch(winActions.initRequest.build(data.payload.win.identifier));
 
