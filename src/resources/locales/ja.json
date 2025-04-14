@@ -119,6 +119,22 @@
         "tags": "タグ",
         "update": "編集"
     },
+    "chatbot": {
+        "detailedDescTitle": "",
+        "detailedDescription": "",
+        "editorDescription": "",
+        "generateDescription": "",
+        "generateDescriptionTitle": "",
+        "inputPlaceholder": "",
+        "noApiKey": "",
+        "noDescription": "",
+        "reset": "",
+        "sendQuestion": "",
+        "shortDescTitle": "",
+        "shortDescription": "",
+        "systemPromptEditor": "",
+        "title": ""
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "{{- author}}によるもの",
@@ -552,6 +568,20 @@
             "person": "個人",
             "type": "タイプ："
         },
+        "apiKey": {
+            "addKey": "",
+            "help": "",
+            "howTo1": "",
+            "howTo2": "",
+            "howTo3": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "providerSelection": "",
+            "removeKey": "",
+            "title": "",
+            "validate": ""
+        },
         "auth": {
             "help": "この操作により、すべてのOPDSログイン情報が削除されます。",
             "title": "本の図書目録への接続",
@@ -585,6 +615,7 @@
             "title": "セッションを保存"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "外観",
             "general": "一般",
             "keyboardShortcuts": "キーボード ショートカット"

@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { downloadActions } from "readium-desktop/common/redux/actions";
+import { apiKeysActions, downloadActions } from "readium-desktop/common/redux/actions";
 import { dialogReducer } from "readium-desktop/common/redux/reducers/dialog";
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard";
@@ -37,6 +37,8 @@ import { creatorReducer } from "readium-desktop/common/redux/reducers/creator";
 import { settingsReducer } from "readium-desktop/common/redux/reducers/settings";
 import { importAnnotationReducer } from "readium-desktop/renderer/common/redux/reducers/importAnnotation";
 import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
+import { arrayReducer } from "readium-desktop/utils/redux-reducers/array.reducer";
+import { IAiApiKey } from "readium-desktop/common/redux/states/ai_apiKey";
 import { noteExportReducer } from "readium-desktop/common/redux/reducers/noteExport";
 
 export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reducer<Partial<ILibraryRootState>>
@@ -94,6 +96,18 @@ export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reduc
         creator: creatorReducer,
         settings: settingsReducer,
         importAnnotations: importAnnotationReducer,
+        aiApiKeys: arrayReducer<apiKeysActions.setKey.TAction, undefined, IAiApiKey, Pick<IAiApiKey, "provider">>(
+            {
+                add: 
+                {
+                    type: apiKeysActions.setKey.ID,
+                    selector: (payload) => {
+                        return [payload.aiKey];
+                    },
+                },
+                getId: (item) => item.provider, // Ajoutez la fonction getId ici
+            },
+        ),
         lcp: lcpReducer,
         noteExport: noteExportReducer,
     });

@@ -44,6 +44,7 @@ export const reduxPersistMiddleware: Middleware
                     settings: prevState.settings,
                     creator: prevState.creator,
                     annotationImportQueue: prevState.annotationImportQueue,
+                    aiApiKeys: prevState.aiApiKeys,
                     noteExport: prevState.noteExport,
                 };
 
@@ -65,6 +66,7 @@ export const reduxPersistMiddleware: Middleware
                     settings: nextState.settings,
                     creator: nextState.creator,
                     annotationImportQueue: nextState.annotationImportQueue,
+                    aiApiKeys: nextState.aiApiKeys,
                     noteExport: nextState.noteExport,
                 };
 

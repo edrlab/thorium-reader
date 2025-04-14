@@ -9,7 +9,7 @@ import {
     apiActions, authActions, catalogActions, downloadActions, i18nActions, keyboardActions, lcpActions, readerActions, sessionActions, themeActions, publicationActions, wizardActions,
     annotationActions,
     creatorActions,
-    settingsActions,
+    settingsActions, apiKeysActions,
     noteExport,
 } from "readium-desktop/common/redux/actions";
 import { syncFactory } from "readium-desktop/renderer/common/redux/middleware/syncFactory";
@@ -66,6 +66,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     settingsActions.enableAPIAPP.ID,
 
+    apiKeysActions.setKey.ID,
     noteExport.overrideHTMLTemplate.ID,
 ];
 

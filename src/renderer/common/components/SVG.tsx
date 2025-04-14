@@ -17,6 +17,7 @@ interface IBaseProps {
     title?: string;
     className?: string;
     ariaHidden?: boolean;
+    style?: React.CSSProperties;
 }
 
 // IProps may typically extend:
@@ -34,9 +35,9 @@ export default class SVG extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<{}>  {
-        const { svg, className, ariaHidden } = this.props;
+        const { svg, className, ariaHidden, style } = this.props;
         return (
-            <svg aria-hidden={ariaHidden} className={className} viewBox={svg.default.viewBox}>
+            <svg aria-hidden={ariaHidden} className={className} style={style} viewBox={svg.default.viewBox}>
                 { this.props.title &&
                     <title>{this.props.title}</title>
                 }

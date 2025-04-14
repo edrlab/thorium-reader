@@ -44,6 +44,7 @@ const persistStateToFs = async (nextState: RootState) => {
         settings: nextState.settings,
         creator: nextState.creator,
         annotationImportQueue: nextState.annotationImportQueue,
+        aiApiKeys: nextState.aiApiKeys,
         noteExport: nextState.noteExport,
     };
 

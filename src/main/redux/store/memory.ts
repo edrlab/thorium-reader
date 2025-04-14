@@ -435,6 +435,15 @@ export async function initStore()
         preloadedState.reader.defaultConfig = { ...readerConfigInitialState, ...preloadedState.reader.defaultConfig };
     }
 
+    if (preloadedState?.aiApiKeys) {
+        for (const aiKey of preloadedState.aiApiKeys) {
+            if (aiKey.provider === "openAI" && aiKey.aiKey) {
+                process.env["OPENAI_API_KEY"] = aiKey.aiKey;
+            } else if (aiKey.provider === "mistralAI" && aiKey.aiKey) {
+                process.env["MISTRAL_API_KEY"] = aiKey.aiKey;
+            } 
+        }
+    }
     if (preloadedState?.creator && !preloadedState.creator.urn) {
         preloadedState.creator.urn = `urn:uuid:${preloadedState.creator.id}`;
     }
@@ -464,3 +473,4 @@ export async function initStore()
 
     return [store, sagaMiddleware];
 }
+

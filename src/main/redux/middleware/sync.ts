@@ -13,7 +13,7 @@ import {
     publicationActions, themeActions,
     readerActions, sessionActions, toastActions, versionUpdateActions,
     creatorActions,
-    annotationActions,
+    annotationActions, apiKeysActions,
     noteExport,
 } from "readium-desktop/common/redux/actions";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
@@ -90,6 +90,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     readerActions.setTheLock.ID,
 
+    apiKeysActions.setKey.ID,
     lcpActions.publicationFileLock.ID,
 
     noteExport.overrideHTMLTemplate.ID,

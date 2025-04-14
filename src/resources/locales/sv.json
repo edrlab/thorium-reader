@@ -119,6 +119,22 @@
         "tags": "Taggar",
         "update": "Redigera"
     },
+    "chatbot": {
+        "detailedDescTitle": "",
+        "detailedDescription": "",
+        "editorDescription": "",
+        "generateDescription": "",
+        "generateDescriptionTitle": "",
+        "inputPlaceholder": "",
+        "noApiKey": "",
+        "noDescription": "",
+        "reset": "",
+        "sendQuestion": "",
+        "shortDescTitle": "",
+        "shortDescription": "",
+        "systemPromptEditor": "",
+        "title": ""
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "av {{- author}}",
@@ -552,6 +568,20 @@
             "person": "Person",
             "type": "Typ:"
         },
+        "apiKey": {
+            "addKey": "",
+            "help": "",
+            "howTo1": "",
+            "howTo2": "",
+            "howTo3": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "providerSelection": "",
+            "removeKey": "",
+            "title": "",
+            "validate": ""
+        },
         "auth": {
             "help": "Denna åtgärd raderar alla OPDS-inloggningsuppgifter.",
             "title": "Hantera åtkomst till kataloger",
@@ -585,6 +615,7 @@
             "title": "Spara session"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Utseende",
             "general": "Allmänt",
             "keyboardShortcuts": "Kortkommandon"

@@ -119,6 +119,22 @@
         "tags": "標籤",
         "update": "編輯"
     },
+    "chatbot": {
+        "detailedDescTitle": "",
+        "detailedDescription": "",
+        "editorDescription": "",
+        "generateDescription": "",
+        "generateDescriptionTitle": "",
+        "inputPlaceholder": "",
+        "noApiKey": "",
+        "noDescription": "",
+        "reset": "",
+        "sendQuestion": "",
+        "shortDescTitle": "",
+        "shortDescription": "",
+        "systemPromptEditor": "",
+        "title": ""
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "經由 '{{- author}}'",
@@ -552,6 +568,20 @@
             "person": "個人",
             "type": "類型："
         },
+        "apiKey": {
+            "addKey": "",
+            "help": "",
+            "howTo1": "",
+            "howTo2": "",
+            "howTo3": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "providerSelection": "",
+            "removeKey": "",
+            "title": "",
+            "validate": ""
+        },
         "auth": {
             "help": "此操作將刪除所有 OPDS 登入憑證。",
             "title": "訪問出版物目錄",
@@ -585,6 +615,7 @@
             "title": "保存登入狀態"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "外觀",
             "general": "一般",
             "keyboardShortcuts": "鍵盤快捷鍵"
