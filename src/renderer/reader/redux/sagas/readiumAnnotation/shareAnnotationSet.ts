@@ -84,7 +84,6 @@ export const saga = () =>
         spawnLeading(
             function* () {
 
-                // TODO: check note selector compute at start only if the lock has been acquired
                 let gotTheLock = yield* selectTyped((state: IReaderRootState) => state.reader.lock);
                 if (!gotTheLock) {
                     yield* takeTyped(readerActions.setTheLock.build);

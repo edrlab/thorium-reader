@@ -43,7 +43,6 @@ const describeCssSelectorWithTextPosition = async (range: Range, document: Docum
     };
 };
 
-// TODO: convert to redux saga
 export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: boolean, cacheDocument: ICacheDocument): SagaGenerator<ISelector[]> {
 
     const selector: ISelector<any>[] = [];

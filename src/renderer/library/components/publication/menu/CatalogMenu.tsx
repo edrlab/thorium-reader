@@ -99,7 +99,6 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
                     try {
 
                         const notes = await (await fetch(`${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0/publication-notes/${props.publicationView.identifier}`)).json();
-                        console.log(notes);
                         const title = convertMultiLangStringToString(props.publicationView.publicationTitle, locale) || "annotation";
                         let label = title.slice(0, 200);
                         label = label.trim();
