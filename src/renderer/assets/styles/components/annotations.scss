@@ -703,17 +703,23 @@
 
     .form_group {
       width: unset;
+      border-radius: 6px;
+      background-color: var(--color-secondary);
     }
 
     input {
       width: 100%;
       padding: 0;
-      height: 25px;
-      margin-left: 5px;
+      height: 22px;
+      margin-left: 10px;
+      margin-right: 1px;
+      border-radius: 6px;
+      background-color: var(--color-secondary);
     }
 
     label {
-      background-color: var(--color-extralight-grey);
+      background: linear-gradient(180deg, var(--color-extralight-grey) 0%, var(--color-extralight-grey) 50%, var(--color-secondary) 50%, var(--color-secondary) 100%);
+      top: -5px;
     }
 
     button {

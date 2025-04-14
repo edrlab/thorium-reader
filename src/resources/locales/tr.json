@@ -600,6 +600,13 @@
             "enableAPIAPP": "",
             "title": ""
         },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
+        },
         "session": {
             "title": ""
         },

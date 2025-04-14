@@ -50,6 +50,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const annotationImportQueue = yield* selectTyped((_state: RootState) => _state.annotationImportQueue);
     const aiApiKeys = yield* selectTyped((_state: RootState) => _state.aiApiKeys);
     const lcp = yield* selectTyped((state: RootState) => state.lcp);
+    const noteExport = yield* selectTyped((state: RootState) => state.noteExport);
 
     const publicationRepository = diMainGet("publication-repository");
     let tag: string[] = [];
@@ -113,6 +114,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
             annotationImportQueue,
             aiApiKeys,
             lcp,
+            noteExport,
         },
     } as readerIpc.EventPayload);
 }

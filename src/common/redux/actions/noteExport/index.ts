@@ -5,9 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export interface INoteCreator {
-    id: string,
-    urn: string,
-    type: "Organization" | "Person",
-    name?: string,
-}
+// import * as enable from "./enable";
+import * as overrideHTMLTemplate from "./overrideHtmlTemplate";
+
+export {
+    overrideHTMLTemplate,
+    // enable,
+};

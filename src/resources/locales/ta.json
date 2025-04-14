@@ -348,14 +348,6 @@
                 "title": "தலைப்பு"
             },
             "annotationsOptions": "சிறுகுறிப்பு விருப்பங்கள்",
-            "colors": {
-                "cyan": "சியான்",
-                "green": "பச்சை",
-                "orange": "ஆரஞ்சு",
-                "purple": "ஊதா",
-                "red": "சிவப்பு",
-                "yellow": "மஞ்சள்"
-            },
             "date": "மாற்றும் தேதி",
             "export": "குறிப்புகளை சேமிக்கவும் ...",
             "filter": {
@@ -449,6 +441,16 @@
             "page": "பக்கம்",
             "pdfscalemode": "பக்க பொருத்தம் அல்லது அகலம்",
             "settingsTitle": "அமைப்புகள்"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "சியான்",
+                "green": "பச்சை",
+                "orange": "ஆரஞ்சு",
+                "purple": "ஊதா",
+                "red": "சிவப்பு",
+                "yellow": "மஞ்சள்"
+            }
         },
         "picker": {
             "search": {
@@ -599,6 +601,13 @@
         "library": {
             "enableAPIAPP": "'PNB' நூலக அமைப்பை செயல்படுத்தவும்",
             "title": "பிரஞ்சு நூலக கணக்குகளுக்கான அணுகல்"
+        },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
         },
         "session": {
             "title": "அமர்வு சேமிப்பை இயக்கவும்"

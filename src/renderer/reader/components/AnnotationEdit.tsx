@@ -33,6 +33,8 @@ import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { noteColorCodeToColorTranslatorKeySet, noteDrawType, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
+import {subscribe} from "@github/paste-markdown";
+
 // import { readiumCSSDefaults } from "@r2-navigator-js/electron/common/readium-css-settings";
 
 interface IProps {
@@ -77,6 +79,15 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         TextOutlineIcon,
     ];
 
+    React.useEffect(() => {
+        const textAreaElement = document.getElementById(`${uuid}_edit`);
+        const { unsubscribe } = subscribe(textAreaElement);
+
+        return () => {
+            unsubscribe();
+        };
+    }, [uuid]);
+
     const saveConfig = React.useCallback(() => {
 
         let flag = false;
@@ -102,6 +113,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
             textAreaRef.current.style.height = "auto";
             textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight + 3}px`;
             textAreaRef.current.focus();
+            textAreaRef.current.setSelectionRange(textAreaRef.current.value.length, textAreaRef.current.value.length);
         }
     }, []); // empty => runs once on mount (undefined => runs on every render)
 
@@ -220,7 +232,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                         e.preventDefault();
 
                         const textareaValue = textAreaRef?.current?.value || "";
-                        const textareaNormalize = textareaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
+                        const textareaNormalize = textareaValue.trim(); // .replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
                         save(hexToRgb(colorSelected), textareaNormalize, drawTypeSelected, tag ? [tag] : []);
                         saveConfig();
                     }}
@@ -237,7 +249,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                         e.preventDefault();
 
                         const textareaValue = textAreaRef?.current?.value || "";
-                        const textareaNormalize = textareaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
+                        const textareaNormalize = textareaValue.trim(); // .replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
                         save(hexToRgb(colorSelected), textareaNormalize, drawTypeSelected, tag ? [tag] : []);
                         saveConfig();
                     }}

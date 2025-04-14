@@ -348,14 +348,6 @@
                 "title": "Título"
             },
             "annotationsOptions": "Opciones",
-            "colors": {
-                "cyan": "Cian",
-                "green": "Verde",
-                "orange": "Naranja",
-                "purple": "Púrpura",
-                "red": "Rojo",
-                "yellow": "Amarillo"
-            },
             "date": "Fecha de modificación",
             "export": "Exportar notas",
             "filter": {
@@ -449,6 +441,16 @@
             "page": "Página",
             "pdfscalemode": "Ajuste o ancho de página",
             "settingsTitle": "Opciones de configuración"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "Cian",
+                "green": "Verde",
+                "orange": "Naranja",
+                "purple": "Púrpura",
+                "red": "Rojo",
+                "yellow": "Amarillo"
+            }
         },
         "picker": {
             "search": {
@@ -599,6 +601,13 @@
         "library": {
             "enableAPIAPP": "Activar el sistema de bibliotecas francesas \"PNB\"",
             "title": "Acceso a las cuentas de la biblioteca francesa"
+        },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
         },
         "session": {
             "title": "Guardar sesión"

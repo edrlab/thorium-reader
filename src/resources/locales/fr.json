@@ -348,14 +348,6 @@
                 "title": "Titre"
             },
             "annotationsOptions": "Notes Options",
-            "colors": {
-                "cyan": "Cyan",
-                "green": "Vert",
-                "orange": "Orange",
-                "purple": "Violet",
-                "red": "Rouge",
-                "yellow": "Jaune"
-            },
             "date": "Date de modification",
             "export": "Sauvegarder sous",
             "filter": {
@@ -449,6 +441,16 @@
             "page": "Page",
             "pdfscalemode": "Page entière ou pleine largeur",
             "settingsTitle": "préférences"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "Cyan",
+                "green": "Vert",
+                "orange": "Orange",
+                "purple": "Violet",
+                "red": "Rouge",
+                "yellow": "Jaune"
+            }
         },
         "picker": {
             "search": {
@@ -599,6 +601,13 @@
         "library": {
             "enableAPIAPP": "Activer l'accès à l'API Dilicom PNB (Prêt Numérique en Bibliothèque)",
             "title": "Ajouter un compte bibliothèque"
+        },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
         },
         "session": {
             "title": "Sauvegarder la session"

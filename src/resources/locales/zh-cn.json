@@ -348,14 +348,6 @@
                 "title": "标题"
             },
             "annotationsOptions": "选项",
-            "colors": {
-                "cyan": "青色",
-                "green": "绿色",
-                "orange": "橙色",
-                "purple": "紫色",
-                "red": "红色",
-                "yellow": "黄色"
-            },
             "date": "修改日期",
             "export": "将笔记另存为...",
             "filter": {
@@ -449,6 +441,16 @@
             "page": "页",
             "pdfscalemode": "适合页面宽度",
             "settingsTitle": "设置"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "青色",
+                "green": "绿色",
+                "orange": "橙色",
+                "purple": "紫色",
+                "red": "红色",
+                "yellow": "黄色"
+            }
         },
         "picker": {
             "search": {
@@ -599,6 +601,13 @@
         "library": {
             "enableAPIAPP": "激活“PNB”图书馆系统",
             "title": "访问法国图书馆帐户"
+        },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
         },
         "session": {
             "title": "保存登录状态"

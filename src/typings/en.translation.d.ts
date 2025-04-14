@@ -791,14 +791,6 @@ declare namespace typed_i18n {
       readonly "title": string
     },
     readonly "annotationsOptions": string,
-    readonly "colors": {
-      readonly "cyan": string,
-      readonly "green": string,
-      readonly "orange": string,
-      readonly "purple": string,
-      readonly "red": string,
-      readonly "yellow": string
-    },
     readonly "date": string,
     readonly "export": string,
     readonly "filter": {
@@ -885,6 +877,16 @@ declare namespace typed_i18n {
     readonly "page": string,
     readonly "pdfscalemode": string,
     readonly "settingsTitle": string
+  },
+  readonly "notes": {
+    readonly "colors": {
+      readonly "cyan": string,
+      readonly "green": string,
+      readonly "orange": string,
+      readonly "purple": string,
+      readonly "red": string,
+      readonly "yellow": string
+    }
   },
   readonly "picker": {
     readonly "search": {
@@ -993,14 +995,6 @@ declare namespace typed_i18n {
     readonly "title": string
   },
   readonly "annotationsOptions": string,
-  readonly "colors": {
-    readonly "cyan": string,
-    readonly "green": string,
-    readonly "orange": string,
-    readonly "purple": string,
-    readonly "red": string,
-    readonly "yellow": string
-  },
   readonly "date": string,
   readonly "export": string,
   readonly "filter": {
@@ -1039,20 +1033,6 @@ declare namespace typed_i18n {
   (_: "reader.annotations.annotationsExport.description", __?: {}): string;
   (_: "reader.annotations.annotationsExport.title", __?: {}): string;
   (_: "reader.annotations.annotationsOptions", __?: {}): string;
-  (_: "reader.annotations.colors", __?: {}): {
-  readonly "cyan": string,
-  readonly "green": string,
-  readonly "orange": string,
-  readonly "purple": string,
-  readonly "red": string,
-  readonly "yellow": string
-};
-  (_: "reader.annotations.colors.cyan", __?: {}): string;
-  (_: "reader.annotations.colors.green", __?: {}): string;
-  (_: "reader.annotations.colors.orange", __?: {}): string;
-  (_: "reader.annotations.colors.purple", __?: {}): string;
-  (_: "reader.annotations.colors.red", __?: {}): string;
-  (_: "reader.annotations.colors.yellow", __?: {}): string;
   (_: "reader.annotations.date", __?: {}): string;
   (_: "reader.annotations.export", __?: {}): string;
   (_: "reader.annotations.filter", __?: {}): {
@@ -1204,6 +1184,30 @@ declare namespace typed_i18n {
   (_: "reader.navigation.page", __?: {}): string;
   (_: "reader.navigation.pdfscalemode", __?: {}): string;
   (_: "reader.navigation.settingsTitle", __?: {}): string;
+  (_: "reader.notes", __?: {}): {
+  readonly "colors": {
+    readonly "cyan": string,
+    readonly "green": string,
+    readonly "orange": string,
+    readonly "purple": string,
+    readonly "red": string,
+    readonly "yellow": string
+  }
+};
+  (_: "reader.notes.colors", __?: {}): {
+  readonly "cyan": string,
+  readonly "green": string,
+  readonly "orange": string,
+  readonly "purple": string,
+  readonly "red": string,
+  readonly "yellow": string
+};
+  (_: "reader.notes.colors.cyan", __?: {}): string;
+  (_: "reader.notes.colors.green", __?: {}): string;
+  (_: "reader.notes.colors.orange", __?: {}): string;
+  (_: "reader.notes.colors.purple", __?: {}): string;
+  (_: "reader.notes.colors.red", __?: {}): string;
+  (_: "reader.notes.colors.yellow", __?: {}): string;
   (_: "reader.picker", __?: {}): {
   readonly "search": {
     readonly "founds": string,
@@ -1463,12 +1467,12 @@ declare namespace typed_i18n {
   readonly "apiKey": {
     readonly "addKey": string,
     readonly "help": string,
-    readonly "keyLabel": string,
-    readonly "mistral": string,
-    readonly "openAi": string,
     readonly "howTo1": string,
     readonly "howTo2": string,
     readonly "howTo3": string,
+    readonly "keyLabel": string,
+    readonly "mistral": string,
+    readonly "openAi": string,
     readonly "providerSelection": string,
     readonly "removeKey": string,
     readonly "title": string,
@@ -1493,6 +1497,13 @@ declare namespace typed_i18n {
   readonly "library": {
     readonly "enableAPIAPP": string,
     readonly "title": string
+  },
+  readonly "note": {
+    readonly "export": {
+      readonly "applyDefaultTemplate": string,
+      readonly "enableCheckbox": string,
+      readonly "overrideHTMLTemplate": string
+    }
   },
   readonly "session": { readonly "title": string },
   readonly "tabs": {
@@ -1526,12 +1537,12 @@ declare namespace typed_i18n {
   (_: "settings.apiKey", __?: {}): {
   readonly "addKey": string,
   readonly "help": string,
-  readonly "keyLabel": string,
-  readonly "mistral": string,
-  readonly "openAi": string,
   readonly "howTo1": string,
   readonly "howTo2": string,
   readonly "howTo3": string,
+  readonly "keyLabel": string,
+  readonly "mistral": string,
+  readonly "openAi": string,
   readonly "providerSelection": string,
   readonly "removeKey": string,
   readonly "title": string,
@@ -1539,12 +1550,12 @@ declare namespace typed_i18n {
 };
   (_: "settings.apiKey.addKey", __?: {}): string;
   (_: "settings.apiKey.help", __?: {}): string;
-  (_: "settings.apiKey.keyLabel", __?: {}): string;
-  (_: "settings.apiKey.mistral", __?: {}): string;
-  (_: "settings.apiKey.openAi", __?: {}): string;
   (_: "settings.apiKey.howTo1", __?: {}): string;
   (_: "settings.apiKey.howTo2", __?: {}): string;
   (_: "settings.apiKey.howTo3", __?: {}): string;
+  (_: "settings.apiKey.keyLabel", __?: {}): string;
+  (_: "settings.apiKey.mistral", __?: {}): string;
+  (_: "settings.apiKey.openAi", __?: {}): string;
   (_: "settings.apiKey.providerSelection", __?: {}): string;
   (_: "settings.apiKey.removeKey", __?: {}): string;
   (_: "settings.apiKey.title", __?: {}): string;
@@ -1580,6 +1591,21 @@ declare namespace typed_i18n {
   (_: "settings.library", __?: {}): { readonly "enableAPIAPP": string, readonly "title": string };
   (_: "settings.library.enableAPIAPP", __?: {}): string;
   (_: "settings.library.title", __?: {}): string;
+  (_: "settings.note", __?: {}): {
+  readonly "export": {
+    readonly "applyDefaultTemplate": string,
+    readonly "enableCheckbox": string,
+    readonly "overrideHTMLTemplate": string
+  }
+};
+  (_: "settings.note.export", __?: {}): {
+  readonly "applyDefaultTemplate": string,
+  readonly "enableCheckbox": string,
+  readonly "overrideHTMLTemplate": string
+};
+  (_: "settings.note.export.applyDefaultTemplate", __?: {}): string;
+  (_: "settings.note.export.enableCheckbox", __?: {}): string;
+  (_: "settings.note.export.overrideHTMLTemplate", __?: {}): string;
   (_: "settings.session", __?: {}): { readonly "title": string };
   (_: "settings.session.title", __?: {}): string;
   (_: "settings.tabs", __?: {}): {

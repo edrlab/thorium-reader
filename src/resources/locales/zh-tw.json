@@ -348,14 +348,6 @@
                 "title": "標題"
             },
             "annotationsOptions": "選項",
-            "colors": {
-                "cyan": "青色",
-                "green": "綠色",
-                "orange": "橘色",
-                "purple": "紫色",
-                "red": "紅色",
-                "yellow": "黃色"
-            },
             "date": "修改日期",
             "export": "將註解另存為...",
             "filter": {
@@ -449,6 +441,16 @@
             "page": "頁",
             "pdfscalemode": "適合頁面寬度",
             "settingsTitle": "設定"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "青色",
+                "green": "綠色",
+                "orange": "橘色",
+                "purple": "紫色",
+                "red": "紅色",
+                "yellow": "黃色"
+            }
         },
         "picker": {
             "search": {
@@ -599,6 +601,13 @@
         "library": {
             "enableAPIAPP": "啟動 \"PNB\" 圖書館系統",
             "title": "訪問法國圖書館帳號"
+        },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
         },
         "session": {
             "title": "保存登入狀態"

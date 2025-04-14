@@ -54,6 +54,7 @@ import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 import { arrayReducer } from "readium-desktop/utils/redux-reducers/array.reducer";
 import { INotePreParsingState, INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import { IAiApiKey } from "readium-desktop/common/redux/states/ai_apiKey";
+import { noteExportReducer } from "readium-desktop/common/redux/reducers/noteExport";
 
 export const rootReducer = () => {
 
@@ -229,5 +230,6 @@ export const rootReducer = () => {
         ),
         img: imageClickReducer,
         lcp: lcpReducer,
+        noteExport: noteExportReducer,
     });
 };

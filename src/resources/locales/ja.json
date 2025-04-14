@@ -348,14 +348,6 @@
                 "title": "名前"
             },
             "annotationsOptions": "メモのオプション",
-            "colors": {
-                "cyan": "青",
-                "green": "緑",
-                "orange": "橙",
-                "purple": "紫",
-                "red": "赤",
-                "yellow": "黄"
-            },
             "date": "変更日",
             "export": "メモを保存する",
             "filter": {
@@ -449,6 +441,16 @@
             "page": "ページ",
             "pdfscalemode": "画面にページを収める / 画面横幅にページを合わせる",
             "settingsTitle": "設定"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "青",
+                "green": "緑",
+                "orange": "橙",
+                "purple": "紫",
+                "red": "赤",
+                "yellow": "黄"
+            }
         },
         "picker": {
             "search": {
@@ -599,6 +601,13 @@
         "library": {
             "enableAPIAPP": "「PNB」蔵書システムを有効にする",
             "title": "フランスの図書館アカウントへの接続"
+        },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
         },
         "session": {
             "title": "セッションを保存"

@@ -348,14 +348,6 @@
                 "title": "Navn"
             },
             "annotationsOptions": "Valgmuligheder",
-            "colors": {
-                "cyan": "Cyan",
-                "green": "Grøn",
-                "orange": "Orange",
-                "purple": "Lilla",
-                "red": "Rød",
-                "yellow": "Gul"
-            },
             "date": "Redigeringsdato",
             "export": "Gem noter som...",
             "filter": {
@@ -449,6 +441,16 @@
             "page": "Side",
             "pdfscalemode": "Tilpas til side eller skærmbredde",
             "settingsTitle": "indstillinger"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "Cyan",
+                "green": "Grøn",
+                "orange": "Orange",
+                "purple": "Lilla",
+                "red": "Rød",
+                "yellow": "Gul"
+            }
         },
         "picker": {
             "search": {
@@ -599,6 +601,13 @@
         "library": {
             "enableAPIAPP": "Aktivér adgang til Dilicom PNB-API",
             "title": "Tilføj en bibliotekskonto"
+        },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
         },
         "session": {
             "title": "Gem session"

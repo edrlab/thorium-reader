@@ -348,14 +348,6 @@
                 "title": "Otsikko"
             },
             "annotationsOptions": "Asetukset",
-            "colors": {
-                "cyan": "Turkoosi",
-                "green": "Vihreä",
-                "orange": "Oranssi",
-                "purple": "Violetti",
-                "red": "Punainen",
-                "yellow": "Keltainen"
-            },
             "date": "Muokkauspäivä",
             "export": "Tallenna nimellä...",
             "filter": {
@@ -449,6 +441,16 @@
             "page": "Sivu",
             "pdfscalemode": "Sovita sivu tai leveyteen",
             "settingsTitle": "Asetukset"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "Turkoosi",
+                "green": "Vihreä",
+                "orange": "Oranssi",
+                "purple": "Violetti",
+                "red": "Punainen",
+                "yellow": "Keltainen"
+            }
         },
         "picker": {
             "search": {
@@ -599,6 +601,13 @@
         "library": {
             "enableAPIAPP": "Ota käyttöön PNB-kirjastojärjestelmä",
             "title": "Pääsy ranskalaisiin kirjastotileihin"
+        },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
         },
         "session": {
             "title": "Tallenna istunto"

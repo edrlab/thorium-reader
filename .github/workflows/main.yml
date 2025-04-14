@@ -160,9 +160,9 @@ jobs:
     - run: node --version && npm --version
     - run: npm --global install npm@^11
     - run: npm --version
-    - run: python --version || echo ok
-    - run: python3 --version || echo ok
-    - run: pip --version || echo ok
+    - run: python --version || echo ok || true
+    - run: python3 --version || echo ok || true
+    - run: pip --version || echo ok || true
     # PYTHON 3.12 distutils deprecation remediation:
     #- run: python3 -m pip install packaging || python -m pip install packaging
     - run: python3 -m pip install setuptools || python -m pip install setuptools
@@ -201,14 +201,15 @@ jobs:
       #if: ${{ matrix.osarch == 'linux-intel' || matrix.osarch == 'linux-arm' }}
       if: startsWith(matrix.osarch, 'linux-')
       run: >
-        (file node_modules/electron/dist/electron) && (node_modules/electron/dist/electron --no-sandbox --version || echo INVALID_ARCH) && (node_modules/electron/dist/electron --no-sandbox --abi || echo INVALID_ARCH)
+        (file node_modules/electron/dist/electron) && (node_modules/electron/dist/electron --no-sandbox --version || echo INVALID_ARCH || true) && (node_modules/electron/dist/electron --no-sandbox --abi || echo INVALID_ARCH || true)
     - name: Electron version + arch (MacOS)
       #if: ${{ matrix.osarch == 'macos-intel' || matrix.osarch == 'macos-arm' }}
       if: startsWith(matrix.osarch, 'macos-')
       run: >
-        (file node_modules/electron/dist/Electron.app/Contents/MacOS/Electron) && (node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --version || echo INVALID_ARCH) && (node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --abi || echo INVALID_ARCH)
-    - run: npm list -g node-gyp || echo ok
-    - run: npm list node-gyp || echo ok
+        (file node_modules/electron/dist/Electron.app/Contents/MacOS/Electron) && (node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --version || echo INVALID_ARCH || true) && (node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --abi || echo INVALID_ARCH || true)
+    - run: npm list -g node-gyp || echo ok || true
+    - run: npm list node-gyp || echo ok || true
+      continue-on-error: true
     - name: PR action (just build)
       if: ${{ github.event_name == 'pull_request' }}
       run: npm run build:prod

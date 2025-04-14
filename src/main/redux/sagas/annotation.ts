@@ -80,7 +80,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         if (!isIReadiumAnnotationSet(readiumAnnotationFormat)) {
 
             debug("Error: ", __READIUM_ANNOTATION_AJV_ERRORS);
-            yield* putTyped(toastActions.openRequest.build(ToastType.Error, __("message.annotations.errorParsing"), readerPublicationIdentifier));
+            yield* putTyped(toastActions.openRequest.build(ToastType.Error, __("message.annotations.errorParsing") + __READIUM_ANNOTATION_AJV_ERRORS, readerPublicationIdentifier));
             return;
         }
 
@@ -183,11 +183,13 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 tags: [fileName], // incommingAnnotation.body?.tag ? [incommingAnnotation.body?.tag] : [],
                 modified: incommingAnnotation.modified ? tryCatchSync(() => new Date(incommingAnnotation.modified).getTime(), fileName) : undefined,
                 created: tryCatchSync(() => new Date(incommingAnnotation.created).getTime(), fileName) || currentTimestamp,
-                creator: creator ? {
+                creator: creator?.id ? {
                     id: creator.id,
+                    urn: creator.id, // readium annotation schema ensure that it is a urn
                     type: creator.type,
                     name: creator.name,
                 } : undefined,
+                group: incommingAnnotation.motivation === "bookmarking" ? "bookmark" : "annotation",
             };
 
             if (annotationParsed.modified) {

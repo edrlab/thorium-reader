@@ -29,7 +29,7 @@ import { availableLanguages } from "readium-desktop/common/services/translator";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { authActions, creatorActions, i18nActions, sessionActions, settingsActions, themeActions } from "readium-desktop/common/redux/actions";
+import { authActions, creatorActions, i18nActions, noteExport, sessionActions, settingsActions, themeActions } from "readium-desktop/common/redux/actions";
 import * as BinIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { TTheme } from "readium-desktop/common/redux/states/theme";
@@ -44,6 +44,8 @@ import { INoteCreator } from "readium-desktop/common/redux/states/creator";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { ApiappHowDoesItWorkInfoBox } from "../dialog/ApiappAddForm";
 import * as RadioGroup from "@radix-ui/react-radio-group";
+import { TextArea } from "react-aria-components";
+import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/annotation/htmlTemplate";
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { ApiKeysList } from "./AiKeyManager";
@@ -231,6 +233,82 @@ const SaveCreatorSettings: React.FC<{}> = () => {
     );
 };
 
+const OverloadNoteExportToHtml: React.FC<{}> = () => {
+    
+    const MAX_LEN = 100 * 1024;
+    const [__] = useTranslator();
+    const dispatch = useDispatch();
+    const enableCheckbox = useSelector((state: ILibraryRootState) => state.noteExport.overrideHTMLTemplate);
+    const htmlContent = useSelector((state: ILibraryRootState) => state.noteExport.htmlContent);
+    const textAreaRef = React.useRef<HTMLTextAreaElement>();
+    const toggleEnableCheckbox = () => {
+        dispatch(noteExport.overrideHTMLTemplate.build(!enableCheckbox, htmlContent));
+    };
+    const updateHtmlContent = React.useCallback((str: string) => {
+        const slicedStr = str.slice(0, MAX_LEN);
+        dispatch(noteExport.overrideHTMLTemplate.build(true, slicedStr));
+    }, [dispatch, MAX_LEN]);
+    const updateHtmlContentDebounced = React.useMemo(() =>
+        debounce(
+            updateHtmlContent
+            , 500)
+        , [updateHtmlContent]);
+    const resetHtmlContent = () => {
+        dispatch(noteExport.overrideHTMLTemplate.build(enableCheckbox, noteExportHtmlMustacheTemplate));
+        textAreaRef.current.value = noteExportHtmlMustacheTemplate;
+    };
+
+    return (<>
+
+        <section className={stylesSettings.section} style={{ position: "relative" }}>
+
+            <h4>{__("settings.note.export.overrideHTMLTemplate")}</h4>
+            <input type="checkbox" className={stylesGlobal.checkbox_custom_input} name="enableCheckbox" />
+            <div className={stylesAnnotations.annotations_checkbox}>
+                <input type="checkbox" id="enableCheckbox" className={stylesGlobal.checkbox_custom_input} name="enableCheckbox" checked={enableCheckbox} onChange={toggleEnableCheckbox} />
+                <label htmlFor="enableCheckbox" className={stylesGlobal.checkbox_custom_label}>
+                    <div
+                        tabIndex={0}
+                        role="checkbox"
+                        aria-checked={enableCheckbox}
+                        aria-label={__("settings.note.export.enableCheckbox")}
+                        onKeyDown={(e) => {
+                            // if (e.code === "Space") {
+                            if (e.key === " ") {
+                                e.preventDefault(); // prevent scroll
+                            }
+                        }}
+                        onKeyUp={(e) => {
+                            // if (e.code === "Space") {
+                            if (e.key === " ") {
+                                e.preventDefault();
+                                toggleEnableCheckbox();
+                            }
+                        }}
+                        className={stylesGlobal.checkbox_custom}
+                        style={{ border: enableCheckbox ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: enableCheckbox ? "var(--color-blue)" : "transparent" }}>
+                        {enableCheckbox ?
+                            <SVG ariaHidden svg={CheckIcon} />
+                            :
+                            <></>
+                        }
+                    </div>
+                    <div aria-hidden>
+                        <h4>{__("settings.note.export.enableCheckbox")}</h4>
+                    </div>
+                </label>
+            </div>
+            {
+                enableCheckbox ? <>
+                    <TextArea style={{ minWidth: "-webkit-fill-available", maxWidth: "-webkit-fill-available" }} name="htmlContent" wrap="hard" ref={textAreaRef} defaultValue={htmlContent} maxLength={MAX_LEN} onChange={(a) => updateHtmlContentDebounced(a.currentTarget.value)}></TextArea>
+                    <button className={stylesSettings.btn_primary} onClick={resetHtmlContent}>{__("settings.note.export.applyDefaultTemplate")}</button>
+                </>
+                    : <></>
+            }
+
+        </section>
+    </>);
+};
 
 const ManageAccessToCatalogSettings = () => {
 
@@ -383,6 +461,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                                 <SaveSessionSettings />
                                 <ManageAccessToCatalogSettings />
                                 <SaveCreatorSettings />
+                                <OverloadNoteExportToHtml />
                             </div>
                         </Tabs.Content>
                         <Tabs.Content value="tab2" tabIndex={-1}>

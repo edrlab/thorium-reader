@@ -348,14 +348,6 @@
                 "title": ""
             },
             "annotationsOptions": "Aukerak",
-            "colors": {
-                "cyan": "",
-                "green": "",
-                "orange": "",
-                "purple": "",
-                "red": "",
-                "yellow": ""
-            },
             "date": "",
             "export": "",
             "filter": {
@@ -449,6 +441,16 @@
             "page": "Orria",
             "pdfscalemode": "Orriaren doikuntza edo zabalera",
             "settingsTitle": "Konfigurazio-aukerak"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "",
+                "green": "",
+                "orange": "",
+                "purple": "",
+                "red": "",
+                "yellow": ""
+            }
         },
         "picker": {
             "search": {
@@ -599,6 +601,13 @@
         "library": {
             "enableAPIAPP": "",
             "title": ""
+        },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
         },
         "session": {
             "title": "Gorde saioa"

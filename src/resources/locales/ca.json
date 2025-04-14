@@ -348,14 +348,6 @@
                 "title": ""
             },
             "annotationsOptions": "Opcions",
-            "colors": {
-                "cyan": "",
-                "green": "",
-                "orange": "",
-                "purple": "",
-                "red": "",
-                "yellow": ""
-            },
             "date": "",
             "export": "",
             "filter": {
@@ -449,6 +441,16 @@
             "page": "Pàgina",
             "pdfscalemode": "Ajust o ample de pàgina",
             "settingsTitle": "Opcions de configuració"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "",
+                "green": "",
+                "orange": "",
+                "purple": "",
+                "red": "",
+                "yellow": ""
+            }
         },
         "picker": {
             "search": {
@@ -599,6 +601,13 @@
         "library": {
             "enableAPIAPP": "",
             "title": ""
+        },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
         },
         "session": {
             "title": "Guardar sessió"

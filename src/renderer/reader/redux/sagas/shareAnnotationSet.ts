@@ -15,9 +15,14 @@ import { getResourceCache } from "./resourceCache";
 import { ICacheDocument } from "readium-desktop/common/redux/states/renderer/resourceCache";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { convertAnnotationStateArrayToReadiumAnnotationSet, convertSelectorTargetToLocatorExtended, INoteStateWithICacheDocument } from "readium-desktop/common/readium/annotation/converter";
-import { IReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
-import { annotationActions, readerActions } from "readium-desktop/common/redux/actions";
-import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import { IReadiumAnnotation, IReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import { annotationActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
+import { EDrawType, INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import { ToastType } from "readium-desktop/common/models/toast";
+import * as Mustache from "mustache";
+import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/annotation/htmlTemplate";
+import { marked } from "marked";
+import DOMPurify from "dompurify";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:shareAnnotationSet");
@@ -60,11 +65,14 @@ export function* importAnnotationSet(): SagaGenerator<void> {
         const cacheDoc = getCacheDocumentFromLocator(cacheDocuments, source);
 
         const noteTotalCount = yield* selectTyped((state: IReaderRootState) => state.reader.noteTotalCount.state);
+        const isABookmark = noteState.group === "bookmark";
+        const locatorExtended = yield* callTyped(() => convertSelectorTargetToLocatorExtended(target, cacheDoc, undefined, isABookmark));
         const noteStateFormated: INoteState = {
             ...noteState,
-            locatorExtended: yield* callTyped(() => convertSelectorTargetToLocatorExtended(target, cacheDoc, undefined)),
+            locatorExtended,
             index: noteTotalCount + 1,
-            group: "annotation", // TODO: parse note as a bookmark if the textInfo length is one character 
+            drawType: (locatorExtended.locator.locations?.caretInfo || isABookmark) ? EDrawType.bookmark : noteState.drawType,
+            group: (locatorExtended.locator.locations?.caretInfo || isABookmark) ? "bookmark" : noteState.group, // can be filed by https://www.w3.org/TR/annotation-model/#motivation-and-purpose
         };
         if (!noteStateFormated.locatorExtended) {
             debug("ERROR: no locator found !! for annotationState, doesn't import this note");
@@ -89,10 +97,49 @@ export function* importAnnotationSet(): SagaGenerator<void> {
     debug("New annotation put in queue from import annotation routine. Start the import routine");
 }
 
+
+const __htmlMustacheViewConverterFn: (readiumAnnotation: IReadiumAnnotationSet) => Promise<object> = async (readiumAnnotation) => {
+
+    const view = {
+        ...readiumAnnotation,
+    };
+    const tmpItems = [];
+    for (const item of (view.items || [])) {
+
+        try {
+            tmpItems.push({ ...item, body: { ...item.body || {}, htmlValue: DOMPurify.sanitize(await marked.parse((item.body?.value || "").replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, ""), { gfm: true })) } });
+        } catch (_) {
+            tmpItems.push(item);
+        }
+    }
+    view.items = tmpItems as IReadiumAnnotation[];
+
+    return view;
+};
+const convertReadiumAnnotationSetToHtml = async (
+    readiumAnnotation: IReadiumAnnotationSet,
+    viewConverterFn: (_: IReadiumAnnotationSet) => Promise<object> = __htmlMustacheViewConverterFn,
+    htmlMustacheTemplate: string = noteExportHtmlMustacheTemplate,
+): Promise<string> => {
+    const output = Mustache.render(htmlMustacheTemplate, await viewConverterFn(readiumAnnotation));
+    return output;
+};
+const downloadAnnotationFile = (data: string, filename: string, extension: ".annotation" | ".html") => {
+
+    const blob = new Blob([data], { type: extension === ".annotation" ? "application/rd-annotations+json" : "text/html" });
+    const jsonObjectUrl = URL.createObjectURL(blob);
+    const anchorEl = document.createElement("a");
+    anchorEl.href = jsonObjectUrl;
+    anchorEl.download = filename + extension;
+    anchorEl.click();
+    URL.revokeObjectURL(jsonObjectUrl);
+};
 function* exportAnnotationSet(): SagaGenerator<void> {
 
     const exportAnnotationSetAction = yield* takeTyped(readerLocalActionExportAnnotationSet.build);
-    const { payload: { annotationArray, publicationView, label } } = exportAnnotationSetAction;
+    const { payload: { annotationArray, publicationView, label, fileType } } = exportAnnotationSetAction;
+    
+    const extension = fileType === "annotation" ? ".annotation" : ".html";
 
     yield* callTyped(getResourceCache);
 
@@ -117,20 +164,13 @@ function* exportAnnotationSet(): SagaGenerator<void> {
 
     debug("readiumAnnotationSet generated, prepare to download it");
 
-    const downloadAnnotationJSON = (contents: IReadiumAnnotationSet, filename: string) => {
+    const {htmlContent, overrideHTMLTemplate} = (yield* selectTyped((state: IReaderRootState) => state.noteExport));
+    const htmlMustacheTemplateContent = overrideHTMLTemplate ? htmlContent : noteExportHtmlMustacheTemplate || noteExportHtmlMustacheTemplate;
 
-        const data = JSON.stringify(contents, null, 2);
-        const blob = new Blob([data], { type: "application/rd-annotations+json" });
-        const jsonObjectUrl = URL.createObjectURL(blob);
-        const anchorEl = document.createElement("a");
-        anchorEl.href = jsonObjectUrl;
-        anchorEl.download = `${filename}.annotation`;
-        anchorEl.click();
-        URL.revokeObjectURL(jsonObjectUrl);
-    };
-
-    downloadAnnotationJSON(readiumAnnotationSet, label);
-
+    const stringData = extension === ".annotation" ?
+        JSON.stringify(readiumAnnotationSet, null, 2) :
+        yield* callTyped(() => convertReadiumAnnotationSetToHtml(readiumAnnotationSet, __htmlMustacheViewConverterFn, htmlMustacheTemplateContent));
+    downloadAnnotationFile(stringData, label, extension);
 }
 
 export const saga = () =>
@@ -153,7 +193,12 @@ export const saga = () =>
                 }
 
                 while (true) {
-                    yield* callTyped(importAnnotationSet);
+                    try {
+                        yield* callTyped(importAnnotationSet);
+                    } catch (e) {
+                        debug("ERROR IMPORT ANNOTATION SET :", e);
+                        yield* putTyped(toastActions.openRequest.build(ToastType.Error, `${e}`));
+                    }
                 }
 
             },

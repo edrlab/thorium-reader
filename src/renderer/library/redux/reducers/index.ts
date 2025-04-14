@@ -39,6 +39,7 @@ import { importAnnotationReducer } from "readium-desktop/renderer/common/redux/r
 import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 import { arrayReducer } from "readium-desktop/utils/redux-reducers/array.reducer";
 import { IAiApiKey } from "readium-desktop/common/redux/states/ai_apiKey";
+import { noteExportReducer } from "readium-desktop/common/redux/reducers/noteExport";
 
 export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reducer<Partial<ILibraryRootState>>
     return combineReducers({ // ILibraryRootState
@@ -108,5 +109,6 @@ export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reduc
             },
         ),
         lcp: lcpReducer,
+        noteExport: noteExportReducer,
     });
 };

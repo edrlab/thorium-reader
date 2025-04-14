@@ -27,6 +27,7 @@ import { readerLocalActionSetConfig } from "../redux/actions";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
+import {subscribe} from "@github/paste-markdown";
 
 interface IProps {
     save: (name: string, color: IColor, tag: string | undefined) => void,
@@ -42,7 +43,7 @@ interface IProps {
 
 export const BookmarkEdit: React.FC<IProps> = (props) => {
 
-    const { cancel, uuid, /*dockedMode,*/ save, locatorExtended, color, tags } = props;
+    const { cancel, uuid, /*dockedMode,*/ save, locatorExtended, color, tags, name } = props;
 
     const displayFromReaderMenu = !!uuid;
     const [__] = useTranslator();
@@ -50,7 +51,7 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
 
     const textAreaRef = React.useRef<HTMLTextAreaElement>();
     const bookmarkMaxLength = 1500;
-    const [textAreaValue, setTextAreaValue] = React.useState("");
+    const [textAreaValue, setTextAreaValue] = React.useState(name);
 
     const [colorSelected, setColor] = React.useState(() => rgbToHex(color));
     const previousColorSelected = React.useRef<string>(colorSelected);
@@ -72,8 +73,14 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
             textAreaRef.current.style.height = "auto";
             textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight + 3}px`;
             textAreaRef.current.focus();
+            textAreaRef.current.setSelectionRange(textAreaRef.current.value.length, textAreaRef.current.value.length);
         }
     }, []); // empty => runs once on mount (undefined => runs on every render)
+
+    React.useEffect(() => {
+        const textAreaElement = document.getElementById(`${uuid}_edit`);
+        subscribe(textAreaElement);
+    }, [uuid]);
 
     return <form className={stylesBookmarks.bookmark_form}>
         <div style={{ backgroundColor: "var(--color-extralight-grey)" }}>
@@ -86,7 +93,7 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
                 <TextArea value={textAreaValue} name="editBookmark" wrap="hard"
                     className={stylesBookmarks.bookmark_form_textarea}
                     maxLength={bookmarkMaxLength} onChange={(a) => setTextAreaValue(a.currentTarget.value)}
-                    ref={textAreaRef}
+                    ref={textAreaRef} id={`${uuid}_edit`}
                 ></TextArea>
                 <div style={{ display: "flex" }}><span style={{ fontSize: "10px", color: "var(--color-medium-grey)", marginLeft: "auto" }}>{textAreaValue.length}/{bookmarkMaxLength}</span></div>
             </div>
@@ -152,7 +159,7 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
                 aria-label={__("reader.marks.saveMark")}
                 onClick={(e) => {
                     e.preventDefault();
-                    const textareaNormalize = textAreaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
+                    const textareaNormalize = textAreaValue.trim(); // .replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
                     // if (textareaNormalize) {
                     save(textareaNormalize, hexToRgb(colorSelected), tag);
                     saveConfig();

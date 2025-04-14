@@ -35,6 +35,7 @@ import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 import { INotePreParsingState } from "readium-desktop/common/redux/states/renderer/note";
 import { arrayReducer } from "readium-desktop/utils/redux-reducers/array.reducer";
 import { IAiApiKey } from "readium-desktop/common/redux/states/ai_apiKey";
+import { noteExportReducer } from "readium-desktop/common/redux/reducers/noteExport";
 
 export const rootReducer = combineReducers({ // RootState
     versionUpdate: versionUpdateReducer,
@@ -141,4 +142,5 @@ export const rootReducer = combineReducers({ // RootState
                     getId: (item) => item.provider,
                 },
             ),
+    noteExport: noteExportReducer,
 });

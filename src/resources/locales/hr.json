@@ -348,14 +348,6 @@
                 "title": ""
             },
             "annotationsOptions": "",
-            "colors": {
-                "cyan": "",
-                "green": "",
-                "orange": "",
-                "purple": "",
-                "red": "",
-                "yellow": ""
-            },
             "date": "",
             "export": "",
             "filter": {
@@ -449,6 +441,16 @@
             "page": "",
             "pdfscalemode": "Širina stranice",
             "settingsTitle": "postavke"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "",
+                "green": "",
+                "orange": "",
+                "purple": "",
+                "red": "",
+                "yellow": ""
+            }
         },
         "picker": {
             "search": {
@@ -599,6 +601,13 @@
         "library": {
             "enableAPIAPP": "",
             "title": ""
+        },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
         },
         "session": {
             "title": "Spremi sesiju"

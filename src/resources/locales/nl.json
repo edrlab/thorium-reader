@@ -348,14 +348,6 @@
                 "title": "Titel"
             },
             "annotationsOptions": "Opties",
-            "colors": {
-                "cyan": "Cyaan",
-                "green": "Groen",
-                "orange": "Oranje",
-                "purple": "Paars",
-                "red": "Rood",
-                "yellow": "Geel"
-            },
             "date": "Wijzigingsdatum",
             "export": "Bewaar aantekeningen als...",
             "filter": {
@@ -449,6 +441,16 @@
             "page": "Pagina",
             "pdfscalemode": "Pagina aanpassen aan breedte",
             "settingsTitle": "instellingen"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "Cyaan",
+                "green": "Groen",
+                "orange": "Oranje",
+                "purple": "Paars",
+                "red": "Rood",
+                "yellow": "Geel"
+            }
         },
         "picker": {
             "search": {
@@ -599,6 +601,13 @@
         "library": {
             "enableAPIAPP": "Het 'PNB'-bibliotheeksysteem activeren",
             "title": "Toegang tot Franse bibliotheek accounts"
+        },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
         },
         "session": {
             "title": "Bewaar sessie"

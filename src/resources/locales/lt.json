@@ -348,14 +348,6 @@
                 "title": "Pavadinimas"
             },
             "annotationsOptions": "Pastabų parinktys",
-            "colors": {
-                "cyan": "Žydra",
-                "green": "Žalia",
-                "orange": "Oranžinė",
-                "purple": "Purpurinė",
-                "red": "Raudona",
-                "yellow": "Geltona"
-            },
             "date": "Keitimo data",
             "export": "Išsaugoti pastabas kaip...",
             "filter": {
@@ -449,6 +441,16 @@
             "page": "Puslapis",
             "pdfscalemode": "talpinti pritaikant prie puslapio aukščio/pločio",
             "settingsTitle": "nuostatos"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "Žydra",
+                "green": "Žalia",
+                "orange": "Oranžinė",
+                "purple": "Purpurinė",
+                "red": "Raudona",
+                "yellow": "Geltona"
+            }
         },
         "picker": {
             "search": {
@@ -599,6 +601,13 @@
         "library": {
             "enableAPIAPP": "Įgalinti prieigą prie Dilicom PNB API",
             "title": "Prieiga prie Prancūzijos bibliotekų paskyrų"
+        },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
         },
         "session": {
             "title": "Įgalinti sesijos išsaugojimą"

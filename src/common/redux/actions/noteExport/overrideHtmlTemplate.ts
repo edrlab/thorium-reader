@@ -6,24 +6,21 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { INoteCreator } from "../../states/creator";
-import { v4 as uuidv4 } from "uuid";
 
-export const ID = "CREATOR_SET";
+export const ID = "NOTE_EXPORT_OVERLOAD_HTML";
 
-export interface Payload extends INoteCreator {
+export interface Payload {
+    overrideHTMLTemplate: boolean;
+    htmlContent: string;
 }
 
-export function build(name: string, type: INoteCreator["type"]): Action<typeof ID, Payload> {
+export function build(overrideHTMLTemplate: boolean, htmlContent = ""): Action<typeof ID, Payload> {
 
-    const uuid = uuidv4();
     return {
         type: ID,
         payload: {
-            id: uuid,
-            urn: `urn:uuid:${uuid}`,
-            name,
-            type,
+            overrideHTMLTemplate,
+            htmlContent,
         },
     };
 }
