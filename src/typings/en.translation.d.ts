@@ -298,6 +298,7 @@ declare namespace typed_i18n {
   readonly "detailedDescTitle": string,
   readonly "detailedDescription": string,
   readonly "editorDescription": string,
+  readonly "generateDescription": string,
   readonly "generateDescriptionTitle": string,
   readonly "inputPlaceholder": string,
   readonly "noDescription": string,
@@ -306,11 +307,13 @@ declare namespace typed_i18n {
   readonly "shortDescTitle": string,
   readonly "shortDescription": string,
   readonly "systemPromptEditor": string,
+  readonly "noApiKey": string,
   readonly "title": string
 };
   (_: "chatbot.detailedDescTitle", __?: {}): string;
   (_: "chatbot.detailedDescription", __?: {}): string;
   (_: "chatbot.editorDescription", __?: {}): string;
+  (_: "chatbot.generateDescription", __?: {}): string;
   (_: "chatbot.generateDescriptionTitle", __?: {}): string;
   (_: "chatbot.inputPlaceholder", __?: {}): string;
   (_: "chatbot.noDescription", __?: {}): string;
@@ -319,6 +322,7 @@ declare namespace typed_i18n {
   (_: "chatbot.shortDescTitle", __?: {}): string;
   (_: "chatbot.shortDescription", __?: {}): string;
   (_: "chatbot.systemPromptEditor", __?: {}): string;
+  (_: "chatbot.noApiKey", __?: {}): string;
   (_: "chatbot.title", __?: {}): string;
   (_: "dialog", __?: {}): {
   readonly "annotations": {

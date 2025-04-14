@@ -408,8 +408,8 @@ export const ImageClickManager: React.FC = () => {
     const [detailOpen, setDetailOpen] = React.useState(true);
     const [autoPrompt, setAutoPrompt] = React.useState("");
 
-    const noDescription = __("chatbot.noDescription").split(__("chatbot.shortDescTitle"));
-    const secondPartNoDescription = noDescription[1].split(__("chatbot.detailedDescTitle"));
+    const generateDescription = __("chatbot.generateDescription").split(__("chatbot.shortDescTitle"));
+    const secondPartGenerateDescription = generateDescription[1].split(__("chatbot.detailedDescTitle"));
 
     const apiList = useSelector((state: IReaderRootState) => state.aiApiKeys);
 
@@ -537,21 +537,27 @@ export const ImageClickManager: React.FC = () => {
                                     : <></>
                                     }
                                 </div>
-                                :
+                                : !imageDescription && apiList.some(k => k.aiKey !== "") ?
                                     <p className={stylesChatbot.no_description_text}>
-                                        {noDescription[0]}
+                                        {__("chatbot.noDescription")}
+                                        {generateDescription[0]}
                                         <button role="submit" onClick={() => { setAutoPrompt(shortDescription); enableChat(true); }}>
                                             {__("chatbot.shortDescTitle")}
                                         </button>
-                                        {secondPartNoDescription[0]}
+                                        {secondPartGenerateDescription[0]}
                                         <button role="submit" onClick={() => { setAutoPrompt(longDescription); enableChat(true); }}>
                                             {__("chatbot.detailedDescTitle")}
                                         </button>
-                                        {secondPartNoDescription[1]}
+                                        {secondPartGenerateDescription[1]}
+                                    </p>
+                                    : 
+                                    <p className={stylesChatbot.no_description_text}>
+                                        {__("chatbot.noDescription")}
+                                        {__("chatbot.noApiKey")}
                                     </p>
                             }
                         </div>
-                        {apiList.length && !chatEnabled ?
+                        {apiList.some(k => k.aiKey !== "") && !chatEnabled ?
                         <div className={stylesChatbot.chatbot_open_title}>
                             <button  onClick={() => enableChat((enabled) => !enabled)} title={__("chatbot.generateDescriptionTitle")}>
                                 <SVG svg={AiIcon} ariaHidden />

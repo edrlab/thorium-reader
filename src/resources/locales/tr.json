@@ -123,8 +123,10 @@
         "detailedDescTitle": "",
         "detailedDescription": "",
         "editorDescription": "",
+        "generateDescription": "",
         "generateDescriptionTitle": "",
         "inputPlaceholder": "",
+        "noApiKey": "",
         "noDescription": "",
         "reset": "",
         "sendQuestion": "",
@@ -348,14 +350,6 @@
                 "title": ""
             },
             "annotationsOptions": "",
-            "colors": {
-                "cyan": "",
-                "green": "",
-                "orange": "",
-                "purple": "",
-                "red": "",
-                "yellow": ""
-            },
             "date": "",
             "export": "",
             "filter": {
@@ -449,6 +443,16 @@
             "page": "",
             "pdfscalemode": "",
             "settingsTitle": ""
+        },
+        "notes": {
+            "colors": {
+                "cyan": "",
+                "green": "",
+                "orange": "",
+                "purple": "",
+                "red": "",
+                "yellow": ""
+            }
         },
         "picker": {
             "search": {
