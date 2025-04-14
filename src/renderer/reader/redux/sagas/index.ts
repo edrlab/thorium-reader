@@ -19,17 +19,21 @@ import * as ipc from "./ipc";
 import * as search from "./search";
 import * as winInit from "./win";
 import * as annotation from "./note";
-import * as shareAnnotationSet from "./shareAnnotationSet";
+import * as shareAnnotationSet from "./readiumAnnotation/shareAnnotationSet";
 import * as img from "./img";
 import * as settingsOrMenuDialogOrDock from "./settingsOrMenu";
 import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { setTheme } from "readium-desktop/common/redux/actions/theme";
 import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysListen, ttsListen } from "@r2-navigator-js/electron/renderer";
 import { eventChannel } from "redux-saga";
-import { put as putTyped, take as takeTyped, select as selectTyped } from "typed-redux-saga/macro";
+import { put as putTyped, take as takeTyped, select as selectTyped, call as callTyped, delay as delayTyped } from "typed-redux-saga/macro";
 import { readerLocalActionReader } from "../actions";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation, readiumAnnotationSelectorFromNote } from "./readiumAnnotation/selector";
+import { getCacheDocumentFromLocator } from "./readiumAnnotation/getCacheDocument";
+import { getResourceCache } from "./resourceCache";
+import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 
 // Logger
 const filename_ = "readium-desktop:renderer:reader:saga:index";
@@ -113,7 +117,7 @@ export function* rootSaga() {
         ),
     ]);
 
-    console.log("SAGA-rootSaga() PRE INIT SUCCESS");
+    debug("SAGA-rootSaga() PRE INIT SUCCESS");
 
     const MOChannel = getMediaOverlayStateChannel();
     const TTSChannel = getTTSStateChannel();
@@ -139,10 +143,49 @@ export function* rootSaga() {
                 yield* putTyped(readerLocalActionReader.bookmarkTotalCount.build(currentBookmarkTotalCount + 1));
             }
         }),
+        spawnLeading(function*() {
+
+            let gotTheLock = yield* selectTyped((state: IReaderRootState) => state.reader.lock);
+            if (!gotTheLock) {
+                yield* takeTyped(readerActions.setTheLock.build);
+            }
+
+            gotTheLock = yield* selectTyped((state: IReaderRootState) => state.reader.lock);
+            if (!gotTheLock) {
+                throw new Error("unreachable!!!");
+            }
+
+            yield* delayTyped(1000); // wait for the reader start stabilisation (aka highlight mounting)
+
+            const notes = yield* selectTyped((state: IReaderRootState) => state.reader.note);
+
+            const { publicationView } = yield* selectTyped((state: IReaderRootState) => state.reader.info);
+            const isLcp = !!publicationView.lcp;
+            for (const note of notes) {
+
+                try {
+                    if (!checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation(note)) {
+
+                        yield* callTyped(getResourceCache);
+                        const cacheDocuments = yield* selectTyped((state: IReaderRootState) => state.resourceCache);
+
+                        const cacheDocument = getCacheDocumentFromLocator(cacheDocuments, note.locatorExtended?.locator?.href);
+                        const selector = yield* callTyped(readiumAnnotationSelectorFromNote, note, isLcp, cacheDocument);
+
+                        debug(`${note.uuid} does not have any readiumAnnotationSelector so let's update the note with this new selectors: ${JSON.stringify(selector, null, 2)}`);
+                        yield* putTyped(readerActions.note.addUpdate.build({ ...note, readiumAnnotation: { ...note?.readiumAnnotation || {}, export: { selector } } }, note));
+                    }
+                } catch (e) {
+                    debug(`ERROR: ${note.uuid} selectors compute CRASH`, e);
+                }
+
+                yield* delayTyped(10); // 100 notes equals to 1 + 1 seconds , seems acceptable to not disturb user with a tiny compute machine
+            }
+        }),
     ]);
 
 
-    console.log("SAGA-rootSaga() INIT SUCCESS");
+    debug("SAGA-rootSaga() INIT SUCCESS");
 
     // initSuccess triggered in reader.tsx didmount and publication loaded
     // yield put(winActions.initSuccess.build());

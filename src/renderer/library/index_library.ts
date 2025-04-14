@@ -83,7 +83,7 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
                 lcp: data.payload.lcp,
                 noteExport: data.payload.noteExport,
             };
-            const [store, _reduxHistory] = createStoreFromDi(preloadedState);
+            const [store, _reduxHistory, _sagaMiddleware] = createStoreFromDi(preloadedState);
             const locale = store.getState().i18n.locale;
             getTranslator().setLocale(locale);
 
