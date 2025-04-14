@@ -443,6 +443,7 @@ export async function initStore()
                 process.env["MISTRAL_API_KEY"] = aiKey.aiKey;
             } 
         }
+    }
     if (preloadedState?.creator && !preloadedState.creator.urn) {
         preloadedState.creator.urn = `urn:uuid:${preloadedState.creator.id}`;
     }
@@ -471,5 +472,5 @@ export async function initStore()
     sagaMiddleware.run(rootSaga);
 
     return [store, sagaMiddleware];
-    }
 }
+
