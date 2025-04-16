@@ -335,14 +335,6 @@
                 "title": "Titolo"
             },
             "annotationsOptions": "Opzioni",
-            "colors": {
-                "cyan": "Ciano",
-                "green": "Verde",
-                "orange": "Arancione",
-                "purple": "Viola",
-                "red": "Rosso",
-                "yellow": "Giallo"
-            },
             "date": "Data di modifica",
             "export": "Salva le note come",
             "filter": {
@@ -436,6 +428,16 @@
             "page": "Pagina",
             "pdfscalemode": "Dimensioni della pagina o larghezza",
             "settingsTitle": "impostazioni"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "Ciano",
+                "green": "Verde",
+                "orange": "Arancione",
+                "purple": "Viola",
+                "red": "Rosso",
+                "yellow": "Giallo"
+            }
         },
         "picker": {
             "search": {
@@ -572,6 +574,13 @@
         "library": {
             "enableAPIAPP": "Attivare l'accesso al sistema bibliotecario francese (PNB)",
             "title": "Aggiungere un account a una biblioteca francese"
+        },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
         },
         "session": {
             "title": "Salva sessione"

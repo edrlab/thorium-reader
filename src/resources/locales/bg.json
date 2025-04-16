@@ -335,14 +335,6 @@
                 "title": ""
             },
             "annotationsOptions": "",
-            "colors": {
-                "cyan": "",
-                "green": "",
-                "orange": "",
-                "purple": "",
-                "red": "",
-                "yellow": ""
-            },
             "date": "",
             "export": "",
             "filter": {
@@ -436,6 +428,16 @@
             "page": "",
             "pdfscalemode": "Побиране в екрана или в ширината му",
             "settingsTitle": "настройки"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "",
+                "green": "",
+                "orange": "",
+                "purple": "",
+                "red": "",
+                "yellow": ""
+            }
         },
         "picker": {
             "search": {
@@ -572,6 +574,13 @@
         "library": {
             "enableAPIAPP": "",
             "title": ""
+        },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
         },
         "session": {
             "title": "Запиши сесията"

@@ -335,14 +335,6 @@
                 "title": "Název"
             },
             "annotationsOptions": "Možnosti anotace",
-            "colors": {
-                "cyan": "Azurová",
-                "green": "Zelená",
-                "orange": "Oranžová",
-                "purple": "Fialová",
-                "red": "Červená",
-                "yellow": "Žlutá"
-            },
             "date": "Datum úpravy",
             "export": "Uložit poznámky jako...",
             "filter": {
@@ -436,6 +428,16 @@
             "page": "Stránka",
             "pdfscalemode": "",
             "settingsTitle": "nastavení"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "Azurová",
+                "green": "Zelená",
+                "orange": "Oranžová",
+                "purple": "Fialová",
+                "red": "Červená",
+                "yellow": "Žlutá"
+            }
         },
         "picker": {
             "search": {
@@ -572,6 +574,13 @@
         "library": {
             "enableAPIAPP": "Aktivovat knihovní systém „PNB“",
             "title": "Přístup k účtům francouzských knihoven"
+        },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
         },
         "session": {
             "title": "Povolit ukládání relací"

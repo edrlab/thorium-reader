@@ -14,6 +14,7 @@ import {
     readerActions, sessionActions, toastActions, versionUpdateActions,
     creatorActions,
     annotationActions,
+    noteExport,
 } from "readium-desktop/common/redux/actions";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
@@ -73,14 +74,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     versionUpdateActions.notify.ID,
 
     // needed to broadcast events to all reader windows,
-    readerActions.bookmark.pop.ID,
-    readerActions.bookmark.push.ID,
-    readerActions.bookmark.update.ID,
-
-    // needed to broadcast events to all reader windows,
-    readerActions.annotation.pop.ID,
-    readerActions.annotation.push.ID,
-    readerActions.annotation.update.ID,
+    readerActions.note.addUpdate.ID,
+    readerActions.note.remove.ID,
 
     sessionActions.save.ID,
 
@@ -96,6 +91,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     readerActions.setTheLock.ID,
 
     lcpActions.publicationFileLock.ID,
+
+    noteExport.overrideHTMLTemplate.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware

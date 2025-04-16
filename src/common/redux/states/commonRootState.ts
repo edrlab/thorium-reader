@@ -14,8 +14,8 @@ import { ITheme } from "./theme";
 import { INoteCreator } from "./creator";
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
 import { TFIFOState } from "readium-desktop/utils/redux-reducers/fifo.reducer";
-import { IAnnotationPreParsingState } from "./renderer/annotation";
 import { ILcpState } from "./lcp";
+import { INoteExportState, INotePreParsingState } from "./renderer/note";
 
 export interface ICommonRootState {
     i18n: I18NState;
@@ -28,6 +28,7 @@ export interface ICommonRootState {
     };
     theme: ITheme;
     creator: INoteCreator;
-    annotationImportQueue: TFIFOState<IAnnotationPreParsingState>;
+    annotationImportQueue: TFIFOState<INotePreParsingState>;
+    noteExport: INoteExportState;
     lcp: ILcpState;
 }

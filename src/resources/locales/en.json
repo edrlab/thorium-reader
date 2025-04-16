@@ -335,14 +335,6 @@
                 "title": "Title"
             },
             "annotationsOptions": "Annotation Options",
-            "colors": {
-                "cyan": "Cyan",
-                "green": "Green",
-                "orange": "Orange",
-                "purple": "Purple",
-                "red": "Red",
-                "yellow": "Yellow"
-            },
             "date": "Modification date",
             "export": "Save notes as...",
             "filter": {
@@ -436,6 +428,16 @@
             "page": "Page",
             "pdfscalemode": "Page fit or width",
             "settingsTitle": "settings"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "Cyan",
+                "green": "Green",
+                "orange": "Orange",
+                "purple": "Purple",
+                "red": "Red",
+                "yellow": "Yellow"
+            }
         },
         "picker": {
             "search": {
@@ -572,6 +574,13 @@
         "library": {
             "enableAPIAPP": "Activate the 'PNB' library system",
             "title": "Access to French library accounts"
+        },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "APPLY DEFAULT TEMPLATE",
+                "enableCheckbox": "Enable/disable mustache template override when exporting HTML notes",
+                "overrideHTMLTemplate": "Override the Mustache template when exporting the note to HTML"
+            }
         },
         "session": {
             "title": "Enable session saving"

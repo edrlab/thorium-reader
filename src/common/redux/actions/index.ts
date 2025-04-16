@@ -16,7 +16,6 @@ import * as importActions from "./import/";
 import * as keyboardActions from "./keyboard/";
 import * as lcpActions from "./lcp/";
 import * as loadActions from "./load";
-import * as netActions from "./net/";
 import * as readerActions from "./reader/";
 import * as toastActions from "./toast/";
 import * as sessionActions from "./session/";
@@ -28,6 +27,7 @@ import * as versionUpdateActions from "./version-update";
 import * as annotationActions from "./annotation";
 import * as creatorActions from "./creator";
 import * as settingsActions from "./settings";
+import * as noteExport from "./noteExport";
 
 export {
     historyActions,
@@ -36,7 +36,6 @@ export {
     dialogActions,
     dockActions,
     i18nActions,
-    netActions,
     readerActions,
     lcpActions,
     importActions,
@@ -53,4 +52,5 @@ export {
     annotationActions,
     creatorActions,
     settingsActions,
+    noteExport,
 };

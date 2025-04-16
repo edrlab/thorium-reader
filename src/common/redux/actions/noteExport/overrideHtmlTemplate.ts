@@ -6,20 +6,22 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { IBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 
-export const ID = "READER_BOOKMARKS_POP";
+export const ID = "NOTE_EXPORT_OVERLOAD_HTML";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface Payload extends IBookmarkState {
+export interface Payload {
+    overrideHTMLTemplate: boolean;
+    htmlContent: string;
 }
 
-export function build(param: IBookmarkState):
-    Action<typeof ID, Payload> {
+export function build(overrideHTMLTemplate: boolean, htmlContent = ""): Action<typeof ID, Payload> {
 
     return {
         type: ID,
-        payload: param,
+        payload: {
+            overrideHTMLTemplate,
+            htmlContent,
+        },
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator

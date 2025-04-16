@@ -29,12 +29,12 @@ export interface IReadiumAnnotation {
         id: string;
         type: "Person" | "Organization"
         name?: string;
-    }
+    };
     body: {
         type: string;
         value: string;
         tag?: string;
-        highlight?: "solid" | "underline" | "strikethrough" | "outline";
+        highlight?: "solid" | "underline" | "strikethrough" | "outline" | "bookmark";
         color?: string;
         textDirection?: "ltr" | "rtl";
         language?: string;
@@ -56,6 +56,7 @@ export interface IReadiumAnnotation {
             // | IFragmentSelector
         )>;
     };
+    motivation: string;
 }
 
 export interface ISelector<T extends ISelector = undefined> {
@@ -325,7 +326,7 @@ export const readiumAnnotationSetSchema = {
                         },
                         "highlight": {
                             "type": "string",
-                            "enum": ["solid", "underline", "strikethrough", "outline"],
+                            "enum": ["solid", "underline", "strikethrough", "outline", "bookmark"],
                             "nullable": true,
                         },
                         "format": {

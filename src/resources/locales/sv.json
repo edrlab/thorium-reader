@@ -335,14 +335,6 @@
                 "title": "Titel"
             },
             "annotationsOptions": "Alternativ",
-            "colors": {
-                "cyan": "Cyan",
-                "green": "Grön",
-                "orange": "Orange",
-                "purple": "Lila",
-                "red": "Röd",
-                "yellow": "Gul"
-            },
             "date": "Redigeringsdatum",
             "export": "Spara anteckningar som",
             "filter": {
@@ -437,6 +429,16 @@
             "pdfscalemode": "Anpassa till hel sida eller sidbredd",
             "settingsTitle": "Inställningar"
         },
+        "notes": {
+            "colors": {
+                "cyan": "Cyan",
+                "green": "Grön",
+                "orange": "Orange",
+                "purple": "Lila",
+                "red": "Röd",
+                "yellow": "Gul"
+            }
+        },
         "picker": {
             "search": {
                 "founds": "{{- nResults}} träff(ar)",
@@ -471,7 +473,7 @@
             "letterSpacing": "Teckenavstånd",
             "lineSpacing": "Radavstånd",
             "margin": "Marginaler",
-            "noFootnotes": "Inaktivera fotnoter",
+            "noFootnotes": "Inaktivera popup-fotnoter",
             "noRTLFlip": "Inaktivera vänster-till-höger-gränssnitt",
             "noRuby": "Dölj japanska ruby-tecken",
             "noTemporaryNavTargetOutline": "Inaktivera visuella hjälpmedel för navigering",
@@ -572,6 +574,13 @@
         "library": {
             "enableAPIAPP": "Aktivera åtkomst till Dilicom PNB API",
             "title": "Lägg till ett bibliotekskonto"
+        },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
         },
         "session": {
             "title": "Spara session"

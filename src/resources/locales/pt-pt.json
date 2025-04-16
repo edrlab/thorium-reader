@@ -135,8 +135,8 @@
         "cancel": "Cancelar",
         "deleteAnnotations": "Eliminar anotações?",
         "deleteAnnotationsText": "Quer mesmo eliminar {{- annotationListLength}} anotações?",
-        "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteBookmarks": "Eliminar marcadores?",
+        "deleteBookmarksText": "Tem a certeza que quer eliminar {{- bookmarkListLength}} marcadores?",
         "deleteFeed": "Eliminar catálogo?",
         "deletePublication": "Eliminar documento?",
         "import": "Confirmar importação:",
@@ -335,21 +335,13 @@
                 "title": "Título"
             },
             "annotationsOptions": "Opções de anotações",
-            "colors": {
-                "cyan": "Ciano",
-                "green": "Verde",
-                "orange": "Laranja",
-                "purple": "Roxo",
-                "red": "Vermelho",
-                "yellow": "Amarelo"
-            },
             "date": "Data de alteração",
             "export": "Guardar anotações como...",
             "filter": {
                 "all": "Tudo",
                 "filterByColor": "Filtrar por cor",
                 "filterByCreator": "Filtrar por criador",
-                "filterByDrawtype": "Filtrar por tipo",
+                "filterByDrawtype": "Filtrar por tipografia",
                 "filterByTag": "Filtrar por etiqueta",
                 "filterOptions": "Opções de filtro",
                 "none": "Nenhum"
@@ -375,7 +367,7 @@
             }
         },
         "bookmarks": {
-            "index": ""
+            "index": "Marcador n.º {{- index}}"
         },
         "divina": {
             "mute": "Silenciar áudio",
@@ -436,6 +428,16 @@
             "page": "Página",
             "pdfscalemode": "Ajustar à página ou largura",
             "settingsTitle": "Configurações"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "Ciano",
+                "green": "Verde",
+                "orange": "Laranja",
+                "purple": "Roxo",
+                "red": "Vermelho",
+                "yellow": "Amarelo"
+            }
         },
         "picker": {
             "search": {
@@ -573,11 +575,18 @@
             "enableAPIAPP": "Ativar API do sistema de bibliotecas PNB",
             "title": "Acesso a contas de bibliotecas francesas"
         },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
+        },
         "session": {
             "title": "Ativar guardar sessão"
         },
         "tabs": {
-            "appearance": "Aparência",
+            "appearance": "Visual",
             "general": "Geral",
             "keyboardShortcuts": "Atalhos de teclado"
         },

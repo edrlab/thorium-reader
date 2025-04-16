@@ -17,6 +17,7 @@ import * as stylesTags from "readium-desktop/renderer/assets/styles/components/t
 import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
 import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 import * as stylesBookmarks from "readium-desktop/renderer/assets/styles/components/bookmarks.scss";
+import * as stylesMarkdown from "readium-desktop/renderer/assets/styles/github-markdown.scss";
 import classNames from "classnames";
 import * as React from "react";
 import FocusLock from "react-focus-lock";
@@ -81,22 +82,27 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { Locator } from "@r2-shared-js/models/locator";
-import { IAnnotationState, TAnnotationState, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { dialogActions, dockActions, readerActions } from "readium-desktop/common/redux/actions";
 import { readerLocalActionExportAnnotationSet, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
 import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 import { IReaderDialogOrDockSettingsMenuState, ReaderConfig } from "readium-desktop/common/models/reader";
-import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { rgbToHex } from "readium-desktop/common/rgb";
 import { ImportAnnotationsDialog } from "readium-desktop/renderer/common/components/ImportAnnotationsDialog";
-import { IBookmarkState, TBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { DockTypeName } from "readium-desktop/common/models/dock";
 import { BookmarkEdit } from "./BookmarkEdit";
 import { BookmarkLocatorInfo } from "./BookmarkLocatorInfo";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
-import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/note";
+import { EDrawType, INoteState, noteColorCodeToColorTranslatorKeySet, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
+
+import DOMPurify from "dompurify";
+import { marked } from "marked";
+
+import { shell } from "electron";
+(window as any).__shell_openExternal = (url: string) => url.startsWith("http") ? shell.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
+
+console.log(window);
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderMenuProps {
@@ -397,30 +403,30 @@ const renderLinkTree = (currentLocation: MiniLocatorExtended, isRTLfn: (_link: I
     return RenderLinkTree;
 };
 
-const HardWrapComment: React.FC<{ comment: string | undefined }> = (props) => {
-    const { comment } = props;
-    if (!comment) {
-        return (
-            <p> </p>
-        );
-    }
-    const splittedComment = comment.split("\n");
+// const HardWrapComment: React.FC<{ comment: string | undefined }> = (props) => {
+//     const { comment } = props;
+//     if (!comment) {
+//         return (
+//             <p> </p>
+//         );
+//     }
+//     const splittedComment = comment.split("\n");
 
-    const strListComponent = [];
-    let n = 0;
-    for (const strline of splittedComment) {
-        strListComponent.push(<span key={++n}>{strline}</span>);
-        strListComponent.push(<br key={++n} />);
-    }
+//     const strListComponent = [];
+//     let n = 0;
+//     for (const strline of splittedComment) {
+//         strListComponent.push(<span key={++n}>{strline}</span>);
+//         strListComponent.push(<br key={++n} />);
+//     }
 
-    return (
-        <p>
-            {
-                strListComponent
-            }
-        </p>
-    );
-};
+//     return (
+//         <p>
+//             {
+//                 strListComponent
+//             }
+//         </p>
+//     );
+// };
 
 export const computeProgression = (spineItemLinks: Link[], locator: Locator) => {
 
@@ -440,48 +446,70 @@ export const computeProgression = (spineItemLinks: Link[], locator: Locator) => 
     return percent;
 };
 
-const getUuidFromUrn = (v: string | undefined): string => v?.startsWith("urn:uuid:") ? v.split("urn:uuid:")[1] : v || "";
-
-const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState, isEdited: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void, setCreatorFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void, setCreatorFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
     const { goToLocator, setTagFilter, setCreatorFilter } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const dockingMode = useReaderConfig("readerDockingMode");
-    // const setReaderConfig = useSaveReaderConfig();
-    // const setDockingMode = React.useCallback((value: ReaderConfig["readerDockingMode"]) => {
-    //     setReaderConfig({readerDockingMode: value});
-    // }, [setReaderConfig]);
     const dockedMode = dockingMode !== "full";
-    const { timestamp, annotation, isEdited, triggerEdition } = props;
-    const { uuid, comment, tags: tagsStringArrayMaybeUndefined } = annotation;
+    const { annotation, isEdited, triggerEdition } = props;
+    const { uuid, textualValue, tags: tagsStringArrayMaybeUndefined } = annotation;
     const tagsStringArray = tagsStringArrayMaybeUndefined || [];
     const tagName = tagsStringArray[0] || "";
     const dockedEditAnnotation = isEdited && dockedMode;
     const annotationColor = rgbToHex(annotation.color);
-    const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
+
+    const [textParsed, setTextParsed] = React.useState<string>();
+    React.useEffect(() => {
+
+        const fc = async () => {
+            if (textualValue) {
+                const parsed = DOMPurify.sanitize(await marked.parse(textualValue.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, ""), { gfm: true }), { FORBID_TAGS: ["style"], FORBID_ATTR: ["style"] });
+                const regex = new RegExp(/href=\"(.*?)\"/, "gm");
+                const hrefSanitized = parsed.replace(regex, (substring) => {
+
+                    let url = /href=\"(.*?)\"/.exec(substring)[1];
+                    if (!url.startsWith("http")) {
+                        url = "http://" + url;
+                    }
+
+                    return `href="" alt="${url}" onclick="return ((e) => {
+                                window.__shell_openExternal('${url}').catch(() => {});
+                                return false;
+                             })()"`;
+                });
+                setTextParsed(hrefSanitized);
+                console.log(parsed, hrefSanitized);
+            }
+        };
+        fc();
+    }, [textualValue]);
 
     const dispatch = useDispatch();
     const [__] = useTranslator();
+    // const noteTotalCount = useSelector((state: IReaderRootState) => state.reader.noteTotalCount.state);
     const save = React.useCallback((color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
-        dispatch(readerActions.annotation.update.build(
-            {
-                ...annotation,
-            },
+        dispatch(readerActions.note.addUpdate.build(
             {
                 uuid: annotation.uuid,
                 locatorExtended: annotation.locatorExtended,
                 color,
-                comment,
-                drawType,
+                textualValue: comment,
+                drawType: EDrawType[drawType],
                 tags,
                 modified: (new Date()).getTime(),
                 created: annotation.created,
+                index: annotation.index,
+                group: "annotation",
+                creator: annotation.creator,
             },
+            annotation,
         ));
         triggerEdition(false);
+        // dispatch(readerLocalActionReader.bookmarkTotalCount.build(noteTotalCount + 1));
     }, [dispatch, annotation, triggerEdition]);
 
-    const date = new Date(timestamp);
+    const date = new Date(annotation.modified || annotation.created);
     const dateStr = `${(`${date.getDate()}`.padStart(2, "0"))}/${(`${date.getMonth() + 1}`.padStart(2, "0"))}/${date.getFullYear()}`;
 
     const { percentRounded } = React.useMemo(() => {
@@ -502,8 +530,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
         return <></>;
     }
 
-    const creatorName = (getUuidFromUrn(annotation.creator?.id) !== getUuidFromUrn(creatorMyself.id) ? (annotation.creator?.name) : creatorMyself.name) || "";
-    // const creatorId = (getUuidFromUrn(annotation.creator?.id) !== getUuidFromUrn(creatorMyself.id) ? getUuidFromUrn(annotation.creator?.id) : getUuidFromUrn(creatorMyself.id)) || "";
+    const creatorName = annotation.creator?.name || "";
 
     return (<li
         className={stylesAnnotations.annotations_line}
@@ -572,16 +599,17 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                             save={save}
                             cancel={() => triggerEdition(false)}
                             dockedMode={dockedMode}
-                            drawType={annotation.drawType}
+                            drawType={EDrawType[annotation.drawType] as TDrawType}
                             color={annotation.color}
                             tags={annotation.tags}
-                            comment={annotation.comment}
+                            comment={annotation.textualValue}
                             locatorExtended={annotation.locatorExtended}
                         />
                     </FocusLock>
                     :
                     <>
-                        <HardWrapComment comment={comment} />
+                        <div className={(stylesMarkdown as any)["markdown-body"]} dangerouslySetInnerHTML={{ __html: textParsed }} />
+                        {/* <HardWrapComment comment={textualValue} /> */}
                         {tagName ? <div className={stylesTags.tags_wrapper} aria-label={__("catalog.tags")}>
                             <div className={stylesTags.tag}>
                                 <a onClick={() => setTagFilter(tagName)}
@@ -688,7 +716,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                 className={stylesPopoverDialog.delete_item_edition}
                 onClick={() => {
                     triggerEdition(false);
-                    dispatch(readerActions.annotation.pop.build(annotation));
+                    dispatch(readerActions.note.remove.build(annotation));
                     // alert("deleted");
                 }}
                 >
@@ -708,7 +736,7 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
                             <Popover.Close
                                 onClick={() => {
                                     triggerEdition(false);
-                                    dispatch(readerActions.annotation.pop.build(annotation));
+                                    dispatch(readerActions.note.remove.build(annotation));
                                 }}
                                 title={__("reader.marks.delete")}
                             >
@@ -729,37 +757,68 @@ const AnnotationCard: React.FC<{ timestamp: number, annotation: IAnnotationState
     </li>);
 };
 
-const BookmarkCard: React.FC<{ timestamp: number, bookmark: IBookmarkState, isEdited: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void, setCreatorFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
+const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void, setCreatorFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
     const { goToLocator, setCreatorFilter, setTagFilter } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const dockingMode = useReaderConfig("readerDockingMode");
     const dockedMode = dockingMode !== "full";
-    const { timestamp, bookmark, isEdited, triggerEdition } = props;
+    const { bookmark, isEdited, triggerEdition } = props;
     const { uuid, color, tags } = bookmark;
     const tag = Array.isArray(tags) ? tags[0] || "" : "";
     const dockedEditBookmark = isEdited && dockedMode;
-    const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
+
+    const [textParsed, setTextParsed] = React.useState<string>();
+    React.useEffect(() => {
+
+        const fc = async () => {
+            if (bookmark.textualValue) {
+                const parsed = DOMPurify.sanitize(await marked.parse(bookmark.textualValue.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, ""), { gfm: true }), { FORBID_TAGS: ["style"], FORBID_ATTR: ["style"] });
+                const regex = new RegExp(/href=\"(.*?)\"/, "gm");
+                const hrefSanitized = parsed.replace(regex, (substring) => {
+
+                    let url = /href=\"(.*?)\"/.exec(substring)[1];
+                    if (!url.startsWith("http")) {
+                        url = "http://" + url;
+                    }
+
+                    return `href="" alt="${url}" onclick="return ((e) => {
+                                window.__shell_openExternal('${url}').catch(() => {});
+                                return false;
+                             })()"`;
+                });
+                setTextParsed(hrefSanitized);
+                console.log(parsed, hrefSanitized);
+            }
+        };
+        fc();
+    }, [bookmark.textualValue]);
 
     const dispatch = useDispatch();
     const [__] = useTranslator();
+    // const noteTotalCount = useSelector((state: IReaderRootState) => state.reader.noteTotalCount.state);
     const save = React.useCallback((name: string, color: IColor, tag: string | undefined) => {
-        dispatch(readerActions.bookmark.update.build(
+        dispatch(readerActions.note.addUpdate.build(
             {
-                ...bookmark,
-            },
-            {
-                ...bookmark,
-                name,
+                uuid: bookmark.uuid,
+                locatorExtended: bookmark.locatorExtended,
+                drawType: bookmark.drawType,
+                textualValue: name,
                 color,
                 tags: tag ? [tag] : undefined,
                 modified: (new Date()).getTime(),
+                group: "bookmark",
+                created: bookmark.created,
+                index: bookmark.index,
+                creator: bookmark.creator,
             },
+            bookmark,
         ));
         triggerEdition(false);
+        // dispatch(readerLocalActionReader.bookmarkTotalCount.build(noteTotalCount + 1));
     }, [dispatch, bookmark, triggerEdition]);
 
-    const date = new Date(timestamp);
+    const date = new Date(bookmark.modified || bookmark.created);
     const dateStr = `${(`${date.getDate()}`.padStart(2, "0"))}/${(`${date.getMonth() + 1}`.padStart(2, "0"))}/${date.getFullYear()}`;
 
     const { percentRounded } = React.useMemo(() => {
@@ -777,8 +836,7 @@ const BookmarkCard: React.FC<{ timestamp: number, bookmark: IBookmarkState, isEd
         return <></>;
     }
 
-    const creatorName = (getUuidFromUrn(bookmark.creator?.id) !== getUuidFromUrn(creatorMyself.id) ? (bookmark.creator?.name) : creatorMyself.name) || "";
-    // const creatorId = (getUuidFromUrn(annotation.creator?.id) !== getUuidFromUrn(creatorMyself.id) ? getUuidFromUrn(annotation.creator?.id) : getUuidFromUrn(creatorMyself.id)) || "";
+    const creatorName = bookmark.creator?.name || "";
 
     return (<li
         className={stylesAnnotations.annotations_line}
@@ -835,7 +893,7 @@ const BookmarkCard: React.FC<{ timestamp: number, bookmark: IBookmarkState, isEd
                     // }
                     id={uuid}
                 >
-                        <p><BookmarkLocatorInfo fallback={__("reader.bookmarks.index", { index: bookmark.index })} locatorExtended={bookmark.locatorExtended} /></p>
+                        <p style={{ userSelect: "text" }}><BookmarkLocatorInfo fallback={__("reader.bookmarks.index", { index: bookmark.index })} locatorExtended={bookmark.locatorExtended} /></p>
                 </button>
                 </div>
             }
@@ -845,17 +903,19 @@ const BookmarkCard: React.FC<{ timestamp: number, bookmark: IBookmarkState, isEd
                     <FocusLock disabled={false} autoFocus={true}>
                         <BookmarkEdit
                             locatorExtended={bookmark.locatorExtended}
-                            name={bookmark.name}
+                            name={bookmark.textualValue}
                             uuid={bookmark.uuid}
                             color={bookmark.color}
                             tags={bookmark.tags}
                             save={save}
                             cancel={() => triggerEdition(false)}
-                            dockedMode={dockedMode} />
+                            dockedMode={dockedMode}
+                        />
                     </FocusLock>
                     :
                     <>
-                        <HardWrapComment comment={bookmark.name} />
+                        {/* <HardWrapComment comment={bookmark.textualValue} /> */}
+                        <div className={(stylesMarkdown as any)["markdown-body"]} dangerouslySetInnerHTML={{ __html: textParsed }} />
                         {tag ? <div className={stylesTags.tags_wrapper} aria-label={__("catalog.tags")}>
                             <div className={stylesTags.tag}>
                                 <a onClick={() => setTagFilter(tag)}
@@ -877,7 +937,9 @@ const BookmarkCard: React.FC<{ timestamp: number, bookmark: IBookmarkState, isEd
                                         }
                                     }}
                                     className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
-                                    tabIndex={0}>
+                                    tabIndex={0}
+                                    style={{ userSelect: "text" }}
+                                >
                                     {tag}
                                 </a>
                             </div>
@@ -890,11 +952,11 @@ const BookmarkCard: React.FC<{ timestamp: number, bookmark: IBookmarkState, isEd
             <div>
                 <div aria-label={__("reader.annotations.date")}>
                     <SVG ariaHidden svg={CalendarIcon} />
-                    <p>{dateStr}</p>
+                    <p style={{userSelect: "text"}}>{dateStr}</p>
                 </div>
                 <div aria-label={__("publication.progression.title")}>
                     <SVG ariaHidden svg={BookOpenIcon} />
-                    <p>{bprogression}</p>
+                    <p style={{userSelect: "text"}}>{bprogression}</p>
                 </div>
                 {creatorName
                     ?
@@ -919,7 +981,7 @@ const BookmarkCard: React.FC<{ timestamp: number, bookmark: IBookmarkState, isEd
                                 }
                             }}
                             tabIndex={0}>
-                            <p style={{ overflow: "hidden", textOverflow: "ellipsis", padding: "0" }} title={creatorName}>{creatorName}</p>
+                            <p style={{ overflow: "hidden", textOverflow: "ellipsis", padding: "0", userSelect: "text" }} title={creatorName} >{creatorName}</p>
                         </a>
                     </div>
                     : <></>
@@ -962,7 +1024,7 @@ const BookmarkCard: React.FC<{ timestamp: number, bookmark: IBookmarkState, isEd
                 className={stylesPopoverDialog.delete_item_edition}
                 onClick={() => {
                     triggerEdition(false);
-                    dispatch(readerActions.bookmark.pop.build(bookmark));
+                    dispatch(readerActions.note.remove.build(bookmark));
                     // alert("deleted");
                 }}
                 >
@@ -982,7 +1044,7 @@ const BookmarkCard: React.FC<{ timestamp: number, bookmark: IBookmarkState, isEd
                             <Popover.Close
                                 onClick={() => {
                                     triggerEdition(false);
-                                    dispatch(readerActions.bookmark.pop.build(bookmark));
+                                    dispatch(readerActions.note.remove.build(bookmark));
                                 }}
                                 title={__("reader.marks.delete")}
                             >
@@ -1005,7 +1067,7 @@ const BookmarkCard: React.FC<{ timestamp: number, bookmark: IBookmarkState, isEd
 
 const selectionIsSet = (a: Selection): a is Set<string> => typeof a === "object";
 const MAX_MATCHES_PER_PAGE = 5;
-
+const START_PAGE = 1;
 
 const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotationUUID: () => void, doFocus: number,*/ popoverBoundary: HTMLDivElement, advancedAnnotationsOnChange: () => void, quickAnnotationsOnChange: () => void, marginAnnotationsOnChange: () => void, hideAnnotationOnChange: () => void, serialAnnotator: boolean } & Pick<IReaderMenuProps, "goToLocator">> = (props) => {
 
@@ -1022,118 +1084,126 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
     const updateDialogOrDockDataInfo = React.useCallback((data: IReaderDialogOrDockSettingsMenuState) => {
         dispatch(dockedMode ? dockActions.updateRequest.build(data) : dialogActions.updateRequest.build(data));
     }, [dockedMode, dispatch]);
-    const { id: annotationId, edit: annotationEdit } = dialogOrDockDataInfo;
 
+    const [sortingOpen, setSortingOpen] = React.useState(false);
+    const [filterOpen, setFilterOpen] = React.useState(false);
+    const [optionsOpen, setOptionsOpen] = React.useState(false);
+
+    const { id: needToFocusOnID, edit: annotationEdit } = dialogOrDockDataInfo;
+    const [annotationUUID, setAnnotationUUID] = React.useState(needToFocusOnID);
+    React.useEffect(() => {
+        setAnnotationUUID(needToFocusOnID);
+        setTagArrayFilter(new Set([]));
+        setColorArrayFilter(new Set([]));
+        setDrawTypeArrayFilter(new Set([]));
+        setCreatorArrayFilter(new Set([]));
+        setSortingOpen(false);
+        setFilterOpen(false);
+        setOptionsOpen(false);
+
+    }, [needToFocusOnID]);
 
     const [__] = useTranslator();
-    const annotationsListAll = useSelector((state: IReaderRootState) => state.reader.annotation);
+    const notes = useSelector((state: IReaderRootState) => state.reader.note);
+    const annotationsListAll = React.useMemo(() => notes.filter(({ group }) => group === "annotation"), [notes]);
     const publicationView = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
     const winId = useSelector((state: IReaderRootState) => state.win.identifier);
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
-    const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
 
     const [tagArrayFilter, setTagArrayFilter] = React.useState<Selection>(new Set([]));
     const [colorArrayFilter, setColorArrayFilter] = React.useState<Selection>(new Set([]));
     const [drawTypeArrayFilter, setDrawTypeArrayFilter] = React.useState<Selection>(new Set([]));
     const [creatorArrayFilter, setCreatorArrayFilter] = React.useState<Selection>(new Set([]));
 
-    let annotationListFiltered: TAnnotationState = [];
-    let startPage = 1;
-    const [pageNumber, setPageNumber] = React.useState(startPage);
+    const [pageNumber, setPageNumber] = React.useState(START_PAGE);
     const changePageNumber = React.useCallback((cb: (n: number) => number) => {
         setTimeout(() => paginatorAnnotationsRef.current?.focus(), 100);
         updateDialogOrDockDataInfo({id: "", edit: false});
         setPageNumber(cb);
     }, [setPageNumber, updateDialogOrDockDataInfo]);
 
-    annotationListFiltered = (selectionIsSet(tagArrayFilter) && tagArrayFilter.size) ||
-        (selectionIsSet(colorArrayFilter) && colorArrayFilter.size) ||
-        (selectionIsSet(drawTypeArrayFilter) && drawTypeArrayFilter.size) ||
-        (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size)
-        ? annotationsListAll.filter(([, { tags, color, drawType, creator }]) => {
+    const tagsIndexList = useSelector((state: IReaderRootState) => state.noteTagsIndex);
+    const selectTagOption = React.useMemo(() => tagsIndexList.map((v, i) => ({ id: i, name: v.tag })), [tagsIndexList]);
 
-            const colorHex = rgbToHex(color);
+    // if tagArrayFilter value not include in the selectTagOption then take only the intersection between tagArrayFilter and selectTagOption
+    const selectTagOptionFilteredNameArray = React.useMemo(() => selectTagOption.map((v) => v.name), [selectTagOption]);
+    // const tagArrayFilterArray = selectionIsSet(tagArrayFilter) ? Array(...tagArrayFilter) : [];
+    // if (tagArrayFilterArray.filter((tagValue) => !selectTagOptionFilteredNameArray.includes(tagValue)).length) {
+    //     const tagArrayFilterArrayDifference = tagArrayFilterArray.filter((tagValue) => selectTagOptionFilteredNameArray.includes(tagValue));
+    //     setTagArrayFilter(new Set(tagArrayFilterArrayDifference));
+    // }
 
-            return (!selectionIsSet(tagArrayFilter) || !tagArrayFilter.size || tags?.some((tagsValueName) => tagArrayFilter.has(tagsValueName))) &&
-                (!selectionIsSet(colorArrayFilter) || !colorArrayFilter.size || colorArrayFilter.has(colorHex)) &&
-                (!selectionIsSet(drawTypeArrayFilter) || !drawTypeArrayFilter.size || drawTypeArrayFilter.has(drawType)) &&
-                (!selectionIsSet(creatorArrayFilter) || !creatorArrayFilter.size || creatorArrayFilter.has(getUuidFromUrn(creator.id) !== getUuidFromUrn(creatorMyself.id) ? creator.name : creatorMyself.name));
+    const creatorListName = React.useMemo(() => annotationsListAll.map(({ creator }) => creator?.name).filter(v => v), [annotationsListAll]);
+    const selectCreatorOptions = React.useMemo(() => [...(new Set(creatorListName))].map((name, index) => ({ id: `${index}_${name}`, name })), [creatorListName]);
+    const annotationsColors = React.useMemo(() => Object.entries(noteColorCodeToColorTranslatorKeySet).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
+    const selectDrawtypesOptions = React.useMemo(() => [
+        { name: "solid_background", svg: HighLightIcon, textValue: `${__("reader.annotations.type.solid")}` },
+        { name: "underline", svg: UnderLineIcon, textValue: `${__("reader.annotations.type.underline")}` },
+        { name: "strikethrough", svg: TextStrikeThroughtIcon, textValue: `${__("reader.annotations.type.strikethrough")}` },
+        { name: "outline", svg: TextOutlineIcon,  textValue: `${__("reader.annotations.type.outline")}` },
+    ], [__]);
 
-        })
-        : annotationsListAll;
+    const annotationListFiltered = React.useMemo(() => {
 
-    if (annotationId) {
+        return (
+            (selectionIsSet(tagArrayFilter) && tagArrayFilter.size) ||
+            (tagArrayFilter === "all") ||
+            (selectionIsSet(colorArrayFilter) && colorArrayFilter.size) ||
+            (colorArrayFilter === "all") ||
+            (selectionIsSet(drawTypeArrayFilter) && drawTypeArrayFilter.size) ||
+            (drawTypeArrayFilter === "all") ||
+            (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size) ||
+            (creatorArrayFilter === "all")
+        ) 
+            ? annotationsListAll.filter(({ tags, color, drawType: _drawType, creator }) => {
 
-        const annotationFocusItemFindIndex = annotationListFiltered.findIndex(([, annotationItem]) => annotationItem.uuid === annotationId);
-        if (annotationFocusItemFindIndex > -1) {
-            const annotationFocusItemPageNumber = Math.ceil((annotationFocusItemFindIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
-            startPage = annotationFocusItemPageNumber;
-            if (startPage !== pageNumber)
-                setPageNumber(startPage);
+                const colorHex = rgbToHex(color);
+                const drawType = EDrawType[_drawType];
+                const creatorName = creator?.name || "";
 
-        } else if (annotationListFiltered !== annotationsListAll) {
-            annotationListFiltered = annotationsListAll;
-            const annotationFocusItemFindIndex = annotationListFiltered.findIndex(([, annotationItem]) => annotationItem.uuid === annotationId);
-            if (annotationFocusItemFindIndex > -1) {
-                const annotationFocusItemPageNumber = Math.ceil((annotationFocusItemFindIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
-                startPage = annotationFocusItemPageNumber;
-                if (startPage !== pageNumber)
-                    setPageNumber(startPage);
+                return ((tagArrayFilter === "all" && tags?.some((tagsValueName) => selectTagOptionFilteredNameArray.includes(tagsValueName))) || (selectionIsSet(tagArrayFilter) && tagArrayFilter.size && tags?.some((tagsValueName) => tagArrayFilter.has(tagsValueName)))) ||
+                    ((colorArrayFilter === "all" && annotationsColors.some(({hex}) => hex === colorHex)) || (selectionIsSet(colorArrayFilter) && colorArrayFilter.size && colorArrayFilter.has(colorHex))) ||
+                    ((drawTypeArrayFilter === "all" && selectDrawtypesOptions.some(({name}) => drawType === name)) || (selectionIsSet(drawTypeArrayFilter) && drawTypeArrayFilter.size && drawTypeArrayFilter.has(drawType))) ||
+                    ((creatorArrayFilter === "all" && creatorListName.includes(creatorName)) || (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size && creatorArrayFilter.has(creatorName)));
 
-                const [, annotationFound] = annotationListFiltered[annotationFocusItemFindIndex];
-
-                // reset filters
-                if (tagArrayFilter !== "all" && !tagArrayFilter.has((annotationFound.tags || [])[0]) && tagArrayFilter.size !== 0) {
-                    setTagArrayFilter(new Set([]));
-                }
-                if (colorArrayFilter !== "all" && !colorArrayFilter.has(rgbToHex(annotationFound.color)) && colorArrayFilter.size !== 0) {
-                    setColorArrayFilter(new Set([]));
-                }
-                if (drawTypeArrayFilter !== "all" && !drawTypeArrayFilter.has(annotationFound.drawType) && drawTypeArrayFilter.size !== 0) {
-                    setDrawTypeArrayFilter(new Set([]));
-                }
-                if (creatorArrayFilter !== "all" && !creatorArrayFilter.has(annotationFound.creator?.name) && creatorArrayFilter.size !== 0) {
-                    setCreatorArrayFilter(new Set([]));
-                }
-            }
-        }
-
-    }
-
-    // React.useEffect(() => {
-    //     if (annotationUUIDFocused) {
-    //         resetAnnotationUUID();
-    //     }
-    // }, [annotationUUIDFocused, resetAnnotationUUID]);
+            })
+            : annotationsListAll;
+    }, [annotationsListAll, tagArrayFilter, colorArrayFilter, drawTypeArrayFilter, creatorArrayFilter, annotationsColors, creatorListName, selectDrawtypesOptions, selectTagOptionFilteredNameArray]);
 
     const [sortType, setSortType] = React.useState<Selection>(new Set(["lastCreated"]));
+
     if (sortType !== "all" && sortType.has("progression")) {
 
         annotationListFiltered.sort((a, b) => {
-            const [, { locatorExtended: { locator: la } }] = a;
-            const [, { locatorExtended: { locator: lb } }] = b;
+            const { locatorExtended: { locator: la } } = a;
+            const { locatorExtended: { locator: lb } } = b;
             const pcta = computeProgression(r2Publication.Spine, la);
             const pctb = computeProgression(r2Publication.Spine, lb);
             return pcta - pctb;
         });
     } else if (sortType !== "all" && sortType.has("lastCreated")) {
-        annotationListFiltered.sort((a, b) => {
-            const [ta] = a;
-            const [tb] = b;
-            return tb - ta;
+        annotationListFiltered.sort(({ created: ca }, { created: cb }) => {
+            return cb - ca;
         });
     } else if (sortType !== "all" && sortType.has("lastModified")) {
-        annotationListFiltered.sort((a, b) => {
-            const [, { modified: ma }] = a;
-            const [, { modified: mb }] = b;
+        annotationListFiltered.sort(({ modified: ma }, { modified: mb }) => {
             return ma && mb ? mb - ma : ma ? -1 : mb ? 1 : 0;
         });
     }
 
-    const pageTotal = Math.ceil(annotationListFiltered.length / MAX_MATCHES_PER_PAGE) || 1;
+    const annotationFocusFoundIndex = annotationUUID ? annotationListFiltered.findIndex(({ uuid }) => annotationUUID === uuid) : -1;
+    React.useEffect(() => {
+        if (annotationUUID) {
+            setAnnotationUUID("");
+            const annotationFocusItemPageNumber = Math.ceil((annotationFocusFoundIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
+            setPageNumber((pageNumber) => annotationFocusItemPageNumber !== pageNumber ? annotationFocusItemPageNumber : pageNumber);
 
+        }
+    }, [annotationUUID, annotationFocusFoundIndex]);
+
+    const pageTotal = Math.ceil(annotationListFiltered.length / MAX_MATCHES_PER_PAGE) || 1;
     if (pageNumber <= 0) {
-        setPageNumber(startPage);
+        setPageNumber(START_PAGE);
     } else if (pageNumber > pageTotal) {
         setPageNumber(pageTotal);
     }
@@ -1145,71 +1215,11 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
     const isFirstPage = pageNumber === 1;
     const isPaginated = pageTotal > 1;
     const pageOptions = Array.from({ length: pageTotal }, (_k, v) => (v += 1, ({ id: v, name: `${v} / ${pageTotal}` })));
-
-
     const begin = startIndex + 1;
     const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, annotationListFiltered.length);
 
-    // const [annotationItemEditedUUID, setannotationItemEditedUUID] = React.useState(annotationIdEdit ? annotationId : "");
-    // if (annotationIdEdit && annotationId !== annotationItemEditedUUID) {
-    //     setannotationItemEditedUUID(annotationId);
-    // }
-    const paginatorAnnotationsRef = React.useRef<HTMLSelectElement>();
-
-    const triggerEdition = (annotationItem: IAnnotationState) =>
+    const triggerEdition = (annotationItem: INoteState) =>
         (value: boolean) => value ? updateDialogOrDockDataInfo({id: annotationItem.uuid, edit: true}) : updateDialogOrDockDataInfo({id: "", edit: false});
-
-    const tagsIndexList = useSelector((state: IReaderRootState) => state.annotationTagsIndex);
-    const selectTagOption = ObjectKeys(tagsIndexList).map((v, i) => ({ id: i, name: v }));
-
-    // if tagArrayFilter value not include in the selectTagOption then take only the intersection between tagArrayFilter and selectTagOption
-    const selectTagOptionFilteredNameArray = selectTagOption.map((v) => v.name);
-    const tagArrayFilterArray = selectionIsSet(tagArrayFilter) ? Array(...tagArrayFilter) : [];
-    if (tagArrayFilterArray.filter((tagValue) => !selectTagOptionFilteredNameArray.includes(tagValue)).length) {
-        const tagArrayFilterArrayDifference = tagArrayFilterArray.filter((tagValue) => selectTagOptionFilteredNameArray.includes(tagValue));
-        setTagArrayFilter(new Set(tagArrayFilterArrayDifference));
-    }
-
-    const creatorList = annotationsListAll.map(([, { creator }]) => creator).filter(v => v);
-    // const creatorSet = creatorList.reduce<Record<string, string>>((acc, { id, name }) => {
-    //     if (!acc[id]) {
-    //         return { ...acc, [getUuidFromUrn(id)]: (getUuidFromUrn(id) !== getUuidFromUrn(creatorMyself.id) ? name : creatorMyself.name) || getUuidFromUrn(id) };
-    //     }
-    //     return acc;
-    // }, {});
-
-    // const selectCreatorOptions = Object.entries(creatorSet).map(([k, v]) => ({ id: k, name: v }));
-    const creatorSet = creatorList.reduce<Record<string, string>>((acc, { id, name }) => {
-        if (!acc[id]) {
-            const _name = (getUuidFromUrn(id) !== getUuidFromUrn(creatorMyself.id) ? name : creatorMyself.name);
-            if (_name) {
-                return { ...acc, [_name]: _name };
-            } else {
-                return acc;
-            }
-        }
-        return acc;
-    }, {});
-
-    const selectCreatorOptions = Object.entries(creatorSet).map(([k, v]) => ({ id: k, name: v }));
-
-    const annotationsColors = React.useMemo(() => Object.entries(noteColorCodeToColorTranslatorKeySet).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
-
-    // I'm disable this feature for performance reason, push new Colors from incoming publicaiton annotation, not used for the moment. So let's commented it for the moment.
-    // Need to be optimised in the future.
-    // annotationsQueue.forEach(([, annotation]) => {
-    //     const colorHex = rgbToHex(annotation.color);
-    //     if (!noteColorCodeToColorTranslatorKeySet.find((annotationColor) => annotationColor.hex === colorHex)) {
-    //         noteColorCodeToColorTranslatorKeySet.push({ hex: colorHex, name: colorHex });
-    //     }
-    // });
-
-    const selectDrawtypesOptions = [
-        { name: "solid_background", svg: HighLightIcon, textValue: `${__("reader.annotations.type.solid")}` },
-        { name: "underline", svg: UnderLineIcon, textValue: `${__("reader.annotations.type.underline")}` },
-        { name: "strikethrough", svg: TextStrikeThroughtIcon, textValue: `${__("reader.annotations.type.strikethrough")}` },
-        { name: "outline", svg: TextOutlineIcon,  textValue: `${__("reader.annotations.type.outline")}` },
-    ];
 
     const nbOfFilters = ((tagArrayFilter === "all") ?
         selectTagOption.length : tagArrayFilter.size) + ((colorArrayFilter === "all") ?
@@ -1217,13 +1227,15 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                 selectDrawtypesOptions.length : drawTypeArrayFilter.size) + ((creatorArrayFilter === "all") ?
                     selectCreatorOptions.length : creatorArrayFilter.size);
 
+    const paginatorAnnotationsRef = React.useRef<HTMLSelectElement>();
     const annotationTitleRef = React.useRef<HTMLInputElement>();
+    const selectFileTypeRef = React.useRef<HTMLSelectElement & { value: "html" | "annotation" }>();
 
     return (
         <>
             <div className={stylesAnnotations.annotations_filter_line}>
                 <div style={{ display: "flex", gap: "10px" }}>
-                    <Popover.Root>
+                    <Popover.Root open={sortingOpen} onOpenChange={(open) => setSortingOpen(open)}>
                         <Popover.Trigger asChild>
                             <button aria-label={__("reader.annotations.sorting.sortingOptions")} className={stylesAnnotations.annotations_filter_trigger_button}
                                 title={__("reader.annotations.sorting.sortingOptions")}>
@@ -1261,7 +1273,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                             </Popover.Content>
                         </Popover.Portal>
                     </Popover.Root>
-                    <Popover.Root>
+                    <Popover.Root open={filterOpen} onOpenChange={(open) => setFilterOpen(open)}>
                         <Popover.Trigger asChild>
                             <button aria-label={__("reader.annotations.filter.filterOptions")} className={stylesAnnotations.annotations_filter_trigger_button}
                                 title={__("reader.annotations.filter.filterOptions")}>
@@ -1484,31 +1496,26 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                             name="annotationsTitle"
                                             id="annotationsTitle"
                                             ref={annotationTitleRef}
-                                            className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" />
+                                            className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
+                                        />
+                                        <select defaultValue="annotation" style={{ height: "inherit", border: "none", marginLeft: "5px" }} ref={selectFileTypeRef} name="file_type">
+                                            <option value="annotation">.annotation</option>
+                                            <option value="html">.html</option>
+                                        </select>
                                     </div>
 
                                     <Popover.Close aria-label={__("reader.annotations.export")} asChild>
                                         <button onClick={() => {
-                                            const annotations = annotationListFiltered.map(([, anno]) => {
-                                                const { creator } = anno;
-                                                if (getUuidFromUrn(creator?.id) === getUuidFromUrn(creatorMyself.id)) {
-                                                    if (!creatorMyself.name) {
-                                                        return { ...anno, creator: undefined };
-                                                    } else {
-                                                        return { ...anno, creator: { ...creatorMyself, id: "urn:uuid:" + creatorMyself.id } };
-                                                    }
-                                                }
-                                                return anno;
-                                            });
-                                            const title = annotationTitleRef?.current.value || "thorium-reader";
-                                            let label = title;
+                                            const title = annotationTitleRef.current?.value || "thorium-reader";
+                                            let label = title.slice(0, 200);
                                             label = label.trim();
                                             label = label.replace(/[^a-z0-9_-]/gi, "_");
                                             label = label.replace(/^_+|_+$/g, ""); // leading and trailing underscore
                                             label = label.replace(/^\./, ""); // remove dot start
                                             label = label.toLowerCase();
+                                            const fileType = selectFileTypeRef.current?.value || "annotation";
 
-                                            dispatch(readerLocalActionExportAnnotationSet.build(annotations, publicationView, label));
+                                            dispatch(readerLocalActionExportAnnotationSet.build(annotationListFiltered, publicationView, label, fileType));
                                         }} className={stylesButtons.button_primary_blue}>
                                             <SVG svg={SaveIcon} />
                                             {__("reader.annotations.export")}
@@ -1536,9 +1543,9 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                     <AlertDialog.Action asChild>
                                         <button className={stylesButtons.button_primary_blue} onClick={() => {
                                             updateDialogOrDockDataInfo({id: "", edit: false});
-                                            for (const [, annotation] of annotationListFiltered) {
+                                            for (const annotation of annotationListFiltered) {
 
-                                                dispatch(readerActions.annotation.pop.build(annotation));
+                                                dispatch(readerActions.note.remove.build(annotation));
                                             }
 
                                             // reset filters
@@ -1555,7 +1562,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                         </AlertDialog.Portal>
                     </AlertDialog.Root>
                     <span style={{height: "30px", width: "2px", borderRight: "2px solid var(--color-extralight-grey)"}}></span>
-                    <Popover.Root>
+                    <Popover.Root open={optionsOpen} onOpenChange={(open) => setOptionsOpen(open)}>
                         <Popover.Trigger className={stylesAnnotations.annotations_filter_trigger_button} title={__("reader.annotations.annotationsOptions")} aria-label={__("reader.annotations.annotationsOptions")}>
                             <SVG ariaHidden svg={OptionsIcon} />
                         </Popover.Trigger>
@@ -1698,13 +1705,12 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
             </div>
             <div className={stylesAnnotations.separator} />
             <ol>
-                {annotationsPagedArray.map(([timestamp, annotationItem], _i) =>
+                {annotationsPagedArray.map((annotationItem, _i) =>
                     <AnnotationCard
                         key={`annotation-card_${annotationItem.uuid}`}
-                        timestamp={timestamp}
                         annotation={annotationItem}
                         goToLocator={goToLocator}
-                        isEdited={annotationItem.uuid === annotationId && annotationEdit}
+                        isEdited={annotationItem.uuid === needToFocusOnID && annotationEdit}
                         triggerEdition={triggerEdition(annotationItem)}
                         setTagFilter={(v) => setTagArrayFilter(new Set([v]))}
                         setCreatorFilter={(v) => setCreatorArrayFilter(new Set([v]))}
@@ -1817,108 +1823,110 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
     const updateDialogOrDockDataInfo = React.useCallback((data: IReaderDialogOrDockSettingsMenuState) => {
         dispatch(dockedMode ? dockActions.updateRequest.build(data) : dialogActions.updateRequest.build(data));
     }, [dockedMode, dispatch]);
-    const { id: bookmarkId, edit: bookmarkEdit } = dialogOrDockDataInfo;
+
+    const [sortingOpen, setSortingOpen] = React.useState(false);
+    const [filterOpen, setFilterOpen] = React.useState(false);
+    const [optionsOpen, setOptionsOpen] = React.useState(false);
+
+    const { id: needToFocusOnID, edit: bookmarkEdit } = dialogOrDockDataInfo;
+    const [bookmarkUUID, setBookmarkUUID] = React.useState(needToFocusOnID);
+    React.useEffect(() => {
+        setBookmarkUUID(needToFocusOnID);
+        setTagArrayFilter(new Set([]));
+        setColorArrayFilter(new Set([]));
+        setCreatorArrayFilter(new Set([]));
+        setSortingOpen(false);
+        setFilterOpen(false);
+        setOptionsOpen(false);
+
+    }, [needToFocusOnID]);
 
     const paginatorBookmarksRef = React.useRef<HTMLSelectElement>();
 
     const [__] = useTranslator();
-    const bookmarkListAll = useSelector((state: IReaderRootState) => state.reader.bookmark);
+    const notes = useSelector((state: IReaderRootState) => state.reader.note);
+    const bookmarkListAll = React.useMemo(() => notes.filter(({ group }) => group === "bookmark"), [notes]);
     const publicationView = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
     const winId = useSelector((state: IReaderRootState) => state.win.identifier);
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
-    const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
 
     const [colorArrayFilter, setColorArrayFilter] = React.useState<Selection>(new Set([]));
     const [creatorArrayFilter, setCreatorArrayFilter] = React.useState<Selection>(new Set([]));
     const [tagArrayFilter, setTagArrayFilter] = React.useState<Selection>(new Set([]));
 
-    let bookmarkListFiltered: TBookmarkState = [];
-    let startPage = 1;
-    const [pageNumber, setPageNumber] = React.useState(startPage);
+    const [pageNumber, setPageNumber] = React.useState(START_PAGE);
     const changePageNumber = React.useCallback((cb: (n: number) => number) => {
         setTimeout(() => paginatorBookmarksRef.current?.focus(), 100);
         updateDialogOrDockDataInfo({id: "", edit: false});
         setPageNumber(cb);
     }, [setPageNumber, updateDialogOrDockDataInfo]);
 
-    bookmarkListFiltered =
-        ((selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size) ||
-        (selectionIsSet(colorArrayFilter) && colorArrayFilter.size)) ||
-        (selectionIsSet(tagArrayFilter) && tagArrayFilter.size)
-        ? bookmarkListAll.filter(([, { creator, color, tags }]) => {
+    const creatorListName = bookmarkListAll.map(({ creator }) => creator?.name).filter(v => v);
+    const selectCreatorOptions = [...(new Set(creatorListName))].map((name, index) => ({ id: `${index}_${name}`, name }));
 
-            const colorHex = rgbToHex(color);
+    const bookmarksColors = React.useMemo(() => Object.entries(noteColorCodeToColorTranslatorKeySet).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
 
-            return (!selectionIsSet(creatorArrayFilter) || !creatorArrayFilter.size || creatorArrayFilter.has(getUuidFromUrn(creator.id) !== getUuidFromUrn(creatorMyself.id) ? creator.name : creatorMyself.name)) &&
-                (!selectionIsSet(colorArrayFilter) || !colorArrayFilter.size || colorArrayFilter.has(colorHex)) &&
-                (!selectionIsSet(tagArrayFilter) || !tagArrayFilter.size || tags?.some((tagsValueName) => tagArrayFilter.has(tagsValueName)));
+    const tagsIndexList = useSelector((state: IReaderRootState) => state.noteTagsIndex);
+    const selectTagOption = React.useMemo(() => tagsIndexList.map((v, i) => ({ id: i, name: v.tag })), [tagsIndexList]);
+    const selectTagOptionFilteredNameArray = React.useMemo(() => selectTagOption.map((v) => v.name), [selectTagOption]);
 
-        })
-        : bookmarkListAll;
+    const bookmarkListFiltered = React.useMemo(() => {
 
-    if (bookmarkId) {
+        return (
+            (selectionIsSet(tagArrayFilter) && tagArrayFilter.size) ||
+            (tagArrayFilter === "all") ||
+            (selectionIsSet(colorArrayFilter) && colorArrayFilter.size) ||
+            (colorArrayFilter === "all") ||
+            (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size) ||
+            (creatorArrayFilter === "all")
+        ) 
+            ? bookmarkListAll.filter(({ tags, color, drawType: _drawType, creator }) => {
 
-        const annotationFocusItemFindIndex = bookmarkListFiltered.findIndex(([, annotationItem]) => annotationItem.uuid === bookmarkId);
-        if (annotationFocusItemFindIndex > -1) {
-            const annotationFocusItemPageNumber = Math.ceil((annotationFocusItemFindIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
-            startPage = annotationFocusItemPageNumber;
-            if (startPage !== pageNumber)
-                setPageNumber(startPage);
+                const colorHex = rgbToHex(color);
+                const creatorName = creator?.name || "";
 
-        } else if (bookmarkListFiltered !== bookmarkListAll) {
-            bookmarkListFiltered = bookmarkListAll;
-            const annotationFocusItemFindIndex = bookmarkListFiltered.findIndex(([, annotationItem]) => annotationItem.uuid === bookmarkId);
-            if (annotationFocusItemFindIndex > -1) {
-                const annotationFocusItemPageNumber = Math.ceil((annotationFocusItemFindIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
-                startPage = annotationFocusItemPageNumber;
-                if (startPage !== pageNumber)
-                    setPageNumber(startPage);
+                return ((tagArrayFilter === "all" && tags?.some((tagsValueName) => selectTagOptionFilteredNameArray.includes(tagsValueName))) || (selectionIsSet(tagArrayFilter) && tagArrayFilter.size && tags?.some((tagsValueName) => tagArrayFilter.has(tagsValueName)))) ||
+                    ((colorArrayFilter === "all" && bookmarksColors.some(({hex}) => hex === colorHex)) || (selectionIsSet(colorArrayFilter) && colorArrayFilter.size && colorArrayFilter.has(colorHex))) ||
+                    ((creatorArrayFilter === "all" && creatorListName.includes(creatorName)) || (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size && creatorArrayFilter.has(creatorName)));
 
-                const [, annotationFound] = bookmarkListFiltered[annotationFocusItemFindIndex];
-
-                // reset filters
-                if (creatorArrayFilter !== "all" && !creatorArrayFilter.has(annotationFound.creator?.name) && creatorArrayFilter.size !== 0) {
-                    setCreatorArrayFilter(new Set([]));
-                }
-                if (colorArrayFilter !== "all" && !colorArrayFilter.has(rgbToHex(annotationFound.color)) && colorArrayFilter.size !== 0) {
-                    setColorArrayFilter(new Set([]));
-                }
-                if (tagArrayFilter !== "all" && !tagArrayFilter.has((annotationFound.tags || [])[0]) && tagArrayFilter.size !== 0) {
-                    setTagArrayFilter(new Set([]));
-                }
-            }
-        }
-
-    }
+            })
+            : bookmarkListAll;
+    }, [bookmarkListAll, tagArrayFilter, colorArrayFilter, creatorArrayFilter, bookmarksColors, creatorListName, selectTagOptionFilteredNameArray]);
 
     const [sortType, setSortType] = React.useState<Selection>(new Set(["lastCreated"]));
     if (sortType !== "all" && sortType.has("progression")) {
 
         bookmarkListFiltered.sort((a, b) => {
-            const [, { locatorExtended: la }] = a;
-            const [, { locatorExtended: lb }] = b;
+            const { locatorExtended: la } = a;
+            const { locatorExtended: lb } = b;
             const pcta = computeProgression(r2Publication.Spine, la.locator);
             const pctb = computeProgression(r2Publication.Spine, lb.locator);
             return pcta - pctb;
         });
     } else if (sortType !== "all" && sortType.has("lastCreated")) {
-        bookmarkListFiltered.sort((a, b) => {
-            const [ta] = a;
-            const [tb] = b;
-            return tb - ta;
+        bookmarkListFiltered.sort(({created: ca}, {created: cb}) => {
+            return cb - ca;
         });
     } else if (sortType !== "all" && sortType.has("lastModified")) {
-        bookmarkListFiltered.sort((a, b) => {
-            const [, { modified: ma }] = a;
-            const [, { modified: mb }] = b;
+        bookmarkListFiltered.sort(({ modified: ma }, { modified: mb }) => {
             return ma && mb ? mb - ma : ma ? -1 : mb ? 1 : 0;
         });
     }
 
+    const annotationFocusFoundIndex = bookmarkUUID ? bookmarkListFiltered.findIndex(({uuid}) => bookmarkUUID === uuid) : -1;
+    React.useEffect(() => {
+        if (bookmarkUUID) {
+            setBookmarkUUID("");
+            const annotationFocusItemPageNumber = Math.ceil((annotationFocusFoundIndex + 1 /* 0 based */) / MAX_MATCHES_PER_PAGE);
+            setPageNumber((pageNumber) => annotationFocusItemPageNumber !== pageNumber ? annotationFocusItemPageNumber : pageNumber);
+
+        }
+    }, [bookmarkUUID, annotationFocusFoundIndex]);
+
     const pageTotal = Math.ceil(bookmarkListFiltered.length / MAX_MATCHES_PER_PAGE) || 1;
 
     if (pageNumber <= 0) {
-        setPageNumber(startPage);
+        setPageNumber(START_PAGE);
     } else if (pageNumber > pageTotal) {
         setPageNumber(pageTotal);
     }
@@ -1935,49 +1943,30 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
     const begin = startIndex + 1;
     const end = Math.min(startIndex + MAX_MATCHES_PER_PAGE, bookmarkListFiltered.length);
 
-    const triggerEdition = (bookmarkItem: IBookmarkState) =>
+    const triggerEdition = (bookmarkItem: INoteState) =>
         (value: boolean) => value ? updateDialogOrDockDataInfo({id: bookmarkItem.uuid, edit: true}) : updateDialogOrDockDataInfo({id: "", edit: false});
 
-    const tagsIndexList = useSelector((state: IReaderRootState) => state.annotationTagsIndex);
-    const selectTagOption = ObjectKeys(tagsIndexList).map((v, i) => ({ id: i, name: v }));
 
     // if tagArrayFilter value not include in the selectTagOption then take only the intersection between tagArrayFilter and selectTagOption
-    const selectTagOptionFilteredNameArray = selectTagOption.map((v) => v.name);
-    const tagArrayFilterArray = selectionIsSet(tagArrayFilter) ? Array(...tagArrayFilter) : [];
-    if (tagArrayFilterArray.filter((tagValue) => !selectTagOptionFilteredNameArray.includes(tagValue)).length) {
-        const tagArrayFilterArrayDifference = tagArrayFilterArray.filter((tagValue) => selectTagOptionFilteredNameArray.includes(tagValue));
-        setTagArrayFilter(new Set(tagArrayFilterArrayDifference));
-    }
-
-    const creatorList = bookmarkListAll.map(([, { creator }]) => creator).filter(v => v);
-    const creatorSet = creatorList.reduce<Record<string, string>>((acc, { id, name }) => {
-        if (!acc[id]) {
-            const _name = (getUuidFromUrn(id) !== getUuidFromUrn(creatorMyself.id) ? name : creatorMyself.name);
-            if (_name) {
-                return { ...acc, [_name]: _name };
-            } else {
-                return acc;
-            }
-        }
-        return acc;
-    }, {});
-
-    const bookmarksColors = React.useMemo(() => Object.entries(noteColorCodeToColorTranslatorKeySet).map(([k, v]) => ({ hex: k, name: __(v) })), [__]);
-
-    const selectCreatorOptions = Object.entries(creatorSet).map(([k, v]) => ({ id: k, name: v }));
-
+    // const selectTagOptionFilteredNameArray = selectTagOption.map((v) => v.name);
+    // const tagArrayFilterArray = selectionIsSet(tagArrayFilter) ? Array(...tagArrayFilter) : [];
+    // if (tagArrayFilterArray.filter((tagValue) => !selectTagOptionFilteredNameArray.includes(tagValue)).length) {
+    //     const tagArrayFilterArrayDifference = tagArrayFilterArray.filter((tagValue) => selectTagOptionFilteredNameArray.includes(tagValue));
+    //     setTagArrayFilter(new Set(tagArrayFilterArrayDifference));
+    // }
     const nbOfFilters = ((tagArrayFilter === "all") ?
         selectTagOption.length : tagArrayFilter.size) + (creatorArrayFilter === "all" ?
             selectCreatorOptions.length : creatorArrayFilter.size) + ((colorArrayFilter === "all") ?
                 bookmarksColors.length : colorArrayFilter.size);
 
     const bookmarkTitleRef = React.useRef<HTMLInputElement>();
+    const selectFileTypeRef = React.useRef<HTMLSelectElement & { value: "html" | "annotation" }>();
 
     return (
         <>
             <div className={stylesBookmarks.bookmarks_filter_line}>
                 <div style={{ display: "flex", gap: "10px" }}>
-                    <Popover.Root>
+                    <Popover.Root open={sortingOpen} onOpenChange={(open) => setSortingOpen(open)}>
                         <Popover.Trigger asChild>
                             <button aria-label={__("reader.annotations.sorting.sortingOptions")} className={stylesBookmarks.bookmarks_filter_trigger_button}
                                 title={__("reader.annotations.sorting.sortingOptions")}>
@@ -2023,7 +2012,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                             </Popover.Content>
                         </Popover.Portal>
                     </Popover.Root>
-                    <Popover.Root>
+                    <Popover.Root open={filterOpen} onOpenChange={(open) => setFilterOpen(open)}>
                         <Popover.Trigger asChild>
                             <button aria-label={__("reader.annotations.filter.filterOptions")} className={stylesBookmarks.bookmarks_filter_trigger_button}
                                 title={__("reader.annotations.filter.filterOptions")}>
@@ -2186,7 +2175,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                 </div>
                 <div style={{ display: "flex", gap: "10px" }}>
                     <ImportAnnotationsDialog winId={winId} publicationView={publicationView}>
-                        <button style={{ display: "none" }} className={stylesBookmarks.bookmarks_filter_trigger_button}
+                        <button className={stylesBookmarks.bookmarks_filter_trigger_button}
                             title={__("catalog.importAnnotation")}
                             aria-label={__("catalog.importAnnotation")}>
                             <SVG svg={ImportIcon} />
@@ -2195,7 +2184,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
 
                     <Popover.Root>
                         <Popover.Trigger asChild>
-                            <button style={{ display: "none" }} className={stylesBookmarks.bookmarks_filter_trigger_button} disabled={!bookmarkListFiltered.length}
+                            <button className={stylesBookmarks.bookmarks_filter_trigger_button} disabled={!bookmarkListFiltered.length}
                                 title={__("catalog.exportAnnotation")}
                                 aria-label={__("catalog.exportAnnotation")}>
                                 <SVG svg={SaveIcon} />
@@ -2224,35 +2213,26 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                             name="annotationsTitle"
                                             id="annotationsTitle"
                                             ref={bookmarkTitleRef}
-                                            className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" />
+                                            className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
+                                        />
+                                        <select defaultValue="annotation" style={{ height: "inherit", border: "none", marginLeft: "5px" }} ref={selectFileTypeRef} name="file_type">
+                                            <option value="annotation">.annotation</option>
+                                            <option value="html">.html</option>
+                                        </select>
                                     </div>
 
                                     <Popover.Close aria-label={__("reader.annotations.export")} asChild>
                                         <button onClick={() => {
+                                            const title = bookmarkTitleRef?.current.value || "thorium-reader";
+                                            let label = title.slice(0, 200);
+                                            label = label.trim();
+                                            label = label.replace(/[^a-z0-9_-]/gi, "_");
+                                            label = label.replace(/^_+|_+$/g, ""); // leading and trailing underscore
+                                            label = label.replace(/^\./, ""); // remove dot start
+                                            label = label.toLowerCase();
+                                            const fileType = selectFileTypeRef.current?.value || "annotation";
 
-                                            //  TODO NEED TO IMPLEMENT BOOKMARK EXPORT
-                                            // const bookmarks = bookmarkListFiltered.map(([, anno]) => {
-                                            //     const { creator } = anno;
-                                            //     if (getUuidFromUrn(creator?.id) === getUuidFromUrn(creatorMyself.id)) {
-                                            //         if (!creatorMyself.name) {
-                                            //             return { ...anno, creator: undefined };
-                                            //         } else {
-                                            //             return { ...anno, creator: { ...creatorMyself, id: "urn:uuid:" + creatorMyself.id } };
-                                            //         }
-                                            //     }
-                                            //     return anno;
-                                            // });
-                                            // const title = bookmarkTitleRef?.current.value || "thorium-reader";
-
-                                            // let label = title;
-                                            // label = label.trim();
-                                            // label = label.replace(/[^a-z0-9_-]/gi, "_");
-                                            // label = label.replace(/^_+|_+$/g, ""); // leading and trailing underscore
-                                            // label = label.replace(/^\./, ""); // remove dot start
-                                            // label = label.toLowerCase();
-
-                                            // TODO
-                                            // dispatch(readerLocalActionExportAnnotationSet.build(bookmarks, publicationView, label));
+                                            dispatch(readerLocalActionExportAnnotationSet.build(bookmarkListFiltered, publicationView, label, fileType));
                                         }} className={stylesButtons.button_primary_blue}>
                                             <SVG svg={SaveIcon} />
                                             {__("reader.annotations.export")}
@@ -2280,9 +2260,9 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                     <AlertDialog.Action asChild>
                                         <button className={stylesButtons.button_primary_blue} onClick={() => {
                                             updateDialogOrDockDataInfo({id: "", edit: false});
-                                            for (const [, bookmark] of bookmarkListFiltered) {
+                                            for (const bookmark of bookmarkListFiltered) {
 
-                                                dispatch(readerActions.bookmark.pop.build(bookmark));
+                                                dispatch(readerActions.note.remove.build(bookmark));
                                             }
 
                                             // reset filters
@@ -2298,7 +2278,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                         </AlertDialog.Portal>
                     </AlertDialog.Root>
                     <span style={{ height: "30px", width: "2px", borderRight: "2px solid var(--color-extralight-grey)" }}></span>
-                    <Popover.Root>
+                    <Popover.Root open={optionsOpen} onOpenChange={(open) => setOptionsOpen(open)}>
                         <Popover.Trigger className={stylesAnnotations.annotations_filter_trigger_button} title={__("reader.annotations.annotationsOptions")} aria-label={__("reader.annotations.annotationsOptions")}>
                             <SVG ariaHidden svg={OptionsIcon} />
                         </Popover.Trigger>
@@ -2352,13 +2332,12 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
             </div>
             <div className={stylesAnnotations.separator} />
             <ol style={{ paddingLeft: "0px" }}>
-                {bookmarksPagedArray.map(([timestamp, bookmarkItem], _i) =>
+                {bookmarksPagedArray.map((bookmarkItem, _i) =>
                     <BookmarkCard
                         key={`bookmark-card_${bookmarkItem.uuid}`}
-                        timestamp={timestamp}
                         bookmark={bookmarkItem}
                         goToLocator={goToLocator}
-                        isEdited={bookmarkItem.uuid === bookmarkId && bookmarkEdit}
+                        isEdited={bookmarkItem.uuid === needToFocusOnID && bookmarkEdit}
                         triggerEdition={triggerEdition(bookmarkItem)}
                         setCreatorFilter={(v) => setCreatorArrayFilter(new Set([v]))}
                         setTagFilter={((v) => setTagArrayFilter(new Set([v])))}

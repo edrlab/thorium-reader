@@ -335,14 +335,6 @@
                 "title": "Τίτλος"
             },
             "annotationsOptions": "Επιλογές Σημειώσεων",
-            "colors": {
-                "cyan": "Κυανό",
-                "green": "Πράσινο",
-                "orange": "Πορτοκαλί",
-                "purple": "Μωβ",
-                "red": "Κόκκινο",
-                "yellow": "Κίτρινο"
-            },
             "date": "Ημερομηνία τροποποίησης",
             "export": "Αποθήκευση σημειώσεων ως...",
             "filter": {
@@ -436,6 +428,16 @@
             "page": "Σελίδα",
             "pdfscalemode": "Προσαρμογή στη σελίδα ή στο πλάτος",
             "settingsTitle": "ρυθμίσεις"
+        },
+        "notes": {
+            "colors": {
+                "cyan": "Κυανό",
+                "green": "Πράσινο",
+                "orange": "Πορτοκαλί",
+                "purple": "Μωβ",
+                "red": "Κόκκινο",
+                "yellow": "Κίτρινο"
+            }
         },
         "picker": {
             "search": {
@@ -572,6 +574,13 @@
         "library": {
             "enableAPIAPP": "Ενεργοποίηση του 'PNB' συστήματος βιβλιοθήκης",
             "title": "Πρόσβαση σε γαλλικούς λογαριασμούς βιβλιοθήκης"
+        },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
         },
         "session": {
             "title": "Αποθήκευση συνεδρίας"

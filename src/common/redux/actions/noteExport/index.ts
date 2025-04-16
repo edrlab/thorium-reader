@@ -5,16 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action } from "readium-desktop/common/models/redux";
+// import * as enable from "./enable";
+import * as overrideHTMLTemplate from "./overrideHtmlTemplate";
 
-export const ID = "NET_ONLINE";
-
-export function build():
-    Action<typeof ID> {
-
-    return {
-        type: ID,
-    };
-}
-build.toString = () => ID; // Redux StringableActionCreator
-export type TAction = ReturnType<typeof build>;
+export {
+    overrideHTMLTemplate,
+    // enable,
+};

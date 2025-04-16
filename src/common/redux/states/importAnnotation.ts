@@ -6,15 +6,15 @@
 // ==LICENSE-END==
 
 import { IReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
-import { IAnnotationPreParsingState } from "readium-desktop/common/redux/states/renderer/annotation";
+import { INotePreParsingState } from "./renderer/note";
 
 interface IReadiumAnnotationModelSetView extends Partial<Pick<IReadiumAnnotationSet, "about" | "title" | "generated" | "generator">> {
 
 }
 export interface IImportAnnotationState extends IReadiumAnnotationModelSetView {
     open: boolean;
-    annotationsConflictListOlder: IAnnotationPreParsingState[]
-    annotationsConflictListNewer: IAnnotationPreParsingState[]
-    annotationsList: IAnnotationPreParsingState[]
+    annotationsConflictListOlder: INotePreParsingState[]
+    annotationsConflictListNewer: INotePreParsingState[]
+    annotationsList: INotePreParsingState[]
     winId?: string | undefined;
 }

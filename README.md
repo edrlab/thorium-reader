@@ -38,7 +38,7 @@ It is currently localized in following 28 languages:
 * (cs) čeština (Czech)
 * (ar) عَرَبِيّ (Arabic)
 
-Since february 2025 we use Weblate project Thorium as the main tool for localisation. The following bar chart shows the translation status that is available from weblate. 
+Since february 2025 we use Weblate project Thorium as the main tool for localisation. The following bar chart shows the translation status that is available from weblate.
 
 <a href="https://hosted.weblate.org/engage/thorium-reader/">
 <img src="https://hosted.weblate.org/widget/thorium-reader/thorium-reader-translation/horizontal-auto.svg" alt="Translation status" />
@@ -52,8 +52,11 @@ More information on translation process can be found in the dedicated [translati
 
 ## Prerequisites
 
-1) NodeJS 18 (check with `node --version`)
-2) NPM 9 (check with `npm --version`)
+1) NodeJS 22 (check with `node --version`)
+2) NPM 11 (check with `npm --version`)
+
+
+**TIP**: the default version of NPM that ships with the NodeJS installer may be slightly old, so make sure to update with `npm i -g npm@latest`, or `nvm install-latest-npm` if you are an NVM user.
 
 ## Technologies
 

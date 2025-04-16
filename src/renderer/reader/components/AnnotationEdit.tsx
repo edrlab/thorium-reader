@@ -9,7 +9,6 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 
 import * as React from "react";
-import { annotationDrawType, TDrawType } from "readium-desktop/common/redux/states/renderer/annotation";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
@@ -29,11 +28,12 @@ import { readerLocalActionSetConfig } from "../redux/actions";
 import classNames from "classnames";
 import { TextArea } from "react-aria-components";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
-import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
-import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/note";
+import { noteColorCodeToColorTranslatorKeySet, noteDrawType, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+
+import {subscribe} from "@github/paste-markdown";
 
 // import { readiumCSSDefaults } from "@r2-navigator-js/electron/common/readium-css-settings";
 
@@ -66,8 +66,8 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
     const previousDrawTypeSelected = React.useRef<TDrawType>(drawTypeSelected);
 
     const [tag, setTag] = React.useState<string>((tags || [])[0] || "");
-    const tagsIndexList = useSelector((state: IReaderRootState) => state.annotationTagsIndex);
-    const selectTagOption = ObjectKeys(tagsIndexList).map((v, i) => ({id: i, name: v}));
+    const tagsIndexList = useSelector((state: IReaderRootState) => state.noteTagsIndex);
+    const selectTagOption = tagsIndexList.map((v, i) => ({ id: i, name: v.tag }));
 
     const annotationMaxLength = 1500;
     const [annotationLength, setAnnotationLength] = React.useState(comment.length);
@@ -78,6 +78,15 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         TextStrikeThroughtIcon,
         TextOutlineIcon,
     ];
+
+    React.useEffect(() => {
+        const textAreaElement = document.getElementById(`${uuid}_edit`);
+        const { unsubscribe } = subscribe(textAreaElement);
+
+        return () => {
+            unsubscribe();
+        };
+    }, [uuid]);
 
     const saveConfig = React.useCallback(() => {
 
@@ -104,6 +113,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
             textAreaRef.current.style.height = "auto";
             textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight + 3}px`;
             textAreaRef.current.focus();
+            textAreaRef.current.setSelectionRange(textAreaRef.current.value.length, textAreaRef.current.value.length);
         }
     }, []); // empty => runs once on mount (undefined => runs on every render)
 
@@ -152,7 +162,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
             <div className={stylesAnnotations.annotation_actions_container}>
                 <h4>{__("reader.annotations.highlight")}</h4>
                 <div role="radiogroup" className={stylesAnnotations.stylePicker}>
-                    {annotationDrawType.map((type, i) => (
+                    {noteDrawType.map((type, i) => (
                         <div key={type}>
                             <input type="radio" id={`${uuid}_drawtype-${type}`} name="drawtype" value={type}
                                 onChange={() => setDrawType(type)}
@@ -222,7 +232,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                         e.preventDefault();
 
                         const textareaValue = textAreaRef?.current?.value || "";
-                        const textareaNormalize = textareaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
+                        const textareaNormalize = textareaValue.trim(); // .replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
                         save(hexToRgb(colorSelected), textareaNormalize, drawTypeSelected, tag ? [tag] : []);
                         saveConfig();
                     }}
@@ -239,7 +249,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                         e.preventDefault();
 
                         const textareaValue = textAreaRef?.current?.value || "";
-                        const textareaNormalize = textareaValue.trim().replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
+                        const textareaNormalize = textareaValue.trim(); // .replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
                         save(hexToRgb(colorSelected), textareaNormalize, drawTypeSelected, tag ? [tag] : []);
                         saveConfig();
                     }}
