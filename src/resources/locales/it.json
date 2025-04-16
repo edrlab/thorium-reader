@@ -123,9 +123,9 @@
         "annotations": {
             "descAuthor": "di {{- author}}",
             "descCreator": "creata da",
-            "descList": "{{- nb}} note di {{- creator}} saranno associate a {{- title}} {{- author}}",
-            "descNewer": "{{- nb}} nuove versioni di queste note sono già associate alla pubblicazione.",
-            "descOlder": "{{- nb}} versioni precedenti di queste note sono già associate alla pubblicazione.",
+            "descList": "{{- count}} note di {{- creator}} saranno associate a {{- title}} {{- author}}",
+            "descNewer": "{{- count}} nuove versioni di queste note sono già associate alla pubblicazione.",
+            "descOlder": "{{- count}} versioni precedenti di queste note sono già associate alla pubblicazione.",
             "descTitle": "Titolo del set:",
             "importAll": "Importa tutte le note",
             "importWithoutConflict": "Importa le note senza conflitti",
@@ -134,7 +134,7 @@
         },
         "cancel": "Annulla",
         "deleteAnnotations": "Eliminare la nota?",
-        "deleteAnnotationsText": "Si desidera eliminare {{- annotationListLength}} note?",
+        "deleteAnnotationsText": "Si desidera eliminare {{- count}} note?",
         "deleteBookmarks": "",
         "deleteBookmarksText": "",
         "deleteFeed": "Vuoi davvero eliminare questo catalogo ?",
@@ -440,7 +440,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} risultato/i",
+                "founds": "{{- count}} risultato/i",
                 "input": "testo ta cercare",
                 "next": "Prossimo",
                 "notFound": "Nessun risultato",
