@@ -30,9 +30,6 @@ import { put as putTyped, take as takeTyped, select as selectTyped, call as call
 import { readerLocalActionReader } from "../actions";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation, readiumAnnotationSelectorFromNote } from "./readiumAnnotation/selector";
-import { getCacheDocumentFromLocator } from "./readiumAnnotation/getCacheDocument";
-import { getResourceCache } from "./resourceCache";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 
 // Logger
