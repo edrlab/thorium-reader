@@ -16,16 +16,19 @@ import { readerLocalActionSetConfig } from "./redux/actions";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import { Store } from "redux";
 import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
+import { SagaMiddleware } from "redux-saga";
 
 // Create container used for dependency injection
 // const container = new Container();
 
 let __store: Store<IReaderRootState> | undefined;
+let __sagaMiddleware: SagaMiddleware | undefined;
 
 export const createStoreFromDi = (preloadedState: Partial<IReaderRootState>): Store<IReaderRootState> => {
 
-    const store = initStore(preloadedState);
+    const [store, sagaMiddleware] = initStore(preloadedState);
     __store = store;
+    __sagaMiddleware = sagaMiddleware;
 
     // see issue https://github.com/edrlab/thorium-reader/issues/2532
     const defaultConfig = readerConfigInitialState;
@@ -135,4 +138,11 @@ export const getStore = () => {
         return __store;
     }
     throw new Error("STORE is UNDEFINED !!!");
+};
+
+export const getSaga = () => {
+    if (__sagaMiddleware) {
+        return __sagaMiddleware;
+    }
+    throw new Error("SAGA MIDDLEWARE is UNDEFINED !!!");
 };

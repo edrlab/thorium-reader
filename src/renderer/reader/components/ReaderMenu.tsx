@@ -83,7 +83,7 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { Locator } from "@r2-shared-js/models/locator";
 import { dialogActions, dockActions, readerActions } from "readium-desktop/common/redux/actions";
-import { readerLocalActionExportAnnotationSet, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
+import { readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
 import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 import { IReaderDialogOrDockSettingsMenuState, ReaderConfig } from "readium-desktop/common/models/reader";
 import { rgbToHex } from "readium-desktop/common/rgb";
@@ -100,6 +100,9 @@ import DOMPurify from "dompurify";
 import { marked } from "marked";
 
 import { shell } from "electron";
+import { exportAnnotationSet } from "readium-desktop/renderer/common/redux/sagas/readiumAnnotation/export";
+import { getSaga } from "../createStore";
+import { clone } from "ramda";
 (window as any).__shell_openExternal = (url: string) => url.startsWith("http") ? shell.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
 
 console.log(window);
@@ -492,7 +495,7 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
         dispatch(readerActions.note.addUpdate.build(
             {
                 uuid: annotation.uuid,
-                locatorExtended: annotation.locatorExtended,
+                locatorExtended: clone(annotation.locatorExtended),
                 color,
                 textualValue: comment,
                 drawType: EDrawType[drawType],
@@ -501,7 +504,7 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
                 created: annotation.created,
                 index: annotation.index,
                 group: "annotation",
-                creator: annotation.creator,
+                creator: clone(annotation.creator),
             },
             annotation,
         ));
@@ -801,7 +804,7 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
         dispatch(readerActions.note.addUpdate.build(
             {
                 uuid: bookmark.uuid,
-                locatorExtended: bookmark.locatorExtended,
+                locatorExtended: clone(bookmark.locatorExtended),
                 drawType: bookmark.drawType,
                 textualValue: name,
                 color,
@@ -810,7 +813,7 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
                 group: "bookmark",
                 created: bookmark.created,
                 index: bookmark.index,
-                creator: bookmark.creator,
+                creator: clone(bookmark.creator),
             },
             bookmark,
         ));
@@ -1505,7 +1508,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                     </div>
 
                                     <Popover.Close aria-label={__("reader.annotations.export")} asChild>
-                                        <button onClick={() => {
+                                        <button onClick={async () => {
                                             const title = annotationTitleRef.current?.value || "thorium-reader";
                                             let label = title.slice(0, 200);
                                             label = label.trim();
@@ -1515,7 +1518,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                             label = label.toLowerCase();
                                             const fileType = selectFileTypeRef.current?.value || "annotation";
 
-                                            dispatch(readerLocalActionExportAnnotationSet.build(annotationListFiltered, publicationView, label, fileType));
+                                            await getSaga().run(exportAnnotationSet, annotationListFiltered, publicationView, label, fileType).toPromise();
                                         }} className={stylesButtons.button_primary_blue}>
                                             <SVG svg={SaveIcon} />
                                             {__("reader.annotations.export")}
@@ -2222,7 +2225,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                     </div>
 
                                     <Popover.Close aria-label={__("reader.annotations.export")} asChild>
-                                        <button onClick={() => {
+                                        <button onClick={async () => {
                                             const title = bookmarkTitleRef?.current.value || "thorium-reader";
                                             let label = title.slice(0, 200);
                                             label = label.trim();
@@ -2232,7 +2235,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                             label = label.toLowerCase();
                                             const fileType = selectFileTypeRef.current?.value || "annotation";
 
-                                            dispatch(readerLocalActionExportAnnotationSet.build(bookmarkListFiltered, publicationView, label, fileType));
+                                            await getSaga().run(exportAnnotationSet, bookmarkListFiltered, publicationView, label, fileType).toPromise();
                                         }} className={stylesButtons.button_primary_blue}>
                                             <SVG svg={SaveIcon} />
                                             {__("reader.annotations.export")}

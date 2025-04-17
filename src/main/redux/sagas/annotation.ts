@@ -34,6 +34,32 @@ const filename_ = "readium-desktop:main:saga:annotationsImporter";
 const debug = debug_(filename_);
 debug("_");
 
+export function* getAnnotationFromMainWinState(publicationIdentifier: string): SagaGenerator<INoteState[]> {
+
+    let annotations: INoteState[] = [];
+    const sessionReader = yield* selectTyped((state: RootState) => state.win.session.reader);
+    const winSessionReaderStateArray = Object.values(sessionReader).filter((v) => v.publicationIdentifier === publicationIdentifier);
+    if (winSessionReaderStateArray.length) {
+        const winSessionReaderStateFirst = winSessionReaderStateArray[0]; // TODO: get the first only !?!
+        annotations = winSessionReaderStateFirst?.reduxState?.note || [];
+
+        debug("current publication AnnotationsList come from the readerSession (there are one or many readerWin currently open)");
+    } else {
+        const sessionRegistry = yield* selectTyped((state: RootState) => state.win.registry.reader);
+        if (Object.keys(sessionRegistry).find((v) => v === publicationIdentifier)) {
+            annotations = sessionRegistry[publicationIdentifier]?.reduxState?.note || [];
+
+            debug("current publication AnnotationsList come from the readerRegistry (no readerWin currently open)");
+        }
+    }
+    debug("There are", annotations.length, "annotation(s) loaded from the current publicationIdentifier");
+    if (!annotations.length) {
+        debug("Be careful, there are no annotation loaded for this publication!");
+    }
+
+    return annotations;
+}
+
 function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAction): SagaGenerator<void> {
 
     const { payload: { publicationIdentifier, winId } } = action;
@@ -121,28 +147,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         debug("GOOD ! spineItemHref matched : publication identified, let's continue the importation");
 
         // OK publication identified
-
-        let annotations: INoteState[] = [];
-        const sessionReader = yield* selectTyped((state: RootState) => state.win.session.reader);
-        const winSessionReaderStateArray = Object.values(sessionReader).filter((v) => v.publicationIdentifier === publicationIdentifier);
-        if (winSessionReaderStateArray.length) {
-            const winSessionReaderStateFirst = winSessionReaderStateArray[0]; // TODO: get the first only !?!
-            annotations = winSessionReaderStateFirst?.reduxState?.note || [];
-
-            debug("current publication AnnotationsList come from the readerSession (there are one or many readerWin currently open)");
-        } else {
-            const sessionRegistry = yield* selectTyped((state: RootState) => state.win.registry.reader);
-            if (Object.keys(sessionRegistry).find((v) => v === publicationIdentifier)) {
-                annotations = sessionRegistry[publicationIdentifier]?.reduxState?.note || [];
-
-                debug("current publication AnnotationsList come from the readerRegistry (no readerWin currently open)");
-            }
-        }
-        debug("There are", annotations.length, "annotation(s) loaded from the current publicationIdentifier");
-        if (!annotations.length) {
-            debug("Be careful, there are no annotation loaded for this publication!");
-        }
-
+        const annotations = yield* callTyped(getAnnotationFromMainWinState, publicationIdentifier);
 
         const annotationsParsedNoConflictArray: INotePreParsingState[] = [];
         const annotationsParsedConflictOlderArray: INotePreParsingState[] = [];

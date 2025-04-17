@@ -11,19 +11,22 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import { initStore } from "readium-desktop/renderer/library/redux/store/memory";
 import { Store } from "redux";
 import { IHistoryContext } from "redux-first-history";
+import { SagaMiddleware } from "redux-saga";
 
 let __store: Store<ILibraryRootState> | undefined;
+let __sagaMiddleware: SagaMiddleware | undefined;
 
 let __reduxHistory: ReturnType<IHistoryContext["createReduxHistory"]>;
 
 export const createStoreFromDi = (preloadedState: Partial<ILibraryRootState>): ReturnType<typeof initStore> => {
 
-    const [store, reduxHistory] = initStore(preloadedState);
+    const [store, reduxHistory, sagaMiddleware] = initStore(preloadedState);
 
     __store = store;
     __reduxHistory = reduxHistory;
+    __sagaMiddleware = sagaMiddleware;
 
-    return [store, reduxHistory];
+    return [store, reduxHistory, sagaMiddleware];
 };
 
 export const getStore = () => {
@@ -38,4 +41,11 @@ export const getReduxHistory = () => {
         return __reduxHistory;
     }
     throw new Error("reduxHistory is UNDEFINED !!!");
+};
+
+export const getSaga = () => {
+    if (__sagaMiddleware) {
+        return __sagaMiddleware;
+    }
+    throw new Error("SAGA MIDDLEWARE is UNDEFINED !!!");
 };

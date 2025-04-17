@@ -9,37 +9,19 @@ import * as debug_ from "debug";
 import { select as selectTyped, take as takeTyped, all as allTyped, call as callTyped, SagaGenerator, put as putTyped, delay as delayTyped } from "typed-redux-saga/macro";
 
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
-import { readerLocalActionExportAnnotationSet, readerLocalActionReader } from "../actions";
+import { readerLocalActionReader } from "../../actions";
 // import { delay } from "redux-saga/effects";
-import { getResourceCache } from "./resourceCache";
-import { ICacheDocument } from "readium-desktop/common/redux/states/renderer/resourceCache";
+import { getResourceCache } from "../resourceCache";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { convertAnnotationStateArrayToReadiumAnnotationSet, convertSelectorTargetToLocatorExtended, INoteStateWithICacheDocument } from "readium-desktop/common/readium/annotation/converter";
-import { IReadiumAnnotation, IReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import { convertSelectorTargetToLocatorExtended } from "readium-desktop/common/readium/annotation/converter";
 import { annotationActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { EDrawType, INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import { ToastType } from "readium-desktop/common/models/toast";
-import * as Mustache from "mustache";
-import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/annotation/htmlTemplate";
-import { marked } from "marked";
-import DOMPurify from "dompurify";
+import { getCacheDocumentFromLocator } from "./getCacheDocument";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:shareAnnotationSet");
 debug("_");
-
-
-
-const getCacheDocumentFromLocator = (cacheDocumentArray: ICacheDocument[], hrefSource: string): ICacheDocument => {
-
-    for (const cacheDoc of cacheDocumentArray) {
-        if (hrefSource && cacheDoc.href && cacheDoc.href === hrefSource) {
-            return cacheDoc;
-        }
-    }
-
-    return undefined;
-};
 
 export function* importAnnotationSet(): SagaGenerator<void> {
 
@@ -97,88 +79,8 @@ export function* importAnnotationSet(): SagaGenerator<void> {
     debug("New annotation put in queue from import annotation routine. Start the import routine");
 }
 
-
-const __htmlMustacheViewConverterFn: (readiumAnnotation: IReadiumAnnotationSet) => Promise<object> = async (readiumAnnotation) => {
-
-    const view = {
-        ...readiumAnnotation,
-    };
-    const tmpItems = [];
-    for (const item of (view.items || [])) {
-
-        try {
-            tmpItems.push({ ...item, body: { ...item.body || {}, htmlValue: DOMPurify.sanitize(await marked.parse((item.body?.value || "").replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, ""), { gfm: true })) } });
-        } catch (_) {
-            tmpItems.push(item);
-        }
-    }
-    view.items = tmpItems as IReadiumAnnotation[];
-
-    return view;
-};
-const convertReadiumAnnotationSetToHtml = async (
-    readiumAnnotation: IReadiumAnnotationSet,
-    viewConverterFn: (_: IReadiumAnnotationSet) => Promise<object> = __htmlMustacheViewConverterFn,
-    htmlMustacheTemplate: string = noteExportHtmlMustacheTemplate,
-): Promise<string> => {
-    const output = Mustache.render(htmlMustacheTemplate, await viewConverterFn(readiumAnnotation));
-    return output;
-};
-const downloadAnnotationFile = (data: string, filename: string, extension: ".annotation" | ".html") => {
-
-    const blob = new Blob([data], { type: extension === ".annotation" ? "application/rd-annotations+json" : "text/html" });
-    const jsonObjectUrl = URL.createObjectURL(blob);
-    const anchorEl = document.createElement("a");
-    anchorEl.href = jsonObjectUrl;
-    anchorEl.download = filename + extension;
-    anchorEl.click();
-    URL.revokeObjectURL(jsonObjectUrl);
-};
-function* exportAnnotationSet(): SagaGenerator<void> {
-
-    const exportAnnotationSetAction = yield* takeTyped(readerLocalActionExportAnnotationSet.build);
-    const { payload: { annotationArray, publicationView, label, fileType } } = exportAnnotationSetAction;
-    
-    const extension = fileType === "annotation" ? ".annotation" : ".html";
-
-    yield* callTyped(getResourceCache);
-
-    debug("exportAnnotationSet just started !");
-    debug("AnnotationArray: ", annotationArray);
-    debug("PubView ok?", typeof publicationView);
-    debug("label:", label);
-
-    const cacheDocuments = yield* selectTyped((state: IReaderRootState) => state.resourceCache);
-
-    const annotationsWithCacheDocumentArray: INoteStateWithICacheDocument[] = [];
-
-    for (const anno of annotationArray) {
-        annotationsWithCacheDocumentArray.push({
-            ...anno,
-            __cacheDocument: getCacheDocumentFromLocator(cacheDocuments, anno.locatorExtended?.locator?.href),
-        });
-    }
-
-    const locale = yield* selectTyped((state: IReaderRootState) => state.i18n.locale);
-    const readiumAnnotationSet = yield* callTyped(() => convertAnnotationStateArrayToReadiumAnnotationSet(locale, annotationsWithCacheDocumentArray, publicationView, label));
-
-    debug("readiumAnnotationSet generated, prepare to download it");
-
-    const {htmlContent, overrideHTMLTemplate} = (yield* selectTyped((state: IReaderRootState) => state.noteExport));
-    const htmlMustacheTemplateContent = overrideHTMLTemplate ? htmlContent : noteExportHtmlMustacheTemplate || noteExportHtmlMustacheTemplate;
-
-    const stringData = extension === ".annotation" ?
-        JSON.stringify(readiumAnnotationSet, null, 2) :
-        yield* callTyped(() => convertReadiumAnnotationSetToHtml(readiumAnnotationSet, __htmlMustacheViewConverterFn, htmlMustacheTemplateContent));
-    downloadAnnotationFile(stringData, label, extension);
-}
-
 export const saga = () =>
     allTyped([
-        spawnLeading(
-            exportAnnotationSet,
-            (e) => console.error("exportAnnotationSet", e),
-        ),
         spawnLeading(
             function* () {
 
