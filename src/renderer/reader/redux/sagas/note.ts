@@ -89,6 +89,12 @@ function* noteAddUpdate(action: readerActions.note.addUpdate.TAction) {
             yield* delayTyped(100);
             yield* callTyped(noteUpdateSelector, note);
         });
+
+    }
+
+    if (!previousNote && note) {
+        const currentBookmarkTotalCount = yield* selectTyped((state: IReaderRootState) => state.reader.noteTotalCount.state);
+        yield* putTyped(readerLocalActionReader.bookmarkTotalCount.build(currentBookmarkTotalCount + 1));
     }
 
     const item = yield* selectTyped((store: IReaderRootState) => store.reader.highlight.handler.find(([_, highlightState]) => highlightState.uuid === note.uuid));

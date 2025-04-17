@@ -131,15 +131,6 @@ export function* rootSaga() {
                 yield* putTyped(readerLocalActionReader.setTTSState.build(state));
             },
         ),
-        fork(function*() {
-
-            while(true) {
-
-                yield* takeTyped(readerActions.note.addUpdate.ID);
-                const currentBookmarkTotalCount = yield* selectTyped((state: IReaderRootState) => state.reader.noteTotalCount.state);
-                yield* putTyped(readerLocalActionReader.bookmarkTotalCount.build(currentBookmarkTotalCount + 1));
-            }
-        }),
         spawnLeading(function*() {
 
             let gotTheLock = yield* selectTyped((state: IReaderRootState) => state.reader.lock);
