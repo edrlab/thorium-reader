@@ -42,6 +42,9 @@ import { sortObject } from "@r2-utils-js/_utils/JsonUtils";
 import SVG from "../../../common/components/SVG";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
+import * as ShiftIcon from "readium-desktop/renderer/assets/icons/shift-icon.svg";
+import * as MacOptionIcon from "readium-desktop/renderer/assets/icons/macoption-icon.svg";
+import * as MacCmdIcon from "readium-desktop/renderer/assets/icons/maccommand-icon.svg";
 import { useTranslator } from "../../../common/hooks/useTranslator";
 import { useDispatch } from "../../../common/hooks/useDispatch";
 
@@ -61,6 +64,8 @@ interface IState {
     displayKeyboardShortcuts: boolean;
     editKeyboardShortcutId: TKeyboardShortcutId | undefined;
     editKeyboardShortcutData: TKeyboardShortcut | undefined;
+    searchItem: string | undefined;
+    systemOs: string;
 }
 
 export const AdvancedTrigger = () => {
@@ -121,6 +126,8 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             displayKeyboardShortcuts: false,
             editKeyboardShortcutId: undefined,
             editKeyboardShortcutData: undefined,
+            searchItem: undefined,
+            systemOs: "",
         };
         this.onKeyUp = this.onKeyUp.bind(this);
 
@@ -128,7 +135,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
 
         this._keyboardSinkIsActive = false;
     }
-
+ 
     public componentDidMount() {
         ensureKeyboardListenerIsInstalled();
 
@@ -137,6 +144,21 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             passive: false,
             capture: true,
         });
+
+        const userAgent = window.navigator.userAgent;
+        let detectedOS = "Unknown";
+
+        if (userAgent.indexOf("Win") !== -1) {
+            detectedOS = "Windows";
+        } else if (userAgent.indexOf("Mac") !== -1) {
+            detectedOS = "MacOS";
+        } else if (userAgent.indexOf("X11") !== -1) {
+            detectedOS = "UNIX";
+        } else if (userAgent.indexOf("Linux") !== -1) {
+            detectedOS = "Linux";
+        }
+
+        this.setState({systemOs: detectedOS});
     }
 
     public componentWillUnmount() {
@@ -146,6 +168,69 @@ class KeyboardSettings extends React.Component<IProps, IState> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 
+        const isSearchEmpty = !this.state.searchItem || this.state.searchItem.trim() === "";
+
+        const cleanNames = {
+            AddBookmarkWithLabel: `${__("settings.keyboard.name.AddBookmarkWithLabel")}`,
+            AnnotationsCreate: `${__("settings.keyboard.name.AnnotationsCreate")}`,
+            AnnotationsCreateQuick: `${__("settings.keyboard.name.AnnotationsCreateQuick")}`,
+            AnnotationsToggleMargin: `${__("settings.keyboard.name.AnnotationsToggleMargin")}`,
+            AudioNext: `${__("settings.keyboard.name.AudioNext")}`,
+            AudioNextAlt: `${__("settings.keyboard.name.AudioNextAlt")}`,
+            AudioPlayPause: `${__("settings.keyboard.name.AudioPlayPause")}`,
+            AudioPrevious: `${__("settings.keyboard.name.AudioPrevious")}`,
+            AudioPreviousAlt: `${__("settings.keyboard.name.AudioPreviousAlt")}`,
+            AudioStop: `${__("settings.keyboard.name.AudioStop")}`,
+            CloseReader: `${__("settings.keyboard.name.CloseReader")}`,
+            FXLZoomIn: `${__("settings.keyboard.name.FXLZoomIn")}`,
+            FXLZoomOut: `${__("settings.keyboard.name.FXLZoomOut")}`,
+            FXLZoomReset: `${__("settings.keyboard.name.FXLZoomReset")}`,
+            FocusMain: `${__("settings.keyboard.name.FocusMain")}`,
+            FocusMainDeep: `${__("settings.keyboard.name.FocusMainDeep")}`,
+            FocusReaderGotoPage: `${__("settings.keyboard.name.FocusReaderGotoPage")}`,
+            FocusReaderNavigation: `${__("settings.keyboard.name.FocusReaderNavigation")}`,
+            FocusReaderNavigationAnnotations: `${__("settings.keyboard.name.FocusReaderNavigationAnnotations")}`,
+            FocusReaderNavigationBookmarks: `${__("settings.keyboard.name.FocusReaderNavigationBookmarks")}`,
+            FocusReaderNavigationSearch: `${__("settings.keyboard.name.FocusReaderNavigationSearch")}`,
+            FocusReaderNavigationTOC: `${__("settings.keyboard.name.FocusReaderNavigationTOC")}`,
+            FocusReaderSettings: `${__("settings.keyboard.name.FocusReaderSettings")}`,
+            FocusSearch: `${__("settings.keyboard.name.FocusSearch")}`,
+            FocusToolbar: `${__("settings.keyboard.name.FocusToolbar")}`,
+            NavigateNextChapter: `${__("settings.keyboard.name.NavigateNextChapter")}`,
+            NavigateNextChapterAlt: `${__("settings.keyboard.name.NavigateNextChapterAlt")}`,
+            NavigateNextHistory: `${__("settings.keyboard.name.NavigateNextHistory")}`,
+            NavigateNextLibraryPage: `${__("settings.keyboard.name.NavigateNextLibraryPage")}`,
+            NavigateNextLibraryPageAlt: `${__("settings.keyboard.name.NavigateNextLibraryPageAlt")}`,
+            NavigateNextOPDSPage: `${__("settings.keyboard.name.NavigateNextOPDSPage")}`,
+            NavigateNextOPDSPageAlt: `${__("settings.keyboard.name.NavigateNextOPDSPageAlt")}`,
+            NavigateNextPage: `${__("settings.keyboard.name.NavigateNextPage")}`,
+            NavigateNextPageAlt: `${__("settings.keyboard.name.NavigateNextPageAlt")}`,
+            NavigatePreviousChapter: `${__("settings.keyboard.name.NavigatePreviousChapter")}`,
+            NavigatePreviousChapterAlt: `${__("settings.keyboard.name.NavigatePreviousChapterAlt")}`,
+            NavigatePreviousHistory: `${__("settings.keyboard.name.NavigatePreviousHistory")}`,
+            NavigatePreviousLibraryPage: `${__("settings.keyboard.name.NavigatePreviousLibraryPage")}`,
+            NavigatePreviousLibraryPageAlt: `${__("settings.keyboard.name.NavigatePreviousLibraryPageAlt")}`,
+            NavigatePreviousOPDSPage: `${__("settings.keyboard.name.NavigatePreviousOPDSPage")}`,
+            NavigatePreviousOPDSPageAlt: `${__("settings.keyboard.name.NavigatePreviousOPDSPageAlt")}`,
+            NavigatePreviousPage: `${__("settings.keyboard.name.NavigatePreviousPage")}`,
+            NavigatePreviousPageAlt: `${__("settings.keyboard.name.NavigatePreviousPageAlt")}`,
+            NavigateToBegin: `${__("settings.keyboard.name.NavigateToBegin")}`,
+            NavigateToEnd: `${__("settings.keyboard.name.NavigateToEnd")}`,
+            OpenReaderInfo: `${__("settings.keyboard.name.OpenReaderInfo")}`,
+            OpenReaderInfoWhereAmI: `${__("settings.keyboard.name.OpenReaderInfoWhereAmI")}`,
+            SearchNext: `${__("settings.keyboard.name.SearchNext")}`,
+            SearchNextAlt: `${__("settings.keyboard.name.SearchNextAlt")}`,
+            SearchPrevious: `${__("settings.keyboard.name.SearchPrevious")}`,
+            SearchPreviousAlt: `${__("settings.keyboard.name.SearchPreviousAlt")}`,
+            SpeakReaderInfoWhereAmI: `${__("settings.keyboard.name.SpeakReaderInfoWhereAmI")}`,
+            ToggleBookmark: `${__("settings.keyboard.name.ToggleBookmark")}`,
+            ToggleReaderFullscreen: `${__("settings.keyboard.name.ToggleReaderFullscreen")}`,
+        };
+
+        const filteredShortcuts = isSearchEmpty
+        ? ObjectKeys(sortObject(this.props.keyboardShortcuts) as TKeyboardShortcutsMap)
+        : ObjectKeys(cleanNames).filter(key => cleanNames[key].toLowerCase().includes(this.state.searchItem?.toLowerCase()));
+          
         return (
             <>
                 <section onKeyDown={
@@ -176,13 +261,21 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                         </div>
                     </div>
                         <div>
+                        <input
+                            type="text"
+                            value={this.state.searchItem}
+                            onChange={(e) => this.setState({searchItem: e.target.value})}
+                            placeholder={__("settings.keyboard.searchPlaceholder")}
+                            style={{width: "200px", borderRadius: "4px"}}
+                        />
+                        {filteredShortcuts.length ?
                             <ul className={stylesGlobal.p_0}>
                             {this.props.keyboardShortcuts &&
-                            ObjectKeys(sortObject(this.props.keyboardShortcuts) as TKeyboardShortcutsMap).map((id) => {
+                            filteredShortcuts.map((id) => {
                                 const def = this.props.keyboardShortcuts[id];
                                 const hit = this.state.editKeyboardShortcutId === id;
                                 const frag = <>
-                                    <h3 aria-hidden className={stylesKeys.keyshortElement_title}>{id}</h3>
+                                    <h3 aria-hidden className={stylesKeys.keyshortElement_title}>{Object.keys(cleanNames).find((name: string) => name === id) ? cleanNames[id] : undefined}</h3>
                                     <div className={hit ? stylesKeys.keyshortElement_shortcut_container_edit : stylesKeys.keyshortElement_shortcut_container}>
                                         <div className={stylesKeys.keyshortElement_shortcut}>
                                             {this.prettifyKeyboardShortcut(def)}
@@ -268,6 +361,9 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                 </li>;
                             })}
                             </ul>
+                            : 
+                            <p>{__("settings.keyboard.noShortcutFound")}</p>
+                            }
                         </div>
                 </section>
             </>
@@ -381,10 +477,10 @@ class KeyboardSettings extends React.Component<IProps, IState> {
     //     this.props.reloadKeyboardShortcuts(defaults);
     // }
     private prettifyKeyboardShortcut(def: TKeyboardShortcut) {
-        const alt = def.alt ? <span>ALT + </span> : null;
-        const shift = def.shift ? <span>SHIFT + </span> : null;
-        const control = def.control ? <span>CTRL + </span> : null;
-        const meta = def.meta ? <span>META + </span> : null;
+        const alt = def.alt ? <span title={this.state.systemOs === "MacOS" ? "Option" : "Alt"}>{this.state.systemOs === "MacOS" ? <SVG ariaHidden svg={MacOptionIcon} /> : "ALT"} + </span> : null;
+        const shift = def.shift ? <span title="Shift"><SVG ariaHidden svg={ShiftIcon} /> + </span> : null;
+        const control = def.control ? <span title="Control">CTRL + </span> : null;
+        const meta = def.meta ? <span title={this.state.systemOs === "MacOS" ? "Command" : "Meta"}>{this.state.systemOs === "MacOS" ? <SVG ariaHidden svg={MacCmdIcon} /> : "META"} + </span> : null;
         const key = <span>{def.key}</span>;
         return <span aria-hidden>{shift}{control}{alt}{meta}{key}</span>;
     }
@@ -413,7 +509,8 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         />
         <label
             htmlFor={`idcheckbox_${id}_ALT`}
-        >ALT</label></>;
+            title={this.state.systemOs === "MacOS" ? "Option" : "Alt"}
+        >{this.state.systemOs === "MacOS" ? <SVG ariaHidden svg={MacOptionIcon} /> : "ALT"}</label></>;
 
         const shift = <><input
             id={`idcheckbox_${id}_SHIFT`}
@@ -435,7 +532,8 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         />
         <label
             htmlFor={`idcheckbox_${id}_SHIFT`}
-        >SHIFT</label></>;
+            title="Shift"
+        ><SVG ariaHidden svg={ShiftIcon} /></label></>;
 
         const control = <><input
             id={`idcheckbox_${id}_CTRL`}
@@ -457,6 +555,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         />
         <label
             htmlFor={`idcheckbox_${id}_CTRL`}
+            title="Control"
         >CTRL</label></>;
 
         const meta = <><input
@@ -479,7 +578,8 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         />
         <label
             htmlFor={`idcheckbox_${id}_META`}
-        >META</label></>;
+            title={this.state.systemOs === "MacOS" ? "Command" : "Meta"}
+        >{this.state.systemOs === "MacOS" ? <SVG ariaHidden svg={MacCmdIcon} /> : "META"}</label></>;
 
         if (!KEY_CODES.includes(def.key)) {
             KEY_CODES.push(def.key);

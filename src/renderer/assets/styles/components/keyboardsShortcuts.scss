@@ -26,6 +26,12 @@
         width: fit-content;
         font-size: 16px;
 
+        span {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
         button {
             height: 20px;
             width: 20px;
@@ -57,6 +63,16 @@
                 .keyshortElement_shortcut {
                     color: var(--color--primary);
                     background-color: transparent;
+
+                    span {
+                        display: flex;
+                        gap: 5px;
+                        align-items: center;
+
+                        svg {
+                            width: 20px;
+                        }
+                    }
 
                     > button {
                         display: none;
@@ -96,14 +112,16 @@
                     color: var(--color--primary);
                     padding: 3px;
                     background-color: var(--color-verylight-grey);
+                    display: flex;
+                    align-items: center;
 
                     &:hover {
                         cursor: pointer;
                     }
 
                     svg {
-                        width: 30px;
-                        height: 30px;
+                        width: 20px;
+                        height: 20px;
                     }
 
                     &:focus {
