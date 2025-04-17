@@ -248,10 +248,6 @@
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-no-metadata": {
-                "compact": "No information is available",
-                "descriptive": "No information is available"
-            },
             "accessibility-summary-title": "Accessibility summary"
         },
         "additional-accessibility-information": {
@@ -266,14 +262,6 @@
             "additional-accessibility-information-braille": {
                 "compact": "Braille",
                 "descriptive": "Braille"
-            },
-            "additional-accessibility-information-color-not-sole-means-of-conveying-information": {
-                "compact": "Color is not the sole means of conveying information",
-                "descriptive": "Color is not the sole means of conveying information"
-            },
-            "additional-accessibility-information-dyslexia-readability": {
-                "compact": "Dyslexia readability",
-                "descriptive": "Dyslexia readability"
             },
             "additional-accessibility-information-full-ruby-annotations": {
                 "compact": "Full ruby annotations",
@@ -319,19 +307,7 @@
                 "compact": "Text-to-speech hinting provided",
                 "descriptive": "Text-to-speech hinting provided"
             },
-            "additional-accessibility-information-title": "Additional accessibility information",
-            "additional-accessibility-information-ultra-high-contrast-between-text-and-background": {
-                "compact": "Ultra high contrast between text and background",
-                "descriptive": "Ultra high contrast between text and background"
-            },
-            "additional-accessibility-information-visible-page-numbering": {
-                "compact": "Visible page numbering ",
-                "descriptive": "Visible page numbering "
-            },
-            "additional-accessibility-information-without-background-sounds": {
-                "compact": "Without background sounds",
-                "descriptive": "Without background sounds"
-            }
+            "additional-accessibility-information-title": "Additional accessibility information"
         },
         "conformance": {
             "conformance-a": {
@@ -347,20 +323,13 @@
                 "descriptive": "The publication contains a conformance statement that it meets the EPUB Accessibility and WCAG 2 Level AAA standard"
             },
             "conformance-certifier": {
-                "compact": "The publication was certified by ",
-                "descriptive": "The publication was certified by "
+                "compact": "The publication was certified by "
             },
             "conformance-certifier-credentials": {
-                "compact": "The certifier's credential is ",
-                "descriptive": "The certifier's credential is "
-            },
-            "conformance-details-certification-info": {
-                "compact": "The publication was certified on ",
-                "descriptive": "The publication was certified on "
+                "compact": "The certifier's credential is "
             },
             "conformance-details-certifier-report": {
-                "compact": "For more information refer to the certifier's report",
-                "descriptive": "For more information refer to the certifier's report"
+                "compact": "For more information refer to the certifier's report"
             },
             "conformance-details-claim": {
                 "compact": "This publication claims to meet",
@@ -386,10 +355,8 @@
                 "compact": "Level AAA",
                 "descriptive": "Level AAA"
             },
-            "conformance-details-title": "Detailed conformance information",
             "conformance-details-wcag-2-0": {
-                "compact": "WCAG 2.0",
-                "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.0"
+                "compact": "WCAG 2.0"
             },
             "conformance-details-wcag-2-1": {
                 "compact": "WCAG 2.1",
@@ -459,17 +426,6 @@
                 "compact": "The presence of hazards is unknown",
                 "descriptive": "The presents of hazards is unknown"
             }
-        },
-        "legal-considerations": {
-            "legal-considerations-exempt": {
-                "compact": "Claims an accessibility exemption in some jurisdictions",
-                "descriptive": "This publication claims an accessibility exemption in some jurisdictions"
-            },
-            "legal-considerations-no-metadata": {
-                "compact": "No information is available",
-                "descriptive": "No information is available"
-            },
-            "legal-considerations-title": "Legal considerations"
         },
         "navigation": {
             "navigation-index": {
@@ -582,10 +538,6 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "No information about appearance modifiability is available",
                 "descriptive": "No information about appearance modifiability is available"
-            },
-            "ways-of-reading-visual-adjustments-unmodifiable": {
-                "compact": "Appearance cannot be modified",
-                "descriptive": "Text and page layout cannot be modified as the reading experience is close to a print version, but reading systems can still provide zooming options"
             }
         }
     },

@@ -248,10 +248,6 @@
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-no-metadata": {
-                "compact": "",
-                "descriptive": ""
-            },
             "accessibility-summary-title": ""
         },
         "additional-accessibility-information": {
@@ -264,14 +260,6 @@
                 "descriptive": ""
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
-            },
-            "additional-accessibility-information-color-not-sole-means-of-conveying-information": {
-                "compact": "",
-                "descriptive": ""
-            },
-            "additional-accessibility-information-dyslexia-readability": {
                 "compact": "",
                 "descriptive": ""
             },
@@ -319,19 +307,7 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "additional-accessibility-information-title": "",
-            "additional-accessibility-information-ultra-high-contrast-between-text-and-background": {
-                "compact": "",
-                "descriptive": ""
-            },
-            "additional-accessibility-information-visible-page-numbering": {
-                "compact": "",
-                "descriptive": ""
-            },
-            "additional-accessibility-information-without-background-sounds": {
-                "compact": "",
-                "descriptive": ""
-            }
+            "additional-accessibility-information-title": ""
         },
         "conformance": {
             "conformance-a": {
@@ -347,20 +323,13 @@
                 "descriptive": ""
             },
             "conformance-certifier": {
-                "compact": "",
-                "descriptive": ""
+                "compact": ""
             },
             "conformance-certifier-credentials": {
-                "compact": "",
-                "descriptive": ""
-            },
-            "conformance-details-certification-info": {
-                "compact": "",
-                "descriptive": ""
+                "compact": ""
             },
             "conformance-details-certifier-report": {
-                "compact": "",
-                "descriptive": ""
+                "compact": ""
             },
             "conformance-details-claim": {
                 "compact": "",
@@ -386,10 +355,8 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "conformance-details-title": "",
             "conformance-details-wcag-2-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": ""
             },
             "conformance-details-wcag-2-1": {
                 "compact": "",
@@ -459,17 +426,6 @@
                 "compact": "",
                 "descriptive": ""
             }
-        },
-        "legal-considerations": {
-            "legal-considerations-exempt": {
-                "compact": "",
-                "descriptive": ""
-            },
-            "legal-considerations-no-metadata": {
-                "compact": "",
-                "descriptive": ""
-            },
-            "legal-considerations-title": ""
         },
         "navigation": {
             "navigation-index": {
@@ -580,10 +536,6 @@
                 "descriptive": ""
             },
             "ways-of-reading-visual-adjustments-unknown": {
-                "compact": "",
-                "descriptive": ""
-            },
-            "ways-of-reading-visual-adjustments-unmodifiable": {
                 "compact": "",
                 "descriptive": ""
             }
