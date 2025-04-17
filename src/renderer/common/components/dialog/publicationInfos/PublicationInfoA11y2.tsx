@@ -88,10 +88,11 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
     const synchronised_pre_recorded_audio = findStrInArray(a11y_accessibilityFeature, "synchronizedAudioText");
 
     // https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/techniques/epub-metadata/index.html#navigation
+    const table_of_contents_navigation = findStrInArray(a11y_accessibilityFeature, "tableOfContents");
+    const page_navigation = findStrInArray(a11y_accessibilityFeature, "pageNavigation");
     const index_navigation = findStrInArray(a11y_accessibilityFeature, "index");
     const next_previous_structural_navigation = findStrInArray(a11y_accessibilityFeature, "structuralNavigation");
-    const page_navigation = findStrInArray(a11y_accessibilityFeature, "pageNavigation");
-    const table_of_contents_navigation = findStrInArray(a11y_accessibilityFeature, "tableOfContents");
+    
 
     // https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/techniques/epub-metadata/index.html#rich-content
     const chemical_formula_as_latex = findStrInArray(a11y_accessibilityFeature, "latex-chemistry");
