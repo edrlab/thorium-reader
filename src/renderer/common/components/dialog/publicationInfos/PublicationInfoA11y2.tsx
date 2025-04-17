@@ -161,8 +161,9 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
     const tactile_graphic = findStrInArray(a11y_accessibilityFeature, "tactileGraphic");
     const tactile_object = findStrInArray(a11y_accessibilityFeature, "tactileObject");
     const text_to_speech_hinting = findStrInArray(a11y_accessibilityFeature, "ttsMarkup");
-    const print_page_numbers = findStrInArray(a11y_accessibilityFeature, "printPageNumbers"); // TODO: already declared in previous a11y implementation but not in https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/techniques/epub-metadata/index.html // declared in readium webpub manifest https://github.com/readium/webpub-manifest/blob/4c73f7323f9241e61bb919ecae2656a491ba15f6/schema/a11y.schema.json#L84
-
+    // const print_page_numbers = findStrInArray(a11y_accessibilityFeature, "printPageNumbers"); 
+    // Replaced by pageBreakMarkers
+    // TODO: already declared in previous a11y implementation but not in https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/techniques/epub-metadata/index.html // declared in readium webpub manifest https://github.com/readium/webpub-manifest/blob/4c73f7323f9241e61bb919ecae2656a491ba15f6/schema/a11y.schema.json#L84 
     // https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/techniques/epub-metadata/index.html#legal-considerations
     // https://github.com/w3c/publ-a11y/issues/350
     // a11y:exemption metadata not implemented on models parsing https://github.com/readium/r2-shared-js/blob/3dbce230c09c00042b38d5dbc9ffba6f2420992e/src/models/metadata.ts#L99 https://github.com/readium/webpub-manifest/blob/4c73f7323f9241e61bb919ecae2656a491ba15f6/schema/a11y.schema.json#L18-L25
