@@ -18,7 +18,7 @@ import * as i18n from "./i18n";
 import * as ipc from "./ipc";
 import * as search from "./search";
 import * as winInit from "./win";
-import * as annotation from "./note";
+import * as noteSaga from "./note";
 import * as shareAnnotationSet from "./readiumAnnotation/shareAnnotationSet";
 import * as img from "./img";
 import * as settingsOrMenuDialogOrDock from "./settingsOrMenu";
@@ -100,7 +100,7 @@ export function* rootSaga() {
 
         search.saga(),
 
-        annotation.saga(),
+        noteSaga.saga(),
         
         shareAnnotationSet.saga(),
 
@@ -158,28 +158,10 @@ export function* rootSaga() {
             yield* delayTyped(1000); // wait for the reader start stabilisation (aka highlight mounting)
 
             const notes = yield* selectTyped((state: IReaderRootState) => state.reader.note);
-
-            const { publicationView } = yield* selectTyped((state: IReaderRootState) => state.reader.info);
-            const isLcp = !!publicationView.lcp;
             for (const note of notes) {
 
-                try {
-                    if (!checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation(note)) {
-
-                        yield* callTyped(getResourceCache);
-                        const cacheDocuments = yield* selectTyped((state: IReaderRootState) => state.resourceCache);
-
-                        const cacheDocument = getCacheDocumentFromLocator(cacheDocuments, note.locatorExtended?.locator?.href);
-                        const selector = yield* callTyped(readiumAnnotationSelectorFromNote, note, isLcp, cacheDocument);
-
-                        debug(`${note.uuid} does not have any readiumAnnotationSelector so let's update the note with this new selectors: ${JSON.stringify(selector, null, 2)}`);
-                        yield* putTyped(readerActions.note.addUpdate.build({ ...note, readiumAnnotation: { ...note?.readiumAnnotation || {}, export: { selector } } }, note));
-                    }
-                } catch (e) {
-                    debug(`ERROR: ${note.uuid} selectors compute CRASH`, e);
-                }
-
                 yield* delayTyped(10); // 100 notes equals to 1 + 1 seconds , seems acceptable to not disturb user with a tiny compute machine
+                yield* callTyped(noteSaga.noteUpdateSelector, note);
             }
         }),
     ]);

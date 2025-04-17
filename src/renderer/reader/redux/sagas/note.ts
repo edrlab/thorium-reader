@@ -25,8 +25,8 @@ import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locator
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
 import { getTranslator } from "readium-desktop/common/services/translator";
-import { EDrawType, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
-import { readiumAnnotationSelectorFromNote } from "./readiumAnnotation/selector";
+import { EDrawType, INoteState, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
+import { checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation, readiumAnnotationSelectorFromNote } from "./readiumAnnotation/selector";
 import { getCacheDocumentFromLocator } from "./readiumAnnotation/getCacheDocument";
 import { getResourceCache } from "./resourceCache";
 
@@ -57,30 +57,36 @@ debug("_");
 //     // yield* putTyped(readerLocalActionAnnotations.focusMode.build({previousFocusUuid: currentFocusUuid || "", currentFocusUuid: uuid, editionEnable: false}));
 // }
 
+export function* noteUpdateSelector(note: INoteState) {
+    try {
+        if (!checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation(note)) {
+
+            yield* callTyped(getResourceCache);
+            const cacheDocuments = yield* selectTyped((state: IReaderRootState) => state.resourceCache);
+
+            const cacheDocument = getCacheDocumentFromLocator(cacheDocuments, note.locatorExtended?.locator?.href);
+            const { publicationView } = yield* selectTyped((state: IReaderRootState) => state.reader.info);
+            const isLcp = !!publicationView.lcp;
+            const selector = yield* callTyped(readiumAnnotationSelectorFromNote, note, isLcp, cacheDocument);
+
+            debug(`${note.uuid} does not have any readiumAnnotationSelector so let's update the note with this new selectors: ${JSON.stringify(selector, null, 2)}`);
+            yield* putTyped(readerActions.note.addUpdate.build({ ...note, readiumAnnotation: { ...note?.readiumAnnotation || {}, export: { selector } } }, note));
+        }
+    } catch (e) {
+        debug(`ERROR: ${note.uuid} selectors compute CRASH`, e);
+    }
+}
+
 function* noteAddUpdate(action: readerActions.note.addUpdate.TAction) {
 
     const { previousNote: previousNote, newNote: note } = action.payload;
 
     // backgroud compute readiumAnnotationSelector
-    if (!previousNote && note) {
+    if (!previousNote && note && (yield* selectTyped((state: IReaderRootState) => state.reader.lock))) {
         yield* spawnTyped(function*() {
 
-            try {
-                yield* callTyped(getResourceCache);
-                const cacheDocuments = yield* selectTyped((state: IReaderRootState) => state.resourceCache);
-
-                yield* delayTyped(100);
-
-                const { publicationView } = yield* selectTyped((state: IReaderRootState) => state.reader.info);
-                const isLcp = !!publicationView.lcp;
-                const cacheDocument = getCacheDocumentFromLocator(cacheDocuments, note.locatorExtended?.locator?.href);
-                const selector = yield* callTyped(readiumAnnotationSelectorFromNote, note, isLcp, cacheDocument);
-
-                debug(`[${note.uuid}] selectors computed for this note : ${JSON.stringify(selector, null, 2)}`);
-                yield* putTyped(readerActions.note.addUpdate.build({ ...note, readiumAnnotation: { ...note?.readiumAnnotation || {}, export: { selector } } }, note));
-            } catch (e) {
-                debug(`ERROR: ${note.uuid} selectors compute CRASH`, e);
-            }
+            yield* delayTyped(100);
+            yield* callTyped(noteUpdateSelector, note);
         });
     }
 
