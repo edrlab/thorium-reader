@@ -184,9 +184,9 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
     // const print_page_numbers = findStrInArray(a11y_accessibilityFeature, "printPageNumbers"); 
     // Replaced by pageBreakMarkers
     // TODO: already declared in previous a11y implementation but not in https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/techniques/epub-metadata/index.html // declared in readium webpub manifest https://github.com/readium/webpub-manifest/blob/4c73f7323f9241e61bb919ecae2656a491ba15f6/schema/a11y.schema.json#L84 
-    // const print_page_numbers = findStrInArray(a11y_accessibilityFeature, "printPageNumbers");
+    const print_page_numbers = findStrInArray(a11y_accessibilityFeature, "printPageNumbers");
 
-    const enableAdditionnals = (page_break_markers || aria || audio_descriptions || braille || full_ruby_annotations || high_contrast_between_foreground_and_background_audio || high_contrast_between_text_and_background || large_print || ruby_annotations || sign_language || tactile_graphic || tactile_object || text_to_speech_hinting /*|| print_page_numbers*/);
+    const enableAdditionnals = (page_break_markers || aria || audio_descriptions || braille || full_ruby_annotations || high_contrast_between_foreground_and_background_audio || high_contrast_between_text_and_background || large_print || ruby_annotations || sign_language || tactile_graphic || tactile_object || text_to_speech_hinting || print_page_numbers);
 
     const enableSummaryDetail = accessibilitySummaryStrSanitized || enableAdditionnals || enableConformance || enableHazard || enableRichContent;
 
@@ -491,9 +491,9 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                             {text_to_speech_hinting ? <li className="publicationInfoA11y2-icon" title={__("publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-text-to-speech-hinting.descriptive")}>
                                 {__("publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-text-to-speech-hinting.compact")}
                             </li> : <></>}
-                            {/* {print_page_numbers ? <li className="publicationInfoA11y2-icon" title={__("publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-print-page-numbers.descriptive")}>
+                            {print_page_numbers ? <li className="publicationInfoA11y2-icon" title={__("publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-print-page-numbers.descriptive")}>
                                 {__("publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-print-page-numbers.compact")}
-                            </li> : <></>} */}
+                            </li> : <></>}
                         </ul>
                     </>
                     : <></>
