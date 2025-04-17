@@ -565,7 +565,8 @@
             "keyboardShortcuts": "Prečaci na tipkovnici",
             "loadUserJson": "Učitaj iz dokumenta korisnika",
             "resetDefaults": "Vrati (učitaj zadano)",
-            "save": "Spremi"
+            "save": "Spremi",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "Izbor jezika"

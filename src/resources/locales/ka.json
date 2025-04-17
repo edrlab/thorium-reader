@@ -565,7 +565,8 @@
             "keyboardShortcuts": "კლავიატურით სწრაფი გამოძახება",
             "loadUserJson": "მომხმარებლის ფაილიდან ჩატვირთვა",
             "resetDefaults": "გადაყენება (ნაგულისხმევის თავიდან ჩატვირთვა)",
-            "save": "შენახვა"
+            "save": "შენახვა",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "ენის არჩევანი"

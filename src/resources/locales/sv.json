@@ -565,7 +565,8 @@
             "keyboardShortcuts": "Kortkommandon",
             "loadUserJson": "Läs in från användarfil",
             "resetDefaults": "Återställ (läs in standard)",
-            "save": "Spara"
+            "save": "Spara",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "Språk"

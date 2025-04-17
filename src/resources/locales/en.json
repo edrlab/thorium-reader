@@ -565,7 +565,8 @@
             "keyboardShortcuts": "Keyboard shortcuts",
             "loadUserJson": "Load from user file",
             "resetDefaults": "Reset (load defaults)",
-            "save": "Save"
+            "save": "Save",
+            "searchPlaceholder": "Type to search a shortcut"
         },
         "language": {
             "languageChoice": "Language"

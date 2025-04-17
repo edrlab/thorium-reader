@@ -565,7 +565,8 @@
             "keyboardShortcuts": "키보드 단축키",
             "loadUserJson": "사용자 파일에서 로드",
             "resetDefaults": "재설정(기본값 로드)",
-            "save": "저장"
+            "save": "저장",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "언어 선택"

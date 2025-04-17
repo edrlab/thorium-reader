@@ -42,6 +42,9 @@ import { sortObject } from "@r2-utils-js/_utils/JsonUtils";
 import SVG from "../../../common/components/SVG";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
+import * as ShiftIcon from "readium-desktop/renderer/assets/icons/shift-icon.svg";
+import * as MacOptionIcon from "readium-desktop/renderer/assets/icons/macoption-icon.svg";
+import * as MacCmdIcon from "readium-desktop/renderer/assets/icons/maccommand-icon.svg";
 import { useTranslator } from "../../../common/hooks/useTranslator";
 import { useDispatch } from "../../../common/hooks/useDispatch";
 
@@ -61,6 +64,8 @@ interface IState {
     displayKeyboardShortcuts: boolean;
     editKeyboardShortcutId: TKeyboardShortcutId | undefined;
     editKeyboardShortcutData: TKeyboardShortcut | undefined;
+    searchItem: string | undefined;
+    systemOs: string;
 }
 
 export const AdvancedTrigger = () => {
@@ -121,6 +126,8 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             displayKeyboardShortcuts: false,
             editKeyboardShortcutId: undefined,
             editKeyboardShortcutData: undefined,
+            searchItem: undefined,
+            systemOs: "",
         };
         this.onKeyUp = this.onKeyUp.bind(this);
 
@@ -128,7 +135,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
 
         this._keyboardSinkIsActive = false;
     }
-
+ 
     public componentDidMount() {
         ensureKeyboardListenerIsInstalled();
 
@@ -137,6 +144,21 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             passive: false,
             capture: true,
         });
+
+        const userAgent = window.navigator.userAgent;
+        let detectedOS = "Unknown";
+
+        if (userAgent.indexOf("Win") !== -1) {
+            detectedOS = "Windows";
+        } else if (userAgent.indexOf("Mac") !== -1) {
+            detectedOS = "MacOS";
+        } else if (userAgent.indexOf("X11") !== -1) {
+            detectedOS = "UNIX";
+        } else if (userAgent.indexOf("Linux") !== -1) {
+            detectedOS = "Linux";
+        }
+
+        this.setState({systemOs: detectedOS});
     }
 
     public componentWillUnmount() {
@@ -145,6 +167,14 @@ class KeyboardSettings extends React.Component<IProps, IState> {
 
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
+
+        const isSearchEmpty = !this.state.searchItem || this.state.searchItem.trim() === "";
+
+        const filteredShortcuts = isSearchEmpty
+            ? ObjectKeys(sortObject(this.props.keyboardShortcuts) as TKeyboardShortcutsMap)
+            : ObjectKeys(sortObject(this.props.keyboardShortcuts) as TKeyboardShortcutsMap).filter((shortcut) =>
+                shortcut.toLowerCase().includes(this.state.searchItem?.toLowerCase()),
+            );
 
         return (
             <>
@@ -176,9 +206,16 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                         </div>
                     </div>
                         <div>
+                        <input
+                            type="text"
+                            value={this.state.searchItem}
+                            onChange={(e) => this.setState({searchItem: e.target.value})}
+                            placeholder={__("settings.keyboard.searchPlaceholder")}
+                            style={{width: "200px", borderRadius: "4px"}}
+                        />
                             <ul className={stylesGlobal.p_0}>
                             {this.props.keyboardShortcuts &&
-                            ObjectKeys(sortObject(this.props.keyboardShortcuts) as TKeyboardShortcutsMap).map((id) => {
+                            filteredShortcuts.map((id) => {
                                 const def = this.props.keyboardShortcuts[id];
                                 const hit = this.state.editKeyboardShortcutId === id;
                                 const frag = <>
@@ -381,10 +418,10 @@ class KeyboardSettings extends React.Component<IProps, IState> {
     //     this.props.reloadKeyboardShortcuts(defaults);
     // }
     private prettifyKeyboardShortcut(def: TKeyboardShortcut) {
-        const alt = def.alt ? <span>ALT + </span> : null;
-        const shift = def.shift ? <span>SHIFT + </span> : null;
-        const control = def.control ? <span>CTRL + </span> : null;
-        const meta = def.meta ? <span>META + </span> : null;
+        const alt = def.alt ? <span title={this.state.systemOs === "MacOS" ? "Option" : "Alt"}>{this.state.systemOs === "MacOS" ? <SVG ariaHidden svg={MacOptionIcon} /> : "ALT"} + </span> : null;
+        const shift = def.shift ? <span title="Shift"><SVG ariaHidden svg={ShiftIcon} /> + </span> : null;
+        const control = def.control ? <span title="Control">CTRL + </span> : null;
+        const meta = def.meta ? <span title={this.state.systemOs === "MacOS" ? "Command" : "Meta"}>{this.state.systemOs === "MacOS" ? <SVG ariaHidden svg={MacCmdIcon} /> : "META"} + </span> : null;
         const key = <span>{def.key}</span>;
         return <span aria-hidden>{shift}{control}{alt}{meta}{key}</span>;
     }
@@ -413,7 +450,8 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         />
         <label
             htmlFor={`idcheckbox_${id}_ALT`}
-        >ALT</label></>;
+            title={this.state.systemOs === "MacOS" ? "Option" : "Alt"}
+        >{this.state.systemOs === "MacOS" ? <SVG ariaHidden svg={MacOptionIcon} /> : "ALT"}</label></>;
 
         const shift = <><input
             id={`idcheckbox_${id}_SHIFT`}
@@ -435,7 +473,8 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         />
         <label
             htmlFor={`idcheckbox_${id}_SHIFT`}
-        >SHIFT</label></>;
+            title="Shift"
+        ><SVG ariaHidden svg={ShiftIcon} /></label></>;
 
         const control = <><input
             id={`idcheckbox_${id}_CTRL`}
@@ -457,6 +496,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         />
         <label
             htmlFor={`idcheckbox_${id}_CTRL`}
+            title="Control"
         >CTRL</label></>;
 
         const meta = <><input
@@ -479,7 +519,8 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         />
         <label
             htmlFor={`idcheckbox_${id}_META`}
-        >META</label></>;
+            title={this.state.systemOs === "MacOS" ? "Command" : "Meta"}
+        >{this.state.systemOs === "MacOS" ? <SVG ariaHidden svg={MacCmdIcon} /> : "META"}</label></>;
 
         if (!KEY_CODES.includes(def.key)) {
             KEY_CODES.push(def.key);

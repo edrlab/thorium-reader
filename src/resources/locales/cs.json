@@ -565,7 +565,8 @@
             "keyboardShortcuts": "Klávesové zkratky",
             "loadUserJson": "Načíst z uživatelského souboru",
             "resetDefaults": "Obnovit (načíst výchozí)",
-            "save": "Uložit"
+            "save": "Uložit",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "Jazyk"

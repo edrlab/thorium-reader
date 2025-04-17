@@ -565,7 +565,8 @@
             "keyboardShortcuts": "Toetsenbord shortcuts",
             "loadUserJson": "Haal uit gebruikersbestand",
             "resetDefaults": "Terug (naar oorspronkelijke instellingen)",
-            "save": "Bewaar"
+            "save": "Bewaar",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "Taal keuze"

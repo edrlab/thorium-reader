@@ -565,7 +565,8 @@
             "keyboardShortcuts": "Dreceres de teclat",
             "loadUserJson": "Cargar arxiu d'usuari",
             "resetDefaults": "Restablir valors predeterminats",
-            "save": "Guardar"
+            "save": "Guardar",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "Selecció d'idioma"

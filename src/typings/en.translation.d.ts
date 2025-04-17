@@ -1451,7 +1451,8 @@ declare namespace typed_i18n {
     readonly "keyboardShortcuts": string,
     readonly "loadUserJson": string,
     readonly "resetDefaults": string,
-    readonly "save": string
+    readonly "save": string,
+    readonly "searchPlaceholder": string
   },
   readonly "language": { readonly "languageChoice": string },
   readonly "library": {
@@ -1509,7 +1510,8 @@ declare namespace typed_i18n {
   readonly "keyboardShortcuts": string,
   readonly "loadUserJson": string,
   readonly "resetDefaults": string,
-  readonly "save": string
+  readonly "save": string,
+  readonly "searchPlaceholder": string
 };
   (_: "settings.keyboard.advancedMenu", __?: {}): string;
   (_: "settings.keyboard.cancel", __?: {}): string;
@@ -1519,6 +1521,7 @@ declare namespace typed_i18n {
   (_: "settings.keyboard.loadUserJson", __?: {}): string;
   (_: "settings.keyboard.resetDefaults", __?: {}): string;
   (_: "settings.keyboard.save", __?: {}): string;
+  (_: "settings.keyboard.searchPlaceholder", __?: {}): string;
   (_: "settings.language", __?: {}): { readonly "languageChoice": string };
   (_: "settings.language.languageChoice", __?: {}): string;
   (_: "settings.library", __?: {}): { readonly "enableAPIAPP": string, readonly "title": string };

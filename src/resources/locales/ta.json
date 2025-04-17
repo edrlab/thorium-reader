@@ -565,7 +565,8 @@
             "keyboardShortcuts": "விசைப்பலகை குறுக்குவழிகள்",
             "loadUserJson": "பயனர் கோப்பிலிருந்து ஏற்றவும்",
             "resetDefaults": "மீட்டமைக்கவும் (இயல்புநிலைகளை ஏற்றவும்)",
-            "save": "சேமி"
+            "save": "சேமி",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "மொழி"

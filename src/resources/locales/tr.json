@@ -565,7 +565,8 @@
             "keyboardShortcuts": "",
             "loadUserJson": "",
             "resetDefaults": "",
-            "save": ""
+            "save": "",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": ""

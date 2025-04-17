@@ -135,6 +135,7 @@ const keyDownUpEventHandler = (
             if (!keyDown && !keyboardShortcutPairing.up) {
                 continue;
             }
+            console.log(keyboardShortcutPairing);
             if (keyboardShortcutMatch(keyboardShortcutPairing.keyboardShortcut, ev_)) {
 
                 if (DEBUG_KEYBOARD) {

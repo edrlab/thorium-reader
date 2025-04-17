@@ -565,7 +565,8 @@
             "keyboardShortcuts": "Tastaturgenveje",
             "loadUserJson": "Indlæs fra brugerfil",
             "resetDefaults": "Nulstil (standardindstillinger)",
-            "save": "Gem"
+            "save": "Gem",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "Sprog"

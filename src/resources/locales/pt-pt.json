@@ -565,7 +565,8 @@
             "keyboardShortcuts": "Atalhos de teclado",
             "loadUserJson": "Carregar a partir de ficheiro do utilizador",
             "resetDefaults": "Redefinir (carregar predefinições)",
-            "save": "Guardar"
+            "save": "Guardar",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "Idioma"

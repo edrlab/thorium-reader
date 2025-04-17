@@ -565,7 +565,8 @@
             "keyboardShortcuts": "Горячие клавиши",
             "loadUserJson": "Загрузить из пользовательского файла",
             "resetDefaults": "Сбросить (загрузка по умолчанию)",
-            "save": "Сохранить"
+            "save": "Сохранить",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "Выбор языка"

@@ -565,7 +565,8 @@
             "keyboardShortcuts": "اختصارات لوحة المفاتيح",
             "loadUserJson": "تحميل من ملف المستخدم",
             "resetDefaults": "إعادة ضبط (تحميل الافتراضيات)",
-            "save": "حفظ"
+            "save": "حفظ",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "اللغة"

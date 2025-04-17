@@ -565,7 +565,8 @@
             "keyboardShortcuts": "キーボードショートカット",
             "loadUserJson": "読込：ユーザーファイル",
             "resetDefaults": "リセット（初期設定に戻す）",
-            "save": "保存"
+            "save": "保存",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "言語の選択"

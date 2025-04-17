@@ -565,7 +565,8 @@
             "keyboardShortcuts": "Бързи клавиши",
             "loadUserJson": "Зареждане от потребителски файл",
             "resetDefaults": "Нулирай (Зареди по подразбиране)",
-            "save": "Запис"
+            "save": "Запис",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "Избор на език"

@@ -565,7 +565,8 @@
             "keyboardShortcuts": "Συντομεύσεις πληκτρολογίου",
             "loadUserJson": "Φόρτωση από αρχείο χρήστη",
             "resetDefaults": "Επαναφορά (φόρτωση προεπιλογών)",
-            "save": "Αποθήκευση"
+            "save": "Αποθήκευση",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "Γλώσσα"

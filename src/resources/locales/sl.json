@@ -565,7 +565,8 @@
             "keyboardShortcuts": "Bližnjice tipkovnice",
             "loadUserJson": "Nalaganje iz datoteke uporabnika",
             "resetDefaults": "Ponastavitev (naloži privzete nastavitve)",
-            "save": "Shrani"
+            "save": "Shrani",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "Izbira jezika"

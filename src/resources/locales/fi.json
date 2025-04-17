@@ -565,7 +565,8 @@
             "keyboardShortcuts": "Pikanäppäimet",
             "loadUserJson": "Lataa käyttäjän tiedostosta",
             "resetDefaults": "Palauta (lataa oletusasetukset)",
-            "save": "Tallenna"
+            "save": "Tallenna",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "Kieli"

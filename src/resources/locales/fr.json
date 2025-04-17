@@ -565,7 +565,8 @@
             "keyboardShortcuts": "Raccourcis clavier",
             "loadUserJson": "Charger le fichier",
             "resetDefaults": "Réinitialiser (défaut)",
-            "save": "Sauvegarder"
+            "save": "Sauvegarder",
+            "searchPlaceholder": "Cherchez un raccourci"
         },
         "language": {
             "languageChoice": "Choix de la langue"

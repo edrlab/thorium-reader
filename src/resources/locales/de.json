@@ -565,7 +565,8 @@
             "keyboardShortcuts": "Tastaturkürzel",
             "loadUserJson": "Aus Benutzerdatei laden",
             "resetDefaults": "Zurücksetzen (auf Standard)",
-            "save": "Speichern"
+            "save": "Speichern",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "Sprachauswahl"

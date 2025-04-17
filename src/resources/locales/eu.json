@@ -565,7 +565,8 @@
             "keyboardShortcuts": "Teklatuko lasterbideak",
             "loadUserJson": "Kargatu erabiltzaile-fitxategia",
             "resetDefaults": "Lehenetsitako balioak berrezartzea",
-            "save": "Gorde"
+            "save": "Gorde",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "Hizkuntza hautatzea"

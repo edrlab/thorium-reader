@@ -565,7 +565,8 @@
             "keyboardShortcuts": "Scorciatoie da tastiera",
             "loadUserJson": "Carica da file utente",
             "resetDefaults": "Ripristina (carica predefiniti)",
-            "save": "Salva"
+            "save": "Salva",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "Scelta della lingua"
