@@ -29,6 +29,7 @@ import { EDrawType, INoteState, TDrawType } from "readium-desktop/common/redux/s
 import { checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation, readiumAnnotationSelectorFromNote } from "./readiumAnnotation/selector";
 import { getCacheDocumentFromLocator } from "./readiumAnnotation/getCacheDocument";
 import { getResourceCache } from "./resourceCache";
+import { clone } from "ramda";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:annotation");
@@ -218,15 +219,10 @@ function* createAnnotation(locatorExtended: MiniLocatorExtended, color: IColor, 
         color,
         textualValue: comment,
         index: noteTotalCount + 1,
-        locatorExtended,
+        locatorExtended: clone(locatorExtended),
         drawType: EDrawType[drawType] || EDrawType.solid_background,
         tags,
-        creator: {
-            id: creator.id,
-            urn: creator.urn,
-            type: creator.type, 
-            name: creator.name,
-        },
+        creator: clone(creator),
         created: (new Date()).getTime(),
         group: "annotation",
     }));

@@ -32,6 +32,7 @@ import { readerLocalActionHighlights, readerLocalActionReader } from "../../redu
 import { BookmarkEdit } from "../BookmarkEdit";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { EDrawType, INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import { clone } from "ramda";
 
 export interface IProps {
     shortcutEnable: boolean;
@@ -220,8 +221,8 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                     textualValue: name,
                     created: (new Date()).getTime(),
                     index: noteTotalCount + 1,
-                    locatorExtended: locatorExtended,
-                    creator: creatorMyself,
+                    locatorExtended: clone(locatorExtended),
+                    creator: clone(creatorMyself),
                     color,
                     tags: tag ? [tag] : undefined,
                     group: "bookmark",
@@ -244,8 +245,8 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                         textualValue: name,
                         created: (new Date()).getTime(),
                         index: noteTotalCount + 1,
-                        locatorExtended: locatorExtended,
-                        creator: creatorMyself,
+                        locatorExtended: clone(locatorExtended),
+                        creator: clone(creatorMyself),
                         color,
                         tags: tag ? [tag] : undefined,
                         group: "bookmark",
