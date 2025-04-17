@@ -79,10 +79,10 @@ export const rootReducer = () => {
                             if (!previousNote) {
                                 return [newNote];
                             }
-                            if (previousNote && state.find((item) => item.uuid === previousNote.uuid)) {
+                            if (previousNote.uuid === newNote.uuid && state.find((item) => item.uuid === previousNote.uuid)) {
                                 return [newNote];
                             }
-                            console.error("NoteArrayReducer error : trying to update a note already deleted !!");
+                            console.error("NoteArrayReducer error : trying to update a note already deleted !!", JSON.stringify(previousNote, null, 2), JSON.stringify(newNote, null, 2));
                             return [];
                         },
                     },
