@@ -7,17 +7,17 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { IReaderStateReaderSession } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
 export const ID = "WIN_SESSION_SET_REDUXSTATE";
 
 export interface Payload {
-    reduxState: Partial<IReaderStateReader>;
+    reduxState: IReaderStateReaderSession;
     identifier: string;
     publicationIdentifier: string;
 }
 
-export function build(winId: string, pubId: string, reduxState: Payload["reduxState"]):
+export function build(winId: string, pubId: string, reduxState: IReaderStateReaderSession):
     Action<typeof ID, Payload> {
 
     return {

@@ -8,12 +8,12 @@
 import * as ramda from "ramda";
 // import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { IReaderRootState, IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { IReaderRootState, IReaderStateReaderPersistence } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { UnknownAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 
 const dispatchSetReduxState = (
     store: MiddlewareAPI<Dispatch<UnknownAction>, IReaderRootState>,
-    readerState: Partial<IReaderStateReader>,
+    readerState: Partial<IReaderStateReaderPersistence>,
 ) => {
 
     const state = store.getState();
@@ -33,7 +33,7 @@ export const reduxPersistMiddleware: Middleware
 
                 const nextState = store.getState();
 
-                const readerState: Partial<IReaderStateReader> = {};
+                const readerState: Partial<IReaderStateReaderPersistence> = {};
                 let dispatchFlag = false;
                 if (!ramda.equals(prevState.reader.config, nextState.reader.config)) {
 

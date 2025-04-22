@@ -81,7 +81,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
                 identifier,
             },
             reader: {
-                ...reader?.reduxState || {},
+                ...reader.reduxState,
                 // see issue https://github.com/edrlab/thorium-reader/issues/2532
                 defaultConfig: {
                     ...readerDefaultConfig,
@@ -138,11 +138,11 @@ function* winClose(action: winActions.reader.closed.TAction) {
 
             yield put(winActions.session.unregisterReader.build(identifier));
 
-            yield put(winActions.registry.registerReaderPublication.build(
-                publicationIdentifier,
-                reader.windowBound,
-                reader.reduxState),
-                );
+            // yield put(winActions.registry.registerReaderPublication.build(
+            //     publicationIdentifier,
+            //     reader.windowBound,
+            //     reader.reduxState),
+            //     );
 
             yield put(streamerActions.publicationCloseRequest.build(publicationIdentifier));
         }

@@ -16,7 +16,6 @@ import { normalizeRectangle } from "readium-desktop/common/rectangle/window";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
-import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
@@ -32,6 +31,7 @@ import {
 } from "./publication/openPublication";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { getTranslator } from "readium-desktop/common/services/translator";
+import { IReaderStateReaderPersistence } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:reader";
@@ -204,9 +204,9 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
 
     if (manifestUrl) {
 
-        const reduxState = yield* selectTyped(
+        const reduxState: Partial<IReaderStateReaderPersistence> = yield* selectTyped(
             (state: RootState) =>
-                state.win.registry.reader[publicationIdentifier]?.reduxState || {} as IReaderStateReader,
+                state.win.registry.reader[publicationIdentifier]?.reduxState || {},
         );
 
         // session always enabled
@@ -335,12 +335,17 @@ function* readerSetReduxState(action: readerActions.setReduxState.TAction) {
 
     if (reader) {
 
-        yield put(winActions.session.setReduxState.build(winId, reader.publicationIdentifier, reduxState));
+        console.log("TRETRE1", Object.keys(reduxState), "vs", Object.keys(reader.reduxState));
+
+        yield put(winActions.session.setReduxState.build(winId, reader.publicationIdentifier, { ...reader.reduxState, ...reduxState }));
 
         yield put(winActions.registry.registerReaderPublication.build(
             reader.publicationIdentifier,
             reader.windowBound,
-            reader.reduxState),
+            reduxState), // partial readerReduxState from reader-persistence need to keep only a list of key
+            // cf src/renderer/reader/redux/middleware/persistence.ts
+            // cf src/main/redux/actions/win/session/registerReader.ts "info" key injection
+            // https://github.com/edrlab/thorium-reader/issues/1444 https://github.com/edrlab/thorium-reader/discussions/1762 
         );
     } else {
         debug("!!! Error no reader window found, why ??", winId);

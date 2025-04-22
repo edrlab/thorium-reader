@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import {
-    IReaderRootState,
+    IReaderStateReaderHydration,
 } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
 export enum EventType {
@@ -18,5 +18,5 @@ export const CHANNEL = "READER_INIT";
 
 export interface EventPayload {
     type: EventType;
-    payload: Partial<IReaderRootState>;
+    payload: IReaderStateReaderHydration;
 }
