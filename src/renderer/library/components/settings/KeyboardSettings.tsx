@@ -16,6 +16,7 @@ import * as stylesDropDown from "readium-desktop/renderer/assets/styles/componen
 import classNames from "classnames";
 import * as React from "react";
 import * as Popover from "@radix-ui/react-popover";
+import {Button, OverlayArrow, Tooltip, TooltipTrigger} from "react-aria-components";
 import FocusLock from "react-focus-lock";
 import { connect } from "react-redux";
 import {
@@ -171,65 +172,228 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         const isSearchEmpty = !this.state.searchItem || this.state.searchItem.trim() === "";
 
         const cleanNames = {
-            AddBookmarkWithLabel: `${__("settings.keyboard.name.AddBookmarkWithLabel")}`,
-            AnnotationsCreate: `${__("settings.keyboard.name.AnnotationsCreate")}`,
-            AnnotationsCreateQuick: `${__("settings.keyboard.name.AnnotationsCreateQuick")}`,
-            AnnotationsToggleMargin: `${__("settings.keyboard.name.AnnotationsToggleMargin")}`,
-            AudioNext: `${__("settings.keyboard.name.AudioNext")}`,
-            AudioNextAlt: `${__("settings.keyboard.name.AudioNextAlt")}`,
-            AudioPlayPause: `${__("settings.keyboard.name.AudioPlayPause")}`,
-            AudioPrevious: `${__("settings.keyboard.name.AudioPrevious")}`,
-            AudioPreviousAlt: `${__("settings.keyboard.name.AudioPreviousAlt")}`,
-            AudioStop: `${__("settings.keyboard.name.AudioStop")}`,
-            CloseReader: `${__("settings.keyboard.name.CloseReader")}`,
-            FXLZoomIn: `${__("settings.keyboard.name.FXLZoomIn")}`,
-            FXLZoomOut: `${__("settings.keyboard.name.FXLZoomOut")}`,
-            FXLZoomReset: `${__("settings.keyboard.name.FXLZoomReset")}`,
-            FocusMain: `${__("settings.keyboard.name.FocusMain")}`,
-            FocusMainDeep: `${__("settings.keyboard.name.FocusMainDeep")}`,
-            FocusReaderGotoPage: `${__("settings.keyboard.name.FocusReaderGotoPage")}`,
-            FocusReaderNavigation: `${__("settings.keyboard.name.FocusReaderNavigation")}`,
-            FocusReaderNavigationAnnotations: `${__("settings.keyboard.name.FocusReaderNavigationAnnotations")}`,
-            FocusReaderNavigationBookmarks: `${__("settings.keyboard.name.FocusReaderNavigationBookmarks")}`,
-            FocusReaderNavigationSearch: `${__("settings.keyboard.name.FocusReaderNavigationSearch")}`,
-            FocusReaderNavigationTOC: `${__("settings.keyboard.name.FocusReaderNavigationTOC")}`,
-            FocusReaderSettings: `${__("settings.keyboard.name.FocusReaderSettings")}`,
-            FocusSearch: `${__("settings.keyboard.name.FocusSearch")}`,
-            FocusToolbar: `${__("settings.keyboard.name.FocusToolbar")}`,
-            NavigateNextChapter: `${__("settings.keyboard.name.NavigateNextChapter")}`,
-            NavigateNextChapterAlt: `${__("settings.keyboard.name.NavigateNextChapterAlt")}`,
-            NavigateNextHistory: `${__("settings.keyboard.name.NavigateNextHistory")}`,
-            NavigateNextLibraryPage: `${__("settings.keyboard.name.NavigateNextLibraryPage")}`,
-            NavigateNextLibraryPageAlt: `${__("settings.keyboard.name.NavigateNextLibraryPageAlt")}`,
-            NavigateNextOPDSPage: `${__("settings.keyboard.name.NavigateNextOPDSPage")}`,
-            NavigateNextOPDSPageAlt: `${__("settings.keyboard.name.NavigateNextOPDSPageAlt")}`,
-            NavigateNextPage: `${__("settings.keyboard.name.NavigateNextPage")}`,
-            NavigateNextPageAlt: `${__("settings.keyboard.name.NavigateNextPageAlt")}`,
-            NavigatePreviousChapter: `${__("settings.keyboard.name.NavigatePreviousChapter")}`,
-            NavigatePreviousChapterAlt: `${__("settings.keyboard.name.NavigatePreviousChapterAlt")}`,
-            NavigatePreviousHistory: `${__("settings.keyboard.name.NavigatePreviousHistory")}`,
-            NavigatePreviousLibraryPage: `${__("settings.keyboard.name.NavigatePreviousLibraryPage")}`,
-            NavigatePreviousLibraryPageAlt: `${__("settings.keyboard.name.NavigatePreviousLibraryPageAlt")}`,
-            NavigatePreviousOPDSPage: `${__("settings.keyboard.name.NavigatePreviousOPDSPage")}`,
-            NavigatePreviousOPDSPageAlt: `${__("settings.keyboard.name.NavigatePreviousOPDSPageAlt")}`,
-            NavigatePreviousPage: `${__("settings.keyboard.name.NavigatePreviousPage")}`,
-            NavigatePreviousPageAlt: `${__("settings.keyboard.name.NavigatePreviousPageAlt")}`,
-            NavigateToBegin: `${__("settings.keyboard.name.NavigateToBegin")}`,
-            NavigateToEnd: `${__("settings.keyboard.name.NavigateToEnd")}`,
-            OpenReaderInfo: `${__("settings.keyboard.name.OpenReaderInfo")}`,
-            OpenReaderInfoWhereAmI: `${__("settings.keyboard.name.OpenReaderInfoWhereAmI")}`,
-            SearchNext: `${__("settings.keyboard.name.SearchNext")}`,
-            SearchNextAlt: `${__("settings.keyboard.name.SearchNextAlt")}`,
-            SearchPrevious: `${__("settings.keyboard.name.SearchPrevious")}`,
-            SearchPreviousAlt: `${__("settings.keyboard.name.SearchPreviousAlt")}`,
-            SpeakReaderInfoWhereAmI: `${__("settings.keyboard.name.SpeakReaderInfoWhereAmI")}`,
-            ToggleBookmark: `${__("settings.keyboard.name.ToggleBookmark")}`,
-            ToggleReaderFullscreen: `${__("settings.keyboard.name.ToggleReaderFullscreen")}`,
+            AddBookmarkWithLabel: {
+                name: `${__("settings.keyboard.name.AddBookmarkWithLabel")}`,
+                description: `${__("settings.keyboard.description.AddBookmarkWithLabelDesc")}`,
+            },
+            AnnotationsCreate: {
+                name: `${__("settings.keyboard.name.AnnotationsCreate")}`,
+                description: `${__("settings.keyboard.description.AnnotationsCreateDesc")}`,
+            },
+            AnnotationsCreateQuick: {
+                name: `${__("settings.keyboard.name.AnnotationsCreateQuick")}`,
+                description: `${__("settings.keyboard.description.AnnotationsCreateQuickDesc")}`,
+            },
+            AnnotationsToggleMargin: {
+                name: `${__("settings.keyboard.name.AnnotationsToggleMargin")}`,
+                description: `${__("settings.keyboard.description.AnnotationsToggleMarginDesc")}`,
+            },
+            AudioNext: {
+                name: `${__("settings.keyboard.name.AudioNext")}`,
+                description: `${__("settings.keyboard.description.AudioNextDesc")}`,
+            },
+            AudioNextAlt: {
+                name: `${__("settings.keyboard.name.AudioNextAlt")}`,
+                description: `${__("settings.keyboard.description.AudioNextAltDesc")}`,
+            },
+            AudioPlayPause: {
+                name: `${__("settings.keyboard.name.AudioPlayPause")}`,
+                description: `${__("settings.keyboard.description.AudioPlayPauseDesc")}`,
+            },
+            AudioPrevious: {
+                name: `${__("settings.keyboard.name.AudioPrevious")}`,
+                description: `${__("settings.keyboard.description.AudioPreviousDesc")}`,
+            },
+            AudioPreviousAlt: {
+                name: `${__("settings.keyboard.name.AudioPreviousAlt")}`,
+                description: `${__("settings.keyboard.description.AudioPreviousAltDesc")}`,
+            },
+            AudioStop: {
+                name: `${__("settings.keyboard.name.AudioStop")}`,
+                description: `${__("settings.keyboard.description.AudioStopDesc")}`,
+            },
+            CloseReader: {
+                name: `${__("settings.keyboard.name.CloseReader")}`,
+                description: `${__("settings.keyboard.description.CloseReaderDesc")}`,
+            },
+            FXLZoomIn: {
+                name: `${__("settings.keyboard.name.FXLZoomIn")}`,
+                description: `${__("settings.keyboard.description.FXLZoomInDesc")}`,
+            },
+            FXLZoomOut: {
+                name: `${__("settings.keyboard.name.FXLZoomOut")}`,
+                description: `${__("settings.keyboard.description.FXLZoomOutDesc")}`,
+            },
+            FXLZoomReset: {
+                name: `${__("settings.keyboard.name.FXLZoomReset")}`,
+                description: `${__("settings.keyboard.description.FXLZoomResetDesc")}`,
+            },
+            FocusMain: {
+                name: `${__("settings.keyboard.name.FocusMain")}`,
+                description: `${__("settings.keyboard.description.FocusMainDesc")}`,
+            },
+            FocusMainDeep: {
+                name: `${__("settings.keyboard.name.FocusMainDeep")}`,
+                description: `${__("settings.keyboard.description.FocusMainDeepDesc")}`,
+            },
+            FocusReaderGotoPage: {
+                name: `${__("settings.keyboard.name.FocusReaderGotoPage")}`,
+                description: `${__("settings.keyboard.description.FocusReaderGotoPageDesc")}`,
+            },
+            FocusReaderNavigation: {
+                name: `${__("settings.keyboard.name.FocusReaderNavigation")}`,
+                description: `${__("settings.keyboard.description.FocusReaderNavigationDesc")}`,
+            },
+            FocusReaderNavigationAnnotations: {
+                name: `${__("settings.keyboard.name.FocusReaderNavigationAnnotations")}`,
+                description: `${__("settings.keyboard.description.FocusReaderNavigationAnnotationsDesc")}`,
+            },
+            FocusReaderNavigationBookmarks: {
+                name: `${__("settings.keyboard.name.FocusReaderNavigationBookmarks")}`,
+                description: `${__("settings.keyboard.description.FocusReaderNavigationBookmarksDesc")}`,
+            },
+            FocusReaderNavigationSearch: {
+                name: `${__("settings.keyboard.name.FocusReaderNavigationSearch")}`,
+                description: `${__("settings.keyboard.description.FocusReaderNavigationSearchDesc")}`,
+            },
+            FocusReaderNavigationTOC: {
+                name: `${__("settings.keyboard.name.FocusReaderNavigationTOC")}`,
+                description: `${__("settings.keyboard.description.FocusReaderNavigationTOCDesc")}`,
+            },
+            FocusReaderSettings: {
+                name: `${__("settings.keyboard.name.FocusReaderSettings")}`,
+                description: `${__("settings.keyboard.description.FocusReaderSettingsDesc")}`,
+            },
+            FocusSearch: {
+                name: `${__("settings.keyboard.name.FocusSearch")}`,
+                description: `${__("settings.keyboard.description.FocusSearchDesc")}`,
+            },
+            FocusToolbar: {
+                name: `${__("settings.keyboard.name.FocusToolbar")}`,
+                description: `${__("settings.keyboard.description.FocusToolbarDesc")}`,
+            },
+            NavigateNextChapter: {
+                name: `${__("settings.keyboard.name.NavigateNextChapter")}`,
+                description: `${__("settings.keyboard.description.NavigateNextChapterDesc")}`,
+            },
+            NavigateNextChapterAlt: {
+                name: `${__("settings.keyboard.name.NavigateNextChapterAlt")}`,
+                description: `${__("settings.keyboard.description.NavigateNextChapterAltDesc")}`,
+            },
+            NavigateNextHistory: {
+                name: `${__("settings.keyboard.name.NavigateNextHistory")}`,
+                description: `${__("settings.keyboard.description.NavigateNextHistoryDesc")}`,
+            },
+            NavigateNextLibraryPage: {
+                name: `${__("settings.keyboard.name.NavigateNextLibraryPage")}`,
+                description: `${__("settings.keyboard.description.NavigateNextLibraryPageDesc")}`,
+            },
+            NavigateNextLibraryPageAlt: {
+                name: `${__("settings.keyboard.name.NavigateNextLibraryPageAlt")}`,
+                description: `${__("settings.keyboard.description.NavigateNextLibraryPageAltDesc")}`,
+            },
+            NavigateNextOPDSPage: {
+                name: `${__("settings.keyboard.name.NavigateNextOPDSPage")}`,
+                description: `${__("settings.keyboard.description.NavigateNextOPDSPageDesc")}`,
+            },
+            NavigateNextOPDSPageAlt: {
+                name: `${__("settings.keyboard.name.NavigateNextOPDSPageAlt")}`,
+                description: `${__("settings.keyboard.description.NavigateNextOPDSPageAltDesc")}`,
+            },
+            NavigateNextPage: {
+                name: `${__("settings.keyboard.name.NavigateNextPage")}`,
+                description: `${__("settings.keyboard.description.NavigateNextPageDesc")}`,
+            },
+            NavigateNextPageAlt: {
+                name: `${__("settings.keyboard.name.NavigateNextPageAlt")}`,
+                description: `${__("settings.keyboard.description.NavigateNextPageAltDesc")}`,
+            },
+            NavigatePreviousChapter: {
+                name: `${__("settings.keyboard.name.NavigatePreviousChapter")}`,
+                description: `${__("settings.keyboard.description.NavigatePreviousChapterDesc")}`,
+            },
+            NavigatePreviousChapterAlt: {
+                name: `${__("settings.keyboard.name.NavigatePreviousChapterAlt")}`,
+                description: `${__("settings.keyboard.description.NavigatePreviousChapterAltDesc")}`,
+            },
+            NavigatePreviousHistory: {
+                name: `${__("settings.keyboard.name.NavigatePreviousHistory")}`,
+                description: `${__("settings.keyboard.description.NavigatePreviousHistoryDesc")}`,
+            },
+            NavigatePreviousLibraryPage: {
+                name: `${__("settings.keyboard.name.NavigatePreviousLibraryPage")}`,
+                description: `${__("settings.keyboard.description.NavigatePreviousLibraryPageDesc")}`,
+            },
+            NavigatePreviousLibraryPageAlt: {
+                name: `${__("settings.keyboard.name.NavigatePreviousLibraryPageAlt")}`,
+                description: `${__("settings.keyboard.description.NavigatePreviousLibraryPageAltDesc")}`,
+            },
+            NavigatePreviousOPDSPage: {
+                name: `${__("settings.keyboard.name.NavigatePreviousOPDSPage")}`,
+                description: `${__("settings.keyboard.description.NavigatePreviousOPDSPageDesc")}`,
+            },
+            NavigatePreviousOPDSPageAlt: {
+                name: `${__("settings.keyboard.name.NavigatePreviousOPDSPageAlt")}`,
+                description: `${__("settings.keyboard.description.NavigatePreviousOPDSPageAltDesc")}`,
+            },
+            NavigatePreviousPage: {
+                name: `${__("settings.keyboard.name.NavigatePreviousPage")}`,
+                description: `${__("settings.keyboard.description.NavigatePreviousPageDesc")}`,
+            },
+            NavigatePreviousPageAlt: {
+                name: `${__("settings.keyboard.name.NavigatePreviousPageAlt")}`,
+                description: `${__("settings.keyboard.description.NavigatePreviousPageAltDesc")}`,
+            },
+            NavigateToBegin: {
+                name: `${__("settings.keyboard.name.NavigateToBegin")}`,
+                description: `${__("settings.keyboard.description.NavigateToBeginDesc")}`,
+            },
+            NavigateToEnd: {
+                name: `${__("settings.keyboard.name.NavigateToEnd")}`,
+                description: `${__("settings.keyboard.description.NavigateToEndDesc")}`,
+            },
+            OpenReaderInfo: {
+                name: `${__("settings.keyboard.name.OpenReaderInfo")}`,
+                description: `${__("settings.keyboard.description.OpenReaderInfoDesc")}`,
+            },
+            OpenReaderInfoWhereAmI: {
+                name: `${__("settings.keyboard.name.OpenReaderInfoWhereAmI")}`,
+                description: `${__("settings.keyboard.description.OpenReaderInfoWhereAmIDesc")}`,
+            },
+            SearchNext: {
+                name: `${__("settings.keyboard.name.SearchNext")}`,
+                description: `${__("settings.keyboard.description.SearchNextDesc")}`,
+            },
+            SearchNextAlt: {
+                name: `${__("settings.keyboard.name.SearchNextAlt")}`,
+                description: `${__("settings.keyboard.description.SearchNextAltDesc")}`,
+            },
+            SearchPrevious: {
+                name: `${__("settings.keyboard.name.SearchPrevious")}`,
+                description: `${__("settings.keyboard.description.SearchPreviousDesc")}`,
+            },
+            SearchPreviousAlt: {
+                name: `${__("settings.keyboard.name.SearchPreviousAlt")}`,
+                description: `${__("settings.keyboard.description.SearchPreviousAltDesc")}`,
+            },
+            SpeakReaderInfoWhereAmI: {
+                name: `${__("settings.keyboard.name.SpeakReaderInfoWhereAmI")}`,
+                description: `${__("settings.keyboard.description.SpeakReaderInfoWhereAmIDesc")}`,
+            },
+            ToggleBookmark: {
+                name: `${__("settings.keyboard.name.ToggleBookmark")}`,
+                description: `${__("settings.keyboard.description.ToggleBookmarkDesc")}`,
+            },
+            ToggleReaderFullscreen: {
+                name: `${__("settings.keyboard.name.ToggleReaderFullscreen")}`,
+                description: `${__("settings.keyboard.description.ToggleReaderFullscreenDesc")}`,
+            },
         };
+        
 
         const filteredShortcuts = isSearchEmpty
         ? ObjectKeys(sortObject(this.props.keyboardShortcuts) as TKeyboardShortcutsMap)
-        : ObjectKeys(cleanNames).filter(key => cleanNames[key].toLowerCase().includes(this.state.searchItem?.toLowerCase()));
+        : ObjectKeys(cleanNames).filter(key => cleanNames[key].name.toLowerCase().includes(this.state.searchItem?.toLowerCase()));
           
         return (
             <>
@@ -275,7 +439,23 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                 const def = this.props.keyboardShortcuts[id];
                                 const hit = this.state.editKeyboardShortcutId === id;
                                 const frag = <>
-                                    <h3 aria-hidden className={stylesKeys.keyshortElement_title}>{Object.keys(cleanNames).find((name: string) => name === id) ? cleanNames[id] : undefined}</h3>
+                                    <div style={{display: "flex"}}>
+                                        <h3 aria-hidden className={stylesKeys.keyshortElement_title}>{Object.keys(cleanNames).find((name: string) => name === id) ? cleanNames[id].name : undefined}</h3>
+                                    {    cleanNames[id].description.length ?                                    
+                                        <TooltipTrigger>
+                                            <Button style={{width: "15px"}}><SVG ariaHidden svg={InfoIcon} /></Button>
+                                            <Tooltip style={{border: "1px solid var(--color-primary)", maxWidth: "300px", width: "fit-content", zIndex: "1000", backgroundColor: "var(--color-secondary)", borderRadius: "6px", padding: "5px"}}>
+                                                <OverlayArrow>
+                                                <svg width={8} height={8} viewBox="0 0 8 8">
+                                                    <path d="M0 0 L4 4 L8 0" />
+                                                </svg>
+                                                </OverlayArrow>
+                                                {Object.keys(cleanNames).find((name: string) => name === id) ? cleanNames[id].description : undefined}
+                                            </Tooltip>
+                                        </TooltipTrigger>
+                                        : ""
+                                    }
+                                    </div>
                                     <div className={hit ? stylesKeys.keyshortElement_shortcut_container_edit : stylesKeys.keyshortElement_shortcut_container}>
                                         <div className={stylesKeys.keyshortElement_shortcut}>
                                             {this.prettifyKeyboardShortcut(def)}
