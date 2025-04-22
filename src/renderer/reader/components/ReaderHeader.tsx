@@ -81,6 +81,7 @@ import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { DockTypeName } from "readium-desktop/common/models/dock";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { TDrawType } from "readium-desktop/common/redux/states/renderer/note";
+import { TKeyboardShortcut } from "readium-desktop/common/keyboard";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -170,6 +171,7 @@ interface IState {
 
     selectedLanguage: ILanguages | undefined;
     selectedVoice: IVoices | undefined;
+    systemOs: string;
 }
 
 export class ReaderHeader extends React.Component<IProps, IState> {
@@ -214,6 +216,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             selectedVoice: undefined,
 
             voices: [],
+
+            systemOs: "",
         };
 
         // this.timerFXLZoomDebounce = undefined;
@@ -254,6 +258,21 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                 this.setVoices(voices);
             });
         }
+
+        const userAgent = window.navigator.userAgent;
+        let detectedOS = "Unknown";
+
+        if (userAgent.indexOf("Win") !== -1) {
+            detectedOS = "Windows";
+        } else if (userAgent.indexOf("Mac") !== -1) {
+            detectedOS = "MacOS";
+        } else if (userAgent.indexOf("X11") !== -1) {
+            detectedOS = "UNIX";
+        } else if (userAgent.indexOf("Linux") !== -1) {
+            detectedOS = "Linux";
+        }
+
+        this.setState({systemOs: detectedOS});
     }
 
     public componentWillUnmount() {
@@ -390,6 +409,22 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
     private __closeNavPanel = false;
 
+    public convertShortcutToString(shortcut: Readonly<TKeyboardShortcut>): string {
+        const parts = [];
+        const system = this.state.systemOs;
+    
+        if (shortcut.meta) parts.push(system === "MacOS" ? "CMD": "META");
+        if (shortcut.control) parts.push("CTRL");
+        if (shortcut.shift) parts.push("SHIFT");
+        if (shortcut.alt) parts.push(system === "MacOS" ? "OPTION" : "ALT");
+    
+        // Ajouter la touche principale
+        const key = shortcut.key.replace("Key", "");
+        parts.push(key);
+    
+        return parts.join(" + ");
+    }
+
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 
@@ -481,6 +516,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
         const appOverlayElement = document.getElementById("app-overlay");
 
+        const infoKeyboardObject = this.convertShortcutToString(this.props.keyboardShortcuts.OpenReaderInfoWhereAmI);
+
+
         return (
             <nav
                 className={classNames(stylesReaderHeader.toolbar_navigation,
@@ -512,7 +550,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     <button
                                         className={stylesReader.menu_button}
                                         ref={this.infoMenuButtonRef}
-                                        title={__("reader.navigation.infoTitle")}
+                                        title={__("reader.navigation.infoTitle") + " (" + infoKeyboardObject + ")"}
                                         disabled={(this.props.settingsOpen || this.props.menuOpen) && !isDockedMode}
                                     >
                                         <SVG ariaHidden={true} svg={InfosIcon} />
