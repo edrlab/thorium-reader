@@ -335,8 +335,6 @@ function* readerSetReduxState(action: readerActions.setReduxState.TAction) {
 
     if (reader) {
 
-        console.log("TRETRE1", Object.keys(reduxState), "vs", Object.keys(reader.reduxState));
-
         yield put(winActions.session.setReduxState.build(winId, reader.publicationIdentifier, { ...reader.reduxState, ...reduxState }));
 
         yield put(winActions.registry.registerReaderPublication.build(
