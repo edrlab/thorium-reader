@@ -9,7 +9,13 @@ import * as debug_ from "debug";
 import { select as selectTyped, call as callTyped, SagaGenerator} from "typed-redux-saga/macro";
 import { convertAnnotationStateArrayToReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/converter";
 import { IReadiumAnnotation, IReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
-import * as Mustache from "mustache";
+
+// https://github.com/janl/mustache.js/issues/797
+// export 'render' (imported as 'Mustache') was not found in 'mustache' (possible exports: default)
+// import * as Mustache from "mustache";
+import Mustache from "mustache";
+// esModuleInterop?
+
 import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/annotation/htmlTemplate";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
@@ -59,14 +65,14 @@ const downloadAnnotationFile = (data: string, filename: string, extension: ".ann
 };
 export function* exportAnnotationSet(notes: INoteState[], publicationView: PublicationView, label?: string, fileType: "html" | "annotation" = "annotation"): SagaGenerator<void> {
 
-    
+
     debug("exportAnnotationSet just started !");
     debug("AnnotationArray: ", notes);
     debug("PubView ok?", typeof publicationView);
     debug("label:", label);
     debug("fileType:", fileType);
 
-    
+
     // notes selector generation with cacheDocument included in note on export, computed after creation
     // yield* callTyped(getResourceCache);
     // const cacheDocuments = yield* selectTyped((state: IReaderRootState) => state.resourceCache);
