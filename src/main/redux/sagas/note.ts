@@ -26,7 +26,7 @@ import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { v4 as uuidv4 } from "uuid";
 import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLatest";
 import { getTranslator } from "readium-desktop/common/services/translator";
-import { EDrawType, INotePreParsingState, INoteState, NOTE_DEFAULT_COLOR, noteColorCodeToColorSet, noteColorSetToColorCode } from "readium-desktop/common/redux/states/renderer/note";
+import { EDrawType, INoteState, NOTE_DEFAULT_COLOR, noteColorCodeToColorSet, noteColorSetToColorCode } from "readium-desktop/common/redux/states/renderer/note";
 
 
 // Logger
@@ -34,30 +34,30 @@ const filename_ = "readium-desktop:main:saga:annotationsImporter";
 const debug = debug_(filename_);
 debug("_");
 
-export function* getAnnotationFromMainWinState(publicationIdentifier: string): SagaGenerator<INoteState[]> {
+export function* getNotesFromMainWinState(publicationIdentifier: string): SagaGenerator<INoteState[]> {
 
-    let annotations: INoteState[] = [];
+    let notes: INoteState[] = [];
     const sessionReader = yield* selectTyped((state: RootState) => state.win.session.reader);
     const winSessionReaderStateArray = Object.values(sessionReader).filter((v) => v.publicationIdentifier === publicationIdentifier);
     if (winSessionReaderStateArray.length) {
         const winSessionReaderStateFirst = winSessionReaderStateArray[0]; // TODO: get the first only !?!
-        annotations = winSessionReaderStateFirst?.reduxState?.note || [];
+        notes = winSessionReaderStateFirst?.reduxState?.note || [];
 
         debug("current publication AnnotationsList come from the readerSession (there are one or many readerWin currently open)");
     } else {
         const sessionRegistry = yield* selectTyped((state: RootState) => state.win.registry.reader);
         if (Object.keys(sessionRegistry).find((v) => v === publicationIdentifier)) {
-            annotations = sessionRegistry[publicationIdentifier]?.reduxState?.note || [];
+            notes = sessionRegistry[publicationIdentifier]?.reduxState?.note || [];
 
             debug("current publication AnnotationsList come from the readerRegistry (no readerWin currently open)");
         }
     }
-    debug("There are", annotations.length, "annotation(s) loaded from the current publicationIdentifier");
-    if (!annotations.length) {
+    debug("There are", notes.length, "annotation(s) loaded from the current publicationIdentifier");
+    if (!notes.length) {
         debug("Be careful, there are no annotation loaded for this publication!");
     }
 
-    return annotations;
+    return notes;
 }
 
 function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAction): SagaGenerator<void> {
@@ -147,12 +147,12 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         debug("GOOD ! spineItemHref matched : publication identified, let's continue the importation");
 
         // OK publication identified
-        const annotations = yield* callTyped(getAnnotationFromMainWinState, publicationIdentifier);
+        const notes = yield* callTyped(getNotesFromMainWinState, publicationIdentifier);
 
-        const annotationsParsedNoConflictArray: INotePreParsingState[] = [];
-        const annotationsParsedConflictOlderArray: INotePreParsingState[] = [];
-        const annotationsParsedConflictNewerArray: INotePreParsingState[] = [];
-        const annotationsParsedAllArray: INotePreParsingState[] = [];
+        const annotationsParsedNoConflictArray: INoteState[] = [];
+        const annotationsParsedConflictOlderArray: INoteState[] = [];
+        const annotationsParsedConflictNewerArray: INoteState[] = [];
+        const annotationsParsedAllArray: INoteState[] = [];
 
         debug("There are", annotationsIncommingArray.length, "incomming annotations to be imported");
 
@@ -176,9 +176,9 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 continue;
             }
 
-            const annotationParsed: INotePreParsingState = {
+            const annotationParsed: INoteState = {
                 uuid,
-                target: incommingAnnotation.target,
+                index: -1, // TODO !!!!
                 textualValue: incommingAnnotation.body?.value,
                 color: hexToRgb(noteColorSetToColorCode[incommingAnnotation.body?.color] ||
                     noteColorSetToColorCode[noteColorCodeToColorSet[incommingAnnotation.body?.color] || NOTE_DEFAULT_COLOR],
@@ -195,6 +195,9 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                     name: creator.name,
                 } : undefined,
                 group: incommingAnnotation.motivation === "bookmarking" ? "bookmark" : "annotation",
+                readiumAnnotation: {
+                    import: { target: incommingAnnotation.target },
+                },
             };
 
             if (annotationParsed.modified) {
@@ -214,7 +217,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
 
             annotationsParsedAllArray.push(annotationParsed);
 
-            const annotationSameUUIDFound = annotations.find(({ uuid }) => uuid === annotationParsed.uuid);
+            const annotationSameUUIDFound = notes.find(({ uuid }) => uuid === annotationParsed.uuid);
             if (annotationSameUUIDFound) {
 
                 if (annotationSameUUIDFound.modified && annotationParsed.modified) {
@@ -285,35 +288,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         debug("ready to send", annotationsParsedReadyToBeImportedArray.length, "annotation(s) to the annotationImportQueue processed to the reader");
 
 
-        // need to develop a FIFO queue because more that one same notes can be pushed to the queue
-
-        let delta = 0;
-        {
-            const annotationQueue = yield* selectTyped((_state: RootState) => _state.annotationImportQueue);
-            debug("AnnotationImportQueue length: ", annotationQueue.length);
-            delta = -1 * annotationQueue.length;
-        }
-
-        yield* putTyped(annotationActions.pushToAnnotationImportQueue.build(annotationsParsedReadyToBeImportedArray));
-
-        // finish !!!
-
-        {
-            const annotationQueue = yield* selectTyped((_state: RootState) => _state.annotationImportQueue);
-            debug("AnnotationImportQueue length: ", annotationQueue.length);
-            delta += annotationQueue.length;
-
-            if (delta === annotationsParsedReadyToBeImportedArray.length) {
-                debug(`${delta} new annotations adedd to the import queue`);
-            } else {
-                debug(`Error not all annotations have been added to the queue : ${delta} vs ${annotationsParsedReadyToBeImportedArray.length} !!!`);
-                debug(JSON.stringify(annotationsParsedReadyToBeImportedArray, null, 4));
-            }
-        }
-
-
-        // then in reader window that got the lock, parse and import notes
-        // annotImportQUeue[0], get the first element and then dispatch to unshift from the state myaction.shift.build()... FIFO queue
+        // push notes to the publicationIdentifier redux-state (reader if open or redux-registry-main state instead)
 
         // convert range to locator IRangeInfo/selectionInfo
         // ref: https://github.com/readium/r2-navigator-js/blob/a08126622ac87e04200a178cc438fd7e1b256c52/src/electron/renderer/webview/selection.ts#L342

@@ -83,7 +83,7 @@ export enum EDrawType {
 export interface INoteState {
     uuid: string;
     index: number;
-    locatorExtended: MiniLocatorExtended;
+    locatorExtended?: MiniLocatorExtended | undefined;
     textualValue?: string;
     color: IColor;
     drawType: EDrawType;
@@ -97,15 +97,15 @@ export interface INoteState {
             selector: ISelector[];
         }
 
-        // TODO: import !?
+        import? : {
+            target: IReadiumAnnotation["target"];
+        }
     }
 }
 
 export type TDrawView = "annotation" | "margin" | "hide";
 
 export type TnoteTagsIndex = Record<string, number>;
-
-export type INotePreParsingState = Pick<INoteState, "uuid" | "textualValue" | "color" | "drawType" | "tags" | "modified" | "created" | "creator" | "group"> & { target: IReadiumAnnotation["target"] };
 
 export interface INoteExportState {
     overrideHTMLTemplate: boolean;

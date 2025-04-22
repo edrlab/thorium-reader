@@ -19,7 +19,6 @@ import * as ipc from "./ipc";
 import * as search from "./search";
 import * as winInit from "./win";
 import * as noteSaga from "./note";
-import * as shareAnnotationSet from "./readiumAnnotation/shareAnnotationSet";
 import * as img from "./img";
 import * as settingsOrMenuDialogOrDock from "./settingsOrMenu";
 import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
@@ -98,8 +97,6 @@ export function* rootSaga() {
         search.saga(),
 
         noteSaga.saga(),
-        
-        shareAnnotationSet.saga(),
 
         img.saga(),
 
@@ -149,7 +146,8 @@ export function* rootSaga() {
             for (const note of notes) {
 
                 yield* delayTyped(10); // 100 notes equals to 1 + 1 seconds , seems acceptable to not disturb user with a tiny compute machine
-                yield* callTyped(noteSaga.noteUpdateSelector, note);
+                yield* callTyped(noteSaga.noteUpdateExportSelectorFromLocatorExtended, note);
+                yield* callTyped(noteSaga.noteUpdateLocatorExtendedFromImportSelector, note);
             }
         }),
     ]);

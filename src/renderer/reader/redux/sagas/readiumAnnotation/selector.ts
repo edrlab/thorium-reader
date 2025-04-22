@@ -45,6 +45,11 @@ const describeCssSelectorWithTextPosition = async (range: Range, document: Docum
 
 export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: boolean, cacheDocument: ICacheDocument): SagaGenerator<ISelector[]> {
 
+    const { locatorExtended } = note;
+    if (!locatorExtended) {
+        return [];
+    }
+
     const selector: ISelector<any>[] = [];
 
     const xmlDom = getDocumentFromICacheDocument(cacheDocument);
@@ -55,7 +60,6 @@ export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: bool
     const document = xmlDom;
     const root = xmlDom.body;
 
-    const { locatorExtended } = note;
     const { selectionInfo, locator } = locatorExtended;
     const { locations } = locator;
     const { progression } = locations;

@@ -84,8 +84,6 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     annotationActions.importTriggerModal.ID,
     // annotationActions.importConfirmOrAbort.ID,
 
-    annotationActions.pushToAnnotationImportQueue.ID,
-
     annotationActions.shiftFromAnnotationImportQueue.ID,
 
     readerActions.setTheLock.ID,
