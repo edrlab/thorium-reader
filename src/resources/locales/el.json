@@ -135,8 +135,8 @@
         "cancel": "Ακύρωση",
         "deleteAnnotations": "Διαγραφή σημειώσεων;",
         "deleteAnnotationsText": "Είσαι σίγουρος/η για τη διαγραφή σημειώσεων {{- annotationListLength}};",
-        "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteBookmarks": "Διαγραφή σελιδοδεικτών;",
+        "deleteBookmarksText": "Είστε σίγουροι ότι θέλετε να διαγράψετε {{- bookmarkListLength}} σελιδοδείκτες;",
         "deleteFeed": "Διαγραφή καταλόγου;",
         "deletePublication": "Διαγραφή βιβλίου;",
         "import": "Επιβεβαίωση εισαγωγής:",
@@ -657,7 +657,7 @@
             }
         },
         "bookmarks": {
-            "index": ""
+            "index": "Σελιδοδείκτης {{- index}}"
         },
         "divina": {
             "mute": "σίγαση ήχου",
@@ -674,7 +674,7 @@
             "edit": "Επεξεργασία",
             "goTo": "Μετάβαση σε σελίδα",
             "landmarks": "Ορόσημα",
-            "saveMark": "Αποθήκευση σελιδοδείκτη",
+            "saveMark": "Αποθήκευση",
             "search": "Αναζήτηση",
             "searchResult": "Αναζήτηση [{{- searchText}}]",
             "toc": "Πίνακας περιεχομένων"
@@ -685,8 +685,8 @@
             "captionsDescription": "Απλοποιημένη προβολή κειμένου με ελάχιστη εφαρμογή στυλ μορφοποίησης.",
             "disableContinuousPlay": "Απενεργοποίηση συνεχούς αναπαραγωγής",
             "disableContinuousPlayDescription": "Μη αυτόματη αναπαραγωγή επόμενου αντικειμένου, παύση αμέσως μετά την αναπαραγωγή του τρέχοντος.",
-            "ignoreAndUseTTS": "",
-            "ignoreAndUseTTSDescription": "",
+            "ignoreAndUseTTS": "Αγνοήστε τον προηχογραφημένο ήχο, χρησιμοποιήστε TTS",
+            "ignoreAndUseTTSDescription": "Αγνοήστε τις επικαλύψεις πολυμέσων EPUB, διαβάστε με Text To Speech αντ' αυτού",
             "next": "Επόμενο Readaloud",
             "pause": "Παύση Readaloud",
             "play": "Έναρξη Readaloud",
@@ -763,7 +763,7 @@
             "letterSpacing": "Διάστημα μεταξύ γραμμάτων",
             "lineSpacing": "Διάστημα μεταξύ γραμμών",
             "margin": "Περιθώριο",
-            "noFootnotes": "Απενεργοποίηση υποσημειώσεων",
+            "noFootnotes": "Απενεργοποίηση αναδυόμενων υποσημειώσεων",
             "noRTLFlip": "Απενεργοποίηση Right-To-Left UI",
             "noRuby": "Κρύψιμο Japanese Ruby",
             "noTemporaryNavTargetOutline": "Απενεργοποίηση των οπτικών δεικτών πλοήγησης",
@@ -867,9 +867,9 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "",
-                "enableCheckbox": "",
-                "overrideHTMLTemplate": ""
+                "applyDefaultTemplate": "ΕΦΑΡΜΟΓΉ ΠΡΟΕΠΙΛΕΓΜΈΝΟΥ ΠΡΟΤΎΠΟΥ",
+                "enableCheckbox": "Ενεργοποίηση/απενεργοποίηση παράκαμψης προτύπου μουστάκι κατά την εξαγωγή σημειώσεων HTML",
+                "overrideHTMLTemplate": "Παράκαμψη του προτύπου Mustache κατά την εξαγωγή της σημείωσης σε HTML"
             }
         },
         "session": {
@@ -890,25 +890,25 @@
     },
     "tts": {
         "highlight": {
-            "mainColor": "",
-            "maskBlockWordOutline": "",
-            "maskBlockWordSolidBackground": "",
-            "maskBlockWordUnderline": "",
-            "maskWordOutline": "",
-            "maskWordSolidBackground": "",
-            "maskWordUnderline": "",
+            "mainColor": "Κύριο χρώμα",
+            "maskBlockWordOutline": "Μπλοκ μάσκας, περίγραμμα λέξης",
+            "maskBlockWordSolidBackground": "Μπλοκ μάσκας, Στερεό φόντο λέξης",
+            "maskBlockWordUnderline": "Μπλοκ μάσκας, υπογράμμιση λέξης",
+            "maskWordOutline": "Μάσκα, Περίγραμμα λέξης",
+            "maskWordSolidBackground": "Μάσκα, Word Στερεό φόντο",
+            "maskWordUnderline": "Μάσκα, Υπογράμμιση λέξης",
             "outlineWordOutline": "",
             "outlineWordSolidBackground": "",
             "outlineWordUnderline": "",
-            "preview": "",
+            "preview": "Προεπισκόπηση στυλ επισήμανσης TTS",
             "solidBackgroundWordOutline": "",
             "solidBackgroundWordSolidBackground": "",
             "solidBackgroundWordUnderline": "",
-            "style": "",
+            "style": "TTS στυλ επισήμανσης",
             "underlineWordOutline": "",
             "underlineWordSolidBackground": "",
             "underlineWordUnderline": "",
-            "wordColor": ""
+            "wordColor": "Χρώμα λέξης"
         }
     },
     "wizard": {
