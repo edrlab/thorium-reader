@@ -137,35 +137,42 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
 
 
     // https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/techniques/epub-metadata/index.html#conformance-group
-    const conformance = a11y_conformsTo.find((item) => item.startsWith("EPUB Accessibility 1."));
-    const __conformanceMatch = conformance?.match(/^EPUB Accessibility (\d+\.\d+) - WCAG (\d+\.\d+) Level ([A]+)$/);
-    const epub10_wcag20a = findStrInArray(a11y_conformsTo, "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-a");
-    const epub10_wcag20aa = findStrInArray(a11y_conformsTo, "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aa");
-    const epub10_wcag20aaa = findStrInArray(a11y_conformsTo, "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aaa");
-    let epub_version = undefined;
-    let wcag_version = undefined;
-    let wcag_level = undefined;
-    if (__conformanceMatch) {
-      [, epub_version, wcag_version, wcag_level] = __conformanceMatch;
-    } else if (epub10_wcag20aaa) {
-        epub_version = "1.0";
-        wcag_version = "2.0";
-        wcag_level = "AAA";
-    } else if (epub10_wcag20aa) {
-        epub_version = "1.0";
-        wcag_version = "2.0";
-        wcag_level = "AA";
-    } else if (epub10_wcag20a) {
-        epub_version = "1.0";
-        wcag_version = "2.0";
-        wcag_level = "A";
+    const conformanceResult: Array<{epub_version: string, wcag_version: string, wcag_level: string}> = [];
+    for (const conformance of a11y_conformsTo) {
+        const __conformanceMatch = conformance?.match(/^EPUB Accessibility (\d+\.\d+) - WCAG (\d+\.\d+) Level ([A]+)$/);
+        const epub10_wcag20a = findStrInArray(a11y_conformsTo, "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-a");
+        const epub10_wcag20aa = findStrInArray(a11y_conformsTo, "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aa");
+        const epub10_wcag20aaa = findStrInArray(a11y_conformsTo, "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-aaa");
+        let epub_version = undefined;
+        let wcag_version = undefined;
+        let wcag_level = undefined;
+        if (__conformanceMatch) {
+            [, epub_version, wcag_version, wcag_level] = __conformanceMatch;
+        } else if (epub10_wcag20aaa) {
+            epub_version = "1.0";
+            wcag_version = "2.0";
+            wcag_level = "AAA";
+        } else if (epub10_wcag20aa) {
+            epub_version = "1.0";
+            wcag_version = "2.0";
+            wcag_level = "AA";
+        } else if (epub10_wcag20a) {
+            epub_version = "1.0";
+            wcag_version = "2.0";
+            wcag_level = "A";
+        }
+        if (epub_version && wcag_level && wcag_version) {
+            conformanceResult.push({epub_version, wcag_level, wcag_version});
+        }
     }
+
+
     // const certifier_credentials = a11y_certifierCredential[0] || "";
     // const certifier = a11y_certifiedBy[0] || "";
     // const certifier_report = a11y_certifierReport[0] || "";
     // const certifier_date = "" // https://github.com/daisy/a11y-meta-viewer/blob/ab45abf9317e31fc187029c0e0b186d358780060/js/xpaths.js#L147 + interpolation localization issue https://github.com/w3c/publ-a11y/issues/688
 
-    const enableConformance = epub_version || wcag_version || wcag_level;
+    const enableConformance = !!conformanceResult.length;
 
     // https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/techniques/epub-metadata/index.html#additional-accessibility-information
     const aria = findStrInArray(a11y_accessibilityFeature, "aria");
@@ -278,6 +285,9 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                     {
                         enableNavigation
                             ? <>
+                                {table_of_contents_navigation ? <li className="publicationInfoA11y2-icon" title={__("publ-a11y-display-guide.navigation.navigation-toc.descriptive")}>
+                                    {__("publ-a11y-display-guide.navigation.navigation-toc.compact")}
+                                </li> : <></>}
                                 {page_navigation ? <li className="publicationInfoA11y2-icon" title={__("publ-a11y-display-guide.navigation.navigation-page-navigation.descriptive")}>
                                     {__("publ-a11y-display-guide.navigation.navigation-page-navigation.compact")}
                                 </li> : <></>}
@@ -286,9 +296,6 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                                 </li> : <></>}
                                 {index_navigation ? <li className="publicationInfoA11y2-icon" title={__("publ-a11y-display-guide.navigation.navigation-index.descriptive")}>
                                     {__("publ-a11y-display-guide.navigation.navigation-index.compact")}
-                                </li> : <></>}
-                                {table_of_contents_navigation ? <li className="publicationInfoA11y2-icon" title={__("publ-a11y-display-guide.navigation.navigation-toc.descriptive")}>
-                                    {__("publ-a11y-display-guide.navigation.navigation-toc.compact")}
                                 </li> : <></>}
                             </>
                             : <li className="publicationInfoA11y2-icon" title={__("publ-a11y-display-guide.navigation.navigation-no-metadata.descriptive")}>
@@ -400,17 +407,17 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                 {enableConformance
                     ? <><h5 className="publicationInfoA11y2-title">{__("publ-a11y-display-guide.conformance.conformance-title")}</h5>
                         <ul className={stylePublication.accessibility_infos_left}>
-                            {(epub_version && wcag_version && wcag_level)
+                            {enableConformance
                                 ? <>
-                                    {wcag_level === "AAA" ? <li className="publicationInfoA11y2-icon" title={__("publ-a11y-display-guide.conformance.conformance-aaa.descriptive")}>
+                                    {conformanceResult.reduce((pv, { wcag_level }) => pv.includes(wcag_level) ? pv : [...pv, wcag_level], []).map((wcag_level, i) => wcag_level === "AAA" ? <li key={"level_" + i} className="publicationInfoA11y2-icon" title={__("publ-a11y-display-guide.conformance.conformance-aaa.descriptive")}>
                                         {__("publ-a11y-display-guide.conformance.conformance-aaa.compact")}
-                                    </li> : wcag_level === "AA" ? <li className="publicationInfoA11y2-icon" title={__("publ-a11y-display-guide.conformance.conformance-aa.descriptive")}>
+                                    </li> : wcag_level === "AA" ? <li key={"level_" + i} className="publicationInfoA11y2-icon" title={__("publ-a11y-display-guide.conformance.conformance-aa.descriptive")}>
                                         {__("publ-a11y-display-guide.conformance.conformance-aa.compact")}
-                                    </li> : wcag_level === "A" ? <li className="publicationInfoA11y2-icon" title={__("publ-a11y-display-guide.conformance.conformance-a.descriptive")}>
+                                    </li> : wcag_level === "A" ? <li key={"level_" + i} className="publicationInfoA11y2-icon" title={__("publ-a11y-display-guide.conformance.conformance-a.descriptive")}>
                                         {__("publ-a11y-display-guide.conformance.conformance-a.compact")}
-                                    </li> : <li className="publicationInfoA11y2-icon" title={__("publ-a11y-display-guide.conformance.conformance-unknown-standard.descriptive")}>
+                                    </li> : <li key={"level_" + i} className="publicationInfoA11y2-icon" title={__("publ-a11y-display-guide.conformance.conformance-unknown-standard.descriptive")}>
                                         {__("publ-a11y-display-guide.conformance.conformance-unknown-standard.compact")}
-                                    </li>
+                                    </li>)
                                     }
                                     {a11y_certifiedBy.length
                                         ? a11y_certifiedBy.map((certifier, i) => <li key={"certifier_" + i}>{isURL(certifier) ? <a title={certifier} onClick={async (e) => { e.preventDefault(); await shell.openExternal(certifier); }} href={certifier}>
@@ -426,7 +433,7 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                                             __("publ-a11y-display-guide.conformance.conformance-certifier-credentials.compact") + " " + certifier_credentials
                                         }</li>)
                                         : <></>}
-                                    <li className="publicationInfoA11y2-icon" title={
+                                    {conformanceResult.map(({ epub_version, wcag_version, wcag_level }, i) => <li key={"conformance_" + i} className="publicationInfoA11y2-icon" title={
                                         __("publ-a11y-display-guide.conformance.conformance-details-claim.descriptive") + " " +
                                         (epub_version === "1.0" ? __("publ-a11y-display-guide.conformance.conformance-details-epub-accessibility-1-0.descriptive") + " " : epub_version === "1.1" ? __("publ-a11y-display-guide.conformance.conformance-details-epub-accessibility-1-1.descriptive") + " " : epub_version) +
                                         (wcag_version === "2.2" ? __("publ-a11y-display-guide.conformance.conformance-details-wcag-2-2.descriptive") + " " : wcag_version === "2.1" ? __("publ-a11y-display-guide.conformance.conformance-details-wcag-2-1.descriptive") + " " : wcag_version === "2.0" ? __("publ-a11y-display-guide.conformance.conformance-details-wcag-2-0.compact") + " " : wcag_version) +
@@ -435,7 +442,7 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                                             (epub_version === "1.0" ? __("publ-a11y-display-guide.conformance.conformance-details-epub-accessibility-1-0.compact") + " " : epub_version === "1.1" ? __("publ-a11y-display-guide.conformance.conformance-details-epub-accessibility-1-1.compact") + " " : epub_version) +
                                             (wcag_version === "2.2" ? __("publ-a11y-display-guide.conformance.conformance-details-wcag-2-2.compact") + " " : wcag_version === "2.1" ? __("publ-a11y-display-guide.conformance.conformance-details-wcag-2-1.compact") + " " : wcag_version === "2.0" ? __("publ-a11y-display-guide.conformance.conformance-details-wcag-2-0.compact") + " " : wcag_version) +
                                             (wcag_level === "AAA" ? __("publ-a11y-display-guide.conformance.conformance-details-level-aaa.compact") : wcag_level === "AA" ? __("publ-a11y-display-guide.conformance.conformance-details-level-aa.compact") : wcag_level === "A" ? __("publ-a11y-display-guide.conformance.conformance-details-level-a.compact") : wcag_level)}
-                                    </li>
+                                    </li>)}
                                     {a11y_certifierReport.length
                                         ? a11y_certifierReport.map((certifier_report, i) => <li key={"certifier_report_" + i} title={certifier_report}>{isURL(certifier_report) ? <a title={certifier_report} onClick={async (e) => { e.preventDefault(); await shell.openExternal(certifier_report); }} href={certifier_report}>
                                             {__("publ-a11y-display-guide.conformance.conformance-details-certifier-report.compact")}
