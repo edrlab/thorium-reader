@@ -9,11 +9,11 @@ import * as debug_ from "debug";
 import { dialog } from "electron";
 import { readFile } from "fs/promises";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { annotationActions, toastActions } from "readium-desktop/common/redux/actions";
+import { annotationActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
 import { SagaGenerator } from "typed-redux-saga";
-import { call as callTyped, put as putTyped, select as selectTyped, take as takeTyped } from "typed-redux-saga/macro";
+import { call as callTyped, put as putTyped, select as selectTyped, take as takeTyped, delay as delayTyped } from "typed-redux-saga/macro";
 import { hexToRgb } from "readium-desktop/common/rgb";
 import { isNil } from "readium-desktop/utils/nil";
 import { RootState } from "../states";
@@ -27,6 +27,8 @@ import { v4 as uuidv4 } from "uuid";
 import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLatest";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { EDrawType, INoteState, NOTE_DEFAULT_COLOR, noteColorCodeToColorSet, noteColorSetToColorCode } from "readium-desktop/common/redux/states/renderer/note";
+import { winActions } from "../actions";
+import { WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/constant";
 
 
 // Logger
@@ -58,6 +60,39 @@ export function* getNotesFromMainWinState(publicationIdentifier: string): SagaGe
     }
 
     return notes;
+}
+
+function* pushNotesFromMainWindow(publicationIdentifier: string, notes: INoteState[]): SagaGenerator<void> {
+
+    const sessionReader = yield* selectTyped((state: RootState) => state.win.session.reader);
+    const winSessionReaderStateArray = Object.values(sessionReader).filter((v) => v.publicationIdentifier === publicationIdentifier);
+
+    if (winSessionReaderStateArray.length) {
+        // dispatch action
+        for (const note of notes) {
+            yield* delayTyped(1);
+            yield* putTyped(readerActions.note.addUpdate.build(note));
+        }
+    } else {
+        const sessionRegistry = yield* selectTyped((state: RootState) => state.win.registry.reader);
+        if (Object.keys(sessionRegistry).find((v) => v === publicationIdentifier)) {
+
+            const reduxState = sessionRegistry[publicationIdentifier]?.reduxState; // potentially not defined, how to deal with it ?
+            reduxState.note = [...(reduxState.note || []), ...notes];
+
+            yield* putTyped(winActions.registry.registerReaderPublication.build(
+                publicationIdentifier,
+                { height: WINDOW_MIN_HEIGHT, width: WINDOW_MIN_WIDTH, x: 0, y: 0 },
+                reduxState),
+            );
+        } else {
+            yield* putTyped(winActions.registry.registerReaderPublication.build(
+                publicationIdentifier,
+                { height: WINDOW_MIN_HEIGHT, width: WINDOW_MIN_WIDTH, x: 0, y: 0 },
+                { note: notes }),
+            );
+        }
+    }
 }
 
 function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAction): SagaGenerator<void> {
@@ -289,6 +324,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
 
 
         // push notes to the publicationIdentifier redux-state (reader if open or redux-registry-main state instead)
+        yield* callTyped(pushNotesFromMainWindow, publicationIdentifier, annotationsParsedReadyToBeImportedArray);
 
         // convert range to locator IRangeInfo/selectionInfo
         // ref: https://github.com/readium/r2-navigator-js/blob/a08126622ac87e04200a178cc438fd7e1b256c52/src/electron/renderer/webview/selection.ts#L342
