@@ -283,10 +283,6 @@
                 "compact": "Page breaks included",
                 "descriptive": "Page breaks included from the original print source"
             },
-            "additional-accessibility-information-print-page-numbers": {
-                "compact": "Print page numbers",
-                "descriptive": "Print page numbers"
-            },
             "additional-accessibility-information-ruby-annotations": {
                 "compact": "Some Ruby annotations",
                 "descriptive": "Some Ruby annotations"
