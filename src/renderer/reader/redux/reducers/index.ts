@@ -74,8 +74,16 @@ export const rootReducer = () => {
                 {
                     add: {
                         type: readerActions.note.addUpdate.ID,
-                        selector: (payload) => {
-                            return [payload.newNote];
+                        selector: (payload, state) => {
+                            const { previousNote, newNote } = payload;
+                            if (!previousNote) {
+                                return [newNote];
+                            }
+                            if (previousNote.uuid === newNote.uuid && state.find((item) => item.uuid === previousNote.uuid)) {
+                                return [newNote];
+                            }
+                            console.error("NoteArrayReducer error : trying to update a note already deleted !!", JSON.stringify(previousNote, null, 2), JSON.stringify(newNote, null, 2));
+                            return [];
                         },
                     },
                     remove: {

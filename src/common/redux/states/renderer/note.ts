@@ -10,7 +10,7 @@ import { hexToRgb } from "readium-desktop/common/rgb";
 import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
 import { MiniLocatorExtended } from "../locatorInitialState";
 import { INoteCreator } from "../creator";
-import { IReadiumAnnotation } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import { IReadiumAnnotation, ISelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 
 // DO NOT REMOVE THIS COMMENT BLOCK (USED FOR TRANSLATOR KEYS DETECTION DURING CODE SCANNING)
 // __("reader.notes.colors.red")
@@ -92,6 +92,13 @@ export interface INoteState {
     created: number;
     creator?: INoteCreator;
     group: "bookmark" | "annotation";
+    readiumAnnotation?: {
+        export?: {
+            selector: ISelector[];
+        }
+
+        // TODO: import !?
+    }
 }
 
 export type TDrawView = "annotation" | "margin" | "hide";
