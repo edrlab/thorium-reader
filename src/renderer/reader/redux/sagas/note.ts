@@ -84,7 +84,7 @@ export function* noteUpdateLocatorExtendedFromImportSelector(note: INoteState) {
 
     try {
         if ((yield* selectTyped((state: IReaderRootState) => state.reader.lock)) &&
-            !note.locatorExtended && note.readiumAnnotation.import?.target?.selector.length && note.readiumAnnotation.import?.target?.source) {
+            !note.locatorExtended && note.readiumAnnotation?.import?.target?.selector.length && note.readiumAnnotation?.import?.target?.source) {
             
             const { target } = note.readiumAnnotation.import;
 
