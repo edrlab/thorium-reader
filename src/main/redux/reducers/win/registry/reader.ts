@@ -25,10 +25,13 @@ function winRegistryReaderReducer_(
                 ...state,
                 ...{
                     [action.payload.publicationIdentifier]: {
-                        ...state[action.payload.publicationIdentifier],
+                        ...(state[action.payload.publicationIdentifier] || {}),
                         ...{
                             windowBound: action.payload.bound,
-                            reduxState: action.payload.reduxStateReader,
+                            reduxState: {
+                                ...(state[action.payload.publicationIdentifier]?.reduxState || {}),
+                                ...action.payload.reduxStateReader,
+                            },
                         },
                     },
                 },
