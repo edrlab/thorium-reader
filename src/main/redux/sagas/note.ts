@@ -71,7 +71,7 @@ function* pushNotesFromMainWindow(publicationIdentifier: string, notes: INoteSta
         // dispatch action
         for (const note of notes) {
             yield* delayTyped(1);
-            yield* putTyped(readerActions.note.addUpdate.build(note));
+            yield* putTyped(readerActions.note.addUpdate.build(publicationIdentifier, note));
         }
 
     } else {

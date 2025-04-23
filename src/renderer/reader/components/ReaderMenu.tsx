@@ -490,9 +490,11 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
 
     const dispatch = useDispatch();
     const [__] = useTranslator();
+    const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
     // const noteTotalCount = useSelector((state: IReaderRootState) => state.reader.noteTotalCount.state);
     const save = React.useCallback((color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
         dispatch(readerActions.note.addUpdate.build(
+            pubId,
             {
                 uuid: annotation.uuid,
                 locatorExtended: clone(annotation.locatorExtended),
@@ -510,7 +512,7 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
         ));
         triggerEdition(false);
         // dispatch(readerLocalActionReader.bookmarkTotalCount.build(noteTotalCount + 1));
-    }, [dispatch, annotation, triggerEdition]);
+    }, [dispatch, annotation, triggerEdition, pubId]);
 
     const date = new Date(annotation.modified || annotation.created);
     const dateStr = `${(`${date.getDate()}`.padStart(2, "0"))}/${(`${date.getMonth() + 1}`.padStart(2, "0"))}/${date.getFullYear()}`;
@@ -801,9 +803,12 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
 
     const dispatch = useDispatch();
     const [__] = useTranslator();
+
+    const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
     // const noteTotalCount = useSelector((state: IReaderRootState) => state.reader.noteTotalCount.state);
     const save = React.useCallback((name: string, color: IColor, tag: string | undefined) => {
         dispatch(readerActions.note.addUpdate.build(
+            pubId,
             {
                 uuid: bookmark.uuid,
                 locatorExtended: clone(bookmark.locatorExtended),
@@ -821,7 +826,7 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
         ));
         triggerEdition(false);
         // dispatch(readerLocalActionReader.bookmarkTotalCount.build(noteTotalCount + 1));
-    }, [dispatch, bookmark, triggerEdition]);
+    }, [dispatch, bookmark, triggerEdition, pubId]);
 
     const date = new Date(bookmark.modified || bookmark.created);
     const dateStr = `${(`${date.getDate()}`.padStart(2, "0"))}/${(`${date.getMonth() + 1}`.padStart(2, "0"))}/${date.getFullYear()}`;

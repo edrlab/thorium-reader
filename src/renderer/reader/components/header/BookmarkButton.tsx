@@ -177,6 +177,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
 
     const toasty = React.useCallback((msg: string) => dispatch(toastActions.openRequest.build(ToastType.Success, msg)), [dispatch]);
 
+    const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
     const addBookmark = React.useCallback((bookmark: Omit<INoteState, "uuid">) => {
 
         if (ttsState !== TTSStateEnum.STOPPED ||
@@ -187,9 +188,9 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
             return;
         }
 
-        dispatch(readerActions.note.addUpdate.build(bookmark));
+        dispatch(readerActions.note.addUpdate.build(pubId, bookmark));
         dispatch(readerLocalActionReader.bookmarkTotalCount.build(noteTotalCount + 1));
-    }, [dispatch, ttsState, mediaOverlaysState, __, toasty, noteTotalCount]);
+    }, [dispatch, ttsState, mediaOverlaysState, __, toasty, noteTotalCount, pubId]);
 
     const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
     const colorDefault = useSelector((state: IReaderRootState) => state.reader.config.annotation_defaultColor);

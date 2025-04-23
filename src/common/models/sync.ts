@@ -24,19 +24,26 @@ export interface WithSender {
 export interface WindowReaderDestination {
     identifier: string;
 }
-export interface WithDestination {
-    destination: WindowReaderDestination;
+export interface WindowReaderPublicationDestination {
+    publicationIdentifier: string;
+}
+export interface WithDestination<T> {
+    destination: T;
 }
 
-export interface AcrossRenderer {
-    sendActionAcrossRenderer: boolean;
-}
+// export interface AcrossRenderer extends WithSender {
+//     sendActionAcrossRenderer: boolean;
+//     publicationIdentifier?: string;
+// }
 
 export interface ActionWithSender<Type extends string = string, Payload = undefined, Meta = undefined> extends Action<Type, Payload, Meta>, WithSender {
 }
 
-export interface ActionWithDestination<Type extends string = string, Payload = undefined, Meta = undefined> extends Action<Type, Payload, Meta>, WithDestination {
+export interface ActionWithDestination<Type extends string = string, Payload = undefined, Meta = undefined> extends Action<Type, Payload, Meta>, WithDestination<WindowReaderDestination> {
 }
 
-export interface ActionAcrossRenderer<Type extends string = string, Payload = undefined, Meta = undefined> extends Action<Type, Payload, Meta>, AcrossRenderer {
+export interface ActionWithReaderPublicationIdentifierDestination<Type extends string = string, Payload = undefined, Meta = undefined> extends Action<Type, Payload, Meta>, WithDestination<WindowReaderPublicationDestination> {
 }
+
+// export interface ActionAcrossRenderer<Type extends string = string, Payload = undefined, Meta = undefined> extends Action<Type, Payload, Meta>, AcrossRenderer {
+// }

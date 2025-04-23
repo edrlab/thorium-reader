@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 import { syncIpc } from "readium-desktop/common/ipc";
-import { ActionAcrossRenderer, ActionWithDestination, ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
+import { ActionWithDestination, ActionWithReaderPublicationIdentifierDestination, ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import {
     apiActions, authActions, catalogActions, dialogActions, downloadActions, historyActions, i18nActions, keyboardActions, lcpActions,
     publicationActions, themeActions,
@@ -130,7 +130,9 @@ export const reduxSyncMiddleware: Middleware
                     if (readers[key]) {
                         try {
                             const readerWin = getReaderWindowFromDi(readers[key].identifier);
-                            if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
+                            if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed() &&
+                                ((!((action as ActionWithReaderPublicationIdentifierDestination)?.destination?.publicationIdentifier)) ||
+                                    (action as ActionWithReaderPublicationIdentifierDestination).destination.publicationIdentifier === readers[key].publicationIdentifier)) {
                                 browserWin.set(readers[key].identifier, readerWin);
                             }
                         } catch (_err) {
@@ -147,9 +149,6 @@ export const reduxSyncMiddleware: Middleware
                             !(
                                 (action as ActionWithSender).sender?.type === SenderType.Renderer
                                 && (action as ActionWithSender).sender?.identifier === id
-                            ) || (
-                                (action as ActionAcrossRenderer)?.sendActionAcrossRenderer
-                                && (action as ActionWithSender)?.sender?.identifier !== id
                             )
                         ) {
 

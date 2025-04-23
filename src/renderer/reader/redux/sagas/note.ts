@@ -68,12 +68,16 @@ export function* noteUpdateExportSelectorFromLocatorExtended(note: INoteState) {
             const cacheDocuments = yield* selectTyped((state: IReaderRootState) => state.resourceCache);
 
             const cacheDocument = getCacheDocumentFromLocator(cacheDocuments, note.locatorExtended.locator?.href);
-            const { publicationView } = yield* selectTyped((state: IReaderRootState) => state.reader.info);
+            const { publicationView, publicationIdentifier } = yield* selectTyped((state: IReaderRootState) => state.reader.info);
             const isLcp = !!publicationView.lcp;
             const selector = yield* callTyped(readiumAnnotationSelectorFromNote, note, isLcp, cacheDocument);
 
             debug(`${note.uuid} does not have any readiumAnnotationSelector so let's update the note with this new selectors: ${JSON.stringify(selector, null, 2)}`);
-            yield* putTyped(readerActions.note.addUpdate.build({ ...note, readiumAnnotation: { ...note?.readiumAnnotation || {}, export: { selector } } }, note));
+            yield* putTyped(readerActions.note.addUpdate.build(
+                publicationIdentifier,
+                { ...note, readiumAnnotation: { ...note?.readiumAnnotation || {}, export: { selector } } },
+                note,
+            ));
         }
     } catch (e) {
         debug(`ERROR: ${note.uuid} selectors compute CRASH`, e);
@@ -100,7 +104,8 @@ export function* noteUpdateLocatorExtendedFromImportSelector(note: INoteState) {
             const locatorExtended = yield* callTyped(() => convertSelectorTargetToLocatorExtended(target, cacheDoc, undefined, isABookmark));
 
             debug(`${note.uuid} doesn't have any locator so let's update the note with the new locator generated: ${JSON.stringify(locatorExtended, null, 2)}`);
-            yield* putTyped(readerActions.note.addUpdate.build({ ...note, locatorExtended }, note));
+            const { publicationIdentifier } = yield* selectTyped((state: IReaderRootState) => state.reader.info);
+            yield* putTyped(readerActions.note.addUpdate.build(publicationIdentifier, { ...note, locatorExtended }, note));
         }
 
     } catch (e) {
@@ -254,7 +259,8 @@ function* createAnnotation(locatorExtended: MiniLocatorExtended, color: IColor, 
     debug(`Create an annotation for, [${locatorExtended.selectionInfo.cleanText.slice(0, 10)}]`);
 
     const noteTotalCount = yield* selectTyped((state: IReaderRootState) => state.reader.noteTotalCount.state);
-    yield* putTyped(readerActions.note.addUpdate.build({
+    const { publicationIdentifier } = yield* selectTyped((state: IReaderRootState) => state.reader.info);
+    yield* putTyped(readerActions.note.addUpdate.build(publicationIdentifier, {
         color,
         textualValue: comment,
         index: noteTotalCount + 1,
