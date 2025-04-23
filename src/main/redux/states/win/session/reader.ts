@@ -12,7 +12,7 @@ export interface IWinSessionReaderState extends IBrowserWindowState {
     publicationIdentifier: string;
     manifestUrl: string;
     fileSystemPath: string;
-    reduxState: IReaderStateReaderSession;
+    reduxState: Partial<IReaderStateReaderSession>;
 }
 
 export interface IDictWinSessionReaderState {
