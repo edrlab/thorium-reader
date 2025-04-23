@@ -22,3 +22,5 @@ export interface IRendererCommonRootState extends ICommonRootState {
         tag: string[]
     }
 }
+
+export type IRendererCommonRootStateHydration = Pick<IRendererCommonRootState, "win" | "i18n" | "keyboard" | "theme" | "reader" | "creator" | "annotationImportQueue" | "noteExport"   | "publication">;

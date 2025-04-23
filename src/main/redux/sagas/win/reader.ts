@@ -80,7 +80,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
                 identifier,
             },
             reader: {
-                ...reader?.reduxState || {},
+                ...(reader?.reduxState || {}), // reader.reduxState is normally always defined but for security reason, I prefer to do not change this !!!
                 // see issue https://github.com/edrlab/thorium-reader/issues/2532
                 defaultConfig: {
                     ...readerDefaultConfig,
@@ -136,11 +136,12 @@ function* winClose(action: winActions.reader.closed.TAction) {
 
             yield put(winActions.session.unregisterReader.build(identifier));
 
-            yield put(winActions.registry.registerReaderPublication.build(
-                publicationIdentifier,
-                reader.windowBound,
-                reader.reduxState),
-                );
+            // fixes #1744 // do not dispatch to registry on close, there are no states change at this step
+            // yield put(winActions.registry.registerReaderPublication.build(
+            //     publicationIdentifier,
+            //     reader.windowBound,
+            //     reader.reduxState),
+            //     );
 
             yield put(streamerActions.publicationCloseRequest.build(publicationIdentifier));
         }

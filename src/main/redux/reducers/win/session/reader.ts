@@ -7,7 +7,6 @@
 
 import { type Reducer } from "redux";
 
-import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { winActions } from "readium-desktop/main/redux/actions";
 import {
     IDictWinSessionReaderState,
@@ -88,7 +87,7 @@ function winSessionReaderReducer_(
 
             if (state[id]) {
 
-                const reduxState: IReaderStateReader = { ...state[id].reduxState };
+                const reduxState = { ...state[id].reduxState };
                 Object.entries(action.payload.reduxState).forEach(([key, value]) => {
                     if (value) {
                         (reduxState as any)[key] = value;

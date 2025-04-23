@@ -7,7 +7,7 @@
 
 import { Rectangle } from "electron";
 import { Action } from "readium-desktop/common/models/redux";
-import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { IReaderStateReaderPersistence } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
 export const ID = "MAIN_WIN_READER_OPEN_REQUEST";
 
@@ -17,14 +17,14 @@ export interface Payload {
     identifier?: string;
     winBound: Rectangle;
     manifestUrl: string;
-    reduxState: IReaderStateReader;
+    reduxState: Partial<IReaderStateReaderPersistence>;
 }
 
 export function build(
     publicationIdentifier: string,
     manifestUrl: string,
     winBound: Rectangle | undefined,
-    reduxState: IReaderStateReader | undefined,
+    reduxState: Partial<IReaderStateReaderPersistence>,
     identifier?: string,
 ):
     Action<typeof ID, Payload> {

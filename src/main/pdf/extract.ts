@@ -98,7 +98,7 @@ export const extractPDFData =
             );
 
             const pdelay = new Promise<TExtractPdfData>(
-                (resolve) => setTimeout(() => resolve([undefined, undefined]), 7000));
+                (resolve) => setTimeout(() => resolve([undefined, undefined]), 15000));
 
             const dataResult = await Promise.race([
                 pdelay,
