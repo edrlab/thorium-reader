@@ -335,16 +335,12 @@ function* readerSetReduxState(action: readerActions.setReduxState.TAction) {
 
     if (reader) {
 
-        yield put(winActions.session.setReduxState.build(winId, reader.publicationIdentifier, { ...reader.reduxState, ...reduxState }));
+        yield put(winActions.session.setReduxState.build(winId, reader.publicationIdentifier, reduxState));
 
         yield put(winActions.registry.registerReaderPublication.build(
             reader.publicationIdentifier,
             reader.windowBound,
-            reduxState), // partial readerReduxState from reader-persistence need to keep only a list of key
-            // cf src/renderer/reader/redux/middleware/persistence.ts
-            // cf src/main/redux/actions/win/session/registerReader.ts "info" key injection
-            // https://github.com/edrlab/thorium-reader/issues/1444 https://github.com/edrlab/thorium-reader/discussions/1762 
-        );
+            reduxState));
     } else {
         debug("!!! Error no reader window found, why ??", winId);
     }
