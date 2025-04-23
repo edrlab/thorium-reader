@@ -61,8 +61,6 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     creatorActions.set.ID,
 
-    annotationActions.shiftFromAnnotationImportQueue.ID,
-    
     noteExport.overrideHTMLTemplate.ID,
 ];
 

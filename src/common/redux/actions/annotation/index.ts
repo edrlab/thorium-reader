@@ -8,11 +8,9 @@
 import * as importAnnotationSet from "./importAnnotationSet";
 import * as importTriggerModal from "./importTriggerModal";
 import * as importConfirmOrAbort from "./importConfirmOrAbort";
-import * as shiftFromAnnotationImportQueue from "./shiftFromAnnotationImportQueue";
 
 export {
     importAnnotationSet,
     importTriggerModal,
     importConfirmOrAbort,
-    shiftFromAnnotationImportQueue,
 };
