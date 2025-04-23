@@ -91,6 +91,8 @@ export function* noteUpdateLocatorExtendedFromImportSelector(note: INoteState) {
             debug("SelectorTarget from noteParserState", JSON.stringify(target, null, 2));
 
             const { source } = target;
+
+            yield* callTyped(getResourceCache);
             const cacheDocuments = yield* selectTyped((state: IReaderRootState) => state.resourceCache);
             const cacheDoc = getCacheDocumentFromLocator(cacheDocuments, source);
 

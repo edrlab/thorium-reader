@@ -25,11 +25,10 @@ import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/re
 import { setTheme } from "readium-desktop/common/redux/actions/theme";
 import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysListen, ttsListen } from "@r2-navigator-js/electron/renderer";
 import { eventChannel } from "redux-saga";
-import { put as putTyped, take as takeTyped, select as selectTyped, call as callTyped, delay as delayTyped } from "typed-redux-saga/macro";
+import { put as putTyped, take as takeTyped, select as selectTyped, call as callTyped, delay as delayTyped, spawn as spawnTyped } from "typed-redux-saga/macro";
 import { readerLocalActionReader } from "../actions";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 
 // Logger
 const filename_ = "readium-desktop:renderer:reader:saga:index";
@@ -128,7 +127,7 @@ export function* rootSaga() {
                 yield* putTyped(readerLocalActionReader.setTTSState.build(state));
             },
         ),
-        spawnLeading(function*() {
+        spawnTyped(function*() {
 
             let gotTheLock = yield* selectTyped((state: IReaderRootState) => state.reader.lock);
             if (!gotTheLock) {
