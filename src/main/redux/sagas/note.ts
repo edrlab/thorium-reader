@@ -73,25 +73,18 @@ function* pushNotesFromMainWindow(publicationIdentifier: string, notes: INoteSta
             yield* delayTyped(1);
             yield* putTyped(readerActions.note.addUpdate.build(note));
         }
+
     } else {
         const sessionRegistry = yield* selectTyped((state: RootState) => state.win.registry.reader);
-        if (Object.keys(sessionRegistry).find((v) => v === publicationIdentifier)) {
+        const reduxState = sessionRegistry[publicationIdentifier]?.reduxState || {};
+        reduxState.note = [...(reduxState.note || []), ...notes];
+        const winBound = sessionRegistry[publicationIdentifier]?.windowBound || { height: WINDOW_MIN_HEIGHT, width: WINDOW_MIN_WIDTH, x: 0, y: 0 };
 
-            const reduxState = sessionRegistry[publicationIdentifier]?.reduxState || {};
-            reduxState.note = [...(reduxState.note || []), ...notes];
-
-            yield* putTyped(winActions.registry.registerReaderPublication.build(
-                publicationIdentifier,
-                { height: WINDOW_MIN_HEIGHT, width: WINDOW_MIN_WIDTH, x: 0, y: 0 },
-                reduxState),
-            );
-        } else {
-            yield* putTyped(winActions.registry.registerReaderPublication.build(
-                publicationIdentifier,
-                { height: WINDOW_MIN_HEIGHT, width: WINDOW_MIN_WIDTH, x: 0, y: 0 },
-                { note: notes }),
-            );
-        }
+        yield* putTyped(winActions.registry.registerReaderPublication.build(
+            publicationIdentifier,
+            winBound,
+            reduxState),
+        );
     }
 }
 
