@@ -389,11 +389,87 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                 description: `${__("settings.keyboard.description.ToggleReaderFullscreenDesc")}`,
             },
         };
-        
+
 
         const filteredShortcuts = isSearchEmpty
-        ? ObjectKeys(sortObject(this.props.keyboardShortcuts) as TKeyboardShortcutsMap)
-        : ObjectKeys(cleanNames).filter(key => cleanNames[key].name.toLowerCase().includes(this.state.searchItem?.toLowerCase()));
+            ? ObjectKeys(sortObject(this.props.keyboardShortcuts) as TKeyboardShortcutsMap)
+            : ObjectKeys(cleanNames).filter(key => cleanNames[key].name.toLowerCase().includes(this.state.searchItem?.toLowerCase()));
+
+        const exportHtml = () => {
+            const element = document.getElementById("content-to-export");
+
+            if (element) {
+                let htmlContent = element.outerHTML;
+
+                const replaceSvgWithSpanName = (html: string): string => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, "text/html");
+                    const spans = doc.querySelectorAll("span[title]");
+
+                    spans.forEach((span) => {
+                        const spanName = span.getAttribute("title") || "";
+                        span.innerHTML = `${spanName} + `;
+                    });
+
+                    return doc.body.innerHTML;
+                };
+
+                htmlContent = replaceSvgWithSpanName(htmlContent);
+
+
+                const getCssStyles = (): string => {
+                    let css = "";
+                    const styleSheets = document.styleSheets;
+
+                    for (let i = 0; i < styleSheets.length; i++) {
+                        const rules = styleSheets[i].cssRules;
+                        if (rules) {
+                            for (let j = 0; j < rules.length; j++) {
+                                css += rules[j].cssText;
+                            }
+                        }
+                    }
+                    return css;
+                };
+
+                const cssStyles = getCssStyles();
+
+                const completeHtml = `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>THORIUM DESKTOP Keyboard Shortcuts</title>
+          <style>
+            ${cssStyles}
+            h1, h2 {
+            text-align: center
+            }
+            .keyshortElement_container {
+                border-bottom: none
+            }
+          </style>
+        </head>
+        <body>
+            <h1>THORIUM DESKTOP</h1>
+            <h2>Keyboard Shortcuts</h2>
+          ${htmlContent}
+        </body>
+        </html>
+      `;
+
+                const blob = new Blob([completeHtml], { type: "text/html" });
+
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = "thorium_shortcuts.html";
+
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        };
           
         return (
             <>
@@ -425,6 +501,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                         </div>
                     </div>
                         <div>
+                            <div style={{display: "flex", justifyContent: "space-between"}}>
                         <input
                             type="text"
                             value={this.state.searchItem}
@@ -432,8 +509,10 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                             placeholder={__("settings.keyboard.searchPlaceholder")}
                             style={{width: "200px", borderRadius: "4px"}}
                         />
+                         <button onClick={exportHtml} className={stylesButtons.button_secondary_blue}>Exporter en HTML</button>
+                         </div>
                         {filteredShortcuts.length ?
-                            <ul className={stylesGlobal.p_0}>
+                            <ul className={stylesGlobal.p_0} id="content-to-export">
                             {this.props.keyboardShortcuts &&
                             filteredShortcuts.map((id) => {
                                 const def = this.props.keyboardShortcuts[id];
@@ -450,7 +529,9 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                                     <path d="M0 0 L4 4 L8 0" />
                                                 </svg>
                                                 </OverlayArrow>
-                                                {Object.keys(cleanNames).find((name: string) => name === id) ? cleanNames[id].description : undefined}
+                                                <p className="shortcut_description">
+                                                    {Object.keys(cleanNames).find((name: string) => name === id) ? cleanNames[id].description : undefined}
+                                                </p>
                                             </Tooltip>
                                         </TooltipTrigger>
                                         : ""
