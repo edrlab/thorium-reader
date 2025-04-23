@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import { ReaderMode } from "readium-desktop/common/models/reader";
+import { I18NState } from "readium-desktop/common/redux/states/i18n";
 import { IKeyboardState } from "readium-desktop/common/redux/states/keyboard";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
@@ -23,7 +24,7 @@ import { ISettingsState } from "readium-desktop/common/redux/states/settings";
 export interface RootState extends ICommonRootState {
     app: AppState;
     // net: NetState;
-    // i18n: I18NState;
+    i18n: I18NState;
     streamer: StreamerState;
     // update: UpdateState;
     win: {
