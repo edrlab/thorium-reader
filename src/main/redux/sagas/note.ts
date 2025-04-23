@@ -77,7 +77,7 @@ function* pushNotesFromMainWindow(publicationIdentifier: string, notes: INoteSta
         const sessionRegistry = yield* selectTyped((state: RootState) => state.win.registry.reader);
         if (Object.keys(sessionRegistry).find((v) => v === publicationIdentifier)) {
 
-            const reduxState = sessionRegistry[publicationIdentifier]?.reduxState; // potentially not defined, how to deal with it ?
+            const reduxState = sessionRegistry[publicationIdentifier]?.reduxState || {};
             reduxState.note = [...(reduxState.note || []), ...notes];
 
             yield* putTyped(winActions.registry.registerReaderPublication.build(
