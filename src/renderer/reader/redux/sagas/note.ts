@@ -30,6 +30,7 @@ import { checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation, readiumAnnot
 import { getCacheDocumentFromLocator } from "./readiumAnnotation/getCacheDocument";
 import { getResourceCache } from "./resourceCache";
 import { clone } from "ramda";
+import { convertSelectorTargetToLocatorExtended } from "readium-desktop/common/readium/annotation/converter";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:annotation");
@@ -58,14 +59,15 @@ debug("_");
 //     // yield* putTyped(readerLocalActionAnnotations.focusMode.build({previousFocusUuid: currentFocusUuid || "", currentFocusUuid: uuid, editionEnable: false}));
 // }
 
-export function* noteUpdateSelector(note: INoteState) {
+export function* noteUpdateExportSelectorFromLocatorExtended(note: INoteState) {
     try {
-        if (!checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation(note)) {
+        if ((yield* selectTyped((state: IReaderRootState) => state.reader.lock)) &&
+        note.locatorExtended && !checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation(note)) {
 
             yield* callTyped(getResourceCache);
             const cacheDocuments = yield* selectTyped((state: IReaderRootState) => state.resourceCache);
 
-            const cacheDocument = getCacheDocumentFromLocator(cacheDocuments, note.locatorExtended?.locator?.href);
+            const cacheDocument = getCacheDocumentFromLocator(cacheDocuments, note.locatorExtended.locator?.href);
             const { publicationView } = yield* selectTyped((state: IReaderRootState) => state.reader.info);
             const isLcp = !!publicationView.lcp;
             const selector = yield* callTyped(readiumAnnotationSelectorFromNote, note, isLcp, cacheDocument);
@@ -78,23 +80,54 @@ export function* noteUpdateSelector(note: INoteState) {
     }
 }
 
+export function* noteUpdateLocatorExtendedFromImportSelector(note: INoteState) {
+
+    try {
+        if ((yield* selectTyped((state: IReaderRootState) => state.reader.lock)) &&
+            !note.locatorExtended && note.readiumAnnotation?.import?.target?.selector.length && note.readiumAnnotation?.import?.target?.source) {
+            
+            const { target } = note.readiumAnnotation.import;
+
+            debug("SelectorTarget from noteParserState", JSON.stringify(target, null, 2));
+
+            const { source } = target;
+
+            yield* callTyped(getResourceCache);
+            const cacheDocuments = yield* selectTyped((state: IReaderRootState) => state.resourceCache);
+            const cacheDoc = getCacheDocumentFromLocator(cacheDocuments, source);
+
+            const isABookmark = note.group === "bookmark"; // TODO: It is a good method do discriminate bookmark selector ? 
+            const locatorExtended = yield* callTyped(() => convertSelectorTargetToLocatorExtended(target, cacheDoc, undefined, isABookmark));
+
+            debug(`${note.uuid} doesn't have any locator so let's update the note with the new locator generated: ${JSON.stringify(locatorExtended, null, 2)}`);
+            yield* putTyped(readerActions.note.addUpdate.build({ ...note, locatorExtended }, note));
+        }
+
+    } catch (e) {
+        debug(`ERROR: ${note.uuid} import selectors compute CRASH`, e);
+    }
+}
+
 function* noteAddUpdate(action: readerActions.note.addUpdate.TAction) {
 
     const { previousNote: previousNote, newNote: note } = action.payload;
 
-    // backgroud compute readiumAnnotationSelector
-    if (!previousNote && note && (yield* selectTyped((state: IReaderRootState) => state.reader.lock))) {
-        yield* spawnTyped(function*() {
-
-            yield* delayTyped(100);
-            yield* callTyped(noteUpdateSelector, note);
-        });
-
+    const currentBookmarkTotalCount = yield* selectTyped((state: IReaderRootState) => state.reader.noteTotalCount.state);
+    if (!previousNote && note) {
+        yield* putTyped(readerLocalActionReader.bookmarkTotalCount.build(currentBookmarkTotalCount + 1));
     }
 
-    if (!previousNote && note) {
-        const currentBookmarkTotalCount = yield* selectTyped((state: IReaderRootState) => state.reader.noteTotalCount.state);
-        yield* putTyped(readerLocalActionReader.bookmarkTotalCount.build(currentBookmarkTotalCount + 1));
+    yield* spawnTyped(function* () {
+        
+        yield* delayTyped(10);
+        // backgroud compute LocatorExtended TO readiumAnnotationSelector
+        yield* callTyped(noteUpdateExportSelectorFromLocatorExtended, note);
+        // backgroud compute readiumAnnotationSelector TO LocatorExtended
+        yield* callTyped(noteUpdateLocatorExtendedFromImportSelector, note);
+    });
+
+    if (!note.locatorExtended) {
+        return ;
     }
 
     const item = yield* selectTyped((store: IReaderRootState) => store.reader.highlight.handler.find(([_, highlightState]) => highlightState.uuid === note.uuid));

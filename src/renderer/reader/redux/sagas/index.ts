@@ -19,18 +19,16 @@ import * as ipc from "./ipc";
 import * as search from "./search";
 import * as winInit from "./win";
 import * as noteSaga from "./note";
-import * as shareAnnotationSet from "./readiumAnnotation/shareAnnotationSet";
 import * as img from "./img";
 import * as settingsOrMenuDialogOrDock from "./settingsOrMenu";
 import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { setTheme } from "readium-desktop/common/redux/actions/theme";
 import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysListen, ttsListen } from "@r2-navigator-js/electron/renderer";
 import { eventChannel } from "redux-saga";
-import { put as putTyped, take as takeTyped, select as selectTyped, call as callTyped, delay as delayTyped } from "typed-redux-saga/macro";
+import { put as putTyped, take as takeTyped, select as selectTyped, call as callTyped, delay as delayTyped, spawn as spawnTyped } from "typed-redux-saga/macro";
 import { readerLocalActionReader } from "../actions";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 
 // Logger
 const filename_ = "readium-desktop:renderer:reader:saga:index";
@@ -98,8 +96,6 @@ export function* rootSaga() {
         search.saga(),
 
         noteSaga.saga(),
-        
-        shareAnnotationSet.saga(),
 
         img.saga(),
 
@@ -131,7 +127,7 @@ export function* rootSaga() {
                 yield* putTyped(readerLocalActionReader.setTTSState.build(state));
             },
         ),
-        spawnLeading(function*() {
+        spawnTyped(function*() {
 
             let gotTheLock = yield* selectTyped((state: IReaderRootState) => state.reader.lock);
             if (!gotTheLock) {
@@ -149,7 +145,8 @@ export function* rootSaga() {
             for (const note of notes) {
 
                 yield* delayTyped(10); // 100 notes equals to 1 + 1 seconds , seems acceptable to not disturb user with a tiny compute machine
-                yield* callTyped(noteSaga.noteUpdateSelector, note);
+                yield* callTyped(noteSaga.noteUpdateExportSelectorFromLocatorExtended, note);
+                yield* callTyped(noteSaga.noteUpdateLocatorExtendedFromImportSelector, note);
             }
         }),
     ]);

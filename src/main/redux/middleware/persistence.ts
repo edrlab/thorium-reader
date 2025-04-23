@@ -43,7 +43,6 @@ export const reduxPersistMiddleware: Middleware
                     wizard: prevState.wizard,
                     settings: prevState.settings,
                     creator: prevState.creator,
-                    annotationImportQueue: prevState.annotationImportQueue,
                     noteExport: prevState.noteExport,
                 };
 
@@ -64,7 +63,6 @@ export const reduxPersistMiddleware: Middleware
                     wizard: nextState.wizard,
                     settings: nextState.settings,
                     creator: nextState.creator,
-                    annotationImportQueue: nextState.annotationImportQueue,
                     noteExport: nextState.noteExport,
                 };
 

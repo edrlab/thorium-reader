@@ -35,7 +35,7 @@ import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducer
 import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
 import { versionUpdateReducer } from "readium-desktop/common/redux/reducers/version-update";
 import { annotationModeEnableReducer } from "./annotationModeEnable";
-import { annotationActions, readerActions } from "readium-desktop/common/redux/actions";
+import { readerActions } from "readium-desktop/common/redux/actions";
 import { readerMediaOverlayReducer } from "./mediaOverlay";
 import { readerTTSReducer } from "./tts";
 import { readerTransientConfigReducer } from "./readerTransientConfig";
@@ -43,7 +43,6 @@ import { readerAllowCustomConfigReducer } from "readium-desktop/common/redux/red
 import { creatorReducer } from "readium-desktop/common/redux/reducers/creator";
 import { importAnnotationReducer } from "readium-desktop/renderer/common/redux/reducers/importAnnotation";
 import { tagReducer } from "readium-desktop/common/redux/reducers/tag";
-import { fifoReducer } from "readium-desktop/utils/redux-reducers/fifo.reducer";
 import { readerResourceCacheReducer } from "./resourceCache";
 import { readerLockReducer } from "./lock";
 import { imageClickReducer } from "./imageClick";
@@ -51,7 +50,7 @@ import { dockReducer } from "readium-desktop/common/redux/reducers/dock";
 import { readerBookmarkTotalCountReducer } from "readium-desktop/common/redux/reducers/reader/bookmarkTotalCount";
 import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 import { arrayReducer } from "readium-desktop/utils/redux-reducers/array.reducer";
-import { INotePreParsingState, INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import { noteExportReducer } from "readium-desktop/common/redux/reducers/noteExport";
 
 export const rootReducer = () => {
@@ -207,21 +206,6 @@ export const rootReducer = () => {
         publication: combineReducers({
             tag: tagReducer,
         }),
-        annotationImportQueue: fifoReducer
-        <
-            annotationActions.pushToAnnotationImportQueue.TAction,
-            INotePreParsingState
-        >(
-            {
-                push: {
-                    type: annotationActions.pushToAnnotationImportQueue.ID,
-                    selector: (action) => action.payload.annotations,
-                },
-                shift: {
-                    type: annotationActions.shiftFromAnnotationImportQueue.ID,
-                },
-            },
-        ),
         img: imageClickReducer,
         lcp: lcpReducer,
         noteExport: noteExportReducer,

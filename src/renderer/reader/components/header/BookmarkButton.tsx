@@ -104,7 +104,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
     const isNavigator = isAudiobook || isEpubNavigator;
 
     const allBookmarks = React.useMemo(() => notes.filter(({ group }) => group === "bookmark"), [notes]);
-    const allBookmarksForCurrentLocationHref = React.useMemo(() => allBookmarks.filter((bookmark) => bookmark.locatorExtended.locator.href === locatorExtended.locator.href), [allBookmarks, locatorExtended]);
+    const allBookmarksForCurrentLocationHref = React.useMemo(() => allBookmarks.filter((bookmark) => bookmark.locatorExtended?.locator.href === locatorExtended.locator.href), [allBookmarks, locatorExtended]);
     const bookmarkSelected = React.useMemo(() => {
 
         let index = undefined;
@@ -343,7 +343,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                     const arr: INoteState[] = [];
                     for (const bookmark of allBookmarks) {
                         try {
-                            if (await isLocatorVisible(bookmark.locatorExtended.locator)) {
+                            if (bookmark.locatorExtended && await isLocatorVisible(bookmark.locatorExtended.locator)) {
                                 arr.push(bookmark);
                             }
                         } catch (_e) {

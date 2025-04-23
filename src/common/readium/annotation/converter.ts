@@ -239,15 +239,13 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
 
 export function convertAnnotationStateToReadiumAnnotation(note: INoteState): IReadiumAnnotation {
 
-    const { uuid, color, locatorExtended: def, tags, drawType, textualValue, creator, created, modified, readiumAnnotation } = note;
-    const { locator, headings, epubPage/*, selectionInfo*/ } = def;
-    const { href /*text, locations*/ } = locator;
-    // const { afterRaw, beforeRaw, highlightRaw } = text || {};
-    // const { rangeInfo: rangeInfoSelection } = selectionInfo || {};
-    // const { progression } = locations;
-
+    const { uuid, color, locatorExtended, tags, drawType, textualValue, creator, created, modified, readiumAnnotation } = note;
     const highlight = (drawType === EDrawType.solid_background ? "solid" : EDrawType[drawType]) as IReadiumAnnotation["body"]["highlight"];
     const isABookmark = drawType === EDrawType.bookmark;
+
+    if (!locatorExtended) {
+        debug("Convert A Note without any locator !!!", note.uuid);
+    }
 
     return {
         "@context": "http://www.w3.org/ns/anno.jsonld",
@@ -271,11 +269,11 @@ export function convertAnnotationStateToReadiumAnnotation(note: INoteState): IRe
             type: creator.type,
         } : undefined,
         target: {
-            source: href || "",
-            meta: {
-                headings: (headings || []).map(({ txt, level }) => ({ txt, level })),
-                page: epubPage || "",
-            },
+            source: locatorExtended?.locator.href || "",
+            meta: (locatorExtended?.headings || locatorExtended?.epubPage) ? {
+                headings: locatorExtended?.headings ? locatorExtended.headings.map(({ txt, level }) => ({ txt, level })) : undefined,
+                page: locatorExtended?.epubPage || undefined,
+            } : undefined,
             selector: readiumAnnotation?.export?.selector || [],
         },
         motivation: isABookmark ? "bookmarking" : undefined, // isABookmark = drawType === EDrawType.bookmark

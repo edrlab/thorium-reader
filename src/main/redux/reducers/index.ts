@@ -14,7 +14,7 @@ import { priorityQueueReducer } from "readium-desktop/utils/redux-reducers/pqueu
 import { combineReducers } from "redux";
 
 import { publicationActions, winActions } from "../actions";
-import { annotationActions, publicationActions as publicationActionsFromCommonAction } from "readium-desktop/common/redux/actions";
+import { publicationActions as publicationActionsFromCommonAction } from "readium-desktop/common/redux/actions";
 import { readerDefaultConfigReducer } from "../../../common/redux/reducers/reader/defaultConfig";
 import { winRegistryReaderReducer } from "./win/registry/reader";
 import { winSessionLibraryReducer } from "./win/session/library";
@@ -30,9 +30,7 @@ import { wizardReducer } from "readium-desktop/common/redux/reducers/wizard";
 import { versionReducer } from "readium-desktop/common/redux/reducers/version";
 import { creatorReducer } from "readium-desktop/common/redux/reducers/creator";
 import { settingsReducer } from "readium-desktop/common/redux/reducers/settings";
-import { fifoReducer } from "readium-desktop/utils/redux-reducers/fifo.reducer";
 import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
-import { INotePreParsingState } from "readium-desktop/common/redux/states/renderer/note";
 import { noteExportReducer } from "readium-desktop/common/redux/reducers/noteExport";
 
 export const rootReducer = combineReducers({ // RootState
@@ -108,20 +106,5 @@ export const rootReducer = combineReducers({ // RootState
     wizard: wizardReducer,
     settings: settingsReducer,
     creator: creatorReducer,
-    annotationImportQueue: fifoReducer
-    <
-        annotationActions.pushToAnnotationImportQueue.TAction,
-        INotePreParsingState
-    >(
-        {
-            push: {
-                type: annotationActions.pushToAnnotationImportQueue.ID,
-                selector: (action) => action.payload.annotations,
-            },
-            shift: {
-                type: annotationActions.shiftFromAnnotationImportQueue.ID,
-            },
-        },
-    ),
     noteExport: noteExportReducer,
 });

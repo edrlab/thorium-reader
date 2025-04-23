@@ -48,7 +48,7 @@ import {
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
 import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
 import { diMainGet } from "../di";
-import { getAnnotationFromMainWinState } from "../redux/sagas/annotation";
+import { getNotesFromMainWinState } from "../redux/sagas/note";
 import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 
 // import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
@@ -285,7 +285,7 @@ const streamProtocolHandler = async (
         const publicationUUID = uPathname.substr(notesFromPublicationPrefix.length);
 
         const sagaMiddleware = diMainGet("saga-middleware");
-        const notes = await sagaMiddleware.run(getAnnotationFromMainWinState, publicationUUID).toPromise<INoteState[]>();
+        const notes = await sagaMiddleware.run(getNotesFromMainWinState, publicationUUID).toPromise<INoteState[]>();
         const notesSerialized = JSON.stringify(notes);
         const notesSerializedBuf = Buffer.from(notesSerialized, "utf-8");
         const contentLength = `${notesSerializedBuf.length || 0}`;

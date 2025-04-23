@@ -516,7 +516,7 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
     const dateStr = `${(`${date.getDate()}`.padStart(2, "0"))}/${(`${date.getMonth() + 1}`.padStart(2, "0"))}/${date.getFullYear()}`;
 
     const { percentRounded } = React.useMemo(() => {
-        if (r2Publication.Spine && annotation.locatorExtended.locator) {
+        if (r2Publication.Spine && annotation.locatorExtended?.locator) {
             const percent = computeProgression(r2Publication.Spine || [], annotation.locatorExtended.locator);
             const percentRounded = Math.round(percent);
             return { style: { width: `${percent}%` }, percentRounded };
@@ -525,7 +525,7 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
     }, [r2Publication, annotation]);
 
     // const bname = (annotation?.locatorExtended?.selectionInfo?.cleanText ? `${annotation.locatorExtended.selectionInfo.cleanText.slice(0, 20)}` : `${__("reader.navigation.annotationTitle")} ${index}`);
-    const btext = (annotation?.locatorExtended?.selectionInfo?.cleanText ? `${annotation.locatorExtended.selectionInfo.cleanText}` : `${__("reader.navigation.annotationTitle")} ${uuid}`);
+    const btext = (annotation.locatorExtended?.selectionInfo?.cleanText ? `${annotation.locatorExtended.selectionInfo.cleanText}` : `${__("reader.navigation.annotationTitle")} ${uuid}`);
 
     const bprogression = (percentRounded >= 0 ? `${percentRounded}% ` : "");
 
@@ -563,7 +563,9 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
                     onClick={(e) => {
                         e.preventDefault();
                         const closeNavAnnotation = !dockedMode && !(e.shiftKey && e.altKey);
-                        goToLocator(annotation.locatorExtended.locator, closeNavAnnotation);
+                        if (annotation.locatorExtended) {
+                            goToLocator(annotation.locatorExtended.locator, closeNavAnnotation);
+                        }
                         // dispatch(readerLocalActionAnnotations.focus.build(annotation));
                     }}
 
@@ -869,7 +871,9 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
                     onClick={(e) => {
                         e.preventDefault();
                         const closeNavAnnotation = !dockedMode && !(e.shiftKey && e.altKey);
-                        goToLocator(bookmark.locatorExtended.locator, closeNavAnnotation);
+                        if (bookmark.locatorExtended) {
+                            goToLocator(bookmark.locatorExtended.locator, closeNavAnnotation);
+                        }
                         // dispatch(readerLocalActionAnnotations.focus.build(annotation));
                     }}
 
@@ -1178,6 +1182,10 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
     if (sortType !== "all" && sortType.has("progression")) {
 
         annotationListFiltered.sort((a, b) => {
+
+            if (!a.locatorExtended || !b.locatorExtended) {
+                return 0;
+            }
             const { locatorExtended: { locator: la } } = a;
             const { locatorExtended: { locator: lb } } = b;
             const pcta = computeProgression(r2Publication.Spine, la);
@@ -1900,6 +1908,10 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
     if (sortType !== "all" && sortType.has("progression")) {
 
         bookmarkListFiltered.sort((a, b) => {
+
+            if (!a.locatorExtended || !b.locatorExtended) {
+                return 0;
+            }
             const { locatorExtended: la } = a;
             const { locatorExtended: lb } = b;
             const pcta = computeProgression(r2Publication.Spine, la.locator);
