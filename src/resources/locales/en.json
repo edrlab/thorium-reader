@@ -976,11 +976,11 @@
                     "name": "Go to Next Library Page (Alternative)"
                 },
                 "NavigateNextOPDSPage": {
-                    "description": "in library window for Catalogues (OPD) feeds, activates the next pagination links.",
+                    "description": "in library window for Catalogues (OPDS) feeds, activates the next pagination links.",
                     "name": "Go to Next OPDS Page"
                 },
                 "NavigateNextOPDSPageAlt": {
-                    "description": "in library window for Catalogues (OPD) feeds, activates the next pagination links (alternative keyboard shortcut).",
+                    "description": "in library window for Catalogues (OPDS) feeds, activates the next pagination links (alternative keyboard shortcut).",
                     "name": "Go to Next OPDS Page (Alternative)"
                 },
                 "NavigateNextPage": {
@@ -1012,11 +1012,11 @@
                     "name": "Go to Previous Library Page (Alternative)"
                 },
                 "NavigatePreviousOPDSPage": {
-                    "description": "in library window for Catalogues (OPD) feeds, activates the previous pagination links.",
+                    "description": "in library window for Catalogues (OPDS) feeds, activates the previous pagination links.",
                     "name": "Go to Previous OPDS Page"
                 },
                 "NavigatePreviousOPDSPageAlt": {
-                    "description": "in library window for Catalogues (OPD) feeds, activates the previous pagination links (alternative keyboard shortcut).",
+                    "description": "in library window for Catalogues (OPDS) feeds, activates the previous pagination links (alternative keyboard shortcut).",
                     "name": "Go to Previous OPDS Page (Alternative)"
                 },
                 "NavigatePreviousPage": {
@@ -1036,7 +1036,7 @@
                     "name": "Go to End"
                 },
                 "OpenReaderInfo": {
-                    "description": "in reader window, publication info popup modal dialog (may be used in future Thorium version for similar feature in library window).",
+                    "description": "in reader window, triggers publication info popup modal dialog.",
                     "name": "Open Reader Info"
                 },
                 "OpenReaderInfoWhereAmI": {
