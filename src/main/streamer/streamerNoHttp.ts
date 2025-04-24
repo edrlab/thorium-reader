@@ -47,6 +47,9 @@ import {
 // import { OPDS_MEDIA_SCHEME } from "readium-desktop/main/redux/sagas/getEventChannel";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
 import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
+import { diMainGet } from "../di";
+import { getNotesFromMainWinState } from "../redux/sagas/note";
+import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 
 // import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
@@ -215,6 +218,9 @@ const streamProtocolHandler = async (
         }
     }
 
+    const notesFromPublicationPrefix = "/publication-notes/";
+    const isNotesFromPublicationRequest = uPathname.startsWith(notesFromPublicationPrefix);
+
     const pdfjsAssetsPrefix = "/pdfjs/";
     const isPdfjsAssets = uPathname.startsWith(pdfjsAssetsPrefix);
 
@@ -274,7 +280,27 @@ const streamProtocolHandler = async (
     headers["Access-Control-Allow-Headers"] = "Content-Type, Content-Length, Accept-Ranges, Content-Range, Range, Link, Transfer-Encoding, X-Requested-With, Authorization, Accept, Origin, User-Agent, DNT, Cache-Control, Keep-Alive, If-Modified-Since";
     headers["Access-Control-Expose-Headers"] = "Content-Type, Content-Length, Accept-Ranges, Content-Range, Range, Link, Transfer-Encoding, X-Requested-With, Authorization, Accept, Origin, User-Agent, DNT, Cache-Control, Keep-Alive, If-Modified-Since";
 
-    if (isPdfjsAssets) {
+    if (isNotesFromPublicationRequest) {
+
+        const publicationUUID = uPathname.substr(notesFromPublicationPrefix.length);
+
+        const sagaMiddleware = diMainGet("saga-middleware");
+        const notes = await sagaMiddleware.run(getNotesFromMainWinState, publicationUUID).toPromise<INoteState[]>();
+        const notesSerialized = JSON.stringify(notes);
+        const notesSerializedBuf = Buffer.from(notesSerialized, "utf-8");
+        const contentLength = `${notesSerializedBuf.length || 0}`;
+        headers["Content-Length"] = contentLength;
+        const contentType = "application/json; charset=utf-8";
+        headers["Content-Type"] = contentType;
+
+        const obj = {
+            data: bufferToStream(notesSerializedBuf),
+            headers,
+            statusCode: 200,
+        };
+        callback(obj);
+        return;
+    } else if (isPdfjsAssets) {
 
         const pdfjsUrlPathname = uPathname.substr(pdfjsAssetsPrefix.length);
         debug("PDFJS request this file:", pdfjsUrlPathname);

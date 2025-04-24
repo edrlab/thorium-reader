@@ -439,6 +439,14 @@ export async function initStore()
         preloadedState.creator.urn = `urn:uuid:${preloadedState.creator.id}`;
     }
 
+    if ((preloadedState as any)?.annotationImportQueue) {
+        // How to deal with the annotationImportQueue migration ? 
+        // A wise decision will be to merge INotePreState to InoteState readerState.note
+        // But it is really necessary, the probability that the user upgrade thorium during an annotations import is pretty low ! Isn't it ? 
+
+        // (preloadedState as any).annotationImportQueue = undefined;
+    }
+
     const sagaMiddleware = createSagaMiddleware();
 
     const mware = applyMiddleware(

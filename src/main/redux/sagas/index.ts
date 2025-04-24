@@ -34,7 +34,7 @@ import * as win from "./win";
 import * as telemetry from "./telemetry";
 import * as lcp from "./lcp";
 import * as catalog from "./catalog";
-import * as annotation from "./annotation";
+import * as annotation from "./note";
 
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { getTranslator } from "readium-desktop/common/services/translator";

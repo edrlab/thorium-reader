@@ -5,9 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IWinReaderReduxState, IWinWindowBoundState } from "../common";
+import { IReaderStateReaderPersistence } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { IWinWindowBoundState } from "../common";
 
-export interface IWinRegistryReaderState extends IWinWindowBoundState, IWinReaderReduxState {
+export interface IWinRegistryReaderState extends IWinWindowBoundState {
+    reduxState: Partial<IReaderStateReaderPersistence>;
 }
 
 export interface IDictWinRegistryReaderState {

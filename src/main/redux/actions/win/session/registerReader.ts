@@ -8,7 +8,7 @@
 import { BrowserWindow, Rectangle } from "electron";
 import { Action } from "readium-desktop/common/models/redux";
 import { locatorInitialState } from "readium-desktop/common/redux/states/locatorInitialState";
-import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { IReaderStateReaderSession, IReaderStateReaderPersistence } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { v4 as uuidv4 } from "uuid";
@@ -27,7 +27,7 @@ export interface Payload {
     winBound: Rectangle;
     filesystemPath: string;
     manifestUrl: string;
-    reduxStateReader: IReaderStateReader;
+    reduxStateReader: IReaderStateReaderSession;
 }
 
 export function build(
@@ -37,7 +37,7 @@ export function build(
     manifestUrl: string,
     filesystemPath: string,
     winBound: Rectangle,
-    reduxStateReader?: IReaderStateReader,
+    reduxStateReader: Partial<IReaderStateReaderPersistence>,
     identifier: string = uuidv4()):
     Action<typeof ID, Payload> {
 
@@ -49,7 +49,7 @@ export function build(
     const manifestUrlR2Protocol = manifestUrl.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)
         ? manifestUrl : convertHttpUrlToCustomScheme(manifestUrl);
 
-    reduxStateReader = {
+    const reduxStateReaderHydrated: IReaderStateReaderSession = {
         ...{
             // see issue https://github.com/edrlab/thorium-reader/issues/2532
             config: readerConfigInitialState,
@@ -68,7 +68,7 @@ export function build(
                 navigator: undefined,
             },
             lock: false,
-        },
+        },          
     };
 
     return {
@@ -80,7 +80,7 @@ export function build(
             filesystemPath,
             winBound,
             identifier,
-            reduxStateReader,
+            reduxStateReader: reduxStateReaderHydrated,
         },
     };
 }

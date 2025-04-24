@@ -31,7 +31,7 @@ import { FormatPublisherDate } from "./formatPublisherDate";
 import LcpInfo from "./LcpInfo";
 import PublicationInfoDescription from "./PublicationInfoDescription";
 import { convertMultiLangStringToLangString, langStringIsRTL } from "readium-desktop/common/language-string";
-import PublicationInfoA11y from "./publicationInfoA11y";
+// import PublicationInfoA11y from "./publicationInfoA11y";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as Dialog from "@radix-ui/react-dialog";
 import SVG from "../../SVG";
@@ -43,6 +43,7 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import { PublicationInfoA11y2 } from "./PublicationInfoA11y2";
 
 
 export interface IProps {
@@ -512,7 +513,8 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                             <h4>{__("publication.accessibility.name")}</h4>
                         </div>
                         <div className={stylePublication.accessibility_infos}>
-                            <PublicationInfoA11y publicationViewMaybeOpds={publicationViewMaybeOpds}></PublicationInfoA11y>
+                            {/* <PublicationInfoA11y publicationViewMaybeOpds={publicationViewMaybeOpds}></PublicationInfoA11y> */}
+                            <PublicationInfoA11y2 publicationViewMaybeOpds={publicationViewMaybeOpds} />
                         </div>
                     </section>
                     {(publicationViewMaybeOpds.lcp ? <section className={stylePublication.publicationInfo_lcpInfo_content}>

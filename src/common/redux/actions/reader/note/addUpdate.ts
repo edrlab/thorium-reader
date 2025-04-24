@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action } from "readium-desktop/common/models/redux";
 import { v4 as uuidv4 } from "uuid";
 import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import { ActionWithReaderPublicationIdentifierDestination } from "readium-desktop/common/models/sync";
 
 export const ID = "READER_NOTE_ADD_UPDATE";
 
@@ -17,8 +17,8 @@ export interface IPayload {
     newNote: INoteState;
 }
 
-export function build(newNote: Omit<INoteState, "uuid"> & Partial<Pick<INoteState, "uuid">>, previousNote: INoteState = undefined):
-    Action<typeof ID, IPayload> {
+export function build(publicationIdentifier: string, newNote: Omit<INoteState, "uuid"> & Partial<Pick<INoteState, "uuid">>, previousNote: INoteState = undefined):
+    ActionWithReaderPublicationIdentifierDestination<typeof ID, IPayload> {
 
     if (!previousNote) {
         if (!newNote.uuid) {
@@ -31,6 +31,9 @@ export function build(newNote: Omit<INoteState, "uuid"> & Partial<Pick<INoteStat
         payload: {
             previousNote,
             newNote: newNote as INoteState,
+        },
+        destination: {
+            publicationIdentifier,
         },
     };
 }

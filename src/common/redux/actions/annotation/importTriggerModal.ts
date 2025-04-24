@@ -7,7 +7,7 @@
 
 import { Action } from "readium-desktop/common/models/redux";
 import { IReadiumAnnotationSet } from "readium-desktop/common/readium/annotation/annotationModel.type";
-import { INotePreParsingState } from "readium-desktop/common/redux/states/renderer/note";
+import { INoteState } from "../../states/renderer/note";
 
 export const ID = "ANNOTATION_IMPORT_TRIGGER_MODAL";
 
@@ -15,9 +15,9 @@ export interface IReadiumAnnotationModelSetView extends Partial<Pick<IReadiumAnn
 
 }
 export interface Payload extends IReadiumAnnotationModelSetView {
-    annotationsList: INotePreParsingState[]
-    annotationsConflictListOlder: INotePreParsingState[];
-    annotationsConflictListNewer: INotePreParsingState[];
+    annotationsList: INoteState[]
+    annotationsConflictListOlder: INoteState[];
+    annotationsConflictListNewer: INoteState[];
     winId?: string | undefined;
 }
 export function build(payload: Payload): Action<typeof ID, Payload> {

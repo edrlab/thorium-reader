@@ -7,16 +7,16 @@
 
 import * as debug_ from "debug";
 
-import { ICssSelector, IProgressionSelector, IReadiumAnnotation, IReadiumAnnotationSet, isCssSelector, ISelector, isProgressionSelector, isTextPositionSelector, isTextQuoteSelector, ITextPositionSelector, ITextQuoteSelector } from "./annotationModel.type";
+import { ICssSelector, IReadiumAnnotation, IReadiumAnnotationSet, isCssSelector, isProgressionSelector, isTextPositionSelector, isTextQuoteSelector, ITextPositionSelector, ITextQuoteSelector } from "./annotationModel.type";
 import { v4 as uuidv4 } from "uuid";
 import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { rgbToHex } from "readium-desktop/common/rgb";
 import { ICacheDocument } from "readium-desktop/common/redux/states/renderer/resourceCache";
 import { getDocumentFromICacheDocument } from "readium-desktop/utils/xmlDom";
-import { createCssSelectorMatcher, createTextPositionSelectorMatcher, createTextQuoteSelectorMatcher, describeTextPosition, describeTextQuote } from "readium-desktop/third_party/apache-annotator/dom";
+import { createCssSelectorMatcher, createTextPositionSelectorMatcher, createTextQuoteSelectorMatcher } from "readium-desktop/third_party/apache-annotator/dom";
 import { makeRefinable } from "readium-desktop/third_party/apache-annotator/selector";
-import { convertRange, convertRangeInfo, normalizeRange } from "@r2-navigator-js/electron/renderer/webview/selection";
+import { convertRange, normalizeRange } from "@r2-navigator-js/electron/renderer/webview/selection";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 import { uniqueCssSelector } from "@r2-navigator-js/electron/renderer/common/cssselector3";
 import { IRangeInfo, ISelectedTextInfo, ISelectionInfo } from "@r2-navigator-js/electron/common/selection";
@@ -235,117 +235,17 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
     return locatorExtended;
 }
 
-export type INoteStateWithICacheDocument = INoteState & { __cacheDocument?: ICacheDocument | undefined };
+// export type INoteStateWithICacheDocument = INoteState & { __cacheDocument?: ICacheDocument | undefined };
 
-const describeCssSelectorWithTextPosition = async (range: Range, document: Document, root: HTMLElement): Promise<ICssSelector<ITextPositionSelector> | undefined> => {
-    // normalizeRange can fundamentally alter the DOM Range by repositioning / snapping to Text boundaries, this is an internal implementation detail inside navigator when CREATING ranges from user document selections.
-    // const rangeNormalize = normalizeRange(range); // from r2-nav and not from third-party/apache-annotator
+export function convertAnnotationStateToReadiumAnnotation(note: INoteState): IReadiumAnnotation {
 
-    const commonAncestorHTMLElement =
-        (range.commonAncestorContainer && range.commonAncestorContainer.nodeType === Node.ELEMENT_NODE)
-            ? range.commonAncestorContainer as Element
-            : (range.startContainer.parentNode && range.startContainer.parentNode.nodeType === Node.ELEMENT_NODE)
-                ? range.startContainer.parentNode as Element
-                : undefined;
-    if (!commonAncestorHTMLElement) {
-        return undefined;
-    }
-
-    return {
-        type: "CssSelector",
-        value: uniqueCssSelector(commonAncestorHTMLElement, document, { root }),
-        refinedBy: await describeTextPosition(
-            range,
-            commonAncestorHTMLElement,
-        ),
-    };
-};
-
-export async function convertAnnotationStateToSelector(annotationWithCacheDoc: INoteStateWithICacheDocument, isLcp: boolean): Promise<[ISelector[], isABookmark: boolean]> {
-
-    const selector: ISelector<any>[] = [];
-
-    const {__cacheDocument, ...annotation} = annotationWithCacheDoc;
-
-    const xmlDom = getDocumentFromICacheDocument(__cacheDocument);
-    if (!xmlDom) {
-        return [[], false];
-    }
-
-    const document = xmlDom;
-    const root = xmlDom.body;
-
-    const { locatorExtended, drawType } = annotation;
-    const { selectionInfo, locator } = locatorExtended;
-    const { locations } = locator;
-    const { progression } = locations;
-
-    // the range start/end is guaranteed in document order (internally used in navigator whenever deserialising DOM Ranges from JSON expression) ... but DOM Ranges are always ordered anyway (only the user / document selection object can be reversed)
-    const rangeInfo = selectionInfo?.rangeInfo || locator.locations.caretInfo?.rangeInfo;
-    if (!rangeInfo) {
-        debug("ERROR!! RangeInfo not defined !!!");
-        debug(rangeInfo);
-        return [selector, false];
-    }
-    const range = convertRangeInfo(xmlDom, rangeInfo);
-    debug("Dump range memory found:", range);
-
-    if (range.collapsed) {
-        debug("RANGE COLLAPSED??! skipping...");
-        return [selector, false];
-    }
-
-    // createTextPositionSelectorMatcher()
-    const selectorCssSelectorWithTextPosition = await describeCssSelectorWithTextPosition(range, document, root);
-    if (selectorCssSelectorWithTextPosition) {
-
-        debug("CssWithTextPositionSelector : ", selectorCssSelectorWithTextPosition);
-        selector.push(selectorCssSelectorWithTextPosition);
-    }
-
-    // describeTextPosition()
-    const selectorTextPosition = await describeTextPosition(range, root);
-    debug("TextPositionSelector : ", selectorTextPosition);
-    selector.push(selectorTextPosition);
-
-    if (!isLcp) {
-
-        // describeTextQuote()
-        const selectorTextQuote = await describeTextQuote(range, root);
-        debug("TextQuoteSelector : ", selectorTextQuote);
-        selector.push(selectorTextQuote);
-    }
-
-    const progressionSelector: IProgressionSelector = {
-        type: "ProgressionSelector",
-        value: progression || -1,
-    };
-    debug("ProgressionSelector : ", progressionSelector);
-    selector.push(progressionSelector);
-
-    // Next TODO: CFI !?!
-
-    // this normally occurs at import time, but let's save debugging effort by checking immediately when exporting...
-    // errors are non-fatal, just hunt for the "IRangeInfo DIFF" console logs
-    const isABookmark = drawType === EDrawType.bookmark; // rangeInfo.endContainerChildTextNodeIndex === rangeInfo.startContainerChildTextNodeIndex && rangeInfo.endContainerElementCssSelector === rangeInfo.startContainerElementCssSelector && rangeInfo.endOffset - rangeInfo.startOffset === 1;
-    if (IS_DEV) {
-        await convertSelectorTargetToLocatorExtended({ source: "", selector }, __cacheDocument, rangeInfo, isABookmark);
-    }
-    return [selector, isABookmark];
-}
-
-export async function convertAnnotationStateToReadiumAnnotation(annotation: INoteStateWithICacheDocument, isLcp: boolean): Promise<IReadiumAnnotation> {
-
-    const { uuid, color, locatorExtended: def, tags, drawType, textualValue, creator, created, modified } = annotation;
-    const { locator, headings, epubPage/*, selectionInfo*/ } = def;
-    const { href /*text, locations*/ } = locator;
-    // const { afterRaw, beforeRaw, highlightRaw } = text || {};
-    // const { rangeInfo: rangeInfoSelection } = selectionInfo || {};
-    // const { progression } = locations;
-
+    const { uuid, color, locatorExtended, tags, drawType, textualValue, creator, created, modified, readiumAnnotation } = note;
     const highlight = (drawType === EDrawType.solid_background ? "solid" : EDrawType[drawType]) as IReadiumAnnotation["body"]["highlight"];
+    const isABookmark = drawType === EDrawType.bookmark;
 
-    const [selector, isABookmark] = await convertAnnotationStateToSelector(annotation, isLcp);
+    if (!locatorExtended) {
+        debug("Convert A Note without any locator !!!", note.uuid);
+    }
 
     return {
         "@context": "http://www.w3.org/ns/anno.jsonld",
@@ -369,22 +269,22 @@ export async function convertAnnotationStateToReadiumAnnotation(annotation: INot
             type: creator.type,
         } : undefined,
         target: {
-            source: href || "",
-            meta: {
-                headings: (headings || []).map(({ txt, level }) => ({ txt, level })),
-                page: epubPage || "",
-            },
-            selector,
+            source: locatorExtended?.locator.href || "",
+            meta: (locatorExtended?.headings || locatorExtended?.epubPage) ? {
+                headings: locatorExtended?.headings ? locatorExtended.headings.map(({ txt, level }) => ({ txt, level })) : undefined,
+                page: locatorExtended?.epubPage || undefined,
+            } : undefined,
+            selector: readiumAnnotation?.export?.selector || [],
         },
         motivation: isABookmark ? "bookmarking" : undefined, // isABookmark = drawType === EDrawType.bookmark
     };
 }
 
-export async function convertAnnotationStateArrayToReadiumAnnotationSet(locale: keyof typeof availableLanguages, annotationArray: INoteStateWithICacheDocument[], publicationView: PublicationView, label?: string): Promise<IReadiumAnnotationSet> {
+export function convertAnnotationStateArrayToReadiumAnnotationSet(locale: keyof typeof availableLanguages, notes: INoteState[], publicationView: PublicationView, label?: string): IReadiumAnnotationSet {
 
     const currentDate = new Date();
     const dateString: string = currentDate.toISOString();
-    const isLcp = !!publicationView.lcp;
+    // const iLcp = !!publicationView.lcp;
 
     return {
         "@context": "http://www.w3.org/ns/anno.jsonld",
@@ -412,6 +312,6 @@ export async function convertAnnotationStateArrayToReadiumAnnotationSet(locale: 
                 }) : [],
             "dc:date": publicationView.publishedAt || "",
         },
-        items: await Promise.all((annotationArray || []).map(async (v) => await convertAnnotationStateToReadiumAnnotation(v, isLcp))),
+        items: notes.map((v) => convertAnnotationStateToReadiumAnnotation(v)),
     };
 }
