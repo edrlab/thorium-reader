@@ -50,6 +50,10 @@ import { useTranslator } from "../../../common/hooks/useTranslator";
 import { useDispatch } from "../../../common/hooks/useDispatch";
 import os from "node:os"; 
 
+const _isMac = os.platform() === "darwin";
+const _isWindows = os.platform() === "win32";
+// const isLinux = !isMac && !isWindows;
+const DETECTED_OS: "Windows" | "MacOS" | "Linux" = _isWindows ? "Windows" : _isMac ? "MacOS" : "Linux";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -67,7 +71,6 @@ interface IState {
     editKeyboardShortcutId: TKeyboardShortcutId | undefined;
     editKeyboardShortcutData: TKeyboardShortcut | undefined;
     searchItem: string | undefined;
-    systemOs: string;
 }
 
 export const AdvancedTrigger = () => {
@@ -129,7 +132,6 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             editKeyboardShortcutId: undefined,
             editKeyboardShortcutData: undefined,
             searchItem: undefined,
-            systemOs: "",
         };
         this.onKeyUp = this.onKeyUp.bind(this);
 
@@ -146,21 +148,6 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             passive: false,
             capture: true,
         });
-        let detectedOS = "Unknown";
-
-        const isMac = os.platform() === "darwin";
-        const isWindows = os.platform() === "win32";
-        const isLinux = !isMac && !isWindows;
-
-        if (isWindows) {
-            detectedOS = "Windows";
-        } else if (isMac) {
-            detectedOS = "MacOS";
-        } else if (isLinux) {
-            detectedOS = "Linux";
-        }
-
-        this.setState({systemOs: detectedOS});
     }
 
     public componentWillUnmount() {
@@ -658,10 +645,10 @@ class KeyboardSettings extends React.Component<IProps, IState> {
     //     this.props.reloadKeyboardShortcuts(defaults);
     // }
     private prettifyKeyboardShortcut(def: TKeyboardShortcut) {
-        const alt = def.alt ? <span title={this.state.systemOs === "MacOS" ? "Option" : "Alt"}>{this.state.systemOs === "MacOS" ? <SVG ariaHidden svg={MacOptionIcon} /> : "ALT"} + </span> : null;
+        const alt = def.alt ? <span title={DETECTED_OS === "MacOS" ? "Option" : "Alt"}>{DETECTED_OS === "MacOS" ? <SVG ariaHidden svg={MacOptionIcon} /> : "ALT"} + </span> : null;
         const shift = def.shift ? <span title="Shift"><SVG ariaHidden svg={ShiftIcon} /> + </span> : null;
         const control = def.control ? <span title="Control">CTRL + </span> : null;
-        const meta = def.meta ? <span title={this.state.systemOs === "MacOS" ? "Command" : "Meta"}>{this.state.systemOs === "MacOS" ? <SVG ariaHidden svg={MacCmdIcon} /> : "META"} + </span> : null;
+        const meta = def.meta ? <span title={DETECTED_OS === "MacOS" ? "Command" : "Meta"}>{DETECTED_OS === "MacOS" ? <SVG ariaHidden svg={MacCmdIcon} /> : "META"} + </span> : null;
         const key = <span>{def.key}</span>;
         return <span aria-hidden>{shift}{control}{alt}{meta}{key}</span>;
     }
@@ -690,8 +677,8 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         />
         <label
             htmlFor={`idcheckbox_${id}_ALT`}
-            title={this.state.systemOs === "MacOS" ? "Option" : "Alt"}
-        >{this.state.systemOs === "MacOS" ? <SVG ariaHidden svg={MacOptionIcon} /> : "ALT"}</label></>;
+            title={DETECTED_OS === "MacOS" ? "Option" : "Alt"}
+        >{DETECTED_OS === "MacOS" ? <SVG ariaHidden svg={MacOptionIcon} /> : "ALT"}</label></>;
 
         const shift = <><input
             id={`idcheckbox_${id}_SHIFT`}
@@ -759,8 +746,8 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         />
         <label
             htmlFor={`idcheckbox_${id}_META`}
-            title={this.state.systemOs === "MacOS" ? "Command" : "Meta"}
-        >{this.state.systemOs === "MacOS" ? <SVG ariaHidden svg={MacCmdIcon} /> : "META"}</label></>;
+            title={DETECTED_OS === "MacOS" ? "Command" : "Meta"}
+        >{DETECTED_OS === "MacOS" ? <SVG ariaHidden svg={MacCmdIcon} /> : "META"}</label></>;
 
         if (!KEY_CODES.includes(def.key)) {
             KEY_CODES.push(def.key);
