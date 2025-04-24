@@ -1446,121 +1446,228 @@ declare namespace typed_i18n {
   readonly "keyboard": {
     readonly "advancedMenu": string,
     readonly "cancel": string,
-    readonly "description": {
-      readonly "AnnotationsCreateDesc": string,
-      readonly "AnnotationsCreateQuickDesc": string,
-      readonly "AnnotationsToggleMarginDesc": string,
-      readonly "AudioNextAltDesc": string,
-      readonly "AudioNextDesc": string,
-      readonly "AudioPlayPauseDesc": string,
-      readonly "AudioPreviousAltDesc": string,
-      readonly "AudioPreviousDesc": string,
-      readonly "AudioStopDesc": string,
-      readonly "CloseReaderDesc": string,
-      readonly "FXLZoomInDesc": string,
-      readonly "FXLZoomOutDesc": string,
-      readonly "FXLZoomResetDesc": string,
-      readonly "FocusMainDeepDesc": string,
-      readonly "FocusMainDesc": string,
-      readonly "FocusReaderGotoPageDesc": string,
-      readonly "FocusReaderNavigationAnnotationsDesc": string,
-      readonly "FocusReaderNavigationBookmarksDesc": string,
-      readonly "FocusReaderNavigationDesc": string,
-      readonly "FocusReaderNavigationSearchDesc": string,
-      readonly "FocusReaderNavigationTOCDesc": string,
-      readonly "FocusReaderSettingsDesc": string,
-      readonly "FocusSearchDesc": string,
-      readonly "FocusToolbarDesc": string,
-      readonly "NavigateNextChapterAltDesc": string,
-      readonly "NavigateNextChapterDesc": string,
-      readonly "NavigateNextHistoryDesc": string,
-      readonly "NavigateNextLibraryPageAltDesc": string,
-      readonly "NavigateNextLibraryPageDesc": string,
-      readonly "NavigateNextOPDSPageAltDesc": string,
-      readonly "NavigateNextOPDSPageDesc": string,
-      readonly "NavigateNextPageAltDesc": string,
-      readonly "NavigateNextPageDesc": string,
-      readonly "NavigatePreviousChapterAltDesc": string,
-      readonly "NavigatePreviousChapterDesc": string,
-      readonly "NavigatePreviousHistoryDesc": string,
-      readonly "NavigatePreviousLibraryPageAltDesc": string,
-      readonly "NavigatePreviousLibraryPageDesc": string,
-      readonly "NavigatePreviousOPDSPageAltDesc": string,
-      readonly "NavigatePreviousOPDSPageDesc": string,
-      readonly "NavigatePreviousPageAltDesc": string,
-      readonly "NavigatePreviousPageDesc": string,
-      readonly "NavigateToBeginDesc": string,
-      readonly "NavigateToEndDesc": string,
-      readonly "OpenReaderInfoDesc": string,
-      readonly "OpenReaderInfoWhereAmIDesc": string,
-      readonly "SearchNextAltDesc": string,
-      readonly "SearchNextDesc": string,
-      readonly "SearchPreviousAltDesc": string,
-      readonly "SearchPreviousDesc": string,
-      readonly "SpeakReaderInfoWhereAmIDesc": string,
-      readonly "ToggleBookmarkDesc": string,
-      readonly "ToggleReaderFullscreenDesc": string,
-      readonly "AddBookmarkWithLabelDesc": string
-    },
     readonly "disclaimer": string,
     readonly "editUserJson": string,
+    readonly "exportHtml": string,
     readonly "keyboardShortcuts": string,
     readonly "loadUserJson": string,
-    readonly "name": {
-      readonly "AddBookmarkWithLabel": string,
-      readonly "AnnotationsCreate": string,
-      readonly "AnnotationsCreateQuick": string,
-      readonly "AnnotationsToggleMargin": string,
-      readonly "AudioNext": string,
-      readonly "AudioNextAlt": string,
-      readonly "AudioPlayPause": string,
-      readonly "AudioPrevious": string,
-      readonly "AudioPreviousAlt": string,
-      readonly "AudioStop": string,
-      readonly "CloseReader": string,
-      readonly "FXLZoomIn": string,
-      readonly "FXLZoomOut": string,
-      readonly "FXLZoomReset": string,
-      readonly "FocusMain": string,
-      readonly "FocusMainDeep": string,
-      readonly "FocusReaderGotoPage": string,
-      readonly "FocusReaderNavigation": string,
-      readonly "FocusReaderNavigationAnnotations": string,
-      readonly "FocusReaderNavigationBookmarks": string,
-      readonly "FocusReaderNavigationSearch": string,
-      readonly "FocusReaderNavigationTOC": string,
-      readonly "FocusReaderSettings": string,
-      readonly "FocusSearch": string,
-      readonly "FocusToolbar": string,
-      readonly "NavigateNextChapter": string,
-      readonly "NavigateNextChapterAlt": string,
-      readonly "NavigateNextHistory": string,
-      readonly "NavigateNextLibraryPage": string,
-      readonly "NavigateNextLibraryPageAlt": string,
-      readonly "NavigateNextOPDSPage": string,
-      readonly "NavigateNextOPDSPageAlt": string,
-      readonly "NavigateNextPage": string,
-      readonly "NavigateNextPageAlt": string,
-      readonly "NavigatePreviousChapter": string,
-      readonly "NavigatePreviousChapterAlt": string,
-      readonly "NavigatePreviousHistory": string,
-      readonly "NavigatePreviousLibraryPage": string,
-      readonly "NavigatePreviousLibraryPageAlt": string,
-      readonly "NavigatePreviousOPDSPage": string,
-      readonly "NavigatePreviousOPDSPageAlt": string,
-      readonly "NavigatePreviousPage": string,
-      readonly "NavigatePreviousPageAlt": string,
-      readonly "NavigateToBegin": string,
-      readonly "NavigateToEnd": string,
-      readonly "OpenReaderInfo": string,
-      readonly "OpenReaderInfoWhereAmI": string,
-      readonly "SearchNext": string,
-      readonly "SearchNextAlt": string,
-      readonly "SearchPrevious": string,
-      readonly "SearchPreviousAlt": string,
-      readonly "SpeakReaderInfoWhereAmI": string,
-      readonly "ToggleBookmark": string,
-      readonly "ToggleReaderFullscreen": string
+    readonly "list": {
+      readonly "AddBookmarkWithLabel": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "AnnotationsCreate": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "AnnotationsCreateQuick": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "AnnotationsToggleMargin": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "AudioNext": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "AudioNextAlt": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "AudioPlayPause": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "AudioPrevious": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "AudioPreviousAlt": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "AudioStop": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "CloseReader": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "FXLZoomIn": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "FXLZoomOut": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "FXLZoomReset": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "FocusMain": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "FocusMainDeep": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "FocusReaderGotoPage": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "FocusReaderNavigation": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "FocusReaderNavigationAnnotations": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "FocusReaderNavigationBookmarks": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "FocusReaderNavigationSearch": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "FocusReaderNavigationTOC": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "FocusReaderSettings": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "FocusSearch": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "FocusToolbar": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "NavigateNextChapter": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "NavigateNextChapterAlt": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "NavigateNextHistory": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "NavigateNextLibraryPage": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "NavigateNextLibraryPageAlt": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "NavigateNextOPDSPage": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "NavigateNextOPDSPageAlt": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "NavigateNextPage": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "NavigateNextPageAlt": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "NavigatePreviousChapter": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "NavigatePreviousChapterAlt": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "NavigatePreviousHistory": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "NavigatePreviousLibraryPage": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "NavigatePreviousLibraryPageAlt": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "NavigatePreviousOPDSPage": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "NavigatePreviousOPDSPageAlt": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "NavigatePreviousPage": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "NavigatePreviousPageAlt": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "NavigateToBegin": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "NavigateToEnd": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "OpenReaderInfo": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "OpenReaderInfoWhereAmI": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "SearchNext": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "SearchNextAlt": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "SearchPrevious": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "SearchPreviousAlt": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "SpeakReaderInfoWhereAmI": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "ToggleBookmark": {
+        readonly "description": string,
+        readonly "name": string
+      },
+      readonly "ToggleReaderFullscreen": {
+        readonly "description": string,
+        readonly "name": string
+      }
     },
     readonly "noShortcutFound": string,
     readonly "resetDefaults": string,
@@ -1618,121 +1725,228 @@ declare namespace typed_i18n {
   (_: "settings.keyboard", __?: {}): {
   readonly "advancedMenu": string,
   readonly "cancel": string,
-  readonly "description": {
-    readonly "AnnotationsCreateDesc": string,
-    readonly "AnnotationsCreateQuickDesc": string,
-    readonly "AnnotationsToggleMarginDesc": string,
-    readonly "AudioNextAltDesc": string,
-    readonly "AudioNextDesc": string,
-    readonly "AudioPlayPauseDesc": string,
-    readonly "AudioPreviousAltDesc": string,
-    readonly "AudioPreviousDesc": string,
-    readonly "AudioStopDesc": string,
-    readonly "CloseReaderDesc": string,
-    readonly "FXLZoomInDesc": string,
-    readonly "FXLZoomOutDesc": string,
-    readonly "FXLZoomResetDesc": string,
-    readonly "FocusMainDeepDesc": string,
-    readonly "FocusMainDesc": string,
-    readonly "FocusReaderGotoPageDesc": string,
-    readonly "FocusReaderNavigationAnnotationsDesc": string,
-    readonly "FocusReaderNavigationBookmarksDesc": string,
-    readonly "FocusReaderNavigationDesc": string,
-    readonly "FocusReaderNavigationSearchDesc": string,
-    readonly "FocusReaderNavigationTOCDesc": string,
-    readonly "FocusReaderSettingsDesc": string,
-    readonly "FocusSearchDesc": string,
-    readonly "FocusToolbarDesc": string,
-    readonly "NavigateNextChapterAltDesc": string,
-    readonly "NavigateNextChapterDesc": string,
-    readonly "NavigateNextHistoryDesc": string,
-    readonly "NavigateNextLibraryPageAltDesc": string,
-    readonly "NavigateNextLibraryPageDesc": string,
-    readonly "NavigateNextOPDSPageAltDesc": string,
-    readonly "NavigateNextOPDSPageDesc": string,
-    readonly "NavigateNextPageAltDesc": string,
-    readonly "NavigateNextPageDesc": string,
-    readonly "NavigatePreviousChapterAltDesc": string,
-    readonly "NavigatePreviousChapterDesc": string,
-    readonly "NavigatePreviousHistoryDesc": string,
-    readonly "NavigatePreviousLibraryPageAltDesc": string,
-    readonly "NavigatePreviousLibraryPageDesc": string,
-    readonly "NavigatePreviousOPDSPageAltDesc": string,
-    readonly "NavigatePreviousOPDSPageDesc": string,
-    readonly "NavigatePreviousPageAltDesc": string,
-    readonly "NavigatePreviousPageDesc": string,
-    readonly "NavigateToBeginDesc": string,
-    readonly "NavigateToEndDesc": string,
-    readonly "OpenReaderInfoDesc": string,
-    readonly "OpenReaderInfoWhereAmIDesc": string,
-    readonly "SearchNextAltDesc": string,
-    readonly "SearchNextDesc": string,
-    readonly "SearchPreviousAltDesc": string,
-    readonly "SearchPreviousDesc": string,
-    readonly "SpeakReaderInfoWhereAmIDesc": string,
-    readonly "ToggleBookmarkDesc": string,
-    readonly "ToggleReaderFullscreenDesc": string,
-    readonly "AddBookmarkWithLabelDesc": string
-  },
   readonly "disclaimer": string,
   readonly "editUserJson": string,
+  readonly "exportHtml": string,
   readonly "keyboardShortcuts": string,
   readonly "loadUserJson": string,
-  readonly "name": {
-    readonly "AddBookmarkWithLabel": string,
-    readonly "AnnotationsCreate": string,
-    readonly "AnnotationsCreateQuick": string,
-    readonly "AnnotationsToggleMargin": string,
-    readonly "AudioNext": string,
-    readonly "AudioNextAlt": string,
-    readonly "AudioPlayPause": string,
-    readonly "AudioPrevious": string,
-    readonly "AudioPreviousAlt": string,
-    readonly "AudioStop": string,
-    readonly "CloseReader": string,
-    readonly "FXLZoomIn": string,
-    readonly "FXLZoomOut": string,
-    readonly "FXLZoomReset": string,
-    readonly "FocusMain": string,
-    readonly "FocusMainDeep": string,
-    readonly "FocusReaderGotoPage": string,
-    readonly "FocusReaderNavigation": string,
-    readonly "FocusReaderNavigationAnnotations": string,
-    readonly "FocusReaderNavigationBookmarks": string,
-    readonly "FocusReaderNavigationSearch": string,
-    readonly "FocusReaderNavigationTOC": string,
-    readonly "FocusReaderSettings": string,
-    readonly "FocusSearch": string,
-    readonly "FocusToolbar": string,
-    readonly "NavigateNextChapter": string,
-    readonly "NavigateNextChapterAlt": string,
-    readonly "NavigateNextHistory": string,
-    readonly "NavigateNextLibraryPage": string,
-    readonly "NavigateNextLibraryPageAlt": string,
-    readonly "NavigateNextOPDSPage": string,
-    readonly "NavigateNextOPDSPageAlt": string,
-    readonly "NavigateNextPage": string,
-    readonly "NavigateNextPageAlt": string,
-    readonly "NavigatePreviousChapter": string,
-    readonly "NavigatePreviousChapterAlt": string,
-    readonly "NavigatePreviousHistory": string,
-    readonly "NavigatePreviousLibraryPage": string,
-    readonly "NavigatePreviousLibraryPageAlt": string,
-    readonly "NavigatePreviousOPDSPage": string,
-    readonly "NavigatePreviousOPDSPageAlt": string,
-    readonly "NavigatePreviousPage": string,
-    readonly "NavigatePreviousPageAlt": string,
-    readonly "NavigateToBegin": string,
-    readonly "NavigateToEnd": string,
-    readonly "OpenReaderInfo": string,
-    readonly "OpenReaderInfoWhereAmI": string,
-    readonly "SearchNext": string,
-    readonly "SearchNextAlt": string,
-    readonly "SearchPrevious": string,
-    readonly "SearchPreviousAlt": string,
-    readonly "SpeakReaderInfoWhereAmI": string,
-    readonly "ToggleBookmark": string,
-    readonly "ToggleReaderFullscreen": string
+  readonly "list": {
+    readonly "AddBookmarkWithLabel": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "AnnotationsCreate": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "AnnotationsCreateQuick": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "AnnotationsToggleMargin": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "AudioNext": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "AudioNextAlt": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "AudioPlayPause": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "AudioPrevious": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "AudioPreviousAlt": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "AudioStop": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "CloseReader": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "FXLZoomIn": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "FXLZoomOut": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "FXLZoomReset": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "FocusMain": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "FocusMainDeep": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "FocusReaderGotoPage": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "FocusReaderNavigation": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "FocusReaderNavigationAnnotations": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "FocusReaderNavigationBookmarks": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "FocusReaderNavigationSearch": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "FocusReaderNavigationTOC": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "FocusReaderSettings": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "FocusSearch": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "FocusToolbar": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "NavigateNextChapter": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "NavigateNextChapterAlt": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "NavigateNextHistory": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "NavigateNextLibraryPage": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "NavigateNextLibraryPageAlt": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "NavigateNextOPDSPage": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "NavigateNextOPDSPageAlt": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "NavigateNextPage": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "NavigateNextPageAlt": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "NavigatePreviousChapter": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "NavigatePreviousChapterAlt": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "NavigatePreviousHistory": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "NavigatePreviousLibraryPage": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "NavigatePreviousLibraryPageAlt": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "NavigatePreviousOPDSPage": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "NavigatePreviousOPDSPageAlt": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "NavigatePreviousPage": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "NavigatePreviousPageAlt": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "NavigateToBegin": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "NavigateToEnd": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "OpenReaderInfo": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "OpenReaderInfoWhereAmI": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "SearchNext": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "SearchNextAlt": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "SearchPrevious": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "SearchPreviousAlt": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "SpeakReaderInfoWhereAmI": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "ToggleBookmark": {
+      readonly "description": string,
+      readonly "name": string
+    },
+    readonly "ToggleReaderFullscreen": {
+      readonly "description": string,
+      readonly "name": string
+    }
   },
   readonly "noShortcutFound": string,
   readonly "resetDefaults": string,
@@ -1741,230 +1955,391 @@ declare namespace typed_i18n {
 };
   (_: "settings.keyboard.advancedMenu", __?: {}): string;
   (_: "settings.keyboard.cancel", __?: {}): string;
-  (_: "settings.keyboard.description", __?: {}): {
-  readonly "AnnotationsCreateDesc": string,
-  readonly "AnnotationsCreateQuickDesc": string,
-  readonly "AnnotationsToggleMarginDesc": string,
-  readonly "AudioNextAltDesc": string,
-  readonly "AudioNextDesc": string,
-  readonly "AudioPlayPauseDesc": string,
-  readonly "AudioPreviousAltDesc": string,
-  readonly "AudioPreviousDesc": string,
-  readonly "AudioStopDesc": string,
-  readonly "CloseReaderDesc": string,
-  readonly "FXLZoomInDesc": string,
-  readonly "FXLZoomOutDesc": string,
-  readonly "FXLZoomResetDesc": string,
-  readonly "FocusMainDeepDesc": string,
-  readonly "FocusMainDesc": string,
-  readonly "FocusReaderGotoPageDesc": string,
-  readonly "FocusReaderNavigationAnnotationsDesc": string,
-  readonly "FocusReaderNavigationBookmarksDesc": string,
-  readonly "FocusReaderNavigationDesc": string,
-  readonly "FocusReaderNavigationSearchDesc": string,
-  readonly "FocusReaderNavigationTOCDesc": string,
-  readonly "FocusReaderSettingsDesc": string,
-  readonly "FocusSearchDesc": string,
-  readonly "FocusToolbarDesc": string,
-  readonly "NavigateNextChapterAltDesc": string,
-  readonly "NavigateNextChapterDesc": string,
-  readonly "NavigateNextHistoryDesc": string,
-  readonly "NavigateNextLibraryPageAltDesc": string,
-  readonly "NavigateNextLibraryPageDesc": string,
-  readonly "NavigateNextOPDSPageAltDesc": string,
-  readonly "NavigateNextOPDSPageDesc": string,
-  readonly "NavigateNextPageAltDesc": string,
-  readonly "NavigateNextPageDesc": string,
-  readonly "NavigatePreviousChapterAltDesc": string,
-  readonly "NavigatePreviousChapterDesc": string,
-  readonly "NavigatePreviousHistoryDesc": string,
-  readonly "NavigatePreviousLibraryPageAltDesc": string,
-  readonly "NavigatePreviousLibraryPageDesc": string,
-  readonly "NavigatePreviousOPDSPageAltDesc": string,
-  readonly "NavigatePreviousOPDSPageDesc": string,
-  readonly "NavigatePreviousPageAltDesc": string,
-  readonly "NavigatePreviousPageDesc": string,
-  readonly "NavigateToBeginDesc": string,
-  readonly "NavigateToEndDesc": string,
-  readonly "OpenReaderInfoDesc": string,
-  readonly "OpenReaderInfoWhereAmIDesc": string,
-  readonly "SearchNextAltDesc": string,
-  readonly "SearchNextDesc": string,
-  readonly "SearchPreviousAltDesc": string,
-  readonly "SearchPreviousDesc": string,
-  readonly "SpeakReaderInfoWhereAmIDesc": string,
-  readonly "ToggleBookmarkDesc": string,
-  readonly "ToggleReaderFullscreenDesc": string,
-  readonly "AddBookmarkWithLabelDesc": string
-};
-  (_: "settings.keyboard.description.AnnotationsCreateDesc", __?: {}): string;
-  (_: "settings.keyboard.description.AnnotationsCreateQuickDesc", __?: {}): string;
-  (_: "settings.keyboard.description.AnnotationsToggleMarginDesc", __?: {}): string;
-  (_: "settings.keyboard.description.AudioNextAltDesc", __?: {}): string;
-  (_: "settings.keyboard.description.AudioNextDesc", __?: {}): string;
-  (_: "settings.keyboard.description.AudioPlayPauseDesc", __?: {}): string;
-  (_: "settings.keyboard.description.AudioPreviousAltDesc", __?: {}): string;
-  (_: "settings.keyboard.description.AudioPreviousDesc", __?: {}): string;
-  (_: "settings.keyboard.description.AudioStopDesc", __?: {}): string;
-  (_: "settings.keyboard.description.CloseReaderDesc", __?: {}): string;
-  (_: "settings.keyboard.description.FXLZoomInDesc", __?: {}): string;
-  (_: "settings.keyboard.description.FXLZoomOutDesc", __?: {}): string;
-  (_: "settings.keyboard.description.FXLZoomResetDesc", __?: {}): string;
-  (_: "settings.keyboard.description.FocusMainDeepDesc", __?: {}): string;
-  (_: "settings.keyboard.description.FocusMainDesc", __?: {}): string;
-  (_: "settings.keyboard.description.FocusReaderGotoPageDesc", __?: {}): string;
-  (_: "settings.keyboard.description.FocusReaderNavigationAnnotationsDesc", __?: {}): string;
-  (_: "settings.keyboard.description.FocusReaderNavigationBookmarksDesc", __?: {}): string;
-  (_: "settings.keyboard.description.FocusReaderNavigationDesc", __?: {}): string;
-  (_: "settings.keyboard.description.FocusReaderNavigationSearchDesc", __?: {}): string;
-  (_: "settings.keyboard.description.FocusReaderNavigationTOCDesc", __?: {}): string;
-  (_: "settings.keyboard.description.FocusReaderSettingsDesc", __?: {}): string;
-  (_: "settings.keyboard.description.FocusSearchDesc", __?: {}): string;
-  (_: "settings.keyboard.description.FocusToolbarDesc", __?: {}): string;
-  (_: "settings.keyboard.description.NavigateNextChapterAltDesc", __?: {}): string;
-  (_: "settings.keyboard.description.NavigateNextChapterDesc", __?: {}): string;
-  (_: "settings.keyboard.description.NavigateNextHistoryDesc", __?: {}): string;
-  (_: "settings.keyboard.description.NavigateNextLibraryPageAltDesc", __?: {}): string;
-  (_: "settings.keyboard.description.NavigateNextLibraryPageDesc", __?: {}): string;
-  (_: "settings.keyboard.description.NavigateNextOPDSPageAltDesc", __?: {}): string;
-  (_: "settings.keyboard.description.NavigateNextOPDSPageDesc", __?: {}): string;
-  (_: "settings.keyboard.description.NavigateNextPageAltDesc", __?: {}): string;
-  (_: "settings.keyboard.description.NavigateNextPageDesc", __?: {}): string;
-  (_: "settings.keyboard.description.NavigatePreviousChapterAltDesc", __?: {}): string;
-  (_: "settings.keyboard.description.NavigatePreviousChapterDesc", __?: {}): string;
-  (_: "settings.keyboard.description.NavigatePreviousHistoryDesc", __?: {}): string;
-  (_: "settings.keyboard.description.NavigatePreviousLibraryPageAltDesc", __?: {}): string;
-  (_: "settings.keyboard.description.NavigatePreviousLibraryPageDesc", __?: {}): string;
-  (_: "settings.keyboard.description.NavigatePreviousOPDSPageAltDesc", __?: {}): string;
-  (_: "settings.keyboard.description.NavigatePreviousOPDSPageDesc", __?: {}): string;
-  (_: "settings.keyboard.description.NavigatePreviousPageAltDesc", __?: {}): string;
-  (_: "settings.keyboard.description.NavigatePreviousPageDesc", __?: {}): string;
-  (_: "settings.keyboard.description.NavigateToBeginDesc", __?: {}): string;
-  (_: "settings.keyboard.description.NavigateToEndDesc", __?: {}): string;
-  (_: "settings.keyboard.description.OpenReaderInfoDesc", __?: {}): string;
-  (_: "settings.keyboard.description.OpenReaderInfoWhereAmIDesc", __?: {}): string;
-  (_: "settings.keyboard.description.SearchNextAltDesc", __?: {}): string;
-  (_: "settings.keyboard.description.SearchNextDesc", __?: {}): string;
-  (_: "settings.keyboard.description.SearchPreviousAltDesc", __?: {}): string;
-  (_: "settings.keyboard.description.SearchPreviousDesc", __?: {}): string;
-  (_: "settings.keyboard.description.SpeakReaderInfoWhereAmIDesc", __?: {}): string;
-  (_: "settings.keyboard.description.ToggleBookmarkDesc", __?: {}): string;
-  (_: "settings.keyboard.description.ToggleReaderFullscreenDesc", __?: {}): string;
-  (_: "settings.keyboard.description.AddBookmarkWithLabelDesc", __?: {}): string;
   (_: "settings.keyboard.disclaimer", __?: {}): string;
   (_: "settings.keyboard.editUserJson", __?: {}): string;
+  (_: "settings.keyboard.exportHtml", __?: {}): string;
   (_: "settings.keyboard.keyboardShortcuts", __?: {}): string;
   (_: "settings.keyboard.loadUserJson", __?: {}): string;
-  (_: "settings.keyboard.name", __?: {}): {
-  readonly "AddBookmarkWithLabel": string,
-  readonly "AnnotationsCreate": string,
-  readonly "AnnotationsCreateQuick": string,
-  readonly "AnnotationsToggleMargin": string,
-  readonly "AudioNext": string,
-  readonly "AudioNextAlt": string,
-  readonly "AudioPlayPause": string,
-  readonly "AudioPrevious": string,
-  readonly "AudioPreviousAlt": string,
-  readonly "AudioStop": string,
-  readonly "CloseReader": string,
-  readonly "FXLZoomIn": string,
-  readonly "FXLZoomOut": string,
-  readonly "FXLZoomReset": string,
-  readonly "FocusMain": string,
-  readonly "FocusMainDeep": string,
-  readonly "FocusReaderGotoPage": string,
-  readonly "FocusReaderNavigation": string,
-  readonly "FocusReaderNavigationAnnotations": string,
-  readonly "FocusReaderNavigationBookmarks": string,
-  readonly "FocusReaderNavigationSearch": string,
-  readonly "FocusReaderNavigationTOC": string,
-  readonly "FocusReaderSettings": string,
-  readonly "FocusSearch": string,
-  readonly "FocusToolbar": string,
-  readonly "NavigateNextChapter": string,
-  readonly "NavigateNextChapterAlt": string,
-  readonly "NavigateNextHistory": string,
-  readonly "NavigateNextLibraryPage": string,
-  readonly "NavigateNextLibraryPageAlt": string,
-  readonly "NavigateNextOPDSPage": string,
-  readonly "NavigateNextOPDSPageAlt": string,
-  readonly "NavigateNextPage": string,
-  readonly "NavigateNextPageAlt": string,
-  readonly "NavigatePreviousChapter": string,
-  readonly "NavigatePreviousChapterAlt": string,
-  readonly "NavigatePreviousHistory": string,
-  readonly "NavigatePreviousLibraryPage": string,
-  readonly "NavigatePreviousLibraryPageAlt": string,
-  readonly "NavigatePreviousOPDSPage": string,
-  readonly "NavigatePreviousOPDSPageAlt": string,
-  readonly "NavigatePreviousPage": string,
-  readonly "NavigatePreviousPageAlt": string,
-  readonly "NavigateToBegin": string,
-  readonly "NavigateToEnd": string,
-  readonly "OpenReaderInfo": string,
-  readonly "OpenReaderInfoWhereAmI": string,
-  readonly "SearchNext": string,
-  readonly "SearchNextAlt": string,
-  readonly "SearchPrevious": string,
-  readonly "SearchPreviousAlt": string,
-  readonly "SpeakReaderInfoWhereAmI": string,
-  readonly "ToggleBookmark": string,
-  readonly "ToggleReaderFullscreen": string
+  (_: "settings.keyboard.list", __?: {}): {
+  readonly "AddBookmarkWithLabel": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "AnnotationsCreate": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "AnnotationsCreateQuick": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "AnnotationsToggleMargin": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "AudioNext": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "AudioNextAlt": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "AudioPlayPause": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "AudioPrevious": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "AudioPreviousAlt": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "AudioStop": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "CloseReader": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "FXLZoomIn": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "FXLZoomOut": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "FXLZoomReset": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "FocusMain": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "FocusMainDeep": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "FocusReaderGotoPage": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "FocusReaderNavigation": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "FocusReaderNavigationAnnotations": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "FocusReaderNavigationBookmarks": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "FocusReaderNavigationSearch": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "FocusReaderNavigationTOC": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "FocusReaderSettings": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "FocusSearch": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "FocusToolbar": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "NavigateNextChapter": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "NavigateNextChapterAlt": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "NavigateNextHistory": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "NavigateNextLibraryPage": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "NavigateNextLibraryPageAlt": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "NavigateNextOPDSPage": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "NavigateNextOPDSPageAlt": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "NavigateNextPage": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "NavigateNextPageAlt": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "NavigatePreviousChapter": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "NavigatePreviousChapterAlt": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "NavigatePreviousHistory": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "NavigatePreviousLibraryPage": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "NavigatePreviousLibraryPageAlt": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "NavigatePreviousOPDSPage": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "NavigatePreviousOPDSPageAlt": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "NavigatePreviousPage": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "NavigatePreviousPageAlt": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "NavigateToBegin": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "NavigateToEnd": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "OpenReaderInfo": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "OpenReaderInfoWhereAmI": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "SearchNext": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "SearchNextAlt": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "SearchPrevious": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "SearchPreviousAlt": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "SpeakReaderInfoWhereAmI": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "ToggleBookmark": {
+    readonly "description": string,
+    readonly "name": string
+  },
+  readonly "ToggleReaderFullscreen": {
+    readonly "description": string,
+    readonly "name": string
+  }
 };
-  (_: "settings.keyboard.name.AddBookmarkWithLabel", __?: {}): string;
-  (_: "settings.keyboard.name.AnnotationsCreate", __?: {}): string;
-  (_: "settings.keyboard.name.AnnotationsCreateQuick", __?: {}): string;
-  (_: "settings.keyboard.name.AnnotationsToggleMargin", __?: {}): string;
-  (_: "settings.keyboard.name.AudioNext", __?: {}): string;
-  (_: "settings.keyboard.name.AudioNextAlt", __?: {}): string;
-  (_: "settings.keyboard.name.AudioPlayPause", __?: {}): string;
-  (_: "settings.keyboard.name.AudioPrevious", __?: {}): string;
-  (_: "settings.keyboard.name.AudioPreviousAlt", __?: {}): string;
-  (_: "settings.keyboard.name.AudioStop", __?: {}): string;
-  (_: "settings.keyboard.name.CloseReader", __?: {}): string;
-  (_: "settings.keyboard.name.FXLZoomIn", __?: {}): string;
-  (_: "settings.keyboard.name.FXLZoomOut", __?: {}): string;
-  (_: "settings.keyboard.name.FXLZoomReset", __?: {}): string;
-  (_: "settings.keyboard.name.FocusMain", __?: {}): string;
-  (_: "settings.keyboard.name.FocusMainDeep", __?: {}): string;
-  (_: "settings.keyboard.name.FocusReaderGotoPage", __?: {}): string;
-  (_: "settings.keyboard.name.FocusReaderNavigation", __?: {}): string;
-  (_: "settings.keyboard.name.FocusReaderNavigationAnnotations", __?: {}): string;
-  (_: "settings.keyboard.name.FocusReaderNavigationBookmarks", __?: {}): string;
-  (_: "settings.keyboard.name.FocusReaderNavigationSearch", __?: {}): string;
-  (_: "settings.keyboard.name.FocusReaderNavigationTOC", __?: {}): string;
-  (_: "settings.keyboard.name.FocusReaderSettings", __?: {}): string;
-  (_: "settings.keyboard.name.FocusSearch", __?: {}): string;
-  (_: "settings.keyboard.name.FocusToolbar", __?: {}): string;
-  (_: "settings.keyboard.name.NavigateNextChapter", __?: {}): string;
-  (_: "settings.keyboard.name.NavigateNextChapterAlt", __?: {}): string;
-  (_: "settings.keyboard.name.NavigateNextHistory", __?: {}): string;
-  (_: "settings.keyboard.name.NavigateNextLibraryPage", __?: {}): string;
-  (_: "settings.keyboard.name.NavigateNextLibraryPageAlt", __?: {}): string;
-  (_: "settings.keyboard.name.NavigateNextOPDSPage", __?: {}): string;
-  (_: "settings.keyboard.name.NavigateNextOPDSPageAlt", __?: {}): string;
-  (_: "settings.keyboard.name.NavigateNextPage", __?: {}): string;
-  (_: "settings.keyboard.name.NavigateNextPageAlt", __?: {}): string;
-  (_: "settings.keyboard.name.NavigatePreviousChapter", __?: {}): string;
-  (_: "settings.keyboard.name.NavigatePreviousChapterAlt", __?: {}): string;
-  (_: "settings.keyboard.name.NavigatePreviousHistory", __?: {}): string;
-  (_: "settings.keyboard.name.NavigatePreviousLibraryPage", __?: {}): string;
-  (_: "settings.keyboard.name.NavigatePreviousLibraryPageAlt", __?: {}): string;
-  (_: "settings.keyboard.name.NavigatePreviousOPDSPage", __?: {}): string;
-  (_: "settings.keyboard.name.NavigatePreviousOPDSPageAlt", __?: {}): string;
-  (_: "settings.keyboard.name.NavigatePreviousPage", __?: {}): string;
-  (_: "settings.keyboard.name.NavigatePreviousPageAlt", __?: {}): string;
-  (_: "settings.keyboard.name.NavigateToBegin", __?: {}): string;
-  (_: "settings.keyboard.name.NavigateToEnd", __?: {}): string;
-  (_: "settings.keyboard.name.OpenReaderInfo", __?: {}): string;
-  (_: "settings.keyboard.name.OpenReaderInfoWhereAmI", __?: {}): string;
-  (_: "settings.keyboard.name.SearchNext", __?: {}): string;
-  (_: "settings.keyboard.name.SearchNextAlt", __?: {}): string;
-  (_: "settings.keyboard.name.SearchPrevious", __?: {}): string;
-  (_: "settings.keyboard.name.SearchPreviousAlt", __?: {}): string;
-  (_: "settings.keyboard.name.SpeakReaderInfoWhereAmI", __?: {}): string;
-  (_: "settings.keyboard.name.ToggleBookmark", __?: {}): string;
-  (_: "settings.keyboard.name.ToggleReaderFullscreen", __?: {}): string;
+  (_: "settings.keyboard.list.AddBookmarkWithLabel", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.AddBookmarkWithLabel.description", __?: {}): string;
+  (_: "settings.keyboard.list.AddBookmarkWithLabel.name", __?: {}): string;
+  (_: "settings.keyboard.list.AnnotationsCreate", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.AnnotationsCreate.description", __?: {}): string;
+  (_: "settings.keyboard.list.AnnotationsCreate.name", __?: {}): string;
+  (_: "settings.keyboard.list.AnnotationsCreateQuick", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.AnnotationsCreateQuick.description", __?: {}): string;
+  (_: "settings.keyboard.list.AnnotationsCreateQuick.name", __?: {}): string;
+  (_: "settings.keyboard.list.AnnotationsToggleMargin", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.AnnotationsToggleMargin.description", __?: {}): string;
+  (_: "settings.keyboard.list.AnnotationsToggleMargin.name", __?: {}): string;
+  (_: "settings.keyboard.list.AudioNext", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.AudioNext.description", __?: {}): string;
+  (_: "settings.keyboard.list.AudioNext.name", __?: {}): string;
+  (_: "settings.keyboard.list.AudioNextAlt", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.AudioNextAlt.description", __?: {}): string;
+  (_: "settings.keyboard.list.AudioNextAlt.name", __?: {}): string;
+  (_: "settings.keyboard.list.AudioPlayPause", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.AudioPlayPause.description", __?: {}): string;
+  (_: "settings.keyboard.list.AudioPlayPause.name", __?: {}): string;
+  (_: "settings.keyboard.list.AudioPrevious", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.AudioPrevious.description", __?: {}): string;
+  (_: "settings.keyboard.list.AudioPrevious.name", __?: {}): string;
+  (_: "settings.keyboard.list.AudioPreviousAlt", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.AudioPreviousAlt.description", __?: {}): string;
+  (_: "settings.keyboard.list.AudioPreviousAlt.name", __?: {}): string;
+  (_: "settings.keyboard.list.AudioStop", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.AudioStop.description", __?: {}): string;
+  (_: "settings.keyboard.list.AudioStop.name", __?: {}): string;
+  (_: "settings.keyboard.list.CloseReader", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.CloseReader.description", __?: {}): string;
+  (_: "settings.keyboard.list.CloseReader.name", __?: {}): string;
+  (_: "settings.keyboard.list.FXLZoomIn", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.FXLZoomIn.description", __?: {}): string;
+  (_: "settings.keyboard.list.FXLZoomIn.name", __?: {}): string;
+  (_: "settings.keyboard.list.FXLZoomOut", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.FXLZoomOut.description", __?: {}): string;
+  (_: "settings.keyboard.list.FXLZoomOut.name", __?: {}): string;
+  (_: "settings.keyboard.list.FXLZoomReset", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.FXLZoomReset.description", __?: {}): string;
+  (_: "settings.keyboard.list.FXLZoomReset.name", __?: {}): string;
+  (_: "settings.keyboard.list.FocusMain", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.FocusMain.description", __?: {}): string;
+  (_: "settings.keyboard.list.FocusMain.name", __?: {}): string;
+  (_: "settings.keyboard.list.FocusMainDeep", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.FocusMainDeep.description", __?: {}): string;
+  (_: "settings.keyboard.list.FocusMainDeep.name", __?: {}): string;
+  (_: "settings.keyboard.list.FocusReaderGotoPage", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.FocusReaderGotoPage.description", __?: {}): string;
+  (_: "settings.keyboard.list.FocusReaderGotoPage.name", __?: {}): string;
+  (_: "settings.keyboard.list.FocusReaderNavigation", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.FocusReaderNavigation.description", __?: {}): string;
+  (_: "settings.keyboard.list.FocusReaderNavigation.name", __?: {}): string;
+  (_: "settings.keyboard.list.FocusReaderNavigationAnnotations", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.FocusReaderNavigationAnnotations.description", __?: {}): string;
+  (_: "settings.keyboard.list.FocusReaderNavigationAnnotations.name", __?: {}): string;
+  (_: "settings.keyboard.list.FocusReaderNavigationBookmarks", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.FocusReaderNavigationBookmarks.description", __?: {}): string;
+  (_: "settings.keyboard.list.FocusReaderNavigationBookmarks.name", __?: {}): string;
+  (_: "settings.keyboard.list.FocusReaderNavigationSearch", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.FocusReaderNavigationSearch.description", __?: {}): string;
+  (_: "settings.keyboard.list.FocusReaderNavigationSearch.name", __?: {}): string;
+  (_: "settings.keyboard.list.FocusReaderNavigationTOC", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.FocusReaderNavigationTOC.description", __?: {}): string;
+  (_: "settings.keyboard.list.FocusReaderNavigationTOC.name", __?: {}): string;
+  (_: "settings.keyboard.list.FocusReaderSettings", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.FocusReaderSettings.description", __?: {}): string;
+  (_: "settings.keyboard.list.FocusReaderSettings.name", __?: {}): string;
+  (_: "settings.keyboard.list.FocusSearch", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.FocusSearch.description", __?: {}): string;
+  (_: "settings.keyboard.list.FocusSearch.name", __?: {}): string;
+  (_: "settings.keyboard.list.FocusToolbar", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.FocusToolbar.description", __?: {}): string;
+  (_: "settings.keyboard.list.FocusToolbar.name", __?: {}): string;
+  (_: "settings.keyboard.list.NavigateNextChapter", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.NavigateNextChapter.description", __?: {}): string;
+  (_: "settings.keyboard.list.NavigateNextChapter.name", __?: {}): string;
+  (_: "settings.keyboard.list.NavigateNextChapterAlt", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.NavigateNextChapterAlt.description", __?: {}): string;
+  (_: "settings.keyboard.list.NavigateNextChapterAlt.name", __?: {}): string;
+  (_: "settings.keyboard.list.NavigateNextHistory", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.NavigateNextHistory.description", __?: {}): string;
+  (_: "settings.keyboard.list.NavigateNextHistory.name", __?: {}): string;
+  (_: "settings.keyboard.list.NavigateNextLibraryPage", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.NavigateNextLibraryPage.description", __?: {}): string;
+  (_: "settings.keyboard.list.NavigateNextLibraryPage.name", __?: {}): string;
+  (_: "settings.keyboard.list.NavigateNextLibraryPageAlt", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.NavigateNextLibraryPageAlt.description", __?: {}): string;
+  (_: "settings.keyboard.list.NavigateNextLibraryPageAlt.name", __?: {}): string;
+  (_: "settings.keyboard.list.NavigateNextOPDSPage", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.NavigateNextOPDSPage.description", __?: {}): string;
+  (_: "settings.keyboard.list.NavigateNextOPDSPage.name", __?: {}): string;
+  (_: "settings.keyboard.list.NavigateNextOPDSPageAlt", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.NavigateNextOPDSPageAlt.description", __?: {}): string;
+  (_: "settings.keyboard.list.NavigateNextOPDSPageAlt.name", __?: {}): string;
+  (_: "settings.keyboard.list.NavigateNextPage", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.NavigateNextPage.description", __?: {}): string;
+  (_: "settings.keyboard.list.NavigateNextPage.name", __?: {}): string;
+  (_: "settings.keyboard.list.NavigateNextPageAlt", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.NavigateNextPageAlt.description", __?: {}): string;
+  (_: "settings.keyboard.list.NavigateNextPageAlt.name", __?: {}): string;
+  (_: "settings.keyboard.list.NavigatePreviousChapter", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.NavigatePreviousChapter.description", __?: {}): string;
+  (_: "settings.keyboard.list.NavigatePreviousChapter.name", __?: {}): string;
+  (_: "settings.keyboard.list.NavigatePreviousChapterAlt", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.NavigatePreviousChapterAlt.description", __?: {}): string;
+  (_: "settings.keyboard.list.NavigatePreviousChapterAlt.name", __?: {}): string;
+  (_: "settings.keyboard.list.NavigatePreviousHistory", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.NavigatePreviousHistory.description", __?: {}): string;
+  (_: "settings.keyboard.list.NavigatePreviousHistory.name", __?: {}): string;
+  (_: "settings.keyboard.list.NavigatePreviousLibraryPage", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.NavigatePreviousLibraryPage.description", __?: {}): string;
+  (_: "settings.keyboard.list.NavigatePreviousLibraryPage.name", __?: {}): string;
+  (_: "settings.keyboard.list.NavigatePreviousLibraryPageAlt", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.NavigatePreviousLibraryPageAlt.description", __?: {}): string;
+  (_: "settings.keyboard.list.NavigatePreviousLibraryPageAlt.name", __?: {}): string;
+  (_: "settings.keyboard.list.NavigatePreviousOPDSPage", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.NavigatePreviousOPDSPage.description", __?: {}): string;
+  (_: "settings.keyboard.list.NavigatePreviousOPDSPage.name", __?: {}): string;
+  (_: "settings.keyboard.list.NavigatePreviousOPDSPageAlt", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.NavigatePreviousOPDSPageAlt.description", __?: {}): string;
+  (_: "settings.keyboard.list.NavigatePreviousOPDSPageAlt.name", __?: {}): string;
+  (_: "settings.keyboard.list.NavigatePreviousPage", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.NavigatePreviousPage.description", __?: {}): string;
+  (_: "settings.keyboard.list.NavigatePreviousPage.name", __?: {}): string;
+  (_: "settings.keyboard.list.NavigatePreviousPageAlt", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.NavigatePreviousPageAlt.description", __?: {}): string;
+  (_: "settings.keyboard.list.NavigatePreviousPageAlt.name", __?: {}): string;
+  (_: "settings.keyboard.list.NavigateToBegin", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.NavigateToBegin.description", __?: {}): string;
+  (_: "settings.keyboard.list.NavigateToBegin.name", __?: {}): string;
+  (_: "settings.keyboard.list.NavigateToEnd", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.NavigateToEnd.description", __?: {}): string;
+  (_: "settings.keyboard.list.NavigateToEnd.name", __?: {}): string;
+  (_: "settings.keyboard.list.OpenReaderInfo", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.OpenReaderInfo.description", __?: {}): string;
+  (_: "settings.keyboard.list.OpenReaderInfo.name", __?: {}): string;
+  (_: "settings.keyboard.list.OpenReaderInfoWhereAmI", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.OpenReaderInfoWhereAmI.description", __?: {}): string;
+  (_: "settings.keyboard.list.OpenReaderInfoWhereAmI.name", __?: {}): string;
+  (_: "settings.keyboard.list.SearchNext", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.SearchNext.description", __?: {}): string;
+  (_: "settings.keyboard.list.SearchNext.name", __?: {}): string;
+  (_: "settings.keyboard.list.SearchNextAlt", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.SearchNextAlt.description", __?: {}): string;
+  (_: "settings.keyboard.list.SearchNextAlt.name", __?: {}): string;
+  (_: "settings.keyboard.list.SearchPrevious", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.SearchPrevious.description", __?: {}): string;
+  (_: "settings.keyboard.list.SearchPrevious.name", __?: {}): string;
+  (_: "settings.keyboard.list.SearchPreviousAlt", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.SearchPreviousAlt.description", __?: {}): string;
+  (_: "settings.keyboard.list.SearchPreviousAlt.name", __?: {}): string;
+  (_: "settings.keyboard.list.SpeakReaderInfoWhereAmI", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.SpeakReaderInfoWhereAmI.description", __?: {}): string;
+  (_: "settings.keyboard.list.SpeakReaderInfoWhereAmI.name", __?: {}): string;
+  (_: "settings.keyboard.list.ToggleBookmark", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.ToggleBookmark.description", __?: {}): string;
+  (_: "settings.keyboard.list.ToggleBookmark.name", __?: {}): string;
+  (_: "settings.keyboard.list.ToggleReaderFullscreen", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.ToggleReaderFullscreen.description", __?: {}): string;
+  (_: "settings.keyboard.list.ToggleReaderFullscreen.name", __?: {}): string;
   (_: "settings.keyboard.noShortcutFound", __?: {}): string;
   (_: "settings.keyboard.resetDefaults", __?: {}): string;
   (_: "settings.keyboard.save", __?: {}): string;

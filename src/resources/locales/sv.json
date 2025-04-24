@@ -560,122 +560,229 @@
         "keyboard": {
             "advancedMenu": "Meny",
             "cancel": "Avbryt",
-            "description": {
-                "AddBookmarkWithLabelDesc": "",
-                "AnnotationsCreateDesc": "",
-                "AnnotationsCreateQuickDesc": "",
-                "AnnotationsToggleMarginDesc": "",
-                "AudioNextAltDesc": "",
-                "AudioNextDesc": "",
-                "AudioPlayPauseDesc": "",
-                "AudioPreviousAltDesc": "",
-                "AudioPreviousDesc": "",
-                "AudioStopDesc": "",
-                "CloseReaderDesc": "",
-                "FXLZoomInDesc": "",
-                "FXLZoomOutDesc": "",
-                "FXLZoomResetDesc": "",
-                "FocusMainDeepDesc": "",
-                "FocusMainDesc": "",
-                "FocusReaderGotoPageDesc": "",
-                "FocusReaderNavigationAnnotationsDesc": "",
-                "FocusReaderNavigationBookmarksDesc": "",
-                "FocusReaderNavigationDesc": "",
-                "FocusReaderNavigationSearchDesc": "",
-                "FocusReaderNavigationTOCDesc": "",
-                "FocusReaderSettingsDesc": "",
-                "FocusSearchDesc": "",
-                "FocusToolbarDesc": "",
-                "NavigateNextChapterAltDesc": "",
-                "NavigateNextChapterDesc": "",
-                "NavigateNextHistoryDesc": "",
-                "NavigateNextLibraryPageAltDesc": "",
-                "NavigateNextLibraryPageDesc": "",
-                "NavigateNextOPDSPageAltDesc": "",
-                "NavigateNextOPDSPageDesc": "",
-                "NavigateNextPageAltDesc": "",
-                "NavigateNextPageDesc": "",
-                "NavigatePreviousChapterAltDesc": "",
-                "NavigatePreviousChapterDesc": "",
-                "NavigatePreviousHistoryDesc": "",
-                "NavigatePreviousLibraryPageAltDesc": "",
-                "NavigatePreviousLibraryPageDesc": "",
-                "NavigatePreviousOPDSPageAltDesc": "",
-                "NavigatePreviousOPDSPageDesc": "",
-                "NavigatePreviousPageAltDesc": "",
-                "NavigatePreviousPageDesc": "",
-                "NavigateToBeginDesc": "",
-                "NavigateToEndDesc": "",
-                "OpenReaderInfoDesc": "",
-                "OpenReaderInfoWhereAmIDesc": "",
-                "SearchNextAltDesc": "",
-                "SearchNextDesc": "",
-                "SearchPreviousAltDesc": "",
-                "SearchPreviousDesc": "",
-                "SpeakReaderInfoWhereAmIDesc": "",
-                "ToggleBookmarkDesc": "",
-                "ToggleReaderFullscreenDesc": ""
-            },
             "disclaimer": "Kortkommandona baserar sig på QWERTY-tangentbordslayouten.",
             "editUserJson": "Redigera användarfil ...",
+            "exportHtml": "",
             "keyboardShortcuts": "Kortkommandon",
-            "loadUserJson": "Läs in från användarfil",
-            "name": {
-                "AddBookmarkWithLabel": "",
-                "AnnotationsCreate": "",
-                "AnnotationsCreateQuick": "",
-                "AnnotationsToggleMargin": "",
-                "AudioNext": "",
-                "AudioNextAlt": "",
-                "AudioPlayPause": "",
-                "AudioPrevious": "",
-                "AudioPreviousAlt": "",
-                "AudioStop": "",
-                "CloseReader": "",
-                "FXLZoomIn": "",
-                "FXLZoomOut": "",
-                "FXLZoomReset": "",
-                "FocusMain": "",
-                "FocusMainDeep": "",
-                "FocusReaderGotoPage": "",
-                "FocusReaderNavigation": "",
-                "FocusReaderNavigationAnnotations": "",
-                "FocusReaderNavigationBookmarks": "",
-                "FocusReaderNavigationSearch": "",
-                "FocusReaderNavigationTOC": "",
-                "FocusReaderSettings": "",
-                "FocusSearch": "",
-                "FocusToolbar": "",
-                "NavigateNextChapter": "",
-                "NavigateNextChapterAlt": "",
-                "NavigateNextHistory": "",
-                "NavigateNextLibraryPage": "",
-                "NavigateNextLibraryPageAlt": "",
-                "NavigateNextOPDSPage": "",
-                "NavigateNextOPDSPageAlt": "",
-                "NavigateNextPage": "",
-                "NavigateNextPageAlt": "",
-                "NavigatePreviousChapter": "",
-                "NavigatePreviousChapterAlt": "",
-                "NavigatePreviousHistory": "",
-                "NavigatePreviousLibraryPage": "",
-                "NavigatePreviousLibraryPageAlt": "",
-                "NavigatePreviousOPDSPage": "",
-                "NavigatePreviousOPDSPageAlt": "",
-                "NavigatePreviousPage": "",
-                "NavigatePreviousPageAlt": "",
-                "NavigateToBegin": "",
-                "NavigateToEnd": "",
-                "OpenReaderInfo": "",
-                "OpenReaderInfoWhereAmI": "",
-                "SearchNext": "",
-                "SearchNextAlt": "",
-                "SearchPrevious": "",
-                "SearchPreviousAlt": "",
-                "SpeakReaderInfoWhereAmI": "",
-                "ToggleBookmark": "",
-                "ToggleReaderFullscreen": ""
+            "list": {
+                "AddBookmarkWithLabel": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreate": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreateQuick": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsToggleMargin": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPlayPause": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioStop": {
+                    "description": "",
+                    "name": ""
+                },
+                "CloseReader": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomIn": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomOut": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomReset": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMain": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMainDeep": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderGotoPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigation": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationAnnotations": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationBookmarks": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationTOC": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderSettings": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusToolbar": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToBegin": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToEnd": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfo": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SpeakReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleBookmark": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleReaderFullscreen": {
+                    "description": "",
+                    "name": ""
+                }
             },
+            "loadUserJson": "Läs in från användarfil",
             "noShortcutFound": "",
             "resetDefaults": "Återställ (läs in standard)",
             "save": "Spara",

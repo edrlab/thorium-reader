@@ -560,122 +560,229 @@
         "keyboard": {
             "advancedMenu": "Keyboard shortcuts advanced menu",
             "cancel": "Cancel",
-            "description": {
-                "AddBookmarkWithLabelDesc": "",
-                "AnnotationsCreateDesc": "When a text is selected, it will be marked as annotation and the annotation dialog box will open to allow additional text and select of color and stroke.",
-                "AnnotationsCreateQuickDesc": "When a text is selected, it will be marked as annotation without opening the annotation dialog box.",
-                "AnnotationsToggleMarginDesc": "Changes the Annotations marks from the text to the margin or reverse.",
-                "AudioNextAltDesc": "in reader window, calls the \"next\" command for audio (TTS or EPUB3 Media Overlays readaloud, or \"forward\" for audiobooks).",
-                "AudioNextDesc": "in reader window, calls the \"next\" command for audio (TTS or EPUB3 Media Overlays readaloud, or \"forward\" for audiobooks).",
-                "AudioPlayPauseDesc": "in reader window, calls the \"play\" or \"pause\" toggle commands for audio (TTS or EPUB3 Media Overlays readaloud).",
-                "AudioPreviousAltDesc": "in reader window, calls the \"previous\" command for audio (TTS or EPUB3 Media Overlays readaloud, or \"rewind\" for audiobooks). Alternative shortcut key.",
-                "AudioPreviousDesc": "in reader window, calls the \"previous\" command for audio (TTS or EPUB3 Media Overlays readaloud, or \"rewind\" for audiobooks).",
-                "AudioStopDesc": "in reader window, calls the \"stop\" command for audio (TTS or EPUB3 Media Overlays readaloud, or \"pause\" for audiobooks).",
-                "CloseReaderDesc": "in reader window, closes the window and returns to the library view.",
-                "FXLZoomInDesc": "Zoom in a fixed layout page.",
-                "FXLZoomOutDesc": "Zoom out a fixed layout page.",
-                "FXLZoomResetDesc": "Reset to 100% zoom on a fixed layout page.",
-                "FocusMainDeepDesc": "Just like \"Main content\" / FocusMainDeep in the reader view (see above), but the keyboard focus is forced deeper into the frame that displays publication content (this can help in cases where screen readers do not automatically read the currently-focussed HTML element inside the displayed document).",
-                "FocusMainDesc": "In reader and library windows, moves the keyboard focus to the \"main\" area landmark. in the reader view, the keyboard focus moves one step further into the frame that displays publication content (screen readers automatically read the currently-focussed HTML element inside the displayed document).",
-                "FocusReaderGotoPageDesc": "in reader window, moves the keyboard focus to the \"goto page\" section in the navigation panel.",
-                "FocusReaderNavigationAnnotationsDesc": "",
-                "FocusReaderNavigationBookmarksDesc": "",
-                "FocusReaderNavigationDesc": "in reader window, moves the keyboard focus to the navigation panel (table of contents, bookmarks, etc.).",
-                "FocusReaderNavigationSearchDesc": "",
-                "FocusReaderNavigationTOCDesc": "in reader window, moves the keyboard focus to the navigation panel, but more specifically into the table of contents, and if possible at the detected heading / closest to the reading location.",
-                "FocusReaderSettingsDesc": "in reader window, moves the keyboard focus to the settings panel (user preferences for displaying publication content).",
-                "FocusSearchDesc": "Available from the library and the reading winfos. In library window, moves the keyboard focus to the search text input of local bookshelf or OPDS feed. In reader window, moves the keyboard focus to the publication-wide search text input.",
-                "FocusToolbarDesc": "in reader and library windows, moves the keyboard focus to the top horizontal toolbar, immediately before the \"skip\" link (which itself moves focus to the \"main\" area landmark).",
-                "NavigateNextChapterAltDesc": "in reader window, move to previous or next \"chapter\" (spine item in the reading order of the publication). Note that the keyboard focus is automatically moved to the \"main\" area landmark, which is immediately before the frame that displays publication content (just like when following / activating a link in the table of contents).",
-                "NavigateNextChapterDesc": "in reader window, move to previous or next \"chapter\" (spine item in the reading order of the publication). Note that the keyboard focus is automatically moved to the \"main\" area landmark, which is immediately before the frame that displays publication content (just like when following / activating a link in the table of contents).",
-                "NavigateNextHistoryDesc": "in reader window, go back or forward in the navigation history: Beginning or End of the publication.",
-                "NavigateNextLibraryPageAltDesc": "In the library view, display the next set of books (alternative keyboard shortcut).",
-                "NavigateNextLibraryPageDesc": "In the library view, display the next set of books.",
-                "NavigateNextOPDSPageAltDesc": "in library window for Catalogues (OPD) feeds, activates the next pagination links (alternative keyboard shortcut).",
-                "NavigateNextOPDSPageDesc": "in library window for Catalogues (OPD) feeds, activates the next pagination links.",
-                "NavigateNextPageAltDesc": "in reader window, move to previous or next \"page\" (or scroll unit, if pagination is disabled).",
-                "NavigateNextPageDesc": "in reader window, move to previous or next \"page\" (or scroll unit, if pagination is disabled).",
-                "NavigatePreviousChapterAltDesc": "in reader window, move to previous \"chapter\" (spine item in the reading order of the publication). Note that the keyboard focus is automatically moved to the \"main\" area landmark, which is immediately before the frame that displays publication content (just like when following / activating a link in the table of contents).",
-                "NavigatePreviousChapterDesc": "in reader window, move to previous \"chapter\" (spine item in the reading order of the publication). Note that the keyboard focus is automatically moved to the \"main\" area landmark, which is immediately before the frame that displays publication content (just like when following / activating a link in the table of contents).",
-                "NavigatePreviousHistoryDesc": "in reader window, go back or forward in the navigation history: Beginning or End of the publication.",
-                "NavigatePreviousLibraryPageAltDesc": "In the library view, display the previous set of books (alternative keyboard shortcut).",
-                "NavigatePreviousLibraryPageDesc": "In the library view, display the previous set of books.",
-                "NavigatePreviousOPDSPageAltDesc": "in library window for Catalogues (OPD) feeds, activates the previous pagination links (alternative keyboard shortcut).",
-                "NavigatePreviousOPDSPageDesc": "in library window for Catalogues (OPD) feeds, activates the previous pagination links.",
-                "NavigatePreviousPageAltDesc": "in reader window, move to previous or next \"page\" (or scroll unit, if pagination is disabled).",
-                "NavigatePreviousPageDesc": "in reader window, move to previous or next \"page\" (or scroll unit, if pagination is disabled).",
-                "NavigateToBeginDesc": "in reader window, goes to the beginning of the publication.",
-                "NavigateToEndDesc": "in reader window, goes to the end of the publication.",
-                "OpenReaderInfoDesc": "in reader window, publication info popup modal dialog (may be used in future Thorium version for similar feature in library window).",
-                "OpenReaderInfoWhereAmIDesc": "in reader window, publication info popup modal dialog with direct keyboard focus on section that displays the headings hierarchy trail and other contextual information for the current reading location, such as nearest preceding page break, as well as document index in the reading order (this is the \"where am I\" feature).",
-                "SearchNextAltDesc": "same as above (alternative keyboard shortcut).",
-                "SearchNextDesc": "in reader window, when the publication-wide search text input is open, finds the previous / next match.",
-                "SearchPreviousAltDesc": "same as above (alternative keyboard shortcut).",
-                "SearchPreviousDesc": "in reader window, when the publication-wide search text input is open, finds the previous / next match.",
-                "SpeakReaderInfoWhereAmIDesc": "in reader window, this is the \"where am I\" feature, just as above, but only spoken via screen reader TTS thanks to an ARIA live region with assertive speech which interrupts the current narration.",
-                "ToggleBookmarkDesc": "in reader window, toggle bookmark (a notification is produced so that screen readers announce the change).",
-                "ToggleReaderFullscreenDesc": "In reader window, toggle fullscreen. Note that this is different from the Zen mode. Keyboard shortcut is the only way to go full screen."
-            },
             "disclaimer": "Shortcuts were defined from QWERTY keyboard layout.",
             "editUserJson": "Edit user file...",
+            "exportHtml": "Export as HTML",
             "keyboardShortcuts": "Keyboard shortcuts",
-            "loadUserJson": "Load from user file",
-            "name": {
-                "AddBookmarkWithLabel": "Add Bookmark with Label",
-                "AnnotationsCreate": "Create Annotation",
-                "AnnotationsCreateQuick": "Create Quick Annotation",
-                "AnnotationsToggleMargin": "Toggle Annotation Margin",
-                "AudioNext": "Next Audio",
-                "AudioNextAlt": "Next Audio (Alternative)",
-                "AudioPlayPause": "Play/Pause Audio",
-                "AudioPrevious": "Previous Audio",
-                "AudioPreviousAlt": "Previous Audio (Alternative)",
-                "AudioStop": "Stop Audio",
-                "CloseReader": "Close Reader",
-                "FXLZoomIn": "FXL Zoom In",
-                "FXLZoomOut": "FXL Zoom Out",
-                "FXLZoomReset": "Reset FXL Zoom",
-                "FocusMain": "Focus on Main Content",
-                "FocusMainDeep": "Deep Focus on Main Content",
-                "FocusReaderGotoPage": "Go to Reader Page",
-                "FocusReaderNavigation": "Focus on Reader Navigation",
-                "FocusReaderNavigationAnnotations": "Focus on Reader Navigation Annotations",
-                "FocusReaderNavigationBookmarks": "Focus on Reader Navigation Bookmarks",
-                "FocusReaderNavigationSearch": "Focus on Reader Navigation Search",
-                "FocusReaderNavigationTOC": "Focus on Reader Navigation TOC",
-                "FocusReaderSettings": "Focus on Reader Settings",
-                "FocusSearch": "Focus on Search",
-                "FocusToolbar": "Focus on Toolbar",
-                "NavigateNextChapter": "Go to Next Chapter",
-                "NavigateNextChapterAlt": "Go to Next Chapter (Alternative)",
-                "NavigateNextHistory": "Go to Next History",
-                "NavigateNextLibraryPage": "Go to Next Library Page",
-                "NavigateNextLibraryPageAlt": "Go to Next Library Page (Alternative)",
-                "NavigateNextOPDSPage": "Go to Next OPDS Page",
-                "NavigateNextOPDSPageAlt": "Go to Next OPDS Page (Alternative)",
-                "NavigateNextPage": "Go to Next Page",
-                "NavigateNextPageAlt": "Go to Next Page (Alternative)",
-                "NavigatePreviousChapter": "Go to Previous Chapter",
-                "NavigatePreviousChapterAlt": "Go to Previous Chapter (Alternative)",
-                "NavigatePreviousHistory": "Go to Previous History",
-                "NavigatePreviousLibraryPage": "Go to Previous Library Page",
-                "NavigatePreviousLibraryPageAlt": "Go to Previous Library Page (Alternative)",
-                "NavigatePreviousOPDSPage": "Go to Previous OPDS Page",
-                "NavigatePreviousOPDSPageAlt": "Go to Previous OPDS Page (Alternative)",
-                "NavigatePreviousPage": "Go to Previous Page",
-                "NavigatePreviousPageAlt": "Go to Previous Page (Alternative)",
-                "NavigateToBegin": "Go to Beginning",
-                "NavigateToEnd": "Go to End",
-                "OpenReaderInfo": "Open Reader Info",
-                "OpenReaderInfoWhereAmI": "Open Reader Info: Where Am I?",
-                "SearchNext": "Search Next",
-                "SearchNextAlt": "Search Next (Alternative)",
-                "SearchPrevious": "Search Previous",
-                "SearchPreviousAlt": "Search Previous (Alternative)",
-                "SpeakReaderInfoWhereAmI": "Speak Reader Info: Where Am I?",
-                "ToggleBookmark": "Toggle Bookmark",
-                "ToggleReaderFullscreen": "Toggle Fullscreen"
+            "list": {
+                "AddBookmarkWithLabel": {
+                    "description": "",
+                    "name": "Add Bookmark with Label"
+                },
+                "AnnotationsCreate": {
+                    "description": "When a text is selected, it will be marked as annotation and the annotation dialog box will open to allow additional text and select of color and stroke.",
+                    "name": "Create Annotation"
+                },
+                "AnnotationsCreateQuick": {
+                    "description": "When a text is selected, it will be marked as annotation without opening the annotation dialog box.",
+                    "name": "Create Quick Annotation"
+                },
+                "AnnotationsToggleMargin": {
+                    "description": "Changes the Annotations marks from the text to the margin or reverse.",
+                    "name": "Toggle Annotation Margin"
+                },
+                "AudioNext": {
+                    "description": "in reader window, calls the \"next\" command for audio (TTS or EPUB3 Media Overlays readaloud, or \"forward\" for audiobooks).",
+                    "name": "Next Audio"
+                },
+                "AudioNextAlt": {
+                    "description": "in reader window, calls the \"next\" command for audio (TTS or EPUB3 Media Overlays readaloud, or \"forward\" for audiobooks).",
+                    "name": "Next Audio (Alternative)"
+                },
+                "AudioPlayPause": {
+                    "description": "in reader window, calls the \"play\" or \"pause\" toggle commands for audio (TTS or EPUB3 Media Overlays readaloud).",
+                    "name": "Play/Pause Audio"
+                },
+                "AudioPrevious": {
+                    "description": "in reader window, calls the \"previous\" command for audio (TTS or EPUB3 Media Overlays readaloud, or \"rewind\" for audiobooks).",
+                    "name": "Previous Audio"
+                },
+                "AudioPreviousAlt": {
+                    "description": "in reader window, calls the \"previous\" command for audio (TTS or EPUB3 Media Overlays readaloud, or \"rewind\" for audiobooks). Alternative shortcut key.",
+                    "name": "Previous Audio (Alternative)"
+                },
+                "AudioStop": {
+                    "description": "in reader window, calls the \"stop\" command for audio (TTS or EPUB3 Media Overlays readaloud, or \"pause\" for audiobooks).",
+                    "name": "Stop Audio"
+                },
+                "CloseReader": {
+                    "description": "in reader window, closes the window and returns to the library view.",
+                    "name": "Close Reader"
+                },
+                "FXLZoomIn": {
+                    "description": "Zoom in a fixed layout page.",
+                    "name": "FXL Zoom In"
+                },
+                "FXLZoomOut": {
+                    "description": "Zoom out a fixed layout page.",
+                    "name": "FXL Zoom Out"
+                },
+                "FXLZoomReset": {
+                    "description": "Reset to 100% zoom on a fixed layout page.",
+                    "name": "Reset FXL Zoom"
+                },
+                "FocusMain": {
+                    "description": "In reader and library windows, moves the keyboard focus to the \"main\" area landmark. in the reader view, the keyboard focus moves one step further into the frame that displays publication content (screen readers automatically read the currently-focussed HTML element inside the displayed document).",
+                    "name": "Focus on Main Content"
+                },
+                "FocusMainDeep": {
+                    "description": "Just like \"Main content\" / FocusMainDeep in the reader view (see above), but the keyboard focus is forced deeper into the frame that displays publication content (this can help in cases where screen readers do not automatically read the currently-focussed HTML element inside the displayed document).",
+                    "name": "Deep Focus on Main Content"
+                },
+                "FocusReaderGotoPage": {
+                    "description": "in reader window, moves the keyboard focus to the \"goto page\" section in the navigation panel.",
+                    "name": "Go to Reader Page"
+                },
+                "FocusReaderNavigation": {
+                    "description": "in reader window, moves the keyboard focus to the navigation panel (table of contents, bookmarks, etc.).",
+                    "name": "Focus on Reader Navigation"
+                },
+                "FocusReaderNavigationAnnotations": {
+                    "description": "",
+                    "name": "Focus on Reader Navigation Annotations"
+                },
+                "FocusReaderNavigationBookmarks": {
+                    "description": "",
+                    "name": "Focus on Reader Navigation Bookmarks"
+                },
+                "FocusReaderNavigationSearch": {
+                    "description": "",
+                    "name": "Focus on Reader Navigation Search"
+                },
+                "FocusReaderNavigationTOC": {
+                    "description": "in reader window, moves the keyboard focus to the navigation panel, but more specifically into the table of contents, and if possible at the detected heading / closest to the reading location.",
+                    "name": "Focus on Reader Navigation TOC"
+                },
+                "FocusReaderSettings": {
+                    "description": "in reader window, moves the keyboard focus to the settings panel (user preferences for displaying publication content).",
+                    "name": "Focus on Reader Settings"
+                },
+                "FocusSearch": {
+                    "description": "Available from the library and the reading winfos. In library window, moves the keyboard focus to the search text input of local bookshelf or OPDS feed. In reader window, moves the keyboard focus to the publication-wide search text input.",
+                    "name": "Focus on Search"
+                },
+                "FocusToolbar": {
+                    "description": "in reader and library windows, moves the keyboard focus to the top horizontal toolbar, immediately before the \"skip\" link (which itself moves focus to the \"main\" area landmark).",
+                    "name": "Focus on Toolbar"
+                },
+                "NavigateNextChapter": {
+                    "description": "in reader window, move to previous or next \"chapter\" (spine item in the reading order of the publication). Note that the keyboard focus is automatically moved to the \"main\" area landmark, which is immediately before the frame that displays publication content (just like when following / activating a link in the table of contents).",
+                    "name": "Go to Next Chapter"
+                },
+                "NavigateNextChapterAlt": {
+                    "description": "in reader window, move to previous or next \"chapter\" (spine item in the reading order of the publication). Note that the keyboard focus is automatically moved to the \"main\" area landmark, which is immediately before the frame that displays publication content (just like when following / activating a link in the table of contents).",
+                    "name": "Go to Next Chapter (Alternative)"
+                },
+                "NavigateNextHistory": {
+                    "description": "in reader window, go back or forward in the navigation history: Beginning or End of the publication.",
+                    "name": "Go to Next History"
+                },
+                "NavigateNextLibraryPage": {
+                    "description": "In the library view, display the next set of books.",
+                    "name": "Go to Next Library Page"
+                },
+                "NavigateNextLibraryPageAlt": {
+                    "description": "In the library view, display the next set of books (alternative keyboard shortcut).",
+                    "name": "Go to Next Library Page (Alternative)"
+                },
+                "NavigateNextOPDSPage": {
+                    "description": "in library window for Catalogues (OPD) feeds, activates the next pagination links.",
+                    "name": "Go to Next OPDS Page"
+                },
+                "NavigateNextOPDSPageAlt": {
+                    "description": "in library window for Catalogues (OPD) feeds, activates the next pagination links (alternative keyboard shortcut).",
+                    "name": "Go to Next OPDS Page (Alternative)"
+                },
+                "NavigateNextPage": {
+                    "description": "in reader window, move to previous or next \"page\" (or scroll unit, if pagination is disabled).",
+                    "name": "Go to Next Page"
+                },
+                "NavigateNextPageAlt": {
+                    "description": "in reader window, move to previous or next \"page\" (or scroll unit, if pagination is disabled).",
+                    "name": "Go to Next Page (Alternative)"
+                },
+                "NavigatePreviousChapter": {
+                    "description": "in reader window, move to previous \"chapter\" (spine item in the reading order of the publication). Note that the keyboard focus is automatically moved to the \"main\" area landmark, which is immediately before the frame that displays publication content (just like when following / activating a link in the table of contents).",
+                    "name": "Go to Previous Chapter"
+                },
+                "NavigatePreviousChapterAlt": {
+                    "description": "in reader window, move to previous \"chapter\" (spine item in the reading order of the publication). Note that the keyboard focus is automatically moved to the \"main\" area landmark, which is immediately before the frame that displays publication content (just like when following / activating a link in the table of contents).",
+                    "name": "Go to Previous Chapter (Alternative)"
+                },
+                "NavigatePreviousHistory": {
+                    "description": "in reader window, go back or forward in the navigation history: Beginning or End of the publication.",
+                    "name": "Go to Previous History"
+                },
+                "NavigatePreviousLibraryPage": {
+                    "description": "In the library view, display the previous set of books.",
+                    "name": "Go to Previous Library Page"
+                },
+                "NavigatePreviousLibraryPageAlt": {
+                    "description": "In the library view, display the previous set of books (alternative keyboard shortcut).",
+                    "name": "Go to Previous Library Page (Alternative)"
+                },
+                "NavigatePreviousOPDSPage": {
+                    "description": "in library window for Catalogues (OPD) feeds, activates the previous pagination links.",
+                    "name": "Go to Previous OPDS Page"
+                },
+                "NavigatePreviousOPDSPageAlt": {
+                    "description": "in library window for Catalogues (OPD) feeds, activates the previous pagination links (alternative keyboard shortcut).",
+                    "name": "Go to Previous OPDS Page (Alternative)"
+                },
+                "NavigatePreviousPage": {
+                    "description": "in reader window, move to previous or next \"page\" (or scroll unit, if pagination is disabled).",
+                    "name": "Go to Previous Page"
+                },
+                "NavigatePreviousPageAlt": {
+                    "description": "in reader window, move to previous or next \"page\" (or scroll unit, if pagination is disabled).",
+                    "name": "Go to Previous Page (Alternative)"
+                },
+                "NavigateToBegin": {
+                    "description": "in reader window, goes to the beginning of the publication.",
+                    "name": "Go to Beginning"
+                },
+                "NavigateToEnd": {
+                    "description": "in reader window, goes to the end of the publication.",
+                    "name": "Go to End"
+                },
+                "OpenReaderInfo": {
+                    "description": "in reader window, publication info popup modal dialog (may be used in future Thorium version for similar feature in library window).",
+                    "name": "Open Reader Info"
+                },
+                "OpenReaderInfoWhereAmI": {
+                    "description": "in reader window, publication info popup modal dialog with direct keyboard focus on section that displays the headings hierarchy trail and other contextual information for the current reading location, such as nearest preceding page break, as well as document index in the reading order (this is the \"where am I\" feature).",
+                    "name": "Open Reader Info: Where Am I?"
+                },
+                "SearchNext": {
+                    "description": "in reader window, when the publication-wide search text input is open, finds the previous / next match.",
+                    "name": "Search Next"
+                },
+                "SearchNextAlt": {
+                    "description": "same as above (alternative keyboard shortcut).",
+                    "name": "Search Next (Alternative)"
+                },
+                "SearchPrevious": {
+                    "description": "in reader window, when the publication-wide search text input is open, finds the previous / next match.",
+                    "name": "Search Previous"
+                },
+                "SearchPreviousAlt": {
+                    "description": "same as above (alternative keyboard shortcut).",
+                    "name": "Search Previous (Alternative)"
+                },
+                "SpeakReaderInfoWhereAmI": {
+                    "description": "in reader window, this is the \"where am I\" feature, just as above, but only spoken via screen reader TTS thanks to an ARIA live region with assertive speech which interrupts the current narration.",
+                    "name": "Speak Reader Info: Where Am I?"
+                },
+                "ToggleBookmark": {
+                    "description": "in reader window, toggle bookmark (a notification is produced so that screen readers announce the change).",
+                    "name": "Toggle Bookmark"
+                },
+                "ToggleReaderFullscreen": {
+                    "description": "In reader window, toggle fullscreen. Note that this is different from the Zen mode. Keyboard shortcut is the only way to go full screen.",
+                    "name": "Toggle Fullscreen"
+                }
             },
+            "loadUserJson": "Load from user file",
             "noShortcutFound": "No shortcut found with this label",
             "resetDefaults": "Reset (load defaults)",
             "save": "Save",
