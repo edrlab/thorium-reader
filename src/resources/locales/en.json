@@ -853,7 +853,6 @@
             "cancel": "Cancel",
             "disclaimer": "Shortcuts were defined from QWERTY keyboard layout.",
             "editUserJson": "Edit user file...",
-            "exportHtml": "Export as HTML",
             "keyboardShortcuts": "Keyboard shortcuts",
             "list": {
                 "AddBookmarkWithLabel": {

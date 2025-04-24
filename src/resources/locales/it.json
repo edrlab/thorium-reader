@@ -853,7 +853,6 @@
             "cancel": "Annulla",
             "disclaimer": "Le scorciatoie sono state definite partendo dal layout della tastiera QWERTY.",
             "editUserJson": "Modifica il file utente...",
-            "exportHtml": "",
             "keyboardShortcuts": "Scorciatoie da tastiera",
             "list": {
                 "AddBookmarkWithLabel": {

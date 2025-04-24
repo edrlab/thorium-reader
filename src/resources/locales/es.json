@@ -853,7 +853,6 @@
             "cancel": "Cancelar",
             "disclaimer": "Los atajos se definieron a partir de la distribución del teclado QWERTY.",
             "editUserJson": "Editar archivo de usuario...",
-            "exportHtml": "",
             "keyboardShortcuts": "Atajos de teclado",
             "list": {
                 "AddBookmarkWithLabel": {

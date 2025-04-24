@@ -853,7 +853,6 @@
             "cancel": "キャンセル",
             "disclaimer": "ショートカットは、QWERTY配列のキーボードレイアウトから定義されました。",
             "editUserJson": "編集：ユーザーファイル",
-            "exportHtml": "",
             "keyboardShortcuts": "キーボードショートカット",
             "list": {
                 "AddBookmarkWithLabel": {

@@ -853,7 +853,6 @@
             "cancel": "取消",
             "disclaimer": "快捷键是根据 QWERTY 键盘布局定义的。",
             "editUserJson": "编辑用户文件...",
-            "exportHtml": "",
             "keyboardShortcuts": "键盘快捷键",
             "list": {
                 "AddBookmarkWithLabel": {

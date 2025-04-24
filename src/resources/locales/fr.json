@@ -853,7 +853,6 @@
             "cancel": "Annuler",
             "disclaimer": "Les raccourcis clavier sont actuellement basés sur une disposition QWERTY.",
             "editUserJson": "Éditer le fichier ...",
-            "exportHtml": "Exporter en HTML",
             "keyboardShortcuts": "Raccourcis clavier",
             "list": {
                 "AddBookmarkWithLabel": {
