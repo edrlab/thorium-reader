@@ -48,7 +48,7 @@ import * as MacOptionIcon from "readium-desktop/renderer/assets/icons/macoption-
 import * as MacCmdIcon from "readium-desktop/renderer/assets/icons/maccommand-icon.svg";
 import { useTranslator } from "../../../common/hooks/useTranslator";
 import { useDispatch } from "../../../common/hooks/useDispatch";
-import { version as osVersion } from "os";
+import os from "node:os"; 
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -146,19 +146,17 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             passive: false,
             capture: true,
         });
-
-        const userAgent = osVersion();
         let detectedOS = "Unknown";
 
-        console.log(userAgent);
+        const isMac = os.platform() === "darwin";
+        const isWindows = os.platform() === "win32";
+        const isLinux = !isMac && !isWindows;
 
-        if (userAgent.startsWith("Windows")) {
+        if (isWindows) {
             detectedOS = "Windows";
-        } else if (userAgent.startsWith("Darwin")) {
+        } else if (isMac) {
             detectedOS = "MacOS";
-        } else if (userAgent.indexOf("X11")) {
-            detectedOS = "UNIX";
-        } else if (userAgent.indexOf("Linux")) {
+        } else if (isLinux) {
             detectedOS = "Linux";
         }
 
