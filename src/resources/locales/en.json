@@ -948,7 +948,7 @@
                     "name": "Focus on Reader Settings"
                 },
                 "FocusSearch": {
-                    "description": "Available from the library and the reading winfos. In library window, moves the keyboard focus to the search text input of local bookshelf or OPDS feed. In reader window, moves the keyboard focus to the publication-wide search text input.",
+                    "description": "Available from the library and the reading windows. In library window, moves the keyboard focus to the search text input of local bookshelf or OPDS feed. In reading window, moves the keyboard focus to the publication-wide search text input.",
                     "name": "Focus on Search"
                 },
                 "FocusToolbar": {
