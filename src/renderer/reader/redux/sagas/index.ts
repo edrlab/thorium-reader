@@ -10,7 +10,7 @@ import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import * as publicationInfoReaderAndLib from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfoReaderAndLib";
 import * as publicationInfoSyncTag from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { all, call, fork, take } from "redux-saga/effects";
+import { all, call, take } from "redux-saga/effects";
 
 import * as readerConfig from "./readerConfig";
 import * as highlightHandler from "./highlight/handler";
@@ -18,15 +18,14 @@ import * as i18n from "./i18n";
 import * as ipc from "./ipc";
 import * as search from "./search";
 import * as winInit from "./win";
-import * as annotation from "./note";
-import * as shareAnnotationSet from "./shareAnnotationSet";
+import * as noteSaga from "./note";
 import * as img from "./img";
 import * as settingsOrMenuDialogOrDock from "./settingsOrMenu";
 import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { setTheme } from "readium-desktop/common/redux/actions/theme";
 import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysListen, ttsListen } from "@r2-navigator-js/electron/renderer";
 import { eventChannel } from "redux-saga";
-import { put as putTyped, take as takeTyped, select as selectTyped } from "typed-redux-saga/macro";
+import { put as putTyped, take as takeTyped, select as selectTyped, call as callTyped, delay as delayTyped, spawn as spawnTyped } from "typed-redux-saga/macro";
 import { readerLocalActionReader } from "../actions";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
@@ -96,9 +95,7 @@ export function* rootSaga() {
 
         search.saga(),
 
-        annotation.saga(),
-        
-        shareAnnotationSet.saga(),
+        noteSaga.saga(),
 
         img.saga(),
 
@@ -113,7 +110,7 @@ export function* rootSaga() {
         ),
     ]);
 
-    console.log("SAGA-rootSaga() PRE INIT SUCCESS");
+    debug("SAGA-rootSaga() PRE INIT SUCCESS");
 
     const MOChannel = getMediaOverlayStateChannel();
     const TTSChannel = getTTSStateChannel();
@@ -130,19 +127,32 @@ export function* rootSaga() {
                 yield* putTyped(readerLocalActionReader.setTTSState.build(state));
             },
         ),
-        fork(function*() {
+        spawnTyped(function*() {
 
-            while(true) {
+            let gotTheLock = yield* selectTyped((state: IReaderRootState) => state.reader.lock);
+            if (!gotTheLock) {
+                yield* takeTyped(readerActions.setTheLock.build);
+            }
 
-                yield* takeTyped(readerActions.note.addUpdate.ID);
-                const currentBookmarkTotalCount = yield* selectTyped((state: IReaderRootState) => state.reader.noteTotalCount.state);
-                yield* putTyped(readerLocalActionReader.bookmarkTotalCount.build(currentBookmarkTotalCount + 1));
+            gotTheLock = yield* selectTyped((state: IReaderRootState) => state.reader.lock);
+            if (!gotTheLock) {
+                throw new Error("unreachable!!!");
+            }
+
+            yield* delayTyped(1000); // wait for the reader start stabilisation (aka highlight mounting)
+
+            const notes = yield* selectTyped((state: IReaderRootState) => state.reader.note);
+            for (const note of notes) {
+
+                yield* delayTyped(10); // 100 notes equals to 1 + 1 seconds , seems acceptable to not disturb user with a tiny compute machine
+                yield* callTyped(noteSaga.noteUpdateExportSelectorFromLocatorExtended, note);
+                yield* callTyped(noteSaga.noteUpdateLocatorExtendedFromImportSelector, note);
             }
         }),
     ]);
 
 
-    console.log("SAGA-rootSaga() INIT SUCCESS");
+    debug("SAGA-rootSaga() INIT SUCCESS");
 
     // initSuccess triggered in reader.tsx didmount and publication loaded
     // yield put(winActions.initSuccess.build());

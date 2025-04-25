@@ -32,6 +32,7 @@ import { readerLocalActionHighlights, readerLocalActionReader } from "../../redu
 import { BookmarkEdit } from "../BookmarkEdit";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { EDrawType, INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import { clone } from "ramda";
 
 export interface IProps {
     shortcutEnable: boolean;
@@ -103,7 +104,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
     const isNavigator = isAudiobook || isEpubNavigator;
 
     const allBookmarks = React.useMemo(() => notes.filter(({ group }) => group === "bookmark"), [notes]);
-    const allBookmarksForCurrentLocationHref = React.useMemo(() => allBookmarks.filter((bookmark) => bookmark.locatorExtended.locator.href === locatorExtended.locator.href), [allBookmarks, locatorExtended]);
+    const allBookmarksForCurrentLocationHref = React.useMemo(() => allBookmarks.filter((bookmark) => bookmark.locatorExtended?.locator.href === locatorExtended.locator.href), [allBookmarks, locatorExtended]);
     const bookmarkSelected = React.useMemo(() => {
 
         let index = undefined;
@@ -176,6 +177,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
 
     const toasty = React.useCallback((msg: string) => dispatch(toastActions.openRequest.build(ToastType.Success, msg)), [dispatch]);
 
+    const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
     const addBookmark = React.useCallback((bookmark: Omit<INoteState, "uuid">) => {
 
         if (ttsState !== TTSStateEnum.STOPPED ||
@@ -186,9 +188,9 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
             return;
         }
 
-        dispatch(readerActions.note.addUpdate.build(bookmark));
+        dispatch(readerActions.note.addUpdate.build(pubId, bookmark));
         dispatch(readerLocalActionReader.bookmarkTotalCount.build(noteTotalCount + 1));
-    }, [dispatch, ttsState, mediaOverlaysState, __, toasty, noteTotalCount]);
+    }, [dispatch, ttsState, mediaOverlaysState, __, toasty, noteTotalCount, pubId]);
 
     const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
     const colorDefault = useSelector((state: IReaderRootState) => state.reader.config.annotation_defaultColor);
@@ -220,8 +222,8 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                     textualValue: name,
                     created: (new Date()).getTime(),
                     index: noteTotalCount + 1,
-                    locatorExtended: locatorExtended,
-                    creator: creatorMyself,
+                    locatorExtended: clone(locatorExtended),
+                    creator: clone(creatorMyself),
                     color,
                     tags: tag ? [tag] : undefined,
                     group: "bookmark",
@@ -244,8 +246,8 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                         textualValue: name,
                         created: (new Date()).getTime(),
                         index: noteTotalCount + 1,
-                        locatorExtended: locatorExtended,
-                        creator: creatorMyself,
+                        locatorExtended: clone(locatorExtended),
+                        creator: clone(creatorMyself),
                         color,
                         tags: tag ? [tag] : undefined,
                         group: "bookmark",
@@ -342,7 +344,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                     const arr: INoteState[] = [];
                     for (const bookmark of allBookmarks) {
                         try {
-                            if (await isLocatorVisible(bookmark.locatorExtended.locator)) {
+                            if (bookmark.locatorExtended && await isLocatorVisible(bookmark.locatorExtended.locator)) {
                                 arr.push(bookmark);
                             }
                         } catch (_e) {

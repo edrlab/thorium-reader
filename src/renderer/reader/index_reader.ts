@@ -21,6 +21,7 @@ import {
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { publicationHasMediaOverlays } from "@r2-navigator-js/electron/renderer";
 import { getTranslator } from "readium-desktop/common/services/translator";
+import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
 // let devTron: any;
 let axe: any;
@@ -76,16 +77,16 @@ ipcRenderer.on(readerIpc.CHANNEL,
                         note.created = (new Date()).getTime();
                     }
                 }
-                data.payload.noteTagsIndex = [];
+                let noteTagsIndex: Array<{ tag: string, index: number }> = [];
                 for (const tag of noteTagList) {
                     if (!tag) continue;
 
-                    const found = data.payload.noteTagsIndex.find(({ tag: tagFromNote }) => tagFromNote === tag);
-                    data.payload.noteTagsIndex = data.payload.noteTagsIndex.filter((v) => v !== found);
-                    data.payload.noteTagsIndex.push({ tag, index: (found?.index || 0) + 1 });
+                    const found = noteTagsIndex.find(({ tag: tagFromNote }) => tagFromNote === tag);
+                    noteTagsIndex = noteTagsIndex.filter((v) => v !== found);
+                    noteTagsIndex.push({ tag, index: (found?.index || 0) + 1 });
                 }
 
-                const store = createStoreFromDi(data.payload);
+                const store = createStoreFromDi({ ...data.payload, noteTagsIndex } as Partial<IReaderRootState>);
                 const locale = store.getState().i18n.locale;
                 getTranslator().setLocale(locale);
 

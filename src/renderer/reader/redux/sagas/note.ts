@@ -11,7 +11,7 @@
 import * as debug_ from "debug";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { SagaGenerator } from "typed-redux-saga";
-import { select as selectTyped, take as takeTyped, race as raceTyped, put as putTyped, all as allTyped, call as callTyped } from "typed-redux-saga/macro";
+import { select as selectTyped, take as takeTyped, race as raceTyped, put as putTyped, all as allTyped, call as callTyped, spawn as spawnTyped, delay as delayTyped} from "typed-redux-saga/macro";
 import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionLocatorHrefChanged, readerLocalActionReader, readerLocalActionSetConfig, readerLocalActionSetLocator } from "../actions";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
@@ -25,7 +25,12 @@ import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locator
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
 import { getTranslator } from "readium-desktop/common/services/translator";
-import { EDrawType, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
+import { EDrawType, INoteState, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
+import { checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation, readiumAnnotationSelectorFromNote } from "./readiumAnnotation/selector";
+import { getCacheDocumentFromLocator } from "./readiumAnnotation/getCacheDocument";
+import { getResourceCache } from "./resourceCache";
+import { clone } from "ramda";
+import { convertSelectorTargetToLocatorExtended } from "readium-desktop/common/readium/annotation/converter";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:annotation");
@@ -54,26 +59,103 @@ debug("_");
 //     // yield* putTyped(readerLocalActionAnnotations.focusMode.build({previousFocusUuid: currentFocusUuid || "", currentFocusUuid: uuid, editionEnable: false}));
 // }
 
+export function* noteUpdateExportSelectorFromLocatorExtended(note: INoteState) {
+    try {
+        if ((yield* selectTyped((state: IReaderRootState) => state.reader.lock)) &&
+        note.locatorExtended && !checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation(note)) {
+
+            yield* callTyped(getResourceCache);
+            const cacheDocuments = yield* selectTyped((state: IReaderRootState) => state.resourceCache);
+
+            const cacheDocument = getCacheDocumentFromLocator(cacheDocuments, note.locatorExtended.locator?.href);
+            const { publicationView, publicationIdentifier } = yield* selectTyped((state: IReaderRootState) => state.reader.info);
+            const isLcp = !!publicationView.lcp;
+            const selector = yield* callTyped(readiumAnnotationSelectorFromNote, note, isLcp, cacheDocument);
+
+            debug(`${note.uuid} does not have any readiumAnnotationSelector so let's update the note with this new selectors: ${JSON.stringify(selector, null, 2)}`);
+            yield* putTyped(readerActions.note.addUpdate.build(
+                publicationIdentifier,
+                { ...note, readiumAnnotation: { ...note?.readiumAnnotation || {}, export: { selector } } },
+                note,
+            ));
+        }
+    } catch (e) {
+        debug(`ERROR: ${note.uuid} selectors compute CRASH`, e);
+    }
+}
+
+export function* noteUpdateLocatorExtendedFromImportSelector(note: INoteState) {
+
+    try {
+        if ((yield* selectTyped((state: IReaderRootState) => state.reader.lock)) &&
+            !note.locatorExtended && note.readiumAnnotation?.import?.target?.selector.length && note.readiumAnnotation?.import?.target?.source) {
+            
+            const { target } = note.readiumAnnotation.import;
+
+            debug("SelectorTarget from noteParserState", JSON.stringify(target, null, 2));
+
+            const { source } = target;
+
+            yield* callTyped(getResourceCache);
+            const cacheDocuments = yield* selectTyped((state: IReaderRootState) => state.resourceCache);
+            const cacheDoc = getCacheDocumentFromLocator(cacheDocuments, source);
+
+            const isABookmark = note.group === "bookmark"; // TODO: It is a good method do discriminate bookmark selector ? 
+            const locatorExtended = yield* callTyped(() => convertSelectorTargetToLocatorExtended(target, cacheDoc, undefined, isABookmark));
+
+            debug(`${note.uuid} doesn't have any locator so let's update the note with the new locator generated: ${JSON.stringify(locatorExtended, null, 2)}`);
+            const { publicationIdentifier } = yield* selectTyped((state: IReaderRootState) => state.reader.info);
+            yield* putTyped(readerActions.note.addUpdate.build(publicationIdentifier, { ...note, locatorExtended }, note));
+        }
+
+    } catch (e) {
+        debug(`ERROR: ${note.uuid} import selectors compute CRASH`, e);
+    }
+}
+
 function* noteAddUpdate(action: readerActions.note.addUpdate.TAction) {
 
     const { previousNote: previousNote, newNote: note } = action.payload;
-    const item = yield* selectTyped((store: IReaderRootState) => store.reader.highlight.handler.find(([_, highlightState]) => highlightState.uuid === note.uuid));
 
+    const currentBookmarkTotalCount = yield* selectTyped((state: IReaderRootState) => state.reader.noteTotalCount.state);
+    if (!previousNote && note) {
+        yield* putTyped(readerLocalActionReader.bookmarkTotalCount.build(currentBookmarkTotalCount + 1));
+    }
+
+    yield* spawnTyped(function* () {
+        
+        yield* delayTyped(10);
+        // backgroud compute LocatorExtended TO readiumAnnotationSelector
+        yield* callTyped(noteUpdateExportSelectorFromLocatorExtended, note);
+        // backgroud compute readiumAnnotationSelector TO LocatorExtended
+        yield* callTyped(noteUpdateLocatorExtendedFromImportSelector, note);
+    });
+
+    if (!note.locatorExtended) {
+        return ;
+    }
+
+    const item = yield* selectTyped((store: IReaderRootState) => store.reader.highlight.handler.find(([_, highlightState]) => highlightState.uuid === note.uuid));
     let update = false;
     if (!previousNote) {
+        debug(`[${note.uuid}] update because previousNote was undefined`);
         update = true;
     }
     if (!update && previousNote && !item) {
         update = true;
+        debug(`[${note.uuid}] update because previousNote is defined but with no current highlight found`);
         yield* putTyped(readerLocalActionHighlights.handler.pop.build([{ uuid: note.uuid }]));
     }
     if (!update && previousNote?.color.red !== note.color.red || previousNote?.color.blue !== note.color.blue || previousNote?.color.green !== note.color.green) {
+        debug(`[${note.uuid}] update because color note has changed`);
         update = true;
     }
-    if (!update && item && item[1]?.def?.textPopup?.text !== note.textualValue) {
+    if (!update && item && item[1]?.def && note.textualValue && item[1].def.textPopup?.text !== note.textualValue) {
+        debug(`[${note.uuid}] update because textPopup has changed`);
         update = true;
     }
     if (!update && previousNote.drawType !== note.drawType) {
+        debug(`[${note.uuid}] update because drawType has changed`);
         update = true;
     }
     if (!update) {
@@ -177,19 +259,15 @@ function* createAnnotation(locatorExtended: MiniLocatorExtended, color: IColor, 
     debug(`Create an annotation for, [${locatorExtended.selectionInfo.cleanText.slice(0, 10)}]`);
 
     const noteTotalCount = yield* selectTyped((state: IReaderRootState) => state.reader.noteTotalCount.state);
-    yield* putTyped(readerActions.note.addUpdate.build({
+    const { publicationIdentifier } = yield* selectTyped((state: IReaderRootState) => state.reader.info);
+    yield* putTyped(readerActions.note.addUpdate.build(publicationIdentifier, {
         color,
         textualValue: comment,
         index: noteTotalCount + 1,
-        locatorExtended,
+        locatorExtended: clone(locatorExtended),
         drawType: EDrawType[drawType] || EDrawType.solid_background,
         tags,
-        creator: {
-            id: creator.id,
-            urn: creator.urn,
-            type: creator.type, 
-            name: creator.name,
-        },
+        creator: clone(creator),
         created: (new Date()).getTime(),
         group: "annotation",
     }));

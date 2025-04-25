@@ -247,6 +247,297 @@
         },
         "whatIsOpds": "Mikä OPDS on?"
     },
+    "publ-a11y-display-guide": {
+        "accessibility-summary": {
+            "accessibility-summary-title": ""
+        },
+        "additional-accessibility-information": {
+            "additional-accessibility-information-aria": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-audio-descriptions": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-braille": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-full-ruby-annotations": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-high-contrast-between-text-and-background": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-large-print": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-page-breaks": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-ruby-annotations": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-sign-language": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-tactile-graphics": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-tactile-objects": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-text-to-speech-hinting": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-title": ""
+        },
+        "conformance": {
+            "conformance-a": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-aa": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-aaa": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-certifier": {
+                "compact": ""
+            },
+            "conformance-certifier-credentials": {
+                "compact": ""
+            },
+            "conformance-details-certifier-report": {
+                "compact": ""
+            },
+            "conformance-details-claim": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-details-epub-accessibility-1-0": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-details-epub-accessibility-1-1": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-details-level-a": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-details-level-aa": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-details-level-aaa": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-details-wcag-2-0": {
+                "compact": ""
+            },
+            "conformance-details-wcag-2-1": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-details-wcag-2-2": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-no": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-title": "",
+            "conformance-unknown-standard": {
+                "compact": "",
+                "descriptive": ""
+            }
+        },
+        "hazards": {
+            "hazards-flashing": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-flashing-none": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-flashing-unknown": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-motion": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-motion-none": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-motion-unknown": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-no-metadata": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-none": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-sound": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-sound-none": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-sound-unknown": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-title": "",
+            "hazards-unknown": {
+                "compact": "",
+                "descriptive": ""
+            }
+        },
+        "navigation": {
+            "navigation-index": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "navigation-no-metadata": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "navigation-page-navigation": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "navigation-structural": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "navigation-title": "",
+            "navigation-toc": {
+                "compact": "",
+                "descriptive": ""
+            }
+        },
+        "rich-content": {
+            "rich-content-accessible-chemistry-as-latex": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-accessible-chemistry-as-mathml": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-accessible-math-as-latex": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-accessible-math-as-mathml": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-accessible-math-described": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-closed-captions": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-extended": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-open-captions": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-title": "",
+            "rich-content-transcript": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-unknown": {
+                "compact": "",
+                "descriptive": ""
+            }
+        },
+        "ways-of-reading": {
+            "ways-of-reading-nonvisual-reading-alt-text": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-nonvisual-reading-no-metadata": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-nonvisual-reading-none": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-nonvisual-reading-not-fully": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-nonvisual-reading-readable": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-prerecorded-audio-complementary": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-prerecorded-audio-no-metadata": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-prerecorded-audio-only": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-prerecorded-audio-synchronized": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-title": "",
+            "ways-of-reading-visual-adjustments-modifiable": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-visual-adjustments-unknown": {
+                "compact": "",
+                "descriptive": ""
+            }
+        }
+    },
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
