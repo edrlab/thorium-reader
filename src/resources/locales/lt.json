@@ -868,7 +868,7 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "",
+                "applyDefaultTemplate": "TAIKYTI NUMATYTĄJĮ ŠABLONĄ",
                 "enableCheckbox": "",
                 "overrideHTMLTemplate": ""
             }

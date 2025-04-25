@@ -135,8 +135,8 @@
         "cancel": "Peru",
         "deleteAnnotations": "Poistetaanko muistiinpanot?",
         "deleteAnnotationsText": "Haluatko varmasti poistaa {{- annotationListLength}} muistiinpanoa?",
-        "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteBookmarks": "Poistetaanko kirjanmerkit?",
+        "deleteBookmarksText": "Haluatko varmasti poistaa {{- bookmarkListLength}} kirjanmerkit?",
         "deleteFeed": "Haluatko poistaa tämän luettelon?",
         "deletePublication": "Haluatko poistaa tämän julkaisun?",
         "import": "Haluatko tuoda nämä tiedostot:",
@@ -658,7 +658,7 @@
             }
         },
         "bookmarks": {
-            "index": ""
+            "index": "Kirjanmerkki{{- index}}"
         },
         "divina": {
             "mute": "mykistä",
@@ -891,7 +891,7 @@
     },
     "tts": {
         "highlight": {
-            "mainColor": "",
+            "mainColor": "Pääväri",
             "maskBlockWordOutline": "",
             "maskBlockWordSolidBackground": "",
             "maskBlockWordUnderline": "",
