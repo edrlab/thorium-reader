@@ -72,7 +72,7 @@
             "lastAdditions": "Πρόσφατη προσθήκη"
         },
         "export": "Αποθήκευση ως",
-        "exportAnnotation": "Εξαγωγή σημειώσεων...",
+        "exportAnnotation": "Εξαγωγή σημειώσεων",
         "format": "Διαμόρφωση (format)",
         "importAnnotation": "Εισαγωγή σημειώσεων",
         "lang": "Γλώσσα",
@@ -248,11 +248,11 @@
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": ""
+            "accessibility-summary-title": "Σύνοψη προσβασιμότητας"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "",
+                "compact": "Συμπεριλαμβάνονται ρόλοι ARIA",
                 "descriptive": ""
             },
             "additional-accessibility-information-audio-descriptions": {
