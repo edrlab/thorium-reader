@@ -12,7 +12,7 @@ import { BrowserWindow } from "electron";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 import { IInfo } from "./extract.type";
-import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
+import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_EXTRACT_PDF } from "readium-desktop/common/streamerProtocol";
 
 const debug = debug_("readium-desktop:main/pdf/extract/index.ts");
 debug("_");
@@ -61,7 +61,7 @@ export const extractPDFData =
             });
 
             // win.hide(); // doesn't works on linux
-            await win.loadURL(`${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0/pdfjs/web/viewer.html?file=${pdfPath}`);
+            await win.loadURL(`${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_EXTRACT_PDF}/pdfjs/web/viewer.html?file=${pdfPath}`);
 
             const content = win.webContents;
 

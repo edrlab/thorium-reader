@@ -45,7 +45,7 @@ import {
     READIUMCSS_FILE_PATH, setupMathJaxTransformer,
 } from "./streamerCommon";
 // import { OPDS_MEDIA_SCHEME } from "readium-desktop/main/redux/sagas/getEventChannel";
-import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
+import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER } from "readium-desktop/common/streamerProtocol";
 import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
 import { diMainGet } from "../di";
 import { getNotesFromMainWinState } from "../redux/sagas/note";
@@ -129,7 +129,7 @@ if (true) { // !_USE_HTTP_STREAMER) {
         if (readiumcssJson) {
             if (!readiumcssJson.urlRoot) {
                 // `/${READIUM_CSS_URL_PATH}/`
-                readiumcssJson.urlRoot = THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://0.0.0.0";
+                readiumcssJson.urlRoot = THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}";
             }
             if (IS_DEV) {
                 debug("_____ readiumCssJson.urlRoot (setupReadiumCSS() transformer): ", readiumcssJson.urlRoot);
@@ -149,7 +149,7 @@ if (true) { // !_USE_HTTP_STREAMER) {
     Transformers.instance().add(new TransformerHTML(transformerReadiumCss));
 
     setupMathJaxTransformer(
-        () => `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0/${MATHJAX_URL_PATH}/es5/tex-mml-chtml.js`,
+        () => `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/${MATHJAX_URL_PATH}/es5/tex-mml-chtml.js`,
     );
 }
 
@@ -271,7 +271,7 @@ const streamProtocolHandler = async (
     if (ref && ref !== "null" && !/^https?:\/\/localhost.+/.test(ref) && !/^https?:\/\/127\.0\.0\.1.+/.test(ref)) {
         headers.referer = ref;
     } else {
-        headers.referer = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0/`;
+        headers.referer = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/`;
     }
 
     // CORS everything!
@@ -481,7 +481,7 @@ const streamProtocolHandler = async (
 
         if (pathInZip === "manifest.json") {
 
-            const rootUrl = "THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL://0.0.0.0/pub/" + encodeURIComponent_RFC3986(b64Path);
+            const rootUrl = "THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL://" + THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER + "/pub/" + encodeURIComponent_RFC3986(b64Path);
             const manifestURL = rootUrl + "/" + "manifest.json";
 
             const contentType =
@@ -822,7 +822,7 @@ const streamProtocolHandler = async (
 
         if (doTransform && link) {
 
-            const fullUrl = req.url; // `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0${uPathname}`;
+            const fullUrl = req.url; // `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}${uPathname}`;
 
             let transformedStream: IStreamAndLength;
             try {

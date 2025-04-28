@@ -24,7 +24,7 @@ import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { getTranslator } from "readium-desktop/common/services/translator";
-import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
+import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER } from "readium-desktop/common/streamerProtocol";
 
 // import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
@@ -261,8 +261,8 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
 
     // const manifestUrl = _USE_HTTP_STREAMER ?
     //     streamer.serverUrl() + manifestPaths[0] :
-    //     `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0${manifestPaths[0]}`;
-    const manifestUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0${manifestPaths[0]}`;
+    //     `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}${manifestPaths[0]}`;
+    const manifestUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}${manifestPaths[0]}`;
 
     debug(pubId, " streamed on ", manifestUrl);
 
