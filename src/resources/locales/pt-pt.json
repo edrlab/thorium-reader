@@ -72,7 +72,7 @@
             "lastAdditions": "Adicionados recentemente"
         },
         "export": "Guardar como",
-        "exportAnnotation": "Exportar anotações...",
+        "exportAnnotation": "Exportar anotações",
         "format": "Formato",
         "importAnnotation": "Importar anotações",
         "lang": "Idioma",
@@ -256,12 +256,12 @@
                 "descriptive": ""
             },
             "additional-accessibility-information-audio-descriptions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Descrição do áudio",
+                "descriptive": "Descrições do áudio"
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Braile",
+                "descriptive": "Braile"
             },
             "additional-accessibility-information-full-ruby-annotations": {
                 "compact": "",
@@ -276,11 +276,11 @@
                 "descriptive": ""
             },
             "additional-accessibility-information-large-print": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Caracteres grandes",
+                "descriptive": "Caracteres grandes"
             },
             "additional-accessibility-information-page-breaks": {
-                "compact": "",
+                "compact": "Quebras de página incluídas",
                 "descriptive": ""
             },
             "additional-accessibility-information-ruby-annotations": {
