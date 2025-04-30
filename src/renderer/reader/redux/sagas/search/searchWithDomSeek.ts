@@ -7,7 +7,7 @@
 
 import { convertRange } from "@r2-navigator-js/electron/renderer/webview/selection";
 
-import { getCount } from "../counter";
+import { getCount } from "../../../../../utils/counter";
 import { getCssSelector_ } from "./cssSelector";
 import { escapeRegExp } from "./regexp";
 import { cleanupStr, collapseWhitespaces, equivalents } from "./transliteration";

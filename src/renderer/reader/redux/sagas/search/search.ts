@@ -8,11 +8,10 @@
 // import { JSDOM } from "jsdom";
 // import * as xmldom from "@xmldom/xmldom";
 
+import { ICacheDocument } from "readium-desktop/common/redux/sagas/resourceCache";
 import { searchDocDomSeek } from "./searchWithDomSeek";
 
 import { IRangeInfo } from "@r2-navigator-js/electron/common/selection";
-import { ICacheDocument } from "readium-desktop/common/redux/states/renderer/resourceCache";
-import { getDocumentFromICacheDocument } from "../xmlDom";
 
 export interface ISearchResult {
     rangeInfo: IRangeInfo;
@@ -29,8 +28,11 @@ export interface ISearchResult {
     uuid: string;
 }
 
-export async function search(searchInput: string, data: ICacheDocument): Promise<ISearchResult[]> {
+export async function search(searchInput: string, cacheDoc: ICacheDocument): Promise<ISearchResult[]> {
 
+    if (!cacheDoc) {
+        return [];
+    }
     try {
         // const isRenderer = typeof window !== undefined; // && typeof process === undefined;
         // const xmlDom = isRenderer ? (new DOMParser()).parseFromString(
@@ -41,7 +43,7 @@ export async function search(searchInput: string, data: ICacheDocument): Promise
         //     contentType,
         // ) : new JSDOM(toParse, { contentType: contentType }).window.document);
 
-        const xmlDom = getDocumentFromICacheDocument(data);
+        const xmlDom = cacheDoc.xmlDom;
         if (!xmlDom) {
             return [];
             // throw new Error("xmlDom not defined !?!");
@@ -64,7 +66,7 @@ export async function search(searchInput: string, data: ICacheDocument): Promise
             }
         }
 
-        const sub = data.xml.substring(0, 400);
+        const sub = cacheDoc.xml.substring(0, 400);
         if (/lang\s*=\s*["']ja/.test(sub)) {
             const iter = xmlDom.createNodeIterator(
                 xmlDom.body,
@@ -89,7 +91,7 @@ export async function search(searchInput: string, data: ICacheDocument): Promise
             }
         }
 
-        return searchDocDomSeek(searchInput, xmlDom, data.href);
+        return searchDocDomSeek(searchInput, xmlDom, cacheDoc.href);
     } catch (e) {
         console.error("DOM Parser error", e);
         return [];

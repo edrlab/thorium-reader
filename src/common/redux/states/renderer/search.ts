@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ISearchResult } from "readium-desktop/utils/search/search";
+import { ISearchResult } from "readium-desktop/renderer/reader/redux/sagas/search/search";
 import { IHighlightBaseState } from "./highlight";
 
 export interface ISearchState {
