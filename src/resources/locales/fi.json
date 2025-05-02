@@ -891,7 +891,7 @@
     "tts": {
         "highlight": {
             "mainColor": "Pääväri",
-            "maskBlockWordOutline": "Korosta rivit, ympyröi sana",
+            "maskBlockWordOutline": "Sumenna, ympyröi sana",
             "maskBlockWordSolidBackground": "Korosta rivit, sanan taustaväri",
             "maskBlockWordUnderline": "Korosta rivit, alleviivaa sana",
             "maskWordOutline": "Korosta virke, ympyröi sana",
