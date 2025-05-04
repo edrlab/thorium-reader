@@ -1,13 +1,13 @@
 {
     "accessibility": {
-        "bookMenu": "",
-        "closeDialog": "",
-        "importFile": "",
-        "leftSlideButton": "",
-        "mainContent": "",
-        "rightSlideButton": "",
-        "skipLink": "",
-        "toolbar": ""
+        "bookMenu": "Menü",
+        "closeDialog": "Kapat",
+        "importFile": "Eseri içe aktar",
+        "leftSlideButton": "Sola kaydır",
+        "mainContent": "ana içerik",
+        "rightSlideButton": "Sağa kaydır",
+        "skipLink": "İçeriğe atla",
+        "toolbar": "araç çubuğu"
     },
     "apiapp": {
         "documentation": "",
