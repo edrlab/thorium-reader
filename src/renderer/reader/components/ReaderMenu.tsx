@@ -2829,8 +2829,9 @@ const TabTitle = ({ value }: { value: string }) => {
 };
 
 export const ReaderMenu: React.FC<IBaseProps> = (props) => {
-    const { /* toggleMenu */ pdfToc, isPdf, focusMainAreaLandmarkAndCloseMenu,
+    const { /* toggleMenu */ pdfToc, isDivina, isPdf, focusMainAreaLandmarkAndCloseMenu,
         pdfNumberOfPages, currentLocation, goToLocator /*openedSection: tabValue, setOpenedSection: setTabValue*/ } = props;
+    const isEpub = !isDivina && !isPdf;
     const { /*doFocus, annotationUUID,*/ handleLinkClick /*, resetAnnotationUUID*/ } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const dockingMode = useReaderConfig("readerDockingMode");
@@ -3003,15 +3004,25 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     options.push(optionTocItem);
     sectionsArray.push(LandMarksTrigger);
     options.push(optionLandmarkItem);
-    sectionsArray.push(SearchTrigger);
-    options.push(optionSearchItem);
-    sectionsArray.push(GoToPageTrigger);
-    options.push(optionGoToPageItem);
+
+    if (isEpub) {
+        sectionsArray.push(SearchTrigger);
+        options.push(optionSearchItem);
+    }
+    if (isPdf || isEpub) {
+        sectionsArray.push(GoToPageTrigger);
+        options.push(optionGoToPageItem);
+    }
+
     sectionsArray.push(Separator);
+
     sectionsArray.push(BookmarksTrigger);
     options.push(optionBookmarkItem);
-    sectionsArray.push(AnnotationTrigger);
-    options.push(optionAnnotationItem);
+
+    if (isEpub) {
+        sectionsArray.push(AnnotationTrigger);
+        options.push(optionAnnotationItem);
+    }
 
     const optionSelected = options.find(({ value }) => value === section)?.id || 0;
 
@@ -3220,4 +3231,5 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
             </Tabs.Root>
         </div>
     );
+
 };
