@@ -32,6 +32,16 @@ export interface IPdfPlayerEvent {
     "keyup": (event: IEventPayload_R2_EVENT_WEBVIEW_KEYUP) => any;
     "toc": (event: TToc) => any;
     "numberofpages": (pages: number) => any;
+    "savePreferences": (data: {
+        page: number,
+        zoom: string,
+        scrollLeft: number,
+        scrollTop: number,
+        rotation: number,
+        sidebarView: number,
+        scrollMode: number,
+        spreadMode: number,
+      }) => any;
 }
 
 export interface IEventBusPdfPlayer extends IEventBus {
