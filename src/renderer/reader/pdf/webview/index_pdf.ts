@@ -103,6 +103,15 @@ function main() {
     });
 
     {
+        bus.subscribe("firstpage", () => {
+            pdfjsEventBus.dispatch("firstpage");
+        });
+        bus.subscribe("lastpage", () => {
+            pdfjsEventBus.dispatch("lastpage");
+        })
+    }
+
+    {
         const debounceSave = debounce(async (data: any) => {
             bus.dispatch("savePreferences", data);
         }, 200);

@@ -15,6 +15,8 @@ export type IPdfPlayerColumn = "auto" | "1" | "2";
 
 export interface IPdfPlayerEvent {
     "page": (pageNumber: string) => any;
+    "firstpage": () => any;
+    "lastpage": () => any;
     "scale": (scale: IPdfPlayerScale) => any;
     "view": (view: IPdfPlayerView) => any;
     "column": (column: IPdfPlayerColumn) => any;

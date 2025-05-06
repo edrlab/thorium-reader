@@ -1970,7 +1970,7 @@ class Reader extends React.Component<IProps, IState> {
     private onKeyboardNavigationToBegin = () => {
 
         if (this.props.isPdf) {
-            createOrGetPdfEventBus().dispatch("page", "1");
+            createOrGetPdfEventBus().dispatch("firstpage");
         } else if (this.props.isDivina) {
             this.currentDivinaPlayer.goToPageWithIndex(0);
         } else {
@@ -1991,8 +1991,7 @@ class Reader extends React.Component<IProps, IState> {
 
         if (this.props.isPdf) {
             if (this.state.pdfPlayerNumberOfPages) {
-                createOrGetPdfEventBus().dispatch("page",
-                    this.state.pdfPlayerNumberOfPages.toString());
+                createOrGetPdfEventBus().dispatch("lastpage");
             }
         } else if (this.props.isDivina) {
             // TODO: Divina total number of pages? (last page index (number))
