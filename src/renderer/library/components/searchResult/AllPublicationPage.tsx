@@ -564,7 +564,7 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
                             (inputRef?.current?.value || "").trim() || undefined);
                         if (props.column.id === "colTags") {
                             props.setSelectedTag(inputRef?.current?.value.trim());
-                            console.log(inputRef.current.value);
+                            // console.log(inputRef.current.value);
                         }
                     }
                 }}
