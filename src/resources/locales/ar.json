@@ -34,7 +34,7 @@
                         "no": "لا",
                         "yes": "نعم"
                     },
-                    "help": "",
+                    "help": "قم بتنشيط هذا إذا كنت تريد عند التشغيل التالي أن يُعاد تلقائياً فتح نوافذ القارئ التي كانت مفتوحة عند إغلاق التطبيق.",
                     "message": "هل تريد حفظ الجلسة؟",
                     "title": "حفظ الجلسة"
                 }
@@ -72,9 +72,9 @@
             "lastAdditions": "المضافة مؤخراً"
         },
         "export": "حفظ بإسم",
-        "exportAnnotation": "",
+        "exportAnnotation": "تصدير الملاحظات",
         "format": "التنسيق",
-        "importAnnotation": "",
+        "importAnnotation": "استيراد الملاحظات",
         "lang": "اللغة",
         "lastRead": "آخر منشور مقروء",
         "moreInfo": "تفاصيل المنشور",
@@ -103,9 +103,9 @@
                 },
                 "availableUntil": "حتى",
                 "copyAvalaible": "متوفر",
-                "copyTotal": "",
-                "holdPosition": "",
-                "holdTotal": "",
+                "copyTotal": "عدد النُسخ",
+                "holdPosition": "الموقع في الطابور",
+                "holdTotal": "عدد المستخدمين في الطابور",
                 "numberOfItems": "عدد البنود",
                 "priveValue": "السعر",
                 "state": "الحالة"
@@ -121,22 +121,22 @@
     },
     "dialog": {
         "annotations": {
-            "descAuthor": "",
-            "descCreator": "",
-            "descList": "",
-            "descNewer": "",
-            "descOlder": "",
-            "descTitle": "",
-            "importAll": "",
-            "importWithoutConflict": "",
-            "origin": "",
-            "title": ""
+            "descAuthor": "تأليف '{{- author}}'",
+            "descCreator": "أنشأه",
+            "descList": "سيتم استيراد {{- nb}} ملاحظات لـ {{- creator}} إلى '{{- title}}' {{- author}}",
+            "descNewer": "تعارض: {{- nb}} ملاحظات أجدد",
+            "descOlder": "تعارض: {{- nb}} ملاحظات أقدم",
+            "descTitle": "عنوان التعليقات التوضيحية: ",
+            "importAll": "استيراد كل الملاحظات",
+            "importWithoutConflict": "استيراد فقط الملاحظات الخالية من التعارض",
+            "origin": "المنشور الأصلي: '{{- title}}' {{- author}}",
+            "title": "استيراد الملاحظات؟"
         },
         "cancel": "إلغاء الأمر",
-        "deleteAnnotations": "",
-        "deleteAnnotationsText": "",
-        "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteAnnotations": "حذف التعليقات التوضيحية؟",
+        "deleteAnnotationsText": "هل تريد بالتأكيد حذف {{- annotationListLength}} ملاحظات؟",
+        "deleteBookmarks": "حذف الإشارات المرجعية؟",
+        "deleteBookmarksText": "هل تريد بالتأكيد حذف {{- bookmarkListLength}} إشارات مرجعية؟",
         "deleteFeed": "حذف الكتالوغ؟",
         "deletePublication": "حذف المنشور؟",
         "import": "تأكيد الاستيراد:",
@@ -172,7 +172,7 @@
     "library": {
         "lcp": {
             "hint": "تلميح: ",
-            "open": "",
+            "open": "فتح",
             "password": "عبارة المرور",
             "sentence": "اكتب عبارة المرور لهذا المنشور المحمي بـ LCP:",
             "urlHint": "هل نسيت عبارة مرورك؟ الدعم متوفر:",
@@ -183,12 +183,12 @@
     },
     "message": {
         "annotations": {
-            "alreadyImported": "",
-            "emptyFile": "",
-            "errorParsing": "",
-            "noBelongTo": "",
-            "nothing": "",
-            "success": ""
+            "alreadyImported": "تم استيراد كل الملاحظات من قبل.",
+            "emptyFile": "لا توجد ملاحظات في الملف.",
+            "errorParsing": "حدث خطأ أثناء تحليل الملف: ",
+            "noBelongTo": "تعذّر استيراد الملاحظات، فملاحظة واحدة على الأقل لا تنتمي إلى هذا المنشور.",
+            "nothing": "لا توجد أي ملاحظة جاهزة للاستيراد، جاري إلغاء عملية الاستيراد",
+            "success": "نجحت عملية الاستيراد."
         },
         "download": {
             "error": "فشل تنزيل [{{- title}}]: [{{- err}}]"
