@@ -13,67 +13,67 @@
         "documentation": "Thorium Belgeleri",
         "howItWorks": "Nasıl çalışır?",
         "informations": "Fransa'da birçok halk kütüphanesi, üylerin kişisel kitaplıklarından dijital yayınları indirmelerine izin veren makine tarafından okunabilir bir katalog (OPDS'ye benzer ancak aynı olmayan) sağlar. Bu teknolojinin Thorium Reader'a entegre edilmesi, anında okumak için bir e-kitabı veya sesli kitabı doğrudan Thorium Reader'a indirmenize olanak tanır.\nFransız halk kütüphanesi hesabınızı Thorium Reader'a nasıl bağlarsınız? Çok basit. Arama alanına bir Fransız şehri (‘Paris’) veya kütüphane adının bir kısmını girin ve Ara düğmesine basın. Aramanıza karşılık gelen halk kütüphanelerinin bir listesi görünecektir. Bir kütüphane seçin ve Ekle düğmesine basın. Güncellenen katalog listesinde bu kütüphaneyi seçin: bir kimlik doğrulama formu görüntülenir. Kullanıcı adınızı/e-posta adresinizi ve şifrenizi girin ve Giriş düğmesine basın. Artık daha önce ödünç aldığınız e-kitapları ve sesli kitapları indirip okuyabileceğiniz kişisel kitaplığınızın içeriğini görebilirsiniz.",
-        "noLibraryFound": ""
+        "noLibraryFound": "({{- name}}) -- Herhangi bir kütüphane bulunamadı"
     },
     "app": {
         "edit": {
-            "copy": "",
-            "cut": "",
-            "paste": "",
-            "redo": "",
-            "selectAll": "",
-            "title": "",
-            "undo": ""
+            "copy": "Kopyala",
+            "cut": "Kes",
+            "paste": "Yapıştır",
+            "redo": "Yenile",
+            "selectAll": "Tümünü seç",
+            "title": "Düzenle",
+            "undo": "Geri al"
         },
-        "hide": "",
-        "quit": "",
+        "hide": "{{- appName}}'ı Gizle",
+        "quit": "{{- appName}}'dan Çık",
         "session": {
             "exit": {
                 "askBox": {
                     "button": {
-                        "no": "",
-                        "yes": ""
+                        "no": "Hayır",
+                        "yes": "Evet"
                     },
-                    "help": "",
-                    "message": "",
-                    "title": ""
+                    "help": "Uygulamayı kapattığınızda açık olan okuyucu pencerelerinin uygulamayı bir sonraki başlatışınızda otomatik olarak yeniden açılmasını istiyorsanız, bunu etkinleştirin.",
+                    "message": "Okuma oturumunu kaydetme ve geri yükleme",
+                    "title": "Oturumu kaydetmek istiyor musunuz?"
                 }
             }
         },
         "update": {
-            "message": "",
-            "title": ""
+            "message": "Yeni sürüm mevcut, daha fazlasını öğrenmek için tıklayın.",
+            "title": "{{- appName}} yazılım güncellemesi."
         },
         "window": {
-            "showLibrary": ""
+            "showLibrary": "Kütüphaneyi / kitaplığı göster"
         }
     },
     "catalog": {
         "about": {
-            "title": ""
+            "title": "{{- appName}} Hakkında (online)"
         },
-        "addBookToLib": "",
-        "addTags": "",
-        "addTagsButton": "",
-        "allBooks": "",
-        "bookInfo": "",
+        "addBookToLib": "İçeri aktar",
+        "addTags": "Etiket ekle",
+        "addTagsButton": "Ekle",
+        "allBooks": "Tüm yayınlar",
+        "bookInfo": "Yayın hakkında",
         "column": {
-            "ascending": "",
-            "descending": "",
-            "unsorted": ""
+            "ascending": "artan",
+            "descending": "azalan",
+            "unsorted": "sıralanmamış"
         },
-        "delete": "",
-        "deleteBook": "",
-        "deleteTag": "",
-        "description": "",
-        "emptyTagList": "",
+        "delete": "Sil",
+        "deleteBook": "Sil",
+        "deleteTag": "Etiketi sil",
+        "description": "Tanım",
+        "emptyTagList": "Etiketi olmayan yayınlar",
         "entry": {
-            "continueReading": "",
-            "lastAdditions": ""
+            "continueReading": "Okumayı duraklat",
+            "lastAdditions": "Son eklenen"
         },
-        "export": "",
-        "exportAnnotation": "",
-        "format": "",
+        "export": "olarak kaydet",
+        "exportAnnotation": "Notları dışarı aktar",
+        "format": "Biçim",
         "importAnnotation": "",
         "lang": "",
         "lastRead": "",
