@@ -55,8 +55,8 @@
         "addBookToLib": "İçeri aktar",
         "addTags": "Etiket ekle",
         "addTagsButton": "Ekle",
-        "allBooks": "Tüm yayınlar",
-        "bookInfo": "Yayın hakkında",
+        "allBooks": "Tüm eserler",
+        "bookInfo": "Eser hakkında",
         "column": {
             "ascending": "artan",
             "descending": "azalan",
@@ -66,7 +66,7 @@
         "deleteBook": "Sil",
         "deleteTag": "Etiketi sil",
         "description": "Tanım",
-        "emptyTagList": "Etiketi olmayan yayınlar",
+        "emptyTagList": "Etiketsiz eserler",
         "entry": {
             "continueReading": "Okumayı duraklat",
             "lastAdditions": "Son eklenen"
@@ -74,23 +74,23 @@
         "export": "olarak kaydet",
         "exportAnnotation": "Notları dışarı aktar",
         "format": "Biçim",
-        "importAnnotation": "",
-        "lang": "",
-        "lastRead": "",
-        "moreInfo": "",
-        "myBooks": "",
-        "noPublicationHelpL1": "",
-        "noPublicationHelpL2": "",
-        "noPublicationHelpL3": "",
-        "noPublicationHelpL4": "",
-        "numberOfPages": "",
+        "importAnnotation": "Notları içe aktar",
+        "lang": "Dil",
+        "lastRead": "Son Okunan",
+        "moreInfo": "Eser Ayrıntıları",
+        "myBooks": "Eserlerim",
+        "noPublicationHelpL1": "Dosyaları buraya bırakın",
+        "noPublicationHelpL2": "veya yukarıdaki \"{{- importTitle }}\" düğmesini kullanın.",
+        "noPublicationHelpL3": "LCP-korumalı eserler desteklenmektedir.",
+        "noPublicationHelpL4": "Desteklenen uzantılar:",
+        "numberOfPages": "Sayfa Sayısı",
         "opds": {
             "auth": {
-                "cancel": "",
-                "login": "",
-                "password": "",
-                "register": "",
-                "username": ""
+                "cancel": "İptal",
+                "login": "Giriş Yap",
+                "password": "Şifre",
+                "register": "Kaydol",
+                "username": "Kullanıcı Adı / E-Posta Adresi"
             },
             "info": {
                 "availableSince": "",
@@ -112,7 +112,7 @@
             }
         },
         "publisher": "",
-        "readBook": "",
+        "readBook": "Oku",
         "released": "",
         "sort": "",
         "tag": "",
@@ -744,9 +744,9 @@
         "settings": {
             "column": {
                 "auto": "",
-                "one": "",
+                "one": "sütun 1",
                 "title": "",
-                "two": ""
+                "two": "sütun 2"
             },
             "customFontSelected": "",
             "customizeReader": "",
@@ -771,12 +771,12 @@
             "paraSpacing": "",
             "pdfZoom": {
                 "name": {
-                    "100pct": "",
-                    "150pct": "",
-                    "200pct": "",
-                    "300pct": "",
-                    "500pct": "",
-                    "50pct": "",
+                    "100pct": "%100",
+                    "150pct": "%150",
+                    "200pct": "%200",
+                    "300pct": "%300",
+                    "500pct": "%500",
+                    "50pct": "%50",
                     "fit": "",
                     "width": ""
                 },
