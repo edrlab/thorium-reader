@@ -25,8 +25,8 @@
             "title": "Düzenle",
             "undo": "Geri al"
         },
-        "hide": "{{- appName}}'ı Gizle",
-        "quit": "{{- appName}}'dan Çık",
+        "hide": "{{- appName}} Uygulamasını gizle",
+        "quit": "{{- appName}} Uygulamasından çık",
         "session": {
             "exit": {
                 "askBox": {
@@ -71,7 +71,7 @@
             "continueReading": "Okumayı duraklat",
             "lastAdditions": "Son eklenen"
         },
-        "export": "olarak kaydet",
+        "export": "Farklı kaydet",
         "exportAnnotation": "Notları dışarı aktar",
         "format": "Biçim",
         "importAnnotation": "Notları içe aktar",
@@ -93,35 +93,35 @@
                 "username": "Kullanıcı Adı / E-Posta Adresi"
             },
             "info": {
-                "availableSince": "",
+                "availableSince": "Tarihinden beri",
                 "availableState": {
-                    "available": "",
-                    "ready": "",
-                    "reserved": "",
-                    "unavailable": "",
-                    "unknown": ""
+                    "available": "Mevcut",
+                    "ready": "Hazır",
+                    "reserved": "Rezerve",
+                    "unavailable": "Mevcut değil",
+                    "unknown": "Bilinmeyen"
                 },
-                "availableUntil": "",
-                "copyAvalaible": "",
-                "copyTotal": "",
-                "holdPosition": "",
+                "availableUntil": "Tarihine kadar",
+                "copyAvalaible": "Mevcut",
+                "copyTotal": "Kopyalar",
+                "holdPosition": "Konumu koru",
                 "holdTotal": "",
-                "numberOfItems": "",
-                "priveValue": "",
-                "state": ""
+                "numberOfItems": "Öğe sayısı",
+                "priveValue": "Fiyat",
+                "state": "Durum"
             }
         },
-        "publisher": "",
+        "publisher": "Yayımcı",
         "readBook": "Oku",
-        "released": "",
-        "sort": "",
-        "tag": "",
-        "tags": "",
-        "update": ""
+        "released": "Yayın tarihi",
+        "sort": "Şuna göre sırala",
+        "tag": "Etiket",
+        "tags": "Etiketler",
+        "update": "Düzenle"
     },
     "dialog": {
         "annotations": {
-            "descAuthor": "",
+            "descAuthor": "'{{- author}}'a göre",
             "descCreator": "",
             "descList": "",
             "descNewer": "",
