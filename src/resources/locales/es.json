@@ -135,8 +135,8 @@
         "cancel": "Cancelar",
         "deleteAnnotations": "¿Eliminar anotaciones?",
         "deleteAnnotationsText": "¿Quieres eliminar {{- annotationListLength}} anotación/es?",
-        "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteBookmarks": "Borrar marcadores",
+        "deleteBookmarksText": "¿Seguro que quieres borrar {{- bookmarkListLength}} marcador/es?",
         "deleteFeed": "¿Seguro que quieres eliminar este catálogo?",
         "deletePublication": "¿Seguro que quieres eliminar esta publicación?",
         "import": "¿Seguro que quieres importar estos ficheros?",
@@ -248,62 +248,62 @@
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": ""
+            "accessibility-summary-title": "Resumen de accesibilidad"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Se incluyen roles ARIA",
+                "descriptive": "El contenido se ha enriquecido con roles ARIA para optimizar la organización y facilitar la navegación"
             },
             "additional-accessibility-information-audio-descriptions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Audiodescripciones",
+                "descriptive": "Audiodescripciones"
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Braille",
+                "descriptive": "Braille"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Anotaciones ruby completas",
+                "descriptive": "Anotaciones ruby completas"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Alto contraste entre audio principal y de fondo",
+                "descriptive": "Alto contraste entre audio principal y de fondo"
             },
             "additional-accessibility-information-high-contrast-between-text-and-background": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Alto contraste entre texto principal y fondo",
+                "descriptive": "Alto contraste entre texto principal y fondo"
             },
             "additional-accessibility-information-large-print": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Impresión grande",
+                "descriptive": "Impresión grande"
             },
             "additional-accessibility-information-page-breaks": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Se incluyen saltos de página",
+                "descriptive": "Se incluyen saltos de página procedentes de la fuente original"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Algunas anotaciones ruby",
+                "descriptive": "Algunas anotaciones ruby"
             },
             "additional-accessibility-information-sign-language": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Lengua de signos",
+                "descriptive": "Lengua de signos"
             },
             "additional-accessibility-information-tactile-graphics": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Se incluyen gráficos táctiles",
+                "descriptive": "Se han incorporado gráficos táctiles para facilitar a personas ciegas el acceso a elementos visuales"
             },
             "additional-accessibility-information-tactile-objects": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Objetos 3D táctiles",
+                "descriptive": "Objetos 3D táctiles"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Se ofrecen indicaciones de texto a voz",
+                "descriptive": "Se ofrecen indicaciones de texto a voz"
             },
-            "additional-accessibility-information-title": ""
+            "additional-accessibility-information-title": "Información adicional sobre accesibilidad"
         },
         "conformance": {
             "conformance-a": {
