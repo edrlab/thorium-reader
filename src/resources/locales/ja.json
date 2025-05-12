@@ -650,7 +650,7 @@
             },
             "toggleMarginMarks": "ページ余白にメモマークを表示",
             "type": {
-                "outline": "枠み",
+                "outline": "囲み",
                 "solid": "背景",
                 "strikethrough": "取り消し線",
                 "underline": "下線"
