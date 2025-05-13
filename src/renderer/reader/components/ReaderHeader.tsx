@@ -81,6 +81,7 @@ import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { DockTypeName } from "readium-desktop/common/models/dock";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { TDrawType } from "readium-desktop/common/redux/states/renderer/note";
+import { PrintContainer } from "./Print";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -142,6 +143,9 @@ interface IBaseProps extends TranslatorProps {
     showSearchResults: () => void;
     disableRTLFlip: boolean;
     isRTLFlip: () => boolean;
+
+    pdfPlayerNumberOfPages: number;
+    pdfThumbnailImageCacheArray: string[];
 }
 
 // IProps may typically extend:
@@ -799,13 +803,60 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                     }
 
                     <ul className={stylesReader.menu_option}>
+
+                        <li
+                            {...(this.props.menuOpen &&
+                                { style: { backgroundColor: "var(--color-blue)" } })}
+                        >
+                            <Popover.Root onOpenChange={(open) => {
+                                if (open) { createOrGetPdfEventBus().dispatch("thumbnailInit"); }
+                            }}>
+                                <Popover.Trigger asChild>
+                                    <button
+                                        aria-pressed={this.props.menuOpen}
+                                        aria-label={__("reader.navigation.print")}
+                                        className={stylesReader.menu_button}
+                                        title={__("reader.navigation.print")}
+                                    >
+                                        <svg
+                                            // className={stylesReaderHeader.active_svg}
+                                            style={{ stroke: "var(--color-blue-alt)", fill: "none" }}
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="30"
+                                            height="20"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            aria-hidden="true"
+                                        >
+                                            <path d="M6 9V2h12v7" />
+                                            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                                            <path d="M6 14h12v8H6z" />
+                                        </svg>
+                                    </button>
+                                </Popover.Trigger>
+                                <Popover.Portal>
+                                    <Popover.Content sideOffset={this.props.isOnSearch ? 50 : 18} align="end" style={{ zIndex: 101 }}
+                                    // onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
+                                    // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
+                                    >
+                                        <PrintContainer pdfPageRange={[1, this.props.pdfPlayerNumberOfPages]} pdfThumbnailImageCacheArray={this.props.pdfThumbnailImageCacheArray} />
+                                        <Popover.Arrow style={{ fill: "var(--color-extralight-grey)" }} width={15} height={10} />
+                                    </Popover.Content>
+                                </Popover.Portal>
+                            </Popover.Root>
+                        </li>
+
                         <li
                             {...(this.props.isOnSearch && { style: { backgroundColor: "var(--color-blue" } })}
                         >
-                               <HeaderSearch shortcutEnable={this.props.shortcutEnable} isPdf={this.props.isPdf} showSearchResults={this.props.showSearchResults} isAudiobook={isAudioBook} isDivina={this.props.isDivina}></HeaderSearch>
+                            <HeaderSearch shortcutEnable={this.props.shortcutEnable} isPdf={this.props.isPdf} showSearchResults={this.props.showSearchResults} isAudiobook={isAudioBook} isDivina={this.props.isDivina}></HeaderSearch>
                         </li>
 
-                        <BookmarkButton shortcutEnable={this.props.shortcutEnable} isOnSearch={this.props.isOnSearch}/>
+                        <BookmarkButton shortcutEnable={this.props.shortcutEnable} isOnSearch={this.props.isOnSearch} />
 
                         <Popover.Root open={this.props.isAnnotationModeEnabled} onOpenChange={(open) => {
                             if (!open) {

@@ -1533,6 +1533,7 @@ declare namespace typed_i18n {
   (_: "publication.title", __?: {}): string;
   (_: "publication.userKeyCheckInvalid", __?: {}): string;
   (_: "reader", __?: {}): {
+  readonly "print": { readonly "print": string, readonly "ranges": string },
   readonly "annotations": {
     readonly "Color": string,
     readonly "addNote": string,
@@ -1627,7 +1628,8 @@ declare namespace typed_i18n {
     readonly "openTableOfContentsTitle": string,
     readonly "page": string,
     readonly "pdfscalemode": string,
-    readonly "settingsTitle": string
+    readonly "settingsTitle": string,
+    readonly "print": string
   },
   readonly "notes": {
     readonly "colors": {
@@ -1737,6 +1739,9 @@ declare namespace typed_i18n {
     readonly "voice": string
   }
 };
+  (_: "reader.print", __?: {}): { readonly "print": string, readonly "ranges": string };
+  (_: "reader.print.print", __?: {}): string;
+  (_: "reader.print.ranges", __?: {}): string;
   (_: "reader.annotations", __?: {}): {
   readonly "Color": string,
   readonly "addNote": string,
@@ -1913,7 +1918,8 @@ declare namespace typed_i18n {
   readonly "openTableOfContentsTitle": string,
   readonly "page": string,
   readonly "pdfscalemode": string,
-  readonly "settingsTitle": string
+  readonly "settingsTitle": string,
+  readonly "print": string
 };
   (_: "reader.navigation.ZenModeExit", __?: {}): string;
   (_: "reader.navigation.ZenModeTitle", __?: {}): string;
@@ -1935,6 +1941,7 @@ declare namespace typed_i18n {
   (_: "reader.navigation.page", __?: {}): string;
   (_: "reader.navigation.pdfscalemode", __?: {}): string;
   (_: "reader.navigation.settingsTitle", __?: {}): string;
+  (_: "reader.navigation.print", __?: {}): string;
   (_: "reader.notes", __?: {}): {
   readonly "colors": {
     readonly "cyan": string,

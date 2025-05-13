@@ -244,6 +244,7 @@ interface IState {
 
     pdfPlayerToc: TToc | undefined;
     pdfPlayerNumberOfPages: number | undefined;
+    pdfThumbnailImageCacheArray: string[] | undefined;
 
     // openedSectionSettings: number | undefined;
     // openedSectionMenu: string;
@@ -338,6 +339,7 @@ class Reader extends React.Component<IProps, IState> {
 
             pdfPlayerToc: undefined,
             pdfPlayerNumberOfPages: undefined,
+            pdfThumbnailImageCacheArray: [],
 
             // openedSectionSettings: undefined,
             // openedSectionMenu: "tab-toc",
@@ -553,11 +555,6 @@ class Reader extends React.Component<IProps, IState> {
 
             const page = this.props.locator?.locator?.href || "";
             console.log("pdf page index", page);
-
-            // createOrGetPdfEventBus().subscribe("ready", () => {
-            //     createOrGetPdfEventBus().dispatch("page", page);
-            // });
-
 
         } else if (this.props.isDivina) {
 
@@ -951,6 +948,9 @@ class Reader extends React.Component<IProps, IState> {
                         showSearchResults={this.showSearchResults}
                         disableRTLFlip={this.props.disableRTLFlip}
                         isRTLFlip={this.isRTLFlip}
+
+                        pdfPlayerNumberOfPages={this.state.pdfPlayerNumberOfPages}
+                        pdfThumbnailImageCacheArray={this.state.pdfThumbnailImageCacheArray}
                     />
                     :
                     <div className={stylesReader.exitZen_container}>
@@ -2182,7 +2182,14 @@ class Reader extends React.Component<IProps, IState> {
 
             createOrGetPdfEventBus().subscribe("copy", (txt) => clipboardInterceptor({ txt, locator: undefined }));
             createOrGetPdfEventBus().subscribe("toc", (toc) => this.setState({ pdfPlayerToc: toc }));
-            createOrGetPdfEventBus().subscribe("numberofpages", (pages) => this.setState({ pdfPlayerNumberOfPages: pages }));
+            createOrGetPdfEventBus().subscribe("numberofpages", (pages) => this.setState({ pdfPlayerNumberOfPages: pages, pdfThumbnailImageCacheArray: Array.from({ length: pages }, () => "") }));
+            createOrGetPdfEventBus().subscribe("thumbnailRendered", (pageNumber, imgSrc) => {
+                this.setState(({ pdfThumbnailImageCacheArray }) => {
+                    const pdfThumbnailImageCacheArrayClone = [...pdfThumbnailImageCacheArray];
+                    pdfThumbnailImageCacheArrayClone[pageNumber - 1] = imgSrc || "";
+                    return { pdfThumbnailImageCacheArray: pdfThumbnailImageCacheArrayClone };
+                });
+            });
 
             createOrGetPdfEventBus().subscribe("keydown", (payload) => {
                 keyDownEventHandler(payload, payload.elementName, payload.elementAttributes);

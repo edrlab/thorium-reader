@@ -717,6 +717,7 @@
             "openTableOfContentsTitle": "navigation",
             "page": "Page",
             "pdfscalemode": "Page fit or width",
+            "print": "print",
             "settingsTitle": "settings"
         },
         "notes": {
@@ -740,6 +741,10 @@
                 "submit": "Find"
             },
             "searchTitle": "Search:"
+        },
+        "print": {
+            "print": "Print",
+            "ranges": "Ranges"
         },
         "settings": {
             "column": {

@@ -103,6 +103,18 @@ function main() {
     });
 
     {
+        bus.subscribe("print", (pageRange: number[]) => {
+            pdfjsEventBus.dispatch("print", pageRange);
+        })
+        bus.subscribe("thumbnailInit", () => {
+            pdfjsEventBus.dispatch("__thumbnailInit");
+        })
+        pdfjsEventBus.on("thumbnailrendered", ({pageNumber, source: {image: {src}}}: any) => {
+            bus.dispatch("thumbnailRendered", pageNumber, src);
+        })
+    }
+
+    {
         bus.subscribe("firstpage", () => {
             pdfjsEventBus.dispatch("firstpage");
         });
