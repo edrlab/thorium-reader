@@ -508,32 +508,32 @@
             },
             "ways-of-reading-nonvisual-reading-readable": {
                 "compact": "قابل للقراءة بصوتٍ عالٍ أو بطريقة برايل الديناميكية",
-                "descriptive": ""
+                "descriptive": "يمكن قراءة كل المحتوى بصوتٍ عالٍ أو بطريقة برايل الديناميكية"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "مقاطع الصوت المسجّلة مسبقاً",
+                "descriptive": "مقاطع الصوت المسجّلة مسبقاً مدمجة في المحتوى"
             },
             "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "لا توجد معلومات عن الصوت المسجّل مسبقاً",
+                "descriptive": "لا توجد معلومات عن الصوت المسجّل مسبقاً"
             },
             "ways-of-reading-prerecorded-audio-only": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "الصوت المسجّل مسبقاً فقط",
+                "descriptive": "كتاب صوتي بدون بديل نصي"
             },
             "ways-of-reading-prerecorded-audio-synchronized": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "الصوت المسجّل مسبقاً متزامن مع النص",
+                "descriptive": "كل المحتوى متوفر كصوت مسجّل مسبقاً متزامن مع النص"
             },
-            "ways-of-reading-title": "",
+            "ways-of-reading-title": "طرق القراءة",
             "ways-of-reading-visual-adjustments-modifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "يمكن تعديل المظهر",
+                "descriptive": "يمكن تعديل مظهر النص وتخطيط الصفحة وفقاً لإمكانات نظام القراءة (إسم الخط وحجمه، والمسافات بين الفقرات والجمل والكلمات والأحرف، بالإضافة إلى لون الخلفية والنص)"
             },
             "ways-of-reading-visual-adjustments-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "لا توجد معلومات عن إمكانية تعديل المظهر",
+                "descriptive": "لا توجد معلومات عن إمكانية تعديل المظهر"
             }
         }
     },
@@ -584,14 +584,14 @@
         "duration": {
             "title": "المدة"
         },
-        "encryptedNoLicense": "",
+        "encryptedNoLicense": "المنشور مشفّر لكنه يفتقر إلى ترخيص LCP!",
         "expired": "انتهت مدة الاستعارة",
         "expiredLcp": "انتهت صلاحية ترخيص LCP الخاص بهذا المنشور.",
-        "incorrectPassphrase": "",
-        "lcpEnd": "",
+        "incorrectPassphrase": "لا يوجد عبارة مرور مخزّنة تتناسب مع المنشور، أو أن عبارة المرور المكتوبة غير صحيحة.",
+        "lcpEnd": "النهاية",
         "lcpRightsCopy": "الأحرف المنسوخة",
         "lcpRightsPrint": "الصفحات المطبوعة",
-        "lcpStart": "",
+        "lcpStart": "البداية",
         "licenceLCP": "الترخيص (LCP)",
         "licenseCertificateDateInvalid": "تاريخ توقيع ترخيص LCP غير صالح.",
         "licenseOutOfDate": "ترخيص LCP قديم.",
@@ -604,14 +604,14 @@
             "title": "مقدار التقدّم"
         },
         "read": "انتهى",
-        "remainingTime": "",
+        "remainingTime": "الاستعارة (الوقت المتبقي)",
         "renewButton": "تجديد",
         "returnButton": "إرجاع",
         "returnedLcp": "تم إرجاع هذا المنشور المحمي بـ LCP.",
         "revokedLcp": "تم إبطال ترخيص LCP الخاص بهذا المنشور.",
         "seeLess": "رؤية مقدار أقل",
         "seeMore": "رؤية مقدار أكثر",
-        "timeLeft": "",
+        "timeLeft": "الوقت المتبقي",
         "title": "العنوان",
         "userKeyCheckInvalid": "عبارة المرور غير صحيحة"
     },
@@ -621,30 +621,30 @@
             "addNote": "تعليق",
             "advancedMode": "الصيغة الفورية (إنشاء تلقائي بعد الاختيار)",
             "annotationsExport": {
-                "description": "",
-                "title": ""
+                "description": "اكتب إسماً للملاحظات المصدَّرة:",
+                "title": "العنوان"
             },
             "annotationsOptions": "خيارات",
-            "date": "",
-            "export": "",
+            "date": "تاريخ التعديل",
+            "export": "حفظ الملاحظات بإسم...",
             "filter": {
-                "all": "",
-                "filterByColor": "",
-                "filterByCreator": "",
-                "filterByDrawtype": "",
-                "filterByTag": "",
-                "filterOptions": "",
-                "none": ""
+                "all": "الكل",
+                "filterByColor": "تصفية حسب اللون",
+                "filterByCreator": "تصفية حسب المُنشئ",
+                "filterByDrawtype": "تصفية حسب النوع",
+                "filterByTag": "تصفية حسب الوسم",
+                "filterOptions": "خيارات التصفية",
+                "none": "بلا"
             },
             "hide": "عدم الإظهار",
             "highlight": "تمييز",
             "noSelectionToast": "لم يتم اختيار شيء",
-            "note": "",
+            "note": "ملاحظة {{- color}}",
             "quickAnnotations": "إنشاء سريع (تخطي المحرِّر)",
             "saveNote": "حفظ",
             "sorting": {
-                "lastcreated": "",
-                "lastmodified": "",
+                "lastcreated": "الأحدث إنشاءً",
+                "lastmodified": "الأحدث تعديلاً",
                 "progression": "",
                 "sortingOptions": ""
             },
