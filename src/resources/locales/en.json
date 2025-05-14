@@ -746,7 +746,8 @@
         "print": {
             "description": "{{- appName}} pre-print dialog with a publication of {{- count}} pages. You have to set the range of pages you want to print to trigger the system print dialog",
             "descriptionLcp": "{{- appName}} pre-print dialog with an LCP publication of {{- count}} pages. You have to set the range of pages you want to print to trigger the system print dialog",
-            "descriptionLcpLimit": "You already printed this set of pages: {{- pageRangePrinted}}. It remains {{- count}} another pages to print from your LCP limit of {{- lcpLimitPages}} pages",
+            "descriptionLcpLimit": "{{- count}} pages remaining (of {{- lcpLimitPages}} LCP limit)",
+            "descriptionLcpLimitPrinted": "Printed pages: {{- pageRangePrinted}} ",
             "print": "Print",
             "printPagesListInfo": "Pages ({{- count}}): ",
             "ranges": "Ranges"

@@ -180,12 +180,14 @@ class LcpInfo extends React.Component<IProps, undefined> {
                     {lcpRightsCopy ? <>
                         <strong>{__("publication.lcpRightsCopy")}: </strong>
                         <span>{lcpRightsCopiesPubInfo} / {lcpRightsCopy}</span><br />
-                    </> : undefined}
+                    </> : <></>}
 
                     {lcpRightsPrint ? <>
                         <strong>{__("publication.lcpRightsPrint")}: </strong>
-                        <span>{lcpRightsPrintCountPubInfo} / {lcpRightsPrint}</span><br />
-                    </> : undefined}
+                        <span>{lcpRightsPrintCountPubInfo} / {lcpRightsPrint}  </span>
+                        {lcpRightsPrintRangePubInfo.length ? ` [${lcpRightsPrintRangePubInfo}] ` : <></>}
+                        <span> {__("reader.print.descriptionLcpLimit", { count: lcpRightsPrint - lcpRightsPrintCountPubInfo, lcpLimitPages: lcpRightsPrint })}</span><br />
+                    </> : <></>}
                 </div>
             </>
         );

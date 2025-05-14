@@ -142,7 +142,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                 {pageRange.length ? pageRange.map((pageNumber) =>
                     pdfThumbnailImageCacheArray[pageNumber - 1]
                         ? <img key={pageNumber} src={pdfThumbnailImageCacheArray[pageNumber - 1]} title={(pageNumber).toString()} />
-                        : (<div key={pageNumber} style={{ position: "relative", backgroundColor: "inherit" }} className={stylesSpinner.spinner_container}><div className={stylesSpinner.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>)
+                        : (<div key={pageNumber} style={{ position: "relative", backgroundColor: "inherit" }} className={stylesSpinner.spinner_container}><div className={stylesSpinner.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>),
 
                 )
                     : <p style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "-webkit-fill-available" }}>No Pages</p>}

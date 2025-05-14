@@ -747,6 +747,7 @@
             "description": "",
             "descriptionLcp": "",
             "descriptionLcpLimit": "",
+            "descriptionLcpLimitPrinted": "",
             "print": "",
             "printPagesListInfo": "",
             "ranges": ""

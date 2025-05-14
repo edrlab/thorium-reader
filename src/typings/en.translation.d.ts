@@ -1658,6 +1658,7 @@ declare namespace typed_i18n {
   readonly "print": {
     readonly "description": string,
     readonly "descriptionLcp": string,
+    readonly "descriptionLcpLimitPrinted": string,
     readonly "descriptionLcpLimit": string,
     readonly "print": string,
     readonly "printPagesListInfo": string,
@@ -2005,6 +2006,7 @@ declare namespace typed_i18n {
   (_: "reader.print", __?: {}): {
   readonly "description": string,
   readonly "descriptionLcp": string,
+  readonly "descriptionLcpLimitPrinted": string,
   readonly "descriptionLcpLimit": string,
   readonly "print": string,
   readonly "printPagesListInfo": string,
@@ -2012,6 +2014,7 @@ declare namespace typed_i18n {
 };
   (_: "reader.print.description", __?: {}): string;
   (_: "reader.print.descriptionLcp", __?: {}): string;
+  (_: "reader.print.descriptionLcpLimitPrinted", __?: {}): string;
   (_: "reader.print.descriptionLcpLimit", __?: {}): string;
   (_: "reader.print.print", __?: {}): string;
   (_: "reader.print.printPagesListInfo", __?: {}): string;

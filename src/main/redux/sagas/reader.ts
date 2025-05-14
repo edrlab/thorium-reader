@@ -375,23 +375,17 @@ function* readerPrint(action: readerActions.print.TAction) {
 
     const lcpRightsPrints = publicationDocument.lcpRightsPrints || [];
     const lcpRightsPrintsRemain = publicationDocument.lcp.rights.print - lcpRightsPrints.length;
-    // if (lcpRightsPrintsRemain <= 0) {
-    //     yield* putTyped(toastActions.openRequest.build(ToastType.Error,
-    //         `LCP [${translator.translate("app.edit.print")}] [${publicationDocument.lcpRightsPrints.length}] / ${publicationDocument.lcp.rights.print}`,
-    //         publicationIdentifier));
-    // }
-
-    // const pagesToPrintSaved = pageRange.filter((page) => !!lcpRightsPrints.find((pageSaved) => pageSaved === page));
     const pagesToPrintSaved = pageRange.filter((page) => lcpRightsPrints.some((pageSaved) => pageSaved === page));
     const pagesToPrintNotSaved = pageRange.filter((page) => !pagesToPrintSaved.some((pageSaved) => pageSaved === page));
     const pagesToPrintNotSavedRightTruncated = pagesToPrintNotSaved.slice(0, lcpRightsPrintsRemain);
     const pagesToPrint: number[] = [...pagesToPrintSaved, ...pagesToPrintNotSavedRightTruncated].sort((a, b) => a-b);
+    const newLcpRightsPrints = [...lcpRightsPrints, ...pagesToPrintNotSavedRightTruncated].sort((a, b) => a-b);
 
     const newPublicationDocument: PublicationDocument = Object.assign(
         {},
         publicationDocument,
         {
-            lcpRightsPrints: pagesToPrint,
+            lcpRightsPrints: newLcpRightsPrints,
         },
     );
 
@@ -402,7 +396,7 @@ function* readerPrint(action: readerActions.print.TAction) {
         yield* putTyped(actionToSend);
     
         yield* putTyped(toastActions.openRequest.build(ToastType.Success,
-            `LCP [${translator.translate("app.edit.print")}] [${newPublicationDocument.lcpRightsPrints}] / ${publicationDocument.lcp.rights.print}`,
+            `LCP [${translator.translate("app.edit.print")}] [${pagesToPrint}] / ${publicationDocument.lcp.rights.print}`,
             publicationIdentifier));
     } else {
         yield* putTyped(toastActions.openRequest.build(ToastType.Error,
