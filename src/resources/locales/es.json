@@ -307,69 +307,69 @@
         },
         "conformance": {
             "conformance-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Esta publicación cumple con estándares mínimos de accesibilidad",
+                "descriptive": "La publicación contiene una declaración de conformidad de cumplimiento del estándar de accesibilidad EPUB y WCAG 2 nivel A"
             },
             "conformance-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Esta publicación cumple con estándares aceptados de accesibilidad",
+                "descriptive": "La publicación contiene una declaración de conformidad de cumplimiento del estándar de accesibilidad EPUB y WCAG 2 nivel AA"
             },
             "conformance-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Esta publicación sobrepasa los estándares aceptados de accesibilidad",
+                "descriptive": "La publicación contiene una declaración de conformidad de cumplimiento del estándar de accesibilidad EPUB y WCAG 2 nivel AAA"
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "La publicación fue certificada por "
             },
             "conformance-certifier-credentials": {
-                "compact": ""
+                "compact": "La credencial del certificador es "
             },
             "conformance-details-certifier-report": {
-                "compact": ""
+                "compact": "Para más información consulta el informe del certificador"
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Esta publicación declara que cumple",
+                "descriptive": "Esta publicación declara que cumple"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Accesibilidad EPUB 1.0",
+                "descriptive": "Accesibilidad EPUB 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Accesibilidad EPUB 1.1",
+                "descriptive": "Accesibilidad EPUB 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Nivel A",
+                "descriptive": "Nivel A"
             },
             "conformance-details-level-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Nivel AA",
+                "descriptive": "Nivel AA"
             },
             "conformance-details-level-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Nivel AAA",
+                "descriptive": "Nivel AAA"
             },
             "conformance-details-wcag-2-0": {
-                "compact": ""
+                "compact": "WCAG 2.0"
             },
             "conformance-details-wcag-2-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.1",
+                "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.2",
+                "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.2"
             },
             "conformance-no": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "No hay información disponible",
+                "descriptive": "No hay información disponible"
             },
-            "conformance-title": "",
+            "conformance-title": "Conformidad",
             "conformance-unknown-standard": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "No es posible determinar la conformidad con estándares para la accesibilidad de esta publicación",
+                "descriptive": "No es posible determinar la conformidad con estándares para la accesibilidad de esta publicación"
             }
         },
         "hazards": {
@@ -682,7 +682,7 @@
         "media-overlays": {
             "activate": "Activar lectura en voz alta",
             "captions": "Texto sincronizado/presentación diáfana",
-            "captionsDescription": "Vista de texto simplificada con estilo de subtítulos mínimo.",
+            "captionsDescription": "reader.media-overlays.captionsDescription",
             "disableContinuousPlay": "Deshabilitar reproducción continua",
             "disableContinuousPlayDescription": "No reproducir automáticamente el siguiente elemento, pausar inmediatamente tras reproducir el elemento actual",
             "ignoreAndUseTTS": "",
