@@ -89,6 +89,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     lcpActions.publicationFileLock.ID,
 
     noteExport.overrideHTMLTemplate.ID,
+
+    readerActions.print.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware

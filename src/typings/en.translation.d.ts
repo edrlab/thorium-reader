@@ -36,7 +36,8 @@ declare namespace typed_i18n {
     readonly "redo": string,
     readonly "selectAll": string,
     readonly "title": string,
-    readonly "undo": string
+    readonly "undo": string,
+    readonly "print": string
   },
   readonly "hide": string,
   readonly "quit": string,
@@ -60,7 +61,8 @@ declare namespace typed_i18n {
   readonly "redo": string,
   readonly "selectAll": string,
   readonly "title": string,
-  readonly "undo": string
+  readonly "undo": string,
+  readonly "print": string
 };
   (_: "app.edit.copy", __?: {}): string;
   (_: "app.edit.cut", __?: {}): string;
@@ -68,7 +70,8 @@ declare namespace typed_i18n {
   (_: "app.edit.redo", __?: {}): string;
   (_: "app.edit.selectAll", __?: {}): string;
   (_: "app.edit.title", __?: {}): string;
-  (_: "app.edit.undo", __?: {}): string; (_: "app.hide", __?: {}): string;
+  (_: "app.edit.undo", __?: {}): string;
+  (_: "app.edit.print", __?: {}): string; (_: "app.hide", __?: {}): string;
   (_: "app.quit", __?: {}): string;
   (_: "app.session", __?: {}): {
   readonly "exit": {
@@ -1533,7 +1536,6 @@ declare namespace typed_i18n {
   (_: "publication.title", __?: {}): string;
   (_: "publication.userKeyCheckInvalid", __?: {}): string;
   (_: "reader", __?: {}): {
-  readonly "print": { readonly "print": string, readonly "ranges": string },
   readonly "annotations": {
     readonly "Color": string,
     readonly "addNote": string,
@@ -1628,8 +1630,8 @@ declare namespace typed_i18n {
     readonly "openTableOfContentsTitle": string,
     readonly "page": string,
     readonly "pdfscalemode": string,
-    readonly "settingsTitle": string,
-    readonly "print": string
+    readonly "print": string,
+    readonly "settingsTitle": string
   },
   readonly "notes": {
     readonly "colors": {
@@ -1653,6 +1655,7 @@ declare namespace typed_i18n {
     },
     readonly "searchTitle": string
   },
+  readonly "print": { readonly "print": string, readonly "ranges": string },
   readonly "settings": {
     readonly "column": {
       readonly "auto": string,
@@ -1739,9 +1742,6 @@ declare namespace typed_i18n {
     readonly "voice": string
   }
 };
-  (_: "reader.print", __?: {}): { readonly "print": string, readonly "ranges": string };
-  (_: "reader.print.print", __?: {}): string;
-  (_: "reader.print.ranges", __?: {}): string;
   (_: "reader.annotations", __?: {}): {
   readonly "Color": string,
   readonly "addNote": string,
@@ -1918,8 +1918,8 @@ declare namespace typed_i18n {
   readonly "openTableOfContentsTitle": string,
   readonly "page": string,
   readonly "pdfscalemode": string,
-  readonly "settingsTitle": string,
-  readonly "print": string
+  readonly "print": string,
+  readonly "settingsTitle": string
 };
   (_: "reader.navigation.ZenModeExit", __?: {}): string;
   (_: "reader.navigation.ZenModeTitle", __?: {}): string;
@@ -1940,8 +1940,8 @@ declare namespace typed_i18n {
   (_: "reader.navigation.openTableOfContentsTitle", __?: {}): string;
   (_: "reader.navigation.page", __?: {}): string;
   (_: "reader.navigation.pdfscalemode", __?: {}): string;
-  (_: "reader.navigation.settingsTitle", __?: {}): string;
   (_: "reader.navigation.print", __?: {}): string;
+  (_: "reader.navigation.settingsTitle", __?: {}): string;
   (_: "reader.notes", __?: {}): {
   readonly "colors": {
     readonly "cyan": string,
@@ -1995,6 +1995,9 @@ declare namespace typed_i18n {
   (_: "reader.picker.search.results", __?: {}): string;
   (_: "reader.picker.search.submit", __?: {}): string;
   (_: "reader.picker.searchTitle", __?: {}): string;
+  (_: "reader.print", __?: {}): { readonly "print": string, readonly "ranges": string };
+  (_: "reader.print.print", __?: {}): string;
+  (_: "reader.print.ranges", __?: {}): string;
   (_: "reader.settings", __?: {}): {
   readonly "column": {
     readonly "auto": string,

@@ -20,6 +20,7 @@
             "copy": "Copy",
             "cut": "Cut",
             "paste": "Paste",
+            "print": "Print",
             "redo": "Redo",
             "selectAll": "Select all",
             "title": "Edit",

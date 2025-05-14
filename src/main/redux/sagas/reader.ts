@@ -10,7 +10,7 @@ import { clipboard, screen } from "electron";
 import * as ramda from "ramda";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
-import { SenderType } from "readium-desktop/common/models/sync";
+import { ActionWithDestination, ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { normalizeRectangle } from "readium-desktop/common/rectangle/window";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
@@ -346,6 +346,71 @@ function* readerSetReduxState(action: readerActions.setReduxState.TAction) {
     }
 }
 
+function* readerPrint(action: readerActions.print.TAction) {
+
+    const { publicationIdentifier, pageRange } = action.payload;
+
+    if ((action as ActionWithDestination).destination) {
+        return ; // action to renderer destination
+    }
+
+    debug("READER PRINT FROM MAIN PROCESS", action.payload);
+
+    const publicationRepository = diMainGet("publication-repository");
+    const translator = getTranslator();
+    const publicationDocument = yield* callTyped(() => publicationRepository.get(
+        publicationIdentifier,
+    ));
+
+    if (!publicationDocument.lcp ||
+        !publicationDocument.lcp.rights ||
+        publicationDocument.lcp.rights.print === null ||
+        typeof publicationDocument.lcp.rights.print === "undefined" ||
+        publicationDocument.lcp.rights.print < 0) {
+
+        const actionToSend = readerActions.print.build(publicationIdentifier, pageRange, (action as unknown as ActionWithSender)?.sender?.identifier);
+        yield* putTyped(actionToSend);
+        return ;
+    }
+
+    const lcpRightsPrints = publicationDocument.lcpRightsPrints || [];
+    const lcpRightsPrintsRemain = publicationDocument.lcp.rights.print - lcpRightsPrints.length;
+    if (lcpRightsPrintsRemain <= 0) {
+        yield* putTyped(toastActions.openRequest.build(ToastType.Error,
+            `LCP [${translator.translate("app.edit.print")}] [${publicationDocument.lcpRightsPrints.length}] / ${publicationDocument.lcp.rights.print}`,
+            publicationIdentifier));
+    }
+
+    // const pagesToPrintSaved = pageRange.filter((page) => !!lcpRightsPrints.find((pageSaved) => pageSaved === page));
+    const pagesToPrintSaved = pageRange.filter((page) => lcpRightsPrints.some((pageSaved) => pageSaved === page));
+    const pagesToPrintNotSaved = pageRange.filter((page) => !pagesToPrintSaved.some((pageSaved) => pageSaved === page));
+    const pagesToPrintNotSavedRightTruncated = pagesToPrintNotSaved.slice(0, lcpRightsPrintsRemain);
+    const pagesToPrint: number[] = [...pagesToPrintSaved, ...pagesToPrintNotSavedRightTruncated].sort((a, b) => a-b);
+
+    const newPublicationDocument: PublicationDocument = Object.assign(
+        {},
+        publicationDocument,
+        {
+            lcpRightsPrints: pagesToPrint,
+        },
+    );
+
+    yield* callTyped(() => publicationRepository.save(newPublicationDocument));
+
+    if (pagesToPrint.length) {
+        const actionToSend = readerActions.print.build(publicationIdentifier, pagesToPrint, (action as unknown as ActionWithSender)?.sender?.identifier);
+        yield* putTyped(actionToSend);
+    
+        yield* putTyped(toastActions.openRequest.build(ToastType.Success,
+            `LCP [${translator.translate("app.edit.print")}] [${newPublicationDocument.lcpRightsPrints}] / ${publicationDocument.lcp.rights.print}`,
+            publicationIdentifier));
+    } else {
+        yield* putTyped(toastActions.openRequest.build(ToastType.Error,
+            `LCP [${translator.translate("app.edit.print")}] ${publicationDocument.lcpRightsPrints.length} / ${publicationDocument.lcp.rights.print}`,
+            publicationIdentifier));
+    }
+}
+
 function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction) {
 
     const { publicationIdentifier, clipboardData } = action.payload;
@@ -434,6 +499,11 @@ export function saga() {
             readerActions.clipboardCopy.ID,
             readerClipboardCopy,
             (e) => error(filename_ + ":readerClipboardCopy", e),
+        ),
+        takeSpawnEvery(
+            readerActions.print.ID,
+            readerPrint,
+            (e) => error(filename_ + ":readerPrint", e),
         ),
     ]);
 }

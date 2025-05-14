@@ -6,7 +6,9 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import * as stylesSpinner from "readium-desktop/renderer/assets/styles/components/spinnerContainer.scss";
 
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
-import { createOrGetPdfEventBus } from "../pdf/driver";
+import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { readerActions } from "readium-desktop/common/redux/actions";
+import { getStore } from "../createStore";
 
 // VibeCoded on labs.perplexity.ai with R1 :-)
 function parsePrintRanges(input: string) {
@@ -66,8 +68,9 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
 
     const [getV, setV] = React.useState(`${pdfPageRange[0]}-${pdfPageRange[1]}`);
     const [__] = useTranslator();
+    const dispatch = useDispatch();
 
-    const range = React.useMemo(() => convertRangestoNumberArray(parsePrintRanges(getV), pdfPageRange), [getV, pdfPageRange]);
+    const pageRange = React.useMemo(() => convertRangestoNumberArray(parsePrintRanges(getV), pdfPageRange), [getV, pdfPageRange]);
 
     return <>
         <style>{`
@@ -118,7 +121,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
             <h4>{__("reader.print.print")}</h4>
 
             <div className="print-popover-image-container">
-                {range.map((pageNumber) =>
+                {pageRange.map((pageNumber) =>
                     pdfThumbnailImageCacheArray[pageNumber - 1]
                         ? <img key={pageNumber} src={pdfThumbnailImageCacheArray[pageNumber - 1]} title={(pageNumber).toString()} />
                         : (<div key={pageNumber} style={{position: "relative", backgroundColor: "inherit"}} className={stylesSpinner.spinner_container}><div className={stylesSpinner.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>),
@@ -131,7 +134,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                     setV(v);
                 }} />
                 <label htmlFor="print-range">{__("reader.print.ranges")}</label>
-                <div className="print-popover-page-icon" title={range.toString()}></div>
+                <div className="print-popover-page-icon" title={pageRange.toString()}></div>
             </div>
 
             <div className={stylesAnnotations.annotation_form_textarea_buttons}>
@@ -142,7 +145,10 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                     aria-label={__("reader.print.print")}
                     onClick={(_e) => {
                         // e.preventDefault();
-                        createOrGetPdfEventBus().dispatch("print", range);
+                        // createOrGetPdfEventBus().dispatch("print", pageRange);
+                        
+                        const publicationIdentifier = getStore().getState().reader.info.publicationIdentifier;
+                        dispatch(readerActions.print.build(publicationIdentifier, pageRange)); // send to main process
                     }}
                 >
                     {__("reader.print.print")}
