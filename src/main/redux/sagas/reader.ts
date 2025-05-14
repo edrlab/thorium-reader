@@ -375,11 +375,11 @@ function* readerPrint(action: readerActions.print.TAction) {
 
     const lcpRightsPrints = publicationDocument.lcpRightsPrints || [];
     const lcpRightsPrintsRemain = publicationDocument.lcp.rights.print - lcpRightsPrints.length;
-    if (lcpRightsPrintsRemain <= 0) {
-        yield* putTyped(toastActions.openRequest.build(ToastType.Error,
-            `LCP [${translator.translate("app.edit.print")}] [${publicationDocument.lcpRightsPrints.length}] / ${publicationDocument.lcp.rights.print}`,
-            publicationIdentifier));
-    }
+    // if (lcpRightsPrintsRemain <= 0) {
+    //     yield* putTyped(toastActions.openRequest.build(ToastType.Error,
+    //         `LCP [${translator.translate("app.edit.print")}] [${publicationDocument.lcpRightsPrints.length}] / ${publicationDocument.lcp.rights.print}`,
+    //         publicationIdentifier));
+    // }
 
     // const pagesToPrintSaved = pageRange.filter((page) => !!lcpRightsPrints.find((pageSaved) => pageSaved === page));
     const pagesToPrintSaved = pageRange.filter((page) => lcpRightsPrints.some((pageSaved) => pageSaved === page));
