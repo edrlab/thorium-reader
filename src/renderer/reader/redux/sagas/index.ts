@@ -156,7 +156,7 @@ export function* rootSaga() {
             function*(action: readerActions.print.TAction) {
                 const { pageRange } = action.payload;
 
-                if ((action as ActionWithSender).sender?.type !== SenderType.Main) {
+                if ((action as unknown as ActionWithSender)?.sender?.type !== SenderType.Main) {
                     return; // expect sender as main process
                 }
 

@@ -20,6 +20,7 @@
             "copy": "نسخ",
             "cut": "قص",
             "paste": "لصق",
+            "print": "",
             "redo": "إعادة",
             "selectAll": "اختيار الكل",
             "title": "تحرير",
@@ -717,6 +718,7 @@
             "openTableOfContentsTitle": "التنقّل",
             "page": "الصفحة",
             "pdfscalemode": "ملاءمة أو عرض الصفحة",
+            "print": "",
             "settingsTitle": "إعدادات"
         },
         "notes": {
@@ -740,6 +742,14 @@
                 "submit": "بحث"
             },
             "searchTitle": "البحث عن:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "print": "",
+            "printPagesListInfo": "",
+            "ranges": ""
         },
         "settings": {
             "column": {

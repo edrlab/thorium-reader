@@ -20,6 +20,7 @@
             "copy": "Копировать",
             "cut": "Вырезать",
             "paste": "Вставить",
+            "print": "",
             "redo": "Восстановить",
             "selectAll": "Выбрать все",
             "title": "Редактировать",
@@ -717,6 +718,7 @@
             "openTableOfContentsTitle": "навигация",
             "page": "Страница",
             "pdfscalemode": "Размер или ширина страницы",
+            "print": "",
             "settingsTitle": "настройки"
         },
         "notes": {
@@ -740,6 +742,14 @@
                 "submit": "Найти"
             },
             "searchTitle": "Поиск:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "print": "",
+            "printPagesListInfo": "",
+            "ranges": ""
         },
         "settings": {
             "column": {

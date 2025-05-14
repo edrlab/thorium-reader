@@ -20,6 +20,7 @@
             "copy": "Kopiatu",
             "cut": "Moztu",
             "paste": "Itsatsi",
+            "print": "",
             "redo": "Berregin",
             "selectAll": "Hautatu dena",
             "title": "Editatu",
@@ -717,6 +718,7 @@
             "openTableOfContentsTitle": "Nabigazioa",
             "page": "Orria",
             "pdfscalemode": "Orriaren doikuntza edo zabalera",
+            "print": "",
             "settingsTitle": "Konfigurazio-aukerak"
         },
         "notes": {
@@ -740,6 +742,14 @@
                 "submit": "Aurkitu"
             },
             "searchTitle": "Bilatu:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "print": "",
+            "printPagesListInfo": "",
+            "ranges": ""
         },
         "settings": {
             "column": {

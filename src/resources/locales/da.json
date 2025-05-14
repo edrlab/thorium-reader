@@ -20,6 +20,7 @@
             "copy": "Kopier",
             "cut": "Klip",
             "paste": "Sæt ind",
+            "print": "",
             "redo": "Gendan",
             "selectAll": "Vælg alt",
             "title": "Rediger",
@@ -717,6 +718,7 @@
             "openTableOfContentsTitle": "indholdsfortegnelse",
             "page": "Side",
             "pdfscalemode": "Tilpas til side eller skærmbredde",
+            "print": "",
             "settingsTitle": "indstillinger"
         },
         "notes": {
@@ -740,6 +742,14 @@
                 "submit": "Find"
             },
             "searchTitle": "Søg:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "print": "",
+            "printPagesListInfo": "",
+            "ranges": ""
         },
         "settings": {
             "column": {

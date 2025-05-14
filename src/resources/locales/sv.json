@@ -20,6 +20,7 @@
             "copy": "Kopiera",
             "cut": "Klipp ut",
             "paste": "Klistra in",
+            "print": "",
             "redo": "Gör om",
             "selectAll": "Markera allt",
             "title": "Redigera",
@@ -717,6 +718,7 @@
             "openTableOfContentsTitle": "Navigation",
             "page": "Sida",
             "pdfscalemode": "Anpassa till hel sida eller sidbredd",
+            "print": "",
             "settingsTitle": "Inställningar"
         },
         "notes": {
@@ -740,6 +742,14 @@
                 "submit": "Sök"
             },
             "searchTitle": "Sök:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "print": "",
+            "printPagesListInfo": "",
+            "ranges": ""
         },
         "settings": {
             "column": {

@@ -20,6 +20,7 @@
             "copy": "Copia",
             "cut": "Taglia",
             "paste": "Incolla",
+            "print": "",
             "redo": "Ripeti",
             "selectAll": "Seleziona tutto",
             "title": "Modifica",
@@ -717,6 +718,7 @@
             "openTableOfContentsTitle": "navigazione",
             "page": "Pagina",
             "pdfscalemode": "Dimensioni della pagina o larghezza",
+            "print": "",
             "settingsTitle": "impostazioni"
         },
         "notes": {
@@ -740,6 +742,14 @@
                 "submit": "Trova"
             },
             "searchTitle": "Cerca:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "print": "",
+            "printPagesListInfo": "",
+            "ranges": ""
         },
         "settings": {
             "column": {

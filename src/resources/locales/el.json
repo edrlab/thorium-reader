@@ -20,6 +20,7 @@
             "copy": "Αντιγραφή",
             "cut": "Αποκοπή",
             "paste": "Επικόλληση",
+            "print": "",
             "redo": "Επανάληψη",
             "selectAll": "Επιλογή όλων",
             "title": "Επεξεργασία",
@@ -717,6 +718,7 @@
             "openTableOfContentsTitle": "πλοήγηση",
             "page": "Σελίδα",
             "pdfscalemode": "Προσαρμογή στη σελίδα ή στο πλάτος",
+            "print": "",
             "settingsTitle": "ρυθμίσεις"
         },
         "notes": {
@@ -740,6 +742,14 @@
                 "submit": "Εύρεση"
             },
             "searchTitle": "Αναζήτηση:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "print": "",
+            "printPagesListInfo": "",
+            "ranges": ""
         },
         "settings": {
             "column": {

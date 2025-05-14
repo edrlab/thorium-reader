@@ -9,6 +9,11 @@ import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/compo
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { getStore } from "../createStore";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { _APP_NAME } from "readium-desktop/preprocessor-directives";
+
+const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
 // VibeCoded on labs.perplexity.ai with R1 :-)
 function parsePrintRanges(input: string) {
@@ -72,6 +77,9 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
 
     const pageRange = React.useMemo(() => convertRangestoNumberArray(parsePrintRanges(getV), pdfPageRange), [getV, pdfPageRange]);
 
+    const publicationView = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
+    const isLcp = !!publicationView.lcp?.rights;
+
     return <>
         <style>{`
              .print-popover-form {
@@ -93,8 +101,17 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
             overflow-x: auto; /* Add horizontal scrollbar */
             overflow-y: hidden; /* Hide vertical scrollbar */
             padding: 10px; /* Optional padding */
-            min-width: 430px;
-            min-height: 210px;
+            width: 430px;
+            height: 200px;
+        }
+
+        .print-popover-form h4 {
+            padding: 0;
+            margin-bottom: 0;
+        }
+
+        .print-popover-form p {
+            padding: 0;
         }
 
         .print-popover-image-container img {
@@ -119,22 +136,31 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
         `}</style>
         <form className="print-popover-form">
             <h4>{__("reader.print.print")}</h4>
+            <p>{isLcp ? __("reader.print.descriptionLcp", { appName: capitalizedAppName, count: pdfPageRange[1] }) : __("reader.print.description", { count: pdfPageRange[1], appName: capitalizedAppName })}</p>
 
             <div className="print-popover-image-container">
-                {pageRange.map((pageNumber) =>
+                {pageRange.length ? pageRange.map((pageNumber) =>
                     pdfThumbnailImageCacheArray[pageNumber - 1]
                         ? <img key={pageNumber} src={pdfThumbnailImageCacheArray[pageNumber - 1]} title={(pageNumber).toString()} />
-                        : (<div key={pageNumber} style={{position: "relative", backgroundColor: "inherit"}} className={stylesSpinner.spinner_container}><div className={stylesSpinner.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>),
-                )}
+                        : (<div key={pageNumber} style={{ position: "relative", backgroundColor: "inherit" }} className={stylesSpinner.spinner_container}><div className={stylesSpinner.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>)
+
+                )
+                    : <p style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "-webkit-fill-available" }}>No Pages</p>}
             </div>
 
+            {/* TODO refactor: publicationView is not synced with the db from main process, when calling to publicationInfo,
+                it made some refresh by calling an "API" call to get/publication and refresh locally the publication view state and not globally in redux.
+                This is something we have to avoid in the future and always synced the publication db state with the renderer publicationView state from redux.
+                For the moment, we cannot fix that so let's comment the LCP Print pagination limitation indication.
+            */}
+            {/* {isLcp && publicationView.lcp?.rights?.print ? <p>{__("reader.print.descriptionLcpLimit", { pageRangePrinted: `[${publicationView.lcpRightsPrints}]`, count: publicationView.lcp.rights.print - publicationView.lcpRightsPrints.length, lcpLimitPages: publicationView.lcp.rights.print })}</p> : <></>} */}
             <div className={stylesInput.form_group} style={{ marginTop: "20px", width: "360px" }}>
                 <input type="text" name="print-range" style={{ width: "100%", marginLeft: "10px" }} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={"print-range"} value={getV} onChange={(e) => {
                     const v = e.target.value;
                     setV(v);
                 }} />
                 <label htmlFor="print-range">{__("reader.print.ranges")}</label>
-                <div className="print-popover-page-icon" title={pageRange.toString()}></div>
+                <div className="print-popover-page-icon" title={__("reader.print.printPagesListInfo", { count: pageRange.length }) + pageRange.toString()}></div>
             </div>
 
             <div className={stylesAnnotations.annotation_form_textarea_buttons}>
@@ -146,7 +172,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                     onClick={(_e) => {
                         // e.preventDefault();
                         // createOrGetPdfEventBus().dispatch("print", pageRange);
-                        
+
                         const publicationIdentifier = getStore().getState().reader.info.publicationIdentifier;
                         dispatch(readerActions.print.build(publicationIdentifier, pageRange)); // send to main process
                     }}

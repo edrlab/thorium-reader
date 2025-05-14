@@ -20,6 +20,7 @@
             "copy": "Kopioi",
             "cut": "Leikkaa",
             "paste": "Liitä",
+            "print": "",
             "redo": "Tee uudelleen",
             "selectAll": "Valitse kaikki",
             "title": "Muokkaa",
@@ -717,6 +718,7 @@
             "openTableOfContentsTitle": "Navigaatio",
             "page": "Sivu",
             "pdfscalemode": "Sovita sivu tai leveyteen",
+            "print": "",
             "settingsTitle": "Asetukset"
         },
         "notes": {
@@ -740,6 +742,14 @@
                 "submit": "Etsi"
             },
             "searchTitle": "Hae:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "print": "",
+            "printPagesListInfo": "",
+            "ranges": ""
         },
         "settings": {
             "column": {

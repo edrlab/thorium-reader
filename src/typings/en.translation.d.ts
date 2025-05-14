@@ -33,11 +33,11 @@ declare namespace typed_i18n {
     readonly "copy": string,
     readonly "cut": string,
     readonly "paste": string,
+    readonly "print": string,
     readonly "redo": string,
     readonly "selectAll": string,
     readonly "title": string,
-    readonly "undo": string,
-    readonly "print": string
+    readonly "undo": string
   },
   readonly "hide": string,
   readonly "quit": string,
@@ -58,20 +58,20 @@ declare namespace typed_i18n {
   readonly "copy": string,
   readonly "cut": string,
   readonly "paste": string,
+  readonly "print": string,
   readonly "redo": string,
   readonly "selectAll": string,
   readonly "title": string,
-  readonly "undo": string,
-  readonly "print": string
+  readonly "undo": string
 };
   (_: "app.edit.copy", __?: {}): string;
   (_: "app.edit.cut", __?: {}): string;
   (_: "app.edit.paste", __?: {}): string;
+  (_: "app.edit.print", __?: {}): string;
   (_: "app.edit.redo", __?: {}): string;
   (_: "app.edit.selectAll", __?: {}): string;
   (_: "app.edit.title", __?: {}): string;
-  (_: "app.edit.undo", __?: {}): string;
-  (_: "app.edit.print", __?: {}): string; (_: "app.hide", __?: {}): string;
+  (_: "app.edit.undo", __?: {}): string; (_: "app.hide", __?: {}): string;
   (_: "app.quit", __?: {}): string;
   (_: "app.session", __?: {}): {
   readonly "exit": {
@@ -1655,7 +1655,14 @@ declare namespace typed_i18n {
     },
     readonly "searchTitle": string
   },
-  readonly "print": { readonly "print": string, readonly "ranges": string },
+  readonly "print": {
+    readonly "description": string,
+    readonly "descriptionLcp": string,
+    readonly "descriptionLcpLimit": string,
+    readonly "print": string,
+    readonly "printPagesListInfo": string,
+    readonly "ranges": string
+  },
   readonly "settings": {
     readonly "column": {
       readonly "auto": string,
@@ -1995,8 +2002,19 @@ declare namespace typed_i18n {
   (_: "reader.picker.search.results", __?: {}): string;
   (_: "reader.picker.search.submit", __?: {}): string;
   (_: "reader.picker.searchTitle", __?: {}): string;
-  (_: "reader.print", __?: {}): { readonly "print": string, readonly "ranges": string };
+  (_: "reader.print", __?: {}): {
+  readonly "description": string,
+  readonly "descriptionLcp": string,
+  readonly "descriptionLcpLimit": string,
+  readonly "print": string,
+  readonly "printPagesListInfo": string,
+  readonly "ranges": string
+};
+  (_: "reader.print.description", __?: {}): string;
+  (_: "reader.print.descriptionLcp", __?: {}): string;
+  (_: "reader.print.descriptionLcpLimit", __?: {}): string;
   (_: "reader.print.print", __?: {}): string;
+  (_: "reader.print.printPagesListInfo", __?: {}): string;
   (_: "reader.print.ranges", __?: {}): string;
   (_: "reader.settings", __?: {}): {
   readonly "column": {
