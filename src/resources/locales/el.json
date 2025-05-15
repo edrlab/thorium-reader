@@ -293,11 +293,11 @@
             },
             "additional-accessibility-information-tactile-graphics": {
                 "compact": "Περιλαμβάνονται απτικά γραφικά",
-                "descriptive": ""
+                "descriptive": "Έχουν ενσωματωθεί απτικά γραφικά για να διευκολυνθεί η πρόσβαση των τυφλών στα οπτικά στοιχεία"
             },
             "additional-accessibility-information-tactile-objects": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Απτικά 3D αντικείμενα",
+                "descriptive": "Απτικά 3D αντικείμενα"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
                 "compact": "",
@@ -332,92 +332,92 @@
                 "descriptive": ""
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Accessibility 1.0",
+                "descriptive": "EPUB Accessibility 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Accessibility 1.1",
+                "descriptive": "EPUB Accessibility 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Επίπεδο A",
+                "descriptive": "Επίπεδο A"
             },
             "conformance-details-level-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Επίπεδο AA",
+                "descriptive": "Επίπεδο AA"
             },
             "conformance-details-level-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Επίπεδο AAA",
+                "descriptive": "Επίπεδο AAA"
             },
             "conformance-details-wcag-2-0": {
-                "compact": ""
+                "compact": "WCAG 2.0"
             },
             "conformance-details-wcag-2-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.1",
+                "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.2",
+                "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.2"
             },
             "conformance-no": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Καμία διαθέσιμη πληροφορία",
+                "descriptive": "Καμία διαθέσιμη πληροφορία"
             },
-            "conformance-title": "",
+            "conformance-title": "Συμμόρφωση",
             "conformance-unknown-standard": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Δεν μπορεί να προσδιοριστεί συμμόρφωση με αποδεκτά πρότυπα προσβασιμότητας για την παρούσα δημοσίευση",
+                "descriptive": "Δεν μπορεί να προσδιοριστεί συμμόρφωση με αποδεκτά πρότυπα προσβασιμότητας για την παρούσα δημοσίευση"
             }
         },
         "hazards": {
             "hazards-flashing": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Περιεχόμενο που αναβοσβήνει (flashing)",
+                "descriptive": "Στη δημοσίευση χρησιμοποιείται περιεχόμενο που αναβοσβήνει (flashing), που μπορεί να προκαλέσει φωτοευαίσθητες επιληπτικές κρίσεις"
             },
             "hazards-flashing-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Χωρίς περιεχόμενο που αναβοσβήνει (flashing)",
+                "descriptive": "Στη δημοσίευση δεν χρησιμοποιείται περιεχόμενο που αναβοσβήνει (flashing)"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Άγνωστη η παρουσία περιεχομένου που αναβοσβήνει (flashing)",
+                "descriptive": "Άγνωστη η παρουσία περιεχομένου που αναβοσβήνει (flashing)"
             },
             "hazards-motion": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Προσομοίωση κίνησης",
+                "descriptive": "Η δημοσίευση περιέχει προσομοιώσεις κίνησης που μπορεί να προκαλέσουν ναυτία"
             },
             "hazards-motion-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Χωρίς προσομοίωση κίνησης",
+                "descriptive": "Η δημοσίευση δεν περιέχει προσομοίωση κίνησης"
             },
             "hazards-motion-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Άγνωστη η παρουσία προσομοίωση κίνησης",
+                "descriptive": "Άγνωστη η παρουσία προσομοίωση κίνησης"
             },
             "hazards-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Καμία διαθέσιμη πληροφορία",
+                "descriptive": "Καμία διαθέσιμη πληροφορία"
             },
             "hazards-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Κανένας κίνδυνος",
+                "descriptive": "Η δημοσίευση δεν περιέχει κινδύνους"
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ήχοι",
+                "descriptive": "Η δημοσίευση περιέχει ήχους που μπορεί να είναι δυσάρεστοι"
             },
             "hazards-sound-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Χωρίς ήχους",
+                "descriptive": "Η δημοσίευση δεν περιέχει ήχους"
             },
             "hazards-sound-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Άγνωστη η παρουσία ήχων",
+                "descriptive": "Άγνωστη η παρουσία ήχων"
             },
-            "hazards-title": "",
+            "hazards-title": "Κίνδυνοι",
             "hazards-unknown": {
                 "compact": "",
                 "descriptive": ""
