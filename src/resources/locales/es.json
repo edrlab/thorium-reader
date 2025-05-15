@@ -374,53 +374,53 @@
         },
         "hazards": {
             "hazards-flashing": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Contenido con destellos",
+                "descriptive": "La publicación incluye contenido con destellos que puede causar convulsiones fotosensibles"
             },
             "hazards-flashing-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "No hay contenido con destellos",
+                "descriptive": "La publicación no incluye contenido con destellos"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Se desconoce la presencia de contenido con destellos",
+                "descriptive": "Se desconoce la presencia de contenido con destellos"
             },
             "hazards-motion": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Simulación de movimiento",
+                "descriptive": "La publicación contiene simulaciones de movimiento que pueden causar mareo"
             },
             "hazards-motion-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "No hay simulación de movimiento",
+                "descriptive": "La publicación no incluye simulación de movimiento"
             },
             "hazards-motion-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "La presencia de simulación de movimiento es desconocida",
+                "descriptive": "La presencia de simulación de movimiento es desconocida"
             },
             "hazards-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "No hay información disponible",
+                "descriptive": "No hay información disponible"
             },
             "hazards-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "No hay riesgos",
+                "descriptive": "La publicación no incluye contenido con riesgos"
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sonidos",
+                "descriptive": "La publicación contiene sonidos que pueden ser incómodos"
             },
             "hazards-sound-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "No hay sonidos",
+                "descriptive": "La publicación no contiene sonidos"
             },
             "hazards-sound-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Se desconoce la presencia de sonidos",
+                "descriptive": "Se desconoce la presencia de sonidos"
             },
-            "hazards-title": "",
+            "hazards-title": "Riesgos",
             "hazards-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Se desconoce la presencia de riesgos",
+                "descriptive": "Se desconoce la presencia de riesgos"
             }
         },
         "navigation": {
