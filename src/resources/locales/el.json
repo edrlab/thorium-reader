@@ -300,29 +300,29 @@
                 "descriptive": "Απτικά 3D αντικείμενα"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Παρέχονται υποδείξεις μέσω τεχνικής ομιλίας (Text-to-speech)",
+                "descriptive": "Παρέχονται υποδείξεις μέσω τεχνικής ομιλίας (Text-to-speech)"
             },
-            "additional-accessibility-information-title": ""
+            "additional-accessibility-information-title": "Πρόσθετες πληροφορίες για προσβασιμότητα"
         },
         "conformance": {
             "conformance-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Η δημοσίευση αυτή πληροί τα ελάχιστα πρότυπα προσβασιμότητας",
+                "descriptive": "Η δημοσίευση περιέχει δήλωση συμμόρφωσης σύμφωνα με την οποία πληροί το πρότυπο προσβασιμότητας EPUB και WCAG 2 Επίπεδο Α"
             },
             "conformance-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Η δημοσίευση αυτή πληροί τα αποδεκτά πρότυπα προσβασιμότητας",
+                "descriptive": "Η δημοσίευση περιέχει δήλωση συμμόρφωσης σύμφωνα με την οποία πληροί το πρότυπο προσβασιμότητας EPUB και WCAG 2 Επίπεδο ΑΑ"
             },
             "conformance-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Η δημοσίευση αυτή υπερβαίνει τα αποδεκτά πρότυπα προσβασιμότητας",
+                "descriptive": "Η δημοσίευση περιέχει δήλωση συμμόρφωσης σύμφωνα με την οποία πληροί το πρότυπο προσβασιμότητας EPUB και WCAG 2 Επίπεδο ΑΑΑ"
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "Η δημοσίευση πιστοποιήθηκε από "
             },
             "conformance-certifier-credentials": {
-                "compact": ""
+                "compact": "Τα διαπιστευτήρια της πιστοποίησης είναι: "
             },
             "conformance-details-certifier-report": {
                 "compact": ""
@@ -429,47 +429,47 @@
                 "descriptive": ""
             },
             "navigation-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Δεν υπάρχουν πληροφορίες",
+                "descriptive": "Δεν υπάρχουν πληροφορίες"
             },
             "navigation-page-navigation": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Μετάβαση σε σελίδα",
+                "descriptive": "Λίστα πλοήγησης σελιδαρίθμησης με βάση την έντυπη έκδοση περιεχομένου"
             },
             "navigation-structural": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Επικεφαλίδες",
+                "descriptive": "Στοιχεία όπως επικεφαλίδες, πίνακες κ.λπ. για δομημένη πλοήγηση"
             },
-            "navigation-title": "",
+            "navigation-title": "Πλοήγηση",
             "navigation-toc": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Πίνακας περιεχομένων",
+                "descriptive": "Δυναμικός πίνακας περιεχομένων για όλα τα κεφάλαια"
             }
         },
         "rich-content": {
             "rich-content-accessible-chemistry-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Χημικοί τύποι σε LaTeX",
+                "descriptive": "Χημικοί τύποι σε προσβάσιμο μορφότυπο (LaTeX)"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Χημικοί τύποι σε MathML",
+                "descriptive": "Χημικοί τύποι σε προσβάσιμο μορφότυπο (MathML)"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Μαθηματικά σε μορφή LaTeX",
+                "descriptive": "Μαθηματικοί τύποι σε προσβάσιμο μορφότυπο (LaTeX)"
             },
             "rich-content-accessible-math-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Μαθηματικά σε μορφή MathML",
+                "descriptive": "Μαθηματικοί τύποι σε προσβάσιμο μορφότυπο (MathML)"
             },
             "rich-content-accessible-math-described": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Παρέχονται κειμενικές περιγραφές μαθηματικών",
+                "descriptive": "Παρέχονται κειμενικές περιγραφές μαθηματικών"
             },
             "rich-content-closed-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bίντεο με ενσωματωμένους υπότιτλους",
+                "descriptive": "Bίντεο με ενσωματωμένους υπότιτλους περιέχονται σε δημοσιεύσεις"
             },
             "rich-content-extended": {
                 "compact": "",
@@ -526,9 +526,9 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "ways-of-reading-title": "",
+            "ways-of-reading-title": "Τρόποι διαβάσματος",
             "ways-of-reading-visual-adjustments-modifiable": {
-                "compact": "",
+                "compact": "Η εμφάνιση μπορεί να τροποποιείται",
                 "descriptive": ""
             },
             "ways-of-reading-visual-adjustments-unknown": {
