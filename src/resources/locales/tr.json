@@ -105,7 +105,7 @@
                 "copyAvalaible": "Mevcut",
                 "copyTotal": "Kopyalar",
                 "holdPosition": "Konumu koru",
-                "holdTotal": "",
+                "holdTotal": "Rezerve",
                 "numberOfItems": "Öğe sayısı",
                 "priveValue": "Fiyat",
                 "state": "Durum"
@@ -141,54 +141,54 @@
         "deletePublication": "Eseri silmek istiyor musunuz?",
         "import": "İçe aktarmayı onayla:",
         "importError": "Hata oluştu, dosya uzantısının ({{acceptedExtension}}) olduğunu doğrulayın.",
-        "renew": "",
-        "return": "",
-        "yes": ""
+        "renew": "Yenilemek ya da ödünç almayı uzatmak istiyor musunuz?",
+        "return": "Esere geri dönmek istiyor musunuz?",
+        "yes": "Evet"
     },
     "error": {
         "errorBox": {
-            "error": "",
-            "message": "",
-            "title": ""
+            "error": "Hata mesajı:",
+            "message": "{{- filename}} Dosyasında hata",
+            "title": "Dahili {{- appName}} uygulaması\nHata"
         }
     },
     "header": {
-        "allBooks": "",
-        "catalogs": "",
-        "downloads": "",
-        "fitlerTagTitle": "",
-        "gridTitle": "",
-        "home": "",
-        "homeTitle": "",
-        "importTitle": "",
-        "listTitle": "",
-        "myCatalogs": "",
-        "refreshTitle": "",
-        "searchPlaceholder": "",
-        "searchTitle": "",
-        "settings": "",
-        "viewMode": ""
+        "allBooks": "Tüm eserler",
+        "catalogs": "Kataloglar",
+        "downloads": "İndirilenler",
+        "fitlerTagTitle": "Etikete göre filtrele",
+        "gridTitle": "Izgara",
+        "home": "Kitaplık menüsü",
+        "homeTitle": "Anasayfa",
+        "importTitle": "Eseri içe aktar",
+        "listTitle": "Tablo",
+        "myCatalogs": "Kataloglarım",
+        "refreshTitle": "yeniden yükle",
+        "searchPlaceholder": "Ara",
+        "searchTitle": "Ara",
+        "settings": "Ayarlar",
+        "viewMode": "Görünüm biçimi"
     },
     "library": {
         "lcp": {
-            "hint": "",
-            "open": "",
-            "password": "",
-            "sentence": "",
-            "urlHint": "",
-            "whatIsLcp?": "",
-            "whatIsLcpInfoDetails": "",
-            "whatIsLcpInfoDetailsLink": ""
+            "hint": "İpucu:",
+            "open": "Aç",
+            "password": "Şifre",
+            "sentence": "Bu eserin açılabilmesi için bir LCP şifresi gerekir",
+            "urlHint": "Şifrenizi mi unuttunuz? Destek almak için buraya tıklayın.",
+            "whatIsLcp?": "LCP nedir?",
+            "whatIsLcpInfoDetails": "LCP, 'Licensed Content Protection', Lisanslı İçerik Koruması anlamına gelir.",
+            "whatIsLcpInfoDetailsLink": "EDRLab  web sitesinde Daha fazlasını öğrenmek için bu bağlantıyı tıklayın."
         }
     },
     "message": {
         "annotations": {
-            "alreadyImported": "",
-            "emptyFile": "",
-            "errorParsing": "",
-            "noBelongTo": "",
-            "nothing": "",
-            "success": ""
+            "alreadyImported": "Tüm notlar zaten içe aktarılmış.",
+            "emptyFile": "Dosyada not mevcut değil.",
+            "errorParsing": "Dosya işlenirken hata oluştu: ",
+            "noBelongTo": "Notlar içe aktarılamadı: En az bir not, Eser'e ait değil.",
+            "nothing": "İçe aktarmaya hazır hiç not yok, içe aktarma durduruluyor",
+            "success": "İçe aktarma başarıyla tamamlandı."
         },
         "download": {
             "error": ""
