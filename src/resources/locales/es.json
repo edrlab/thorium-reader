@@ -425,47 +425,47 @@
         },
         "navigation": {
             "navigation-index": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Índice",
+                "descriptive": "Índice con enlaces a entradas referenciadas"
             },
             "navigation-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "No hay información disponible",
+                "descriptive": "No hay información disponible"
             },
             "navigation-page-navigation": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ir a página",
+                "descriptive": "Lista de páginas para ir a páginas tomando como fuente la versión impresa"
             },
             "navigation-structural": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Encabezados",
+                "descriptive": "Elementos como encabezados, tablas, etc. para una navegación estructurada"
             },
-            "navigation-title": "",
+            "navigation-title": "Navegación",
             "navigation-toc": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Tabla de contenido",
+                "descriptive": "Tabla de contenido con enlaces a todos los capítulos del texto"
             }
         },
         "rich-content": {
             "rich-content-accessible-chemistry-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Fórmulas químicas en LaTeX",
+                "descriptive": "Fórmulas químicas en formato accesible (LaTeX)"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Fórmulas químicas en MathML",
+                "descriptive": "Fórmulas químicas en formato accesible (MathML)"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Matemáticas como LaTeX",
+                "descriptive": "Matemáticas en formato accesible (LaTeX)"
             },
             "rich-content-accessible-math-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Matemáticas como MathML",
+                "descriptive": "fórmulas matemáticas en formato accesible (MathML)"
             },
             "rich-content-accessible-math-described": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Se proporcionan descripciones de texto para matemáticas",
+                "descriptive": "Se proporcionan descripciones de texto para matemáticas"
             },
             "rich-content-closed-captions": {
                 "compact": "",
