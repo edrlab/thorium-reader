@@ -468,72 +468,72 @@
                 "descriptive": "Se proporcionan descripciones de texto para matemáticas"
             },
             "rich-content-closed-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Los vídeos tienen subtítulos cerrados",
+                "descriptive": "Los vídeos incluidos en las publicaciones tienen subtítulos cerrados"
             },
             "rich-content-extended": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Las imágenes con información abundante disponen de descripciones extensas",
+                "descriptive": "Las imágenes con información abundante disponen de descripciones extensas"
             },
             "rich-content-open-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Los vídeos tienen subtítulos abiertos",
+                "descriptive": "Los vídeos incluidos en las publicaciones tienen subtítulos abiertos"
             },
-            "rich-content-title": "",
+            "rich-content-title": "Contenido enriquecido",
             "rich-content-transcript": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Se proporcionan transcripciones",
+                "descriptive": "Se proporcionan transcripciones"
             },
             "rich-content-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "No hay información disponible",
+                "descriptive": "No hay información disponible"
             }
         },
         "ways-of-reading": {
             "ways-of-reading-nonvisual-reading-alt-text": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Tiene texto alternativo",
+                "descriptive": "Tiene descripciones para imágenes mediante texto alternativo"
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "No hay información disponible sobre lectura no visual",
+                "descriptive": "No hay información disponible sobre lectura no visual"
             },
             "ways-of-reading-nonvisual-reading-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "No se puede leer por voz ni en braille dinámico",
+                "descriptive": "El contenido no se puede leer mediante salida de voz ni en braille dinámico"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "No se puede leer completamente por voz ni en braille dinámico",
+                "descriptive": "No todo el contenido podrá leerse mediante salida de voz ni en braille dinámico"
             },
             "ways-of-reading-nonvisual-reading-readable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Se puede leer por voz o en braille dinámico",
+                "descriptive": "Todo el contenido se puede leer mediante salida de voz o en braille dinámico"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Clips de audio pregrabados",
+                "descriptive": "En el contenido se integran clips de audio pregrabados"
             },
             "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "No hay información disponible sobre audio pregrabado",
+                "descriptive": "No hay información disponible sobre audio pregrabado"
             },
             "ways-of-reading-prerecorded-audio-only": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Solo audio pregrabado",
+                "descriptive": "Audiolibro sin texto alternativo"
             },
             "ways-of-reading-prerecorded-audio-synchronized": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Audio pregrabado sincronizado con texto",
+                "descriptive": "Todo el contenido está disponible como audio pregrabado sincronizado con texto"
             },
-            "ways-of-reading-title": "",
+            "ways-of-reading-title": "Modos de lectura",
             "ways-of-reading-visual-adjustments-modifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Es posible modificar el aspecto visual",
+                "descriptive": "El aspecto visual del texto y el diseño de página se pueden modificar en función de las posibilidades del sistema de lectura (familia y tamaño de fuente, espacios entre párrafos, frases, palabras y letras, así como el color de fondo y texto)"
             },
             "ways-of-reading-visual-adjustments-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "No hay información disponible sobre la posibilidad de modificar el aspecto visual",
+                "descriptive": "No hay información disponible sobre la posibilidad de modificar el aspecto visual"
             }
         }
     },
@@ -657,7 +657,7 @@
             }
         },
         "bookmarks": {
-            "index": ""
+            "index": "Marcador {{- index}}"
         },
         "divina": {
             "mute": "silenciar",
@@ -685,8 +685,8 @@
             "captionsDescription": "reader.media-overlays.captionsDescription",
             "disableContinuousPlay": "Deshabilitar reproducción continua",
             "disableContinuousPlayDescription": "No reproducir automáticamente el siguiente elemento, pausar inmediatamente tras reproducir el elemento actual",
-            "ignoreAndUseTTS": "",
-            "ignoreAndUseTTSDescription": "",
+            "ignoreAndUseTTS": "Ignorar audio pregrabado, usar TTS",
+            "ignoreAndUseTTSDescription": "Ignorar multimedia integrado en EPUB, leer con síntesis de texto a voz",
             "next": "Siguiente (Lectura en voz alta)",
             "pause": "Pausar (Lectura en voz alta)",
             "play": "Reproducir (Lectura en voz alta)",
@@ -867,9 +867,9 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "",
-                "enableCheckbox": "",
-                "overrideHTMLTemplate": ""
+                "applyDefaultTemplate": "Aplicar plantilla predeterminada",
+                "enableCheckbox": "Habilitar/deshabilitar anulación de plantilla mustache cuando se exporten notas HTML",
+                "overrideHTMLTemplate": "Anular la plantilla mustache cuando se exporte la nota a HTML"
             }
         },
         "session": {
