@@ -105,7 +105,7 @@ import { getSaga } from "../createStore";
 import { clone } from "ramda";
 (window as any).__shell_openExternal = (url: string) => url.startsWith("http") ? shell.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
 
-console.log(window);
+// console.log(window);
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderMenuProps {
@@ -1166,7 +1166,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
             (drawTypeArrayFilter === "all") ||
             (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size) ||
             (creatorArrayFilter === "all")
-        ) 
+        )
             ? annotationsListAll.filter(({ tags, color, drawType: _drawType, creator }) => {
 
                 const colorHex = rgbToHex(color);
@@ -1895,7 +1895,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
             (colorArrayFilter === "all") ||
             (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size) ||
             (creatorArrayFilter === "all")
-        ) 
+        )
             ? bookmarkListAll.filter(({ tags, color, drawType: _drawType, creator }) => {
 
                 const colorHex = rgbToHex(color);

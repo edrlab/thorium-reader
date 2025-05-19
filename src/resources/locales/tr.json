@@ -1,18 +1,18 @@
 {
     "accessibility": {
-        "bookMenu": "",
-        "closeDialog": "",
-        "importFile": "",
-        "leftSlideButton": "",
-        "mainContent": "",
-        "rightSlideButton": "",
-        "skipLink": "",
-        "toolbar": ""
+        "bookMenu": "Menü",
+        "closeDialog": "Kapat",
+        "importFile": "Eseri içe aktar",
+        "leftSlideButton": "Sola kaydır",
+        "mainContent": "ana içerik",
+        "rightSlideButton": "Sağa kaydır",
+        "skipLink": "İçeriğe atla",
+        "toolbar": "araç çubuğu"
     },
     "apiapp": {
-        "documentation": "",
-        "howItWorks": "",
-        "informations": "",
+        "documentation": "Thorium Belgeleri",
+        "howItWorks": "Nasıl çalışır?",
+        "informations": "Fransa'da birçok halk kütüphanesi, üylerin kişisel kitaplıklarından dijital yayınları indirmelerine izin veren makine tarafından okunabilir bir katalog (OPDS'ye benzer ancak aynı olmayan) sağlar. Bu teknolojinin Thorium Reader'a entegre edilmesi, anında okumak için bir e-kitabı veya sesli kitabı doğrudan Thorium Reader'a indirmenize olanak tanır.\nFransız halk kütüphanesi hesabınızı Thorium Reader'a nasıl bağlarsınız? Çok basit. Arama alanına bir Fransız şehri (‘Paris’) veya kütüphane adının bir kısmını girin ve Ara düğmesine basın. Aramanıza karşılık gelen halk kütüphanelerinin bir listesi görünecektir. Bir kütüphane seçin ve Ekle düğmesine basın. Güncellenen katalog listesinde bu kütüphaneyi seçin: bir kimlik doğrulama formu görüntülenir. Kullanıcı adınızı/e-posta adresinizi ve şifrenizi girin ve Giriş düğmesine basın. Artık daha önce ödünç aldığınız e-kitapları ve sesli kitapları indirip okuyabileceğiniz kişisel kitaplığınızın içeriğini görebilirsiniz.",
         "noLibraryFound": ""
     },
     "app": {
@@ -747,7 +747,6 @@
             "description": "",
             "descriptionLcp": "",
             "descriptionLcpLimit": "",
-            "descriptionLcpLimitPrinted": "",
             "print": "",
             "printPagesListInfo": "",
             "ranges": ""

@@ -27,7 +27,7 @@
             "undo": "Αναίρεση"
         },
         "hide": "Απόκρυψη {{- appName}}",
-        "quit": "Εγκατάληψη {{- appName}}",
+        "quit": "Αποχώρηση {{- appName}}",
         "session": {
             "exit": {
                 "askBox": {
@@ -73,7 +73,7 @@
             "lastAdditions": "Πρόσφατη προσθήκη"
         },
         "export": "Αποθήκευση ως",
-        "exportAnnotation": "Εξαγωγή σημειώσεων...",
+        "exportAnnotation": "Εξαγωγή σημειώσεων",
         "format": "Διαμόρφωση (format)",
         "importAnnotation": "Εισαγωγή σημειώσεων",
         "lang": "Γλώσσα",
@@ -249,51 +249,51 @@
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": ""
+            "accessibility-summary-title": "Σύνοψη προσβασιμότητας"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Συμπεριλαμβάνονται ρόλοι ARIA",
+                "descriptive": "Το περιεχόμενο εμπλουτίζεται με ρόλους ARIA για τη βελτιστοποίηση της οργάνωσης και τη διευκόλυνση της πλοήγησης"
             },
             "additional-accessibility-information-audio-descriptions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Περιγραφές ηχητικού περιεχομένου",
+                "descriptive": "Περιγραφές ηχητικού περιεχομένου"
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Braille",
+                "descriptive": "Braille"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Πλήρεις σχολιασμοί σε Ruby",
+                "descriptive": "Πλήρεις σχολιασμοί σε Ruby"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Υψηλή αντίθεση μεταξύ ήχου προσκηνίου και παρασκηνίου",
+                "descriptive": "Υψηλή αντίθεση μεταξύ ήχου προσκηνίου και παρασκηνίου"
             },
             "additional-accessibility-information-high-contrast-between-text-and-background": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Υψηλή αντίθεση μεταξύ ήχου προσκηνίου και παρασκηνίου",
+                "descriptive": "Υψηλή αντίθεση μεταξύ ήχου προσκηνίου και παρασκηνίου"
             },
             "additional-accessibility-information-large-print": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Μεγάλη εκτύπωση",
+                "descriptive": "Μεγάλη εκτύπωση"
             },
             "additional-accessibility-information-page-breaks": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Περιλαμβάνεται διαχωρισμός σελίδων",
+                "descriptive": "Περιλαμβάνεται διαχωρισμός σελίδων με βάση την έντυπη έκδοση προέλευσης"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ορισμένοι σχολιασμοί σε Ruby",
+                "descriptive": "Ορισμένοι σχολιασμοί σε Ruby"
             },
             "additional-accessibility-information-sign-language": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Νοηματική γλώσσα",
+                "descriptive": "Νοηματική γλώσσα"
             },
             "additional-accessibility-information-tactile-graphics": {
-                "compact": "",
+                "compact": "Περιλαμβάνονται απτικά γραφικά",
                 "descriptive": ""
             },
             "additional-accessibility-information-tactile-objects": {
@@ -747,7 +747,6 @@
             "description": "",
             "descriptionLcp": "",
             "descriptionLcpLimit": "",
-            "descriptionLcpLimitPrinted": "",
             "print": "",
             "printPagesListInfo": "",
             "ranges": ""
