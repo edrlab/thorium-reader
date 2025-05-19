@@ -252,6 +252,8 @@ interface IState {
 
     historyCanGoBack: boolean;
     historyCanGoForward: boolean;
+
+    printDialogOpen: boolean;
 }
 
 class Reader extends React.Component<IProps, IState> {
@@ -352,6 +354,8 @@ class Reader extends React.Component<IProps, IState> {
             historyCanGoForward: false,
 
             // doFocus: 1,
+
+            printDialogOpen: false,
         };
 
         this.handleTTSPlay = this.handleTTSPlay.bind(this);
@@ -952,6 +956,8 @@ class Reader extends React.Component<IProps, IState> {
 
                         pdfPlayerNumberOfPages={this.state.pdfPlayerNumberOfPages}
                         pdfThumbnailImageCacheArray={this.state.pdfThumbnailImageCacheArray}
+                        pdfPrintOpen={this.state.printDialogOpen}
+                        setPdfPrintOpen={(value: boolean) => this.setState({ printDialogOpen: value })}
                     />
                     :
                     <div className={stylesReader.exitZen_container}>
@@ -1321,6 +1327,10 @@ class Reader extends React.Component<IProps, IState> {
             true, // listen for key up (not key down)
             this.props.keyboardShortcuts.AnnotationsCreateQuick,
             this.onKeyboardQuickAnnotation);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.Print,
+            this.onKeyboardPrint);
     }
 
     private unregisterAllKeyboardListeners() {
@@ -1359,6 +1369,7 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardAnnotationMargin);
         unregisterKeyboardListener(this.onKeyboardAnnotation);
         unregisterKeyboardListener(this.onKeyboardQuickAnnotation);
+        unregisterKeyboardListener(this.onKeyboardPrint);
     }
 
     private onKeyboardFixedLayoutZoomReset() {
@@ -2039,6 +2050,11 @@ class Reader extends React.Component<IProps, IState> {
         }
     };
 
+    private onKeyboardPrint = () => {
+        if (this.props.isPdf) {
+            this.setState({ printDialogOpen: true });
+        }
+    };
 
     // always triggered by window.history.back/forward/go()
     // not triggered by history.pushState() and history.replaceState()

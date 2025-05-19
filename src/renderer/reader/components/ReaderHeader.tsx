@@ -147,6 +147,9 @@ interface IBaseProps extends TranslatorProps {
 
     pdfPlayerNumberOfPages: number;
     pdfThumbnailImageCacheArray: string[];
+
+    pdfPrintOpen: boolean;
+    setPdfPrintOpen: (value: boolean) => void;
 }
 
 // IProps may typically extend:
@@ -809,8 +812,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             {...(this.props.menuOpen &&
                                 { style: { backgroundColor: "var(--color-blue)" } })}
                         >
-                            <Popover.Root onOpenChange={(open) => {
+                            <Popover.Root open={this.props.pdfPrintOpen} onOpenChange={(open) => {
                                 this.props.setShortcutEnable(!open);
+                                this.props.setPdfPrintOpen(open);
                             }}>
                                 <Popover.Trigger asChild>
                                     <button
