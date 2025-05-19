@@ -645,8 +645,8 @@
             "sorting": {
                 "lastcreated": "الأحدث إنشاءً",
                 "lastmodified": "الأحدث تعديلاً",
-                "progression": "",
-                "sortingOptions": ""
+                "progression": "التقدّم",
+                "sortingOptions": "خيارات الفرز"
             },
             "toggleMarginMarks": "إظهار في الهوامش",
             "type": {
@@ -657,7 +657,7 @@
             }
         },
         "bookmarks": {
-            "index": ""
+            "index": "{{- index}} الإشارات المرجعية"
         },
         "divina": {
             "mute": "كتم الصوت",
@@ -666,7 +666,7 @@
         "fxl": {
             "fit": "ملاءمة"
         },
-        "goToContent": "",
+        "goToContent": "الانتقال إلى المحتوى",
         "marks": {
             "annotations": "التعليقات",
             "bookmarks": "الإشارات المرجعية",
@@ -674,7 +674,7 @@
             "edit": "تحرير",
             "goTo": "الانتقال إلى صفحة",
             "landmarks": "المَعالم",
-            "saveMark": "حفظ الإشارة المرجعية",
+            "saveMark": "حفظ",
             "search": "بحث",
             "searchResult": "بحث عن [{{- searchText}}]",
             "toc": "جدول المحتويات"
@@ -683,10 +683,10 @@
             "activate": "تنشيط القراءة بصوت عالٍ",
             "captions": "التسميات التوضيحية / عرض نظيف",
             "captionsDescription": "عرض مبسَّط للنص مع الحد الأدنى لتصميم التسميات التوضيحية.",
-            "disableContinuousPlay": "",
-            "disableContinuousPlayDescription": "",
-            "ignoreAndUseTTS": "",
-            "ignoreAndUseTTSDescription": "",
+            "disableContinuousPlay": "تعطيل التشغيل المتواصل",
+            "disableContinuousPlayDescription": "عدم تشغيل العنصر التالي تلقائياً، والتوقف مؤقتاً فور انتهاء تشغيل العنصر الحالي.",
+            "ignoreAndUseTTS": "تجاهل الصوت المسجّل مسبقاً، واستخدام ميزة تحويل النص إلى كلام (TTS)",
+            "ignoreAndUseTTSDescription": "تجاهل مسارات الوسائط المشمولة في EPUB، واستخدام ميزة تحويل النص إلى كلام بدلاً منها",
             "next": "القراءة التالية بصوت عالٍ",
             "pause": "إيقاف القراءة بصوت عالٍ مؤقتاً",
             "play": "تشغيل القراءة بصوت عالٍ",
@@ -698,8 +698,8 @@
             "title": "القراءة بصوت عالٍ"
         },
         "navigation": {
-            "ZenModeExit": "",
-            "ZenModeTitle": "",
+            "ZenModeExit": "الخروج من وضع القراءة المبسّطة",
+            "ZenModeTitle": "وضع القراءة المبسّطة",
             "annotationTitle": "التعليق",
             "backHomeTitle": "عودة إلى رف الكتب",
             "bookmarkTitle": "الإشارة المرجعية",
@@ -721,12 +721,12 @@
         },
         "notes": {
             "colors": {
-                "cyan": "",
-                "green": "",
-                "orange": "",
-                "purple": "",
-                "red": "",
-                "yellow": ""
+                "cyan": "أزرق سماوي",
+                "green": "أخضر",
+                "orange": "برتقالي",
+                "purple": "أرجواني",
+                "red": "أحمر",
+                "yellow": "أصفر"
             }
         },
         "picker": {
@@ -748,7 +748,7 @@
                 "title": "الأعمدة",
                 "two": "عمودان"
             },
-            "customFontSelected": "",
+            "customFontSelected": "لقد اخترت خطاً شخصياً",
             "customizeReader": "تخصيص تنسيق النص",
             "disabled": "تم تعطيله",
             "display": "العرض",
@@ -763,10 +763,10 @@
             "letterSpacing": "تباعد الأحرف",
             "lineSpacing": "تباعد الأسطر",
             "margin": "الهامش",
-            "noFootnotes": "تعطيل الحواشي السفلية",
+            "noFootnotes": "تعطيل الحواشي السفلية المنبثقة",
             "noRTLFlip": "تعطيل واجهة اليمين إلى اليسار",
             "noRuby": "إخفاء علامات روبي اليابانية",
-            "noTemporaryNavTargetOutline": "",
+            "noTemporaryNavTargetOutline": "تعطيل مؤشرات التنقّل المرئية",
             "paginated": "مقسَّم إلى صفحات",
             "paraSpacing": "تباعد الفقرات",
             "pdfZoom": {
@@ -783,7 +783,7 @@
                 "title": "تكبير/تصغير"
             },
             "preset": {
-                "apply": "",
+                "apply": "تطبيق",
                 "applyDetails": "",
                 "detail": "",
                 "reset": "",
