@@ -83,7 +83,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
 
     const publicationIdentifier = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
 
-    const pageRange = React.useMemo(() => convertRangestoNumberArray(parsePrintRanges(getV), pdfPageRange), [getV, pdfPageRange]);
+    const pageRange = React.useMemo(() => convertRangestoNumberArray(parsePrintRanges(getV), pdfPageRange).sort((a, b) => a - b), [getV, pdfPageRange]);
 
     const publicationViewFromReduxState = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
 
@@ -238,7 +238,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                     : <p style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "-webkit-fill-available" }}>No Pages</p>}
             </div> */}
 
-            {isLcp && publicationView.lcp?.rights?.print ? <p>{__("reader.print.descriptionLcpLimit", { pageRangePrinted: `[${publicationView.lcpRightsPrints}]`, count: publicationView.lcp.rights.print - publicationView.lcpRightsPrints.length, lcpLimitPages: publicationView.lcp.rights.print })}</p> : <></>}
+            {isLcp && publicationView.lcp?.rights?.print ? <p>{__("reader.print.descriptionLcpLimit", { pageRangePrinted: `[${publicationView.lcpRightsPrints}]`, count: publicationView.lcp.rights.print - publicationView.lcpRightsPrints.length, lcpLimitPages: publicationView.lcp.rights.print })}<span>  [{publicationView.lcpRightsPrints.join(",")}]</span></p> : <></>}
             <div className={stylesInput.form_group} style={{ marginTop: "20px", width: "360px" }}>
                 <input type="text" name="print-range" style={{ width: "100%", marginLeft: "10px" }} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={"print-range"} value={getV} onChange={(e) => {
                     const v = e.target.value;

@@ -908,6 +908,7 @@ class Reader extends React.Component<IProps, IState> {
                     {!this.state.zenMode ?
                 <ReaderHeader
                         shortcutEnable={this.state.shortcutEnable}
+                        setShortcutEnable={(value: boolean) => this.setState({ "shortcutEnable": value })}
                         infoOpen={this.props.infoOpen}
                         // menuOpen={this.props.menuOpen}
                         // settingsOpen={this.state.settingsOpen}

@@ -105,6 +105,7 @@ interface IBaseProps extends TranslatorProps {
     // menuOpen: boolean;
     infoOpen: boolean;
     shortcutEnable: boolean;
+    setShortcutEnable: (v: boolean) => void;
     mode?: ReaderMode;
     // settingsOpen: boolean;
     // handleMenuClick: (open?: boolean) => void;
@@ -808,7 +809,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             {...(this.props.menuOpen &&
                                 { style: { backgroundColor: "var(--color-blue)" } })}
                         >
-                            <Popover.Root>
+                            <Popover.Root onOpenChange={(open) => {
+                                this.props.setShortcutEnable(!open);
+                            }}>
                                 <Popover.Trigger asChild>
                                     <button
                                         aria-pressed={this.props.menuOpen}
