@@ -12,6 +12,9 @@ import { getStore } from "../createStore";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
+import { createOrGetPdfEventBus } from "../pdf/driver";
+
+import { useVirtualizer } from "@tanstack/react-virtual";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -69,6 +72,7 @@ function convertRangestoNumberArray(ranges: number[][], pdfPageRange: [start: nu
     return [...set];
 }
 
+const pdfThumbnailRequestedArray: (boolean)[] = [];
 export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { pdfPageRange: [start: number, end: number], pdfThumbnailImageCacheArray: string[] }) => {
 
     const [getV, setV] = React.useState(`${pdfPageRange[0]}-${pdfPageRange[1]}`);
@@ -79,6 +83,14 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
 
     const publicationView = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
     const isLcp = !!publicationView.lcp?.rights;
+
+    const rowVirtualizer = useVirtualizer({
+        horizontal: true,
+        count: pageRange.length,
+        getScrollElement: () => document.getElementById("print-popover-image-container"),
+        estimateSize: () => 155,
+        overscan: 3,
+      });
 
     return <>
         <style>{`
@@ -96,12 +108,12 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
         }
 
         .print-popover-image-container {
-            display: flex; /* Use flexbox to align images horizontally */
-            flex-wrap: nowrap; /* Prevent images from wrapping to a new line */
-            overflow-x: auto; /* Add horizontal scrollbar */
-            overflow-y: hidden; /* Hide vertical scrollbar */
-            padding: 10px; /* Optional padding */
-            width: 430px;
+            // display: flex; 
+            // flex-wrap: nowrap; 
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 10px;
+            // width: 430px;
             height: 200px;
         }
 
@@ -138,15 +150,71 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
             <h4>{__("reader.print.print")}</h4>
             <p>{isLcp ? __("reader.print.descriptionLcp", { appName: capitalizedAppName, count: pdfPageRange[1] }) : __("reader.print.description", { count: pdfPageRange[1], appName: capitalizedAppName })}</p>
 
-            <div className="print-popover-image-container">
-                {pageRange.length ? pageRange.map((pageNumber) =>
-                    pdfThumbnailImageCacheArray[pageNumber - 1]
-                        ? <img key={pageNumber} src={pdfThumbnailImageCacheArray[pageNumber - 1]} title={(pageNumber).toString()} />
-                        : (<div key={pageNumber} style={{ position: "relative", backgroundColor: "inherit" }} className={stylesSpinner.spinner_container}><div className={stylesSpinner.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>),
+
+            <div id="print-popover-image-container" className="print-popover-image-container">
+
+                {
+                    pageRange.length ?
+
+                        <div
+                            style={{
+                                height: "100%",
+                                width: `${rowVirtualizer.getTotalSize()}px`,
+                                position: "relative",
+                            }}
+                        >
+                            {rowVirtualizer.getVirtualItems().map((virtualItem) => {
+
+
+                                const pageNumber = pageRange[virtualItem.index];
+                                const pageIndexZeroBased = pageNumber - 1;
+                                const src = pdfThumbnailImageCacheArray[pageIndexZeroBased];
+
+                                if (!src && !pdfThumbnailRequestedArray[pageIndexZeroBased]) {
+                                    createOrGetPdfEventBus().dispatch("thumbnailRequest", pageIndexZeroBased);
+                                    pdfThumbnailRequestedArray[pageIndexZeroBased] = true;
+                                }
+                                return (
+                                    <div
+                                        key={virtualItem.key}
+                                        style={{
+                                            position: "absolute",
+                                            top: 0,
+                                            left: 0,
+                                            height: "100%",
+                                            width: `${virtualItem.size}px`,
+                                            transform: `translateX(${virtualItem.start}px)`,
+                                        }}
+                                    >{
+                                            src
+                                                ? <img key={pageNumber} src={src} title={(pageNumber).toString()} />
+                                                : (<div key={pageNumber} style={{ position: "relative", backgroundColor: "inherit" }} className={stylesSpinner.spinner_container}><div className={stylesSpinner.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>)
+                                        }</div>
+                                );
+                            })}
+                        </div>
+                        : <p style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "-webkit-fill-available" }}>No Pages</p>
+                }
+
+            </div>
+
+            {/* <div id="print-popover-image-container" className="print-popover-image-container">
+                {pageRange.length ? pageRange.map((pageNumber) => {
+                    const pageIndexZeroBased = pageNumber - 1;
+                    const src = pdfThumbnailImageCacheArray[pageIndexZeroBased];
+
+                    if (!src && !pdfThumbnailRequestedArray[pageIndexZeroBased]) {
+                        createOrGetPdfEventBus().dispatch("thumbnailRequest", pageIndexZeroBased);
+                        pdfThumbnailRequestedArray[pageIndexZeroBased] = true;
+                    }
+                    return src
+                        ? <img key={pageNumber} src={src} title={(pageNumber).toString()} />
+                        : (<div key={pageNumber} style={{ position: "relative", backgroundColor: "inherit" }} className={stylesSpinner.spinner_container}><div className={stylesSpinner.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>);
+                }
 
                 )
                     : <p style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "-webkit-fill-available" }}>No Pages</p>}
-            </div>
+            </div> */}
 
             {/* TODO refactor: publicationView is not synced with the db from main process, when calling to publicationInfo,
                 it made some refresh by calling an "API" call to get/publication and refresh locally the publication view state and not globally in redux.

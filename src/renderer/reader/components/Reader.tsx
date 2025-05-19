@@ -244,7 +244,7 @@ interface IState {
 
     pdfPlayerToc: TToc | undefined;
     pdfPlayerNumberOfPages: number | undefined;
-    pdfThumbnailImageCacheArray: string[] | undefined;
+    pdfThumbnailImageCacheArray: string[];
 
     // openedSectionSettings: number | undefined;
     // openedSectionMenu: string;

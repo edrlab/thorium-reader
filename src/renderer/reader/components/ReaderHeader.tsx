@@ -808,9 +808,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             {...(this.props.menuOpen &&
                                 { style: { backgroundColor: "var(--color-blue)" } })}
                         >
-                            <Popover.Root onOpenChange={(open) => {
-                                if (open) { createOrGetPdfEventBus().dispatch("thumbnailInit"); }
-                            }}>
+                            <Popover.Root>
                                 <Popover.Trigger asChild>
                                     <button
                                         aria-pressed={this.props.menuOpen}

@@ -106,8 +106,8 @@ function main() {
         bus.subscribe("print", (pageRange: number[]) => {
             pdfjsEventBus.dispatch("print", pageRange);
         })
-        bus.subscribe("thumbnailInit", () => {
-            pdfjsEventBus.dispatch("__thumbnailInit");
+        bus.subscribe("thumbnailRequest", (pageIndexZeroBased) => {
+            pdfjsEventBus.dispatch("__thumbnailPageRequest", pageIndexZeroBased);
         })
         pdfjsEventBus.on("thumbnailrendered", ({pageNumber, source: {image: {src}}}: any) => {
             bus.dispatch("thumbnailRendered", pageNumber, src);

@@ -45,7 +45,7 @@ export interface IPdfPlayerEvent {
         spreadMode: number,
       }) => any;
     "print": (pageRange: number[]) => any;
-    "thumbnailInit": () => any;
+    "thumbnailRequest": (pageIndexZeroBased: number) => any;
     "thumbnailRendered": (pageNumber: number, imgSrc: string) => any;
 }
 
