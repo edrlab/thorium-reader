@@ -191,37 +191,37 @@
             "success": "İçe aktarma başarıyla tamamlandı."
         },
         "download": {
-            "error": ""
+            "error": "[{{- title}}] İndirmesi başarısız: [{{- err}}]"
         },
         "import": {
-            "alreadyImport": "",
-            "fail": "",
-            "success": ""
+            "alreadyImport": "[{{- title}}] dosyası zaten içe aktarılmış.",
+            "fail": "[{{- path}}] İçe aktarması başarısız: [{{- err}}]",
+            "success": "[{{- title}}]: İçe aktarımı tamamlandı."
         },
         "open": {
-            "error": ""
+            "error": "Eser yüklemesi başarısız: [{{- err}}]"
         }
     },
     "opds": {
         "addForm": {
-            "addButton": "",
-            "name": "",
-            "namePlaceholder": "",
-            "url": "",
-            "urlPlaceholder": ""
+            "addButton": "Ekle",
+            "name": "İsim",
+            "namePlaceholder": "İsim",
+            "url": "Link:",
+            "urlPlaceholder": "Link"
         },
         "addFormApiapp": {
-            "title": ""
+            "title": "Kütüphane hesabı ekle"
         },
-        "addMenu": "",
-        "breadcrumbRoot": "",
-        "documentation": "",
-        "empty": "",
-        "firstPage": "",
-        "informations": "",
-        "lastPage": "",
+        "addMenu": "OPDS Beslemesi ekle",
+        "breadcrumbRoot": "Kataloglar",
+        "documentation": "OPDS resmi web sitesi",
+        "empty": "Hiç eser bulunamadı",
+        "firstPage": "İlk",
+        "informations": "Sadece birkaç tıklamayla kamu kütüphanelerinden ve dijital kitap satıcılarından dijital yayınları keşfedebileceğiniz ve indirebileceğiniz bir dünya hayal edin. Açık Eser Dağıtım Sistemi olarak Türkçe'ye çevrilebilecek Open Publication Distribution System (OPDS) katalog biçimi tam olarak bunu sunar. OPDS ile çeşitli e-kitap sağlayıcılarının kataloglarında gezinebilir, kaydolabilir, bir eser ödünç alabilir, bir eser satın alabilir veya kişisel kitaplığınızı ziyaret edebilirsiniz. Hatta anında okumak için bir e-kitap veya sesli kitabı doğrudan Thorium Reader'a indirebilirsiniz.\nPeki, bir OPDS kataloğunu nasıl bulursunuz? Çok basit. Kataloğa giden bir köprü bağlantısı (URL) arayıp bulun. Bu URL'yi yukarıdaki Bağlantı alanına kopyalayın. Tüm aktif OPDS katalogları için tek bir hizmet sağlama noktası olmadığını unutmayın. Tercih ettiğiniz kütüphane veya kitap satıcısıyla iletişime geçmeniz ve OPDS katalog URL'sini istemeniz gerekebilir. Nereden başlayacağınızdan emin değilseniz, Wikipedia'da çeşitli dillerde size yardımcı olabilecek birkaç OPDS kataloğu kaydı mevcuttur.\nAd alanı sizin için kolay bir yere yerleştirilmiştir ve Thorium Reader'a besleme tanımlamanın kolay bir yolunu sağlar.",
+        "lastPage": "Son",
         "menu": {
-            "aboutBook": "",
+            "aboutBook": "Eser hakkında",
             "addExtract": "",
             "goBuyBook": "",
             "goLoanBook": "",
