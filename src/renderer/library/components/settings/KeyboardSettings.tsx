@@ -46,6 +46,7 @@ import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon
 import * as ShiftIcon from "readium-desktop/renderer/assets/icons/shift-icon.svg";
 import * as MacOptionIcon from "readium-desktop/renderer/assets/icons/macoption-icon.svg";
 import * as MacCmdIcon from "readium-desktop/renderer/assets/icons/maccommand-icon.svg";
+import * as WindowsIcon from "readium-desktop/renderer/assets/icons/windows-icon.svg";
 import { useTranslator } from "../../../common/hooks/useTranslator";
 import { useDispatch } from "../../../common/hooks/useDispatch";
 import os from "node:os"; 
@@ -71,6 +72,8 @@ interface IState {
     editKeyboardShortcutId: TKeyboardShortcutId | undefined;
     editKeyboardShortcutData: TKeyboardShortcut | undefined;
     searchItem: string | undefined;
+    layoutMap: Map<KeyMapCode, string> | null;
+    selectLayoutMap: Map<string, string> | null;
 }
 
 export const AdvancedTrigger = () => {
@@ -132,6 +135,8 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             editKeyboardShortcutId: undefined,
             editKeyboardShortcutData: undefined,
             searchItem: undefined,
+            layoutMap: null,
+            selectLayoutMap: null,
         };
         this.onKeyUp = this.onKeyUp.bind(this);
 
@@ -139,6 +144,8 @@ class KeyboardSettings extends React.Component<IProps, IState> {
 
         this._keyboardSinkIsActive = false;
     }
+
+      _isMounted = false;
  
     public componentDidMount() {
         ensureKeyboardListenerIsInstalled();
@@ -148,10 +155,55 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             passive: false,
             capture: true,
         });
+        this._isMounted = true;
+        this.loadLayoutMap();
+        this.loadSelectLayoutMap();
+    }
+
+    public componentDidUpdate(prevProps: { }) {
+    if (prevProps !== this.props.keyboardShortcuts) {
+      this.loadLayoutMap();
+    }
+  }
+
+    private async loadKeyboardLayoutMap<K extends "layoutMap" | "selectLayoutMap">(
+        codes: string[],
+        stateKey: K,
+    ) {
+        try {
+            const layoutMapAPI = await navigator.keyboard?.getLayoutMap();
+            if (!layoutMapAPI) return;
+
+            const newMap = new Map<string, string>();
+            for (const code of codes) {
+                const label = layoutMapAPI.get(code as KeyMapCode) ?? code;
+                newMap.set(code, label);
+            }
+
+            if (this._isMounted) {
+                this.setState({ [stateKey]: newMap } as Pick<IState, K>);
+            }
+        } catch {
+            if (this._isMounted) {
+                this.setState({ [stateKey]: null } as Pick<IState, K>);
+            }
+        }
+    }
+
+    private async loadLayoutMap() {
+        const codes = Array.from(new Set(
+            Object.values(this.props.keyboardShortcuts).map(item => item.key),
+        ));
+        await this.loadKeyboardLayoutMap(codes, "layoutMap");
+    }
+
+    private async loadSelectLayoutMap() {
+        await this.loadKeyboardLayoutMap(KEY_CODES, "selectLayoutMap");
     }
 
     public componentWillUnmount() {
         document.removeEventListener("keyup", this.onKeyUp);
+        this._isMounted = false;
     }
 
     public render(): React.ReactElement<{}> {
@@ -407,10 +459,10 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                         />
                             )
                         } */}
-                        <div className={stylesSettings.session_text}>
+                        {/* <div className={stylesSettings.session_text}>
                             <SVG ariaHidden svg={InfoIcon} />
                             <p>{__("settings.keyboard.disclaimer")}</p>
-                        </div>
+                        </div> */}
                     </div>
                         <div>
                         <input
@@ -645,12 +697,20 @@ class KeyboardSettings extends React.Component<IProps, IState> {
     //     this.props.reloadKeyboardShortcuts(defaults);
     // }
     private prettifyKeyboardShortcut(def: TKeyboardShortcut) {
+        function toUpperIfSimpleLowerCase(char: string): string {
+            if (/^[a-z]$/.test(char)) {
+                return char.toUpperCase();
+            }
+            return char;
+        }
         const alt = def.alt ? <span title={DETECTED_OS === "MacOS" ? "Option" : "Alt"}>{DETECTED_OS === "MacOS" ? <SVG ariaHidden svg={MacOptionIcon} /> : "ALT"} + </span> : null;
         const shift = def.shift ? <span title="Shift"><SVG ariaHidden svg={ShiftIcon} /> + </span> : null;
         const control = def.control ? <span title="Control">CTRL + </span> : null;
-        const meta = def.meta ? <span title={DETECTED_OS === "MacOS" ? "Command" : "Meta"}>{DETECTED_OS === "MacOS" ? <SVG ariaHidden svg={MacCmdIcon} /> : "META"} + </span> : null;
-        const key = <span>{def.key}</span>;
-        return <span aria-hidden>{shift}{control}{alt}{meta}{key}</span>;
+        const meta = def.meta ? <span title={DETECTED_OS === "MacOS" ? "Command" : "Meta"}>{DETECTED_OS === "MacOS" ? <SVG ariaHidden svg={MacCmdIcon} /> : <SVG ariaHidden svg={WindowsIcon} />} + </span> : null;
+        const { layoutMap } = this.state;
+        const softKeyRaw = layoutMap?.get(def.key as KeyMapCode) ?? def.key;
+        const softKey = toUpperIfSimpleLowerCase(softKeyRaw);
+        return <span aria-hidden>{shift}{control}{alt}{meta}<span>{softKey}</span></span>;
     }
     private stringifyKeyboardShortcut(def: TKeyboardShortcut) {
         return `${def.shift ? "SHIFT " : ""}${def.control ? "CTRL " : ""}${def.alt ? "ALT " : ""}${def.meta ? "META " : ""}${(def.shift || def.control || def.alt || def.meta) ? "+ " : ""}${def.key}`;
@@ -747,7 +807,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         <label
             htmlFor={`idcheckbox_${id}_META`}
             title={DETECTED_OS === "MacOS" ? "Command" : "Meta"}
-        >{DETECTED_OS === "MacOS" ? <SVG ariaHidden svg={MacCmdIcon} /> : "META"}</label></>;
+        >{DETECTED_OS === "MacOS" ? <SVG ariaHidden svg={MacCmdIcon} /> : <SVG ariaHidden svg={WindowsIcon} />}</label></>;
 
         if (!KEY_CODES.includes(def.key)) {
             KEY_CODES.push(def.key);
@@ -780,12 +840,19 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             id="keySelect"
         >
             {KEY_CODES.map((keyOption, idx) => {
+                const label = this.state.selectLayoutMap?.get(keyOption) ?? keyOption;
+                function toUpperIfSimpleLowerCase(char: string): string {
+                    if (/^[a-z]$/.test(char)) {
+                        return char.toUpperCase();
+                    }
+            return char;
+        }
                 return (
                     <option
                         key={`keyOption_${idx}`}
                         value={keyOption}
                     >
-                        {keyOption}
+                        {toUpperIfSimpleLowerCase(label)}
                     </option>
                 );
             })}
