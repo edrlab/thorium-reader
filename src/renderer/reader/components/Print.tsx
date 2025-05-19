@@ -7,14 +7,16 @@ import * as stylesSpinner from "readium-desktop/renderer/assets/styles/component
 
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { readerActions } from "readium-desktop/common/redux/actions";
-import { getStore } from "../createStore";
+import { apiActions, readerActions } from "readium-desktop/common/redux/actions";
+import { getSaga } from "../createStore";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import { createOrGetPdfEventBus } from "../pdf/driver";
 
 import { useVirtualizer } from "@tanstack/react-virtual";
+import { publicationInfoReaderLibGetPublicationApiCall } from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfoReaderAndLib";
+import { PublicationView } from "readium-desktop/common/views/publication";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -79,10 +81,11 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
     const [__] = useTranslator();
     const dispatch = useDispatch();
 
+    const publicationIdentifier = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
+
     const pageRange = React.useMemo(() => convertRangestoNumberArray(parsePrintRanges(getV), pdfPageRange), [getV, pdfPageRange]);
 
-    const publicationView = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
-    const isLcp = !!publicationView.lcp?.rights;
+    const publicationViewFromReduxState = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
 
     const rowVirtualizer = useVirtualizer({
         horizontal: true,
@@ -91,6 +94,25 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
         estimateSize: () => 155,
         overscan: 3,
       });
+
+    const [publicationView, setPubView] = React.useState<PublicationView>(publicationViewFromReduxState);
+
+    const isLcp = !!publicationView.lcp?.rights;
+
+    React.useEffect(() => {
+
+        getSaga().run(publicationInfoReaderLibGetPublicationApiCall, publicationIdentifier, false)
+            .toPromise<apiActions.result.TAction<PublicationView>>()
+            .then((action) => {
+
+            if (action) {
+
+                const pubView = action.payload;
+                setPubView({...pubView});
+            }
+        });
+        
+    }, [publicationIdentifier]);
 
     return <>
         <style>{`
@@ -216,12 +238,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                     : <p style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "-webkit-fill-available" }}>No Pages</p>}
             </div> */}
 
-            {/* TODO refactor: publicationView is not synced with the db from main process, when calling to publicationInfo,
-                it made some refresh by calling an "API" call to get/publication and refresh locally the publication view state and not globally in redux.
-                This is something we have to avoid in the future and always synced the publication db state with the renderer publicationView state from redux.
-                For the moment, we cannot fix that so let's comment the LCP Print pagination limitation indication.
-            */}
-            {/* {isLcp && publicationView.lcp?.rights?.print ? <p>{__("reader.print.descriptionLcpLimit", { pageRangePrinted: `[${publicationView.lcpRightsPrints}]`, count: publicationView.lcp.rights.print - publicationView.lcpRightsPrints.length, lcpLimitPages: publicationView.lcp.rights.print })}</p> : <></>} */}
+            {isLcp && publicationView.lcp?.rights?.print ? <p>{__("reader.print.descriptionLcpLimit", { pageRangePrinted: `[${publicationView.lcpRightsPrints}]`, count: publicationView.lcp.rights.print - publicationView.lcpRightsPrints.length, lcpLimitPages: publicationView.lcp.rights.print })}</p> : <></>}
             <div className={stylesInput.form_group} style={{ marginTop: "20px", width: "360px" }}>
                 <input type="text" name="print-range" style={{ width: "100%", marginLeft: "10px" }} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={"print-range"} value={getV} onChange={(e) => {
                     const v = e.target.value;
@@ -241,7 +258,6 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                         // e.preventDefault();
                         // createOrGetPdfEventBus().dispatch("print", pageRange);
 
-                        const publicationIdentifier = getStore().getState().reader.info.publicationIdentifier;
                         dispatch(readerActions.print.build(publicationIdentifier, pageRange)); // send to main process
                     }}
                 >
