@@ -784,13 +784,13 @@
             },
             "preset": {
                 "apply": "تطبيق",
-                "applyDetails": "",
-                "detail": "",
-                "reset": "",
-                "resetDetails": "",
-                "save": "",
-                "saveDetails": "",
-                "title": ""
+                "applyDetails": "تطبيق إعداداتك المفضّلة على المنشور الحالي.",
+                "detail": "حفظ / تطبيق / إعادة ضبط إعداداتك المفضّلة.",
+                "reset": "إعادة ضبط",
+                "resetDetails": "إعادة ضبط إعداداتك المفضّلة (الإعدادات الافتراضية).",
+                "save": "حفظ",
+                "saveDetails": "هذا الإجراء يحفظ الإعدادات الحالية، أي، خيارات العرض وتنسيق النص المفضّلة لديك. يمكن بعد ذلك تطبيق هذه الإعدادات على منشورات أخرى من خلال ضغط زر \"تطبيق\" في نوافذ القراءة الأخرى.",
+                "title": "التفضيلات"
             },
             "preview": "معاينة تمهيدية",
             "reduceMotion": "تقليل الحركة",
@@ -821,9 +821,9 @@
         },
         "tts": {
             "activate": "تنشيط ميزة تحويل النص إلى كلام",
-            "language": "",
+            "language": "لغة ميزة تحويل النص إلى كلام",
             "next": "النص التالي المحوَّل إلى كلام",
-            "options": "",
+            "options": "خيارات ميزة تحويل النص إلى كلام",
             "pause": "إيقاف ميزة تحويل النص إلى كلام مؤقتاً",
             "play": "تشغيل ميزة تحويل النص إلى كلام",
             "previous": "النص السابق المحوَّل إلى كلام",
@@ -836,16 +836,16 @@
     },
     "settings": {
         "annotationCreator": {
-            "creator": "",
-            "help": "",
-            "name": "",
-            "organization": "",
-            "person": "",
-            "type": ""
+            "creator": "منشئ التعليقات التوضيحية (اختياري)",
+            "help": "في حال تحديد ذلك، سيتم تضمين هذا الاسم في البيانات المعيارية للملاحظات المُصدَّرة.",
+            "name": "الاسم",
+            "organization": "المنظمة",
+            "person": "الشخص",
+            "type": "النوع:"
         },
         "auth": {
-            "help": "",
-            "title": "",
+            "help": "هذا الإجراء يحذف كل بيانات تسجيل الدخول الخاصة بنظام توزيع المنشورات المفتوح (OPDS).",
+            "title": "الوصول إلى كتالوغات المنشورات",
             "wipeData": "حذف بيانات تسجيل الدخول"
         },
         "keyboard": {
@@ -862,14 +862,14 @@
             "languageChoice": "اللغة"
         },
         "library": {
-            "enableAPIAPP": "",
-            "title": ""
+            "enableAPIAPP": "تنشيط نظام مكتبة PNB",
+            "title": "الوصول إلى حسابات المكتبة الفرنسية"
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "",
-                "enableCheckbox": "",
-                "overrideHTMLTemplate": ""
+                "applyDefaultTemplate": "تطبيق القالب الافتراضي",
+                "enableCheckbox": "تفعيل/تعطيل تجاوز قالب Mustache عند تصدير الملاحظات بصيغة HTML",
+                "overrideHTMLTemplate": "تجاوز قالب Mustache عند تصدير الملاحظة بصيغة HTML"
             }
         },
         "session": {
@@ -890,25 +890,25 @@
     },
     "tts": {
         "highlight": {
-            "mainColor": "",
-            "maskBlockWordOutline": "",
-            "maskBlockWordSolidBackground": "",
-            "maskBlockWordUnderline": "",
-            "maskWordOutline": "",
-            "maskWordSolidBackground": "",
-            "maskWordUnderline": "",
-            "outlineWordOutline": "",
-            "outlineWordSolidBackground": "",
-            "outlineWordUnderline": "",
-            "preview": "",
-            "solidBackgroundWordOutline": "",
-            "solidBackgroundWordSolidBackground": "",
-            "solidBackgroundWordUnderline": "",
-            "style": "",
-            "underlineWordOutline": "",
-            "underlineWordSolidBackground": "",
-            "underlineWordUnderline": "",
-            "wordColor": ""
+            "mainColor": "اللون الرئيسي",
+            "maskBlockWordOutline": "تعتيم الكتلة، إبراز الكلمات بإطار",
+            "maskBlockWordSolidBackground": "تعتيم الكتلة، خلفية صلبة للكلمات",
+            "maskBlockWordUnderline": "تعتيم الكتلة، تسطير الكلمات",
+            "maskWordOutline": "تعتيم، إبراز الكلمات بإطار",
+            "maskWordSolidBackground": "تعتيم، خلفية صلبة للكلمات",
+            "maskWordUnderline": "تعتيم، تسطير الكلمات",
+            "outlineWordOutline": "إبراز، إبراز الكلمات بإطار",
+            "outlineWordSolidBackground": "إبراز، خلفية صلبة للكلمات",
+            "outlineWordUnderline": "إبراز، تسطير الكلمات",
+            "preview": "رؤية عيّنة عن نمط التمييز الذي تستخدمه ميزة تحويل النص إلى كلام",
+            "solidBackgroundWordOutline": "خلفية صلبة، إبراز الكلمات بإطار",
+            "solidBackgroundWordSolidBackground": "خلفية صلبة، خلفية صلبة للكلمات",
+            "solidBackgroundWordUnderline": "خلفية صلبة، تسطير الكلمات",
+            "style": "نمط التمييز الذي تستخدمه ميزة تحويل النص إلى كلام",
+            "underlineWordOutline": "تسطير، إبراز الكلمات بإطار",
+            "underlineWordSolidBackground": "تسطير، خلفية صلبة للكلمات",
+            "underlineWordUnderline": "تسطير، تسطير الكلمات",
+            "wordColor": "لون الكلمات"
         }
     },
     "wizard": {
