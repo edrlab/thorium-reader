@@ -248,7 +248,7 @@
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": "Resumen de accesibilidad"
+            "accessibility-summary-title": "Información sobre accesibilidad"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
@@ -319,13 +319,13 @@
                 "descriptive": "La publicación contiene una declaración de conformidad de cumplimiento del estándar de accesibilidad EPUB y WCAG 2 nivel AAA"
             },
             "conformance-certifier": {
-                "compact": "La publicación fue certificada por "
+                "compact": "La publicación fue evaluada por "
             },
             "conformance-certifier-credentials": {
-                "compact": "La credencial del certificador es "
+                "compact": "La credencial del evaluador es "
             },
             "conformance-details-certifier-report": {
-                "compact": "Para más información consulta el informe del certificador"
+                "compact": "Para más información, consulta el informe del evaluador"
             },
             "conformance-details-claim": {
                 "compact": "Esta publicación declara que cumple",
@@ -402,8 +402,8 @@
                 "descriptive": "No hay información disponible"
             },
             "hazards-none": {
-                "compact": "No hay riesgos",
-                "descriptive": "La publicación no incluye contenido con riesgos"
+                "compact": "No hay incidencias",
+                "descriptive": "La publicación no incluye contenido con incidencias"
             },
             "hazards-sound": {
                 "compact": "Sonidos",
@@ -417,10 +417,10 @@
                 "compact": "Se desconoce la presencia de sonidos",
                 "descriptive": "Se desconoce la presencia de sonidos"
             },
-            "hazards-title": "Riesgos",
+            "hazards-title": "Incidencias",
             "hazards-unknown": {
-                "compact": "Se desconoce la presencia de riesgos",
-                "descriptive": "Se desconoce la presencia de riesgos"
+                "compact": "Se desconoce si existen incidencias",
+                "descriptive": "Se desconoce si existen incidencias"
             }
         },
         "navigation": {
@@ -468,16 +468,16 @@
                 "descriptive": "Se proporcionan descripciones de texto para matemáticas"
             },
             "rich-content-closed-captions": {
-                "compact": "Los vídeos tienen subtítulos cerrados",
-                "descriptive": "Los vídeos incluidos en las publicaciones tienen subtítulos cerrados"
+                "compact": "Los vídeos tienen subtítulos opcionales (accesibles con lector de pantalla)",
+                "descriptive": "Los vídeos incluidos en las publicaciones tienen subtítulos opcionales (accesibles con lector de pantalla)"
             },
             "rich-content-extended": {
                 "compact": "Las imágenes con información abundante disponen de descripciones extensas",
                 "descriptive": "Las imágenes con información abundante disponen de descripciones extensas"
             },
             "rich-content-open-captions": {
-                "compact": "Los vídeos tienen subtítulos abiertos",
-                "descriptive": "Los vídeos incluidos en las publicaciones tienen subtítulos abiertos"
+                "compact": "Los vídeos tienen subtítulos incrustados (inaccesibles con lector de pantalla)",
+                "descriptive": "Los vídeos incluidos en las publicaciones tienen subtítulos incrustados (inaccesibles con lector de pantalla)"
             },
             "rich-content-title": "Contenido enriquecido",
             "rich-content-transcript": {
@@ -495,20 +495,20 @@
                 "descriptive": "Tiene descripciones para imágenes mediante texto alternativo"
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
-                "compact": "No hay información disponible sobre lectura no visual",
-                "descriptive": "No hay información disponible sobre lectura no visual"
+                "compact": "No hay información disponible sobre lectura con síntesis de voz o en braille",
+                "descriptive": "No hay información disponible sobre lectura con síntesis de voz o en braille"
             },
             "ways-of-reading-nonvisual-reading-none": {
-                "compact": "No se puede leer por voz ni en braille dinámico",
-                "descriptive": "El contenido no se puede leer mediante salida de voz ni en braille dinámico"
+                "compact": "No se puede leer con síntesis de voz ni en braille",
+                "descriptive": "El contenido no se puede leer con síntesis de voz ni en braille"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
-                "compact": "No se puede leer completamente por voz ni en braille dinámico",
-                "descriptive": "No todo el contenido podrá leerse mediante salida de voz ni en braille dinámico"
+                "compact": "No se puede leer completamente con síntesis de voz ni en braille",
+                "descriptive": "No todo el contenido podrá leerse con síntesis de voz ni en braille"
             },
             "ways-of-reading-nonvisual-reading-readable": {
-                "compact": "Se puede leer por voz o en braille dinámico",
-                "descriptive": "Todo el contenido se puede leer mediante salida de voz o en braille dinámico"
+                "compact": "Se puede leer con síntesis de voz y en braille",
+                "descriptive": "Todo el contenido se puede leer con síntesis de voz y en braille"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
                 "compact": "Clips de audio pregrabados",
@@ -526,7 +526,7 @@
                 "compact": "Audio pregrabado sincronizado con texto",
                 "descriptive": "Todo el contenido está disponible como audio pregrabado sincronizado con texto"
             },
-            "ways-of-reading-title": "Modos de lectura",
+            "ways-of-reading-title": "Legibilidad",
             "ways-of-reading-visual-adjustments-modifiable": {
                 "compact": "Es posible modificar el aspecto visual",
                 "descriptive": "El aspecto visual del texto y el diseño de página se pueden modificar en función de las posibilidades del sistema de lectura (familia y tamaño de fuente, espacios entre párrafos, frases, palabras y letras, así como el color de fondo y texto)"
@@ -554,7 +554,7 @@
             "accessibilityHazard": {
                 "flashing": "Destellos",
                 "motionSimulation": "Animación",
-                "name": "Riesgo:",
+                "name": "Incidencia:",
                 "noFlashing": "Sin destellos",
                 "noMotionSimulation": "Sin animaciones",
                 "noSound": "Sin sonido",
@@ -682,7 +682,7 @@
         "media-overlays": {
             "activate": "Activar lectura en voz alta",
             "captions": "Texto sincronizado/presentación diáfana",
-            "captionsDescription": "reader.media-overlays.captionsDescription",
+            "captionsDescription": "Vista de texto simplificada con estilo de subtítulos mínimo",
             "disableContinuousPlay": "Deshabilitar reproducción continua",
             "disableContinuousPlayDescription": "No reproducir automáticamente el siguiente elemento, pausar inmediatamente tras reproducir el elemento actual",
             "ignoreAndUseTTS": "Ignorar audio pregrabado, usar TTS",
