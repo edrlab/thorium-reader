@@ -325,11 +325,11 @@
                 "compact": "Τα διαπιστευτήρια της πιστοποίησης είναι: "
             },
             "conformance-details-certifier-report": {
-                "compact": ""
+                "compact": "Για περισσότερες πληροφορίες ανατρέξτε στην έκθεση πιστοποίησης"
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Η δημοσίευση αυτή ισχυρίζεται ότι ανταποκρίνεται",
+                "descriptive": "Η δημοσίευση αυτή ισχυρίζεται ότι ανταποκρίνεται"
             },
             "conformance-details-epub-accessibility-1-0": {
                 "compact": "EPUB Accessibility 1.0",
@@ -419,14 +419,14 @@
             },
             "hazards-title": "Κίνδυνοι",
             "hazards-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Η παρουσία κινδύνων είναι άγνωστη",
+                "descriptive": "Η παρουσία κινδύνων είναι άγνωστη"
             }
         },
         "navigation": {
             "navigation-index": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ευρετήριο",
+                "descriptive": "Ευρετήριο με συνδέσμους προς τις αναφερόμενες καταχωρήσεις"
             },
             "navigation-no-metadata": {
                 "compact": "Δεν υπάρχουν πληροφορίες",
@@ -472,31 +472,31 @@
                 "descriptive": "Bίντεο με ενσωματωμένους υπότιτλους περιέχονται σε δημοσιεύσεις"
             },
             "rich-content-extended": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Οι πληροφοριακά περιεκτικές εικόνες περιγράφονται με εκτεταμένες περιγραφές",
+                "descriptive": "Οι πληροφοριακά περιεκτικές εικόνες περιγράφονται με εκτεταμένες περιγραφές"
             },
             "rich-content-open-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Τα Βίντεο έχουν σταθερό υποτιτλισμό (open captions)",
+                "descriptive": "Τα συμπεριλαμβανόμενα βίντεο στις δημοσιεύσεις έχουν σταθερό υποτιτλισμό (open captions)"
             },
-            "rich-content-title": "",
+            "rich-content-title": "Πλούσιο περιεχόμενο",
             "rich-content-transcript": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Διατίθεται απομαγνητοφώνηση",
+                "descriptive": "Διατίθεται απομαγνητοφώνηση"
             },
             "rich-content-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Δεν διατίθενται πληροφορίες",
+                "descriptive": "Δεν διατίθενται πληροφορίες"
             }
         },
         "ways-of-reading": {
             "ways-of-reading-nonvisual-reading-alt-text": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Έχει εναλλακτικό κείμενο",
+                "descriptive": "Έχει εναλλακτικό κείμενο περιγραφής για εικόνες"
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Δεν διατίθενται πληροφορίες για ανάγνωση χωρίς οπτική επαφή",
+                "descriptive": "Δεν διατίθενται πληροφορίες για ανάγνωση χωρίς οπτική επαφή"
             },
             "ways-of-reading-nonvisual-reading-none": {
                 "compact": "",
