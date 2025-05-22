@@ -40,15 +40,24 @@ import NunitoBold from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-Se
 import { WizardModal } from "./Wizard";
 import { getReduxHistory, getStore } from "../createStore";
 import { getTranslator } from "readium-desktop/common/services/translator";
+import { IProfile } from "readium-desktop/common/redux/states/profile";
 // eslintxx-disable-next-line @typescript-eslint/no-unused-expressions
 // globalScssStyle.__LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__;
 
-export default class App extends React.Component<{}, undefined> {
+interface IState {
+  themeApplied: boolean;
+}
+
+export default class App extends React.Component<{}, IState> {
 
     constructor(props: {}) {
         super(props);
 
         this.onDrop = this.onDrop.bind(this);
+
+        this.state = {
+            themeApplied: false,
+        };
     }
 
     getFiles = async (event: DropEvent): Promise<Array<File>> => {
@@ -125,11 +134,41 @@ export default class App extends React.Component<{}, undefined> {
             ));
     }
 
+    private unsubscribe: () => void;
+
     public async componentDidMount() {
         ensureKeyboardListenerIsInstalled();
 
         const store = getStore();
         document.body.setAttribute("data-theme", store.getState().theme.name);
+
+        const profile = store.getState().profile;
+        this.applyThemeVariables(profile);
+
+        this.unsubscribe = store.subscribe(() => {
+            const newProfile = store.getState().profile;
+            this.applyThemeVariables(newProfile);
+        });
+    }
+
+    private applyThemeVariables(profile: IProfile): void {
+        const root = document.documentElement;
+        const colors = profile.colors;
+
+        if (colors) {
+            Object.entries(colors).forEach(([key, value]) => {
+            const cssVar = `--theme-${key}`;
+            root.style.setProperty(cssVar, value);
+            });
+        }
+
+        this.setState({ themeApplied: true });
+    }
+
+    public componentWillUnmount() {
+        if (this.unsubscribe) {
+            this.unsubscribe();
+        }
     }
 
     public render(): React.ReactElement<{}> {

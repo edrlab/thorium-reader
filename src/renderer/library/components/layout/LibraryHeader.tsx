@@ -25,6 +25,8 @@ import * as ShelfIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { Settings } from "../settings/Settings";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
+import { getStore } from "../../createStore";
+import { IProfile } from "readium-desktop/common/redux/states/profile";
 // import { WizardModal } from "../Wizard";
 
 interface NavigationHeader {
@@ -47,14 +49,49 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
-class Header extends React.Component<IProps, undefined> {
+interface IState {
+  themeApplied: boolean;
+  logo?: string;
+}
+
+class Header extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
+
+        this.state = {
+            themeApplied: false,
+            logo: undefined,
+        };
+    }
+    private unsubscribe: () => void;
+
+    componentDidMount(): void {
+        const store = getStore();
+        const profile = store.getState().profile;
+        this.applySupplierLogo(profile);
+
+        this.unsubscribe = store.subscribe(() => {
+            const newProfile = store.getState().profile;
+            this.applySupplierLogo(newProfile);
+        });
+    }
+
+    private applySupplierLogo(profile: IProfile): void {
+        const logo = profile.logo;
+
+        this.setState({ themeApplied: true, logo });
+    }
+
+    public componentWillUnmount() {
+        if (this.unsubscribe) {
+            this.unsubscribe();
+        }
     }
 
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
+        const { logo } = this.state;
 
         const headerNav: NavigationHeader[] = [
             {
@@ -95,8 +132,15 @@ class Header extends React.Component<IProps, undefined> {
                 label={__("accessibility.skipLink")}
             />
             <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>
+                {logo && (
+                    <div
+                        className="logo"
+                        style={{height: "60px", width: "60px", margin: " 20px auto"}}
+                        dangerouslySetInnerHTML={{ __html: logo }}
+                    />
+                    )}
                 <h1 className={stylesHeader.appName} aria-label="Thorium"></h1>
-                <ul style={{paddingTop: "10px"}}>
+                <ul style={{paddingTop: "10px", height: logo ? "calc(100% - 180px)" : ""}}>
                     <div>
                     {
                         headerNav.map(

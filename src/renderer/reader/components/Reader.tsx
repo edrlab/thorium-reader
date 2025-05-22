@@ -110,6 +110,7 @@ import { getStore } from "../createStore";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
 import { DockTypeName } from "readium-desktop/common/models/dock";
 import { TDrawView } from "readium-desktop/common/redux/states/renderer/note";
+import { IProfile } from "readium-desktop/common/redux/states/profile";
 
 const debug = debug_("readium-desktop:renderer:reader:components:Reader");
 debug("_");
@@ -251,6 +252,8 @@ interface IState {
 
     historyCanGoBack: boolean;
     historyCanGoForward: boolean;
+
+     themeApplied: boolean;
 }
 
 class Reader extends React.Component<IProps, IState> {
@@ -349,6 +352,8 @@ class Reader extends React.Component<IProps, IState> {
             historyCanGoBack: false,
             historyCanGoForward: false,
 
+            themeApplied: false,
+
             // doFocus: 1,
         };
 
@@ -417,6 +422,8 @@ class Reader extends React.Component<IProps, IState> {
         fixedLayoutZoomPercent(fxlZoomPercent); // navigator 100ms timeout debouncer
         // this.blackoutDebounced();
     }
+
+    private unsubscribe: () => void;
 
     public async componentDidMount() {
         // navigatorTTSVoicesSetter(this.props.ttsVoices);
@@ -683,6 +690,14 @@ class Reader extends React.Component<IProps, IState> {
         });
 
         this.props.dispatchReaderTSXMountedAndPublicationIntoViewportLoaded();
+
+        const profile = store.getState().profile;
+        this.applyThemeVariables(profile);
+
+        this.unsubscribe = store.subscribe(() => {
+            const newProfile = store.getState().profile;
+            this.applyThemeVariables(newProfile);
+        });
     }
 
     public async componentDidUpdate(oldProps: IProps, _oldState: IState) {
@@ -758,6 +773,22 @@ class Reader extends React.Component<IProps, IState> {
         this.unregisterAllKeyboardListeners();
 
         window.removeEventListener("popstate", this.onPopState);
+
+        if (this.unsubscribe) {
+            this.unsubscribe();
+        }
+    }
+
+    private applyThemeVariables(profile: IProfile): void {
+        const root = document.documentElement;
+        const colors: string[] = profile.colors;
+
+        Object.entries(colors).forEach(([key, value]) => {
+        const cssVar = `--theme-${key}`;
+        root.style.setProperty(cssVar, value);
+        });
+
+        this.setState({ themeApplied: true });
     }
 
     private isFixedLayout(): boolean {

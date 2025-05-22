@@ -28,7 +28,7 @@ import { availableLanguages } from "readium-desktop/common/services/translator";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { authActions, creatorActions, i18nActions, noteExport, sessionActions, settingsActions, themeActions } from "readium-desktop/common/redux/actions";
+import { authActions, creatorActions, i18nActions, noteExport, profileActions, sessionActions, settingsActions, themeActions } from "readium-desktop/common/redux/actions";
 import * as BinIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { TTheme } from "readium-desktop/common/redux/states/theme";
@@ -46,6 +46,8 @@ import * as RadioGroup from "@radix-ui/react-radio-group";
 import { TextArea } from "react-aria-components";
 import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/annotation/htmlTemplate";
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
+import profiles from "readium-desktop/resources/profiles/testProfiles.json";
+import { IProfile } from "readium-desktop/common/redux/states/profile";
 
 interface ISettingsProps {};
 
@@ -313,50 +315,57 @@ const ManageAccessToCatalogSettings = () => {
     const dispatch = useDispatch();
     const enableAPIAPP = useSelector((state: ILibraryRootState) => state.settings.enableAPIAPP);
 
+
+
     const toggleEnableAPIAPP = () => {
         dispatch(settingsActions.enableAPIAPP.build(!enableAPIAPP));
     };
 
+    const profile = useSelector((s: ICommonRootState) => s.profile);
+
+    const dilicomDisabled: boolean = profile.dilicom; 
+
     return (
-        <section className={stylesSettings.section} style={{ gap: "10px" }}>
-            <h4>{__("settings.library.title")}</h4>
-            <div className={stylesAnnotations.annotations_checkbox}>
-                <input type="checkbox" id="enableAPIAPP" className={stylesGlobal.checkbox_custom_input} name="enableAPIAPP" checked={enableAPIAPP} onChange={toggleEnableAPIAPP} />
-                <label htmlFor="enableAPIAPP" className={stylesGlobal.checkbox_custom_label}>
-                    <div
-                        tabIndex={0}
-                        role="checkbox"
-                        aria-checked={enableAPIAPP}
-                        aria-label={__("settings.library.enableAPIAPP")}
-                        onKeyDown={(e) => {
-                            // if (e.code === "Space") {
-                            if (e.key === " ") {
-                                e.preventDefault(); // prevent scroll
+        dilicomDisabled === false ? <></> : 
+            <section className={stylesSettings.section} style={{ gap: "10px" }}>
+                <h4>{__("settings.library.title")}</h4>
+                <div className={stylesAnnotations.annotations_checkbox}>
+                    <input type="checkbox" id="enableAPIAPP" className={stylesGlobal.checkbox_custom_input} name="enableAPIAPP" checked={enableAPIAPP} onChange={toggleEnableAPIAPP} />
+                    <label htmlFor="enableAPIAPP" className={stylesGlobal.checkbox_custom_label}>
+                        <div
+                            tabIndex={0}
+                            role="checkbox"
+                            aria-checked={enableAPIAPP}
+                            aria-label={__("settings.library.enableAPIAPP")}
+                            onKeyDown={(e) => {
+                                // if (e.code === "Space") {
+                                if (e.key === " ") {
+                                    e.preventDefault(); // prevent scroll
+                                }
+                            }}
+                            onKeyUp={(e) => {
+                                // if (e.code === "Space") {
+                                if (e.key === " ") {
+                                    e.preventDefault();
+                                    toggleEnableAPIAPP();
+                                }
+                            }}
+                            className={stylesGlobal.checkbox_custom}
+                            style={{ border: enableAPIAPP ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: enableAPIAPP ? "var(--color-blue)" : "transparent" }}>
+                            {enableAPIAPP ?
+                                <SVG ariaHidden svg={CheckIcon} />
+                                :
+                                <></>
                             }
-                        }}
-                        onKeyUp={(e) => {
-                            // if (e.code === "Space") {
-                            if (e.key === " ") {
-                                e.preventDefault();
-                                toggleEnableAPIAPP();
-                            }
-                        }}
-                        className={stylesGlobal.checkbox_custom}
-                        style={{ border: enableAPIAPP ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: enableAPIAPP ? "var(--color-blue)" : "transparent" }}>
-                        {enableAPIAPP ?
-                            <SVG ariaHidden svg={CheckIcon} />
-                            :
-                            <></>
-                        }
-                    </div>
-                    <div aria-hidden>
-                        <h4>{__("settings.library.enableAPIAPP")}</h4>
-                    </div>
-                </label>
-            </div>
-            <ApiappHowDoesItWorkInfoBox />
-        </section>
-    );
+                        </div>
+                        <div aria-hidden>
+                            <h4>{__("settings.library.enableAPIAPP")}</h4>
+                        </div>
+                    </label>
+                </div>
+                <ApiappHowDoesItWorkInfoBox />
+            </section>
+        );
 };
 
 const Themes = () => {
@@ -391,6 +400,28 @@ const Themes = () => {
             ) : (
                 <></>
             )}
+        </div>
+    );
+};
+
+const Profiles = () => {
+
+    const allProfiles: Array<IProfile> = (profiles);
+    const dispatch = useDispatch();
+    const profile = useSelector((s: ICommonRootState) => s.profile);
+
+    const setProfile = (profileSelected: React.Key) => {
+        if (typeof profileSelected !== "number") return;
+            const profileChosen = allProfiles.find(({ id }) => id === profileSelected);
+            dispatch(profileActions.setProfile.build(profileChosen));
+    };
+    const selectedKey = allProfiles.find(({ name }) => name === profile.name);
+
+    return (
+        <div>
+            <ComboBox label="Sélectionner un profil" items={allProfiles}  selectedKey={selectedKey?.id} onSelectionChange={setProfile}>
+                {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+            </ComboBox>
         </div>
     );
 };
@@ -456,6 +487,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             <TabHeader title={__("settings.tabs.appearance")} />
                             <div className={stylesSettings.settings_tab}>
                                 <Themes />
+                                <Profiles />
                             </div>
                         </Tabs.Content>
                         <Tabs.Content value="tab4" tabIndex={-1}>
