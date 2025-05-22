@@ -44,6 +44,7 @@ export const reduxPersistMiddleware: Middleware
                     settings: prevState.settings,
                     creator: prevState.creator,
                     noteExport: prevState.noteExport,
+                    profile: prevState.profile,
                 };
 
                 const persistNextState: PersistRootState = {
@@ -64,6 +65,7 @@ export const reduxPersistMiddleware: Middleware
                     settings: nextState.settings,
                     creator: nextState.creator,
                     noteExport: nextState.noteExport,
+                    profile: nextState.profile,
                 };
 
                 // RangeError: Maximum call stack size exceeded

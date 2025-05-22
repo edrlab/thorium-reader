@@ -32,6 +32,7 @@ import { creatorReducer } from "readium-desktop/common/redux/reducers/creator";
 import { settingsReducer } from "readium-desktop/common/redux/reducers/settings";
 import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 import { noteExportReducer } from "readium-desktop/common/redux/reducers/noteExport";
+import { profileReducer } from "readium-desktop/common/redux/reducers/profile";
 
 export const rootReducer = combineReducers({ // RootState
     versionUpdate: versionUpdateReducer,
@@ -107,4 +108,5 @@ export const rootReducer = combineReducers({ // RootState
     settings: settingsReducer,
     creator: creatorReducer,
     noteExport: noteExportReducer,
+    profile: profileReducer,
 });

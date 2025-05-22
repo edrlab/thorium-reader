@@ -116,6 +116,7 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
         settings: state.settings,
         lcp: state.lcp,
         noteExport: state.noteExport,
+        profile: state.profile,
     };
     try {
         const publication = yield* callTyped(getCatalog);

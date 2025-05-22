@@ -15,6 +15,7 @@ import { INoteCreator } from "./creator";
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
 import { ILcpState } from "./lcp";
 import { INoteExportState } from "./renderer/note";
+import { IProfile } from "./profile";
 
 export interface ICommonRootState {
     i18n: I18NState;
@@ -29,4 +30,5 @@ export interface ICommonRootState {
     creator: INoteCreator;
     noteExport: INoteExportState;
     lcp: ILcpState;
+    profile: IProfile;
 }

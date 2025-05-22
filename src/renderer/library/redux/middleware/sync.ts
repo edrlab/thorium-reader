@@ -11,6 +11,7 @@ import {
     creatorActions,
     settingsActions,
     noteExport,
+    profileActions,
 } from "readium-desktop/common/redux/actions";
 import { syncFactory } from "readium-desktop/renderer/common/redux/middleware/syncFactory";
 
@@ -67,6 +68,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     settingsActions.enableAPIAPP.ID,
 
     noteExport.overrideHTMLTemplate.ID,
+
+    profileActions.setProfile.ID,
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);

@@ -15,6 +15,7 @@ import {
     creatorActions,
     annotationActions,
     noteExport,
+    profileActions,
 } from "readium-desktop/common/redux/actions";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
@@ -89,6 +90,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     lcpActions.publicationFileLock.ID,
 
     noteExport.overrideHTMLTemplate.ID,
+
+    profileActions.setProfile.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware
