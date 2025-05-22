@@ -5,71 +5,119 @@
   display: none;
 }
 
+// GLOBAL COLORS
+
+$color-white: #fff;
+$color-white-2: #d9d9d9;
+$color-black: #2D2D2D;
+$color-black-2: #1E1E1E;
+$color-grey-1: #61646B;
+$color-grey-2: #7c7d86;
+
+// THORIUM SET OF COLORS 
+
+$thorium-theme-neutral-light: $color-white;
+$thorium-theme-neutral-dark: #1D1D1E;
+$thorium-theme-primary-light: #1053C8;
+$thorium-theme-primary-dark: #99A9E3;
+$thorium-theme-secondary-light: #ECF2FD;
+$thorium-theme-secondary-dark: $color-black;
+$thorium-theme-border-light: #afb1b6;
+$thorium-theme-border-dark: #48484b;
+$thorium-theme-background-light: #f5f5f5;
+$thorium-theme-background-dark: #27272a;
+$thorium-theme-appName-light: $thorium-theme-border-light;
+$thorium-theme-appName-dark: #EAEAEA;
+$thorium-theme-scrollbar-thumb: $color-grey-2;
+$thorium-theme-button-hover-light: $color-white;
+$thorium-theme-button-hover-dark: #48484b;
+
+// CUSTOM SET OF COLORS (DEFAULT TO THORIUM)
+
+$theme-neutral-light: var(--theme-neutral-light, $thorium-theme-neutral-light);
+$theme-neutral-dark: var(--theme-neutral-dark, $thorium-theme-neutral-dark);
+$theme-main-primary-light: var(--theme-primary-light, $thorium-theme-primary-light);
+$theme-main-primary-dark: var(--theme-primary-dark, $thorium-theme-primary-dark);
+$theme-main-secondary-light: var(--theme-secondary-light, $thorium-theme-secondary-light);
+$theme-main-secondary-dark: var(--theme-secondary-dark, $thorium-theme-secondary-dark);
+$theme-border-light: var(--theme-border-light, $thorium-theme-border-light);
+$theme-border-dark: var(--theme-border-dark, $thorium-theme-border-dark);
+$theme-background-light: var(--theme-background-light, $thorium-theme-background-light);
+$theme-background-dark: var(--theme-background-dark, $thorium-theme-background-dark);
+$theme-appName-light: var(--theme-appName-light, $thorium-theme-appName-light);
+$theme-appName-dark: var(--theme-appName-dark, $thorium-theme-appName-dark);
+$-theme-scrollbar-thumb-light: var(--theme-primary-light, $thorium-theme-scrollbar-thumb);
+$-theme-scrollbar-thumb-dark: var(--theme-primary-dark, $thorium-theme-scrollbar-thumb);
+$-theme-button-hover-light: var(--theme-neutral-light, $thorium-theme-button-hover-light);
+$-theme-button-hover-dark: var(--theme-neutral-dark, $thorium-theme-button-hover-dark);
+
+// FINAL VARIABLES PALETTE
+
 $color-palette: (
   light: (
     --color-primary: #4d4d4d,
-    --color-secondary: #fff,
-    --color-blue: #1053C8,
-    --color-blue-alt: #1053C8,
-    --color-light-blue: #ECF2FD,
-    --color-extralight-grey: #f5f5f5,
-    --color-extralight-grey-alt: color.adjust(#f5f5f5, $lightness: -5%),
-    --color-verylight-grey: #d9d9d9,
-    --color-verylight-grey-alt: #d9d9d9,
-    --color-verylight-grey-alt2: #d9d9d9,
-    --color-light-grey: #afb1b6,
-    --color-medium-grey: #61646B,
-    --color-mediumdark-grey: #2D2D2D,
-    --color-mediumdark-grey-alt: #2D2D2D,
-    --color-dark-grey: #1E1E1E,
-    --color-dark-grey-alt: #1E1E1E,
+    --color-secondary: $theme-neutral-light,
+    --color-blue: $theme-main-primary-light,
+    --color-blue-alt: $theme-main-primary-light,
+    --color-light-blue: $theme-main-secondary-light,
+    --color-extralight-grey: $theme-background-light,
+    --color-extralight-grey-alt: color.adjust($thorium-theme-background-light, $lightness: -5%),
+    --color-verylight-grey: $color-white-2,
+    --color-verylight-grey-alt: $color-white-2,
+    --color-verylight-grey-alt2: $color-white-2,
+    --color-light-grey: $theme-border-light,
+    --color-medium-grey: $color-grey-1,
+    --color-mediumdark-grey: $color-black,
+    --color-mediumdark-grey-alt: $color-black,
+    --color-dark-grey: $color-black-2,
+    --color-dark-grey-alt: $color-black-2,
     --color-accent: #00BCD4,
-    --color-accent-contrast: #fff,
+    --color-accent-contrast: $color-white,
     --reader-fontColor: #000,
-    --scrollbar-thumb: #98989d,
-    --color-disabled: #61646B,
+    --scrollbar-thumb: $-theme-scrollbar-thumb-light,
+    --color-disabled: $color-grey-1,
     --color-error: #FCEEF1,
     --color-error-dark: #D52A54,
     --color-success: #0B8454,
     --color-success-light: #ECFEF7,
-    --color-appName: #AFB1B6,
+    --color-appName: $theme-appName-light,
     --color-annotations-txt: #f5f5f5,
-    --color-annotations-txt-area: #fff,
-    --color-annotations-bg: #fff,
-    --color-button-hover: #fff,
+    --color-annotations-txt-area: $color-white,
+    --color-annotations-bg: $color-white,
+    --color-button-hover: $-theme-button-hover-light,
     --color-docked-header: #f5f5f5,
   ),
   dark: (
     --color-primary: #e7eaf8,
-    --color-secondary: #1D1D1E,
-    --color-blue: #99A9E3,
-    --color-blue-alt: #fff,
-    --color-light-blue: #2D2D2D,
-    --color-extralight-grey: #27272a,
-    --color-extralight-grey-alt: color.adjust(#27272a, $lightness: 5%),
-    --color-verylight-grey: color.adjust(#61646B, $lightness: 25%),
-    --color-verylight-grey-alt: #7c7d86,
+    --color-secondary: $theme-neutral-dark,
+    --color-blue: $theme-main-primary-dark,
+    --color-blue-alt: $color-white,
+    --color-light-blue: $theme-main-secondary-dark,
+    --color-extralight-grey: $theme-background-dark,
+    --color-extralight-grey-alt: color.adjust($thorium-theme-background-dark, $lightness: 5%),
+    --color-verylight-grey: color.adjust($color-grey-1, $lightness: 25%),
+    --color-verylight-grey-alt: $color-grey-2,
     --color-verylight-grey-alt2: #454547,
-    --color-light-grey: #48484b,
-    --color-medium-grey: #7c7d86,
-    --color-mediumdark-grey: #2D2D2D,
-    --color-mediumdark-grey-alt: #d9d9d9,
-    --color-dark-grey: #1E1E1E,
-    --color-dark-grey-alt: #7c7d86,
+    --color-light-grey: $theme-border-dark,
+    --color-medium-grey: $color-grey-2,
+    --color-mediumdark-grey: $color-black,
+    --color-mediumdark-grey-alt: $color-white-2,
+    --color-dark-grey: $color-black-2,
+    --color-dark-grey-alt: $color-grey-2,
     --color-accent: #00BCD4,
-    --color-accent-contrast: #fff,
+    --color-accent-contrast: $color-white,
     --reader-fontColor: #000,
-    --scrollbar-thumb: #98989d,
+    --scrollbar-thumb: $-theme-scrollbar-thumb-dark,
     --color-disabled: #a7a9b3,
     --color-error: #4f1d1d,
     --color-error-dark: #F590A9,
     --color-success: #303936,
     --color-success-light: #121d19,
-    --color-appName: #EAEAEA,
+    --color-appName: $theme-appName-dark,
     --color-annotations-txt: #3b3c3f,
     --color-annotations-txt-area: #3b3c3f,
-    --color-annotations-bg: #2D2D2D,
-    --color-button-hover: #48484b,
+    --color-annotations-bg: $color-black,
+    --color-button-hover: $-theme-button-hover-dark,
     --color-docked-header: #121212,
 
   /*
