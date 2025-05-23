@@ -809,7 +809,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                     <ul className={stylesReader.menu_option}>
 
                         <li
-                            {...(this.props.menuOpen &&
+                            {...(this.props.pdfPrintOpen &&
                                 { style: { backgroundColor: "var(--color-blue)" } })}
                         >
                             <Popover.Root open={this.props.pdfPrintOpen} onOpenChange={(open) => {
@@ -818,7 +818,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             }}>
                                 <Popover.Trigger asChild>
                                     <button
-                                        aria-pressed={this.props.menuOpen}
+                                        aria-pressed={this.props.pdfPrintOpen}
                                         aria-label={__("reader.navigation.print")}
                                         className={stylesReader.menu_button}
                                         title={__("reader.navigation.print")}
