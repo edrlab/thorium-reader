@@ -103,6 +103,7 @@ import { shell } from "electron";
 import { exportAnnotationSet } from "readium-desktop/renderer/common/redux/sagas/readiumAnnotation/export";
 import { getSaga } from "../createStore";
 import { clone } from "ramda";
+import { isPdfFn } from "readium-desktop/common/isManifestType";
 (window as any).__shell_openExternal = (url: string) => url.startsWith("http") ? shell.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
 
 // console.log(window);
@@ -453,6 +454,7 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
 
     const { goToLocator, setTagFilter, setCreatorFilter } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
+    const isPdf = isPdfFn(r2Publication);
     const dockingMode = useReaderConfig("readerDockingMode");
     const dockedMode = dockingMode !== "full";
     const { annotation, isEdited, triggerEdition } = props;
@@ -611,6 +613,7 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
                             tags={annotation.tags}
                             comment={annotation.textualValue}
                             locatorExtended={annotation.locatorExtended}
+                            isPdf={isPdf}
                         />
                     </FocusLock>
                     :
@@ -3019,7 +3022,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     sectionsArray.push(BookmarksTrigger);
     options.push(optionBookmarkItem);
 
-    if (isEpub) {
+    if (isEpub || isPdf) {
         sectionsArray.push(AnnotationTrigger);
         options.push(optionAnnotationItem);
     }

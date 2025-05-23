@@ -74,6 +74,7 @@ export function createOrGetPdfEventBus(): IEventBusPdfPlayer {
 
 export function pdfMount(
     pdfPath: string,
+    noteUrl: string,
     publicationViewport: HTMLDivElement,
     data: {
         page: string,
@@ -159,7 +160,7 @@ export function pdfMount(
 
     webview.setAttribute("preload", preloadPath);
     webview.setAttribute("src",
-        `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_EXTRACT_PDF}/pdfjs/web/viewer.html?file=${encodeURIComponent_RFC3986(pdfPath)}&thoriumpdfdata=${encodeURIComponent_RFC3986(b64EncodedPdfData)}`);
+        `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_EXTRACT_PDF}/pdfjs/web/viewer.html?file=${encodeURIComponent_RFC3986(pdfPath)}&thoriumpdfdata=${encodeURIComponent_RFC3986(b64EncodedPdfData)}&noteurl=${encodeURIComponent_RFC3986(noteUrl)}`);
 
     publicationViewport.append(webview);
 }

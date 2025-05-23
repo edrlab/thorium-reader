@@ -47,11 +47,12 @@ interface IProps {
     comment: string,
     tags: string[],
     locatorExtended?: MiniLocatorExtended,
+    isPdf: boolean,
 }
 
 export const AnnotationEdit: React.FC<IProps> = (props) => {
 
-    const { save, cancel, uuid, dockedMode, color, drawType, comment, tags, locatorExtended} = props;
+    const { save, cancel, uuid, dockedMode, color, drawType, comment, tags, locatorExtended, isPdf} = props;
 
     const displayFromReaderMenu = !!uuid;
     const [__] = useTranslator();
@@ -159,7 +160,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                     )}
                 </div>
             </div>
-            <div className={stylesAnnotations.annotation_actions_container}>
+            <div style={{display: isPdf ? "none" : "unset"}} className={stylesAnnotations.annotation_actions_container}>
                 <h4>{__("reader.annotations.highlight")}</h4>
                 <div role="radiogroup" className={stylesAnnotations.stylePicker}>
                     {noteDrawType.map((type, i) => (

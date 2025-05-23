@@ -12,9 +12,23 @@ import { IEventBus } from "./eventBus";
 export type IPdfPlayerScale = "page-fit" | "page-width" | number;
 export type IPdfPlayerView = "scrolled" | "paginated";
 export type IPdfPlayerColumn = "auto" | "1" | "2";
+export type IPdfAnnotation = {
+    annotationType: number;
+    color: number[];
+    opacity: number;
+    thickness: number;
+    quadPoints: Float32Array<ArrayBuffer> | null;
+    outlines: number[];
+    pageIndex: number;
+    rect: number[];
+    rotation: number;
+    structTreeParentId: any | null;
+    text: string;
+};
 
 export interface IPdfPlayerEvent {
-    "page": (pageNumber: string) => any;
+    "pageIndexOneBased": (pageIndexOneBased: number) => any;
+    "pageNumberString": (pageNumberString: string) => any;
     "firstpage": () => any;
     "lastpage": () => any;
     "scale": (scale: IPdfPlayerScale) => any;
@@ -44,6 +58,9 @@ export interface IPdfPlayerEvent {
         scrollMode: number,
         spreadMode: number,
       }) => any;
+    "highlightSelection": () => any;
+    "annotation": (annotation: IPdfAnnotation) => any;
+    "selectionChange": (textSelected: string) => any;
 }
 
 export interface IEventBusPdfPlayer extends IEventBus {

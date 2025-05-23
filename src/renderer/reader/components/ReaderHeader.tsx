@@ -818,7 +818,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         { style: { backgroundColor: "var(--color-blue" } })}
                                 >
                                     <input
-                                        disabled={this.props.isPdf || this.props.isDivina || isAudioBook}
+                                        disabled={this.props.isDivina || isAudioBook}
                                         id="annotationButton"
                                         aria-label={__("reader.navigation.annotationTitle")}
                                         className={stylesReader.bookmarkButton}
@@ -864,6 +864,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         tags={[]}
                                         comment=""
                                         locatorExtended={this.props.annotationLocatorExtended}
+                                        isPdf={this.props.isPdf}
                                     />
                                     <Popover.Arrow style={{ fill: "var(--color-extralight-grey)" }} width={15} height={10} />
                                 </Popover.Content>

@@ -20,7 +20,7 @@ import { readerActions, toastActions } from "readium-desktop/common/redux/action
 import { ToastType } from "readium-desktop/common/models/toast";
 
 import { highlightsDrawMargin, keyboardFocusRequest, MediaOverlaysStateEnum, TTSStateEnum } from "@r2-navigator-js/electron/renderer";
-import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+import { MiniLocatorExtended, MiniLocatorExtendedWithPdfInfo } from "readium-desktop/common/redux/states/locatorInitialState";
 
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
@@ -31,6 +31,10 @@ import { getCacheDocumentFromLocator } from "./readiumAnnotation/getCacheDocumen
 import { getResourceCache } from "./resourceCache";
 import { clone } from "ramda";
 import { convertSelectorTargetToLocatorExtended } from "readium-desktop/common/readium/annotation/converter";
+import { createOrGetPdfEventBus } from "../../pdf/driver";
+import { IPdfAnnotation } from "../../pdf/common/pdfReader.type";
+import { isPdfFn } from "readium-desktop/common/isManifestType";
+import { cleanupStr } from "@r2-navigator-js/electron/renderer/webview/selection";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:annotation");
@@ -252,7 +256,7 @@ function* noteRemove(action: readerActions.note.remove.TAction) {
 function* createAnnotation(locatorExtended: MiniLocatorExtended, color: IColor, comment: string, drawType: TDrawType, tags: string[]) {
 
     // clean __selection global variable state
-    __selectionInfoGlobal.locatorExtended = undefined;
+    (globalThis.window as any).__selectionInfoGlobal.locatorExtended = undefined;
 
     const creator = yield* selectTyped((state: IReaderRootState) => state.creator);
 
@@ -302,16 +306,112 @@ function* newLocatorEditAndSaveTheNote(locatorExtended: MiniLocatorExtended, fro
     if (cancelAction) {
         debug("annotation canceled and not saved [not created]");
 
-        // __selectionInfoGlobal.locatorExtended is not yet cleaned, ready to re-trigger the note creation
+        // (globalThis.window as any).__selectionInfoGlobal.locatorExtended is not yet cleaned, ready to re-trigger the note creation
         return;
     } else if (noteTakenAction) {
 
         const { color, textualValue, drawType, tags } = noteTakenAction.payload;
         debug(`annotation save the note with the color: ${color} , comment: ${textualValue.slice(0, 20)} , drawType: ${drawType} , tags: ${tags}`);
 
+        // PDF!!
 
-        // get color and comment and save the note
-        yield* callTyped(createAnnotation, locatorExtended, color, textualValue, EDrawType[drawType] as TDrawType, tags);
+        const r2Publication = yield* selectTyped((store: IReaderRootState) => store.reader.info.r2Publication);
+        const isPDF = isPdfFn(r2Publication);
+
+        if (!isPDF) {
+
+            // get color and comment and save the note
+            yield* callTyped(createAnnotation, locatorExtended, color, textualValue, EDrawType[drawType] as TDrawType, tags);
+
+            return ;
+
+        } 
+
+        const pdfAnnotationPromise = new Promise<IPdfAnnotation>((resolve) => {
+
+            const pdfAnnotationHandler = (pdfAnnotation: IPdfAnnotation) => {
+    
+                createOrGetPdfEventBus().remove(pdfAnnotationHandler, "annotation");
+                resolve(pdfAnnotation);
+            };
+            createOrGetPdfEventBus().subscribe("annotation", pdfAnnotationHandler);
+
+        });    
+        createOrGetPdfEventBus().dispatch("highlightSelection");
+
+        const pdfAnnotation = yield* callTyped(() => Promise.race([
+            pdfAnnotationPromise,
+            new Promise<void>((_, reject) => setTimeout(() => reject("TIMEOUT"), 2000)),
+        ]));
+
+        if (!pdfAnnotation) {
+            return ;
+        }
+
+        const {
+            // annotationType, // always '9' highlight
+            // color, // [rgb]
+            // opacity,
+            // thickness,
+            quadPoints,
+            outlines,
+            pageIndex,
+            rect,
+            rotation,
+            structTreeParentId, // null unused
+            text, // string textContent
+        } = pdfAnnotation;
+
+        const pdfLocatorExtended: MiniLocatorExtendedWithPdfInfo = {
+            locEventID: undefined,
+            audioPlaybackInfo: undefined,
+            locator: {
+                href: `${pageIndex}`,
+                title: undefined,
+                text: { highlight: text },
+                locations: {},
+            },
+            paginationInfo: undefined,
+            selectionInfo: {
+                rangeInfo: {
+                    startContainerElementCssSelector: "",
+                    startContainerElementCFI: undefined,
+                    startContainerElementXPath: undefined,
+                    startContainerChildTextNodeIndex: 0,
+                    startOffset: 0,
+                    endContainerElementCssSelector: "",
+                    endContainerElementCFI: undefined,
+                    endContainerElementXPath: undefined,
+                    endContainerChildTextNodeIndex: 0,
+                    endOffset: 0,
+                    cfi: undefined,
+                },
+                textFragment: undefined,
+                cleanBefore: "",
+                cleanText: cleanupStr(text),
+                cleanAfter: "",
+                rawBefore: "",
+                rawText: text,
+                rawAfter: "",
+            },
+            selectionIsNew: undefined,
+            docInfo: undefined,
+            epubPage: undefined,
+            epubPageID: undefined,
+            headings: undefined,
+            secondWebViewHref: undefined,
+            pdfInfo: { 
+                quadPoints,
+                outlines,
+                rect,
+                rotation,
+                structTreeParentId, 
+            },
+        };
+
+        yield* callTyped(createAnnotation, pdfLocatorExtended, color, textualValue, "solid_background" as TDrawType, tags);
+
+
 
     } else {
         debug("ERROR: second yield RACE not worked !!?!!");
@@ -355,7 +455,7 @@ function* annotationButtonTrigger(action: readerLocalActionAnnotations.trigger.T
         yield* putTyped(readerLocalActionLocatorHrefChanged.build(href1, href1, href2, href2));
     }
 
-    const { locatorExtended } = __selectionInfoGlobal;
+    const { locatorExtended } = (globalThis.window as any).__selectionInfoGlobal;
     if (!locatorExtended) {
         debug("annotationBtnTriggerRequestedAction received");
         // trigger a Toast notification to user
@@ -373,19 +473,19 @@ function* annotationButtonTrigger(action: readerLocalActionAnnotations.trigger.T
 
 }
 
-const __selectionInfoGlobal: {locatorExtended: MiniLocatorExtended | undefined} = {locatorExtended: undefined};
+(globalThis.window as any).__selectionInfoGlobal = {locatorExtended: undefined} as {locatorExtended: MiniLocatorExtended | undefined};
 function* setLocator(action: readerLocalActionSetLocator.TAction) {
 
     const locatorExtended = action.payload;
     const { selectionInfo, selectionIsNew } = locatorExtended;
 
     if (!selectionInfo) {
-        __selectionInfoGlobal.locatorExtended = undefined;
+        (globalThis.window as any).__selectionInfoGlobal.locatorExtended = undefined;
         return;
     }
 
     debug(`${selectionIsNew ? "New" : "Old"} Selection Requested ! [${selectionInfo.cleanText.slice(0, 50)}...]`);
-    __selectionInfoGlobal.locatorExtended = locatorExtended;
+    (globalThis.window as any).__selectionInfoGlobal.locatorExtended = locatorExtended;
 
     // check the boolean value of annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator
     const annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator = (window as any).__annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator || false;

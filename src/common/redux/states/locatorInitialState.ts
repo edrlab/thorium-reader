@@ -91,6 +91,15 @@ import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 //     followingElementIDs?: string[];
 // }
 export type MiniLocatorExtended = Omit<LocatorExtended, "followingElementIDs">;
+export type MiniLocatorExtendedWithPdfInfo = MiniLocatorExtended & {
+    pdfInfo: {
+        quadPoints: Float32Array<ArrayBuffer>;
+        outlines: number[];
+        rect: number[];
+        rotation: number;
+        structTreeParentId: null;
+    }
+};
 
 export const minimizeLocatorExtended = (locatorExtended: LocatorExtended): MiniLocatorExtended => {
 

@@ -107,9 +107,10 @@ import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 import { translateContentFieldHelper } from "readium-desktop/common/services/translator";
 import { getStore } from "../createStore";
-import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
+import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_PUB_NOTES } from "readium-desktop/common/streamerProtocol";
 import { DockTypeName } from "readium-desktop/common/models/dock";
 import { TDrawView } from "readium-desktop/common/redux/states/renderer/note";
+import { cleanupStr } from "@r2-navigator-js/electron/renderer/webview/selection";
 
 const debug = debug_("readium-desktop:renderer:reader:components:Reader");
 debug("_");
@@ -2172,10 +2173,13 @@ class Reader extends React.Component<IProps, IState> {
             const zoom = "page-fit"; // scale
             // const column = ""; // TODO: !?
 
+            const noteUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_PUB_NOTES}/publication-notes/${this.props.publicationView.identifier}`;
+
             console.log("pdf url", pdfUrl, "with page", page);
 
             pdfMount(
                 pdfUrl,
+                noteUrl,
                 publicationViewport,
                 { page, scrollTop: position, zoom },
             );
@@ -2189,6 +2193,71 @@ class Reader extends React.Component<IProps, IState> {
             });
             createOrGetPdfEventBus().subscribe("keyup", (payload) => {
                 keyUpEventHandler(payload, payload.elementName, payload.elementAttributes);
+            });
+            createOrGetPdfEventBus().subscribe("selectionChange", (text) => {
+
+                (globalThis.window as any).__selectionInfoGlobal = { locatorExtended: undefined };
+
+
+                // if (!annotation) {
+                //     return ;
+                // }
+
+                // const {
+                //     // annotationType, // always '9' highlight
+                //     // color, // [rgb]
+                //     // opacity,
+                //     // thickness,
+                //     quadPoints,
+                //     outlines,
+                //     pageIndex,
+                //     rect,
+                //     rotation,
+                //     structTreeParentId, // null unused
+                //     text // string textContent
+                // } = annotation;
+
+                const locatorExtended: MiniLocatorExtended = {
+                    locEventID: undefined,
+                    audioPlaybackInfo: undefined,
+                    locator: {
+                        href: "", // `${pageIndex}`,
+                        title: undefined,
+                        text: { highlight: text },
+                        locations: {},
+                    },
+                    paginationInfo: undefined,
+                    selectionInfo: {
+                        rangeInfo: {
+                            startContainerElementCssSelector: "",
+                            startContainerElementCFI: undefined,
+                            startContainerElementXPath: undefined,
+                            startContainerChildTextNodeIndex: 0,
+                            startOffset: 0,
+                            endContainerElementCssSelector: "",
+                            endContainerElementCFI: undefined,
+                            endContainerElementXPath: undefined,
+                            endContainerChildTextNodeIndex: 0,
+                            endOffset: 0,
+                            cfi: undefined,
+                        },
+                        textFragment: undefined,
+                        cleanBefore: "",
+                        cleanText: cleanupStr(text),
+                        cleanAfter: "",
+                        rawBefore: "",
+                        rawText: text,
+                        rawAfter: "",
+                    },
+                    selectionIsNew: undefined,
+                    docInfo: undefined,
+                    epubPage: undefined,
+                    epubPageID: undefined,
+                    headings: undefined,
+                    secondWebViewHref: undefined,
+                };
+
+                (globalThis.window as any).__selectionInfoGlobal = { locatorExtended };
             });
 
             console.log("toc", this.state.pdfPlayerToc);
@@ -2793,7 +2862,7 @@ class Reader extends React.Component<IProps, IState> {
         if (this.props.isPdf) {
             const index = locator?.href || "";
             if (index) {
-                createOrGetPdfEventBus().dispatch("page", index);
+                createOrGetPdfEventBus().dispatch("pageIndexOneBased", parseInt(index, 10) + 1);
             }
         } else if (this.props.isDivina) {
             // console.log(JSON.stringify(locator, null, 4));
@@ -2834,9 +2903,9 @@ class Reader extends React.Component<IProps, IState> {
 
         if (this.props.isPdf) {
 
-            const index = url;
-            if (index) {
-                createOrGetPdfEventBus().dispatch("page", index);
+            const pageNumber = url;
+            if (pageNumber) {
+                createOrGetPdfEventBus().dispatch("pageNumberString", pageNumber);
             }
 
         } else if (this.props.isDivina) {

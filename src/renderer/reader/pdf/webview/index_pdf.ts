@@ -103,6 +103,30 @@ function main() {
     });
 
     {
+        bus.subscribe("highlightSelection", () => {
+            pdfjsEventBus.dispatch("__highlightSelection");
+        });
+        pdfjsEventBus.on("__annotation", (annotation: {
+                annotationType: number;
+                color: number[];
+                opacity: number;
+                thickness: number;
+                quadPoints: Float32Array<ArrayBuffer> | null;
+                outlines: number[];
+                pageIndex: number;
+                rect: number[];
+                rotation: number;
+                structTreeParentId: any | null;
+                text: string;
+            }) => {
+            bus.dispatch("annotation", annotation);
+        });
+        pdfjsEventBus.on("__selectionChange", (textSelected: string) => {
+            bus.dispatch("selectionChange", textSelected);
+        })
+    }
+
+    {
         bus.subscribe("firstpage", () => {
             pdfjsEventBus.dispatch("firstpage");
         });
@@ -179,19 +203,14 @@ function main() {
 
     // pagechange
     {
-        bus.subscribe("page", (pageNumber) => {
-            console.log("pageNumber from host", pageNumber);
-
+        bus.subscribe("pageIndexOneBased", (pageIndexOneBased) => {
             p.then(() => {
-
-                // pdfjsEventBus.dispatch("pagenumberchanged", {
-                //     source: null,
-                //     value: pageNumber,
-                // });
-                const page = parseInt(pageNumber, 10);
-                pdfjsEventBus.dispatch("__setPageNumber", page);
-                
+                pdfjsEventBus.dispatch("__setPageIndexOneBased", pageIndexOneBased);
             });
+        });
+
+        bus.subscribe("pageNumberString", (pageNumberString) => {
+            pdfjsEventBus. dispatch("__setPageNumberString", pageNumberString);
         });
         // const debounceUpdateviewarea = debounce(async (evt: any) => {
         //     try {
