@@ -63,7 +63,7 @@
     "package:linux": "cross-env DEBUG=* CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --linux --x64 --publish never",
     "postpackage:linux": "(ls -alsR ./release/linux-arm64-unpacked/ || ls -alsR ./release/linux-unpacked/) && (npx @electron/fuses read --app ./release/linux-arm64-unpacked/thorium || npx @electron/fuses read --app ./release/linux-unpacked/thorium) || echo ok",
     "prepackage:mac": "npm run package:build",
-    "package:mac": "cross-env DEBUG=* electron-builder --mac --arm64 --publish never",
+    "package:mac": "cross-env DEBUG=* electron-builder --mac --x64 --publish never",
     "postpackage:mac": "(npx @electron/fuses read --app ./release/mac/Thorium.app || npx @electron/fuses read --app ./release/mac-arm64/Thorium.app) || echo ok",
     "package:mac:skip-notarize": "cross-env SKIP_NOTARIZE=1 npm run package:mac",
     "_NOT_NEEDED_prepackage:all": "npm run package:build",
