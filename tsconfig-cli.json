@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig",
   "compilerOptions": {
-    "skipLibCheck": true,
+    // "skipLibCheck": true,
     // NODENEXT works because "typed-redux-saga/macro" in WebPack Babel config is not used when compiling from the CLI with tsc or tsgo
     // "module": "esnext", // 99
     // "module": "ES2020", // 6

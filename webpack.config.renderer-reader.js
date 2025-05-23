@@ -33,6 +33,7 @@ console.log(`READER nodeEnv: ${nodeEnv}`);
 
 // https://github.com/edrlab/thorium-reader/issues/1097#issuecomment-643406149
 const useLegacyTypeScriptLoader = process.env.USE_LEGACY_TYPESCRIPT_LOADER ? true : false;
+const GoTsCheckerWebpackPlugin = require("./scripts/go-ts-checker-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 ForkTsCheckerWebpackPlugin.prototype[require("util").inspect.custom] = (_depth, _options) => {
     return "ForkTsCheckerWebpackPlugin";
@@ -394,7 +395,11 @@ let config = Object.assign(
     },
 );
 
-if (!checkTypeScriptSkip) {
+if (checkTypeScriptSkip) {
+    // config.plugins.push(
+    //     new GoTsCheckerWebpackPlugin({name: "READER"}),
+    // );
+} else {
     config.plugins.push(
         new ForkTsCheckerWebpackPlugin({
             // measureCompilationTime: true,

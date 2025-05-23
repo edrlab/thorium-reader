@@ -42,7 +42,7 @@
     "traceResolution": false,
     "disableSizeLimit": false,
     "removeComments": true,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     // NODENEXT does not work because of "typed-redux-saga/macro" in WebPack Babel config
     "module": "esnext", // 99
     // "module": "ES2020", // 6
