@@ -179,17 +179,16 @@ function main() {
 
     // pagechange
     {
-        bus.subscribe("page", (pageNumber) => {
-            console.log("pageNumber from host", pageNumber);
-
+        // PageNumber or PageLabel one based !! This is not pageIndex zero based
+        bus.subscribe("pageLabel", (pageLabel: string) => {
             p.then(() => {
-
-                // pdfjsEventBus.dispatch("pagenumberchanged", {
-                //     source: null,
-                //     value: pageNumber,
-                // });
-                const page = parseInt(pageNumber, 10);
-                pdfjsEventBus.dispatch("__setPageNumber", page);
+                pdfjsEventBus.dispatch("__setPageLabelOrPageNumber", pageLabel);
+                
+            });
+        });
+        bus.subscribe("pageNumber", (pageNumber: number) => {
+            p.then(() => {
+                pdfjsEventBus.dispatch("__setPageLabelOrPageNumber", pageNumber);
                 
             });
         });
