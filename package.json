@@ -411,7 +411,6 @@
     "markdown-loader": "^8.0.0",
     "mini-css-extract-plugin": "^2.9.2",
     "ncp": "^2.0.0",
-    "node-pty": "^1.1.0-beta34",
     "npm-scripts-lifecycle": "^1.0.0",
     "prettier": "^3.5.3",
     "remote-redux-devtools": "^0.5.16",
