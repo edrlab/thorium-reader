@@ -11,6 +11,7 @@ import * as path from "path";
 import { lockInstance } from "readium-desktop/main/cli/lock";
 import { IS_DEV, _APP_NAME, _APP_VERSION, _PACKAGING } from "readium-desktop/preprocessor-directives";
 import yargs from "yargs";
+// import { hideBin } from "yargs/helpers";
 import { closeProcessLock } from "../di";
 import { EOL } from "os";
 import { diMainGet } from "readium-desktop/main/di";
@@ -51,7 +52,7 @@ let __pendingCmd = 0;
 
 // yargs configuration
 const yargsInit = () =>
-    yargs
+    yargs() // hideBin(process.argv)
         .scriptName(_APP_NAME)
         .version(_APP_VERSION)
         .usage("$0 <cmd> [args]")

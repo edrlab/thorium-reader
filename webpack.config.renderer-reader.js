@@ -45,7 +45,7 @@ let externals = {
     "electron-devtools-installer": "electron-devtools-installer",
     "remote-redux-devtools": "remote-redux-devtools",
     electron: "electron",
-    yargs: "yargs",
+    // yargs: "yargs",
 };
 const _externalsCache = new Set();
 if (nodeEnv !== "production") {
@@ -297,6 +297,7 @@ let config = Object.assign(
                     loader: useLegacyTypeScriptLoader ? "awesome-typescript-loader" : "ts-loader",
                     options: {
                         transpileOnly: true, // checkTypeScriptSkip
+                        // compiler: "@typescript/native-preview",
                     },
                 },
                 {
@@ -313,6 +314,7 @@ let config = Object.assign(
                             loader: useLegacyTypeScriptLoader ? "awesome-typescript-loader" : "ts-loader",
                             options: {
                                 transpileOnly: true, // checkTypeScriptSkip
+                                // compiler: "@typescript/native-preview",
                             },
                         },
                     ],
