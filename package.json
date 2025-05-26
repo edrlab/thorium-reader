@@ -46,7 +46,7 @@
     "start:dev:main": "npm run build:dev:main && npm run start:dev:main:electron",
     "start:devex": "cross-env WEBPACK=bundle-external npm run start:dev",
     "start:dev": "cross-env DEBUG_COLORS=true npm run start:dev:renderer:pdf && cross-env DEBUG_COLORS=true concurrently --kill-others \"npm run start:dev:renderer:library\" \"npm run start:dev:renderer:reader\" \"npm run start:dev:main\"",
-    "start:dev:quick": "tsgo --project ./tsconfig-cli.json && cross-env SKIP_CHECK_TYPESCRIPT=1 npm run start:dev",
+    "start:dev:quick": "cross-env SKIP_CHECK_TYPESCRIPT=1 DEBUG_COLORS=true npm run start:dev:renderer:pdf && cross-env SKIP_CHECK_TYPESCRIPT=1 DEBUG_COLORS=true concurrently --kill-others \"npm run start:dev:renderer:library\" \"npm run start:dev:renderer:reader\" \"npm run start:dev:main\" \"tsgo --project ./tsconfig-cli.json --watch\"",
     "vscode:launch:attach:electron": "electron --enable-logging --remote-debugging-port=9223 --inspect=25575 --nolazy .",
     "vscode:launch:attach": "cross-env DEBUG=r2:*,readium-desktop:* NODE_ENV=development VSCODE_LAUNCH=true npm run build:dev:main && npm run start:dev:renderer:pdf && concurrently --kill-others \"npm run start:dev:renderer:library\" \"npm run start:dev:renderer:reader\" \"npm run vscode:launch:attach:electron\"",
     "vscode:launch:hot": "cross-env DEBUG=r2:*,readium-desktop:* NODE_ENV=development VSCODE_LAUNCH=true npm run build:dev:main",

@@ -409,10 +409,10 @@ let config = Object.assign(
 
 
 if (checkTypeScriptSkip) {
-    const GoTsCheckerWebpackPlugin = require("./scripts/go-ts-checker-webpack-plugin");
-    config.plugins.push(
-        new GoTsCheckerWebpackPlugin({name: "LIBRARY"}), // we use a single-pass fast-compile/typecheck in this LIBRARY watcher, no need in READER (and MAIN + PDF configs do not activate a watcher)
-    );
+    // const GoTsCheckerWebpackPlugin = require("./scripts/go-ts-checker-webpack-plugin");
+    // config.plugins.push(
+    //     new GoTsCheckerWebpackPlugin({name: "LIBRARY"}), // we use a single-pass fast-compile/typecheck in this LIBRARY watcher, no need in READER (and MAIN + PDF configs do not activate a watcher)
+    // );
 } else {
     config.plugins.push(
         new ForkTsCheckerWebpackPlugin({
