@@ -683,6 +683,12 @@
             "fit": "பொருத்தம்"
         },
         "goToContent": "உள்ளடக்கத்திற்குச் செல்லுங்கள்",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "சிறுகுறிப்புகள்",
             "bookmarks": "புக்மார்க்குகள்",

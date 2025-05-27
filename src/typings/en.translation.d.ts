@@ -1765,6 +1765,12 @@ declare namespace typed_i18n {
     readonly "speed": string,
     readonly "stop": string,
     readonly "voice": string
+  },
+  readonly "imgViewer": {
+    readonly "title": string,
+    readonly "zoomIn": string,
+    readonly "zoomOut": string,
+    readonly "zoomReset": string
   }
 };
   (_: "reader.annotations", __?: {}): {
@@ -2236,6 +2242,16 @@ declare namespace typed_i18n {
   (_: "reader.tts.speed", __?: {}): string;
   (_: "reader.tts.stop", __?: {}): string;
   (_: "reader.tts.voice", __?: {}): string;
+  (_: "reader.imgViewer", __?: {}): {
+  readonly "title": string,
+  readonly "zoomIn": string,
+  readonly "zoomOut": string,
+  readonly "zoomReset": string
+};
+  (_: "reader.imgViewer.title", __?: {}): string;
+  (_: "reader.imgViewer.zoomIn", __?: {}): string;
+  (_: "reader.imgViewer.zoomOut", __?: {}): string;
+  (_: "reader.imgViewer.zoomReset", __?: {}): string;
   (_: "settings", __?: {}): {
   readonly "annotationCreator": {
     readonly "creator": string,

@@ -683,6 +683,12 @@
             "fit": "Sovita"
         },
         "goToContent": "Siirry sisältöön",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "Muistiinpanot",
             "bookmarks": "Kirjanmerkit",

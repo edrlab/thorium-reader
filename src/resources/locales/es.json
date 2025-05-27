@@ -683,6 +683,12 @@
             "fit": "Ajustar"
         },
         "goToContent": "Ir al contenido",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "Anotaciones",
             "bookmarks": "Marcadores",

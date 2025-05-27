@@ -683,6 +683,12 @@
             "fit": "Prilagajanje zaslonu"
         },
         "goToContent": "Pojdi na vsebino",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "Opombe",
             "bookmarks": "Zaznamki",

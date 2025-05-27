@@ -683,6 +683,12 @@
             "fit": ""
         },
         "goToContent": "Přejít na obsah",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "Anotace",
             "bookmarks": "Záložky",
