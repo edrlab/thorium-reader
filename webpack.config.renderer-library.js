@@ -44,7 +44,7 @@ let externals = {
     "electron-devtools-installer": "electron-devtools-installer",
     "remote-redux-devtools": "remote-redux-devtools",
     electron: "electron",
-    yargs: "yargs",
+    // yargs: "yargs",
 };
 const _externalsCache = new Set();
 if (nodeEnv !== "production") {
@@ -298,6 +298,7 @@ let config = Object.assign(
                     loader: useLegacyTypeScriptLoader ? "awesome-typescript-loader" : "ts-loader",
                     options: {
                         transpileOnly: true, // checkTypeScriptSkip
+                        // compiler: "@typescript/native-preview",
                     },
                 },
                 {
@@ -314,6 +315,7 @@ let config = Object.assign(
                             loader: useLegacyTypeScriptLoader ? "awesome-typescript-loader" : "ts-loader",
                             options: {
                                 transpileOnly: true, // checkTypeScriptSkip
+                                // compiler: "@typescript/native-preview",
                             },
                         },
                     ],
@@ -405,7 +407,13 @@ let config = Object.assign(
     },
 );
 
-if (!checkTypeScriptSkip) {
+
+if (checkTypeScriptSkip) {
+    // const GoTsCheckerWebpackPlugin = require("./scripts/go-ts-checker-webpack-plugin");
+    // config.plugins.push(
+    //     new GoTsCheckerWebpackPlugin({name: "LIBRARY"}), // we use a single-pass fast-compile/typecheck in this LIBRARY watcher, no need in READER (and MAIN + PDF configs do not activate a watcher)
+    // );
+} else {
     config.plugins.push(
         new ForkTsCheckerWebpackPlugin({
             // measureCompilationTime: true,

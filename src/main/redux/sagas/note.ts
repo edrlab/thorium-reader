@@ -9,11 +9,11 @@ import * as debug_ from "debug";
 import { dialog } from "electron";
 import { readFile } from "fs/promises";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { annotationActions, toastActions } from "readium-desktop/common/redux/actions";
+import { annotationActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
 import { SagaGenerator } from "typed-redux-saga";
-import { call as callTyped, put as putTyped, select as selectTyped, take as takeTyped } from "typed-redux-saga/macro";
+import { call as callTyped, put as putTyped, select as selectTyped, take as takeTyped, delay as delayTyped } from "typed-redux-saga/macro";
 import { hexToRgb } from "readium-desktop/common/rgb";
 import { isNil } from "readium-desktop/utils/nil";
 import { RootState } from "../states";
@@ -26,13 +26,67 @@ import { tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { v4 as uuidv4 } from "uuid";
 import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLatest";
 import { getTranslator } from "readium-desktop/common/services/translator";
-import { EDrawType, INotePreParsingState, INoteState, NOTE_DEFAULT_COLOR, noteColorCodeToColorSet, noteColorSetToColorCode } from "readium-desktop/common/redux/states/renderer/note";
+import { EDrawType, INoteState, NOTE_DEFAULT_COLOR, noteColorCodeToColorSet, noteColorSetToColorCode } from "readium-desktop/common/redux/states/renderer/note";
+import { winActions } from "../actions";
+import { WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/constant";
 
 
 // Logger
 const filename_ = "readium-desktop:main:saga:annotationsImporter";
 const debug = debug_(filename_);
 debug("_");
+
+export function* getNotesFromMainWinState(publicationIdentifier: string): SagaGenerator<INoteState[]> {
+
+    let notes: INoteState[] = [];
+    const sessionReader = yield* selectTyped((state: RootState) => state.win.session.reader);
+    const winSessionReaderStateArray = Object.values(sessionReader).filter((v) => v.publicationIdentifier === publicationIdentifier);
+    if (winSessionReaderStateArray.length) {
+        const winSessionReaderStateFirst = winSessionReaderStateArray[0]; // TODO: get the first only !?!
+        notes = winSessionReaderStateFirst?.reduxState?.note || [];
+
+        debug("current publication AnnotationsList come from the readerSession (there are one or many readerWin currently open)");
+    } else {
+        const sessionRegistry = yield* selectTyped((state: RootState) => state.win.registry.reader);
+        if (Object.keys(sessionRegistry).find((v) => v === publicationIdentifier)) {
+            notes = sessionRegistry[publicationIdentifier]?.reduxState?.note || [];
+
+            debug("current publication AnnotationsList come from the readerRegistry (no readerWin currently open)");
+        }
+    }
+    debug("There are", notes.length, "annotation(s) loaded from the current publicationIdentifier");
+    if (!notes.length) {
+        debug("Be careful, there are no annotation loaded for this publication!");
+    }
+
+    return notes;
+}
+
+function* pushNotesFromMainWindow(publicationIdentifier: string, notes: INoteState[]): SagaGenerator<void> {
+
+    const sessionReader = yield* selectTyped((state: RootState) => state.win.session.reader);
+    const winSessionReaderStateArray = Object.values(sessionReader).filter((v) => v.publicationIdentifier === publicationIdentifier);
+
+    if (winSessionReaderStateArray.length) {
+        // dispatch action
+        for (const note of notes) {
+            yield* delayTyped(1);
+            yield* putTyped(readerActions.note.addUpdate.build(publicationIdentifier, note));
+        }
+
+    } else {
+        const sessionRegistry = yield* selectTyped((state: RootState) => state.win.registry.reader);
+        const reduxState = sessionRegistry[publicationIdentifier]?.reduxState || {};
+        reduxState.note = [...(reduxState.note || []), ...notes];
+        const winBound = sessionRegistry[publicationIdentifier]?.windowBound || { height: WINDOW_MIN_HEIGHT, width: WINDOW_MIN_WIDTH, x: 0, y: 0 };
+
+        yield* putTyped(winActions.registry.registerReaderPublication.build(
+            publicationIdentifier,
+            winBound,
+            reduxState),
+        );
+    }
+}
 
 function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAction): SagaGenerator<void> {
 
@@ -121,33 +175,12 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         debug("GOOD ! spineItemHref matched : publication identified, let's continue the importation");
 
         // OK publication identified
+        const notes = yield* callTyped(getNotesFromMainWinState, publicationIdentifier);
 
-        let annotations: INoteState[] = [];
-        const sessionReader = yield* selectTyped((state: RootState) => state.win.session.reader);
-        const winSessionReaderStateArray = Object.values(sessionReader).filter((v) => v.publicationIdentifier === publicationIdentifier);
-        if (winSessionReaderStateArray.length) {
-            const winSessionReaderStateFirst = winSessionReaderStateArray[0]; // TODO: get the first only !?!
-            annotations = winSessionReaderStateFirst?.reduxState?.note || [];
-
-            debug("current publication AnnotationsList come from the readerSession (there are one or many readerWin currently open)");
-        } else {
-            const sessionRegistry = yield* selectTyped((state: RootState) => state.win.registry.reader);
-            if (Object.keys(sessionRegistry).find((v) => v === publicationIdentifier)) {
-                annotations = sessionRegistry[publicationIdentifier]?.reduxState?.note || [];
-
-                debug("current publication AnnotationsList come from the readerRegistry (no readerWin currently open)");
-            }
-        }
-        debug("There are", annotations.length, "annotation(s) loaded from the current publicationIdentifier");
-        if (!annotations.length) {
-            debug("Be careful, there are no annotation loaded for this publication!");
-        }
-
-
-        const annotationsParsedNoConflictArray: INotePreParsingState[] = [];
-        const annotationsParsedConflictOlderArray: INotePreParsingState[] = [];
-        const annotationsParsedConflictNewerArray: INotePreParsingState[] = [];
-        const annotationsParsedAllArray: INotePreParsingState[] = [];
+        const annotationsParsedNoConflictArray: INoteState[] = [];
+        const annotationsParsedConflictOlderArray: INoteState[] = [];
+        const annotationsParsedConflictNewerArray: INoteState[] = [];
+        const annotationsParsedAllArray: INoteState[] = [];
 
         debug("There are", annotationsIncommingArray.length, "incomming annotations to be imported");
 
@@ -171,9 +204,9 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                 continue;
             }
 
-            const annotationParsed: INotePreParsingState = {
+            const annotationParsed: INoteState = {
                 uuid,
-                target: incommingAnnotation.target,
+                index: -1, // TODO !!!!
                 textualValue: incommingAnnotation.body?.value,
                 color: hexToRgb(noteColorSetToColorCode[incommingAnnotation.body?.color] ||
                     noteColorSetToColorCode[noteColorCodeToColorSet[incommingAnnotation.body?.color] || NOTE_DEFAULT_COLOR],
@@ -190,6 +223,9 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
                     name: creator.name,
                 } : undefined,
                 group: incommingAnnotation.motivation === "bookmarking" ? "bookmark" : "annotation",
+                readiumAnnotation: {
+                    import: { target: incommingAnnotation.target },
+                },
             };
 
             if (annotationParsed.modified) {
@@ -209,7 +245,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
 
             annotationsParsedAllArray.push(annotationParsed);
 
-            const annotationSameUUIDFound = annotations.find(({ uuid }) => uuid === annotationParsed.uuid);
+            const annotationSameUUIDFound = notes.find(({ uuid }) => uuid === annotationParsed.uuid);
             if (annotationSameUUIDFound) {
 
                 if (annotationSameUUIDFound.modified && annotationParsed.modified) {
@@ -280,35 +316,8 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         debug("ready to send", annotationsParsedReadyToBeImportedArray.length, "annotation(s) to the annotationImportQueue processed to the reader");
 
 
-        // need to develop a FIFO queue because more that one same notes can be pushed to the queue
-
-        let delta = 0;
-        {
-            const annotationQueue = yield* selectTyped((_state: RootState) => _state.annotationImportQueue);
-            debug("AnnotationImportQueue length: ", annotationQueue.length);
-            delta = -1 * annotationQueue.length;
-        }
-
-        yield* putTyped(annotationActions.pushToAnnotationImportQueue.build(annotationsParsedReadyToBeImportedArray));
-
-        // finish !!!
-
-        {
-            const annotationQueue = yield* selectTyped((_state: RootState) => _state.annotationImportQueue);
-            debug("AnnotationImportQueue length: ", annotationQueue.length);
-            delta += annotationQueue.length;
-
-            if (delta === annotationsParsedReadyToBeImportedArray.length) {
-                debug(`${delta} new annotations adedd to the import queue`);
-            } else {
-                debug(`Error not all annotations have been added to the queue : ${delta} vs ${annotationsParsedReadyToBeImportedArray.length} !!!`);
-                debug(JSON.stringify(annotationsParsedReadyToBeImportedArray, null, 4));
-            }
-        }
-
-
-        // then in reader window that got the lock, parse and import notes
-        // annotImportQUeue[0], get the first element and then dispatch to unshift from the state myaction.shift.build()... FIFO queue
+        // push notes to the publicationIdentifier redux-state (reader if open or redux-registry-main state instead)
+        yield* callTyped(pushNotesFromMainWindow, publicationIdentifier, annotationsParsedReadyToBeImportedArray);
 
         // convert range to locator IRangeInfo/selectionInfo
         // ref: https://github.com/readium/r2-navigator-js/blob/a08126622ac87e04200a178cc438fd7e1b256c52/src/electron/renderer/webview/selection.ts#L342

@@ -35,7 +35,7 @@ import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducer
 import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
 import { versionUpdateReducer } from "readium-desktop/common/redux/reducers/version-update";
 import { annotationModeEnableReducer } from "./annotationModeEnable";
-import { annotationActions, apiKeysActions, readerActions } from "readium-desktop/common/redux/actions";
+import { apiKeysActions, readerActions } from "readium-desktop/common/redux/actions";
 import { readerMediaOverlayReducer } from "./mediaOverlay";
 import { readerTTSReducer } from "./tts";
 import { readerTransientConfigReducer } from "./readerTransientConfig";
@@ -43,7 +43,6 @@ import { readerAllowCustomConfigReducer } from "readium-desktop/common/redux/red
 import { creatorReducer } from "readium-desktop/common/redux/reducers/creator";
 import { importAnnotationReducer } from "readium-desktop/renderer/common/redux/reducers/importAnnotation";
 import { tagReducer } from "readium-desktop/common/redux/reducers/tag";
-import { fifoReducer } from "readium-desktop/utils/redux-reducers/fifo.reducer";
 import { readerResourceCacheReducer } from "./resourceCache";
 import { readerLockReducer } from "./lock";
 import { imageClickReducer } from "./imageClick";
@@ -52,7 +51,7 @@ import { readerBookmarkTotalCountReducer } from "readium-desktop/common/redux/re
 // import { apiKeysReducer } from "readium-desktop/common/redux/reducers/api_key";
 import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 import { arrayReducer } from "readium-desktop/utils/redux-reducers/array.reducer";
-import { INotePreParsingState, INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import { IAiApiKey } from "readium-desktop/common/redux/states/ai_apiKey";
 import { noteExportReducer } from "readium-desktop/common/redux/reducers/noteExport";
 
@@ -76,8 +75,16 @@ export const rootReducer = () => {
                 {
                     add: {
                         type: readerActions.note.addUpdate.ID,
-                        selector: (payload) => {
-                            return [payload.newNote];
+                        selector: (payload, state) => {
+                            const { previousNote, newNote } = payload;
+                            if (!previousNote) {
+                                return [newNote];
+                            }
+                            if (previousNote.uuid === newNote.uuid && state.find((item) => item.uuid === previousNote.uuid)) {
+                                return [newNote];
+                            }
+                            console.error("NoteArrayReducer error : trying to update a note already deleted !!", JSON.stringify(previousNote, null, 2), JSON.stringify(newNote, null, 2));
+                            return [];
                         },
                     },
                     remove: {
@@ -211,21 +218,6 @@ export const rootReducer = () => {
                     },
                 },
                 getId: (item) => item.provider, // Ajoutez la fonction getId ici
-            },
-        ),
-        annotationImportQueue: fifoReducer
-        <
-            annotationActions.pushToAnnotationImportQueue.TAction,
-            INotePreParsingState
-        >(
-            {
-                push: {
-                    type: annotationActions.pushToAnnotationImportQueue.ID,
-                    selector: (action) => action.payload.annotations,
-                },
-                shift: {
-                    type: annotationActions.shiftFromAnnotationImportQueue.ID,
-                },
             },
         ),
         img: imageClickReducer,

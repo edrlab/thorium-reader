@@ -2,7 +2,7 @@
     "accessibility": {
         "bookMenu": "Meny",
         "closeDialog": "Stäng",
-        "importFile": "Importera publikation",
+        "importFile": "Importera bok",
         "leftSlideButton": "Dra åt vänster",
         "mainContent": "huvudinnehåll",
         "rightSlideButton": "Dra åt höger",
@@ -12,7 +12,7 @@
     "apiapp": {
         "documentation": "Thorium-dokumentation",
         "howItWorks": "Hur fungerar det?",
-        "informations": "I Frankrike erbjuder många offentliga bibliotek en maskinläsbar katalog (liknande OPDS men inte identisk), som låter låntagare ladda ner digitala publikationer från deras personliga bokhylla. Med denna teknik integrerad i Thorium Reader kan du ladda ner en e-bok eller ljudbok direkt till Thorium Reader för omedelbar läsning. Hur ansluter du ditt konto från ett franskt offentligt bibliotek till Thorium Reader? Det är enkelt. Ange en fransk stad eller en del av bibliotekets namn i sökfältet och tryck på sökknappen. En lista med offentliga bibliotek som motsvarar din sökning visas. Välj ett bibliotek och tryck på Lägg till. I den uppdaterade listan med kataloger, välj detta bibliotek: ett inloggningsformulär visas. Ange ditt användarnamn/e-postadress och lösenord, och tryck på Logga in. Du kan nu se innehållet i din personliga bokhylla, från vilken du kan ladda ner och läsa de e-böcker och ljudböcker du tidigare lånat.",
+        "informations": "I Frankrike erbjuder många offentliga bibliotek en maskinläsbar katalog (liknande OPDS men inte identisk), som låter låntagare ladda ner digitala publikationer från deras personliga bokhylla. Med denna teknik integrerad i Thorium Reader kan du ladda ner en e-bok eller ljudbok direkt till Thorium Reader för omedelbar läsning.\nHur ansluter du ditt konto från ett franskt offentligt bibliotek till Thorium Reader? Det är enkelt. Ange en fransk stad eller en del av bibliotekets namn i sökfältet och tryck på sökknappen. En lista med offentliga bibliotek som motsvarar din sökning visas. Välj ett bibliotek och tryck på Lägg till. I den uppdaterade listan med kataloger, välj detta bibliotek: ett inloggningsformulär visas. Ange ditt användarnamn/e-postadress och lösenord, och tryck på Logga in. Du kan nu se innehållet i din personliga bokhylla, från vilken du kan ladda ner och läsa de e-böcker och ljudböcker du tidigare lånat.",
         "noLibraryFound": "Inget bibliotek hittades ({{- name}})"
     },
     "app": {
@@ -72,7 +72,7 @@
             "lastAdditions": "Nyligen tillagt"
         },
         "export": "Spara som",
-        "exportAnnotation": "Spara anteckningar som",
+        "exportAnnotation": "Exportera anteckningar",
         "format": "Format",
         "importAnnotation": "Importera anteckningar",
         "lang": "Språk",
@@ -151,8 +151,8 @@
         "cancel": "Avbryt",
         "deleteAnnotations": "Radera anteckningar?",
         "deleteAnnotationsText": "Vill du radera {{- annotationListLength}} anteckning(ar)?",
-        "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteBookmarks": "Radera bokmärken?",
+        "deleteBookmarksText": "Vill du radera {{- bookmarkListLength}} bokmärke(n)?",
         "deleteFeed": "Vill du ta bort den här katalogen?",
         "deletePublication": "Vill du ta bort den här publikationen?",
         "import": "Vill du importera följande filer:",
@@ -176,7 +176,7 @@
         "gridTitle": "Gallerivy",
         "home": "Huvudmeny",
         "homeTitle": "Hem",
-        "importTitle": "Importera en publikation",
+        "importTitle": "Importera en bok",
         "listTitle": "Tabellvy",
         "myCatalogs": "Mina kataloger",
         "refreshTitle": "Uppdatera",
@@ -234,7 +234,7 @@
         "documentation": "OPDS officiella webbplats",
         "empty": "Inga publikationer hittades",
         "firstPage": "Första",
-        "informations": "Föreställ dig en värld där du kan utforska och ladda ner digitala publikationer från offentliga bibliotek och digitala bokhandlar med bara några få klick. Det är precis vad katalogformatet Open Publication Distribution System (OPDS) erbjuder. Med OPDS kan du navigera genom kataloger från olika e-boksleverantörer, registrera dig, låna, köpa en publikation eller besöka din personliga bokhylla. Du kan till och med ladda ner en e-bok eller ljudbok direkt till Thorium Reader för omedelbar läsning. Så, hur hittar du en OPDS-katalog? Det är enkelt. Leta efter en länk (URL) som leder till katalogen. Kopiera denna URL till länkfältet ovan. Tänk på att det inte finns någon central plats för alla aktiva OPDS-kataloger. Du måste kontakta ditt föredragna bibliotek eller bokhandlare och be om deras OPDS-katalog-URL. Om du är osäker på var du ska börja, har Wikipedia några register över OPDS-kataloger på olika språk som kan vara till hjälp. I namnfältet kan du ange ett valfritt namn för att enkelt identifiera flödet i Thorium Reader.",
+        "informations": "Föreställ dig en värld där du kan utforska och ladda ner digitala publikationer från offentliga bibliotek och digitala bokhandlar med bara några få klick. Det är precis vad katalogformatet Open Publication Distribution System (OPDS) erbjuder. Med OPDS kan du navigera genom kataloger från olika e-boksleverantörer, registrera dig, låna, köpa en publikation eller besöka din personliga bokhylla. Du kan till och med ladda ner en e-bok eller ljudbok direkt till Thorium Reader för omedelbar läsning.\nSå, hur hittar du en OPDS-katalog? Det är enkelt. Leta efter en länk (URL) som leder till katalogen. Kopiera denna URL till länkfältet ovan. Tänk på att det inte finns någon central plats för alla aktiva OPDS-kataloger. Du måste kontakta ditt föredragna bibliotek eller bokhandlare och be om deras OPDS-katalog-URL. Om du är osäker på var du ska börja, har Wikipedia några register över OPDS-kataloger på olika språk som kan vara till hjälp.\nI namnfältet kan du ange ett valfritt namn för att enkelt identifiera flödet i Thorium Reader.",
         "lastPage": "Sista",
         "menu": {
             "aboutBook": "Om boken",
@@ -261,6 +261,297 @@
             "url": "Länk:"
         },
         "whatIsOpds": "Vad är OPDS?"
+    },
+    "publ-a11y-display-guide": {
+        "accessibility-summary": {
+            "accessibility-summary-title": ""
+        },
+        "additional-accessibility-information": {
+            "additional-accessibility-information-aria": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-audio-descriptions": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-braille": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-full-ruby-annotations": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-high-contrast-between-text-and-background": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-large-print": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-page-breaks": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-ruby-annotations": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-sign-language": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-tactile-graphics": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-tactile-objects": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-text-to-speech-hinting": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-title": ""
+        },
+        "conformance": {
+            "conformance-a": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-aa": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-aaa": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-certifier": {
+                "compact": ""
+            },
+            "conformance-certifier-credentials": {
+                "compact": ""
+            },
+            "conformance-details-certifier-report": {
+                "compact": ""
+            },
+            "conformance-details-claim": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-details-epub-accessibility-1-0": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-details-epub-accessibility-1-1": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-details-level-a": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-details-level-aa": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-details-level-aaa": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-details-wcag-2-0": {
+                "compact": ""
+            },
+            "conformance-details-wcag-2-1": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-details-wcag-2-2": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-no": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-title": "",
+            "conformance-unknown-standard": {
+                "compact": "",
+                "descriptive": ""
+            }
+        },
+        "hazards": {
+            "hazards-flashing": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-flashing-none": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-flashing-unknown": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-motion": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-motion-none": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-motion-unknown": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-no-metadata": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-none": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-sound": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-sound-none": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-sound-unknown": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-title": "",
+            "hazards-unknown": {
+                "compact": "",
+                "descriptive": ""
+            }
+        },
+        "navigation": {
+            "navigation-index": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "navigation-no-metadata": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "navigation-page-navigation": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "navigation-structural": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "navigation-title": "",
+            "navigation-toc": {
+                "compact": "",
+                "descriptive": ""
+            }
+        },
+        "rich-content": {
+            "rich-content-accessible-chemistry-as-latex": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-accessible-chemistry-as-mathml": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-accessible-math-as-latex": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-accessible-math-as-mathml": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-accessible-math-described": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-closed-captions": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-extended": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-open-captions": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-title": "",
+            "rich-content-transcript": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-unknown": {
+                "compact": "",
+                "descriptive": ""
+            }
+        },
+        "ways-of-reading": {
+            "ways-of-reading-nonvisual-reading-alt-text": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-nonvisual-reading-no-metadata": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-nonvisual-reading-none": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-nonvisual-reading-not-fully": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-nonvisual-reading-readable": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-prerecorded-audio-complementary": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-prerecorded-audio-no-metadata": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-prerecorded-audio-only": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-prerecorded-audio-synchronized": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-title": "",
+            "ways-of-reading-visual-adjustments-modifiable": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-visual-adjustments-unknown": {
+                "compact": "",
+                "descriptive": ""
+            }
+        }
     },
     "publication": {
         "accessibility": {
@@ -382,7 +673,7 @@
             }
         },
         "bookmarks": {
-            "index": ""
+            "index": "Bokmärke {{- index}}"
         },
         "divina": {
             "mute": "stäng av ljud",
@@ -399,7 +690,7 @@
             "edit": "Redigera",
             "goTo": "Gå till sida",
             "landmarks": "Landmärken",
-            "saveMark": "Spara bokmärke",
+            "saveMark": "Spara",
             "search": "Sök",
             "searchResult": "Sök [{{- searchText}}]",
             "toc": "Innehållsförteckning"
@@ -410,8 +701,8 @@
             "captionsDescription": "Förenklad textvy med minimal formatering.",
             "disableContinuousPlay": "Inaktivera kontinuerlig uppläsning",
             "disableContinuousPlayDescription": "Läs inte automatiskt upp nästa objekt. Pausa efter att det aktuella objektet har lästs upp.",
-            "ignoreAndUseTTS": "",
-            "ignoreAndUseTTSDescription": "",
+            "ignoreAndUseTTS": "Ignorera förinspelat ljud, använd text-till-tal",
+            "ignoreAndUseTTSDescription": "Använd inte Epub Media Overlays, läs med text-till-tal istället",
             "next": "Nästa",
             "pause": "Pausa",
             "play": "Läs upp",
@@ -442,7 +733,7 @@
             "openTableOfContentsTitle": "Navigation",
             "page": "Sida",
             "pdfscalemode": "Anpassa till hel sida eller sidbredd",
-            "settingsTitle": "Inställningar"
+            "settingsTitle": "inställningar"
         },
         "notes": {
             "colors": {
@@ -606,9 +897,9 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "",
-                "enableCheckbox": "",
-                "overrideHTMLTemplate": ""
+                "applyDefaultTemplate": "ANVÄND STANDARDMALLEN",
+                "enableCheckbox": "Aktivera/inaktivera ändringar i Mustache-mallen när anteckningar exporteras till HTML",
+                "overrideHTMLTemplate": "Använd egen Mustache-mall när anteckningar exporteras till HTML"
             }
         },
         "session": {
@@ -630,25 +921,25 @@
     },
     "tts": {
         "highlight": {
-            "mainColor": "",
-            "maskBlockWordOutline": "",
-            "maskBlockWordSolidBackground": "",
-            "maskBlockWordUnderline": "",
-            "maskWordOutline": "",
-            "maskWordSolidBackground": "",
-            "maskWordUnderline": "",
-            "outlineWordOutline": "",
-            "outlineWordSolidBackground": "",
-            "outlineWordUnderline": "",
-            "preview": "",
-            "solidBackgroundWordOutline": "",
-            "solidBackgroundWordSolidBackground": "",
-            "solidBackgroundWordUnderline": "",
-            "style": "",
-            "underlineWordOutline": "",
-            "underlineWordSolidBackground": "",
-            "underlineWordUnderline": "",
-            "wordColor": ""
+            "mainColor": "Bakgrundsfärg",
+            "maskBlockWordOutline": "Maskering med ram, ram runt ord",
+            "maskBlockWordSolidBackground": "Maskering med ram, bakgrundsfärg för ord",
+            "maskBlockWordUnderline": "Maskering med ram, understruket ord",
+            "maskWordOutline": "Maskering, ram runt ord",
+            "maskWordSolidBackground": "Maskering, bakgrundsfärg för ord",
+            "maskWordUnderline": "Maskering, understruket ord",
+            "outlineWordOutline": "Ram, ram runt ord",
+            "outlineWordSolidBackground": "Ram, bakgrundsfärg för ord",
+            "outlineWordUnderline": "Ram, understruket ord",
+            "preview": "Förhandsvisning av markering",
+            "solidBackgroundWordOutline": "Bakgrundsfärg, ram runt ord",
+            "solidBackgroundWordSolidBackground": "Bakgrundsfärg, bakgrundsfärg för ord",
+            "solidBackgroundWordUnderline": "Bakgrundsfärg, understruket ord",
+            "style": "Stil för markering av text-till-tal",
+            "underlineWordOutline": "Understrykning, ram runt ord",
+            "underlineWordSolidBackground": "Understrykning, bakgrundsfärg för ord",
+            "underlineWordUnderline": "Understrykning, understruket ord",
+            "wordColor": "Ordfärg"
         }
     },
     "wizard": {

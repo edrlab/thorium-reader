@@ -83,7 +83,7 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { Locator } from "@r2-shared-js/models/locator";
 import { dialogActions, dockActions, readerActions } from "readium-desktop/common/redux/actions";
-import { readerLocalActionExportAnnotationSet, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
+import { readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
 import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 import { IReaderDialogOrDockSettingsMenuState, ReaderConfig } from "readium-desktop/common/models/reader";
 import { rgbToHex } from "readium-desktop/common/rgb";
@@ -100,9 +100,12 @@ import DOMPurify from "dompurify";
 import { marked } from "marked";
 
 import { shell } from "electron";
+import { exportAnnotationSet } from "readium-desktop/renderer/common/redux/sagas/readiumAnnotation/export";
+import { getSaga } from "../createStore";
+import { clone } from "ramda";
 (window as any).__shell_openExternal = (url: string) => url.startsWith("http") ? shell.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
 
-console.log(window);
+// console.log(window);
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderMenuProps {
@@ -487,12 +490,14 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
 
     const dispatch = useDispatch();
     const [__] = useTranslator();
+    const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
     // const noteTotalCount = useSelector((state: IReaderRootState) => state.reader.noteTotalCount.state);
     const save = React.useCallback((color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
         dispatch(readerActions.note.addUpdate.build(
+            pubId,
             {
                 uuid: annotation.uuid,
-                locatorExtended: annotation.locatorExtended,
+                locatorExtended: clone(annotation.locatorExtended),
                 color,
                 textualValue: comment,
                 drawType: EDrawType[drawType],
@@ -501,19 +506,19 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
                 created: annotation.created,
                 index: annotation.index,
                 group: "annotation",
-                creator: annotation.creator,
+                creator: clone(annotation.creator),
             },
             annotation,
         ));
         triggerEdition(false);
         // dispatch(readerLocalActionReader.bookmarkTotalCount.build(noteTotalCount + 1));
-    }, [dispatch, annotation, triggerEdition]);
+    }, [dispatch, annotation, triggerEdition, pubId]);
 
     const date = new Date(annotation.modified || annotation.created);
     const dateStr = `${(`${date.getDate()}`.padStart(2, "0"))}/${(`${date.getMonth() + 1}`.padStart(2, "0"))}/${date.getFullYear()}`;
 
     const { percentRounded } = React.useMemo(() => {
-        if (r2Publication.Spine && annotation.locatorExtended.locator) {
+        if (r2Publication.Spine && annotation.locatorExtended?.locator) {
             const percent = computeProgression(r2Publication.Spine || [], annotation.locatorExtended.locator);
             const percentRounded = Math.round(percent);
             return { style: { width: `${percent}%` }, percentRounded };
@@ -522,7 +527,7 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
     }, [r2Publication, annotation]);
 
     // const bname = (annotation?.locatorExtended?.selectionInfo?.cleanText ? `${annotation.locatorExtended.selectionInfo.cleanText.slice(0, 20)}` : `${__("reader.navigation.annotationTitle")} ${index}`);
-    const btext = (annotation?.locatorExtended?.selectionInfo?.cleanText ? `${annotation.locatorExtended.selectionInfo.cleanText}` : `${__("reader.navigation.annotationTitle")} ${uuid}`);
+    const btext = (annotation.locatorExtended?.selectionInfo?.cleanText ? `${annotation.locatorExtended.selectionInfo.cleanText}` : `${__("reader.navigation.annotationTitle")} ${uuid}`);
 
     const bprogression = (percentRounded >= 0 ? `${percentRounded}% ` : "");
 
@@ -560,7 +565,9 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
                     onClick={(e) => {
                         e.preventDefault();
                         const closeNavAnnotation = !dockedMode && !(e.shiftKey && e.altKey);
-                        goToLocator(annotation.locatorExtended.locator, closeNavAnnotation);
+                        if (annotation.locatorExtended) {
+                            goToLocator(annotation.locatorExtended.locator, closeNavAnnotation);
+                        }
                         // dispatch(readerLocalActionAnnotations.focus.build(annotation));
                     }}
 
@@ -796,12 +803,15 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
 
     const dispatch = useDispatch();
     const [__] = useTranslator();
+
+    const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
     // const noteTotalCount = useSelector((state: IReaderRootState) => state.reader.noteTotalCount.state);
     const save = React.useCallback((name: string, color: IColor, tag: string | undefined) => {
         dispatch(readerActions.note.addUpdate.build(
+            pubId,
             {
                 uuid: bookmark.uuid,
-                locatorExtended: bookmark.locatorExtended,
+                locatorExtended: clone(bookmark.locatorExtended),
                 drawType: bookmark.drawType,
                 textualValue: name,
                 color,
@@ -810,13 +820,13 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
                 group: "bookmark",
                 created: bookmark.created,
                 index: bookmark.index,
-                creator: bookmark.creator,
+                creator: clone(bookmark.creator),
             },
             bookmark,
         ));
         triggerEdition(false);
         // dispatch(readerLocalActionReader.bookmarkTotalCount.build(noteTotalCount + 1));
-    }, [dispatch, bookmark, triggerEdition]);
+    }, [dispatch, bookmark, triggerEdition, pubId]);
 
     const date = new Date(bookmark.modified || bookmark.created);
     const dateStr = `${(`${date.getDate()}`.padStart(2, "0"))}/${(`${date.getMonth() + 1}`.padStart(2, "0"))}/${date.getFullYear()}`;
@@ -866,7 +876,9 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
                     onClick={(e) => {
                         e.preventDefault();
                         const closeNavAnnotation = !dockedMode && !(e.shiftKey && e.altKey);
-                        goToLocator(bookmark.locatorExtended.locator, closeNavAnnotation);
+                        if (bookmark.locatorExtended) {
+                            goToLocator(bookmark.locatorExtended.locator, closeNavAnnotation);
+                        }
                         // dispatch(readerLocalActionAnnotations.focus.build(annotation));
                     }}
 
@@ -1154,7 +1166,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
             (drawTypeArrayFilter === "all") ||
             (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size) ||
             (creatorArrayFilter === "all")
-        ) 
+        )
             ? annotationsListAll.filter(({ tags, color, drawType: _drawType, creator }) => {
 
                 const colorHex = rgbToHex(color);
@@ -1175,6 +1187,10 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
     if (sortType !== "all" && sortType.has("progression")) {
 
         annotationListFiltered.sort((a, b) => {
+
+            if (!a.locatorExtended || !b.locatorExtended) {
+                return 0;
+            }
             const { locatorExtended: { locator: la } } = a;
             const { locatorExtended: { locator: lb } } = b;
             const pcta = computeProgression(r2Publication.Spine, la);
@@ -1505,7 +1521,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                     </div>
 
                                     <Popover.Close aria-label={__("reader.annotations.export")} asChild>
-                                        <button onClick={() => {
+                                        <button onClick={async () => {
                                             const title = annotationTitleRef.current?.value || "thorium-reader";
                                             let label = title.slice(0, 200);
                                             label = label.trim();
@@ -1515,7 +1531,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                             label = label.toLowerCase();
                                             const fileType = selectFileTypeRef.current?.value || "annotation";
 
-                                            dispatch(readerLocalActionExportAnnotationSet.build(annotationListFiltered, publicationView, label, fileType));
+                                            await getSaga().run(exportAnnotationSet, annotationListFiltered, publicationView, label, fileType).toPromise();
                                         }} className={stylesButtons.button_primary_blue}>
                                             <SVG svg={SaveIcon} />
                                             {__("reader.annotations.export")}
@@ -1879,7 +1895,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
             (colorArrayFilter === "all") ||
             (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size) ||
             (creatorArrayFilter === "all")
-        ) 
+        )
             ? bookmarkListAll.filter(({ tags, color, drawType: _drawType, creator }) => {
 
                 const colorHex = rgbToHex(color);
@@ -1897,6 +1913,10 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
     if (sortType !== "all" && sortType.has("progression")) {
 
         bookmarkListFiltered.sort((a, b) => {
+
+            if (!a.locatorExtended || !b.locatorExtended) {
+                return 0;
+            }
             const { locatorExtended: la } = a;
             const { locatorExtended: lb } = b;
             const pcta = computeProgression(r2Publication.Spine, la.locator);
@@ -2222,7 +2242,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                     </div>
 
                                     <Popover.Close aria-label={__("reader.annotations.export")} asChild>
-                                        <button onClick={() => {
+                                        <button onClick={async () => {
                                             const title = bookmarkTitleRef?.current.value || "thorium-reader";
                                             let label = title.slice(0, 200);
                                             label = label.trim();
@@ -2232,7 +2252,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                             label = label.toLowerCase();
                                             const fileType = selectFileTypeRef.current?.value || "annotation";
 
-                                            dispatch(readerLocalActionExportAnnotationSet.build(bookmarkListFiltered, publicationView, label, fileType));
+                                            await getSaga().run(exportAnnotationSet, bookmarkListFiltered, publicationView, label, fileType).toPromise();
                                         }} className={stylesButtons.button_primary_blue}>
                                             <SVG svg={SaveIcon} />
                                             {__("reader.annotations.export")}
@@ -2809,8 +2829,9 @@ const TabTitle = ({ value }: { value: string }) => {
 };
 
 export const ReaderMenu: React.FC<IBaseProps> = (props) => {
-    const { /* toggleMenu */ pdfToc, isPdf, focusMainAreaLandmarkAndCloseMenu,
+    const { /* toggleMenu */ pdfToc, isDivina, isPdf, focusMainAreaLandmarkAndCloseMenu,
         pdfNumberOfPages, currentLocation, goToLocator /*openedSection: tabValue, setOpenedSection: setTabValue*/ } = props;
+    const isEpub = !isDivina && !isPdf;
     const { /*doFocus, annotationUUID,*/ handleLinkClick /*, resetAnnotationUUID*/ } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const dockingMode = useReaderConfig("readerDockingMode");
@@ -2983,15 +3004,25 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     options.push(optionTocItem);
     sectionsArray.push(LandMarksTrigger);
     options.push(optionLandmarkItem);
-    sectionsArray.push(SearchTrigger);
-    options.push(optionSearchItem);
-    sectionsArray.push(GoToPageTrigger);
-    options.push(optionGoToPageItem);
+
+    if (isEpub) {
+        sectionsArray.push(SearchTrigger);
+        options.push(optionSearchItem);
+    }
+    if (isPdf || isEpub) {
+        sectionsArray.push(GoToPageTrigger);
+        options.push(optionGoToPageItem);
+    }
+
     sectionsArray.push(Separator);
+
     sectionsArray.push(BookmarksTrigger);
     options.push(optionBookmarkItem);
-    sectionsArray.push(AnnotationTrigger);
-    options.push(optionAnnotationItem);
+
+    if (isEpub) {
+        sectionsArray.push(AnnotationTrigger);
+        options.push(optionAnnotationItem);
+    }
 
     const optionSelected = options.find(({ value }) => value === section)?.id || 0;
 
@@ -3200,4 +3231,5 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
             </Tabs.Root>
         </div>
     );
+
 };

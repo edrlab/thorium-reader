@@ -11,13 +11,16 @@ import { formatTime } from "readium-desktop/common/utils/time";
 import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
 import { getStore } from "../createStore";
 
-const getBookmarkLocatorInfo = (locatorExtended: MiniLocatorExtended, fallback: string): string => {
+const getBookmarkLocatorInfo = (locatorExtended: MiniLocatorExtended | undefined, fallback: string): string => {
     let locatorInfo = "";
     // if (locatorExtended.locator.text?.highlight) {
     //     name = locatorExtended.locator.text.highlight;
     // } else if (locatorExtended.selectionInfo?.cleanText) {
     //     name = locatorExtended.selectionInfo.cleanText;
     // } else
+    if (!locatorExtended) {
+        return locatorInfo;
+    }
 
     let doNotTrim = false;
 
@@ -36,7 +39,7 @@ const getBookmarkLocatorInfo = (locatorExtended: MiniLocatorExtended, fallback: 
     } else if (locatorExtended.locator.href) {
         const pub = getStore().getState().reader.info.r2Publication;
         if (isPdfFn(pub)) {
-            locatorInfo = `${parseInt(locatorExtended.locator.href, 10) + 1}`;
+            locatorInfo = `${locatorExtended.locator.href}`;
         } else if (isDivinaFn(pub)) {
             locatorInfo = `${locatorExtended.locator.href}`;
         } else {
@@ -54,7 +57,7 @@ const getBookmarkLocatorInfo = (locatorExtended: MiniLocatorExtended, fallback: 
     return locatorInfo;
 };
 
-export const BookmarkLocatorInfo: React.FC<{fallback: string, locatorExtended: MiniLocatorExtended}> = ({locatorExtended, fallback}) => {
+export const BookmarkLocatorInfo: React.FC<{fallback: string, locatorExtended?: MiniLocatorExtended}> = ({locatorExtended, fallback}) => {
 
     return <>{getBookmarkLocatorInfo(locatorExtended, fallback)}</>;
 };

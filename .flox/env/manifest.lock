@@ -24,28 +24,24 @@
         "aarch64-linux",
         "x86_64-darwin",
         "x86_64-linux"
-      ],
-      "allow": {
-        "licenses": []
-      },
-      "semver": {}
+      ]
     }
   },
   "packages": [
     {
       "attr_path": "nodejs_22",
       "broken": false,
-      "derivation": "/nix/store/4bl62dvqxj7m1c9jf0h6i7dj8kvmfph3-nodejs-22.14.0.drv",
+      "derivation": "/nix/store/xvmi92k10p9ccqz68rr4w2l6m9ixpk5b-nodejs-22.14.0.drv",
       "description": "Event-driven I/O framework for the V8 JavaScript engine",
       "install_id": "nodejs_22",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=2c8d3f48d33929642c1c12cd243df4cc7d2ce434",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=adaa24fbf46737f3f1b5497bf64bae750f82942e",
       "name": "nodejs-22.14.0",
       "pname": "nodejs_22",
-      "rev": "2c8d3f48d33929642c1c12cd243df4cc7d2ce434",
-      "rev_count": 778048,
-      "rev_date": "2025-04-02T08:40:04Z",
-      "scrape_date": "2025-04-03T01:11:05.758984Z",
+      "rev": "adaa24fbf46737f3f1b5497bf64bae750f82942e",
+      "rev_count": 799423,
+      "rev_date": "2025-05-13T23:30:50Z",
+      "scrape_date": "2025-05-16T04:21:36.546419Z",
       "stabilities": [
         "unstable"
       ],
@@ -55,8 +51,9 @@
         "out"
       ],
       "outputs": {
-        "libv8": "/nix/store/4m6xhygkx74fsd5k99nihgr7vg85f553-nodejs-22.14.0-libv8",
-        "out": "/nix/store/i1v519j66jmvpqr5h382i9nanxwa5l6n-nodejs-22.14.0"
+        "dev": "/nix/store/9xaa4qy83dpy95d1ffibkfzzgyyrp7hk-nodejs-22.14.0-dev",
+        "libv8": "/nix/store/dcjrxq66pzqjvabbkz596sfbwlzgy1gm-nodejs-22.14.0-libv8",
+        "out": "/nix/store/j2rsxk1lxlapi903kxkvnsdlb0pfbnl1-nodejs-22.14.0"
       },
       "system": "aarch64-darwin",
       "group": "toplevel",
@@ -65,17 +62,17 @@
     {
       "attr_path": "nodejs_22",
       "broken": false,
-      "derivation": "/nix/store/m8khc780w6kw2yrzfg4f6d53d8midsr2-nodejs-22.14.0.drv",
+      "derivation": "/nix/store/nfsdr7c7dyb7bl65ck9hvw0w5qbainws-nodejs-22.14.0.drv",
       "description": "Event-driven I/O framework for the V8 JavaScript engine",
       "install_id": "nodejs_22",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=2c8d3f48d33929642c1c12cd243df4cc7d2ce434",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=adaa24fbf46737f3f1b5497bf64bae750f82942e",
       "name": "nodejs-22.14.0",
       "pname": "nodejs_22",
-      "rev": "2c8d3f48d33929642c1c12cd243df4cc7d2ce434",
-      "rev_count": 778048,
-      "rev_date": "2025-04-02T08:40:04Z",
-      "scrape_date": "2025-04-03T01:28:56.731813Z",
+      "rev": "adaa24fbf46737f3f1b5497bf64bae750f82942e",
+      "rev_count": 799423,
+      "rev_date": "2025-05-13T23:30:50Z",
+      "scrape_date": "2025-05-16T04:40:24.484017Z",
       "stabilities": [
         "unstable"
       ],
@@ -85,8 +82,9 @@
         "out"
       ],
       "outputs": {
-        "libv8": "/nix/store/s8407q9aa2mi2b60zk2mkjjdnv4qw87x-nodejs-22.14.0-libv8",
-        "out": "/nix/store/p6183qmkyfkz5sqlv4wbw6a2nnh1r8jf-nodejs-22.14.0"
+        "dev": "/nix/store/9hv74w50r20z1f1flnpza0aicz5agg8i-nodejs-22.14.0-dev",
+        "libv8": "/nix/store/ww17b0kj7zawsa17l2kw5yi6019lddfy-nodejs-22.14.0-libv8",
+        "out": "/nix/store/8v7hqm22mk2w725sqwqcnym5jznqmn64-nodejs-22.14.0"
       },
       "system": "aarch64-linux",
       "group": "toplevel",
@@ -95,17 +93,17 @@
     {
       "attr_path": "nodejs_22",
       "broken": false,
-      "derivation": "/nix/store/196ab1kxhfzgd8vv2vspas0r7h4hxks8-nodejs-22.14.0.drv",
+      "derivation": "/nix/store/7157kvxcqj6j3jxp6r5lpzg6b8zmd3wn-nodejs-22.14.0.drv",
       "description": "Event-driven I/O framework for the V8 JavaScript engine",
       "install_id": "nodejs_22",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=2c8d3f48d33929642c1c12cd243df4cc7d2ce434",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=adaa24fbf46737f3f1b5497bf64bae750f82942e",
       "name": "nodejs-22.14.0",
       "pname": "nodejs_22",
-      "rev": "2c8d3f48d33929642c1c12cd243df4cc7d2ce434",
-      "rev_count": 778048,
-      "rev_date": "2025-04-02T08:40:04Z",
-      "scrape_date": "2025-04-03T01:45:02.543887Z",
+      "rev": "adaa24fbf46737f3f1b5497bf64bae750f82942e",
+      "rev_count": 799423,
+      "rev_date": "2025-05-13T23:30:50Z",
+      "scrape_date": "2025-05-16T04:56:47.526113Z",
       "stabilities": [
         "unstable"
       ],
@@ -115,8 +113,9 @@
         "out"
       ],
       "outputs": {
-        "libv8": "/nix/store/sx5pbfq09qkl6bfxcljmhf5s1z049693-nodejs-22.14.0-libv8",
-        "out": "/nix/store/mxpq0x25ayiliy6938pflhqvfc1nznkl-nodejs-22.14.0"
+        "dev": "/nix/store/6wb73ifswly0ajfp3zv125bqnvzb4k37-nodejs-22.14.0-dev",
+        "libv8": "/nix/store/v4nnkjh9jdz0wsq7l3f4mdfh2skjvwal-nodejs-22.14.0-libv8",
+        "out": "/nix/store/sn8xmika3xqfpzzznbcv061gym6njija-nodejs-22.14.0"
       },
       "system": "x86_64-darwin",
       "group": "toplevel",
@@ -125,17 +124,17 @@
     {
       "attr_path": "nodejs_22",
       "broken": false,
-      "derivation": "/nix/store/krrkhhd5vs17c7mx5zrqivf0rrl8w8kq-nodejs-22.14.0.drv",
+      "derivation": "/nix/store/vcbkrrp8jzqvchw30klpq54ac4l2gmhl-nodejs-22.14.0.drv",
       "description": "Event-driven I/O framework for the V8 JavaScript engine",
       "install_id": "nodejs_22",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=2c8d3f48d33929642c1c12cd243df4cc7d2ce434",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=adaa24fbf46737f3f1b5497bf64bae750f82942e",
       "name": "nodejs-22.14.0",
       "pname": "nodejs_22",
-      "rev": "2c8d3f48d33929642c1c12cd243df4cc7d2ce434",
-      "rev_count": 778048,
-      "rev_date": "2025-04-02T08:40:04Z",
-      "scrape_date": "2025-04-03T02:04:36.154207Z",
+      "rev": "adaa24fbf46737f3f1b5497bf64bae750f82942e",
+      "rev_count": 799423,
+      "rev_date": "2025-05-13T23:30:50Z",
+      "scrape_date": "2025-05-16T05:18:51.042309Z",
       "stabilities": [
         "unstable"
       ],
@@ -145,8 +144,9 @@
         "out"
       ],
       "outputs": {
-        "libv8": "/nix/store/j4w6685rkqwwl03cc8phm8xiyb2xmbnq-nodejs-22.14.0-libv8",
-        "out": "/nix/store/bmakyv5ip1wc9jk155glzdw4vnnrym04-nodejs-22.14.0"
+        "dev": "/nix/store/sbqvdlpp1zp6fdr3cb0mqyprjbcf2ihn-nodejs-22.14.0-dev",
+        "libv8": "/nix/store/ianbd6y7fbm32073q239zdxlcmjwvm57-nodejs-22.14.0-libv8",
+        "out": "/nix/store/50lhzpd68v47x6jy0b8b3p91n2zv3lv4-nodejs-22.14.0"
       },
       "system": "x86_64-linux",
       "group": "toplevel",

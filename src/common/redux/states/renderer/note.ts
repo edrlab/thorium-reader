@@ -10,7 +10,7 @@ import { hexToRgb } from "readium-desktop/common/rgb";
 import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
 import { MiniLocatorExtended } from "../locatorInitialState";
 import { INoteCreator } from "../creator";
-import { IReadiumAnnotation } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import { IReadiumAnnotation, ISelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 
 // DO NOT REMOVE THIS COMMENT BLOCK (USED FOR TRANSLATOR KEYS DETECTION DURING CODE SCANNING)
 // __("reader.notes.colors.red")
@@ -83,7 +83,7 @@ export enum EDrawType {
 export interface INoteState {
     uuid: string;
     index: number;
-    locatorExtended: MiniLocatorExtended;
+    locatorExtended?: MiniLocatorExtended | undefined;
     textualValue?: string;
     color: IColor;
     drawType: EDrawType;
@@ -92,13 +92,20 @@ export interface INoteState {
     created: number;
     creator?: INoteCreator;
     group: "bookmark" | "annotation";
+    readiumAnnotation?: {
+        export?: {
+            selector: ISelector[];
+        }
+
+        import? : {
+            target: IReadiumAnnotation["target"];
+        }
+    }
 }
 
 export type TDrawView = "annotation" | "margin" | "hide";
 
 export type TnoteTagsIndex = Record<string, number>;
-
-export type INotePreParsingState = Pick<INoteState, "uuid" | "textualValue" | "color" | "drawType" | "tags" | "modified" | "created" | "creator" | "group"> & { target: IReadiumAnnotation["target"] };
 
 export interface INoteExportState {
     overrideHTMLTemplate: boolean;

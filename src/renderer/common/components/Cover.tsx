@@ -9,6 +9,8 @@ import "reflect-metadata";
 
 import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
 
+import { OPDS_MEDIA_SCHEME, OPDS_MEDIA_SCHEME__IP_ORIGIN_COVER_IMG } from "readium-desktop/common/streamerProtocol";
+
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import * as React from "react";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
@@ -193,7 +195,7 @@ class Cover extends React.Component<IProps, IState> {
         if (this.state.imgErroredOnce) return;
 
         const b64 = Buffer.from(this.state.imgUrl).toString("base64");
-        const imgUrl = "opds-media://0.0.0.0/" + encodeURIComponent_RFC3986(b64);
+        const imgUrl = OPDS_MEDIA_SCHEME + "://" + OPDS_MEDIA_SCHEME__IP_ORIGIN_COVER_IMG + "/" + encodeURIComponent_RFC3986(b64);
         this.setState({imgUrl, imgErroredOnce: true});
     }
 }

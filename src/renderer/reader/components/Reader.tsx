@@ -498,42 +498,32 @@ class Reader extends React.Component<IProps, IState> {
 
             this.loadPublicationIntoViewport();
 
-            createOrGetPdfEventBus().subscribe("page",
-                (pageIndex) => {
-                    // const numberOfPages = this.props.r2Publication?.Metadata?.NumberOfPages;
-                    const locatorExtended: LocatorExtended = {
-                        audioPlaybackInfo: undefined,
-                        paginationInfo: undefined,
-                        selectionInfo: undefined,
-                        selectionIsNew: undefined,
-                        docInfo: undefined,
-                        epubPage: undefined,
-                        epubPageID: undefined,
-                        headings: undefined,
-                        secondWebViewHref: undefined,
-                        followingElementIDs: undefined,
-                        locator: {
-                            href: pageIndex.toString(),
-                            locations: {
-                                position: parseInt(pageIndex, 10),
-                                // progression: numberOfPages ? (pageIndex / numberOfPages) : 0,
-                                progression: 0,
-                            },
+            createOrGetPdfEventBus().subscribe("savePreferences", ({ page, scrollTop }) => {
+                const locatorExtended: LocatorExtended = {
+                    audioPlaybackInfo: undefined,
+                    paginationInfo: undefined,
+                    selectionInfo: undefined,
+                    selectionIsNew: undefined,
+                    docInfo: undefined,
+                    epubPage: undefined,
+                    epubPageID: undefined,
+                    headings: undefined,
+                    secondWebViewHref: undefined,
+                    followingElementIDs: undefined,
+                    locator: {
+                        href: `${page}`,
+                        locations: {
+                            position: scrollTop,
+                            progression: 0,
                         },
-                    };
+                    },
+                };
 
-                    console.log("pdf pageChange", pageIndex);
-
-                    this.handleReadingLocationChange(locatorExtended);
-                });
+                this.handleReadingLocationChange(locatorExtended);
+            });
 
             const page = this.props.locator?.locator?.href || "";
             console.log("pdf page index", page);
-
-            createOrGetPdfEventBus().subscribe("ready", () => {
-                createOrGetPdfEventBus().dispatch("page", page);
-            });
-
 
         } else if (this.props.isDivina) {
 
@@ -1946,7 +1936,7 @@ class Reader extends React.Component<IProps, IState> {
     private onKeyboardNavigationToBegin = () => {
 
         if (this.props.isPdf) {
-            createOrGetPdfEventBus().dispatch("page", "1");
+            createOrGetPdfEventBus().dispatch("firstpage");
         } else if (this.props.isDivina) {
             this.currentDivinaPlayer.goToPageWithIndex(0);
         } else {
@@ -1967,8 +1957,7 @@ class Reader extends React.Component<IProps, IState> {
 
         if (this.props.isPdf) {
             if (this.state.pdfPlayerNumberOfPages) {
-                createOrGetPdfEventBus().dispatch("page",
-                    this.state.pdfPlayerNumberOfPages.toString());
+                createOrGetPdfEventBus().dispatch("lastpage");
             }
         } else if (this.props.isDivina) {
             // TODO: Divina total number of pages? (last page index (number))
@@ -2143,11 +2132,18 @@ class Reader extends React.Component<IProps, IState> {
                 console.log("can't found pdf link");
             }
 
-            console.log("pdf url", pdfUrl);
+
+            const page = this.props.locator.locator.href || "1";
+            const position = this.props.locator.locator.locations.position || undefined;
+            const zoom = "page-fit"; // scale
+            // const column = ""; // TODO: !?
+
+            console.log("pdf url", pdfUrl, "with page", page);
 
             pdfMount(
                 pdfUrl,
                 publicationViewport,
+                { page, scrollTop: position, zoom },
             );
 
             createOrGetPdfEventBus().subscribe("copy", (txt) => clipboardInterceptor({ txt, locator: undefined }));
@@ -2761,9 +2757,12 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         if (this.props.isPdf) {
-            const index = locator?.href || "";
-            if (index) {
-                createOrGetPdfEventBus().dispatch("page", index);
+            const pageNumberString = locator?.href || "";
+            if (pageNumberString) {
+                const pageNumber = parseInt(pageNumberString, 10);
+                if (pageNumber) {
+                    createOrGetPdfEventBus().dispatch("pageNumber", pageNumber);
+                }
             }
         } else if (this.props.isDivina) {
             // console.log(JSON.stringify(locator, null, 4));
@@ -2806,7 +2805,7 @@ class Reader extends React.Component<IProps, IState> {
 
             const index = url;
             if (index) {
-                createOrGetPdfEventBus().dispatch("page", index);
+                createOrGetPdfEventBus().dispatch("pageLabel", index);
             }
 
         } else if (this.props.isDivina) {

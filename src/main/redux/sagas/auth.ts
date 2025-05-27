@@ -7,6 +7,7 @@
 
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import * as debug_ from "debug";
+import { OPDS_MEDIA_SCHEME, OPDS_MEDIA_SCHEME__IP_ORIGIN_OPDS_MEDIA } from "readium-desktop/common/streamerProtocol";
 import { BrowserWindow, globalShortcut } from "electron";
 import { Headers } from "node-fetch";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -35,7 +36,7 @@ import { URL } from "url";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
-import { getOpdsRequestCustomProtocolEventChannel, getOpdsRequestMediaCustomProtocolEventChannel, OPDS_AUTH_SCHEME, OPDS_MEDIA_SCHEME, TregisterHttpProtocolHandler} from "./getEventChannel";
+import { getOpdsRequestCustomProtocolEventChannel, getOpdsRequestMediaCustomProtocolEventChannel, OPDS_AUTH_SCHEME, TregisterHttpProtocolHandler} from "./getEventChannel";
 import { initClientSecretToken } from "./apiapp";
 import { digestAuthentication } from "readium-desktop/utils/digest";
 import isURL from "validator/lib/isURL";
@@ -216,7 +217,7 @@ function* opdsAuthWipeData() {
 
 function* opdsRequestMediaFlow({request, callback}: TregisterHttpProtocolHandler) {
 
-    const schemePrefix = OPDS_MEDIA_SCHEME + "://0.0.0.0/";
+    const schemePrefix = OPDS_MEDIA_SCHEME + "://" + OPDS_MEDIA_SCHEME__IP_ORIGIN_OPDS_MEDIA + "/";
     if (request && request.url.startsWith(schemePrefix)) {
         const b64 = decodeURIComponent(request.url.slice(schemePrefix.length));
         const url = Buffer.from(b64, "base64").toString("utf-8");
@@ -948,7 +949,7 @@ const htmlLoginTemplate = (
                 gap: 50px;
                 flex-wrap: wrap;
                 overflow: hidden;
-    
+
                 @media only screen and (max-width: 1000px) {
                     flex-direction: column;
                 }

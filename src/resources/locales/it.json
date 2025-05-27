@@ -262,6 +262,297 @@
         },
         "whatIsOpds": "Cos'è l'OPDS?"
     },
+    "publ-a11y-display-guide": {
+        "accessibility-summary": {
+            "accessibility-summary-title": "Informazioni aggiuntive sull'accessibilità"
+        },
+        "additional-accessibility-information": {
+            "additional-accessibility-information-aria": {
+                "compact": "Ruoli ARIA inclusi",
+                "descriptive": "Il contenuto è semanticamente arricchito con ruoli ARIA per ottimizzare l'organizzazione e facilitare la navigazione"
+            },
+            "additional-accessibility-information-audio-descriptions": {
+                "compact": "Descrizioni audio",
+                "descriptive": "Descrizioni audio"
+            },
+            "additional-accessibility-information-braille": {
+                "compact": "Braille",
+                "descriptive": "Braille"
+            },
+            "additional-accessibility-information-full-ruby-annotations": {
+                "compact": "Annotazioni complete in Ruby",
+                "descriptive": "Annotazioni complete in Ruby"
+            },
+            "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
+                "compact": "Elevato contrasto tra audio principale e sottofondo",
+                "descriptive": "Elevato contrasto tra audio principale e sottofond"
+            },
+            "additional-accessibility-information-high-contrast-between-text-and-background": {
+                "compact": "Elevato contrasto tra testo in primo piano e sfondo",
+                "descriptive": "Elevato contrasto tra testo in primo piano e sfondo"
+            },
+            "additional-accessibility-information-large-print": {
+                "compact": "Stampa a caratteri ingranditi",
+                "descriptive": "Stampa a caratteri ingranditi"
+            },
+            "additional-accessibility-information-page-breaks": {
+                "compact": "Interruzioni di pagina incluse",
+                "descriptive": "Interruzioni di pagina incluse dalla fonte originale a stampa"
+            },
+            "additional-accessibility-information-ruby-annotations": {
+                "compact": "Alcune annotazioni in Ruby",
+                "descriptive": "Alcune annotazioni in Ruby"
+            },
+            "additional-accessibility-information-sign-language": {
+                "compact": "Lingua dei segni",
+                "descriptive": "Lingua dei segni"
+            },
+            "additional-accessibility-information-tactile-graphics": {
+                "compact": "Grafica tattile inclusa",
+                "descriptive": "La grafica tattile è stata integrata per facilitare l'accesso agli elementi visivi alle persone non vedenti"
+            },
+            "additional-accessibility-information-tactile-objects": {
+                "compact": "Oggetti 3D tattili",
+                "descriptive": "Oggetti 3D tattili"
+            },
+            "additional-accessibility-information-text-to-speech-hinting": {
+                "compact": "Suggerimenti per il text-to-speech forniti",
+                "descriptive": "Suggerimenti per il text-to-speech forniti"
+            },
+            "additional-accessibility-information-title": "Ulteriori informazioni sull'accessibilità"
+        },
+        "conformance": {
+            "conformance-a": {
+                "compact": "Questa pubblicazione soddisfa gli standard minimi di accessibilità",
+                "descriptive": "La pubblicazione contiene una dichiarazione di conformità che attesta la rispondenza agli standard EPUB Accessibility e WCAG 2 Livello A"
+            },
+            "conformance-aa": {
+                "compact": "Questa pubblicazione soddisfa gli standard di accessibilità",
+                "descriptive": "La pubblicazione contiene una dichiarazione di conformità che attesta la rispondenza agli standard EPUB Accessibility e WCAG 2 Livello AA"
+            },
+            "conformance-aaa": {
+                "compact": "Questa pubblicazione supera gli standard di accessibilità",
+                "descriptive": "La pubblicazione contiene una dichiarazione di conformità che attesta la rispondenza agli standard EPUB Accessibility e WCAG 2 Livello AAA"
+            },
+            "conformance-certifier": {
+                "compact": "La pubblicazione è stata certificata da "
+            },
+            "conformance-certifier-credentials": {
+                "compact": "Le credenziali del certificatore sono "
+            },
+            "conformance-details-certifier-report": {
+                "compact": "Per ulteriori informazioni, consultare il report di accessibilità del certificatore"
+            },
+            "conformance-details-claim": {
+                "compact": "Questa pubblicazione è conforme ai requisiti di",
+                "descriptive": "Questa pubblicazione è conforme ai requisiti di"
+            },
+            "conformance-details-epub-accessibility-1-0": {
+                "compact": " EPUB Accessibility 1.0",
+                "descriptive": " EPUB Accessibility 1.0"
+            },
+            "conformance-details-epub-accessibility-1-1": {
+                "compact": " EPUB Accessibility 1.1",
+                "descriptive": " EPUB Accessibility 1.1"
+            },
+            "conformance-details-level-a": {
+                "compact": " livello A",
+                "descriptive": " livello A"
+            },
+            "conformance-details-level-aa": {
+                "compact": " livello AA",
+                "descriptive": " livello AA"
+            },
+            "conformance-details-level-aaa": {
+                "compact": " livello AAA",
+                "descriptive": " livello AAA"
+            },
+            "conformance-details-wcag-2-0": {
+                "compact": " WCAG 2.0"
+            },
+            "conformance-details-wcag-2-1": {
+                "compact": " WCAG 2.1",
+                "descriptive": " Linee guida per l'accessibilità dei contenuti Web (WCAG) 2.1"
+            },
+            "conformance-details-wcag-2-2": {
+                "compact": " WCAG 2.2",
+                "descriptive": " Linee guida per l'accessibilità dei contenuti Web (WCAG) 2.2"
+            },
+            "conformance-no": {
+                "compact": "Non sono disponibili informazioni",
+                "descriptive": "Non sono disponibili informazioni"
+            },
+            "conformance-title": "Conformità",
+            "conformance-unknown-standard": {
+                "compact": "Non è possibile determinare la conformità agli standard per l'accessibilità di questa pubblicazione",
+                "descriptive": "Non è possibile determinare la conformità agli standard per l'accessibilità di questa pubblicazione"
+            }
+        },
+        "hazards": {
+            "hazards-flashing": {
+                "compact": "Contenuto lampeggiante",
+                "descriptive": "La pubblicazione contiene contenuti lampeggianti che possono causare crisi di fotosensibilità"
+            },
+            "hazards-flashing-none": {
+                "compact": "Non è presente contenuto lampeggiante",
+                "descriptive": "La pubblicazione non contiene contenuti lampeggianti che possono causare crisi di fotosensibilità"
+            },
+            "hazards-flashing-unknown": {
+                "compact": "Contenuto lampeggiante non noto",
+                "descriptive": "Non è stato possibile determinare la presenza di contenuti lampeggianti che possono causare crisi di fotosensibilità"
+            },
+            "hazards-motion": {
+                "compact": "Simulazione di movimento",
+                "descriptive": "La pubblicazione contiene simulazioni di movimento che possono provocare cinetosi"
+            },
+            "hazards-motion-none": {
+                "compact": "Non è presente simulazione di movimento",
+                "descriptive": "La pubblicazione non contiene simulazioni di movimento che possono provocare cinetosi"
+            },
+            "hazards-motion-unknown": {
+                "compact": "Simulazione di movimento non nota",
+                "descriptive": "Non è stato possibile determinare la presenza di simulazioni di movimento che possono provocare cinetosi"
+            },
+            "hazards-no-metadata": {
+                "compact": "Non sono disponibili informazioni",
+                "descriptive": "Non sono disponibili informazioni"
+            },
+            "hazards-none": {
+                "compact": "Nessun pericolo",
+                "descriptive": "La pubblicazione non contiene pericoli"
+            },
+            "hazards-sound": {
+                "compact": "Suoni",
+                "descriptive": "La pubblicazione contiene suoni che possono risultare fastidiosi"
+            },
+            "hazards-sound-none": {
+                "compact": "Non sono presenti pericoli legati ai suoni",
+                "descriptive": "La pubblicazione non contiene suoni che possono risultare fastidiosi"
+            },
+            "hazards-sound-unknown": {
+                "compact": "Pericoli legati ai suoni non noti",
+                "descriptive": "Non è stato possibile determinare la presenza di suoni che possono risultare fastidiosi"
+            },
+            "hazards-title": "Pericoli",
+            "hazards-unknown": {
+                "compact": "La presenza di pericoli è sconosciuta",
+                "descriptive": "La presenza di pericoli è sconosciuta"
+            }
+        },
+        "navigation": {
+            "navigation-index": {
+                "compact": "Indice analitico interattivo",
+                "descriptive": "L’indice analitico permette l’accesso diretto a tutte le voci di riferimento tramite link"
+            },
+            "navigation-no-metadata": {
+                "compact": "Non sono disponibili informazioni",
+                "descriptive": "Non sono disponibili informazioni"
+            },
+            "navigation-page-navigation": {
+                "compact": "Vai alla pagina",
+                "descriptive": "Sono presenti i riferimenti ai numeri di pagina della corrispondente versione a stampa"
+            },
+            "navigation-structural": {
+                "compact": "Intestazioni",
+                "descriptive": "Elementi come titoli, elenchi e tabelle permettono  una navigazione strutturata"
+            },
+            "navigation-title": "Navigazione",
+            "navigation-toc": {
+                "compact": "Indice interattivo",
+                "descriptive": "L’indice permette l’accesso diretto a tutti i capitoli tramite link"
+            }
+        },
+        "rich-content": {
+            "rich-content-accessible-chemistry-as-latex": {
+                "compact": "Formule chimiche in LaTeX",
+                "descriptive": "Le formule chimiche sono in formato accessibile (LaTeX)"
+            },
+            "rich-content-accessible-chemistry-as-mathml": {
+                "compact": "Formule chimiche in MathML",
+                "descriptive": "Le formule chimiche sono in formato accessibile (MathML)"
+            },
+            "rich-content-accessible-math-as-latex": {
+                "compact": "Matematica come LaTeX",
+                "descriptive": "Le formule matematiche sono in formato accessibile (LaTeX)"
+            },
+            "rich-content-accessible-math-as-mathml": {
+                "compact": "Matematica come MathML",
+                "descriptive": "Le formule matematiche sono in formato accessibile (MathML)"
+            },
+            "rich-content-accessible-math-described": {
+                "compact": "Le formule matematiche presentano delle descrizioni testuali",
+                "descriptive": "Le formule matematiche presentano delle descrizioni testuali"
+            },
+            "rich-content-closed-captions": {
+                "compact": "I video hanno i sottotitoli",
+                "descriptive": "I video inclusi nella pubblicazione hanno i sottotitoli"
+            },
+            "rich-content-extended": {
+                "compact": "Le immagini complesse presentano descrizioni estese",
+                "descriptive": "Le immagini complesse presentano descrizioni estese"
+            },
+            "rich-content-open-captions": {
+                "compact": "I video hanno i sottotitoli",
+                "descriptive": "I video inclusi nella pubblicazione hanno i sottotitoli"
+            },
+            "rich-content-title": "Arricchimento dei contenuti",
+            "rich-content-transcript": {
+                "compact": "Sono fornite trascrizioni",
+                "descriptive": "Sono fornite trascrizioni"
+            },
+            "rich-content-unknown": {
+                "compact": "Non sono disponibili informazioni",
+                "descriptive": "Non sono disponibili informazioni"
+            }
+        },
+        "ways-of-reading": {
+            "ways-of-reading-nonvisual-reading-alt-text": {
+                "compact": "Le immagini sono descritte",
+                "descriptive": "Le immagini  presentano delle descrizioni testuali alternative"
+            },
+            "ways-of-reading-nonvisual-reading-no-metadata": {
+                "compact": "Non sono disponibili informazioni sulla lettura non visiva",
+                "descriptive": "Non sono disponibili informazioni sulla lettura non visiva"
+            },
+            "ways-of-reading-nonvisual-reading-none": {
+                "compact": "Non leggibile con la lettura ad alta voce o il display braille",
+                "descriptive": "Il contenuto non è leggibile con la lettura ad alta voce o con il display braille"
+            },
+            "ways-of-reading-nonvisual-reading-not-fully": {
+                "compact": "Non completamente leggibile con la lettura ad alta voce o il display braille",
+                "descriptive": "Non tutto il contenuto è leggibile con la lettura ad alta voce o con il display braille"
+            },
+            "ways-of-reading-nonvisual-reading-readable": {
+                "compact": "Leggibile con la lettura ad alta voce o il display braille",
+                "descriptive": "Tutto il contenuto può essere letto con la lettura ad alta voce o con il display braille"
+            },
+            "ways-of-reading-prerecorded-audio-complementary": {
+                "compact": "Clip audio preregistrate",
+                "descriptive": "Le clip audio preregistrate sono incorporate nel contenuto"
+            },
+            "ways-of-reading-prerecorded-audio-no-metadata": {
+                "compact": "Non sono disponibili informazioni sull'audio preregistrato",
+                "descriptive": "Non sono disponibili informazioni sull'audio preregistrato."
+            },
+            "ways-of-reading-prerecorded-audio-only": {
+                "compact": "Solo audio preregistrato",
+                "descriptive": "Audiolibro senza testi alternativi"
+            },
+            "ways-of-reading-prerecorded-audio-synchronized": {
+                "compact": "Audio preregistrato sincronizzato con il testo",
+                "descriptive": "Tutto il contenuto è disponibile come audio preregistrato sincronizzato con il testo"
+            },
+            "ways-of-reading-title": "Modalità di lettura",
+            "ways-of-reading-visual-adjustments-modifiable": {
+                "compact": "La formattazione del testo e il layout della pagina possono essere modificati",
+                "descriptive": "La formattazione del testo e il layout della pagina possono essere modificati in base alle funzionalità presenti nella soluzione di lettura (ingrandimento dei caratteri del testo, modifica dei colori e dei contrasti per il testo e lo sfondo, modifica degli spazi tra lettere, parole, frasi e paragrafi)"
+            },
+            "ways-of-reading-visual-adjustments-unknown": {
+                "compact": "Non sono disponibili informazioni sulla possibilità di formattare il testo",
+                "descriptive": "Non sono disponibili informazioni sulla possibilità di formattare il testo"
+            }
+        }
+    },
     "publication": {
         "accessibility": {
             "accessModeSufficient": {

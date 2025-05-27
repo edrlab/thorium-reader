@@ -301,13 +301,13 @@ declare namespace typed_i18n {
   readonly "generateDescription": string,
   readonly "generateDescriptionTitle": string,
   readonly "inputPlaceholder": string,
+  readonly "noApiKey": string,
   readonly "noDescription": string,
   readonly "reset": string,
   readonly "sendQuestion": string,
   readonly "shortDescTitle": string,
   readonly "shortDescription": string,
   readonly "systemPromptEditor": string,
-  readonly "noApiKey": string,
   readonly "title": string
 };
   (_: "chatbot.detailedDescTitle", __?: {}): string;
@@ -316,13 +316,13 @@ declare namespace typed_i18n {
   (_: "chatbot.generateDescription", __?: {}): string;
   (_: "chatbot.generateDescriptionTitle", __?: {}): string;
   (_: "chatbot.inputPlaceholder", __?: {}): string;
+  (_: "chatbot.noApiKey", __?: {}): string;
   (_: "chatbot.noDescription", __?: {}): string;
   (_: "chatbot.reset", __?: {}): string;
   (_: "chatbot.sendQuestion", __?: {}): string;
   (_: "chatbot.shortDescTitle", __?: {}): string;
   (_: "chatbot.shortDescription", __?: {}): string;
   (_: "chatbot.systemPromptEditor", __?: {}): string;
-  (_: "chatbot.noApiKey", __?: {}): string;
   (_: "chatbot.title", __?: {}): string;
   (_: "dialog", __?: {}): {
   readonly "annotations": {
@@ -604,6 +604,783 @@ declare namespace typed_i18n {
   (_: "opds.updateForm.updateButton", __?: {}): string;
   (_: "opds.updateForm.url", __?: {}): string;
   (_: "opds.whatIsOpds", __?: {}): string;
+  (_: "publ-a11y-display-guide", __?: {}): {
+  readonly "accessibility-summary": {
+    readonly "accessibility-summary-title": string
+  },
+  readonly "additional-accessibility-information": {
+    readonly "additional-accessibility-information-aria": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "additional-accessibility-information-audio-descriptions": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "additional-accessibility-information-braille": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "additional-accessibility-information-full-ruby-annotations": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "additional-accessibility-information-high-contrast-between-text-and-background": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "additional-accessibility-information-large-print": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "additional-accessibility-information-page-breaks": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "additional-accessibility-information-ruby-annotations": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "additional-accessibility-information-sign-language": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "additional-accessibility-information-tactile-graphics": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "additional-accessibility-information-tactile-objects": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "additional-accessibility-information-text-to-speech-hinting": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "additional-accessibility-information-title": string
+  },
+  readonly "conformance": {
+    readonly "conformance-a": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "conformance-aa": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "conformance-aaa": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "conformance-certifier": { readonly "compact": string },
+    readonly "conformance-certifier-credentials": {
+      readonly "compact": string
+    },
+    readonly "conformance-details-certifier-report": {
+      readonly "compact": string
+    },
+    readonly "conformance-details-claim": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "conformance-details-epub-accessibility-1-0": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "conformance-details-epub-accessibility-1-1": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "conformance-details-level-a": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "conformance-details-level-aa": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "conformance-details-level-aaa": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "conformance-details-wcag-2-0": { readonly "compact": string },
+    readonly "conformance-details-wcag-2-1": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "conformance-details-wcag-2-2": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "conformance-no": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "conformance-title": string,
+    readonly "conformance-unknown-standard": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    }
+  },
+  readonly "hazards": {
+    readonly "hazards-flashing": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "hazards-flashing-none": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "hazards-flashing-unknown": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "hazards-motion": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "hazards-motion-none": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "hazards-motion-unknown": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "hazards-no-metadata": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "hazards-none": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "hazards-sound": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "hazards-sound-none": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "hazards-sound-unknown": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "hazards-title": string,
+    readonly "hazards-unknown": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    }
+  },
+  readonly "navigation": {
+    readonly "navigation-index": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "navigation-no-metadata": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "navigation-page-navigation": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "navigation-structural": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "navigation-title": string,
+    readonly "navigation-toc": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    }
+  },
+  readonly "rich-content": {
+    readonly "rich-content-accessible-chemistry-as-latex": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "rich-content-accessible-chemistry-as-mathml": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "rich-content-accessible-math-as-latex": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "rich-content-accessible-math-as-mathml": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "rich-content-accessible-math-described": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "rich-content-closed-captions": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "rich-content-extended": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "rich-content-open-captions": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "rich-content-title": string,
+    readonly "rich-content-transcript": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "rich-content-unknown": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    }
+  },
+  readonly "ways-of-reading": {
+    readonly "ways-of-reading-nonvisual-reading-alt-text": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "ways-of-reading-nonvisual-reading-no-metadata": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "ways-of-reading-nonvisual-reading-none": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "ways-of-reading-nonvisual-reading-not-fully": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "ways-of-reading-nonvisual-reading-readable": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "ways-of-reading-prerecorded-audio-complementary": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "ways-of-reading-prerecorded-audio-no-metadata": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "ways-of-reading-prerecorded-audio-only": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "ways-of-reading-prerecorded-audio-synchronized": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "ways-of-reading-title": string,
+    readonly "ways-of-reading-visual-adjustments-modifiable": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    },
+    readonly "ways-of-reading-visual-adjustments-unknown": {
+      readonly "compact": string,
+      readonly "descriptive": string
+    }
+  }
+};
+  (_: "publ-a11y-display-guide.accessibility-summary", __?: {}): { readonly "accessibility-summary-title": string };
+  (_: "publ-a11y-display-guide.accessibility-summary.accessibility-summary-title", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information", __?: {}): {
+  readonly "additional-accessibility-information-aria": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "additional-accessibility-information-audio-descriptions": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "additional-accessibility-information-braille": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "additional-accessibility-information-full-ruby-annotations": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "additional-accessibility-information-high-contrast-between-text-and-background": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "additional-accessibility-information-large-print": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "additional-accessibility-information-page-breaks": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "additional-accessibility-information-ruby-annotations": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "additional-accessibility-information-sign-language": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "additional-accessibility-information-tactile-graphics": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "additional-accessibility-information-tactile-objects": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "additional-accessibility-information-text-to-speech-hinting": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "additional-accessibility-information-title": string
+};
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-aria", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-aria.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-aria.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-audio-descriptions", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-audio-descriptions.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-audio-descriptions.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-braille", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-braille.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-braille.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-full-ruby-annotations", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-full-ruby-annotations.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-full-ruby-annotations.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-high-contrast-between-foreground-and-background-audio", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-high-contrast-between-foreground-and-background-audio.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-high-contrast-between-foreground-and-background-audio.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-high-contrast-between-text-and-background", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-high-contrast-between-text-and-background.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-high-contrast-between-text-and-background.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-large-print", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-large-print.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-large-print.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-page-breaks", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-page-breaks.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-page-breaks.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-ruby-annotations", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-ruby-annotations.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-ruby-annotations.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-sign-language", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-sign-language.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-sign-language.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-tactile-graphics", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-tactile-graphics.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-tactile-graphics.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-tactile-objects", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-tactile-objects.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-tactile-objects.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-text-to-speech-hinting", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-text-to-speech-hinting.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-text-to-speech-hinting.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.additional-accessibility-information.additional-accessibility-information-title", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance", __?: {}): {
+  readonly "conformance-a": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "conformance-aa": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "conformance-aaa": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "conformance-certifier": { readonly "compact": string },
+  readonly "conformance-certifier-credentials": {
+    readonly "compact": string
+  },
+  readonly "conformance-details-certifier-report": {
+    readonly "compact": string
+  },
+  readonly "conformance-details-claim": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "conformance-details-epub-accessibility-1-0": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "conformance-details-epub-accessibility-1-1": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "conformance-details-level-a": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "conformance-details-level-aa": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "conformance-details-level-aaa": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "conformance-details-wcag-2-0": { readonly "compact": string },
+  readonly "conformance-details-wcag-2-1": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "conformance-details-wcag-2-2": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "conformance-no": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "conformance-title": string,
+  readonly "conformance-unknown-standard": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  }
+};
+  (_: "publ-a11y-display-guide.conformance.conformance-a", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.conformance.conformance-a.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-a.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-aa", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.conformance.conformance-aa.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-aa.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-aaa", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.conformance.conformance-aaa.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-aaa.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-certifier", __?: {}): { readonly "compact": string };
+  (_: "publ-a11y-display-guide.conformance.conformance-certifier.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-certifier-credentials", __?: {}): { readonly "compact": string };
+  (_: "publ-a11y-display-guide.conformance.conformance-certifier-credentials.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-details-certifier-report", __?: {}): { readonly "compact": string };
+  (_: "publ-a11y-display-guide.conformance.conformance-details-certifier-report.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-details-claim", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.conformance.conformance-details-claim.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-details-claim.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-details-epub-accessibility-1-0", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.conformance.conformance-details-epub-accessibility-1-0.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-details-epub-accessibility-1-0.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-details-epub-accessibility-1-1", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.conformance.conformance-details-epub-accessibility-1-1.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-details-epub-accessibility-1-1.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-details-level-a", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.conformance.conformance-details-level-a.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-details-level-a.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-details-level-aa", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.conformance.conformance-details-level-aa.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-details-level-aa.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-details-level-aaa", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.conformance.conformance-details-level-aaa.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-details-level-aaa.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-details-wcag-2-0", __?: {}): { readonly "compact": string };
+  (_: "publ-a11y-display-guide.conformance.conformance-details-wcag-2-0.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-details-wcag-2-1", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.conformance.conformance-details-wcag-2-1.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-details-wcag-2-1.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-details-wcag-2-2", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.conformance.conformance-details-wcag-2-2.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-details-wcag-2-2.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-no", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.conformance.conformance-no.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-no.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-title", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-unknown-standard", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.conformance.conformance-unknown-standard.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.conformance.conformance-unknown-standard.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.hazards", __?: {}): {
+  readonly "hazards-flashing": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "hazards-flashing-none": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "hazards-flashing-unknown": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "hazards-motion": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "hazards-motion-none": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "hazards-motion-unknown": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "hazards-no-metadata": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "hazards-none": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "hazards-sound": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "hazards-sound-none": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "hazards-sound-unknown": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "hazards-title": string,
+  readonly "hazards-unknown": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  }
+};
+  (_: "publ-a11y-display-guide.hazards.hazards-flashing", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.hazards.hazards-flashing.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.hazards.hazards-flashing.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.hazards.hazards-flashing-none", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.hazards.hazards-flashing-none.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.hazards.hazards-flashing-none.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.hazards.hazards-flashing-unknown", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.hazards.hazards-flashing-unknown.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.hazards.hazards-flashing-unknown.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.hazards.hazards-motion", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.hazards.hazards-motion.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.hazards.hazards-motion.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.hazards.hazards-motion-none", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.hazards.hazards-motion-none.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.hazards.hazards-motion-none.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.hazards.hazards-motion-unknown", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.hazards.hazards-motion-unknown.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.hazards.hazards-motion-unknown.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.hazards.hazards-no-metadata", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.hazards.hazards-no-metadata.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.hazards.hazards-no-metadata.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.hazards.hazards-none", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.hazards.hazards-none.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.hazards.hazards-none.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.hazards.hazards-sound", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.hazards.hazards-sound.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.hazards.hazards-sound.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.hazards.hazards-sound-none", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.hazards.hazards-sound-none.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.hazards.hazards-sound-none.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.hazards.hazards-sound-unknown", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.hazards.hazards-sound-unknown.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.hazards.hazards-sound-unknown.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.hazards.hazards-title", __?: {}): string;
+  (_: "publ-a11y-display-guide.hazards.hazards-unknown", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.hazards.hazards-unknown.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.hazards.hazards-unknown.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.navigation", __?: {}): {
+  readonly "navigation-index": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "navigation-no-metadata": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "navigation-page-navigation": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "navigation-structural": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "navigation-title": string,
+  readonly "navigation-toc": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  }
+};
+  (_: "publ-a11y-display-guide.navigation.navigation-index", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.navigation.navigation-index.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.navigation.navigation-index.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.navigation.navigation-no-metadata", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.navigation.navigation-no-metadata.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.navigation.navigation-no-metadata.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.navigation.navigation-page-navigation", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.navigation.navigation-page-navigation.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.navigation.navigation-page-navigation.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.navigation.navigation-structural", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.navigation.navigation-structural.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.navigation.navigation-structural.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.navigation.navigation-title", __?: {}): string;
+  (_: "publ-a11y-display-guide.navigation.navigation-toc", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.navigation.navigation-toc.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.navigation.navigation-toc.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.rich-content", __?: {}): {
+  readonly "rich-content-accessible-chemistry-as-latex": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "rich-content-accessible-chemistry-as-mathml": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "rich-content-accessible-math-as-latex": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "rich-content-accessible-math-as-mathml": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "rich-content-accessible-math-described": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "rich-content-closed-captions": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "rich-content-extended": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "rich-content-open-captions": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "rich-content-title": string,
+  readonly "rich-content-transcript": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "rich-content-unknown": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  }
+};
+  (_: "publ-a11y-display-guide.rich-content.rich-content-accessible-chemistry-as-latex", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.rich-content.rich-content-accessible-chemistry-as-latex.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.rich-content.rich-content-accessible-chemistry-as-latex.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.rich-content.rich-content-accessible-chemistry-as-mathml", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.rich-content.rich-content-accessible-chemistry-as-mathml.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.rich-content.rich-content-accessible-chemistry-as-mathml.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.rich-content.rich-content-accessible-math-as-latex", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.rich-content.rich-content-accessible-math-as-latex.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.rich-content.rich-content-accessible-math-as-latex.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.rich-content.rich-content-accessible-math-as-mathml", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.rich-content.rich-content-accessible-math-as-mathml.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.rich-content.rich-content-accessible-math-as-mathml.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.rich-content.rich-content-accessible-math-described", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.rich-content.rich-content-accessible-math-described.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.rich-content.rich-content-accessible-math-described.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.rich-content.rich-content-closed-captions", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.rich-content.rich-content-closed-captions.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.rich-content.rich-content-closed-captions.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.rich-content.rich-content-extended", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.rich-content.rich-content-extended.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.rich-content.rich-content-extended.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.rich-content.rich-content-open-captions", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.rich-content.rich-content-open-captions.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.rich-content.rich-content-open-captions.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.rich-content.rich-content-title", __?: {}): string;
+  (_: "publ-a11y-display-guide.rich-content.rich-content-transcript", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.rich-content.rich-content-transcript.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.rich-content.rich-content-transcript.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.rich-content.rich-content-unknown", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.rich-content.rich-content-unknown.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.rich-content.rich-content-unknown.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.ways-of-reading", __?: {}): {
+  readonly "ways-of-reading-nonvisual-reading-alt-text": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "ways-of-reading-nonvisual-reading-no-metadata": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "ways-of-reading-nonvisual-reading-none": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "ways-of-reading-nonvisual-reading-not-fully": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "ways-of-reading-nonvisual-reading-readable": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "ways-of-reading-prerecorded-audio-complementary": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "ways-of-reading-prerecorded-audio-no-metadata": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "ways-of-reading-prerecorded-audio-only": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "ways-of-reading-prerecorded-audio-synchronized": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "ways-of-reading-title": string,
+  readonly "ways-of-reading-visual-adjustments-modifiable": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  },
+  readonly "ways-of-reading-visual-adjustments-unknown": {
+    readonly "compact": string,
+    readonly "descriptive": string
+  }
+};
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-nonvisual-reading-alt-text", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-nonvisual-reading-alt-text.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-nonvisual-reading-alt-text.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-nonvisual-reading-no-metadata", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-nonvisual-reading-no-metadata.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-nonvisual-reading-no-metadata.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-nonvisual-reading-none", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-nonvisual-reading-none.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-nonvisual-reading-none.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-nonvisual-reading-not-fully", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-nonvisual-reading-not-fully.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-nonvisual-reading-not-fully.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-nonvisual-reading-readable", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-nonvisual-reading-readable.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-nonvisual-reading-readable.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-complementary", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-complementary.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-complementary.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-no-metadata", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-no-metadata.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-no-metadata.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-only", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-only.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-only.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-synchronized", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-synchronized.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-synchronized.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-title", __?: {}): string;
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-modifiable", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-modifiable.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-modifiable.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-unknown", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-unknown.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-unknown.descriptive", __?: {}): string;
   (_: "publication", __?: {}): {
   readonly "accessibility": {
     readonly "accessModeSufficient": { readonly "textual": string },

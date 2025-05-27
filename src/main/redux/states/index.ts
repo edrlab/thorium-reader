@@ -53,4 +53,4 @@ export interface RootState extends ICommonRootState {
     aiApiKeys: Array<IAiApiKey>;
 }
 
-export type PersistRootState = Pick<RootState, "win" | "publication" | "reader" | "session" | "i18n" | "opds" | "version" | "theme" | "wizard" | "settings" | "creator" | "annotationImportQueue" | "aiApiKeys" | "noteExport">;
+export type PersistRootState = Pick<RootState, "win" | "publication" | "reader" | "session" | "i18n" | "opds" | "version" | "theme" | "wizard" | "settings" | "creator" | "noteExport" | "aiApiKeys">;

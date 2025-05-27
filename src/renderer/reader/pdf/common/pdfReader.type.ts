@@ -14,7 +14,10 @@ export type IPdfPlayerView = "scrolled" | "paginated";
 export type IPdfPlayerColumn = "auto" | "1" | "2";
 
 export interface IPdfPlayerEvent {
-    "page": (pageNumber: string) => any;
+    "pageNumber": (pageNumber: number) => any;
+    "pageLabel": (pageLabel: string) => any;
+    "firstpage": () => any;
+    "lastpage": () => any;
     "scale": (scale: IPdfPlayerScale) => any;
     "view": (view: IPdfPlayerView) => any;
     "column": (column: IPdfPlayerColumn) => any;
@@ -32,6 +35,16 @@ export interface IPdfPlayerEvent {
     "keyup": (event: IEventPayload_R2_EVENT_WEBVIEW_KEYUP) => any;
     "toc": (event: TToc) => any;
     "numberofpages": (pages: number) => any;
+    "savePreferences": (data: {
+        page: number,
+        zoom: string,
+        scrollLeft: number,
+        scrollTop: number,
+        rotation: number,
+        sidebarView: number,
+        scrollMode: number,
+        spreadMode: number,
+      }) => any;
 }
 
 export interface IEventBusPdfPlayer extends IEventBus {

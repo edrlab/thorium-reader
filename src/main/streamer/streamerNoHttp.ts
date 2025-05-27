@@ -45,8 +45,11 @@ import {
     READIUMCSS_FILE_PATH, setupMathJaxTransformer,
 } from "./streamerCommon";
 // import { OPDS_MEDIA_SCHEME } from "readium-desktop/main/redux/sagas/getEventChannel";
-import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
+import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER } from "readium-desktop/common/streamerProtocol";
 import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
+import { diMainGet } from "../di";
+import { getNotesFromMainWinState } from "../redux/sagas/note";
+import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 
 import { openai } from "@ai-sdk/openai";
 import { mistral } from "@ai-sdk/mistral";
@@ -140,7 +143,7 @@ if (true) { // !_USE_HTTP_STREAMER) {
         if (readiumcssJson) {
             if (!readiumcssJson.urlRoot) {
                 // `/${READIUM_CSS_URL_PATH}/`
-                readiumcssJson.urlRoot = THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://0.0.0.0";
+                readiumcssJson.urlRoot = THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}";
             }
             if (IS_DEV) {
                 debug("_____ readiumCssJson.urlRoot (setupReadiumCSS() transformer): ", readiumcssJson.urlRoot);
@@ -160,7 +163,7 @@ if (true) { // !_USE_HTTP_STREAMER) {
     Transformers.instance().add(new TransformerHTML(transformerReadiumCss));
 
     setupMathJaxTransformer(
-        () => `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0/${MATHJAX_URL_PATH}/es5/tex-mml-chtml.js`,
+        () => `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/${MATHJAX_URL_PATH}/es5/tex-mml-chtml.js`,
     );
 }
 
@@ -232,6 +235,9 @@ const streamProtocolHandler = async (
     const aiSdkPrefix = "/aisdk/";
     const isAiSdk = uPathname.startsWith(aiSdkPrefix);
 
+    const notesFromPublicationPrefix = "/publication-notes/";
+    const isNotesFromPublicationRequest = uPathname.startsWith(notesFromPublicationPrefix);
+
     const pdfjsAssetsPrefix = "/pdfjs/";
     const isPdfjsAssets = uPathname.startsWith(pdfjsAssetsPrefix);
 
@@ -283,7 +289,7 @@ const streamProtocolHandler = async (
     if (ref && ref !== "null" && !/^https?:\/\/localhost.+/.test(ref) && !/^https?:\/\/127\.0\.0\.1.+/.test(ref)) {
         headers.referer = ref;
     } else {
-        headers.referer = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0/`;
+        headers.referer = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/`;
     }
 
     // CORS everything!
@@ -383,9 +389,27 @@ const streamProtocolHandler = async (
         callback(obj);
         return ;
 
-    }
+    } else if (isNotesFromPublicationRequest) {
 
-    if (isPdfjsAssets) {
+        const publicationUUID = uPathname.substr(notesFromPublicationPrefix.length);
+
+        const sagaMiddleware = diMainGet("saga-middleware");
+        const notes = await sagaMiddleware.run(getNotesFromMainWinState, publicationUUID).toPromise<INoteState[]>();
+        const notesSerialized = JSON.stringify(notes);
+        const notesSerializedBuf = Buffer.from(notesSerialized, "utf-8");
+        const contentLength = `${notesSerializedBuf.length || 0}`;
+        headers["Content-Length"] = contentLength;
+        const contentType = "application/json; charset=utf-8";
+        headers["Content-Type"] = contentType;
+
+        const obj = {
+            data: bufferToStream(notesSerializedBuf),
+            headers,
+            statusCode: 200,
+        };
+        callback(obj);
+        return;
+    } else if (isPdfjsAssets) {
 
         const pdfjsUrlPathname = uPathname.substr(pdfjsAssetsPrefix.length);
         debug("PDFJS request this file:", pdfjsUrlPathname);
@@ -566,7 +590,7 @@ const streamProtocolHandler = async (
 
         if (pathInZip === "manifest.json") {
 
-            const rootUrl = "THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL://0.0.0.0/pub/" + encodeURIComponent_RFC3986(b64Path);
+            const rootUrl = "THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL://" + THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER + "/pub/" + encodeURIComponent_RFC3986(b64Path);
             const manifestURL = rootUrl + "/" + "manifest.json";
 
             const contentType =
@@ -907,7 +931,7 @@ const streamProtocolHandler = async (
 
         if (doTransform && link) {
 
-            const fullUrl = req.url; // `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0${uPathname}`;
+            const fullUrl = req.url; // `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}${uPathname}`;
 
             let transformedStream: IStreamAndLength;
             try {

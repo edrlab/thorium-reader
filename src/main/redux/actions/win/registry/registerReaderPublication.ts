@@ -7,26 +7,18 @@
 
 import { Rectangle } from "electron";
 import { Action } from "readium-desktop/common/models/redux";
-import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { IReaderStateReaderPersistence } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
 export const ID = "WIN_REGISTRY_REGISTER_READER_PUBLICATION";
 
 export interface Payload {
     publicationIdentifier: string;
     bound: Rectangle;
-    reduxStateReader: IReaderStateReader;
+    reduxStateReader: Partial<IReaderStateReaderPersistence>;
 }
 
-export function build(publicationIdentifier: string, bound: Rectangle, reduxStateReader: IReaderStateReader):
+export function build(publicationIdentifier: string, bound: Rectangle, reduxStateReader: Partial<IReaderStateReaderPersistence>):
     Action<typeof ID, Payload> {
-
-    // https://github.com/edrlab/thorium-reader/issues/1444
-    // TODO:
-    // see initStore() in main/redux/store/memory.ts
-    // !!
-    delete reduxStateReader.highlight;
-    // https://github.com/edrlab/thorium-reader/blob/fd9d82beb95d5d2ee4c927a2eed91ebf3ffa8424/src/main/redux/actions/win/session/registerReader.ts#L57
-    delete reduxStateReader.info;
 
     return {
         type: ID,

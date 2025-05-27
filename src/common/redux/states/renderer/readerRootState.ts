@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { ReaderConfig, ReaderConfigPublisher, ReaderInfo, ReaderMode } from "readium-desktop/common/models/reader";
-import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
+import { IRendererCommonRootState, IRendererCommonRootStateHydration } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { IDivinaState } from "readium-desktop/common/redux/states/renderer/divina";
 import { IHighlightHandlerState, IHighlightMounterState } from "./highlight";
 import { ISearchState } from "./search";
@@ -68,3 +68,7 @@ export interface IReaderStateReader {
     // it is a kind of Mutex in multi-threading concept
     lock: boolean;
 }
+
+export type IReaderStateReaderPersistence = Pick<IReaderStateReader, "config" | "locator" | "divina" | "disableRTLFlip" | "note" | "allowCustomConfig" | "noteTotalCount">;
+export type IReaderStateReaderSession = Partial<IReaderStateReaderPersistence> & Pick<IReaderStateReader, "lock" | "info">;
+export type IReaderStateReaderHydration = IRendererCommonRootStateHydration & { reader: IReaderStateReaderSession };
