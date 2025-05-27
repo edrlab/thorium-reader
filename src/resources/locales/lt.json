@@ -667,6 +667,12 @@
             "fit": "Talpinti"
         },
         "goToContent": "Eiti į turinį",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "Pastabos",
             "bookmarks": "Žymės",

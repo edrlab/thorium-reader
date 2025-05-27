@@ -667,6 +667,12 @@
             "fit": "Προσαρμογή"
         },
         "goToContent": "Μετάβαση στο περιεχόμενο",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "Σημειώσεις",
             "bookmarks": "Σελιδοδείκτες",

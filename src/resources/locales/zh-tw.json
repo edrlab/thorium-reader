@@ -667,6 +667,12 @@
             "fit": "Fit"
         },
         "goToContent": "轉至內容",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "註解",
             "bookmarks": "書籤",

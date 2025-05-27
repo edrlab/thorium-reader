@@ -667,6 +667,12 @@
             "fit": "自适应"
         },
         "goToContent": "跳转到正文",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "注解",
             "bookmarks": "书签",

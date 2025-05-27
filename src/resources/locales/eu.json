@@ -667,6 +667,12 @@
             "fit": "Egokitu"
         },
         "goToContent": "",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "Oharrak",
             "bookmarks": "Markatzaileak",

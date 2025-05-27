@@ -667,6 +667,12 @@
             "fit": "Размер"
         },
         "goToContent": "",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "Аннотации",
             "bookmarks": "Закладки",

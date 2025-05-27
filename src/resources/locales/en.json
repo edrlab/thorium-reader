@@ -667,6 +667,12 @@
             "fit": "Fit"
         },
         "goToContent": "Go to the content",
+        "imgViewer": {
+            "title": "Image Viewer Dialog Modal",
+            "zoomIn": "Zoom In",
+            "zoomOut": "Zoom Out",
+            "zoomReset": "Zoom Reset"
+        },
         "marks": {
             "annotations": "Annotations",
             "bookmarks": "Bookmarks",
@@ -832,12 +838,6 @@
             "speed": "TTS playback rate",
             "stop": "Stop TTS",
             "voice": "TTS voice"
-        },
-        "imgViewer": {
-            "title": "Image Viewer Dialog Modal",
-            "zoomIn": "Zoom In",
-            "zoomOut": "Zoom Out",
-            "zoomReset": "Zoom Reset"
         }
     },
     "settings": {

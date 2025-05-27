@@ -667,6 +667,12 @@
             "fit": "Anpassa"
         },
         "goToContent": "Gå till innehållet",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "Anteckningar",
             "bookmarks": "Bokmärken",

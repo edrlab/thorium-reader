@@ -667,6 +667,12 @@
             "fit": "ملاءمة"
         },
         "goToContent": "الانتقال إلى المحتوى",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "التعليقات",
             "bookmarks": "الإشارات المرجعية",

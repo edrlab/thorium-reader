@@ -667,6 +667,12 @@
             "fit": "合わせる"
         },
         "goToContent": "コンテンツへ移動",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "メモ",
             "bookmarks": "しおり",
