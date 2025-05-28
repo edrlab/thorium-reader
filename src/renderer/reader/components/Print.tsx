@@ -116,8 +116,8 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
 
         const lcpRightsPrints = publicationView.lcpRightsPrints || [];
         const lcpRightsPrintsRemain = publicationView.lcp.rights.print - lcpRightsPrints.length;
-        const pagesToPrintSaved = pageRange.filter((page) => lcpRightsPrints.some((pageSaved) => pageSaved === page));
-        const pagesToPrintNotSaved = pageRange.filter((page) => !pagesToPrintSaved.some((pageSaved) => pageSaved === page));
+        const pagesToPrintSaved = pagesToPrint.filter((page) => lcpRightsPrints.some((pageSaved) => pageSaved === page));
+        const pagesToPrintNotSaved = pagesToPrint.filter((page) => !pagesToPrintSaved.some((pageSaved) => pageSaved === page));
         const pagesToPrintNotSavedRightTruncated = pagesToPrintNotSaved.slice(0, lcpRightsPrintsRemain);
         pagesToPrint = [...pagesToPrintSaved, ...pagesToPrintNotSavedRightTruncated].sort((a, b) => a - b);
         newLcpRightsPrints = [...lcpRightsPrints, ...pagesToPrintNotSavedRightTruncated].sort((a, b) => a - b);
@@ -257,7 +257,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
 
             {
                 isLcpWithPrintRights ?
-                    <p>{__("reader.print.descriptionLcpLimit", { pageRangePrinted: `[${publicationView.lcpRightsPrints}]`, count: publicationView.lcp.rights.print - publicationView.lcpRightsPrints.length, lcpLimitPages: publicationView.lcp.rights.print })}{publicationView.lcpRightsPrints.length ? <span> {"->"} [{publicationView.lcpRightsPrints.join(",")}]</span> : ""}{(publicationView.lcp.rights.print - publicationView.lcpRightsPrints.length) < pageRange.length ? <span> {"->"} [{newLcpRightsPrints.join(",")}]</span> : ""}</p>
+                    <p>{__("reader.print.descriptionLcpLimit", { pageRangePrinted: `[${publicationView.lcpRightsPrints}]`, count: publicationView.lcp.rights.print - publicationView.lcpRightsPrints.length, lcpLimitPages: publicationView.lcp.rights.print })}{publicationView.lcpRightsPrints.length ? <span> {"->"} [{publicationView.lcpRightsPrints.join(",")}]</span> : ""}{newLcpRightsPrints.length ? <span> {"->"} [{newLcpRightsPrints.join(",")}]</span> : ""}</p>
                     : <></>
             }
             <div className={stylesInput.form_group} style={{ marginTop: "20px", width: "360px" }}>
