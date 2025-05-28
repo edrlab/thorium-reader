@@ -1577,6 +1577,12 @@ declare namespace typed_i18n {
   readonly "divina": { readonly "mute": string, readonly "unmute": string },
   readonly "fxl": { readonly "fit": string },
   readonly "goToContent": string,
+  readonly "imgViewer": {
+    readonly "title": string,
+    readonly "zoomIn": string,
+    readonly "zoomOut": string,
+    readonly "zoomReset": string
+  },
   readonly "marks": {
     readonly "annotations": string,
     readonly "bookmarks": string,
@@ -1735,12 +1741,6 @@ declare namespace typed_i18n {
     readonly "speed": string,
     readonly "stop": string,
     readonly "voice": string
-  },
-  readonly "imgViewer": {
-    readonly "title": string,
-    readonly "zoomIn": string,
-    readonly "zoomOut": string,
-    readonly "zoomReset": string
   }
 };
   (_: "reader.annotations", __?: {}): {
@@ -1843,6 +1843,16 @@ declare namespace typed_i18n {
   (_: "reader.fxl", __?: {}): { readonly "fit": string };
   (_: "reader.fxl.fit", __?: {}): string;
   (_: "reader.goToContent", __?: {}): string;
+  (_: "reader.imgViewer", __?: {}): {
+  readonly "title": string,
+  readonly "zoomIn": string,
+  readonly "zoomOut": string,
+  readonly "zoomReset": string
+};
+  (_: "reader.imgViewer.title", __?: {}): string;
+  (_: "reader.imgViewer.zoomIn", __?: {}): string;
+  (_: "reader.imgViewer.zoomOut", __?: {}): string;
+  (_: "reader.imgViewer.zoomReset", __?: {}): string;
   (_: "reader.marks", __?: {}): {
   readonly "annotations": string,
   readonly "bookmarks": string,
@@ -2212,16 +2222,6 @@ declare namespace typed_i18n {
   (_: "reader.tts.speed", __?: {}): string;
   (_: "reader.tts.stop", __?: {}): string;
   (_: "reader.tts.voice", __?: {}): string;
-  (_: "reader.imgViewer", __?: {}): {
-  readonly "title": string,
-  readonly "zoomIn": string,
-  readonly "zoomOut": string,
-  readonly "zoomReset": string
-};
-  (_: "reader.imgViewer.title", __?: {}): string;
-  (_: "reader.imgViewer.zoomIn", __?: {}): string;
-  (_: "reader.imgViewer.zoomOut", __?: {}): string;
-  (_: "reader.imgViewer.zoomReset", __?: {}): string;
   (_: "settings", __?: {}): {
   readonly "annotationCreator": {
     readonly "creator": string,
