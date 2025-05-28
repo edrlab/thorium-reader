@@ -272,6 +272,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                     type="submit"
                     className={stylesButtons.button_primary_blue}
                     aria-label={__("reader.print.print")}
+                    disabled={!pageRange.length}
                     onClick={(_e) => {
                         // e.preventDefault();
                         // createOrGetPdfEventBus().dispatch("print", pageRange);
