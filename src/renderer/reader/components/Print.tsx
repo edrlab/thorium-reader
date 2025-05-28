@@ -87,17 +87,12 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
 
     const publicationViewFromReduxState = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
 
-    const rowVirtualizer = useVirtualizer({
-        horizontal: true,
-        count: pageRange.length,
-        getScrollElement: () => document.getElementById("print-popover-image-container"),
-        estimateSize: () => 155,
-        overscan: 3,
-      });
+
 
     const [publicationView, setPubView] = React.useState<PublicationView>(publicationViewFromReduxState);
 
     const isLcp = !!publicationView.lcp?.rights;
+    const isLcpWithPrintRights = isLcp && publicationView.lcp?.rights?.print;
 
     React.useEffect(() => {
 
@@ -114,6 +109,28 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
         
     }, [publicationIdentifier]);
 
+
+    let pagesToPrint = pageRange;
+    let newLcpRightsPrints: number[] = [];
+    if (isLcpWithPrintRights) {
+
+        const lcpRightsPrints = publicationView.lcpRightsPrints || [];
+        const lcpRightsPrintsRemain = publicationView.lcp.rights.print - lcpRightsPrints.length;
+        const pagesToPrintSaved = pageRange.filter((page) => lcpRightsPrints.some((pageSaved) => pageSaved === page));
+        const pagesToPrintNotSaved = pageRange.filter((page) => !pagesToPrintSaved.some((pageSaved) => pageSaved === page));
+        const pagesToPrintNotSavedRightTruncated = pagesToPrintNotSaved.slice(0, lcpRightsPrintsRemain);
+        pagesToPrint = [...pagesToPrintSaved, ...pagesToPrintNotSavedRightTruncated].sort((a, b) => a - b);
+        newLcpRightsPrints = [...lcpRightsPrints, ...pagesToPrintNotSavedRightTruncated].sort((a, b) => a - b);
+
+    }    
+
+    const rowVirtualizer = useVirtualizer({
+        horizontal: true,
+        count: pagesToPrint.length,
+        getScrollElement: () => document.getElementById("print-popover-image-container"),
+        estimateSize: () => 155,
+        overscan: 3,
+    });
     return <>
         <style>{`
              .print-popover-form {
@@ -190,7 +207,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
             <div id="print-popover-image-container" className="print-popover-image-container">
 
                 {
-                    pageRange.length ?
+                    pagesToPrint.length ?
 
                         <div
                             style={{
@@ -202,7 +219,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                             {rowVirtualizer.getVirtualItems().map((virtualItem) => {
 
 
-                                const pageNumber = pageRange[virtualItem.index];
+                                const pageNumber = pagesToPrint[virtualItem.index];
                                 const pageIndexZeroBased = pageNumber - 1;
                                 const src = pdfThumbnailImageCacheArray[pageIndexZeroBased];
 
@@ -238,32 +255,18 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
 
             </div>
 
-            {/* <div id="print-popover-image-container" className="print-popover-image-container">
-                {pageRange.length ? pageRange.map((pageNumber) => {
-                    const pageIndexZeroBased = pageNumber - 1;
-                    const src = pdfThumbnailImageCacheArray[pageIndexZeroBased];
-
-                    if (!src && !pdfThumbnailRequestedArray[pageIndexZeroBased]) {
-                        createOrGetPdfEventBus().dispatch("thumbnailRequest", pageIndexZeroBased);
-                        pdfThumbnailRequestedArray[pageIndexZeroBased] = true;
-                    }
-                    return src
-                        ? <img key={pageNumber} src={src} title={(pageNumber).toString()} />
-                        : (<div key={pageNumber} style={{ position: "relative", backgroundColor: "inherit" }} className={stylesSpinner.spinner_container}><div className={stylesSpinner.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>);
-                }
-
-                )
-                    : <p style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "-webkit-fill-available" }}>No Pages</p>}
-            </div> */}
-
-            {isLcp && publicationView.lcp?.rights?.print ? <p>{__("reader.print.descriptionLcpLimit", { pageRangePrinted: `[${publicationView.lcpRightsPrints}]`, count: publicationView.lcp.rights.print - publicationView.lcpRightsPrints.length, lcpLimitPages: publicationView.lcp.rights.print })}<span>  [{publicationView.lcpRightsPrints.join(",")}]</span></p> : <></>}
+            {
+                isLcpWithPrintRights ?
+                    <p>{__("reader.print.descriptionLcpLimit", { pageRangePrinted: `[${publicationView.lcpRightsPrints}]`, count: publicationView.lcp.rights.print - publicationView.lcpRightsPrints.length, lcpLimitPages: publicationView.lcp.rights.print })}{publicationView.lcpRightsPrints.length ? <span> {"->"} [{publicationView.lcpRightsPrints.join(",")}]</span> : ""}{(publicationView.lcp.rights.print - publicationView.lcpRightsPrints.length) < pageRange.length ? <span> {"->"} [{newLcpRightsPrints.join(",")}]</span> : ""}</p>
+                    : <></>
+            }
             <div className={stylesInput.form_group} style={{ marginTop: "20px", width: "360px" }}>
                 <input type="text" name="print-range" style={{ width: "100%", marginLeft: "10px" }} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={"print-range"} value={getV} onChange={(e) => {
                     const v = e.target.value;
                     setV(v);
                 }} />
                 <label htmlFor="print-range">{__("reader.print.ranges")}</label>
-                <div className="print-popover-page-icon" title={__("reader.print.printPagesListInfo", { count: pageRange.length }) + pageRange.toString()}></div>
+                <div className="print-popover-page-icon" title={__("reader.print.printPagesListInfo", { count: pagesToPrint.length }) + pagesToPrint.toString()}></div>
             </div>
 
             <div className={stylesAnnotations.annotation_form_textarea_buttons}>
@@ -272,12 +275,12 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                     type="submit"
                     className={stylesButtons.button_primary_blue}
                     aria-label={__("reader.print.print")}
-                    disabled={!pageRange.length}
+                    disabled={!pagesToPrint.length}
                     onClick={(_e) => {
                         // e.preventDefault();
-                        // createOrGetPdfEventBus().dispatch("print", pageRange);
+                        // createOrGetPdfEventBus().dispatch("print", pagesToPrint);
 
-                        dispatch(readerActions.print.build(publicationIdentifier, pageRange)); // send to main process
+                        dispatch(readerActions.print.build(publicationIdentifier, pagesToPrint)); // send to main process
                     }}
                 >
                     {__("reader.print.print")}
