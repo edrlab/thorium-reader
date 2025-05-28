@@ -824,7 +824,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         title={__("reader.navigation.print")}
                                     >
                                         <svg
-                                            // className={stylesReaderHeader.active_svg}
+                                            className={stylesReaderHeader.active_svg}
                                             style={{ stroke: "var(--color-blue-alt)", fill: "none" }}
                                             xmlns="http://www.w3.org/2000/svg"
                                             width="30"
