@@ -1666,8 +1666,8 @@ declare namespace typed_i18n {
     readonly "descriptionLcp": string,
     readonly "descriptionLcpLimit": string,
     readonly "print": string,
-    readonly "rangesInfo": string,
-    readonly "ranges": string
+    readonly "ranges": string,
+    readonly "rangesInfo": string
   },
   readonly "settings": {
     readonly "column": {
@@ -2023,15 +2023,15 @@ declare namespace typed_i18n {
   readonly "descriptionLcp": string,
   readonly "descriptionLcpLimit": string,
   readonly "print": string,
-  readonly "rangesInfo": string,
-  readonly "ranges": string
+  readonly "ranges": string,
+  readonly "rangesInfo": string
 };
   (_: "reader.print.description", __?: {}): string;
   (_: "reader.print.descriptionLcp", __?: {}): string;
   (_: "reader.print.descriptionLcpLimit", __?: {}): string;
   (_: "reader.print.print", __?: {}): string;
-  (_: "reader.print.rangesInfo", __?: {}): string;
   (_: "reader.print.ranges", __?: {}): string;
+  (_: "reader.print.rangesInfo", __?: {}): string;
   (_: "reader.settings", __?: {}): {
   readonly "column": {
     readonly "auto": string,
