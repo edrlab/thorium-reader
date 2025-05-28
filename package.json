@@ -42,7 +42,7 @@
     "start:dev:renderer:library": "webpack-dev-server --config webpack.config.renderer-library.js",
     "start:dev:renderer:reader": "webpack-dev-server --config webpack.config.renderer-reader.js",
     "start:dev:renderer:pdf": "webpack --config webpack.config.renderer-pdf.js",
-    "start:dev:main:electron": "cross-env DEBUG=r2:*,readium-desktop:*,proxy-agent,-readium-desktop:main#streamerNoHttp,-readium-desktop:main:saga:persist,-r2:navigator#electron/common/readium-css-inject NODE_ENV=development electron .",
+    "start:dev:main:electron": "cross-env DEBUG=r2:*,readium-desktop:*,-proxy-agent,-readium-desktop:main#streamerNoHttp,-readium-desktop:main:saga:persist,-r2:navigator#electron/common/readium-css-inject NODE_ENV=development electron .",
     "start:dev:main": "npm run build:dev:main && npm run start:dev:main:electron",
     "start:devex": "cross-env WEBPACK=bundle-external npm run start:dev",
     "start:dev": "cross-env DEBUG_COLORS=true npm run start:dev:renderer:pdf && cross-env DEBUG_COLORS=true concurrently --kill-others \"npm run start:dev:renderer:library\" \"npm run start:dev:renderer:reader\" \"npm run start:dev:main\"",
