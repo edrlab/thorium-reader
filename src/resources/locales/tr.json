@@ -754,8 +754,8 @@
             "descriptionLcp": "",
             "descriptionLcpLimit": "",
             "print": "",
-            "printPagesListInfo": "",
-            "ranges": ""
+            "ranges": "",
+            "rangesInfo": ""
         },
         "settings": {
             "column": {
