@@ -181,8 +181,8 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' stroke='%23007bff' stroke-width='2' fill='none'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='14' fill='%23007bff'%3E?%3C/text%3E%3C/svg%3E");
             background-size: contain;
             position: absolute;
-            right: -40px;
-            top: -5px;
+            right: -30px;
+            top: -7px;
         }
         .print-popover-thumbnail-pagination-bubble {
             position: absolute;
@@ -261,12 +261,12 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                     : <></>
             }
             <div className={stylesInput.form_group} style={{ marginTop: "20px", width: "360px" }}>
-                <input type="text" name="print-range" style={{ width: "100%", marginLeft: "10px" }} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={"print-range"} placeholder={"-1;4-5;7;9-"}value={getV} onChange={(e) => {
+                <input type="text" name="print-range" style={{ width: "100%", marginLeft: "10px" }} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={__("reader.print.ranges")} value={getV} onChange={(e) => {
                     const v = e.target.value;
                     setV(v);
                 }} />
                 <label htmlFor="print-range">{__("reader.print.ranges")}</label>
-                <div className="print-popover-page-icon" title={__("reader.print.printPagesListInfo", { count: pagesToPrint.length }) + pagesToPrint.toString()}></div>
+                <div className="print-popover-page-icon" title={__("reader.print.rangesInfo")}></div>
             </div>
 
             <div className={stylesAnnotations.annotation_form_textarea_buttons}>
