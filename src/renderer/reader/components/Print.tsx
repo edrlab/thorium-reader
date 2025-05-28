@@ -261,7 +261,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                     : <></>
             }
             <div className={stylesInput.form_group} style={{ marginTop: "20px", width: "360px" }}>
-                <input type="text" name="print-range" style={{ width: "100%", marginLeft: "10px" }} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={"print-range"} value={getV} onChange={(e) => {
+                <input type="text" name="print-range" style={{ width: "100%", marginLeft: "10px" }} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={"print-range"} placeholder={"-1;4-5;7;9-"}value={getV} onChange={(e) => {
                     const v = e.target.value;
                     setV(v);
                 }} />
