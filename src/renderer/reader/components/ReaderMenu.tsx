@@ -728,7 +728,7 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
                 }}
                 >
                     <SVG ariaHidden={true} svg={DeleteIcon} />
-                    {__("reader.marks.delete")}
+                    { !dockedMode ? __("reader.marks.delete") : undefined}
                 </button> :
                 <Popover.Root>
                     <Popover.Trigger asChild>
@@ -1041,7 +1041,7 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
                 }}
                 >
                     <SVG ariaHidden={true} svg={DeleteIcon} />
-                    {__("reader.marks.delete")}
+                    { !dockedMode ? __("reader.marks.delete") : undefined}
                 </button> :
                 <Popover.Root>
                     <Popover.Trigger asChild>
@@ -3132,7 +3132,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 }
                             }}
                             disabledKeys={options.filter(option => option.disabled === true).map(option => option.id)}
-                            style={{ margin: "0", padding: "0", flexDirection: "row" }}
+                            style={{ padding: "0", flexDirection: "row" }}
                             // onInputChange={(v) => {
                             //     console.log("inputchange: ", v);
 

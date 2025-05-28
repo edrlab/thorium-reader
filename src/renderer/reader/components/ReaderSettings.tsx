@@ -1836,7 +1836,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                             //         console.error("Combobox No value !!!");
                             //     }
                             // }}
-                            style={{ paddingBottom: "0", margin: "0", flexDirection: "row" }}
+                            style={{ paddingBottom: "0", flexDirection: "row" }}
                             ref={dockedModeRef}
                         >
                             {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
