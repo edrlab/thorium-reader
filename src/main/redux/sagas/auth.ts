@@ -139,7 +139,7 @@ const opdsAuthFlow =
             try {
 
                 yield race({
-                    a: delay(60000),
+                    a: delay(240000),
                     b: join(task),
                     c: call(
                         async () =>

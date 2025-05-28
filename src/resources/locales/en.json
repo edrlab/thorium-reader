@@ -668,6 +668,12 @@
             "fit": "Fit"
         },
         "goToContent": "Go to the content",
+        "imgViewer": {
+            "title": "Image Viewer Dialog Modal",
+            "zoomIn": "Zoom In",
+            "zoomOut": "Zoom Out",
+            "zoomReset": "Zoom Reset"
+        },
         "marks": {
             "annotations": "Annotations",
             "bookmarks": "Bookmarks",

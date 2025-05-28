@@ -1580,6 +1580,12 @@ declare namespace typed_i18n {
   readonly "divina": { readonly "mute": string, readonly "unmute": string },
   readonly "fxl": { readonly "fit": string },
   readonly "goToContent": string,
+  readonly "imgViewer": {
+    readonly "title": string,
+    readonly "zoomIn": string,
+    readonly "zoomOut": string,
+    readonly "zoomReset": string
+  },
   readonly "marks": {
     readonly "annotations": string,
     readonly "bookmarks": string,
@@ -1659,7 +1665,6 @@ declare namespace typed_i18n {
     readonly "description": string,
     readonly "descriptionLcp": string,
     readonly "descriptionLcpLimit": string,
-    readonly "descriptionLcpLimitPrinted": string,
     readonly "print": string,
     readonly "printPagesListInfo": string,
     readonly "ranges": string
@@ -1850,6 +1855,16 @@ declare namespace typed_i18n {
   (_: "reader.fxl", __?: {}): { readonly "fit": string };
   (_: "reader.fxl.fit", __?: {}): string;
   (_: "reader.goToContent", __?: {}): string;
+  (_: "reader.imgViewer", __?: {}): {
+  readonly "title": string,
+  readonly "zoomIn": string,
+  readonly "zoomOut": string,
+  readonly "zoomReset": string
+};
+  (_: "reader.imgViewer.title", __?: {}): string;
+  (_: "reader.imgViewer.zoomIn", __?: {}): string;
+  (_: "reader.imgViewer.zoomOut", __?: {}): string;
+  (_: "reader.imgViewer.zoomReset", __?: {}): string;
   (_: "reader.marks", __?: {}): {
   readonly "annotations": string,
   readonly "bookmarks": string,
@@ -2007,7 +2022,6 @@ declare namespace typed_i18n {
   readonly "description": string,
   readonly "descriptionLcp": string,
   readonly "descriptionLcpLimit": string,
-  readonly "descriptionLcpLimitPrinted": string,
   readonly "print": string,
   readonly "printPagesListInfo": string,
   readonly "ranges": string
@@ -2015,7 +2029,6 @@ declare namespace typed_i18n {
   (_: "reader.print.description", __?: {}): string;
   (_: "reader.print.descriptionLcp", __?: {}): string;
   (_: "reader.print.descriptionLcpLimit", __?: {}): string;
-  (_: "reader.print.descriptionLcpLimitPrinted", __?: {}): string;
   (_: "reader.print.print", __?: {}): string;
   (_: "reader.print.printPagesListInfo", __?: {}): string;
   (_: "reader.print.ranges", __?: {}): string;

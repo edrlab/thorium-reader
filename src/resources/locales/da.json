@@ -668,6 +668,12 @@
             "fit": "Tilpas"
         },
         "goToContent": "Gå til indhold",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "Noter",
             "bookmarks": "Bogmærker",

@@ -668,6 +668,12 @@
             "fit": "Pas"
         },
         "goToContent": "Ga naar de Inhoud",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "Annotaties",
             "bookmarks": "Bladwijzers",

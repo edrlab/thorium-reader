@@ -668,6 +668,12 @@
             "fit": ""
         },
         "goToContent": "",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "Anotacije",
             "bookmarks": "Knjižne oznake",

@@ -11,6 +11,7 @@ import * as path from "path";
 import { lockInstance } from "readium-desktop/main/cli/lock";
 import { IS_DEV, _APP_NAME, _APP_VERSION, _PACKAGING } from "readium-desktop/preprocessor-directives";
 import yargs from "yargs";
+// import { hideBin } from "yargs/helpers";
 import { closeProcessLock } from "../di";
 import { EOL } from "os";
 import { diMainGet } from "readium-desktop/main/di";
@@ -22,6 +23,7 @@ import { flushSession } from "../tools/flushSession";
 import { isOpenUrl, setOpenUrl } from "./url";
 import { globSync } from "glob";
 import { PublicationView } from "readium-desktop/common/views/publication";
+import { isAcceptedExtension } from "readium-desktop/common/extension";
 
 // Logger
 const debug = debug_("readium-desktop:cli:process");
@@ -51,7 +53,7 @@ let __pendingCmd = 0;
 
 // yargs configuration
 const yargsInit = () =>
-    yargs
+    yargs() // hideBin(process.argv)
         .scriptName(_APP_NAME)
         .version(_APP_VERSION)
         .usage("$0 <cmd> [args]")
@@ -141,6 +143,14 @@ const yargsInit = () =>
 
                     const pubApi = diMainGet("publication-api");
                     for (const fp of filePathArray) {
+
+                        const ext = path.extname(fp);
+                        const isPDF = isAcceptedExtension("pdf", ext);
+                        if (isPDF) {
+                            process.stderr.write("import PDF from CLI is not allowed: " + fp + EOL);
+                            __returnCode = 1;
+                            continue;
+                        }
 
                         debug("cliImport filePath in filePathArray: ", fp);
                         const pubViews = await sagaMiddleware.run(pubApi.importFromFs, fp).toPromise<PublicationView[]>();
