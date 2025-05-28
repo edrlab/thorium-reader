@@ -167,6 +167,20 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
             right: -40px;
             top: -5px;
         }
+        .print-popover-thumbnail-pagination-bubble {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
         `}</style>
         <form className="print-popover-form">
             <h4>{__("reader.print.print")}</h4>
@@ -199,6 +213,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                                 return (
                                     <div
                                         key={virtualItem.key}
+                                        className="print-popover-thumbnail-container"
                                         style={{
                                             position: "absolute",
                                             top: 0,
@@ -207,11 +222,14 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                                             width: `${virtualItem.size}px`,
                                             transform: `translateX(${virtualItem.start}px)`,
                                         }}
-                                    >{
+                                    >
+                                        {
                                             src
                                                 ? <img key={pageNumber} src={src} title={(pageNumber).toString()} />
                                                 : (<div key={pageNumber} style={{ position: "relative", backgroundColor: "inherit" }} className={stylesSpinner.spinner_container}><div className={stylesSpinner.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>)
-                                        }</div>
+                                        }
+                                        <div className="print-popover-thumbnail-pagination-bubble">{`${pageNumber}`}</div>
+                                    </div>
                                 );
                             })}
                         </div>
