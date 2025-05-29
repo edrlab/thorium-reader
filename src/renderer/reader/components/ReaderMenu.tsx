@@ -3091,26 +3091,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                 dockedMode ?
                     <>
                         <div key="docked-header" className={stylesPopoverDialog.docked_header}>
-                            <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls} style={{ justifyContent: "space-between", width: "100%" }}>
-                                <div style={{ display: "flex", gap: "5px" }}>
-                                    <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label={__("reader.svg.left")} onClick={setDockingModeLeftSide}>
-                                        <SVG ariaHidden={true} svg={DockLeftIcon} />
-                                    </button>
-                                    <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label={__("reader.svg.right")} onClick={setDockingModeRightSide}>
-                                        <SVG ariaHidden={true} svg={DockRightIcon} />
-                                    </button>
-                                    <button className={stylesButtons.button_transparency_icon} disabled={false} aria-label={__("reader.settings.column.auto")} onClick={setDockingModeFull}>
-                                        <SVG ariaHidden={true} svg={DockModalIcon} />
-                                    </button>
-                                </div>
-                                <Dialog.Close asChild>
-                                    <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
-                                        <SVG ariaHidden={true} svg={QuitIcon} />
-                                    </button>
-                                </Dialog.Close>
-                            </div>
-                        </div>
-                        <SelectRef
+                                                    <SelectRef
                             items={options}
                             selectedKey={optionSelected}
                             svg={options.find(({ value }) => value === section)?.svg}
@@ -3151,6 +3132,25 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         >
                             {item => <SelectItem >{item.name}</SelectItem>}
                         </SelectRef>
+                            <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls} style={{ justifyContent: "end", width: "100%" }}>
+                                <div style={{ display: "flex", gap: "5px" }}>
+                                    <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label={__("reader.svg.left")} onClick={setDockingModeLeftSide}>
+                                        <SVG ariaHidden={true} svg={DockLeftIcon} />
+                                    </button>
+                                    <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label={__("reader.svg.right")} onClick={setDockingModeRightSide}>
+                                        <SVG ariaHidden={true} svg={DockRightIcon} />
+                                    </button>
+                                    <button className={stylesButtons.button_transparency_icon} disabled={false} aria-label={__("reader.settings.column.auto")} onClick={setDockingModeFull}>
+                                        <SVG ariaHidden={true} svg={DockModalIcon} />
+                                    </button>
+                                </div>
+                                <Dialog.Close asChild>
+                                    <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
+                                        <SVG ariaHidden={true} svg={QuitIcon} />
+                                    </button>
+                                </Dialog.Close>
+                            </div>
+                        </div>
                     </>
                     : <></>
             }

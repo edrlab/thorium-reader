@@ -1780,7 +1780,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
             {
                 dockedMode ?
                     <>
-                        <div key="docked-header" className={stylesPopoverDialog.docked_header}>
+                        <div key="docked-header" className={stylesPopoverDialog.docked_header} style={{borderBottom: "unset"}}>
                             {
                                 (dockedMode && isEpub) ? <AllowCustomContainer /> : <></>
                             }
@@ -1836,7 +1836,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                             //         console.error("Combobox No value !!!");
                             //     }
                             // }}
-                            style={{ paddingBottom: "0", flexDirection: "row" }}
+                            style={{ margin: "0", paddingBottom: "10px", flexDirection: "row", backgroundColor: "var(--color-docked-header)", borderBottom: "1px solid var(--color-extralight-grey-alt)" }}
                             ref={dockedModeRef}
                         >
                             {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
