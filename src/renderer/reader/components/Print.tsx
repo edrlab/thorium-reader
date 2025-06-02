@@ -79,7 +79,7 @@ function convertRangestoNumberArray(ranges: number[][], pdfPageRange: [start: nu
 const pdfThumbnailRequestedArray: (boolean)[] = [];
 export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { pdfPageRange: [start: number, end: number], pdfThumbnailImageCacheArray: string[] }) => {
 
-    const [getV, setV] = React.useState(`${pdfPageRange[0]}-${pdfPageRange[1]}`);
+    const [getV, setV] = React.useState(pdfPageRange[1] ? `${pdfPageRange[0]}-${pdfPageRange[1]}` : "1");
     const [__] = useTranslator();
     const dispatch = useDispatch();
 
@@ -107,6 +107,8 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                 const pubView = action.payload;
                 setPubView({...pubView});
             }
+        }).catch((e) => {
+            console.error("getSaga().run(publicationInfoReaderLibGetPublicationApiCall, publicationIdentifier, false)", e);
         });
         
     }, [publicationIdentifier]);
