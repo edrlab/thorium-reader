@@ -808,53 +808,56 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
                     <ul className={stylesReader.menu_option}>
 
-                        <li
-                            {...(this.props.pdfPrintOpen &&
-                                { style: { backgroundColor: "var(--color-blue)" } })}
-                        >
-                            <Popover.Root open={this.props.pdfPrintOpen} onOpenChange={(open) => {
-                                this.props.setShortcutEnable(!open);
-                                this.props.setPdfPrintOpen(open);
-                            }}>
-                                <Popover.Trigger asChild>
-                                    <button
-                                        aria-pressed={this.props.pdfPrintOpen}
-                                        aria-label={__("reader.navigation.print")}
-                                        className={stylesReader.menu_button}
-                                        title={__("reader.navigation.print")}
-                                    >
-                                        <svg
-                                            className={stylesReaderHeader.active_svg}
-                                            style={{ stroke: "var(--color-blue-alt)", fill: "none" }}
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="30"
-                                            height="20"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            aria-hidden="true"
-                                        >
-                                            <path d="M6 9V2h12v7" />
-                                            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
-                                            <path d="M6 14h12v8H6z" />
-                                        </svg>
-                                    </button>
-                                </Popover.Trigger>
-                                <Popover.Portal>
-                                    <Popover.Content sideOffset={this.props.isOnSearch ? 50 : 18} align="end" style={{ zIndex: 101 }}
-                                    // onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
-                                    // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
-                                    >
-                                        <PrintContainer pdfPageRange={[1, this.props.pdfPlayerNumberOfPages]} pdfThumbnailImageCacheArray={this.props.pdfThumbnailImageCacheArray} />
-                                        <Popover.Arrow style={{ fill: "var(--color-extralight-grey)" }} width={15} height={10} />
-                                    </Popover.Content>
-                                </Popover.Portal>
-                            </Popover.Root>
-                        </li>
-
+                        {
+                            this.props.readerMenuProps.isPdf ?
+                                <li
+                                    {...(this.props.pdfPrintOpen &&
+                                        { style: { backgroundColor: "var(--color-blue)" } })}
+                                >
+                                    <Popover.Root open={this.props.pdfPrintOpen} onOpenChange={(open) => {
+                                        this.props.setShortcutEnable(!open);
+                                        this.props.setPdfPrintOpen(open);
+                                    }}>
+                                        <Popover.Trigger asChild>
+                                            <button
+                                                aria-pressed={this.props.pdfPrintOpen}
+                                                aria-label={__("reader.navigation.print")}
+                                                className={stylesReader.menu_button}
+                                                title={__("reader.navigation.print")}
+                                            >
+                                                <svg
+                                                    className={stylesReaderHeader.active_svg}
+                                                    style={{ stroke: "var(--color-blue-alt)", fill: "none" }}
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="30"
+                                                    height="20"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    strokeWidth="2"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    aria-hidden="true"
+                                                >
+                                                    <path d="M6 9V2h12v7" />
+                                                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                                                    <path d="M6 14h12v8H6z" />
+                                                </svg>
+                                            </button>
+                                        </Popover.Trigger>
+                                        <Popover.Portal>
+                                            <Popover.Content sideOffset={this.props.isOnSearch ? 50 : 18} align="end" style={{ zIndex: 101 }}
+                                            // onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
+                                            // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
+                                            >
+                                                <PrintContainer pdfPageRange={[1, this.props.pdfPlayerNumberOfPages]} pdfThumbnailImageCacheArray={this.props.pdfThumbnailImageCacheArray} />
+                                                <Popover.Arrow style={{ fill: "var(--color-extralight-grey)" }} width={15} height={10} />
+                                            </Popover.Content>
+                                        </Popover.Portal>
+                                    </Popover.Root>
+                                </li>
+                                : <></>
+                        }
                         <li
                             {...(this.props.isOnSearch && { style: { backgroundColor: "var(--color-blue" } })}
                         >
