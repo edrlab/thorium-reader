@@ -219,6 +219,7 @@ export async function importPublicationFromFS(
 
         lcp: null, // updated below via lcpManager.updateDocumentLcp()
         lcpRightsCopies: 0,
+        lcpRightsPrints: [],
     };
 
     debug(`publication document ID=${pubDocument.identifier} HASH=${pubDocument.hash}`);

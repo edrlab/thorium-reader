@@ -20,6 +20,7 @@
             "copy": "Copiar",
             "cut": "Cortar",
             "paste": "Colar",
+            "print": "",
             "redo": "Refazer",
             "selectAll": "Selecionar tudo",
             "title": "Editar",
@@ -72,7 +73,7 @@
             "lastAdditions": "Adicionados recentemente"
         },
         "export": "Guardar como",
-        "exportAnnotation": "Exportar anotações...",
+        "exportAnnotation": "Exportar anotações",
         "format": "Formato",
         "importAnnotation": "Importar anotações",
         "lang": "Idioma",
@@ -225,11 +226,11 @@
             "addExtract": "Importar excerto",
             "goBuyBook": "Comprar documento",
             "goLoanBook": "Emprestar documento",
-            "goRevokeLoanBook": "Revogar o empréstimo",
+            "goRevokeLoanBook": "Revogar empréstimo",
             "goSubBook": "Subscrever"
         },
         "network": {
-            "error": "Não foi possível aceder ao sinal OPDS",
+            "error": "Erro ao processar o sinal",
             "noInternet": "Sem Internet",
             "noInternetMessage": "Verifique o cabo de rede, modem, router ou o Wi-Fi",
             "reject": "Desculpe, ocorreu um erro inesperado!",
@@ -240,7 +241,7 @@
         "shelf": "Estante",
         "updateForm": {
             "name": "Nome:",
-            "title": "Editar um sinal OPDS",
+            "title": "Editar sinal OPDS",
             "updateButton": "Editar",
             "url": "Endereço:"
         },
@@ -248,7 +249,7 @@
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": ""
+            "accessibility-summary-title": "Informacões de acessibilidade"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
@@ -256,12 +257,12 @@
                 "descriptive": ""
             },
             "additional-accessibility-information-audio-descriptions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Descrição do áudio",
+                "descriptive": "Descrições do áudio"
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Braile",
+                "descriptive": "Braile"
             },
             "additional-accessibility-information-full-ruby-annotations": {
                 "compact": "",
@@ -276,11 +277,11 @@
                 "descriptive": ""
             },
             "additional-accessibility-information-large-print": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Caracteres grandes",
+                "descriptive": "Caracteres grandes"
             },
             "additional-accessibility-information-page-breaks": {
-                "compact": "",
+                "compact": "Quebras de página incluídas",
                 "descriptive": ""
             },
             "additional-accessibility-information-ruby-annotations": {
@@ -319,13 +320,13 @@
                 "descriptive": ""
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "Acessibilidade avaliada por "
             },
             "conformance-certifier-credentials": {
-                "compact": ""
+                "compact": "A credencial do avaliador é "
             },
             "conformance-details-certifier-report": {
-                "compact": ""
+                "compact": "Para mais informações ver relatório de avaliação"
             },
             "conformance-details-claim": {
                 "compact": "",
@@ -374,7 +375,7 @@
         },
         "hazards": {
             "hazards-flashing": {
-                "compact": "",
+                "compact": "Conteúdo com luzes intermitentes",
                 "descriptive": ""
             },
             "hazards-flashing-none": {
@@ -417,7 +418,7 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "hazards-title": "",
+            "hazards-title": "Pontos de atenção",
             "hazards-unknown": {
                 "compact": "",
                 "descriptive": ""
@@ -546,7 +547,7 @@
                 "alternativeText": "Contém texto alternativo nas imagens",
                 "displayTransformability": "A aparência do texto e o visual da página podem ser modificados",
                 "longDescription": "Recursos gráficos totalmente descritos",
-                "printPageNumbers": "Contém uma lista de páginas para onde ir, com referência à versão impressa",
+                "printPageNumbers": "Contém uma lista de páginas para onde ir, por referência à versão impressa",
                 "readingOrder": "Contém ordenação de leitura",
                 "synchronizedAudioText": "Texto e áudio sincronizados",
                 "tableOfContents": "Contém índice"
@@ -562,7 +563,7 @@
                 "sound": "Som",
                 "unknown": "Desconhecido"
             },
-            "certifierReport": "Relatório do certificador:",
+            "certifierReport": "Relatório do avaliador:",
             "conformsTo": "Em conformidade com:",
             "moreInformation": "Mais informações",
             "name": "Acessibilidade",
@@ -667,6 +668,12 @@
             "fit": "Ajustar"
         },
         "goToContent": "Ir para o conteúdo",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "Anotações",
             "bookmarks": "Marcadores",
@@ -717,6 +724,7 @@
             "openTableOfContentsTitle": "Navegação",
             "page": "Página",
             "pdfscalemode": "Ajustar à página ou largura",
+            "print": "",
             "settingsTitle": "Configurações"
         },
         "notes": {
@@ -740,6 +748,18 @@
                 "submit": "Procurar"
             },
             "searchTitle": "Pesquisar:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
         },
         "settings": {
             "column": {

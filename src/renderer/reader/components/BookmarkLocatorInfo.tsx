@@ -39,7 +39,7 @@ const getBookmarkLocatorInfo = (locatorExtended: MiniLocatorExtended | undefined
     } else if (locatorExtended.locator.href) {
         const pub = getStore().getState().reader.info.r2Publication;
         if (isPdfFn(pub)) {
-            locatorInfo = `${parseInt(locatorExtended.locator.href, 10) + 1}`;
+            locatorInfo = `${locatorExtended.locator.href}`;
         } else if (isDivinaFn(pub)) {
             locatorInfo = `${locatorExtended.locator.href}`;
         } else {

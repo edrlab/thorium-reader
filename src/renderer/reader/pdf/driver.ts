@@ -53,7 +53,7 @@ export function createOrGetPdfEventBus(): IEventBusPdfPlayer {
                       try {
 
                           const key = typeof message?.key !== "undefined" ? JSON.parse(message.key) : undefined;
-                          const data = typeof message?.payload !== "undefined" ? JSON.parse(message.payload) : [];
+                          const data = typeof message?.payload !== "undefined" ? typeof message.payload === "string" ? JSON.parse(message.payload) : message.payload : [];
                           console.log("ipc-message pdf-eventbus received", key, data);
 
                           if (Array.isArray(data)) {
@@ -75,6 +75,16 @@ export function createOrGetPdfEventBus(): IEventBusPdfPlayer {
 export function pdfMount(
     pdfPath: string,
     publicationViewport: HTMLDivElement,
+    data: {
+        page: string,
+        zoom: string,
+        // scrollLeft: number,
+        scrollTop: number,
+        // rotation: number,
+        // sidebarView: number,
+        // scrollMode: number,
+        // spreadMode: number,
+    }
 ) {
 
     if (pdfPath.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)) {
@@ -82,6 +92,10 @@ export function pdfMount(
     }
 
     console.log("pdfPath ADJUSTED", pdfPath);
+
+    const pdfData = data;
+    const pdfDataString = JSON.stringify(pdfData); 
+    const b64EncodedPdfData = Buffer.from(pdfDataString, "utf8").toString("base64");
 
     const webview = document.createElement("webview");
 
@@ -144,7 +158,8 @@ export function pdfMount(
     // webview.setAttribute("disablewebsecurity", "");
 
     webview.setAttribute("preload", preloadPath);
-    webview.setAttribute("src", `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_EXTRACT_PDF}/pdfjs/web/viewer.html?file=` + encodeURIComponent_RFC3986(pdfPath));
+    webview.setAttribute("src",
+        `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_EXTRACT_PDF}/pdfjs/web/viewer.html?file=${encodeURIComponent_RFC3986(pdfPath)}&thoriumpdfdata=${encodeURIComponent_RFC3986(b64EncodedPdfData)}`);
 
     publicationViewport.append(webview);
 }

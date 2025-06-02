@@ -20,6 +20,7 @@
             "copy": "Kopiatu",
             "cut": "Moztu",
             "paste": "Itsatsi",
+            "print": "",
             "redo": "Berregin",
             "selectAll": "Hautatu dena",
             "title": "Editatu",
@@ -667,6 +668,12 @@
             "fit": "Egokitu"
         },
         "goToContent": "",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "Oharrak",
             "bookmarks": "Markatzaileak",
@@ -717,6 +724,7 @@
             "openTableOfContentsTitle": "Nabigazioa",
             "page": "Orria",
             "pdfscalemode": "Orriaren doikuntza edo zabalera",
+            "print": "",
             "settingsTitle": "Konfigurazio-aukerak"
         },
         "notes": {
@@ -740,6 +748,18 @@
                 "submit": "Aurkitu"
             },
             "searchTitle": "Bilatu:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
         },
         "settings": {
             "column": {

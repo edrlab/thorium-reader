@@ -32,7 +32,7 @@ export interface IPdfState {
 export type IPdfBus = IEventBusPdfPlayer;
 
 const pdfjsEventBus = new EventBus();
-pdfjsEventBus.onAll((key: any) => (...arg: any[]) => console.log("PDFJS EVENTBUS", key, ...arg));
+// pdfjsEventBus.onAll((_key: any) => (..._arg: any[]) => /*console.log("PDFJS EVENTBUS", key, arg)*/ {});
 (window as any).pdfjsEventBus = pdfjsEventBus;
 
 const pdfDocument = new Promise<PDFDocumentProxy>((resolve) =>
@@ -57,7 +57,7 @@ function main() {
                 try {
 
                     const key = typeof message?.key !== "undefined" ? JSON.parse(message.key) : undefined;
-                    const data = typeof message?.payload !== "undefined" ? JSON.parse(message.payload) : [];
+                    const data = typeof message?.payload !== "undefined" ? typeof message.payload === "string" ? JSON.parse(message.payload) : message.payload : [];
                     console.log("ipcRenderer pdf-eventbus received", key, data);
 
                     if (Array.isArray(data)) {
@@ -101,6 +101,36 @@ function main() {
         bus.dispatch("column", defaultCol);
 
     });
+
+    {
+        bus.subscribe("print", (pageRange: number[]) => {
+            pdfjsEventBus.dispatch("print", pageRange);
+        })
+        bus.subscribe("thumbnailRequest", (pageIndexZeroBased) => {
+            pdfjsEventBus.dispatch("__thumbnailPageRequest", pageIndexZeroBased);
+        })
+        pdfjsEventBus.on("thumbnailrendered", ({pageNumber, source: {image: {src}}}: any) => {
+            bus.dispatch("thumbnailRendered", pageNumber, src);
+        })
+    }
+
+    {
+        bus.subscribe("firstpage", () => {
+            pdfjsEventBus.dispatch("firstpage");
+        });
+        bus.subscribe("lastpage", () => {
+            pdfjsEventBus.dispatch("lastpage");
+        })
+    }
+
+    {
+        const debounceSave = debounce(async (data: any) => {
+            bus.dispatch("savePreferences", data);
+        }, 200);
+        pdfjsEventBus.on("__savePreferences", async (data: any) => {
+            await debounceSave(data)
+        })
+    }
 
     {
         pdfjsEventBus.on("__ready", () => {
@@ -161,29 +191,31 @@ function main() {
 
     // pagechange
     {
-        bus.subscribe("page", (pageNumber) => {
-            console.log("pageNumber from host", pageNumber);
-
+        // PageNumber or PageLabel one based !! This is not pageIndex zero based
+        bus.subscribe("pageLabel", (pageLabel: string) => {
             p.then(() => {
-
-                pdfjsEventBus.dispatch("pagenumberchanged", {
-                    source: null,
-                    value: pageNumber.toString(),
-                });
+                pdfjsEventBus.dispatch("__setPageLabelOrPageNumber", pageLabel);
+                
             });
         });
-        const debounceUpdateviewarea = debounce(async (evt: any) => {
-            try {
-                const { location: { pageNumber } } = evt;
-                console.log("pageNumber", pageNumber);
-                bus.dispatch("page", pageNumber);
-            } catch (e) {
-                console.log("updateviewarea ERROR", e);
-            }
-        }, 500);
-        pdfjsEventBus.on("updateviewarea", async (evt: any) => {
-            await debounceUpdateviewarea(evt);
+        bus.subscribe("pageNumber", (pageNumber: number) => {
+            p.then(() => {
+                pdfjsEventBus.dispatch("__setPageLabelOrPageNumber", pageNumber);
+                
+            });
         });
+        // const debounceUpdateviewarea = debounce(async (evt: any) => {
+        //     try {
+        //         const { location: { pageNumber } } = evt;
+        //         console.log("pageNumber", pageNumber);
+        //         bus.dispatch("page", pageNumber);
+        //     } catch (e) {
+        //         console.log("updateviewarea ERROR", e);
+        //     }
+        // }, 500);
+        // pdfjsEventBus.on("updateviewarea", async (evt: any) => {
+        //     await debounceUpdateviewarea(evt);
+        // });
 
         bus.subscribe("page-next", () => {
             if (colMode === "2") {

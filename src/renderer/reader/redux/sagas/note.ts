@@ -353,7 +353,7 @@ function* annotationButtonTrigger(action: readerLocalActionAnnotations.trigger.T
     }
 
     const { locatorExtended } = __selectionInfoGlobal;
-    if (!locatorExtended) {
+    if (!locatorExtended?.selectionInfo) {
         debug("annotationBtnTriggerRequestedAction received");
         // trigger a Toast notification to user
         yield* putTyped(

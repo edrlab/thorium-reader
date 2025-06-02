@@ -31,6 +31,8 @@ import { readerActions } from "readium-desktop/common/redux/actions";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { resourceCacheTimer } from "readium-desktop/common/redux/sagas/resourceCache";
+import { createOrGetPdfEventBus } from "../../pdf/driver";
+import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 
 // Logger
 const filename_ = "readium-desktop:renderer:reader:saga:index";
@@ -152,6 +154,20 @@ export function* rootSaga() {
             }
         }),
         spawnLeading(resourceCacheTimer), // resourceCache memory cleaning 
+        takeSpawnEvery(
+            readerActions.print.ID,
+            function*(action: readerActions.print.TAction) {
+                const { pageRange } = action.payload;
+
+                if ((action as unknown as ActionWithSender)?.sender?.type !== SenderType.Main) {
+                    return; // expect sender as main process
+                }
+
+                debug("READER PRINT FROM RENDERER PROCESS", action.payload);
+                createOrGetPdfEventBus().dispatch("print", pageRange);
+            },
+            (e) => debug("readerActions.print", e),
+        ),
     ]);
 
 

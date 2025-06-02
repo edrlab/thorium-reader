@@ -587,21 +587,20 @@ const httpGetUnauthorized =
                         const responseAfterRefresh = await httpGetUnauthorizedRefresh(
                             auth,
                         )(url, options, _callback, ..._arg);
-                        return responseAfterRefresh || response;
-                    } else {
-                        // Most likely because of a wrong access token.
-                        // In some cases the returned content won't launch a new authentication process
-                        // It's safer to just delete the access token and start afresh now.
-                        await deleteAuthenticationToken(url.host);
-                        (options.headers as Headers).delete("Authorization");
-                        const responseWithoutAuth = await httpGetWithAuth(
-                            false,
-                        )(url, options, _callback, ..._arg);
-                        return responseWithoutAuth || response;
+                        if (responseAfterRefresh) {
+                            return responseAfterRefresh;
+                        }
                     }
-                } else {
-                    return await handleCallback(response, _callback);
+                    // Most likely because of a wrong access token, rovoked/invalid token
+                    // In some cases the returned content won't launch a new authentication process
+                    // It's safer to just delete the access token and start afresh now.
+                    await deleteAuthenticationToken(url.host);
+                    (options.headers as Headers).delete("Authorization");
+                    return await httpGetWithAuth(
+                        false,
+                    )(url, options, _callback, ..._arg);
                 }
+                return await handleCallback(response, _callback);
             }
             return response;
         };

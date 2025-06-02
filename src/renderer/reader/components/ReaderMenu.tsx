@@ -105,7 +105,7 @@ import { getSaga } from "../createStore";
 import { clone } from "ramda";
 (window as any).__shell_openExternal = (url: string) => url.startsWith("http") ? shell.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
 
-console.log(window);
+// console.log(window);
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends IReaderMenuProps {
@@ -1166,7 +1166,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
             (drawTypeArrayFilter === "all") ||
             (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size) ||
             (creatorArrayFilter === "all")
-        ) 
+        )
             ? annotationsListAll.filter(({ tags, color, drawType: _drawType, creator }) => {
 
                 const colorHex = rgbToHex(color);
@@ -1895,7 +1895,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
             (colorArrayFilter === "all") ||
             (selectionIsSet(creatorArrayFilter) && creatorArrayFilter.size) ||
             (creatorArrayFilter === "all")
-        ) 
+        )
             ? bookmarkListAll.filter(({ tags, color, drawType: _drawType, creator }) => {
 
                 const colorHex = rgbToHex(color);
@@ -2829,8 +2829,9 @@ const TabTitle = ({ value }: { value: string }) => {
 };
 
 export const ReaderMenu: React.FC<IBaseProps> = (props) => {
-    const { /* toggleMenu */ pdfToc, isPdf, focusMainAreaLandmarkAndCloseMenu,
+    const { /* toggleMenu */ pdfToc, isDivina, isPdf, focusMainAreaLandmarkAndCloseMenu,
         pdfNumberOfPages, currentLocation, goToLocator /*openedSection: tabValue, setOpenedSection: setTabValue*/ } = props;
+    const isEpub = !isDivina && !isPdf;
     const { /*doFocus, annotationUUID,*/ handleLinkClick /*, resetAnnotationUUID*/ } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const dockingMode = useReaderConfig("readerDockingMode");
@@ -3003,15 +3004,25 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     options.push(optionTocItem);
     sectionsArray.push(LandMarksTrigger);
     options.push(optionLandmarkItem);
-    sectionsArray.push(SearchTrigger);
-    options.push(optionSearchItem);
-    sectionsArray.push(GoToPageTrigger);
-    options.push(optionGoToPageItem);
+
+    if (isEpub) {
+        sectionsArray.push(SearchTrigger);
+        options.push(optionSearchItem);
+    }
+    if (isPdf || isEpub) {
+        sectionsArray.push(GoToPageTrigger);
+        options.push(optionGoToPageItem);
+    }
+
     sectionsArray.push(Separator);
+
     sectionsArray.push(BookmarksTrigger);
     options.push(optionBookmarkItem);
-    sectionsArray.push(AnnotationTrigger);
-    options.push(optionAnnotationItem);
+
+    if (isEpub) {
+        sectionsArray.push(AnnotationTrigger);
+        options.push(optionAnnotationItem);
+    }
 
     const optionSelected = options.find(({ value }) => value === section)?.id || 0;
 
@@ -3220,4 +3231,5 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
             </Tabs.Root>
         </div>
     );
+
 };
