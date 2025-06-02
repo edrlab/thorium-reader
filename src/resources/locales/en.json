@@ -758,8 +758,8 @@
             "pageHelpInfo2": " - enter two page numbers separated by a dash character to reference a range of contiguous page (e.g. \"6-13\")",
             "pageHelpInfo3": " - use the semicolon character to separate multiple pages or page ranges (e.g. \"5;14-20;37\")",
             "pageHelpInfo4": " - leave out the first or last page of a range to reference the first or last page of the publication (e.g. \"-16\" is equivalent to \"1-16\", and \"34-\" is equivalent to \"34-100\" assuming a book with a total of 100 pages)",
-            "print": "Print",
-            "rangesInfo": ""
+            "pages": "Pages",
+            "print": "Print"
         },
         "settings": {
             "column": {

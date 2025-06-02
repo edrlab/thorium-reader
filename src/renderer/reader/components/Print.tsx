@@ -263,11 +263,11 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                     : <></>
             }
             <div className={stylesInput.form_group} style={{ marginTop: "20px", width: "360px" }}>
-                <input type="text" name="print-range" style={{ width: "100%", marginLeft: "10px" }} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={__("reader.print.print")} value={getV} onChange={(e) => {
+                <input type="text" name="print-range" style={{ width: "100%", marginLeft: "10px" }} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={__("reader.print.pages")} value={getV} onChange={(e) => {
                     const v = e.target.value;
                     setV(v);
                 }} />
-                <label htmlFor="print-range">{__("reader.print.print")}</label>
+                <label htmlFor="print-range">{__("reader.print.pages")}</label>
 
                 <TooltipTrigger>
                     <Button style={{ width: "15px", height: "15px", marginLeft: "10px", marginRight: "10px"}}><SVG ariaHidden svg={InfoIcon} /></Button>
@@ -288,7 +288,6 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                         {__("reader.print.pageHelpInfo4")}
                     </Tooltip>
                 </TooltipTrigger>
-                {/* <div className="print-popover-page-icon" title={__("reader.print.rangesInfo")}></div> */}
             </div>
 
             <div className={stylesAnnotations.annotation_form_textarea_buttons}>
