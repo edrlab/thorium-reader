@@ -20,6 +20,7 @@
             "copy": "Kopieer",
             "cut": "Knip",
             "paste": "Plak",
+            "print": "",
             "redo": "Opnieuw",
             "selectAll": "Alles selecteren",
             "title": "Wijzig",
@@ -723,6 +724,7 @@
             "openTableOfContentsTitle": "navigatie",
             "page": "Pagina",
             "pdfscalemode": "Pagina aanpassen aan breedte",
+            "print": "",
             "settingsTitle": "instellingen"
         },
         "notes": {
@@ -746,6 +748,18 @@
                 "submit": "Vind"
             },
             "searchTitle": "Zoek:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
         },
         "settings": {
             "column": {

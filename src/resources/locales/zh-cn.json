@@ -20,6 +20,7 @@
             "copy": "复制",
             "cut": "剪切",
             "paste": "粘贴",
+            "print": "",
             "redo": "重做",
             "selectAll": "全选",
             "title": "编辑",
@@ -723,6 +724,7 @@
             "openTableOfContentsTitle": "导航",
             "page": "页",
             "pdfscalemode": "适合页面宽度",
+            "print": "",
             "settingsTitle": "设置"
         },
         "notes": {
@@ -746,6 +748,18 @@
                 "submit": "查找"
             },
             "searchTitle": "搜索："
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
         },
         "settings": {
             "column": {

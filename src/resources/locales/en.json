@@ -20,6 +20,7 @@
             "copy": "Copy",
             "cut": "Cut",
             "paste": "Paste",
+            "print": "Print",
             "redo": "Redo",
             "selectAll": "Select all",
             "title": "Edit",
@@ -723,6 +724,7 @@
             "openTableOfContentsTitle": "navigation",
             "page": "Page",
             "pdfscalemode": "Page fit or width",
+            "print": "print",
             "settingsTitle": "settings"
         },
         "notes": {
@@ -746,6 +748,18 @@
                 "submit": "Find"
             },
             "searchTitle": "Search:"
+        },
+        "print": {
+            "description": "{{- appName}} pre-print dialog with a publication of {{- count}} pages. You have to set the range of pages you want to print to trigger the system print dialog",
+            "descriptionLcp": "{{- appName}} pre-print dialog with an LCP publication of {{- count}} pages. You have to set the range of pages you want to print to trigger the system print dialog",
+            "descriptionLcpLimit": "{{- count}} pages remaining (of {{- lcpLimitPages}} LCP limit)",
+            "pageHelpInfo": "page ranges help information :",
+            "pageHelpInfo1": " - enter a page number to reference a single page (e.g. \"6\")",
+            "pageHelpInfo2": " - enter two page numbers separated by a dash character to reference a range of contiguous page (e.g. \"6-13\")",
+            "pageHelpInfo3": " - use the semicolon character to separate multiple pages or page ranges (e.g. \"5;14-20;37\")",
+            "pageHelpInfo4": " - leave out the first or last page of a range to reference the first or last page of the publication (e.g. \"-16\" is equivalent to \"1-16\", and \"34-\" is equivalent to \"34-100\" assuming a book with a total of 100 pages)",
+            "pages": "Pages",
+            "print": "Print"
         },
         "settings": {
             "column": {
