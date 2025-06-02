@@ -20,6 +20,7 @@
             "copy": "Kopírovat",
             "cut": "Vyjmout",
             "paste": "Vložit",
+            "print": "",
             "redo": "Zpět",
             "selectAll": "Vybrat vše",
             "title": "Upravit",
@@ -723,6 +724,7 @@
             "openTableOfContentsTitle": "navigace",
             "page": "Stránka",
             "pdfscalemode": "",
+            "print": "",
             "settingsTitle": "nastavení"
         },
         "notes": {
@@ -746,6 +748,18 @@
                 "submit": "Najít"
             },
             "searchTitle": "Hledat:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
         },
         "settings": {
             "column": {

@@ -20,6 +20,7 @@
             "copy": "Kopyala",
             "cut": "Kes",
             "paste": "Yapıştır",
+            "print": "",
             "redo": "Yenile",
             "selectAll": "Tümünü seç",
             "title": "Düzenle",
@@ -723,6 +724,7 @@
             "openTableOfContentsTitle": "",
             "page": "",
             "pdfscalemode": "",
+            "print": "",
             "settingsTitle": ""
         },
         "notes": {
@@ -746,6 +748,18 @@
                 "submit": ""
             },
             "searchTitle": ""
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
         },
         "settings": {
             "column": {

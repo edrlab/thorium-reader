@@ -20,6 +20,7 @@
             "copy": "複製",
             "cut": "剪下",
             "paste": "貼上",
+            "print": "",
             "redo": "重做",
             "selectAll": "全選",
             "title": "編輯",
@@ -723,6 +724,7 @@
             "openTableOfContentsTitle": "導航",
             "page": "頁",
             "pdfscalemode": "適合頁面寬度",
+            "print": "",
             "settingsTitle": "設定"
         },
         "notes": {
@@ -746,6 +748,18 @@
                 "submit": "尋找"
             },
             "searchTitle": "搜索："
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
         },
         "settings": {
             "column": {

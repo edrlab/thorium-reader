@@ -33,6 +33,7 @@ declare namespace typed_i18n {
     readonly "copy": string,
     readonly "cut": string,
     readonly "paste": string,
+    readonly "print": string,
     readonly "redo": string,
     readonly "selectAll": string,
     readonly "title": string,
@@ -57,6 +58,7 @@ declare namespace typed_i18n {
   readonly "copy": string,
   readonly "cut": string,
   readonly "paste": string,
+  readonly "print": string,
   readonly "redo": string,
   readonly "selectAll": string,
   readonly "title": string,
@@ -65,6 +67,7 @@ declare namespace typed_i18n {
   (_: "app.edit.copy", __?: {}): string;
   (_: "app.edit.cut", __?: {}): string;
   (_: "app.edit.paste", __?: {}): string;
+  (_: "app.edit.print", __?: {}): string;
   (_: "app.edit.redo", __?: {}): string;
   (_: "app.edit.selectAll", __?: {}): string;
   (_: "app.edit.title", __?: {}): string;
@@ -1633,6 +1636,7 @@ declare namespace typed_i18n {
     readonly "openTableOfContentsTitle": string,
     readonly "page": string,
     readonly "pdfscalemode": string,
+    readonly "print": string,
     readonly "settingsTitle": string
   },
   readonly "notes": {
@@ -1656,6 +1660,18 @@ declare namespace typed_i18n {
       readonly "submit": string
     },
     readonly "searchTitle": string
+  },
+  readonly "print": {
+    readonly "description": string,
+    readonly "descriptionLcp": string,
+    readonly "descriptionLcpLimit": string,
+    readonly "pageHelpInfo": string,
+    readonly "pageHelpInfo1": string,
+    readonly "pageHelpInfo2": string,
+    readonly "pageHelpInfo3": string,
+    readonly "pageHelpInfo4": string,
+    readonly "pages": string,
+    readonly "print": string
   },
   readonly "settings": {
     readonly "column": {
@@ -1929,6 +1945,7 @@ declare namespace typed_i18n {
   readonly "openTableOfContentsTitle": string,
   readonly "page": string,
   readonly "pdfscalemode": string,
+  readonly "print": string,
   readonly "settingsTitle": string
 };
   (_: "reader.navigation.ZenModeExit", __?: {}): string;
@@ -1950,6 +1967,7 @@ declare namespace typed_i18n {
   (_: "reader.navigation.openTableOfContentsTitle", __?: {}): string;
   (_: "reader.navigation.page", __?: {}): string;
   (_: "reader.navigation.pdfscalemode", __?: {}): string;
+  (_: "reader.navigation.print", __?: {}): string;
   (_: "reader.navigation.settingsTitle", __?: {}): string;
   (_: "reader.notes", __?: {}): {
   readonly "colors": {
@@ -2004,6 +2022,28 @@ declare namespace typed_i18n {
   (_: "reader.picker.search.results", __?: {}): string;
   (_: "reader.picker.search.submit", __?: {}): string;
   (_: "reader.picker.searchTitle", __?: {}): string;
+  (_: "reader.print", __?: {}): {
+  readonly "description": string,
+  readonly "descriptionLcp": string,
+  readonly "descriptionLcpLimit": string,
+  readonly "pageHelpInfo": string,
+  readonly "pageHelpInfo1": string,
+  readonly "pageHelpInfo2": string,
+  readonly "pageHelpInfo3": string,
+  readonly "pageHelpInfo4": string,
+  readonly "pages": string,
+  readonly "print": string
+};
+  (_: "reader.print.description", __?: {}): string;
+  (_: "reader.print.descriptionLcp", __?: {}): string;
+  (_: "reader.print.descriptionLcpLimit", __?: {}): string;
+  (_: "reader.print.pageHelpInfo", __?: {}): string;
+  (_: "reader.print.pageHelpInfo1", __?: {}): string;
+  (_: "reader.print.pageHelpInfo2", __?: {}): string;
+  (_: "reader.print.pageHelpInfo3", __?: {}): string;
+  (_: "reader.print.pageHelpInfo4", __?: {}): string;
+  (_: "reader.print.pages", __?: {}): string;
+  (_: "reader.print.print", __?: {}): string;
   (_: "reader.settings", __?: {}): {
   readonly "column": {
     readonly "auto": string,

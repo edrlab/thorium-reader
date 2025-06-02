@@ -45,6 +45,9 @@ export interface IPdfPlayerEvent {
         scrollMode: number,
         spreadMode: number,
       }) => any;
+    "print": (pageRange: number[]) => any;
+    "thumbnailRequest": (pageIndexZeroBased: number) => any;
+    "thumbnailRendered": (pageNumber: number, imgSrc: string) => any;
 }
 
 export interface IEventBusPdfPlayer extends IEventBus {

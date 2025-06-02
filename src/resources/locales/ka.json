@@ -20,6 +20,7 @@
             "copy": "ასლი",
             "cut": "ამოჭრა",
             "paste": "ჩასმა",
+            "print": "",
             "redo": "აღდგენა",
             "selectAll": "ყველას მონიშვნა",
             "title": "რედაქტირება",
@@ -723,6 +724,7 @@
             "openTableOfContentsTitle": "ნავიგაცია",
             "page": "",
             "pdfscalemode": "გვერდზე მორგება ან სიგანე",
+            "print": "",
             "settingsTitle": "პარამეტრები"
         },
         "notes": {
@@ -746,6 +748,18 @@
                 "submit": "პოვნა"
             },
             "searchTitle": "ძიება:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
         },
         "settings": {
             "column": {

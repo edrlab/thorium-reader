@@ -20,6 +20,7 @@
             "copy": "Копиране",
             "cut": "Изрязване",
             "paste": "Поставяне",
+            "print": "",
             "redo": "Връщане",
             "selectAll": "Изберане на всички",
             "title": "Редактиране",
@@ -723,6 +724,7 @@
             "openTableOfContentsTitle": "навигация",
             "page": "",
             "pdfscalemode": "Побиране в екрана или в ширината му",
+            "print": "",
             "settingsTitle": "настройки"
         },
         "notes": {
@@ -746,6 +748,18 @@
                 "submit": "Намери"
             },
             "searchTitle": "Търси:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
         },
         "settings": {
             "column": {

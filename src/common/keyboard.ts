@@ -393,6 +393,12 @@ const _defaults_ = Object.freeze({
         shift: true,
         key: "KeyQ",
     }),
+    Print: Object.freeze<TKeyboardShortcut>({
+        alt: false,
+        control: true,
+        shift: false,
+        key: "KeyP",
+    }),
 });
 export const _defaults = sortObject(_defaults_);
 

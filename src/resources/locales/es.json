@@ -20,6 +20,7 @@
             "copy": "Copiar",
             "cut": "Cortar",
             "paste": "Pegar",
+            "print": "",
             "redo": "Rehacer",
             "selectAll": "Seleccionar todo",
             "title": "Editar",
@@ -723,6 +724,7 @@
             "openTableOfContentsTitle": "navegación",
             "page": "Página",
             "pdfscalemode": "Ajuste o ancho de página",
+            "print": "",
             "settingsTitle": "Opciones de configuración"
         },
         "notes": {
@@ -746,6 +748,18 @@
                 "submit": "Encontrar"
             },
             "searchTitle": "Buscar:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
         },
         "settings": {
             "column": {
