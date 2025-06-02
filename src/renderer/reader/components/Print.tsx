@@ -4,7 +4,7 @@ import * as stylesInput from "readium-desktop/renderer/assets/styles/components/
 import * as Popover from "@radix-ui/react-popover";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesSpinner from "readium-desktop/renderer/assets/styles/components/spinnerContainer.scss";
-
+import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { apiActions, readerActions } from "readium-desktop/common/redux/actions";
@@ -17,6 +17,8 @@ import { createOrGetPdfEventBus } from "../pdf/driver";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { publicationInfoReaderLibGetPublicationApiCall } from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfoReaderAndLib";
 import { PublicationView } from "readium-desktop/common/views/publication";
+import {Button, OverlayArrow, Tooltip, TooltipTrigger} from "react-aria-components";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -261,12 +263,32 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                     : <></>
             }
             <div className={stylesInput.form_group} style={{ marginTop: "20px", width: "360px" }}>
-                <input type="text" name="print-range" style={{ width: "100%", marginLeft: "10px" }} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={__("reader.print.ranges")} value={getV} onChange={(e) => {
+                <input type="text" name="print-range" style={{ width: "100%", marginLeft: "10px" }} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={__("reader.print.print")} value={getV} onChange={(e) => {
                     const v = e.target.value;
                     setV(v);
                 }} />
-                <label htmlFor="print-range">{__("reader.print.ranges")}</label>
-                <div className="print-popover-page-icon" title={__("reader.print.rangesInfo")}></div>
+                <label htmlFor="print-range">{__("reader.print.print")}</label>
+
+                <TooltipTrigger>
+                    <Button style={{ width: "15px", height: "15px", marginLeft: "10px", marginRight: "10px"}}><SVG ariaHidden svg={InfoIcon} /></Button>
+                    <Tooltip style={{ border: "1px solid var(--color-primary)", maxWidth: "300px", width: "fit-content", zIndex: "1000", backgroundColor: "var(--color-secondary)", borderRadius: "6px", padding: "5px", color: "var(--color-primary)" }}>
+                        <OverlayArrow>
+                            <svg width={8} height={8} viewBox="0 0 8 8">
+                                <path d="M0 0 L4 4 L8 0" />
+                            </svg>
+                        </OverlayArrow>
+                        {__("reader.print.pageHelpInfo")}
+                        <br/>
+                        {__("reader.print.pageHelpInfo1")}
+                        <br/>
+                        {__("reader.print.pageHelpInfo2")}
+                        <br/>
+                        {__("reader.print.pageHelpInfo3")}
+                        <br/>
+                        {__("reader.print.pageHelpInfo4")}
+                    </Tooltip>
+                </TooltipTrigger>
+                {/* <div className="print-popover-page-icon" title={__("reader.print.rangesInfo")}></div> */}
             </div>
 
             <div className={stylesAnnotations.annotation_form_textarea_buttons}>

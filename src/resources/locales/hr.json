@@ -753,8 +753,12 @@
             "description": "",
             "descriptionLcp": "",
             "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
             "print": "",
-            "ranges": "",
             "rangesInfo": ""
         },
         "settings": {
