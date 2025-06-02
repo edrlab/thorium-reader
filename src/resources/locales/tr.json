@@ -223,7 +223,7 @@
         "lastPage": "Son",
         "menu": {
             "aboutBook": "Eser hakkında",
-            "addExtract": "",
+            "addExtract": "Özeti içe aktar",
             "goBuyBook": "Eser satın al",
             "goLoanBook": "Eser ödünç al",
             "goRevokeLoanBook": "Ödünç alımı sonlandır",
@@ -265,16 +265,16 @@
                 "descriptive": "Braille"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ruby biçiminde tam açıklamalar",
+                "descriptive": "Ruby biçiminde tam açıklamalar"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Önplan ve arkaplan sesleri arasında yüksek karşıtlık",
+                "descriptive": "Önplan ve arkaplan sesleri arasında yüksek karşıtlık"
             },
             "additional-accessibility-information-high-contrast-between-text-and-background": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Önplan metni ve arkaplan arasında yüksek karşıtlık",
+                "descriptive": "Önplan metni ve arkaplan arasında yüksek karşıtlık"
             },
             "additional-accessibility-information-large-print": {
                 "compact": "",
