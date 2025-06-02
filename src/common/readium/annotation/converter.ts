@@ -12,8 +12,6 @@ import { v4 as uuidv4 } from "uuid";
 import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { rgbToHex } from "readium-desktop/common/rgb";
-import { ICacheDocument } from "readium-desktop/common/redux/states/renderer/resourceCache";
-import { getDocumentFromICacheDocument } from "readium-desktop/utils/xmlDom";
 import { createCssSelectorMatcher, createTextPositionSelectorMatcher, createTextQuoteSelectorMatcher } from "readium-desktop/third_party/apache-annotator/dom";
 import { makeRefinable } from "readium-desktop/third_party/apache-annotator/selector";
 import { convertRange, normalizeRange } from "@r2-navigator-js/electron/renderer/webview/selection";
@@ -29,10 +27,9 @@ import { EDrawType, INoteState, NOTE_DEFAULT_COLOR, noteColorCodeToColorSet } fr
 // Logger
 const debug = debug_("readium-desktop:common:readium:annotation:converter");
 
-export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnnotation["target"], cacheDoc: ICacheDocument, debugRangeInfo: IRangeInfo | undefined, isABookmark: boolean): Promise<MiniLocatorExtended | undefined> {
+export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnnotation["target"], debugRangeInfo: IRangeInfo | undefined, isABookmark: boolean, xmlDom: Document, href: string): Promise<MiniLocatorExtended | undefined> {
 
-   const xmlDom = getDocumentFromICacheDocument(cacheDoc);
-    if (!xmlDom) {
+    if (!target || !target.source || !xmlDom || !href) {
         return undefined;
     }
 
@@ -213,7 +210,7 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
 
     const locatorExtended: MiniLocatorExtended = {
         locator: {
-            href: cacheDoc.href,
+            href,
             locations: {
                 cssSelector: cssSelectorFromRangeInfo,
                 caretInfo: caretInfo,

@@ -7,11 +7,11 @@
 
 import { convertRange } from "@r2-navigator-js/electron/renderer/webview/selection";
 
-import { getCount } from "../counter";
 import { getCssSelector_ } from "./cssSelector";
 import { escapeRegExp } from "./regexp";
 import { cleanupStr, collapseWhitespaces, equivalents } from "./transliteration";
 import { ISearchResult } from "./search";
+import { getCount } from "readium-desktop/utils/counter";
 
 export async function searchDocDomSeek(searchInput: string, doc: Document, href: string): Promise<ISearchResult[]> {
     // https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent
