@@ -5,8 +5,23 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ISearchResult } from "readium-desktop/renderer/reader/redux/sagas/search/search";
+import { IRangeInfo } from "@r2-navigator-js/electron/common/selection";
 import { IHighlightBaseState } from "./highlight";
+
+export interface ISearchResult {
+    rangeInfo: IRangeInfo;
+
+    cleanBefore: string;
+    cleanText: string;
+    cleanAfter: string;
+
+    // rawBefore: string;
+    // rawText: string;
+    // rawAfter: string;
+
+    href: string;
+    uuid: string;
+}
 
 export interface ISearchState {
     enable: boolean;

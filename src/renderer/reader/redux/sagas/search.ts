@@ -10,7 +10,7 @@ import * as debug_ from "debug";
 import { clone, flatten } from "ramda";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { ISearchResult, search } from "readium-desktop/renderer/reader/redux/sagas/search/search";
+import { search } from "readium-desktop/renderer/reader/redux/sagas/search/search";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, cancel, put, take } from "redux-saga/effects";
 import {
@@ -28,6 +28,7 @@ import { IHighlightHandlerState } from "readium-desktop/common/redux/states/rend
 
 import debounce from "debounce";
 import { getResourceCacheAll } from "readium-desktop/common/redux/sagas/resourceCache";
+import { ISearchResult } from "readium-desktop/common/redux/states/renderer/search";
 
 const handleLinkLocatorDebounced = debounce(handleLinkLocator, 200);
 

@@ -26,7 +26,7 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import { Link } from "@r2-shared-js/models/publication-link";
 
 import { readerLocalActionSearch } from "../redux/actions";
-import { ISearchResult } from "readium-desktop/renderer/reader/redux/sagas/search/search";
+import { ISearchResult } from "readium-desktop/common/redux/states/renderer/search";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {

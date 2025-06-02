@@ -10,23 +10,7 @@
 
 import { ICacheDocument } from "readium-desktop/common/redux/sagas/resourceCache";
 import { searchDocDomSeek } from "./searchWithDomSeek";
-
-import { IRangeInfo } from "@r2-navigator-js/electron/common/selection";
-
-export interface ISearchResult {
-    rangeInfo: IRangeInfo;
-
-    cleanBefore: string;
-    cleanText: string;
-    cleanAfter: string;
-
-    // rawBefore: string;
-    // rawText: string;
-    // rawAfter: string;
-
-    href: string;
-    uuid: string;
-}
+import { ISearchResult } from "readium-desktop/common/redux/states/renderer/search";
 
 export async function search(searchInput: string, cacheDoc: ICacheDocument): Promise<ISearchResult[]> {
 
