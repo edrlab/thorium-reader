@@ -590,16 +590,15 @@ const httpGetUnauthorized =
                         if (responseAfterRefresh) {
                             return responseAfterRefresh;
                         }
-                    } else {
-                        // Most likely because of a wrong access token.
-                        // In some cases the returned content won't launch a new authentication process
-                        // It's safer to just delete the access token and start afresh now.
-                        await deleteAuthenticationToken(url.host);
-                        (options.headers as Headers).delete("Authorization");
-                        return await httpGetWithAuth(
-                            false,
-                        )(url, options, _callback, ..._arg);
                     }
+                    // Most likely because of a wrong access token, rovoked/invalid token
+                    // In some cases the returned content won't launch a new authentication process
+                    // It's safer to just delete the access token and start afresh now.
+                    await deleteAuthenticationToken(url.host);
+                    (options.headers as Headers).delete("Authorization");
+                    return await httpGetWithAuth(
+                        false,
+                    )(url, options, _callback, ..._arg);
                 }
                 return await handleCallback(response, _callback);
             }
@@ -610,8 +609,6 @@ const httpGetUnauthorizedRefresh =
     (auth: IOpdsAuthenticationToken): typeof httpFetchFormattedResponse | undefined =>
         async (...arg) => {
 
-            const [_url, ..._arg] = arg;
-            const url = _url instanceof URL ? _url : new URL(_url);
             const { refreshToken, refreshUrl } = auth;
             const options: RequestInit = {};
             options.headers = options.headers instanceof Headers
@@ -638,7 +635,7 @@ const httpGetUnauthorizedRefresh =
                     : undefined;
                 auth.accessToken = newAccessToken || auth.accessToken;
 
-                const httpGetResponse = await httpGetUnauthorized(auth, false)(url, ..._arg);
+                const httpGetResponse = await httpGetUnauthorized(auth, false)(...arg);
 
                 if (httpGetResponse.statusCode !== 401) {
 
@@ -647,20 +644,6 @@ const httpGetUnauthorizedRefresh =
                     await httpSetAuthenticationToken(auth);
                 }
                 return httpGetResponse;
-            } else {
-                debug("authentication refresh failed", httpPostResponse.statusCode);
-
-                if (httpPostResponse.statusCode === 400) {
-                    // https://datatracker.ietf.org/doc/html/rfc6749#section-5.2
-                    // Most likely because of a wrong access token or refresh token revoked
-                    // In some cases the returned content won't launch a new authentication process
-                    // It's safer to just delete the access token and start afresh now.
-                    await deleteAuthenticationToken(url.host);
-                    (options.headers as Headers).delete("Authorization");
-                    return await httpGetWithAuth(
-                        false,
-                    )(url, ..._arg);
-                }
             }
 
             return undefined;
