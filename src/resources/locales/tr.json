@@ -873,6 +873,7 @@
             "cancel": "",
             "disclaimer": "",
             "editUserJson": "",
+            "exportHtml": "",
             "keyboardShortcuts": "",
             "list": {
                 "AddBookmarkWithLabel": {

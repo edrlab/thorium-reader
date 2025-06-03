@@ -873,6 +873,7 @@
             "cancel": "Peruuta",
             "disclaimer": "Pikanäppäimet perustuvat QWERTY-näppäinasetteluun.",
             "editUserJson": "Muokkaa käyttäjän tiedostoa...",
+            "exportHtml": "",
             "keyboardShortcuts": "Pikanäppäimet",
             "list": {
                 "AddBookmarkWithLabel": {

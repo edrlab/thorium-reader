@@ -873,6 +873,7 @@
             "cancel": "Отменить",
             "disclaimer": "Сочетания клавиш были определены из раскладки клавиатуры QWERTY.",
             "editUserJson": "Редактировать файл пользователя...",
+            "exportHtml": "",
             "keyboardShortcuts": "Горячие клавиши",
             "list": {
                 "AddBookmarkWithLabel": {

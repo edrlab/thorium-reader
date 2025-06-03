@@ -873,6 +873,7 @@
             "cancel": "Cancelar",
             "disclaimer": "Os atalhos foram definidos a partir da disposição do teclado QWERTY.",
             "editUserJson": "Editar ficheiro de utilizador...",
+            "exportHtml": "",
             "keyboardShortcuts": "Atalhos de teclado",
             "list": {
                 "AddBookmarkWithLabel": {

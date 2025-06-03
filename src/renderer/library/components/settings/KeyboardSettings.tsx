@@ -48,7 +48,11 @@ import * as MacCmdIcon from "readium-desktop/renderer/assets/icons/maccommand-ic
 import * as WindowsIcon from "readium-desktop/renderer/assets/icons/windows-icon.svg";
 import { useTranslator } from "../../../common/hooks/useTranslator";
 import { useDispatch } from "../../../common/hooks/useDispatch";
-import os from "node:os";
+
+import { shell } from "electron";
+import * as fs from "fs";
+import * as path from "path";
+import * as os from "os";
 
 const _isMac = os.platform() === "darwin";
 const _isWindows = os.platform() === "win32";
@@ -433,6 +437,85 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             },
         };
 
+        const exportHtml = async (ev: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+            ev.preventDefault();
+            const element = document.getElementById("content-to-export");
+
+            if (element) {
+                let htmlContent = element.outerHTML;
+
+                const replaceSvgWithSpanName = (html: string): string => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, "text/html");
+                    const spans = doc.querySelectorAll("span[title]");
+
+                    spans.forEach((span) => {
+                        const spanName = span.getAttribute("title") || "";
+                        span.innerHTML = `${spanName} + `;
+                    });
+
+                    return doc.body.innerHTML;
+                };
+
+                const removeButtons = (html: string): string => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, "text/html");
+                    const buttons = doc.querySelectorAll("button");
+
+                    buttons.forEach((button) => {
+                        button.remove();
+                    });
+
+                    return doc.body.innerHTML;
+                };
+
+                htmlContent = replaceSvgWithSpanName(htmlContent);
+                htmlContent = removeButtons(htmlContent);
+
+                const completeHtml = `
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>THORIUM DESKTOP Keyboard Shortcuts</title>
+                    <style>
+                        h1, h2 {
+                            text-align: center
+                        }
+                        .keyshortElement_container {
+                            border-bottom: none
+                        }
+                        ul {
+                            display: flex;
+                            height: calc(100dvh - 150px);
+                            width: 100%;
+                            flex-direction: column;
+                            flex-wrap: wrap;
+                        }
+                        li {
+                            list-style: none;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            height: 40px;
+                        }
+                    </style>
+                    </head>
+                    <body>
+                        <h1>THORIUM DESKTOP</h1>
+                        <h2>Keyboard Shortcuts</h2>
+                    ${htmlContent}
+                    </body>
+                    </html>
+                `;
+
+                const tempPath = path.join(os.tmpdir(), "tempfile.html");
+                fs.writeFileSync(tempPath, completeHtml, "utf8");
+
+                await shell.openExternal(`file://${tempPath}`);
+            }
+        };
 
         const filteredShortcuts = isSearchEmpty
         ? ObjectKeys(sortObject(this.props.keyboardShortcuts) as TKeyboardShortcutsMap)
@@ -468,6 +551,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                         </div> */}
                     </div>
                         <div>
+                            <div style={{display: "flex", justifyContent: "space-between"}}>
                         <input
                             type="text"
                             value={this.state.searchItem}
@@ -475,8 +559,10 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                             placeholder={__("settings.keyboard.searchPlaceholder")}
                             style={{width: "200px", borderRadius: "4px"}}
                         />
+                         <a onClick={(ev) => exportHtml(ev)} href="" className={stylesButtons.button_secondary_blue} style={{textDecoration: "none", height: "20px"}}>{__("settings.keyboard.exportHtml")}</a>
+                         </div>
                         {filteredShortcuts.length ?
-                            <ul className={stylesGlobal.p_0}>
+                            <ul className={stylesGlobal.p_0} id="content-to-export">
                             {this.props.keyboardShortcuts &&
                             filteredShortcuts.map((id) => {
                                 const def = this.props.keyboardShortcuts[id];
@@ -493,7 +579,9 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                                     <path d="M0 0 L4 4 L8 0" />
                                                 </svg>
                                                 </OverlayArrow>
-                                                {Object.keys(cleanNames).find((name: string) => name === id) ? cleanNames[id].description : undefined}
+                                                <p className="shortcut_description">
+                                                    {Object.keys(cleanNames).find((name: string) => name === id) ? cleanNames[id].description : undefined}
+                                                </p>
                                             </Tooltip>
                                         </TooltipTrigger>
                                         : ""

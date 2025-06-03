@@ -873,6 +873,7 @@
             "cancel": "Avbryt",
             "disclaimer": "Kortkommandona baserar sig på QWERTY-tangentbordslayouten.",
             "editUserJson": "Redigera användarfil ...",
+            "exportHtml": "",
             "keyboardShortcuts": "Kortkommandon",
             "list": {
                 "AddBookmarkWithLabel": {

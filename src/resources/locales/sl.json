@@ -873,6 +873,7 @@
             "cancel": "Prekliči",
             "disclaimer": "Bližnjice so bile določene na podlagi postavitve tipkovnice QWERTY.",
             "editUserJson": "Uredi datoteko uporabnika...",
+            "exportHtml": "",
             "keyboardShortcuts": "Bližnjice tipkovnice",
             "list": {
                 "AddBookmarkWithLabel": {

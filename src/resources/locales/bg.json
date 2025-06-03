@@ -873,6 +873,7 @@
             "cancel": "Отказ",
             "disclaimer": "",
             "editUserJson": "Редактиране на потребителски файл...",
+            "exportHtml": "",
             "keyboardShortcuts": "Бързи клавиши",
             "list": {
                 "AddBookmarkWithLabel": {

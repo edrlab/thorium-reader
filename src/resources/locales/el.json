@@ -873,6 +873,7 @@
             "cancel": "Ακύρωση",
             "disclaimer": "Οι συντομεύσεις ορίστηκαν από τη διάταξη πληκτρολογίου QWERTY.",
             "editUserJson": "Επεξεργασία αρχείου χρήστη...",
+            "exportHtml": "",
             "keyboardShortcuts": "Συντομεύσεις πληκτρολογίου",
             "list": {
                 "AddBookmarkWithLabel": {

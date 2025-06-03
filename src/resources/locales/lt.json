@@ -873,6 +873,7 @@
             "cancel": "Nutraukti",
             "disclaimer": "Spartieji klavišai nustatyti remiantis QWERTY klaviatūros išdėstymu.",
             "editUserJson": "Keisti naudotojo failą...",
+            "exportHtml": "",
             "keyboardShortcuts": "Spartieji klavišai",
             "list": {
                 "AddBookmarkWithLabel": {

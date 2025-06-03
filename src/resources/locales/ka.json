@@ -873,6 +873,7 @@
             "cancel": "გადაფიქრება",
             "disclaimer": "",
             "editUserJson": "მომხმარებლის ფაილის რედაქტირება...",
+            "exportHtml": "",
             "keyboardShortcuts": "კლავიატურით სწრაფი გამოძახება",
             "list": {
                 "AddBookmarkWithLabel": {

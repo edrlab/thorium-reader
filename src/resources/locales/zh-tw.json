@@ -873,6 +873,7 @@
             "cancel": "取消",
             "disclaimer": "快捷鍵是根據 QWERTY 鍵盤佈局定義的。",
             "editUserJson": "編輯使用者文件...",
+            "exportHtml": "",
             "keyboardShortcuts": "鍵盤快捷鍵",
             "list": {
                 "AddBookmarkWithLabel": {

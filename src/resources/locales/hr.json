@@ -873,6 +873,7 @@
             "cancel": "Poništi",
             "disclaimer": "",
             "editUserJson": "Uredi dokument korisnika...",
+            "exportHtml": "",
             "keyboardShortcuts": "Prečaci na tipkovnici",
             "list": {
                 "AddBookmarkWithLabel": {

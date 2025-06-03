@@ -873,6 +873,7 @@
             "cancel": "Abbrechen",
             "disclaimer": "Tastenkombinationen orientieren sich am QWERTZ-Tastaturlayout.",
             "editUserJson": "Benutzerdatei bearbeiten ...",
+            "exportHtml": "",
             "keyboardShortcuts": "Tastaturkürzel",
             "list": {
                 "AddBookmarkWithLabel": {
