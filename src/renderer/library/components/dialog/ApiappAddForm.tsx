@@ -18,7 +18,17 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import { IApiappSearchResultView } from "readium-desktop/common/api/interface/apiappApi.interface";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
+
+// TypeScript GO:
+// The current file is a CommonJS module whose imports will produce 'require' calls;
+// however, the referenced file is an ECMAScript module and cannot be imported with 'require'.
+// Consider writing a dynamic 'import("...")' call instead.
+// To convert this file to an ECMAScript module, change its file extension to '.mts',
+// or add the field `"type": "module"` to 'package.json'.
+// @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
+// @ts-ignore TS1479
 import { nanoid } from "nanoid";
+
 import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";

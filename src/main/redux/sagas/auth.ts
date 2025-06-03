@@ -9,7 +9,17 @@ import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import * as debug_ from "debug";
 import { OPDS_MEDIA_SCHEME, OPDS_MEDIA_SCHEME__IP_ORIGIN_OPDS_MEDIA } from "readium-desktop/common/streamerProtocol";
 import { BrowserWindow, globalShortcut } from "electron";
+
+// TypeScript GO:
+// The current file is a CommonJS module whose imports will produce 'require' calls;
+// however, the referenced file is an ECMAScript module and cannot be imported with 'require'.
+// Consider writing a dynamic 'import("...")' call instead.
+// To convert this file to an ECMAScript module, change its file extension to '.mts',
+// or add the field `"type": "module"` to 'package.json'.
+// @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
+// @ts-ignore TS1479
 import { Headers } from "node-fetch";
+
 import { ToastType } from "readium-desktop/common/models/toast";
 import { authActions, historyActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
@@ -40,7 +50,17 @@ import { getOpdsRequestCustomProtocolEventChannel, getOpdsRequestMediaCustomProt
 import { initClientSecretToken } from "./apiapp";
 import { digestAuthentication } from "readium-desktop/utils/digest";
 import isURL from "validator/lib/isURL";
+
+// TypeScript GO:
+// The current file is a CommonJS module whose imports will produce 'require' calls;
+// however, the referenced file is an ECMAScript module and cannot be imported with 'require'.
+// Consider writing a dynamic 'import("...")' call instead.
+// To convert this file to an ECMAScript module, change its file extension to '.mts',
+// or add the field `"type": "module"` to 'package.json'.
+// @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
+// @ts-ignore TS1479
 import { nanoid } from "nanoid";
+
 import { getTranslator } from "readium-desktop/common/services/translator";
 
 // Logger
