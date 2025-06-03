@@ -1750,6 +1750,50 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
     SelectRef.displayName = "ComboBox";
 
+    const SelectRefComponent = () => {
+        return (
+             <SelectRef
+                id="reader-settings-nav" 
+                items={options}
+                selectedKey={optionSelected}
+                disabledKeys={optionDisabled}
+                svg={options.find(({ value }) => value === section)?.svg}
+                onSelectionChange={(id) => {
+                    // console.log("selectionchange: ", id);
+                    const value = options.find(({ id: _id }) => _id === id)?.value;
+                    if (value) {
+                        setSection(value);
+                        setTimeout(() => {
+                            // TODO: is stealing focus here necessary? Should this vary depending on keyboard or mouse interaction?
+                            const elem = document.getElementById(`readerSettings_tabs-${value}`);
+                            elem?.blur();
+                            elem?.focus();
+                        }, 1);
+                        // console.log("set Tab Value = ", value);
+                    } else {
+                        // console.error("Combobox No value !!!");
+                    }
+                }}
+                // onInputChange={(v) => {
+                //     console.log("inputchange: ", v);
+
+                //     const value = options.find(({ name }) => name === v)?.value;
+                //     if (value) {
+                //         setTabValue(value);
+                //         console.log("set Tab Value = ", value);
+
+                //     } else {
+                //         console.error("Combobox No value !!!");
+                //     }
+                // }}
+                style={{ margin: "0", paddingBottom: (dockedMode && isEpub) ? "10px" : "0", flexDirection: "row", backgroundColor: "var(--color-docked-header)", borderBottom: "1px solid var(--color-extralight-grey-alt)" }}
+                ref={dockedModeRef}
+            >
+                {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+            </SelectRef>
+        );
+    }; 
+
     const TabHeader = () => {
 
         return (
@@ -1782,7 +1826,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                     <>
                         <div key="docked-header" className={stylesPopoverDialog.docked_header} style={{borderBottom: "unset"}}>
                             {
-                                (dockedMode && isEpub) ? <AllowCustomContainer /> : <></>
+                                (dockedMode && isEpub) ? <AllowCustomContainer /> : <SelectRefComponent />
                             }
                             <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls}>
                                 <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label={__("reader.svg.left")} onClick={setDockingModeLeftSide}>
@@ -1802,45 +1846,9 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                                 </Dialog.Close>
                             </div>
                         </div>
-                        <SelectRef
-                            id="reader-settings-nav" 
-                            items={options}
-                            selectedKey={optionSelected}
-                            disabledKeys={optionDisabled}
-                            svg={options.find(({ value }) => value === section)?.svg}
-                            onSelectionChange={(id) => {
-                                // console.log("selectionchange: ", id);
-                                const value = options.find(({ id: _id }) => _id === id)?.value;
-                                if (value) {
-                                    setSection(value);
-                                    setTimeout(() => {
-                                        // TODO: is stealing focus here necessary? Should this vary depending on keyboard or mouse interaction?
-                                        const elem = document.getElementById(`readerSettings_tabs-${value}`);
-                                        elem?.blur();
-                                        elem?.focus();
-                                    }, 1);
-                                    // console.log("set Tab Value = ", value);
-                                } else {
-                                    // console.error("Combobox No value !!!");
-                                }
-                            }}
-                            // onInputChange={(v) => {
-                            //     console.log("inputchange: ", v);
-
-                            //     const value = options.find(({ name }) => name === v)?.value;
-                            //     if (value) {
-                            //         setTabValue(value);
-                            //         console.log("set Tab Value = ", value);
-
-                            //     } else {
-                            //         console.error("Combobox No value !!!");
-                            //     }
-                            // }}
-                            style={{ margin: "0", paddingBottom: "10px", flexDirection: "row", backgroundColor: "var(--color-docked-header)", borderBottom: "1px solid var(--color-extralight-grey-alt)" }}
-                            ref={dockedModeRef}
-                        >
-                            {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
-                        </SelectRef>
+                        {
+                            (dockedMode && isEpub) ? <SelectRefComponent /> : <></>
+                        }
                     </>
                     : <></>
             }
