@@ -2,7 +2,7 @@
     "accessibility": {
         "bookMenu": "Meny",
         "closeDialog": "Stäng",
-        "importFile": "Importera publikation",
+        "importFile": "Importera bok",
         "leftSlideButton": "Dra åt vänster",
         "mainContent": "huvudinnehåll",
         "rightSlideButton": "Dra åt höger",
@@ -12,7 +12,7 @@
     "apiapp": {
         "documentation": "Thorium-dokumentation",
         "howItWorks": "Hur fungerar det?",
-        "informations": "I Frankrike erbjuder många offentliga bibliotek en maskinläsbar katalog (liknande OPDS men inte identisk), som låter låntagare ladda ner digitala publikationer från deras personliga bokhylla. Med denna teknik integrerad i Thorium Reader kan du ladda ner en e-bok eller ljudbok direkt till Thorium Reader för omedelbar läsning. Hur ansluter du ditt konto från ett franskt offentligt bibliotek till Thorium Reader? Det är enkelt. Ange en fransk stad eller en del av bibliotekets namn i sökfältet och tryck på sökknappen. En lista med offentliga bibliotek som motsvarar din sökning visas. Välj ett bibliotek och tryck på Lägg till. I den uppdaterade listan med kataloger, välj detta bibliotek: ett inloggningsformulär visas. Ange ditt användarnamn/e-postadress och lösenord, och tryck på Logga in. Du kan nu se innehållet i din personliga bokhylla, från vilken du kan ladda ner och läsa de e-böcker och ljudböcker du tidigare lånat.",
+        "informations": "I Frankrike erbjuder många offentliga bibliotek en maskinläsbar katalog (liknande OPDS men inte identisk), som låter låntagare ladda ner digitala publikationer från deras personliga bokhylla. Med denna teknik integrerad i Thorium Reader kan du ladda ner en e-bok eller ljudbok direkt till Thorium Reader för omedelbar läsning.\nHur ansluter du ditt konto från ett franskt offentligt bibliotek till Thorium Reader? Det är enkelt. Ange en fransk stad eller en del av bibliotekets namn i sökfältet och tryck på sökknappen. En lista med offentliga bibliotek som motsvarar din sökning visas. Välj ett bibliotek och tryck på Lägg till. I den uppdaterade listan med kataloger, välj detta bibliotek: ett inloggningsformulär visas. Ange ditt användarnamn/e-postadress och lösenord, och tryck på Logga in. Du kan nu se innehållet i din personliga bokhylla, från vilken du kan ladda ner och läsa de e-böcker och ljudböcker du tidigare lånat.",
         "noLibraryFound": "Inget bibliotek hittades ({{- name}})"
     },
     "app": {
@@ -20,6 +20,7 @@
             "copy": "Kopiera",
             "cut": "Klipp ut",
             "paste": "Klistra in",
+            "print": "",
             "redo": "Gör om",
             "selectAll": "Markera allt",
             "title": "Redigera",
@@ -72,7 +73,7 @@
             "lastAdditions": "Nyligen tillagt"
         },
         "export": "Spara som",
-        "exportAnnotation": "Spara anteckningar som",
+        "exportAnnotation": "Exportera anteckningar",
         "format": "Format",
         "importAnnotation": "Importera anteckningar",
         "lang": "Språk",
@@ -135,8 +136,8 @@
         "cancel": "Avbryt",
         "deleteAnnotations": "Radera anteckningar?",
         "deleteAnnotationsText": "Vill du radera {{- annotationListLength}} anteckning(ar)?",
-        "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteBookmarks": "Radera bokmärken?",
+        "deleteBookmarksText": "Vill du radera {{- bookmarkListLength}} bokmärke(n)?",
         "deleteFeed": "Vill du ta bort den här katalogen?",
         "deletePublication": "Vill du ta bort den här publikationen?",
         "import": "Vill du importera följande filer:",
@@ -160,7 +161,7 @@
         "gridTitle": "Gallerivy",
         "home": "Huvudmeny",
         "homeTitle": "Hem",
-        "importTitle": "Importera en publikation",
+        "importTitle": "Importera en bok",
         "listTitle": "Tabellvy",
         "myCatalogs": "Mina kataloger",
         "refreshTitle": "Uppdatera",
@@ -174,7 +175,7 @@
             "hint": "Tips:",
             "open": "Öppna",
             "password": "Lösenord",
-            "sentence": "Den här publikationer behöver ett LCP-lösenord för att kunna öppnas:",
+            "sentence": "Den här publikationen behöver ett LCP-lösenord för att kunna öppnas",
             "urlHint": "Har du glömt ditt lösenord? Här kan du få hjälp.",
             "whatIsLcp?": "Vad är LCP?",
             "whatIsLcpInfoDetails": "LCP står för \"Licensed Content Protection\".",
@@ -187,7 +188,7 @@
             "emptyFile": "Inga anteckningar tillgängliga i filen.",
             "errorParsing": "Fel vid inläsning av filformat: ",
             "noBelongTo": "Det går inte att importera anteckningarna, minst en anteckning tillhör inte publikationen.",
-            "nothing": "Det finns inga anteckningar tillgängliga för import, avbryter importen.",
+            "nothing": "Det finns inga anteckningar tillgängliga för import, avbryter importen",
             "success": "Importen slutförd."
         },
         "download": {
@@ -218,7 +219,7 @@
         "documentation": "OPDS officiella webbplats",
         "empty": "Inga publikationer hittades",
         "firstPage": "Första",
-        "informations": "Föreställ dig en värld där du kan utforska och ladda ner digitala publikationer från offentliga bibliotek och digitala bokhandlar med bara några få klick. Det är precis vad katalogformatet Open Publication Distribution System (OPDS) erbjuder. Med OPDS kan du navigera genom kataloger från olika e-boksleverantörer, registrera dig, låna, köpa en publikation eller besöka din personliga bokhylla. Du kan till och med ladda ner en e-bok eller ljudbok direkt till Thorium Reader för omedelbar läsning. Så, hur hittar du en OPDS-katalog? Det är enkelt. Leta efter en länk (URL) som leder till katalogen. Kopiera denna URL till länkfältet ovan. Tänk på att det inte finns någon central plats för alla aktiva OPDS-kataloger. Du måste kontakta ditt föredragna bibliotek eller bokhandlare och be om deras OPDS-katalog-URL. Om du är osäker på var du ska börja, har Wikipedia några register över OPDS-kataloger på olika språk som kan vara till hjälp. I namnfältet kan du ange ett valfritt namn för att enkelt identifiera flödet i Thorium Reader.",
+        "informations": "Föreställ dig en värld där du kan utforska och ladda ner digitala publikationer från offentliga bibliotek och digitala bokhandlar med bara några få klick. Det är precis vad katalogformatet Open Publication Distribution System (OPDS) erbjuder. Med OPDS kan du navigera genom kataloger från olika e-boksleverantörer, registrera dig, låna, köpa en publikation eller besöka din personliga bokhylla. Du kan till och med ladda ner en e-bok eller ljudbok direkt till Thorium Reader för omedelbar läsning.\nSå, hur hittar du en OPDS-katalog? Det är enkelt. Leta efter en länk (URL) som leder till katalogen. Kopiera denna URL till länkfältet ovan. Tänk på att det inte finns någon central plats för alla aktiva OPDS-kataloger. Du måste kontakta ditt föredragna bibliotek eller bokhandlare och be om deras OPDS-katalog-URL. Om du är osäker på var du ska börja, har Wikipedia några register över OPDS-kataloger på olika språk som kan vara till hjälp.\nI namnfältet kan du ange ett valfritt namn för att enkelt identifiera flödet i Thorium Reader.",
         "lastPage": "Sista",
         "menu": {
             "aboutBook": "Om boken",
@@ -248,292 +249,292 @@
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": ""
+            "accessibility-summary-title": "Kompletterande information om tillgänglighet"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Innehåller ARIA-roller",
+                "descriptive": "Innehållet har försetts med ARIA-roller för att tydliggöra strukturen och underlätta navigering"
             },
             "additional-accessibility-information-audio-descriptions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Syntolkning",
+                "descriptive": "Syntolkning"
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Punktskrift",
+                "descriptive": "Punktskrift"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Fullständig ruby-annotering",
+                "descriptive": "Fullständig ruby-annotering"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Hög kontrast mellan förgrundsljud och bakgrundsljud",
+                "descriptive": "Hög kontrast mellan förgrundsljud och bakgrundsljud"
             },
             "additional-accessibility-information-high-contrast-between-text-and-background": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Hög kontrast mellan text och bakgrund",
+                "descriptive": "Hög kontrast mellan text och bakgrund"
             },
             "additional-accessibility-information-large-print": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Storstil",
+                "descriptive": "Storstil"
             },
             "additional-accessibility-information-page-breaks": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Innehåller sidnummer",
+                "descriptive": "Innehåller sidnummer från tryckt förlaga"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Viss ruby-annotering",
+                "descriptive": "Viss ruby-annotering"
             },
             "additional-accessibility-information-sign-language": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Teckenspråk",
+                "descriptive": "Teckenspråk"
             },
             "additional-accessibility-information-tactile-graphics": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Innehåller taktila bilder",
+                "descriptive": "Taktila bilder har lagts till för att tillgängliggöra visuella element för personer med synnedsättning"
             },
             "additional-accessibility-information-tactile-objects": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Taktila 3D-objekt",
+                "descriptive": "Taktila 3D-objekt"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Innehåller uttalsinstruktioner för talsyntes",
+                "descriptive": "Innehåller uttalsinstruktioner för talsyntes"
             },
-            "additional-accessibility-information-title": ""
+            "additional-accessibility-information-title": "Ytterligare tillgänglighetsinformation"
         },
         "conformance": {
             "conformance-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Publikationen uppfyller tillgänglighetskrav på en grundläggande nivå",
+                "descriptive": "Publikationen anger att den uppfyller standarderna EPUB Accessibility och WCAG 2 nivå A"
             },
             "conformance-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Publikationen uppfyller tillgänglighetskrav på en vedertagen nivå",
+                "descriptive": "Publikationen anger att den uppfyller standarderna EPUB Accessibility och WCAG 2 nivå AA"
             },
             "conformance-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Publikationen uppfyller tillgänglighetskrav utöver en vedertagen nivå",
+                "descriptive": "Publikationen anger att den uppfyller standarderna EPUB Accessibility och WCAG 2 nivå AAA"
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "Publikationen är certifierad av "
             },
             "conformance-certifier-credentials": {
-                "compact": ""
+                "compact": "Certifierarens märkning är "
             },
             "conformance-details-certifier-report": {
-                "compact": ""
+                "compact": "Se certifieringsrapporten för mer information"
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Publikationen anger att den uppfyller kraven enligt",
+                "descriptive": "Publikationen anger att den uppfyller kraven enligt"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Accessibility 1.0",
+                "descriptive": "EPUB Accessibility 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Accessibility 1.1",
+                "descriptive": "EPUB Accessibility 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "nivå A",
+                "descriptive": "nivå A"
             },
             "conformance-details-level-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "nivå AA",
+                "descriptive": "nivå AA"
             },
             "conformance-details-level-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "nivå AAA",
+                "descriptive": "nivå AAA"
             },
             "conformance-details-wcag-2-0": {
-                "compact": ""
+                "compact": "WCAG 2.0"
             },
             "conformance-details-wcag-2-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.1",
+                "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.2",
+                "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.2"
             },
             "conformance-no": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Information saknas",
+                "descriptive": "Information saknas"
             },
-            "conformance-title": "",
+            "conformance-title": "Tillgänglighetskrav",
             "conformance-unknown-standard": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Det går inte att avgöra om publikationen uppfyller vedertagna tillgänglighetskrav",
+                "descriptive": "Det går inte att avgöra om publikationen uppfyller vedertagna tillgänglighetskrav"
             }
         },
         "hazards": {
             "hazards-flashing": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Blinkande innehåll",
+                "descriptive": "Publikationen har blinkande innehåll som kan vara skadligt för ljuskänsliga personer"
             },
             "hazards-flashing-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Inget blinkande innehåll",
+                "descriptive": "Publikationen har inget blinkande innehåll"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Förekomst av blinkande innehåll är okänd",
+                "descriptive": "Förekomst av blinkande innehåll är okänd"
             },
             "hazards-motion": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Rörelsesimulering",
+                "descriptive": "Publikationen innehåller rörelsesimulering som skulle kunna orsaka illamående"
             },
             "hazards-motion-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ingen rörelsesimulering",
+                "descriptive": "Publikationen innehåller ingen rörelsesimulering"
             },
             "hazards-motion-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Förekomst av rörelsesimulering är okänd",
+                "descriptive": "Förekomst av rörelsesimulering är okänd"
             },
             "hazards-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Information saknas",
+                "descriptive": "Information saknas"
             },
             "hazards-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Inga risker",
+                "descriptive": "Publikationen innehåller inga risker"
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ljud",
+                "descriptive": "Publikationen innehåller ljud som kan orsaka obehag"
             },
             "hazards-sound-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Inget ljud",
+                "descriptive": "Publikationen innehåller inget ljud"
             },
             "hazards-sound-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Förekomst av ljud som kan orsaka obehag är okänd",
+                "descriptive": "Förekomst av ljud som kan orsaka obehag är okänd"
             },
-            "hazards-title": "",
+            "hazards-title": "Risker",
             "hazards-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Förekomst av risker är okänd",
+                "descriptive": "Förekomst av risker är okänd"
             }
         },
         "navigation": {
             "navigation-index": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Register",
+                "descriptive": "Register med länkar till innehållet"
             },
             "navigation-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Information saknas",
+                "descriptive": "Information saknas"
             },
             "navigation-page-navigation": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Gå till sida",
+                "descriptive": "Sidindelning för navigering enligt sidnummer i tryckt förlaga"
             },
             "navigation-structural": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Rubriker",
+                "descriptive": "Navigerbara element såsom rubriker eller tabeller"
             },
-            "navigation-title": "",
+            "navigation-title": "Navigering",
             "navigation-toc": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Innehållsförteckning",
+                "descriptive": "Innehållsförteckning med länkar till alla kapitel"
             }
         },
         "rich-content": {
             "rich-content-accessible-chemistry-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Kemiska formler i LaTeX",
+                "descriptive": "Kemiska formler i tillgängligt format (LaTeX)"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Kemiska formler i MathML",
+                "descriptive": "Kemiska formler i tillgängligt format (MathML)"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Matematik som LaTeX",
+                "descriptive": "Matematiska formler i tillgängligt format (LaTeX)"
             },
             "rich-content-accessible-math-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Matematik som MathML",
+                "descriptive": "Matematiska formler i tillgängligt format (MathML)"
             },
             "rich-content-accessible-math-described": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Innehåller textbeskrivningar av matematik",
+                "descriptive": "Innehåller textbeskrivningar av matematik"
             },
             "rich-content-closed-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Videoklipp har undertext som kan sättas på/stängas av",
+                "descriptive": "Videoklipp som ingår i publikationen har undertext som kan sättas på och stängas av (stängda undertexter)"
             },
             "rich-content-extended": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Informationsrika bilder har utökade bildbeskrivningar",
+                "descriptive": "Informationsrika bilder har utökade bildbeskrivningar"
             },
             "rich-content-open-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Videoklipp har undertext som inte kan stängas av",
+                "descriptive": "Videoklipp som ingår i publikationen har undertext som inte kan stängas av (öppna undertexter)"
             },
-            "rich-content-title": "",
+            "rich-content-title": "Berikat innehåll",
             "rich-content-transcript": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Innehåller transkriptioner",
+                "descriptive": "Innehåller transkriptioner"
             },
             "rich-content-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Information saknas",
+                "descriptive": "Information saknas"
             }
         },
         "ways-of-reading": {
             "ways-of-reading-nonvisual-reading-alt-text": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Har textalternativ (alt-texter)",
+                "descriptive": "Har textalternativ (alt-texter) till bilder"
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Information om icke-visuell läsbarhet saknas",
+                "descriptive": "Information om icke-visuell läsbarhet saknas"
             },
             "ways-of-reading-nonvisual-reading-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Kan inte läsas med uppläsningsfunktion eller punktskriftsskärm",
+                "descriptive": "Innehållet går inte att läsa med uppläsningsfunktion eller punktskriftsskärm"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Inte läsbart i sin helhet med uppläsningsfunktion eller punktskriftsskärm",
+                "descriptive": "Allt innehåll går inte att läsa med uppläsningsfunktion eller punktskriftsskärm"
             },
             "ways-of-reading-nonvisual-reading-readable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Kan läsas med uppläsningsfunktion eller punktskriftsskärm",
+                "descriptive": "Hela innehållet går att läsa med uppläsningsfunktion eller punktskriftsskärm"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Förinspelade ljudklipp",
+                "descriptive": "Innehåller förinspelade ljudklipp"
             },
             "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Information om förinspelat ljud saknas",
+                "descriptive": "Information om förinspelat ljud saknas"
             },
             "ways-of-reading-prerecorded-audio-only": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Endast förinspelat ljud",
+                "descriptive": "Bok med ljud utan textalternativ"
             },
             "ways-of-reading-prerecorded-audio-synchronized": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Förinspelat ljud synkroniserat med texten",
+                "descriptive": "Hela innehållet finns tillgängligt som förinspelat ljud synkroniserat med texten"
             },
-            "ways-of-reading-title": "",
+            "ways-of-reading-title": "Olika sätt att läsa",
             "ways-of-reading-visual-adjustments-modifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Utseendet kan justeras",
+                "descriptive": "Det går att justera text och layout i den utsträckning som läsprogrammet tillåter, till exempel typsnitt, storlek på text, avstånd mellan rader och stycken samt färg på text och bakgrund"
             },
             "ways-of-reading-visual-adjustments-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Information om möjlighet att justera utseende saknas",
+                "descriptive": "Information om möjlighet att justera utseende saknas"
             }
         }
     },
@@ -562,11 +563,11 @@
                 "sound": "Ljud",
                 "unknown": "Okänt"
             },
-            "certifierReport": "Rapport från certifierande instans",
+            "certifierReport": "Rapport från certifierande instans:",
             "conformsTo": "Följer:",
             "moreInformation": "Mer information",
             "name": "Tillgänglighet",
-            "noA11y": "Det finns ingen information om tillgänglighet."
+            "noA11y": "Det finns ingen information om tillgänglighet"
         },
         "actions": "Åtgärder",
         "audio": {
@@ -621,12 +622,12 @@
             "addNote": "Anteckna",
             "advancedMode": "Omedelbart-läge (skapa automatiskt efter markering)",
             "annotationsExport": {
-                "description": "Namnge anteckningarna",
+                "description": "Namnge anteckningarna:",
                 "title": "Titel"
             },
             "annotationsOptions": "Alternativ",
             "date": "Redigeringsdatum",
-            "export": "Spara anteckningar som",
+            "export": "Spara anteckningar som...",
             "filter": {
                 "all": "Alla",
                 "filterByColor": "Filtrera efter färg",
@@ -657,7 +658,7 @@
             }
         },
         "bookmarks": {
-            "index": ""
+            "index": "Bokmärke {{- index}}"
         },
         "divina": {
             "mute": "stäng av ljud",
@@ -667,6 +668,12 @@
             "fit": "Anpassa"
         },
         "goToContent": "Gå till innehållet",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "Anteckningar",
             "bookmarks": "Bokmärken",
@@ -674,7 +681,7 @@
             "edit": "Redigera",
             "goTo": "Gå till sida",
             "landmarks": "Landmärken",
-            "saveMark": "Spara bokmärke",
+            "saveMark": "Spara",
             "search": "Sök",
             "searchResult": "Sök [{{- searchText}}]",
             "toc": "Innehållsförteckning"
@@ -685,8 +692,8 @@
             "captionsDescription": "Förenklad textvy med minimal formatering.",
             "disableContinuousPlay": "Inaktivera kontinuerlig uppläsning",
             "disableContinuousPlayDescription": "Läs inte automatiskt upp nästa objekt. Pausa efter att det aktuella objektet har lästs upp.",
-            "ignoreAndUseTTS": "",
-            "ignoreAndUseTTSDescription": "",
+            "ignoreAndUseTTS": "Ignorera förinspelat ljud, använd text-till-tal",
+            "ignoreAndUseTTSDescription": "Använd inte Epub Media Overlays, läs med text-till-tal istället",
             "next": "Nästa",
             "pause": "Pausa",
             "play": "Läs upp",
@@ -717,6 +724,7 @@
             "openTableOfContentsTitle": "Navigation",
             "page": "Sida",
             "pdfscalemode": "Anpassa till hel sida eller sidbredd",
+            "print": "",
             "settingsTitle": "Inställningar"
         },
         "notes": {
@@ -740,6 +748,18 @@
                 "submit": "Sök"
             },
             "searchTitle": "Sök:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
         },
         "settings": {
             "column": {
@@ -1044,6 +1064,10 @@
                     "description": "",
                     "name": ""
                 },
+                "Print": {
+                    "description": "",
+                    "name": ""
+                },
                 "SearchNext": {
                     "description": "",
                     "name": ""
@@ -1088,9 +1112,9 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "",
-                "enableCheckbox": "",
-                "overrideHTMLTemplate": ""
+                "applyDefaultTemplate": "ANVÄND STANDARDMALLEN",
+                "enableCheckbox": "Aktivera/inaktivera ändringar i Mustache-mallen när anteckningar exporteras till HTML",
+                "overrideHTMLTemplate": "Använd egen Mustache-mall när anteckningar exporteras till HTML"
             }
         },
         "session": {
@@ -1111,25 +1135,25 @@
     },
     "tts": {
         "highlight": {
-            "mainColor": "",
-            "maskBlockWordOutline": "",
-            "maskBlockWordSolidBackground": "",
-            "maskBlockWordUnderline": "",
-            "maskWordOutline": "",
-            "maskWordSolidBackground": "",
-            "maskWordUnderline": "",
-            "outlineWordOutline": "",
-            "outlineWordSolidBackground": "",
-            "outlineWordUnderline": "",
-            "preview": "",
-            "solidBackgroundWordOutline": "",
-            "solidBackgroundWordSolidBackground": "",
-            "solidBackgroundWordUnderline": "",
-            "style": "",
-            "underlineWordOutline": "",
-            "underlineWordSolidBackground": "",
-            "underlineWordUnderline": "",
-            "wordColor": ""
+            "mainColor": "Bakgrundsfärg",
+            "maskBlockWordOutline": "Maskering med ram, ram runt ord",
+            "maskBlockWordSolidBackground": "Maskering med ram, bakgrundsfärg för ord",
+            "maskBlockWordUnderline": "Maskering med ram, understruket ord",
+            "maskWordOutline": "Maskering, ram runt ord",
+            "maskWordSolidBackground": "Maskering, bakgrundsfärg för ord",
+            "maskWordUnderline": "Maskering, understruket ord",
+            "outlineWordOutline": "Ram, ram runt ord",
+            "outlineWordSolidBackground": "Ram, bakgrundsfärg för ord",
+            "outlineWordUnderline": "Ram, understruket ord",
+            "preview": "Förhandsvisning av markering",
+            "solidBackgroundWordOutline": "Bakgrundsfärg, ram runt ord",
+            "solidBackgroundWordSolidBackground": "Bakgrundsfärg, bakgrundsfärg för ord",
+            "solidBackgroundWordUnderline": "Bakgrundsfärg, understruket ord",
+            "style": "Stil för markering av text-till-tal",
+            "underlineWordOutline": "Understrykning, ram runt ord",
+            "underlineWordSolidBackground": "Understrykning, bakgrundsfärg för ord",
+            "underlineWordUnderline": "Understrykning, understruket ord",
+            "wordColor": "Ordfärg"
         }
     },
     "wizard": {

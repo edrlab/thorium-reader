@@ -1,227 +1,228 @@
 {
     "accessibility": {
-        "bookMenu": "",
-        "closeDialog": "",
-        "importFile": "",
-        "leftSlideButton": "",
-        "mainContent": "",
-        "rightSlideButton": "",
-        "skipLink": "",
-        "toolbar": ""
+        "bookMenu": "Menü",
+        "closeDialog": "Kapat",
+        "importFile": "Eseri içe aktar",
+        "leftSlideButton": "Sola kaydır",
+        "mainContent": "ana içerik",
+        "rightSlideButton": "Sağa kaydır",
+        "skipLink": "İçeriğe atla",
+        "toolbar": "araç çubuğu"
     },
     "apiapp": {
-        "documentation": "",
-        "howItWorks": "",
-        "informations": "",
-        "noLibraryFound": ""
+        "documentation": "Thorium Belgeleri",
+        "howItWorks": "Nasıl çalışır?",
+        "informations": "Fransa'da birçok halk kütüphanesi, üylerin kişisel kitaplıklarından dijital yayınları indirmelerine izin veren makine tarafından okunabilir bir katalog (OPDS'ye benzer ancak aynı olmayan) sağlar. Bu teknolojinin Thorium Reader'a entegre edilmesi, anında okumak için bir e-kitabı veya sesli kitabı doğrudan Thorium Reader'a indirmenize olanak tanır.\nFransız halk kütüphanesi hesabınızı Thorium Reader'a nasıl bağlarsınız? Çok basit. Arama alanına bir Fransız şehri (‘Paris’) veya kütüphane adının bir kısmını girin ve Ara düğmesine basın. Aramanıza karşılık gelen halk kütüphanelerinin bir listesi görünecektir. Bir kütüphane seçin ve Ekle düğmesine basın. Güncellenen katalog listesinde bu kütüphaneyi seçin: bir kimlik doğrulama formu görüntülenir. Kullanıcı adınızı/e-posta adresinizi ve şifrenizi girin ve Giriş düğmesine basın. Artık daha önce ödünç aldığınız e-kitapları ve sesli kitapları indirip okuyabileceğiniz kişisel kitaplığınızın içeriğini görebilirsiniz.",
+        "noLibraryFound": "({{- name}}) -- Herhangi bir kütüphane bulunamadı"
     },
     "app": {
         "edit": {
-            "copy": "",
-            "cut": "",
-            "paste": "",
-            "redo": "",
-            "selectAll": "",
-            "title": "",
-            "undo": ""
+            "copy": "Kopyala",
+            "cut": "Kes",
+            "paste": "Yapıştır",
+            "print": "",
+            "redo": "Yenile",
+            "selectAll": "Tümünü seç",
+            "title": "Düzenle",
+            "undo": "Geri al"
         },
-        "hide": "",
-        "quit": "",
+        "hide": "{{- appName}} Uygulamasını gizle",
+        "quit": "{{- appName}} Uygulamasından çık",
         "session": {
             "exit": {
                 "askBox": {
                     "button": {
-                        "no": "",
-                        "yes": ""
+                        "no": "Hayır",
+                        "yes": "Evet"
                     },
-                    "help": "",
-                    "message": "",
-                    "title": ""
+                    "help": "Uygulamayı kapattığınızda açık olan okuyucu pencerelerinin uygulamayı bir sonraki başlatışınızda otomatik olarak yeniden açılmasını istiyorsanız, bunu etkinleştirin.",
+                    "message": "Okuma oturumunu kaydetme ve geri yükleme",
+                    "title": "Oturumu kaydetmek istiyor musunuz?"
                 }
             }
         },
         "update": {
-            "message": "",
-            "title": ""
+            "message": "Yeni sürüm mevcut, daha fazlasını öğrenmek için tıklayın.",
+            "title": "{{- appName}} yazılım güncellemesi."
         },
         "window": {
-            "showLibrary": ""
+            "showLibrary": "Kütüphaneyi / kitaplığı göster"
         }
     },
     "catalog": {
         "about": {
-            "title": ""
+            "title": "{{- appName}} Hakkında (online)"
         },
-        "addBookToLib": "",
-        "addTags": "",
-        "addTagsButton": "",
-        "allBooks": "",
-        "bookInfo": "",
+        "addBookToLib": "İçeri aktar",
+        "addTags": "Etiket ekle",
+        "addTagsButton": "Ekle",
+        "allBooks": "Tüm eserler",
+        "bookInfo": "Eser hakkında",
         "column": {
-            "ascending": "",
-            "descending": "",
-            "unsorted": ""
+            "ascending": "artan",
+            "descending": "azalan",
+            "unsorted": "sıralanmamış"
         },
-        "delete": "",
-        "deleteBook": "",
-        "deleteTag": "",
-        "description": "",
-        "emptyTagList": "",
+        "delete": "Sil",
+        "deleteBook": "Sil",
+        "deleteTag": "Etiketi sil",
+        "description": "Tanım",
+        "emptyTagList": "Etiketsiz eserler",
         "entry": {
-            "continueReading": "",
-            "lastAdditions": ""
+            "continueReading": "Okumayı duraklat",
+            "lastAdditions": "Son eklenen"
         },
-        "export": "",
-        "exportAnnotation": "",
-        "format": "",
-        "importAnnotation": "",
-        "lang": "",
-        "lastRead": "",
-        "moreInfo": "",
-        "myBooks": "",
-        "noPublicationHelpL1": "",
-        "noPublicationHelpL2": "",
-        "noPublicationHelpL3": "",
-        "noPublicationHelpL4": "",
-        "numberOfPages": "",
+        "export": "Farklı kaydet",
+        "exportAnnotation": "Notları dışarı aktar",
+        "format": "Biçim",
+        "importAnnotation": "Notları içe aktar",
+        "lang": "Dil",
+        "lastRead": "Son Okunan",
+        "moreInfo": "Eser Ayrıntıları",
+        "myBooks": "Eserlerim",
+        "noPublicationHelpL1": "Dosyaları buraya bırakın",
+        "noPublicationHelpL2": "veya yukarıdaki \"{{- importTitle }}\" düğmesini kullanın.",
+        "noPublicationHelpL3": "LCP-korumalı eserler desteklenmektedir.",
+        "noPublicationHelpL4": "Desteklenen uzantılar:",
+        "numberOfPages": "Sayfa Sayısı",
         "opds": {
             "auth": {
-                "cancel": "",
-                "login": "",
-                "password": "",
-                "register": "",
-                "username": ""
+                "cancel": "İptal",
+                "login": "Giriş Yap",
+                "password": "Şifre",
+                "register": "Kaydol",
+                "username": "Kullanıcı Adı / E-Posta Adresi"
             },
             "info": {
-                "availableSince": "",
+                "availableSince": "Tarihinden beri",
                 "availableState": {
-                    "available": "",
-                    "ready": "",
-                    "reserved": "",
-                    "unavailable": "",
-                    "unknown": ""
+                    "available": "Mevcut",
+                    "ready": "Hazır",
+                    "reserved": "Rezerve",
+                    "unavailable": "Mevcut değil",
+                    "unknown": "Bilinmeyen"
                 },
-                "availableUntil": "",
-                "copyAvalaible": "",
-                "copyTotal": "",
-                "holdPosition": "",
-                "holdTotal": "",
-                "numberOfItems": "",
-                "priveValue": "",
-                "state": ""
+                "availableUntil": "Tarihine kadar",
+                "copyAvalaible": "Mevcut",
+                "copyTotal": "Kopyalar",
+                "holdPosition": "Konumu koru",
+                "holdTotal": "Rezerve",
+                "numberOfItems": "Öğe sayısı",
+                "priveValue": "Fiyat",
+                "state": "Durum"
             }
         },
-        "publisher": "",
-        "readBook": "",
-        "released": "",
-        "sort": "",
-        "tag": "",
-        "tags": "",
-        "update": ""
+        "publisher": "Yayımcı",
+        "readBook": "Oku",
+        "released": "Yayın tarihi",
+        "sort": "Şuna göre sırala",
+        "tag": "Etiket",
+        "tags": "Etiketler",
+        "update": "Düzenle"
     },
     "dialog": {
         "annotations": {
-            "descAuthor": "",
-            "descCreator": "",
-            "descList": "",
-            "descNewer": "",
-            "descOlder": "",
-            "descTitle": "",
-            "importAll": "",
-            "importWithoutConflict": "",
-            "origin": "",
-            "title": ""
+            "descAuthor": "'{{- author}}'a göre",
+            "descCreator": "oluşturana göre",
+            "descList": "{{- nb}} not(ları) {{- creator}}, '{{- title}}' {{- author}} içerisine aktarılacak",
+            "descNewer": "Çakışma(lar): {{- nb}} not(ları) daha yeni",
+            "descOlder": "Çakışma(lar): {{- nb}} not(ları) daha eski",
+            "descTitle": "Açıklayıcı notların başlığı: ",
+            "importAll": "Tüm notları içe aktar",
+            "importWithoutConflict": "Sadece çakışma olmayan notları içe aktar",
+            "origin": "Kaynak eser: '{{- title}}' {{- author}}",
+            "title": "Notları içe aktarmak istiyor musunuz?"
         },
-        "cancel": "",
-        "deleteAnnotations": "",
-        "deleteAnnotationsText": "",
-        "deleteBookmarks": "",
-        "deleteBookmarksText": "",
-        "deleteFeed": "",
-        "deletePublication": "",
-        "import": "",
-        "importError": "",
-        "renew": "",
-        "return": "",
-        "yes": ""
+        "cancel": "İptal",
+        "deleteAnnotations": "Açıklayıcı notları silmek istiyor musunuz?",
+        "deleteAnnotationsText": "{{- annotationListLength}} Not(larını)? silmek istediğinize emin misiniz?",
+        "deleteBookmarks": "Yer imlerini silmek istiyor musunuz?",
+        "deleteBookmarksText": "{{- bookmarkListLength}} yer im(ler)ini silmek istediğinize emin misiniz?",
+        "deleteFeed": "Katalogu silmek istiyor musunuz?",
+        "deletePublication": "Eseri silmek istiyor musunuz?",
+        "import": "İçe aktarmayı onayla:",
+        "importError": "Hata oluştu, dosya uzantısının ({{acceptedExtension}}) olduğunu doğrulayın.",
+        "renew": "Yenilemek ya da ödünç almayı uzatmak istiyor musunuz?",
+        "return": "Esere geri dönmek istiyor musunuz?",
+        "yes": "Evet"
     },
     "error": {
         "errorBox": {
-            "error": "",
-            "message": "",
-            "title": ""
+            "error": "Hata mesajı:",
+            "message": "{{- filename}} Dosyasında hata",
+            "title": "Dahili {{- appName}} uygulaması\nHata"
         }
     },
     "header": {
-        "allBooks": "",
-        "catalogs": "",
-        "downloads": "",
-        "fitlerTagTitle": "",
-        "gridTitle": "",
-        "home": "",
-        "homeTitle": "",
-        "importTitle": "",
-        "listTitle": "",
-        "myCatalogs": "",
-        "refreshTitle": "",
-        "searchPlaceholder": "",
-        "searchTitle": "",
-        "settings": "",
-        "viewMode": ""
+        "allBooks": "Tüm eserler",
+        "catalogs": "Kataloglar",
+        "downloads": "İndirilenler",
+        "fitlerTagTitle": "Etikete göre filtrele",
+        "gridTitle": "Izgara",
+        "home": "Kitaplık menüsü",
+        "homeTitle": "Anasayfa",
+        "importTitle": "Eseri içe aktar",
+        "listTitle": "Tablo",
+        "myCatalogs": "Kataloglarım",
+        "refreshTitle": "yeniden yükle",
+        "searchPlaceholder": "Ara",
+        "searchTitle": "Ara",
+        "settings": "Ayarlar",
+        "viewMode": "Görünüm biçimi"
     },
     "library": {
         "lcp": {
-            "hint": "",
-            "open": "",
-            "password": "",
-            "sentence": "",
-            "urlHint": "",
-            "whatIsLcp?": "",
-            "whatIsLcpInfoDetails": "",
-            "whatIsLcpInfoDetailsLink": ""
+            "hint": "İpucu:",
+            "open": "Aç",
+            "password": "Şifre",
+            "sentence": "Bu eserin açılabilmesi için bir LCP şifresi gerekir",
+            "urlHint": "Şifrenizi mi unuttunuz? Destek almak için buraya tıklayın.",
+            "whatIsLcp?": "LCP nedir?",
+            "whatIsLcpInfoDetails": "LCP, 'Licensed Content Protection', Lisanslı İçerik Koruması anlamına gelir.",
+            "whatIsLcpInfoDetailsLink": "EDRLab  web sitesinde Daha fazlasını öğrenmek için bu bağlantıyı tıklayın."
         }
     },
     "message": {
         "annotations": {
-            "alreadyImported": "",
-            "emptyFile": "",
-            "errorParsing": "",
-            "noBelongTo": "",
-            "nothing": "",
-            "success": ""
+            "alreadyImported": "Tüm notlar zaten içe aktarılmış.",
+            "emptyFile": "Dosyada not mevcut değil.",
+            "errorParsing": "Dosya işlenirken hata oluştu: ",
+            "noBelongTo": "Notlar içe aktarılamadı: En az bir not, Eser'e ait değil.",
+            "nothing": "İçe aktarmaya hazır hiç not yok, içe aktarma durduruluyor",
+            "success": "İçe aktarma başarıyla tamamlandı."
         },
         "download": {
-            "error": ""
+            "error": "[{{- title}}] İndirmesi başarısız: [{{- err}}]"
         },
         "import": {
-            "alreadyImport": "",
-            "fail": "",
-            "success": ""
+            "alreadyImport": "[{{- title}}] dosyası zaten içe aktarılmış.",
+            "fail": "[{{- path}}] İçe aktarması başarısız: [{{- err}}]",
+            "success": "[{{- title}}]: İçe aktarımı tamamlandı."
         },
         "open": {
-            "error": ""
+            "error": "Eser yüklemesi başarısız: [{{- err}}]"
         }
     },
     "opds": {
         "addForm": {
-            "addButton": "",
-            "name": "",
-            "namePlaceholder": "",
-            "url": "",
-            "urlPlaceholder": ""
+            "addButton": "Ekle",
+            "name": "İsim",
+            "namePlaceholder": "İsim",
+            "url": "Link:",
+            "urlPlaceholder": "Link"
         },
         "addFormApiapp": {
-            "title": ""
+            "title": "Kütüphane hesabı ekle"
         },
-        "addMenu": "",
-        "breadcrumbRoot": "",
-        "documentation": "",
-        "empty": "",
-        "firstPage": "",
-        "informations": "",
-        "lastPage": "",
+        "addMenu": "OPDS Beslemesi ekle",
+        "breadcrumbRoot": "Kataloglar",
+        "documentation": "OPDS resmi web sitesi",
+        "empty": "Hiç eser bulunamadı",
+        "firstPage": "İlk",
+        "informations": "Sadece birkaç tıklamayla kamu kütüphanelerinden ve dijital kitap satıcılarından dijital yayınları keşfedebileceğiniz ve indirebileceğiniz bir dünya hayal edin. Açık Eser Dağıtım Sistemi olarak Türkçe'ye çevrilebilecek Open Publication Distribution System (OPDS) katalog biçimi tam olarak bunu sunar. OPDS ile çeşitli e-kitap sağlayıcılarının kataloglarında gezinebilir, kaydolabilir, bir eser ödünç alabilir, bir eser satın alabilir veya kişisel kitaplığınızı ziyaret edebilirsiniz. Hatta anında okumak için bir e-kitap veya sesli kitabı doğrudan Thorium Reader'a indirebilirsiniz.\nPeki, bir OPDS kataloğunu nasıl bulursunuz? Çok basit. Kataloğa giden bir köprü bağlantısı (URL) arayıp bulun. Bu URL'yi yukarıdaki Bağlantı alanına kopyalayın. Tüm aktif OPDS katalogları için tek bir hizmet sağlama noktası olmadığını unutmayın. Tercih ettiğiniz kütüphane veya kitap satıcısıyla iletişime geçmeniz ve OPDS katalog URL'sini istemeniz gerekebilir. Nereden başlayacağınızdan emin değilseniz, Wikipedia'da çeşitli dillerde size yardımcı olabilecek birkaç OPDS kataloğu kaydı mevcuttur.\nAd alanı sizin için kolay bir yere yerleştirilmiştir ve Thorium Reader'a besleme tanımlamanın kolay bir yolunu sağlar.",
+        "lastPage": "Son",
         "menu": {
-            "aboutBook": "",
+            "aboutBook": "Eser hakkında",
             "addExtract": "",
             "goBuyBook": "",
             "goLoanBook": "",
@@ -667,6 +668,12 @@
             "fit": ""
         },
         "goToContent": "",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "",
             "bookmarks": "",
@@ -717,6 +724,7 @@
             "openTableOfContentsTitle": "",
             "page": "",
             "pdfscalemode": "",
+            "print": "",
             "settingsTitle": ""
         },
         "notes": {
@@ -741,12 +749,24 @@
             },
             "searchTitle": ""
         },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
+        },
         "settings": {
             "column": {
                 "auto": "",
-                "one": "",
+                "one": "sütun 1",
                 "title": "",
-                "two": ""
+                "two": "sütun 2"
             },
             "customFontSelected": "",
             "customizeReader": "",
@@ -771,12 +791,12 @@
             "paraSpacing": "",
             "pdfZoom": {
                 "name": {
-                    "100pct": "",
-                    "150pct": "",
-                    "200pct": "",
-                    "300pct": "",
-                    "500pct": "",
-                    "50pct": "",
+                    "100pct": "%100",
+                    "150pct": "%150",
+                    "200pct": "%200",
+                    "300pct": "%300",
+                    "500pct": "%500",
+                    "50pct": "%50",
                     "fit": "",
                     "width": ""
                 },
@@ -1041,6 +1061,10 @@
                     "name": ""
                 },
                 "OpenReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "Print": {
                     "description": "",
                     "name": ""
                 },

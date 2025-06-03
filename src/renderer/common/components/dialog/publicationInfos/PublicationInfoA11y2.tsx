@@ -30,7 +30,7 @@ export interface IProps {
 }
 
 const findStrInArrayArray = (array: (string[])[] | string[] | undefined, str: string): boolean => Array.isArray(array) && array.findIndex((a) => (Array.isArray(a) ? a : [a]).findIndex((b) => b === str) > -1) > -1;
-const findStrInArray = (array: string[] | undefined, str: string | string[]): boolean => !!array.find((a) => Array.isArray(str) ? str.includes(a) : a === str);
+const findStrInArray = (array: string[] | undefined, str: string | string[]): boolean => Array.isArray(array) && !!array.find((a) => Array.isArray(str) ? str.includes(a) : a === str);
 
 
 
@@ -51,11 +51,15 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
         a11y_accessibilityFeature,
         a11y_accessibilityHazard,
         a11y_accessibilitySummary,
-        a11y_conformsTo,
-        a11y_certifierReport,
-        a11y_certifiedBy,
-        a11y_certifierCredential,
+        a11y_conformsTo: a11y_conformsTo_,
+        a11y_certifierReport: a11y_certifierReport_,
+        a11y_certifiedBy: a11y_certifiedBy_,
+        a11y_certifierCredential: a11y_certifierCredential_,
     } = publicationViewMaybeOpds;
+    const a11y_conformsTo = Array.isArray(a11y_conformsTo_) ? a11y_conformsTo_ : a11y_conformsTo_ ? [a11y_conformsTo_] : [];
+    const a11y_certifierReport = Array.isArray(a11y_certifierReport_) ? a11y_certifierReport_ : a11y_certifierReport_ ? [a11y_certifierReport_] : [];
+    const a11y_certifiedBy = Array.isArray(a11y_certifiedBy_) ? a11y_certifiedBy_ : a11y_certifiedBy_ ? [a11y_certifiedBy_] : [];
+    const a11y_certifierCredential = Array.isArray(a11y_certifierCredential_) ? a11y_certifierCredential_ : a11y_certifierCredential_ ? [a11y_certifierCredential_] : [];
 
     // taken from previous a11y implementation src/renderer/common/components/dialog/publicationInfos/publicationInfoA11y.tsx:ln108
     let accessibilitySummaryStrSanitized = undefined;

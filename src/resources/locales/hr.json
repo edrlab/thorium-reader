@@ -20,6 +20,7 @@
             "copy": "Kopiraj",
             "cut": "Izreži",
             "paste": "Zalijepi",
+            "print": "",
             "redo": "Ponovi",
             "selectAll": "Označi sve",
             "title": "Uredi",
@@ -667,6 +668,12 @@
             "fit": ""
         },
         "goToContent": "",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "Anotacije",
             "bookmarks": "Knjižne oznake",
@@ -717,6 +724,7 @@
             "openTableOfContentsTitle": "navigacija",
             "page": "",
             "pdfscalemode": "Širina stranice",
+            "print": "",
             "settingsTitle": "postavke"
         },
         "notes": {
@@ -740,6 +748,18 @@
                 "submit": "Traži"
             },
             "searchTitle": "Pretraga:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
         },
         "settings": {
             "column": {
@@ -1041,6 +1061,10 @@
                     "name": ""
                 },
                 "OpenReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "Print": {
                     "description": "",
                     "name": ""
                 },

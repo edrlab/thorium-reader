@@ -121,13 +121,17 @@ export const PublicationInfoLibWithRadixContent = React.forwardRef<HTMLDivElemen
 );
 PublicationInfoLibWithRadixContent.displayName = "PublicationInfoLibWithRadixContent";
 
-const PublicationInfoOpdsContext = React.createContext<IOpdsPublicationView | undefined>(undefined);
+const PublicationInfoOpdsContext = React.createContext<DialogType[DialogTypeName.PublicationInfoOpds] | undefined>(undefined);
 export const PublicationInfoOpdsWithRadix: React.FC<React.PropsWithChildren<{opdsPublicationView: IOpdsPublicationView}>> = (props) => {
     const defaultOpen = false;
 
     const dispatch = useDispatch();
     const [open, setOpen] = React.useState(defaultOpen);
     const openFromState = useSelector((state: ILibraryRootState) => state.dialog.open);
+    const data = useSelector((state: ILibraryRootState) =>
+        state.dialog.type === DialogTypeName.PublicationInfoOpds
+            ? state.dialog.data as DialogType[DialogTypeName.PublicationInfoOpds]
+            : undefined);
     React.useMemo(() => {
         if (!openFromState) {
             setOpen(false);
@@ -150,7 +154,7 @@ export const PublicationInfoOpdsWithRadix: React.FC<React.PropsWithChildren<{opd
                     }
                 }}
         >
-            <PublicationInfoOpdsContext.Provider value={props.opdsPublicationView}>
+            <PublicationInfoOpdsContext.Provider value={data}>
                 {props.children}
             </PublicationInfoOpdsContext.Provider>
         </Dialog.Root>
@@ -182,8 +186,8 @@ export const PublicationInfoOpdsWithRadixContent = React.forwardRef<HTMLDivEleme
                     <div className={stylesModals.modal_dialog_body}>
                         <PublicationInfoOpdsContext.Consumer>
                             {
-                                (opdsPublicationView) =>
-                                    <PublicationInfoWithRadixContent publicationViewMaybeOpds={opdsPublicationView} closeDialog={() => dispatch(dialogActions.closeRequest.build())} isOpds={true}
+                                (pub) =>
+                                    <PublicationInfoWithRadixContent publicationViewMaybeOpds={pub?.publication} closeDialog={() => dispatch(dialogActions.closeRequest.build())} isOpds={true}
                                      />
                             }
                         </PublicationInfoOpdsContext.Consumer>

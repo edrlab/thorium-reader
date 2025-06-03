@@ -23,7 +23,7 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { ImportAnnotationsDialog } from "../../../../common/components/ImportAnnotationsDialog";
 import { exportAnnotationSet } from "readium-desktop/renderer/common/redux/sagas/readiumAnnotation/export";
-import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
+import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_PUB_NOTES } from "readium-desktop/common/streamerProtocol";
 import debounce from "debounce";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
@@ -98,7 +98,7 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
                 onClick={debounce(async () => {
                     try {
 
-                        const notes = await (await fetch(`${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0/publication-notes/${props.publicationView.identifier}`)).json();
+                        const notes = await (await fetch(`${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_PUB_NOTES}/publication-notes/${props.publicationView.identifier}`)).json();
                         const title = convertMultiLangStringToString(props.publicationView.publicationTitle, locale) || "annotation";
                         let label = title.slice(0, 200);
                         label = label.trim();

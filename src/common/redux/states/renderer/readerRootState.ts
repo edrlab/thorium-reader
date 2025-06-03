@@ -22,7 +22,6 @@ import { IAnnotationModeState /*TAnnotationState,*/ } from "./annotation";
 import { ITTSState } from "readium-desktop/renderer/reader/redux/state/tts";
 import { IMediaOverlayState } from "readium-desktop/renderer/reader/redux/state/mediaOverlay";
 import { IAllowCustomConfigState } from "readium-desktop/renderer/reader/redux/state/allowCustom";
-import { ICacheDocument } from "./resourceCache";
 import { IImageClickState } from "readium-desktop/renderer/reader/redux/state/imageClick";
 import { DockState } from "../dock";
 import { IBookmarkTotalCountState } from "readium-desktop/renderer/reader/redux/state/bookmarkTotalCount";
@@ -31,7 +30,6 @@ import { INoteState } from "./note";
 export interface IReaderRootState extends IRendererCommonRootState {
     reader: IReaderStateReader;
     search: ISearchState;
-    resourceCache: ICacheDocument[];
     mode: ReaderMode;
     annotation: IAnnotationModeState;
     noteTagsIndex: Array<{ tag: string, index: number }>;

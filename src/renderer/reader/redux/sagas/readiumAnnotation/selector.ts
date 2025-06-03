@@ -7,10 +7,8 @@
 
 import * as debug_ from "debug";
 
-import { getDocumentFromICacheDocument } from "readium-desktop/utils/xmlDom";
 import { ICssSelector, IProgressionSelector, ISelector, ITextPositionSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { uniqueCssSelector } from "@r2-navigator-js/electron/renderer/common/cssselector3";
-import { ICacheDocument } from "readium-desktop/common/redux/states/renderer/resourceCache";
 import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import {  describeTextPosition, describeTextQuote } from "readium-desktop/third_party/apache-annotator/dom";
 import { convertRangeInfo } from "@r2-navigator-js/electron/renderer/webview/selection";
@@ -43,7 +41,7 @@ const describeCssSelectorWithTextPosition = async (range: Range, document: Docum
     };
 };
 
-export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: boolean, cacheDocument: ICacheDocument): SagaGenerator<ISelector[]> {
+export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: boolean, _source: string, xmlDom: Document): SagaGenerator<ISelector[]> {
 
     const { locatorExtended } = note;
     if (!locatorExtended) {
@@ -52,7 +50,6 @@ export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: bool
 
     const selector: ISelector<any>[] = [];
 
-    const xmlDom = getDocumentFromICacheDocument(cacheDocument);
     if (!xmlDom) {
         return [];
     }

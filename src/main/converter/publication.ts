@@ -315,6 +315,7 @@ export class PublicationViewConverter {
 
             lcp: document.lcp,
             lcpRightsCopies: document.lcpRightsCopies,
+            lcpRightsPrints: document.lcpRightsPrints,
 
             RDFType: r2Publication.Metadata.RDFType,
 

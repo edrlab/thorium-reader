@@ -43,7 +43,6 @@ import { readerAllowCustomConfigReducer } from "readium-desktop/common/redux/red
 import { creatorReducer } from "readium-desktop/common/redux/reducers/creator";
 import { importAnnotationReducer } from "readium-desktop/renderer/common/redux/reducers/importAnnotation";
 import { tagReducer } from "readium-desktop/common/redux/reducers/tag";
-import { readerResourceCacheReducer } from "./resourceCache";
 import { readerLockReducer } from "./lock";
 import { imageClickReducer } from "./imageClick";
 import { dockReducer } from "readium-desktop/common/redux/reducers/dock";
@@ -151,7 +150,6 @@ export const rootReducer = () => {
             lock: readerLockReducer,
         }),
         search: searchReducer,
-        resourceCache: readerResourceCacheReducer,
         annotation: annotationModeEnableReducer,
         noteTagsIndex: arrayReducer<readerActions.note.addUpdate.TAction | readerActions.note.remove.TAction, undefined, { tag: string, index: number }, { tag: string }>(
             {

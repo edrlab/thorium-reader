@@ -27,10 +27,9 @@ import { IHighlightHandlerState } from "readium-desktop/common/redux/states/rend
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { EDrawType, INoteState, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 import { checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation, readiumAnnotationSelectorFromNote } from "./readiumAnnotation/selector";
-import { getCacheDocumentFromLocator } from "./readiumAnnotation/getCacheDocument";
-import { getResourceCache } from "./resourceCache";
 import { clone } from "ramda";
 import { convertSelectorTargetToLocatorExtended } from "readium-desktop/common/readium/annotation/converter";
+import { getResourceCache } from "readium-desktop/common/redux/sagas/resourceCache";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:annotation");
@@ -64,13 +63,14 @@ export function* noteUpdateExportSelectorFromLocatorExtended(note: INoteState) {
         if ((yield* selectTyped((state: IReaderRootState) => state.reader.lock)) &&
         note.locatorExtended && !checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation(note)) {
 
-            yield* callTyped(getResourceCache);
-            const cacheDocuments = yield* selectTyped((state: IReaderRootState) => state.resourceCache);
-
-            const cacheDocument = getCacheDocumentFromLocator(cacheDocuments, note.locatorExtended.locator?.href);
             const { publicationView, publicationIdentifier } = yield* selectTyped((state: IReaderRootState) => state.reader.info);
             const isLcp = !!publicationView.lcp;
-            const selector = yield* callTyped(readiumAnnotationSelectorFromNote, note, isLcp, cacheDocument);
+
+            const source = note.locatorExtended.locator?.href;
+            const cacheDoc = yield* callTyped(getResourceCache, source);
+            const xmlDom = cacheDoc?.xmlDom;
+
+            const selector = yield* callTyped(readiumAnnotationSelectorFromNote, note, isLcp, source, xmlDom);
 
             debug(`${note.uuid} does not have any readiumAnnotationSelector so let's update the note with this new selectors: ${JSON.stringify(selector, null, 2)}`);
             yield* putTyped(readerActions.note.addUpdate.build(
@@ -94,14 +94,11 @@ export function* noteUpdateLocatorExtendedFromImportSelector(note: INoteState) {
 
             debug("SelectorTarget from noteParserState", JSON.stringify(target, null, 2));
 
-            const { source } = target;
-
-            yield* callTyped(getResourceCache);
-            const cacheDocuments = yield* selectTyped((state: IReaderRootState) => state.resourceCache);
-            const cacheDoc = getCacheDocumentFromLocator(cacheDocuments, source);
+            const cacheDoc = yield* callTyped(getResourceCache, target.source);
+            const xmlDom = cacheDoc?.xmlDom;
 
             const isABookmark = note.group === "bookmark"; // TODO: It is a good method do discriminate bookmark selector ? 
-            const locatorExtended = yield* callTyped(() => convertSelectorTargetToLocatorExtended(target, cacheDoc, undefined, isABookmark));
+            const locatorExtended = yield* callTyped(convertSelectorTargetToLocatorExtended, target, undefined, isABookmark, xmlDom, target.source);
 
             debug(`${note.uuid} doesn't have any locator so let's update the note with the new locator generated: ${JSON.stringify(locatorExtended, null, 2)}`);
             const { publicationIdentifier } = yield* selectTyped((state: IReaderRootState) => state.reader.info);
@@ -356,7 +353,7 @@ function* annotationButtonTrigger(action: readerLocalActionAnnotations.trigger.T
     }
 
     const { locatorExtended } = __selectionInfoGlobal;
-    if (!locatorExtended) {
+    if (!locatorExtended?.selectionInfo) {
         debug("annotationBtnTriggerRequestedAction received");
         // trigger a Toast notification to user
         yield* putTyped(

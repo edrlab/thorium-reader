@@ -5,8 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { TKeyboardShortcutsMapReadOnly } from "readium-desktop/common/keyboard";
+import { TKeyboardShortcutsMap } from "readium-desktop/common/keyboard";
 
 export interface IKeyboardState {
-    shortcuts: TKeyboardShortcutsMapReadOnly;
+    shortcuts: TKeyboardShortcutsMap;
 }
