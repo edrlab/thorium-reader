@@ -223,58 +223,58 @@
         "lastPage": "Son",
         "menu": {
             "aboutBook": "Eser hakkında",
-            "addExtract": "",
-            "goBuyBook": "",
-            "goLoanBook": "",
-            "goRevokeLoanBook": "",
-            "goSubBook": ""
+            "addExtract": "Özeti içe aktar",
+            "goBuyBook": "Eser satın al",
+            "goLoanBook": "Eser ödünç al",
+            "goRevokeLoanBook": "Ödünç alımı sonlandır",
+            "goSubBook": "Abone ol"
         },
         "network": {
-            "error": "",
-            "noInternet": "",
-            "noInternetMessage": "",
-            "reject": "",
-            "timeout": ""
+            "error": "Beslemeye erişim hatası",
+            "noInternet": "İnternet yok",
+            "noInternetMessage": "Ağ kablosunu, modemi, yönlendiriciyi veya wifiyi kontrol etmeyi deneyin",
+            "reject": "Üzgünüm, beklenmedik hata",
+            "timeout": "Bağlantı zaman aşımına uğradı, lütfen daha sonra tekrar deneyin"
         },
-        "next": "",
-        "previous": "",
-        "shelf": "",
+        "next": "Sonraki",
+        "previous": "Önceki",
+        "shelf": "Raf",
         "updateForm": {
-            "name": "",
-            "title": "",
-            "updateButton": "",
-            "url": ""
+            "name": "İsim",
+            "title": "OPDS beslemesini düzenle",
+            "updateButton": "Düzenle",
+            "url": "Bağlantı:"
         },
-        "whatIsOpds": ""
+        "whatIsOpds": "OPDS nedir?"
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": ""
+            "accessibility-summary-title": "Erişilebilirlik özeti"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ARIA satırları içerir",
+                "descriptive": "İçerik, düzeni en iyi hale getirmek ve gezinmeyi kolaylaştırmak için ARIA satırlarıyla iyileştirilmiştir"
             },
             "additional-accessibility-information-audio-descriptions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sesli açıklamalar",
+                "descriptive": "Sesli açıklamalar"
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Braille",
+                "descriptive": "Braille"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ruby biçiminde tam açıklamalar",
+                "descriptive": "Ruby biçiminde tam açıklamalar"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Önplan ve arkaplan sesleri arasında yüksek karşıtlık",
+                "descriptive": "Önplan ve arkaplan sesleri arasında yüksek karşıtlık"
             },
             "additional-accessibility-information-high-contrast-between-text-and-background": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Önplan metni ve arkaplan arasında yüksek karşıtlık",
+                "descriptive": "Önplan metni ve arkaplan arasında yüksek karşıtlık"
             },
             "additional-accessibility-information-large-print": {
                 "compact": "",
