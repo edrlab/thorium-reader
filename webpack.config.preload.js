@@ -1,4 +1,6 @@
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const StatoscopeWebpackPlugin = require('@statoscope/webpack-plugin').default;
+
 const TerserPlugin = require("terser-webpack-plugin");
 
 var fs = require("fs");
@@ -30,16 +32,6 @@ let config = Object.assign(
         },
 
         plugins: [
-            new BundleAnalyzerPlugin({
-                analyzerMode: "disabled",
-                defaultSizes: "stat", // "parsed"
-                openAnalyzer: false,
-                generateStatsFile: true,
-                statsFilename: "stats_renderer-preload.json",
-                statsOptions: null,
-
-                excludeAssets: null,
-            }),
         ],
     },
 );
@@ -64,5 +56,32 @@ config.optimization = {
 // {
 //     minimize: false,
 // };
+
+if (process.env.ENABLE_WEBPACK_BUNDLE_STATS)
+config.plugins.push(
+new StatoscopeWebpackPlugin({
+    saveReportTo: './dist/STATOSCOPE_[name].html',
+    // saveStatsTo: './dist/STATOSCOPE_[name].json',
+    saveStatsTo: undefined,
+    normalizeStats: false,
+    saveOnlyStats: false,
+    disableReportCompression: true,
+    statsOptions: {},
+    additionalStats: [],
+    watchMode: false,
+    name: 'renderer-preload',
+    open: false,
+    compressor: false,
+}),
+new BundleAnalyzerPlugin({
+    analyzerMode: "disabled",
+    defaultSizes: "stat", // "parsed"
+    openAnalyzer: false,
+    generateStatsFile: true,
+    statsFilename: "stats_renderer-preload.json",
+    statsOptions: null,
+
+    excludeAssets: null,
+}));
 
 module.exports = config;

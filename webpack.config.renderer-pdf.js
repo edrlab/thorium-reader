@@ -1,4 +1,6 @@
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const StatoscopeWebpackPlugin = require('@statoscope/webpack-plugin').default;
+
 const TerserPlugin = require("terser-webpack-plugin");
 
 const path = require("path");
@@ -132,7 +134,7 @@ let config = Object.assign(
                         {
                             loader: path.resolve("./scripts/webpack-loader-scope-checker.js"),
                             options: {
-                                forbid: "library",
+                                forbids: ["src/renderer/library", "src/main", "src/renderer/reader/components", "src/renderer/reader/redux", "src/common", "src/resources", "src/typings", "src/renderer/reader/common", "src/renderer/common"],
                             },
                         },
                     ],
@@ -168,16 +170,6 @@ let config = Object.assign(
         },
 
         plugins: [
-            new BundleAnalyzerPlugin({
-                analyzerMode: "disabled",
-                defaultSizes: "stat", // "parsed"
-                openAnalyzer: false,
-                generateStatsFile: true,
-                statsFilename: "stats_renderer-pdf.json",
-                statsOptions: null,
-
-                excludeAssets: null,
-            }),
             preprocessorDirectives.definePlugin,
         ],
     },
@@ -222,5 +214,32 @@ if (nodeEnv !== "production") {
     config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^devtron$/ }));
     config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^@axe-core\/react$/ }));
 }
+
+if (process.env.ENABLE_WEBPACK_BUNDLE_STATS)
+config.plugins.push(
+new StatoscopeWebpackPlugin({
+    saveReportTo: './dist/STATOSCOPE_[name].html',
+    // saveStatsTo: './dist/STATOSCOPE_[name].json',
+    saveStatsTo: undefined,
+    normalizeStats: false,
+    saveOnlyStats: false,
+    disableReportCompression: true,
+    statsOptions: {},
+    additionalStats: [],
+    watchMode: false,
+    name: 'renderer-pdf',
+    open: false,
+    compressor: false,
+}),
+new BundleAnalyzerPlugin({
+    analyzerMode: "disabled",
+    defaultSizes: "stat", // "parsed"
+    openAnalyzer: false,
+    generateStatsFile: true,
+    statsFilename: "stats_renderer-pdf.json",
+    statsOptions: null,
+
+    excludeAssets: null,
+}));
 
 module.exports = config;
