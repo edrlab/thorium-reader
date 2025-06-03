@@ -244,6 +244,7 @@ interface IState {
 
     pdfPlayerToc: TToc | undefined;
     pdfPlayerNumberOfPages: number | undefined;
+    pdfThumbnailImageCacheArray: string[];
 
     // openedSectionSettings: number | undefined;
     // openedSectionMenu: string;
@@ -251,6 +252,8 @@ interface IState {
 
     historyCanGoBack: boolean;
     historyCanGoForward: boolean;
+
+    printDialogOpen: boolean;
 }
 
 class Reader extends React.Component<IProps, IState> {
@@ -338,6 +341,7 @@ class Reader extends React.Component<IProps, IState> {
 
             pdfPlayerToc: undefined,
             pdfPlayerNumberOfPages: undefined,
+            pdfThumbnailImageCacheArray: [],
 
             // openedSectionSettings: undefined,
             // openedSectionMenu: "tab-toc",
@@ -350,6 +354,8 @@ class Reader extends React.Component<IProps, IState> {
             historyCanGoForward: false,
 
             // doFocus: 1,
+
+            printDialogOpen: false,
         };
 
         this.handleTTSPlay = this.handleTTSPlay.bind(this);
@@ -498,42 +504,32 @@ class Reader extends React.Component<IProps, IState> {
 
             this.loadPublicationIntoViewport();
 
-            createOrGetPdfEventBus().subscribe("page",
-                (pageIndex) => {
-                    // const numberOfPages = this.props.r2Publication?.Metadata?.NumberOfPages;
-                    const locatorExtended: LocatorExtended = {
-                        audioPlaybackInfo: undefined,
-                        paginationInfo: undefined,
-                        selectionInfo: undefined,
-                        selectionIsNew: undefined,
-                        docInfo: undefined,
-                        epubPage: undefined,
-                        epubPageID: undefined,
-                        headings: undefined,
-                        secondWebViewHref: undefined,
-                        followingElementIDs: undefined,
-                        locator: {
-                            href: pageIndex.toString(),
-                            locations: {
-                                position: parseInt(pageIndex, 10),
-                                // progression: numberOfPages ? (pageIndex / numberOfPages) : 0,
-                                progression: 0,
-                            },
+            createOrGetPdfEventBus().subscribe("savePreferences", ({ page, scrollTop }) => {
+                const locatorExtended: LocatorExtended = {
+                    audioPlaybackInfo: undefined,
+                    paginationInfo: undefined,
+                    selectionInfo: undefined,
+                    selectionIsNew: undefined,
+                    docInfo: undefined,
+                    epubPage: undefined,
+                    epubPageID: undefined,
+                    headings: undefined,
+                    secondWebViewHref: undefined,
+                    followingElementIDs: undefined,
+                    locator: {
+                        href: `${page}`,
+                        locations: {
+                            position: scrollTop,
+                            progression: 0,
                         },
-                    };
+                    },
+                };
 
-                    console.log("pdf pageChange", pageIndex);
-
-                    this.handleReadingLocationChange(locatorExtended);
-                });
+                this.handleReadingLocationChange(locatorExtended);
+            });
 
             const page = this.props.locator?.locator?.href || "";
             console.log("pdf page index", page);
-
-            createOrGetPdfEventBus().subscribe("ready", () => {
-                createOrGetPdfEventBus().dispatch("page", page);
-            });
-
 
         } else if (this.props.isDivina) {
 
@@ -887,6 +883,7 @@ class Reader extends React.Component<IProps, IState> {
                     {!this.state.zenMode ?
                 <ReaderHeader
                         shortcutEnable={this.state.shortcutEnable}
+                        setShortcutEnable={(value: boolean) => this.setState({ "shortcutEnable": value })}
                         infoOpen={this.props.infoOpen}
                         // menuOpen={this.props.menuOpen}
                         // settingsOpen={this.state.settingsOpen}
@@ -927,6 +924,11 @@ class Reader extends React.Component<IProps, IState> {
                         showSearchResults={this.showSearchResults}
                         disableRTLFlip={this.props.disableRTLFlip}
                         isRTLFlip={this.isRTLFlip}
+
+                        pdfPlayerNumberOfPages={this.state.pdfPlayerNumberOfPages}
+                        pdfThumbnailImageCacheArray={this.state.pdfThumbnailImageCacheArray}
+                        pdfPrintOpen={this.state.printDialogOpen}
+                        setPdfPrintOpen={(value: boolean) => this.setState({ printDialogOpen: value })}
                     />
                     :
                     <div className={stylesReader.exitZen_container}>
@@ -1296,6 +1298,10 @@ class Reader extends React.Component<IProps, IState> {
             true, // listen for key up (not key down)
             this.props.keyboardShortcuts.AnnotationsCreateQuick,
             this.onKeyboardQuickAnnotation);
+        registerKeyboardListener(
+            true, // listen for key up (not key down)
+            this.props.keyboardShortcuts.Print,
+            this.onKeyboardPrint);
     }
 
     private unregisterAllKeyboardListeners() {
@@ -1334,6 +1340,7 @@ class Reader extends React.Component<IProps, IState> {
         unregisterKeyboardListener(this.onKeyboardAnnotationMargin);
         unregisterKeyboardListener(this.onKeyboardAnnotation);
         unregisterKeyboardListener(this.onKeyboardQuickAnnotation);
+        unregisterKeyboardListener(this.onKeyboardPrint);
     }
 
     private onKeyboardFixedLayoutZoomReset() {
@@ -1946,7 +1953,7 @@ class Reader extends React.Component<IProps, IState> {
     private onKeyboardNavigationToBegin = () => {
 
         if (this.props.isPdf) {
-            createOrGetPdfEventBus().dispatch("page", "1");
+            createOrGetPdfEventBus().dispatch("firstpage");
         } else if (this.props.isDivina) {
             this.currentDivinaPlayer.goToPageWithIndex(0);
         } else {
@@ -1967,8 +1974,7 @@ class Reader extends React.Component<IProps, IState> {
 
         if (this.props.isPdf) {
             if (this.state.pdfPlayerNumberOfPages) {
-                createOrGetPdfEventBus().dispatch("page",
-                    this.state.pdfPlayerNumberOfPages.toString());
+                createOrGetPdfEventBus().dispatch("lastpage");
             }
         } else if (this.props.isDivina) {
             // TODO: Divina total number of pages? (last page index (number))
@@ -2015,6 +2021,11 @@ class Reader extends React.Component<IProps, IState> {
         }
     };
 
+    private onKeyboardPrint = () => {
+        if (this.props.isPdf) {
+            this.setState({ printDialogOpen: true });
+        }
+    };
 
     // always triggered by window.history.back/forward/go()
     // not triggered by history.pushState() and history.replaceState()
@@ -2143,16 +2154,30 @@ class Reader extends React.Component<IProps, IState> {
                 console.log("can't found pdf link");
             }
 
-            console.log("pdf url", pdfUrl);
+
+            const page = this.props.locator.locator.href || "1";
+            const position = this.props.locator.locator.locations.position || undefined;
+            const zoom = "page-fit"; // scale
+            // const column = ""; // TODO: !?
+
+            console.log("pdf url", pdfUrl, "with page", page);
 
             pdfMount(
                 pdfUrl,
                 publicationViewport,
+                { page, scrollTop: position, zoom },
             );
 
             createOrGetPdfEventBus().subscribe("copy", (txt) => clipboardInterceptor({ txt, locator: undefined }));
             createOrGetPdfEventBus().subscribe("toc", (toc) => this.setState({ pdfPlayerToc: toc }));
-            createOrGetPdfEventBus().subscribe("numberofpages", (pages) => this.setState({ pdfPlayerNumberOfPages: pages }));
+            createOrGetPdfEventBus().subscribe("numberofpages", (pages) => this.setState({ pdfPlayerNumberOfPages: pages, pdfThumbnailImageCacheArray: Array.from({ length: pages }, () => "") }));
+            createOrGetPdfEventBus().subscribe("thumbnailRendered", (pageNumber, imgSrc) => {
+                this.setState(({ pdfThumbnailImageCacheArray }) => {
+                    const pdfThumbnailImageCacheArrayClone = [...pdfThumbnailImageCacheArray];
+                    pdfThumbnailImageCacheArrayClone[pageNumber - 1] = imgSrc || "";
+                    return { pdfThumbnailImageCacheArray: pdfThumbnailImageCacheArrayClone };
+                });
+            });
 
             createOrGetPdfEventBus().subscribe("keydown", (payload) => {
                 keyDownEventHandler(payload, payload.elementName, payload.elementAttributes);
@@ -2761,9 +2786,12 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         if (this.props.isPdf) {
-            const index = locator?.href || "";
-            if (index) {
-                createOrGetPdfEventBus().dispatch("page", index);
+            const pageNumberString = locator?.href || "";
+            if (pageNumberString) {
+                const pageNumber = parseInt(pageNumberString, 10);
+                if (pageNumber) {
+                    createOrGetPdfEventBus().dispatch("pageNumber", pageNumber);
+                }
             }
         } else if (this.props.isDivina) {
             // console.log(JSON.stringify(locator, null, 4));
@@ -2806,7 +2834,7 @@ class Reader extends React.Component<IProps, IState> {
 
             const index = url;
             if (index) {
-                createOrGetPdfEventBus().dispatch("page", index);
+                createOrGetPdfEventBus().dispatch("pageLabel", index);
             }
 
         } else if (this.props.isDivina) {

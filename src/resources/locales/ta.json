@@ -20,6 +20,7 @@
             "copy": "நகலெடு",
             "cut": "வெட்டு",
             "paste": "ஒட்டு",
+            "print": "",
             "redo": "மீண்டும்செய்",
             "selectAll": "அனைத்தையும் தெரிவுசெய்",
             "title": "தொகு",
@@ -667,6 +668,12 @@
             "fit": "பொருத்தம்"
         },
         "goToContent": "உள்ளடக்கத்திற்குச் செல்லுங்கள்",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "சிறுகுறிப்புகள்",
             "bookmarks": "புக்மார்க்குகள்",
@@ -717,6 +724,7 @@
             "openTableOfContentsTitle": "வானோடல்",
             "page": "பக்கம்",
             "pdfscalemode": "பக்க பொருத்தம் அல்லது அகலம்",
+            "print": "",
             "settingsTitle": "அமைப்புகள்"
         },
         "notes": {
@@ -740,6 +748,18 @@
                 "submit": "கண்டுபிடி"
             },
             "searchTitle": "தேடல்:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
         },
         "settings": {
             "column": {

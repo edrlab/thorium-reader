@@ -11,397 +11,463 @@ import { sortObject } from "@r2-utils-js/_utils/JsonUtils";
 
 export const DEBUG_KEYBOARD = false;
 
-export interface TKeyboardShortcut {
-    alt?: boolean;
-    control?: boolean;
-    shift?: boolean;
-    meta?: boolean;
-
+export interface TKeyboardShortcutModifiers {
+    alt: boolean;
+    control: boolean;
+    shift: boolean;
+    meta: boolean;
+}
+export interface TKeyboardShortcutFull extends TKeyboardShortcutModifiers {
     key: string;
 }
-// should not be exported publicly,
-// but needed here for TypeScript typing,
-// and elsewhere for the actual data :(
-// the process.platform usage is really only relevant in the main Electron process
-// as the renderer process actually shared keyboard state
-const _defaults_ = Object.freeze({
-    // help: Object.freeze<TKeyboardShortcut>({
+
+export interface TKeyboardShortcut extends Partial<TKeyboardShortcutModifiers> {
+    key: string;
+}
+// export type TKeyboardShortcutReadOnly = Readonly<TKeyboardShortcut>;
+
+const _defaults_ = {
+    // help: {
+    //     meta: false,
     //     alt: false,
     //     control: true,
     //     shift: false,
     //     key: "F1",
-    // }),
-    OpenReaderInfo: Object.freeze<TKeyboardShortcut>({
+    // } satisfies TKeyboardShortcutFull,
+    OpenReaderInfo: {
+        meta: false,
         alt: false,
         control: true,
         shift: false,
         key: "KeyI",
-    }),
-    OpenReaderInfoWhereAmI: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    OpenReaderInfoWhereAmI: {
+        meta: false,
         alt: false,
         control: true,
         shift: true,
         key: "KeyI",
-    }),
-    SpeakReaderInfoWhereAmI: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    SpeakReaderInfoWhereAmI: {
+        meta: false,
         alt: false,
         control: true,
         shift: true,
         key: "KeyK",
-    }),
+    } satisfies TKeyboardShortcutFull,
 
-    FocusMain: Object.freeze<TKeyboardShortcut>({
+    FocusMain: {
+        meta: false,
         alt: false,
         control: true,
         shift: false,
         key: "F10",
-    }),
-    FocusMainDeep: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    FocusMainDeep: {
+        meta: false,
         alt: false,
         control: true,
         shift: true,
         key: "F10",
-    }),
+    } satisfies TKeyboardShortcutFull,
 
-    FocusToolbar: Object.freeze<TKeyboardShortcut>({
+    FocusToolbar: {
+        meta: false,
         alt: false,
         control: true,
         shift: false,
         key: "KeyT",
-    }),
-    // focus_cycle_landmarks: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    // focus_cycle_landmarks: {
+    //     meta: false,
     //     alt: false,
     //     control: true,
     //     shift: false,
     //     key: "F6",
-    // }),
+    // } satisfies TKeyboardShortcutFull,
 
-    FocusReaderNavigation: Object.freeze<TKeyboardShortcut>({
+    FocusReaderNavigation: {
+        meta: false,
         alt: false,
         control: true,
         shift: false,
         key: "KeyN",
-    }),
-    FocusReaderNavigationTOC: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    FocusReaderNavigationTOC: {
+        meta: false,
         alt: false,
         control: true,
         shift: true,
         key: "KeyN",
-    }),
-    FocusReaderNavigationBookmarks: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    FocusReaderNavigationBookmarks: {
+        meta: false,
         alt: false,
         control: true,
         shift: true,
         key: "KeyB",
-    }),
-    FocusReaderNavigationAnnotations: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    FocusReaderNavigationAnnotations: {
+        meta: false,
         alt: false,
         control: true,
         shift: true,
         key: "KeyA",
-    }),
-    FocusReaderNavigationSearch: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    FocusReaderNavigationSearch: {
+        meta: false,
         alt: false,
         control: true,
         shift: true,
         key: "KeyF",
-    }),
-    FocusReaderGotoPage: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    FocusReaderGotoPage: {
+        meta: false,
         alt: false,
         control: true,
         shift: true,
         key: "KeyP",
-    }),
-    FocusReaderSettings: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    FocusReaderSettings: {
+        meta: false,
         alt: false,
         control: true,
         shift: false,
         key: "KeyS",
-    }),
+    } satisfies TKeyboardShortcutFull,
 
-    ToggleBookmark: Object.freeze<TKeyboardShortcut>({
+    ToggleBookmark: {
+        meta: false,
         alt: false,
         control: true,
         shift: false,
         key: "KeyB",
-    }),
+    } satisfies TKeyboardShortcutFull,
 
-    // AddBookmarkWithLabelAlt: Object.freeze<TKeyboardShortcut>({
+    // AddBookmarkWithLabelAlt: {
+    //     meta: false,
     //     alt: true,
     //     control: true,
     //     shift: true,
     //     key: "KeyB",
-    // }),
-    AddBookmarkWithLabel: Object.freeze<TKeyboardShortcut>({
+    // } satisfies TKeyboardShortcutFull,
+    AddBookmarkWithLabel: {
+        meta: false,
         alt: true,
         control: false,
         shift: true,
         key: "KeyB",
-    }),
+    } satisfies TKeyboardShortcutFull,
 
-    ToggleReaderFullscreen: Object.freeze<TKeyboardShortcut>({
+    ToggleReaderFullscreen: {
+        meta: false,
         alt: false,
         control: true,
         shift: false,
         key: "F11",
-    }),
+    } satisfies TKeyboardShortcutFull,
 
-    FocusSearch: Object.freeze<TKeyboardShortcut>({
+    FocusSearch: {
+        meta: false,
         alt: false,
         control: true,
         shift: false,
         key: "KeyF",
-    }),
-    SearchNext: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    SearchNext: {
+        meta: false,
         alt: false,
         control: false,
         shift: false,
         key: "F3",
-    }),
-    SearchPrevious: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    SearchPrevious: {
+        meta: false,
         alt: false,
         control: false,
         shift: true,
         key: "F3",
-    }),
-    SearchNextAlt: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    SearchNextAlt: {
+        meta: false,
         alt: false,
         control: true,
         shift: false,
         key: "KeyG",
-    }),
-    SearchPreviousAlt: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    SearchPreviousAlt: {
+        meta: false,
         alt: false,
         control: true,
         shift: true,
         key: "KeyG",
-    }),
+    } satisfies TKeyboardShortcutFull,
 
-    NavigatePreviousOPDSPage: Object.freeze<TKeyboardShortcut>({
+    NavigatePreviousOPDSPage: {
+        meta: false,
         alt: false,
         control: true,
         shift: true,
         key: "ArrowLeft",
-    }),
-    NavigateNextOPDSPage: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    NavigateNextOPDSPage: {
+        meta: false,
         alt: false,
         control: true,
         shift: true,
         key: "ArrowRight",
-    }),
+    } satisfies TKeyboardShortcutFull,
 
-    NavigatePreviousOPDSPageAlt: Object.freeze<TKeyboardShortcut>({
+    NavigatePreviousOPDSPageAlt: {
+        meta: false,
         alt: false,
         control: true,
         shift: true,
         key: "Comma",
-    }),
-    NavigateNextOPDSPageAlt: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    NavigateNextOPDSPageAlt: {
+        meta: false,
         alt: false,
         control: true,
         shift: true,
         key: "Period",
-    }),
+    } satisfies TKeyboardShortcutFull,
 
-    NavigatePreviousLibraryPage: Object.freeze<TKeyboardShortcut>({
+    NavigatePreviousLibraryPage: {
+        meta: false,
         alt: false,
         control: true,
         shift: true,
         key: "ArrowLeft",
-    }),
-    NavigateNextLibraryPage: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    NavigateNextLibraryPage: {
+        meta: false,
         alt: false,
         control: true,
         shift: true,
         key: "ArrowRight",
-    }),
+    } satisfies TKeyboardShortcutFull,
 
-    NavigatePreviousLibraryPageAlt: Object.freeze<TKeyboardShortcut>({
+    NavigatePreviousLibraryPageAlt: {
+        meta: false,
         alt: false,
         control: true,
         shift: true,
         key: "Comma",
-    }),
-    NavigateNextLibraryPageAlt: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    NavigateNextLibraryPageAlt: {
+        meta: false,
         alt: false,
         control: true,
         shift: true,
         key: "Period",
-    }),
+    } satisfies TKeyboardShortcutFull,
 
-    CloseReader: Object.freeze<TKeyboardShortcut>({
+    CloseReader: {
+        meta: false,
         alt: false,
         control: true,
         shift: false,
         key: "KeyW",
-    }),
+    } satisfies TKeyboardShortcutFull,
 
-    NavigatePreviousHistory: Object.freeze<TKeyboardShortcut>({
+    NavigatePreviousHistory: {
+        meta: false,
         alt: false,
         control: true,
         shift: false,
         key: "Backspace",
-    }),
-    NavigateNextHistory: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    NavigateNextHistory: {
+        meta: false,
         alt: false,
         control: true,
         shift: true,
         key: "Backspace",
-    }),
+    } satisfies TKeyboardShortcutFull,
 
-    NavigatePreviousPage: Object.freeze<TKeyboardShortcut>({
+    NavigatePreviousPage: {
+        meta: false,
         alt: false,
         control: false,
         shift: false,
         key: "ArrowLeft",
-    }),
-    NavigateNextPage: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    NavigateNextPage: {
+        meta: false,
         alt: false,
         control: false,
         shift: false,
         key: "ArrowRight",
-    }),
+    } satisfies TKeyboardShortcutFull,
 
-    NavigatePreviousPageAlt: Object.freeze<TKeyboardShortcut>({
+    NavigatePreviousPageAlt: {
+        meta: false,
         alt: false,
         control: true,
         shift: false,
         key: "Comma",
-    }),
-    NavigateNextPageAlt: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    NavigateNextPageAlt: {
+        meta: false,
         alt: false,
         control: true,
         shift: false,
         key: "Period",
-    }),
+    } satisfies TKeyboardShortcutFull,
 
-    NavigatePreviousChapter: Object.freeze<TKeyboardShortcut>({
+    NavigatePreviousChapter: {
+        meta: false,
         alt: process && process.platform !== "darwin",
         control: true,
         shift: true,
         key: "ArrowLeft",
-    }),
-    NavigateNextChapter: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    NavigateNextChapter: {
+        meta: false,
         alt: process && process.platform !== "darwin",
         control: true,
         shift: true,
         key: "ArrowRight",
-    }),
+    } satisfies TKeyboardShortcutFull,
 
-    NavigatePreviousChapterAlt: Object.freeze<TKeyboardShortcut>({
+    NavigatePreviousChapterAlt: {
+        meta: false,
         alt: false,
         control: true,
         shift: false,
         key: "PageUp",
-    }),
-    NavigateNextChapterAlt: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    NavigateNextChapterAlt: {
+        meta: false,
         alt: false,
         control: true,
         shift: false,
         key: "PageDown",
-    }),
+    } satisfies TKeyboardShortcutFull,
 
-    NavigateToBegin: Object.freeze<TKeyboardShortcut>({
+    NavigateToBegin: {
+        meta: false,
         alt: false,
         control: true,
         shift: false,
         key: "Home",
-    }),
-    NavigateToEnd: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    NavigateToEnd: {
+        meta: false,
         alt: false,
         control: true,
         shift: false,
         key: "End",
-    }),
+    } satisfies TKeyboardShortcutFull,
 
-    AudioPlayPause: Object.freeze<TKeyboardShortcut>({
+    AudioPlayPause: {
+        meta: false,
         alt: false,
         control: true,
         shift: false,
         key: "Digit2",
-    }),
-    AudioPrevious: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    AudioPrevious: {
+        meta: false,
         alt: false,
         control: true,
         shift: false,
         key: "Digit1",
-    }),
-    AudioNext: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    AudioNext: {
+        meta: false,
         alt: false,
         control: true,
         shift: false,
         key: "Digit3",
-    }),
-    AudioPreviousAlt: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    AudioPreviousAlt: {
+        meta: false,
         alt: true,
         control: true,
         shift: true,
         key: "Digit1",
-    }),
-    AudioNextAlt: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    AudioNextAlt: {
+        meta: false,
         alt: true,
         control: true,
         shift: true,
         key: "Digit3",
-    }),
-    AudioStop: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    AudioStop: {
+        meta: false,
         alt: false,
         control: true,
         shift: false,
         key: "Digit4",
-    }),
-    FXLZoomReset: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    FXLZoomReset: {
+        meta: false,
         alt: false,
         control: true,
         shift: false,
         key: "Digit0",
-    }),
-    FXLZoomOut: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    FXLZoomOut: {
+        meta: false,
         alt: false,
         control: true,
         shift: false,
         key: "Digit8",
-    }),
-    FXLZoomIn: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    FXLZoomIn: {
+        meta: false,
         alt: false,
         control: true,
         shift: false,
         key: "Digit9",
-    }),
+    } satisfies TKeyboardShortcutFull,
 
-    AnnotationsToggleMargin: Object.freeze<TKeyboardShortcut>({
+    AnnotationsToggleMargin: {
+        meta: false,
         alt: true,
         control: true,
         shift: true,
         key: "KeyZ",
-    }),
-    // AnnotationsCreateAlt: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    // AnnotationsCreateAlt: {
+    //     meta: false,
     //     alt: true,
     //     control: true,
     //     shift: true,
     //     key: "KeyA",
-    // }),
-    AnnotationsCreate: Object.freeze<TKeyboardShortcut>({
+    // } satisfies TKeyboardShortcutFull,
+    AnnotationsCreate: {
+        meta: false,
         alt: true,
         control: false,
         shift: true,
         key: "KeyA",
-    }),
-    AnnotationsCreateQuick: Object.freeze<TKeyboardShortcut>({
+    } satisfies TKeyboardShortcutFull,
+    AnnotationsCreateQuick: {
+        meta: false,
         alt: true,
         control: false,
         shift: true,
         key: "KeyQ",
-    }),
-});
-export const _defaults = sortObject(_defaults_);
+    } satisfies TKeyboardShortcutFull,
+    Print: {
+        meta: false,
+        alt: false,
+        control: true,
+        shift: false,
+        key: "KeyP",
+    } satisfies TKeyboardShortcutFull,
+} as const;
+export type TKeyboardShortcutsMapDEFAULT = typeof _defaults_;
+export const defaultKeyboardShortcuts = sortObject(_defaults_) as TKeyboardShortcutsMapDEFAULT;
 
-export type TKeyboardShortcutsMapReadOnly = typeof _defaults_;
-export type TKeyboardShortcutId = keyof TKeyboardShortcutsMapReadOnly;
+export type TKeyboardShortcutId = keyof TKeyboardShortcutsMapDEFAULT;
 export type TKeyboardShortcutsMap = {
     [id in TKeyboardShortcutId]: TKeyboardShortcut;
 };
-export type TKeyboardShortcutReadOnly = Readonly<TKeyboardShortcut>;
 
 // IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN
 export interface IKeyboardEvent {
@@ -422,7 +488,7 @@ export interface IKeyboardEvent {
 //
 // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
 export function keyboardShortcutMatch(ks: TKeyboardShortcut, e: IKeyboardEvent): boolean {
-    const match = ks.key === e.code // not e.key! (physical code, instead of logical key)
+    const match = ks.key === e.code // not e.key! (physical code / keycap position in QWERTY, instead of logical key generated by keystroke(s))
         && (ks.alt && e.altKey || !ks.alt && !e.altKey)
         && (ks.control && e.ctrlKey || !ks.control && !e.ctrlKey)
         && (ks.meta && e.metaKey || !ks.meta && !e.metaKey)
@@ -442,16 +508,27 @@ function keyboardShortcutMatch_(ks1: TKeyboardShortcut, ks2: TKeyboardShortcut):
         && (ks1.shift && ks2.shift || !ks1.shift && !ks2.shift);
 }
 export function keyboardShortcutsMatch(
-    kss1: TKeyboardShortcutsMapReadOnly,
-    kss2: TKeyboardShortcutsMapReadOnly): boolean {
+    kss1: TKeyboardShortcutsMap,
+    kss2: TKeyboardShortcutsMap): boolean {
 
     const ids = ObjectKeys(kss1);
     for (const id of ids) {
         const ks1 = kss1[id];
         const ks2 = kss2[id];
-        if (!keyboardShortcutMatch_(ks1, ks2)) {
+        if (!ks2 || !keyboardShortcutMatch_(ks1, ks2)) {
             return false;
         }
     }
+
+    // NOT NEEDED as usage of keyboardShortcutsMatch() is in React components to diff the before/after props that carry the state with identical JSON keys
+    // const ids2 = ObjectKeys(kss2);
+    // for (const id2 of ids2) {
+    //     const ks1 = kss1[id2];
+    //     const ks2 = kss2[id2];
+    //     if (!ks1 || !keyboardShortcutMatch_(ks1, ks2)) {
+    //         return false;
+    //     }
+    // }
+
     return true;
 }

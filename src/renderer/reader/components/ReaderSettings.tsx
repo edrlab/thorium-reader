@@ -252,7 +252,7 @@ export const FontSize = () => {
         } else {
             newStepValue = Number(currentSliderValue.replace(/%/g, "")) + step;
         }
-        const clampedValue = Math.min(Math.max(newStepValue, 75), 250);
+        const clampedValue = Math.min(Math.max(newStepValue, 75), 400);
         const valueToString = clampedValue.toFixed(1);
         setCurrentSliderValue(valueToString);
         set({ fontSize: valueToString + "%" });
@@ -275,7 +275,7 @@ export const FontSize = () => {
                     type="range"
                     aria-labelledby="label_fontSize"
                     min={75}
-                    max={250}
+                    max={400}
                     step={12.5}
                     aria-valuemin={0}
                     value={currentSliderValue}

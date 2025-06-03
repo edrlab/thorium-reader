@@ -10,12 +10,12 @@ import * as debug_ from "debug";
 import { clone, flatten } from "ramda";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { ISearchResult, search } from "readium-desktop/utils/search/search";
+import { search } from "readium-desktop/renderer/reader/redux/sagas/search/search";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { all, call, cancel, join, put, take } from "redux-saga/effects";
+import { all, call, cancel, put, take } from "redux-saga/effects";
 import {
-    all as allTyped, delay as delayTyped, fork as forkTyped, select as selectTyped, takeEvery as takeEveryTyped,
-    takeLatest as takeLatestTyped,
+    all as allTyped, delay as delayTyped, select as selectTyped, takeEvery as takeEveryTyped,
+    takeLatest as takeLatestTyped, call as callTyped,
 } from "typed-redux-saga/macro";
 
 import { IRangeInfo } from "@r2-navigator-js/electron/common/selection";
@@ -27,7 +27,8 @@ import { readerLocalActionHighlights, readerLocalActionSearch } from "../actions
 import { IHighlightHandlerState } from "readium-desktop/common/redux/states/renderer/highlight";
 
 import debounce from "debounce";
-import { getResourceCache } from "./resourceCache";
+import { getResourceCacheAll } from "readium-desktop/common/redux/sagas/resourceCache";
+import { ISearchResult } from "readium-desktop/common/redux/states/renderer/search";
 
 const handleLinkLocatorDebounced = debounce(handleLinkLocator, 200);
 
@@ -68,19 +69,18 @@ function createLocatorLink(href: string, rangeInfo: IRangeInfo): R2Locator {
 // const searchFct = async (..._arg: any) =>
 //     new Promise<ISearchResult[]>((resolve) => setTimeout(() => resolve([]), 1000));
 
-const searchFct = search;
-
 function* searchRequest(action: readerLocalActionSearch.request.TAction) {
 
     yield call(clearSearch);
 
     const text = action.payload.textSearch;
-    const cacheFromState = yield* selectTyped((state: IReaderRootState) => state.resourceCache);
 
-    const searchMap = cacheFromState.map(
+    const cacheDocs = yield* callTyped(getResourceCacheAll);
+
+    const searchMap = cacheDocs.map(
         (v) =>
             call(async () => {
-                return await searchFct(text, v);
+                return await search(text, v);
             }),
     );
 
@@ -194,12 +194,8 @@ function* searchFocus(action: readerLocalActionSearch.focus.TAction) {
 
 function* searchEnable(_action: readerLocalActionSearch.enable.TAction) {
 
-    const taskRequest = yield* forkTyped(getResourceCache);
-
     const taskSearch = yield* takeLatestTyped(readerLocalActionSearch.request.ID,
         function*(action: readerLocalActionSearch.request.TAction) {
-            yield join(taskRequest);
-
             yield* delayTyped(100); // refresh load props in Search.tsx (Caused by React18 !?, the load spinner doesn't rotate now !)
 
             yield call(searchRequest, action);
@@ -213,7 +209,6 @@ function* searchEnable(_action: readerLocalActionSearch.enable.TAction) {
     // wait the search cancellation
     yield take(readerLocalActionSearch.cancel.ID);
 
-    yield cancel(taskRequest);
     yield cancel(taskSearch);
     yield cancel(taskFocus);
     yield cancel(taskFound);

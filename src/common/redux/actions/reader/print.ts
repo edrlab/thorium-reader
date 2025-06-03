@@ -1,3 +1,4 @@
+
 // ==LICENSE-BEGIN==
 // Copyright 2017 European Digital Reading Lab. All rights reserved.
 // Licensed to the Readium Foundation under one or more contributor license agreements.
@@ -5,24 +6,27 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action } from "readium-desktop/common/models/redux";
-import { ICacheDocument } from "readium-desktop/common/redux/states/renderer/resourceCache";
+import { ActionWithDestination } from "readium-desktop/common/models/sync";
 
-export const ID = "READER_RESOURCE_SET_CACHE";
+export const ID = "READER_PRINT";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Payload {
-    searchDocument: ICacheDocument[];
+    publicationIdentifier: string,
+    pageRange: number[],
 }
 
-export function build(data: ICacheDocument[]):
-    Action<typeof ID, Payload> {
+export function build(publicationIdentifier: string, pageRange: number[], winId?: string):
+    ActionWithDestination<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
-            searchDocument: data,
+            publicationIdentifier,
+            pageRange,
         },
+        destination: winId ? {
+            identifier: winId,
+        } : undefined,
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator

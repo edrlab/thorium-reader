@@ -20,6 +20,7 @@
             "copy": "Kopier",
             "cut": "Klip",
             "paste": "Sæt ind",
+            "print": "",
             "redo": "Gendan",
             "selectAll": "Vælg alt",
             "title": "Rediger",
@@ -135,8 +136,8 @@
         "cancel": "Annullér",
         "deleteAnnotations": "Slet alle noter?",
         "deleteAnnotationsText": "Vil du slette {{- annotationListLength}} note(r)?",
-        "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteBookmarks": "Slet bogmærker?",
+        "deleteBookmarksText": "Er du sikker på at du vil slette {{- bookmarkListLength}} bogmærke(r)?",
         "deleteFeed": "Er du sikker på at du vil slette dette katalog?",
         "deletePublication": "Er du sikker på at du vil fjerne bogen?",
         "import": "Bekræft at du vil importere disse filer:",
@@ -248,292 +249,292 @@
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": ""
+            "accessibility-summary-title": "Oversigt over tilgængelighed"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ARIA-roller er til stede",
+                "descriptive": "Indholdet er beriget med ARIA-roller for at optimere organisering og navigation"
             },
             "additional-accessibility-information-audio-descriptions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Lydbeskrivelser",
+                "descriptive": "Lydbeskrivelser"
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Punktskrift",
+                "descriptive": "Punktskrift"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Understøtter \"ruby\" notationer",
+                "descriptive": "Understøtter \"ruby\" notationer"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Høj kontrast imellem forgrund- og baggrunds-lyd",
+                "descriptive": "Høj kontrast imellem forgrund- og baggrunds-lyd"
             },
             "additional-accessibility-information-high-contrast-between-text-and-background": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Høj kontrast mellem forgrundstekst og baggrund",
+                "descriptive": "Høj kontrast mellem forgrundstekst og baggrund"
             },
             "additional-accessibility-information-large-print": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Stor skrift",
+                "descriptive": "Stor skrift"
             },
             "additional-accessibility-information-page-breaks": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Inkluderer sideskift",
+                "descriptive": "Inkluderer sideskift fra det originale materiale"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Nogle \"ruby\" notationer",
+                "descriptive": "Nogle \"ruby\" notationer"
             },
             "additional-accessibility-information-sign-language": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Tegnsprog",
+                "descriptive": "Tegnsprog"
             },
             "additional-accessibility-information-tactile-graphics": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Indeholder taktil grafik",
+                "descriptive": "Taktil grafik er integreret for at facilitere adgang til visuelle elementer for blinde"
             },
             "additional-accessibility-information-tactile-objects": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Taktile 3D objekter",
+                "descriptive": "Taktile 3D objekter"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Indeholder hints til tekst-til-tale (TTS)",
+                "descriptive": "Indeholder hints til tekst-til-tale (TTS)"
             },
-            "additional-accessibility-information-title": ""
+            "additional-accessibility-information-title": "Yderligere tilgængelighedsinformation"
         },
         "conformance": {
             "conformance-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Denne bog opfylde minimumskravene til tilgængelighed",
+                "descriptive": "Bogen indeholder en erklæring om, at den opfylder EPUB Accessibility og WCAG 2 niveau A-standarden"
             },
             "conformance-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bogen opfylder gængse tilgængelighedsstandarder",
+                "descriptive": "Bogen indeholder en erklæring om, at den opfylder EPUB Accessibility og WCAG 2 niveau AA-standarden"
             },
             "conformance-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bogen overgår gængse tilgængelighedsstandarder",
+                "descriptive": "Bogen indeholder en erklæring om, at den opfylder EPUB Accessibility og WCAG 2 niveau AAA-standarden"
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "Denne bog er certificeret af "
             },
             "conformance-certifier-credentials": {
-                "compact": ""
+                "compact": "Certificeringsorganets legitimationsoplysninger er "
             },
             "conformance-details-certifier-report": {
-                "compact": ""
+                "compact": "For yderligere information se certificeringsrapporten"
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Denne bog hævder at opfylde",
+                "descriptive": "Denne bog hævder at opfylde"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Tilgængelighed 1.0",
+                "descriptive": "EPUB Tilgængelighed 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Tilgængelighed 1.1",
+                "descriptive": "EPUB Tilgængelighed 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Niveau A",
+                "descriptive": "Niveau A"
             },
             "conformance-details-level-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Niveau AA",
+                "descriptive": "Niveau AA"
             },
             "conformance-details-level-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Niveau AAA",
+                "descriptive": "Niveau AAA"
             },
             "conformance-details-wcag-2-0": {
-                "compact": ""
+                "compact": "WCAG 2.0"
             },
             "conformance-details-wcag-2-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.1",
+                "descriptive": "Retningslinjer for tilgængelighed af webindhold (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.2",
+                "descriptive": "Retningslinjer for tilgængelighed af webindhold (WCAG) 2.2"
             },
             "conformance-no": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ingen information tilgængelig",
+                "descriptive": "Ingen information tilgængelig"
             },
-            "conformance-title": "",
+            "conformance-title": "Overholdelse",
             "conformance-unknown-standard": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ikke muligt at fastslå overholdelse af gængse standarder for tilgængelighed for denne bog",
+                "descriptive": "Ikke muligt at fastslå overholdelse af gængse standarder for tilgængelighed for denne bog"
             }
         },
         "hazards": {
             "hazards-flashing": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Blinkende indhold",
+                "descriptive": "Denne bog indeholder blinkende indhold, der kan forårsage anfald for personer med lysfølsomhed"
             },
             "hazards-flashing-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ingen blinkende indhold",
+                "descriptive": "Denne bog indeholder ikke blinkende indhold"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Uvist om bogen indeholder blinkende indhold",
+                "descriptive": "Det er uvist om bogen indeholder blinkende indhold"
             },
             "hazards-motion": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Simuleret bevægelse",
+                "descriptive": "Bogen indeholder simuleret bevægelse, som kan skabe svimmelhed"
             },
             "hazards-motion-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ingen simuleret bevægelse",
+                "descriptive": "Bogen indeholder ikke simuleret bevægelse"
             },
             "hazards-motion-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Det er uvist om bogen indeholder simuleret bevægelse",
+                "descriptive": "Det er uvist om bogen indeholder simuleret bevægelse"
             },
             "hazards-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ingen information tilgængelig",
+                "descriptive": "Ingen information tilgængelig"
             },
             "hazards-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Intet risikabelt indhold",
+                "descriptive": "Bogen indeholder ikke noget risikabelt indhold"
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Lyde",
+                "descriptive": "Bogen indeholder lyde, som kan være ubehagelige"
             },
             "hazards-sound-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ingen lyde",
+                "descriptive": "Bogen indeholder ikke lyd"
             },
             "hazards-sound-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Det er uvist om bogen indeholder lyd",
+                "descriptive": "Det er uvist om bogen indeholder lyd"
             },
-            "hazards-title": "",
+            "hazards-title": "Risikabelt indhold",
             "hazards-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Uvist om bogen indeholder risikabelt indhold",
+                "descriptive": "Det er uvist om bogen indeholder risikabelt indhold"
             }
         },
         "navigation": {
             "navigation-index": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Stikordsregister",
+                "descriptive": "Indholdsfortegnelse med links til indhold"
             },
             "navigation-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ingen information tilgængelig",
+                "descriptive": "Ingen information tilgængelig"
             },
             "navigation-page-navigation": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Gå til side",
+                "descriptive": "Sideliste hvor du kan gå til sider fra den trykte bog"
             },
             "navigation-structural": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Overskrifter",
+                "descriptive": "Elementer så som overskrifter, tabeller, osv. til struktureret navigation"
             },
-            "navigation-title": "",
+            "navigation-title": "Navigation",
             "navigation-toc": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Indholdsfortegnelse",
+                "descriptive": "Indholdsfortegnelse til alle kapitler med tekst via links"
             }
         },
         "rich-content": {
             "rich-content-accessible-chemistry-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Kemiske formler i LaTeX format",
+                "descriptive": "Kemiske formler i tilgængeligt format (LaTeX)"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Kemiske formler i MathML format",
+                "descriptive": "Kemiske formler i tilgængeligt format (MathML)"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Matematik i LaTeX format",
+                "descriptive": "Matematiske formler i tilgængeligt format (LaTeX)"
             },
             "rich-content-accessible-math-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Matematik i MathML format",
+                "descriptive": "Matematiske formler i tilgængeligt format (MathML)"
             },
             "rich-content-accessible-math-described": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Tekstbeskrivelser til matematik",
+                "descriptive": "Indeholder tekstbeskrivelser til matematik"
             },
             "rich-content-closed-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Videoer har undertekster",
+                "descriptive": "Videoer i bogen indeholder undertekster"
             },
             "rich-content-extended": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Informationsrige billeder har udvidede beskrivelser",
+                "descriptive": "Informationsrige billeder beskrives med udvidede beskrivelser"
             },
             "rich-content-open-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Videoer har valgfrie undertekster",
+                "descriptive": "Videoer i bogens indhold har valgfrie undertekster"
             },
-            "rich-content-title": "",
+            "rich-content-title": "Rigt indhold",
             "rich-content-transcript": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Indeholder transskriptioner",
+                "descriptive": "Indeholder transskriptioner"
             },
             "rich-content-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ingen information tilgængelig",
+                "descriptive": "Ingen information tilgængelig"
             }
         },
         "ways-of-reading": {
             "ways-of-reading-nonvisual-reading-alt-text": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Har alternativ tekst",
+                "descriptive": "Har alternative tekstbeskrivelser til billeder"
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ingen information omkring ikke-visuel læsning tilgængelig",
+                "descriptive": "Ingen information omkring ikke-visuel læsning tilgængelig"
             },
             "ways-of-reading-nonvisual-reading-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ikke læsbar med oplæsning eller dynamisk punktskrift",
+                "descriptive": "Indholdet er Ikke læsbart med oplæsning eller dynamisk punktskrift"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ikke fuldt læsbar med oplæsning eller dynamisk punktskrift",
+                "descriptive": "Ikke alt indholdet i bogen er fuldt læsbart med oplæsning eller dynamisk punktskrift"
             },
             "ways-of-reading-nonvisual-reading-readable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Læsbar med oplæsning eller dynamisk punktskrift",
+                "descriptive": "Alt indholdet i bogen er læsbart med oplæsning eller dynamisk punktskrift"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Forudindspillede lydklip",
+                "descriptive": "Bogen har indhold med forudindspillede lydklip i"
             },
             "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ingen information omkring forudindspillede lydklip",
+                "descriptive": "Ingen information omkring forudindspillede lydklip"
             },
             "ways-of-reading-prerecorded-audio-only": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Indeholder kun lyd",
+                "descriptive": "Lydbog uden et tekstalternativ"
             },
             "ways-of-reading-prerecorded-audio-synchronized": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Lydbog med synkroniseret tekst",
+                "descriptive": "Alt indhold i bogen er forudindspillet lyd med synkroniseret tekst"
             },
-            "ways-of-reading-title": "",
+            "ways-of-reading-title": "Læsemåder",
             "ways-of-reading-visual-adjustments-modifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Udseende kan ændres",
+                "descriptive": "Tekstens udseende og sidelayout kan ændres i henhold til læsesystemets muligheder (skrifttype og skriftstørrelse, mellemrum mellem afsnit, sætninger, ord og bogstaver, samt baggrunds- og tekstfarve)"
             },
             "ways-of-reading-visual-adjustments-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ingen information om bogens udseende kan ændres",
+                "descriptive": "Ingen information angiver om bogens udseende kan ændres"
             }
         }
     },
@@ -553,10 +554,10 @@
             },
             "accessibilityHazard": {
                 "flashing": "Blinkende indhold",
-                "motionSimulation": "Bevægelsessimulation",
+                "motionSimulation": "Simuleret bevægelse",
                 "name": "Advarsel:",
                 "noFlashing": "Intet blinkende indhold",
-                "noMotionSimulation": "Ingen simulation af bevægelse",
+                "noMotionSimulation": "Ingen simuleret bevægelse",
                 "noSound": "Ingen lyd",
                 "none": "Intet",
                 "sound": "Lyd",
@@ -637,7 +638,7 @@
                 "none": "Ingen"
             },
             "hide": "Skjul",
-            "highlight": "Overstregning",
+            "highlight": "Fremhævning",
             "noSelectionToast": "Intet markeret",
             "note": "{{- color}} Note",
             "quickAnnotations": "Hurtig-oprettelse (spring redigering over)",
@@ -657,7 +658,7 @@
             }
         },
         "bookmarks": {
-            "index": ""
+            "index": "Bogmærke {{- index}}"
         },
         "divina": {
             "mute": "slå lyd fra",
@@ -667,6 +668,12 @@
             "fit": "Tilpas"
         },
         "goToContent": "Gå til indhold",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "Noter",
             "bookmarks": "Bogmærker",
@@ -674,7 +681,7 @@
             "edit": "Rediger",
             "goTo": "Gå til side",
             "landmarks": "Regioner",
-            "saveMark": "Gem bogmærke",
+            "saveMark": "Gem",
             "search": "Søg",
             "searchResult": "Søgning [{{- searchText}}]",
             "toc": "Indholdsfortegnelse"
@@ -685,8 +692,8 @@
             "captionsDescription": "Simpel tekstvisning med minimal styling af billedtekster.",
             "disableContinuousPlay": "Deaktiver kontinuerlig afspilning",
             "disableContinuousPlayDescription": "Afspil ikke automatisk næste del. Sæt på pause efter at den nuværende del er afspillet.",
-            "ignoreAndUseTTS": "",
-            "ignoreAndUseTTSDescription": "",
+            "ignoreAndUseTTS": "Ignorer forudindspillet lyd og brug syntetisk tale (TTS)",
+            "ignoreAndUseTTSDescription": "Ignorer EPUB'ens medieindhold og læs bogen højt med syntetisk tale (TTS)",
             "next": "Næste oplæsnings-stykke",
             "pause": "Pause oplæsning",
             "play": "Start oplæsning",
@@ -717,6 +724,7 @@
             "openTableOfContentsTitle": "indholdsfortegnelse",
             "page": "Side",
             "pdfscalemode": "Tilpas til side eller skærmbredde",
+            "print": "",
             "settingsTitle": "indstillinger"
         },
         "notes": {
@@ -741,6 +749,18 @@
             },
             "searchTitle": "Søg:"
         },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
+        },
         "settings": {
             "column": {
                 "auto": "Standard",
@@ -763,7 +783,7 @@
             "letterSpacing": "Bogstav-mellemrum",
             "lineSpacing": "Linje-mellemrum",
             "margin": "Margen",
-            "noFootnotes": "Slå fodnoter fra",
+            "noFootnotes": "Slå popup med fodnoter fra",
             "noRTLFlip": "Slå højre-til-venstre UI fra",
             "noRuby": "Skjul japansk læsehjælp (Ruby)",
             "noTemporaryNavTargetOutline": "Slå visuelle navigations-markører fra",
@@ -1087,9 +1107,9 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "",
-                "enableCheckbox": "",
-                "overrideHTMLTemplate": ""
+                "applyDefaultTemplate": "ANVEND STANDARD SKABELON",
+                "enableCheckbox": "Slå brug af \"mustache\" skabelon til/fra når HTML noter eksporteres",
+                "overrideHTMLTemplate": "Overskriv \"mustache\" skabelonen når noten eksporteres til HTML"
             }
         },
         "session": {
@@ -1110,25 +1130,25 @@
     },
     "tts": {
         "highlight": {
-            "mainColor": "",
-            "maskBlockWordOutline": "",
-            "maskBlockWordSolidBackground": "",
-            "maskBlockWordUnderline": "",
-            "maskWordOutline": "",
-            "maskWordSolidBackground": "",
-            "maskWordUnderline": "",
-            "outlineWordOutline": "",
-            "outlineWordSolidBackground": "",
-            "outlineWordUnderline": "",
-            "preview": "",
-            "solidBackgroundWordOutline": "",
-            "solidBackgroundWordSolidBackground": "",
-            "solidBackgroundWordUnderline": "",
-            "style": "",
-            "underlineWordOutline": "",
-            "underlineWordSolidBackground": "",
-            "underlineWordUnderline": "",
-            "wordColor": ""
+            "mainColor": "Hovedfarve",
+            "maskBlockWordOutline": "Maskeringsblok, Ord med omrids",
+            "maskBlockWordSolidBackground": "Maskeringsblok, Ord med fast baggrund",
+            "maskBlockWordUnderline": "Maskeringsblok, Understreg ord",
+            "maskWordOutline": "Maskering, Ord med omrids",
+            "maskWordSolidBackground": "Maskering, Ord med fast baggrund",
+            "maskWordUnderline": "Maskering, Understreg ord",
+            "outlineWordOutline": "Omrids, Ord med omrids",
+            "outlineWordSolidBackground": "Omrids, Ord med fast baggrund",
+            "outlineWordUnderline": "Omrids, Understreg ord",
+            "preview": "Forhåndsvisning af TTS-fremhævningsstil",
+            "solidBackgroundWordOutline": "Fast baggrund, Ord med omrids",
+            "solidBackgroundWordSolidBackground": "Fast baggrund, Ord med fast baggrund",
+            "solidBackgroundWordUnderline": "Fast baggrund, Understreg ord",
+            "style": "TTS-fremhævningsstil",
+            "underlineWordOutline": "Understreg, Ord med omrids",
+            "underlineWordSolidBackground": "Understreg, Ord med fast baggrund",
+            "underlineWordUnderline": "Understreg, Understreg ord",
+            "wordColor": "Ord farve"
         }
     },
     "wizard": {

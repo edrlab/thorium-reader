@@ -7,12 +7,12 @@
 
 import { type Reducer } from "redux";
 
-import { _defaults } from "readium-desktop/common/keyboard";
+import { defaultKeyboardShortcuts } from "readium-desktop/common/keyboard";
 import { keyboardActions } from "readium-desktop/common/redux/actions";
 import { IKeyboardState } from "readium-desktop/common/redux/states/keyboard";
 
 const initialState: IKeyboardState = {
-    shortcuts: _defaults,
+    shortcuts: defaultKeyboardShortcuts,
 };
 
 function keyboardReducer_(

@@ -20,6 +20,7 @@
             "copy": "Copiar",
             "cut": "Cortar",
             "paste": "Pegar",
+            "print": "",
             "redo": "Refacer",
             "selectAll": "Seleccionar todo",
             "title": "Editar",
@@ -667,6 +668,12 @@
             "fit": "Axustar"
         },
         "goToContent": "",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "Anotacións",
             "bookmarks": "Marcadores",
@@ -717,6 +724,7 @@
             "openTableOfContentsTitle": "Navegación",
             "page": "Páxina",
             "pdfscalemode": "Axuste ou ancho de páxina",
+            "print": "",
             "settingsTitle": "Opcións de configuración"
         },
         "notes": {
@@ -740,6 +748,18 @@
                 "submit": "Atopar"
             },
             "searchTitle": "Buscar:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
         },
         "settings": {
             "column": {
