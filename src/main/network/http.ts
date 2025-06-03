@@ -12,6 +12,7 @@
 // To convert this file to an ECMAScript module, change its file extension to '.mts',
 // or add the field `"type": "module"` to 'package.json'.
 // @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore TS1479
 import timeoutSignal from "timeout-signal";
 
@@ -27,6 +28,7 @@ import * as https from "https";
 // To convert this file to an ECMAScript module, change its file extension to '.mts',
 // or add the field `"type": "module"` to 'package.json'.
 // @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore TS1479
 import { AbortError, Headers, RequestInit, Response } from "node-fetch";
 
