@@ -72,11 +72,6 @@ export function* exportAnnotationSet(notes: INoteState[], publicationView: Publi
     debug("label:", label);
     debug("fileType:", fileType);
 
-
-    // notes selector generation with cacheDocument included in note on export, computed after creation
-    // yield* callTyped(getResourceCache);
-    // const cacheDocuments = yield* selectTyped((state: IReaderRootState) => state.resourceCache);
-
     const locale = yield* selectTyped((state: ICommonRootState) => state.i18n.locale);
     const readiumAnnotationSet = yield* callTyped(() => convertAnnotationStateArrayToReadiumAnnotationSet(locale, notes, publicationView, label));
 

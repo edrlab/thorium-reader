@@ -20,6 +20,7 @@
             "copy": "Kopioi",
             "cut": "Leikkaa",
             "paste": "Liitä",
+            "print": "",
             "redo": "Tee uudelleen",
             "selectAll": "Valitse kaikki",
             "title": "Muokkaa",
@@ -135,8 +136,8 @@
         "cancel": "Peru",
         "deleteAnnotations": "Poistetaanko muistiinpanot?",
         "deleteAnnotationsText": "Haluatko varmasti poistaa {{- annotationListLength}} muistiinpanoa?",
-        "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteBookmarks": "Poistetaanko kirjanmerkit?",
+        "deleteBookmarksText": "Haluatko varmasti poistaa {{- bookmarkListLength}} kirjanmerkit?",
         "deleteFeed": "Haluatko poistaa tämän luettelon?",
         "deletePublication": "Haluatko poistaa tämän julkaisun?",
         "import": "Haluatko tuoda nämä tiedostot:",
@@ -248,292 +249,292 @@
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": ""
+            "accessibility-summary-title": "Yhteenveto saavutettavuudesta"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ARIA-rooleja on käytetty",
+                "descriptive": "Sisältöön on lisätty ARIA-rooleja, jotka selkeyttävät rakennetta ja voivat helpottaa navigaatiota"
             },
             "additional-accessibility-information-audio-descriptions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Kuvailutulkkaus",
+                "descriptive": "Kuvailutulkkaus"
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Pistekirjoitus",
+                "descriptive": "Pistekirjoitus"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sisältää kattavat rubi-merkinnät",
+                "descriptive": "Sisältää kattavat rubi-merkinnät"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Korkea kontrasti äänisisältöjen edusta- ja taustaäänen tasoissa",
+                "descriptive": "Korkea kontrasti äänisisältöjen edusta- ja taustaäänen tasoissa"
             },
             "additional-accessibility-information-high-contrast-between-text-and-background": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Korkea kontrasti tekstin ja taustan välillä",
+                "descriptive": "Korkea kontrasti tekstin ja taustan välillä"
             },
             "additional-accessibility-information-large-print": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Isotekstinen",
+                "descriptive": "Isotekstinen"
             },
             "additional-accessibility-information-page-breaks": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sivunvaihtokohdat on merkitty",
+                "descriptive": "Painetun julkaisun sivunvaihtokohdat on merkitty"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sisältää rubi-merkintöjä",
+                "descriptive": "Sisältää rubi-merkintöjä"
             },
             "additional-accessibility-information-sign-language": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Viittomakielinen",
+                "descriptive": "Viittomakielinen"
             },
             "additional-accessibility-information-tactile-graphics": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sisältää kohokuvia",
+                "descriptive": "Sisältää kohokuvia sokeille henkilöille"
             },
             "additional-accessibility-information-tactile-objects": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Kolmiuloitteisia taktiiliosia",
+                "descriptive": "Kolmiuloitteisia taktiiliosia"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Tekstistä puheeksi -vihjeitä",
+                "descriptive": "Tekstistä puheeksi -vihjeitä"
             },
-            "additional-accessibility-information-title": ""
+            "additional-accessibility-information-title": "Lisätietoa saavutettavuudesta"
         },
         "conformance": {
             "conformance-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Tämä julkaisu noudattaa saavutettavuusstandardien alinta tasoa",
+                "descriptive": "Tämä julkaisu ilmoittaa, että se noudattaa standardeja EPUB Accessibility ja WCAG 2, taso A"
             },
             "conformance-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Tämä julkaisu noudattaa saavutettavuusstandardien yleisesti hyväksyttyä tasoa",
+                "descriptive": "Tämä julkaisu ilmoittaa, että se noudattaa standardeja EPUB Accessibility ja WCAG 2, taso AA"
             },
             "conformance-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Tämä julkaisu ylittää saavutettavuusstandardien yleisesti hyväksytyn tason",
+                "descriptive": "Tämä julkaisu ilmoittaa, että se noudattaa standardeja EPUB Accessibility ja WCAG 2, taso AAA"
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "Julkaisun saavutettavuuden on arvioinut "
             },
             "conformance-certifier-credentials": {
-                "compact": ""
+                "compact": "Arvioijan sertifiointitunnus "
             },
             "conformance-details-certifier-report": {
-                "compact": ""
+                "compact": "Lisätietoja arvioijan raportissa"
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Tämän julkaisun ilmoitetaan noudattavan standardia",
+                "descriptive": "Tämän julkaisun ilmoitetaan noudattavan standardia"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Accessibility 1.0",
+                "descriptive": "EPUB Accessibility 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Accessibility 1.1",
+                "descriptive": "EPUB Accessibility 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Taso A",
+                "descriptive": "Taso AA"
             },
             "conformance-details-level-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Taso AAA",
+                "descriptive": "Taso AA"
             },
             "conformance-details-level-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Taso AAA",
+                "descriptive": "Taso AAA"
             },
             "conformance-details-wcag-2-0": {
-                "compact": ""
+                "compact": "WCAG 2.0"
             },
             "conformance-details-wcag-2-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.1",
+                "descriptive": "Verkkosisällön saavutettavuusohjeet (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.2",
+                "descriptive": "Verkkosisällön saavutettavuusohjeet (WCAG) 2.2"
             },
             "conformance-no": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Tietoa ei ole saatavilla",
+                "descriptive": "Tietoa ei ole saatavilla"
             },
-            "conformance-title": "",
+            "conformance-title": "Saavutettavuusstandardien noudattaminen",
             "conformance-unknown-standard": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ei ole tiedossa, noudattaako julkaisu saavutettavuusstandardeja",
+                "descriptive": "Ei ole tiedossa, noudattaako julkaisu saavutettavuusstandardeja"
             }
         },
         "hazards": {
             "hazards-flashing": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Välkkyvää sisältöä",
+                "descriptive": "Julkaisussa on välkkyvää sisältöä, joka voi olla haitallista valoherkille"
             },
             "hazards-flashing-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ei välkkyvää sisältöä",
+                "descriptive": "Julkaisussa ei ole välkkyvää sisältöä"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ei ole tietoa, onko julkaisussa välkkyvää sisältöä",
+                "descriptive": "Ei ole tietoa, onko julkaisussa välkkyvää sisältöä"
             },
             "hazards-motion": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Simuloitua liikettä",
+                "descriptive": "Julkaisu sisältää simuloitua liikettä, joka voi aiheuttaa liikepahoinvointia"
             },
             "hazards-motion-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ei simuloitua liikettä",
+                "descriptive": "Julkaisu ei sisällä simuloitua liikettä"
             },
             "hazards-motion-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ei ole tietoa, onko julkaisussa simuloitua liikettä",
+                "descriptive": "Ei ole tietoa, onko julkaisussa simuloitua liikettä"
             },
             "hazards-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Tietoa ei ole saatavilla",
+                "descriptive": "Tietoa ei ole saatavilla"
             },
             "hazards-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ei vaaratekijöitä",
+                "descriptive": "Julkaisu ei sisällä vaaratekijöitä"
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ääniä",
+                "descriptive": "Julkaisu sisältää ääniä, jotka voivat olla häiritseviä"
             },
             "hazards-sound-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ei häiritseviä ääniä",
+                "descriptive": "Julkaisu ei sisällä häiritseviä ääniä"
             },
             "hazards-sound-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ei ole tietoa, onko julkaisussa häiritseviä ääniä",
+                "descriptive": "Ei ole tietoa, onko julkaisussa häiritseviä ääniä"
             },
-            "hazards-title": "",
+            "hazards-title": "Vaaratekijät",
             "hazards-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ei tietoa vaaratekijöistä",
+                "descriptive": "Ei tietoa vaaratekijöistä"
             }
         },
         "navigation": {
             "navigation-index": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Hakemisto",
+                "descriptive": "Hakemisto, jossa hakusanat on linkitetty sisältöön"
             },
             "navigation-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Tietoa ei ole saatavilla",
+                "descriptive": "Tietoa ei ole saatavilla"
             },
             "navigation-page-navigation": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Siirtyminen sivunumeron mukaan",
+                "descriptive": "Sivuluettelo, jonka avulla voi siirtyä painetun version sivuja vastaaviin kohtiin"
             },
             "navigation-structural": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Otsikot",
+                "descriptive": "Sisältää navigointia helpottavia rakenteita, kuten otsikoita"
             },
-            "navigation-title": "",
+            "navigation-title": "Navigaatio",
             "navigation-toc": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sisällysluettelo",
+                "descriptive": "Sisällysluettelo, jossa on linkit kaikkiin lukuihin"
             }
         },
         "rich-content": {
             "rich-content-accessible-chemistry-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Kemian kaavat LaTeX-muodossa",
+                "descriptive": "Kemian kaavat ovat saavutettavassa muodossa (LaTeX)"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Kemian kaavat MathML-muodossa",
+                "descriptive": "Kemian kaavat ovat saavutettavassa muodossa (MathML)"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Matematiikka LaTeX-muodossa",
+                "descriptive": "Matematiikka on saavutettavassa muodossa (LaTeX)"
             },
             "rich-content-accessible-math-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Matematiikka on MathML-muodossa",
+                "descriptive": "Matematiikka on saavutettavassa muodossa (MathML)"
             },
             "rich-content-accessible-math-described": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Matematiikalle on tekstikuvaukset",
+                "descriptive": "Matematiikalle on tekstikuvaukset"
             },
             "rich-content-closed-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Videoissa on tekstitys, jonka voi piilottaa",
+                "descriptive": "Julkaisun videoissa on tekstitys, jonka voi piilottaa"
             },
             "rich-content-extended": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Paljon tietoa sisältävillä kuvilla on pitkät selostukset",
+                "descriptive": "Paljon tietoa sisältävillä kuvilla on pitkät selostukset"
             },
             "rich-content-open-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Videoissa on tekstitys",
+                "descriptive": "Julkaisun videoissa on tekstitys"
             },
-            "rich-content-title": "",
+            "rich-content-title": "Monimuotoinen sisältö",
             "rich-content-transcript": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Tekstivastine ääni- tai videosisällölle",
+                "descriptive": "Tekstivastine ääni- tai videosisällölle"
             },
             "rich-content-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Tietoa ei ole saatavilla",
+                "descriptive": "Tietoa ei ole saatavilla"
             }
         },
         "ways-of-reading": {
             "ways-of-reading-nonvisual-reading-alt-text": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sisältää vaihtoehtoiset tekstit",
+                "descriptive": "Sisältää vaihtoehtoiset tekstit kuville"
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ei tietoa tukeeko muita kuin näköön perustuvia tapoja lukea",
+                "descriptive": "Ei tietoa tukeeko muita kuin näköön perustuvia tapoja lukea"
             },
             "ways-of-reading-nonvisual-reading-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ei luettavissa ruudunlukuohjelmalla tai pistenäytöllä",
+                "descriptive": "Sisältö ei ole luettavissa ruudunlukuohjelmalla tai pistenäytöllä"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ei kokonaan luettavissa ruudunlukuohjelmalla tai pistenäytöllä",
+                "descriptive": "Kaikki sisältö ei ole luettavissa ruudunlukuohjelmalla tai pistenäytöllä"
             },
             "ways-of-reading-nonvisual-reading-readable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Luettavissa ruudunlukuohjelmalla tai pistenäytöllä",
+                "descriptive": "Kaikki sisältö on luettavissa ruudunlukuohjelmalla tai pistenäytöllä"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sisältää äänitteitä",
+                "descriptive": "Sisällössä on äänitettyjä osuuksia"
             },
             "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ei tietoa äänitteistä",
+                "descriptive": "Ei tietoa äänitteistä"
             },
             "ways-of-reading-prerecorded-audio-only": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sisältää vain ääntä",
+                "descriptive": "Äänikirja, jossa ei ole tekstiä"
             },
             "ways-of-reading-prerecorded-audio-synchronized": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Äänite on synkronoitu tekstin kanssa",
+                "descriptive": "Koko sisältö on käytettävissä äänitteenä, joka on synkronoitu tekstin kanssa"
             },
-            "ways-of-reading-title": "",
+            "ways-of-reading-title": "Lukemisen keinot",
             "ways-of-reading-visual-adjustments-modifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ulkoasua voi mukauttaa",
+                "descriptive": "Tekstin ja sivujen ulkoasua voi mukauttaa lukuohjelman toimintojen avulla (esimerkiksi muuttaa kirjaintyyppiä, tekstin kokoa ja välistyksiä sekä tekstin ja taustan värejä)"
             },
             "ways-of-reading-visual-adjustments-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ei tietoa siitä, voiko ulkoasua mukauttaa",
+                "descriptive": "Ei tietoa siitä, voiko ulkoasua mukauttaa"
             }
         }
     },
@@ -657,7 +658,7 @@
             }
         },
         "bookmarks": {
-            "index": ""
+            "index": "Kirjanmerkki{{- index}}"
         },
         "divina": {
             "mute": "mykistä",
@@ -667,6 +668,12 @@
             "fit": "Sovita"
         },
         "goToContent": "Siirry sisältöön",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "Muistiinpanot",
             "bookmarks": "Kirjanmerkit",
@@ -685,8 +692,8 @@
             "captionsDescription": "Pelkistetty tekstinäkymä.",
             "disableContinuousPlay": "Älä käytä jatkuvaa luentaa",
             "disableContinuousPlayDescription": "Älä jatka luentaa automaattisesti seuraavaan kohteeseen vaan keskeytä luenta, kun nykyinen kohde on luettu.",
-            "ignoreAndUseTTS": "",
-            "ignoreAndUseTTSDescription": "",
+            "ignoreAndUseTTS": "Älä käytä kirjan äänitettä, valitse teksti puheeksi -toiminto",
+            "ignoreAndUseTTSDescription": "Älä käytä epub-kirjan synkronoitua äänitettä, valitse tekstistä puheeksi -toiminto",
             "next": "Seuraava",
             "pause": "Pysäytä",
             "play": "Jatka",
@@ -717,6 +724,7 @@
             "openTableOfContentsTitle": "Navigaatio",
             "page": "Sivu",
             "pdfscalemode": "Sovita sivu tai leveyteen",
+            "print": "",
             "settingsTitle": "Asetukset"
         },
         "notes": {
@@ -740,6 +748,18 @@
                 "submit": "Etsi"
             },
             "searchTitle": "Hae:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
         },
         "settings": {
             "column": {
@@ -1087,7 +1107,7 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "",
+                "applyDefaultTemplate": "Käytä oletuspohjaa",
                 "enableCheckbox": "",
                 "overrideHTMLTemplate": ""
             }
@@ -1110,25 +1130,25 @@
     },
     "tts": {
         "highlight": {
-            "mainColor": "",
-            "maskBlockWordOutline": "",
-            "maskBlockWordSolidBackground": "",
-            "maskBlockWordUnderline": "",
-            "maskWordOutline": "",
-            "maskWordSolidBackground": "",
-            "maskWordUnderline": "",
-            "outlineWordOutline": "",
-            "outlineWordSolidBackground": "",
-            "outlineWordUnderline": "",
-            "preview": "",
-            "solidBackgroundWordOutline": "",
-            "solidBackgroundWordSolidBackground": "",
-            "solidBackgroundWordUnderline": "",
-            "style": "",
-            "underlineWordOutline": "",
-            "underlineWordSolidBackground": "",
-            "underlineWordUnderline": "",
-            "wordColor": ""
+            "mainColor": "Pääväri",
+            "maskBlockWordOutline": "Sumenna, ympyröi sana",
+            "maskBlockWordSolidBackground": "Korosta rivit, sanan taustaväri",
+            "maskBlockWordUnderline": "Korosta rivit, alleviivaa sana",
+            "maskWordOutline": "Korosta virke, ympyröi sana",
+            "maskWordSolidBackground": "Korosta virke, sanan taustaväri",
+            "maskWordUnderline": "Korosta virke, alleviivaa sana",
+            "outlineWordOutline": "Ympyröi virke, ympyröi sana",
+            "outlineWordSolidBackground": "Ympyröi virke, sanan taustaväri",
+            "outlineWordUnderline": "Ympyröi virke, alleviivaa sana",
+            "preview": "Tekstistä puheeksi -korostusvalinnan esikatselu",
+            "solidBackgroundWordOutline": "Virkkeen taustaväri, ympyröi sana",
+            "solidBackgroundWordSolidBackground": "Virkkeen taustaväri, sanan taustaväri",
+            "solidBackgroundWordUnderline": "Virkkeen taustaväri, alleviivaa sana",
+            "style": "Tekstistä puheeksi -korostustyylit",
+            "underlineWordOutline": "Alleviivaa virke, ympyröi sana",
+            "underlineWordSolidBackground": "Alleviivaa virke, sanan taustaväri",
+            "underlineWordUnderline": "Alleviivaa virke, alleviivaa sana",
+            "wordColor": "Sanan väri"
         }
     },
     "wizard": {

@@ -20,6 +20,7 @@
             "copy": "Kopijuoti",
             "cut": "Iškirpti",
             "paste": "Įklijuoti",
+            "print": "",
             "redo": "Atkurti",
             "selectAll": "Pažymėti viską",
             "title": "Keisti",
@@ -667,6 +668,12 @@
             "fit": "Talpinti"
         },
         "goToContent": "Eiti į turinį",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "Pastabos",
             "bookmarks": "Žymės",
@@ -717,6 +724,7 @@
             "openTableOfContentsTitle": "naršymas",
             "page": "Puslapis",
             "pdfscalemode": "talpinti pritaikant prie puslapio aukščio/pločio",
+            "print": "",
             "settingsTitle": "nuostatos"
         },
         "notes": {
@@ -740,6 +748,18 @@
                 "submit": "Ieškoti"
             },
             "searchTitle": "Paieška:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
         },
         "settings": {
             "column": {
@@ -1087,7 +1107,7 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "",
+                "applyDefaultTemplate": "TAIKYTI NUMATYTĄJĮ ŠABLONĄ",
                 "enableCheckbox": "",
                 "overrideHTMLTemplate": ""
             }

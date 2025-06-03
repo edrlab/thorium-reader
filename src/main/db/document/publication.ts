@@ -37,6 +37,7 @@ export interface PublicationDocument extends Identifiable, Timestampable {
 
     lcp?: LcpInfo;
     lcpRightsCopies?: number;
+    lcpRightsPrints?: number[];
 
     hash: string;
 
