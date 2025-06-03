@@ -9,7 +9,7 @@ import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 
 import { sortObject } from "@r2-utils-js/_utils/JsonUtils";
 
-export const DEBUG_KEYBOARD = true;
+export const DEBUG_KEYBOARD = false;
 
 export interface TKeyboardShortcut {
     alt?: boolean;
@@ -147,9 +147,8 @@ const _defaults_ = Object.freeze({
     }),
 
     FocusSearch: Object.freeze<TKeyboardShortcut>({
-        meta: true,
         alt: false,
-        control: false,
+        control: true,
         shift: false,
         key: "KeyF",
     }),
@@ -166,16 +165,14 @@ const _defaults_ = Object.freeze({
         key: "F3",
     }),
     SearchNextAlt: Object.freeze<TKeyboardShortcut>({
-        meta: true,
         alt: false,
-        control: false,
+        control: true,
         shift: false,
         key: "KeyG",
     }),
     SearchPreviousAlt: Object.freeze<TKeyboardShortcut>({
-        meta: true,
         alt: false,
-        control: false,
+        control: true,
         shift: true,
         key: "KeyG",
     }),
