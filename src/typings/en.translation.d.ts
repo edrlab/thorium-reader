@@ -2471,6 +2471,10 @@ declare namespace typed_i18n {
         readonly "description": string,
         readonly "name": string
       },
+      readonly "Print": {
+        readonly "description": string,
+        readonly "name": string
+      },
       readonly "SearchNext": {
         readonly "description": string,
         readonly "name": string
@@ -2749,6 +2753,10 @@ declare namespace typed_i18n {
       readonly "description": string,
       readonly "name": string
     },
+    readonly "Print": {
+      readonly "description": string,
+      readonly "name": string
+    },
     readonly "SearchNext": {
       readonly "description": string,
       readonly "name": string
@@ -2978,6 +2986,10 @@ declare namespace typed_i18n {
     readonly "description": string,
     readonly "name": string
   },
+  readonly "Print": {
+    readonly "description": string,
+    readonly "name": string
+  },
   readonly "SearchNext": {
     readonly "description": string,
     readonly "name": string
@@ -3148,6 +3160,9 @@ declare namespace typed_i18n {
   (_: "settings.keyboard.list.OpenReaderInfoWhereAmI", __?: {}): { readonly "description": string, readonly "name": string };
   (_: "settings.keyboard.list.OpenReaderInfoWhereAmI.description", __?: {}): string;
   (_: "settings.keyboard.list.OpenReaderInfoWhereAmI.name", __?: {}): string;
+  (_: "settings.keyboard.list.Print", __?: {}): { readonly "description": string, readonly "name": string };
+  (_: "settings.keyboard.list.Print.description", __?: {}): string;
+  (_: "settings.keyboard.list.Print.name", __?: {}): string;
   (_: "settings.keyboard.list.SearchNext", __?: {}): { readonly "description": string, readonly "name": string };
   (_: "settings.keyboard.list.SearchNext.description", __?: {}): string;
   (_: "settings.keyboard.list.SearchNext.name", __?: {}): string;

@@ -48,7 +48,7 @@ import * as MacCmdIcon from "readium-desktop/renderer/assets/icons/maccommand-ic
 import * as WindowsIcon from "readium-desktop/renderer/assets/icons/windows-icon.svg";
 import { useTranslator } from "../../../common/hooks/useTranslator";
 import { useDispatch } from "../../../common/hooks/useDispatch";
-import os from "node:os"; 
+import os from "node:os";
 
 const _isMac = os.platform() === "darwin";
 const _isWindows = os.platform() === "win32";
@@ -144,8 +144,8 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         this._keyboardSinkIsActive = false;
     }
 
-      _isMounted = false;
- 
+    _isMounted = false;
+
     public componentDidMount() {
         ensureKeyboardListenerIsInstalled();
 
@@ -426,14 +426,18 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             ToggleReaderFullscreen: {
                 name: `${__("settings.keyboard.list.ToggleReaderFullscreen.name")}`,
                 description: `${__("settings.keyboard.list.ToggleReaderFullscreen.description")}`,
-            },              
+            },
+            Print: {
+                name: `${__("settings.keyboard.list.Print.name")}`,
+                description: `${__("settings.keyboard.list.Print.description")}`,
+            },
         };
-        
+
 
         const filteredShortcuts = isSearchEmpty
         ? ObjectKeys(sortObject(this.props.keyboardShortcuts) as TKeyboardShortcutsMap)
         : ObjectKeys(cleanNames).filter(key => cleanNames[key].name.toLowerCase().includes(this.state.searchItem?.toLowerCase()));
-          
+
         return (
             <>
                 <section onKeyDown={
@@ -480,7 +484,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                 const frag = <>
                                     <div style={{display: "flex"}}>
                                         <h3 aria-hidden className={stylesKeys.keyshortElement_title}>{Object.keys(cleanNames).find((name: string) => name === id) ? cleanNames[id].name : undefined}</h3>
-                                    {    cleanNames[id].description.length ?                                    
+                                    {    cleanNames[id].description.length ?
                                         <TooltipTrigger>
                                             <Button style={{width: "15px"}}><SVG ariaHidden svg={InfoIcon} /></Button>
                                             <Tooltip style={{border: "1px solid var(--color-primary)", maxWidth: "300px", width: "fit-content", zIndex: "1000", backgroundColor: "var(--color-secondary)", borderRadius: "6px", padding: "5px", color: "var(--color-primary)"}}>
@@ -580,7 +584,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                 </li>;
                             })}
                             </ul>
-                            : 
+                            :
                             <p>{__("settings.keyboard.noShortcutFound")}</p>
                             }
                         </div>

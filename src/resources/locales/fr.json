@@ -1063,6 +1063,10 @@
                     "description": "dans la fenêtre du lecteur, ouvre une boîte de dialogue modale d'informations sur la publication avec un focus clavier direct sur la section qui affiche la hiérarchie des titres et d'autres informations contextuelles pour l'emplacement de lecture actuel, telles que la pause de page précédente la plus proche, ainsi que l'index du document dans l'ordre de lecture (c'est la fonctionnalité \"où suis-je\").",
                     "name": "Ouvrir les Infos du Lecteur : Où Suis-je ?"
                 },
+                "Print": {
+                    "description": "dans la fenêtre du lecteur, ouvre une boîte de dialogue d'impression",
+                    "name": "Imprimmer"
+                },
                 "SearchNext": {
                     "description": "dans la fenêtre du lecteur, lorsque l'entrée de texte de recherche globale de la publication est ouverte, trouve la correspondance précédente / suivante.",
                     "name": "Rechercher Suivant"
