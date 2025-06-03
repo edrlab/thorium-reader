@@ -8,7 +8,7 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code/code_values
 
 import {
-    DEBUG_KEYBOARD, IKeyboardEvent, keyboardShortcutMatch, TKeyboardShortcutReadOnly,
+    DEBUG_KEYBOARD, IKeyboardEvent, keyboardShortcutMatch, TKeyboardShortcut,
 } from "readium-desktop/common/keyboard";
 
 import { ipcRenderer } from "electron";
@@ -261,13 +261,13 @@ export function ensureKeyboardListenerIsInstalled() {
 
 interface IKeyboardShortcutPairing {
     up: boolean; // otherwise, assumes down
-    keyboardShortcut: TKeyboardShortcutReadOnly;
+    keyboardShortcut: TKeyboardShortcut;
     callback: () => void;
 }
 const _keyboardShortcutPairings: IKeyboardShortcutPairing[] = [];
 export function registerKeyboardListener(
     up: boolean,
-    keyboardShortcut: TKeyboardShortcutReadOnly,
+    keyboardShortcut: TKeyboardShortcut,
     callback: () => void) {
 
     if (DEBUG_KEYBOARD) {
