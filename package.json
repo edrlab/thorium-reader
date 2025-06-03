@@ -300,6 +300,7 @@
     "lunr": "^2.3.9",
     "lunr-languages": "^1.14.0",
     "marked": "^15.0.12",
+    "marked-emoji": "^2.0.0",
     "match-sorter": "^8.0.2",
     "mathjax": "^3.2.2",
     "mime-types": "^3.0.1",
