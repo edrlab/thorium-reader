@@ -460,7 +460,7 @@ export const ImageClickManager: React.FC = () => {
                             <h2>{__("chatbot.title")}</h2>
                             <Select
                                 items={selectModelItems}
-                                selectedKey={selectModelItems[0].id}
+                                selectedKey={modelSelected.id}
                                 onSelectionChange={(key) => {
                                     // console.log("selectionchange: ", key);
                                     const found = aiSDKModelOptions.find(({ id: _id }) => _id === key);
