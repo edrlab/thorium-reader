@@ -7,7 +7,7 @@
 
 export const DEFAULT_SYSTEM_PROMPT = "Your goal is to describe the image, you should not answer on a topic other than this image. Answer all requests in {{languages}} unless I explicitly ask you otherwise.";
 const ADVANCED_SYSTEM_PROMPT = {
-    goal: "describe the image, you should not answer on a topic other than this image. Answer all requests in {{languages}} unless I explicitly ask you otherwise",
+    goal: "describe the image, you should not answer on a topic other than this image. Answer all requests in this language : \"{{languages}}\", unless I explicitly ask you otherwise",
     context: {
         title: "{{title}}",
         author: "{{author}}",
@@ -15,6 +15,10 @@ const ADVANCED_SYSTEM_PROMPT = {
         languages: "{{languages}}",
         text_before: "{{beforeText}}",
         text_after: "{{afterText}}",
+        describedby: "{{describedby}}",
+        details: "{{details}}",
+        figcaption: "{{figcaption}}",
+        labelledby: "{{labelledby}}",
     },
 };
 

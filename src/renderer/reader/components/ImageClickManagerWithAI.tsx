@@ -358,8 +358,8 @@ export const ImageClickManager: React.FC = () => {
 
     React.useEffect(() => {
         setSystemPrompt(modelSelected.systemPrompt
-            .replace("{{title}}", "\"" + documentTitle + "\"")
-            .replace("{{author}}", "\"" + authorsLangString ?
+            .replace("{{title}}", documentTitle)
+            .replace("{{author}}", "\"" + (authorsLangString && authorsLangString.length) ?
                 authorsLangString.reduce<string>((prev, text) => {
                     const textLangStr = convertMultiLangStringToLangString(text, locale);
                     // const textLang = textLangStr && textLangStr[0] ? textLangStr[0].toLowerCase() : "";
@@ -369,7 +369,7 @@ export const ImageClickManager: React.FC = () => {
                     return prev ? `${prev}, ${textStr}` : textStr;
                 }, "")
                 : "" + "\"")
-            .replace("{{publisher}}", "\"" + publishersLangString ?
+            .replace("{{publisher}}", "\"" + (publishersLangString && publishersLangString.length) ?
                 // publishers.join(", ")
                 publishersLangString.reduce<string>((prev, text) => {
                     const textLangStr = convertMultiLangStringToLangString(text, locale);
@@ -380,7 +380,7 @@ export const ImageClickManager: React.FC = () => {
                     return prev ? `${prev}, ${textStr}` : textStr;
                 }, "")
                 : "" + "\"")
-            .replace("{{languages}}", "\"" + languages ?
+            .replace(/\{\{languages\}\}/g, "\"" + (languages && languages.length) ?
                 // publishers.join(", ")
                 languages.reduce<string>((prev, text) => {
                     const textLangStr = convertMultiLangStringToLangString(text, locale);
@@ -391,12 +391,12 @@ export const ImageClickManager: React.FC = () => {
                     return prev ? `${prev}, ${textStr}` : textStr;
                 }, "")
                 : "" + "\"")
-            .replace("{{beforeText}}", "\"" + dom_beforeText + "\"")
-            .replace("{{afterText}}", "\"" + dom_afterText + "\"")
-            .replace("{{describedby}}", "\"" + dom_describedbyText + "\"")
-            .replace("{{details}}", "\"" + dom_detailsText + "\"")
-            .replace("{{figcaption}}", "\"" + dom_figcaptionText + "\"")
-            .replace("{{labelledby}}", "\"" + dom_labelledByText + "\""),
+            .replace("{{beforeText}}", dom_beforeText ? dom_beforeText : "")
+            .replace("{{afterText}}", dom_afterText ? dom_afterText : "")
+            .replace("{{describedby}}", dom_describedbyText ? dom_describedbyText : "" )
+            .replace("{{details}}", dom_detailsText ? dom_detailsText : "")
+            .replace("{{figcaption}}", dom_figcaptionText ? dom_figcaptionText : "")
+            .replace("{{labelledby}}", dom_labelledByText ? dom_labelledByText : ""),
         );
     }, [modelSelected.systemPrompt, dom_beforeText, dom_afterText, dom_describedbyText, dom_detailsText, dom_figcaptionText, dom_labelledByText, authorsLangString, documentTitle, locale, publishersLangString, languages]);
 
