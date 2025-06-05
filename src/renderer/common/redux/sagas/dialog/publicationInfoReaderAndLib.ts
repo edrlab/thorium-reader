@@ -67,9 +67,9 @@ function* checkReaderAndLibPublication(action: dialogActions.openRequest.TAction
     }
 }
 
-function* getApi(id: string, lsd: boolean) {
+function* getApi(id: string, checkLcpLsd: boolean) {
 
-    yield apiSaga("publication/get", REQUEST_ID, id, lsd);
+    yield apiSaga("publication/get", REQUEST_ID, id, checkLcpLsd);
     while (true) {
         const action:
             apiActions.result.TAction<TReturnPromiseOrGeneratorType<TApiMethod["publication/get"]>>
@@ -114,3 +114,5 @@ export function saga() {
         ),
     ]);
 }
+
+export const publicationInfoReaderLibGetPublicationApiCall = getApi;

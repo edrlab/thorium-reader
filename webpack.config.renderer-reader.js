@@ -1,6 +1,8 @@
 // const crypto = require("crypto");
 
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const StatoscopeWebpackPlugin = require('@statoscope/webpack-plugin').default;
+
 const TerserPlugin = require("terser-webpack-plugin");
 
 const fs = require("fs");
@@ -51,7 +53,7 @@ const _externalsCache = new Set();
 if (nodeEnv !== "production") {
     const nodeExternals = require("webpack-node-externals");
     const neFunc = nodeExternals({
-        allowlist: ["timeout-signal", "nanoid", "normalize-url", "node-fetch", "data-uri-to-buffer", /^fetch-blob/, /^formdata-polyfill/],
+        allowlist: ["color", "pdf.js", "readium-speech", "@github/paste-markdown", "yargs", "timeout-signal", "nanoid", "normalize-url", "node-fetch", "data-uri-to-buffer", /^fetch-blob/, /^formdata-polyfill/],
         importType: function (moduleName) {
             if (!_externalsCache.has(moduleName)) {
                 console.log(`WEBPACK EXTERNAL (READER): [${moduleName}]`);
@@ -287,7 +289,7 @@ let config = Object.assign(
                         {
                             loader: path.resolve("./scripts/webpack-loader-scope-checker.js"),
                             options: {
-                                forbid: "library",
+                                forbids: ["src/renderer/library", "src/main", "src/renderer/reader/pdf/webview"],
                             },
                         },
                     ],
@@ -375,16 +377,6 @@ let config = Object.assign(
             hot: _enableHot,
         },
         plugins: [
-            new BundleAnalyzerPlugin({
-                analyzerMode: "disabled",
-                defaultSizes: "stat", // "parsed"
-                openAnalyzer: false,
-                generateStatsFile: true,
-                statsFilename: "stats_renderer-reader.json",
-                statsOptions: null,
-
-                excludeAssets: null,
-            }),
             new HtmlWebpackPlugin({
                 template: "./src/renderer/reader/index_reader.ejs",
                 filename: "index_reader.html",
@@ -496,5 +488,32 @@ if (nodeEnv !== "production") {
         use: scssLoaderConfig,
     });
 }
+
+if (process.env.ENABLE_WEBPACK_BUNDLE_STATS)
+config.plugins.push(
+new StatoscopeWebpackPlugin({
+    saveReportTo: './dist/STATOSCOPE_[name].html',
+    // saveStatsTo: './dist/STATOSCOPE_[name].json',
+    saveStatsTo: undefined,
+    normalizeStats: false,
+    saveOnlyStats: false,
+    disableReportCompression: true,
+    statsOptions: {},
+    additionalStats: [],
+    watchMode: false,
+    name: 'renderer-reader',
+    open: false,
+    compressor: false,
+}),
+new BundleAnalyzerPlugin({
+    analyzerMode: "disabled",
+    defaultSizes: "stat", // "parsed"
+    openAnalyzer: false,
+    generateStatsFile: true,
+    statsFilename: "stats_renderer-reader.json",
+    statsOptions: null,
+
+    excludeAssets: null,
+}));
 
 module.exports = config;

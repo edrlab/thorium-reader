@@ -20,6 +20,7 @@
             "copy": "Копировать",
             "cut": "Вырезать",
             "paste": "Вставить",
+            "print": "",
             "redo": "Восстановить",
             "selectAll": "Выбрать все",
             "title": "Редактировать",
@@ -36,7 +37,7 @@
                     },
                     "help": "",
                     "message": "Вы хотите сохранить сеанс ?",
-                    "title": "Сохранить сеанс"
+                    "title": "Сохранить сеанс?"
                 }
             }
         },
@@ -187,7 +188,7 @@
     },
     "library": {
         "lcp": {
-            "hint": "Подсказка : ",
+            "hint": "Подсказка :",
             "open": "",
             "password": "Пароль",
             "sentence": "Для открытия этой книги требуется пароль LCP: ",
@@ -581,7 +582,7 @@
             "certifierReport": "Отчёт сертификатора",
             "conformsTo": "Соответствует:",
             "moreInformation": "Больше информации",
-            "name": "Доступность\n",
+            "name": "Доступность",
             "noA11y": "Информация о доступности отсутствует"
         },
         "actions": "Действия",
@@ -696,7 +697,7 @@
             "edit": "Редактировать",
             "goTo": "Перейти на страницу",
             "landmarks": "Ориентиры",
-            "saveMark": "Сохранить закладку",
+            "saveMark": "Сохранить",
             "search": "Поиск",
             "searchResult": "Найдено [{{- searchText}}]",
             "toc": "Содержание"
@@ -739,6 +740,7 @@
             "openTableOfContentsTitle": "навигация",
             "page": "Страница",
             "pdfscalemode": "Размер или ширина страницы",
+            "print": "",
             "settingsTitle": "настройки"
         },
         "notes": {
@@ -763,6 +765,18 @@
             },
             "searchTitle": "Поиск:"
         },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
+        },
         "settings": {
             "column": {
                 "auto": "Авто",
@@ -785,7 +799,7 @@
             "letterSpacing": "Межбуквенное расстояние",
             "lineSpacing": "Межстрочный интервал",
             "margin": "Отступ",
-            "noFootnotes": "Отключить сноски",
+            "noFootnotes": "Отключить всплывающие сноски",
             "noRTLFlip": "Отключить интерфейс справа-налево",
             "noRuby": "Скрыть Японский рубин",
             "noTemporaryNavTargetOutline": "",
@@ -866,7 +880,6 @@
             "type": ""
         },
         "apiKey": {
-            "addKey": "",
             "help": "",
             "howTo1": "",
             "howTo2": "",
@@ -874,10 +887,7 @@
             "keyLabel": "",
             "mistral": "",
             "openAi": "",
-            "providerSelection": "",
-            "removeKey": "",
-            "title": "",
-            "validate": ""
+            "title": ""
         },
         "auth": {
             "help": "",

@@ -20,7 +20,6 @@ import FocusLock from "react-focus-lock";
 import { connect } from "react-redux";
 import {
     DEBUG_KEYBOARD, TKeyboardShortcut, TKeyboardShortcutId, TKeyboardShortcutsMap,
-    TKeyboardShortcutsMapReadOnly,
 } from "readium-desktop/common/keyboard";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { keyboardActions, toastActions } from "readium-desktop/common/redux/actions/";
@@ -577,7 +576,7 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         setKeyboardShortcuts:
-            (data: TKeyboardShortcutsMapReadOnly) => dispatch(keyboardActions.setShortcuts.build(data, true)),
+            (data: TKeyboardShortcutsMap) => dispatch(keyboardActions.setShortcuts.build(data, true)),
         showKeyboardShortcuts: () => dispatch(keyboardActions.showShortcuts.build(true)),
         reloadKeyboardShortcuts: (defaults: boolean) => dispatch(keyboardActions.reloadShortcuts.build(defaults)),
         toast: (str: string) => dispatch(toastActions.openRequest.build(ToastType.Success, str)),

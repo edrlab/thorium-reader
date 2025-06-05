@@ -20,6 +20,7 @@
             "copy": "コピー",
             "cut": "切り取り",
             "paste": "貼り付け",
+            "print": "",
             "redo": "やり直し",
             "selectAll": "すべて選択",
             "title": "編集",
@@ -739,6 +740,7 @@
             "openTableOfContentsTitle": "ナビゲーション",
             "page": "ページ",
             "pdfscalemode": "画面にページを収める / 画面横幅にページを合わせる",
+            "print": "",
             "settingsTitle": "設定"
         },
         "notes": {
@@ -762,6 +764,18 @@
                 "submit": "検索"
             },
             "searchTitle": "検索："
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
         },
         "settings": {
             "column": {
@@ -866,7 +880,6 @@
             "type": "タイプ："
         },
         "apiKey": {
-            "addKey": "",
             "help": "",
             "howTo1": "",
             "howTo2": "",
@@ -874,10 +887,7 @@
             "keyLabel": "",
             "mistral": "",
             "openAi": "",
-            "providerSelection": "",
-            "removeKey": "",
-            "title": "",
-            "validate": ""
+            "title": ""
         },
         "auth": {
             "help": "この操作により、すべてのOPDSログイン情報が削除されます。",

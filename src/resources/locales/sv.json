@@ -20,6 +20,7 @@
             "copy": "Kopiera",
             "cut": "Klipp ut",
             "paste": "Klistra in",
+            "print": "",
             "redo": "Gör om",
             "selectAll": "Markera allt",
             "title": "Redigera",
@@ -739,7 +740,8 @@
             "openTableOfContentsTitle": "Navigation",
             "page": "Sida",
             "pdfscalemode": "Anpassa till hel sida eller sidbredd",
-            "settingsTitle": "inställningar"
+            "print": "",
+            "settingsTitle": "Inställningar"
         },
         "notes": {
             "colors": {
@@ -762,6 +764,18 @@
                 "submit": "Sök"
             },
             "searchTitle": "Sök:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
         },
         "settings": {
             "column": {
@@ -866,7 +880,6 @@
             "type": "Typ:"
         },
         "apiKey": {
-            "addKey": "",
             "help": "",
             "howTo1": "",
             "howTo2": "",
@@ -874,10 +887,7 @@
             "keyLabel": "",
             "mistral": "",
             "openAi": "",
-            "providerSelection": "",
-            "removeKey": "",
-            "title": "",
-            "validate": ""
+            "title": ""
         },
         "auth": {
             "help": "Denna åtgärd raderar alla OPDS-inloggningsuppgifter.",

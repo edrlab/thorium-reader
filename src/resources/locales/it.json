@@ -20,6 +20,7 @@
             "copy": "Copia",
             "cut": "Taglia",
             "paste": "Incolla",
+            "print": "",
             "redo": "Ripeti",
             "selectAll": "Seleziona tutto",
             "title": "Modifica",
@@ -739,6 +740,7 @@
             "openTableOfContentsTitle": "navigazione",
             "page": "Pagina",
             "pdfscalemode": "Dimensioni della pagina o larghezza",
+            "print": "",
             "settingsTitle": "impostazioni"
         },
         "notes": {
@@ -762,6 +764,18 @@
                 "submit": "Trova"
             },
             "searchTitle": "Cerca:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
         },
         "settings": {
             "column": {
@@ -866,7 +880,6 @@
             "type": "Tipo:"
         },
         "apiKey": {
-            "addKey": "",
             "help": "",
             "howTo1": "",
             "howTo2": "",
@@ -874,10 +887,7 @@
             "keyLabel": "",
             "mistral": "",
             "openAi": "",
-            "providerSelection": "",
-            "removeKey": "",
-            "title": "",
-            "validate": ""
+            "title": ""
         },
         "auth": {
             "help": "Questa azione cancella tutte le credenziali di accesso all'OPDS.",

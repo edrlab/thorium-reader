@@ -8,6 +8,7 @@
 import "reflect-metadata";
 
 import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
+import * as stylesSpinner from "readium-desktop/renderer/assets/styles/components/spinnerContainer.scss";
 
 import { OPDS_MEDIA_SCHEME, OPDS_MEDIA_SCHEME__IP_ORIGIN_COVER_IMG } from "readium-desktop/common/streamerProtocol";
 
@@ -143,7 +144,7 @@ class Cover extends React.Component<IProps, IState> {
                 {
                 needsSpinner
                 ?
-                (<div className={stylesPublications.spinner_container}><div className={stylesPublications.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>)
+                (<div className={stylesSpinner.spinner_container}><div className={stylesSpinner.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>)
                 :
                 <div className={stylesPublications.gradient}></div>
                 }
@@ -181,7 +182,7 @@ class Cover extends React.Component<IProps, IState> {
             {
             needsSpinner
             ?
-            (<div className={stylesPublications.spinner_container}><div className={stylesPublications.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>)
+            (<div className={stylesSpinner.spinner_container}><div className={stylesSpinner.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>)
             :
             <div className={stylesPublications.gradient}></div>
             }

@@ -23,6 +23,7 @@ import { flushSession } from "../tools/flushSession";
 import { isOpenUrl, setOpenUrl } from "./url";
 import { globSync } from "glob";
 import { PublicationView } from "readium-desktop/common/views/publication";
+import { isAcceptedExtension } from "readium-desktop/common/extension";
 
 // Logger
 const debug = debug_("readium-desktop:cli:process");
@@ -142,6 +143,14 @@ const yargsInit = () =>
 
                     const pubApi = diMainGet("publication-api");
                     for (const fp of filePathArray) {
+
+                        const ext = path.extname(fp);
+                        const isPDF = isAcceptedExtension("pdf", ext);
+                        if (isPDF) {
+                            process.stderr.write("import PDF from CLI is not allowed: " + fp + EOL);
+                            __returnCode = 1;
+                            continue;
+                        }
 
                         debug("cliImport filePath in filePathArray: ", fp);
                         const pubViews = await sagaMiddleware.run(pubApi.importFromFs, fp).toPromise<PublicationView[]>();

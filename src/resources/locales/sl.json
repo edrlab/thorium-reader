@@ -20,6 +20,7 @@
             "copy": "Kopiraj",
             "cut": "Izreži",
             "paste": "Prilepi",
+            "print": "",
             "redo": "Ponovi",
             "selectAll": "Izberi vse",
             "title": "Uredi",
@@ -739,6 +740,7 @@
             "openTableOfContentsTitle": "navigacija",
             "page": "Stran",
             "pdfscalemode": "Prileganje strani ali širine",
+            "print": "",
             "settingsTitle": "nastavitve"
         },
         "notes": {
@@ -762,6 +764,18 @@
                 "submit": "Išči"
             },
             "searchTitle": "Iskanje:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
         },
         "settings": {
             "column": {
@@ -866,7 +880,6 @@
             "type": "Tip:"
         },
         "apiKey": {
-            "addKey": "",
             "help": "",
             "howTo1": "",
             "howTo2": "",
@@ -874,10 +887,7 @@
             "keyLabel": "",
             "mistral": "",
             "openAi": "",
-            "providerSelection": "",
-            "removeKey": "",
-            "title": "",
-            "validate": ""
+            "title": ""
         },
         "auth": {
             "help": "To dejanje izbriše vse poverilnice za prijavo v OPDS.",

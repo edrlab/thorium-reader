@@ -20,6 +20,7 @@
             "copy": "நகலெடு",
             "cut": "வெட்டு",
             "paste": "ஒட்டு",
+            "print": "",
             "redo": "மீண்டும்செய்",
             "selectAll": "அனைத்தையும் தெரிவுசெய்",
             "title": "தொகு",
@@ -739,6 +740,7 @@
             "openTableOfContentsTitle": "வானோடல்",
             "page": "பக்கம்",
             "pdfscalemode": "பக்க பொருத்தம் அல்லது அகலம்",
+            "print": "",
             "settingsTitle": "அமைப்புகள்"
         },
         "notes": {
@@ -762,6 +764,18 @@
                 "submit": "கண்டுபிடி"
             },
             "searchTitle": "தேடல்:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
         },
         "settings": {
             "column": {
@@ -866,7 +880,6 @@
             "type": "தட்டச்சு:"
         },
         "apiKey": {
-            "addKey": "",
             "help": "",
             "howTo1": "",
             "howTo2": "",
@@ -874,10 +887,7 @@
             "keyLabel": "",
             "mistral": "",
             "openAi": "",
-            "providerSelection": "",
-            "removeKey": "",
-            "title": "",
-            "validate": ""
+            "title": ""
         },
         "auth": {
             "help": "இந்த செயல் அனைத்து OPDS உள்நுழைவு நற்சான்றுகளையும் நீக்குகிறது.",

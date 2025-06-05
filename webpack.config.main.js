@@ -1,4 +1,6 @@
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const StatoscopeWebpackPlugin = require('@statoscope/webpack-plugin').default;
+
 const TerserPlugin = require("terser-webpack-plugin");
 
 const path = require("path");
@@ -45,7 +47,7 @@ const _externalsCache = new Set();
 if (nodeEnv !== "production") {
     const nodeExternals = require("webpack-node-externals");
     const neFunc = nodeExternals({
-        allowlist: ["timeout-signal", "nanoid", "normalize-url", "node-fetch", "data-uri-to-buffer", /^fetch-blob/, /^formdata-polyfill/],
+        allowlist: ["color", "pdf.js", "readium-speech", "@github/paste-markdown", "yargs", "timeout-signal", "nanoid", "normalize-url", "node-fetch", "data-uri-to-buffer", /^fetch-blob/, /^formdata-polyfill/],
         importType: function (moduleName) {
             if (!_externalsCache.has(moduleName)) {
                 console.log(`WEBPACK EXTERNAL (MAIN): [${moduleName}]`);
@@ -141,6 +143,17 @@ let config = Object.assign(
         module: {
             rules: [
                 {
+                    test: /\.(js|ts)$/,
+                    use: [
+                        {
+                            loader: path.resolve("./scripts/webpack-loader-scope-checker.js"),
+                            options: {
+                                forbids: "src/renderer",
+                            },
+                        },
+                    ],
+                },
+                {
                     test: /\.tsx$/,
                     loader: useLegacyTypeScriptLoader ? "awesome-typescript-loader" : "ts-loader",
                     options: {
@@ -171,16 +184,6 @@ let config = Object.assign(
             ],
         },
         plugins: [
-            new BundleAnalyzerPlugin({
-                analyzerMode: "disabled",
-                defaultSizes: "stat", // "parsed"
-                openAnalyzer: false,
-                generateStatsFile: true,
-                statsFilename: "stats_main.json",
-                statsOptions: null,
-
-                excludeAssets: null,
-            }),
             new CopyWebpackPlugin({
                 patterns: [
                     {
@@ -307,5 +310,31 @@ if (nodeEnv !== "production") {
     config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^remote-redux-devtools$/ }));
     config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^json-diff$/ }));
 }
+
+if (process.env.ENABLE_WEBPACK_BUNDLE_STATS)
+config.plugins.push(
+new StatoscopeWebpackPlugin({
+  saveReportTo: './dist/STATOSCOPE_[name].html',
+  // saveStatsTo: './dist/STATOSCOPE_[name].json',
+  saveStatsTo: undefined,
+  normalizeStats: false,
+  saveOnlyStats: false,
+  disableReportCompression: true,
+  statsOptions: {},
+  additionalStats: [],
+  watchMode: false,
+  name: 'main',
+  open: false,
+  compressor: false,
+}),
+new BundleAnalyzerPlugin({
+    analyzerMode: "disabled",
+    defaultSizes: "stat", // "parsed"
+    openAnalyzer: false,
+    generateStatsFile: true,
+    statsFilename: "stats_main.json",
+    statsOptions: null,
+    excludeAssets: null,
+}));
 
 module.exports = config;

@@ -20,6 +20,7 @@
             "copy": "Kopiatu",
             "cut": "Moztu",
             "paste": "Itsatsi",
+            "print": "",
             "redo": "Berregin",
             "selectAll": "Hautatu dena",
             "title": "Editatu",
@@ -739,6 +740,7 @@
             "openTableOfContentsTitle": "Nabigazioa",
             "page": "Orria",
             "pdfscalemode": "Orriaren doikuntza edo zabalera",
+            "print": "",
             "settingsTitle": "Konfigurazio-aukerak"
         },
         "notes": {
@@ -762,6 +764,18 @@
                 "submit": "Aurkitu"
             },
             "searchTitle": "Bilatu:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
         },
         "settings": {
             "column": {
@@ -866,7 +880,6 @@
             "type": ""
         },
         "apiKey": {
-            "addKey": "",
             "help": "",
             "howTo1": "",
             "howTo2": "",
@@ -874,10 +887,7 @@
             "keyLabel": "",
             "mistral": "",
             "openAi": "",
-            "providerSelection": "",
-            "removeKey": "",
-            "title": "",
-            "validate": ""
+            "title": ""
         },
         "auth": {
             "help": "",

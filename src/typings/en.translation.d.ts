@@ -33,6 +33,7 @@ declare namespace typed_i18n {
     readonly "copy": string,
     readonly "cut": string,
     readonly "paste": string,
+    readonly "print": string,
     readonly "redo": string,
     readonly "selectAll": string,
     readonly "title": string,
@@ -57,6 +58,7 @@ declare namespace typed_i18n {
   readonly "copy": string,
   readonly "cut": string,
   readonly "paste": string,
+  readonly "print": string,
   readonly "redo": string,
   readonly "selectAll": string,
   readonly "title": string,
@@ -65,6 +67,7 @@ declare namespace typed_i18n {
   (_: "app.edit.copy", __?: {}): string;
   (_: "app.edit.cut", __?: {}): string;
   (_: "app.edit.paste", __?: {}): string;
+  (_: "app.edit.print", __?: {}): string;
   (_: "app.edit.redo", __?: {}): string;
   (_: "app.edit.selectAll", __?: {}): string;
   (_: "app.edit.title", __?: {}): string;
@@ -1607,6 +1610,12 @@ declare namespace typed_i18n {
   readonly "divina": { readonly "mute": string, readonly "unmute": string },
   readonly "fxl": { readonly "fit": string },
   readonly "goToContent": string,
+  readonly "imgViewer": {
+    readonly "title": string,
+    readonly "zoomIn": string,
+    readonly "zoomOut": string,
+    readonly "zoomReset": string
+  },
   readonly "marks": {
     readonly "annotations": string,
     readonly "bookmarks": string,
@@ -1657,6 +1666,7 @@ declare namespace typed_i18n {
     readonly "openTableOfContentsTitle": string,
     readonly "page": string,
     readonly "pdfscalemode": string,
+    readonly "print": string,
     readonly "settingsTitle": string
   },
   readonly "notes": {
@@ -1680,6 +1690,18 @@ declare namespace typed_i18n {
       readonly "submit": string
     },
     readonly "searchTitle": string
+  },
+  readonly "print": {
+    readonly "description": string,
+    readonly "descriptionLcp": string,
+    readonly "descriptionLcpLimit": string,
+    readonly "pageHelpInfo": string,
+    readonly "pageHelpInfo1": string,
+    readonly "pageHelpInfo2": string,
+    readonly "pageHelpInfo3": string,
+    readonly "pageHelpInfo4": string,
+    readonly "pages": string,
+    readonly "print": string
   },
   readonly "settings": {
     readonly "column": {
@@ -1765,12 +1787,6 @@ declare namespace typed_i18n {
     readonly "speed": string,
     readonly "stop": string,
     readonly "voice": string
-  },
-  readonly "imgViewer": {
-    readonly "title": string,
-    readonly "zoomIn": string,
-    readonly "zoomOut": string,
-    readonly "zoomReset": string
   }
 };
   (_: "reader.annotations", __?: {}): {
@@ -1873,6 +1889,16 @@ declare namespace typed_i18n {
   (_: "reader.fxl", __?: {}): { readonly "fit": string };
   (_: "reader.fxl.fit", __?: {}): string;
   (_: "reader.goToContent", __?: {}): string;
+  (_: "reader.imgViewer", __?: {}): {
+  readonly "title": string,
+  readonly "zoomIn": string,
+  readonly "zoomOut": string,
+  readonly "zoomReset": string
+};
+  (_: "reader.imgViewer.title", __?: {}): string;
+  (_: "reader.imgViewer.zoomIn", __?: {}): string;
+  (_: "reader.imgViewer.zoomOut", __?: {}): string;
+  (_: "reader.imgViewer.zoomReset", __?: {}): string;
   (_: "reader.marks", __?: {}): {
   readonly "annotations": string,
   readonly "bookmarks": string,
@@ -1949,6 +1975,7 @@ declare namespace typed_i18n {
   readonly "openTableOfContentsTitle": string,
   readonly "page": string,
   readonly "pdfscalemode": string,
+  readonly "print": string,
   readonly "settingsTitle": string
 };
   (_: "reader.navigation.ZenModeExit", __?: {}): string;
@@ -1970,6 +1997,7 @@ declare namespace typed_i18n {
   (_: "reader.navigation.openTableOfContentsTitle", __?: {}): string;
   (_: "reader.navigation.page", __?: {}): string;
   (_: "reader.navigation.pdfscalemode", __?: {}): string;
+  (_: "reader.navigation.print", __?: {}): string;
   (_: "reader.navigation.settingsTitle", __?: {}): string;
   (_: "reader.notes", __?: {}): {
   readonly "colors": {
@@ -2024,6 +2052,28 @@ declare namespace typed_i18n {
   (_: "reader.picker.search.results", __?: {}): string;
   (_: "reader.picker.search.submit", __?: {}): string;
   (_: "reader.picker.searchTitle", __?: {}): string;
+  (_: "reader.print", __?: {}): {
+  readonly "description": string,
+  readonly "descriptionLcp": string,
+  readonly "descriptionLcpLimit": string,
+  readonly "pageHelpInfo": string,
+  readonly "pageHelpInfo1": string,
+  readonly "pageHelpInfo2": string,
+  readonly "pageHelpInfo3": string,
+  readonly "pageHelpInfo4": string,
+  readonly "pages": string,
+  readonly "print": string
+};
+  (_: "reader.print.description", __?: {}): string;
+  (_: "reader.print.descriptionLcp", __?: {}): string;
+  (_: "reader.print.descriptionLcpLimit", __?: {}): string;
+  (_: "reader.print.pageHelpInfo", __?: {}): string;
+  (_: "reader.print.pageHelpInfo1", __?: {}): string;
+  (_: "reader.print.pageHelpInfo2", __?: {}): string;
+  (_: "reader.print.pageHelpInfo3", __?: {}): string;
+  (_: "reader.print.pageHelpInfo4", __?: {}): string;
+  (_: "reader.print.pages", __?: {}): string;
+  (_: "reader.print.print", __?: {}): string;
   (_: "reader.settings", __?: {}): {
   readonly "column": {
     readonly "auto": string,
@@ -2242,16 +2292,6 @@ declare namespace typed_i18n {
   (_: "reader.tts.speed", __?: {}): string;
   (_: "reader.tts.stop", __?: {}): string;
   (_: "reader.tts.voice", __?: {}): string;
-  (_: "reader.imgViewer", __?: {}): {
-  readonly "title": string,
-  readonly "zoomIn": string,
-  readonly "zoomOut": string,
-  readonly "zoomReset": string
-};
-  (_: "reader.imgViewer.title", __?: {}): string;
-  (_: "reader.imgViewer.zoomIn", __?: {}): string;
-  (_: "reader.imgViewer.zoomOut", __?: {}): string;
-  (_: "reader.imgViewer.zoomReset", __?: {}): string;
   (_: "settings", __?: {}): {
   readonly "annotationCreator": {
     readonly "creator": string,
@@ -2262,7 +2302,6 @@ declare namespace typed_i18n {
     readonly "type": string
   },
   readonly "apiKey": {
-    readonly "addKey": string,
     readonly "help": string,
     readonly "howTo1": string,
     readonly "howTo2": string,
@@ -2270,10 +2309,7 @@ declare namespace typed_i18n {
     readonly "keyLabel": string,
     readonly "mistral": string,
     readonly "openAi": string,
-    readonly "providerSelection": string,
-    readonly "removeKey": string,
-    readonly "title": string,
-    readonly "validate": string
+    readonly "title": string
   },
   readonly "auth": {
     readonly "help": string,
@@ -2332,7 +2368,6 @@ declare namespace typed_i18n {
   (_: "settings.annotationCreator.person", __?: {}): string;
   (_: "settings.annotationCreator.type", __?: {}): string;
   (_: "settings.apiKey", __?: {}): {
-  readonly "addKey": string,
   readonly "help": string,
   readonly "howTo1": string,
   readonly "howTo2": string,
@@ -2340,12 +2375,8 @@ declare namespace typed_i18n {
   readonly "keyLabel": string,
   readonly "mistral": string,
   readonly "openAi": string,
-  readonly "providerSelection": string,
-  readonly "removeKey": string,
-  readonly "title": string,
-  readonly "validate": string
+  readonly "title": string
 };
-  (_: "settings.apiKey.addKey", __?: {}): string;
   (_: "settings.apiKey.help", __?: {}): string;
   (_: "settings.apiKey.howTo1", __?: {}): string;
   (_: "settings.apiKey.howTo2", __?: {}): string;
@@ -2353,10 +2384,7 @@ declare namespace typed_i18n {
   (_: "settings.apiKey.keyLabel", __?: {}): string;
   (_: "settings.apiKey.mistral", __?: {}): string;
   (_: "settings.apiKey.openAi", __?: {}): string;
-  (_: "settings.apiKey.providerSelection", __?: {}): string;
-  (_: "settings.apiKey.removeKey", __?: {}): string;
   (_: "settings.apiKey.title", __?: {}): string;
-  (_: "settings.apiKey.validate", __?: {}): string;
   (_: "settings.auth", __?: {}): {
   readonly "help": string,
   readonly "title": string,

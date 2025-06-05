@@ -63,6 +63,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     apiKeysActions.setKey.ID,
     noteExport.overrideHTMLTemplate.ID,
+
+    readerActions.print.ID,
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);
