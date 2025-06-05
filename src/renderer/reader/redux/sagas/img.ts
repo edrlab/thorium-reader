@@ -9,14 +9,12 @@ import * as debug_ from "debug";
 import { setImageClickHandler } from "@r2-navigator-js/electron/renderer";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { eventChannel } from "redux-saga";
-import { put as putTyped, select as selectTyped, call as callTyped } from "typed-redux-saga";
+import { put as putTyped, call as callTyped } from "typed-redux-saga";
 import { readerLocalActionSetImageClick } from "../actions";
 
 import { IEventPayload_R2_EVENT_IMAGE_CLICK } from "@r2-navigator-js/electron/common/events";
-import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { ICacheDocument } from "readium-desktop/common/redux/states/renderer/resourceCache";
-import { getDocumentFromICacheDocument } from "readium-desktop/utils/xmlDom";
-import { cleanupStr } from "readium-desktop/utils/search/transliteration";
+import { cleanupStr } from "./search/transliteration";
+import { getResourceCache } from "readium-desktop/common/redux/sagas/resourceCache";
 
 // Logger
 const filename_ = "readium-desktop:renderer:reader:saga:img";
@@ -44,30 +42,15 @@ export function getWebviewImageClickChannel() {
     return channel;
 }
 
-const getCacheDocumentFromLocator = (cacheDocumentArray: ICacheDocument[], hrefSource: string): ICacheDocument => {
-
-    for (const cacheDoc of cacheDocumentArray) {
-        if (hrefSource && cacheDoc.href && cacheDoc.href === hrefSource) {
-            return cacheDoc;
-        }
-    }
-
-    return undefined;
-};
-
 function* webviewImageClick(payload: IEventPayload_R2_EVENT_IMAGE_CLICK) {
 
     debug("IMAGE_CLICK received :", payload);
     yield* putTyped(readerLocalActionSetImageClick.build(payload));
 
-    const { hostDocumentURL, cssSelectorOf_HTMLImg_SVGImage_SVGFragment } = payload;
-    const cacheDocuments = yield* selectTyped((state: IReaderRootState) => state.resourceCache);
-    const cacheDoc = getCacheDocumentFromLocator(cacheDocuments, hostDocumentURL);
+    const { hostDocumentURL: source, cssSelectorOf_HTMLImg_SVGImage_SVGFragment } = payload;
 
-    const xmlDom = yield* callTyped(() => getDocumentFromICacheDocument(cacheDoc));
-    if (!xmlDom) {
-        return ;
-    }
+    const cacheDoc = yield* callTyped(getResourceCache, source);
+    const xmlDom = cacheDoc?.xmlDom;
 
     const rootElem = xmlDom.body;
     const imgElem = xmlDom.querySelector(cssSelectorOf_HTMLImg_SVGImage_SVGFragment);
