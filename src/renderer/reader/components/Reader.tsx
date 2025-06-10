@@ -48,6 +48,7 @@ import {
 } from "readium-desktop/renderer/common/keyboard";
 import ReaderFooter from "readium-desktop/renderer/reader/components/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/reader/components/ReaderHeader";
+import TextSelectionPopup from "readium-desktop/renderer/reader/components/TextSelectionPopup";
 import {
     TKeyboardEventOnAnchor, TMouseEventOnAnchor,
     TMouseEventOnSpan,
@@ -1100,11 +1101,12 @@ class Reader extends React.Component<IProps, IState> {
 
                     disableRTLFlip={this.props.disableRTLFlip}
                     isRTLFlip={this.isRTLFlip}
-                    publicationView={this.props.publicationView}
-
-                        />
+                    publicationView={this.props.publicationView}                        />
                         : <></>
                     }
+                
+                {/* Text Selection Annotation Popup */}
+                <TextSelectionPopup />
                 </div>
             </>
         );
