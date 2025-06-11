@@ -56,14 +56,27 @@ function render(text: string) {
     // Replace all instances of single backslashes before brackets with double backslashes
     // See https://github.com/markedjs/marked/issues/546 for more information.
     text = text.replace(/\\([\[\]\(\)])/g, "\\\\$1");
+    text = text.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, "");
 
-    const result = DOMPurify.sanitize(
+    const parsed = DOMPurify.sanitize(
         marked.parse(text, {
             async: false,
             breaks: true,
-        }),
-    );
-    return result;
+        }), { FORBID_TAGS: ["style"], FORBID_ATTR: ["style"] });
+
+    const regex = new RegExp(/href=\"(.*?)\"/, "gm");
+    const hrefSanitized = parsed.replace(regex, (_substring, url) => {
+
+        if (!url?.startsWith("http")) {
+            url = "http://" + url;
+        }
+
+        return `href="" alt="${url}" onclick="return ((e) => {
+                    window.__shell_openExternal('${url}').catch(() => {});
+                    return false;
+                })()"`;
+    });
+    return hrefSanitized;
 }
 
 // async function getBase64ImageFromUrl(imageUrl: string): Promise<string> {
