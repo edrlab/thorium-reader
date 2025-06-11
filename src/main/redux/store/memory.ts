@@ -29,6 +29,10 @@ import { EDrawType, INoteState, NOTE_DEFAULT_COLOR_OBJ, TDrawType } from "readiu
 import { clone } from "ramda";
 import { TBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { TAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
+import { AiProviderType } from "readium-desktop/common/redux/states/ai_apiKey";
+
+// TODO: DEBUG ONLY AISDK
+import "dotenv/config";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -441,7 +445,16 @@ export async function initStore()
                 process.env["OPENAI_API_KEY"] = aiKey.aiKey;
             } else if (aiKey.provider === "mistralAI" && aiKey.aiKey) {
                 process.env["MISTRAL_API_KEY"] = aiKey.aiKey;
-            } 
+            }
+        }
+    }
+    {
+        preloadedState.aiApiKeys = preloadedState?.aiApiKeys || [];
+        if (process.env["OPENAI_API_KEY"]) {
+            preloadedState.aiApiKeys.push({ provider: AiProviderType.openAI, aiKey: process.env["OPENAI_API_KEY"] });
+        }
+        if (process.env["MISTRAL_API_KEY"]) {
+            preloadedState.aiApiKeys.push({ provider: AiProviderType.mistralAI, aiKey: process.env["MISTRAL_API_KEY"] });
         }
     }
     if (preloadedState?.creator && !preloadedState.creator.urn) {

@@ -66,8 +66,6 @@ debug("_");
 const debugAiSdk = debug_("readium-desktop:main#AISDK");
 debug("_");
 
-// TODO: DEBUG ONLY AISDK
-import "dotenv/config";
 import { nanoid } from "nanoid";
 
 // !!!!!!
