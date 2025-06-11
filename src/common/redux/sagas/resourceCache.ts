@@ -100,7 +100,7 @@ export function* resourceCacheTimer(): SagaGenerator<void> {
     }
 
     if (__resourceCache.size) {
-        debug(`__resourceCache MAP (size: ${__resourceCache.size}):`, __resourceCache);
+        // debug(`__resourceCache MAP (size: ${__resourceCache.size}):`, __resourceCache);
     }
 }
 

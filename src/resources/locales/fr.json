@@ -57,7 +57,7 @@
         "addTags": "Ajouter un mot-clef",
         "addTagsButton": "Ajouter",
         "allBooks": "Mes livres",
-        "bookInfo": "A propos",
+        "bookInfo": "À propos",
         "column": {
             "ascending": "ordre croissant",
             "descending": "Ordre décroissant",
@@ -238,7 +238,7 @@
         "informations": "Imaginez un monde dans lequel vous pouvez explorer et télécharger en quelques clics les publications numériques des bibliothèques publiques et des librairies numériques. C'est exactement ce qu'offre le format de catalogue OPDS (Open Publication Distribution System). Avec OPDS, vous pouvez naviguer dans les catalogues de différents fournisseurs de livres électroniques, vous connecter, emprunter, acheter une publication ou visiter votre bibliothèque personnelle. Vous pouvez aussi télécharger un livre électronique ou un livre audio directement dans Thorium Reader pour une lecture instantanée.\nComment trouver un catalogue OPDS ? C'est très simple. Recherchez un lien hypertexte (URL) menant au catalogue. Copiez cette URL dans le champ \"Lien\" ci-dessus. N'oubliez pas qu'il n'existe pas de registre universel de tous les catalogues OPDS actifs. Vous devrez contacter la bibliothèque ou le libraire de votre choix et lui demander l'URL de son catalogue OPDS. Si vous ne savez pas par où commencer, Wikipedia propose quelques registres de catalogues OPDS dans différentes langues qui pourraient vous être utiles.\nLe champ Nom est laissé à votre convenance ; il permet d'identifier facilement le catalogue dans Thorium Reader.",
         "lastPage": "Dernière",
         "menu": {
-            "aboutBook": "A propos",
+            "aboutBook": "À propos",
             "addExtract": "Ajouter l'extrait",
             "goBuyBook": "Aller sur la page d'achat",
             "goLoanBook": "Aller sur la page d'emprunt",
