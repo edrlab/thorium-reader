@@ -329,122 +329,122 @@
                 "compact": "Daha fazla bilgi için sertifikalandıranın raporuna bakın"
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bu eser şunu karşıladığı iddiasındadır:",
+                "descriptive": "Bu eser şunu karşıladığı iddiasındadır:"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Erişilebilirliği 1.0",
+                "descriptive": "EPUB Erişilebilirliği 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Erişilebilirliği 1.1",
+                "descriptive": "EPUB Erişilebilirliği 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "A Seviye",
+                "descriptive": "A Seviye"
             },
             "conformance-details-level-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "AA Seviye",
+                "descriptive": "AA Seviye"
             },
             "conformance-details-level-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "AAA Seviye",
+                "descriptive": "AAA Seviye"
             },
             "conformance-details-wcag-2-0": {
-                "compact": ""
+                "compact": "WCAG 2.0"
             },
             "conformance-details-wcag-2-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.1",
+                "descriptive": "Web İçeriği Erişilebilirlik Kılavuzu (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.2",
+                "descriptive": "Web İçeriği Erişilebilirlik Kılavuzu (WCAG) 2.2"
             },
             "conformance-no": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bilgi mevcut değil",
+                "descriptive": "Bilgi mevcut değil"
             },
-            "conformance-title": "",
+            "conformance-title": "Uygunluk",
             "conformance-unknown-standard": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bu eserin erişilebilirliğe ilişkin kabul görmüş standartlara uygunluğu belirlenemiyor",
+                "descriptive": "Bu eserin erişilebilirliğe ilişkin kabul görmüş standartlara uygunluğu belirlenemiyor"
             }
         },
         "hazards": {
             "hazards-flashing": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Yanıp sönen içerik",
+                "descriptive": "Eserde, ışığa duyarlılık kaynaklı nöbetlere neden olabilecek yanıp sönen içerikler bulunuyor"
             },
             "hazards-flashing-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Yanıp sönen içerik yok",
+                "descriptive": "Eserde, yanıp sönen içerik bulunmuyor"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Yanıp sönen içerik mevcudiyeti bilinmiyor",
+                "descriptive": "Yanıp sönen içerik mevcudiyeti bilinmiyor"
             },
             "hazards-motion": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Hareket simülasyonu",
+                "descriptive": "Eser, hareket hastalığına sebep olabilecek hareket simülasyonları içeriyor"
             },
             "hazards-motion-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Hareket simülasyonu yok",
+                "descriptive": "Eser, hareket simülasyonu içermiyor"
             },
             "hazards-motion-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Hareket simülasyonu mevcudiyeti bilinmiyor",
+                "descriptive": "Hareket simülasyonu mevcudiyeti bilinmiyor"
             },
             "hazards-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bilgi mevcut değil",
+                "descriptive": "Bilgi mevcut değil"
             },
             "hazards-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Risk yok",
+                "descriptive": "Eser, risk içermiyor"
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sesler",
+                "descriptive": "Eser, rahatsız edici olabilecek sesler içeriyor"
             },
             "hazards-sound-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ses yok",
+                "descriptive": "Eser, ses içermiyor"
             },
             "hazards-sound-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ses mevcudiyeti bilinmiyor",
+                "descriptive": "Ses mevcudiyeti bilinmiyor"
             },
-            "hazards-title": "",
+            "hazards-title": "Riskler",
             "hazards-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Risk mevcudiyeti bilinmiyor",
+                "descriptive": "Risk mevcudiyeti bilinmiyor"
             }
         },
         "navigation": {
             "navigation-index": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Dizin",
+                "descriptive": "Gönderme  yapılan girdilere bağlantılar içeren dizin"
             },
             "navigation-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bilgi mevcut değil",
+                "descriptive": "Bilgi mevcut değil"
             },
             "navigation-page-navigation": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sayfaya git",
+                "descriptive": "Basılı kaynak sürümdeki sayfalara gitmek için sayfa listesi"
             },
             "navigation-structural": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Başlıklar",
+                "descriptive": "Yapılandırılmış gezinme için başlıklar, tablolar ve benzeri  gibi öğeler"
             },
-            "navigation-title": "",
+            "navigation-title": "Gezinme",
             "navigation-toc": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "İçindekiler tablosu",
+                "descriptive": "Metnin tüm bölümlerine bağlantılarla içindekiler tablosu"
             }
         },
         "rich-content": {
