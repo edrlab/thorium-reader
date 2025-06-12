@@ -51,6 +51,7 @@ import { diMainGet } from "../di";
 import { getNotesFromMainWinState } from "../redux/sagas/note";
 import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 
+import { google } from "@ai-sdk/google";
 import { openai } from "@ai-sdk/openai";
 import { mistral } from "@ai-sdk/mistral";
 import { CoreUserMessage, LanguageModelV1, streamText } from "ai";
@@ -347,6 +348,10 @@ const streamProtocolHandler = async (
             model = openai(modelId.split("__!__")[1]);
         } else if (modelId.startsWith("mistralai")) {
             model = mistral(modelId.split("__!__")[1]);
+        } else if (modelId.startsWith("gemini")) {
+            model = google(modelId.split("__!__")[1], {
+                useSearchGrounding: true,
+            }) as LanguageModelV1;
         }
 
         try {

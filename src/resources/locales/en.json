@@ -134,7 +134,7 @@
         "shortDescTitle": "short description",
         "shortDescription": "Describe this image in two sentences",
         "systemPromptEditor": "System prompt editor",
-        "title": "Describe the image with {{- title}}"
+        "title": "Describe image with {{- title}}"
     },
     "dialog": {
         "annotations": {

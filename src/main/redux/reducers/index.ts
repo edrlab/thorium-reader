@@ -118,6 +118,8 @@ export const rootReducer = combineReducers({ // RootState
                                 process.env["OPENAI_API_KEY"] = payload.aiKey.aiKey;
                             } else if (payload.aiKey.provider === "mistralAI") {
                                 process.env["MISTRAL_API_KEY"] = payload.aiKey.aiKey;
+                            } else if (payload.aiKey.provider === "geminiAI") {
+                                process.env["GOOGLE_GENERATIVE_AI_API_KEY"] = payload.aiKey.aiKey;
                             }
                             return [payload.aiKey];
                         },

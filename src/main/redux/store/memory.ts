@@ -445,16 +445,21 @@ export async function initStore()
                 process.env["OPENAI_API_KEY"] = aiKey.aiKey;
             } else if (aiKey.provider === "mistralAI" && aiKey.aiKey) {
                 process.env["MISTRAL_API_KEY"] = aiKey.aiKey;
+            } else if (aiKey.provider === "geminiAI" && aiKey.aiKey) {
+                process.env["GOOGLE_GENERATIVE_AI_API_KEY"] = aiKey.aiKey;
             }
         }
     }
     {
-        preloadedState.aiApiKeys = preloadedState?.aiApiKeys || [];
+        preloadedState.aiApiKeys = [];
         if (process.env["OPENAI_API_KEY"]) {
             preloadedState.aiApiKeys.push({ provider: AiProviderType.openAI, aiKey: process.env["OPENAI_API_KEY"] });
         }
         if (process.env["MISTRAL_API_KEY"]) {
             preloadedState.aiApiKeys.push({ provider: AiProviderType.mistralAI, aiKey: process.env["MISTRAL_API_KEY"] });
+        }
+        if (process.env["GOOGLE_GENERATIVE_AI_API_KEY"]) {
+            preloadedState.aiApiKeys.push({ provider: AiProviderType.geminiAI, aiKey: process.env["GOOGLE_GENERATIVE_AI_API_KEY"] });
         }
     }
     if (preloadedState?.creator && !preloadedState.creator.urn) {

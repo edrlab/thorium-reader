@@ -42,6 +42,7 @@ import * as PlusIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import * as MinusIcon from "readium-desktop/renderer/assets/icons/Minus-Bold.svg";
 import * as OpenAiIcon from "readium-desktop/renderer/assets/icons/open-ai-icon.svg";
 import * as MistralAiIcon from "readium-desktop/renderer/assets/icons/mistral-ai-icon.svg";
+import * as GeminiIcon from "readium-desktop/renderer/assets/icons/gemini.svg";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { AiProviderType } from "readium-desktop/common/redux/states/ai_apiKey";
 
@@ -245,8 +246,9 @@ const Chat = ({ imageHref, autoPrompt, setAutoPrompt }: { imageHref: string, ima
                             <div className={stylesChatbot.chatbot_message_speaker}>
                                 {message.role === "user" ? "" : message.id.includes("openai") ?
                                     <SVG svg={OpenAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.openai)} />
-                                    :
-                                    <SVG svg={MistralAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.mistral)} />
+                                    : message.id.includes("mistral") ?
+                                        <SVG svg={MistralAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.mistral)} />
+                                        : <SVG svg={GeminiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.openai)} />
                                 }
                             </div>
                             <div className={stylesChatbot.chatbot_message_content} dangerouslySetInnerHTML={{ __html: render(message.content) }}>
@@ -261,8 +263,9 @@ const Chat = ({ imageHref, autoPrompt, setAutoPrompt }: { imageHref: string, ima
                         <div>
                             {modelSelected.name.startsWith("openAI") ?
                                 <SVG svg={OpenAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.openai)} />
-                                :
-                                <SVG svg={MistralAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.mistral)} />
+                                : modelSelected.name.startsWith("mistralAI") ?
+                                    <SVG svg={MistralAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.mistral)} />
+                                    : <SVG svg={GeminiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.openai)} />
                             }
                         </div>
                         <input

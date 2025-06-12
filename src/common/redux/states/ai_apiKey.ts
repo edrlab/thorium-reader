@@ -7,7 +7,8 @@
 
 export enum AiProviderType {
     openAI = "openAI",
-    mistralAI = "mistralAI"
+    mistralAI = "mistralAI",
+    geminiAI = "geminiAI",
 }
 
 export interface IAiApiKey {

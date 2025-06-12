@@ -26,6 +26,7 @@ import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import * as OpenAiIcon from "readium-desktop/renderer/assets/icons/open-ai-icon.svg";
 import * as LinkIcon from "readium-desktop/renderer/assets/icons/link-icon.svg";
 import * as MistralAiIcon from "readium-desktop/renderer/assets/icons/mistral-ai-icon.svg";
+import * as GeminiIcon from "readium-desktop/renderer/assets/icons/gemini.svg";
 import { AiProviderType } from "readium-desktop/common/redux/states/ai_apiKey";
 
 const AiKeyCard = ({provider}:{provider: string}) => {
@@ -50,8 +51,10 @@ const AiKeyCard = ({provider}:{provider: string}) => {
 
     const openAiLink = "https://platform.openai.com/api-keys";
     const mistralAiLink = "https://console.mistral.ai/api-keys";
+    const geminiAiLink = "https://aistudio.google.com/apikey";
     const openAiPlaceholder = "ex: sk-0000000000000000000000000000000000000000000000";
     const mistralPLaceholder = "ex: aBCdef1234567890Abcdef1234567890abcDEf1234567890";
+    const geminiPlaceholder = "ex: AI...";
 
 
     return (
@@ -62,27 +65,31 @@ const AiKeyCard = ({provider}:{provider: string}) => {
                         <SVG svg={OpenAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.openai)} />
                         {__("settings.apiKey.openAi")}
                     </h4>
-                ) : (
+                ) : provider === AiProviderType.mistralAI ? (
                     <h4>
                         <SVG svg={MistralAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.openai)} />
                         {__("settings.apiKey.mistral")}
                     </h4>
-                )}
+                ) : <h4>
+                    <SVG svg={GeminiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.openai)} />
+                    {"gemini"}
+                </h4>
+                }
             </div>
             <div>
                 <ul>
                     <li>
-                        {__("settings.apiKey.howTo1", {provider: provider})} 
-                        <a href={ provider === AiProviderType.openAI ? openAiLink : provider === AiProviderType.mistralAI ? mistralAiLink : ""} target="blank" style={{marginLeft: "3px"}}>
-                            <SVG svg={LinkIcon} ariaHidden style={{width: "10px", height: "10px"}} />
+                        {__("settings.apiKey.howTo1", { provider: provider })}
+                        <a href={provider === AiProviderType.openAI ? openAiLink : provider === AiProviderType.mistralAI ? mistralAiLink : geminiAiLink} target="blank" style={{ marginLeft: "3px" }}>
+                            <SVG svg={LinkIcon} ariaHidden style={{ width: "10px", height: "10px" }} />
                         </a>
                     </li>
-                    <li>{__("settings.apiKey.howTo2", {provider: provider})}</li>
-                    <li>{__("settings.apiKey.howTo3", {provider: provider})}</li>
+                    <li>{__("settings.apiKey.howTo2", { provider: provider })}</li>
+                    <li>{__("settings.apiKey.howTo3", { provider: provider })}</li>
                 </ul>
             </div>
             <form className={stylesSettings.apiKey_input_edit_container} onSubmit={(e) => e.preventDefault()}>
-                <div className={stylesInput.form_group} style={{transition: "500ms", border: isFocused || !apiKey ? "1px solid var(--color-light-grey)" : "1px solid transparent", borderRadius: isFocused || !apiKey ? "6px" : "unset"}}>
+                <div className={stylesInput.form_group} style={{ transition: "500ms", border: isFocused || !apiKey ? "1px solid var(--color-light-grey)" : "1px solid transparent", borderRadius: isFocused || !apiKey ? "6px" : "unset" }}>
                     <input
                         name="api-key"
                         className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
@@ -90,18 +97,18 @@ const AiKeyCard = ({provider}:{provider: string}) => {
                         defaultValue={apiKey}
                         onChange={(e) => setKey(e.target.value, provider)}
                         placeholder={
-                            provider === AiProviderType.openAI ? openAiPlaceholder : 
-                            provider === AiProviderType.mistralAI ? mistralPLaceholder : 
-                            ""
-                            }
+                            provider === AiProviderType.openAI ? openAiPlaceholder :
+                                provider === AiProviderType.mistralAI ? mistralPLaceholder :
+                                    geminiPlaceholder
+                        }
                         onFocus={() => setIsFocused(true)}
                         onBlur={() => setIsFocused(false)}
                         onKeyDown={handleKeyDown}
                         ref={inputRef}
-                        style={{transition: "500ms", backgroundColor: isFocused || !apiKey ? "var(--color-annotations-txt-area)" : "inherit", borderBottom: isFocused || !apiKey ? "1px solid transparent" : "1px solid var(--color-light-grey)"}}
+                        style={{ transition: "500ms", backgroundColor: isFocused || !apiKey ? "var(--color-annotations-txt-area)" : "inherit", borderBottom: isFocused || !apiKey ? "1px solid transparent" : "1px solid var(--color-light-grey)" }}
                     />
                     <label htmlFor="api-key">{__("settings.apiKey.keyLabel")}</label>
-                </div>      
+                </div>
             </form>
         </div>
     );
@@ -109,7 +116,7 @@ const AiKeyCard = ({provider}:{provider: string}) => {
 
 export const ApiKeysList = () => {
     const [__] = useTranslator();
-    const allProviders = ["openAI", "mistralAI"];
+    const allProviders = ["openAI", "mistralAI", "geminiAI"];
 
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>

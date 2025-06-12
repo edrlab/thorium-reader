@@ -169,19 +169,21 @@
         margin: 0 !important;
         padding: 0;
         padding-bottom: 10px !important;
-        max-width: 350px;
-        min-width: 180px;
+        // max-width: 350px;
+        // min-width: 180px;
+        width: 500px;
+        min-width: 500px;
         height: 30px;
         max-height: 30px;
 
         .my_combobox_container {
             padding-left: 10px !important;
             border: none !important;
-            width: fit-content;
+            width: 500px;
 
             button {
                 font-size: 20px;
-                min-width: 180px;
+                width: 500px;
                 color: var(--color-blue);
             }
 

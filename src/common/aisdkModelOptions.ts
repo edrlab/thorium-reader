@@ -22,10 +22,20 @@ const ADVANCED_SYSTEM_PROMPT = {
     },
 };
 
-const ADVANCED_SYSTEM_PROMPT_STRING = JSON.stringify(ADVANCED_SYSTEM_PROMPT);
+const ADVANCED_SYSTEM_PROMPT_STRING = JSON.stringify(ADVANCED_SYSTEM_PROMPT, null, 4);
 
 export interface IaiSdkModel { id: string, name: string, systemPrompt: string };
 export const aiSDKModelOptions: Array<IaiSdkModel> = [
+    {
+        id: "gemini__!__gemini-2.5-pro-preview-06-05__!__default-prompt",
+        name: "geminiAI gemini-2.5-pro-preview-06-05 (default)",
+        systemPrompt: DEFAULT_SYSTEM_PROMPT,
+    },
+    {
+        id: "gemini__!__gemini-2.5-pro-preview-06-05__!__specific-prompt",
+        name: "geminiAI gemini-2.5-pro-preview-06-05 (advanced)",
+        systemPrompt: ADVANCED_SYSTEM_PROMPT_STRING,
+    },
     {
         id: "openai__!__gpt-4o-mini__!__default-prompt",
         name: "openAI gpt-4o-mini (default)",
