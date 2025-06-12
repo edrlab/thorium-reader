@@ -121,10 +121,10 @@
         "update": "Edit"
     },
     "chatbot": {
-        "detailedDescTitle": "detailed description",
+        "detailedDescTitle": "extended description",
         "detailedDescription": "Describe this illustration in detail (nature of the image, technique, format, symbolism, characters, scenery, colours, style, period, etc.)",
         "editorDescription": "Editor's description",
-        "generateDescription": "You can ask the AI to generate either a short description or a detailed description.",
+        "generateDescription": "You can ask the AI to generate either a short description or an extended description.",
         "generateDescriptionTitle": "Generate a textual description",
         "inputPlaceholder": "Ask something, For example: can you describe this image?",
         "noApiKey": "You can generate a description and chat with an AI by entering an API Key in the application settings",
