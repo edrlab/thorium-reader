@@ -259,6 +259,8 @@
             max-width: 100%;
             display: flex;
             align-items: start;
+            flex-direction: column;
+            user-select: text;
 
             p {
                 text-align: start;

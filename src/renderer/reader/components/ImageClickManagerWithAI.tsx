@@ -43,8 +43,11 @@ import * as MinusIcon from "readium-desktop/renderer/assets/icons/Minus-Bold.svg
 import * as OpenAiIcon from "readium-desktop/renderer/assets/icons/open-ai-icon.svg";
 import * as MistralAiIcon from "readium-desktop/renderer/assets/icons/mistral-ai-icon.svg";
 import * as GeminiIcon from "readium-desktop/renderer/assets/icons/gemini.svg";
+import * as GoogleIcon from "readium-desktop/renderer/assets/icons/google.svg";
+import * as WikipediaIcon from "readium-desktop/renderer/assets/icons/wikipedia.svg";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { AiProviderType } from "readium-desktop/common/redux/states/ai_apiKey";
+import { shell } from "electron";
 
 interface ControlsProps {
     chatEnabled: boolean;
@@ -121,14 +124,16 @@ const ChatContext = React.createContext<IChatContext>(undefined);
 
 let __messages: UIMessage[] = [];
 
+let selectionTextContent = "";
+
 const Chat = ({ imageHref, autoPrompt, setAutoPrompt }: { imageHref: string, imageDescription: string, autoPrompt: string, setAutoPrompt: (value: React.SetStateAction<string>) => void }) => {
 
 
-    const { systemPrompt, setSystemPrompt  /*showImage*/ } = React.useContext(ChatContext);
+    const { systemPrompt, setSystemPrompt  /*showImage*/, modelSelected } = React.useContext(ChatContext);
     const [__] = useTranslator();
 
-    const apiList = useSelector((state: IReaderRootState) => state.aiApiKeys);
-    const modelSelected = aiSDKModelOptions.filter(e => apiList.some(item => AiProviderType[item.provider] === e.name.split(" ")[0]))[0];
+    // const apiList = useSelector((state: IReaderRootState) => state.aiApiKeys);
+    // const modelSelected = aiSDKModelOptions.filter(e => apiList.some(item => AiProviderType[item.provider] === e.name.split(" ")[0]))[0];
 
     // const handleModelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     //     const selectedId = event.target.value;
@@ -181,6 +186,16 @@ const Chat = ({ imageHref, autoPrompt, setAutoPrompt }: { imageHref: string, ima
             setAutoPrompt("");
         }
     }, [input, autoPrompt, setAutoPrompt]);
+
+    React.useEffect(() => {
+
+        const unsubscribe = document.onselectionchange = () => {
+            selectionTextContent = document.getSelection().toString() || selectionTextContent;
+            console.log(`new Selection : "${selectionTextContent}"`);
+        };
+
+        return unsubscribe;
+    });
 
 
     return (
@@ -254,6 +269,29 @@ const Chat = ({ imageHref, autoPrompt, setAutoPrompt }: { imageHref: string, ima
                             <div className={stylesChatbot.chatbot_message_content} dangerouslySetInnerHTML={{ __html: render(message.content) }}>
                                 {/* {message.content} */}
                             </div>
+                            {message.role === "assistant" ?
+                                <div style={{border: "1px", borderColor: "gray", display: "flex", flexDirection: "row"}}>
+                                    <button style={{marginLeft: "5px", marginRight: "5px"}} onClick={() => {
+
+                                        let text = message.content.slice(0, 200);
+                                        if (selectionTextContent && message.content.includes(selectionTextContent)) {
+                                            text = selectionTextContent;
+                                        }
+
+                                        shell.openExternal(`https://www.google.com/search?hl=en&q=${encodeURIComponent(text)}`);
+                                    }}><SVG style={{width: "20px", height: "20px"}} svg={GoogleIcon} /></button>
+                                    <button style={{marginLeft: "5px", marginRight: "5px"}} onClick={() => {
+
+                                        let text = message.content.slice(0, 200);
+                                        if (selectionTextContent && message.content.includes(selectionTextContent)) {
+                                            text = selectionTextContent;
+                                        }
+
+                                        shell.openExternal(`https://en.wikipedia.org/w/index.php?title=Special:Search&search=${encodeURIComponent(text)}`);
+                                    }}><SVG style={{width: "20px", height: "20px"}} svg={WikipediaIcon} /></button>
+                                </div>
+                                : <></>
+                            }
                         </div>
                     ))}
                     <div id="aichat-anchor"></div>
