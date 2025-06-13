@@ -191,7 +191,7 @@ const Theme = () => {
     return (
         <section className={stylesSettings.section}>
             <h4>{__("reader.settings.theme.title")}</h4>
-            <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px", marginTop: "20px", flexWrap: "wrap" }}
+            <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px", marginTop: "5px", flexWrap: "wrap" }}
                 value={themeOptions.find((theme) => theme.id === defaultKey).value}
                 onValueChange={(option) => set({ theme: option as TTheme })}
             >
@@ -1786,7 +1786,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                 //         console.error("Combobox No value !!!");
                 //     }
                 // }}
-                style={{ margin: "0", paddingBottom: (dockedMode && isEpub) ? "10px" : "0", flexDirection: "row", backgroundColor: "var(--color-docked-header)", borderBottom: "1px solid var(--color-extralight-grey-alt)" }}
+                style={{ margin: "0", padding: (dockedMode && isEpub) ? "10px 0" : "0", flexDirection: "row", backgroundColor: "var(--color-docked-header)", borderBottom: "1px solid var(--color-extralight-grey-alt)" }}
                 ref={dockedModeRef}
             >
                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
@@ -1824,7 +1824,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
             {
                 dockedMode ?
                     <>
-                        <div key="docked-header" className={stylesPopoverDialog.docked_header} style={{borderBottom: "unset"}}>
+                        <div key="docked-header" className={stylesPopoverDialog.docked_header}>
                             {
                                 (dockedMode && isEpub) ? <AllowCustomContainer /> : <SelectRefComponent />
                             }

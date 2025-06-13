@@ -61,7 +61,7 @@
 }
 
 .popover_dialog_reader {
-  width: 350px;
+  width: 370px;
   height: calc(100dvh - 114px);
   display: flex;
   margin-top: 50px;
@@ -137,12 +137,17 @@
     .my_combobox_container {
       width: fit-content;
       min-width: 110px;
-      height: 28px;
+      height: 25px;
       background-color: var(--color-light-blue);
       color: var(--color-blue);
       border-color: var(--color-blue) !important;
       display: flex;
       align-items: center;
+
+      &:has(#reader-settings-nav) {
+        width: 100%;
+        margin: 0 20px 0 5px;
+      }
 
       > button {
         color: var(--color-blue);
@@ -160,8 +165,8 @@
       }
 
       input, > button {
-        width: 170px;
-        height: 25px;
+        width: 100%;
+        height: 20px;
         background-color: inherit;
         font-size: 14px;
         margin-left: 10px;
