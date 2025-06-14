@@ -20,7 +20,7 @@
             "copy": "Kopyala",
             "cut": "Kes",
             "paste": "Yapıştır",
-            "print": "",
+            "print": "Yazdır",
             "redo": "Yenile",
             "selectAll": "Tümünü seç",
             "title": "Düzenle",
@@ -265,8 +265,8 @@
                 "descriptive": "Braille"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "Ruby biçiminde tam açıklamalar",
-                "descriptive": "Ruby biçiminde tam açıklamalar"
+                "compact": "Asya dillerinde tam okutucu belirtimleri",
+                "descriptive": "Asya dillerinde tam okutucu belirtimleri"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
                 "compact": "Önplan ve arkaplan sesleri arasında yüksek karşıtlık",
@@ -277,174 +277,174 @@
                 "descriptive": "Önplan metni ve arkaplan arasında yüksek karşıtlık"
             },
             "additional-accessibility-information-large-print": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Büyük puntolu",
+                "descriptive": "Büyük puntolu"
             },
             "additional-accessibility-information-page-breaks": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sayfa geçişleri dahil",
+                "descriptive": "Orjinal basılı kaynaktaki sayfa geçişleri dahil"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Asya dillerinde bazı Okutucu belirtimleri",
+                "descriptive": "Asya dillerinde bazı Okutucu belirtimleri"
             },
             "additional-accessibility-information-sign-language": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "İşaret dili",
+                "descriptive": "İşaret dili"
             },
             "additional-accessibility-information-tactile-graphics": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Dokunsal grafikler dahil",
+                "descriptive": "Görme engelli kişilerin görsel öğelere erişimini kolaylaştırmak için dokunsal grafikler entegre edilmiştir"
             },
             "additional-accessibility-information-tactile-objects": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Dokunsal 3D nesneler",
+                "descriptive": "Dokunsal 3D nesneler"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Metinden-sese (TTS) ile okuma için ipuçları sağlanır",
+                "descriptive": "Metinden-sese (TTS) ile okuma için ipuçları sağlanır"
             },
-            "additional-accessibility-information-title": ""
+            "additional-accessibility-information-title": "İlave erişilebilirlik bilgisi"
         },
         "conformance": {
             "conformance-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bu eser, asgari erişilebilirlik standartlarını karşılar",
+                "descriptive": "Eser, EPUB Erişilebilirlik ve WCAG 2 A Seviyesi standardını karşıladığına dair bir uygunluk beyanı içerir"
             },
             "conformance-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bu eser, kabul edilen erişilebilirlik standartlarını karşılar",
+                "descriptive": "Eser, EPUB Erişilebilirlik ve WCAG 2 AA Seviyesi standardını karşıladığına dair bir uygunluk beyanı içerir"
             },
             "conformance-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bu eser, kabul edilen erişilebilirlik standartlarının üzerindedir",
+                "descriptive": "Eser, EPUB Erişilebilirlik ve WCAG 2 AAA Seviyesi standardını karşıladığına dair bir uygunluk beyanı içerir"
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "Eseri sertifikalandıran: "
             },
             "conformance-certifier-credentials": {
-                "compact": ""
+                "compact": "Sertifikalandıranın kimlik bilgisi: "
             },
             "conformance-details-certifier-report": {
-                "compact": ""
+                "compact": "Daha fazla bilgi için sertifikalandıranın raporuna bakın"
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bu eser şunu karşıladığı iddiasındadır:",
+                "descriptive": "Bu eser şunu karşıladığı iddiasındadır:"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Erişilebilirliği 1.0",
+                "descriptive": "EPUB Erişilebilirliği 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Erişilebilirliği 1.1",
+                "descriptive": "EPUB Erişilebilirliği 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "A Seviye",
+                "descriptive": "A Seviye"
             },
             "conformance-details-level-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "AA Seviye",
+                "descriptive": "AA Seviye"
             },
             "conformance-details-level-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "AAA Seviye",
+                "descriptive": "AAA Seviye"
             },
             "conformance-details-wcag-2-0": {
-                "compact": ""
+                "compact": "WCAG 2.0"
             },
             "conformance-details-wcag-2-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.1",
+                "descriptive": "Web İçeriği Erişilebilirlik Kılavuzu (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.2",
+                "descriptive": "Web İçeriği Erişilebilirlik Kılavuzu (WCAG) 2.2"
             },
             "conformance-no": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bilgi mevcut değil",
+                "descriptive": "Bilgi mevcut değil"
             },
-            "conformance-title": "",
+            "conformance-title": "Uygunluk",
             "conformance-unknown-standard": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bu eserin erişilebilirliğe ilişkin kabul görmüş standartlara uygunluğu belirlenemiyor",
+                "descriptive": "Bu eserin erişilebilirliğe ilişkin kabul görmüş standartlara uygunluğu belirlenemiyor"
             }
         },
         "hazards": {
             "hazards-flashing": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Yanıp sönen içerik",
+                "descriptive": "Eserde, ışığa duyarlılık kaynaklı nöbetlere neden olabilecek yanıp sönen içerikler bulunuyor"
             },
             "hazards-flashing-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Yanıp sönen içerik yok",
+                "descriptive": "Eserde, yanıp sönen içerik bulunmuyor"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Yanıp sönen içerik mevcudiyeti bilinmiyor",
+                "descriptive": "Yanıp sönen içerik mevcudiyeti bilinmiyor"
             },
             "hazards-motion": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Hareket simülasyonu",
+                "descriptive": "Eser, hareket hastalığına sebep olabilecek hareket simülasyonları içeriyor"
             },
             "hazards-motion-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Hareket simülasyonu yok",
+                "descriptive": "Eser, hareket simülasyonu içermiyor"
             },
             "hazards-motion-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Hareket simülasyonu mevcudiyeti bilinmiyor",
+                "descriptive": "Hareket simülasyonu mevcudiyeti bilinmiyor"
             },
             "hazards-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bilgi mevcut değil",
+                "descriptive": "Bilgi mevcut değil"
             },
             "hazards-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Risk yok",
+                "descriptive": "Eser, risk içermiyor"
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sesler",
+                "descriptive": "Eser, rahatsız edici olabilecek sesler içeriyor"
             },
             "hazards-sound-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ses yok",
+                "descriptive": "Eser, ses içermiyor"
             },
             "hazards-sound-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ses mevcudiyeti bilinmiyor",
+                "descriptive": "Ses mevcudiyeti bilinmiyor"
             },
-            "hazards-title": "",
+            "hazards-title": "Riskler",
             "hazards-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Risk mevcudiyeti bilinmiyor",
+                "descriptive": "Risk mevcudiyeti bilinmiyor"
             }
         },
         "navigation": {
             "navigation-index": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Dizin",
+                "descriptive": "Gönderme  yapılan girdilere bağlantılar içeren dizin"
             },
             "navigation-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bilgi mevcut değil",
+                "descriptive": "Bilgi mevcut değil"
             },
             "navigation-page-navigation": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sayfaya git",
+                "descriptive": "Basılı kaynak sürümdeki sayfalara gitmek için sayfa listesi"
             },
             "navigation-structural": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Başlıklar",
+                "descriptive": "Yapılandırılmış gezinme için başlıklar, tablolar ve benzeri  gibi öğeler"
             },
-            "navigation-title": "",
+            "navigation-title": "Gezinme",
             "navigation-toc": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "İçindekiler tablosu",
+                "descriptive": "Metnin tüm bölümlerine bağlantılarla içindekiler tablosu"
             }
         },
         "rich-content": {
@@ -759,36 +759,36 @@
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
-            "print": ""
+            "print": "Yazdır"
         },
         "settings": {
             "column": {
-                "auto": "",
-                "one": "sütun 1",
-                "title": "",
-                "two": "sütun 2"
+                "auto": "Varsayılan",
+                "one": "Sütun 1",
+                "title": "Sütunlar",
+                "two": "Sütun 2"
             },
-            "customFontSelected": "",
-            "customizeReader": "",
-            "disabled": "",
-            "display": "",
+            "customFontSelected": "Kişisel bir yazı tipi seçtiniz",
+            "customizeReader": "Metin biçimlendirmesini özelleştir",
+            "disabled": "geçersiz",
+            "display": "Görüntüleme",
             "disposition": {
-                "title": ""
+                "title": "Düzen"
             },
-            "font": "",
-            "fontSize": "",
-            "infoCustomFont": "",
-            "justification": "",
-            "justify": "",
-            "letterSpacing": "",
-            "lineSpacing": "",
-            "margin": "",
-            "noFootnotes": "",
-            "noRTLFlip": "",
-            "noRuby": "",
-            "noTemporaryNavTargetOutline": "",
-            "paginated": "",
-            "paraSpacing": "",
+            "font": "Yazı tipi",
+            "fontSize": "Yazı tipi boyutu",
+            "infoCustomFont": "Adını yazarak işletim sisteminden yazı tipini seçin",
+            "justification": "Hizalama",
+            "justify": "İki yana yaslama",
+            "letterSpacing": "Harf aralığı",
+            "lineSpacing": "Satır aralığı",
+            "margin": "Kenar",
+            "noFootnotes": "Dipnot açılır pencerelerini devredışı bırak",
+            "noRTLFlip": "Sağdan sola kullanıcı arayüzünü devredışı bırak",
+            "noRuby": "Japonca Okutucuları Gizle",
+            "noTemporaryNavTargetOutline": "Görsel gezinme belirteçlerini devredışı bırak",
+            "paginated": "Sayfalara ayrılmış",
+            "paraSpacing": "Paragraf aralığı",
             "pdfZoom": {
                 "name": {
                     "100pct": "%100",
