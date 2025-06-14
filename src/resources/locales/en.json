@@ -871,7 +871,7 @@
         "keyboard": {
             "advancedMenu": "Keyboard shortcuts advanced menu",
             "cancel": "Cancel",
-            "disclaimer": "Keyboard shortcuts are designed based on the physical locations of keys on a QWERTY layout",
+            "disclaimer": "The application defaults were designed based on the physical location of keys on a QWERTY layout",
             "editUserJson": "Edit user file...",
             "keyboardShortcuts": "Keyboard shortcuts",
             "list": {
@@ -896,7 +896,7 @@
                     "name": "Next Audio"
                 },
                 "AudioNextAlt": {
-                    "description": "Move forward to the next audio event in EPUB3 Media Overlays, Text To Speech readaloud, or audiobooks. This skips the current escapable structure, if available",
+                    "description": "Move forward to the next audio event in EPUB3 Media Overlays, Text To Speech readaloud, or audiobooks. This skips the current escapable structure, if applicable",
                     "name": "Next Audio (escape)"
                 },
                 "AudioPlayPause": {
@@ -908,7 +908,7 @@
                     "name": "Previous Audio"
                 },
                 "AudioPreviousAlt": {
-                    "description": "Move backward to the previous audio event in EPUB3 Media Overlays, Text To Speech readaloud, or audiobooks. This skips the current escapable structure, if available",
+                    "description": "Move backward to the previous audio event in EPUB3 Media Overlays, Text To Speech readaloud, or audiobooks. This skips the current escapable structure, if applicable",
                     "name": "Previous Audio (escape)"
                 },
                 "AudioStop": {
@@ -972,7 +972,7 @@
                     "name": "Search Command"
                 },
                 "FocusToolbar": {
-                    "description": "Move the keyboard focus to the landmark area of the graphical user interface immediately before the 'skip link' (which itself moves the focus to the main content area of the library of reader window)",
+                    "description": "Move the keyboard focus to the landmark area of the graphical user interface immediately before the 'skip link' (which itself moves the focus to the main content area of the library or reader window)",
                     "name": "Focus on Toolbar"
                 },
                 "NavigateNextChapter": {
