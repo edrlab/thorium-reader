@@ -900,9 +900,233 @@
             "disclaimer": "Les raccourcis clavier sont actuellement basés sur une disposition QWERTY.",
             "editUserJson": "Éditer le fichier ...",
             "keyboardShortcuts": "Raccourcis clavier",
+            "list": {
+                "AddBookmarkWithLabel": {
+                    "description": "",
+                    "name": "Ajouter un Signet avec Libellé"
+                },
+                "AnnotationsCreate": {
+                    "description": "Lorsqu'un texte est sélectionné, il sera marqué comme annotation et la boîte de dialogue d'annotation s'ouvrira pour permettre d'ajouter du texte supplémentaire et de sélectionner une couleur et un trait.",
+                    "name": "Créer une Annotation"
+                },
+                "AnnotationsCreateQuick": {
+                    "description": "Lorsqu'un texte est sélectionné, il sera marqué comme annotation sans ouvrir la boîte de dialogue d'annotation.",
+                    "name": "Créer une Annotation Rapide"
+                },
+                "AnnotationsToggleMargin": {
+                    "description": "Change les marques d'annotations du texte à la marge ou inversement.",
+                    "name": "Basculer la Marge d'Annotation"
+                },
+                "AudioNext": {
+                    "description": "dans la fenêtre du lecteur, appelle la commande \"suivant\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3, ou \"avance rapide\" pour les livres audio).",
+                    "name": "Audio Suivant"
+                },
+                "AudioNextAlt": {
+                    "description": "dans la fenêtre du lecteur, appelle la commande \"suivant\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3, ou \"avance rapide\" pour les livres audio).",
+                    "name": "Audio Suivant (Alternatif)"
+                },
+                "AudioPlayPause": {
+                    "description": "dans la fenêtre du lecteur, appelle les commandes de basculement \"lecture\" ou \"pause\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3).",
+                    "name": "Lire/Pause Audio"
+                },
+                "AudioPrevious": {
+                    "description": "dans la fenêtre du lecteur, appelle la commande \"précédent\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3, ou \"rembobiner\" pour les livres audio).",
+                    "name": "Audio Précédent"
+                },
+                "AudioPreviousAlt": {
+                    "description": "dans la fenêtre du lecteur, appelle la commande \"précédent\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3, ou \"rembobiner\" pour les livres audio). Raccourci clavier alternatif.",
+                    "name": "Audio Précédent (Alternatif)"
+                },
+                "AudioStop": {
+                    "description": "dans la fenêtre du lecteur, appelle la commande \"arrêter\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3, ou \"pause\" pour les livres audio).",
+                    "name": "Arrêter l'Audio"
+                },
+                "CloseReader": {
+                    "description": "dans la fenêtre du lecteur, ferme la fenêtre et retourne à la vue de la bibliothèque.",
+                    "name": "Fermer le Lecteur"
+                },
+                "FXLZoomIn": {
+                    "description": "Zoom avant sur une page à mise en page fixe.",
+                    "name": "Zoom Avant FXL"
+                },
+                "FXLZoomOut": {
+                    "description": "Zoom arrière sur une page à mise en page fixe.",
+                    "name": "Zoom Arrière FXL"
+                },
+                "FXLZoomReset": {
+                    "description": "Réinitialiser à 100% de zoom sur une page à mise en page fixe.",
+                    "name": "Réinitialiser le Zoom FXL"
+                },
+                "FocusMain": {
+                    "description": "Dans les fenêtres du lecteur et de la bibliothèque, déplace le focus clavier vers le repère de la zone \"principale\". Dans la vue du lecteur, le focus clavier se déplace d'un pas supplémentaire dans le cadre qui affiche le contenu de la publication (les lecteurs d'écran lisent automatiquement l'élément HTML actuellement focalisé à l'intérieur du document affiché).",
+                    "name": "Focus sur le Contenu Principal"
+                },
+                "FocusMainDeep": {
+                    "description": "Tout comme \"Contenu principal\" / FocusMainDeep dans la vue du lecteur (voir ci-dessus), mais le focus clavier est forcé plus profondément dans le cadre qui affiche le contenu de la publication (cela peut aider dans les cas où les lecteurs d'écran ne lisent pas automatiquement l'élément HTML actuellement focalisé à l'intérieur du document affiché).",
+                    "name": "Focus Profond sur le Contenu Principal"
+                },
+                "FocusReaderGotoPage": {
+                    "description": "dans la fenêtre du lecteur, déplace le focus clavier vers la section \"aller à la page\" dans le panneau de navigation.",
+                    "name": "Aller à la Page du Lecteur"
+                },
+                "FocusReaderNavigation": {
+                    "description": "dans la fenêtre du lecteur, déplace le focus clavier vers le panneau de navigation (table des matières, signets, etc.).",
+                    "name": "Focus sur la Navigation du Lecteur"
+                },
+                "FocusReaderNavigationAnnotations": {
+                    "description": "",
+                    "name": "Focus sur les Annotations de Navigation du Lecteur"
+                },
+                "FocusReaderNavigationBookmarks": {
+                    "description": "",
+                    "name": "Focus sur les Signets de Navigation du Lecteur"
+                },
+                "FocusReaderNavigationSearch": {
+                    "description": "",
+                    "name": "Focus sur la Recherche de Navigation du Lecteur"
+                },
+                "FocusReaderNavigationTOC": {
+                    "description": "dans la fenêtre du lecteur, déplace le focus clavier vers le panneau de navigation, mais plus spécifiquement dans la table des matières, et si possible au niveau du titre détecté / le plus proche de l'emplacement de lecture.",
+                    "name": "Focus sur la Table des Matières de Navigation du Lecteur"
+                },
+                "FocusReaderSettings": {
+                    "description": "dans la fenêtre du lecteur, déplace le focus clavier vers le panneau des paramètres (préférences utilisateur pour l'affichage du contenu de la publication).",
+                    "name": "Focus sur les Paramètres du Lecteur"
+                },
+                "FocusSearch": {
+                    "description": "Disponible depuis la bibliothèque et les infos de lecture. Dans la fenêtre de la bibliothèque, déplace le focus clavier vers l'entrée de texte de recherche de la bibliothèque locale ou du flux OPDS. Dans la fenêtre du lecteur, déplace le focus clavier vers l'entrée de texte de recherche globale de la publication.",
+                    "name": "Focus sur la Recherche"
+                },
+                "FocusToolbar": {
+                    "description": "dans les fenêtres du lecteur et de la bibliothèque, déplace le focus clavier vers la barre d'outils horizontale supérieure, juste avant le lien \"sauter\" (qui lui-même déplace le focus vers le repère de la zone \"principale\").",
+                    "name": "Focus sur la Barre d'Outils"
+                },
+                "NavigateNextChapter": {
+                    "description": "dans la fenêtre du lecteur, se déplace vers le \"chapitre\" précédent ou suivant (élément de la colonne vertébrale dans l'ordre de lecture de la publication). Notez que le focus clavier est automatiquement déplacé vers le repère de la zone \"principale\", qui se trouve juste avant le cadre affichant le contenu de la publication (comme lors du suivi / activation d'un lien dans la table des matières).",
+                    "name": "Aller au Chapitre Suivant"
+                },
+                "NavigateNextChapterAlt": {
+                    "description": "dans la fenêtre du lecteur, se déplace vers le \"chapitre\" précédent ou suivant (élément de la colonne vertébrale dans l'ordre de lecture de la publication). Notez que le focus clavier est automatiquement déplacé vers le repère de la zone \"principale\", qui se trouve juste avant le cadre affichant le contenu de la publication (comme lors du suivi / activation d'un lien dans la table des matières).",
+                    "name": "Aller au Chapitre Suivant (Alternatif)"
+                },
+                "NavigateNextHistory": {
+                    "description": "dans la fenêtre du lecteur, revenir en arrière ou en avant dans l'historique de navigation : Début ou Fin de la publication.",
+                    "name": "Aller à l'Historique Suivant"
+                },
+                "NavigateNextLibraryPage": {
+                    "description": "Dans la vue de la bibliothèque, affiche le prochain ensemble de livres.",
+                    "name": "Aller à la Page Suivante de la Bibliothèque"
+                },
+                "NavigateNextLibraryPageAlt": {
+                    "description": "Dans la vue de la bibliothèque, affiche le prochain ensemble de livres (raccourci clavier alternatif).",
+                    "name": "Aller à la Page Suivante de la Bibliothèque (Alternatif)"
+                },
+                "NavigateNextOPDSPage": {
+                    "description": "dans la fenêtre de la bibliothèque pour les flux de Catalogues (OPD), active les liens de pagination suivants.",
+                    "name": "Aller à la Page OPDS Suivante"
+                },
+                "NavigateNextOPDSPageAlt": {
+                    "description": "dans la fenêtre de la bibliothèque pour les flux de Catalogues (OPD), active les liens de pagination suivants (raccourci clavier alternatif).",
+                    "name": "Aller à la Page OPDS Suivante (Alternatif)"
+                },
+                "NavigateNextPage": {
+                    "description": "dans la fenêtre du lecteur, se déplace vers la \"page\" précédente ou suivante (ou unité de défilement, si la pagination est désactivée).",
+                    "name": "Aller à la Page Suivante"
+                },
+                "NavigateNextPageAlt": {
+                    "description": "dans la fenêtre du lecteur, se déplace vers la \"page\" précédente ou suivante (ou unité de défilement, si la pagination est désactivée).",
+                    "name": "Aller à la Page Suivante (Alternatif)"
+                },
+                "NavigatePreviousChapter": {
+                    "description": "dans la fenêtre du lecteur, se déplace vers le \"chapitre\" précédent (élément de la colonne vertébrale dans l'ordre de lecture de la publication). Notez que le focus clavier est automatiquement déplacé vers le repère de la zone \"principale\", qui se trouve juste avant le cadre affichant le contenu de la publication (comme lors du suivi / activation d'un lien dans la table des matières).",
+                    "name": "Aller au Chapitre Précédent"
+                },
+                "NavigatePreviousChapterAlt": {
+                    "description": "dans la fenêtre du lecteur, se déplace vers le \"chapitre\" précédent (élément de la colonne vertébrale dans l'ordre de lecture de la publication). Notez que le focus clavier est automatiquement déplacé vers le repère de la zone \"principale\", qui se trouve juste avant le cadre affichant le contenu de la publication (comme lors du suivi / activation d'un lien dans la table des matières).",
+                    "name": "Aller au Chapitre Précédent (Alternatif)"
+                },
+                "NavigatePreviousHistory": {
+                    "description": "dans la fenêtre du lecteur, revenir en arrière ou en avant dans l'historique de navigation : Début ou Fin de la publication.",
+                    "name": "Aller à l'Historique Précédent"
+                },
+                "NavigatePreviousLibraryPage": {
+                    "description": "Dans la vue de la bibliothèque, affiche l'ensemble précédent de livres.",
+                    "name": "Aller à la Page Précédente de la Bibliothèque"
+                },
+                "NavigatePreviousLibraryPageAlt": {
+                    "description": "Dans la vue de la bibliothèque, affiche l'ensemble précédent de livres (raccourci clavier alternatif).",
+                    "name": "Aller à la Page Précédente de la Bibliothèque (Alternatif)"
+                },
+                "NavigatePreviousOPDSPage": {
+                    "description": "dans la fenêtre de la bibliothèque pour les flux de Catalogues (OPD), active les liens de pagination précédents.",
+                    "name": "Aller à la Page OPDS Précédente"
+                },
+                "NavigatePreviousOPDSPageAlt": {
+                    "description": "dans la fenêtre de la bibliothèque pour les flux de Catalogues (OPD), active les liens de pagination précédents (raccourci clavier alternatif).",
+                    "name": "Aller à la Page OPDS Précédente (Alternatif)"
+                },
+                "NavigatePreviousPage": {
+                    "description": "dans la fenêtre du lecteur, se déplace vers la \"page\" précédente ou suivante (ou unité de défilement, si la pagination est désactivée).",
+                    "name": "Aller à la Page Précédente"
+                },
+                "NavigatePreviousPageAlt": {
+                    "description": "dans la fenêtre du lecteur, se déplace vers la \"page\" précédente ou suivante (ou unité de défilement, si la pagination est désactivée).",
+                    "name": "Aller à la Page Précédente (Alternatif)"
+                },
+                "NavigateToBegin": {
+                    "description": "dans la fenêtre du lecteur, va au début de la publication.",
+                    "name": "Aller au Début"
+                },
+                "NavigateToEnd": {
+                    "description": "dans la fenêtre du lecteur, va à la fin de la publication.",
+                    "name": "Aller à la Fin"
+                },
+                "OpenReaderInfo": {
+                    "description": "dans la fenêtre du lecteur, ouvre une boîte de dialogue modale d'informations sur la publication (peut être utilisée dans une future version de Thorium pour une fonctionnalité similaire dans la fenêtre de la bibliothèque).",
+                    "name": "Ouvrir les Infos du Lecteur"
+                },
+                "OpenReaderInfoWhereAmI": {
+                    "description": "dans la fenêtre du lecteur, ouvre une boîte de dialogue modale d'informations sur la publication avec un focus clavier direct sur la section qui affiche la hiérarchie des titres et d'autres informations contextuelles pour l'emplacement de lecture actuel, telles que la pause de page précédente la plus proche, ainsi que l'index du document dans l'ordre de lecture (c'est la fonctionnalité \"où suis-je\").",
+                    "name": "Ouvrir les Infos du Lecteur : Où Suis-je ?"
+                },
+                "Print": {
+                    "description": "dans la fenêtre du lecteur, ouvre une boîte de dialogue d'impression",
+                    "name": "Imprimmer"
+                },
+                "SearchNext": {
+                    "description": "dans la fenêtre du lecteur, lorsque l'entrée de texte de recherche globale de la publication est ouverte, trouve la correspondance précédente / suivante.",
+                    "name": "Rechercher Suivant"
+                },
+                "SearchNextAlt": {
+                    "description": "identique à ci-dessus (raccourci clavier alternatif).",
+                    "name": "Rechercher Suivant (Alternatif)"
+                },
+                "SearchPrevious": {
+                    "description": "dans la fenêtre du lecteur, lorsque l'entrée de texte de recherche globale de la publication est ouverte, trouve la correspondance précédente / suivante.",
+                    "name": "Rechercher Précédent"
+                },
+                "SearchPreviousAlt": {
+                    "description": "identique à ci-dessus (raccourci clavier alternatif).",
+                    "name": "Rechercher Précédent (Alternatif)"
+                },
+                "SpeakReaderInfoWhereAmI": {
+                    "description": "dans la fenêtre du lecteur, c'est la fonctionnalité \"où suis-je\", exactement comme ci-dessus, mais uniquement parlée via le lecteur d'écran TTS grâce à une région en direct ARIA avec une parole assertive qui interrompt la narration en cours.",
+                    "name": "Lire les Infos du Lecteur : Où Suis-je ?"
+                },
+                "ToggleBookmark": {
+                    "description": "dans la fenêtre du lecteur, bascule le signet (une notification est produite pour que les lecteurs d'écran annoncent le changement).",
+                    "name": "Basculer le Signet"
+                },
+                "ToggleReaderFullscreen": {
+                    "description": "Dans la fenêtre du lecteur, bascule en plein écran. Notez que cela est différent du mode Zen. Le raccourci clavier est le seul moyen de passer en plein écran.",
+                    "name": "Basculer en Plein Écran"
+                }
+            },
             "loadUserJson": "Charger le fichier",
+            "noShortcutFound": "Aucun raccourci trouvé avec ce label",
             "resetDefaults": "Réinitialiser (défaut)",
-            "save": "Sauvegarder"
+            "save": "Sauvegarder",
+            "searchPlaceholder": "Cherchez un raccourci"
         },
         "language": {
             "languageChoice": "Choix de la langue"

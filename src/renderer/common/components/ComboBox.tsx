@@ -72,7 +72,7 @@ export function ComboBox<T extends object>(
                 {svg ? <SVG ariaHidden svg={svg} /> : <></>}
                 <Input id={inputId} className={classNames(StylesCombobox.react_aria_Input, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} ref={refInputEl} placeholder={placeholder} />
                 {(!props.defaultItems || !!Array(...(props.defaultItems || [])).length) &&
-                    <Button className={StylesCombobox.react_aria_Button}>
+                    <Button className={StylesCombobox.react_aria_Button} style={{width: "unset"}}>
                         <SVG ariaHidden svg={ChevronDown} />
                     </Button>}
             </Group>

@@ -14,7 +14,7 @@ import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { sortObject } from "@r2-utils-js/_utils/JsonUtils";
 
 import {
-    defaultKeyboardShortcuts, TKeyboardShortcut, TKeyboardShortcutId,
+    defaultKeyboardShortcuts, TKeyboardShortcut, TKeyboardShortcutFull, TKeyboardShortcutId,
     TKeyboardShortcutsMap,
 } from "../common/keyboard";
 
@@ -29,10 +29,12 @@ reset();
 
 function cloneDefaults(): TKeyboardShortcutsMap {
     const obj = JSON.parse(JSON.stringify(defaultKeyboardShortcuts)) as TKeyboardShortcutsMap;
-    // const ids = ObjectKeys(obj);
-    // for (const id of ids) {
-    //     obj[id] = obj[id] as TKeyboardShortcutFull;
-    // }
+    const ids = ObjectKeys(obj);
+    for (const id of ids) {
+        if ((obj[id] as TKeyboardShortcutFull).scope) {
+            delete (obj[id] as TKeyboardShortcutFull).scope;
+        }
+    }
     return obj;
 }
 function reset(): TKeyboardShortcutsMap {

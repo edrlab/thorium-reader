@@ -122,9 +122,11 @@ let _firstMediaOverlaysPlay = true;
 // translate("catalog.emptyTagList")
 // translate("reader.picker.search.results")
 
+// TODO: see MASSIVE HACK in "search" Redux Saga, needs refactoring!
 interface IWindowHistory extends History {
     _readerInstance: Reader | undefined;
     _length: number | undefined;
+    _handleLinkLocator: ((locator: R2Locator, isFromOnPopState: boolean) => void) | undefined;
 }
 const windowHistory = window.history as IWindowHistory;
 
@@ -440,6 +442,7 @@ class Reader extends React.Component<IProps, IState> {
         // }
 
         windowHistory._readerInstance = this;
+        windowHistory._handleLinkLocator = this.handleLinkLocator;
 
         const store = getStore(); // diRendererSymbolTable.store
         document.body.setAttribute("data-theme", store.getState().theme.name);

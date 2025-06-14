@@ -20,7 +20,7 @@
             "copy": "Kopieer",
             "cut": "Knip",
             "paste": "Plak",
-            "print": "",
+            "print": "Afdrukken",
             "redo": "Opnieuw",
             "selectAll": "Alles selecteren",
             "title": "Wijzig",
@@ -73,7 +73,7 @@
             "lastAdditions": "Recent toegevoegd"
         },
         "export": "Bewaar als",
-        "exportAnnotation": "Exporteer aantekeningen...",
+        "exportAnnotation": "Exporteer aantekeningen",
         "format": "Formaat",
         "importAnnotation": "Importeer aantekeningen",
         "lang": "Taal",
@@ -152,8 +152,8 @@
         "cancel": "Annuleer",
         "deleteAnnotations": "Verwijder aantekeningen?",
         "deleteAnnotationsText": "Weet je zeker dat je {{- annotationListLength}} aantekening(en) wil verwijderen?",
-        "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteBookmarks": "Bladwijzers verwijderen?",
+        "deleteBookmarksText": "Ben je zeker om {{- bookmarkListLength}} bladwijzer(s) te verwijderen?",
         "deleteFeed": "Wil je deze catalogus echt verwijderen ?",
         "deletePublication": "Wil je deze publicatie echt verwijderen ?",
         "import": "Wil je deze bestanden echt importeren :",
@@ -265,292 +265,292 @@
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": ""
+            "accessibility-summary-title": "Toegankelijkheid samenvatting"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "voorzien van ARIA rollen",
+                "descriptive": "Inhoud is verrijkt met ARIA rollen voor beter overzicht en om navigatie te vergemakkelijken"
             },
             "additional-accessibility-information-audio-descriptions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Audio beschrijvingen",
+                "descriptive": "Audio beschrijvingen"
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Braille",
+                "descriptive": "Braille"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Volledige ruby annotaties",
+                "descriptive": "Volledige ruby annotaties"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Groot contrast tussen voorgrond- en achtergrondgeluid",
+                "descriptive": "Hoog contrast tussen voorgrond- en achtergrondgeluid"
             },
             "additional-accessibility-information-high-contrast-between-text-and-background": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Hoog contrast tussen voorgrond- en achtergrond tekst",
+                "descriptive": "Hoog contrast tussen voorgrond- en achtergrondtekst"
             },
             "additional-accessibility-information-large-print": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Grootletter",
+                "descriptive": "Grootletter"
             },
             "additional-accessibility-information-page-breaks": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Pagina-einden inbegrepen",
+                "descriptive": "Pagina-einden overgenomen uit de originele printversie"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Enkele Ruby annotaties",
+                "descriptive": "Enkele Ruby annotaties"
             },
             "additional-accessibility-information-sign-language": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Gebarentaal",
+                "descriptive": "Gebarentaal"
             },
             "additional-accessibility-information-tactile-graphics": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Tactiele afbeeldingen inbegrepen",
+                "descriptive": "Tactiele afbeeldingen zijn toegevoegd om toegang tot visuele elementen mogelijk te maken voor blinden"
             },
             "additional-accessibility-information-tactile-objects": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Tactiele 3D objecten",
+                "descriptive": "Tactiele 3D objecten"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Tekst naar spraakt hints voorzien",
+                "descriptive": "Tekst naar spraak hints voorzien"
             },
-            "additional-accessibility-information-title": ""
+            "additional-accessibility-information-title": "Aanvullende toegankelijkheids-informatie"
         },
         "conformance": {
             "conformance-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Deze publicatie voldoet aan minimum toegankelijkheidsstandaarden",
+                "descriptive": "Deze publicatie bevat een conformiteitsverklaring dat het voldoet aan de EPUB Accessibility en WCAG 2 Level A standaard"
             },
             "conformance-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Deze publicatie voldoet aan gangbare toegankelijkheidsstandaarden",
+                "descriptive": "Deze publicatie bevat een conformiteitsverklaring dat het voldoet aan de EPUB Accessibility en WCAG 2 Level AA standaard"
             },
             "conformance-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Deze publicatie overtreft gangbare toegankelijkheidsstandaarden",
+                "descriptive": "Deze publicatie bevat een conformiteitsverklaring dat het voldoet aan de EPUB Accessibility en WCAG 2 Level AAA standaard"
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "Deze publicatie is gecertificeerd door "
             },
             "conformance-certifier-credentials": {
-                "compact": ""
+                "compact": "De referentie van de certificeerder is "
             },
             "conformance-details-certifier-report": {
-                "compact": ""
+                "compact": "Voor meer informatie raadpleeg het rapport van de certificeerder"
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Deze publicatie zegt te voldoen aan",
+                "descriptive": "Deze publicatie zegt te voldoen aan"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Accessibility 1.0",
+                "descriptive": "EPUB Accessibility 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Accessibility 1.1",
+                "descriptive": "EPUB Accessibility 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Niveau A",
+                "descriptive": "Niveau A"
             },
             "conformance-details-level-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Niveau AA",
+                "descriptive": "Niveau AA"
             },
             "conformance-details-level-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Niveau AAA",
+                "descriptive": "Niveau AAA"
             },
             "conformance-details-wcag-2-0": {
-                "compact": ""
+                "compact": "WCAG 2.0"
             },
             "conformance-details-wcag-2-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.1",
+                "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.2",
+                "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.2"
             },
             "conformance-no": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Geen informatie beschikbaar",
+                "descriptive": "Geen informatie beschikbaar"
             },
-            "conformance-title": "",
+            "conformance-title": "Conformiteit",
             "conformance-unknown-standard": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Conformiteit met gangbare toegankelijkheids-standaarden kunnen niet bepaald voor deze publicatie",
+                "descriptive": "Conformiteit met gangbare toegankelijkheids-standaarden kunnen niet bepaald voor deze publicatie"
             }
         },
         "hazards": {
             "hazards-flashing": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Inhoud met flitsen",
+                "descriptive": "Deze publicatie bevat inhoud met flitsen die kan leiden tot lichtgevoelige aanvallen"
             },
             "hazards-flashing-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Geen inhoud met flitsen",
+                "descriptive": "Deze publicatie bevat geen inhoud met flitsen"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "De aanwezigheid van inhoud met flitsen is onbekend",
+                "descriptive": "De aanwezigheid van inhoud met flitsen is onbekend"
             },
             "hazards-motion": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bewegingssimulatie",
+                "descriptive": "Deze publicatie bevat bewegingssimulatie die bewegingsziekte kan veroorzaken"
             },
             "hazards-motion-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Geen bewegingssimulatie",
+                "descriptive": "Deze publicatie bevat geen gewegingssimulatie"
             },
             "hazards-motion-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "De aanwezigheid van bewegingssimulatie is onbekend",
+                "descriptive": "De aanwezigheid van bewegingssimulatie is onbekend"
             },
             "hazards-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Geen informatie aanwezig",
+                "descriptive": "Geen informatie aanwezig"
             },
             "hazards-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Geen gevaren",
+                "descriptive": "Deze publicatie bevat geen gevaren"
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Geluiden",
+                "descriptive": "Deze publicatie bevat geluid die niet prettig kunnen zijn"
             },
             "hazards-sound-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Geen geluiden",
+                "descriptive": "Deze publicatie bevat geen geluiden"
             },
             "hazards-sound-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "De aanwezigheid van geluiden is onbekend",
+                "descriptive": "De aanwezigheid van geluiden is onbekend"
             },
-            "hazards-title": "",
+            "hazards-title": "Gevaren",
             "hazards-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "De aanwezigheid van gevaren is onbekend",
+                "descriptive": "De presentatie van gevaren is onbekend"
             }
         },
         "navigation": {
             "navigation-index": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Index",
+                "descriptive": "Index met links naar vermeldingen waar naar wordt verwezen"
             },
             "navigation-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Geen informatie beschikbaar",
+                "descriptive": "Geen informatie beschikbaar"
             },
             "navigation-page-navigation": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ga naar pagina",
+                "descriptive": "Pagina lijst om naar pagina's van de gedrukte bronversie te gaan"
             },
             "navigation-structural": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Koppen",
+                "descriptive": "Elementen zoals koppen, tabellen, en dergelijk voor gestructureerde navigatie"
             },
-            "navigation-title": "",
+            "navigation-title": "Navigatie",
             "navigation-toc": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Inhoudsopgave",
+                "descriptive": "Inhoudsopgave naar alle hoofdstukken van de tekst via links"
             }
         },
         "rich-content": {
             "rich-content-accessible-chemistry-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Chemische formules in LaTeX",
+                "descriptive": "Chemische formules in toegankelijk formaat (LaTeX)"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Chemische formules in MathML",
+                "descriptive": "Chemische formules in toegankelijk formaat (MathML)"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Wiskunde als LaTex",
+                "descriptive": "Wiskundige formules in toegankelijk formaat (LaTeX)"
             },
             "rich-content-accessible-math-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Wiskunde in MathML",
+                "descriptive": "Wiskundige formules in toegankelijk formaat (MathML)"
             },
             "rich-content-accessible-math-described": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Tekstuele beschrijving van wiskunde zijn voorzien",
+                "descriptive": "Tekstuele beschrijving van wiskunde zijn voorzien"
             },
             "rich-content-closed-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Videos hebben gesloten ondertitels",
+                "descriptive": "Videos in de publicatie zijn voorzien van gesloten ondertitels"
             },
             "rich-content-extended": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Afbeeldingen met veel informatie zijn voorzien van uitgebreide beschrijvingen",
+                "descriptive": "Afbeeldingen met veel informatie zijn voorzien van uitgebreide beschrijvingen"
             },
             "rich-content-open-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Video's hebben open ondertitels",
+                "descriptive": "Video's in de publicatie zijn voorzien van open ondertitels"
             },
-            "rich-content-title": "",
+            "rich-content-title": "Rijke inhoud",
             "rich-content-transcript": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Voorzien van transcriptie",
+                "descriptive": "Voorzien van transcriptie"
             },
             "rich-content-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Geen informatie beschikbaar",
+                "descriptive": "Geen informatie beschikbaar"
             }
         },
         "ways-of-reading": {
             "ways-of-reading-nonvisual-reading-alt-text": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Heeft alternatieve tekst",
+                "descriptive": "Heeft alternatieve tekst voor afbeeldingen"
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Geen informatie over niet visueel lezen beschikbaar",
+                "descriptive": "Geen informatie over niet visueel lezen beschikbaar"
             },
             "ways-of-reading-nonvisual-reading-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Niet leesbaar met voorleesfunctie of dynamisch braille",
+                "descriptive": "De inhoud is niet leesbaar middels een voorleesfunctie of dynamische braille"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Niet volledig leesbaar met voorleesfunctie of dynamisch braille",
+                "descriptive": "Niet alle inhoud is leesbaar met een voorleesfunctie of dynamisch braille"
             },
             "ways-of-reading-nonvisual-reading-readable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Leesbaar middels voorleesfunctie of dynamisch braille",
+                "descriptive": "De volledige inhoud kan worden gelezen met een voorleesfunctie of dynamisch braille"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Vooraf opgenomen audio fragmenten",
+                "descriptive": "Vooraf opgenomen audio fragmenten zijn opgenomen in de inhoud"
             },
             "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Geen informatie over vooraf opgenomen audio beschikbaar",
+                "descriptive": "Geen informatie over vooraf opgenomen audio beschikbaar"
             },
             "ways-of-reading-prerecorded-audio-only": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Alleen vooraf opgenomen audio",
+                "descriptive": "Luisterboek zonder tekst alternatief"
             },
             "ways-of-reading-prerecorded-audio-synchronized": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Vooraf opgenomen audio met gesynchroniseerde tekst",
+                "descriptive": "Alle informatie is beschikbaar als vooraf opgenomen audio met gesynchroniseerde tekst"
             },
-            "ways-of-reading-title": "",
+            "ways-of-reading-title": "Manieren van lezen",
             "ways-of-reading-visual-adjustments-modifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Weergave kan worden aangepast",
+                "descriptive": "Weergave van tekst en pagina opmaak kan worden aangepast, afhankelijk van de mogelijkheden van het leessysteem (lettertype, lettergrootte, afstand tussen paragrafen, zinnen, woorden en letters, als ook de kleur van tekst en achtergrond)"
             },
             "ways-of-reading-visual-adjustments-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Geen informatie beschikbaar over mogelijkheden weergave aan te passen",
+                "descriptive": "Geen informatie beschikbaar over de mogelijkheid weergave aan te passen"
             }
         }
     },
@@ -674,7 +674,7 @@
             }
         },
         "bookmarks": {
-            "index": ""
+            "index": "Bladwijzer {{- index}}"
         },
         "divina": {
             "mute": "demp geluid",
@@ -686,9 +686,9 @@
         "goToContent": "Ga naar de Inhoud",
         "imgViewer": {
             "title": "",
-            "zoomIn": "",
-            "zoomOut": "",
-            "zoomReset": ""
+            "zoomIn": "Inzoomen",
+            "zoomOut": "Uitzoomen",
+            "zoomReset": "Reset zoom"
         },
         "marks": {
             "annotations": "Annotaties",
@@ -708,8 +708,8 @@
             "captionsDescription": "Vereenvoudigde tekstweergave met minimale stijl onderschriften.",
             "disableContinuousPlay": "Schakel doorlopend afspelen uit",
             "disableContinuousPlayDescription": "Speel niet automatisch het volgende item af, pauzeer onmiddellijk nadat het huidige item is afgespeeld.",
-            "ignoreAndUseTTS": "",
-            "ignoreAndUseTTSDescription": "",
+            "ignoreAndUseTTS": "Negeer vooraf opgenomen audio, gebruik tekst naar spraak",
+            "ignoreAndUseTTSDescription": "Negeer EPUB media overlays, lees met tekst naar spraak",
             "next": "Volgende Voorlezen",
             "pause": "Pauzeer Voorlezen",
             "play": "Speel Voorlezen",
@@ -740,7 +740,7 @@
             "openTableOfContentsTitle": "navigatie",
             "page": "Pagina",
             "pdfscalemode": "Pagina aanpassen aan breedte",
-            "print": "",
+            "print": "druk af",
             "settingsTitle": "instellingen"
         },
         "notes": {
@@ -766,16 +766,16 @@
             "searchTitle": "Zoek:"
         },
         "print": {
-            "description": "",
-            "descriptionLcp": "",
-            "descriptionLcpLimit": "",
-            "pageHelpInfo": "",
-            "pageHelpInfo1": "",
-            "pageHelpInfo2": "",
-            "pageHelpInfo3": "",
-            "pageHelpInfo4": "",
-            "pages": "",
-            "print": ""
+            "description": "{{- appName}} dialoogvenster voor afdrukken van een publicatie met {{- count}} pagina's. Je moet het afdruk bereik zetten om de printdialoog op te roepen",
+            "descriptionLcp": "{{- appName}} dialoogvenster voor afdrukken van een LCP publicatie met {{- count}} pagina's. Je moet het afdruk bereik zetten om de printdialoog op te roepen",
+            "descriptionLcpLimit": "{{- count}} pagina's over (van {{- lcpLimitPages}} LCP limiet)",
+            "pageHelpInfo": "pagina bereik hulp informatie :",
+            "pageHelpInfo1": " - geef een pagina nummer op om naar een enkele pagina te verwijzen (b.v. \"6\")",
+            "pageHelpInfo2": " - geef twee paginanummers op verbonden met een streepje om naar een aangesloten bereik van pagina's te verwijzen (b.v. \"6-13\")",
+            "pageHelpInfo3": " - gebruik een puntkomma om meerdere pagina's of pagina bereiken te scheiden (b.v. \"5;14-20;37\")",
+            "pageHelpInfo4": " - laat het eerste of laatste paginanummer weg in een bereik om te verwijzen naar de eerste of laatste pagina van een publicatie (b.v. \"-16\" is gelijk aan \"1-16\", en \"34-\" is gelijk aan \"34-100\" uitgaande van een boek met 100 pagina's in totaal)",
+            "pages": "Pagina's",
+            "print": "Afdrukken"
         },
         "settings": {
             "column": {
@@ -900,9 +900,233 @@
             "disclaimer": "Snelkoppelingen zijn gedefinieerd op basis van de QWERTY-toetsenbordindeling.",
             "editUserJson": "Wijzig gebruikersbestand...",
             "keyboardShortcuts": "Toetsenbord shortcuts",
+            "list": {
+                "AddBookmarkWithLabel": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreate": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreateQuick": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsToggleMargin": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPlayPause": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioStop": {
+                    "description": "",
+                    "name": ""
+                },
+                "CloseReader": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomIn": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomOut": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomReset": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMain": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMainDeep": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderGotoPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigation": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationAnnotations": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationBookmarks": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationTOC": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderSettings": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusToolbar": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToBegin": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToEnd": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfo": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "Print": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SpeakReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleBookmark": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleReaderFullscreen": {
+                    "description": "",
+                    "name": ""
+                }
+            },
             "loadUserJson": "Haal uit gebruikersbestand",
+            "noShortcutFound": "",
             "resetDefaults": "Terug (naar oorspronkelijke instellingen)",
-            "save": "Bewaar"
+            "save": "Bewaar",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "Taal keuze"
@@ -913,7 +1137,7 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "",
+                "applyDefaultTemplate": "PAS STANDAARD TEMPLATE TOE",
                 "enableCheckbox": "",
                 "overrideHTMLTemplate": ""
             }
@@ -938,7 +1162,7 @@
     "tts": {
         "highlight": {
             "mainColor": "Hoofd kleur",
-            "maskBlockWordOutline": "",
+            "maskBlockWordOutline": "Maskeer Blok, Woord Omtrek",
             "maskBlockWordSolidBackground": "Maskeer Blok, Woord Effen Achtergrond",
             "maskBlockWordUnderline": "Maskeer Blok, Woord Onderstreept",
             "maskWordOutline": "Maskeer, Woord Omlijnt",
