@@ -1170,6 +1170,11 @@ export function initSessions() {
     app.commandLine.appendSwitch("autoplay-policy", "no-user-gesture-required");
     app.commandLine.appendSwitch("enable-speech-dispatcher");
 
+    // https://github.com/electron/electron/issues/46538
+    // --gtk-version=3
+    // Gtk-ERROR **: 12:09:19.718: GTK 2/3 symbols detected. Using GTK 2/3 and GTK 4 in the same process is not supported
+    app.commandLine.appendSwitch("gtk-version", "3");
+
     Transformers.instance().add(new TransformerHTML(transformerIFrames));
 
     protocol.registerSchemesAsPrivileged([

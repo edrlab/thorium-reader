@@ -29,6 +29,8 @@ import { put as putTyped, take as takeTyped, select as selectTyped, call as call
 import { readerLocalActionReader } from "../actions";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
+import { resourceCacheTimer } from "readium-desktop/common/redux/sagas/resourceCache";
 import { createOrGetPdfEventBus } from "../../pdf/driver";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 
@@ -151,6 +153,7 @@ export function* rootSaga() {
                 yield* callTyped(noteSaga.noteUpdateLocatorExtendedFromImportSelector, note);
             }
         }),
+        spawnLeading(resourceCacheTimer), // resourceCache memory cleaning 
         takeSpawnEvery(
             readerActions.print.ID,
             function*(action: readerActions.print.TAction) {

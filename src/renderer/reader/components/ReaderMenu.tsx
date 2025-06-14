@@ -97,12 +97,12 @@ import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { EDrawType, INoteState, noteColorCodeToColorTranslatorKeySet, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 
 import DOMPurify from "dompurify";
-import { marked } from "marked";
 
 import { shell } from "electron";
 import { exportAnnotationSet } from "readium-desktop/renderer/common/redux/sagas/readiumAnnotation/export";
 import { getSaga } from "../createStore";
 import { clone } from "ramda";
+import { marked } from "readium-desktop/renderer/common/marked/marked";
 (window as any).__shell_openExternal = (url: string) => url.startsWith("http") ? shell.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
 
 // console.log(window);
@@ -469,10 +469,9 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
             if (textualValue) {
                 const parsed = DOMPurify.sanitize(await marked.parse(textualValue.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, ""), { gfm: true }), { FORBID_TAGS: ["style"], FORBID_ATTR: ["style"] });
                 const regex = new RegExp(/href=\"(.*?)\"/, "gm");
-                const hrefSanitized = parsed.replace(regex, (substring) => {
+                const hrefSanitized = parsed.replace(regex, (_substring, url) => {
 
-                    let url = /href=\"(.*?)\"/.exec(substring)[1];
-                    if (!url.startsWith("http")) {
+                    if (!url?.startsWith("http")) {
                         url = "http://" + url;
                     }
 
