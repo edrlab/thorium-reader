@@ -669,10 +669,10 @@
         },
         "goToContent": "Go to the content",
         "imgViewer": {
-            "title": "Image Viewer Dialog Modal",
+            "title": "Image viewer (zoom)",
             "zoomIn": "Zoom In",
             "zoomOut": "Zoom Out",
-            "zoomReset": "Zoom Reset"
+            "zoomReset": "Reset Zoom"
         },
         "marks": {
             "annotations": "Annotations",
