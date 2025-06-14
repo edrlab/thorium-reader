@@ -28,20 +28,20 @@ function parsePrintRanges(input: string) {
     return input.split(";").map(segment => {
       const trimmed = segment.trim();
       if (!trimmed) return null;
-      
+
       const match = segmentRegex.exec(trimmed);
       if (!match) return null;
-  
+
       // Single number case (e.g., "1")
       if (match[1] !== undefined) {
         const num = parseInt(match[1], 10);
         return [num, num];
       }
-  
+
       // Range case (e.g., "1-4", "2-", "-9")
       const start = match[2] ? parseInt(match[2], 10) : null;
       const end = match[3] ? parseInt(match[3], 10) : null;
-      
+
       // Handle invalid case where both start and end are missing ("-")
       return (start === null && end === null) ? null : [start, end];
     }).filter(Boolean); // Remove any null/invalid entries
@@ -94,7 +94,12 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
     const [publicationView, setPubView] = React.useState<PublicationView>(publicationViewFromReduxState);
 
     const isLcp = !!publicationView.lcp?.rights;
-    const isLcpWithPrintRights = isLcp && publicationView.lcp?.rights?.print;
+    const isLcpWithPrintRights = isLcp && (!!publicationView.lcp?.rights?.print || publicationView.lcp.rights.print === 0);
+
+    const publicationViewLcpRightsPrints = publicationView.lcpRightsPrints || [];
+
+    // console.log(JSON.stringify(publicationView.lcp?.rights, null, 4));
+    // console.log(JSON.stringify(publicationView.lcpRightsPrints, null, 4));
 
     React.useEffect(() => {
 
@@ -110,7 +115,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
         }).catch((e) => {
             console.error("getSaga().run(publicationInfoReaderLibGetPublicationApiCall, publicationIdentifier, false)", e);
         });
-        
+
     }, [publicationIdentifier]);
 
 
@@ -118,7 +123,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
     let newLcpRightsPrints: number[] = [];
     if (isLcpWithPrintRights) {
 
-        const lcpRightsPrints = publicationView.lcpRightsPrints || [];
+        const lcpRightsPrints = publicationViewLcpRightsPrints || [];
         const lcpRightsPrintsRemain = publicationView.lcp.rights.print - lcpRightsPrints.length;
         const pagesToPrintSaved = pagesToPrint.filter((page) => lcpRightsPrints.some((pageSaved) => pageSaved === page));
         const pagesToPrintNotSaved = pagesToPrint.filter((page) => !pagesToPrintSaved.some((pageSaved) => pageSaved === page));
@@ -126,7 +131,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
         pagesToPrint = [...pagesToPrintSaved, ...pagesToPrintNotSavedRightTruncated].sort((a, b) => a - b);
         newLcpRightsPrints = [...lcpRightsPrints, ...pagesToPrintNotSavedRightTruncated].sort((a, b) => a - b);
 
-    }    
+    }
 
     const rowVirtualizer = useVirtualizer({
         horizontal: true,
@@ -151,8 +156,8 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
         }
 
         .print-popover-image-container {
-            // display: flex; 
-            // flex-wrap: nowrap; 
+            // display: flex;
+            // flex-wrap: nowrap;
             overflow-x: auto;
             overflow-y: hidden;
             padding: 10px;
@@ -261,7 +266,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
 
             {
                 isLcpWithPrintRights ?
-                    <p style={{overflow: "auto"}}>{__("reader.print.descriptionLcpLimit", { pageRangePrinted: `[${publicationView.lcpRightsPrints}]`, count: publicationView.lcp.rights.print - publicationView.lcpRightsPrints.length, lcpLimitPages: publicationView.lcp.rights.print })}{publicationView.lcpRightsPrints.length ? <span> {"->"} [{publicationView.lcpRightsPrints.join(",")}]</span> : ""}{newLcpRightsPrints.length ? <span> {"->"} [{newLcpRightsPrints.join(",")}]</span> : ""}</p>
+                    <p style={{overflow: "auto"}}>{__("reader.print.descriptionLcpLimit", { pageRangePrinted: `[${publicationViewLcpRightsPrints}]`, count: publicationView.lcp.rights.print - publicationViewLcpRightsPrints.length, lcpLimitPages: publicationView.lcp.rights.print })}{publicationViewLcpRightsPrints.length ? <span> {"->"} [{publicationViewLcpRightsPrints.join(",")}]</span> : ""}{newLcpRightsPrints.length ? <span> {"->"} [{newLcpRightsPrints.join(",")}]</span> : ""}</p>
                     : <></>
             }
             <div className={stylesInput.form_group} style={{ marginTop: "20px", width: "360px" }}>
