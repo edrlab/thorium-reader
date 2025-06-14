@@ -13,7 +13,7 @@ import * as stylesSettings from "readium-desktop/renderer/assets/styles/componen
 import * as stylesKeys from "readium-desktop/renderer/assets/styles/components/keyboardsShortcuts.scss";
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 
-import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
+import { keyboardShortcutsMatch, keyboardShortcutMatches, defaultKeyboardShortcuts, TKeyboardShortcutScopeZone } from "readium-desktop/common/keyboard";
 
 import classNames from "classnames";
 import * as React from "react";
@@ -519,26 +519,36 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                             {this.props.keyboardShortcuts &&
                             filteredShortcuts.map((id) => {
                                 const def = this.props.keyboardShortcuts[id];
+                                const isDuplicated = !!ObjectKeys(this.props.keyboardShortcuts).filter((idea) => idea !== id).find((idea) => {
+                                    const scopeOverlap = !!defaultKeyboardShortcuts[idea]?.scope.length && !!defaultKeyboardShortcuts[id]?.scope.length
+                                        && (!!defaultKeyboardShortcuts[idea].scope.find((scope) => (defaultKeyboardShortcuts[id].scope as TKeyboardShortcutScopeZone[]).includes(scope))
+                                        || !!defaultKeyboardShortcuts[id].scope.find((scope) => (defaultKeyboardShortcuts[idea].scope as TKeyboardShortcutScopeZone[]).includes(scope)));
+                                    return scopeOverlap && keyboardShortcutMatches(def, this.props.keyboardShortcuts[idea]);
+                                });
                                 const hit = this.state.editKeyboardShortcutId === id;
+                                const cname = Object.keys(cleanNames).find((name: string) => name === id) ? cleanNames[id].name : undefined;
+                                const cdesc = Object.keys(cleanNames).find((name: string) => name === id) ? cleanNames[id].description : undefined;
                                 const frag = <>
-                                    <div style={{display: "flex"}}>
-                                        <h3 aria-hidden className={stylesKeys.keyshortElement_title}>{Object.keys(cleanNames).find((name: string) => name === id) ? cleanNames[id].name : undefined}</h3>
+                                    <div style={{display: "flex", border: isDuplicated ? "2px solid red" : undefined}}>
+                                        <h3 className={stylesKeys.keyshortElement_title}>{cname}</h3>
                                     {    cleanNames[id].description.length ?
                                         <TooltipTrigger>
-                                            <Button style={{width: "15px"}}><SVG ariaHidden svg={InfoIcon} /></Button>
+                                            <Button style={{ width: "15px" }} aria-label={cdesc}><SVG ariaHidden svg={InfoIcon} /></Button>
                                             <Tooltip style={{border: "1px solid var(--color-primary)", maxWidth: "300px", width: "fit-content", zIndex: "1000", backgroundColor: "var(--color-secondary)", borderRadius: "6px", padding: "5px", color: "var(--color-primary)"}}>
                                                 <OverlayArrow>
                                                 <svg width={8} height={8} viewBox="0 0 8 8">
                                                     <path d="M0 0 L4 4 L8 0" />
                                                 </svg>
                                                 </OverlayArrow>
-                                                {Object.keys(cleanNames).find((name: string) => name === id) ? cleanNames[id].description : undefined}
+                                                {cdesc}
                                             </Tooltip>
                                         </TooltipTrigger>
                                         : ""
                                     }
                                     </div>
-                                    <div className={hit ? stylesKeys.keyshortElement_shortcut_container_edit : stylesKeys.keyshortElement_shortcut_container}>
+                                    <div
+                                        style={{border: isDuplicated ? "2px solid orange" : undefined}}
+                                        className={hit ? stylesKeys.keyshortElement_shortcut_container_edit : stylesKeys.keyshortElement_shortcut_container}>
                                         <div className={stylesKeys.keyshortElement_shortcut}>
                                             {this.prettifyKeyboardShortcut(def)}
                                             <button
@@ -553,7 +563,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                                         el?.focus();
                                                     }, 100);
                                                 }}
-                                                aria-label={`${__("app.edit.title")} (${id}) ${this.stringifyKeyboardShortcut(def)}`}
+                                                aria-label={`${__("app.edit.title")} (${cname}) ${this.stringifyKeyboardShortcut(def)}`}
                                                 // title={`${__("app.edit.title")} (${id}) ${this.stringifyKeyboardShortcut(def)}`}
                                             ><SVG ariaHidden svg={EditIcon} /></button>
                                         </div>
@@ -575,7 +585,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                                                 el?.focus();
                                                             }, 100);
                                                         }}
-                                                        aria-label={`${__("settings.keyboard.cancel")} (${id}) ${this.stringifyKeyboardShortcut(this.state.editKeyboardShortcutData)}`}
+                                                        aria-label={`${__("settings.keyboard.cancel")} (${cname}) ${this.stringifyKeyboardShortcut(this.state.editKeyboardShortcutData)}`}
                                                         // title={`${__("settings.keyboard.cancel")} (${id}) ${this.stringifyKeyboardShortcut(this.state.editKeyboardShortcutData)}`}
                                                         >
                                                         {hit ?
@@ -592,7 +602,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                                                 el?.focus();
                                                             }, 100);
                                                         }}
-                                                        aria-label={`${__("settings.keyboard.save")} (${id}) ${this.stringifyKeyboardShortcut(this.state.editKeyboardShortcutData)}`}
+                                                        aria-label={`${__("settings.keyboard.save")} (${cname}) ${this.stringifyKeyboardShortcut(this.state.editKeyboardShortcutData)}`}
                                                         // title={`${__("settings.keyboard.save")} (${id}) ${this.stringifyKeyboardShortcut(this.state.editKeyboardShortcutData)}`}
                                                         >
                                                             <SVG ariaHidden svg={SaveIcon} />
@@ -756,6 +766,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
 
         const alt = <><input
             id={`idcheckbox_${id}_ALT`}
+            aria-label={DETECTED_OS === "MacOS" ? "Option" : "Alt"}
             type="checkbox"
             checked={def.alt ? true : false}
             className={stylesKeys.keyshortElement_shortcut_container_edit_input}
@@ -772,13 +783,15 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                 });
             }}
         />
-        <label
+        <label tabIndex={-1} aria-hidden
             htmlFor={`idcheckbox_${id}_ALT`}
             title={DETECTED_OS === "MacOS" ? "Option" : "Alt"}
+            aria-label={DETECTED_OS === "MacOS" ? "Option" : "Alt"}
         >{DETECTED_OS === "MacOS" ? <SVG ariaHidden svg={MacOptionIcon} /> : "ALT"}</label></>;
 
         const shift = <><input
             id={`idcheckbox_${id}_SHIFT`}
+            aria-label="Shift"
             type="checkbox"
             checked={def.shift ? true : false}
             className={stylesKeys.keyshortElement_shortcut_container_edit_input}
@@ -795,13 +808,15 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                 });
             }}
         />
-        <label
+        <label tabIndex={-1} aria-hidden
             htmlFor={`idcheckbox_${id}_SHIFT`}
             title="Shift"
+            aria-label="Shift"
         ><SVG ariaHidden svg={ShiftIcon} /></label></>;
 
         const control = <><input
             id={`idcheckbox_${id}_CTRL`}
+            aria-label="Control"
             type="checkbox"
             checked={def.control ? true : false}
             className={stylesKeys.keyshortElement_shortcut_container_edit_input}
@@ -818,13 +833,15 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                 });
             }}
         />
-        <label
+        <label tabIndex={-1} aria-hidden
             htmlFor={`idcheckbox_${id}_CTRL`}
             title="Control"
+            aria-label="Control"
         >CTRL</label></>;
 
         const meta = <><input
             id={`idcheckbox_${id}_META`}
+            aria-label={DETECTED_OS === "MacOS" ? "Command" : "Meta"}
             type="checkbox"
             checked={def.meta ? true : false}
             className={stylesKeys.keyshortElement_shortcut_container_edit_input}
@@ -841,9 +858,10 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                 });
             }}
         />
-        <label
+        <label tabIndex={-1} aria-hidden
             htmlFor={`idcheckbox_${id}_META`}
             title={DETECTED_OS === "MacOS" ? "Command" : "Meta"}
+            aria-label={DETECTED_OS === "MacOS" ? "Command" : "Meta"}
         >{DETECTED_OS === "MacOS" ? <SVG ariaHidden svg={MacCmdIcon} /> : <SVG ariaHidden svg={WindowsIcon} />}</label></>;
 
         if (!KEY_CODES.includes(def.key)) {
@@ -932,7 +950,19 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             }
         }}
         ></input>;
-        return <div className={stylesKeys.keyshortElement_shortcut}>{shift}{control}{alt}{meta}{keySelect}{keySink}</div>;
+
+        // const def = this.props.keyboardShortcuts[id];
+        const isDuplicated = !!ObjectKeys(this.props.keyboardShortcuts).filter((idea) => idea !== id).find((idea) => {
+            const scopeOverlap = !!defaultKeyboardShortcuts[idea]?.scope.length && !!defaultKeyboardShortcuts[id]?.scope.length
+                && (!!defaultKeyboardShortcuts[idea].scope.find((scope) => (defaultKeyboardShortcuts[id].scope as TKeyboardShortcutScopeZone[]).includes(scope))
+                || !!defaultKeyboardShortcuts[id].scope.find((scope) => (defaultKeyboardShortcuts[idea].scope as TKeyboardShortcutScopeZone[]).includes(scope)));
+            return scopeOverlap && keyboardShortcutMatches(def, this.props.keyboardShortcuts[idea]);
+        });
+        return <>
+            {/* isDuplicated ? <div style={{display:"none"}} aria-label="duplicated keyboard shortcut" aria-live="assertive" aria-relevant="all" role="alert">duplicated keyboard shortcut</div> : undefined */}
+            <div style={{border: isDuplicated ? "2px solid red" : undefined}}
+                    className={stylesKeys.keyshortElement_shortcut}>{shift}{control}{alt}{meta}{keySelect}{keySink}</div>
+        </>;
     }
 }
 
