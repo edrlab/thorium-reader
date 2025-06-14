@@ -887,9 +887,9 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "APPLY DEFAULT TEMPLATE",
-                "enableCheckbox": "Enable/disable mustache template override when exporting HTML notes",
-                "overrideHTMLTemplate": "Override the Mustache template when exporting the note to HTML"
+                "applyDefaultTemplate": "Load default template",
+                "enableCheckbox": "Customize the HTML template",
+                "overrideHTMLTemplate": "Notes export (annotations and bookmarks)"
             }
         },
         "session": {
