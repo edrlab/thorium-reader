@@ -474,7 +474,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         : ObjectKeys(cleanNames).filter(key =>
             cleanNames[key].name.toLowerCase().includes(searchItem)
             ||
-            cleanNames[key].description?.toLowerCase().includes(searchItem)
+            cleanNames[key].description?.toLowerCase().includes(searchItem),
         );
 
         return (
