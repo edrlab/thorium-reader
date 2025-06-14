@@ -266,7 +266,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
 
             {
                 isLcpWithPrintRights ?
-                    <p style={{overflow: "auto"}}>{__("reader.print.descriptionLcpLimit", { pageRangePrinted: `[${publicationViewLcpRightsPrints}]`, count: publicationView.lcp.rights.print - publicationViewLcpRightsPrints.length, lcpLimitPages: publicationView.lcp.rights.print })}{publicationViewLcpRightsPrints.length ? <span> {"->"} [{publicationViewLcpRightsPrints.join(",")}]</span> : ""}{newLcpRightsPrints.length ? <span> {"->"} [{newLcpRightsPrints.join(",")}]</span> : ""}</p>
+                    <p style={{overflow: "auto"}}>{__("reader.print.descriptionLcpLimit", { /* pageRangePrinted: `[${publicationViewLcpRightsPrints}]`, */ count: publicationView.lcp.rights.print - publicationViewLcpRightsPrints.length, lcpLimitPages: publicationView.lcp.rights.print })}{publicationViewLcpRightsPrints.length ? <span> <br/> [{publicationViewLcpRightsPrints.join(",")}]</span> : ""}{newLcpRightsPrints.length ? <span> {" ... "} [{newLcpRightsPrints.join(",")}]</span> : ""}</p>
                     : <></>
             }
             <div className={stylesInput.form_group} style={{ marginTop: "20px", width: "360px" }}>
