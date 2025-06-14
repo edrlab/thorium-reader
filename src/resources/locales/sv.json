@@ -411,8 +411,8 @@
                 "descriptive": "Publikationen innehåller ljud som kan orsaka obehag"
             },
             "hazards-sound-none": {
-                "compact": "Inget ljud",
-                "descriptive": "Publikationen innehåller inget ljud"
+                "compact": "Inget ljud som kan orsaka obehag",
+                "descriptive": "Publikationen innehåller inget ljud som kan orsaka obehag"
             },
             "hazards-sound-unknown": {
                 "compact": "Förekomst av ljud som kan orsaka obehag är okänd",

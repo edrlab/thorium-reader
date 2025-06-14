@@ -172,11 +172,11 @@
     },
     "library": {
         "lcp": {
-            "hint": "Подсказка: ",
-            "open": "",
+            "hint": "Подсказка:",
+            "open": "Отвори",
             "password": "Парола",
             "sentence": "Тази публикация се нуждае от LCP парола, за да бъде отворена: ",
-            "urlHint": "Забравили сте паролата си? Намерете помощ тук",
+            "urlHint": "Забравили сте паролата си? Намерете помощ тук.",
             "whatIsLcp?": "",
             "whatIsLcpInfoDetails": "",
             "whatIsLcpInfoDetailsLink": ""
@@ -195,7 +195,7 @@
             "error": "Изтеглянето на {{- title}} е неуспешно: [{{- err}}]"
         },
         "import": {
-            "alreadyImport": "{{- title}} вече е била добавена",
+            "alreadyImport": "{{- title}} вече е била добавена.",
             "fail": "Добавянето на {{- path}} се провали. {{- err}}",
             "success": "Добавянето на {{- title}} завърши."
         },
@@ -575,8 +575,8 @@
         },
         "author": "Автор",
         "cancelledLcp": "Тази книга не може да бъде прочетена, защото лицензът за LCP е анулиран.",
-        "certificateRevoked": "Сертификатът е анулиран",
-        "certificateSignatureInvalid": "Ключа за сертификата е невалиден",
+        "certificateRevoked": "Сертификатът е анулиран.",
+        "certificateSignatureInvalid": "Ключа за сертификата е невалиден.",
         "cover": {
             "img": "корица"
         },
@@ -594,9 +594,9 @@
         "lcpRightsPrint": "Печат на страници",
         "lcpStart": "Начало",
         "licenceLCP": "",
-        "licenseCertificateDateInvalid": "Датата на ключа за лиценза е невалидна",
-        "licenseOutOfDate": "Изтекъл срок на лиценза",
-        "licenseSignatureInvalid": "Ключа за лиценза е невалиден",
+        "licenseCertificateDateInvalid": "Датата на ключа за лиценза е невалидна.",
+        "licenseOutOfDate": "Изтекъл срок на лиценза.",
+        "licenseSignatureInvalid": "Ключа за лиценза е невалиден.",
         "licensed": "",
         "markAsRead": "",
         "notStarted": "",
@@ -614,7 +614,7 @@
         "seeMore": "Виж повече",
         "timeLeft": "",
         "title": "Title",
-        "userKeyCheckInvalid": "Паролата е невалидна"
+        "userKeyCheckInvalid": "Паролата е невалидна."
     },
     "reader": {
         "annotations": {

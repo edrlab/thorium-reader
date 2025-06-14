@@ -20,7 +20,7 @@
             "copy": "Kopier",
             "cut": "Klip",
             "paste": "Sæt ind",
-            "print": "",
+            "print": "Print",
             "redo": "Gendan",
             "selectAll": "Vælg alt",
             "title": "Rediger",
@@ -669,10 +669,10 @@
         },
         "goToContent": "Gå til indhold",
         "imgViewer": {
-            "title": "",
-            "zoomIn": "",
-            "zoomOut": "",
-            "zoomReset": ""
+            "title": "Billedfremviser",
+            "zoomIn": "Zoom ind",
+            "zoomOut": "Zoom ud",
+            "zoomReset": "Nulstil zoom"
         },
         "marks": {
             "annotations": "Noter",
@@ -724,7 +724,7 @@
             "openTableOfContentsTitle": "indholdsfortegnelse",
             "page": "Side",
             "pdfscalemode": "Tilpas til side eller skærmbredde",
-            "print": "",
+            "print": "print",
             "settingsTitle": "indstillinger"
         },
         "notes": {
@@ -750,16 +750,16 @@
             "searchTitle": "Søg:"
         },
         "print": {
-            "description": "",
-            "descriptionLcp": "",
-            "descriptionLcpLimit": "",
-            "pageHelpInfo": "",
-            "pageHelpInfo1": "",
-            "pageHelpInfo2": "",
-            "pageHelpInfo3": "",
-            "pageHelpInfo4": "",
-            "pages": "",
-            "print": ""
+            "description": "{{- appName}} print dialog for en bog med {{- count}} sider. Du skal angive de sider du ønsker printet før at systemets print dialog vises",
+            "descriptionLcp": "{{- appName}} print dialog for en LCP-beskyttet bog med {{- count}} sider. Du skal angive de sider du ønsker printet før at systemets print dialog vises",
+            "descriptionLcpLimit": "{{- count}} sider tilbage (af LCP begrænsning på {{- lcpLimitPages}})",
+            "pageHelpInfo": "hjælpeinformation til angivelse af sider:",
+            "pageHelpInfo1": " - indtast et nummer på en side (fx. \"6\")",
+            "pageHelpInfo2": " - indtast to sidetal med en bindestreg imellem, for at angive en kontinuerlig række af sider (fx. \"6-13\")",
+            "pageHelpInfo3": " - brug semikolon til at opdele flere enkeltsider eller kontinuerlige siderækker (fx. \"5;14-20;37\")",
+            "pageHelpInfo4": " - undlad den første eller sidste del i en angivelse af siderække for at medtage alle sider hertil (fx. svarer \"-16\" til \"1-16\" og \"34-\" svarer til \"34-100\" antaget at bogen er på 100 sider)",
+            "pages": "Sider",
+            "print": "Print"
         },
         "settings": {
             "column": {

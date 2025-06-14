@@ -19,8 +19,8 @@ import {
 } from "typed-redux-saga/macro";
 
 import { IRangeInfo } from "@r2-navigator-js/electron/common/selection";
-import { handleLinkLocator } from "@r2-navigator-js/electron/renderer";
-import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
+// import { r2HandleLinkLocator } from "@r2-navigator-js/electron/renderer";
+import { Locator, Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
 
 import { readerLocalActionHighlights, readerLocalActionSearch } from "../actions";
@@ -30,7 +30,18 @@ import debounce from "debounce";
 import { getResourceCacheAll } from "readium-desktop/common/redux/sagas/resourceCache";
 import { ISearchResult } from "readium-desktop/common/redux/states/renderer/search";
 
-const handleLinkLocatorDebounced = debounce(handleLinkLocator, 200);
+// TODO: MASSIVE HACK, needs refactoring!
+interface IWindowHistory extends History {
+    // _readerInstance: Reader | undefined;
+    // _length: number | undefined;
+    _handleLinkLocator: ((locator: R2Locator, isFromOnPopState: boolean) => void) | undefined;
+}
+const windowHistory = window.history as IWindowHistory;
+
+// const handleLinkLocatorDebounced = debounce(r2HandleLinkLocator, 200);
+const handleLinkLocatorDebounced = debounce((location: Locator) => {
+    windowHistory._handleLinkLocator?.(location, false);
+}, 200);
 
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:search");
 

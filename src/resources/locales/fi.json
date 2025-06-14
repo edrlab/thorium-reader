@@ -20,7 +20,7 @@
             "copy": "Kopioi",
             "cut": "Leikkaa",
             "paste": "Liitä",
-            "print": "",
+            "print": "Tulosta",
             "redo": "Tee uudelleen",
             "selectAll": "Valitse kaikki",
             "title": "Muokkaa",
@@ -669,10 +669,10 @@
         },
         "goToContent": "Siirry sisältöön",
         "imgViewer": {
-            "title": "",
-            "zoomIn": "",
-            "zoomOut": "",
-            "zoomReset": ""
+            "title": "Kuvan tarkasteluikkuna",
+            "zoomIn": "Lähennä",
+            "zoomOut": "Loitonna",
+            "zoomReset": "Nollaa zoom"
         },
         "marks": {
             "annotations": "Muistiinpanot",
@@ -724,7 +724,7 @@
             "openTableOfContentsTitle": "Navigaatio",
             "page": "Sivu",
             "pdfscalemode": "Sovita sivu tai leveyteen",
-            "print": "",
+            "print": "Tulosta",
             "settingsTitle": "Asetukset"
         },
         "notes": {
