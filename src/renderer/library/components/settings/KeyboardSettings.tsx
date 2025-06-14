@@ -54,6 +54,11 @@ const _isWindows = os.platform() === "win32";
 // const isLinux = !isMac && !isWindows;
 const DETECTED_OS: "Windows" | "MacOS" | "Linux" = _isWindows ? "Windows" : _isMac ? "MacOS" : "Linux";
 
+type TKeyboardShortcutsMapNameDescription = Record<keyof TKeyboardShortcutsMap, {
+    name: string;
+    description?: string;
+}>;
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
 }
@@ -157,8 +162,10 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         const { __ } = this.props;
 
         const isSearchEmpty = !this.state.searchItem || this.state.searchItem.trim() === "";
+        const searchItem = isSearchEmpty ? undefined : this.state.searchItem.replace(/\s\s+/g, " ").trim().toLowerCase();
+        // console.log(`<${this.state.searchItem}>`, `<${searchItem}>`);
 
-        const cleanNames = {
+        const cleanNames = sortObject({
             AddBookmarkWithLabel: {
                 name: `${__("settings.keyboard.list.AddBookmarkWithLabel.name")}`,
                 description: `${__("settings.keyboard.list.AddBookmarkWithLabel.description")}`,
@@ -379,12 +386,15 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                 name: `${__("settings.keyboard.list.Print.name")}`,
                 description: `${__("settings.keyboard.list.Print.description")}`,
             },
-        };
-
+        } satisfies TKeyboardShortcutsMapNameDescription) as TKeyboardShortcutsMapNameDescription;
 
         const filteredShortcuts = isSearchEmpty
         ? ObjectKeys(sortObject(this.props.keyboardShortcuts) as TKeyboardShortcutsMap)
-        : ObjectKeys(cleanNames).filter(key => cleanNames[key].name.toLowerCase().includes(this.state.searchItem?.toLowerCase()));
+        : ObjectKeys(cleanNames).filter(key =>
+            cleanNames[key].name.toLowerCase().includes(searchItem)
+            ||
+            cleanNames[key].description?.toLowerCase().includes(searchItem)
+        );
 
         return (
             <>
