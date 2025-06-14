@@ -669,10 +669,10 @@
         },
         "goToContent": "Go to the content",
         "imgViewer": {
-            "title": "Image Viewer Dialog Modal",
+            "title": "Image viewer (zoom)",
             "zoomIn": "Zoom In",
             "zoomOut": "Zoom Out",
-            "zoomReset": "Zoom Reset"
+            "zoomReset": "Reset Zoom"
         },
         "marks": {
             "annotations": "Annotations",
@@ -750,12 +750,12 @@
             "searchTitle": "Search:"
         },
         "print": {
-            "description": "{{- appName}} pre-print dialog with a publication of {{- count}} pages. You have to set the range of pages you want to print to trigger the system print dialog",
-            "descriptionLcp": "{{- appName}} pre-print dialog with an LCP publication of {{- count}} pages. You have to set the range of pages you want to print to trigger the system print dialog",
-            "descriptionLcpLimit": "{{- count}} pages remaining (of {{- lcpLimitPages}} LCP limit)",
-            "pageHelpInfo": "page ranges help information :",
+            "description": "{{- appName}} pre-print step: please select the pages you want to send to the system print dialog (this publication has {{- count}} pages)",
+            "descriptionLcp": "{{- appName}} pre-print step: please select the pages you want to send to the system print dialog (this LCP-protected publication has {{- count}} pages)",
+            "descriptionLcpLimit": "LCP limit: {{- lcpLimitPages}}, pages remaining: {{- count}}",
+            "pageHelpInfo": "Page selector syntax:",
             "pageHelpInfo1": " - enter a page number to reference a single page (e.g. \"6\")",
-            "pageHelpInfo2": " - enter two page numbers separated by a dash character to reference a range of contiguous page (e.g. \"6-13\")",
+            "pageHelpInfo2": " - enter two page numbers separated by a dash character to reference a range of contiguous pages (e.g. \"6-13\")",
             "pageHelpInfo3": " - use the semicolon character to separate multiple pages or page ranges (e.g. \"5;14-20;37\")",
             "pageHelpInfo4": " - leave out the first or last page of a range to reference the first or last page of the publication (e.g. \"-16\" is equivalent to \"1-16\", and \"34-\" is equivalent to \"34-100\" assuming a book with a total of 100 pages)",
             "pages": "Pages",
@@ -1111,9 +1111,9 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "APPLY DEFAULT TEMPLATE",
-                "enableCheckbox": "Enable/disable mustache template override when exporting HTML notes",
-                "overrideHTMLTemplate": "Override the Mustache template when exporting the note to HTML"
+                "applyDefaultTemplate": "Load default template",
+                "enableCheckbox": "Customize the HTML template",
+                "overrideHTMLTemplate": "Notes export (annotations and bookmarks)"
             }
         },
         "session": {
