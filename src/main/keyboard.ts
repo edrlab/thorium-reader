@@ -14,36 +14,43 @@ import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { sortObject } from "@r2-utils-js/_utils/JsonUtils";
 
 import {
-    _defaults, TKeyboardShortcut, TKeyboardShortcutId, TKeyboardShortcutReadOnly,
-    TKeyboardShortcutsMap, TKeyboardShortcutsMapReadOnly,
+    defaultKeyboardShortcuts, TKeyboardShortcut, TKeyboardShortcutId,
+    TKeyboardShortcutsMap,
 } from "../common/keyboard";
+
+// uncomment this to test webpack-loader-scope-checker.js (violation: MAIN calls RENDERER code => WebPack bundles source tree from different realm)
+// import { unregisterKeyboardListener } from "readium-desktop/renderer/common/keyboard";
+// unregisterKeyboardListener(() => { });
 
 const debug = debug_("readium-desktop:keyboard");
 
-const defaults: TKeyboardShortcutsMapReadOnly = _defaults;
-
-let current: TKeyboardShortcutsMapReadOnly;
+let _current: TKeyboardShortcutsMap;
 reset();
 
 function cloneDefaults(): TKeyboardShortcutsMap {
-    // TODO: better deep clone with recursive freeze
-    const obj = JSON.parse(JSON.stringify(defaults)) as TKeyboardShortcutsMap;
-    const ids = ObjectKeys(obj);
-    for (const id of ids) {
-        obj[id] = Object.freeze<TKeyboardShortcut>(obj[id]);
-    }
+    const obj = JSON.parse(JSON.stringify(defaultKeyboardShortcuts)) as TKeyboardShortcutsMap;
+    // const ids = ObjectKeys(obj);
+    // for (const id of ids) {
+    //     obj[id] = obj[id] as TKeyboardShortcutFull;
+    // }
     return obj;
 }
-function reset(): TKeyboardShortcutsMapReadOnly {
-    current = Object.freeze<TKeyboardShortcutsMap>(cloneDefaults());
-    return current;
+function reset(): TKeyboardShortcutsMap {
+    _current = cloneDefaults();
+
+    // NOT NEEDED because userland calls to loadDefaults() or loadUser() are in code logic that triggers Redux Saga takeSpawnEvery keyboardActions.setShortcuts.ID
+    // // saveUser(_current);
+    // const txt = JSON.stringify({}, null, 4);
+    // fs.writeFileSync(userFilePath, txt, { encoding: "utf8" });
+
+    return _current;
 }
 
-function get(id: TKeyboardShortcutId): TKeyboardShortcutReadOnly {
-    return current[id];
+function get(id: TKeyboardShortcutId): TKeyboardShortcut {
+    return _current[id];
 }
-function getDefault(id: TKeyboardShortcutId): TKeyboardShortcutReadOnly {
-    return defaults[id];
+function getDefault(id: TKeyboardShortcutId): TKeyboardShortcut {
+    return defaultKeyboardShortcuts[id];
 }
 
 const userDataPath = app.getPath("userData");
@@ -56,10 +63,15 @@ const defaultsFilePath = path.join(
     folderPath,
     DEFAULTS_FILENAME,
 );
-const USER_FILENAME = "user.json";
+const USER_FILENAME = "user_.json";
 const userFilePath = path.join(
     folderPath,
     USER_FILENAME,
+);
+const USER_FILENAME_OLD = "user.json";
+const userFilePath_OLD = path.join(
+    folderPath,
+    USER_FILENAME_OLD,
 );
 
 function showFolder() {
@@ -74,7 +86,7 @@ function showUserFile() {
     shell.showItemInFolder(userFilePath);
 }
 
-function load(fileName: string): TKeyboardShortcutsMapReadOnly | undefined {
+function load(fileName: string): TKeyboardShortcutsMap | undefined {
     const filePath = path.join(
         folderPath,
         fileName,
@@ -89,7 +101,7 @@ function load(fileName: string): TKeyboardShortcutsMapReadOnly | undefined {
     const obj = cloneDefaults();
     for (const id of ids) {
         // filters out non-recognised names
-        if (!defaults[id]) {
+        if (!defaultKeyboardShortcuts[id]) {
             continue;
         }
 
@@ -102,7 +114,7 @@ function load(fileName: string): TKeyboardShortcutsMapReadOnly | undefined {
             continue;
         }
         // filters out objects with missing key (the rest is optional)
-        if (!json[id].key) {
+        if (!json[id].key || typeof json[id].key !== "string") {
             continue;
         }
         const s: TKeyboardShortcut = {
@@ -117,10 +129,10 @@ function load(fileName: string): TKeyboardShortcutsMapReadOnly | undefined {
         // replaces the default
         obj[id] = s;
     }
-    return Object.freeze<TKeyboardShortcutsMapReadOnly>(obj);
+    return obj;
 }
 function loadUser(): boolean {
-    let obj: TKeyboardShortcutsMapReadOnly | undefined;
+    let obj: TKeyboardShortcutsMap | undefined;
     try {
         obj = load(USER_FILENAME);
     } catch (err) {
@@ -130,11 +142,37 @@ function loadUser(): boolean {
     if (!obj) {
         return false;
     }
-    current = obj;
+    _current = obj;
     return  true;
 }
-function saveUser(obj: TKeyboardShortcutsMapReadOnly) {
-    const txt = JSON.stringify(sortObject(obj), null, 4);
+function saveUser(obj: TKeyboardShortcutsMap) {
+    const objUser = {} as TKeyboardShortcutsMap;
+    const defaultKeys = ObjectKeys(defaultKeyboardShortcuts); // Object.keys(defaultKeyboardShortcuts) as Array<keyof TKeyboardShortcutsMap>;
+    for (const defaultKey of defaultKeys) {
+        if (obj[defaultKey] &&
+            obj[defaultKey].key && typeof obj[defaultKey].key === "string" &&
+            // typeof obj[defaultKey].meta === "boolean" &&
+            // typeof obj[defaultKey].shift === "boolean" &&
+            // typeof obj[defaultKey].control === "boolean" &&
+            // typeof obj[defaultKey].alt === "boolean" &&
+            (
+                obj[defaultKey].key !== defaultKeyboardShortcuts[defaultKey].key ||
+                (obj[defaultKey].meta ? true : false) !== defaultKeyboardShortcuts[defaultKey].meta ||
+                (obj[defaultKey].shift ? true : false) !== defaultKeyboardShortcuts[defaultKey].shift ||
+                (obj[defaultKey].control ? true : false) !== defaultKeyboardShortcuts[defaultKey].control ||
+                (obj[defaultKey].alt ? true : false) !== defaultKeyboardShortcuts[defaultKey].alt
+            )
+        ) {
+            objUser[defaultKey] = {
+                key: obj[defaultKey].key,
+                meta: obj[defaultKey].meta,
+                shift: obj[defaultKey].shift,
+                control: obj[defaultKey].control,
+                alt: obj[defaultKey].alt,
+            };
+        }
+    }
+    const txt = JSON.stringify(sortObject(objUser), null, 4);
     fs.writeFileSync(userFilePath, txt, { encoding: "utf8" });
 }
 
@@ -149,13 +187,23 @@ function init() {
 
     // always recreate at launch (ensures no mistaken tampering by users)
     if (true || !fs.existsSync(defaultsFilePath)) {
-        const txt = JSON.stringify(sortObject(defaults), null, 4);
+        const txt = JSON.stringify(sortObject(defaultKeyboardShortcuts), null, 4);
         fs.writeFileSync(defaultsFilePath, txt, { encoding: "utf8" });
+    }
+
+    if (fs.existsSync(userFilePath_OLD)) {
+        try {
+            fs.unlinkSync(userFilePath_OLD);
+        } catch (e) {
+            debug(userFilePath_OLD);
+            debug(e);
+        }
     }
 
     // preserve existing user-defined data
     if (!fs.existsSync(userFilePath)) {
-        const txt = JSON.stringify(sortObject(defaults), null, 4);
+        // const txt = JSON.stringify(sortObject(defaults), null, 4);
+        const txt = JSON.stringify({}, null, 4);
         fs.writeFileSync(userFilePath, txt, { encoding: "utf8" });
     } else {
         const okay = loadUser();
@@ -166,15 +214,15 @@ function init() {
 // process.nextTick(() => {
 // });
 
-export const keyboardShortcuts = Object.freeze({
+export const keyboardShortcuts = {
     init,
     get,
     getAll: () => {
-        return current;
+        return _current;
     },
     getDefault,
     getAllDefaults: () => {
-        return defaults;
+        return defaultKeyboardShortcuts;
     },
     loadUser,
     loadDefaults: () => {
@@ -184,4 +232,4 @@ export const keyboardShortcuts = Object.freeze({
     showFolder,
     showDefaultFile,
     showUserFile,
-});
+};
