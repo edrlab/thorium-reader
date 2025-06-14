@@ -17,11 +17,11 @@ import Mustache from "mustache";
 // esModuleInterop?
 
 import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/annotation/htmlTemplate";
-import { marked } from "marked";
 import DOMPurify from "dompurify";
 import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
+import { marked } from "readium-desktop/renderer/common/marked/marked";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:common:redux:sagas:readiumAnnotation:export");
