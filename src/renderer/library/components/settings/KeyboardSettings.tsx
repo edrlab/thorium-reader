@@ -13,6 +13,8 @@ import * as stylesSettings from "readium-desktop/renderer/assets/styles/componen
 import * as stylesKeys from "readium-desktop/renderer/assets/styles/components/keyboardsShortcuts.scss";
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 
+import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
+
 import classNames from "classnames";
 import * as React from "react";
 import * as Popover from "@radix-ui/react-popover";
@@ -77,8 +79,15 @@ interface IState {
     editKeyboardShortcutId: TKeyboardShortcutId | undefined;
     editKeyboardShortcutData: TKeyboardShortcut | undefined;
     searchItem: string | undefined;
-    layoutMap: Map<KeyMapCode, string> | null;
+    // layoutMap: Map<KeyMapCode, string> | null;
     selectLayoutMap: Map<string, string> | null;
+}
+
+function toUpperIfSimpleLowerCase(char: string): string {
+    if (/^[a-z]$/.test(char)) {
+        return char.toUpperCase();
+    }
+    return char;
 }
 
 export const AdvancedTrigger = () => {
@@ -140,7 +149,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             editKeyboardShortcutId: undefined,
             editKeyboardShortcutData: undefined,
             searchItem: undefined,
-            layoutMap: null,
+            // layoutMap: null,
             selectLayoutMap: null,
         };
         this.onKeyUp = this.onKeyUp.bind(this);
@@ -150,7 +159,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         this._keyboardSinkIsActive = false;
     }
 
-    _isMounted = false;
+    // _isMounted = false;
 
     public componentDidMount() {
         ensureKeyboardListenerIsInstalled();
@@ -160,55 +169,74 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             passive: false,
             capture: true,
         });
-        this._isMounted = true;
-        this.loadLayoutMap();
-        this.loadSelectLayoutMap();
+        // this._isMounted = true;
+        // this.loadLayoutMap();
+
+        Object.values(this.props.keyboardShortcuts).forEach(def => {
+            if (!KEY_CODES.includes(def.key)) {
+                KEY_CODES.push(def.key);
+            }
+        });
+        (async () => {
+            await this.loadKeyboardLayoutMap(/* KEY_CODES , "selectLayoutMap" */);
+        })();
     }
 
-    public componentDidUpdate(prevProps: { }) {
-    if (prevProps !== this.props.keyboardShortcuts) {
-      this.loadLayoutMap();
+    public componentDidUpdate(oldProps: IProps) {
+        if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
+            let needsUpdating = false;
+            Object.values(this.props.keyboardShortcuts).forEach(def => {
+                if (!KEY_CODES.includes(def.key)) {
+                    KEY_CODES.push(def.key);
+                    needsUpdating = true;
+                }
+            });
+            if (needsUpdating) {
+                (async () => {
+                    await this.loadKeyboardLayoutMap(/* KEY_CODES, "selectLayoutMap" */);
+                })();
+            }
+        }
     }
-  }
 
-    private async loadKeyboardLayoutMap<K extends "layoutMap" | "selectLayoutMap">(
-        codes: string[],
-        stateKey: K,
+    private async loadKeyboardLayoutMap/* <K extends  "layoutMap" | "selectLayoutMap"> */(
+        // codes: string[],
+        // stateKey: K,
     ) {
         try {
             const layoutMapAPI = await navigator.keyboard?.getLayoutMap();
             if (!layoutMapAPI) return;
 
             const newMap = new Map<string, string>();
-            for (const code of codes) {
+            for (const code of KEY_CODES) { // codes
                 const label = layoutMapAPI.get(code as KeyMapCode) ?? code;
+                // console.log("code > label", code, label);
                 newMap.set(code, label);
             }
 
-            if (this._isMounted) {
-                this.setState({ [stateKey]: newMap } as Pick<IState, K>);
-            }
+            // if (this._isMounted) {
+                // this.setState({ [stateKey]: newMap } as Pick<IState, K>);
+                this.setState({ selectLayoutMap: newMap });
+            // }
         } catch {
-            if (this._isMounted) {
-                this.setState({ [stateKey]: null } as Pick<IState, K>);
-            }
+            // if (this._isMounted) {
+                // this.setState({ [stateKey]: null } as Pick<IState, K>);
+                this.setState({ selectLayoutMap: null });
+            // }
         }
     }
 
-    private async loadLayoutMap() {
-        const codes = Array.from(new Set(
-            Object.values(this.props.keyboardShortcuts).map(item => item.key),
-        ));
-        await this.loadKeyboardLayoutMap(codes, "layoutMap");
-    }
+    // private async loadLayoutMap() {
+    //     const codes = Array.from(new Set(
+    //         Object.values(this.props.keyboardShortcuts).map(item => item.key),
+    //     ));
+    //     await this.loadKeyboardLayoutMap(codes, "layoutMap");
+    // }
 
-    private async loadSelectLayoutMap() {
-        await this.loadKeyboardLayoutMap(KEY_CODES, "selectLayoutMap");
-    }
 
     public componentWillUnmount() {
         document.removeEventListener("keyup", this.onKeyUp);
-        this._isMounted = false;
+        // this._isMounted = false;
     }
 
     public render(): React.ReactElement<{}> {
@@ -711,18 +739,13 @@ class KeyboardSettings extends React.Component<IProps, IState> {
     //     this.props.reloadKeyboardShortcuts(defaults);
     // }
     private prettifyKeyboardShortcut(def: TKeyboardShortcut) {
-        function toUpperIfSimpleLowerCase(char: string): string {
-            if (/^[a-z]$/.test(char)) {
-                return char.toUpperCase();
-            }
-            return char;
-        }
         const alt = def.alt ? <span title={DETECTED_OS === "MacOS" ? "Option" : "Alt"}>{DETECTED_OS === "MacOS" ? <SVG ariaHidden svg={MacOptionIcon} /> : "ALT"} + </span> : null;
         const shift = def.shift ? <span title="Shift"><SVG ariaHidden svg={ShiftIcon} /> + </span> : null;
         const control = def.control ? <span title="Control">CTRL + </span> : null;
         const meta = def.meta ? <span title={DETECTED_OS === "MacOS" ? "Command" : "Meta"}>{DETECTED_OS === "MacOS" ? <SVG ariaHidden svg={MacCmdIcon} /> : <SVG ariaHidden svg={WindowsIcon} />} + </span> : null;
-        const { layoutMap } = this.state;
-        const softKeyRaw = layoutMap?.get(def.key as KeyMapCode) ?? def.key;
+        // const { layoutMap } = this.state;
+        // const softKeyRaw = layoutMap?.get(def.key as KeyMapCode) ?? def.key;
+        const softKeyRaw = this.state.selectLayoutMap?.get(def.key) ?? def.key;
         const softKey = toUpperIfSimpleLowerCase(softKeyRaw);
         return <span aria-hidden>{shift}{control}{alt}{meta}<span>{softKey}</span></span>;
     }
@@ -825,6 +848,9 @@ class KeyboardSettings extends React.Component<IProps, IState> {
 
         if (!KEY_CODES.includes(def.key)) {
             KEY_CODES.push(def.key);
+            (async () => {
+                await this.loadKeyboardLayoutMap(/* KEY_CODES, "selectLayoutMap" */);
+            })();
         }
 
         const keySelect =
@@ -855,12 +881,6 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         >
             {KEY_CODES.map((keyOption, idx) => {
                 const label = this.state.selectLayoutMap?.get(keyOption) ?? keyOption;
-                function toUpperIfSimpleLowerCase(char: string): string {
-                    if (/^[a-z]$/.test(char)) {
-                        return char.toUpperCase();
-                    }
-            return char;
-        }
                 return (
                     <option
                         key={`keyOption_${idx}`}
