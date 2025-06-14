@@ -45,7 +45,7 @@ interface IProps {
     dockedMode?: boolean;
     locatorExtended: MiniLocatorExtended;
     uuid?: string;
-    name: string;
+    name: string | undefined;
     color: IColor;
     tags: string[] | undefined;
 }
@@ -61,7 +61,7 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
 
     const textAreaRef = React.useRef<HTMLTextAreaElement>();
     const bookmarkMaxLength = 1500;
-    const [textAreaValue, setTextAreaValue] = React.useState(name);
+    const [textAreaValue, setTextAreaValue] = React.useState(name || "");
 
     const [colorSelected, setColor] = React.useState(() => rgbToHex(color));
     const previousColorSelected = React.useRef<string>(colorSelected);
