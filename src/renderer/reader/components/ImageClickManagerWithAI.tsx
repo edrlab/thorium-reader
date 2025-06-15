@@ -53,7 +53,7 @@ interface ControlsProps {
     chatEnabled: boolean;
 }
 
-
+const onePixelImageDataURL = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==";
 
 // https://github.com/huggingface/transformers.js-examples/blob/5b6e0c18677e3e22ef42779a766f48e2ed0a4b18/smolvlm-webgpu/src/components/Chat.jsx#L10
 function render(text: string) {
@@ -265,8 +265,19 @@ const Chat = ({ imageHref, autoPrompt, setAutoPrompt }: { imageHref: string, aut
                                         : <SVG svg={GeminiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.openai)} />
                                 }
                             </div>
-                            <div className={stylesChatbot.chatbot_message_content} dangerouslySetInnerHTML={{ __html: render(message.content) }}>
-                                {/* {message.content} */}
+
+                            <div
+                                className={stylesChatbot.chatbot_message_content}
+                                dangerouslySetInnerHTML={{
+                                    __html:
+                                    render(message.content) +
+                                        `<!--XxX-->\n\n<img src="${onePixelImageDataURL}" onload="/* this.focus({preventScroll:false,focusVisible:false}); */ if (this.parentNode?.parentNode?.parentNode?.scrollHeight) this.parentNode.parentNode.parentNode.scrollTop=this.parentNode.parentNode.parentNode.scrollHeight">`
+                                }}
+                            >
+                                {/*
+                                    (reset ? `\n<img src="${onePixelImageDataURL}" onload="if (this.parentNode?.scrollHeight) this.parentNode.scrollTop=0">`
+
+                                    {message.content} */}
                             </div>
                             {message.role === "assistant" ?
                                 <div style={{border: "1px", borderColor: "gray", display: "flex", flexDirection: "row"}}>
@@ -293,7 +304,11 @@ const Chat = ({ imageHref, autoPrompt, setAutoPrompt }: { imageHref: string, aut
                             }
                         </div>
                     ))}
-                    <div id="aichat-anchor"></div>
+                    {/* <div id="aichat-anchor"></div> */}
+
+
+
+
                 </div>
                 <form onSubmit={(event) => handleSubmit(event, {})} className={stylesChatbot.chatbot_user_form}>
                     <div className={stylesChatbot.chatbot_user_form_input_container}>
