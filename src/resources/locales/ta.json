@@ -20,7 +20,7 @@
             "copy": "நகலெடு",
             "cut": "வெட்டு",
             "paste": "ஒட்டு",
-            "print": "",
+            "print": "அச்சிடுக",
             "redo": "மீண்டும்செய்",
             "selectAll": "அனைத்தையும் தெரிவுசெய்",
             "title": "தொகு",
@@ -73,7 +73,7 @@
             "lastAdditions": "அண்மைக் காலத்தில் சேர்க்கப்பட்டது"
         },
         "export": "என சேமி",
-        "exportAnnotation": "ஏற்றுமதி குறிப்புகள் ...",
+        "exportAnnotation": "ஏற்றுமதி குறிப்புகள்",
         "format": "வடிவம்",
         "importAnnotation": "குறிப்புகளை இறக்குமதி செய்யுங்கள்",
         "lang": "மொழி",
@@ -136,8 +136,8 @@
         "cancel": "ரத்துசெய்",
         "deleteAnnotations": "சிறுகுறிப்புகளை நீக்கவா?",
         "deleteAnnotationsText": "நீங்கள் நிச்சயமாக {{- சிறுகுறிப்பு செட்ட்லெங்}} குறிப்புகளை நீக்க விரும்புகிறீர்களா?",
-        "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteBookmarks": "புக்மார்க்குகளை நீக்கவா?",
+        "deleteBookmarksText": "{{- புக்மார்க்குகள் பட்டியல் நீளம்}} புக்மார்க்குகளை நீக்க விரும்புகிறீர்களா?",
         "deleteFeed": "பட்டியலை நீக்கவா?",
         "deletePublication": "வெளியீட்டை நீக்கவா?",
         "import": "இறக்குமதியை உறுதிப்படுத்தவும்:",
@@ -249,292 +249,292 @@
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": ""
+            "accessibility-summary-title": "அணுகல் சுருக்கம்"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ஏரியா பாத்திரங்கள் சேர்க்கப்பட்டுள்ளன",
+                "descriptive": "அமைப்பை மேம்படுத்துவதற்கும் வழிசெலுத்தலை எளிதாக்குவதற்கும் ஏரியா பாத்திரங்களுடன் உள்ளடக்கம் மேம்படுத்தப்பட்டுள்ளது"
             },
             "additional-accessibility-information-audio-descriptions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ஆடியோ விளக்கங்கள்",
+                "descriptive": "ஆடியோ விளக்கங்கள்"
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "பிரெய்ல்",
+                "descriptive": "பிரெய்ல்"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "முழு ரூபி சிறுகுறிப்புகள்",
+                "descriptive": "முழு ரூபி சிறுகுறிப்புகள்"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "முன்புறம் மற்றும் பின்னணி ஆடியோவுக்கு இடையில் அதிக வேறுபாடு",
+                "descriptive": "முன்புறம் மற்றும் பின்னணி ஆடியோவுக்கு இடையில் அதிக வேறுபாடு"
             },
             "additional-accessibility-information-high-contrast-between-text-and-background": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "முன்புற உரை மற்றும் பின்னணிக்கு இடையில் அதிக வேறுபாடு",
+                "descriptive": "முன்புற உரை மற்றும் பின்னணிக்கு இடையில் அதிக வேறுபாடு"
             },
             "additional-accessibility-information-large-print": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "பெரிய அச்சு",
+                "descriptive": "பெரிய அச்சு"
             },
             "additional-accessibility-information-page-breaks": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "பக்க இடைவெளிகள் சேர்க்கப்பட்டுள்ளன",
+                "descriptive": "அசல் அச்சு மூலத்திலிருந்து பக்க இடைவெளிகள் சேர்க்கப்பட்டுள்ளன"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "சில ரூபி சிறுகுறிப்புகள்",
+                "descriptive": "சில ரூபி சிறுகுறிப்புகள்"
             },
             "additional-accessibility-information-sign-language": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "சைகை மொழி",
+                "descriptive": "சைகை மொழி"
             },
             "additional-accessibility-information-tactile-graphics": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "தொட்டுணரக்கூடிய கிராபிக்ச் சேர்க்கப்பட்டுள்ளது",
+                "descriptive": "பார்வையற்றவர்களுக்கு காட்சி கூறுகளை அணுகுவதற்கு தொட்டுணரக்கூடிய கிராபிக்ச் ஒருங்கிணைக்கப்பட்டுள்ளன"
             },
             "additional-accessibility-information-tactile-objects": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "தொட்டுணரக்கூடிய 3D பொருள்கள்",
+                "descriptive": "தொட்டுணரக்கூடிய 3D பொருள்கள்"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "உரை-க்கு-பேச்சு குறிப்பு வழங்கப்பட்டது",
+                "descriptive": "உரை-க்கு-பேச்சு குறிப்பு வழங்கப்பட்டது"
             },
-            "additional-accessibility-information-title": ""
+            "additional-accessibility-information-title": "கூடுதல் அணுகல் செய்தி"
         },
         "conformance": {
             "conformance-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "இந்த வெளியீடு குறைந்தபட்ச அணுகல் தரங்களை நிறைவு செய்கிறது",
+                "descriptive": "வெளியீட்டில் எபப் அணுகல் மற்றும் WCAG 2 நிலை ஒரு தரத்தை நிறைவு செய்கிறது என்ற இணக்க அறிக்கை உள்ளது"
             },
             "conformance-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "இந்த வெளியீடு ஏற்றுக்கொள்ளப்பட்ட அணுகல் தரங்களை நிறைவு செய்கிறது",
+                "descriptive": "வெளியீட்டில் EPUB அணுகல் மற்றும் WCAG 2 நிலை AA தரத்தை நிறைவு செய்கிறது என்ற இணக்க அறிக்கை உள்ளது"
             },
             "conformance-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "இந்த வெளியீடு ஏற்றுக்கொள்ளப்பட்ட அணுகல் தரங்களை மீறுகிறது",
+                "descriptive": "வெளியீட்டில் EPUB அணுகல் மற்றும் WCAG 2 நிலை AAA தரத்தை நிறைவு செய்கிறது என்ற இணக்க அறிக்கை உள்ளது"
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "வெளியீடு சான்றிதழ் பெற்றது "
             },
             "conformance-certifier-credentials": {
-                "compact": ""
+                "compact": "சான்றிதழின் நற்சான்றிதழ் "
             },
             "conformance-details-certifier-report": {
-                "compact": ""
+                "compact": "மேலும் தகவலுக்கு சான்றிதழின் அறிக்கையைப் பார்க்கவும்"
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "இந்த வெளியீடு சந்திப்பதாகக் கூறுகிறது",
+                "descriptive": "இந்த வெளியீடு சந்திப்பதாகக் கூறுகிறது"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "எபப் அணுகல் 1.0",
+                "descriptive": "எபப் அணுகல் 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "எபப் அணுகல் 1.1",
+                "descriptive": "எபப் அணுகல் 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "நிலை a",
+                "descriptive": "நிலை a"
             },
             "conformance-details-level-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "நிலை AA",
+                "descriptive": "நிலை AA"
             },
             "conformance-details-level-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "நிலை AAA",
+                "descriptive": "நிலை AAA"
             },
             "conformance-details-wcag-2-0": {
-                "compact": ""
+                "compact": "WCAG 2.0"
             },
             "conformance-details-wcag-2-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.1",
+                "descriptive": "வலை உள்ளடக்க அணுகல் வழிகாட்டுதல்கள் (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.2",
+                "descriptive": "வலை உள்ளடக்க அணுகல் வழிகாட்டுதல்கள் (WCAG) 2.2"
             },
             "conformance-no": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "எந்த தகவலும் கிடைக்கவில்லை",
+                "descriptive": "எந்த தகவலும் கிடைக்கவில்லை"
             },
-            "conformance-title": "",
+            "conformance-title": "இணக்கம்",
             "conformance-unknown-standard": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "இந்த வெளியீட்டின் அணுகலுக்கான ஏற்றுக்கொள்ளப்பட்ட தரங்களுக்கு இணங்குவதை தீர்மானிக்க முடியாது",
+                "descriptive": "இந்த வெளியீட்டின் அணுகலுக்கான ஏற்றுக்கொள்ளப்பட்ட தரங்களுக்கு இணங்குவதை தீர்மானிக்க முடியாது"
             }
         },
         "hazards": {
             "hazards-flashing": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ஒளிரும் உள்ளடக்கம்",
+                "descriptive": "வெளியீட்டில் ஒளிரும் உள்ளடக்கம் உள்ளது, இது ஒளிச்சேர்க்கை வலிப்புத்தாக்கங்களை ஏற்படுத்தும்"
             },
             "hazards-flashing-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ஒளிரும் உள்ளடக்கம் இல்லை",
+                "descriptive": "வெளியீட்டில் ஒளிரும் உள்ளடக்கம் இல்லை"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ஒளிரும் உள்ளடக்கத்தின் இருப்பு தெரியவில்லை",
+                "descriptive": "ஒளிரும் உள்ளடக்கத்தின் இருப்பு தெரியவில்லை"
             },
             "hazards-motion": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "இயக்க உருவகப்படுத்துதல்",
+                "descriptive": "இயக்க நோயை ஏற்படுத்தக்கூடிய இயக்க உருவகப்படுத்துதல்களை வெளியீட்டில் கொண்டுள்ளது"
             },
             "hazards-motion-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "இயக்க உருவகப்படுத்துதல் இல்லை",
+                "descriptive": "வெளியீட்டில் இயக்க உருவகப்படுத்துதல் இல்லை"
             },
             "hazards-motion-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "இயக்க உருவகப்படுத்துதலின் இருப்பு தெரியவில்லை",
+                "descriptive": "இயக்க உருவகப்படுத்துதலின் இருப்பு தெரியவில்லை"
             },
             "hazards-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "எந்த தகவலும் கிடைக்கவில்லை",
+                "descriptive": "எந்த தகவலும் கிடைக்கவில்லை"
             },
             "hazards-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ஆபத்துகள் இல்லை",
+                "descriptive": "வெளியீட்டில் எந்த ஆபத்துகளும் இல்லை"
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ஒலிகள்",
+                "descriptive": "வெளியீட்டில் சங்கடமான ஒலிகள் உள்ளன"
             },
             "hazards-sound-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ஒலி இல்லை",
+                "descriptive": "வெளியீட்டில் எந்த ஒலிகளும் இல்லை"
             },
             "hazards-sound-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ஒலிகளின் இருப்பு தெரியவில்லை",
+                "descriptive": "ஒலிகளின் இருப்பு தெரியவில்லை"
             },
-            "hazards-title": "",
+            "hazards-title": "ஆபத்துகள்",
             "hazards-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "அபாயங்களின் இருப்பு தெரியவில்லை",
+                "descriptive": "ஆபத்துகளின் பரிசுகள் தெரியவில்லை"
             }
         },
         "navigation": {
             "navigation-index": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "குறியெண்",
+                "descriptive": "குறிப்பிடப்பட்ட உள்ளீடுகளுக்கான இணைப்புகளுடன் குறியீடு"
             },
             "navigation-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "எந்த தகவலும் கிடைக்கவில்லை",
+                "descriptive": "எந்த தகவலும் கிடைக்கவில்லை"
             },
             "navigation-page-navigation": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "பக்கத்திற்குச் செல்லுங்கள்",
+                "descriptive": "அச்சு மூல பதிப்பிலிருந்து பக்கங்களுக்குச் செல்ல பக்க பட்டியல்"
             },
             "navigation-structural": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "தலைப்புகள்",
+                "descriptive": "கட்டமைக்கப்பட்ட வழிசெலுத்தலுக்கான தலைப்புகள், அட்டவணைகள் போன்ற கூறுகள்"
             },
-            "navigation-title": "",
+            "navigation-title": "வானோடல்",
             "navigation-toc": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "உள்ளடக்க அட்டவணை",
+                "descriptive": "இணைப்புகள் வழியாக உரையின் அனைத்து அத்தியாயங்களுக்கும் உள்ளடக்க அட்டவணை"
             }
         },
         "rich-content": {
             "rich-content-accessible-chemistry-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "லேடெக்சில் வேதியியல் சூத்திரங்கள்",
+                "descriptive": "அணுகக்கூடிய வடிவத்தில் வேதியியல் சூத்திரங்கள் (லேடெக்ச்)"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "கணிதத்தில் வேதியியல் சூத்திரங்கள்",
+                "descriptive": "அணுகக்கூடிய வடிவத்தில் வேதியியல் சூத்திரங்கள் (MATHML)"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "கணிதம் லேடெக்ச்",
+                "descriptive": "அணுகக்கூடிய வடிவத்தில் கணித சூத்திரங்கள் (லேடெக்ச்)"
             },
             "rich-content-accessible-math-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "கணிதமாக கணிதம்",
+                "descriptive": "அணுகக்கூடிய வடிவத்தில் கணித சூத்திரங்கள் (MATHML)"
             },
             "rich-content-accessible-math-described": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "கணிதத்தின் உரை விளக்கங்கள் வழங்கப்படுகின்றன",
+                "descriptive": "கணிதத்தின் உரை விளக்கங்கள் வழங்கப்படுகின்றன"
             },
             "rich-content-closed-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "வீடியோக்களில் மூடிய தலைப்புகள் உள்ளன",
+                "descriptive": "வெளியீடுகளில் சேர்க்கப்பட்ட வீடியோக்கள் மூடிய தலைப்புகளைக் கொண்டுள்ளன"
             },
             "rich-content-extended": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "செய்தி நிறைந்த படங்கள் நீட்டிக்கப்பட்ட விளக்கங்களால் விவரிக்கப்பட்டுள்ளன",
+                "descriptive": "செய்தி நிறைந்த படங்கள் நீட்டிக்கப்பட்ட விளக்கங்களால் விவரிக்கப்பட்டுள்ளன"
             },
             "rich-content-open-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "வீடியோக்களில் திறந்த தலைப்புகள் உள்ளன",
+                "descriptive": "வெளியீடுகளில் சேர்க்கப்பட்ட வீடியோக்கள் திறந்த தலைப்புகளைக் கொண்டுள்ளன"
             },
-            "rich-content-title": "",
+            "rich-content-title": "பணக்கார உள்ளடக்கம்",
             "rich-content-transcript": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "டிரான்ச்கிரிப்ட் (கள்) வழங்கப்பட்டது",
+                "descriptive": "டிரான்ச்கிரிப்ட் (கள்) வழங்கப்பட்டது"
             },
             "rich-content-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "எந்த தகவலும் கிடைக்கவில்லை",
+                "descriptive": "எந்த தகவலும் கிடைக்கவில்லை"
             }
         },
         "ways-of-reading": {
             "ways-of-reading-nonvisual-reading-alt-text": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "மாற்று உரை உள்ளது",
+                "descriptive": "படங்களுக்கான மாற்று உரை விளக்கங்கள் உள்ளன"
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "அல்லாத வாசிப்பு பற்றிய எந்த தகவலும் கிடைக்கவில்லை",
+                "descriptive": "அல்லாத வாசிப்பு பற்றிய எந்த தகவலும் கிடைக்கவில்லை"
             },
             "ways-of-reading-nonvisual-reading-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "சத்தமாக அல்லது மாறும் பிரெய்லில் படிக்க படிக்க முடியாது",
+                "descriptive": "உரத்த பேச்சு அல்லது மாறும் பிரெய்ல் வாசிப்பதால் உள்ளடக்கம் படிக்க முடியாது"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "சத்தமாக அல்லது மாறும் பிரெயிலில் படிக்க முழுமையாக படிக்க முடியாது",
+                "descriptive": "உரத்த பேச்சு அல்லது மாறும் பிரெய்லைப் படிக்கும்போது எல்லா உள்ளடக்கங்களும் படிக்க முடியாது"
             },
             "ways-of-reading-nonvisual-reading-readable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "உரக்க அல்லது மாறும் பிரெயிலில் படிக்கக்கூடியது",
+                "descriptive": "எல்லா உள்ளடக்கத்தையும் உரத்த பேச்சு அல்லது மாறும் பிரெய்ல் படிக்கலாம்"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "முன்பதிவு செய்யப்பட்ட ஆடியோ கிளிப்புகள்",
+                "descriptive": "முன்பதிவு செய்யப்பட்ட ஆடியோ கிளிப்புகள் உள்ளடக்கத்தில் உட்பொதிக்கப்பட்டுள்ளன"
             },
             "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "முன்கூட்டியே பதிவுசெய்யப்பட்ட ஆடியோ பற்றிய தகவல்கள் எதுவும் கிடைக்கவில்லை",
+                "descriptive": "முன்கூட்டியே பதிவுசெய்யப்பட்ட ஆடியோ பற்றிய தகவல்கள் எதுவும் கிடைக்கவில்லை"
             },
             "ways-of-reading-prerecorded-audio-only": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "முன்பதிவு செய்யப்பட்ட ஆடியோ மட்டுமே",
+                "descriptive": "உரை மாற்று இல்லாத ஆடியோபுக்"
             },
             "ways-of-reading-prerecorded-audio-synchronized": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "முன்பதிவு செய்யப்பட்ட ஆடியோ உரையுடன் ஒத்திசைக்கப்பட்டது",
+                "descriptive": "அனைத்து உள்ளடக்கங்களும் உரையுடன் ஒத்திசைக்கப்பட்ட ஆடியோவை ஒத்திசைக்கின்றன"
             },
-            "ways-of-reading-title": "",
+            "ways-of-reading-title": "வாசிப்பதற்கான வழிகள்",
             "ways-of-reading-visual-adjustments-modifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "தோற்றத்தை மாற்றியமைக்கலாம்",
+                "descriptive": "உரை மற்றும் பக்க தளவமைப்பின் தோற்றத்தை வாசிப்பு அமைப்பின் திறன்களின்படி மாற்றலாம் (எழுத்துரு குடும்பம் மற்றும் எழுத்துரு அளவு, பத்திகள், வாக்கியங்கள், சொற்கள் மற்றும் கடிதங்கள், அத்துடன் பின்னணி மற்றும் உரையின் நிறம்)"
             },
             "ways-of-reading-visual-adjustments-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "தோற்றம் மாற்றியமைத்தல் பற்றிய எந்த தகவலும் கிடைக்கவில்லை",
+                "descriptive": "தோற்றம் மாற்றியமைத்தல் பற்றிய எந்த தகவலும் கிடைக்கவில்லை"
             }
         }
     },
@@ -658,7 +658,7 @@
             }
         },
         "bookmarks": {
-            "index": ""
+            "index": "புக்மார்க்கு {{- குறியீட்டு}}"
         },
         "divina": {
             "mute": "முடக்கு ஆடியோ",
@@ -669,10 +669,10 @@
         },
         "goToContent": "உள்ளடக்கத்திற்குச் செல்லுங்கள்",
         "imgViewer": {
-            "title": "",
-            "zoomIn": "",
-            "zoomOut": "",
-            "zoomReset": ""
+            "title": "பட பார்வையாளர் (பெரிதாக்கு)",
+            "zoomIn": "பெரிதாக்கு",
+            "zoomOut": "சிறிதாக்கு",
+            "zoomReset": "பெரிதாக்கு மீட்டமைக்கவும்"
         },
         "marks": {
             "annotations": "சிறுகுறிப்புகள்",
@@ -681,7 +681,7 @@
             "edit": "தொகு",
             "goTo": "பக்கத்திற்குச் செல்லுங்கள்",
             "landmarks": "அடையாளங்கள்",
-            "saveMark": "புத்தகக்குறியை சேமிக்கவும்",
+            "saveMark": "சேமி",
             "search": "தேடல்",
             "searchResult": "தேடு [{{- SearchText}}]",
             "toc": "உள்ளடக்க அட்டவணை"
@@ -724,7 +724,7 @@
             "openTableOfContentsTitle": "வானோடல்",
             "page": "பக்கம்",
             "pdfscalemode": "பக்க பொருத்தம் அல்லது அகலம்",
-            "print": "",
+            "print": "அச்சிடுக",
             "settingsTitle": "அமைப்புகள்"
         },
         "notes": {
@@ -750,16 +750,16 @@
             "searchTitle": "தேடல்:"
         },
         "print": {
-            "description": "",
-            "descriptionLcp": "",
-            "descriptionLcpLimit": "",
-            "pageHelpInfo": "",
-            "pageHelpInfo1": "",
-            "pageHelpInfo2": "",
-            "pageHelpInfo3": "",
-            "pageHelpInfo4": "",
-            "pages": "",
-            "print": ""
+            "description": "{{- appName}} முன்-அச்சு படி: கணினி அச்சு உரையாடலுக்கு நீங்கள் அனுப்ப விரும்பும் பக்கங்களைத் தேர்ந்தெடுக்கவும் (இந்த வெளியீட்டில் {{- எண்ணிக்கை}} பக்கங்கள் உள்ளன)",
+            "descriptionLcp": "{{- appName}} முன்-அச்சு படி: கணினி அச்சு உரையாடலுக்கு நீங்கள் அனுப்ப விரும்பும் பக்கங்களைத் தேர்ந்தெடுக்கவும் (இந்த LCP- பாதுகாக்கப்பட்ட வெளியீட்டில் {{- எண்ணிக்கை}} பக்கங்கள் உள்ளன)",
+            "descriptionLcpLimit": "LCP வரம்பு: {{- lcplimitpages}}, மீதமுள்ள பக்கங்கள்: {{- எண்ணிக்கை}}}",
+            "pageHelpInfo": "பக்க தேர்வாளர் தொடரியல்:",
+            "pageHelpInfo1": " - ஒரு பக்கத்தைக் குறிப்பிட ஒரு பக்க எண்ணை உள்ளிடவும் (எ.கா. \"6\")",
+            "pageHelpInfo2": " - தொடர்ச்சியான பக்கங்களின் வரம்பைக் குறிக்க ஒரு கோடு எழுத்துக்களால் பிரிக்கப்பட்ட இரண்டு பக்க எண்களை உள்ளிடவும் (எ.கா. \"6-13\")",
+            "pageHelpInfo3": " - பல பக்கங்கள் அல்லது பக்க வரம்புகளை பிரிக்க அரைக்கா தன்மையைப் பயன்படுத்தவும் (எ.கா. \"5; 14-20; 37\")",
+            "pageHelpInfo4": " -வெளியீட்டின் முதல் அல்லது கடைசி பக்கத்தைக் குறிப்பிடுவதற்கான வரம்பின் முதல் அல்லது கடைசி பக்கத்தை விட்டு விடுங்கள் (எ.கா. \"-16\" என்பது \"1-16\" க்கு சமம், மற்றும் \"34-\" என்பது \"34-100\" க்கு சமம், மொத்தம் 100 பக்கங்களைக் கொண்ட ஒரு புத்தகத்தை அனுமானிக்கிறது)",
+            "pages": "பக்கங்கள்",
+            "print": "அச்சிடுக"
         },
         "settings": {
             "column": {
