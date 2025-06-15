@@ -479,15 +479,13 @@ export const ImageClickManager: React.FC = () => {
     if (dom_labelledByText) {
         imageDescription.push(dom_labelledByText);
     }
+    // imageDescription.push("sa lhkba sdflkhjb lhabsdv pilybh ;lakshdbv ;ilh;k basdfbkb sdkfb kba sdlvkb lb s".repeat(10));
 
     const shortDescription = __("chatbot.shortDescription");
     const longDescription = __("chatbot.detailedDescription");
 
     const [detailOpen, setDetailOpen] = React.useState(true);
     const [autoPrompt, setAutoPrompt] = React.useState("");
-
-    const generateDescription = __("chatbot.generateDescription").split(__("chatbot.shortDescTitle"));
-    const secondPartGenerateDescription = generateDescription[1].split(__("chatbot.detailedDescTitle"));
 
     const apiList = useSelector((state: IReaderRootState) => state.aiApiKeys);
 
@@ -506,7 +504,7 @@ export const ImageClickManager: React.FC = () => {
         >
             <Dialog.Portal>
                 <div className={stylesModals.modal_dialog_overlay}></div>
-                <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined} style={{ minWidth: "776px", padding: "5px 10px", minHeight: "unset", width: "unset", maxWidth: "calc(100% - 200px)", maxHeight: "calc(100% - 100px)"}} >
+                <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined} style={{ minWidth: "90%", minHeight: "90%", width: "90%", height: "90%", padding: "5px 10px"}} >
                     <VisuallyHidden>
                         <Dialog.DialogTitle>{__("chatbot.title")}</Dialog.DialogTitle>
                     </VisuallyHidden>
@@ -554,7 +552,7 @@ export const ImageClickManager: React.FC = () => {
                         </div>
                         : ""
                     }
-                    <div className={stylesChatbot.chatbot_content}>
+                        <div className={stylesChatbot.chatbot_content}>
                         <div style={{
                             flex: (showImage || !chatEnabled) ? "1" : "0",
                             flexDirection: chatEnabled ? "row" : "column",
@@ -576,7 +574,7 @@ export const ImageClickManager: React.FC = () => {
                             {showImage ?
                                 <div style={{ position: "relative"}}>
                                     <TransformWrapper>
-                                        <TransformComponent wrapperStyle={{ display: "flex", width: "100%", height: "100%", minHeight: "inherit", alignItems: "center", flex: "1", position: "relative" }}>
+                                        <TransformComponent wrapperStyle={{ display: "flex", width: "100%", height: "100%", minHeight: "inherit", alignItems: "flex-start", flex: "1", position: "relative" }}>
                                             <img
                                                 style={{height: "100%", width: "100%", maxHeight: chatEnabled ? "200px" : "calc(100vh - 250px)", backgroundColor: "white", color: "black", fill: "currentcolor", stroke: "currentcolor" }}
                                                 src={isSVGFragment ? ("data:image/svg+xml;base64," + Buffer.from(HTMLImgSrc_SVGImageHref_SVGFragmentMarkup).toString("base64")) : HTMLImgSrc_SVGImageHref_SVGFragmentMarkup}
@@ -612,7 +610,7 @@ export const ImageClickManager: React.FC = () => {
                                 // showImage ?
                                 <div style={{ maxWidth: chatEnabled ? "500px" : "unset"}}>
                                     {imageDescription.length ?
-                                        imageDescription.map((str) => <p style={{fontStyle: "italic"}}>{str}</p>) :
+                                                imageDescription.map((str, i) => <p key={`imgDescItem${i}`} style={{fontStyle: "italic"}}>{str}</p>) :
                                         <p>{__("chatbot.noDescription")}</p>
                                     }
                                 </div>
@@ -623,19 +621,15 @@ export const ImageClickManager: React.FC = () => {
                                 chatEnabled ?
                                 apiList.some(k => k.aiKey !== "") ?
                                 <p className={stylesChatbot.no_description_text}>
-                                    {generateDescription[0]}
+                                    {__("chatbot.generateDescription")}
                                     <span>&nbsp;</span>
                                     <button role="submit" onClick={() => { setAutoPrompt(shortDescription); enableChat(true); }}>
                                         {__("chatbot.shortDescTitle")}
                                     </button>
-                                    <span>&nbsp;</span>
-                                    {secondPartGenerateDescription[0]}
-                                    <span>&nbsp;</span>
+                                    <span>&nbsp;-&nbsp;</span>
                                     <button role="submit" onClick={() => { setAutoPrompt(longDescription); enableChat(true); }}>
                                         {__("chatbot.detailedDescTitle")}
                                     </button>
-                                    <span>&nbsp;</span>
-                                    {secondPartGenerateDescription[1]}
                                 </p>
                                 :
                                 <p className={stylesChatbot.no_description_text}>

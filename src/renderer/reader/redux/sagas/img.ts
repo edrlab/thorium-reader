@@ -123,6 +123,7 @@ function* webviewImageClick(payload: IEventPayload_R2_EVENT_IMAGE_CLICK) {
     let afterText = "";
     // if (!detailsText && !describedbyText && (!(labelledByText && figcaptionText) || !figcaptionText)) {
 
+    // TODO: start iterator at imgElem and go forward / backward, instead of rootElem and search down
     const iter = xmlDom.createNodeIterator(rootElem, NodeFilter.SHOW_ALL, { acceptNode: () => NodeFilter.FILTER_ACCEPT });
 
     const resetImgIterator = () => {
@@ -130,9 +131,9 @@ function* webviewImageClick(payload: IEventPayload_R2_EVENT_IMAGE_CLICK) {
         do {
             curEl = iter.nextNode();
         } while (curEl && imgElem !== curEl);
-        if (curEl != imgElem) {
-            return;
-        }
+        // if (curEl != imgElem) {
+        //     return;
+        // }
     };
 
     resetImgIterator();
@@ -147,7 +148,7 @@ function* webviewImageClick(payload: IEventPayload_R2_EVENT_IMAGE_CLICK) {
         }
         if (node.nodeName === "IMG" || node.nodeName === "img") {
             break;
-        } 
+        }
     }
     resetImgIterator();
     while (afterText.length < N_CHAR_SIZE) {
@@ -164,6 +165,9 @@ function* webviewImageClick(payload: IEventPayload_R2_EVENT_IMAGE_CLICK) {
 
     beforeText = beforeText.slice(abs(beforeText.length - CUT), beforeText.length);
     afterText = afterText.slice(0, CUT);
+
+    beforeText = cleanupStr(beforeText);
+    afterText = cleanupStr(afterText);
 
     const DomParsingTexts = {
         dom_beforeText: beforeText,

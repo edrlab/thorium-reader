@@ -123,8 +123,8 @@
     "chatbot": {
         "detailedDescTitle": "extended description",
         "detailedDescription": "Describe this image in one or more paragraphs, provide details about the contents of the image, also give meta information about the context of the image from any relevant perspective (for example: historical, technical, artistic, etc.)",
-        "editorDescription": "Authored description(s)",
-        "generateDescription": "As the AI to generate a short description or an extended description",
+        "editorDescription": "Authored description(s):",
+        "generateDescription": "As the AI to generate:",
         "generateDescriptionTitle": "AI image description...",
         "inputPlaceholder": "Ask something, For example: can you describe this image?",
         "noApiKey": "Please go to the application settings and enter an API key for your AI provider",
