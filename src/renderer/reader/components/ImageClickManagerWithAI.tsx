@@ -599,6 +599,8 @@ export const ImageClickManager: React.FC = () => {
                                     setDetailOpen(!detailOpen);
                                 }}
                             >
+                                {showImage ?
+                                    <>
                                 <div className={stylesChatbot.chatbot_detail_element_summary}>
                                     {
                                     // chatEnabled ?
@@ -606,21 +608,20 @@ export const ImageClickManager: React.FC = () => {
                                     // : <></>
                                     }
                                 </div>
-                                {
-                                // showImage ?
                                 <div style={{ maxWidth: chatEnabled ? "500px" : "unset"}}>
                                     {imageDescription.length ?
                                                 imageDescription.map((str, i) => <p key={`imgDescItem${i}`} style={{fontStyle: "italic"}}>{str}</p>) :
                                         <p>{__("chatbot.noDescription")}</p>
                                     }
                                 </div>
-                                // : <></>
+                                    </>
+                                : ""
                                 }
 
-                                {
-                                chatEnabled ?
-                                apiList.some(k => k.aiKey !== "") ?
-                                <p className={stylesChatbot.no_description_text}>
+                                    {
+                                        chatEnabled ?
+                                            apiList.some(k => k.aiKey !== "") ?
+                                                <p className={stylesChatbot.no_description_text} style={{marginTop: showImage ? "2em" : undefined, borderTop: showImage ? "2px solid silver" : undefined}}>
                                     {__("chatbot.generateDescription")}
                                     <span>&nbsp;</span>
                                     <button role="submit" onClick={() => { setAutoPrompt(shortDescription); enableChat(true); }}>
