@@ -122,19 +122,19 @@
     },
     "chatbot": {
         "detailedDescTitle": "extended description",
-        "detailedDescription": "Describe this illustration in detail (nature of the image, technique, format, symbolism, characters, scenery, colours, style, period, etc.)",
-        "editorDescription": "Editor's description",
-        "generateDescription": "You can ask the AI to generate either a short description or an extended description.",
-        "generateDescriptionTitle": "Generate a textual description",
+        "detailedDescription": "Describe this image in one or more paragraphs, provide details about the contents of the image, also give meta information about the context of the image from any relevant perspective (for example: historical, technical, artistic, etc.)",
+        "editorDescription": "Authored description(s)",
+        "generateDescription": "As the AI to generate a short description or an extended description",
+        "generateDescriptionTitle": "AI image description...",
         "inputPlaceholder": "Ask something, For example: can you describe this image?",
-        "noApiKey": "You can generate a description and chat with an AI by entering an API Key in the application settings",
-        "noDescription": "No description was provided by the author. ",
+        "noApiKey": "Please go to the application settings and enter an API key for your AI provider",
+        "noDescription": "No authored description.",
         "reset": "Reset",
-        "sendQuestion": "Send the question",
+        "sendQuestion": "Send",
         "shortDescTitle": "short description",
-        "shortDescription": "Describe this image in two sentences",
+        "shortDescription": "Describe this image in one or two sentences",
         "systemPromptEditor": "System prompt editor",
-        "title": "Describe image with {{- title}}"
+        "title": "AI model: {{- title}}"
     },
     "dialog": {
         "annotations": {

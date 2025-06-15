@@ -33,6 +33,8 @@
 
 .no_description_text {
     flex: 2;
+    margin-top: 2em !important;
+    border-top: 2px solid silver;
 
     button {
         font-size: 12px;
@@ -48,7 +50,7 @@
         width: 100%;
         margin: 10px 0;
         padding: 0 20px;
-        
+
         summary {
             color: var(--color-blue);
         }
@@ -480,4 +482,3 @@
 .CSS_END_chatbot {
     display: none;
   }
-  

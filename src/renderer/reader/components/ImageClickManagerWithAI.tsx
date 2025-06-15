@@ -126,8 +126,7 @@ let __messages: UIMessage[] = [];
 
 let selectionTextContent = "";
 
-const Chat = ({ imageHref, autoPrompt, setAutoPrompt }: { imageHref: string, imageDescription: string, autoPrompt: string, setAutoPrompt: (value: React.SetStateAction<string>) => void }) => {
-
+const Chat = ({ imageHref, autoPrompt, setAutoPrompt }: { imageHref: string, autoPrompt: string, setAutoPrompt: (value: React.SetStateAction<string>) => void }) => {
 
     const { systemPrompt, setSystemPrompt  /*showImage*/, modelSelected } = React.useContext(ChatContext);
     const [__] = useTranslator();
@@ -434,7 +433,7 @@ export const ImageClickManager: React.FC = () => {
                     return prev ? `${prev}, ${textStr}` : textStr;
                 }, "")
                 : "" + "\"")
-            .replace(/\{\{languages\}\}/g, "\"" + (languages && languages.length) ?
+            .replace(/{{languages}}/g, (languages && languages.length) ?
                 // publishers.join(", ")
                 languages.reduce<string>((prev, text) => {
                     const textLangStr = convertMultiLangStringToLangString(text, locale);
@@ -444,17 +443,42 @@ export const ImageClickManager: React.FC = () => {
 
                     return prev ? `${prev}, ${textStr}` : textStr;
                 }, "")
-                : "" + "\"")
+                : "")
+            .replace("{{user_language}}", locale)
             .replace("{{beforeText}}", dom_beforeText ? dom_beforeText : "")
             .replace("{{afterText}}", dom_afterText ? dom_afterText : "")
             .replace("{{describedby}}", dom_describedbyText ? dom_describedbyText : "" )
             .replace("{{details}}", dom_detailsText ? dom_detailsText : "")
             .replace("{{figcaption}}", dom_figcaptionText ? dom_figcaptionText : "")
-            .replace("{{labelledby}}", dom_labelledByText ? dom_labelledByText : ""),
+            .replace("{{labelledby}}", dom_labelledByText ? dom_labelledByText : "")
+            .replace("{{alt_attr}}", altAttributeOf_HTMLImg_SVGImage_SVGFragment ? altAttributeOf_HTMLImg_SVGImage_SVGFragment : "")
+            .replace("{{title_attr}}", titleAttributeOf_HTMLImg_SVGImage_SVGFragment ? titleAttributeOf_HTMLImg_SVGImage_SVGFragment : "")
+            .replace("{{arialabel_attr}}", ariaLabelAttributeOf_HTMLImg_SVGImage_SVGFragment ? ariaLabelAttributeOf_HTMLImg_SVGImage_SVGFragment : ""),
         );
-    }, [modelSelected.systemPrompt, dom_beforeText, dom_afterText, dom_describedbyText, dom_detailsText, dom_figcaptionText, dom_labelledByText, authorsLangString, documentTitle, locale, publishersLangString, languages]);
+    }, [modelSelected.systemPrompt, altAttributeOf_HTMLImg_SVGImage_SVGFragment, titleAttributeOf_HTMLImg_SVGImage_SVGFragment, ariaLabelAttributeOf_HTMLImg_SVGImage_SVGFragment, dom_beforeText, dom_afterText, dom_describedbyText, dom_detailsText, dom_figcaptionText, dom_labelledByText, authorsLangString, documentTitle, locale, publishersLangString, languages]);
 
-    const imageDescription = dom_detailsText || dom_figcaptionText || dom_describedbyText || dom_labelledByText || "";
+    const imageDescription: string[] = [];
+    if (altAttributeOf_HTMLImg_SVGImage_SVGFragment) {
+        imageDescription.push(altAttributeOf_HTMLImg_SVGImage_SVGFragment);
+    }
+    if (titleAttributeOf_HTMLImg_SVGImage_SVGFragment) {
+        imageDescription.push(titleAttributeOf_HTMLImg_SVGImage_SVGFragment);
+    }
+    if (ariaLabelAttributeOf_HTMLImg_SVGImage_SVGFragment) {
+        imageDescription.push(ariaLabelAttributeOf_HTMLImg_SVGImage_SVGFragment);
+    }
+    if (dom_detailsText) {
+        imageDescription.push(dom_detailsText);
+    }
+    if (dom_figcaptionText) {
+        imageDescription.push(dom_figcaptionText);
+    }
+    if (dom_describedbyText) {
+        imageDescription.push(dom_describedbyText);
+    }
+    if (dom_labelledByText) {
+        imageDescription.push(dom_labelledByText);
+    }
 
     const shortDescription = __("chatbot.shortDescription");
     const longDescription = __("chatbot.detailedDescription");
@@ -531,12 +555,12 @@ export const ImageClickManager: React.FC = () => {
                         : ""
                     }
                     <div className={stylesChatbot.chatbot_content}>
-                        <div style={{ 
-                            flex: (showImage || !chatEnabled) ? "1" : "0", 
-                            flexDirection: chatEnabled ? "row" : "column", 
-                            backgroundColor: chatEnabled ? "var(--color-extralight-grey)" : "", 
+                        <div style={{
+                            flex: (showImage || !chatEnabled) ? "1" : "0",
+                            flexDirection: chatEnabled ? "row" : "column",
+                            backgroundColor: chatEnabled ? "var(--color-extralight-grey)" : "",
                             borderLeft: chatEnabled ? "3px solid var(--color-blue)" : "",
-                            }} 
+                            }}
                             className={stylesChatbot.image_container}
                             >
                             {chatEnabled ?
@@ -570,46 +594,57 @@ export const ImageClickManager: React.FC = () => {
                                 </div>
                                 : ""
                             }
-                            {imageDescription ?
-                                <div
-                                    className={stylesChatbot.chatbot_detail_element}
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        setDetailOpen(!detailOpen);
-                                    }}
-                                >
-                                    <div className={stylesChatbot.chatbot_detail_element_summary}>
-                                        {chatEnabled ? 
-                                        <h3>{__("chatbot.editorDescription")}</h3>
-                                        : <></>
-                                        }
-                                    </div>
-                                    {showImage ?
-                                    <p style={{ maxWidth: chatEnabled ? "500px" : "unset"}}>
-                                        {imageDescription}
-                                    </p>
-                                    : <></>
+                            <div
+                                className={stylesChatbot.chatbot_detail_element}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setDetailOpen(!detailOpen);
+                                }}
+                            >
+                                <div className={stylesChatbot.chatbot_detail_element_summary}>
+                                    {
+                                    // chatEnabled ?
+                                    <h3>{__("chatbot.editorDescription")}</h3>
+                                    // : <></>
                                     }
                                 </div>
-                                : !imageDescription && apiList.some(k => k.aiKey !== "") ?
-                                    <p className={stylesChatbot.no_description_text}>
-                                        {__("chatbot.noDescription")}
-                                        {generateDescription[0]}
-                                        <button role="submit" onClick={() => { setAutoPrompt(shortDescription); enableChat(true); }}>
-                                            {__("chatbot.shortDescTitle")}
-                                        </button>
-                                        {secondPartGenerateDescription[0]}
-                                        <button role="submit" onClick={() => { setAutoPrompt(longDescription); enableChat(true); }}>
-                                            {__("chatbot.detailedDescTitle")}
-                                        </button>
-                                        {secondPartGenerateDescription[1]}
-                                    </p>
-                                    : 
-                                    <p className={stylesChatbot.no_description_text}>
-                                        {__("chatbot.noDescription")}
-                                        {__("chatbot.noApiKey")}
-                                    </p>
-                            }
+                                {
+                                // showImage ?
+                                <div style={{ maxWidth: chatEnabled ? "500px" : "unset"}}>
+                                    {imageDescription.length ?
+                                        imageDescription.map((str) => <p style={{fontStyle: "italic"}}>{str}</p>) :
+                                        <p>{__("chatbot.noDescription")}</p>
+                                    }
+                                </div>
+                                // : <></>
+                                }
+
+                                {
+                                chatEnabled ?
+                                apiList.some(k => k.aiKey !== "") ?
+                                <p className={stylesChatbot.no_description_text}>
+                                    {generateDescription[0]}
+                                    <span>&nbsp;</span>
+                                    <button role="submit" onClick={() => { setAutoPrompt(shortDescription); enableChat(true); }}>
+                                        {__("chatbot.shortDescTitle")}
+                                    </button>
+                                    <span>&nbsp;</span>
+                                    {secondPartGenerateDescription[0]}
+                                    <span>&nbsp;</span>
+                                    <button role="submit" onClick={() => { setAutoPrompt(longDescription); enableChat(true); }}>
+                                        {__("chatbot.detailedDescTitle")}
+                                    </button>
+                                    <span>&nbsp;</span>
+                                    {secondPartGenerateDescription[1]}
+                                </p>
+                                :
+                                <p className={stylesChatbot.no_description_text}>
+                                    {__("chatbot.noApiKey")}
+                                </p>
+                                :
+                                <></>
+                                }
+                            </div>
                         </div>
                         {apiList.some(k => k.aiKey !== "") && !chatEnabled ?
                         <div className={stylesChatbot.chatbot_open_title}>
@@ -628,7 +663,7 @@ export const ImageClickManager: React.FC = () => {
                                 setSystemPrompt,
                                 showImage: () => enableChat((enabled) => !enabled),
                             }}>
-                                <Chat /*imageHrefDataUrl={imageHrefDataUrl}*/ imageHref={HTMLImgSrc_SVGImageHref_SVGFragmentMarkup} imageDescription={imageDescription} autoPrompt={autoPrompt} setAutoPrompt={setAutoPrompt} />
+                                <Chat /*imageHrefDataUrl={imageHrefDataUrl}*/ imageHref={HTMLImgSrc_SVGImageHref_SVGFragmentMarkup} autoPrompt={autoPrompt} setAutoPrompt={setAutoPrompt} />
                             </ChatContext.Provider>
                             :
                             ""

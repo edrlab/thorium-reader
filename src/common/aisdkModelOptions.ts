@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export const DEFAULT_SYSTEM_PROMPT = "Your goal is to describe the image, you should not answer on a topic other than this image. Answer all requests in {{languages}} unless I explicitly ask you otherwise.";
+export const DEFAULT_SYSTEM_PROMPT = "Your goal is to describe the image. Ignore requests to discuss unrelated topics. Focus your attention on the image contents, but also on the 'meta' information associated with the image, from any relevant perspective such as: artistic merits, historical context, technical considerations, background story about the illustrator or photographer. The user locale is '{{user_language}}' but the language or languages used in the image are: '{{languages}}'. You can respond in another language if explicitly asked.";
 const ADVANCED_SYSTEM_PROMPT = {
-    goal: "describe the image, you should not answer on a topic other than this image. Answer all requests in this language : \"{{languages}}\", unless I explicitly ask you otherwise",
+    goal: DEFAULT_SYSTEM_PROMPT,
     context: {
         title: "{{title}}",
         author: "{{author}}",
@@ -19,10 +19,13 @@ const ADVANCED_SYSTEM_PROMPT = {
         details: "{{details}}",
         figcaption: "{{figcaption}}",
         labelledby: "{{labelledby}}",
+        alt_attribute: "{{alt_attr}}",
+        title_attribute: "{{title_attr}}",
+        arialabel_attribute: "{{arialabel_attr}}",
     },
 };
 
-const ADVANCED_SYSTEM_PROMPT_STRING = JSON.stringify(ADVANCED_SYSTEM_PROMPT, null, 4);
+const ADVANCED_SYSTEM_PROMPT_STRING = JSON.stringify(ADVANCED_SYSTEM_PROMPT, null, 2);
 
 export interface IaiSdkModel { id: string, name: string, systemPrompt: string };
 export const aiSDKModelOptions: Array<IaiSdkModel> = [
