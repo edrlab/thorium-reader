@@ -1100,41 +1100,41 @@
             "noShortcutFound": "",
             "resetDefaults": "",
             "save": "",
-            "searchPlaceholder": ""
+            "searchPlaceholder": "Bir kısayol aramak için yazın"
         },
         "language": {
-            "languageChoice": ""
+            "languageChoice": "Dil"
         },
         "library": {
-            "enableAPIAPP": "",
-            "title": ""
+            "enableAPIAPP": "'PNB' kütüphane sistemini etkinleştir",
+            "title": "Fransız kütüphane hesaplarına erişin"
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "",
-                "enableCheckbox": "",
-                "overrideHTMLTemplate": ""
+                "applyDefaultTemplate": "Varsayılan şablonu yükle",
+                "enableCheckbox": "HTML şablonunu özelleştir",
+                "overrideHTMLTemplate": "Notları dışa aktar (açıklamalar ve yer imleri)"
             }
         },
         "session": {
-            "title": ""
+            "title": "Oturum kaydetmeyi etkinleştir"
         },
         "tabs": {
-            "appearance": "",
-            "general": "",
-            "keyboardShortcuts": ""
+            "appearance": "Görünüm",
+            "general": "Genel",
+            "keyboardShortcuts": "Klavye kısayolları"
         },
         "theme": {
-            "auto": "",
-            "dark": "",
-            "description": "",
-            "light": "",
-            "title": ""
+            "auto": "Otomatik",
+            "dark": "Karanlık",
+            "description": "Uygulama teması işletim sistemiyle eşleşir.",
+            "light": "Aydınlık",
+            "title": "Uygulama Teması"
         }
     },
     "tts": {
         "highlight": {
-            "mainColor": "",
+            "mainColor": "Ana renk",
             "maskBlockWordOutline": "",
             "maskBlockWordSolidBackground": "",
             "maskBlockWordUnderline": "",
