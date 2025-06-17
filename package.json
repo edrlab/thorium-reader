@@ -89,7 +89,7 @@
     "bundle-stats_main": "webpack-bundle-analyzer dist/stats_main.json dist --report dist/stats_main.html --mode static --default-sizes stat --log-level debug --no-open",
     "typescript-check": "tsc --showConfig --project ./tsconfig-cli.json && echo \"####################\" && tsc --listFilesOnly --project ./tsconfig-cli.json && echo \"####################\" && tsc --project ./tsconfig-cli.json --extendedDiagnostics --diagnostics",
     "typescript-check-GO": "tsgo --showConfig --project ./tsconfig-cli.json && echo \"####################\" && tsgo --project ./tsconfig-cli.json --listFiles --extendedDiagnostics --diagnostics",
-    "typescript-check-GO:watch" :"tsgo --project ./tsconfig-cli.json --watch"
+    "typescript-check-GO:watch": "tsgo --project ./tsconfig-cli.json --watch"
   },
   "repository": {
     "type": "git",
@@ -313,7 +313,7 @@
     "pdf.js": "github:edrlab/pdf.js#build",
     "proxy-agent": "^6.5.0",
     "r2-lcp-js": "^1.0.44",
-    "r2-navigator-js": "^1.21.0",
+    "r2-navigator-js": "^1.21.1",
     "r2-opds-js": "^1.0.47",
     "r2-shared-js": "^1.0.83",
     "r2-streamer-js": "^1.0.51",
