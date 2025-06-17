@@ -66,11 +66,11 @@ export function* noteUpdateExportSelectorFromLocatorExtended(note: INoteState) {
             const { publicationView, publicationIdentifier } = yield* selectTyped((state: IReaderRootState) => state.reader.info);
             const isLcp = !!publicationView.lcp;
 
-            const source = note.locatorExtended.locator?.href;
-            const cacheDoc = yield* callTyped(getResourceCache, source);
+            const sourceHref = note.locatorExtended.locator?.href;
+            const cacheDoc = yield* callTyped(getResourceCache, sourceHref);
             const xmlDom = cacheDoc?.xmlDom;
 
-            const selector = yield* callTyped(readiumAnnotationSelectorFromNote, note, isLcp, source, xmlDom);
+            const selector = yield* callTyped(readiumAnnotationSelectorFromNote, note, isLcp, sourceHref, xmlDom);
 
             debug(`${note.uuid} does not have any readiumAnnotationSelector so let's update the note with this new selectors: ${JSON.stringify(selector, null, 2)}`);
             yield* putTyped(readerActions.note.addUpdate.build(

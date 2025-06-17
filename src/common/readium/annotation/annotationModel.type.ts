@@ -114,7 +114,7 @@ export function isCssSelector(a: any): a is ICssSelector<undefined> {
 }
 
 export interface ICfiSelector<T extends ISelector = any> extends ISelector<T> {
-    type: "CssSelector";
+    type: "CfiSelector";
     value: string;
 }
 export function isCfiSelector(a: any): a is ICfiSelector<undefined> {
