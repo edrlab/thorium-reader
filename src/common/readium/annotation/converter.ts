@@ -107,7 +107,7 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
         }
 
         // the range start/end is guaranteed in document order due to the text matchers above (forward tree walk) ... but DOM Ranges are always ordered anyway (only the user / document selection object can be reversed)
-        const tuple = convertRange(range, (element) => uniqueCssSelector(element, xmlDom, {root}), () => "", () => "");
+        const tuple = convertRange(range, (element) => uniqueCssSelector(element, xmlDom, {root}), () => "" /*, () => "" */);
         if (tuple && tuple.length === 2) {
             convertedRangeArray.push(tuple);
         }
@@ -184,7 +184,7 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
             cleanBefore: textInfo.cleanBefore,
             cleanText: textInfo.cleanText,
             cleanAfter: textInfo.cleanAfter,
-    
+
             rawBefore: textInfo.rawBefore,
             rawText: textInfo.rawText,
             rawAfter: textInfo.rawAfter,
@@ -192,13 +192,13 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
     } else {
         selectionInfo = {
             textFragment: undefined,
-    
+
             rangeInfo: {...rangeInfo},
-    
+
             cleanBefore: textInfo.cleanBefore,
             cleanText: textInfo.cleanText,
             cleanAfter: textInfo.cleanAfter,
-    
+
             rawBefore: textInfo.rawBefore,
             rawText: textInfo.rawText,
             rawAfter: textInfo.rawAfter,

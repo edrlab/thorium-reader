@@ -89,7 +89,7 @@ export function* noteUpdateLocatorExtendedFromImportSelector(note: INoteState) {
     try {
         if ((yield* selectTyped((state: IReaderRootState) => state.reader.lock)) &&
             !note.locatorExtended && note.readiumAnnotation?.import?.target?.selector.length && note.readiumAnnotation?.import?.target?.source) {
-            
+
             const { target } = note.readiumAnnotation.import;
 
             debug("SelectorTarget from noteParserState", JSON.stringify(target, null, 2));
@@ -97,7 +97,7 @@ export function* noteUpdateLocatorExtendedFromImportSelector(note: INoteState) {
             const cacheDoc = yield* callTyped(getResourceCache, target.source);
             const xmlDom = cacheDoc?.xmlDom;
 
-            const isABookmark = note.group === "bookmark"; // TODO: It is a good method do discriminate bookmark selector ? 
+            const isABookmark = note.group === "bookmark"; // TODO: It is a good method do discriminate bookmark selector ?
             const locatorExtended = yield* callTyped(convertSelectorTargetToLocatorExtended, target, undefined, isABookmark, xmlDom, target.source);
 
             debug(`${note.uuid} doesn't have any locator so let's update the note with the new locator generated: ${JSON.stringify(locatorExtended, null, 2)}`);
@@ -120,7 +120,7 @@ function* noteAddUpdate(action: readerActions.note.addUpdate.TAction) {
     }
 
     yield* spawnTyped(function* () {
-        
+
         yield* delayTyped(10);
         // backgroud compute LocatorExtended TO readiumAnnotationSelector
         yield* callTyped(noteUpdateExportSelectorFromLocatorExtended, note);
@@ -175,12 +175,12 @@ function* noteAddUpdate(action: readerActions.note.addUpdate.TAction) {
                     textFragment: undefined,
                     rangeInfo: note.locatorExtended.locator.locations.caretInfo?.rangeInfo || {
                         startContainerElementCssSelector: note.locatorExtended.locator.locations.cssSelector,
-                        startContainerElementCFI: undefined,
+                        // startContainerElementCFI: undefined,
                         startContainerElementXPath: undefined,
                         startContainerChildTextNodeIndex: -1,
                         startOffset: -1,
                         endContainerElementCssSelector: note.locatorExtended.locator.locations.cssSelector,
-                        endContainerElementCFI: undefined,
+                        // endContainerElementCFI: undefined,
                         endContainerElementXPath: undefined,
                         endContainerChildTextNodeIndex: -1,
                         endOffset: -1,
@@ -196,12 +196,12 @@ function* noteAddUpdate(action: readerActions.note.addUpdate.TAction) {
                     textFragment: undefined,
                     rangeInfo: note.locatorExtended.selectionInfo?.rangeInfo || {
                         startContainerElementCssSelector: note.locatorExtended.locator.locations.cssSelector,
-                        startContainerElementCFI: undefined,
+                        // startContainerElementCFI: undefined,
                         startContainerElementXPath: undefined,
                         startContainerChildTextNodeIndex: -1,
                         startOffset: -1,
                         endContainerElementCssSelector: note.locatorExtended.locator.locations.cssSelector,
-                        endContainerElementCFI: undefined,
+                        // endContainerElementCFI: undefined,
                         endContainerElementXPath: undefined,
                         endContainerChildTextNodeIndex: -1,
                         endOffset: -1,
@@ -221,7 +221,7 @@ function* noteAddUpdate(action: readerActions.note.addUpdate.TAction) {
         },
     ]));
 
-    if (note.group === "bookmark") { 
+    if (note.group === "bookmark") {
         const defaultDrawView = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_defaultDrawView);
         if (defaultDrawView === "hide"
             // SKIP ENTIRELY, see ABOVE
@@ -445,12 +445,12 @@ function* readerStart() {
                     textFragment: undefined,
                     rangeInfo: note.locatorExtended.locator.locations.caretInfo?.rangeInfo || {
                         startContainerElementCssSelector: note.locatorExtended.locator.locations.cssSelector,
-                        startContainerElementCFI: undefined,
+                        // startContainerElementCFI: undefined,
                         startContainerElementXPath: undefined,
                         startContainerChildTextNodeIndex: -1,
                         startOffset: -1,
                         endContainerElementCssSelector: note.locatorExtended.locator.locations.cssSelector,
-                        endContainerElementCFI: undefined,
+                        // endContainerElementCFI: undefined,
                         endContainerElementXPath: undefined,
                         endContainerChildTextNodeIndex: -1,
                         endOffset: -1,
@@ -466,12 +466,12 @@ function* readerStart() {
                     textFragment: undefined,
                     rangeInfo: note.locatorExtended.selectionInfo?.rangeInfo || {
                         startContainerElementCssSelector: note.locatorExtended.locator.locations.cssSelector,
-                        startContainerElementCFI: undefined,
+                        // startContainerElementCFI: undefined,
                         startContainerElementXPath: undefined,
                         startContainerChildTextNodeIndex: -1,
                         startOffset: -1,
                         endContainerElementCssSelector: note.locatorExtended.locator.locations.cssSelector,
-                        endContainerElementCFI: undefined,
+                        // endContainerElementCFI: undefined,
                         endContainerElementXPath: undefined,
                         endContainerChildTextNodeIndex: -1,
                         endOffset: -1,
