@@ -113,6 +113,15 @@ export function isCssSelector(a: any): a is ICssSelector<undefined> {
     && typeof a.value === "string";
 }
 
+export interface ICfiSelector<T extends ISelector = any> extends ISelector<T> {
+    type: "CssSelector";
+    value: string;
+}
+export function isCfiSelector(a: any): a is ICfiSelector<undefined> {
+    return typeof a === "object" && a.type === "CfiSelector"
+    && typeof a.value === "string";
+}
+
 // not used anymore
 // internal DOMRange selector not shared across annotation selector
 // We prefer EPUB-CFI nowadays when official library will be choosen
