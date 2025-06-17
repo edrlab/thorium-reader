@@ -672,7 +672,7 @@
             "title": "Billedfremviser",
             "zoomIn": "Zoom ind",
             "zoomOut": "Zoom ud",
-            "zoomReset": "Nulstil zoom"
+            "zoomReset": "Nulstil Zoom"
         },
         "marks": {
             "annotations": "Noter",
@@ -750,10 +750,10 @@
             "searchTitle": "Søg:"
         },
         "print": {
-            "description": "{{- appName}} print dialog for en bog med {{- count}} sider. Du skal angive de sider du ønsker printet før at systemets print dialog vises",
-            "descriptionLcp": "{{- appName}} print dialog for en LCP-beskyttet bog med {{- count}} sider. Du skal angive de sider du ønsker printet før at systemets print dialog vises",
-            "descriptionLcpLimit": "{{- count}} sider tilbage (af LCP begrænsning på {{- lcpLimitPages}})",
-            "pageHelpInfo": "hjælpeinformation til angivelse af sider:",
+            "description": "{{- appName}} pre-print dialog: Angiv det sideinterval, du ønsker at sende til systemets udskrivningsdialog (denne bog har {{- count}} sider)",
+            "descriptionLcp": "{{- appName}} pre-print dialog: Angiv det sideinterval, du ønsker at sende til systemets udskrivningsdialog (denne LCP-beskyttede bog har {{- count}} sider)",
+            "descriptionLcpLimit": "LCP begrænsning: {{- lcpLimitPages}}, sider tilbage: {{- count}}",
+            "pageHelpInfo": "Syntaks for angivelse af sider:",
             "pageHelpInfo1": " - indtast et nummer på en side (fx. \"6\")",
             "pageHelpInfo2": " - indtast to sidetal med en bindestreg imellem, for at angive en kontinuerlig række af sider (fx. \"6-13\")",
             "pageHelpInfo3": " - brug semikolon til at opdele flere enkeltsider eller kontinuerlige siderækker (fx. \"5;14-20;37\")",
@@ -871,104 +871,104 @@
         "keyboard": {
             "advancedMenu": "Menu for avancerede tastaturgenveje",
             "cancel": "Annullér",
-            "disclaimer": "Tastaturgenveje er defineret ud fra et QWERTY-tastaturlayout.",
+            "disclaimer": "Standard tastaturgenveje er designet ud fra et QWERTY tastaturlayout",
             "editUserJson": "Rediger brugerfilen...",
             "keyboardShortcuts": "Tastaturgenveje",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "",
-                    "name": ""
+                    "description": "Åben bogmærke dialogen og redigér note, farve og tag for bogmærket",
+                    "name": "Opret bogmærke med note"
                 },
                 "AnnotationsCreate": {
-                    "description": "",
-                    "name": ""
+                    "description": "Åben note dialogen for den markerede tekst og redigér note, overstregnings-farve og type, samt tag",
+                    "name": "Opret Note"
                 },
                 "AnnotationsCreateQuick": {
-                    "description": "",
-                    "name": ""
+                    "description": "Opret en note for den markerede tekst, med den senest brugte overstregnings-farve og type (dette åbner ikke redigerings-dialogen)",
+                    "name": "Opret Hurtig-note"
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "",
-                    "name": ""
+                    "description": "Vælg imellem om noter og bogmærker skal vises i side-margen eller som en del af teksten",
+                    "name": "Slå noter i side-margen til/fra"
                 },
                 "AudioNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå frem til næste lydklip i en bog med tilhørende medier, tekst-til-tale oplæsning eller lydbøger",
+                    "name": "Næste Lydklip"
                 },
                 "AudioNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå frem til næste lydklip i en bog med tilhørende medier, tekst-til-tale oplæsning eller lydbøger. Dette springer over den nuværende struktur, hvis muligt",
+                    "name": "Næste Lydklip (spring over)"
                 },
                 "AudioPlayPause": {
-                    "description": "",
-                    "name": ""
+                    "description": "Skift imellem afspilning/pause i tilhørende medier, tekst-til-tale oplæsning eller lydbøger",
+                    "name": "Afspil/Pause Lyd"
                 },
                 "AudioPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå tilbage til forrige lydklip i en bog med tilhørende medier, tekst-til-tale oplæsning eller lydbøger",
+                    "name": "Forrige Lyd"
                 },
                 "AudioPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå tilbage til forrige lydklip i en bog med tilhørende medier, tekst-til-tale oplæsning eller lydbøger. Dette springer over den nuværende struktur, hvis muligt",
+                    "name": "Forrige Lyd (spring over)"
                 },
                 "AudioStop": {
-                    "description": "",
-                    "name": ""
+                    "description": "Stop afspilning af tilhørende medier, tekst-til-tale oplæsning eller lydbøger",
+                    "name": "Stop Afspilning"
                 },
                 "CloseReader": {
-                    "description": "",
-                    "name": ""
+                    "description": "Luk læser-vinduet og gå tilbage til biblioteket",
+                    "name": "Luk Læser"
                 },
                 "FXLZoomIn": {
-                    "description": "",
-                    "name": ""
+                    "description": "Zoom ind på et enkelt sideopslag eller et opslag på 2 sider med fast layout.",
+                    "name": "Fast layout - Zoom ind"
                 },
                 "FXLZoomOut": {
-                    "description": "",
-                    "name": ""
+                    "description": "Zoom ud fra et enkelt sideopslag eller et opslag på 2 sider med fast layout.",
+                    "name": "Fast layout - Zoom ud"
                 },
                 "FXLZoomReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nulstil zoom for et enkelt sideopslag eller et opslag på 2 sider med fast layout.",
+                    "name": "Fast layout - Nulstil zoom"
                 },
                 "FocusMain": {
-                    "description": "",
-                    "name": ""
+                    "description": "Flyt tastaturfokus til det primære indhold i brugergrænsefladen. I læse-vinduet, flyttes fokus til bogens indhold",
+                    "name": "Fokusér på Primært Indhold"
                 },
                 "FocusMainDeep": {
-                    "description": "",
-                    "name": ""
+                    "description": "I læsevinduet flytter dette fokus til bogens indhold, på en mere pålidelig måde for skærmlæsere",
+                    "name": "Dybt fokus på Primært Indhold"
                 },
                 "FocusReaderGotoPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Flyt tastaturfokus til 'gå til side' sektionen af læse-vinduets navigationspanel",
+                    "name": "Fokusér på 'Gå til side'"
                 },
                 "FocusReaderNavigation": {
-                    "description": "",
-                    "name": ""
+                    "description": "Flyt tastaturfokus til læse-vinduets navigationspanel",
+                    "name": "Fokusér på Navigationspanelet"
                 },
                 "FocusReaderNavigationAnnotations": {
-                    "description": "",
-                    "name": ""
+                    "description": "Flyt tastaturfokus til 'noter' sektionen af læse-vinduets navigationspanel",
+                    "name": "Fokusér på 'Noter'"
                 },
                 "FocusReaderNavigationBookmarks": {
-                    "description": "",
-                    "name": ""
+                    "description": "Flyt tastaturfokus til 'bogmærker' sektionen af læse-vinduets navigationspanel",
+                    "name": "Fokusér på 'Bogmærker'"
                 },
                 "FocusReaderNavigationSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Flyt tastaturfokus til 'søg' sektionen af læse-vinduets navigationspanel",
+                    "name": "Fokusér på 'Søg'"
                 },
                 "FocusReaderNavigationTOC": {
-                    "description": "",
-                    "name": ""
+                    "description": "Flyt tastaturfokus til 'Indholdsfortegnelse' sektionen af læse-vinduets navigationspanel",
+                    "name": "Fokusér på 'Indholdsfortegnelse'"
                 },
                 "FocusReaderSettings": {
-                    "description": "",
-                    "name": ""
+                    "description": "Flyt tastaturfokus til læse-vinduets panel med indstillinger (visningsindstillinger, osv.)",
+                    "name": "Fokusér på Læserindstillinger"
                 },
                 "FocusSearch": {
-                    "description": "",
+                    "description": "Flyt tastaturfokus til læse-vinduets inputfelt til tekst-søgnings. I biblioteketsvinduet påbegyndes en søgning på boghylden eller i det aktive OPDS katalog",
                     "name": ""
                 },
                 "FocusToolbar": {
