@@ -99,6 +99,7 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
 
     let cfi = cfiSelector?.value || cfiFragmentSelector?.value;
     if (cfi) {
+        cfi = cfi.replace(/^.*!/, "");
         cfi = cfi.startsWith("epubcfi(") ? cfi : `epubcfi(${cfi})`;
         const parser = new EpubCfiParser(cfi);
         const rootNode = parser.parse();
@@ -215,7 +216,7 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
             cleanBefore: textInfo.cleanBefore,
             cleanText: textInfo.cleanText,
             cleanAfter: textInfo.cleanAfter,
-    
+
             rawBefore: textInfo.rawBefore,
             rawText: textInfo.rawText,
             rawAfter: textInfo.rawAfter,
@@ -223,13 +224,13 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
     } else {
         selectionInfo = {
             textFragment: undefined,
-    
+
             rangeInfo: {...rangeInfo},
-    
+
             cleanBefore: textInfo.cleanBefore,
             cleanText: textInfo.cleanText,
             cleanAfter: textInfo.cleanAfter,
-    
+
             rawBefore: textInfo.rawBefore,
             rawText: textInfo.rawText,
             rawAfter: textInfo.rawAfter,
