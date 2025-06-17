@@ -444,20 +444,20 @@
             "navigation-title": "Gezinme",
             "navigation-toc": {
                 "compact": "İçindekiler tablosu",
-                "descriptive": "Metnin tüm bölümlerine bağlantılarla içindekiler tablosu"
+                "descriptive": "Metnin tüm fasıllarına bağlantılar içeren içindekiler tablosu"
             }
         },
         "rich-content": {
             "rich-content-accessible-chemistry-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "LaTeX'te kimyasal formüller",
+                "descriptive": "Erişilebilir biçimde kimyasal formüller (LaTeX)"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "MathML'de kimyasal formüller",
+                "descriptive": "Erişilebilir biçimde kimyasal formüller (MathML)"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "",
+                "compact": "LaTeX biçiminde matematik",
                 "descriptive": ""
             },
             "rich-content-accessible-math-as-mathml": {
