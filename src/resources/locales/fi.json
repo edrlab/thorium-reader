@@ -750,16 +750,16 @@
             "searchTitle": "Hae:"
         },
         "print": {
-            "description": "",
-            "descriptionLcp": "",
-            "descriptionLcpLimit": "",
-            "pageHelpInfo": "",
-            "pageHelpInfo1": "",
-            "pageHelpInfo2": "",
-            "pageHelpInfo3": "",
-            "pageHelpInfo4": "",
-            "pages": "",
-            "print": ""
+            "description": "{{- appName}}tulostuksen valmistelu : valitse sivut, jotka haluat lähettää tulostettaviksi (tässä julkaisussa {{- count}} sivua)",
+            "descriptionLcp": "{{- appName}} tulostuksen valmistelu: valitse sivut, jotka haluat lähettää tulostettaviksi (tässä LCP-suojatusssa julkaisussa on {{- count}} sivua)",
+            "descriptionLcpLimit": "LCP-rajoitus: {{- lcpLimitPages}}, sivuja jäljellä: {{- count}}",
+            "pageHelpInfo": "Sivunvalintasyntaksi:",
+            "pageHelpInfo1": " - anna sivunumero viitataksesi yksittäiseen sivuun (esim. \"6\")",
+            "pageHelpInfo2": " - anna kaksi yhdysmerkillä erotettua lukua, jotta voit viitata usean peräkkäisen sivun alueeseen (esim. \"6-13\")",
+            "pageHelpInfo3": " - erota puolipisteellä useat sivut tai sivualueet (esim. \"5;14-20;37\")",
+            "pageHelpInfo4": " - jätä sivualueen ensimmäinen tai viimeinen numero pois, jos se viittaa julkaisun ensimmäiseen tai viimeiseen sivuun (esim. \"-16\" vastaa merkintää \"1-16\", ja \"34-\" vastaa merkintää \"34-100\" jos kirjassa on 100 sivua)",
+            "pages": "Sivut",
+            "print": "Tulostus"
         },
         "settings": {
             "column": {
@@ -876,16 +876,16 @@
             "keyboardShortcuts": "Pikanäppäimet",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "",
-                    "name": ""
+                    "description": "Avaa kirjanmerkki-ikkuna ja muokkaa tekstiä (muistiinpano), väriä ja tunnistetta",
+                    "name": "Luo kirjanmerkki, jolla on nimilappu"
                 },
                 "AnnotationsCreate": {
-                    "description": "",
-                    "name": ""
+                    "description": "Avaa muistiinpanojen luonti-ikkuna valittua tekstiä varten ja muokkaa muistiinpanoa, korostusta sekä tunnistetta",
+                    "name": "Luo muistiinpano"
                 },
                 "AnnotationsCreateQuick": {
-                    "description": "",
-                    "name": ""
+                    "description": "Luo muistiinpano valitusta tekstistä, käytä edellistä korostustyyliä (toiminto ei avaa valintaikkunaa, joten tekstiä ja tunnistetta ei voi lisätä)",
+                    "name": "Luo pikamuistiinpano"
                 },
                 "AnnotationsToggleMargin": {
                     "description": "",
