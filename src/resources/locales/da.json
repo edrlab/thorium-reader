@@ -6,7 +6,7 @@
         "leftSlideButton": "Flyt listen til venstre",
         "mainContent": "hovedindhold",
         "rightSlideButton": "Flyt listen til højre",
-        "skipLink": "Hop til indhold",
+        "skipLink": "Spring til indholdet",
         "toolbar": "værktøjslinje"
     },
     "apiapp": {
@@ -969,138 +969,138 @@
                 },
                 "FocusSearch": {
                     "description": "Flyt tastaturfokus til læse-vinduets inputfelt til tekst-søgnings. I biblioteketsvinduet påbegyndes en søgning på boghylden eller i det aktive OPDS katalog",
-                    "name": ""
+                    "name": "Søge-kommando"
                 },
                 "FocusToolbar": {
-                    "description": "",
-                    "name": ""
+                    "description": "Flyt tastaturfokus til området i brugergrænsefladen lige før 'spring linket over' (som i sig selv flytter fokus til hovedindholdsområdet i biblioteket eller læservinduet)",
+                    "name": "Fokusér på Værktøjslinjen"
                 },
                 "NavigateNextChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "I læseren - Naviger til det næste dokument i bogens læserækkefølge. Bemærk at der findes en alternativ tastaturgenvej til denne",
+                    "name": "Gå til Næste Kapitel"
                 },
                 "NavigateNextChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "I læseren - Naviger til næste dokument i bogens læserækkefølgen. Dette er et alternativ til standard tastaturgenvejen",
+                    "name": "Gå til Næste Kapitel (Alternativ)"
                 },
                 "NavigateNextHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "I læseren - Gå et trin frem i navigationshistorikken",
+                    "name": "Gå Frem i Historikken"
                 },
                 "NavigateNextLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "I biblioteksvinduet, gå til den næste side af en sideinddelt bog. Bemærk at der findes en alternativ tastaturgenvej til denne",
+                    "name": "Gå til Næste Biblioteksside"
                 },
                 "NavigateNextLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "I læseren - gå til næste side i en sideinddelt bog. Dette er et alternativ til standard tastaturgenvejen",
+                    "name": "Gå til Næste Biblioteksside (Alternativ)"
                 },
                 "NavigateNextOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "I biblioteksvinduet for OPDS kataloger - gå til næste side. Bemærk at der findes en alternativ tastaturgenvej til denne",
+                    "name": "Gå til Næste Side i OPDS Katalog"
                 },
                 "NavigateNextOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "I biblioteksvinduet for OPDS kataloger - gå til næste side. Dette er et alternativ til standard tastaturgenvejen",
+                    "name": "Gå til Næste Side i OPDS Katalog (Alternativ)"
                 },
                 "NavigateNextPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå til næste side i læseren. Bemærk at der findes en alternativ tastaturgenvej til denne",
+                    "name": "Gå til Næste Side"
                 },
                 "NavigateNextPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "I læseren - Gå til næste side i bogen. Dette er et alternativ til standard tastaturgenvejen",
+                    "name": "Gå til Næste Side (Alternativ)"
                 },
                 "NavigatePreviousChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "I læseren - Naviger til forrige dokument i læserækkefølgen (f.x. kapitel). Bemærk at der findes en alternativ tastaturgenvej til denne",
+                    "name": "Gå til Forrige Kapitel"
                 },
                 "NavigatePreviousChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "I læseren - Naviger til forrige dokument i læserækkefølgen (f.x. kapitel). Dette er et alternativ til standard tastaturgenvejen",
+                    "name": "Gå til Forrige Kapitel (Alternativ)"
                 },
                 "NavigatePreviousHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "I læseren - Gå et trin tilbage i navigationshistorikken",
+                    "name": "Gå Tilbage i Historikken"
                 },
                 "NavigatePreviousLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "I læseren - Vis den forrige side i en sideopdelt bog. Bemærk at der findes en alternativ tastaturgenvej til denne",
+                    "name": "Gå til Forrige Biblioteksside"
                 },
                 "NavigatePreviousLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "I læseren - Vis den forrige side i en sideopdelt bog. Dette er et alternativ til standard tastaturgenvejen",
+                    "name": "Gå til Forrige Biblioteksside (Alternativ)"
                 },
                 "NavigatePreviousOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "I biblioteksvinduet for kataloger - Følg det forrige sidelink. Bemærk at der findes en alternativ tastaturgenvej til denne",
+                    "name": "Gå til Forrige OPDS Katalogside"
                 },
                 "NavigatePreviousOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "I biblioteksvinduet for kataloger - Følg det forrige sidelink. Dette er en alternativ tastaturgenvej",
+                    "name": "Gå til Forrige OPDS Katalogside (Alternativ)"
                 },
                 "NavigatePreviousPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "I læseren - Gå til den forrige side i bogen. Bemærk at der findes en alternativ tastaturgenvej til denne",
+                    "name": "Gå til Forrige Side"
                 },
                 "NavigatePreviousPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "I læseren - Gå til den forrige side i bogen. Dette er en alternativ tastaturgenvej",
+                    "name": "Gå til Forrige Side (Alternativ)"
                 },
                 "NavigateToBegin": {
-                    "description": "",
-                    "name": ""
+                    "description": "I læseren - gå tilbage til bogens start",
+                    "name": "Gå til Begyndelsen"
                 },
                 "NavigateToEnd": {
-                    "description": "",
-                    "name": ""
+                    "description": "I læseren - gå til bogens slutning",
+                    "name": "Gå til Slutning"
                 },
                 "OpenReaderInfo": {
-                    "description": "",
-                    "name": ""
+                    "description": "I læseren - åben informationsdialogen om bogen",
+                    "name": "Vis information om bogen"
                 },
                 "OpenReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "I læseren - åben informationsdialogen om bogen og fokusér keyboardet på sektionen omkring nuværende position i bogen",
+                    "name": "Vis information om bogen - Nuværende position"
                 },
                 "Print": {
-                    "description": "",
-                    "name": ""
+                    "description": "I læseren, åben print dialogen",
+                    "name": "Print"
                 },
                 "SearchNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "I læserens søgeværktøj - gå til næste match. Bemærk at der findes en alternativ tastaturgenvej til denne",
+                    "name": "Søgning - Næste"
                 },
                 "SearchNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "I læserens søgeværktøj - gå til næste match. Dette er et alternativ til standard tastaturgenvejen",
+                    "name": "Søgning - Næste (Alternativ)"
                 },
                 "SearchPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "I læserens søgeværktøj - gå til forrige match. Bemærk at der findes en alternativ tastaturgenvej til denne",
+                    "name": "Søgning - Forrige"
                 },
                 "SearchPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "I læserens søgeværktøj - gå til forrige match. Dette er et alternativ til standard tastaturgenvejen",
+                    "name": "Søgning - Forrige (Alternativ)"
                 },
                 "SpeakReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "I læseren - Beskriv den nuværende position i bogen, ved hjælp af tekst der er kompatibelt med skærmlæsere",
+                    "name": "Beskriv Nuværende Position (Tale)"
                 },
                 "ToggleBookmark": {
-                    "description": "",
-                    "name": ""
+                    "description": "Tilføj et nyt bogmærke eller fjern et eksisterende der er markeret",
+                    "name": "Slå bogmærke til/fra"
                 },
                 "ToggleReaderFullscreen": {
-                    "description": "",
-                    "name": ""
+                    "description": "I læseren - Aktivér systemets fuldskærmstilstand eller gå tilbage til normalt vindue. Bemærk at dette er anderledes end 'zen mode', hvilket simplificerer brugergrænsefladen",
+                    "name": "Slå Fuldskærm Til/Fra"
                 }
             },
             "loadUserJson": "Indlæs fra brugerfil",
-            "noShortcutFound": "",
+            "noShortcutFound": "Ingen genveje fundet med dette navn",
             "resetDefaults": "Nulstil (standardindstillinger)",
             "save": "Gem",
-            "searchPlaceholder": ""
+            "searchPlaceholder": "Skriv her for at søge efter en genvej"
         },
         "language": {
             "languageChoice": "Sprog"
@@ -1111,9 +1111,9 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "ANVEND STANDARD SKABELON",
-                "enableCheckbox": "Slå brug af \"mustache\" skabelon til/fra når HTML noter eksporteres",
-                "overrideHTMLTemplate": "Overskriv \"mustache\" skabelonen når noten eksporteres til HTML"
+                "applyDefaultTemplate": "Anvend standardskabelon",
+                "enableCheckbox": "Rediger HTML skabelon",
+                "overrideHTMLTemplate": "Eksport af noter (og bogmærker)"
             }
         },
         "session": {
