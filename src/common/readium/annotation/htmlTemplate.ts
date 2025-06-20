@@ -10,6 +10,10 @@ export const noteExportHtmlMustacheTemplate = `
     <meta name=generator content="{{name}}" />
     <meta name="dc:identifier" content="{{id}}" />
     {{/generator}}
+    {{#about}}
+    <meta name="dc:creator" content="{{dc:creator}}" />
+    <meta name="dc:date" content="{{dc:date}}" />
+    {{/about}}
     <style>
         body { font-family: Arial, sans-serif; margin: 2rem; }
         header, footer { color: #666; padding: 1rem; }
