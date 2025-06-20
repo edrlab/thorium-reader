@@ -5,7 +5,7 @@ export const noteExportHtmlMustacheTemplate = `
 <!-- https://github.com/edrlab/thorium-reader/blob/develop/src/common/readium/annotation/htmlTemplate.ts -->
 <html>
 <head>
-    <title>{{title}} - Annotations</title>
+    <title>{{title}} | Annotations about{{dc:title}}</title>
     {{#generator}}
     <meta name=generator content="{{name}}" />
     <meta name="dc:identifier" content="{{id}}" />
@@ -26,7 +26,7 @@ export const noteExportHtmlMustacheTemplate = `
 <body>
     <!-- Header Section with Collection Metadata -->
     <header>
-        <h1>{{title}}</h1>
+        <h1>{{title}} | Annotations about <cite>{{ .dc:title }}</cite></h1>
         <div class="metadata">
             <p><strong>Context:</strong> {{@context}}</p>
             <p><strong>ID:</strong> {{id}}</p>
