@@ -871,7 +871,7 @@
         "keyboard": {
             "advancedMenu": "Atalhos de teclado - menu avançado",
             "cancel": "Cancelar",
-            "disclaimer": "Os atalhos foram definidos a partir da disposição do teclado QWERTY.",
+            "disclaimer": "Os padrões da aplicação foram definidos com base na disposição de um teclado QWERTY",
             "editUserJson": "Editar ficheiro de utilizador...",
             "keyboardShortcuts": "Atalhos de teclado",
             "list": {
