@@ -15,7 +15,7 @@ export const noteExportHtmlMustacheTemplate = `
     <meta name="dc:date" content="{{dc:date}}" />
     {{/about}}
     <style>
-        body { font-family: Arial, sans-serif; margin: 2rem; }
+        body {margin: 2rem; }
         header, footer { color: #666; padding: 1rem; }
         .metadata { background-color: #f8f9fa; padding: 1rem; margin: 1rem 0; }
         .annotation { margin: 2rem 0; padding: 1rem; border-left: 4px solidrgb(150, 150, 150); }
