@@ -6,6 +6,10 @@ export const noteExportHtmlMustacheTemplate = `
 <html>
 <head>
     <title>{{title}} - Annotations</title>
+    {{#generator}}
+    <meta name=generator content="{{name}}" />
+    <meta name="dc:identifier" content="{{id}}" />
+    {{/generator}}
     <style>
         body { font-family: Arial, sans-serif; margin: 2rem; }
         header, footer { color: #666; padding: 1rem; }
