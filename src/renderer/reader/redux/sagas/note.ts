@@ -27,7 +27,7 @@ import { IHighlightHandlerState } from "readium-desktop/common/redux/states/rend
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { EDrawType, INoteState, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 import { checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation, readiumAnnotationSelectorFromNote } from "./readiumAnnotation/selector";
-import { clone } from "ramda";
+import { clone, equals } from "ramda";
 import { convertSelectorTargetToLocatorExtended } from "readium-desktop/common/readium/annotation/converter";
 import { getResourceCache } from "readium-desktop/common/redux/sagas/resourceCache";
 
@@ -99,6 +99,11 @@ export function* noteUpdateLocatorExtendedFromImportSelector(note: INoteState) {
 
             const isABookmark = note.group === "bookmark"; // TODO: It is a good method do discriminate bookmark selector ?
             const locatorExtended = yield* callTyped(convertSelectorTargetToLocatorExtended, target, undefined, isABookmark, xmlDom, target.source);
+            
+            if (equals(locatorExtended, note.locatorExtended)) {
+                debug(`ERROR: ${note.uuid} locatorExtended not updated, same as previous one`);
+                return ;
+            }
 
             debug(`${note.uuid} doesn't have any locator so let's update the note with the new locator generated: ${JSON.stringify(locatorExtended, null, 2)}`);
             const { publicationIdentifier } = yield* selectTyped((state: IReaderRootState) => state.reader.info);
