@@ -100,8 +100,8 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
     let cfi = cfiSelector?.value || cfiFragmentSelector?.value;
     if (cfi) {
         cfi = cfi.trim();
-        cfi = cfi.replace(/^.*!/, "").replace(/\)$/, ""); // keep only the right part after the !
-        cfi = cfi.startsWith("epubcfi(") ? cfi : `epubcfi(${cfi})`;
+        cfi = cfi.replace(/^epubcfi\(/, "").replace(/^.*!/, "").replace(/\)$/, ""); // keep only the right part after the !
+        cfi = `epubcfi(${cfi})`;
         const parser = new EpubCfiParser(cfi);
         const rootNode = parser.parse();
         const resolver = new EpubCfiResolver(rootNode);
