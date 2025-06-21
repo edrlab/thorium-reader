@@ -99,7 +99,8 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
 
     let cfi = cfiSelector?.value || cfiFragmentSelector?.value;
     if (cfi) {
-        cfi = cfi.replace(/^.*!/, "");
+        cfi = cfi.trim();
+        cfi = cfi.replace(/^.*!/, "").replace(/\)$/, ""); // keep only the right part after the !
         cfi = cfi.startsWith("epubcfi(") ? cfi : `epubcfi(${cfi})`;
         const parser = new EpubCfiParser(cfi);
         const rootNode = parser.parse();
@@ -107,19 +108,19 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
         resolver.continueResolving(xmlDom.documentElement, new URL("fake://dummy"));
         const resolved = resolver.getResolvedTarget();
         if (resolved.hasErrors()) {
-            console.log("Colibrio CFI ERRORS:");
-            console.log(JSON.stringify(resolved.getParserErrors(), null, 4));
-            console.log(JSON.stringify(resolved.getResolverErrors(), null, 4));
+            debug("Colibrio CFI ERRORS:");
+            debug(JSON.stringify(resolved.getParserErrors(), null, 4));
+            debug(JSON.stringify(resolved.getResolverErrors(), null, 4));
         } else {
             if (resolved.isDomRange()) {
                 const domRange = resolved.createDomRange();
-                console.log("Colibrio CFI DOM RANGE");
+                debug("Colibrio CFI DOM RANGE");
                 if (domRange) {
                     pushToRangeArray(domRange);
                 }
             } else if (resolved.isTargetingElement()) {
                 const elem = resolved.getTargetElement();
-                console.log("Colibrio CFI ELEMENT", elem);
+                debug("Colibrio CFI ELEMENT", elem);
             }
         }
     }
