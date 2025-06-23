@@ -293,6 +293,10 @@
   display: flex;
   flex-direction: column;
 
+  li a {
+    width: calc(100% - 20px)!important;
+  }
+
   .correspondances {
     padding: 0;
     margin: 0;
