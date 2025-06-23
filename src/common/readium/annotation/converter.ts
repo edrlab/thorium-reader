@@ -171,8 +171,8 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
     let caretInfo: ISelectionInfo = undefined;
     let selectionInfo: ISelectionInfo = undefined;
     if (
-        isABookmark ||
-        (rangeInfo.endContainerChildTextNodeIndex === rangeInfo.startContainerChildTextNodeIndex && rangeInfo.endContainerElementCssSelector === rangeInfo.startContainerElementCssSelector && rangeInfo.endOffset - rangeInfo.startOffset === 1)
+        isABookmark //||  // See https://github.com/edrlab/thorium-reader/issues/2988
+        // (rangeInfo.endContainerChildTextNodeIndex === rangeInfo.startContainerChildTextNodeIndex && rangeInfo.endContainerElementCssSelector === rangeInfo.startContainerElementCssSelector && rangeInfo.endOffset - rangeInfo.startOffset === 1)
     ) {
         // IT's a bookmark: need to move this rangeInfo to the locations.caretInfo
 
