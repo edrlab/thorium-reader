@@ -97,7 +97,7 @@ export function* noteUpdateLocatorExtendedFromImportSelector(note: INoteState) {
             const cacheDoc = yield* callTyped(getResourceCache, target.source);
             const xmlDom = cacheDoc?.xmlDom;
 
-            const isABookmark = note.group === "bookmark"; // TODO: It is a good method do discriminate bookmark selector ?
+            const isABookmark = note.group === "bookmark"; // TODO: need a better way do distinguish bookmark selector from annotation selector with one character ? See https://github.com/edrlab/thorium-reader/issues/2988
             const locatorExtended = yield* callTyped(convertSelectorTargetToLocatorExtended, target, undefined, isABookmark, xmlDom, target.source);
             
             if (equals(locatorExtended, note.locatorExtended)) {
