@@ -20,7 +20,7 @@
             "copy": "Copiar",
             "cut": "Cortar",
             "paste": "Colar",
-            "print": "",
+            "print": "Imprimir",
             "redo": "Refazer",
             "selectAll": "Selecionar tudo",
             "title": "Editar",
@@ -893,7 +893,7 @@
                 },
                 "AudioNext": {
                     "description": "",
-                    "name": ""
+                    "name": "Segmento áudio seguinte"
                 },
                 "AudioNextAlt": {
                     "description": "",
@@ -901,11 +901,11 @@
                 },
                 "AudioPlayPause": {
                     "description": "",
-                    "name": ""
+                    "name": "Tocar/Pausar áudio"
                 },
                 "AudioPrevious": {
                     "description": "",
-                    "name": ""
+                    "name": "Segmento áudio anterior"
                 },
                 "AudioPreviousAlt": {
                     "description": "",
@@ -913,11 +913,11 @@
                 },
                 "AudioStop": {
                     "description": "",
-                    "name": ""
+                    "name": "Parar áudio"
                 },
                 "CloseReader": {
                     "description": "",
-                    "name": ""
+                    "name": "Fechar leitor"
                 },
                 "FXLZoomIn": {
                     "description": "",
@@ -1069,19 +1069,19 @@
                 },
                 "SearchNext": {
                     "description": "",
-                    "name": ""
+                    "name": "Pesquisar resultado seguinte"
                 },
                 "SearchNextAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Pesquisar resultado seguinte (alternativo)"
                 },
                 "SearchPrevious": {
                     "description": "",
-                    "name": ""
+                    "name": "Pesquisar resultado anterior"
                 },
                 "SearchPreviousAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Pesquisar resultado anterior (alternativo)"
                 },
                 "SpeakReaderInfoWhereAmI": {
                     "description": "",
