@@ -783,6 +783,7 @@
             "letterSpacing": "Διάστημα μεταξύ γραμμάτων",
             "lineSpacing": "Διάστημα μεταξύ γραμμών",
             "margin": "Περιθώριο",
+            "mathjax": "",
             "noFootnotes": "Απενεργοποίηση αναδυόμενων υποσημειώσεων",
             "noRTLFlip": "Απενεργοποίηση Right-To-Left UI",
             "noRuby": "Κρύψιμο Japanese Ruby",

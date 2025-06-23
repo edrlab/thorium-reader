@@ -783,6 +783,7 @@
             "letterSpacing": "Harf aralığı",
             "lineSpacing": "Satır aralığı",
             "margin": "Kenar",
+            "mathjax": "",
             "noFootnotes": "Dipnot açılır pencerelerini devredışı bırak",
             "noRTLFlip": "Sağdan sola kullanıcı arayüzünü devredışı bırak",
             "noRuby": "Japonca Okutucuları Gizle",

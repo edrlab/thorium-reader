@@ -783,6 +783,7 @@
             "letterSpacing": "Kirjainvälistys",
             "lineSpacing": "Riviväli",
             "margin": "Marginaali",
+            "mathjax": "",
             "noFootnotes": "Alaviitteet pois käytöstä",
             "noRTLFlip": "Estä oikealta vasemmalle -käyttöliittymä",
             "noRuby": "Piilota japanin rubi-merkit",

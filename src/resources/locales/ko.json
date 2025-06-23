@@ -783,6 +783,7 @@
             "letterSpacing": "문자 간격",
             "lineSpacing": "줄 간격",
             "margin": "여백",
+            "mathjax": "",
             "noFootnotes": "각주 비활성화",
             "noRTLFlip": "",
             "noRuby": "",

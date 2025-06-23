@@ -764,9 +764,9 @@
         "settings": {
             "column": {
                 "auto": "Défaut",
-                "one": "1 col",
+                "one": "1 colonne",
                 "title": "Colonnes",
-                "two": "2 cols"
+                "two": "2 colonnes"
             },
             "customFontSelected": "Vous avez sélectionné une police personnelle",
             "customizeReader": "Personnaliser la mise en forme",
@@ -783,6 +783,7 @@
             "letterSpacing": "Espacement des lettres",
             "lineSpacing": "Espacement des lignes",
             "margin": "Marge",
+            "mathjax": "Activer MathJax",
             "noFootnotes": "Désactiver la fenêtre pop-up des notes de bas de page",
             "noRTLFlip": "Désactiver l'interface droite-à-gauche",
             "noRuby": "Cacher les caractères Ruby Japonais",
@@ -819,16 +820,16 @@
             "text": "Texte",
             "theme": {
                 "name": {
-                    "Contrast1": "Contraste 1",
-                    "Contrast2": "Contraste 2",
-                    "Contrast3": "Contraste 3",
-                    "Contrast4": "Contraste 4",
+                    "Contrast1": "Contrasté",
+                    "Contrast2": "Contrasté 2",
+                    "Contrast3": "Contrasté 3",
+                    "Contrast4": "Contrasté 4",
                     "Neutral": "Neutre",
                     "Night": "Nuit",
                     "Paper": "Papier",
                     "Sepia": "Sépia"
                 },
-                "title": "Thème"
+                "title": "Thème de lecture"
             },
             "wordSpacing": "Espacement des mots"
         },

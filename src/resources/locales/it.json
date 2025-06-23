@@ -783,6 +783,7 @@
             "letterSpacing": "Spaziatura lettere",
             "lineSpacing": "Spaziatura linee",
             "margin": "Margine",
+            "mathjax": "",
             "noFootnotes": "Disattiva note a piè di pagina",
             "noRTLFlip": "Disabilita l'interfaccia utente da destra a sinistra",
             "noRuby": "Nascondi Ruby Giapponese",

@@ -140,15 +140,15 @@ const Theme = ({ dockedMode }: { dockedMode: boolean }) => {
         },
         {
             id: 3,
-            name: `${__("reader.settings.theme.name.Paper")}`,
-            value: "paper",
-            style: { backgroundColor: "#E9DDC8", color: "#000000" },
-        },
-        {
-            id: 4,
             name: `${__("reader.settings.theme.name.Night")}`,
             value: "night",
             style: { backgroundColor: "#121212", color: "#fff" },
+        },
+        {
+            id: 4,
+            name: `${__("reader.settings.theme.name.Paper")}`,
+            value: "paper",
+            style: { backgroundColor: "#E9DDC8", color: "#000000" },
         },
         {
             id: 5,
@@ -1135,7 +1135,7 @@ const ReadingDisplayCheckboxSettings = ({
         {
             id: "mathjax",
             name: "mathjax",
-            label: "MathJax",
+            label: __("reader.settings.mathjax"),
             description: "MathJax",
             checked: enableMathJax,
             onChange: () => {
