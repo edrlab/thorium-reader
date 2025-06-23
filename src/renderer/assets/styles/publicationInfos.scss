@@ -51,6 +51,11 @@
         svg {
             fill: var(--color-secondary);
         }
+
+        &:focus {
+            outline: var(--color-blue) solid 2px !important;
+            outline-offset: 2px;
+        }
     }
 
     .button_secondary, .button_transparency {
