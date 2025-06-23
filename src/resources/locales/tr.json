@@ -457,51 +457,51 @@
                 "descriptive": "Erişilebilir biçimde kimyasal formüller (MathML)"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "LaTeX biçiminde matematik",
-                "descriptive": ""
+                "compact": "LaTeX şeklinde matematik",
+                "descriptive": "Erişilebilir biçimde matematik formülleri (LaTeX)"
             },
             "rich-content-accessible-math-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "MathML şeklinde matematik",
+                "descriptive": "Erişilebilir biçimde matematik formülleri (MathML)"
             },
             "rich-content-accessible-math-described": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Matematiksel içeriğin metin açıklamaları sağlanmaktadır",
+                "descriptive": "Matematiksel içeriğin metin açıklamaları sağlanmaktadır"
             },
             "rich-content-closed-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Video'larda altyazı var",
+                "descriptive": "Eserlerin kapsamlarına dahil edilen video'larda altyazı var"
             },
             "rich-content-extended": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bilgi açısından zengin görseller, kapsamlı açıklamalarla betimlenmektedir",
+                "descriptive": "Bilgi açısından zengin görseller, kapsamlı açıklamalarla betimlenmektedir"
             },
             "rich-content-open-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Video'larda gömülü altyazı var",
+                "descriptive": "Eserlerin kapsamlarına dahil edilen video'larda gömülü altyazı var"
             },
-            "rich-content-title": "",
+            "rich-content-title": "Zengin içerik",
             "rich-content-transcript": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Yazılı döküm(ler) sağlanmaktadır",
+                "descriptive": "Yazılı döküm(ler) sağlanmaktadır"
             },
             "rich-content-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bilgi mevcut değil",
+                "descriptive": "Bilgi mevcut değil"
             }
         },
         "ways-of-reading": {
             "ways-of-reading-nonvisual-reading-alt-text": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "İsimli içerikte alternatif metin var",
+                "descriptive": "İsimli içerikte, görseller için alternatif metin betimlemeleri var"
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Görsel olmayan okuma hakkında bilgi mevcut değil",
+                "descriptive": "Görsel olmayan okuma hakkında bilgi mevcut değil"
             },
             "ways-of-reading-nonvisual-reading-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sesli okuma veya dinamik braille ile okunamıyor",
+                "descriptive": "İçerik, sesli okuma veya dinamik braille ile okunamıyor"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
                 "compact": "",
@@ -908,28 +908,28 @@
                     "name": ""
                 },
                 "AudioPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Sesli okuma esnasında, bir önceki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya sesli kitap.) Bu, mevcuttaki geçilebilir yapıları atlar",
+                    "name": "Önceki sesli bölüme git (kaçın)"
                 },
                 "AudioStop": {
-                    "description": "",
-                    "name": ""
+                    "description": "Mevcut sesli oynatımı durdur (EPUB3 medya katmanları, metinden sese okumalar veya sesli kitaplar)",
+                    "name": "Sesli Oynatımı Durdur"
                 },
                 "CloseReader": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuyucu penceresini kapat ve kütüphaneye dön",
+                    "name": "Okuyucuyu Kapat"
                 },
                 "FXLZoomIn": {
-                    "description": "",
-                    "name": ""
+                    "description": "Belirlenmiş düzende, tek sayfa veya çift sayfa görünümünü yakınlaştır.",
+                    "name": "FXL Yakınlaştır"
                 },
                 "FXLZoomOut": {
-                    "description": "",
-                    "name": ""
+                    "description": "Belirlenmiş düzende, tek sayfa veya çift sayfa görünümünü uzaklaştır.",
+                    "name": "FXL Uzaklaştır"
                 },
                 "FXLZoomReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Belirlenmiş düzendeki tek sayfa veya çift sayfa görünümünün yakınlaştırmasını/uzaklaştırmasını sıfırla.",
+                    "name": "FXL Yakınlaştırmasını/Uzaklaştırmasını Sıfırla"
                 },
                 "FocusMain": {
                     "description": "",
