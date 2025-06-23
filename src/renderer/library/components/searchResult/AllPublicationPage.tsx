@@ -519,6 +519,7 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
     const queryParams = new URLSearchParams(location.search);
     const searchParamsFocus_ = queryParams.get("focus") || undefined;
     const searchParamsValue_ = queryParams.get("value") || undefined;
+    const setShowColumnFilters = props.setShowColumnFilters;
     React.useEffect(() => {
         if (searchParamsFocus === "tags" && props.column.id === "colTags") {
             console.log("focus=tags");
@@ -528,7 +529,7 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
                 console.log("NO REF!");
                 if (!props.showColumnFilters) {
                     console.log("setShowColumnFilters FORCE");
-                    props.setShowColumnFilters(true);
+                    setShowColumnFilters(true);
                 }
                 return;
 
@@ -545,7 +546,7 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
                     (inputRef?.current?.value || "").trim() || undefined);
             }
         }
-    }, [props.showColumnFilters, props.setShowColumnFilters, props.column.id, props.accessibilitySupportEnabled, props.column, searchParamsFocus, searchParamsValue, onInputChange]);
+    }, [props.showColumnFilters, setShowColumnFilters, props.column.id, props.accessibilitySupportEnabled, props.column, searchParamsFocus, searchParamsValue, searchParamsFocus_, searchParamsValue_, onInputChange]);
 
     return props.showColumnFilters ?
         <div className={stylesPublication.showColFilters_wrapper}>
