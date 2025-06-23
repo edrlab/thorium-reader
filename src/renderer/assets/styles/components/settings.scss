@@ -102,6 +102,7 @@ $setting_color: var(--color-blue);
     &:not(:has(.guidedTour_content)) {
         @media screen and (height <= 750px) {
             height: calc(100dvh - 150px);
+            min-height: 550px;
         }
     }
 } 

@@ -389,7 +389,7 @@ export const FontFamily = () => {
                     <p>{__("reader.settings.customFontSelected")}</p>
                 }
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "20px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                 <h4>{__("reader.settings.preview")}:</h4>
                 <span
                     aria-hidden
