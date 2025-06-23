@@ -6,7 +6,7 @@
 
 .allBooks {
     &_header {
-        font-size: 18px;
+        font-size: 20px;
         max-width: 80%;
         text-overflow: ellipsis;
         overflow: hidden;
@@ -16,7 +16,7 @@
         &_navigation {
             background-color: var(--color-extralight-grey);
             border-radius: 6px;
-            height: 96px;
+            height: 80px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -112,7 +112,6 @@
             &_container {
                 display: flex;
                 align-items: center;
-                gap: 10px;
 
                 button[disabled] {
                     color: gray;

@@ -2191,6 +2191,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
                                 <div className={stylesPublication.filter_container}>
                                     <ComboBox
+                                        label={__("header.fitlerTagTitle")}
                                         defaultItems={tagsOptions}
                                         defaultSelectedKey={
                                             tagsOptions.findIndex((tag) =>
