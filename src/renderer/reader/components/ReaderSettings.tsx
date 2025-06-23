@@ -120,7 +120,7 @@ const TabTitle = ({ value }: { value: string }) => {
     );
 };
 
-const Theme = () => {
+const Theme = ({ dockedMode }: { dockedMode: boolean }) => {
     const [__] = useTranslator();
     const theme = useReaderConfig("theme");
     const set = useSaveReaderConfigDebounced();
@@ -191,7 +191,7 @@ const Theme = () => {
     return (
         <section className={stylesSettings.section}>
             <h4>{__("reader.settings.theme.title")}</h4>
-            <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px", marginTop: "5px", flexWrap: "wrap" }}
+            <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: dockedMode ? "10px" : "20px", marginTop: "5px", flexWrap: "wrap" }}
                 value={themeOptions.find((theme) => theme.id === defaultKey).value}
                 onValueChange={(option) => set({ theme: option as TTheme })}
             >
@@ -1889,7 +1889,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                     <Tabs.Content value="tab-display" tabIndex={-1} id="readerSettings_tabs-tab-display" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <TabHeader />
                         <section className={stylesSettings.settings_tab}>
-                            {isPdf ? <></> : <Theme />}
+                            {isPdf ? <></> : <Theme dockedMode={dockedMode} />}
                             {isPdf ? <></> : <ReadingDisplayLayout isFXL={props.isFXL} />}
                             {isPdf ? <></> : <ReadingDisplayAlign />}
                             <ReadingDisplayCol isPdf={props.isPdf} pdfCol={pdfState.pdfCol} />

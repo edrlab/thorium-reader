@@ -112,9 +112,9 @@ $setting_color: var(--color-blue);
     width: 100%;
     flex: 1;
     border-right: 2px solid var(--color-extralight-grey-alt);
-    padding-top: 50px;
+    padding-top: 20px;
     background-color: var(--color-extralight-grey);
-    gap: 10px;
+    gap: 5px;
 
     button {
         height: 30px;
@@ -136,6 +136,7 @@ $setting_color: var(--color-blue);
             overflow: hidden;
             max-width: 180px;
             white-space: nowrap;
+            font-weight: unset;
         }
 
         &:hover {
@@ -262,6 +263,7 @@ $setting_color: var(--color-blue);
             left: 50%;
             top: 50%;
             fill: $setting_color;
+            height: 15px;
         }
     }
 }
