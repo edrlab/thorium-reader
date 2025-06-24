@@ -7,11 +7,11 @@
 
 import { convertRange } from "@r2-navigator-js/electron/renderer/webview/selection";
 
-import { getCount } from "../counter";
 import { getCssSelector_ } from "./cssSelector";
 import { escapeRegExp } from "./regexp";
 import { cleanupStr, collapseWhitespaces, equivalents } from "./transliteration";
-import { ISearchResult } from "./search";
+import { getCount } from "readium-desktop/utils/counter";
+import { ISearchResult } from "readium-desktop/common/redux/states/renderer/search";
 
 export async function searchDocDomSeek(searchInput: string, doc: Document, href: string): Promise<ISearchResult[]> {
     // https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent
@@ -251,7 +251,7 @@ export async function searchDocDomSeek(searchInput: string, doc: Document, href:
         const tuple = convertRange(
             range,
             (doc as any).getCssSelector,
-            (_node: Node) => "", // computeElementCFI
+            // (_node: Node) => "", // computeElementCFI
             (_node: Node) => "", // computeElementXPath
         );
 

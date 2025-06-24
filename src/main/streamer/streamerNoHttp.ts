@@ -157,12 +157,25 @@ function getPreFetchResources(publication: R2Publication): Link[] {
     const links: Link[] = [];
 
     if (publication.Resources) {
-        // https://w3c.github.io/publ-epub-revision/epub32/spec/epub-spec.html#cmt-grp-font
-        const mediaTypes = ["text/css",
-            "text/javascript", "application/javascript",
-            "application/vnd.ms-opentype", "font/otf", "application/font-sfnt",
-            "font/ttf", "application/font-sfnt",
-            "font/woff", "application/font-woff", "font/woff2"];
+        //https://www.w3.org/TR/epub-33/#sec-core-media-types
+        // "application/x-font-sfnt" ?
+        // https://github.com/w3c/epub-tests/pull/306
+        // https://github.com/w3c/epubcheck/issues/1612
+        // https://github.com/w3c/epub-specs/issues/667
+        // https://github.com/w3c/epub-specs/pull/2726
+        const mediaTypes = [
+            "text/css",
+            "text/javascript",
+            "application/javascript",
+            "application/vnd.ms-opentype",
+            "font/otf",
+            "application/x-font-ttf",
+            "font/ttf",
+            "application/font-sfnt",
+            "font/woff",
+            "application/font-woff",
+            "font/woff2",
+        ];
         for (const mediaType of mediaTypes) {
             for (const link of publication.Resources) {
                 if (link.TypeLink === mediaType) {
@@ -1156,6 +1169,11 @@ const transformerIFrames: TTransformFunction = (
 export function initSessions() {
     app.commandLine.appendSwitch("autoplay-policy", "no-user-gesture-required");
     app.commandLine.appendSwitch("enable-speech-dispatcher");
+
+    // https://github.com/electron/electron/issues/46538
+    // --gtk-version=3
+    // Gtk-ERROR **: 12:09:19.718: GTK 2/3 symbols detected. Using GTK 2/3 and GTK 4 in the same process is not supported
+    app.commandLine.appendSwitch("gtk-version", "3");
 
     Transformers.instance().add(new TransformerHTML(transformerIFrames));
 

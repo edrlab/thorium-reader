@@ -8,7 +8,7 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code/code_values
 
 import {
-    DEBUG_KEYBOARD, IKeyboardEvent, keyboardShortcutMatch, TKeyboardShortcutReadOnly,
+    DEBUG_KEYBOARD, IKeyboardEvent, keyboardShortcutMatch, TKeyboardShortcut,
 } from "readium-desktop/common/keyboard";
 
 import { ipcRenderer } from "electron";
@@ -25,19 +25,19 @@ export interface TKeyboardDocument extends TDocument {
     _keyboardListenerIsInstalled: boolean;
 }
 
-const _keyOptionsFunctions = [];
+const _keyOptionsFunctions: string[] = [];
 for (let i = 1; i <= 12; i++) {
     _keyOptionsFunctions.push(`F${i}`);
 }
-const _keyOptionsNumbers = [];
+const _keyOptionsNumbers: string[] = [];
 for (let i = 0; i <= 9; i++) {
     _keyOptionsNumbers.push(`Digit${i}`);
 }
-const _keyOptionsNumpads = [];
+const _keyOptionsNumpads: string[] = [];
 for (let i = 0; i <= 9; i++) {
     _keyOptionsNumpads.push(`Numpad${i}`);
 }
-const _keyOptionsAlpha = [];
+const _keyOptionsAlpha: string[] = [];
 for (let i = 0; i < 26; i++) {
     const upper = String.fromCharCode(65 + i); // 97 is lowercase "a"
     _keyOptionsAlpha.push(`Key${upper}`);
@@ -46,7 +46,7 @@ const _keyOptionsArrows = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "P
 const _keyOptionsEnterReturnSpace = ["Space", "Enter", "Return"];
 
 // const, but can be augmented from client code when new Key codes are "discovered" (platform-specific detection)
-export const KEY_CODES = [].concat(
+export const KEY_CODES = _keyOptionsNumpads.concat(
     _keyOptionsFunctions,
     _keyOptionsNumbers,
     _keyOptionsAlpha,
@@ -57,7 +57,6 @@ export const KEY_CODES = [].concat(
     ["Period", "Comma", "Quote", "Backquote", "Minus", "Equal", "Semicolon"],
     ["CapsLock", "Insert", "PrintScreen"],
     ["NumLock", "NumpadMultiply", "NumpadEqual", "NumpadSubtract", "NumpadDecimal", "NumpadEnter", "NumpadDivide"],
-    _keyOptionsNumpads,
 );
 // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code/code_values
 
@@ -261,13 +260,13 @@ export function ensureKeyboardListenerIsInstalled() {
 
 interface IKeyboardShortcutPairing {
     up: boolean; // otherwise, assumes down
-    keyboardShortcut: TKeyboardShortcutReadOnly;
+    keyboardShortcut: TKeyboardShortcut;
     callback: () => void;
 }
 const _keyboardShortcutPairings: IKeyboardShortcutPairing[] = [];
 export function registerKeyboardListener(
     up: boolean,
-    keyboardShortcut: TKeyboardShortcutReadOnly,
+    keyboardShortcut: TKeyboardShortcut,
     callback: () => void) {
 
     if (DEBUG_KEYBOARD) {

@@ -13,437 +13,438 @@
         "documentation": "Thorium Belgeleri",
         "howItWorks": "Nasıl çalışır?",
         "informations": "Fransa'da birçok halk kütüphanesi, üylerin kişisel kitaplıklarından dijital yayınları indirmelerine izin veren makine tarafından okunabilir bir katalog (OPDS'ye benzer ancak aynı olmayan) sağlar. Bu teknolojinin Thorium Reader'a entegre edilmesi, anında okumak için bir e-kitabı veya sesli kitabı doğrudan Thorium Reader'a indirmenize olanak tanır.\nFransız halk kütüphanesi hesabınızı Thorium Reader'a nasıl bağlarsınız? Çok basit. Arama alanına bir Fransız şehri (‘Paris’) veya kütüphane adının bir kısmını girin ve Ara düğmesine basın. Aramanıza karşılık gelen halk kütüphanelerinin bir listesi görünecektir. Bir kütüphane seçin ve Ekle düğmesine basın. Güncellenen katalog listesinde bu kütüphaneyi seçin: bir kimlik doğrulama formu görüntülenir. Kullanıcı adınızı/e-posta adresinizi ve şifrenizi girin ve Giriş düğmesine basın. Artık daha önce ödünç aldığınız e-kitapları ve sesli kitapları indirip okuyabileceğiniz kişisel kitaplığınızın içeriğini görebilirsiniz.",
-        "noLibraryFound": ""
+        "noLibraryFound": "({{- name}}) -- Herhangi bir kütüphane bulunamadı"
     },
     "app": {
         "edit": {
-            "copy": "",
-            "cut": "",
-            "paste": "",
-            "redo": "",
-            "selectAll": "",
-            "title": "",
-            "undo": ""
+            "copy": "Kopyala",
+            "cut": "Kes",
+            "paste": "Yapıştır",
+            "print": "Yazdır",
+            "redo": "Yenile",
+            "selectAll": "Tümünü seç",
+            "title": "Düzenle",
+            "undo": "Geri al"
         },
-        "hide": "",
-        "quit": "",
+        "hide": "{{- appName}} Uygulamasını gizle",
+        "quit": "{{- appName}} Uygulamasından çık",
         "session": {
             "exit": {
                 "askBox": {
                     "button": {
-                        "no": "",
-                        "yes": ""
+                        "no": "Hayır",
+                        "yes": "Evet"
                     },
-                    "help": "",
-                    "message": "",
-                    "title": ""
+                    "help": "Uygulamayı kapattığınızda açık olan okuyucu pencerelerinin uygulamayı bir sonraki başlatışınızda otomatik olarak yeniden açılmasını istiyorsanız, bunu etkinleştirin.",
+                    "message": "Okuma oturumunu kaydetme ve geri yükleme",
+                    "title": "Oturumu kaydetmek istiyor musunuz?"
                 }
             }
         },
         "update": {
-            "message": "",
-            "title": ""
+            "message": "Yeni sürüm mevcut, daha fazlasını öğrenmek için tıklayın.",
+            "title": "{{- appName}} yazılım güncellemesi."
         },
         "window": {
-            "showLibrary": ""
+            "showLibrary": "Kütüphaneyi / kitaplığı göster"
         }
     },
     "catalog": {
         "about": {
-            "title": ""
+            "title": "{{- appName}} Hakkında (online)"
         },
-        "addBookToLib": "",
-        "addTags": "",
-        "addTagsButton": "",
-        "allBooks": "",
-        "bookInfo": "",
+        "addBookToLib": "İçeri aktar",
+        "addTags": "Etiket ekle",
+        "addTagsButton": "Ekle",
+        "allBooks": "Tüm eserler",
+        "bookInfo": "Eser hakkında",
         "column": {
-            "ascending": "",
-            "descending": "",
-            "unsorted": ""
+            "ascending": "artan",
+            "descending": "azalan",
+            "unsorted": "sıralanmamış"
         },
-        "delete": "",
-        "deleteBook": "",
-        "deleteTag": "",
-        "description": "",
-        "emptyTagList": "",
+        "delete": "Sil",
+        "deleteBook": "Sil",
+        "deleteTag": "Etiketi sil",
+        "description": "Tanım",
+        "emptyTagList": "Etiketsiz eserler",
         "entry": {
-            "continueReading": "",
-            "lastAdditions": ""
+            "continueReading": "Okumayı duraklat",
+            "lastAdditions": "Son eklenen"
         },
-        "export": "",
-        "exportAnnotation": "",
-        "format": "",
-        "importAnnotation": "",
-        "lang": "",
-        "lastRead": "",
-        "moreInfo": "",
-        "myBooks": "",
-        "noPublicationHelpL1": "",
-        "noPublicationHelpL2": "",
-        "noPublicationHelpL3": "",
-        "noPublicationHelpL4": "",
-        "numberOfPages": "",
+        "export": "Farklı kaydet",
+        "exportAnnotation": "Notları dışarı aktar",
+        "format": "Biçim",
+        "importAnnotation": "Notları içe aktar",
+        "lang": "Dil",
+        "lastRead": "Son Okunan",
+        "moreInfo": "Eser Ayrıntıları",
+        "myBooks": "Eserlerim",
+        "noPublicationHelpL1": "Dosyaları buraya bırakın",
+        "noPublicationHelpL2": "veya yukarıdaki \"{{- importTitle }}\" düğmesini kullanın.",
+        "noPublicationHelpL3": "LCP-korumalı eserler desteklenmektedir.",
+        "noPublicationHelpL4": "Desteklenen uzantılar:",
+        "numberOfPages": "Sayfa Sayısı",
         "opds": {
             "auth": {
-                "cancel": "",
-                "login": "",
-                "password": "",
-                "register": "",
-                "username": ""
+                "cancel": "İptal",
+                "login": "Giriş Yap",
+                "password": "Şifre",
+                "register": "Kaydol",
+                "username": "Kullanıcı Adı / E-Posta Adresi"
             },
             "info": {
-                "availableSince": "",
+                "availableSince": "Tarihinden beri",
                 "availableState": {
-                    "available": "",
-                    "ready": "",
-                    "reserved": "",
-                    "unavailable": "",
-                    "unknown": ""
+                    "available": "Mevcut",
+                    "ready": "Hazır",
+                    "reserved": "Rezerve",
+                    "unavailable": "Mevcut değil",
+                    "unknown": "Bilinmeyen"
                 },
-                "availableUntil": "",
-                "copyAvalaible": "",
-                "copyTotal": "",
-                "holdPosition": "",
-                "holdTotal": "",
-                "numberOfItems": "",
-                "priveValue": "",
-                "state": ""
+                "availableUntil": "Tarihine kadar",
+                "copyAvalaible": "Mevcut",
+                "copyTotal": "Kopyalar",
+                "holdPosition": "Konumu koru",
+                "holdTotal": "Rezerve",
+                "numberOfItems": "Öğe sayısı",
+                "priveValue": "Fiyat",
+                "state": "Durum"
             }
         },
-        "publisher": "",
-        "readBook": "",
-        "released": "",
-        "sort": "",
-        "tag": "",
-        "tags": "",
-        "update": ""
+        "publisher": "Yayımcı",
+        "readBook": "Oku",
+        "released": "Yayın tarihi",
+        "sort": "Şuna göre sırala",
+        "tag": "Etiket",
+        "tags": "Etiketler",
+        "update": "Düzenle"
     },
     "dialog": {
         "annotations": {
-            "descAuthor": "",
-            "descCreator": "",
-            "descList": "",
-            "descNewer": "",
-            "descOlder": "",
-            "descTitle": "",
-            "importAll": "",
-            "importWithoutConflict": "",
-            "origin": "",
-            "title": ""
+            "descAuthor": "'{{- author}}'a göre",
+            "descCreator": "oluşturana göre",
+            "descList": "{{- nb}} not(ları) {{- creator}}, '{{- title}}' {{- author}} içerisine aktarılacak",
+            "descNewer": "Çakışma(lar): {{- nb}} not(ları) daha yeni",
+            "descOlder": "Çakışma(lar): {{- nb}} not(ları) daha eski",
+            "descTitle": "Açıklayıcı notların başlığı: ",
+            "importAll": "Tüm notları içe aktar",
+            "importWithoutConflict": "Sadece çakışma olmayan notları içe aktar",
+            "origin": "Kaynak eser: '{{- title}}' {{- author}}",
+            "title": "Notları içe aktarmak istiyor musunuz?"
         },
-        "cancel": "",
-        "deleteAnnotations": "",
-        "deleteAnnotationsText": "",
-        "deleteBookmarks": "",
-        "deleteBookmarksText": "",
-        "deleteFeed": "",
-        "deletePublication": "",
-        "import": "",
-        "importError": "",
-        "renew": "",
-        "return": "",
-        "yes": ""
+        "cancel": "İptal",
+        "deleteAnnotations": "Açıklayıcı notları silmek istiyor musunuz?",
+        "deleteAnnotationsText": "{{- annotationListLength}} Not(larını)? silmek istediğinize emin misiniz?",
+        "deleteBookmarks": "Yer imlerini silmek istiyor musunuz?",
+        "deleteBookmarksText": "{{- bookmarkListLength}} yer im(ler)ini silmek istediğinize emin misiniz?",
+        "deleteFeed": "Katalogu silmek istiyor musunuz?",
+        "deletePublication": "Eseri silmek istiyor musunuz?",
+        "import": "İçe aktarmayı onayla:",
+        "importError": "Hata oluştu, dosya uzantısının ({{acceptedExtension}}) olduğunu doğrulayın.",
+        "renew": "Yenilemek ya da ödünç almayı uzatmak istiyor musunuz?",
+        "return": "Esere geri dönmek istiyor musunuz?",
+        "yes": "Evet"
     },
     "error": {
         "errorBox": {
-            "error": "",
-            "message": "",
-            "title": ""
+            "error": "Hata mesajı:",
+            "message": "{{- filename}} Dosyasında hata",
+            "title": "Dahili {{- appName}} uygulaması\nHata"
         }
     },
     "header": {
-        "allBooks": "",
-        "catalogs": "",
-        "downloads": "",
-        "fitlerTagTitle": "",
-        "gridTitle": "",
-        "home": "",
-        "homeTitle": "",
-        "importTitle": "",
-        "listTitle": "",
-        "myCatalogs": "",
-        "refreshTitle": "",
-        "searchPlaceholder": "",
-        "searchTitle": "",
-        "settings": "",
-        "viewMode": ""
+        "allBooks": "Tüm eserler",
+        "catalogs": "Kataloglar",
+        "downloads": "İndirilenler",
+        "fitlerTagTitle": "Etikete göre filtrele",
+        "gridTitle": "Izgara",
+        "home": "Kitaplık menüsü",
+        "homeTitle": "Anasayfa",
+        "importTitle": "Eseri içe aktar",
+        "listTitle": "Tablo",
+        "myCatalogs": "Kataloglarım",
+        "refreshTitle": "yeniden yükle",
+        "searchPlaceholder": "Ara",
+        "searchTitle": "Ara",
+        "settings": "Ayarlar",
+        "viewMode": "Görünüm biçimi"
     },
     "library": {
         "lcp": {
-            "hint": "",
-            "open": "",
-            "password": "",
-            "sentence": "",
-            "urlHint": "",
-            "whatIsLcp?": "",
-            "whatIsLcpInfoDetails": "",
-            "whatIsLcpInfoDetailsLink": ""
+            "hint": "İpucu:",
+            "open": "Aç",
+            "password": "Şifre",
+            "sentence": "Bu eserin açılabilmesi için bir LCP şifresi gerekir",
+            "urlHint": "Şifrenizi mi unuttunuz? Destek almak için buraya tıklayın.",
+            "whatIsLcp?": "LCP nedir?",
+            "whatIsLcpInfoDetails": "LCP, 'Licensed Content Protection', Lisanslı İçerik Koruması anlamına gelir.",
+            "whatIsLcpInfoDetailsLink": "EDRLab  web sitesinde Daha fazlasını öğrenmek için bu bağlantıyı tıklayın."
         }
     },
     "message": {
         "annotations": {
-            "alreadyImported": "",
-            "emptyFile": "",
-            "errorParsing": "",
-            "noBelongTo": "",
-            "nothing": "",
-            "success": ""
+            "alreadyImported": "Tüm notlar zaten içe aktarılmış.",
+            "emptyFile": "Dosyada not mevcut değil.",
+            "errorParsing": "Dosya işlenirken hata oluştu: ",
+            "noBelongTo": "Notlar içe aktarılamadı: En az bir not, Eser'e ait değil.",
+            "nothing": "İçe aktarmaya hazır hiç not yok, içe aktarma durduruluyor",
+            "success": "İçe aktarma başarıyla tamamlandı."
         },
         "download": {
-            "error": ""
+            "error": "[{{- title}}] İndirmesi başarısız: [{{- err}}]"
         },
         "import": {
-            "alreadyImport": "",
-            "fail": "",
-            "success": ""
+            "alreadyImport": "[{{- title}}] dosyası zaten içe aktarılmış.",
+            "fail": "[{{- path}}] İçe aktarması başarısız: [{{- err}}]",
+            "success": "[{{- title}}]: İçe aktarımı tamamlandı."
         },
         "open": {
-            "error": ""
+            "error": "Eser yüklemesi başarısız: [{{- err}}]"
         }
     },
     "opds": {
         "addForm": {
-            "addButton": "",
-            "name": "",
-            "namePlaceholder": "",
-            "url": "",
-            "urlPlaceholder": ""
+            "addButton": "Ekle",
+            "name": "İsim",
+            "namePlaceholder": "İsim",
+            "url": "Link:",
+            "urlPlaceholder": "Link"
         },
         "addFormApiapp": {
-            "title": ""
+            "title": "Kütüphane hesabı ekle"
         },
-        "addMenu": "",
-        "breadcrumbRoot": "",
-        "documentation": "",
-        "empty": "",
-        "firstPage": "",
-        "informations": "",
-        "lastPage": "",
+        "addMenu": "OPDS Beslemesi ekle",
+        "breadcrumbRoot": "Kataloglar",
+        "documentation": "OPDS resmi web sitesi",
+        "empty": "Hiç eser bulunamadı",
+        "firstPage": "İlk",
+        "informations": "Sadece birkaç tıklamayla kamu kütüphanelerinden ve dijital kitap satıcılarından dijital yayınları keşfedebileceğiniz ve indirebileceğiniz bir dünya hayal edin. Açık Eser Dağıtım Sistemi olarak Türkçe'ye çevrilebilecek Open Publication Distribution System (OPDS) katalog biçimi tam olarak bunu sunar. OPDS ile çeşitli e-kitap sağlayıcılarının kataloglarında gezinebilir, kaydolabilir, bir eser ödünç alabilir, bir eser satın alabilir veya kişisel kitaplığınızı ziyaret edebilirsiniz. Hatta anında okumak için bir e-kitap veya sesli kitabı doğrudan Thorium Reader'a indirebilirsiniz.\nPeki, bir OPDS kataloğunu nasıl bulursunuz? Çok basit. Kataloğa giden bir köprü bağlantısı (URL) arayıp bulun. Bu URL'yi yukarıdaki Bağlantı alanına kopyalayın. Tüm aktif OPDS katalogları için tek bir hizmet sağlama noktası olmadığını unutmayın. Tercih ettiğiniz kütüphane veya kitap satıcısıyla iletişime geçmeniz ve OPDS katalog URL'sini istemeniz gerekebilir. Nereden başlayacağınızdan emin değilseniz, Wikipedia'da çeşitli dillerde size yardımcı olabilecek birkaç OPDS kataloğu kaydı mevcuttur.\nAd alanı sizin için kolay bir yere yerleştirilmiştir ve Thorium Reader'a besleme tanımlamanın kolay bir yolunu sağlar.",
+        "lastPage": "Son",
         "menu": {
-            "aboutBook": "",
-            "addExtract": "",
-            "goBuyBook": "",
-            "goLoanBook": "",
-            "goRevokeLoanBook": "",
-            "goSubBook": ""
+            "aboutBook": "Eser hakkında",
+            "addExtract": "Özeti içe aktar",
+            "goBuyBook": "Eser satın al",
+            "goLoanBook": "Eser ödünç al",
+            "goRevokeLoanBook": "Ödünç alımı sonlandır",
+            "goSubBook": "Abone ol"
         },
         "network": {
-            "error": "",
-            "noInternet": "",
-            "noInternetMessage": "",
-            "reject": "",
-            "timeout": ""
+            "error": "Beslemeye erişim hatası",
+            "noInternet": "İnternet yok",
+            "noInternetMessage": "Ağ kablosunu, modemi, yönlendiriciyi veya wifiyi kontrol etmeyi deneyin",
+            "reject": "Üzgünüm, beklenmedik hata",
+            "timeout": "Bağlantı zaman aşımına uğradı, lütfen daha sonra tekrar deneyin"
         },
-        "next": "",
-        "previous": "",
-        "shelf": "",
+        "next": "Sonraki",
+        "previous": "Önceki",
+        "shelf": "Raf",
         "updateForm": {
-            "name": "",
-            "title": "",
-            "updateButton": "",
-            "url": ""
+            "name": "İsim",
+            "title": "OPDS beslemesini düzenle",
+            "updateButton": "Düzenle",
+            "url": "Bağlantı:"
         },
-        "whatIsOpds": ""
+        "whatIsOpds": "OPDS nedir?"
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": ""
+            "accessibility-summary-title": "Erişilebilirlik özeti"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ARIA satırları içerir",
+                "descriptive": "İçerik, düzeni en iyi hale getirmek ve gezinmeyi kolaylaştırmak için ARIA satırlarıyla iyileştirilmiştir"
             },
             "additional-accessibility-information-audio-descriptions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sesli açıklamalar",
+                "descriptive": "Sesli açıklamalar"
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Braille",
+                "descriptive": "Braille"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Asya dillerinde tam okutucu belirtimleri",
+                "descriptive": "Asya dillerinde tam okutucu belirtimleri"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Önplan ve arkaplan sesleri arasında yüksek karşıtlık",
+                "descriptive": "Önplan ve arkaplan sesleri arasında yüksek karşıtlık"
             },
             "additional-accessibility-information-high-contrast-between-text-and-background": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Önplan metni ve arkaplan arasında yüksek karşıtlık",
+                "descriptive": "Önplan metni ve arkaplan arasında yüksek karşıtlık"
             },
             "additional-accessibility-information-large-print": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Büyük puntolu",
+                "descriptive": "Büyük puntolu"
             },
             "additional-accessibility-information-page-breaks": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sayfa geçişleri dahil",
+                "descriptive": "Orjinal basılı kaynaktaki sayfa geçişleri dahil"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Asya dillerinde bazı Okutucu belirtimleri",
+                "descriptive": "Asya dillerinde bazı Okutucu belirtimleri"
             },
             "additional-accessibility-information-sign-language": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "İşaret dili",
+                "descriptive": "İşaret dili"
             },
             "additional-accessibility-information-tactile-graphics": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Dokunsal grafikler dahil",
+                "descriptive": "Görme engelli kişilerin görsel öğelere erişimini kolaylaştırmak için dokunsal grafikler entegre edilmiştir"
             },
             "additional-accessibility-information-tactile-objects": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Dokunsal 3D nesneler",
+                "descriptive": "Dokunsal 3D nesneler"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Metinden-sese (TTS) ile okuma için ipuçları sağlanır",
+                "descriptive": "Metinden-sese (TTS) ile okuma için ipuçları sağlanır"
             },
-            "additional-accessibility-information-title": ""
+            "additional-accessibility-information-title": "İlave erişilebilirlik bilgisi"
         },
         "conformance": {
             "conformance-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bu eser, asgari erişilebilirlik standartlarını karşılar",
+                "descriptive": "Eser, EPUB Erişilebilirlik ve WCAG 2 A Seviyesi standardını karşıladığına dair bir uygunluk beyanı içerir"
             },
             "conformance-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bu eser, kabul edilen erişilebilirlik standartlarını karşılar",
+                "descriptive": "Eser, EPUB Erişilebilirlik ve WCAG 2 AA Seviyesi standardını karşıladığına dair bir uygunluk beyanı içerir"
             },
             "conformance-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bu eser, kabul edilen erişilebilirlik standartlarının üzerindedir",
+                "descriptive": "Eser, EPUB Erişilebilirlik ve WCAG 2 AAA Seviyesi standardını karşıladığına dair bir uygunluk beyanı içerir"
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "Eseri sertifikalandıran: "
             },
             "conformance-certifier-credentials": {
-                "compact": ""
+                "compact": "Sertifikalandıranın kimlik bilgisi: "
             },
             "conformance-details-certifier-report": {
-                "compact": ""
+                "compact": "Daha fazla bilgi için sertifikalandıranın raporuna bakın"
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bu eser şunu karşıladığı iddiasındadır:",
+                "descriptive": "Bu eser şunu karşıladığı iddiasındadır:"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Erişilebilirliği 1.0",
+                "descriptive": "EPUB Erişilebilirliği 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Erişilebilirliği 1.1",
+                "descriptive": "EPUB Erişilebilirliği 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "A Seviye",
+                "descriptive": "A Seviye"
             },
             "conformance-details-level-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "AA Seviye",
+                "descriptive": "AA Seviye"
             },
             "conformance-details-level-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "AAA Seviye",
+                "descriptive": "AAA Seviye"
             },
             "conformance-details-wcag-2-0": {
-                "compact": ""
+                "compact": "WCAG 2.0"
             },
             "conformance-details-wcag-2-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.1",
+                "descriptive": "Web İçeriği Erişilebilirlik Kılavuzu (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.2",
+                "descriptive": "Web İçeriği Erişilebilirlik Kılavuzu (WCAG) 2.2"
             },
             "conformance-no": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bilgi mevcut değil",
+                "descriptive": "Bilgi mevcut değil"
             },
-            "conformance-title": "",
+            "conformance-title": "Uygunluk",
             "conformance-unknown-standard": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bu eserin erişilebilirliğe ilişkin kabul görmüş standartlara uygunluğu belirlenemiyor",
+                "descriptive": "Bu eserin erişilebilirliğe ilişkin kabul görmüş standartlara uygunluğu belirlenemiyor"
             }
         },
         "hazards": {
             "hazards-flashing": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Yanıp sönen içerik",
+                "descriptive": "Eserde, ışığa duyarlılık kaynaklı nöbetlere neden olabilecek yanıp sönen içerikler bulunuyor"
             },
             "hazards-flashing-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Yanıp sönen içerik yok",
+                "descriptive": "Eserde, yanıp sönen içerik bulunmuyor"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Yanıp sönen içerik mevcudiyeti bilinmiyor",
+                "descriptive": "Yanıp sönen içerik mevcudiyeti bilinmiyor"
             },
             "hazards-motion": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Hareket simülasyonu",
+                "descriptive": "Eser, hareket hastalığına sebep olabilecek hareket simülasyonları içeriyor"
             },
             "hazards-motion-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Hareket simülasyonu yok",
+                "descriptive": "Eser, hareket simülasyonu içermiyor"
             },
             "hazards-motion-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Hareket simülasyonu mevcudiyeti bilinmiyor",
+                "descriptive": "Hareket simülasyonu mevcudiyeti bilinmiyor"
             },
             "hazards-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bilgi mevcut değil",
+                "descriptive": "Bilgi mevcut değil"
             },
             "hazards-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Risk yok",
+                "descriptive": "Eser, risk içermiyor"
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sesler",
+                "descriptive": "Eser, rahatsız edici olabilecek sesler içeriyor"
             },
             "hazards-sound-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ses yok",
+                "descriptive": "Eser, ses içermiyor"
             },
             "hazards-sound-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ses mevcudiyeti bilinmiyor",
+                "descriptive": "Ses mevcudiyeti bilinmiyor"
             },
-            "hazards-title": "",
+            "hazards-title": "Riskler",
             "hazards-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Risk mevcudiyeti bilinmiyor",
+                "descriptive": "Risk mevcudiyeti bilinmiyor"
             }
         },
         "navigation": {
             "navigation-index": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Dizin",
+                "descriptive": "Gönderme  yapılan girdilere bağlantılar içeren dizin"
             },
             "navigation-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bilgi mevcut değil",
+                "descriptive": "Bilgi mevcut değil"
             },
             "navigation-page-navigation": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sayfaya git",
+                "descriptive": "Basılı kaynak sürümdeki sayfalara gitmek için sayfa listesi"
             },
             "navigation-structural": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Başlıklar",
+                "descriptive": "Yapılandırılmış gezinme için başlıklar, tablolar ve benzeri  gibi öğeler"
             },
-            "navigation-title": "",
+            "navigation-title": "Gezinme",
             "navigation-toc": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "İçindekiler tablosu",
+                "descriptive": "Metnin tüm bölümlerine bağlantılarla içindekiler tablosu"
             }
         },
         "rich-content": {
@@ -667,6 +668,12 @@
             "fit": ""
         },
         "goToContent": "",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "",
             "bookmarks": "",
@@ -717,6 +724,7 @@
             "openTableOfContentsTitle": "",
             "page": "",
             "pdfscalemode": "",
+            "print": "",
             "settingsTitle": ""
         },
         "notes": {
@@ -741,42 +749,54 @@
             },
             "searchTitle": ""
         },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": "Yazdır"
+        },
         "settings": {
             "column": {
-                "auto": "",
-                "one": "",
-                "title": "",
-                "two": ""
+                "auto": "Varsayılan",
+                "one": "Sütun 1",
+                "title": "Sütunlar",
+                "two": "Sütun 2"
             },
-            "customFontSelected": "",
-            "customizeReader": "",
-            "disabled": "",
-            "display": "",
+            "customFontSelected": "Kişisel bir yazı tipi seçtiniz",
+            "customizeReader": "Metin biçimlendirmesini özelleştir",
+            "disabled": "geçersiz",
+            "display": "Görüntüleme",
             "disposition": {
-                "title": ""
+                "title": "Düzen"
             },
-            "font": "",
-            "fontSize": "",
-            "infoCustomFont": "",
-            "justification": "",
-            "justify": "",
-            "letterSpacing": "",
-            "lineSpacing": "",
-            "margin": "",
-            "noFootnotes": "",
-            "noRTLFlip": "",
-            "noRuby": "",
-            "noTemporaryNavTargetOutline": "",
-            "paginated": "",
-            "paraSpacing": "",
+            "font": "Yazı tipi",
+            "fontSize": "Yazı tipi boyutu",
+            "infoCustomFont": "Adını yazarak işletim sisteminden yazı tipini seçin",
+            "justification": "Hizalama",
+            "justify": "İki yana yaslama",
+            "letterSpacing": "Harf aralığı",
+            "lineSpacing": "Satır aralığı",
+            "margin": "Kenar",
+            "noFootnotes": "Dipnot açılır pencerelerini devredışı bırak",
+            "noRTLFlip": "Sağdan sola kullanıcı arayüzünü devredışı bırak",
+            "noRuby": "Japonca Okutucuları Gizle",
+            "noTemporaryNavTargetOutline": "Görsel gezinme belirteçlerini devredışı bırak",
+            "paginated": "Sayfalara ayrılmış",
+            "paraSpacing": "Paragraf aralığı",
             "pdfZoom": {
                 "name": {
-                    "100pct": "",
-                    "150pct": "",
-                    "200pct": "",
-                    "300pct": "",
-                    "500pct": "",
-                    "50pct": "",
+                    "100pct": "%100",
+                    "150pct": "%150",
+                    "200pct": "%200",
+                    "300pct": "%300",
+                    "500pct": "%500",
+                    "50pct": "%50",
                     "fit": "",
                     "width": ""
                 },
@@ -854,9 +874,233 @@
             "disclaimer": "",
             "editUserJson": "",
             "keyboardShortcuts": "",
+            "list": {
+                "AddBookmarkWithLabel": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreate": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreateQuick": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsToggleMargin": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPlayPause": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioStop": {
+                    "description": "",
+                    "name": ""
+                },
+                "CloseReader": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomIn": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomOut": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomReset": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMain": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMainDeep": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderGotoPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigation": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationAnnotations": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationBookmarks": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationTOC": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderSettings": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusToolbar": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToBegin": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToEnd": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfo": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "Print": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SpeakReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleBookmark": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleReaderFullscreen": {
+                    "description": "",
+                    "name": ""
+                }
+            },
             "loadUserJson": "",
+            "noShortcutFound": "",
             "resetDefaults": "",
-            "save": ""
+            "save": "",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": ""

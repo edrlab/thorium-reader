@@ -20,6 +20,7 @@
             "copy": "Copy",
             "cut": "Cut",
             "paste": "Paste",
+            "print": "Print",
             "redo": "Redo",
             "selectAll": "Select all",
             "title": "Edit",
@@ -667,6 +668,12 @@
             "fit": "Fit"
         },
         "goToContent": "Go to the content",
+        "imgViewer": {
+            "title": "Image viewer (zoom)",
+            "zoomIn": "Zoom In",
+            "zoomOut": "Zoom Out",
+            "zoomReset": "Reset Zoom"
+        },
         "marks": {
             "annotations": "Annotations",
             "bookmarks": "Bookmarks",
@@ -717,6 +724,7 @@
             "openTableOfContentsTitle": "navigation",
             "page": "Page",
             "pdfscalemode": "Page fit or width",
+            "print": "print",
             "settingsTitle": "settings"
         },
         "notes": {
@@ -740,6 +748,18 @@
                 "submit": "Find"
             },
             "searchTitle": "Search:"
+        },
+        "print": {
+            "description": "{{- appName}} pre-print step: please select the pages you want to send to the system print dialog (this publication has {{- count}} pages)",
+            "descriptionLcp": "{{- appName}} pre-print step: please select the pages you want to send to the system print dialog (this LCP-protected publication has {{- count}} pages)",
+            "descriptionLcpLimit": "LCP limit: {{- lcpLimitPages}}, pages remaining: {{- count}}",
+            "pageHelpInfo": "Page selector syntax:",
+            "pageHelpInfo1": " - enter a page number to reference a single page (e.g. \"6\")",
+            "pageHelpInfo2": " - enter two page numbers separated by a dash character to reference a range of contiguous pages (e.g. \"6-13\")",
+            "pageHelpInfo3": " - use the semicolon character to separate multiple pages or page ranges (e.g. \"5;14-20;37\")",
+            "pageHelpInfo4": " - leave out the first or last page of a range to reference the first or last page of the publication (e.g. \"-16\" is equivalent to \"1-16\", and \"34-\" is equivalent to \"34-100\" assuming a book with a total of 100 pages)",
+            "pages": "Pages",
+            "print": "Print"
         },
         "settings": {
             "column": {
@@ -851,12 +871,236 @@
         "keyboard": {
             "advancedMenu": "Keyboard shortcuts advanced menu",
             "cancel": "Cancel",
-            "disclaimer": "Shortcuts were defined from QWERTY keyboard layout.",
+            "disclaimer": "The application defaults were designed based on the physical location of keys on a QWERTY layout",
             "editUserJson": "Edit user file...",
             "keyboardShortcuts": "Keyboard shortcuts",
+            "list": {
+                "AddBookmarkWithLabel": {
+                    "description": "Open the bookmark creation dialog and edit the textual label (note), color and tag",
+                    "name": "Create Bookmark with Label"
+                },
+                "AnnotationsCreate": {
+                    "description": "Open the annotation creation dialog for the selected document text, and edit the textual note, highlight color and type, and tag",
+                    "name": "Create Annotation"
+                },
+                "AnnotationsCreateQuick": {
+                    "description": "Create an annotation for the selected document text, with the last-used highlight color and type (this does not open the editor dialog, so the textual note and tag is empty)",
+                    "name": "Create Quick Annotation"
+                },
+                "AnnotationsToggleMargin": {
+                    "description": "Alternate the annotation and bookmark visual indicators, either in the document margin or in the text",
+                    "name": "Toggle Annotation Margin"
+                },
+                "AudioNext": {
+                    "description": "Move forward to the next audio event in EPUB3 Media Overlays, Text To Speech readaloud, or audiobooks",
+                    "name": "Next Audio"
+                },
+                "AudioNextAlt": {
+                    "description": "Move forward to the next audio event in EPUB3 Media Overlays, Text To Speech readaloud, or audiobooks. This skips the current escapable structure, if applicable",
+                    "name": "Next Audio (escape)"
+                },
+                "AudioPlayPause": {
+                    "description": "Toggle play/pause in EPUB3 Media Overlays, Text To Speech readaloud, or audiobooks",
+                    "name": "Play/Pause Audio"
+                },
+                "AudioPrevious": {
+                    "description": "Move backward to the previous audio event in EPUB3 Media Overlays, Text To Speech readaloud, or audiobooks",
+                    "name": "Previous Audio"
+                },
+                "AudioPreviousAlt": {
+                    "description": "Move backward to the previous audio event in EPUB3 Media Overlays, Text To Speech readaloud, or audiobooks. This skips the current escapable structure, if applicable",
+                    "name": "Previous Audio (escape)"
+                },
+                "AudioStop": {
+                    "description": "Stop audio in EPUB3 Media Overlays, Text To Speech readaloud, or audiobooks",
+                    "name": "Stop Audio"
+                },
+                "CloseReader": {
+                    "description": "Close the reader window and return to the library",
+                    "name": "Close Reader"
+                },
+                "FXLZoomIn": {
+                    "description": "Zoom into a fixed layout single page or 2-page spread.",
+                    "name": "FXL Zoom In"
+                },
+                "FXLZoomOut": {
+                    "description": "Zoom out of a fixed layout single page or 2-page spread.",
+                    "name": "FXL Zoom Out"
+                },
+                "FXLZoomReset": {
+                    "description": "Reset zoom on a fixed layout single page or 2-page spread.",
+                    "name": "Reset FXL Zoom"
+                },
+                "FocusMain": {
+                    "description": "Move the keyboard focus to the 'main' landmark in the graphical user interface. In the reader window, this moves into the publication content",
+                    "name": "Focus on Main Content"
+                },
+                "FocusMainDeep": {
+                    "description": "In the reader window, this moves the keyboard focus into the publication content using a more reliable technique for screen readers",
+                    "name": "Deep Focus on Main Content"
+                },
+                "FocusReaderGotoPage": {
+                    "description": "Move the keyboard focus to the 'goto page' section of the reader window's navigation panel",
+                    "name": "Focus on 'Go to Page'"
+                },
+                "FocusReaderNavigation": {
+                    "description": "Move the keyboard focus to the reader window's navigation panel",
+                    "name": "Focus on Navigation Panel"
+                },
+                "FocusReaderNavigationAnnotations": {
+                    "description": "Move the keyboard focus to the 'annotations' section of the reader window's navigation panel",
+                    "name": "Focus on 'Annotations'"
+                },
+                "FocusReaderNavigationBookmarks": {
+                    "description": "Move the keyboard focus to the 'bookmarks' section of the reader window's navigation panel",
+                    "name": "Focus on 'Bookmarks'"
+                },
+                "FocusReaderNavigationSearch": {
+                    "description": "Move the keyboard focus to the 'search' section of the reader window's navigation panel",
+                    "name": "Focus on 'Search'"
+                },
+                "FocusReaderNavigationTOC": {
+                    "description": "Move the keyboard focus to the 'TOC' section of the reader window's navigation panel",
+                    "name": "Focus on 'table of contents'"
+                },
+                "FocusReaderSettings": {
+                    "description": "Move the keyboard focus to the reader window's settings panel (display preferences, etc.)",
+                    "name": "Focus on Reader Settings"
+                },
+                "FocusSearch": {
+                    "description": "Move the keyboard focus to the reader window's text search input, or in the library window this searches the bookshelf or the active OPDS feed",
+                    "name": "Search Command"
+                },
+                "FocusToolbar": {
+                    "description": "Move the keyboard focus to the landmark area of the graphical user interface immediately before the 'skip link' (which itself moves the focus to the main content area of the library or reader window)",
+                    "name": "Focus on Toolbar"
+                },
+                "NavigateNextChapter": {
+                    "description": "In the reader window, navigate to the next document in the reading order of the publication (e.g. chapter in the book spine). Note that there is an alternative keyboard shortcut to this default one",
+                    "name": "Go to Next Chapter"
+                },
+                "NavigateNextChapterAlt": {
+                    "description": "In the reader window, navigate to the next document in the reading order of the publication (e.g. chapter in the book spine). This is an alternative keyboard shortcut to the default one",
+                    "name": "Go to Next Chapter (Alternative)"
+                },
+                "NavigateNextHistory": {
+                    "description": "In the reader window, jump one step forward in the navigation history",
+                    "name": "Go to Next History"
+                },
+                "NavigateNextLibraryPage": {
+                    "description": "In the library window, show the next page of a paginated list of publications. Note that there is an alternative keyboard shortcut to this default one",
+                    "name": "Go to Next Library Page"
+                },
+                "NavigateNextLibraryPageAlt": {
+                    "description": "In the library window, show the next page of a paginated list of publications. This is an alternative keyboard shortcut to the default one",
+                    "name": "Go to Next Library Page (Alternative)"
+                },
+                "NavigateNextOPDSPage": {
+                    "description": "In the library window for catalogs / OPDS feeds, follow the next pagination link. Note that there is an alternative keyboard shortcut to this default one",
+                    "name": "Go to Next OPDS Page"
+                },
+                "NavigateNextOPDSPageAlt": {
+                    "description": "In the library window for catalogs / OPDS feeds, follow the next pagination link. This is an alternative keyboard shortcut to the default one",
+                    "name": "Go to Next OPDS Page (Alternative)"
+                },
+                "NavigateNextPage": {
+                    "description": "In the reader window, turn to the next 'page' in the publication. Note that there is an alternative keyboard shortcut to this default one",
+                    "name": "Go to Next Page"
+                },
+                "NavigateNextPageAlt": {
+                    "description": "In the reader window, turn to the next 'page' in the publication. This is an alternative keyboard shortcut to the default one",
+                    "name": "Go to Next Page (Alternative)"
+                },
+                "NavigatePreviousChapter": {
+                    "description": "In the reader window, navigate to the previous document in the reading order of the publication (e.g. chapter in the book spine). Note that there is an alternative keyboard shortcut to this default one",
+                    "name": "Go to Previous Chapter"
+                },
+                "NavigatePreviousChapterAlt": {
+                    "description": "In the reader window, navigate to the previous document in the reading order of the publication (e.g. chapter in the book spine). This is an alternative keyboard shortcut to the default one",
+                    "name": "Go to Previous Chapter (Alternative)"
+                },
+                "NavigatePreviousHistory": {
+                    "description": "In the reader window, jump one step backwards in the navigation history",
+                    "name": "Go to Previous History"
+                },
+                "NavigatePreviousLibraryPage": {
+                    "description": "In the library window, show the previous page of a paginated list of publications. Note that there is an alternative keyboard shortcut to this default one",
+                    "name": "Go to Previous Library Page"
+                },
+                "NavigatePreviousLibraryPageAlt": {
+                    "description": "In the library window, show the previous page of a paginated list of publications. This is an alternative keyboard shortcut to the default one",
+                    "name": "Go to Previous Library Page (Alternative)"
+                },
+                "NavigatePreviousOPDSPage": {
+                    "description": "In the library window for catalogs / OPDS feeds, follow the previous pagination link. Note that there is an alternative keyboard shortcut to this default one",
+                    "name": "Go to Previous OPDS Page"
+                },
+                "NavigatePreviousOPDSPageAlt": {
+                    "description": "In the library window for catalogs / OPDS feeds, follow the previous pagination link. This is an alternative keyboard shortcut to the default one",
+                    "name": "Go to Previous OPDS Page (Alternative)"
+                },
+                "NavigatePreviousPage": {
+                    "description": "In the reader window, turn to the previous 'page' in the publication. Note that there is an alternative keyboard shortcut to this default one",
+                    "name": "Go to Previous Page"
+                },
+                "NavigatePreviousPageAlt": {
+                    "description": "In the reader window, turn to the previous 'page' in the publication. This is an alternative keyboard shortcut to the default one",
+                    "name": "Go to Previous Page (Alternative)"
+                },
+                "NavigateToBegin": {
+                    "description": "In the reader window, go to the beginning of the publication",
+                    "name": "Go to Beginning"
+                },
+                "NavigateToEnd": {
+                    "description": "In the reader window, go to the end of the publication",
+                    "name": "Go to End"
+                },
+                "OpenReaderInfo": {
+                    "description": "In the reader window, open the popup dialog that display information about the publication",
+                    "name": "Display Publication Information"
+                },
+                "OpenReaderInfoWhereAmI": {
+                    "description": "In the reader window, open the popup dialog that display information about the publication, and focus the keyboard on the section that shows the context of the current reading location",
+                    "name": "Display Publication Information, Show Reading Location"
+                },
+                "Print": {
+                    "description": "In the reader window, open the print dialog",
+                    "name": "Print"
+                },
+                "SearchNext": {
+                    "description": "In the reader window's search tool, go to the next found match. Note that there is an alternative keyboard shortcut to this default one",
+                    "name": "Search Next"
+                },
+                "SearchNextAlt": {
+                    "description": "In the reader window's search tool, go to the next found match. This is an alternative keyboard shortcut to the default one",
+                    "name": "Search Next (Alternative)"
+                },
+                "SearchPrevious": {
+                    "description": "In the reader window's search tool, go to the previous found match. Note that there is an alternative keyboard shortcut to this default one",
+                    "name": "Search Previous"
+                },
+                "SearchPreviousAlt": {
+                    "description": "In the reader window's search tool, go to the previous found match. This is an alternative keyboard shortcut to the default one",
+                    "name": "Search Previous (Alternative)"
+                },
+                "SpeakReaderInfoWhereAmI": {
+                    "description": "In the reader window, describe the context of the current reading location, using speech text compatible with screen readers",
+                    "name": "Describe Reading Location (Speech)"
+                },
+                "ToggleBookmark": {
+                    "description": "Add a new bookmark or remove an existing one if it is currently selected",
+                    "name": "Toggle Bookmark"
+                },
+                "ToggleReaderFullscreen": {
+                    "description": "In the reader window, activate system fullscreen or restore normal window mode. Note that this is different from 'zen mode' which simplifies the user interface",
+                    "name": "Toggle Fullscreen"
+                }
+            },
             "loadUserJson": "Load from user file",
+            "noShortcutFound": "No shortcut found with this label",
             "resetDefaults": "Reset (load defaults)",
-            "save": "Save"
+            "save": "Save",
+            "searchPlaceholder": "Type to search a shortcut"
         },
         "language": {
             "languageChoice": "Language"
@@ -867,9 +1111,9 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "APPLY DEFAULT TEMPLATE",
-                "enableCheckbox": "Enable/disable mustache template override when exporting HTML notes",
-                "overrideHTMLTemplate": "Override the Mustache template when exporting the note to HTML"
+                "applyDefaultTemplate": "Load default template",
+                "enableCheckbox": "Customize the HTML template",
+                "overrideHTMLTemplate": "Notes export (annotations and bookmarks)"
             }
         },
         "session": {

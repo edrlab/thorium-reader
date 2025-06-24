@@ -7,6 +7,16 @@
 
 import debounce from "debounce";
 import { ipcRenderer } from "electron";
+
+// TypeScript GO:
+// The current file is a CommonJS module whose imports will produce 'require' calls;
+// however, the referenced file is an ECMAScript module and cannot be imported with 'require'.
+// Consider writing a dynamic 'import("...")' call instead.
+// To convert this file to an ECMAScript module, change its file extension to '.mts',
+// or add the field `"type": "module"` to 'package.json'.
+// @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore TS1479
 import { PDFDocumentProxy } from "pdf.js";
 
 import {
@@ -103,6 +113,18 @@ function main() {
     });
 
     {
+        bus.subscribe("print", (pageRange: number[]) => {
+            pdfjsEventBus.dispatch("print", pageRange);
+        })
+        bus.subscribe("thumbnailRequest", (pageIndexZeroBased) => {
+            pdfjsEventBus.dispatch("__thumbnailPageRequest", pageIndexZeroBased);
+        })
+        pdfjsEventBus.on("thumbnailrendered", ({pageNumber, source: {image: {src}}}: any) => {
+            bus.dispatch("thumbnailRendered", pageNumber, src);
+        })
+    }
+
+    {
         bus.subscribe("firstpage", () => {
             pdfjsEventBus.dispatch("firstpage");
         });
@@ -179,18 +201,17 @@ function main() {
 
     // pagechange
     {
-        bus.subscribe("page", (pageNumber) => {
-            console.log("pageNumber from host", pageNumber);
-
+        // PageNumber or PageLabel one based !! This is not pageIndex zero based
+        bus.subscribe("pageLabel", (pageLabel: string) => {
             p.then(() => {
+                pdfjsEventBus.dispatch("__setPageLabelOrPageNumber", pageLabel);
 
-                // pdfjsEventBus.dispatch("pagenumberchanged", {
-                //     source: null,
-                //     value: pageNumber,
-                // });
-                const page = parseInt(pageNumber, 10);
-                pdfjsEventBus.dispatch("__setPageNumber", page);
-                
+            });
+        });
+        bus.subscribe("pageNumber", (pageNumber: number) => {
+            p.then(() => {
+                pdfjsEventBus.dispatch("__setPageLabelOrPageNumber", pageNumber);
+
             });
         });
         // const debounceUpdateviewarea = debounce(async (evt: any) => {

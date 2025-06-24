@@ -20,6 +20,7 @@
             "copy": "Αντιγραφή",
             "cut": "Αποκοπή",
             "paste": "Επικόλληση",
+            "print": "",
             "redo": "Επανάληψη",
             "selectAll": "Επιλογή όλων",
             "title": "Επεξεργασία",
@@ -293,254 +294,254 @@
             },
             "additional-accessibility-information-tactile-graphics": {
                 "compact": "Περιλαμβάνονται απτικά γραφικά",
-                "descriptive": ""
+                "descriptive": "Έχουν ενσωματωθεί απτικά γραφικά για να διευκολυνθεί η πρόσβαση των τυφλών στα οπτικά στοιχεία"
             },
             "additional-accessibility-information-tactile-objects": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Απτικά 3D αντικείμενα",
+                "descriptive": "Απτικά 3D αντικείμενα"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Παρέχονται υποδείξεις μέσω τεχνικής ομιλίας (Text-to-speech)",
+                "descriptive": "Παρέχονται υποδείξεις μέσω τεχνικής ομιλίας (Text-to-speech)"
             },
-            "additional-accessibility-information-title": ""
+            "additional-accessibility-information-title": "Πρόσθετες πληροφορίες για προσβασιμότητα"
         },
         "conformance": {
             "conformance-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Η δημοσίευση αυτή πληροί τα ελάχιστα πρότυπα προσβασιμότητας",
+                "descriptive": "Η δημοσίευση περιέχει δήλωση συμμόρφωσης σύμφωνα με την οποία πληροί το πρότυπο προσβασιμότητας EPUB και WCAG 2 Επίπεδο Α"
             },
             "conformance-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Η δημοσίευση αυτή πληροί τα αποδεκτά πρότυπα προσβασιμότητας",
+                "descriptive": "Η δημοσίευση περιέχει δήλωση συμμόρφωσης σύμφωνα με την οποία πληροί το πρότυπο προσβασιμότητας EPUB και WCAG 2 Επίπεδο ΑΑ"
             },
             "conformance-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Η δημοσίευση αυτή υπερβαίνει τα αποδεκτά πρότυπα προσβασιμότητας",
+                "descriptive": "Η δημοσίευση περιέχει δήλωση συμμόρφωσης σύμφωνα με την οποία πληροί το πρότυπο προσβασιμότητας EPUB και WCAG 2 Επίπεδο ΑΑΑ"
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "Η δημοσίευση πιστοποιήθηκε από "
             },
             "conformance-certifier-credentials": {
-                "compact": ""
+                "compact": "Τα διαπιστευτήρια της πιστοποίησης είναι: "
             },
             "conformance-details-certifier-report": {
-                "compact": ""
+                "compact": "Για περισσότερες πληροφορίες ανατρέξτε στην έκθεση πιστοποίησης"
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Η δημοσίευση αυτή ισχυρίζεται ότι ανταποκρίνεται",
+                "descriptive": "Η δημοσίευση αυτή ισχυρίζεται ότι ανταποκρίνεται"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Accessibility 1.0",
+                "descriptive": "EPUB Accessibility 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Accessibility 1.1",
+                "descriptive": "EPUB Accessibility 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Επίπεδο A",
+                "descriptive": "Επίπεδο A"
             },
             "conformance-details-level-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Επίπεδο AA",
+                "descriptive": "Επίπεδο AA"
             },
             "conformance-details-level-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Επίπεδο AAA",
+                "descriptive": "Επίπεδο AAA"
             },
             "conformance-details-wcag-2-0": {
-                "compact": ""
+                "compact": "WCAG 2.0"
             },
             "conformance-details-wcag-2-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.1",
+                "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.2",
+                "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.2"
             },
             "conformance-no": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Καμία διαθέσιμη πληροφορία",
+                "descriptive": "Καμία διαθέσιμη πληροφορία"
             },
-            "conformance-title": "",
+            "conformance-title": "Συμμόρφωση",
             "conformance-unknown-standard": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Δεν μπορεί να προσδιοριστεί συμμόρφωση με αποδεκτά πρότυπα προσβασιμότητας για την παρούσα δημοσίευση",
+                "descriptive": "Δεν μπορεί να προσδιοριστεί συμμόρφωση με αποδεκτά πρότυπα προσβασιμότητας για την παρούσα δημοσίευση"
             }
         },
         "hazards": {
             "hazards-flashing": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Περιεχόμενο που αναβοσβήνει (flashing)",
+                "descriptive": "Στη δημοσίευση χρησιμοποιείται περιεχόμενο που αναβοσβήνει (flashing), που μπορεί να προκαλέσει φωτοευαίσθητες επιληπτικές κρίσεις"
             },
             "hazards-flashing-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Χωρίς περιεχόμενο που αναβοσβήνει (flashing)",
+                "descriptive": "Στη δημοσίευση δεν χρησιμοποιείται περιεχόμενο που αναβοσβήνει (flashing)"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Άγνωστη η παρουσία περιεχομένου που αναβοσβήνει (flashing)",
+                "descriptive": "Άγνωστη η παρουσία περιεχομένου που αναβοσβήνει (flashing)"
             },
             "hazards-motion": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Προσομοίωση κίνησης",
+                "descriptive": "Η δημοσίευση περιέχει προσομοιώσεις κίνησης που μπορεί να προκαλέσουν ναυτία"
             },
             "hazards-motion-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Χωρίς προσομοίωση κίνησης",
+                "descriptive": "Η δημοσίευση δεν περιέχει προσομοίωση κίνησης"
             },
             "hazards-motion-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Άγνωστη η παρουσία προσομοίωση κίνησης",
+                "descriptive": "Άγνωστη η παρουσία προσομοίωση κίνησης"
             },
             "hazards-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Καμία διαθέσιμη πληροφορία",
+                "descriptive": "Καμία διαθέσιμη πληροφορία"
             },
             "hazards-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Κανένας κίνδυνος",
+                "descriptive": "Η δημοσίευση δεν περιέχει κινδύνους"
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ήχοι",
+                "descriptive": "Η δημοσίευση περιέχει ήχους που μπορεί να είναι δυσάρεστοι"
             },
             "hazards-sound-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Χωρίς ήχους",
+                "descriptive": "Η δημοσίευση δεν περιέχει ήχους"
             },
             "hazards-sound-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Άγνωστη η παρουσία ήχων",
+                "descriptive": "Άγνωστη η παρουσία ήχων"
             },
-            "hazards-title": "",
+            "hazards-title": "Κίνδυνοι",
             "hazards-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Η παρουσία κινδύνων είναι άγνωστη",
+                "descriptive": "Η παρουσία κινδύνων είναι άγνωστη"
             }
         },
         "navigation": {
             "navigation-index": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ευρετήριο",
+                "descriptive": "Ευρετήριο με συνδέσμους προς τις αναφερόμενες καταχωρήσεις"
             },
             "navigation-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Δεν υπάρχουν πληροφορίες",
+                "descriptive": "Δεν υπάρχουν πληροφορίες"
             },
             "navigation-page-navigation": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Μετάβαση σε σελίδα",
+                "descriptive": "Λίστα πλοήγησης σελιδαρίθμησης με βάση την έντυπη έκδοση περιεχομένου"
             },
             "navigation-structural": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Επικεφαλίδες",
+                "descriptive": "Στοιχεία όπως επικεφαλίδες, πίνακες κ.λπ. για δομημένη πλοήγηση"
             },
-            "navigation-title": "",
+            "navigation-title": "Πλοήγηση",
             "navigation-toc": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Πίνακας περιεχομένων",
+                "descriptive": "Δυναμικός πίνακας περιεχομένων για όλα τα κεφάλαια"
             }
         },
         "rich-content": {
             "rich-content-accessible-chemistry-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Χημικοί τύποι σε LaTeX",
+                "descriptive": "Χημικοί τύποι σε προσβάσιμο μορφότυπο (LaTeX)"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Χημικοί τύποι σε MathML",
+                "descriptive": "Χημικοί τύποι σε προσβάσιμο μορφότυπο (MathML)"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Μαθηματικά σε μορφή LaTeX",
+                "descriptive": "Μαθηματικοί τύποι σε προσβάσιμο μορφότυπο (LaTeX)"
             },
             "rich-content-accessible-math-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Μαθηματικά σε μορφή MathML",
+                "descriptive": "Μαθηματικοί τύποι σε προσβάσιμο μορφότυπο (MathML)"
             },
             "rich-content-accessible-math-described": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Παρέχονται κειμενικές περιγραφές μαθηματικών",
+                "descriptive": "Παρέχονται κειμενικές περιγραφές μαθηματικών"
             },
             "rich-content-closed-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bίντεο με ενσωματωμένους υπότιτλους",
+                "descriptive": "Bίντεο με ενσωματωμένους υπότιτλους περιέχονται σε δημοσιεύσεις"
             },
             "rich-content-extended": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Οι πληροφοριακά περιεκτικές εικόνες περιγράφονται με εκτεταμένες περιγραφές",
+                "descriptive": "Οι πληροφοριακά περιεκτικές εικόνες περιγράφονται με εκτεταμένες περιγραφές"
             },
             "rich-content-open-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Τα βίντεο έχουν σταθερό υποτιτλισμό (open captions)",
+                "descriptive": "Τα συμπεριλαμβανόμενα βίντεο στις δημοσιεύσεις έχουν σταθερό υποτιτλισμό (open captions)"
             },
-            "rich-content-title": "",
+            "rich-content-title": "Πλούσιο περιεχόμενο",
             "rich-content-transcript": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Διατίθεται απομαγνητοφώνηση",
+                "descriptive": "Διατίθεται απομαγνητοφώνηση"
             },
             "rich-content-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Δεν διατίθενται πληροφορίες",
+                "descriptive": "Δεν διατίθενται πληροφορίες"
             }
         },
         "ways-of-reading": {
             "ways-of-reading-nonvisual-reading-alt-text": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Έχει εναλλακτικό κείμενο",
+                "descriptive": "Έχει εναλλακτικό κείμενο περιγραφής για εικόνες"
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Δεν διατίθενται πληροφορίες για ανάγνωση χωρίς οπτική επαφή",
+                "descriptive": "Δεν διατίθενται πληροφορίες για ανάγνωση χωρίς οπτική επαφή"
             },
             "ways-of-reading-nonvisual-reading-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Δεν μπορεί να διαβαστεί σε φωνητική ανάγνωση ή δυναμική γραφή Braille",
+                "descriptive": "Δεν μπορεί να διαβαστεί σε φωνητική ανάγνωση ή σε δυναμική γραφή Braille"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Δεν είναι πλήρως αναγνώσιμο σε φωνητική ανάγνωση ή σε δυναμική γραφή Braille",
+                "descriptive": "Δεν θα μπορεί να διαβαστεί όλο το περιεχόμενο σε μορφή φωνητικής ανάγνωσης ή δυναμικής γραφής Braille"
             },
             "ways-of-reading-nonvisual-reading-readable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Με δυνατότητα ανάγνωσης σε φωνητική ανάγνωση ή σε δυναμική γραφή Braille",
+                "descriptive": "Όλο το περιεχόμενο μπορεί να διαβαστεί ως ομιλία με φωνητική ανάγνωση ή ως δυναμική γραφή Braille"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Προηχογραφημένα ηχητικά αποσπάσματα",
+                "descriptive": "Προηχογραφημένα ηχητικά αποσπάσματα είναι ενσωματωμένα στο περιεχόμενο"
             },
             "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Δεν υπάρχουν διαθέσιμες πληροφορίες σχετικά με τον προηχογραφημένο ηχητικό περιεχόμενο",
+                "descriptive": "Δεν υπάρχουν διαθέσιμες πληροφορίες σχετικά με τον προηχογραφημένο ηχητικό περιεχόμενο"
             },
             "ways-of-reading-prerecorded-audio-only": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Μόνο προηχογραφημένος ήχος",
+                "descriptive": "Ακουστικό βιβλίο χωρίς εναλλακτικό κείμενο"
             },
             "ways-of-reading-prerecorded-audio-synchronized": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Προηχογραφημένος ήχος συγχρονισμένος με το κείμενο",
+                "descriptive": "Όλο το περιεχόμενο διατίθεται ως προηχογραφημένος ήχος συγχρονισμένος με το κείμενο"
             },
-            "ways-of-reading-title": "",
+            "ways-of-reading-title": "Τρόποι διαβάσματος",
             "ways-of-reading-visual-adjustments-modifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Η εμφάνιση μπορεί να τροποποιείται",
+                "descriptive": "Η εμφάνιση του κειμένου και η διάταξη της σελίδας μπορούν να τροποποιηθούν ανάλογα με τις δυνατότητες του συστήματος ανάγνωσης (γραμματοσειρά και μέγεθος γραμματοσειράς, διαστήματα μεταξύ παραγράφων, προτάσεων, λέξεων και γραμμάτων, καθώς και χρώμα φόντου και κειμένου)"
             },
             "ways-of-reading-visual-adjustments-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Δεν υπάρχουν διαθέσιμες πληροφορίες σχετικά με τη δυνατότητα τροποποίησης της εμφάνισης",
+                "descriptive": "Δεν υπάρχουν διαθέσιμες πληροφορίες σχετικά με τη δυνατότητα τροποποίησης της εμφάνισης"
             }
         }
     },
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": "Όλο το περιεχόμενο μπορεί να αναπαραγχθεί ακουστικά ή μέσω δυναμικής γραφής Braille"
+                "textual": "Όλο το περιεχόμενο μπορεί να διαβαστεί ως ομιλία με φωνητική ανάγνωση ή ως δυναμική γραφή Braille"
             },
             "accessibilityFeature": {
                 "alternativeText": "Ενπεριέχεται εναλλακτικό κείμενο στις εικόνες",
@@ -667,6 +668,12 @@
             "fit": "Προσαρμογή"
         },
         "goToContent": "Μετάβαση στο περιεχόμενο",
+        "imgViewer": {
+            "title": "Παράθυρο διαλόγου προβολής εικόνων",
+            "zoomIn": "Μεγέθυνση",
+            "zoomOut": "Σμίκρυνση",
+            "zoomReset": "Επαναφορά μέγεθους"
+        },
         "marks": {
             "annotations": "Σημειώσεις",
             "bookmarks": "Σελιδοδείκτες",
@@ -680,22 +687,22 @@
             "toc": "Πίνακας περιεχομένων"
         },
         "media-overlays": {
-            "activate": "Ενεργοποίηση λειτουργίας ακουστικού αναγνώστη (Readaloud)",
+            "activate": "Ενεργοποίηση λειτουργίας Φωνητικού αναγνώστη (Readaloud)",
             "captions": "Λεζάντες / Καθάρισμα οθόνης",
             "captionsDescription": "Απλοποιημένη προβολή κειμένου με ελάχιστη εφαρμογή στυλ μορφοποίησης.",
             "disableContinuousPlay": "Απενεργοποίηση συνεχούς αναπαραγωγής",
             "disableContinuousPlayDescription": "Μη αυτόματη αναπαραγωγή επόμενου αντικειμένου, παύση αμέσως μετά την αναπαραγωγή του τρέχοντος.",
             "ignoreAndUseTTS": "Αγνοήστε τον προηχογραφημένο ήχο, χρησιμοποιήστε TTS",
             "ignoreAndUseTTSDescription": "Αγνοήστε τις επικαλύψεις πολυμέσων EPUB, διαβάστε με Text To Speech αντ' αυτού",
-            "next": "Επόμενο Readaloud",
-            "pause": "Παύση Readaloud",
-            "play": "Έναρξη Readaloud",
-            "previous": "Προηγούμενο Readaloud",
+            "next": "Επόμενο Φωνητικού αναγνώστη",
+            "pause": "Παύση Φωνητικού αναγνώστη",
+            "play": "Έναρξη Φωνητικού αναγνώστη",
+            "previous": "Προηγούμενο Φωνητικού αναγνώστη",
             "skip": "Δυνατότητα παράκαμψης",
             "skipDescription": "Παράκαμψη βοηθητικού περιεχομένου, όπως αλλαγές σελίδας, υποσημειώσεις/σημειώσεις τέλους κ.λπ.",
-            "speed": "Ρυθμός αναπαραγωγής Readaloud",
-            "stop": "Σταμάτημα Readaloud",
-            "title": "Λειτουργία προφορικού αναγνώστη (Readaloud)"
+            "speed": "Ρυθμός αναπαραγωγής Φωνητικού αναγνώστη",
+            "stop": "Σταμάτημα Φωνητικού αναγνώστη",
+            "title": "Λειτουργία φωνητικού αναγνώστη (Readaloud)"
         },
         "navigation": {
             "ZenModeExit": "Έξοδο λειτουργίας Zen",
@@ -717,6 +724,7 @@
             "openTableOfContentsTitle": "πλοήγηση",
             "page": "Σελίδα",
             "pdfscalemode": "Προσαρμογή στη σελίδα ή στο πλάτος",
+            "print": "",
             "settingsTitle": "ρυθμίσεις"
         },
         "notes": {
@@ -740,6 +748,18 @@
                 "submit": "Εύρεση"
             },
             "searchTitle": "Αναζήτηση:"
+        },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
         },
         "settings": {
             "column": {
@@ -854,9 +874,233 @@
             "disclaimer": "Οι συντομεύσεις ορίστηκαν από τη διάταξη πληκτρολογίου QWERTY.",
             "editUserJson": "Επεξεργασία αρχείου χρήστη...",
             "keyboardShortcuts": "Συντομεύσεις πληκτρολογίου",
+            "list": {
+                "AddBookmarkWithLabel": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreate": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreateQuick": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsToggleMargin": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPlayPause": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioStop": {
+                    "description": "",
+                    "name": ""
+                },
+                "CloseReader": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomIn": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomOut": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomReset": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMain": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMainDeep": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderGotoPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigation": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationAnnotations": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationBookmarks": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationTOC": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderSettings": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusToolbar": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToBegin": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToEnd": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfo": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "Print": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SpeakReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleBookmark": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleReaderFullscreen": {
+                    "description": "",
+                    "name": ""
+                }
+            },
             "loadUserJson": "Φόρτωση από αρχείο χρήστη",
+            "noShortcutFound": "",
             "resetDefaults": "Επαναφορά (φόρτωση προεπιλογών)",
-            "save": "Αποθήκευση"
+            "save": "Αποθήκευση",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "Γλώσσα"
@@ -891,23 +1135,23 @@
     "tts": {
         "highlight": {
             "mainColor": "Κύριο χρώμα",
-            "maskBlockWordOutline": "Μπλοκ μάσκας, περίγραμμα λέξης",
-            "maskBlockWordSolidBackground": "Μπλοκ μάσκας, Στερεό φόντο λέξης",
-            "maskBlockWordUnderline": "Μπλοκ μάσκας, υπογράμμιση λέξης",
-            "maskWordOutline": "Μάσκα, Περίγραμμα λέξης",
-            "maskWordSolidBackground": "Μάσκα, Word Στερεό φόντο",
+            "maskBlockWordOutline": "Mask Block, περίγραμμα λέξης",
+            "maskBlockWordSolidBackground": "Mask Block, Συμπαγές φόντο λέξης",
+            "maskBlockWordUnderline": "Mask Block, υπογράμμιση λέξης",
+            "maskWordOutline": "Mask, υπογράμμιση λέξης",
+            "maskWordSolidBackground": "Mask, Συμπαγές φόντο λέξης",
             "maskWordUnderline": "Μάσκα, Υπογράμμιση λέξης",
-            "outlineWordOutline": "",
-            "outlineWordSolidBackground": "",
-            "outlineWordUnderline": "",
+            "outlineWordOutline": "Περίγραμμα, περίγραμμα λέξης",
+            "outlineWordSolidBackground": "Περίγραμμα, συμπαγές φόντο λέξης",
+            "outlineWordUnderline": "Περίγραμμα, υπογράμμιση λέξης",
             "preview": "Προεπισκόπηση στυλ επισήμανσης TTS",
-            "solidBackgroundWordOutline": "",
-            "solidBackgroundWordSolidBackground": "",
-            "solidBackgroundWordUnderline": "",
+            "solidBackgroundWordOutline": "Συμπαγές φόντο, περίγραμμα λέξης",
+            "solidBackgroundWordSolidBackground": "Συμπαγές φόντο, συμπαγές φόντο λέξης",
+            "solidBackgroundWordUnderline": "Συμπαγές φόντο, υπογράμμιση λέξης",
             "style": "TTS στυλ επισήμανσης",
-            "underlineWordOutline": "",
-            "underlineWordSolidBackground": "",
-            "underlineWordUnderline": "",
+            "underlineWordOutline": "Υπογράμμιση, περίγραμμα λέξης",
+            "underlineWordSolidBackground": "Υπογράμμιση, συμπαγές φόντο λέξης",
+            "underlineWordUnderline": "Υπογράμμιση. υπογράμμιση λέξης",
             "wordColor": "Χρώμα λέξης"
         }
     },
@@ -921,7 +1165,7 @@
             "annotations": "Επισήμανε κείμενο, επίλεξε στυλ και χρώμα, επισήναψε προσωπικές σημειώσεις. Δημιούργησε σημειώσεις σε 'γρήγορη' λειτουργία για να παρακάμψεις το πρόγραμμα επεξεργασίας (μπορείς να εισαγάγεις κείμενο και να προσαρμόσεις τα στυλ αργότερα). Για πιο γρήγορη εφαρμογή, χρησιμοποίησε τη 'γρήγορη' λειτουργία που δημιουργεί σχολιασμούς αμέσως μετά την επισήμανση του κειμένου!",
             "catalogs": "Δανείσου βιβλία από την τοπική σου βιβλιοθήκη ή ανακάλυψε τίτλους μέσω ροών OPDS. Απόκτησε πρόσβαση σε μια ποικιλία εκδόσεων από πολλές πηγές χάρη σε διαδικτυακούς καταλόγους.",
             "home": "Το Thorium φαίνεται διαφορετικό! Ας ανακαλύψουμε τι νέο υπάρχει...",
-            "readingView1": "Προσάρμοσε τις προτιμήσεις σου για ανάγνωση και ακρόαση: Το Thorium προσφέρει τώρα πολλά έγχρωμα θέματα τόσο για τη διεπαφή χρήστη όσο και για τα βιβλία. Επίσης είναι πλέον ευκολότερο να διαμορφώσεις 'ομιλούντα' ηλεκτρονικά βιβλία με συνθετική φωνή και συγχρονισμένη αφήγηση κειμένου/ήχου.",
+            "readingView1": "Προσάρμοσε τις προτιμήσεις σου για ανάγνωση και ακρόαση: Το Thorium προσφέρει τώρα πολλά έγχρωμα θέματα τόσο για τη διεπαφή χρήστη όσο και για τα βιβλία. Επίσης είναι πλέον ευκολότερο να διαμορφώσεις την φωνητική ανάγνωση των ηλεκτρονικών βιβλίων με συνθετική φωνή και συγχρονισμένη αφήγηση κειμένου/ήχου.",
             "readingView2": "Η βελτιωμένη διεπαφή χρήστη του Thorium διευκολύνει την αναζήτηση μέσα στο περιεχόμενο, την εξερεύνηση των αποτελεσμάτων αναζήτησης, τη μετάβαση σε συγκεκριμένες σελίδες, την περιήγηση στον πίνακα περιεχομένων, τη δημιουργία σελιδοδεικτών κ.λπ. χάρη στα νέα σταθερά μενού ('docked' panels). Η λειτουργία ανάγνωσης σε πλήρη οθόνη συνεχίζει να προσφέρει ένα περιβάλλον χωρίς περισπασμούς.",
             "yourBooks": "Καλώς ήρθες στο επανασχεδιασμένο προσωπικό σου φάκελο βιβλίων! Στην προβολή 'πλέγμα', φιλτράρεις εύκολα ανά ετικέτες ή αναζητάς βιβλία με λέξεις-κλειδιά. Στη σύνθετη προβολή 'πίνακα', επέλεξε και ταξινόμησε τα βιβλία ανά συγγραφέα, τίτλο, ημερομηνία, μορφή κ.λπ."
         },

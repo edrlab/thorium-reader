@@ -1,6 +1,8 @@
 // const crypto = require("crypto");
 
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const StatoscopeWebpackPlugin = require('@statoscope/webpack-plugin').default;
+
 const TerserPlugin = require("terser-webpack-plugin");
 
 const fs = require("fs");
@@ -44,13 +46,13 @@ let externals = {
     "electron-devtools-installer": "electron-devtools-installer",
     "remote-redux-devtools": "remote-redux-devtools",
     electron: "electron",
-    yargs: "yargs",
+    // yargs: "yargs",
 };
 const _externalsCache = new Set();
 if (nodeEnv !== "production") {
     const nodeExternals = require("webpack-node-externals");
     const neFunc = nodeExternals({
-        allowlist: ["timeout-signal", "nanoid", "normalize-url", "node-fetch", "data-uri-to-buffer", /^fetch-blob/, /^formdata-polyfill/],
+        allowlist: ["color", "pdf.js", "readium-speech", "@github/paste-markdown", "yargs", "timeout-signal", "nanoid", "normalize-url", "node-fetch", "data-uri-to-buffer", /^fetch-blob/, /^formdata-polyfill/],
         importType: function (moduleName) {
             if (!_externalsCache.has(moduleName)) {
                 console.log(`WEBPACK EXTERNAL (LIBRARY): [${moduleName}]`);
@@ -288,7 +290,7 @@ let config = Object.assign(
                         {
                             loader: path.resolve("./scripts/webpack-loader-scope-checker.js"),
                             options: {
-                                forbid: "reader",
+                                forbids: ["src/renderer/reader", "src/main"],
                             },
                         },
                     ],
@@ -298,6 +300,7 @@ let config = Object.assign(
                     loader: useLegacyTypeScriptLoader ? "awesome-typescript-loader" : "ts-loader",
                     options: {
                         transpileOnly: true, // checkTypeScriptSkip
+                        // compiler: "@typescript/native-preview",
                     },
                 },
                 {
@@ -314,6 +317,7 @@ let config = Object.assign(
                             loader: useLegacyTypeScriptLoader ? "awesome-typescript-loader" : "ts-loader",
                             options: {
                                 transpileOnly: true, // checkTypeScriptSkip
+                                // compiler: "@typescript/native-preview",
                             },
                         },
                     ],
@@ -386,16 +390,6 @@ let config = Object.assign(
             hot: _enableHot,
         },
         plugins: [
-            new BundleAnalyzerPlugin({
-                analyzerMode: "disabled",
-                defaultSizes: "stat", // "parsed"
-                openAnalyzer: false,
-                generateStatsFile: true,
-                statsFilename: "stats_renderer-library.json",
-                statsOptions: null,
-
-                excludeAssets: null,
-            }),
             new HtmlWebpackPlugin({
                 template: "./src/renderer/library/index_library.ejs",
                 filename: "index_library.html",
@@ -405,7 +399,13 @@ let config = Object.assign(
     },
 );
 
-if (!checkTypeScriptSkip) {
+
+if (checkTypeScriptSkip) {
+    // const GoTsCheckerWebpackPlugin = require("./scripts/go-ts-checker-webpack-plugin");
+    // config.plugins.push(
+    //     new GoTsCheckerWebpackPlugin({name: "LIBRARY"}), // we use a single-pass fast-compile/typecheck in this LIBRARY watcher, no need in READER (and MAIN + PDF configs do not activate a watcher)
+    // );
+} else {
     config.plugins.push(
         new ForkTsCheckerWebpackPlugin({
             // measureCompilationTime: true,
@@ -503,5 +503,32 @@ if (nodeEnv !== "production") {
         use: scssLoaderConfig,
     });
 }
+
+if (process.env.ENABLE_WEBPACK_BUNDLE_STATS)
+config.plugins.push(
+new StatoscopeWebpackPlugin({
+    saveReportTo: './dist/STATOSCOPE_[name].html',
+    // saveStatsTo: './dist/STATOSCOPE_[name].json',
+    saveStatsTo: undefined,
+    normalizeStats: false,
+    saveOnlyStats: false,
+    disableReportCompression: true,
+    statsOptions: {},
+    additionalStats: [],
+    watchMode: false,
+    name: 'renderer-library',
+    open: false,
+    compressor: false,
+}),
+new BundleAnalyzerPlugin({
+    analyzerMode: "disabled",
+    defaultSizes: "stat", // "parsed"
+    openAnalyzer: false,
+    generateStatsFile: true,
+    statsFilename: "stats_renderer-library.json",
+    statsOptions: null,
+
+    excludeAssets: null,
+}));
 
 module.exports = config;

@@ -12,7 +12,7 @@
     "apiapp": {
         "documentation": "Thoriumの説明書",
         "howItWorks": "どのように動作しますか？",
-        "informations": "フランスでは、多くの公共図書館がデジタル図書目録を提供していて（OPDSに似ていますが異なります）、利用者はそこにある自身の本棚から電子出版物をダウンロードできます。このテクノロジーをThorium Readerに統合することで、電子書籍またはオーディオブックをThorium Readerに直接ダウンロードして、すぐに読めるようになります。\nフランスの公共図書館のアカウントをThorium Readerに接続するにはどうすればよいですか？ それは簡単です。検索フィールドにフランスの都市（「Paris」）または図書館の名前の一部を入力し、検索ボタンを押してください。検索結果に公共図書館の一覧が表示されますので、該当する図書館を選択して「追加」をクリックします。デジタル図書目録の更新一覧において、その図書館を選択してください。その際、認証フォームが表示されますので、ユーザー名/メールアドレスとパスワードを入力し、「ログイン」をクリックしてください。あなたの本棚の内容が表示され、そこから借りた電子書籍やオーディオブックをダウンロードして読むことができます。\n",
+        "informations": "フランスでは、多くの公共図書館がデジタル図書目録を提供していて（OPDSに似ていますが異なります）、利用者はそこにある自身の本棚から電子出版物をダウンロードできます。このテクノロジーをThorium Readerに統合することで、電子書籍またはオーディオブックをThorium Readerに直接ダウンロードして、すぐに読めるようになります。\nフランスの公共図書館のアカウントをThorium Readerに接続するにはどうすればよいですか？ それは簡単です。検索フィールドにフランスの都市（「Paris」）または図書館の名前の一部を入力し、検索ボタンを押してください。検索結果に公共図書館の一覧が表示されますので、該当する図書館を選択して「追加」をクリックします。デジタル図書目録の更新一覧において、その図書館を選択してください。その際、認証フォームが表示されますので、ユーザー名/メールアドレスとパスワードを入力し、「ログイン」をクリックしてください。あなたの本棚の内容が表示され、そこから借りた電子書籍やオーディオブックをダウンロードして読むことができます。",
         "noLibraryFound": "蔵書は見つかりませんでした（{{- name}}）"
     },
     "app": {
@@ -20,13 +20,14 @@
             "copy": "コピー",
             "cut": "切り取り",
             "paste": "貼り付け",
+            "print": "",
             "redo": "やり直し",
             "selectAll": "すべて選択",
             "title": "編集",
             "undo": "元に戻す"
         },
-        "hide": "隠す {{appName}}",
-        "quit": "終了 {{appName}}",
+        "hide": "隠す {{- appName}}",
+        "quit": "終了 {{- appName}}",
         "session": {
             "exit": {
                 "askBox": {
@@ -42,7 +43,7 @@
         },
         "update": {
             "message": "新しいバージョンが利用できます。詳細はクリックしてください。",
-            "title": "{{- appName}} ソフトウェア アップデート"
+            "title": "{{- appName}} ソフトウェアの更新。"
         },
         "window": {
             "showLibrary": "蔵書/本棚を表示"
@@ -50,7 +51,7 @@
     },
     "catalog": {
         "about": {
-            "title": "{{appName}} について"
+            "title": "{{- appName}} について（オンライン）"
         },
         "addBookToLib": "追加",
         "addTags": "タグを追加",
@@ -66,7 +67,7 @@
         "deleteBook": "削除",
         "deleteTag": "タグを削除",
         "description": "概要",
-        "emptyTagList": "タグがついた本はありません",
+        "emptyTagList": "タグがついた本はありません。",
         "entry": {
             "continueReading": "読書にもどる",
             "lastAdditions": "最近追加したもの"
@@ -127,7 +128,7 @@
             "descNewer": "競合：{{- nb}} 件のより新しいメモ",
             "descOlder": "競合：{{- nb}} 件のより古いメモ",
             "descTitle": "メモのタイトル ",
-            "importAll": "全てのメモを取りこむ",
+            "importAll": "すべてのメモを取りこむ",
             "importWithoutConflict": "競合していないメモのみを取りこむ",
             "origin": "原本：'{{- title}}' {{- author}}",
             "title": "メモを取りこみますか？"
@@ -135,8 +136,8 @@
         "cancel": "キャンセル",
         "deleteAnnotations": "メモを削除しますか？",
         "deleteAnnotationsText": "{{-annotationListLength}} 件のメモを削除しますか？",
-        "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteBookmarks": "しおりを削除しますか？",
+        "deleteBookmarksText": "しおり、 {{- bookmarkListLength}} つを削除しますか？",
         "deleteFeed": "この図書目録を削除しますか？",
         "deletePublication": "この本を削除しますか？",
         "import": "追加します：",
@@ -174,8 +175,8 @@
             "hint": "ヒント：",
             "open": "開く",
             "password": "パスワード",
-            "sentence": "この本はLCPで保護されています。パスワードを入力してください： ",
-            "urlHint": "パスワードを忘れましたか？ サポート窓口で確認してください：",
+            "sentence": "この本を開くためにはLCPパスワードが必要です",
+            "urlHint": "パスワードを忘れましたか？ サポートに確認してください。",
             "whatIsLcp?": "LCPとはなんですか？",
             "whatIsLcpInfoDetails": "LCPはLicensed Content Protectionの略です。",
             "whatIsLcpInfoDetailsLink": "詳しくは、EDRLabのWebサイトを参照してください。"
@@ -183,9 +184,9 @@
     },
     "message": {
         "annotations": {
-            "alreadyImported": "全てのメモがすでに取り込まれています。",
+            "alreadyImported": "すべてのメモがすでに取り込まれています。",
             "emptyFile": "ファイル内にメモはありません。",
-            "errorParsing": "ファイル解析中にエラーが発生しました：",
+            "errorParsing": "ファイル解析中にエラーが発生しました： ",
             "noBelongTo": "メモを取りこめません。少なくとも1つのメモがこの本に関するものではありません。",
             "nothing": "取りこめる状態のメモがないため、取りこみを中止します",
             "success": "取り込みが正常に完了しました。"
@@ -218,7 +219,7 @@
         "documentation": "OPDSの公式Webサイト",
         "empty": "本が見つかりません",
         "firstPage": "最初",
-        "informations": "数回クリックするだけで、公共の図書館や電子書店から電子出版物を検索してダウンロードできる世界を想像してみてください。それがまさにOpen Publication Distribution System（OPDS）形式の図書目録が提供するものです。OPDSを通して、いろいろな電子書籍提供元の図書目録を閲覧したり、サインアップしたり、借りたり、購入したり、自分の本棚にアクセスしたりできます。それによって電子書籍やオーディオブックをThorium Readerに直接ダウンロードでき、すぐに本を読めるようになります。\nそれでは、OPDS図書目録を見つけるにはどうすればよいでしょうか？ それは簡単です。その図書目録のアドレス（URL）を知るだけです。そして、そのアドレスを［URL］フィールドにコピーします。ひとつ注意したいこととして、随時更新されているOPDS図書目録すべてが、どこかでまとまって紹介されているわけではありません。お気に入りの図書館または書店に連絡して、OPDS図書目録のURLを尋ねる必要があります。どこから始めればよいかわからない場合は、Wikipediaにさまざまな言語のOPDS図書目録を収集しているページがいくつかあるので、役に立つかもしれません。\n［名前］フィールドは自由に使ってください。Thorium Readerでフィードを簡単に識別するためのものです。\n",
+        "informations": "数回クリックするだけで、公共の図書館や電子書店から電子出版物を検索してダウンロードできる世界を想像してみてください。それがまさにOpen Publication Distribution System（OPDS）形式の図書目録が提供するものです。OPDSを通して、いろいろな電子書籍提供元の図書目録を閲覧したり、サインアップしたり、借りたり、購入したり、自分の本棚にアクセスしたりできます。それによって電子書籍やオーディオブックをThorium Readerに直接ダウンロードでき、すぐに本を読めるようになります。\nそれでは、OPDS図書目録を見つけるにはどうすればよいでしょうか？ それは簡単です。その図書目録のアドレス（URL）を知るだけです。そして、そのアドレスを［URL］フィールドにコピーします。ひとつ注意したいこととして、随時更新されているOPDS図書目録すべてが、どこかでまとまって紹介されているわけではありません。お気に入りの図書館または書店に連絡して、OPDS図書目録のURLを尋ねる必要があります。どこから始めればよいかわからない場合は、Wikipediaにさまざまな言語のOPDS図書目録を収集しているページがいくつかあるので、役に立つかもしれません。\n［名前］フィールドは自由に使ってください。Thorium Readerでフィードを簡単に識別するためのものです。",
         "lastPage": "最後",
         "menu": {
             "aboutBook": "本の情報",
@@ -231,7 +232,7 @@
         "network": {
             "error": "OPDSフィードにアクセスできません",
             "noInternet": "インターネットにつながりません",
-            "noInternetMessage": "ネットワークケーブル、モデム、ルーター、Wi-Fiを確認してください。",
+            "noInternetMessage": "ネットワークケーブル、モデム、ルーター、Wi-Fiを確認してください",
             "reject": "予期しないエラーが発生しました！",
             "timeout": "ネットワーク接続がタイムアウトしました。あとで再度試してください"
         },
@@ -240,7 +241,7 @@
         "shelf": "本棚",
         "updateForm": {
             "name": "名前：",
-            "title": "OPDSフィードの編集",
+            "title": "OPDSフィードを編集",
             "updateButton": "編集",
             "url": "URL："
         },
@@ -248,292 +249,292 @@
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": ""
+            "accessibility-summary-title": "アクセシビリティ概要"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ARIAロールを含む",
+                "descriptive": "構成の最適化やナビゲーションに配慮するため、コンテンツにARIAロールを使っています"
             },
             "additional-accessibility-information-audio-descriptions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "音声の説明",
+                "descriptive": "音声の説明"
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "点字",
+                "descriptive": "点字"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "総ルビが使われています（すべてにフリガナが振られています）",
+                "descriptive": "総ルビが使われています（すべてにフリガナが振られています）"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "主となる音声とBGM/SEの音量の差を強くしています",
+                "descriptive": "主となる音声とBGM/SEの音量の差を強くしています"
             },
             "additional-accessibility-information-high-contrast-between-text-and-background": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "テキストの色と背景の間の明暗の差を強くしています",
+                "descriptive": "テキストの色と背景の間の明暗の差を強くしています"
             },
             "additional-accessibility-information-large-print": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "大きな文字",
+                "descriptive": "大きな文字"
             },
             "additional-accessibility-information-page-breaks": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ページ区切りを含んでいます",
+                "descriptive": "紙の本のとおりのページ区切りを含んでいます"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "いくつかの語句にルビが振られています",
+                "descriptive": "いくつかの語句にルビが振られています"
             },
             "additional-accessibility-information-sign-language": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "手話",
+                "descriptive": "手話"
             },
             "additional-accessibility-information-tactile-graphics": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "触覚グラフィックを含んでいます",
+                "descriptive": "視覚障害者が視覚要素を理解しやすいように触覚グラフィックを使っています"
             },
             "additional-accessibility-information-tactile-objects": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "触覚3Dオブジェクト",
+                "descriptive": "触覚3Dオブジェクト"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "テキスト読み上げ機能（TTS）にヒントを提供しています",
+                "descriptive": "テキスト読み上げ機能（TTS）にヒントを提供しています"
             },
-            "additional-accessibility-information-title": ""
+            "additional-accessibility-information-title": "追加のアクセシビリティ情報"
         },
         "conformance": {
             "conformance-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "この本は、すくなくとも必要なアクセシビリティ基準をみたしています",
+                "descriptive": "この本は、EPUBアクセシビリティとWCAG 2 レベルAに適合している宣言が含まれています"
             },
             "conformance-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "この本は、アクセシビリティ基準をみたしています",
+                "descriptive": "この本は、EPUBアクセシビリティとWCAG 2 レベルAAに適合している宣言が含まれています"
             },
             "conformance-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "この本は、満たされるアクセシビリティ基準よりも優れています",
+                "descriptive": "この本は、EPUBアクセシビリティとWCAG 2 レベルAAAに適合している宣言が含まれています"
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "この本を認証したのは "
             },
             "conformance-certifier-credentials": {
-                "compact": ""
+                "compact": "認証機関の資格情報は "
             },
             "conformance-details-certifier-report": {
-                "compact": ""
+                "compact": "詳しい情報は、認証機関についての報告書を参照してください"
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "この本は、次の事柄をみたしていると表明しています",
+                "descriptive": "この本は、次の事柄をみたしていると表明しています"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUBアクセシビリティ 1.0",
+                "descriptive": "EPUBアクセシビリティ 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUBアクセシビリティ 1.1",
+                "descriptive": "EPUBアクセシビリティ 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "レベルA",
+                "descriptive": "レベルA"
             },
             "conformance-details-level-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "レベルAA",
+                "descriptive": "レベルAA"
             },
             "conformance-details-level-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "レベルAAA",
+                "descriptive": "レベルAAA"
             },
             "conformance-details-wcag-2-0": {
-                "compact": ""
+                "compact": "WCAG 2.0"
             },
             "conformance-details-wcag-2-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.1",
+                "descriptive": "ウェブ コンテンツ アクセシビリティ ガイドライン (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.2",
+                "descriptive": "ウェブ コンテンツ アクセシビリティ ガイドライン (WCAG) 2.2"
             },
             "conformance-no": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "情報はありません",
+                "descriptive": "情報はありません"
             },
-            "conformance-title": "",
+            "conformance-title": "適合度",
             "conformance-unknown-standard": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "この本のアクセシビリティについて、標準への適合性は判断できません",
+                "descriptive": "この本のアクセシビリティについて、標準への適合性は判断できません"
             }
         },
         "hazards": {
             "hazards-flashing": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "点滅するコンテンツ",
+                "descriptive": "この本は、光過敏性発作を引き起こす可能性のある点滅するコンテンツを含んでいます"
             },
             "hazards-flashing-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "点滅するコンテンツを含んでいません",
+                "descriptive": "この本は、点滅するコンテンツを含んでいません"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "点滅するコンテンツがあるかの情報はありません",
+                "descriptive": "点滅するコンテンツがあるかの情報はありません"
             },
             "hazards-motion": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "動きのあるシミュレーション",
+                "descriptive": "この本は、めまいを引き起こす可能性のある動きのあるシミュレーションを含んでいます"
             },
             "hazards-motion-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "動きのあるシミュレーションを含んでいません",
+                "descriptive": "この本は、動きのあるシミュレーションを含んでいません"
             },
             "hazards-motion-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "動きのあるシミュレーションがあるかの情報はありません",
+                "descriptive": "動きのあるシミュレーションがあるかの情報はありません"
             },
             "hazards-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "情報はありません",
+                "descriptive": "情報はありません"
             },
             "hazards-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "危険要因を含んでいません",
+                "descriptive": "この本は、危険要因を含んでいません"
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "音",
+                "descriptive": "この本は、不快な音を含んでいます"
             },
             "hazards-sound-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "音を含んでいません",
+                "descriptive": "この本は、音を含んでいません"
             },
             "hazards-sound-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "音が含まれているかの情報はありません",
+                "descriptive": "音が含まれているかの情報はありません"
             },
-            "hazards-title": "",
+            "hazards-title": "危険要因",
             "hazards-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "危険要因が含まれているかの情報はありません",
+                "descriptive": "危険要因が含まれているかの情報はありません"
             }
         },
         "navigation": {
             "navigation-index": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "索引",
+                "descriptive": "索引の各項目は、本文にリンクされています"
             },
             "navigation-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "情報はありません",
+                "descriptive": "情報はありません"
             },
             "navigation-page-navigation": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ページ移動",
+                "descriptive": "ページ移動のために、紙の本と同じページ番号をもっています"
             },
             "navigation-structural": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "見出し",
+                "descriptive": "ナビゲーションのために、見出しや表などの要素が構造化されています"
             },
-            "navigation-title": "",
+            "navigation-title": "ナビゲーション",
             "navigation-toc": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "目次",
+                "descriptive": "目次では、すべての章にリンクされています"
             }
         },
         "rich-content": {
             "rich-content-accessible-chemistry-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "LaTeXを使った化学式",
+                "descriptive": "アクセシブルな形式（LaTeX）での化学式"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "MathMLを使った化学式",
+                "descriptive": "アクセシブルな形式（MathML）の化学式"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "LaTeXによる数式",
+                "descriptive": "アクセシブルな形式（LaTeX）の数式"
             },
             "rich-content-accessible-math-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "MathMLによる数式",
+                "descriptive": "アクセシブルな形式（MathML）の数式"
             },
             "rich-content-accessible-math-described": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "数式のテキスト説明を含んでいます",
+                "descriptive": "数式のテキスト説明を含んでいます"
             },
             "rich-content-closed-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "動画には字幕がついています",
+                "descriptive": "この本に含まれている動画には字幕がついています"
             },
             "rich-content-extended": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "多くの情報を含んでいる画像には、具体的な説明をつけています",
+                "descriptive": "多くの情報を含んでいる画像には、具体的な説明をつけています"
             },
             "rich-content-open-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "どの動画でも字幕が表示されます",
+                "descriptive": "この本では、どの動画でも字幕が表示されます"
             },
-            "rich-content-title": "",
+            "rich-content-title": "リッチコンテンツ",
             "rich-content-transcript": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "リッチコンテンツについての文書データを含んでいます",
+                "descriptive": "リッチコンテンツについての文書データを含んでいる"
             },
             "rich-content-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "情報はありません",
+                "descriptive": "情報はありません"
             }
         },
         "ways-of-reading": {
             "ways-of-reading-nonvisual-reading-alt-text": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "代替テキストを含んでいます",
+                "descriptive": "画像には代替テキストがついています"
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "非視覚的読書についての情報はありません",
+                "descriptive": "非視覚的読書についての情報はありません"
             },
             "ways-of-reading-nonvisual-reading-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "読み上げやダイナミック点字を使って、読むことはできません",
+                "descriptive": "コンテンツに対して読み上げやダイナミック点字を利用できません"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "読み上げやダイナミック点字を使って、完全に読むことはできません",
+                "descriptive": "コンテンツのすべてを、読み上げやダイナミック点字で読めるわけではありません"
             },
             "ways-of-reading-nonvisual-reading-readable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "読み上げまたはダイナミック点字を使って、読むことができます",
+                "descriptive": "すべてのコンテンツは、テキスト読み上げまたはダイナミック点字を使って、読むことができます"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "録音済みの音声クリップ",
+                "descriptive": "録音済みの音声クリップがコンテンツに埋め込まれています"
             },
             "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "録音済みの音声についての情報はありません",
+                "descriptive": "録音済みの音声についての情報はありません"
             },
             "ways-of-reading-prerecorded-audio-only": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "録音済み音声のみ",
+                "descriptive": "代替テキストのないオーディオブック"
             },
             "ways-of-reading-prerecorded-audio-synchronized": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "テキストと同期した録音済み音声",
+                "descriptive": "コンテンツのすべては、テキストと同期した録音済みの音声を含んでいます"
             },
-            "ways-of-reading-title": "",
+            "ways-of-reading-title": "読むときの調整",
             "ways-of-reading-visual-adjustments-modifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "外観は変更できます",
+                "descriptive": "テキストの外観とページレイアウトは、読書システムの機能に応じて変更できます（書体と文字の大きさ、段落・文・単語・文字間のスペース、背景と文字の色）"
             },
             "ways-of-reading-visual-adjustments-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "外観の変更可能性についての情報はありません",
+                "descriptive": "外観の変更可能性についての情報はありません"
             }
         }
     },
@@ -543,26 +544,26 @@
                 "textual": "「音声読み上げ機能（TTS）」「スクリーンリーダー」が使いやすい"
             },
             "accessibilityFeature": {
-                "alternativeText": "代替テキストが含まれてる",
-                "displayTransformability": "テキストやレイアウトを変更できる",
-                "longDescription": "画像や図版を正確に説明している",
-                "printPageNumbers": "紙の書籍のページ番号を参照できる",
-                "readingOrder": "読み上げ順序が組み込まれている",
-                "synchronizedAudioText": "テキストと音声が同期する",
-                "tableOfContents": "目次がある"
+                "alternativeText": "代替テキストが含まれています",
+                "displayTransformability": "テキストやページレイアウトを変更できます",
+                "longDescription": "図版を正確に説明しています",
+                "printPageNumbers": "紙の本のページ番号を参照できます",
+                "readingOrder": "読み上げ順序が組み込まれています",
+                "synchronizedAudioText": "テキストと音声が同期します",
+                "tableOfContents": "目次を含んでいます"
             },
             "accessibilityHazard": {
-                "flashing": "光る（点滅する）",
-                "motionSimulation": "動きのあるシミュレーションがある",
+                "flashing": "光ります（点滅します）",
+                "motionSimulation": "動きのあるシミュレーションがあります",
                 "name": "危険要因：",
-                "noFlashing": "光らない（点滅しない）",
-                "noMotionSimulation": "動きのあるシミュレーションはない",
-                "noSound": "音は出ない",
-                "none": "ありません",
-                "sound": "音が出る",
-                "unknown": "不明"
+                "noFlashing": "光りません（点滅しません）",
+                "noMotionSimulation": "動きのあるシミュレーションはありません",
+                "noSound": "音は出ません",
+                "none": "危険要因はありません",
+                "sound": "音が出ます",
+                "unknown": "不明です"
             },
-            "certifierReport": "認証書",
+            "certifierReport": "認証機関の報告書：",
             "conformsTo": "準拠：",
             "moreInformation": "より詳しい情報",
             "name": "アクセシビリティ",
@@ -593,9 +594,9 @@
         "lcpRightsPrint": "ページを印刷",
         "lcpStart": "開始",
         "licenceLCP": "ライセンス（LCP）",
-        "licenseCertificateDateInvalid": "LCPライセンスの署名の日付が無効です",
-        "licenseOutOfDate": "LCPライセンスの期限切れです",
-        "licenseSignatureInvalid": "LCPライセンスの署名が無効です",
+        "licenseCertificateDateInvalid": "LCP提供業者の証明書の有効期限が切れています。",
+        "licenseOutOfDate": "LCPライセンスの期限が切れています。",
+        "licenseSignatureInvalid": "LCPライセンスの署名が無効です。",
         "licensed": "ライセンスが付与されています",
         "markAsRead": "既読にする",
         "notStarted": "まだ開いていません",
@@ -613,7 +614,7 @@
         "seeMore": "続きを見る",
         "timeLeft": "残り",
         "title": "書名",
-        "userKeyCheckInvalid": "パスワードが間違っています"
+        "userKeyCheckInvalid": "パスワードが間違っています。"
     },
     "reader": {
         "annotations": {
@@ -626,18 +627,18 @@
             },
             "annotationsOptions": "メモのオプション",
             "date": "変更日",
-            "export": "メモを保存する",
+            "export": "メモとして保存する…",
             "filter": {
                 "all": "すべて",
                 "filterByColor": "色で絞りこむ",
                 "filterByCreator": "作成者で絞りこむ",
                 "filterByDrawtype": "タイプで絞りこむ",
                 "filterByTag": "タグで絞りこむ",
-                "filterOptions": "オプションで絞りこむ\n",
-                "none": "なし"
+                "filterOptions": "オプションで絞りこむ",
+                "none": "解除"
             },
             "hide": "メモを表示しない",
-            "highlight": "ハイライト",
+            "highlight": "強調スタイル",
             "noSelectionToast": "選択されていません",
             "note": "{{- color}}のメモ",
             "quickAnnotations": "クイック作成（メモ編集画面をスキップ）",
@@ -650,14 +651,14 @@
             },
             "toggleMarginMarks": "ページ余白にメモマークを表示",
             "type": {
-                "outline": "枠線",
+                "outline": "囲み",
                 "solid": "背景",
                 "strikethrough": "取り消し線",
                 "underline": "下線"
             }
         },
         "bookmarks": {
-            "index": ""
+            "index": "しおり {{- index}}"
         },
         "divina": {
             "mute": "音を鳴らさない",
@@ -667,6 +668,12 @@
             "fit": "合わせる"
         },
         "goToContent": "コンテンツへ移動",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "メモ",
             "bookmarks": "しおり",
@@ -674,7 +681,7 @@
             "edit": "編集",
             "goTo": "ページ移動",
             "landmarks": "構成",
-            "saveMark": "しおりを挟む",
+            "saveMark": "保存",
             "search": "検索",
             "searchResult": "検索 [{{- searchText}}]",
             "toc": "目次"
@@ -682,11 +689,11 @@
         "media-overlays": {
             "activate": "朗読機能を起動",
             "captions": "字幕 / 明確な表示",
-            "captionsDescription": "字幕のスタイルを最小限にした、シンプルなテキスト表示",
+            "captionsDescription": "字幕のスタイルを最小限にした、単純なテキストとして表示する。",
             "disableContinuousPlay": "連続再生を無効に",
             "disableContinuousPlayDescription": "次の項目を自動再生せずに、現在の項目の再生が終了したらすぐに一時停止する。",
-            "ignoreAndUseTTS": "",
-            "ignoreAndUseTTSDescription": "",
+            "ignoreAndUseTTS": "録音済みの音声を無視してTTSを使う",
+            "ignoreAndUseTTSDescription": "EPUBメディアオーバーレイを無視し、代わりにテキスト読み上げ機能（TTS）を使う",
             "next": "次に進む（朗読）",
             "pause": "一時停止（朗読）",
             "play": "再生（朗読）",
@@ -717,6 +724,7 @@
             "openTableOfContentsTitle": "ナビゲーション",
             "page": "ページ",
             "pdfscalemode": "画面にページを収める / 画面横幅にページを合わせる",
+            "print": "",
             "settingsTitle": "設定"
         },
         "notes": {
@@ -741,6 +749,18 @@
             },
             "searchTitle": "検索："
         },
+        "print": {
+            "description": "",
+            "descriptionLcp": "",
+            "descriptionLcpLimit": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "print": ""
+        },
         "settings": {
             "column": {
                 "auto": "自動",
@@ -757,7 +777,7 @@
             },
             "font": "書体",
             "fontSize": "文字の大きさ",
-            "infoCustomFont": "変更したいフォントの名前を入力してください。OSにインストールされているそのフォントを選択できます。",
+            "infoCustomFont": "OSにインストールされているフォント名を入力することで、そのフォントへの変更もできます",
             "justification": "位置揃え",
             "justify": "両端揃え",
             "letterSpacing": "文字の間隔",
@@ -820,15 +840,15 @@
             "publicationNoToc": "目次がありません"
         },
         "tts": {
-            "activate": "音声読み上げ機能（TTS）を起動",
-            "language": "TTS言語",
+            "activate": "テキスト読み上げ機能（TTS）を起動",
+            "language": "言語（TTS）",
             "next": "次に進む（TTS）",
-            "options": "TTS オプション",
+            "options": "TTSオプション",
             "pause": "一時停止（TTS）",
             "play": "再生（TTS）",
             "previous": "前にもどる（TTS）",
-            "sentenceDetect": "音声読み上げ（TTS）語句の分割",
-            "sentenceDetectDescription": "長い段落を複数の文に分割",
+            "sentenceDetect": "テキスト読み上げ（TTS）語句の分割",
+            "sentenceDetectDescription": "長い段落を複数の文に分割します。",
             "speed": "再生速度（TTS）",
             "stop": "停止（TTS）",
             "voice": "音声（TTS）"
@@ -852,11 +872,235 @@
             "advancedMenu": "メニュー",
             "cancel": "キャンセル",
             "disclaimer": "ショートカットは、QWERTY配列のキーボードレイアウトから定義されました。",
-            "editUserJson": "編集：ユーザーファイル",
+            "editUserJson": "ユーザーファイルを編集…",
             "keyboardShortcuts": "キーボードショートカット",
+            "list": {
+                "AddBookmarkWithLabel": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreate": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreateQuick": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsToggleMargin": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPlayPause": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioStop": {
+                    "description": "",
+                    "name": ""
+                },
+                "CloseReader": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomIn": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomOut": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomReset": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMain": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMainDeep": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderGotoPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigation": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationAnnotations": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationBookmarks": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationTOC": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderSettings": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusToolbar": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToBegin": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToEnd": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfo": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "Print": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SpeakReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleBookmark": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleReaderFullscreen": {
+                    "description": "",
+                    "name": ""
+                }
+            },
             "loadUserJson": "読込：ユーザーファイル",
+            "noShortcutFound": "",
             "resetDefaults": "リセット（初期設定に戻す）",
-            "save": "保存"
+            "save": "保存",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "言語の選択"
@@ -867,9 +1111,9 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "",
-                "enableCheckbox": "",
-                "overrideHTMLTemplate": ""
+                "applyDefaultTemplate": "初期設定のテンプレートを適用",
+                "enableCheckbox": "HTMLメモを出力するとき、Mustacheテンプレートの上書きを有効/無効にする",
+                "overrideHTMLTemplate": "メモをHTMLに出力するとき、Mustacheテンプレートを上書きする"
             }
         },
         "session": {
@@ -890,25 +1134,25 @@
     },
     "tts": {
         "highlight": {
-            "mainColor": "色",
-            "maskBlockWordOutline": "マスクブロック、単語枠",
-            "maskBlockWordSolidBackground": "マスクブロック、単語ハイライト",
-            "maskBlockWordUnderline": "マスクブロック、単語下線",
-            "maskWordOutline": "マスク、単語枠",
-            "maskWordSolidBackground": "マスク、単語ハイライト",
-            "maskWordUnderline": "マスク、単語下線",
-            "outlineWordOutline": "囲み枠、単語枠",
-            "outlineWordSolidBackground": "囲み枠、単語ハイライト",
-            "outlineWordUnderline": "囲み枠、単語下線",
-            "preview": "TTS ハイライト・スタイル・プレビュー",
-            "solidBackgroundWordOutline": "ハイライト、単語枠",
-            "solidBackgroundWordSolidBackground": "ハイライト、単語ハイライト",
-            "solidBackgroundWordUnderline": "ハイライト、単語下線",
-            "style": "TTS ハイライト スタイル",
-            "underlineWordOutline": "下線、単語枠",
-            "underlineWordSolidBackground": "下線、単語ハイライト",
-            "underlineWordUnderline": "下線、単語下線",
-            "wordColor": "単語色"
+            "mainColor": "文の下線・囲み・背景の色",
+            "maskBlockWordOutline": "文：囲み・他を薄く、単語：囲み",
+            "maskBlockWordSolidBackground": "文：囲み・他を薄く、単語：背景色",
+            "maskBlockWordUnderline": "文：囲み・他を薄く、単語：下線",
+            "maskWordOutline": "文：他を薄く、単語：囲み",
+            "maskWordSolidBackground": "文：他を薄く、単語：背景色",
+            "maskWordUnderline": "文：他を薄く、単語：下線",
+            "outlineWordOutline": "文：囲み、単語：囲み",
+            "outlineWordSolidBackground": "文：囲み、単語：背景色",
+            "outlineWordUnderline": "文：囲み、単語：下線",
+            "preview": "TTS時の強調・スタイルのプレビュー",
+            "solidBackgroundWordOutline": "文：背景色、単語：囲み",
+            "solidBackgroundWordSolidBackground": "文：背景色、単語：背景色",
+            "solidBackgroundWordUnderline": "文：背景色、単語：下線",
+            "style": "強調・スタイル（TTS）",
+            "underlineWordOutline": "文：下線、単語：背景色",
+            "underlineWordSolidBackground": "文：下線、単語：背景色",
+            "underlineWordUnderline": "文：下線、単語：下線",
+            "wordColor": "単語の下線・囲み・背景の色"
         }
     },
     "wizard": {
@@ -918,11 +1162,11 @@
             "next": "次へ"
         },
         "description": {
-            "annotations": "文書の本文を、スタイルと色を選択してハイライトできます。その際、個人的なメモも添付できます。オプションの「クイック」作成を有効にすると、メモ編集画面を飛ばすことができます（あとでメモを入力したり、スタイルをカスタマイズしたりできます)。さらなる高速化を求めたい方は、本文を選択するだけで、すぐにハイライトできる「インスタント」モードをあわせて使ってください！",
+            "annotations": "文書の本文を、スタイルと色を選択してハイライトできます。その際、個人的なメモも添付できます。オプションの「クイック」作成を有効にすると、メモ編集画面を飛ばすことができます（あとでメモを入力したり、スタイルをカスタマイズしたりできます)。さらなる高速化を求めたい方は、本文を選択するだけで、すぐに強調できる「インスタント」モードをあわせて使ってください！",
             "catalogs": "地元の図書館から本を借りたり、OPDSフィード経由で本を見つけたりできます。オンラインの図書目録により、複数のところにある、さまざまな本にアクセスできます。",
             "home": "Thoriumの見た目が違います！ 何が新しいのか見てみましょう...",
             "readingView1": "読書と聴き方の設定をカスタマイズ： Thoriumでは、ソフトウェアの外観（ユーザーインターフェイス）と電子書籍の両方に複数のカラーテーマが提供されるようになりました。また、電子書籍を合成音声で朗読したり同期される本文/音声ナレーションについての設定もより簡単になりました。",
-            "readingView2": "Thoriumのユーザーインターフェイスが改良されました。本文検索、検索結果の探索、指定したページへの移動、目次の参照、しおりの作成などがより簡単になりました。これは、新しい「ドックド（docked）」パネルによるものです。また、アプリケーション画面全体での読書モードはこれまでどおり、気を散らすことのない読書環境を提供します。\n\n",
+            "readingView2": "Thoriumのユーザーインターフェイスが改良されました。本文検索、検索結果の探索、指定したページへの移動、目次の参照、しおりの作成などがより簡単になりました。これは、新しい「ドックド（docked）」パネルによるものです。また、アプリケーション画面全体での読書モードはこれまでどおり、気を散らすことのない読書環境を提供します。",
             "yourBooks": "再設計されたあなた自身の本棚へようこそ！ 「格子状（grid）」の表示では、タグで簡単にフィルタリングしたり、キーワードで本を検索したりできます。より高機能な「一覧表（table）」での表示では、著者、書名、日付、ファイル形式などで並べ替えてから本を選択できます。"
         },
         "dontShow": "次回以降は表示しない",

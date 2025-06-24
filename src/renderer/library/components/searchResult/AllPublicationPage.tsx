@@ -88,7 +88,7 @@ import classNames from "classnames";
 import * as Popover from "@radix-ui/react-popover";
 
 // import { PublicationInfoLibWithRadix, PublicationInfoLibWithRadixContent, PublicationInfoLibWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 // import * as FilterIcon from "readium-desktop/renderer/assets/icons/filter-icon.svg";
 // import * as DeleteFilter from "readium-desktop/renderer/assets/icons/deleteFilter-icon.svg";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
@@ -451,6 +451,7 @@ interface ITableCellProps_Filter {
     displayType: DisplayType;
 
     showColumnFilters: boolean,
+    setShowColumnFilters: (show: boolean) => void,
     accessibilitySupportEnabled: boolean,
 
     selectedTag: string,
@@ -513,11 +514,23 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
     const [searchParams] = useSearchParams();
     const searchParamsFocus = searchParams.get("focus");
     const searchParamsValue = searchParams.get("value");
+    const navigate = useNavigate();
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const searchParamsFocus_ = queryParams.get("focus") || undefined;
+    const searchParamsValue_ = queryParams.get("value") || undefined;
+    const setShowColumnFilters = props.setShowColumnFilters;
     React.useEffect(() => {
         if (searchParamsFocus === "tags" && props.column.id === "colTags") {
             console.log("focus=tags");
+            console.log(searchParamsFocus, searchParamsFocus_);
+            console.log(searchParamsValue, searchParamsValue_);
             if (!inputRef.current) {
                 console.log("NO REF!");
+                if (!props.showColumnFilters) {
+                    console.log("setShowColumnFilters FORCE");
+                    setShowColumnFilters(true);
+                }
                 return;
 
             }
@@ -533,7 +546,7 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
                     (inputRef?.current?.value || "").trim() || undefined);
             }
         }
-    }, [props.column.id, props.accessibilitySupportEnabled, props.column, searchParamsFocus, searchParamsValue, onInputChange]);
+    }, [props.showColumnFilters, setShowColumnFilters, props.column.id, props.accessibilitySupportEnabled, props.column, searchParamsFocus, searchParamsValue, searchParamsFocus_, searchParamsValue_, onInputChange]);
 
     return props.showColumnFilters ?
         <div className={stylesPublication.showColFilters_wrapper}>
@@ -547,6 +560,12 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
                 ref={inputRef}
                 type="search"
                 onChange={(e) => {
+                    if (queryParams.has("focus") || queryParams.has("value")) {
+                         navigate(location.pathname, {
+                             state: location.state,
+                             replace: true,
+                         });
+                     }
                     // setValue(e.target.value);
                     // forceReRender(NaN);
                     if (!props.accessibilitySupportEnabled) {
@@ -1395,6 +1414,9 @@ interface ITableCellProps_TableView {
 export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Common> = (props) => {
 
     const [showColumnFilters, setShowColumnFilters] = React.useState(false);
+    const setShowColumnFilters_ = React.useCallback((show: boolean) => {
+        setShowColumnFilters(show);
+    }, [setShowColumnFilters]);
     const [selectedTag, setSelectedTag] = React.useState("");
 
     const scrollToViewRef = React.useRef(null);
@@ -1409,6 +1431,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
         displayType,
 
         showColumnFilters,
+        setShowColumnFilters: setShowColumnFilters_,
         accessibilitySupportEnabled,
 
         selectedTag,

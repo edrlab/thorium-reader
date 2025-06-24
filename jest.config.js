@@ -5,9 +5,11 @@ const { pathsToModuleNameMapper } = require('ts-jest');
 // const { jsWithBabel: tsjPreset } = require('ts-jest/presets');
 // console.log(tsjPreset.transform);
 
-const { compilerOptions } = require("./tsconfig");
-// const fs = require("fs");
-// const compilerOptions = JSON.parse(fs.readFileSync("./tsconfig.json", { encoding: "utf8" })).compilerOptions;
+// const { compilerOptions } = require("./tsconfig");
+const fs = require("fs");
+const txt = fs.readFileSync("./tsconfig.json", { encoding: "utf8" }).replace(/\s*\/\/.*/g, "");
+// console.log(txt);
+const compilerOptions = JSON.parse(txt).compilerOptions;
 
 const pathMaps = pathsToModuleNameMapper(compilerOptions.paths, { prefix: "<rootDir>/" } );
 // console.log(pathMaps);

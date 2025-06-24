@@ -27,6 +27,16 @@ import { readerLocalActionSetConfig } from "../redux/actions";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
+
+// TypeScript GO:
+// The current file is a CommonJS module whose imports will produce 'require' calls;
+// however, the referenced file is an ECMAScript module and cannot be imported with 'require'.
+// Consider writing a dynamic 'import("...")' call instead.
+// To convert this file to an ECMAScript module, change its file extension to '.mts',
+// or add the field `"type": "module"` to 'package.json'.
+// @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore TS1479
 import {subscribe} from "@github/paste-markdown";
 
 interface IProps {
@@ -35,7 +45,7 @@ interface IProps {
     dockedMode?: boolean;
     locatorExtended: MiniLocatorExtended;
     uuid?: string;
-    name: string;
+    name: string | undefined;
     color: IColor;
     tags: string[] | undefined;
 }
@@ -51,7 +61,7 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
 
     const textAreaRef = React.useRef<HTMLTextAreaElement>();
     const bookmarkMaxLength = 1500;
-    const [textAreaValue, setTextAreaValue] = React.useState(name);
+    const [textAreaValue, setTextAreaValue] = React.useState(name || "");
 
     const [colorSelected, setColor] = React.useState(() => rgbToHex(color));
     const previousColorSelected = React.useRef<string>(colorSelected);

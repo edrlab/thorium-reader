@@ -42,9 +42,15 @@
     "traceResolution": false,
     "disableSizeLimit": false,
     "removeComments": true,
-    "skipLibCheck": false,
-    "module": "ES2020",
-    "moduleResolution": "Node",
+    "skipLibCheck": true,
+    // NODENEXT does not work because of "typed-redux-saga/macro" in WebPack Babel config
+    "module": "esnext", // 99
+    // "module": "ES2020", // 6
+    // "module": "preserve", // 200
+    // "module": "nodenext", // 199
+    // "moduleResolution": "nodenext", // 99
+    // "moduleResolution": "node", // 100
+    "moduleResolution": "bundler", // 100
     "lib": [
       "es2020",
       "dom",
@@ -56,9 +62,9 @@
     "emitDecoratorMetadata": true,
     "baseUrl": ".",
     "paths": {
-      "file-selector": [
-        "src/typings/noop.d.ts"
-      ],
+      // "file-selector": [
+      //   "src/typings/noop.d.ts"
+      // ],
       "readium-desktop/*": [
         "./src/*"
       ],
