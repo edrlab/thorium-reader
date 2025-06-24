@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 
-import { ICssSelector, IReadiumAnnotation, IReadiumAnnotationSet, isCssSelector, isProgressionSelector, isTextPositionSelector, isTextQuoteSelector, ITextPositionSelector, ITextQuoteSelector } from "./annotationModel.type";
+import { ICssSelector, IReadiumAnnotation, IReadiumAnnotationSet, isCFIFragmentSelector, isCfiSelector, isCssSelector, isProgressionSelector, isTextPositionSelector, isTextQuoteSelector, ITextPositionSelector, ITextQuoteSelector } from "./annotationModel.type";
 import { v4 as uuidv4 } from "uuid";
 import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -24,6 +24,9 @@ import { convertMultiLangStringToString } from "readium-desktop/common/language-
 import { availableLanguages } from "readium-desktop/common/services/translator";
 import { EDrawType, INoteState, NOTE_DEFAULT_COLOR, noteColorCodeToColorSet } from "readium-desktop/common/redux/states/renderer/note";
 
+import { EpubCfiParser } from "@r2-navigator-js/electron/common/colibrio-cfi/parser/EpubCfiParser";
+import { EpubCfiResolver } from "@r2-navigator-js/electron/common/colibrio-cfi/resolver/EpubCfiResolver";
+
 // Logger
 const debug = debug_("readium-desktop:common:readium:annotation:converter");
 
@@ -35,6 +38,8 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
 
     const root = xmlDom.body;
 
+    const cfiSelector = target.selector.find(isCfiSelector);
+    const cfiFragmentSelector = target.selector.find(isCFIFragmentSelector);
     const textQuoteSelector = target.selector.find(isTextQuoteSelector);
     const textPositionSelector = target.selector.find(isTextPositionSelector);
     const cssSelector = target.selector.find(isCssSelector);
@@ -91,6 +96,34 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
             pushToRangeArray(rangeOrElement);
         }
     }
+
+    let cfi = cfiSelector?.value || cfiFragmentSelector?.value;
+    if (cfi) {
+        cfi = cfi.trim();
+        cfi = cfi.replace(/^epubcfi\(/, "").replace(/^.*!/, "").replace(/\)$/, ""); // keep only the right part after the !
+        cfi = `epubcfi(${cfi})`;
+        const parser = new EpubCfiParser(cfi);
+        const rootNode = parser.parse();
+        const resolver = new EpubCfiResolver(rootNode);
+        resolver.continueResolving(xmlDom.documentElement, new URL("fake://dummy"));
+        const resolved = resolver.getResolvedTarget();
+        if (resolved.hasErrors()) {
+            debug("Colibrio CFI ERRORS:");
+            debug(JSON.stringify(resolved.getParserErrors(), null, 4));
+            debug(JSON.stringify(resolved.getResolverErrors(), null, 4));
+        } else {
+            if (resolved.isDomRange()) {
+                const domRange = resolved.createDomRange();
+                debug("Colibrio CFI DOM RANGE");
+                if (domRange) {
+                    pushToRangeArray(domRange);
+                }
+            } else if (resolved.isTargetingElement()) {
+                const elem = resolved.getTargetElement();
+                debug("Colibrio CFI ELEMENT", elem);
+            }
+        }
+    }
     if (!ranges.length) {
         debug("No selector found !!", JSON.stringify(target.selector, null, 4));
         return undefined;
@@ -107,7 +140,7 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
         }
 
         // the range start/end is guaranteed in document order due to the text matchers above (forward tree walk) ... but DOM Ranges are always ordered anyway (only the user / document selection object can be reversed)
-        const tuple = convertRange(range, (element) => uniqueCssSelector(element, xmlDom, {root}), () => "", () => "");
+        const tuple = convertRange(range, (element) => uniqueCssSelector(element, xmlDom, {root}), () => "" /*, () => "" */);
         if (tuple && tuple.length === 2) {
             convertedRangeArray.push(tuple);
         }
@@ -171,8 +204,8 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
     let caretInfo: ISelectionInfo = undefined;
     let selectionInfo: ISelectionInfo = undefined;
     if (
-        isABookmark ||
-        (rangeInfo.endContainerChildTextNodeIndex === rangeInfo.startContainerChildTextNodeIndex && rangeInfo.endContainerElementCssSelector === rangeInfo.startContainerElementCssSelector && rangeInfo.endOffset - rangeInfo.startOffset === 1)
+        isABookmark //||  // See https://github.com/edrlab/thorium-reader/issues/2988
+        // (rangeInfo.endContainerChildTextNodeIndex === rangeInfo.startContainerChildTextNodeIndex && rangeInfo.endContainerElementCssSelector === rangeInfo.startContainerElementCssSelector && rangeInfo.endOffset - rangeInfo.startOffset === 1)
     ) {
         // IT's a bookmark: need to move this rangeInfo to the locations.caretInfo
 
@@ -184,7 +217,7 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
             cleanBefore: textInfo.cleanBefore,
             cleanText: textInfo.cleanText,
             cleanAfter: textInfo.cleanAfter,
-    
+
             rawBefore: textInfo.rawBefore,
             rawText: textInfo.rawText,
             rawAfter: textInfo.rawAfter,
@@ -192,13 +225,13 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
     } else {
         selectionInfo = {
             textFragment: undefined,
-    
+
             rangeInfo: {...rangeInfo},
-    
+
             cleanBefore: textInfo.cleanBefore,
             cleanText: textInfo.cleanText,
             cleanAfter: textInfo.cleanAfter,
-    
+
             rawBefore: textInfo.rawBefore,
             rawText: textInfo.rawText,
             rawAfter: textInfo.rawAfter,

@@ -27,7 +27,7 @@ import { IHighlightHandlerState } from "readium-desktop/common/redux/states/rend
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { EDrawType, INoteState, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 import { checkIfIsAllSelectorsNoteAreGeneratedForReadiumAnnotation, readiumAnnotationSelectorFromNote } from "./readiumAnnotation/selector";
-import { clone } from "ramda";
+import { clone, equals } from "ramda";
 import { convertSelectorTargetToLocatorExtended } from "readium-desktop/common/readium/annotation/converter";
 import { getResourceCache } from "readium-desktop/common/redux/sagas/resourceCache";
 
@@ -66,11 +66,11 @@ export function* noteUpdateExportSelectorFromLocatorExtended(note: INoteState) {
             const { publicationView, publicationIdentifier } = yield* selectTyped((state: IReaderRootState) => state.reader.info);
             const isLcp = !!publicationView.lcp;
 
-            const source = note.locatorExtended.locator?.href;
-            const cacheDoc = yield* callTyped(getResourceCache, source);
+            const sourceHref = note.locatorExtended.locator?.href;
+            const cacheDoc = yield* callTyped(getResourceCache, sourceHref);
             const xmlDom = cacheDoc?.xmlDom;
 
-            const selector = yield* callTyped(readiumAnnotationSelectorFromNote, note, isLcp, source, xmlDom);
+            const selector = yield* callTyped(readiumAnnotationSelectorFromNote, note, isLcp, sourceHref, xmlDom);
 
             debug(`${note.uuid} does not have any readiumAnnotationSelector so let's update the note with this new selectors: ${JSON.stringify(selector, null, 2)}`);
             yield* putTyped(readerActions.note.addUpdate.build(
@@ -89,7 +89,7 @@ export function* noteUpdateLocatorExtendedFromImportSelector(note: INoteState) {
     try {
         if ((yield* selectTyped((state: IReaderRootState) => state.reader.lock)) &&
             !note.locatorExtended && note.readiumAnnotation?.import?.target?.selector.length && note.readiumAnnotation?.import?.target?.source) {
-            
+
             const { target } = note.readiumAnnotation.import;
 
             debug("SelectorTarget from noteParserState", JSON.stringify(target, null, 2));
@@ -97,8 +97,13 @@ export function* noteUpdateLocatorExtendedFromImportSelector(note: INoteState) {
             const cacheDoc = yield* callTyped(getResourceCache, target.source);
             const xmlDom = cacheDoc?.xmlDom;
 
-            const isABookmark = note.group === "bookmark"; // TODO: It is a good method do discriminate bookmark selector ? 
+            const isABookmark = note.group === "bookmark"; // TODO: need a better way do distinguish bookmark selector from annotation selector with one character ? See https://github.com/edrlab/thorium-reader/issues/2988
             const locatorExtended = yield* callTyped(convertSelectorTargetToLocatorExtended, target, undefined, isABookmark, xmlDom, target.source);
+            
+            if (equals(locatorExtended, note.locatorExtended)) {
+                debug(`ERROR: ${note.uuid} locatorExtended not updated, same as previous one`);
+                return ;
+            }
 
             debug(`${note.uuid} doesn't have any locator so let's update the note with the new locator generated: ${JSON.stringify(locatorExtended, null, 2)}`);
             const { publicationIdentifier } = yield* selectTyped((state: IReaderRootState) => state.reader.info);
@@ -120,7 +125,7 @@ function* noteAddUpdate(action: readerActions.note.addUpdate.TAction) {
     }
 
     yield* spawnTyped(function* () {
-        
+
         yield* delayTyped(10);
         // backgroud compute LocatorExtended TO readiumAnnotationSelector
         yield* callTyped(noteUpdateExportSelectorFromLocatorExtended, note);
@@ -175,12 +180,12 @@ function* noteAddUpdate(action: readerActions.note.addUpdate.TAction) {
                     textFragment: undefined,
                     rangeInfo: note.locatorExtended.locator.locations.caretInfo?.rangeInfo || {
                         startContainerElementCssSelector: note.locatorExtended.locator.locations.cssSelector,
-                        startContainerElementCFI: undefined,
+                        // startContainerElementCFI: undefined,
                         startContainerElementXPath: undefined,
                         startContainerChildTextNodeIndex: -1,
                         startOffset: -1,
                         endContainerElementCssSelector: note.locatorExtended.locator.locations.cssSelector,
-                        endContainerElementCFI: undefined,
+                        // endContainerElementCFI: undefined,
                         endContainerElementXPath: undefined,
                         endContainerChildTextNodeIndex: -1,
                         endOffset: -1,
@@ -196,12 +201,12 @@ function* noteAddUpdate(action: readerActions.note.addUpdate.TAction) {
                     textFragment: undefined,
                     rangeInfo: note.locatorExtended.selectionInfo?.rangeInfo || {
                         startContainerElementCssSelector: note.locatorExtended.locator.locations.cssSelector,
-                        startContainerElementCFI: undefined,
+                        // startContainerElementCFI: undefined,
                         startContainerElementXPath: undefined,
                         startContainerChildTextNodeIndex: -1,
                         startOffset: -1,
                         endContainerElementCssSelector: note.locatorExtended.locator.locations.cssSelector,
-                        endContainerElementCFI: undefined,
+                        // endContainerElementCFI: undefined,
                         endContainerElementXPath: undefined,
                         endContainerChildTextNodeIndex: -1,
                         endOffset: -1,
@@ -221,7 +226,7 @@ function* noteAddUpdate(action: readerActions.note.addUpdate.TAction) {
         },
     ]));
 
-    if (note.group === "bookmark") { 
+    if (note.group === "bookmark") {
         const defaultDrawView = yield* selectTyped((state: IReaderRootState) => state.reader.config.annotation_defaultDrawView);
         if (defaultDrawView === "hide"
             // SKIP ENTIRELY, see ABOVE
@@ -445,12 +450,12 @@ function* readerStart() {
                     textFragment: undefined,
                     rangeInfo: note.locatorExtended.locator.locations.caretInfo?.rangeInfo || {
                         startContainerElementCssSelector: note.locatorExtended.locator.locations.cssSelector,
-                        startContainerElementCFI: undefined,
+                        // startContainerElementCFI: undefined,
                         startContainerElementXPath: undefined,
                         startContainerChildTextNodeIndex: -1,
                         startOffset: -1,
                         endContainerElementCssSelector: note.locatorExtended.locator.locations.cssSelector,
-                        endContainerElementCFI: undefined,
+                        // endContainerElementCFI: undefined,
                         endContainerElementXPath: undefined,
                         endContainerChildTextNodeIndex: -1,
                         endOffset: -1,
@@ -466,12 +471,12 @@ function* readerStart() {
                     textFragment: undefined,
                     rangeInfo: note.locatorExtended.selectionInfo?.rangeInfo || {
                         startContainerElementCssSelector: note.locatorExtended.locator.locations.cssSelector,
-                        startContainerElementCFI: undefined,
+                        // startContainerElementCFI: undefined,
                         startContainerElementXPath: undefined,
                         startContainerChildTextNodeIndex: -1,
                         startOffset: -1,
                         endContainerElementCssSelector: note.locatorExtended.locator.locations.cssSelector,
-                        endContainerElementCFI: undefined,
+                        // endContainerElementCFI: undefined,
                         endContainerElementXPath: undefined,
                         endContainerChildTextNodeIndex: -1,
                         endOffset: -1,
