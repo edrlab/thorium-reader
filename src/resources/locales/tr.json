@@ -504,98 +504,98 @@
                 "descriptive": "İçerik, sesli okuma veya dinamik braille ile okunamıyor"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sesli okuma veya dinamik braille ile tam olarak okunamıyor",
+                "descriptive": "İçeriğin tamamı, sesli okuma veya dinamik braille ile okunamayabilir"
             },
             "ways-of-reading-nonvisual-reading-readable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sesli okuma veya dinamik braille ile okunabilir",
+                "descriptive": "Tüm içerik, sesli okuma veya dinamik braille ile okunabilir"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Önceden kaydedilmiş ses klipleri",
+                "descriptive": "Önceden kaydedilmiş ses klipleri içeriğe gömülüdür"
             },
             "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Önceden kaydedilmiş ses klipleri hakkında bilgi mevcut değil",
+                "descriptive": "Önceden kaydedilmiş ses klipleri hakkında bilgi mevcut değil"
             },
             "ways-of-reading-prerecorded-audio-only": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sadece önceden kaydedilmiş ses klipleri",
+                "descriptive": "Sesli kitapta metin alternatifi bulunmuyor"
             },
             "ways-of-reading-prerecorded-audio-synchronized": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Önceden kaydedilmiş ses dosyası, metin ile eşzamanlıdır",
+                "descriptive": "İçeriğin tamamında, önceden kaydedilmiş ses dosyası ile  metin eşzamanlaması mevcuttur"
             },
-            "ways-of-reading-title": "",
+            "ways-of-reading-title": "Okuma biçimleri",
             "ways-of-reading-visual-adjustments-modifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Görünümde değişiklik yapılabilir",
+                "descriptive": "Metnin görünümünde ve sayfa düzeninde, okuma sisteminin kaabiliyetlerine bağlı olarak değişiklik yapılabilir(yazı biçimi türleri ve yazı boyutu; paragraflar, cümleler, kelimeler ve harfler arasındaki boşluklar ile metin ve arkaplan rengi gibi)"
             },
             "ways-of-reading-visual-adjustments-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Görünümün değiştirilip değiştirilemeyeceği hakkında bilgi mevcut değil",
+                "descriptive": "Görünümün değiştirilip değiştirilemeyeceği hakkında bilgi mevcut değil"
             }
         }
     },
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": ""
+                "textual": "Tüm içerik, sesli okuma veya dinamik braille ile okunabilir"
             },
             "accessibilityFeature": {
-                "alternativeText": "",
-                "displayTransformability": "",
-                "longDescription": "",
-                "printPageNumbers": "",
-                "readingOrder": "",
-                "synchronizedAudioText": "",
-                "tableOfContents": ""
+                "alternativeText": "İçerikteki görsellerde alt metin bulunmaktadır",
+                "displayTransformability": "Metin ve sayfa düzeninin görünümü değiştirilebilir",
+                "longDescription": "Tamamen betimlenmiş grafiksel kaynaklar",
+                "printPageNumbers": "Basılı kaynak sürümdeki sayfalara gidebilmek için  bir sayfa listesi içerir",
+                "readingOrder": "Okuma düzeni içerir",
+                "synchronizedAudioText": "Metin ve ses eşzamanlanmıştır",
+                "tableOfContents": "İçindekiler Tablosu içerir"
             },
             "accessibilityHazard": {
-                "flashing": "",
-                "motionSimulation": "",
-                "name": "",
-                "noFlashing": "",
-                "noMotionSimulation": "",
-                "noSound": "",
-                "none": "",
-                "sound": "",
-                "unknown": ""
+                "flashing": "Yanıp sönen görsel uyarıcı",
+                "motionSimulation": "Hareket simülasyonu",
+                "name": "Tehlike:",
+                "noFlashing": "Yanıp sönen uyarıcı yok",
+                "noMotionSimulation": "Hareket simülasyonu yok",
+                "noSound": "Ses yok",
+                "none": "Hiç",
+                "sound": "Ses",
+                "unknown": "Bilinmeyen"
             },
-            "certifierReport": "",
-            "conformsTo": "",
-            "moreInformation": "",
-            "name": "",
-            "noA11y": ""
+            "certifierReport": "Sertifikalandıranın raporu:",
+            "conformsTo": "Şuna uygundur:",
+            "moreInformation": "Daha fazla bilgi",
+            "name": "Erişilebilirlik",
+            "noA11y": "Erişilebilirlik bilgisi mevcut değil"
         },
-        "actions": "",
+        "actions": "Eylemler",
         "audio": {
-            "tracks": ""
+            "tracks": "Ses dosyaları"
         },
-        "author": "",
-        "cancelledLcp": "",
-        "certificateRevoked": "",
-        "certificateSignatureInvalid": "",
+        "author": "Yazar",
+        "cancelledLcp": "Bu eserin LCP lisansı iptal edilmiştir.",
+        "certificateRevoked": "LCP lisans sertifikası geçersizleştirildi.",
+        "certificateSignatureInvalid": "LCP lisans sertifikasının imzası geçersiz.",
         "cover": {
-            "img": ""
+            "img": "kapak görseli"
         },
-        "day": "",
-        "days": "",
+        "day": "gün",
+        "days": "günler",
         "duration": {
-            "title": ""
+            "title": "Süre"
         },
-        "encryptedNoLicense": "",
-        "expired": "",
-        "expiredLcp": "",
-        "incorrectPassphrase": "",
-        "lcpEnd": "",
-        "lcpRightsCopy": "",
-        "lcpRightsPrint": "",
-        "lcpStart": "",
-        "licenceLCP": "",
-        "licenseCertificateDateInvalid": "",
-        "licenseOutOfDate": "",
+        "encryptedNoLicense": "Eser şifrelenmiş ancak bir LCP lisansı bulunmuyor'!",
+        "expired": "Ödünç alma süresi doldu",
+        "expiredLcp": "Bu eserin LCP lisans süresi doldu.",
+        "incorrectPassphrase": "Eserle eşleşen kayıtlı bir şifre yok veya girilen şifre hatalı.",
+        "lcpEnd": "Son",
+        "lcpRightsCopy": "Karakterler kopyalandı",
+        "lcpRightsPrint": "Sayfalar basıldı",
+        "lcpStart": "Başlat",
+        "licenceLCP": "Lisans (LCP)",
+        "licenseCertificateDateInvalid": "LCP sağlayıcı sertifikasının süresi doldu.",
+        "licenseOutOfDate": "Güncel olmayan LCP Lisansı",
         "licenseSignatureInvalid": "",
         "licensed": "",
         "markAsRead": "",
