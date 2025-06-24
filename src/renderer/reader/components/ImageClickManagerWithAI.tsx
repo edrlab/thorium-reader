@@ -23,7 +23,7 @@ import Loader from "readium-desktop/renderer/common/components/Loader";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 import { Select, SelectItem } from "readium-desktop/renderer/common/components/Select";
-import { aiSDKModelOptions, DEFAULT_SYSTEM_PROMPT, IaiSdkModel } from "readium-desktop/common/aisdkModelOptions";
+import { AIModels, IAIModels } from "readium-desktop/common/AIModels";
 import { convertMultiLangStringToLangString } from "readium-desktop/common/language-string";
 
 import classNames from "classnames";
@@ -46,7 +46,6 @@ import * as GeminiIcon from "readium-desktop/renderer/assets/icons/gemini.svg";
 import * as GoogleIcon from "readium-desktop/renderer/assets/icons/google.svg";
 import * as WikipediaIcon from "readium-desktop/renderer/assets/icons/wikipedia.svg";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { AiProviderType } from "readium-desktop/common/redux/states/ai_apiKey";
 import { shell } from "electron";
 
 interface ControlsProps {
@@ -111,24 +110,24 @@ const Controls: React.FC<ControlsProps> = ({ chatEnabled }) => {
 // const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
 // SelectRef.displayName = "ComboBox";
 
-interface IChatContext {
-    modelSelected: IaiSdkModel,
-    setModel: React.Dispatch<React.SetStateAction<IaiSdkModel>>,
-    systemPrompt: string,
-    setSystemPrompt: React.Dispatch<React.SetStateAction<string>>
-    showImage: () => void;
-}
-
-const ChatContext = React.createContext<IChatContext>(undefined);
-
-
 let __messages: UIMessage[] = [];
 
 let selectionTextContent = "";
 
-const Chat = ({ imageHref, autoPrompt, setAutoPrompt }: { imageHref: string, autoPrompt: string, setAutoPrompt: (value: React.SetStateAction<string>) => void }) => {
+interface ChatProps {
+    modelSelected: IAIModels,
+    setModel: React.Dispatch<React.SetStateAction<IAIModels>>,
+    systemPrompt: string,
+    setSystemPrompt: React.Dispatch<React.SetStateAction<string>>
+    showImage: () => void;
+    imageHref: string,
+    autoPrompt: string,
+    setAutoPrompt: (value: React.SetStateAction<string>) => void,
+}
 
-    const { systemPrompt, setSystemPrompt  /*showImage*/, modelSelected } = React.useContext(ChatContext);
+const Chat = (props: ChatProps) => {
+
+    const { systemPrompt, setSystemPrompt  /*showImage*/, modelSelected,  imageHref, autoPrompt, setAutoPrompt } = props;
     const [__] = useTranslator();
 
     // const apiList = useSelector((state: IReaderRootState) => state.aiApiKeys);
@@ -158,7 +157,8 @@ const Chat = ({ imageHref, autoPrompt, setAutoPrompt }: { imageHref: string, aut
         // TODO : pass model identification from frontend
         body: {
             imageHref,
-            modelId: modelSelected.id,
+            modelId: modelSelected.modelId,
+            modelFamily: modelSelected.providerFamily,
             systemPrompt: systemPrompt,
         },
         credentials: "same-origin",
@@ -190,7 +190,6 @@ const Chat = ({ imageHref, autoPrompt, setAutoPrompt }: { imageHref: string, aut
 
         const unsubscribe = document.onselectionchange = () => {
             selectionTextContent = document.getSelection().toString() || selectionTextContent;
-            console.log(`new Selection : "${selectionTextContent}"`);
         };
 
         return unsubscribe;
@@ -271,7 +270,7 @@ const Chat = ({ imageHref, autoPrompt, setAutoPrompt }: { imageHref: string, aut
                                 dangerouslySetInnerHTML={{
                                     __html:
                                     render(message.content) +
-                                        `<!--XxX-->\n\n<img src="${onePixelImageDataURL}" onload="/* this.focus({preventScroll:false,focusVisible:false}); */ if (this.parentNode?.parentNode?.parentNode?.scrollHeight) this.parentNode.parentNode.parentNode.scrollTop=this.parentNode.parentNode.parentNode.scrollHeight">`
+                                        `<!--XxX-->\n\n<img src="${onePixelImageDataURL}" onload="/* this.focus({preventScroll:false,focusVisible:false}); */ if (this.parentNode?.parentNode?.parentNode?.scrollHeight) this.parentNode.parentNode.parentNode.scrollTop=this.parentNode.parentNode.parentNode.scrollHeight">`,
                                 }}
                             >
                                 {/*
@@ -412,8 +411,14 @@ export const ImageClickManager: React.FC = () => {
 
     const chatEnabled = chatEnabled_ && !isSVGFragment; // isSVGImage and otherwise HTML image
 
-    const [modelSelected, setModel] = React.useState(aiSDKModelOptions[0]);
-    const [systemPrompt, setSystemPrompt] = React.useState(DEFAULT_SYSTEM_PROMPT);
+    const apiKeysList = useSelector((state: IReaderRootState) => state.aiApiKeys);
+    const apiKeysFound = apiKeysList.some((item) => !!item.aiKey);
+
+    const selectModelItems = AIModels.filter(e => apiKeysList.some(apiKeysItem => apiKeysItem.provider === e.providerFamily));
+
+    const defaultModel = selectModelItems[0];
+    const [modelSelected, setModel] = React.useState(defaultModel);
+    const [systemPrompt, setSystemPrompt] = React.useState(defaultModel.systemPrompt);
     const previousHref = React.useRef(HTMLImgSrc_SVGImageHref_SVGFragmentMarkup);
 
     React.useEffect(() => {
@@ -502,28 +507,23 @@ export const ImageClickManager: React.FC = () => {
     const [detailOpen, setDetailOpen] = React.useState(true);
     const [autoPrompt, setAutoPrompt] = React.useState("");
 
-    const apiList = useSelector((state: IReaderRootState) => state.aiApiKeys);
-
-    const selectModelItems = aiSDKModelOptions.filter(e => apiList.some(item => AiProviderType[item.provider] === e.name.split(" ")[0]));
-
-
     return (
-    <>
-        <Dialog.Root open={open} onOpenChange={(openState: boolean) => {
-            if (openState == false) {
-                dispatch(readerLocalActionSetImageClick.build());
-                enableChat(false);
-                setShowImage(true);
-            }
-        }}
-        >
-            <Dialog.Portal>
-                <div className={stylesModals.modal_dialog_overlay}></div>
-                <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined} style={{ minWidth: "90%", minHeight: "90%", width: "90%", height: "90%", padding: "5px 10px"}} >
-                    <VisuallyHidden>
-                        <Dialog.DialogTitle>{__("chatbot.title")}</Dialog.DialogTitle>
-                    </VisuallyHidden>
-                    <style>{`
+        <>
+            <Dialog.Root open={open} onOpenChange={(openState: boolean) => {
+                if (openState == false) {
+                    dispatch(readerLocalActionSetImageClick.build());
+                    enableChat(false);
+                    setShowImage(true);
+                }
+            }}
+            >
+                <Dialog.Portal>
+                    <div className={stylesModals.modal_dialog_overlay}></div>
+                    <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined} style={{ minWidth: "90%", minHeight: "90%", width: "90%", height: "90%", padding: "5px 10px" }} >
+                        <VisuallyHidden>
+                            <Dialog.DialogTitle>{__("chatbot.title")}</Dialog.DialogTitle>
+                        </VisuallyHidden>
+                        <style>{`
                 #aichat-scroller * {
                     overflow-anchor: none;
                 }
@@ -533,154 +533,156 @@ export const ImageClickManager: React.FC = () => {
                     height: 1px;
                 }
            `}</style>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: chatEnabled ? "space-between" : "end" }}>
-                        {chatEnabled ?
-                            <button onClick={() => { enableChat((enabled) => !enabled); setShowImage(true); }} style={{ zIndex: 105 }} className={stylesButtons.button_transparency_icon}>
-                                <SVG ariaHidden={true} svg={BackIcon} style={{ transform: "rotate(180deg)" }} />
-                            </button>
-                            : ""
-                        }
-                        <Dialog.Close asChild>
-                            <button style={{ zIndex: 105 }} data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
-                                <SVG ariaHidden={true} svg={QuitIcon} />
-                            </button>
-                        </Dialog.Close>
-                    </div>
-                    {chatEnabled ?
-                        <div className={stylesChatbot.chatbot_title}>
-                            <h2>{__("chatbot.title")}</h2>
-                            <Select
-                                items={selectModelItems}
-                                selectedKey={modelSelected.id}
-                                onSelectionChange={(key) => {
-                                    // console.log("selectionchange: ", key);
-                                    const found = aiSDKModelOptions.find(({ id: _id }) => _id === key);
-                                    if (found) {
-                                        setModel(found);
-                                    }
-                                }}
-                            // disabledKeys={options.filter(option => option.disabled === true).map(option => option.id)}
-                            // style={{ padding: "0", width: "80%", height: "30px", maxHeight: "30px", margin: "10px" }}
-                            >
-                                {item => <SelectItem>{item.name}</SelectItem>}
-                            </Select>
-                        </div>
-                        : ""
-                    }
-                        <div className={stylesChatbot.chatbot_content}>
-                        <div style={{
-                            flex: (showImage || !chatEnabled) ? "1" : "0",
-                            flexDirection: chatEnabled ? "row" : "column",
-                            backgroundColor: chatEnabled ? "var(--color-extralight-grey)" : "",
-                            borderLeft: chatEnabled ? "3px solid var(--color-blue)" : "",
-                            }}
-                            className={stylesChatbot.image_container}
-                            >
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: chatEnabled ? "space-between" : "end" }}>
                             {chatEnabled ?
-                                <button
-                                    className={stylesChatbot.image_display_button}
-                                    title={showImage ? "hide image" : "show image"}
-                                    onClick={() => setShowImage(!showImage)}>
-                                    <SVG svg={ChevronRight} style={{ transform: showImage ? "rotate(-90deg)" : "rotate(90deg)" }}></SVG>
+                                <button onClick={() => { enableChat((enabled) => !enabled); setShowImage(true); }} style={{ zIndex: 105 }} className={stylesButtons.button_transparency_icon}>
+                                    <SVG ariaHidden={true} svg={BackIcon} style={{ transform: "rotate(180deg)" }} />
                                 </button>
                                 : ""
                             }
-                            { /*  initialScale={scale} minScale={scale / 2} maxScale={4 * scale} */}
-                            {showImage ?
-                                <div style={{ position: "relative"}}>
-                                    <TransformWrapper>
-                                        <TransformComponent wrapperStyle={{ display: "flex", width: "100%", height: "100%", minHeight: "inherit", alignItems: "flex-start", flex: "1", position: "relative" }}>
-                                            <img
-                                                style={{height: "100%", width: "100%", maxHeight: chatEnabled ? "200px" : "calc(100vh - 250px)", backgroundColor: "white", color: "black", fill: "currentcolor", stroke: "currentcolor" }}
-                                                src={isSVGFragment ? ("data:image/svg+xml;base64," + Buffer.from(HTMLImgSrc_SVGImageHref_SVGFragmentMarkup).toString("base64")) : HTMLImgSrc_SVGImageHref_SVGFragmentMarkup}
-                                                alt={altAttributeOf_HTMLImg_SVGImage_SVGFragment}
-                                                title={titleAttributeOf_HTMLImg_SVGImage_SVGFragment}
-                                                aria-label={ariaLabelAttributeOf_HTMLImg_SVGImage_SVGFragment}
-                                                tabIndex={0}
-                                            />
-                                        </TransformComponent>
-                                        {(showImage || !chatEnabled) ?
-                                            <Controls chatEnabled={chatEnabled} />
-                                            : ""
+                            <Dialog.Close asChild>
+                                <button style={{ zIndex: 105 }} data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
+                                    <SVG ariaHidden={true} svg={QuitIcon} />
+                                </button>
+                            </Dialog.Close>
+                        </div>
+                        {chatEnabled ?
+                            <div className={stylesChatbot.chatbot_title}>
+                                <h2>{__("chatbot.title")}</h2>
+                                <Select
+                                    items={selectModelItems}
+                                    selectedKey={modelSelected.id}
+                                    onSelectionChange={(key) => {
+                                        // console.log("selectionchange: ", key);
+                                        const found = selectModelItems.find(({ id }) => id === key);
+                                        if (found) {
+                                            setModel(found);
                                         }
-                                    </TransformWrapper>
-                                </div>
-                                : ""
-                            }
-                            <div
-                                className={stylesChatbot.chatbot_detail_element}
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    setDetailOpen(!detailOpen);
-                                }}
+                                    }}
+                                // disabledKeys={options.filter(option => option.disabled === true).map(option => option.id)}
+                                // style={{ padding: "0", width: "80%", height: "30px", maxHeight: "30px", margin: "10px" }}
+                                >
+                                    {item => <SelectItem>{item.name}</SelectItem>}
+                                </Select>
+                            </div>
+                            : ""
+                        }
+                        <div className={stylesChatbot.chatbot_content}>
+                            <div style={{
+                                flex: (showImage || !chatEnabled) ? "1" : "0",
+                                flexDirection: chatEnabled ? "row" : "column",
+                                backgroundColor: chatEnabled ? "var(--color-extralight-grey)" : "",
+                                borderLeft: chatEnabled ? "3px solid var(--color-blue)" : "",
+                            }}
+                                className={stylesChatbot.image_container}
                             >
-                                {showImage ?
-                                    <>
-                                <div className={stylesChatbot.chatbot_detail_element_summary}>
-                                    {
-                                    // chatEnabled ?
-                                    <h3>{__("chatbot.editorDescription")}</h3>
-                                    // : <></>
-                                    }
-                                </div>
-                                <div style={{ maxWidth: chatEnabled ? "500px" : "unset"}}>
-                                    {imageDescription.length ?
-                                                imageDescription.map((str, i) => <p key={`imgDescItem${i}`} style={{fontStyle: "italic"}}>{str}</p>) :
-                                        <p>{__("chatbot.noDescription")}</p>
-                                    }
-                                </div>
-                                    </>
-                                : ""
+                                {chatEnabled ?
+                                    <button
+                                        className={stylesChatbot.image_display_button}
+                                        title={showImage ? "hide image" : "show image"}
+                                        onClick={() => setShowImage(!showImage)}>
+                                        <SVG svg={ChevronRight} style={{ transform: showImage ? "rotate(-90deg)" : "rotate(90deg)" }}></SVG>
+                                    </button>
+                                    : ""
                                 }
+                                { /*  initialScale={scale} minScale={scale / 2} maxScale={4 * scale} */}
+                                {showImage ?
+                                    <div style={{ position: "relative" }}>
+                                        <TransformWrapper>
+                                            <TransformComponent wrapperStyle={{ display: "flex", width: "100%", height: "100%", minHeight: "inherit", alignItems: "flex-start", flex: "1", position: "relative" }}>
+                                                <img
+                                                    style={{ height: "100%", width: "100%", maxHeight: chatEnabled ? "200px" : "calc(100vh - 250px)", backgroundColor: "white", color: "black", fill: "currentcolor", stroke: "currentcolor" }}
+                                                    src={isSVGFragment ? ("data:image/svg+xml;base64," + Buffer.from(HTMLImgSrc_SVGImageHref_SVGFragmentMarkup).toString("base64")) : HTMLImgSrc_SVGImageHref_SVGFragmentMarkup}
+                                                    alt={altAttributeOf_HTMLImg_SVGImage_SVGFragment}
+                                                    title={titleAttributeOf_HTMLImg_SVGImage_SVGFragment}
+                                                    aria-label={ariaLabelAttributeOf_HTMLImg_SVGImage_SVGFragment}
+                                                    tabIndex={0}
+                                                />
+                                            </TransformComponent>
+                                            {(showImage || !chatEnabled) ?
+                                                <Controls chatEnabled={chatEnabled} />
+                                                : ""
+                                            }
+                                        </TransformWrapper>
+                                    </div>
+                                    : ""
+                                }
+                                <div
+                                    className={stylesChatbot.chatbot_detail_element}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setDetailOpen(!detailOpen);
+                                    }}
+                                >
+                                    {showImage ?
+                                        <>
+                                            <div className={stylesChatbot.chatbot_detail_element_summary}>
+                                                {
+                                                    // chatEnabled ?
+                                                    <h3>{__("chatbot.editorDescription")}</h3>
+                                                    // : <></>
+                                                }
+                                            </div>
+                                            <div style={{ maxWidth: chatEnabled ? "500px" : "unset" }}>
+                                                {imageDescription.length ?
+                                                    imageDescription.map((str, i) => <p key={`imgDescItem${i}`} style={{ fontStyle: "italic" }}>{str}</p>) :
+                                                    <p>{__("chatbot.noDescription")}</p>
+                                                }
+                                            </div>
+                                        </>
+                                        : ""
+                                    }
 
                                     {
                                         chatEnabled ?
-                                            apiList.some(k => k.aiKey !== "") ?
-                                                <p className={stylesChatbot.no_description_text} style={{marginTop: showImage ? "2em" : undefined, borderTop: showImage ? "2px solid silver" : undefined}}>
-                                    {__("chatbot.generateDescription")}
-                                    <span>&nbsp;</span>
-                                    <button role="submit" onClick={() => { setAutoPrompt(shortDescription); enableChat(true); }}>
-                                        {__("chatbot.shortDescTitle")}
-                                    </button>
-                                    <span>&nbsp;-&nbsp;</span>
-                                    <button role="submit" onClick={() => { setAutoPrompt(longDescription); enableChat(true); }}>
-                                        {__("chatbot.detailedDescTitle")}
-                                    </button>
-                                </p>
-                                :
-                                <p className={stylesChatbot.no_description_text}>
-                                    {__("chatbot.noApiKey")}
-                                </p>
+                                            apiKeysFound ?
+                                                <p className={stylesChatbot.no_description_text} style={{ marginTop: showImage ? "2em" : undefined, borderTop: showImage ? "2px solid silver" : undefined }}>
+                                                    {__("chatbot.generateDescription")}
+                                                    <span>&nbsp;</span>
+                                                    <button role="submit" onClick={() => { setAutoPrompt(shortDescription); enableChat(true); }}>
+                                                        {__("chatbot.shortDescTitle")}
+                                                    </button>
+                                                    <span>&nbsp;-&nbsp;</span>
+                                                    <button role="submit" onClick={() => { setAutoPrompt(longDescription); enableChat(true); }}>
+                                                        {__("chatbot.detailedDescTitle")}
+                                                    </button>
+                                                </p>
+                                                :
+                                                <p className={stylesChatbot.no_description_text}>
+                                                    {__("chatbot.noApiKey")}
+                                                </p>
+                                            :
+                                            <></>
+                                    }
+                                </div>
+                            </div>
+                            {
+                                (apiKeysFound && !chatEnabled)
+                                    ?
+                                    <div className={stylesChatbot.chatbot_open_title}>
+                                        <button onClick={() => enableChat((enabled) => !enabled)} title={__("chatbot.generateDescriptionTitle")}>
+                                            <SVG svg={AiIcon} ariaHidden />
+                                            <p>{__("chatbot.generateDescriptionTitle")}</p>
+                                        </button>
+                                    </div>
+                                    : <></>
+                            }
+                            {chatEnabled ?
+                                <Chat
+                                    /*imageHrefDataUrl={imageHrefDataUrl}*/
+                                    modelSelected={modelSelected}
+                                    setModel={setModel}
+                                    systemPrompt={systemPrompt}
+                                    setSystemPrompt={setSystemPrompt}
+                                    showImage={() => enableChat((enabled) => !enabled)}
+                                    imageHref={HTMLImgSrc_SVGImageHref_SVGFragmentMarkup} autoPrompt={autoPrompt} setAutoPrompt={setAutoPrompt}
+                                />
                                 :
                                 <></>
-                                }
-                            </div>
+                            }
                         </div>
-                        {apiList.some(k => k.aiKey !== "") && !chatEnabled ?
-                        <div className={stylesChatbot.chatbot_open_title}>
-                            <button  onClick={() => enableChat((enabled) => !enabled)} title={__("chatbot.generateDescriptionTitle")}>
-                                <SVG svg={AiIcon} ariaHidden />
-                                <p>{__("chatbot.generateDescriptionTitle")}</p>
-                            </button>
-                        </div>
-                        : <></>
-                        }
-                        {chatEnabled ?
-                            <ChatContext.Provider value={{
-                                modelSelected,
-                                setModel,
-                                systemPrompt,
-                                setSystemPrompt,
-                                showImage: () => enableChat((enabled) => !enabled),
-                            }}>
-                                <Chat /*imageHrefDataUrl={imageHrefDataUrl}*/ imageHref={HTMLImgSrc_SVGImageHref_SVGFragmentMarkup} autoPrompt={autoPrompt} setAutoPrompt={setAutoPrompt} />
-                            </ChatContext.Provider>
-                            :
-                            ""
-                        }
-                    </div>
-                </Dialog.Content>
-            </Dialog.Portal>
-        </Dialog.Root>
-    </>);
+                    </Dialog.Content>
+                </Dialog.Portal>
+            </Dialog.Root >
+        </>);
 };

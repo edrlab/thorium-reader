@@ -68,6 +68,7 @@ const debugAiSdk = debug_("readium-desktop:main#AISDK");
 debug("_");
 
 import { nanoid } from "nanoid";
+import { AIProviderFamily } from "readium-desktop/common/AIModels";
 
 // !!!!!!
 /// BE CAREFUL DEBUG HAS BEED DISABLED IN package.json
@@ -318,7 +319,7 @@ const streamProtocolHandler = async (
         const body = JSON.parse(req.uploadData[0].bytes.toString());
         debugAiSdk("AISDK JSON BODY", JSON.stringify(body, null, 4));
 
-        const { messages, imageHref, modelId, systemPrompt } = body;
+        const { messages, imageHref, modelId, modelFamily, systemPrompt } = body;
 
         let mimeType: string | undefined;
         try {
@@ -344,14 +345,17 @@ const streamProtocolHandler = async (
         let readStream: NodeJS.ReadableStream | string = "";
 
         let model: LanguageModelV1 | undefined;
-        if (modelId.startsWith("openai")) {
-            model = openai(modelId.split("__!__")[1]);
-        } else if (modelId.startsWith("mistralai")) {
-            model = mistral(modelId.split("__!__")[1]);
-        } else if (modelId.startsWith("gemini")) {
-            model = google(modelId.split("__!__")[1], {
+        const modelFamily_ = modelFamily as AIProviderFamily;
+        if (modelFamily_ === "openAI") {
+            model = openai(modelId);
+        } else if (modelFamily_ === "mistralAI") {
+            model = mistral(modelId);
+        } else if (modelFamily_ === "geminiAI") {
+            model = google(modelId, {
                 useSearchGrounding: true,
             }) as LanguageModelV1;
+        } else {
+            debug("AI SDK ERROR : No model found with ", modelFamily, modelId);
         }
 
         try {
@@ -377,7 +381,7 @@ const streamProtocolHandler = async (
                     debugAiSdk("AISDK response", response);
                 },
                 experimental_generateMessageId: () => 
-                    modelId.split("-")[0] + "-?-" + nanoid(),
+                    modelId + "-?-" + nanoid(),
             });
 
             const { warnings, usage, sources, finishReason, providerMetadata, text, reasoning, toolCalls, toolResults, steps, request, response } = result;

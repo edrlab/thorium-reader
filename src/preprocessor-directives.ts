@@ -76,3 +76,7 @@ export const OPEN_DEV_TOOLS = IS_DEV && process.env.THORIUM_OPEN_DEVTOOLS === "1
 
 declare const __CONTINUOUS_INTEGRATION_DEPLOY__: boolean;
 export const _CONTINUOUS_INTEGRATION_DEPLOY = __CONTINUOUS_INTEGRATION_DEPLOY__;
+
+declare const __AI_FEATURE__: boolean;
+export const _AI_FEATURE = __AI_FEATURE__;
+export const IS_AI_FEATURE = IS_DEV && _AI_FEATURE;

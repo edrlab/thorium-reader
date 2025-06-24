@@ -27,31 +27,59 @@ const ADVANCED_SYSTEM_PROMPT = {
 
 const ADVANCED_SYSTEM_PROMPT_STRING = JSON.stringify(ADVANCED_SYSTEM_PROMPT, null, 2);
 
-export interface IaiSdkModel { id: string, name: string, systemPrompt: string };
-export const aiSDKModelOptions: Array<IaiSdkModel> = [
+export type AIPromptType = "default" | "advanced";
+export type AIProviderFamily = "openAI" | "mistralAI" | "geminiAI";
+export interface IAIModels {
+    id: string;
+    modelId: string;
+    providerFamily: AIProviderFamily;
+    name: string;
+    systemPrompt: string;
+    systemPromptType: AIPromptType;
+};
+export const AIModels: Array<IAIModels> = [
     {
-        id: "gemini__!__gemini-2.5-pro-preview-06-05__!__default-prompt",
+        id: "",
+        providerFamily: "geminiAI",
+        modelId: "gemini-2.5-pro-preview-06-05",
         name: "geminiAI gemini-2.5-pro-preview-06-05 (default)",
         systemPrompt: DEFAULT_SYSTEM_PROMPT,
+        systemPromptType: "default",
     },
     {
-        id: "gemini__!__gemini-2.5-pro-preview-06-05__!__specific-prompt",
+        id: "",
+        providerFamily: "geminiAI",
+        modelId: "gemini-2.5-pro-preview-06-05",
         name: "geminiAI gemini-2.5-pro-preview-06-05 (advanced)",
         systemPrompt: ADVANCED_SYSTEM_PROMPT_STRING,
+        systemPromptType: "advanced",
     },
     {
-        id: "openai__!__gpt-4o-mini__!__default-prompt",
+        id: "",
+        providerFamily: "openAI",
+        modelId: "gpt-4o-mini",
         name: "openAI gpt-4o-mini (default)",
         systemPrompt: DEFAULT_SYSTEM_PROMPT,
+        systemPromptType: "default",
     },
     {
-        id: "openai__!__gpt-4o-mini__!__specific-prompt",
+        id: "",
+        providerFamily: "openAI",
+        modelId: "gpt-4o-mini",
         name: "openAI gpt-4o-mini (advanced)",
         systemPrompt: ADVANCED_SYSTEM_PROMPT_STRING,
+        systemPromptType: "advanced",
     },
     {
-        id: "mistralai__!__pixtral-12b-2409",
+        id: "",
+        providerFamily: "mistralAI",
+        modelId: "pixtral-12b-2409",
         name: "mistralAI Pixtral 12B",
         systemPrompt: DEFAULT_SYSTEM_PROMPT,
+        systemPromptType: "default",
     },
 ];
+
+for (const model of AIModels) {
+    model.id = `${model.providerFamily}__!__${model.modelId}__!__${model.systemPromptType}`;
+}

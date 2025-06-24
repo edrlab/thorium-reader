@@ -27,9 +27,9 @@ import * as OpenAiIcon from "readium-desktop/renderer/assets/icons/open-ai-icon.
 import * as LinkIcon from "readium-desktop/renderer/assets/icons/link-icon.svg";
 import * as MistralAiIcon from "readium-desktop/renderer/assets/icons/mistral-ai-icon.svg";
 import * as GeminiIcon from "readium-desktop/renderer/assets/icons/gemini.svg";
-import { AiProviderType } from "readium-desktop/common/redux/states/ai_apiKey";
+import { AIProviderFamily } from "readium-desktop/common/AIModels";
 
-const AiKeyCard = ({provider}:{provider: string}) => {
+const AiKeyCard = ({ provider }: { provider: AIProviderFamily }) => {
     const [__] = useTranslator();
     const dispatch = useDispatch();
 
@@ -60,12 +60,12 @@ const AiKeyCard = ({provider}:{provider: string}) => {
     return (
         <div className={stylesSettings.apiKey_container} key={provider}>
             <div>
-                {provider === AiProviderType.openAI ? (
+                {provider === "openAI" ? (
                     <h4>
                         <SVG svg={OpenAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.openai)} />
                         {__("settings.apiKey.openAi")}
                     </h4>
-                ) : provider === AiProviderType.mistralAI ? (
+                ) : provider === "mistralAI" ? (
                     <h4>
                         <SVG svg={MistralAiIcon} className={classNames(stylesChatbot.provider_logo, stylesChatbot.openai)} />
                         {__("settings.apiKey.mistral")}
@@ -80,7 +80,7 @@ const AiKeyCard = ({provider}:{provider: string}) => {
                 <ul>
                     <li>
                         {__("settings.apiKey.howTo1", { provider: provider })}
-                        <a href={provider === AiProviderType.openAI ? openAiLink : provider === AiProviderType.mistralAI ? mistralAiLink : geminiAiLink} target="blank" style={{ marginLeft: "3px" }}>
+                        <a href={provider === "openAI" ? openAiLink : provider === "mistralAI" ? mistralAiLink : geminiAiLink} target="blank" style={{ marginLeft: "3px" }}>
                             <SVG svg={LinkIcon} ariaHidden style={{ width: "10px", height: "10px" }} />
                         </a>
                     </li>
@@ -97,8 +97,8 @@ const AiKeyCard = ({provider}:{provider: string}) => {
                         defaultValue={apiKey}
                         onChange={(e) => setKey(e.target.value, provider)}
                         placeholder={
-                            provider === AiProviderType.openAI ? openAiPlaceholder :
-                                provider === AiProviderType.mistralAI ? mistralPLaceholder :
+                            provider === "openAI" ? openAiPlaceholder :
+                                provider === "mistralAI" ? mistralPLaceholder :
                                     geminiPlaceholder
                         }
                         onFocus={() => setIsFocused(true)}
@@ -116,7 +116,7 @@ const AiKeyCard = ({provider}:{provider: string}) => {
 
 export const ApiKeysList = () => {
     const [__] = useTranslator();
-    const allProviders = ["openAI", "mistralAI", "geminiAI"];
+    const allProviders: AIProviderFamily[] = ["openAI", "mistralAI", "geminiAI"];
 
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>
@@ -125,15 +125,15 @@ export const ApiKeysList = () => {
                 <SVG ariaHidden svg={InfoIcon} />
                 <p>{__("settings.apiKey.help")}</p>
             </div>
-            {allProviders.map((provider) => {
-
-                return (
-                    <AiKeyCard
-                        key={provider}
-                        provider={provider}
-                    />
-                );
-            })}
+            {
+                allProviders.map((provider) => {
+                    return (
+                        <AiKeyCard
+                            key={provider}
+                            provider={provider}
+                        />
+                    );
+                })}
         </section>
     );
 };

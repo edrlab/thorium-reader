@@ -5,13 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export enum AiProviderType {
-    openAI = "openAI",
-    mistralAI = "mistralAI",
-    geminiAI = "geminiAI",
-}
+import { AIProviderFamily } from "readium-desktop/common/AIModels";
 
 export interface IAiApiKey {
     aiKey: string,
-    provider: AiProviderType,
+    provider: AIProviderFamily,
 }

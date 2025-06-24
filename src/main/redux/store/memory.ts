@@ -29,7 +29,6 @@ import { EDrawType, INoteState, NOTE_DEFAULT_COLOR_OBJ, TDrawType } from "readiu
 import { clone } from "ramda";
 import { TBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { TAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
-import { AiProviderType } from "readium-desktop/common/redux/states/ai_apiKey";
 
 // TODO: DEBUG ONLY AISDK
 import "dotenv/config";
@@ -453,13 +452,13 @@ export async function initStore()
     {
         preloadedState.aiApiKeys = [];
         if (process.env["OPENAI_API_KEY"]) {
-            preloadedState.aiApiKeys.push({ provider: AiProviderType.openAI, aiKey: process.env["OPENAI_API_KEY"] });
+            preloadedState.aiApiKeys.push({ provider: "openAI", aiKey: process.env["OPENAI_API_KEY"] });
         }
         if (process.env["MISTRAL_API_KEY"]) {
-            preloadedState.aiApiKeys.push({ provider: AiProviderType.mistralAI, aiKey: process.env["MISTRAL_API_KEY"] });
+            preloadedState.aiApiKeys.push({ provider: "mistralAI", aiKey: process.env["MISTRAL_API_KEY"] });
         }
         if (process.env["GOOGLE_GENERATIVE_AI_API_KEY"]) {
-            preloadedState.aiApiKeys.push({ provider: AiProviderType.geminiAI, aiKey: process.env["GOOGLE_GENERATIVE_AI_API_KEY"] });
+            preloadedState.aiApiKeys.push({ provider: "geminiAI", aiKey: process.env["GOOGLE_GENERATIVE_AI_API_KEY"] });
         }
     }
     if (preloadedState?.creator && !preloadedState.creator.urn) {

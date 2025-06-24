@@ -39,6 +39,8 @@ const telemetrySecret = process.env.THORIUM_TELEMETRY_SECRET || "";
 
 // const USE_HTTP_STREAMER = false;
 
+const isAIFeatureEnabled = true; 
+
 const data = {
     __APP_VERSION__: JSON.stringify(version),
     __PACK_NAME__: JSON.stringify(name), // EDRLab.ThoriumReader
@@ -58,6 +60,7 @@ const data = {
     __TELEMETRY_URL__: JSON.stringify(telemetryUrl),
     __TELEMETRY_SECRET__: JSON.stringify(telemetrySecret),
     // __USE_HTTP_STREAMER__: JSON.stringify(USE_HTTP_STREAMER),
+    __AI_FEATURE__: JSON.stringify(isAIFeatureEnabled),
 };
 
 // we do not replace "process.env.NODE_ENV" at build-time,
