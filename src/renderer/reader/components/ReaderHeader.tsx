@@ -825,11 +825,11 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     {...(this.props.pdfPrintOpen &&
                                         { style: { backgroundColor: "var(--color-blue)" } })}
                                 >
-                                    <Popover.Root open={this.props.pdfPrintOpen} onOpenChange={(open) => {
+                                    <Dialog.Root open={this.props.pdfPrintOpen} onOpenChange={(open) => {
                                         this.props.setShortcutEnable(!open);
                                         this.props.setPdfPrintOpen(open);
                                     }}>
-                                        <Popover.Trigger asChild>
+                                        <Dialog.Trigger asChild>
                                             <button
                                                 aria-pressed={this.props.pdfPrintOpen}
                                                 aria-label={__("reader.navigation.print")}
@@ -855,17 +855,18 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     <path d="M6 14h12v8H6z" />
                                                 </svg>
                                             </button>
-                                        </Popover.Trigger>
-                                        <Popover.Portal>
-                                            <Popover.Content sideOffset={this.props.isOnSearch ? 50 : 18} align="end" style={{ zIndex: 101 }}
+                                        </Dialog.Trigger>
+                                        <Dialog.Portal container={appOverlayElement}>
+                                            <Dialog.Content style={{ zIndex: 101, height: "fit-content" }}
+                                            className={containerClassName}
                                             // onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
                                             // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
                                             >
                                                 <PrintContainer pdfPageRange={[1, this.props.pdfPlayerNumberOfPages]} pdfThumbnailImageCacheArray={this.props.pdfThumbnailImageCacheArray} />
-                                                <Popover.Arrow style={{ fill: "var(--color-extralight-grey)" }} width={15} height={10} />
-                                            </Popover.Content>
-                                        </Popover.Portal>
-                                    </Popover.Root>
+
+                                            </Dialog.Content>
+                                        </Dialog.Portal>
+                                    </Dialog.Root>
                                 </li>
                                 : <></>
                         }

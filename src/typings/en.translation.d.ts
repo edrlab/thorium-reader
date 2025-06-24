@@ -1664,7 +1664,10 @@ declare namespace typed_i18n {
   readonly "print": {
     readonly "description": string,
     readonly "descriptionLcp": string,
+    readonly "descriptionLcpCount": string,
     readonly "descriptionLcpLimit": string,
+    readonly "descriptionLcpPrintable": string,
+    readonly "howTo": string,
     readonly "pageHelpInfo": string,
     readonly "pageHelpInfo1": string,
     readonly "pageHelpInfo2": string,
@@ -2025,7 +2028,10 @@ declare namespace typed_i18n {
   (_: "reader.print", __?: {}): {
   readonly "description": string,
   readonly "descriptionLcp": string,
+  readonly "descriptionLcpCount": string,
   readonly "descriptionLcpLimit": string,
+  readonly "descriptionLcpPrintable": string,
+  readonly "howTo": string,
   readonly "pageHelpInfo": string,
   readonly "pageHelpInfo1": string,
   readonly "pageHelpInfo2": string,
@@ -2036,7 +2042,10 @@ declare namespace typed_i18n {
 };
   (_: "reader.print.description", __?: {}): string;
   (_: "reader.print.descriptionLcp", __?: {}): string;
+  (_: "reader.print.descriptionLcpCount", __?: {}): string;
   (_: "reader.print.descriptionLcpLimit", __?: {}): string;
+  (_: "reader.print.descriptionLcpPrintable", __?: {}): string;
+  (_: "reader.print.howTo", __?: {}): string;
   (_: "reader.print.pageHelpInfo", __?: {}): string;
   (_: "reader.print.pageHelpInfo1", __?: {}): string;
   (_: "reader.print.pageHelpInfo2", __?: {}): string;

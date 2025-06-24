@@ -752,7 +752,10 @@
         "print": {
             "description": "{{- appName}} print dialog for en bog med {{- count}} sider. Du skal angive de sider du ønsker printet før at systemets print dialog vises",
             "descriptionLcp": "{{- appName}} print dialog for en LCP-beskyttet bog med {{- count}} sider. Du skal angive de sider du ønsker printet før at systemets print dialog vises",
+            "descriptionLcpCount": "",
             "descriptionLcpLimit": "{{- count}} sider tilbage (af LCP begrænsning på {{- lcpLimitPages}})",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
             "pageHelpInfo": "hjælpeinformation til angivelse af sider:",
             "pageHelpInfo1": " - indtast et nummer på en side (fx. \"6\")",
             "pageHelpInfo2": " - indtast to sidetal med en bindestreg imellem, for at angive en kontinuerlig række af sider (fx. \"6-13\")",

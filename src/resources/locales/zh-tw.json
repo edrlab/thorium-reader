@@ -752,7 +752,10 @@
         "print": {
             "description": "",
             "descriptionLcp": "",
+            "descriptionLcpCount": "",
             "descriptionLcpLimit": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
             "pageHelpInfo": "",
             "pageHelpInfo1": "",
             "pageHelpInfo2": "",

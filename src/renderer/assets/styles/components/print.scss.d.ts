@@ -1,0 +1,9 @@
+export declare const CSS_END_components_print: string;
+export declare const CSS_START_components_print: string;
+export declare const print_popover_actions_buttons: string;
+export declare const print_popover_form: string;
+export declare const print_popover_help_container: string;
+export declare const print_popover_image_container: string;
+export declare const print_popover_page_icon: string;
+export declare const print_popover_thumbnail_container: string;
+export declare const print_popover_thumbnail_pagination_bubble: string;

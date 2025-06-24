@@ -752,7 +752,10 @@
         "print": {
             "description": "Finestra di dialogo di prestampa {{- appName}} con una pubblicazione di {{- count}} pagine. È necessario impostare l'intervallo di pagine che si desidera stampare per attivare la finestra di dialogo di stampa del sistema",
             "descriptionLcp": "Finestra di dialogo di prestampa {{- appName}} con una pubblicazione LCP di {{- count}} pagine. Per attivare la finestra di dialogo di stampa del sistema, è necessario impostare l'intervallo di pagine che si desidera stampare",
+            "descriptionLcpCount": "",
             "descriptionLcpLimit": "{{- count}} pagine rimanenti (del limite LCP di {{- lcpLimitPages}})",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
             "pageHelpInfo": "informazioni di aiuto per gli intervalli di pagine:",
             "pageHelpInfo1": " - inserire un numero di pagina per fare riferimento a una singola pagina (ad es. \"6\")",
             "pageHelpInfo2": " - inserire due numeri di pagina separati da un trattino per fare riferimento a un intervallo di pagine contigue (ad esempio \"6-13\")",
