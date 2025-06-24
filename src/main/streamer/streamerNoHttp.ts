@@ -11,7 +11,7 @@ import { app, net, protocol, ProtocolRequest, ProtocolResponse, session } from "
 import * as fs from "fs";
 import * as mime from "mime-types";
 import * as path from "path";
-import { _PACKAGING, IS_DEV } from "readium-desktop/preprocessor-directives";
+import { _PACKAGING, IS_AI_FEATURE, IS_DEV } from "readium-desktop/preprocessor-directives";
 
 import { TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { parseDOM, serializeDOM } from "@r2-navigator-js/electron/common/dom";
@@ -311,7 +311,7 @@ const streamProtocolHandler = async (
     headers["Access-Control-Allow-Headers"] = "Content-Type, Content-Length, Accept-Ranges, Content-Range, Range, Link, Transfer-Encoding, X-Requested-With, Authorization, Accept, Origin, User-Agent, DNT, Cache-Control, Keep-Alive, If-Modified-Since";
     headers["Access-Control-Expose-Headers"] = "Content-Type, Content-Length, Accept-Ranges, Content-Range, Range, Link, Transfer-Encoding, X-Requested-With, Authorization, Accept, Origin, User-Agent, DNT, Cache-Control, Keep-Alive, If-Modified-Since";
 
-    if (isAiSdk) {
+    if (IS_AI_FEATURE && isAiSdk) {
 
         // use specific debug instance
         debugAiSdk("AISDK request !!!");

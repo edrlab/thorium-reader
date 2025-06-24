@@ -18,6 +18,7 @@ import * as React from "react";
 import { Provider } from "react-redux";
 import {
     _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL,
+    IS_AI_FEATURE,
 } from "readium-desktop/preprocessor-directives";
 import ToastManager from "readium-desktop/renderer/common/components/toast/ToastManager";
 
@@ -32,6 +33,7 @@ import { getTranslator } from "readium-desktop/common/services/translator";
 import { getStore } from "../createStore";
 import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
 import { ImageClickManager } from "./ImageClickManagerWithAI";
+import { ImageClickManagerImgViewerOnly } from "./ImageClickManagerViewerOnly";
 // import { ImageClickManagerImgViewerOnly } from "./ImageClickManagerViewerOnly";
 
 export default class App extends React.Component<{}, undefined> {
@@ -239,7 +241,11 @@ url("${rcssPath}/fonts/iAWriterDuospace-Regular.ttf") format("truetype");
                 <TranslatorContext.Provider value={getTranslator()}>
                     <Reader />
                     <ToastManager />
-                    <ImageClickManager />
+                    {
+                        IS_AI_FEATURE
+                            ? <ImageClickManager />
+                            : <ImageClickManagerImgViewerOnly />
+                    }
                 </TranslatorContext.Provider>
             </Provider>
         );

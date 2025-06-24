@@ -49,6 +49,7 @@ import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/a
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { ApiKeysList } from "./AiKeyManager";
+import { IS_AI_FEATURE } from "readium-desktop/preprocessor-directives";
 
 interface ISettingsProps {};
 
@@ -447,12 +448,16 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             <SVG ariaHidden svg={KeyReturnIcon} />
                             <h3>{__("settings.tabs.keyboardShortcuts")}</h3>
                         </Tabs.Trigger>
-                        <Tabs.Trigger value="tab5">
-                            <SVG ariaHidden svg={AiIcon} />
-                            <h3>{__("settings.tabs.aiKeyManager")}</h3>
-                        </Tabs.Trigger>
+                        {IS_AI_FEATURE
+                            ?
+                            <Tabs.Trigger value="tab5">
+                                <SVG ariaHidden svg={AiIcon} />
+                                <h3>{__("settings.tabs.aiKeyManager")}</h3>
+                            </Tabs.Trigger>
+                            : <></>
+                        }
                     </Tabs.List>
-                    <div className={stylesSettings.settings_content} style={{marginTop: "70px"}}>
+                    <div className={stylesSettings.settings_content} style={{ marginTop: "70px" }}>
                         <Tabs.Content value="tab1" tabIndex={-1}>
                             <TabHeader title={__("settings.tabs.general")} />
                             <div className={stylesSettings.settings_tab}>
@@ -478,13 +483,16 @@ export const Settings: React.FC<ISettingsProps> = () => {
                                 <KeyboardSettings />
                             </div>
                         </Tabs.Content>
-                        <Tabs.Content value="tab5" tabIndex={-1}>
-                            <TabHeader title={__("settings.tabs.aiKeyManager")}>
-                            </TabHeader>
-                            <div className={stylesSettings.settings_tab}>
-                                <ApiKeysList />
-                            </div>
-                        </Tabs.Content>
+                        {IS_AI_FEATURE ?
+                            <Tabs.Content value="tab5" tabIndex={-1}>
+                                <TabHeader title={__("settings.tabs.aiKeyManager")}>
+                                </TabHeader>
+                                <div className={stylesSettings.settings_tab}>
+                                    <ApiKeysList />
+                                </div>
+                            </Tabs.Content>
+                            : <></>
+                        }
                     </div>
                 </Tabs.Root>
 
