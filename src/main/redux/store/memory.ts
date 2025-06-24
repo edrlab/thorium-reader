@@ -33,6 +33,7 @@ import { TAnnotationState } from "readium-desktop/common/redux/states/renderer/a
 
 if (IS_AI_FEATURE) {
     // .env AI API KEY":
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     require("dotenv/config");
 }
 
