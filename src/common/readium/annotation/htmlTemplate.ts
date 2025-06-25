@@ -105,8 +105,7 @@ export const noteExportHtmlMustacheTemplate = `
                     <!-- Selectors -->
                     <section class="selectors">
                     <details>
-                        <summary><h4>Selectors</h4>
-                        </summary
+                        <summary>Selectors</summary
                         {{#target.selector}}
                                 <strong>{{type}}</strong>
                                 <ul>
