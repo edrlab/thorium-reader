@@ -5,7 +5,7 @@ export const noteExportHtmlMustacheTemplate = `
 <!-- https://github.com/edrlab/thorium-reader/blob/develop/src/common/readium/annotation/htmlTemplate.ts -->
 <html>
 <head>
-    <title>{{title}} | Annotations about{{dc:title}}</title>
+    <title>Annotations about {{ .dc:title }}</title>
     {{#generator}}
     <meta name=generator content="{{name}}" />
     <meta name="dc:identifier" content="{{id}}" />
@@ -20,12 +20,14 @@ export const noteExportHtmlMustacheTemplate = `
         .annotation { margin: 2rem 0; padding: 1rem; border-left: 4px solidrgb(150, 150, 150); }
         .selector { background-color: #f5f5f5; padding: 1rem; margin: 1rem 0; }
         .highlight { padding: 0.2em; }
+        .perannotation {border-left: 1px; border-color: {{body.color}}; }
+        .annotationmetadata { font-style: italic; color: #888; }
     </style>
 </head>
 <body>
     <!-- Header Section with Collection Metadata -->
     <header>
-        <h1>{{title}} | Annotations about <cite>{{ .dc:title }}</cite></h1>
+        <h1>Annotations about <cite>{{ .dc:title }}</cite></h1>
         <section class="metadata">
             {{#about}}
                 <h2>Informations about the annotated publication</h2>
@@ -49,7 +51,7 @@ export const noteExportHtmlMustacheTemplate = `
             <section class="annotation">
                 <!-- Annotation Body -->
                 <section class="body">
-                    <h2>Annotation ID: {{body.id}}</h2>
+                    <h2 class="perannotation">Annotation ID: {{body.id}}</h2>
 
                     {{#body.value}}
                         <blockquote lang="{{body.language}}" {{#body.format}}data-format="{{body.format}}"{{/body.format}}>
@@ -63,13 +65,13 @@ export const noteExportHtmlMustacheTemplate = `
                     </article>
                     {{/body.htmlValue}}
 
-                    {{#body.tag}}<p>Tag: {{body.tag}}</p>{{/body.tag}}
-
-
                 <!-- Annotation Metadata -->
-                    {{#body.color}}<p>Color: {{body.color}}</p>{{/body.color}}
-                    {{#body.highlight}}<p>Highlight: {{body.highlight}}</p>{{/body.highlight}}
-                    {{#body.textDirection}}<p>TextDirection: {{body.textDirection}}</p>{{/body.textDirection}}
+                    <p class="annotationmetadata">
+                    {{#body.tag}}Tag: {{body.tag}}<{{/body.tag}}; 
+                    {{#body.color}}Color: {{body.color}}{{/body.color}};
+                    {{#body.highlight}}Highlight type: {{body.highlight}}{{/body.highlight}}; 
+                    {{#body.textDirection}}TextDirection: {{body.textDirection}}{{/body.textDirection}}
+                    </p>
                 </section>
 
                     <!-- Creator Information -->
