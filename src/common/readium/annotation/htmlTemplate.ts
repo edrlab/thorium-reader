@@ -17,11 +17,13 @@ export const noteExportHtmlMustacheTemplate = `
         body {margin: 2rem; }
         header, footer { color: #666; padding: 1rem; }
         .metadata { background-color: #f8f9fa; padding: 1rem; margin: 1rem 0; }
-        .annotations { margin: 2rem 0; padding: 1rem; border-left: 4px solidrgb(150, 150, 150); }
+        .annotations { margin: 2rem 0; padding: 1rem; border-left: thin solid rgb(150, 150, 150); }
         .selector { background-color: #f5f5f5; padding: 1rem; margin: 1rem 0; }
         .highlight { padding: 0.2em; }
-        .annotation {padding: 10px; border-left-style: solid;border-left-width: thin; border-left-color: grey; }
+        .annotation {margin: 10px; padding: 10px; border-left-style: solid; border-left-width: thin; }
         .annotationmetadata { font-style: italic; color: #888; }
+        blockquote
+
     </style>
 </head>
 <body>
@@ -51,17 +53,18 @@ export const noteExportHtmlMustacheTemplate = `
         {{#items}}
             <section class="annotations">
                 <!-- Annotation Body -->
-                <section class="annotation">
+                <section class="annotation" style="border-color: {{#body.color}}{{body.color}}{{/body.color}};">
                     <h2>Annotation</h2>
                     <p>{{#motivation}}{{motivation}}{{/motivation}}</p>
         
-
+<!-- Selected text is provided for context -->
                     <blockquote class="highlight">
                         {{#target.selector}}
                            {{#exact}}{{exact}}{{/exact}}
                         {{/target.selector}}
                     </blockquote>
-    
+
+<!-- Header Section with Collection Metadata -->    
                     {{#body.htmlValue}}
                     <article class="markdown-body">
                         {{{body.htmlValue}}}
