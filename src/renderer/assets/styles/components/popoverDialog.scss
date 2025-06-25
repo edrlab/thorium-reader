@@ -263,8 +263,9 @@
     width: fit-content;
     text-align: left;
     display: block;
-    padding: 5px 40px 5px 5px;
+    padding: 5px;
     margin: 5px 0;
+    border-radius: 4px;
     
     &.active:not(.inert) {
       &:hover {
@@ -321,7 +322,7 @@
     width: 90%;
     text-align: left;
     display: block;
-    padding: 5px 40px 5px 5px;
+    padding: 5px;
     margin: 5px 0;
     background-color: var(--color-extralight-grey);
   }
