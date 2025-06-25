@@ -6,13 +6,13 @@
   "compilerOptions": {
     // "skipLibCheck": true,
     // NODENEXT works because "typed-redux-saga/macro" in WebPack Babel config is not used when compiling from the CLI with tsc or tsgo
-    // "module": "esnext", // 99
+    "module": "esnext", // 99
     // "module": "ES2020", // 6
     // "module": "preserve", // 200
-    "module": "nodenext", // 199
-    "moduleResolution": "nodenext", // 99
+    // "module": "nodenext", // 199
+    // "moduleResolution": "nodenext", // 99
     // "moduleResolution": "node", // 100
-    // "moduleResolution": "bundler", // 100
+    "moduleResolution": "bundler", // 100
     "diagnostics": false,
     "extendedDiagnostics": false,
     "traceResolution": false,
@@ -22,6 +22,7 @@
     "pretty": false,
     "sourceMap": false,
     "inlineSources": false,
+    "resolveJsonModule": false,
     // "esModuleInterop": true,
     // allowSyntheticDefaultImports: true,
     // "types": ["./node_modules/marked-emoji/src/"],
