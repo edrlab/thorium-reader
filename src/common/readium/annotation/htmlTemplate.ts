@@ -72,7 +72,7 @@ export const noteExportHtmlMustacheTemplate = `
                         {{#body.color}} | Color: {{body.color}}{{/body.color}}
                         {{#body.highlight}} | Highlight type: {{body.highlight}}{{/body.highlight}};
                         {{#body.textDirection}}TextDirection:  | {{body.textDirection}}{{/body.textDirection}}
-                    </p>
+                     | </p>
                 </section>
 
                 <!-- Creator Information -->
@@ -134,7 +134,7 @@ export const noteExportHtmlMustacheTemplate = `
             <section class="generator">
             <details>
             <summary>
-                <h3>Generator</h3>
+                Generator
             </summary>
                 <p>ID: {{id}} | Type: {{type}} | Name: {{name}}</p   
             </section>
