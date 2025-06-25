@@ -141,13 +141,13 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
     const rowVirtualizer = useVirtualizer({
         horizontal: true,
         count: pagesToPrint.length,
-        getScrollElement: () => document.getElementById("print-popover-image-container"),
+        getScrollElement: () => document.getElementById("print-dialog-image-container"),
         estimateSize: () => 155,
         overscan: 3,
     });
 
     return <>
-        <form className={stylesPrint.print_popover_form}>
+        <form className={stylesPrint.print_dialog_form}>
             <div style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
                 <h2>{__("reader.print.print")}</h2>
                 <Dialog.Close asChild>
@@ -161,7 +161,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
           <div style={{margin: "10px", borderBottom: "2px solid var(--color-extralight-grey)"}}/>
 
             <div style={{padding: "10px 15px 5px", backgroundColor: "var(--color-extralight-grey)"}}>
-            <div id="print-popover-image-container" className={stylesPrint.print_popover_image_container}>
+            <div id="print-dialog-image-container" className={stylesPrint.print_dialog_image_container}>
 
                 {
                     pagesToPrint.length ?
@@ -187,7 +187,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                                 return (
                                     <div
                                         key={virtualItem.key}
-                                        className={stylesPrint.print_popover_thumbnail_container}
+                                        className={stylesPrint.print_dialog_thumbnail_container}
                                         style={{
                                             width: `${virtualItem.size - 10}px`,
                                             transform: `translateX(${virtualItem.start}px)`,
@@ -198,7 +198,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                                                 ? <img key={pageNumber} src={src} title={(pageNumber).toString()} />
                                                 : (<div key={pageNumber} style={{ position: "relative", backgroundColor: "inherit" }} className={stylesSpinner.spinner_container}><div className={stylesSpinner.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>)
                                         }
-                                        <div className={stylesPrint.print_popover_thumbnail_pagination_bubble}>{`${pageNumber}`}</div>
+                                        <div className={stylesPrint.print_dialog_thumbnail_pagination_bubble}>{`${pageNumber}`}</div>
                                     </div>
                                 );
                             })}
@@ -240,7 +240,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                 <SVG ariaHidden svg={infoOpen ? ChevronUp : ChevronDown} />
             </button>
             {infoOpen ?
-            <div className={stylesPrint.print_popover_help_container}>
+            <div className={stylesPrint.print_dialog_help_container}>
                 <p>{__("reader.print.pageHelpInfo")}</p>
                 <ul>
                     <li>{__("reader.print.pageHelpInfo1")}</li>
@@ -251,7 +251,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
             </div>
              : <></>}
 
-            <div className={stylesPrint.print_popover_actions_buttons}>
+            <div className={stylesPrint.print_dialog_actions_buttons}>
                 <Dialog.Close className={stylesButtons.button_secondary_blue} aria-label={__("dialog.cancel")}>{__("dialog.cancel")}</Dialog.Close>
                 <Dialog.Close
                     type="submit"

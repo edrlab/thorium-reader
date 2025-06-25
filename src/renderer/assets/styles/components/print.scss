@@ -4,7 +4,7 @@
   display: none;
 }
 
-.print_popover_form {
+.print_dialog_form {
     background-color: var(--color-secondary);
     border-radius: 10px;
     border: 1px solid var(--color-light-grey);
@@ -37,7 +37,7 @@
     }
 }
 
-.print_popover_image_container {
+.print_dialog_image_container {
     // display: flex;
     // flex-wrap: nowrap;
     overflow: auto hidden;
@@ -46,16 +46,16 @@
     background-color: var(--color-extralight-grey);
 }
 
-.print_popover_image_container img {
+.print_dialog_image_container img {
     height: 100%;
     width: 100%;
 }
 
-.print_popover_page_icon {
+.print_dialog_page_icon {
     position: relative;
 }
 
-.print_popover_page_icon::after {
+.print_dialog_page_icon::after {
     content: '';
     width: 1.2em;
     height: 1.2em;
@@ -66,7 +66,7 @@
     top: -7px;
 }
 
-.print_popover_thumbnail_pagination_bubble {
+.print_dialog_thumbnail_pagination_bubble {
     position: absolute;
     bottom: 10px;
     left: 50%;
@@ -81,7 +81,7 @@
     box-shadow: 0 2px 4px rgb(0 0 0 / 20%);
 }
 
-.print_popover_thumbnail_container {
+.print_dialog_thumbnail_container {
     position: absolute;
     top: 0;
     left: 0;
@@ -90,14 +90,14 @@
     outline: 4px;
 }
 
-.print_popover_actions_buttons {
+.print_dialog_actions_buttons {
     margin: 5px 0;
     display: flex;
     gap: 5px;
     justify-content: end;
 }
 
-.print_popover_help_container {
+.print_dialog_help_container {
     p {
         margin: 0;
     }

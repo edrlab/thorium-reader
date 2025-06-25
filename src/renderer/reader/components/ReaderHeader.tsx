@@ -93,6 +93,7 @@ import { DockTypeName } from "readium-desktop/common/models/dock";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 import { PrintContainer } from "./Print";
+import * as PrinterIcon from "readium-desktop/renderer/assets/icons/printer-icon.svg";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -532,7 +533,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         className={stylesReader.menu_button}
                                         ref={this.infoMenuButtonRef}
                                         title={__("reader.navigation.infoTitle")}
-                                        disabled={(this.props.settingsOpen || this.props.menuOpen) && !isDockedMode}
+                                        disabled={(this.props.settingsOpen || this.props.menuOpen || this.props.pdfPrintOpen) && !isDockedMode}
                                     >
                                         <SVG ariaHidden={true} svg={InfosIcon} />
                                     </button>
@@ -836,29 +837,12 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 className={stylesReader.menu_button}
                                                 title={__("reader.navigation.print")}
                                             >
-                                                <svg
-                                                    className={stylesReaderHeader.active_svg}
-                                                    style={{ stroke: "var(--color-blue-alt)", fill: "none" }}
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="30"
-                                                    height="20"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    strokeWidth="2"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    aria-hidden="true"
-                                                >
-                                                    <path d="M6 9V2h12v7" />
-                                                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
-                                                    <path d="M6 14h12v8H6z" />
-                                                </svg>
+                                                <SVG ariaHidden svg={PrinterIcon} className={this.props.pdfPrintOpen ? stylesReaderHeader.active_svg : ""} />
                                             </button>
                                         </Dialog.Trigger>
                                         <Dialog.Portal container={appOverlayElement}>
                                             <Dialog.Content style={{ zIndex: 101, height: "fit-content" }}
-                                            className={containerClassName}
+                                            className={stylesPopoverDialog.modal_dialog_reader}
                                             // onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
                                             // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
                                             >
