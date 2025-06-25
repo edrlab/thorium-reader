@@ -31,7 +31,6 @@ export const noteExportHtmlMustacheTemplate = `
 
 
             {{#about}}
-            <div class="metadata">
             <section class="metadata">
                 <h2>Informations about the annotated publication</h2>
                 <ul>
