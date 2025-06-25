@@ -11,7 +11,6 @@ export const noteExportHtmlMustacheTemplate = `
     <meta name="dc:identifier" content="{{id}}" />
     {{/generator}}
     {{#about}}
-    <meta name="dc:creator" content="{{dc:creator}}" />
     <meta name="dc:date" content="{{dc:date}}" />
     {{/about}}
     <style>
