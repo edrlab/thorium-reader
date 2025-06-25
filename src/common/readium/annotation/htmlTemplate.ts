@@ -103,20 +103,23 @@ export const noteExportHtmlMustacheTemplate = `
 
                     <!-- Selectors -->
                     <section class="selectors">
-                        <h4>Selectors</h4>
+                    <details>
+                        <summary><h4>Selectors</h4>
+                        </summary
                         {{#target.selector}}
-                            <section class="selector">
                                 <strong>{{type}}</strong>
-                                {{#start}}<p>Start: {{start}}</p>{{/start}}
-                                {{#end}}<p>End: {{end}}</p>{{/end}}
-                                {{#exact}}<p>Exact: {{exact}}</p>{{/exact}}
-                                {{#prefix}}<p>Prefix: {{prefix}}</p>{{/prefix}}
-                                {{#suffix}}<p>Suffix: {{suffix}}</p>{{/suffix}}
-                                {{#value}}<p>Value: {{value}}</p>{{/value}}
-                                {{#conformsTo}}<p>Conforms to: {{conformsTo}}</p>{{/conformsTo}}
-                                {{#refinedBy}}<section class="refined">{{> selector}}</section>{{/refinedBy}}
-                            </section>
+                                <ul>
+                                {{#start}}<li>Start: {{start}}</li>{{/start}}
+                                {{#end}}<pli>End: {{end}}</li>{{/end}}
+                                {{#exact}}<li>Exact: {{exact}}</li>{{/exact}}
+                                {{#prefix}}<li>Prefix: {{prefix}}</li>{{/prefix}}
+                                {{#suffix}}<li>Suffix: {{suffix}}</li>{{/suffix}}
+                                {{#value}}<li>Value: {{value}}</li>{{/value}}
+                                {{#conformsTo}}<li>Conforms to: {{conformsTo}}</li>{{/conformsTo}}
+                                {{#refinedBy}}<div class="refined">{{> selector}}</div>{{/refinedBy}}
+                                </ul>
                         {{/target.selector}}
+                        </details
                     </section>
                 </section>
             </section>
