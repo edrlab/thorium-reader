@@ -26,7 +26,7 @@ export const noteExportHtmlMustacheTemplate = `
     <!-- Header Section with Collection Metadata -->
     <header>
         <h1>{{title}} | Annotations about <cite>{{ .dc:title }}</cite></h1>
-        <div class="metadata">
+        <section class="metadata">
 
 
             {{#about}}
@@ -44,27 +44,27 @@ export const noteExportHtmlMustacheTemplate = `
 
             {{/about}}
 
-        </div>
+        </section>
     </header>
 
     <!-- Main Content - Annotations -->
     <main>
         {{#items}}
-            <div class="annotation">
+            <section class="annotation">
                 <!-- Annotation Metadata -->
                 <h2>{{motivation}}</h2>
                 <p><small>Created: {{created}}</small></p>
                 {{#modified}}<p><small>Modified: {{modified}}</small></p>{{/modified}}
 
                 <!-- Creator Information -->
-                <div class="creator">
+                <section class="creator">
                     <h3>Creator</h3>
                     <p>{{creator.name}} ({{creator.id}})</p>
                     <p>Type: {{creator.type}}</p>
-                </div>
+                </section>
 
                 <!-- Annotation Body -->
-                <div class="body">
+                <section class="body">
                     <h3>Content</h3>
                     {{#body.color}}<p>Color: {{body.color}}</p>{{/body.color}}
                     {{#body.highlight}}<p>Highlight: {{body.highlight}}</p>{{/body.highlight}}
@@ -86,15 +86,15 @@ export const noteExportHtmlMustacheTemplate = `
                     {{/body.value}}
 
                     {{#body.tag}}<p>Tag: {{body.tag}}</p>{{/body.tag}}
-                </div>
+                </section>
 
                 <!-- Target Information -->
-                <div class="target">
+                <section class="target">
                     <h3>Target</h3>
                     <p>Source: {{target.source}}</p>
                     
                     {{#target.meta}}
-                        <div class="meta">
+                        <section class="meta">
                             {{#page}}<p>Page: {{page}}</p>{{/page}}
                             {{#headings}}
                                 <h4>Headings</h4>
@@ -102,14 +102,14 @@ export const noteExportHtmlMustacheTemplate = `
                                     {{#.}}<li>Level {{level}}: {{txt}}</li>{{/.}}
                                 </ul>
                             {{/headings}}
-                        </div>
+                        </section>
                     {{/target.meta}}
 
                     <!-- Selectors -->
-                    <div class="selectors">
+                    <section class="selectors">
                         <h4>Selectors</h4>
                         {{#target.selector}}
-                            <div class="selector">
+                            <section class="selector">
                                 <strong>{{type}}</strong>
                                 {{#start}}<p>Start: {{start}}</p>{{/start}}
                                 {{#end}}<p>End: {{end}}</p>{{/end}}
@@ -118,12 +118,12 @@ export const noteExportHtmlMustacheTemplate = `
                                 {{#suffix}}<p>Suffix: {{suffix}}</p>{{/suffix}}
                                 {{#value}}<p>Value: {{value}}</p>{{/value}}
                                 {{#conformsTo}}<p>Conforms to: {{conformsTo}}</p>{{/conformsTo}}
-                                {{#refinedBy}}<div class="refined">{{> selector}}</div>{{/refinedBy}}
-                            </div>
+                                {{#refinedBy}}<section class="refined">{{> selector}}</section>{{/refinedBy}}
+                            </section>
                         {{/target.selector}}
-                    </div>
-                </div>
-            </div>
+                    </section>
+                </section>
+            </section>
             {{^isLast}}<hr>{{/isLast}}
         {{/items}}
     </main>
@@ -136,13 +136,13 @@ export const noteExportHtmlMustacheTemplate = `
         on:</strong> {{generated}}</p>{{/generated}}
          <p><strong><strong>ID:</strong> {{id}} | Context:</strong> {{@context}} | <strong>Type:</strong> {{type}}</p>     
             {{#generator}}
-            <div class="generator">
+            <section class="generator">
             <details>
             <summary>
                 <h3>Generator</h3>
             </summary>
                 <p>ID: {{id}} | Type: {{type}} | Name: {{name}}</p   
-            </div>
+            </section>
             {{/generator}}
     </footer>
 </body>
