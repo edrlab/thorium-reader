@@ -1,5 +1,8 @@
 {
   "extends": "./tsconfig",
+  "watchOptions": {
+    "excludeDirectories": ["**/node_modules", "dist", "release"]
+  },
   "compilerOptions": {
     // "skipLibCheck": true,
     // NODENEXT works because "typed-redux-saga/macro" in WebPack Babel config is not used when compiling from the CLI with tsc or tsgo
@@ -19,9 +22,20 @@
     "pretty": false,
     "sourceMap": false,
     "inlineSources": false,
-    // "types": [],
-    // "typeRoots": ["./node_modules/@types"]
+    // "esModuleInterop": true,
+    // allowSyntheticDefaultImports: true,
+    // "types": ["./node_modules/marked-emoji/src/"],
+    // "typeRoots": ["./node_modules/marked-emoji/src/"]
   },
+  // "files": [
+  //   "typings.d.ts",
+  //   // "./node_modules/marked-emoji/src/index.d.cts"
+  // ],
+  // "include": [
+  //   "./src/**/*",
+  //   "./test/**/*",
+  //   // "./node_modules/marked-emoji/src/index.d.ts"
+  // ],
   // "exclude": [
   //   "node_modules",
   //   "./node_modules",

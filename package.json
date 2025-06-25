@@ -87,9 +87,11 @@
     "bundle-stats_renderer-pdf": "webpack-bundle-analyzer dist/stats_renderer-pdf.json dist --report dist/stats_renderer-pdf.html --mode static --default-sizes stat --log-level debug --no-open",
     "bundle-stats_renderer-preload": "webpack-bundle-analyzer dist/stats_renderer-preload.json dist --report dist/stats_renderer-preload.html --mode static --default-sizes stat --log-level debug --no-open",
     "bundle-stats_main": "webpack-bundle-analyzer dist/stats_main.json dist --report dist/stats_main.html --mode static --default-sizes stat --log-level debug --no-open",
-    "typescript-check": "tsc --showConfig --project ./tsconfig-cli.json && echo \"####################\" && tsc --listFilesOnly --project ./tsconfig-cli.json && echo \"####################\" && tsc --project ./tsconfig-cli.json --extendedDiagnostics --diagnostics",
-    "typescript-check-GO": "tsgo --showConfig --project ./tsconfig-cli.json && echo \"####################\" && tsgo --project ./tsconfig-cli.json --listFiles --extendedDiagnostics --diagnostics",
-    "typescript-check-GO:watch": "tsgo --project ./tsconfig-cli.json --watch"
+    "patch-types": "node -e 'const path = require(\"path\"); const fs = require(\"fs\"); const filePath = path.join(process.cwd(), \"node_modules/marked/package.json\"); let fileStr = fs.readFileSync(filePath, { encoding: \"utf8\" }); fileStr = fileStr.replace(/\"exports\":/, `\"exports__\":`); fs.writeFileSync(filePath, fileStr, { encoding: \"utf8\" });' && node -e 'const path = require(\"path\"); const fs = require(\"fs\"); const filePath = path.join(process.cwd(), \"node_modules/marked-emoji/package.json\"); let fileStr = fs.readFileSync(filePath, { encoding: \"utf8\" }); fileStr = fileStr.replace(/\"exports\":/g, `\"exports__\":`); fs.writeFileSync(filePath, fileStr, { encoding: \"utf8\" });'",
+    "unpatch-types": "node -e 'const path = require(\"path\"); const fs = require(\"fs\"); const filePath = path.join(process.cwd(), \"node_modules/marked/package.json\"); let fileStr = fs.readFileSync(filePath, { encoding: \"utf8\" }); fileStr = fileStr.replace(/\"exports__\":/, `\"exports\":`); fs.writeFileSync(filePath, fileStr, { encoding: \"utf8\" });' && node -e 'const path = require(\"path\"); const fs = require(\"fs\"); const filePath = path.join(process.cwd(), \"node_modules/marked-emoji/package.json\"); let fileStr = fs.readFileSync(filePath, { encoding: \"utf8\" }); fileStr = fileStr.replace(/\"exports__\":/g, `\"exports\":`); fs.writeFileSync(filePath, fileStr, { encoding: \"utf8\" });'",
+    "typescript-check": "npm run patch-types && tsc --showConfig --project ./tsconfig-cli.json && echo \"####################\" && tsc --listFilesOnly --project ./tsconfig-cli.json && echo \"####################\" && tsc --project ./tsconfig-cli.json --extendedDiagnostics --diagnostics && npm run unpatch-types",
+    "typescript-check-GO": "npm run patch-types && tsgo --showConfig --project ./tsconfig-cli.json && echo \"####################\" && tsgo --project ./tsconfig-cli.json --listFiles --extendedDiagnostics --diagnostics && npm run unpatch-types",
+    "typescript-check-GO:watch": "npm run patch-types && concurrently \"tsgo --project ./tsconfig-cli.json --watch --excludeDirectories **/node_modules\" \"npm run unpatch-types || echo ok\""
   },
   "repository": {
     "type": "git",
@@ -386,7 +388,7 @@
     "@types/yazl": "^3.3.0",
     "@typescript-eslint/eslint-plugin": "^8.34.1",
     "@typescript-eslint/parser": "^8.34.1",
-    "@typescript/native-preview": "^7.0.0-dev.20250620.1",
+    "@typescript/native-preview": "^7.0.0-dev.20250625.1",
     "babel-loader": "^10.0.0",
     "babel-plugin-macros": "^3.1.0",
     "chromium-pickle-js": "^0.2.0",
