@@ -27,23 +27,19 @@ export const noteExportHtmlMustacheTemplate = `
     <header>
         <h1>{{title}} | Annotations about <cite>{{ .dc:title }}</cite></h1>
         <section class="metadata">
-
-
             {{#about}}
-            <section class="metadata">
                 <h2>Informations about the annotated publication</h2>
-                <ul>
-                {{#dc:title}}<li>Title: {{.}}</li>{{/dc:title}}
-                {{#dc:creator}}<li>Creator: {{.}}</li>{{/dc:creator}}
-                {{#dc:publisher}}<li>Publisher: {{.}}</li>{{/dc:publisher}}
-                {{#dc:date}}<li>Date: {{.}}</li>{{/dc:date}}
-                {{#dc:format}}<li>Format: {{.}}</li>{{/dc:format}}
-                {{#dc:identifier}}<li>Identifier: {{.}}</li>{{/dc:identifier}}
-                </ul>
-            </section>
-
+                {{#dc:title}}<p>Title: <cite>{{.}}</cite></p>{{/dc:title}}
+                {{#dc:creator}}<p>Creator: {{.}}</p>{{/dc:creator}}
+                {{#dc:publisher}}<p>Publisher: {{.}}</p>{{/dc:publisher}}
+                <details>
+                    <summary>More about thi spublication</summary>                                <ul>
+                    {{#dc:date}}<li>Date: {{.}}</li>{{/dc:date}}
+                    {{#dc:format}}<li>Format: {{.}}</li>{{/dc:format}}
+                    {{#dc:identifier}}<li>Identifier: {{.}}</li>{{/dc:identifier}}
+                    </ul>
+                </details>
             {{/about}}
-
         </section>
     </header>
 
