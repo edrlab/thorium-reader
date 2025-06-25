@@ -88,14 +88,12 @@ export const noteExportHtmlMustacheTemplate = `
 
                 <!-- Creator Information -->
                 <section class="creator">
-                    <h3>Creator</h3>
                     <p><small>Created by {{creator.name}} ({{creator.id}}) ({{creator.type}}) on: {{created}} and modified on: {{modified}}</small></p>
                 </section>
 
                 <!-- Target Information -->
                 <section class="target">
-                    <h3>Target</h3>
-                    <p>Source: {{target.source}}</p>
+                    <h3>Source</h3>
                     
                     {{#target.meta}}
                     <section class="meta">
@@ -114,6 +112,7 @@ export const noteExportHtmlMustacheTemplate = `
                         <details>
                             <summary>Selectors</summary>
                             {{#target.selector}}
+                            <p>{{target.source}}</p>
                                 <strong>{{type}}</strong>
                                 <ul>
                                     {{#start}}<li>Start: {{start}}</li>{{/start}}
