@@ -179,10 +179,10 @@ const Theme = ({ dockedMode }: { dockedMode: boolean }) => {
 
     const defaultKey =
         theme === "neutral" ? 1
-            : theme === "night" ? 4
+            : theme === "night" ? 3
                 : theme === "sepia" ? 2
                     : theme === "contrast1" ? 5
-                        : theme === "paper" ? 3
+                        : theme === "paper" ? 4
                             : theme === "contrast2" ? 6
                                 : theme === "contrast3" ? 7
                                     : theme === "contrast4" ? 8
