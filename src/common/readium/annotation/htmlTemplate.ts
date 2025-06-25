@@ -32,14 +32,18 @@ export const noteExportHtmlMustacheTemplate = `
 
             {{#about}}
             <div class="metadata">
-                <h3>Publication Metadata</h3>
-                {{#dc:identifier}}<p>Identifier: {{.}}</p>{{/dc:identifier}}
-                {{#dc:format}}<p>Format: {{.}}</p>{{/dc:format}}
-                {{#dc:title}}<p>Title: {{.}}</p>{{/dc:title}}
-                {{#dc:publisher}}<p>Publisher: {{.}}</p>{{/dc:publisher}}
-                {{#dc:creator}}<p>Creator: {{.}}</p>{{/dc:creator}}
-                {{#dc:date}}<p>Date: {{.}}</p>{{/dc:date}}
-            </div>
+            <section class="metadata">
+                <h2>Informations about the annotated publication</h2>
+                <ul>
+                {{#dc:title}}<li>Title: {{.}}</li>{{/dc:title}}
+                {{#dc:creator}}<li>Creator: {{.}}</li>{{/dc:creator}}
+                {{#dc:publisher}}<li>Publisher: {{.}}</li>{{/dc:publisher}}
+                {{#dc:date}}<li>Date: {{.}}</li>{{/dc:date}}
+                {{#dc:format}}<li>Format: {{.}}</li>{{/dc:format}}
+                {{#dc:identifier}}<li>Identifier: {{.}}</li>{{/dc:identifier}}
+                </ul>
+            </section>
+
             {{/about}}
 
         </div>
