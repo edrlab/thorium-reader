@@ -11,16 +11,17 @@
         text-overflow: ellipsis;
         overflow: hidden;
         text-wrap: nowrap;
+        margin-bottom: 10px;
 
 
         &_navigation {
             background-color: var(--color-extralight-grey);
             border-radius: 6px;
-            height: 80px;
+            height: 75px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 5px 20px;
+            padding: 5px 20px 0;
             margin: 10px 0;
             width: inherit;
 
@@ -35,7 +36,7 @@
                 height: 56px;
 
                 @media screen and (width <= 1072px) {
-                    gap: 30px;
+                    gap: 25px;
                     flex-direction: column;
                     align-items: start;
                     height: unset;
@@ -103,6 +104,7 @@
 
             &_title {
                 font-size: 14px;
+                font-weight: 600;
                 // margin: 0 0 5px 40px;
                 // position: absolute;
                 // top: -18px;
@@ -330,12 +332,16 @@
 
     &_wrapper {
         overflow: auto;
-        inset: 280px 20px 75px 26px;
+        inset: 240px 20px 75px 26px;
         padding: 0;
         margin-top: 0;
         margin-bottom: 0.4em;
         position: absolute;
         background-color: var(--color-secondary);
+
+        @media screen and (width <= 1072px) {
+            inset: 280px 20px 75px 26px;
+        }
 
         @include mx.scrollbar_styling;
 
