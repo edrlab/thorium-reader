@@ -20,7 +20,7 @@ export const noteExportHtmlMustacheTemplate = `
         .annotations { margin: 2rem 0; padding: 1rem; border-left: 4px solidrgb(150, 150, 150); }
         .selector { background-color: #f5f5f5; padding: 1rem; margin: 1rem 0; }
         .highlight { padding: 0.2em; }
-        .annotation {border-left-width: thin; border-left-color: grey; }
+        .annotation {padding: 10px; border-left-style: solid;border-left-width: thin; border-left-color: grey; }
         .annotationmetadata { font-style: italic; color: #888; }
     </style>
 </head>
@@ -73,7 +73,6 @@ export const noteExportHtmlMustacheTemplate = `
                         {{#body.highlight}} | Highlight type: {{body.highlight}}{{/body.highlight}};
                         {{#body.textDirection}}TextDirection:  | {{body.textDirection}}{{/body.textDirection}}
                      | </p>
-                </section>
 
                 <!-- Creator Information -->
                 <section class="creator">
@@ -116,6 +115,7 @@ export const noteExportHtmlMustacheTemplate = `
                                 </ul>
                             {{/target.selector}}
                         </details>
+                        </section>
                     </section>
                 </section>
                 {{^isLast}}<hr>{{/isLast}}
