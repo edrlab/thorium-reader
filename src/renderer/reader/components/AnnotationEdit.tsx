@@ -126,7 +126,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         }
     }, []); // empty => runs once on mount (undefined => runs on every render)
 
-    const component = <div
+    const component = <form
         className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form : stylesAnnotations.annotation_form}
     >
         {displayFromReaderMenu ? <></> :
@@ -277,7 +277,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
             }
         </div>
         {/* </div> */}
-    </div>;
+    </form>;
 
     return component;
 };
