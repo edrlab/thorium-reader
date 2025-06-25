@@ -51,24 +51,15 @@ export const noteExportHtmlMustacheTemplate = `
     <main>
         {{#items}}
             <section class="annotation">
-                <!-- Annotation Metadata -->
-                <h2>{{motivation}}</h2>
-                <p><small>Created: {{created}}</small></p>
-                {{#modified}}<p><small>Modified: {{modified}}</small></p>{{/modified}}
-
-                <!-- Creator Information -->
-                <section class="creator">
-                    <h3>Creator</h3>
-                    <p>{{creator.name}} ({{creator.id}})</p>
-                    <p>Type: {{creator.type}}</p>
-                </section>
-
                 <!-- Annotation Body -->
                 <section class="body">
-                    <h3>Content</h3>
-                    {{#body.color}}<p>Color: {{body.color}}</p>{{/body.color}}
-                    {{#body.highlight}}<p>Highlight: {{body.highlight}}</p>{{/body.highlight}}
-                    {{#body.textDirection}}<p>TextDirection: {{body.textDirection}}</p>{{/body.textDirection}}
+                    <h2>Annotation ID: {{body.id}}</h2>
+
+                    {{#body.value}}
+                        <blockquote lang="{{body.language}}" {{#body.format}}data-format="{{body.format}}"{{/body.format}}>
+                            {{body.value}}
+                        </blockquote>
+                    {{/body.value}}
 
                     {{#body.htmlValue}}
                     <article class="markdown-body">
@@ -76,17 +67,22 @@ export const noteExportHtmlMustacheTemplate = `
                     </article>
                     {{/body.htmlValue}}
 
-                    {{#body.value}}
-                    <details>
-                        <summary>Text Value</summary>
-                        <p lang="{{body.language}}" {{#body.format}}data-format="{{body.format}}"{{/body.format}}>
-                            {{body.value}}
-                        </p>
-                    </details>
-                    {{/body.value}}
-
                     {{#body.tag}}<p>Tag: {{body.tag}}</p>{{/body.tag}}
+
+
+                <!-- Annotation Metadata -->
+                    {{#body.color}}<p>Color: {{body.color}}</p>{{/body.color}}
+                    {{#body.highlight}}<p>Highlight: {{body.highlight}}</p>{{/body.highlight}}
+                    {{#body.textDirection}}<p>TextDirection: {{body.textDirection}}</p>{{/body.textDirection}}
                 </section>
+
+                    <!-- Creator Information -->
+
+                <section class="creator">
+                <h3>Creator</h3>
+                <p><small>Created by {{creator.name}} ({{creator.id}}) ({{creator.type}}) on: {{created}} and modified on: {{modified}}</small></p>
+                </section>
+
 
                 <!-- Target Information -->
                 <section class="target">
