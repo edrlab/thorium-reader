@@ -288,20 +288,21 @@ $setting_color: var(--color-blue);
 .close_button_div {
     position: absolute;
     top: 5px;
-    right: 10px;
+    right: 5px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
     background-color: transparent;
-    padding: 10px;
-    width: 60%;
+    width: 63%;
     z-index: 10;
+    padding: 0 0 10px 10px;
 
     div {
         display: flex;
         align-items: center;
         gap: 5px;
+        margin-bottom: 10px;
     }
 
     .settings_tab_title {
