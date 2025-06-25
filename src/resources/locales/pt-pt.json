@@ -116,7 +116,7 @@
         "readBook": "Ler",
         "released": "Publicado em",
         "sort": "Ordenar por",
-        "tag": "Etiqueta",
+        "tag": "Etiquetar",
         "tags": "Etiquetas",
         "update": "Editar"
     },
@@ -265,16 +265,16 @@
                 "descriptive": "Braile"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Anotações completas em Ruby",
+                "descriptive": "Anotações completas em Ruby"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Alto contraste entre áudio de primeiro e segundo plano",
+                "descriptive": "Alto contraste entre áudio de primeiro e segundo plano"
             },
             "additional-accessibility-information-high-contrast-between-text-and-background": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Alto contraste entre texto de primeiro e segundo plano",
+                "descriptive": "Alto contraste entre texto de primeiro e segundo plano"
             },
             "additional-accessibility-information-large-print": {
                 "compact": "Caracteres grandes",
@@ -282,27 +282,27 @@
             },
             "additional-accessibility-information-page-breaks": {
                 "compact": "Quebras de página incluídas",
-                "descriptive": ""
+                "descriptive": "Quebras de página incluídas a partir da versão impressa"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Algumas anotações em Ruby",
+                "descriptive": "Algumas anotações em Ruby"
             },
             "additional-accessibility-information-sign-language": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Língua gestual",
+                "descriptive": "Língua gestual"
             },
             "additional-accessibility-information-tactile-graphics": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Gráficos táteis incluídos",
+                "descriptive": "Integração de gráficos táteis para facilitar o acesso aos elementos visuais para pessoas invisuais"
             },
             "additional-accessibility-information-tactile-objects": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Objetos 3D táteis",
+                "descriptive": "Objetos 3D táteis"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sugestões Texto para voz disponíveis",
+                "descriptive": "Sugestões Texto para voz disponíveis"
             },
             "additional-accessibility-information-title": ""
         },
@@ -329,19 +329,19 @@
                 "compact": "Para mais informações ver relatório de avaliação"
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Esta publicação afirma conformidade",
+                "descriptive": "Esta publicação afirma conformidade"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Acessibilidade 1.0",
+                "descriptive": "EPUB Acessibilidade 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Acessibilidade 1.1",
+                "descriptive": "EPUB Acessibilidade 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "",
+                "compact": "Nível A",
                 "descriptive": ""
             },
             "conformance-details-level-aa": {
@@ -480,20 +480,20 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "rich-content-title": "",
+            "rich-content-title": "Conteúdo enriquecido",
             "rich-content-transcript": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Transcrições fornecidas",
+                "descriptive": "São fornecidas transcrições para os conteúdos áudio e vídeo"
             },
             "rich-content-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Nenhuma informação disponível",
+                "descriptive": "Nenhuma informação disponível"
             }
         },
         "ways-of-reading": {
             "ways-of-reading-nonvisual-reading-alt-text": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Possui texto alternativo",
+                "descriptive": "Possui texto alternativo para descrição das imagens"
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
                 "compact": "",
@@ -541,7 +541,7 @@
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": "Todo o conteúdo pode ser lido em voz alta ou em braille dinâmico"
+                "textual": "Todo o conteúdo pode ser lido em voz alta ou em braile dinâmico"
             },
             "accessibilityFeature": {
                 "alternativeText": "Contém texto alternativo nas imagens",
@@ -605,7 +605,7 @@
             "title": "Progressão"
         },
         "read": "Concluído",
-        "remainingTime": "Empréstimo (tempo restante)",
+        "remainingTime": "Empréstimo (restante)",
         "renewButton": "Renovar",
         "returnButton": "Devolver",
         "returnedLcp": "Este documento, protegido por PCL, foi devolvido.",
@@ -681,7 +681,7 @@
             "edit": "Editar",
             "goTo": "Ir para página",
             "landmarks": "Pontos de referência",
-            "saveMark": "Guardar favorito",
+            "saveMark": "Guardar",
             "search": "Pesquisar",
             "searchResult": "Pesquisar [{{- searchText}}]",
             "toc": "Índice"
@@ -709,7 +709,7 @@
             "ZenModeTitle": "Modo Zen",
             "annotationTitle": "Anotação",
             "backHomeTitle": "Fechar janela de leitura (voltar à estante)",
-            "bookmarkTitle": "Marcador",
+            "bookmarkTitle": "marcador",
             "currentPage": "Página atual: {{- current}}",
             "currentPageTotal": "Página atual: {{- current}}/{{- total}}",
             "detachWindowTitle": "Mostrar biblioteca / janela da estante",
@@ -803,7 +803,7 @@
                 "title": "Zoom"
             },
             "preset": {
-                "apply": "Aplicar os seus parâmetros de leitura preferidos",
+                "apply": "Aplicar",
                 "applyDetails": "Aplicar os seus parâmetros de leitura preferidos ao livro atual.",
                 "detail": "Guardar/Aplicar/Repor os seus parâmetros de leitura preferidos.",
                 "reset": "Repor",
@@ -1049,11 +1049,11 @@
                 },
                 "NavigateToBegin": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para o início"
                 },
                 "NavigateToEnd": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para o fim"
                 },
                 "OpenReaderInfo": {
                     "description": "",
@@ -1065,7 +1065,7 @@
                 },
                 "Print": {
                     "description": "",
-                    "name": ""
+                    "name": "Imprimir"
                 },
                 "SearchNext": {
                     "description": "",
@@ -1093,7 +1093,7 @@
                 },
                 "ToggleReaderFullscreen": {
                     "description": "",
-                    "name": ""
+                    "name": "Alternar ecrã completo"
                 }
             },
             "loadUserJson": "Carregar a partir de ficheiro do utilizador",
@@ -1112,8 +1112,8 @@
         "note": {
             "export": {
                 "applyDefaultTemplate": "",
-                "enableCheckbox": "",
-                "overrideHTMLTemplate": ""
+                "enableCheckbox": "Personalizar o modelo HTML",
+                "overrideHTMLTemplate": "Exportação de anotações (anotações e marcadores)"
             }
         },
         "session": {
@@ -1127,7 +1127,7 @@
         "theme": {
             "auto": "Automático",
             "dark": "Escuro",
-            "description": "O tema da aplicação corresponde ao sistema operativo.",
+            "description": "O tema da aplicação combina com o do sistema operativo.",
             "light": "Claro",
             "title": "Tema da aplicação"
         }
