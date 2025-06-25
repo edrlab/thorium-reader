@@ -53,19 +53,28 @@ export const noteExportHtmlMustacheTemplate = `
                 <!-- Annotation Body -->
                 <section class="annotation">
                     <h2>Annotation</h2>
-                    {{#body.value}}
+                    <p>{{#motivation}}{{motivation}}{{/motivation}}</p>
+        
+
                     <blockquote class="highlight">
-                        <p lang="{{body.language}}" {{#body.format}}data-format="{{body.format}}"{{/body.format}}>
-                            {{body.value}}
-                        </p>
+                        {{#target.selector}}
+                           {{#exact}}{{exact}}{{/exact}}
+                        {{/target.selector}}
                     </blockquote>
-                    {{/body.value}}
+    
                     {{#body.htmlValue}}
                     <article class="markdown-body">
                         {{{body.htmlValue}}}
                     </article>
                     {{/body.htmlValue}}
-
+                    {{#body.value}}
+                    <details>
+                        <summary>Raw annotation (not converted to HTML)</summary>
+                        <p lang="{{body.language}}" {{#body.format}}data-format="{{body.format}}"{{/body.format}}>
+                            {{body.value}}
+                        </p>
+                    </details>
+                    {{/body.value}}
                     <!-- Annotation Metadata -->
                     <p class="annotationmetadata">
                         {{#body.tag}} | Tag: {{body.tag}}{{/body.tag}}
