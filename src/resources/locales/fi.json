@@ -900,7 +900,7 @@
                     "name": ""
                 },
                 "AudioPlayPause": {
-                    "description": "Aktivoi käynnistä/pysäytä kesken olevaan teokseen (EPUB3 teksti- ja äänikirja, tekstistä puheeksi tai äänikirja)",
+                    "description": "Aktivoi käynnistä/pysäytä kesken olevaan teokseen (EPUB3 teksti- ja äänikirja, tekstistä puheeksi -toiminto tai äänikirja)",
                     "name": "Käynnistä/pysäytä ääni"
                 },
                 "AudioPrevious": {
