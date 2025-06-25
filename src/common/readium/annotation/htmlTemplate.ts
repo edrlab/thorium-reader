@@ -17,10 +17,10 @@ export const noteExportHtmlMustacheTemplate = `
         body {margin: 2rem; }
         header, footer { color: #666; padding: 1rem; }
         .metadata { background-color: #f8f9fa; padding: 1rem; margin: 1rem 0; }
-        .annotation { margin: 2rem 0; padding: 1rem; border-left: 4px solidrgb(150, 150, 150); }
+        .annotations { margin: 2rem 0; padding: 1rem; border-left: 4px solidrgb(150, 150, 150); }
         .selector { background-color: #f5f5f5; padding: 1rem; margin: 1rem 0; }
         .highlight { padding: 0.2em; }
-        .perannotation {border-left: 1px; border-color: {{body.color}}; }
+        .annotation {border-left-width: thin; border-left-color: grey; }
         .annotationmetadata { font-style: italic; color: #888; }
     </style>
 </head>
@@ -35,7 +35,8 @@ export const noteExportHtmlMustacheTemplate = `
                 {{#dc:creator}}<p>Creator: {{.}}</p>{{/dc:creator}}
                 {{#dc:publisher}}<p>Publisher: {{.}}</p>{{/dc:publisher}}
                 <details>
-                    <summary>More about thi spublication</summary>                                <ul>
+                    <summary>More about this publication</summary> 
+                    <ul>
                     {{#dc:date}}<li>Date: {{.}}</li>{{/dc:date}}
                     {{#dc:format}}<li>Format: {{.}}</li>{{/dc:format}}
                     {{#dc:identifier}}<li>Identifier: {{.}}</li>{{/dc:identifier}}
@@ -48,39 +49,37 @@ export const noteExportHtmlMustacheTemplate = `
     <!-- Main Content - Annotations -->
     <main>
         {{#items}}
-            <section class="annotation">
+            <section class="annotations">
                 <!-- Annotation Body -->
-                <section class="perannotation">
-                    <h2>Annotation ID: {{body.id}}</h2>
-
+                <section class="annotation">
+                    <h2>Annotation</h2>
                     {{#body.value}}
-                        <blockquote lang="{{body.language}}" {{#body.format}}data-format="{{body.format}}"{{/body.format}}>
+                    <blockquote class="highlight">
+                        <p lang="{{body.language}}" {{#body.format}}data-format="{{body.format}}"{{/body.format}}>
                             {{body.value}}
-                        </blockquote>
+                        </p>
+                    </blockquote>
                     {{/body.value}}
-
                     {{#body.htmlValue}}
                     <article class="markdown-body">
                         {{{body.htmlValue}}}
                     </article>
                     {{/body.htmlValue}}
 
-                <!-- Annotation Metadata -->
+                    <!-- Annotation Metadata -->
                     <p class="annotationmetadata">
-                    {{#body.tag}}Tag: {{body.tag}}<{{/body.tag}}; 
-                    {{#body.color}}Color: {{body.color}}{{/body.color}};
-                    {{#body.highlight}}Highlight type: {{body.highlight}}{{/body.highlight}}; 
-                    {{#body.textDirection}}TextDirection: {{body.textDirection}}{{/body.textDirection}}
+                        {{#body.tag}} | Tag: {{body.tag}}{{/body.tag}}
+                        {{#body.color}} | Color: {{body.color}}{{/body.color}}
+                        {{#body.highlight}} | Highlight type: {{body.highlight}}{{/body.highlight}};
+                        {{#body.textDirection}}TextDirection:  | {{body.textDirection}}{{/body.textDirection}}
                     </p>
                 </section>
 
-                    <!-- Creator Information -->
-
+                <!-- Creator Information -->
                 <section class="creator">
-                <h3>Creator</h3>
-                <p><small>Created by {{creator.name}} ({{creator.id}}) ({{creator.type}}) on: {{created}} and modified on: {{modified}}</small></p>
+                    <h3>Creator</h3>
+                    <p><small>Created by {{creator.name}} ({{creator.id}}) ({{creator.type}}) on: {{created}} and modified on: {{modified}}</small></p>
                 </section>
-
 
                 <!-- Target Information -->
                 <section class="target">
@@ -88,40 +87,39 @@ export const noteExportHtmlMustacheTemplate = `
                     <p>Source: {{target.source}}</p>
                     
                     {{#target.meta}}
-                        <section class="meta">
-                            {{#page}}<p>Page: {{page}}</p>{{/page}}
-                                <h4>This annotation happens in the context of the following publication title hierarchy</h4>
-                                <ul>
-                                    {{#headings}}
-                                    {{#.}}<li>Level {{level}}: {{txt}}</li>{{/.}}
-                                    {{/headings}}
-                                </ul>
-
-                        </section>
+                    <section class="meta">
+                        {{#page}}<p>Page: {{page}}</p>{{/page}}
+                        <h4>This annotation happens in the context of the following publication title hierarchy</h4>
+                        <ul>
+                            {{#headings}}
+                            {{#.}}<li>Level {{level}}: {{txt}}</li>{{/.}}
+                            {{/headings}}
+                        </ul>
+                    </section>
                     {{/target.meta}}
 
                     <!-- Selectors -->
                     <section class="selectors">
-                    <details>
-                        <summary>Selectors</summary
-                        {{#target.selector}}
+                        <details>
+                            <summary>Selectors</summary>
+                            {{#target.selector}}
                                 <strong>{{type}}</strong>
                                 <ul>
-                                {{#start}}<li>Start: {{start}}</li>{{/start}}
-                                {{#end}}<pli>End: {{end}}</li>{{/end}}
-                                {{#exact}}<li>Exact: {{exact}}</li>{{/exact}}
-                                {{#prefix}}<li>Prefix: {{prefix}}</li>{{/prefix}}
-                                {{#suffix}}<li>Suffix: {{suffix}}</li>{{/suffix}}
-                                {{#value}}<li>Value: {{value}}</li>{{/value}}
-                                {{#conformsTo}}<li>Conforms to: {{conformsTo}}</li>{{/conformsTo}}
-                                {{#refinedBy}}<div class="refined">{{> selector}}</div>{{/refinedBy}}
+                                    {{#start}}<li>Start: {{start}}</li>{{/start}}
+                                    {{#end}}<li>End: {{end}}</li>{{/end}}
+                                    {{#exact}}<li>Exact: {{exact}}</li>{{/exact}}
+                                    {{#prefix}}<li>Prefix: {{prefix}}</li>{{/prefix}}
+                                    {{#suffix}}<li>Suffix: {{suffix}}</li>{{/suffix}}
+                                    {{#value}}<li>Value: {{value}}</li>{{/value}}
+                                    {{#conformsTo}}<li>Conforms to: {{conformsTo}}</li>{{/conformsTo}}
+                                    {{#refinedBy}}<div class="refined">{{> selector}}</div>{{/refinedBy}}
                                 </ul>
-                        {{/target.selector}}
-                        </details
+                            {{/target.selector}}
+                        </details>
                     </section>
                 </section>
+                {{^isLast}}<hr>{{/isLast}}
             </section>
-            {{^isLast}}<hr>{{/isLast}}
         {{/items}}
     </main>
 
