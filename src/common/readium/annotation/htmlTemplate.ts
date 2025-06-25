@@ -92,12 +92,13 @@ export const noteExportHtmlMustacheTemplate = `
                     {{#target.meta}}
                         <section class="meta">
                             {{#page}}<p>Page: {{page}}</p>{{/page}}
-                            {{#headings}}
-                                <h4>Headings</h4>
+                                <h4>This annotation happens in the context of the following publication title hierarchy</h4>
                                 <ul>
+                                    {{#headings}}
                                     {{#.}}<li>Level {{level}}: {{txt}}</li>{{/.}}
+                                    {{/headings}}
                                 </ul>
-                            {{/headings}}
+
                         </section>
                     {{/target.meta}}
 
