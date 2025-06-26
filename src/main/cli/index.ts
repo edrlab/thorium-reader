@@ -297,7 +297,8 @@ export function commandLineMainEntry(
                 // https://www.electronjs.org/docs/api/command-line-switches#--inspect-publish-uidstderrhttp
                 // arg.includes("--inspect-publish-uid") ||
                 // https://www.electronjs.org/docs/api/command-line-switches#--js-flagsflags
-                arg.includes("--js-flags")
+                arg.includes("--js-flags") ||
+                arg.includes("--experimental-network-inspector")
             ) {
                 // process.exit1);
                 app.exit(1);

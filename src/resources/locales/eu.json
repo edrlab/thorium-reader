@@ -786,6 +786,7 @@
             "letterSpacing": "Letren tartea",
             "lineSpacing": "Lerroartea",
             "margin": "Marjina",
+            "mathjax": "",
             "noFootnotes": "Oin-oharrak desaktibatu",
             "noRTLFlip": "Desgaitu eskuinetik ezkerrera UI",
             "noRuby": "Ezkutatu Japoniako Ruby",

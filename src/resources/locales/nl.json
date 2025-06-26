@@ -786,6 +786,7 @@
             "letterSpacing": "Letterafstand",
             "lineSpacing": "Regelafstand",
             "margin": "Marge",
+            "mathjax": "",
             "noFootnotes": "Verberg pop-up voetnoten",
             "noRTLFlip": "Schakel de rechts-naar-links-UI uit",
             "noRuby": "Verberg Japanse Ruby",

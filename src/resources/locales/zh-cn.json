@@ -20,7 +20,7 @@
             "copy": "复制",
             "cut": "剪切",
             "paste": "粘贴",
-            "print": "",
+            "print": "打印",
             "redo": "重做",
             "selectAll": "全选",
             "title": "编辑",
@@ -136,8 +136,8 @@
         "cancel": "取消",
         "deleteAnnotations": "您要删除笔记吗？",
         "deleteAnnotationsText": "您确定要删除 {{- annotationListLength}} 条笔记吗？",
-        "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteBookmarks": "删除书签？",
+        "deleteBookmarksText": "确认删除{{- bookmarkListLength}}个书签？",
         "deleteFeed": "您真的要删除此出版目录吗？",
         "deletePublication": "您真的要删除此出版物吗?",
         "import": "您真的要导入这些文件吗:",
@@ -257,8 +257,8 @@
                 "descriptive": ""
             },
             "additional-accessibility-information-audio-descriptions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "音频描述",
+                "descriptive": "音频描述"
             },
             "additional-accessibility-information-braille": {
                 "compact": "",
@@ -786,6 +786,7 @@
             "letterSpacing": "字符间距",
             "lineSpacing": "行间距",
             "margin": "页边距",
+            "mathjax": "",
             "noFootnotes": "禁用脚注",
             "noRTLFlip": "禁用从右到左的界面布局",
             "noRuby": "隐藏日文振假名",
