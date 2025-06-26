@@ -11,7 +11,6 @@ import { app, protocol, ProtocolRequest, ProtocolResponse, session } from "elect
 import * as fs from "fs";
 import * as mime from "mime-types";
 import * as path from "path";
-import { _PACKAGING, IS_DEV } from "readium-desktop/preprocessor-directives";
 
 import { TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { parseDOM, serializeDOM } from "@r2-navigator-js/electron/common/dom";
@@ -131,7 +130,7 @@ if (true) { // !_USE_HTTP_STREAMER) {
                 // `/${READIUM_CSS_URL_PATH}/`
                 readiumcssJson.urlRoot = THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}";
             }
-            if (IS_DEV) {
+            if (__TH__IS_DEV__) {
                 debug("_____ readiumCssJson.urlRoot (setupReadiumCSS() transformer): ", readiumcssJson.urlRoot);
             }
 
@@ -268,7 +267,7 @@ const streamProtocolHandler = async (
         debug("streamProtocolHandler req.referrer", ref);
     }
 
-    if (IS_DEV) {
+    if (__TH__IS_DEV__) {
         Object.keys(req.headers).forEach((header: string) => {
             const val = req.headers[header];
 
@@ -320,7 +319,7 @@ const streamProtocolHandler = async (
 
         const pdfjsFolder = "assets/lib/pdfjs";
         let folderPath: string = path.join(__dirname, pdfjsFolder);
-        if (_PACKAGING === "0") {
+        if (!__TH__IS_PACKAGED__) {
             folderPath = path.join(process.cwd(), "dist", pdfjsFolder);
         }
         const pdfjsFullPathname = path.normalize(`${folderPath}/${pdfjsUrlPathname}`);

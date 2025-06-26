@@ -142,7 +142,7 @@ export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: bool
     // this normally occurs at import time, but let's save debugging effort by checking immediately when exporting...
     // errors are non-fatal, just hunt for the "IRangeInfo DIFF" console logs
     // const isABookmark = drawType === EDrawType.bookmark; // rangeInfo.endContainerChildTextNodeIndex === rangeInfo.startContainerChildTextNodeIndex && rangeInfo.endContainerElementCssSelector === rangeInfo.startContainerElementCssSelector && rangeInfo.endOffset - rangeInfo.startOffset === 1;
-    // if (IS_DEV) {
+    // if (__TH__IS_DEV__) {
         // await convertSelectorTargetToLocatorExtended({ source: "", selector }, cacheDocument, rangeInfo, isABookmark);
     // }
     return selector;

@@ -10,7 +10,7 @@ import * as path from "path";
 import { computeReadiumCssJsonMessage } from "readium-desktop/common/computeReadiumCssJsonMessage";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { diMainGet } from "readium-desktop/main/di";
-import { _APP_NAME, _APP_VERSION, _NODE_MODULE_RELATIVE_URL, _PACKAGING } from "readium-desktop/preprocessor-directives";
+import { _APP_NAME, _APP_VERSION, _NODE_MODULE_RELATIVE_URL } from "readium-desktop/preprocessor-directives";
 
 import { IEventPayload_R2_EVENT_READIUMCSS } from "@r2-navigator-js/electron/common/events";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
@@ -57,7 +57,7 @@ export function computeReadiumCssJsonMessageInStreamer(
 }
 
 let mathJaxPath = "MathJax";
-if (_PACKAGING === "1") {
+if (__TH__IS_PACKAGED__) {
     mathJaxPath = path.normalize(path.join(__dirname, mathJaxPath));
 } else {
     mathJaxPath = "mathjax";
@@ -70,7 +70,7 @@ export const MATHJAX_FILE_PATH = mathJaxPath;
 export const MATHJAX_URL_PATH = "math-jax";
 
 let rcssPath = "ReadiumCSS";
-if (_PACKAGING === "1") {
+if (__TH__IS_PACKAGED__) {
     rcssPath = path.normalize(path.join(__dirname, rcssPath));
 } else {
     rcssPath = "r2-navigator-js/dist/ReadiumCSS";
