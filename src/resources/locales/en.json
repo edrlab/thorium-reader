@@ -896,23 +896,23 @@
                     "name": "Next Audio Segment"
                 },
                 "AudioNextAlt": {
-                    "description": "Move forward to the next audio segment in the narration (EPUB3 Media Overlays, Text To Speech read-aloud, or audiobook). This skips any currently escapable structure",
+                    "description": "Move forward to the next audio segment in the narration (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook). This skips any currently escapable structure",
                     "name": "Next Audio Segment (escape)"
                 },
                 "AudioPlayPause": {
-                    "description": "Toggle play/pause for current narration (EPUB3 Media Overlays, Text To Speech read-aloud, or audiobook)",
+                    "description": "Toggle play/pause for current narration (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook)",
                     "name": "Play/Pause Audio"
                 },
                 "AudioPrevious": {
-                    "description": "Move back to the previous audio segment in the narration (EPUB3 Media Overlays, Text To Speech read-aloud, or audiobook)",
+                    "description": "Move back to the previous audio segment in the narration (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook)",
                     "name": "Previous Audio Segment"
                 },
                 "AudioPreviousAlt": {
-                    "description": "Move back to the previous audio segment in the narration (EPUB3 Media Overlays, Text To Speech read-aloud, or audiobook). This skips any currently escapable structure",
+                    "description": "Move back to the previous audio segment in the narration (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook). This skips any currently escapable structure",
                     "name": "Previous Audio Segment (escape)"
                 },
                 "AudioStop": {
-                    "description": "Stop current audio (EPUB3 Media Overlays, Text To Speech read-aloud, or audiobook)",
+                    "description": "Stop current audio (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook)",
                     "name": "Stop Audio"
                 },
                 "CloseReader": {
