@@ -904,7 +904,7 @@
                     "name": "Play/Pause Audio"
                 },
                 "AudioPrevious": {
-                    "description": "Move back to the previous audio segment in the narration (works with EPUB3 Media Overlays, Text To Speech read-aloud, or audiobook)",
+                    "description": "Move back to the previous audio segment in the narration (EPUB3 Media Overlays, Text To Speech read-aloud, or audiobook)",
                     "name": "Previous Audio Segment"
                 },
                 "AudioPreviousAlt": {
