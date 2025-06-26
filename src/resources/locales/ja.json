@@ -799,6 +799,7 @@
             "letterSpacing": "文字の間隔",
             "lineSpacing": "行の間隔",
             "margin": "ページの余白",
+            "mathjax": "",
             "noFootnotes": "ポップアップ脚注を表示しない",
             "noRTLFlip": "右から左へ進むUIを無効にする",
             "noRuby": "ルビを表示しない",

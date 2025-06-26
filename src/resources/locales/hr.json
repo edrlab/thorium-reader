@@ -799,6 +799,7 @@
             "letterSpacing": "Razmak između slova",
             "lineSpacing": "Razmak između redova",
             "margin": "Margina",
+            "mathjax": "",
             "noFootnotes": "Isključi fusnote",
             "noRTLFlip": "",
             "noRuby": "",

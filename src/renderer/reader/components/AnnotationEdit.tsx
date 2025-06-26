@@ -26,7 +26,7 @@ import * as TagIcon from "readium-desktop/renderer/assets/icons/tag-icon.svg";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { readerLocalActionSetConfig } from "../redux/actions";
 import classNames from "classnames";
-import { TextArea } from "react-aria-components";
+// import { TextArea } from "react-aria-components";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
@@ -140,8 +140,16 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                         `${locatorExtended.selectionInfo.cleanText.slice(0, 200)}...` :
                         locatorExtended.selectionInfo.cleanText)
                     : ""}</p>
-            <TextArea id={`${uuid}_edit`} name="addNote" wrap="hard" className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form_textarea : stylesAnnotations.annotation_form_textarea} defaultValue={comment} ref={textAreaRef} maxLength={annotationMaxLength} onChange={(a) => setAnnotationLength(a.currentTarget.value.length)}
-            ></TextArea>
+            <textarea
+                id={`${uuid}_edit`}
+                name="addNote"
+                wrap="hard"
+                className={displayFromReaderMenu ? stylesAnnotations.annotation_edit_form_textarea : stylesAnnotations.annotation_form_textarea}
+                defaultValue={comment}
+                ref={textAreaRef}
+                maxLength={annotationMaxLength}
+                onChange={(a) => setAnnotationLength(a.currentTarget.value.length)}
+            />
             <span style={{fontSize: "10px", color: "var(--color-medium-grey)", width: "420px", textAlign: "end"}}>{annotationLength}/{annotationMaxLength}</span>
 
         </div>

@@ -460,158 +460,158 @@
             "navigation-title": "Gezinme",
             "navigation-toc": {
                 "compact": "İçindekiler tablosu",
-                "descriptive": "Metnin tüm bölümlerine bağlantılarla içindekiler tablosu"
+                "descriptive": "Metnin tüm fasıllarına bağlantılar içeren içindekiler tablosu"
             }
         },
         "rich-content": {
             "rich-content-accessible-chemistry-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "LaTeX'te kimyasal formüller",
+                "descriptive": "Erişilebilir biçimde kimyasal formüller (LaTeX)"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "MathML'de kimyasal formüller",
+                "descriptive": "Erişilebilir biçimde kimyasal formüller (MathML)"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "LaTeX şeklinde matematik",
+                "descriptive": "Erişilebilir biçimde matematik formülleri (LaTeX)"
             },
             "rich-content-accessible-math-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "MathML şeklinde matematik",
+                "descriptive": "Erişilebilir biçimde matematik formülleri (MathML)"
             },
             "rich-content-accessible-math-described": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Matematiksel içeriğin metin açıklamaları sağlanmaktadır",
+                "descriptive": "Matematiksel içeriğin metin açıklamaları sağlanmaktadır"
             },
             "rich-content-closed-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Video'larda altyazı var",
+                "descriptive": "Eserlerin kapsamlarına dahil edilen video'larda altyazı var"
             },
             "rich-content-extended": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bilgi açısından zengin görseller, kapsamlı açıklamalarla betimlenmektedir",
+                "descriptive": "Bilgi açısından zengin görseller, kapsamlı açıklamalarla betimlenmektedir"
             },
             "rich-content-open-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Video'larda gömülü altyazı var",
+                "descriptive": "Eserlerin kapsamlarına dahil edilen video'larda gömülü altyazı var"
             },
-            "rich-content-title": "",
+            "rich-content-title": "Zengin içerik",
             "rich-content-transcript": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Yazılı döküm(ler) sağlanmaktadır",
+                "descriptive": "Yazılı döküm(ler) sağlanmaktadır"
             },
             "rich-content-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Bilgi mevcut değil",
+                "descriptive": "Bilgi mevcut değil"
             }
         },
         "ways-of-reading": {
             "ways-of-reading-nonvisual-reading-alt-text": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "İsimli içerikte alternatif metin var",
+                "descriptive": "İsimli içerikte, görseller için alternatif metin betimlemeleri var"
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Görsel olmayan okuma hakkında bilgi mevcut değil",
+                "descriptive": "Görsel olmayan okuma hakkında bilgi mevcut değil"
             },
             "ways-of-reading-nonvisual-reading-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sesli okuma veya dinamik braille ile okunamıyor",
+                "descriptive": "İçerik, sesli okuma veya dinamik braille ile okunamıyor"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sesli okuma veya dinamik braille ile tam olarak okunamıyor",
+                "descriptive": "İçeriğin tamamı, sesli okuma veya dinamik braille ile okunamayabilir"
             },
             "ways-of-reading-nonvisual-reading-readable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sesli okuma veya dinamik braille ile okunabilir",
+                "descriptive": "Tüm içerik, sesli okuma veya dinamik braille ile okunabilir"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Önceden kaydedilmiş ses klipleri",
+                "descriptive": "Önceden kaydedilmiş ses klipleri içeriğe gömülüdür"
             },
             "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Önceden kaydedilmiş ses klipleri hakkında bilgi mevcut değil",
+                "descriptive": "Önceden kaydedilmiş ses klipleri hakkında bilgi mevcut değil"
             },
             "ways-of-reading-prerecorded-audio-only": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sadece önceden kaydedilmiş ses klipleri",
+                "descriptive": "Sesli kitapta metin alternatifi bulunmuyor"
             },
             "ways-of-reading-prerecorded-audio-synchronized": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Önceden kaydedilmiş ses dosyası, metin ile eşzamanlıdır",
+                "descriptive": "İçeriğin tamamında, önceden kaydedilmiş ses dosyası ile  metin eşzamanlaması mevcuttur"
             },
-            "ways-of-reading-title": "",
+            "ways-of-reading-title": "Okuma biçimleri",
             "ways-of-reading-visual-adjustments-modifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Görünümde değişiklik yapılabilir",
+                "descriptive": "Metnin görünümünde ve sayfa düzeninde, okuma sisteminin kaabiliyetlerine bağlı olarak değişiklik yapılabilir(yazı biçimi türleri ve yazı boyutu; paragraflar, cümleler, kelimeler ve harfler arasındaki boşluklar ile metin ve arkaplan rengi gibi)"
             },
             "ways-of-reading-visual-adjustments-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Görünümün değiştirilip değiştirilemeyeceği hakkında bilgi mevcut değil",
+                "descriptive": "Görünümün değiştirilip değiştirilemeyeceği hakkında bilgi mevcut değil"
             }
         }
     },
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": ""
+                "textual": "Tüm içerik, sesli okuma veya dinamik braille ile okunabilir"
             },
             "accessibilityFeature": {
-                "alternativeText": "",
-                "displayTransformability": "",
-                "longDescription": "",
-                "printPageNumbers": "",
-                "readingOrder": "",
-                "synchronizedAudioText": "",
-                "tableOfContents": ""
+                "alternativeText": "İçerikteki görsellerde alt metin bulunmaktadır",
+                "displayTransformability": "Metin ve sayfa düzeninin görünümü değiştirilebilir",
+                "longDescription": "Tamamen betimlenmiş grafiksel kaynaklar",
+                "printPageNumbers": "Basılı kaynak sürümdeki sayfalara gidebilmek için  bir sayfa listesi içerir",
+                "readingOrder": "Okuma düzeni içerir",
+                "synchronizedAudioText": "Metin ve ses eşzamanlanmıştır",
+                "tableOfContents": "İçindekiler Tablosu içerir"
             },
             "accessibilityHazard": {
-                "flashing": "",
-                "motionSimulation": "",
-                "name": "",
-                "noFlashing": "",
-                "noMotionSimulation": "",
-                "noSound": "",
-                "none": "",
-                "sound": "",
-                "unknown": ""
+                "flashing": "Yanıp sönen görsel uyarıcı",
+                "motionSimulation": "Hareket simülasyonu",
+                "name": "Tehlike:",
+                "noFlashing": "Yanıp sönen uyarıcı yok",
+                "noMotionSimulation": "Hareket simülasyonu yok",
+                "noSound": "Ses yok",
+                "none": "Hiç",
+                "sound": "Ses",
+                "unknown": "Bilinmeyen"
             },
-            "certifierReport": "",
-            "conformsTo": "",
-            "moreInformation": "",
-            "name": "",
-            "noA11y": ""
+            "certifierReport": "Sertifikalandıranın raporu:",
+            "conformsTo": "Şuna uygundur:",
+            "moreInformation": "Daha fazla bilgi",
+            "name": "Erişilebilirlik",
+            "noA11y": "Erişilebilirlik bilgisi mevcut değil"
         },
-        "actions": "",
+        "actions": "Eylemler",
         "audio": {
-            "tracks": ""
+            "tracks": "Ses dosyaları"
         },
-        "author": "",
-        "cancelledLcp": "",
-        "certificateRevoked": "",
-        "certificateSignatureInvalid": "",
+        "author": "Yazar",
+        "cancelledLcp": "Bu eserin LCP lisansı iptal edilmiştir.",
+        "certificateRevoked": "LCP lisans sertifikası geçersizleştirildi.",
+        "certificateSignatureInvalid": "LCP lisans sertifikasının imzası geçersiz.",
         "cover": {
-            "img": ""
+            "img": "kapak görseli"
         },
-        "day": "",
-        "days": "",
+        "day": "gün",
+        "days": "günler",
         "duration": {
-            "title": ""
+            "title": "Süre"
         },
-        "encryptedNoLicense": "",
-        "expired": "",
-        "expiredLcp": "",
-        "incorrectPassphrase": "",
-        "lcpEnd": "",
-        "lcpRightsCopy": "",
-        "lcpRightsPrint": "",
-        "lcpStart": "",
-        "licenceLCP": "",
-        "licenseCertificateDateInvalid": "",
-        "licenseOutOfDate": "",
+        "encryptedNoLicense": "Eser şifrelenmiş ancak bir LCP lisansı bulunmuyor'!",
+        "expired": "Ödünç alma süresi doldu",
+        "expiredLcp": "Bu eserin LCP lisans süresi doldu.",
+        "incorrectPassphrase": "Eserle eşleşen kayıtlı bir şifre yok veya girilen şifre hatalı.",
+        "lcpEnd": "Son",
+        "lcpRightsCopy": "Karakterler kopyalandı",
+        "lcpRightsPrint": "Sayfalar basıldı",
+        "lcpStart": "Başlat",
+        "licenceLCP": "Lisans (LCP)",
+        "licenseCertificateDateInvalid": "LCP sağlayıcı sertifikasının süresi doldu.",
+        "licenseOutOfDate": "Güncel olmayan LCP Lisansı",
         "licenseSignatureInvalid": "",
         "licensed": "",
         "markAsRead": "",
@@ -799,6 +799,7 @@
             "letterSpacing": "Harf aralığı",
             "lineSpacing": "Satır aralığı",
             "margin": "Kenar",
+            "mathjax": "",
             "noFootnotes": "Dipnot açılır pencerelerini devredışı bırak",
             "noRTLFlip": "Sağdan sola kullanıcı arayüzünü devredışı bırak",
             "noRuby": "Japonca Okutucuları Gizle",
@@ -934,28 +935,28 @@
                     "name": ""
                 },
                 "AudioPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Sesli okuma esnasında, bir önceki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya sesli kitap.) Bu, mevcuttaki geçilebilir yapıları atlar",
+                    "name": "Önceki sesli bölüme git (kaçın)"
                 },
                 "AudioStop": {
-                    "description": "",
-                    "name": ""
+                    "description": "Mevcut sesli oynatımı durdur (EPUB3 medya katmanları, metinden sese okumalar veya sesli kitaplar)",
+                    "name": "Sesli Oynatımı Durdur"
                 },
                 "CloseReader": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuyucu penceresini kapat ve kütüphaneye dön",
+                    "name": "Okuyucuyu Kapat"
                 },
                 "FXLZoomIn": {
-                    "description": "",
-                    "name": ""
+                    "description": "Belirlenmiş düzende, tek sayfa veya çift sayfa görünümünü yakınlaştır.",
+                    "name": "FXL Yakınlaştır"
                 },
                 "FXLZoomOut": {
-                    "description": "",
-                    "name": ""
+                    "description": "Belirlenmiş düzende, tek sayfa veya çift sayfa görünümünü uzaklaştır.",
+                    "name": "FXL Uzaklaştır"
                 },
                 "FXLZoomReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Belirlenmiş düzendeki tek sayfa veya çift sayfa görünümünün yakınlaştırmasını/uzaklaştırmasını sıfırla.",
+                    "name": "FXL Yakınlaştırmasını/Uzaklaştırmasını Sıfırla"
                 },
                 "FocusMain": {
                     "description": "",
@@ -1126,42 +1127,42 @@
             "noShortcutFound": "",
             "resetDefaults": "",
             "save": "",
-            "searchPlaceholder": ""
+            "searchPlaceholder": "Bir kısayol aramak için yazın"
         },
         "language": {
-            "languageChoice": ""
+            "languageChoice": "Dil"
         },
         "library": {
-            "enableAPIAPP": "",
-            "title": ""
+            "enableAPIAPP": "'PNB' kütüphane sistemini etkinleştir",
+            "title": "Fransız kütüphane hesaplarına erişin"
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "",
-                "enableCheckbox": "",
-                "overrideHTMLTemplate": ""
+                "applyDefaultTemplate": "Varsayılan şablonu yükle",
+                "enableCheckbox": "HTML şablonunu özelleştir",
+                "overrideHTMLTemplate": "Notları dışa aktar (açıklamalar ve yer imleri)"
             }
         },
         "session": {
-            "title": ""
+            "title": "Oturum kaydetmeyi etkinleştir"
         },
         "tabs": {
             "aiKeyManager": "",
-            "appearance": "",
-            "general": "",
-            "keyboardShortcuts": ""
+            "appearance": "Görünüm",
+            "general": "Genel",
+            "keyboardShortcuts": "Klavye kısayolları"
         },
         "theme": {
-            "auto": "",
-            "dark": "",
-            "description": "",
-            "light": "",
-            "title": ""
+            "auto": "Otomatik",
+            "dark": "Karanlık",
+            "description": "Uygulama teması işletim sistemiyle eşleşir.",
+            "light": "Aydınlık",
+            "title": "Uygulama Teması"
         }
     },
     "tts": {
         "highlight": {
-            "mainColor": "",
+            "mainColor": "Ana renk",
             "maskBlockWordOutline": "",
             "maskBlockWordSolidBackground": "",
             "maskBlockWordUnderline": "",

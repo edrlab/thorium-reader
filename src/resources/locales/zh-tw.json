@@ -799,6 +799,7 @@
             "letterSpacing": "字符間距",
             "lineSpacing": "行間距",
             "margin": "頁邊距",
+            "mathjax": "",
             "noFootnotes": "沒有附註",
             "noRTLFlip": "禁用從右到左的 UI",
             "noRuby": "隱藏日文漢字注音",

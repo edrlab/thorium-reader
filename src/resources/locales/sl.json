@@ -799,6 +799,7 @@
             "letterSpacing": "Razmik med črkami",
             "lineSpacing": "Razmik med vrsticami",
             "margin": "Obroba",
+            "mathjax": "",
             "noFootnotes": "Onemogoči opombe",
             "noRTLFlip": "Onemogoči uporabniški vmesnik od desne proti levi",
             "noRuby": "Skrij japonski Ruby",

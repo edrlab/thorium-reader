@@ -208,6 +208,11 @@
     &[data-selected], &:has(input:checked), &[data-state="checked"] {
       color: var(--color-secondary);
       background-color: var(--color-blue);
+      
+        &:focus {
+            outline: var(--color-blue) solid 2px !important;
+            outline-offset: 2px;
+        }
     }
   }
 

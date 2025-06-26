@@ -799,6 +799,7 @@
             "letterSpacing": "Разстояние между буквите",
             "lineSpacing": "Разстояние между редовете",
             "margin": "Отстъпи",
+            "mathjax": "",
             "noFootnotes": "Деактивирайте бележките под линия",
             "noRTLFlip": "",
             "noRuby": "",

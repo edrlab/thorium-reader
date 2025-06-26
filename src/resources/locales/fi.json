@@ -766,16 +766,16 @@
             "searchTitle": "Hae:"
         },
         "print": {
-            "description": "",
-            "descriptionLcp": "",
-            "descriptionLcpLimit": "",
-            "pageHelpInfo": "",
-            "pageHelpInfo1": "",
-            "pageHelpInfo2": "",
-            "pageHelpInfo3": "",
-            "pageHelpInfo4": "",
-            "pages": "",
-            "print": ""
+            "description": "{{- appName}}tulostuksen valmistelu : valitse sivut, jotka haluat lähettää tulostettaviksi (tässä julkaisussa {{- count}} sivua)",
+            "descriptionLcp": "{{- appName}} tulostuksen valmistelu: valitse sivut, jotka haluat lähettää tulostettaviksi (tässä LCP-suojatusssa julkaisussa on {{- count}} sivua)",
+            "descriptionLcpLimit": "LCP-rajoitus: {{- lcpLimitPages}}, sivuja jäljellä: {{- count}}",
+            "pageHelpInfo": "Sivunvalintasyntaksi:",
+            "pageHelpInfo1": " - anna sivunumero viitataksesi yksittäiseen sivuun (esim. \"6\")",
+            "pageHelpInfo2": " - anna kaksi yhdysmerkillä erotettua lukua, jotta voit viitata usean peräkkäisen sivun alueeseen (esim. \"6-13\")",
+            "pageHelpInfo3": " - erota puolipisteellä useat sivut tai sivualueet (esim. \"5;14-20;37\")",
+            "pageHelpInfo4": " - jätä sivualueen ensimmäinen tai viimeinen numero pois, jos se viittaa julkaisun ensimmäiseen tai viimeiseen sivuun (esim. \"-16\" vastaa merkintää \"1-16\", ja \"34-\" vastaa merkintää \"34-100\" jos kirjassa on 100 sivua)",
+            "pages": "Sivut",
+            "print": "Tulostus"
         },
         "settings": {
             "column": {
@@ -799,6 +799,7 @@
             "letterSpacing": "Kirjainvälistys",
             "lineSpacing": "Riviväli",
             "margin": "Marginaali",
+            "mathjax": "",
             "noFootnotes": "Alaviitteet pois käytöstä",
             "noRTLFlip": "Estä oikealta vasemmalle -käyttöliittymä",
             "noRuby": "Piilota japanin rubi-merkit",
@@ -902,16 +903,16 @@
             "keyboardShortcuts": "Pikanäppäimet",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "",
-                    "name": ""
+                    "description": "Avaa kirjanmerkki-ikkuna ja muokkaa tekstiä (muistiinpano), väriä ja tunnistetta",
+                    "name": "Luo kirjanmerkki, jolla on nimilappu"
                 },
                 "AnnotationsCreate": {
-                    "description": "",
-                    "name": ""
+                    "description": "Avaa muistiinpanojen luonti-ikkuna valittua tekstiä varten ja muokkaa muistiinpanoa, korostusta sekä tunnistetta",
+                    "name": "Luo muistiinpano"
                 },
                 "AnnotationsCreateQuick": {
-                    "description": "",
-                    "name": ""
+                    "description": "Luo muistiinpano valitusta tekstistä, käytä edellistä korostustyyliä (toiminto ei avaa valintaikkunaa, joten tekstiä ja tunnistetta ei voi lisätä)",
+                    "name": "Luo pikamuistiinpano"
                 },
                 "AnnotationsToggleMargin": {
                     "description": "",
@@ -926,80 +927,80 @@
                     "name": ""
                 },
                 "AudioPlayPause": {
-                    "description": "",
-                    "name": ""
+                    "description": "Aktivoi käynnistä/pysäytä kesken olevaan teokseen (EPUB3 teksti- ja äänikirja, tekstistä puheeksi -toiminto tai äänikirja)",
+                    "name": "Käynnistä/pysäytä ääni"
                 },
                 "AudioPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "Siirry takaisin edelliseen äänijaksoon (toimi EPUB3 teksti- ja äänikirjojen, tekstistä puheeksi -toiminnon ja äänikirjojen kanssa)",
+                    "name": "Edellinen äänijakso"
                 },
                 "AudioPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Siirry edelliseen äänijaksoon (toimii EPUB3 teksti- ja äänikirjojen, tekstistä puheeksi -toiminnon tai äänikirjan kanssa). Tämä ohittaa mahdollisen ohitettavissa olevan rakenteen",
+                    "name": "Edellinen äänijakso (ohita)"
                 },
                 "AudioStop": {
-                    "description": "",
-                    "name": ""
+                    "description": "Pysäytä nykyinen ääni (EPUB3 teksti- ja äänikirja, tekstistä puheeksi -toiminto tai äänikirja)",
+                    "name": "Lopeta ääni"
                 },
                 "CloseReader": {
-                    "description": "",
-                    "name": ""
+                    "description": "Sulje lukutila ja palaa kirjastonäkymään",
+                    "name": "Sulje lukutila"
                 },
                 "FXLZoomIn": {
-                    "description": "",
-                    "name": ""
+                    "description": "Lähennä kiinteän asettelun yksittäistä sivua tai aukeamaa.",
+                    "name": "FXL lähennä"
                 },
                 "FXLZoomOut": {
-                    "description": "",
-                    "name": ""
+                    "description": "Loitonna kiinteän asettelun yksittäistä sivua tai aukeamaa.",
+                    "name": "FXL loitonna"
                 },
                 "FXLZoomReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Palauta zoom kiinteän asettelun sivulle tai aukeamalle.",
+                    "name": "Palauta FXL zoom"
                 },
                 "FocusMain": {
-                    "description": "",
-                    "name": ""
+                    "description": "Siirrä näppäimistökohdistus käyttöliittymän pääalueeseen. Lukutilassa toiminto vie julkaisun sisältöön",
+                    "name": "Kohdista pääsisältöön"
                 },
                 "FocusMainDeep": {
-                    "description": "",
-                    "name": ""
+                    "description": "Lukutilassa toiminto siirtää näppäimistökohdistuksen julkaisun sisältöön tavalla, joka toimii ruudunlukuohjelmien kanssa",
+                    "name": "Siirrä kohdistus suoraan sisältöön"
                 },
                 "FocusReaderGotoPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Siirrä näppäimistökohdistus lukutilan navigointipaneelin \"Siirry sivulle\" -osioon",
+                    "name": "Kohdista \"Siirry sivulle\" -osioon"
                 },
                 "FocusReaderNavigation": {
-                    "description": "",
-                    "name": ""
+                    "description": "Siirrä näppäimistökohdistus lukutilan navigointipaneeliin",
+                    "name": "Kohdista navigointipaneeliin"
                 },
                 "FocusReaderNavigationAnnotations": {
-                    "description": "",
-                    "name": ""
+                    "description": "Siirrä näppäimistökohdistus lukutilan navigointipaneelin \"muistiinpanot\"-osioon.",
+                    "name": "Kohdista \"muistiinpanoihin\""
                 },
                 "FocusReaderNavigationBookmarks": {
-                    "description": "",
-                    "name": ""
+                    "description": "Siirrä näppäimistökohdistus lukutilan navigointipaneelin \"kirjanmerkit\"-osioon",
+                    "name": "Kohdista \"kirjanmerkkeihin\""
                 },
                 "FocusReaderNavigationSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Siirrä näppäimistökohdistus lukutilan navigointipaneelin \"haku\"-osioon.",
+                    "name": "Kohdista \"hakuun\""
                 },
                 "FocusReaderNavigationTOC": {
-                    "description": "",
-                    "name": ""
+                    "description": "Siirrä näppäimistökohdistus lukutilan navigointipaneelin \"sisällysluettelo\"-osioon",
+                    "name": "Kohdista \"sisällysluetteloon\""
                 },
                 "FocusReaderSettings": {
-                    "description": "",
-                    "name": ""
+                    "description": "Siirrä näppäimistökohdistus lukutilan asetuksiin (näyttöasetukset ym.)",
+                    "name": "Kohdista lukutilan asetuksiin"
                 },
                 "FocusSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Siirrä näppäimistökohdistus lukutilan tekstihaku-kenttään tai kirjastonäkymässä hae kirjahyllyä tai OPDS-syötettä",
+                    "name": "Haku-komento"
                 },
                 "FocusToolbar": {
-                    "description": "",
-                    "name": ""
+                    "description": "Siirrä näppäimistökohdistus käyttöliittymän kiintopistealueeseen juuri ennen \"ohita linkki\" -toimintoa (joka puolestaan siirtää kohdistuksen kirjaston tai lukutilan pääsisältöön)",
+                    "name": "Kohdista työkaluvalikkoon"
                 },
                 "NavigateNextChapter": {
                     "description": "",

@@ -16,7 +16,7 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
 import * as TagIcon from "readium-desktop/renderer/assets/icons/tag-icon.svg";
-import { TextArea } from "react-aria-components";
+// import { TextArea } from "react-aria-components";
 import { BookmarkLocatorInfo } from "./BookmarkLocatorInfo";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/renderer/note";
@@ -100,11 +100,16 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
             `${bookmark.locatorExtended.selectionInfo.cleanText.slice(0, 200)}...` : bookmark.locatorExtended.selectionInfo.cleanText) : ""}</p> */}
             <p><BookmarkLocatorInfo fallback="" locatorExtended={locatorExtended}/></p>
             <div>
-                <TextArea value={textAreaValue} name="editBookmark" wrap="hard"
+                <textarea
+                    id={`${uuid}_edit`}
+                    value={textAreaValue}
+                    name="editBookmark"
+                    wrap="hard"
                     className={stylesBookmarks.bookmark_form_textarea}
-                    maxLength={bookmarkMaxLength} onChange={(a) => setTextAreaValue(a.currentTarget.value)}
-                    ref={textAreaRef} id={`${uuid}_edit`}
-                ></TextArea>
+                    maxLength={bookmarkMaxLength}
+                    onChange={(a) => setTextAreaValue(a.currentTarget.value)}
+                    ref={textAreaRef}
+                />
                 <div style={{ display: "flex" }}><span style={{ fontSize: "10px", color: "var(--color-medium-grey)", marginLeft: "auto" }}>{textAreaValue.length}/{bookmarkMaxLength}</span></div>
             </div>
             <div className={stylesBookmarks.bookmarks_actions_container} style={{ marginTop: "-15px" }}>

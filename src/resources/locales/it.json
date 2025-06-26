@@ -799,6 +799,7 @@
             "letterSpacing": "Spaziatura lettere",
             "lineSpacing": "Spaziatura linee",
             "margin": "Margine",
+            "mathjax": "",
             "noFootnotes": "Disattiva note a piè di pagina",
             "noRTLFlip": "Disabilita l'interfaccia utente da destra a sinistra",
             "noRuby": "Nascondi Ruby Giapponese",
@@ -897,33 +898,33 @@
         "keyboard": {
             "advancedMenu": "Menu",
             "cancel": "Annulla",
-            "disclaimer": "Le scorciatoie sono state definite partendo dal layout della tastiera QWERTY.",
+            "disclaimer": "Le impostazioni predefinite dell'applicazione sono state progettate in base alla posizione fisica dei tasti in una tastiera QWERTY",
             "editUserJson": "Modifica il file utente...",
             "keyboardShortcuts": "Scorciatoie da tastiera",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "",
-                    "name": ""
+                    "description": "Apre la finestra di dialogo per la creazione del segnalibro e modificare l'etichetta testuale (nota), il colore e il tag",
+                    "name": "Crea un segnalibro con etichetta"
                 },
                 "AnnotationsCreate": {
-                    "description": "",
-                    "name": ""
+                    "description": "Apre la finestra di dialogo per la creazione di annotazioni per il testo selezionato e modificare la nota testuale, il colore e il tipo di evidenziazione e l'etichetta",
+                    "name": "Crea annotazione"
                 },
                 "AnnotationsCreateQuick": {
-                    "description": "",
-                    "name": ""
+                    "description": "Crea un'annotazione per il testo selezionato, con il colore e il tipo di evidenziazione usati nell'ultimo caso (non apre la finestra di dialogo dell'editor, quindi la nota testuale e il tag sono vuoti)",
+                    "name": "Creare un'annotazione rapida"
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "",
-                    "name": ""
+                    "description": "Alternare gli indicatori visivi delle annotazioni e dei segnalibri, nel margine del documento o nel testo",
+                    "name": "Attiva/disattiva l'annotazione a margine"
                 },
                 "AudioNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "Passa all'evento audio successivo negli EPUB3 Media Overlay, nella lettura a sintesi vocale o negli audiolibri",
+                    "name": "Audio successivo"
                 },
                 "AudioNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Passa all'evento audio successivo negli EPUB3 Media Overlay, nella lettura a sintesi vocale o negli audiolibri. Salta la struttura superabile corrente, nel caso in cui sia presente",
+                    "name": "Audio successivo (esci)"
                 },
                 "AudioPlayPause": {
                     "description": "",
