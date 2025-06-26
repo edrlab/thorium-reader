@@ -7,3 +7,4 @@ export declare const print_dialog_image_container: string;
 export declare const print_dialog_page_icon: string;
 export declare const print_dialog_thumbnail_container: string;
 export declare const print_dialog_thumbnail_pagination_bubble: string;
+export declare const print_lcp_list: string;

@@ -146,6 +146,25 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
         overscan: 3,
     });
 
+    function formatPrints(prints: number[]) {
+        if (prints.length === 0) return "";
+        if (prints.length < 10) {
+            return `[${prints.join(",")}]`;
+        } else {
+            return `[${prints[0]}-${prints[prints.length - 1]}]`;
+        }
+    }
+
+    let lcpPrintable = "";
+
+    if (publicationViewLcpRightsPrints.length) {
+        lcpPrintable = formatPrints(publicationViewLcpRightsPrints);
+    } else if (newLcpRightsPrints.length) {
+        lcpPrintable = newLcpRightsPrints.length < 10 
+            ? ` ... ${formatPrints(newLcpRightsPrints)}`
+            : formatPrints(newLcpRightsPrints);
+    }
+
     return <>
         <form className={stylesPrint.print_dialog_form}>
             <div style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
@@ -208,7 +227,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
 
             </div>
             </div>
-            <div style={{display: "flex", alignItems: "center", gap: "20px"}}>
+            <div style={{display: "flex", alignItems: "center", gap: "20px", minHeight: "85px"}}>
                 <div className={stylesInput.form_group} style={{ marginTop: "20px", width: "360px", marginLeft: "5px"}}>
                     <input type="text" name="print-range" style={{ width: "100%", marginLeft: "10px" }} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={__("reader.print.pages")} value={getV} onChange={(e) => {
                         const v = e.target.value;
@@ -220,15 +239,11 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                 isLcpWithPrintRights ?
                 <div>
                     <h4><SVG ariaHidden svg={KeyIcon}/>{__("publication.licensed")}</h4>
-                    <ul style={{listStyleType: "none", paddingInlineStart: "20px", margin: "0"}}>
+                    <ul className={stylesPrint.print_lcp_list}>
                         <li>{__("reader.print.descriptionLcpLimit", {lcpLimitPages: publicationView.lcp.rights.print})}</li>
                         <li>{__("reader.print.descriptionLcpCount",{count: publicationView.lcp.rights.print - publicationViewLcpRightsPrints.length})}</li>
-                        <li>
-                            {__("reader.print.descriptionLcpPrintable", {printable: (
-                                publicationViewLcpRightsPrints.length ? "[" + [publicationViewLcpRightsPrints.join(",")] + "]"
-                                : newLcpRightsPrints.length ? " ... [" + [newLcpRightsPrints.join(",")] + "]"
-                                : ""
-                            )})}
+                        <li title={lcpPrintable}>
+                            {__("reader.print.descriptionLcpPrintable", {printable: (lcpPrintable)})}
                         </li>
                     </ul>
                 </div>

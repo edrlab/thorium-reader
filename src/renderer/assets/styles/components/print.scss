@@ -15,6 +15,7 @@
     height: 100%;
     overflow: auto;
     padding-bottom: 20px;
+    gap: 5px;
 
     p {
         padding: 0;
@@ -44,6 +45,7 @@
     // width: 430px;
     height: 200px;
     background-color: var(--color-extralight-grey);
+    padding-bottom: 5px;
 }
 
 .print_dialog_image_container img {
@@ -104,6 +106,19 @@
 
     ul {
         padding-inline-start: 20px;
+    }
+}
+
+.print_lcp_list {
+    list-style-type: none;
+    padding-inline-start: 20px;
+    margin: 0;
+
+    li {
+        max-width: 250px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-wrap: nowrap;
     }
 }
 
