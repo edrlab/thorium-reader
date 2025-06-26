@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { app, dialog } from "electron";
 import * as path from "path";
 import { lockInstance } from "readium-desktop/main/cli/lock";
-import { IS_DEV, _APP_NAME, _APP_VERSION, _PACKAGING } from "readium-desktop/preprocessor-directives";
+import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import yargs from "yargs";
 // import { hideBin } from "yargs/helpers";
 import { closeProcessLock } from "../di";
@@ -272,7 +272,7 @@ export function commandLineMainEntry(
 ) {
 
     debug("process.argv", process.argv);
-    if (!IS_DEV && _PACKAGING === "1") {
+    if (!__TH__IS_DEV__ && __TH__IS_PACKAGED__) {
         // https://nodejs.org/fr/docs/guides/debugging-getting-started/#enable-inspector
         // SIGUSR1
 
@@ -311,7 +311,7 @@ export function commandLineMainEntry(
 
     const argFormated = processArgv
         .filter((arg) => knownOption(arg) || !arg.startsWith("-"))
-        .slice((_PACKAGING === "0") ? 2 : 1);
+        .slice(!__TH__IS_PACKAGED__ ? 2 : 1);
 
     debug("processArgv", processArgv, "arg", argFormated);
 
