@@ -39,7 +39,7 @@ const telemetrySecret = process.env.THORIUM_TELEMETRY_SECRET || "";
 
 // const USE_HTTP_STREAMER = false;
 
-const isAIFeatureEnabled = false; 
+const isAIFeatureEnabled = false; // process.env.ENABLE_AI_FEATURE ? true : false;
 
 const data = {
     __APP_VERSION__: JSON.stringify(version),
