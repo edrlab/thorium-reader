@@ -884,7 +884,7 @@
                     "name": "Create Annotation"
                 },
                 "AnnotationsCreateQuick": {
-                    "description": "Quickly creates an annotation for the selected text, with the last-used highlight color and type (note and tag will be empty)",
+                    "description": "Quickly create an annotation for the selected text, with the last-used highlight color and type (note and tag will be empty)",
                     "name": "Create Quick Annotation"
                 },
                 "AnnotationsToggleMargin": {
