@@ -783,6 +783,7 @@
             "letterSpacing": "Letter spacing",
             "lineSpacing": "Line spacing",
             "margin": "Margin",
+            "mathjax": "Enable MathJax",
             "noFootnotes": "Disable popup footnotes",
             "noRTLFlip": "Disable Right-To-Left UI",
             "noRuby": "Hide Japanese Ruby",

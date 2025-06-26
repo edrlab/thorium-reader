@@ -783,6 +783,7 @@
             "letterSpacing": "Bogstav-mellemrum",
             "lineSpacing": "Linje-mellemrum",
             "margin": "Margen",
+            "mathjax": "",
             "noFootnotes": "Slå popup med fodnoter fra",
             "noRTLFlip": "Slå højre-til-venstre UI fra",
             "noRuby": "Skjul japansk læsehjælp (Ruby)",

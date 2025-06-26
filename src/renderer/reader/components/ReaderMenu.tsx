@@ -2997,7 +2997,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     };
 
     const Separator =
-        <span key={"separator"} style={{ borderBottom: "1px solid var(--color-extralight-grey-alt)", width: "80%", margin: "0 10%" }}></span>;
+        <span key={"separator"} style={{ borderBottom: "2px solid var(--color-extralight-grey-alt)", width: "80%", margin: "0 10%" }}></span>;
 
     sectionsArray.push(TocTrigger);
     options.push(optionTocItem);
@@ -3112,7 +3112,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 }
                             }}
                             disabledKeys={options.filter(option => option.disabled === true).map(option => option.id)}
-                            style={{ padding: "0", flexDirection: "row" }}
+                            style={{ padding: "0", flexDirection: "row", flex: "2"}}
                             // onInputChange={(v) => {
                             //     console.log("inputchange: ", v);
 
@@ -3131,7 +3131,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         >
                             {item => <SelectItem >{item.name}</SelectItem>}
                         </SelectRef>
-                            <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls} style={{ justifyContent: "end", width: "100%" }}>
+                            <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls} style={{ justifyContent: "end", width: "100%", flex: "1" }}>
                                 <div style={{ display: "flex", gap: "5px" }}>
                                     <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label={__("reader.svg.left")} onClick={setDockingModeLeftSide}>
                                         <SVG ariaHidden={true} svg={DockLeftIcon} />
