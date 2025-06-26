@@ -19,7 +19,6 @@ import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locator
 import { uniqueCssSelector } from "@r2-navigator-js/electron/renderer/common/cssselector3";
 import { IRangeInfo, ISelectedTextInfo, ISelectionInfo } from "@r2-navigator-js/electron/common/selection";
 
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { availableLanguages } from "readium-desktop/common/services/translator";
 import { EDrawType, INoteState, NOTE_DEFAULT_COLOR, noteColorCodeToColorSet } from "readium-desktop/common/redux/states/renderer/note";
@@ -152,7 +151,7 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
     debug(`${convertedRangeArray.length} range(s) converted found !!!`);
     debug("dump convertedRange : ", JSON.stringify(convertedRangeArray, null, 4));
 
-    if (IS_DEV) {
+    if (__TH__IS_DEV__) {
         debug("#".repeat(80));
         let ok = true;
         let prevRangeInfo = debugRangeInfo;
@@ -185,7 +184,7 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
     }
 
     // TODO: need an Heuristic to choose the range from the array, maybe check if all ranges are equal and add a priority in function of the selector
-    // see above IS_DEV ... maybe pick the most "correct" DOM Range? (most generated, to eliminate odd ones?)
+    // see above __TH__IS_DEV__ ... maybe pick the most "correct" DOM Range? (most generated, to eliminate odd ones?)
     let rangeInfo: IRangeInfo = undefined;
     let textInfo: ISelectedTextInfo = undefined;
     for (const convertedRange of convertedRangeArray) {

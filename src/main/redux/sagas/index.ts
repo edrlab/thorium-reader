@@ -36,7 +36,6 @@ import * as lcp from "./lcp";
 import * as catalog from "./catalog";
 import * as annotation from "./note";
 
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { getTranslator } from "readium-desktop/common/services/translator";
 
 // Logger
@@ -171,11 +170,11 @@ function* checkAppVersionUpdate() {
     // Correct HTTP header content-type, but reliance on GitHack servers:
     // const JSON_URL = `https://raw.githack.com/edrlab/thorium-reader/${BRANCH}/latest.json`;
     try {
-        let version = IS_DEV ? yield* selectTyped((state: RootState) => state.version) : null;
+        let version = __TH__IS_DEV__ ? yield* selectTyped((state: RootState) => state.version) : null;
         // src/common/redux/reducers/version.ts
         // version is null (initial state) or current _APP_VERSION (package.json version)
         // telemetry.collectSaveAndSend (prev_version handling) is called before appActions.initSuccess, and finally this checkAppVersionUpdate Saga is called after appActions.initSuccess
-        if (IS_DEV && _APP_VERSION !== version) {
+        if (__TH__IS_DEV__ && _APP_VERSION !== version) {
             // at that point, this should never happen (see Saga order described in comment above)
             debug("VERSION MISMATCH (checkAppVersionUpdate): ", _APP_VERSION, " !== ", version);
         }
@@ -238,7 +237,7 @@ function* checkAppVersionUpdate() {
 
                     yield put(versionUpdateActions.notify.build(json.version, json.url));
 
-                    if (IS_DEV) {
+                    if (__TH__IS_DEV__) {
                         yield call(async () => {
 
                             const translate = getTranslator().translate;

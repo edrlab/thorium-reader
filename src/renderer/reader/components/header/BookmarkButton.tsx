@@ -24,7 +24,6 @@ import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { registerKeyboardListener, unregisterKeyboardListener } from "readium-desktop/renderer/common/keyboard";
 import { DEBUG_KEYBOARD } from "readium-desktop/common/keyboard";
 import { ReadiumElectronBrowserWindow } from "@r2-navigator-js/electron/renderer/webview/state";
@@ -320,7 +319,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
 
             const fetchVisibleBookmarks = () => {
 
-                if (IS_DEV) {
+                if (__TH__IS_DEV__) {
                     if (!__time) {
                         __time = true;
                         console.time("UPDATE_BOOKMARK_NEW_METHOD");
@@ -353,7 +352,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                     }
                     setVisibleBookmarks(arr);
                 }).finally(() => {
-                    if (IS_DEV) {
+                    if (__TH__IS_DEV__) {
                         console.timeEnd("UPDATE_BOOKMARK_NEW_METHOD");
                         __time = false;
                     }

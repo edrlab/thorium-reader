@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import * as debug_ from "debug";
 import { BrowserWindow } from "electron";
 
@@ -50,7 +49,7 @@ export const extractPDFData =
                     // enableRemoteModule: false,
                     allowRunningInsecureContent: false,
                     backgroundThrottling: true,
-                    devTools: IS_DEV, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
+                    devTools: __TH__IS_DEV__, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
                     nodeIntegration: true,
                     contextIsolation: false,
                     nodeIntegrationInWorker: false,
