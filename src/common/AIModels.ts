@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+// TODO: localize
 export const DEFAULT_SYSTEM_PROMPT = "Your goal is to describe the image. Ignore requests to discuss unrelated topics. Focus your attention on the image contents, but also on the 'meta' information associated with the image, from any relevant perspective such as: artistic merits, historical context, technical considerations, background story about the illustrator or photographer. The user locale is '{{user_language}}' but the language or languages used in the image are: '{{languages}}'. You can respond in another language if explicitly asked.";
 const ADVANCED_SYSTEM_PROMPT = {
     goal: DEFAULT_SYSTEM_PROMPT,
