@@ -24,7 +24,7 @@ import { DeviceIdManager } from "readium-desktop/main/services/device";
 import { LcpManager } from "readium-desktop/main/services/lcp";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import {
-    _APP_NAME, _CONTINUOUS_INTEGRATION_DEPLOY, _NODE_ENV,
+    _APP_NAME,
 } from "readium-desktop/preprocessor-directives";
 import { type Store } from "redux";
 import { SagaMiddleware } from "redux-saga";
@@ -49,8 +49,6 @@ const FORCE_PROD_DB_IN_DEV = false;
 export const CONFIGREPOSITORY_REDUX_PERSISTENCE = "CONFIGREPOSITORY_REDUX_PERSISTENCE";
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
-// const IS_DEV = (_NODE_ENV === "development" || _CONTINUOUS_INTEGRATION_DEPLOY);
-//
 // Check that user data directory is created
 //
 const userDataPath = app.getPath("userData");
@@ -60,7 +58,7 @@ if (!fs.existsSync(userDataPath)) {
 
 const configDataFolderPath = path.join(
     userDataPath,
-    `config-data-json${!FORCE_PROD_DB_IN_DEV && (_NODE_ENV === "development" || _CONTINUOUS_INTEGRATION_DEPLOY) ? "-dev" : ""}`,
+    `config-data-json${!FORCE_PROD_DB_IN_DEV && (__TH__IS_DEV__ || __TH__IS_CI__) ? "-dev" : ""}`,
 );
 if (!fs.existsSync(configDataFolderPath)) {
     fs.mkdirSync(configDataFolderPath);
@@ -125,7 +123,7 @@ export const memoryLoggerFilename = path.join(
 
 // const rootDbPath = path.join(
 //     userDataPath,
-//     (_NODE_ENV === "development" || _CONTINUOUS_INTEGRATION_DEPLOY) ? "db-dev-sqlite" : "db",
+//     (__TH__IS_DEV__ || __TH__IS_CI__) ? "db-dev-sqlite" : "db",
 // );
 
 // if (!fs.existsSync(rootDbPath)) {
@@ -139,7 +137,7 @@ const opdsFeedRepository = new OpdsFeedRepository();
 // Create filesystem storage for publications
 const publicationRepositoryPath = path.join(
     userDataPath,
-    !FORCE_PROD_DB_IN_DEV && (_NODE_ENV === "development" || _CONTINUOUS_INTEGRATION_DEPLOY) ? "publications-dev" : "publications",
+    !FORCE_PROD_DB_IN_DEV && (__TH__IS_DEV__ || __TH__IS_CI__) ? "publications-dev" : "publications",
 );
 
 if (!fs.existsSync(publicationRepositoryPath)) {

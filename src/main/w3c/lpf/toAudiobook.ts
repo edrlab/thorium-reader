@@ -10,7 +10,6 @@ import { promises as fsp } from "fs";
 import { dirname } from "path";
 import { readStreamToBuffer } from "readium-desktop/main/stream/stream";
 import { extractFileFromZip } from "readium-desktop/main/zip/extract";
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
 
 import { TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
@@ -114,7 +113,7 @@ export async function lpfToAudiobookConverter(lpfPath: string): Promise<[string,
         }
     };
 
-    if (IS_DEV) {
+    if (__TH__IS_DEV__) {
 
         return [audiobookPath, async () => { /* no op */ }];
     } else {

@@ -30,7 +30,7 @@ import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/r
 import { ok } from "readium-desktop/common/utils/assert";
 import { formatTime } from "readium-desktop/common/utils/time";
 import {
-    _APP_NAME, _APP_VERSION, _DIST_RELATIVE_URL, _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL,
+    _APP_NAME, _APP_VERSION, _DIST_RELATIVE_URL, _NODE_MODULE_RELATIVE_URL, _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 import * as DoubleArrowDownIcon from "readium-desktop/renderer/assets/icons/double_arrow_down_black_24dp.svg";
 import * as DoubleArrowLeftIcon from "readium-desktop/renderer/assets/icons/double_arrow_left_black_24dp.svg";
@@ -2511,7 +2511,7 @@ class Reader extends React.Component<IProps, IState> {
 
             const PREPATH = "preload.js";
             let preloadPath = PREPATH;
-            if (_PACKAGING === "1") {
+            if (__TH__IS_PACKAGED__) {
                 preloadPath = "file://" + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", PREPATH)).replace(/\\/g, "/");
             } else {
                 preloadPath = "r2-navigator-js/dist/" +

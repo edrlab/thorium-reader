@@ -15,7 +15,6 @@ import { reduxSyncMiddleware } from "readium-desktop/main/redux/middleware/sync"
 import { rootReducer } from "readium-desktop/main/redux/reducers";
 import { rootSaga } from "readium-desktop/main/redux/sagas";
 import { PersistRootState, RootState } from "readium-desktop/main/redux/states";
-import { ENABLE_AI_FEATURE, IS_DEV } from "readium-desktop/preprocessor-directives";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { applyMiddleware, legacy_createStore as createStore, type Store } from "redux";
 import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
@@ -31,7 +30,7 @@ import { TBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { TAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 
 
-if (ENABLE_AI_FEATURE) {
+if (__TH__ENABLE_AI__) {
     // .env AI API KEY":
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     require("dotenv/config");
@@ -442,7 +441,7 @@ export async function initStore()
         preloadedState.reader.defaultConfig = { ...readerConfigInitialState, ...preloadedState.reader.defaultConfig };
     }
 
-    if (ENABLE_AI_FEATURE) {
+    if (__TH__ENABLE_AI__) {
 
         if (preloadedState?.aiApiKeys) {
             for (const aiKey of preloadedState.aiApiKeys) {
@@ -490,7 +489,7 @@ export async function initStore()
     );
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
-    const middleware = IS_DEV ? require("remote-redux-devtools").composeWithDevTools(
+    const middleware = __TH__IS_DEV__ ? require("remote-redux-devtools").composeWithDevTools(
         {
             port: REDUX_REMOTE_DEVTOOLS_PORT,
         },

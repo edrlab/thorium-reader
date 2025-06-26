@@ -8,7 +8,7 @@
 import { ipcRenderer, shell, WillNavigateEvent } from "electron";
 import * as path from "path";
 import {
-    _DIST_RELATIVE_URL, _PACKAGING, _RENDERER_PDF_WEBVIEW_BASE_URL, IS_DEV,
+    _DIST_RELATIVE_URL, _RENDERER_PDF_WEBVIEW_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 
 import { CONTEXT_MENU_SETUP } from "@r2-navigator-js/electron/common/context-menu";
@@ -94,7 +94,7 @@ export function pdfMount(
     console.log("pdfPath ADJUSTED", pdfPath);
 
     const pdfData = data;
-    const pdfDataString = JSON.stringify(pdfData); 
+    const pdfDataString = JSON.stringify(pdfData);
     const b64EncodedPdfData = Buffer.from(pdfDataString, "utf8").toString("base64");
 
     const webview = document.createElement("webview");
@@ -130,7 +130,7 @@ export function pdfMount(
 
     const PDFPATH = "index_pdf.js";
     let preloadPath = PDFPATH;
-    if (_PACKAGING === "1") {
+    if (__TH__IS_PACKAGED__) {
         preloadPath = "file://" + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", PDFPATH)).replace(/\\/g, "/");
     } else {
         if (_RENDERER_PDF_WEBVIEW_BASE_URL === "filex://host/") {
@@ -154,7 +154,7 @@ export function pdfMount(
         "display: flex; margin: 0; padding: 0; box-sizing: border-box; position: absolute; left: 0; right: 0; bottom: 0; top: 0;");
     // webview.setAttribute("partition", "persist:pdfjsreader");
     webview.setAttribute("webpreferences",
-        `enableRemoteModule=0, allowRunningInsecureContent=0, backgroundThrottling=0, devTools=${IS_DEV ? "1" : "0"}, nodeIntegration=0, contextIsolation=0, nodeIntegrationInWorker=0, sandbox=0, webSecurity=1, webviewTag=0`);
+        `enableRemoteModule=0, allowRunningInsecureContent=0, backgroundThrottling=0, devTools=${__TH__IS_DEV__ ? "1" : "0"}, nodeIntegration=0, contextIsolation=0, nodeIntegrationInWorker=0, sandbox=0, webSecurity=1, webviewTag=0`);
     // webview.setAttribute("disablewebsecurity", "");
 
     webview.setAttribute("preload", preloadPath);
@@ -171,7 +171,7 @@ const webviewDomReadyDebugger = (ev: DOMEvent) => {
 
     webview.clearHistory();
 
-    if (IS_DEV) {
+    if (__TH__IS_DEV__) {
         ipcRenderer.send(CONTEXT_MENU_SETUP, webview.getWebContentsId());
     }
 };

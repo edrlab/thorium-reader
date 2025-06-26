@@ -49,7 +49,6 @@ import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/a
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { ApiKeysList } from "./AiKeyManager";
-import { ENABLE_AI_FEATURE } from "readium-desktop/preprocessor-directives";
 
 interface ISettingsProps {};
 
@@ -448,7 +447,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             <SVG ariaHidden svg={KeyReturnIcon} />
                             <h3>{__("settings.tabs.keyboardShortcuts")}</h3>
                         </Tabs.Trigger>
-                        {ENABLE_AI_FEATURE
+                        {__TH__ENABLE_AI__
                             ?
                             <Tabs.Trigger value="tab5">
                                 <SVG ariaHidden svg={AiIcon} />
@@ -483,7 +482,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                                 <KeyboardSettings />
                             </div>
                         </Tabs.Content>
-                        {ENABLE_AI_FEATURE ?
+                        {__TH__ENABLE_AI__ ?
                             <Tabs.Content value="tab5" tabIndex={-1}>
                                 <TabHeader title={__("settings.tabs.aiKeyManager")}>
                                 </TabHeader>
