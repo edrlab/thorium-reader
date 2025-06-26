@@ -15,7 +15,7 @@ import { reduxSyncMiddleware } from "readium-desktop/main/redux/middleware/sync"
 import { rootReducer } from "readium-desktop/main/redux/reducers";
 import { rootSaga } from "readium-desktop/main/redux/sagas";
 import { PersistRootState, RootState } from "readium-desktop/main/redux/states";
-import { IS_AI_FEATURE, IS_DEV } from "readium-desktop/preprocessor-directives";
+import { ENABLE_AI_FEATURE, IS_DEV } from "readium-desktop/preprocessor-directives";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { applyMiddleware, legacy_createStore as createStore, type Store } from "redux";
 import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
@@ -31,7 +31,7 @@ import { TBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { TAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 
 
-if (IS_AI_FEATURE) {
+if (ENABLE_AI_FEATURE) {
     // .env AI API KEY":
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     require("dotenv/config");
@@ -369,7 +369,7 @@ export async function initStore()
                 }
                 state.reduxState.noteTotalCount.state = (state?.reduxState as any)?.bookmarkTotalCount?.state || 0;
                 (state.reduxState as any).bookmarkTotalCount = undefined;
-            } 
+            }
 
             if ((state?.reduxState as any)?.bookmark) {
 
@@ -442,7 +442,7 @@ export async function initStore()
         preloadedState.reader.defaultConfig = { ...readerConfigInitialState, ...preloadedState.reader.defaultConfig };
     }
 
-    if (IS_AI_FEATURE) {
+    if (ENABLE_AI_FEATURE) {
 
         if (preloadedState?.aiApiKeys) {
             for (const aiKey of preloadedState.aiApiKeys) {
@@ -474,9 +474,9 @@ export async function initStore()
     }
 
     if ((preloadedState as any)?.annotationImportQueue) {
-        // How to deal with the annotationImportQueue migration ? 
+        // How to deal with the annotationImportQueue migration ?
         // A wise decision will be to merge INotePreState to InoteState readerState.note
-        // But it is really necessary, the probability that the user upgrade thorium during an annotations import is pretty low ! Isn't it ? 
+        // But it is really necessary, the probability that the user upgrade thorium during an annotations import is pretty low ! Isn't it ?
 
         // (preloadedState as any).annotationImportQueue = undefined;
     }
@@ -506,4 +506,3 @@ export async function initStore()
 
     return [store, sagaMiddleware];
 }
-

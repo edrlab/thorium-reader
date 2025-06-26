@@ -78,5 +78,5 @@ declare const __CONTINUOUS_INTEGRATION_DEPLOY__: boolean;
 export const _CONTINUOUS_INTEGRATION_DEPLOY = __CONTINUOUS_INTEGRATION_DEPLOY__;
 
 declare const __AI_FEATURE__: boolean;
-export const _AI_FEATURE = __AI_FEATURE__;
-export const IS_AI_FEATURE = IS_DEV && _AI_FEATURE;
+const _AI_FEATURE = __AI_FEATURE__;
+export const ENABLE_AI_FEATURE = IS_DEV && _AI_FEATURE;

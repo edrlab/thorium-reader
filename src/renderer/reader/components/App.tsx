@@ -18,7 +18,7 @@ import * as React from "react";
 import { Provider } from "react-redux";
 import {
     _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL,
-    IS_AI_FEATURE,
+    ENABLE_AI_FEATURE,
 } from "readium-desktop/preprocessor-directives";
 import ToastManager from "readium-desktop/renderer/common/components/toast/ToastManager";
 
@@ -242,7 +242,7 @@ url("${rcssPath}/fonts/iAWriterDuospace-Regular.ttf") format("truetype");
                     <Reader />
                     <ToastManager />
                     {
-                        IS_AI_FEATURE
+                        ENABLE_AI_FEATURE
                             ? <ImageClickManager />
                             : <ImageClickManagerImgViewerOnly />
                     }
