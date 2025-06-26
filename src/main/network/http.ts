@@ -36,7 +36,6 @@ import {
     IHttpGetResult, THttpGetCallback, THttpOptions, THttpResponse,
 } from "readium-desktop/common/utils/http";
 import { decryptPersist, encryptPersist } from "readium-desktop/main/fs/persistCrypto";
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 
 import { diMainGet, opdsAuthFilePath } from "../di";
@@ -226,7 +225,7 @@ export async function httpFetchRawResponse(
     // https://github.com/edrlab/thorium-reader/issues/1323#issuecomment-911772951
     const httpsAgent = new https.Agent({
         timeout: options.timeout || DEFAULT_HTTP_TIMEOUT,
-        rejectUnauthorized: IS_DEV ? false : true,
+        rejectUnauthorized: !__TH__IS_DEV__,
     });
     const httpAgent = new http.Agent({
         timeout: options.timeout || DEFAULT_HTTP_TIMEOUT,
@@ -257,7 +256,7 @@ export async function httpFetchRawResponse(
     // if (!options.agent && url.toString().startsWith("https:")) {
     //     const httpsAgent = new https.Agent({
     //         timeout: options.timeout || DEFAULT_HTTP_TIMEOUT,
-    //         rejectUnauthorized: IS_DEV ? false : true,
+    //         rejectUnauthorized: __TH__IS_DEV__ ? false : true,
     //     });
     //     options.agent = httpsAgent;
     // }

@@ -24,7 +24,6 @@ import {
 } from "./mounter";
 // import { handleLinkLocator } from "@r2-navigator-js/electron/renderer";
 // import debounce from "debounce";
-// import { IS_DEV } from "readium-desktop/preprocessor-directives";
 
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:highlight:handler");
 
@@ -162,7 +161,7 @@ function* dispatchClick(data: THighlightClick) {
     // }
 
     // // TODO HIGHLIGHTS-ANNOTATIONS: this is just a hack for testing!
-    // if (IS_DEV) {
+    // if (__TH__IS_DEV__) {
     //       if (ref.group === "annotations") {
     //           if (event.meta) {
     //               yield* callTyped(() => highlightsRemove(href, [ref.id]));

@@ -14,7 +14,7 @@ import { diMainGet, saveReaderWindowInDi } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import { winActions } from "readium-desktop/main/redux/actions";
 import {
-    _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH, IS_DEV, OPEN_DEV_TOOLS, _CONTINUOUS_INTEGRATION_DEPLOY,
+    _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 
 import {
@@ -28,7 +28,7 @@ import { WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/cons
 const debug = debug_("readium-desktop:createReaderWindow");
 debug("_");
 
-const ENABLE_DEV_TOOLS = IS_DEV || _CONTINUOUS_INTEGRATION_DEPLOY;
+const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
 
 export function* createReaderWindow(action: winActions.reader.openRequest.TAction) {
 
@@ -96,7 +96,7 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
         readerUrl = readerUrl.replace(/\\/g, "/");
     }
 
-    if (true) { // IS_DEV
+    if (true) { // __TH__IS_DEV__
 
         readerWindow.webContents.on("did-finish-load", () => {
             // see app.whenReady() in src/main/redux/sagas/app.ts
@@ -127,24 +127,24 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
 
     yield* callTyped(() => readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" }));
 
-    // // TODO shouldn't the call to reader.openSucess be fenced with if (!IS_DEV) {}, just like in createlibraryWindow??
+    // // TODO shouldn't the call to reader.openSucess be fenced with if (!__TH__IS_DEV__) {}, just like in createlibraryWindow??
     // // (otherwise called a second time in did-finish-load event handler below)
-    // if (!IS_DEV) {
+    // if (!__TH__IS_DEV__) {
     //     // see 'did-finish-load' otherwise
     //     yield* putTyped(winActions.reader.openSucess.build(readerWindow, registerReaderAction.payload.identifier));
     // }
 
-    if (IS_DEV) {
+    // if (__TH__IS_DEV__) {
 
-        if (_VSCODE_LAUNCH !== "true" && OPEN_DEV_TOOLS) {
-            setTimeout(() => {
-                if (!readerWindow.isDestroyed() && !readerWindow.webContents.isDestroyed()) {
-                    debug("opening dev tools (reader) ...");
-                    readerWindow.webContents.openDevTools({ activate: true, mode: "detach" });
-                }
-            }, 2000);
-        }
-    }
+    //     if (!__TH__IS_VSCODE_LAUNCH__ && OPEN_DEV_TOOLS) {
+    //         setTimeout(() => {
+    //             if (!readerWindow.isDestroyed() && !readerWindow.webContents.isDestroyed()) {
+    //                 debug("opening dev tools (reader) ...");
+    //                 readerWindow.webContents.openDevTools({ activate: true, mode: "detach" });
+    //             }
+    //         }, 2000);
+    //     }
+    // }
 
     setMenu(readerWindow, true);
 

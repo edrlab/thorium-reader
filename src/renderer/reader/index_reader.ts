@@ -9,7 +9,6 @@ import { ipcRenderer } from "electron";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { readerIpc } from "readium-desktop/common/ipc";
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import { createStoreFromDi } from "readium-desktop/renderer/reader/createStore";
 
@@ -25,7 +24,7 @@ import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/r
 
 // let devTron: any;
 let axe: any;
-if (IS_DEV) {
+if (__TH__IS_DEV__) {
     // requires electron.remote!
     // enableRemoteModule: false
     // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -39,7 +38,7 @@ initGlobalConverters_OPDS();
 initGlobalConverters_SHARED();
 initGlobalConverters_GENERIC();
 
-// if (IS_DEV) {
+// if (__TH__IS_DEV__) {
 //     setTimeout(() => {
 //         devTron.install();
 //     }, 5000);
@@ -64,7 +63,7 @@ ipcRenderer.on(readerIpc.CHANNEL,
                 };
 
                 const notes = data.payload.reader.note || [];
-                
+
                 const noteTagList = [];
                 for (const note of notes) {
                     noteTagList.push(...(note.tags || []));
@@ -96,7 +95,7 @@ ipcRenderer.on(readerIpc.CHANNEL,
         }
     });
 
-if (IS_DEV) {
+if (__TH__IS_DEV__) {
     ipcRenderer.once("AXE_A11Y", () => {
         const publicationViewport = document.getElementById("publication_viewport");
         let parent: Element | undefined;
