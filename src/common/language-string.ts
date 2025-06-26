@@ -104,7 +104,5 @@ export function convertMultiLangStringToLangString(items: string | IStringMap | 
 export function langStringIsRTL(lang: string): boolean {
     return lang === "ar" || lang.startsWith("ar-") ||
         lang === "he" || lang.startsWith("he-") ||
-        lang === "fa" || lang.startsWith("fa-") ||
-        lang === "zh-Hant" ||
-        lang === "zh-TW";
+        lang === "fa" || lang.startsWith("fa-");
 }
