@@ -16,7 +16,7 @@ import { connect } from "react-redux";
 // import { ABOUT_BOOK_TITLE_PREFIX } from "readium-desktop/common/constant";
 // import { readerActions } from "readium-desktop/common/redux/actions";
 // import { PublicationView } from "readium-desktop/common/views/publication";
-import { _APP_NAME, _APP_VERSION, _PACKAGING } from "readium-desktop/preprocessor-directives";
+import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -142,7 +142,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
 
     //         let folderPath = path.join(window.location.pathname.replace(/^\/\//, "/"), "..", infoFolderRelativePath);
     //         let folderPath = path.join((global as any).__dirname, infoFolderRelativePath);
-    //         if (_PACKAGING === "0") {
+    //         if (!__TH__IS_PACKAGED__) {
     //             folderPath = path.join(process.cwd(), "dist", infoFolderRelativePath);
     //         }
 

@@ -15,7 +15,6 @@ import { reduxSyncMiddleware } from "readium-desktop/main/redux/middleware/sync"
 import { rootReducer } from "readium-desktop/main/redux/reducers";
 import { rootSaga } from "readium-desktop/main/redux/sagas";
 import { PersistRootState, RootState } from "readium-desktop/main/redux/states";
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { applyMiddleware, legacy_createStore as createStore, type Store } from "redux";
 import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
@@ -362,7 +361,7 @@ export async function initStore()
                 }
                 state.reduxState.noteTotalCount.state = (state?.reduxState as any)?.bookmarkTotalCount?.state || 0;
                 (state.reduxState as any).bookmarkTotalCount = undefined;
-            } 
+            }
 
             if ((state?.reduxState as any)?.bookmark) {
 
@@ -440,9 +439,9 @@ export async function initStore()
     }
 
     if ((preloadedState as any)?.annotationImportQueue) {
-        // How to deal with the annotationImportQueue migration ? 
+        // How to deal with the annotationImportQueue migration ?
         // A wise decision will be to merge INotePreState to InoteState readerState.note
-        // But it is really necessary, the probability that the user upgrade thorium during an annotations import is pretty low ! Isn't it ? 
+        // But it is really necessary, the probability that the user upgrade thorium during an annotations import is pretty low ! Isn't it ?
 
         // (preloadedState as any).annotationImportQueue = undefined;
     }
@@ -456,7 +455,7 @@ export async function initStore()
     );
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
-    const middleware = IS_DEV ? require("remote-redux-devtools").composeWithDevTools(
+    const middleware = __TH__IS_DEV__ ? require("remote-redux-devtools").composeWithDevTools(
         {
             port: REDUX_REMOTE_DEVTOOLS_PORT,
         },

@@ -38,13 +38,14 @@ let config = Object.assign(
 
 config.optimization = {
     ...(config.optimization || {}),
+    nodeEnv: false,
     minimize: true,
     minimizer: [
         new TerserPlugin({
             extractComments: false,
             exclude: /MathJax/,
             terserOptions: {
-                compress: false,
+                compress: {defaults:false, dead_code:true, booleans: true, passes: 1},
                 mangle: false,
                 output: {
                     comments: false,

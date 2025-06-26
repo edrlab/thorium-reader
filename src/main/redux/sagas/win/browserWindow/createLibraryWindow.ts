@@ -5,8 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
+// import * as debug_ from "debug";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-import * as debug_ from "debug";
 import { BrowserWindow, Event, HandlerDetails, shell } from "electron";
 import * as path from "path";
 import { defaultRectangle, normalizeRectangle } from "readium-desktop/common/rectangle/window";
@@ -15,7 +15,7 @@ import { setMenu } from "readium-desktop/main/menu";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import {
-    _RENDERER_LIBRARY_BASE_URL, _VSCODE_LAUNCH, IS_DEV, OPEN_DEV_TOOLS, _CONTINUOUS_INTEGRATION_DEPLOY,
+    _RENDERER_LIBRARY_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
@@ -26,9 +26,9 @@ import { contextMenuSetup } from "@r2-navigator-js/electron/main/browser-window-
 import { WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/constant";
 
 // Logger
-const debug = debug_("readium-desktop:createLibraryWindow");
+// const debug = debug_("readium-desktop:createLibraryWindow");
 
-const ENABLE_DEV_TOOLS = IS_DEV || _CONTINUOUS_INTEGRATION_DEPLOY;
+const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
 
 // Global reference to the main window,
 // so the garbage collector doesn't close it.
@@ -94,7 +94,7 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         rendererBaseUrl = rendererBaseUrl.replace(/\\/g, "/");
     }
 
-    if (true) { // IS_DEV
+    if (true) { // __TH__IS_DEV__
 
         libWindow.webContents.on("did-finish-load", () => {
             // see app.whenReady() in src/main/redux/sagas/app.ts
@@ -124,21 +124,21 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
 
         });
 
-        if (_VSCODE_LAUNCH !== "true" && OPEN_DEV_TOOLS) {
-            setTimeout(() => {
-                if (!libWindow.isDestroyed() && !libWindow.webContents.isDestroyed()) {
-                    debug("opening dev tools (library) ...");
-                    libWindow.webContents.openDevTools({ activate: true, mode: "detach" });
-                }
-            }, 2000);
-        }
+        // if (!__TH__IS_VSCODE_LAUNCH__ && OPEN_DEV_TOOLS) {
+        //     setTimeout(() => {
+        //         if (!libWindow.isDestroyed() && !libWindow.webContents.isDestroyed()) {
+        //             debug("opening dev tools (library) ...");
+        //             libWindow.webContents.openDevTools({ activate: true, mode: "detach" });
+        //         }
+        //     }, 2000);
+        // }
     }
 
     yield* callTyped(() => libWindow.loadURL(rendererBaseUrl /*, {baseURLForDataURL, httpReferrer} */));
     // the promise will resolve when the page has finished loading (see did-finish-load)
     // and rejects if the page fails to load (see did-fail-load).
 
-    // if (!IS_DEV) {
+    // if (!__TH__IS_DEV__) {
     //     // see 'did-finish-load' otherwise
     //     const identifier = yield* selectTyped((state: RootState) => state.win.session.library.identifier);
     //     yield put(winActions.library.openSucess.build(libWindow, identifier));
