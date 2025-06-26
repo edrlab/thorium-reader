@@ -3183,7 +3183,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
 
                     <Tabs.Content value="tab-bookmark" tabIndex={-1} id={"reader-menu-tab-bookmark"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <TabHeader />
-                        <div className={stylesSettings.settings_tab}>
+                        <div className={classNames(stylesSettings.settings_tab, stylesBookmarks.bookmarks_tab)}>
                             <BookmarkList  popoverBoundary={popoverBoundary.current} goToLocator={goToLocator} hideBookmarkOnChange={hideAnnotationOnChange} />
                         </div>
                     </Tabs.Content>

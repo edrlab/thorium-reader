@@ -12,6 +12,7 @@
 
   ol {
     padding: 0;
+    margin: 0;
   }
 }
 
@@ -584,6 +585,7 @@
       height: unset;
       font-family: Nunito, sans-serif;
       border-radius: 5px;
+      width: 100%;
 
       p {
         text-align: left;
@@ -735,6 +737,11 @@
 
     p {
       margin: 0;
+    }
+
+    select {
+      background-color: var(--color-secondary);
+      color: var(--color-primary);
     }
 
   }
