@@ -783,6 +783,7 @@
             "letterSpacing": "Letter spacing",
             "lineSpacing": "Line spacing",
             "margin": "Margin",
+            "mathjax": "Enable MathJax",
             "noFootnotes": "Disable popup footnotes",
             "noRTLFlip": "Disable Right-To-Left UI",
             "noRuby": "Hide Japanese Ruby",
@@ -884,7 +885,7 @@
                     "name": "Create Annotation"
                 },
                 "AnnotationsCreateQuick": {
-                    "description": "Create an annotation for the selected document text, with the last-used highlight color and type (this does not open the editor dialog, so the textual note and tag is empty)",
+                    "description": "Quickly create an annotation for the selected text, with the last-used highlight color and type (note and tag will be empty)",
                     "name": "Create Quick Annotation"
                 },
                 "AnnotationsToggleMargin": {
@@ -892,27 +893,27 @@
                     "name": "Toggle Annotation Margin"
                 },
                 "AudioNext": {
-                    "description": "Move forward to the next audio event in EPUB3 Media Overlays, Text To Speech readaloud, or audiobooks",
-                    "name": "Next Audio"
+                    "description": "Move forward to the next audio segment in the narration (EPUB3 Media Overlays, Text To Speech, or pre-recorded audiobook)",
+                    "name": "Next Audio Segment"
                 },
                 "AudioNextAlt": {
-                    "description": "Move forward to the next audio event in EPUB3 Media Overlays, Text To Speech readaloud, or audiobooks. This skips the current escapable structure, if applicable",
-                    "name": "Next Audio (escape)"
+                    "description": "Move forward to the next audio segment in the narration (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook). This skips any currently escapable structure",
+                    "name": "Next Audio Segment (escape)"
                 },
                 "AudioPlayPause": {
-                    "description": "Toggle play/pause in EPUB3 Media Overlays, Text To Speech readaloud, or audiobooks",
+                    "description": "Toggle play/pause for current narration (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook)",
                     "name": "Play/Pause Audio"
                 },
                 "AudioPrevious": {
-                    "description": "Move backward to the previous audio event in EPUB3 Media Overlays, Text To Speech readaloud, or audiobooks",
-                    "name": "Previous Audio"
+                    "description": "Move back to the previous audio segment in the narration (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook)",
+                    "name": "Previous Audio Segment"
                 },
                 "AudioPreviousAlt": {
-                    "description": "Move backward to the previous audio event in EPUB3 Media Overlays, Text To Speech readaloud, or audiobooks. This skips the current escapable structure, if applicable",
-                    "name": "Previous Audio (escape)"
+                    "description": "Move back to the previous audio segment in the narration (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook). This skips any currently escapable structure",
+                    "name": "Previous Audio Segment (escape)"
                 },
                 "AudioStop": {
-                    "description": "Stop audio in EPUB3 Media Overlays, Text To Speech readaloud, or audiobooks",
+                    "description": "Stop current audio (EPUB3 Media Overlays, Text To Speech read-aloud, or pre-recorded audiobook)",
                     "name": "Stop Audio"
                 },
                 "CloseReader": {
@@ -1056,7 +1057,7 @@
                     "name": "Go to End"
                 },
                 "OpenReaderInfo": {
-                    "description": "In the reader window, open the popup dialog that display information about the publication",
+                    "description": "In the reader window, open the information dialog for the publication",
                     "name": "Display Publication Information"
                 },
                 "OpenReaderInfoWhereAmI": {
@@ -1068,20 +1069,20 @@
                     "name": "Print"
                 },
                 "SearchNext": {
-                    "description": "In the reader window's search tool, go to the next found match. Note that there is an alternative keyboard shortcut to this default one",
-                    "name": "Search Next"
+                    "description": "In the reader window's search tool, go to the next search result. Note that there is an alternative keyboard shortcut to this default one",
+                    "name": "Search Result Next"
                 },
                 "SearchNextAlt": {
-                    "description": "In the reader window's search tool, go to the next found match. This is an alternative keyboard shortcut to the default one",
-                    "name": "Search Next (Alternative)"
+                    "description": "In the reader window's search tool, go to the next search result. This is an alternative keyboard shortcut to the default one",
+                    "name": "Search Result Next (Alternative)"
                 },
                 "SearchPrevious": {
-                    "description": "In the reader window's search tool, go to the previous found match. Note that there is an alternative keyboard shortcut to this default one",
-                    "name": "Search Previous"
+                    "description": "In the reader window's search tool, go to the previous search result. Note that there is an alternative keyboard shortcut to this default one",
+                    "name": "Search Result Previous"
                 },
                 "SearchPreviousAlt": {
-                    "description": "In the reader window's search tool, go to the previous found match. This is an alternative keyboard shortcut to the default one",
-                    "name": "Search Previous (Alternative)"
+                    "description": "In the reader window's search tool, go to the previous search result. This is an alternative keyboard shortcut to the default one",
+                    "name": "Search Result Previous (Alternative)"
                 },
                 "SpeakReaderInfoWhereAmI": {
                     "description": "In the reader window, describe the context of the current reading location, using speech text compatible with screen readers",

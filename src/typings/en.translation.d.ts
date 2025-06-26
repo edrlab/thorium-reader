@@ -1693,6 +1693,7 @@ declare namespace typed_i18n {
     readonly "letterSpacing": string,
     readonly "lineSpacing": string,
     readonly "margin": string,
+    readonly "mathjax": string,
     readonly "noFootnotes": string,
     readonly "noRTLFlip": string,
     readonly "noRuby": string,
@@ -2064,6 +2065,7 @@ declare namespace typed_i18n {
   readonly "letterSpacing": string,
   readonly "lineSpacing": string,
   readonly "margin": string,
+  readonly "mathjax": string,
   readonly "noFootnotes": string,
   readonly "noRTLFlip": string,
   readonly "noRuby": string,
@@ -2137,6 +2139,7 @@ declare namespace typed_i18n {
   (_: "reader.settings.letterSpacing", __?: {}): string;
   (_: "reader.settings.lineSpacing", __?: {}): string;
   (_: "reader.settings.margin", __?: {}): string;
+  (_: "reader.settings.mathjax", __?: {}): string;
   (_: "reader.settings.noFootnotes", __?: {}): string;
   (_: "reader.settings.noRTLFlip", __?: {}): string;
   (_: "reader.settings.noRuby", __?: {}): string;

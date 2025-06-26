@@ -1033,7 +1033,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
                                                     left: /*(isDockedMode && this.props.readerConfig.readerDockingMode === "left") ? "0" :*/ "",
                                                     height: /*(isDockedMode && isOnSearch) ? "calc(100dvh - 159px)" :*/ "",
-                                                    marginTop: /*(isDockedMode && !isOnSearch) ? "70px" :*/ "20px",
+                                                    marginTop: /*(isDockedMode && !isOnSearch) ? "70px" :*/ "0px",
                                                 }}
                                                 aria-describedby={undefined}
                                             >
@@ -1126,7 +1126,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
                                                 left: /*isDockedMode && this.props.readerConfig.readerDockingMode === "left" ? "0" :*/ "",
                                                 height: /*isDockedMode && isOnSearch ? "calc(100dvh - 159px)" :*/ "",
-                                                marginTop: /*isDockedMode && !isOnSearch ? "70px" :*/ "20px",
+                                                marginTop: /*isDockedMode && !isOnSearch ? "70px" :*/ "0px",
                                             }}
                                             aria-describedby={undefined}
                                         >

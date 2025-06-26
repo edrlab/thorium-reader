@@ -783,6 +783,7 @@
             "letterSpacing": "Espaiat de lletres",
             "lineSpacing": "Interlineat",
             "margin": "Marge",
+            "mathjax": "",
             "noFootnotes": "Desactivar notes al peu",
             "noRTLFlip": "Desactiva la IU de dreta a esquerra",
             "noRuby": "Oculta el Ruby japonès",

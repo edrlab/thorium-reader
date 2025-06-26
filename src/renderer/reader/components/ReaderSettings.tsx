@@ -120,7 +120,7 @@ const TabTitle = ({ value }: { value: string }) => {
     );
 };
 
-const Theme = () => {
+const Theme = ({ dockedMode }: { dockedMode: boolean }) => {
     const [__] = useTranslator();
     const theme = useReaderConfig("theme");
     const set = useSaveReaderConfigDebounced();
@@ -140,15 +140,15 @@ const Theme = () => {
         },
         {
             id: 3,
-            name: `${__("reader.settings.theme.name.Paper")}`,
-            value: "paper",
-            style: { backgroundColor: "#E9DDC8", color: "#000000" },
-        },
-        {
-            id: 4,
             name: `${__("reader.settings.theme.name.Night")}`,
             value: "night",
             style: { backgroundColor: "#121212", color: "#fff" },
+        },
+        {
+            id: 4,
+            name: `${__("reader.settings.theme.name.Paper")}`,
+            value: "paper",
+            style: { backgroundColor: "#E9DDC8", color: "#000000" },
         },
         {
             id: 5,
@@ -179,10 +179,10 @@ const Theme = () => {
 
     const defaultKey =
         theme === "neutral" ? 1
-            : theme === "night" ? 4
+            : theme === "night" ? 3
                 : theme === "sepia" ? 2
                     : theme === "contrast1" ? 5
-                        : theme === "paper" ? 3
+                        : theme === "paper" ? 4
                             : theme === "contrast2" ? 6
                                 : theme === "contrast3" ? 7
                                     : theme === "contrast4" ? 8
@@ -191,7 +191,7 @@ const Theme = () => {
     return (
         <section className={stylesSettings.section}>
             <h4>{__("reader.settings.theme.title")}</h4>
-            <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px", marginTop: "5px", flexWrap: "wrap" }}
+            <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: dockedMode ? "10px" : "20px", marginTop: "5px", flexWrap: "wrap" }}
                 value={themeOptions.find((theme) => theme.id === defaultKey).value}
                 onValueChange={(option) => set({ theme: option as TTheme })}
             >
@@ -389,7 +389,7 @@ export const FontFamily = () => {
                     <p>{__("reader.settings.customFontSelected")}</p>
                 }
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "20px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                 <h4>{__("reader.settings.preview")}:</h4>
                 <span
                     aria-hidden
@@ -1135,7 +1135,7 @@ const ReadingDisplayCheckboxSettings = ({
         {
             id: "mathjax",
             name: "mathjax",
-            label: "MathJax",
+            label: __("reader.settings.mathjax"),
             description: "MathJax",
             checked: enableMathJax,
             onChange: () => {
@@ -1889,7 +1889,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                     <Tabs.Content value="tab-display" tabIndex={-1} id="readerSettings_tabs-tab-display" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <TabHeader />
                         <section className={stylesSettings.settings_tab}>
-                            {isPdf ? <></> : <Theme />}
+                            {isPdf ? <></> : <Theme dockedMode={dockedMode} />}
                             {isPdf ? <></> : <ReadingDisplayLayout isFXL={props.isFXL} />}
                             {isPdf ? <></> : <ReadingDisplayAlign />}
                             <ReadingDisplayCol isPdf={props.isPdf} pdfCol={pdfState.pdfCol} />
