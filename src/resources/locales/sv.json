@@ -36,7 +36,7 @@
                         "yes": "Ja"
                     },
                     "help": "Välj detta om du vill att läsfönster som är öppna när du stänger programmet ska öppnas automatiskt vid nästa start.",
-                    "message": "Sparar och återställer sessionen",
+                    "message": "Spara och återställ sessionen",
                     "title": "Spara session?"
                 }
             }
@@ -857,7 +857,7 @@
     },
     "settings": {
         "annotationCreator": {
-            "creator": "Skapare",
+            "creator": "Anteckningsförfattare (valfritt)",
             "help": "Namnet du anger här kommer att inkluderas i metadata för exporterade anteckningar.",
             "name": "Namn",
             "organization": "Organisation",
