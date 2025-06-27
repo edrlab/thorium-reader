@@ -5,6 +5,8 @@
 }
 
 .print_dialog_form {
+    @include mx.scrollbar_styling;
+
     background-color: var(--color-secondary);
     border-radius: 10px;
     border: 1px solid var(--color-light-grey);
@@ -39,6 +41,8 @@
 }
 
 .print_dialog_image_container {
+    @include mx.scrollbar_styling;
+
     // display: flex;
     // flex-wrap: nowrap;
     overflow: auto hidden;
@@ -114,11 +118,32 @@
     padding-inline-start: 20px;
     margin: 0;
 
+    h4 {
+        margin-top: 0;
+    }
+
     li {
-        max-width: 250px;
+        max-width: inherit;
         overflow: hidden;
         text-overflow: ellipsis;
         text-wrap: auto;
+    }
+}
+
+.info_text {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-extralight-grey);
+    color: var(--color-primary);
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+
+    svg {
+        margin-top: 5px;
+        width: 25px;
+        height: 25px;
+        color: var(--color-blue);;
     }
 }
 

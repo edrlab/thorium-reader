@@ -750,19 +750,21 @@
             "searchTitle": "Zoek:"
         },
         "print": {
-            "description": "{{- appName}} dialoogvenster voor afdrukken van een publicatie met {{- count}} pagina's. Je moet het afdruk bereik zetten om de printdialoog op te roepen",
-            "descriptionLcp": "{{- appName}} dialoogvenster voor afdrukken van een LCP publicatie met {{- count}} pagina's. Je moet het afdruk bereik zetten om de printdialoog op te roepen",
             "descriptionLcpCount": "",
             "descriptionLcpLimit": "{{- count}} pagina's over (van {{- lcpLimitPages}} LCP limiet)",
             "descriptionLcpPrintable": "",
             "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
             "pageHelpInfo": "pagina bereik hulp informatie :",
             "pageHelpInfo1": " - geef een pagina nummer op om naar een enkele pagina te verwijzen (b.v. \"6\")",
             "pageHelpInfo2": " - geef twee paginanummers op verbonden met een streepje om naar een aangesloten bereik van pagina's te verwijzen (b.v. \"6-13\")",
             "pageHelpInfo3": " - gebruik een puntkomma om meerdere pagina's of pagina bereiken te scheiden (b.v. \"5;14-20;37\")",
             "pageHelpInfo4": " - laat het eerste of laatste paginanummer weg in een bereik om te verwijzen naar de eerste of laatste pagina van een publicatie (b.v. \"-16\" is gelijk aan \"1-16\", en \"34-\" is gelijk aan \"34-100\" uitgaande van een boek met 100 pagina's in totaal)",
             "pages": "Pagina's",
-            "print": "Afdrukken"
+            "print": "Afdrukken",
+            "printablePages": ""
         },
         "settings": {
             "column": {

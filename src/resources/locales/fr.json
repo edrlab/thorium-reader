@@ -750,19 +750,21 @@
             "searchTitle": "Recherche"
         },
         "print": {
-            "description": "{{- appName}} étape de pré-impression : veuillez sélectionner les pages que vous souhaitez envoyer au dialogue d'impression du système (cette publication a {{- count}} pages).",
-            "descriptionLcp": "{{- appName}} étape de pré-impression : veuillez sélectionner les pages que vous souhaitez envoyer au dialogue d'impression du système (cette publication protégée par LCP a {{- count}} pages).",
-            "descriptionLcpCount": "Pages restantes : {{- count}}",
-            "descriptionLcpLimit": "Limite LCP : {{- lcpLimitPages}}",
-            "descriptionLcpPrintable": "Pages imprimables : {{- printable}}",
-            "howTo": "Comment séléctionner une plage de pages à imprimer",
+            "descriptionLcpCount":  "Limite de pages restantes : {{- count}}",
+            "descriptionLcpLimit": "LCP DRM limite stricte : {{- lcpLimitPages}}",
+            "descriptionLcpPrintable": "Pages imprimées et mémorisées : {{- printable}}",
+            "howTo": "Comment sélectionner une série de pages à imprimer ?",
+            "lcpInfo": "Le nombre de pages que vous pouvez imprimer dans cette publication est limité. Choisissez ici les pages désirés.",
+            "noPagesLcpLimitReached": "vous avez atteint la limite LCP",
+            "noPrintablePages": "Aucune page imprimable",
             "pageHelpInfo": "Syntaxe du sélecteur de page :",
             "pageHelpInfo1": "saisir un numéro de page pour faire référence à une seule page (par exemple : \"6\")",
             "pageHelpInfo2": "saisir deux numéros de page séparés par un tiret pour faire référence à une série de pages contiguës (par exemple, \"6-13\")",
             "pageHelpInfo3": "utiliser le caractère point-virgule pour séparer plusieurs pages ou plages de pages (par exemple : \"5;14-20;37\")",
             "pageHelpInfo4": "omettre la première ou la dernière page d'un intervalle pour faire référence à la première ou à la dernière page de la publication (par exemple, \"-16\" équivaut à \"1-16\", et \"34-\" équivaut à \"34-100\" dans l'hypothèse d'un livre de 100 pages au total).",
             "pages": "Pages",
-            "print": "Imprimer"
+            "print": "Imprimer",
+            "printablePages": "pages imprimables :"
         },
         "settings": {
             "column": {

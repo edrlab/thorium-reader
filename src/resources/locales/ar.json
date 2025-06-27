@@ -750,19 +750,21 @@
             "searchTitle": "البحث عن:"
         },
         "print": {
-            "description": "",
-            "descriptionLcp": "",
             "descriptionLcpCount": "",
             "descriptionLcpLimit": "",
             "descriptionLcpPrintable": "",
             "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
             "pageHelpInfo": "",
             "pageHelpInfo1": "",
             "pageHelpInfo2": "",
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
-            "print": ""
+            "print": "",
+            "printablePages": ""
         },
         "settings": {
             "column": {

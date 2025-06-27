@@ -24,12 +24,12 @@ import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down
 import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
 import * as KeyIcon from "readium-desktop/renderer/assets/icons/key-icon.svg";
 
-const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
+// const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
 // VibeCoded on labs.perplexity.ai with R1 :-)
 function parsePrintRanges(input: string) {
     const segmentRegex = /^\s*(\d+)\s*$|^\s*(\d*)\s*-\s*(\d*)\s*$/;
-    return input.split(";").map(segment => {
+    return input.split(/[\,|\;]/).filter((v) => !!v).map(segment => {
         const trimmed = segment.trim();
         if (!trimmed) return null;
 
@@ -99,7 +99,7 @@ function formatRanges(ranges: number[]) {
             prev = current;
         }
     }
-    return result.join(",");
+    return result.join(", ");
 }
 
 const pdfThumbnailRequestedArray: (boolean)[] = [];
@@ -148,7 +148,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
 
 
     let pagesToPrint = pageRange;
-    let newLcpRightsPrints: number[] = [];
+    // let newLcpRightsPrints: number[] = [];
     if (isLcpWithPrintRights) {
 
         const lcpRightsPrints = publicationViewLcpRightsPrintsConsumed;
@@ -157,7 +157,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
         const pagesToPrintNotSaved = pagesToPrint.filter((page) => !pagesToPrintSaved.some((pageSaved) => pageSaved === page));
         const pagesToPrintNotSavedRightTruncated = pagesToPrintNotSaved.slice(0, lcpRightsPrintsRemain);
         pagesToPrint = [...pagesToPrintSaved, ...pagesToPrintNotSavedRightTruncated].sort((a, b) => a - b);
-        newLcpRightsPrints = [...lcpRightsPrints, ...pagesToPrintNotSavedRightTruncated].sort((a, b) => a - b);
+        // newLcpRightsPrints = [...lcpRightsPrints, ...pagesToPrintNotSavedRightTruncated].sort((a, b) => a - b);
 
     }
 
@@ -179,11 +179,28 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                     </button>
                 </Dialog.Close>
             </div>
-            <p>{isLcp ? __("reader.print.descriptionLcp", { appName: capitalizedAppName, count: pdfPageRange[1] }) : __("reader.print.description", { count: pdfPageRange[1], appName: capitalizedAppName })}</p>
+            {
+                isLcpWithPrintRights ?
+                    <div className={stylesPrint.info_text}>
+                        <div style={{ display: "flex", flexDirection: "row", fontSize: "14px" }}>
+                            <SVG ariaHidden svg={InfoIcon} />
+                            <p style={{ marginLeft: "10px" }}>{__("reader.print.lcpInfo")}</p>
+                        </div>
+                        <div style={{ display: "flex", flexDirection: "column", marginLeft: "20px", marginBottom: "5px" }}>
+                            <h4 style={{ marginTop: "0px" }}><SVG ariaHidden svg={KeyIcon} />{__("publication.licensed")}</h4>
+                            <ul className={stylesPrint.print_lcp_list}>
+                                <li>{__("reader.print.descriptionLcpLimit", { lcpLimitPages: publicationView.lcp.rights.print })}</li>
+                                <li>{__("reader.print.descriptionLcpCount", { count: lcpCountPages })}</li>
+                                <li>{__("reader.print.descriptionLcpPrintable", { printable: formatRanges(publicationViewLcpRightsPrintsConsumed), count: publicationViewLcpRightsPrintsConsumed.length.toString() })}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    : <div style={{ margin: "10px", borderBottom: "2px solid var(--color-extralight-grey)" }} />
 
-            <div style={{ margin: "10px", borderBottom: "2px solid var(--color-extralight-grey)" }} />
+            }
 
             <div style={{ padding: "10px 15px 5px", backgroundColor: "var(--color-extralight-grey)" }}>
+                <p aria-label="Prévisualisation">Prévisualisation</p>
                 <div id="print-dialog-image-container" className={stylesPrint.print_dialog_image_container}>
 
                     {
@@ -226,30 +243,26 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                                     );
                                 })}
                             </div>
-                            : <p style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "-webkit-fill-available" }}>No Pages</p>
+                            : <>
+                                <p style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "-webkit-fill-available" }}>{__("reader.print.noPrintablePages")}</p>
+                                {isLcpWithPrintRights && !!pageRange.length ? <p style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "-webkit-fill-available" }}>{__("reader.print.noPagesLcpLimitReached")}</p> : <></>}
+                            </>
                     }
 
                 </div>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "20px", minHeight: "85px" }}>
-                <div className={stylesInput.form_group} style={{ marginTop: "20px", width: "360px", marginLeft: "5px" }}>
+            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", minHeight: "85px" }}>
+                <div className={stylesInput.form_group} style={{ marginTop: "20px", minWidth: "360px", marginLeft: "5px" }}>
                     <input type="text" name="print-range" style={{ width: "100%", marginLeft: "10px" }} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={__("reader.print.pages")} value={getV} onChange={(e) => {
                         const v = e.target.value;
                         setV(v);
                     }} />
                     <label htmlFor="print-range">{__("reader.print.pages")}</label>
                 </div>
-                {
-                    isLcpWithPrintRights ?
-                        <div>
-                            <h4><SVG ariaHidden svg={KeyIcon} />{__("publication.licensed")}</h4>
-                            <ul className={stylesPrint.print_lcp_list}>
-                                <li>{__("reader.print.descriptionLcpLimit", { lcpLimitPages: publicationView.lcp.rights.print })}</li>
-                                <li>{__("reader.print.descriptionLcpCount", { count: lcpCountPages })}</li>
-                                <li>{__("reader.print.descriptionLcpPrintable", { printable: formatRanges(newLcpRightsPrints) })}</li>
-                            </ul>
-                        </div>
-                        : <></>}
+                <div style={{ marginTop: "20px" }}>
+                    <label htmlFor="pages-to-print">{__("reader.print.printablePages")}</label>
+                    <p style={{ marginTop: "3px" }} id="pages-to-print">{formatRanges(pagesToPrint)} ({pagesToPrint.length})</p>
+                </div>
             </div>
             <button className={classNames("button_catalog_infos")} onClick={(e) => { e.preventDefault(); setInfoOpen(!infoOpen); }}>
                 <SVG ariaHidden svg={InfoIcon} />
@@ -262,7 +275,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                     <ul>
                         <li>{__("reader.print.pageHelpInfo1")}</li>
                         <li>{__("reader.print.pageHelpInfo2")}</li>
-                        <li> {__("reader.print.pageHelpInfo3")}</li>
+                        <li>{__("reader.print.pageHelpInfo3")}</li>
                         <li>{__("reader.print.pageHelpInfo4")}</li>
                     </ul>
                 </div>

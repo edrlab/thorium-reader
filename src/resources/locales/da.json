@@ -750,19 +750,21 @@
             "searchTitle": "Søg:"
         },
         "print": {
-            "description": "{{- appName}} pre-print dialog: Angiv det sideinterval, du ønsker at sende til systemets udskrivningsdialog (denne bog har {{- count}} sider)",
-            "descriptionLcp": "{{- appName}} pre-print dialog: Angiv det sideinterval, du ønsker at sende til systemets udskrivningsdialog (denne LCP-beskyttede bog har {{- count}} sider)",
             "descriptionLcpCount": "",
             "descriptionLcpLimit": "LCP begrænsning: {{- lcpLimitPages}}, sider tilbage: {{- count}}",
             "descriptionLcpPrintable": "",
             "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
             "pageHelpInfo": "Syntaks for angivelse af sider:",
             "pageHelpInfo1": " - indtast et nummer på en side (fx. \"6\")",
             "pageHelpInfo2": " - indtast to sidetal med en bindestreg imellem, for at angive en kontinuerlig række af sider (fx. \"6-13\")",
             "pageHelpInfo3": " - brug semikolon til at opdele flere enkeltsider eller kontinuerlige siderækker (fx. \"5;14-20;37\")",
             "pageHelpInfo4": " - undlad den første eller sidste del i en angivelse af siderække for at medtage alle sider hertil (fx. svarer \"-16\" til \"1-16\" og \"34-\" svarer til \"34-100\" antaget at bogen er på 100 sider)",
             "pages": "Sider",
-            "print": "Print"
+            "print": "Print",
+            "printablePages": ""
         },
         "settings": {
             "column": {
