@@ -783,7 +783,7 @@
             "letterSpacing": "Kirjainvälistys",
             "lineSpacing": "Riviväli",
             "margin": "Marginaali",
-            "mathjax": "",
+            "mathjax": "Ota MathJax käyttöön",
             "noFootnotes": "Alaviitteet pois käytöstä",
             "noRTLFlip": "Estä oikealta vasemmalle -käyttöliittymä",
             "noRuby": "Piilota japanin rubi-merkit",
@@ -889,16 +889,16 @@
                     "name": "Luo pikamuistiinpano"
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "",
-                    "name": ""
+                    "description": "Vuorottele muistiinpanojen ja kirjanmerkkien visuaalisia merkkejä joko marginaalissa tai tekstissä",
+                    "name": "Muuta muistiinpanojen marginaalia"
                 },
                 "AudioNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "Siirry seuraavaan ääniosioon (EPUB3 teksti- ja äänikirja, tekstistä puheeksi -toiminto tai äänikirja)",
+                    "name": "Seuraava ääniosio"
                 },
                 "AudioNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Siirry seuraavaan äänijaksoon (EPUB3 teksti- ja äänikirja, tekstistä puheeksi -toiminto, äänikirja). Toiminto ohittaa rakenteet, jotka ovat ohitettavissa",
+                    "name": "Seuraava äänijakso (ohita)"
                 },
                 "AudioPlayPause": {
                     "description": "Aktivoi käynnistä/pysäytä kesken olevaan teokseen (EPUB3 teksti- ja äänikirja, tekstistä puheeksi -toiminto tai äänikirja)",
@@ -977,131 +977,131 @@
                     "name": "Kohdista työkaluvalikkoon"
                 },
                 "NavigateNextChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "Siirry lukutilassa seuraavaan osioon teoksen lukemisjärjestyksessä (esim. seuraavaan lukuun kirjan rakenteessa). Huomaa, että toiminnolle saatavilla on vaihtoehtoinen näppäinoikotie",
+                    "name": "Siirry seuraavaan lukuun"
                 },
                 "NavigateNextChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Siirry lukutilassa seuraavaan osioon teoksen lukemisjärjestyksessä (esim. seuraavaan lukuun kirjan rakenteessa). Huomaa, että tämä on toiminnon vaihtoehtoinen näppäinoikotie",
+                    "name": "Siirry seuraavaan lukuun (vaihtoehtoinen)"
                 },
                 "NavigateNextHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "Lukutilassa siirry askel eteenpäin navigointihistoriassa",
+                    "name": "Siirry historiassa eteenpäin"
                 },
                 "NavigateNextLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Näytä kirjasto näkymässä sivutetun julkaisuluettelon seuraava sivu. Huomaa, että toiminnolle on tarjolla vaihtoehtoinen näppäinoikotie.",
+                    "name": "Siirry julkaisujen seuraavalle sivulle"
                 },
                 "NavigateNextLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Näytä kirjastonäkymässä sivutetun julkaisuluettelon seuraava sivu. Tämä on toiminnon vaihtoehtoinen näppäinoikotie.",
+                    "name": "Siirry julkaisujen seuraavalle sivulle (vaihtoehtoinen)"
                 },
                 "NavigateNextOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Seuraa kirjastonäkymän luettelonäkymässä/OPDS-syötteessä seuraavaa sivunumerolinkkiä. Huomaa, että oletuspikanäppäimelle on tarjolla vaihtoehtoinen pikanäppäin.",
+                    "name": "Siirry seuraavalle OPDS-sivulle"
                 },
                 "NavigateNextOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Seuraa kirjastonäkymän luettelonäkymässä/OPDS-syötteessä seuraavaa sivunumerolinkkiä. Tämä on vaihtoehtoinen pikanäppäin",
+                    "name": "Siirry seuraavalle OPDS-sivulle (vaihtoehtoinen)"
                 },
                 "NavigateNextPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Käännä lukutilassa julkaisun seuraava sivu. Huomaa, että oletuspikanäppäimelle on vaihtoehtoinen pikanäppäin",
+                    "name": "Käännä seuraava sivu"
                 },
                 "NavigateNextPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Käännä lukutilassa julkaisun seuraava sivu. Tämä on vaihtoehtoinen pikanäppäin",
+                    "name": "Käännä seuraava sivu (vaihtoehtoinen)"
                 },
                 "NavigatePreviousChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "Siirry lukutilassa edelliseen osioon kirjan rakenteessa (esim. edelliseen lukuun). Huomaa, että oletuspikanäppäimelle on vaihtoehtoinen pikanäppäin",
+                    "name": "Siirry edelliseen lukuun"
                 },
                 "NavigatePreviousChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Siirry lukutilassa edelliseen osioon kirjan rakenteessa (esim. edelliseen lukuun). Tämä on vaihtoehtoinen pikanäppäin",
+                    "name": "Siirry edelliseen lukuun (vaihtoehtoinen)"
                 },
                 "NavigatePreviousHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "Siirry lukutilassa askel taaksepäin navigointihistoriassa",
+                    "name": "Siirry historiassa taaksepäin"
                 },
                 "NavigatePreviousLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Näytä kirjastonäkymässä sivutetun julkaisuluettelon edellinen sivu. Huomaa, että oletuspikanäppäimelle on vaihtoehtoinen pikanäppäin",
+                    "name": "Siirry julkaisujen edelliselle sivulle"
                 },
                 "NavigatePreviousLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Näytä kirjastonäkymässä sivutetun julkaisuluettelon edellinen sivu. Tämä on vaihtoehtoinen pikanäppäin",
+                    "name": "Siirry julkaisuluettelon edelliselle sivulle (vaihtoehtoinen)"
                 },
                 "NavigatePreviousOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Seuraa luetteloiden/OPDS-syötteiden edellistä sivunumerolinkkiä. Huomaa, että oletuspikanäppäimelle on tarjolla vaihtoehtoinen pikanäppäin",
+                    "name": "Siirry edelliselle OPDS-sivulle"
                 },
                 "NavigatePreviousOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Seuraa luetteloiden/OPDS-syötteiden edellistä sivunumerolinkkiä. Tämä on vaihtoehtoinen pikanäppäin",
+                    "name": "Siirry edelliselle OPDS-sivulle (vaihtoehtoinen)"
                 },
                 "NavigatePreviousPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Käännä lukunäkymässä julkaisun edellinen sivu. Huomaa, että oletuspikanäppäimelle on vaihtoehtoinen pikanäppäin",
+                    "name": "Siirry edelliselle sivulle"
                 },
                 "NavigatePreviousPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Käännä lukunäkymässä julkaisun edellinen sivu. Tämä on vaihtoehtoinen pikanäppäin",
+                    "name": "Siirry edelliselle sivulle (vaihtoehtoinen)"
                 },
                 "NavigateToBegin": {
-                    "description": "",
-                    "name": ""
+                    "description": "Siirry lukunäkymässä julkaisuun alkuun",
+                    "name": "Siirry alkuun"
                 },
                 "NavigateToEnd": {
-                    "description": "",
-                    "name": ""
+                    "description": "Siirry lukunäkymässä julkaisun loppuun",
+                    "name": "Siirry loppuun"
                 },
                 "OpenReaderInfo": {
-                    "description": "",
-                    "name": ""
+                    "description": "Avaa lukunäkymässä julkaisun tiedot -ikkuna",
+                    "name": "Näytä julkaisun tiedot"
                 },
                 "OpenReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "Avaa lukunäkymässä ponnahdusikkuna, joka näyttää tietoja julkaisusta ja kohdentaa näppäimistön kohtaan, joka esittää nyt luettavan tekstin ympäristön",
+                    "name": "Näytä julkaisun tiedot ja luettava kohta"
                 },
                 "Print": {
-                    "description": "",
-                    "name": ""
+                    "description": "Avaa tulostusikkuna lukunäkymässä",
+                    "name": "Tulosta"
                 },
                 "SearchNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "Siirry lukunäkymän hakutyökalussa seuraavaan hakutulokseen. Huomaa, että oletuspikanäppäimelle on vaihtoehtoinen pikanäppäin",
+                    "name": "Seuraava hakutulos"
                 },
                 "SearchNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Siirry lukunäkymän hakutyökalussa seuraavaan hakutulokseen. Tämä on vaihtoehtoinen pikanäppäin",
+                    "name": "Seuraava hakutulos (vaihtoehtoinen)"
                 },
                 "SearchPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "Siirry lukunäkymän hakutyökalussa edelliseen hakutulokseen. Huomaa, että oletuspikanäppäimelle on vaihtoehtoinen pikanäppäin",
+                    "name": "Edellinen hakutulos"
                 },
                 "SearchPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Siirry lukunäkymän hakutyökalussa edelliseen hakutulokseen. Tämä on vaihtoehtoinen pikanäppäin",
+                    "name": "Edellinen hakutulos (vaihtoehtoinen)"
                 },
                 "SpeakReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "Kuvaile lukunäkymässä nykyisen luettevan kohdan ympäristö ja käytä ruudunlukijoiden kanssa toimivaa puheääntä",
+                    "name": "Kuvaile luettava kohta (ääneen)"
                 },
                 "ToggleBookmark": {
-                    "description": "",
-                    "name": ""
+                    "description": "Lisää uusi kirjanmerkki tai poista valittuna oleva kirjanmerkki",
+                    "name": "Siirrä kirjanmerkkiä"
                 },
                 "ToggleReaderFullscreen": {
-                    "description": "",
-                    "name": ""
+                    "description": "Ota lukunykymässä käyttöön tai poista käytöstä koko ruudun tila. Huomaa, että toiminto ei ole sama kuin keskittymistila, joka yksinkertaistaa käyttöliittymää",
+                    "name": "Muuta koko ruudun tila"
                 }
             },
             "loadUserJson": "Lataa käyttäjän tiedostosta",
-            "noShortcutFound": "",
+            "noShortcutFound": "Tällä nimellä ei löydy pikanäppäintä",
             "resetDefaults": "Palauta (lataa oletusasetukset)",
             "save": "Tallenna",
-            "searchPlaceholder": ""
+            "searchPlaceholder": "Hae pikanäppäimiä"
         },
         "language": {
             "languageChoice": "Kieli"
@@ -1113,8 +1113,8 @@
         "note": {
             "export": {
                 "applyDefaultTemplate": "Käytä oletuspohjaa",
-                "enableCheckbox": "",
-                "overrideHTMLTemplate": ""
+                "enableCheckbox": "Mukauta html-mallia",
+                "overrideHTMLTemplate": "Merkintöjen vienti (muistiinpanot ja kirjanmerkit)"
             }
         },
         "session": {
