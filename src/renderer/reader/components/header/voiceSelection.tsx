@@ -101,7 +101,6 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
                         // nothing
                     } else {
 
-                        console.log("KEY=", key);
                         const found = voices.find((voice) => typeof key === "string" && createNameId(voice).split("__!!__")[1] === key.split("__!!__")[1]);
                         if (found) {
                             setSelectedVoice(found);
