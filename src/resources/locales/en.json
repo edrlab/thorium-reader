@@ -755,7 +755,7 @@
             "descriptionLcpCount": "Pages remaining: {{- count}}",
             "descriptionLcpLimit": "LCP limit: {{- lcpLimitPages}}",
             "descriptionLcpPrintable": "Printable pages: {{- printable}}",
-            "howTo": "How to select a range of pages to print",
+            "howTo": "How to select the pages to print",
             "pageHelpInfo": "Page selector syntax:",
             "pageHelpInfo1": "enter a page number to reference a single page (e.g. \"6\")",
             "pageHelpInfo2": "enter two page numbers separated by a dash character to reference a range of contiguous pages (e.g. \"6-13\")",
