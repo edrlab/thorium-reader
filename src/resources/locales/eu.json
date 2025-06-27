@@ -594,7 +594,7 @@
         "lcpRightsPrint": "Inprimagailuaren kopia",
         "lcpStart": "Hasiera",
         "licenceLCP": "Lizentzia (LCP)",
-        "licenseCertificateDateInvalid": "Lizentzia-sinaduraren data ez da baliozkoa",
+        "licenseCertificateDateInvalid": "Lizentzia-sinaduraren data ez da baliozkoa ({{- dateTime}})",
         "licenseOutOfDate": "Lizentzia ez dago eguneratuta",
         "licenseSignatureInvalid": "Lizentziaren sinadura ez da baliozkoa",
         "licensed": "Lizentziarekin",

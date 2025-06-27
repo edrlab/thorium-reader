@@ -646,7 +646,7 @@ export class LcpManager {
         }
     }
 
-    public convertUnlockPublicationResultToString(val: any): string | undefined {
+    public convertUnlockPublicationResultToString(val: any, licenseIssueDate: string): string | undefined {
         let message: string | undefined;
         if (typeof val === "string") {
             message = val;
@@ -678,7 +678,7 @@ export class LcpManager {
                 }
                 case 111: {
                     // message = "LICENSE_CERTIFICATE_DATE_INVALID (was LICENSE_SIGNATURE_DATE_INVALID): " + val;
-                    message = this.translator.translate("publication.licenseCertificateDateInvalid");
+                    message = this.translator.translate("publication.licenseCertificateDateInvalid", { dateTime: licenseIssueDate });
                     break;
                 }
                 case 112: {

@@ -594,7 +594,7 @@
         "lcpRightsPrint": "ページを印刷",
         "lcpStart": "開始",
         "licenceLCP": "ライセンス（LCP）",
-        "licenseCertificateDateInvalid": "LCP提供業者の証明書の有効期限が切れています。",
+        "licenseCertificateDateInvalid": "LCP提供業者の証明書の有効期限が切れています。 ({{- dateTime}})",
         "licenseOutOfDate": "LCPライセンスの期限が切れています。",
         "licenseSignatureInvalid": "LCPライセンスの署名が無効です。",
         "licensed": "ライセンスが付与されています",

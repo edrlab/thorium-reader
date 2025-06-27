@@ -594,7 +594,7 @@
         "lcpRightsPrint": "Sayfalar basıldı",
         "lcpStart": "Başlat",
         "licenceLCP": "Lisans (LCP)",
-        "licenseCertificateDateInvalid": "LCP sağlayıcı sertifikasının süresi doldu.",
+        "licenseCertificateDateInvalid": "LCP sağlayıcı sertifikasının süresi doldu. ({{- dateTime}})",
         "licenseOutOfDate": "Güncel olmayan LCP Lisansı",
         "licenseSignatureInvalid": "LCP lisans imzası geçersiz.",
         "licensed": "Lisanslı",

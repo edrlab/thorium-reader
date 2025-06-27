@@ -594,7 +594,7 @@
         "lcpRightsPrint": "Tiskane strani",
         "lcpStart": "Začetek",
         "licenceLCP": "Licenca (LCP)",
-        "licenseCertificateDateInvalid": "Datum podpisa licence ni veljaven",
+        "licenseCertificateDateInvalid": "Datum podpisa licence ni veljaven ({{- dateTime}})",
         "licenseOutOfDate": "Licenca ni več veljavna",
         "licenseSignatureInvalid": "Podpis licence ni veljaven",
         "licensed": "Licencirano",

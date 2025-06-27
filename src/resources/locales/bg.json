@@ -594,7 +594,7 @@
         "lcpRightsPrint": "Печат на страници",
         "lcpStart": "Начало",
         "licenceLCP": "",
-        "licenseCertificateDateInvalid": "Датата на ключа за лиценза е невалидна.",
+        "licenseCertificateDateInvalid": "Датата на ключа за лиценза е невалидна. ({{- dateTime}})",
         "licenseOutOfDate": "Изтекъл срок на лиценза.",
         "licenseSignatureInvalid": "Ключа за лиценза е невалиден.",
         "licensed": "",

@@ -594,7 +594,7 @@
         "lcpRightsPrint": "列印頁數",
         "lcpStart": "開始",
         "licenceLCP": "授權（LCP）",
-        "licenseCertificateDateInvalid": "LCP 提供者憑證已過期。",
+        "licenseCertificateDateInvalid": "LCP 提供者憑證已過期。 ({{- dateTime}})",
         "licenseOutOfDate": "LCP 許可證已過期。",
         "licenseSignatureInvalid": "LCP 許可證簽章無效。",
         "licensed": "已授權",

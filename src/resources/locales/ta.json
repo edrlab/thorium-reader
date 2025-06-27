@@ -594,7 +594,7 @@
         "lcpRightsPrint": "அச்சிடப்பட்ட பக்கங்கள்",
         "lcpStart": "தொடங்கு",
         "licenceLCP": "உரிமம் (எல்.சி.பி)",
-        "licenseCertificateDateInvalid": "காலாவதியான எல்.சி.பி வழங்குநர் சான்றிதழ்.",
+        "licenseCertificateDateInvalid": "காலாவதியான எல்.சி.பி வழங்குநர் சான்றிதழ். ({{- dateTime}})",
         "licenseOutOfDate": "எல்.சி.பி உரிமத்திற்கு வெளியே.",
         "licenseSignatureInvalid": "தவறான எல்.சி.பி உரிம கையொப்பம்.",
         "licensed": "உரிமம்",

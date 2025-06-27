@@ -594,7 +594,7 @@
         "lcpRightsPrint": "Ispisano stranica",
         "lcpStart": "Početak",
         "licenceLCP": "",
-        "licenseCertificateDateInvalid": "Datum potpisa licence je netočan",
+        "licenseCertificateDateInvalid": "Datum potpisa licence je netočan ({{- dateTime}})",
         "licenseOutOfDate": "Licenca je istekla",
         "licenseSignatureInvalid": "Potpis licence je netočan",
         "licensed": "",

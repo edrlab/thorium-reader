@@ -594,7 +594,7 @@
         "lcpRightsPrint": "Kopiera utskrift",
         "lcpStart": "Start",
         "licenceLCP": "Licens (LCP)",
-        "licenseCertificateDateInvalid": "Licensens signeringsdatum är ogiltigt.",
+        "licenseCertificateDateInvalid": "Licensens signeringsdatum är ogiltigt. ({{- dateTime}})",
         "licenseOutOfDate": "Licensen har löpt ut.",
         "licenseSignatureInvalid": "Licensens signatur är ogiltig.",
         "licensed": "Licensierad",

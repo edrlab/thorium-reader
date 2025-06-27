@@ -594,7 +594,7 @@
         "lcpRightsPrint": "Tulostetut sivut",
         "lcpStart": "Aloita",
         "licenceLCP": "Käyttöoikeus (LCP)",
-        "licenseCertificateDateInvalid": "LCP-käyttöoikeuden allekirjoituksen päiväys ei kelpaa.",
+        "licenseCertificateDateInvalid": "LCP-käyttöoikeuden allekirjoituksen päiväys ei kelpaa. ({{- dateTime}})",
         "licenseOutOfDate": "LCP-käyttöoikeus on vanhentunut.",
         "licenseSignatureInvalid": "LCP-käyttöoikeuden allekirjoitus ei kelpaa.",
         "licensed": "Lisensoitu",

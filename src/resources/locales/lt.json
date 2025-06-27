@@ -594,7 +594,7 @@
         "lcpRightsPrint": "Spausdintos kopijos",
         "lcpStart": "Pradžia",
         "licenceLCP": "Licencija (LCP)",
-        "licenseCertificateDateInvalid": "Baigėsi LCP teikėjo sertifikato galiojimo laikas.",
+        "licenseCertificateDateInvalid": "Baigėsi LCP teikėjo sertifikato galiojimo laikas. ({{- dateTime}})",
         "licenseOutOfDate": "LCP licencijos galiojimas pasibaigęs.",
         "licenseSignatureInvalid": "Negaliojantis LCP licencijos parašas.",
         "licensed": "Licencijuotas",

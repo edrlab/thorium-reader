@@ -594,7 +594,7 @@
         "lcpRightsPrint": "Εκτυπώσιμες σελίδες",
         "lcpStart": "Αρχή",
         "licenceLCP": "Άδεια χρήσης (LCP)",
-        "licenseCertificateDateInvalid": "Η ημερομηνία υπογραφής της άδειας LCP είναι άκυρη.",
+        "licenseCertificateDateInvalid": "Η ημερομηνία υπογραφής της άδειας LCP είναι άκυρη. ({{- dateTime}})",
         "licenseOutOfDate": "Η άδεια LCP έχει λήξει.",
         "licenseSignatureInvalid": "Η υπογραφή της άδειας LCP είναι άκυρη.",
         "licensed": "Με άδεια χρήσης",

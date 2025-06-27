@@ -594,7 +594,7 @@
         "lcpRightsPrint": "Количество страниц, разрешенных для печати",
         "lcpStart": "Начать",
         "licenceLCP": "Лицензия (LCP)",
-        "licenseCertificateDateInvalid": "Дата подписания лицензии недействительна",
+        "licenseCertificateDateInvalid": "Дата подписания лицензии недействительна ({{- dateTime}})",
         "licenseOutOfDate": "Лицензия LCP устарела",
         "licenseSignatureInvalid": "Лицензионная подпись недействительна",
         "licensed": "Лицензированная",

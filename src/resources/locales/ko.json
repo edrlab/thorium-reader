@@ -594,7 +594,7 @@
         "lcpRightsPrint": "인쇄된 페이지",
         "lcpStart": "시작",
         "licenceLCP": "",
-        "licenseCertificateDateInvalid": "라이선스 서명날짜가 유효하지 않습니다",
+        "licenseCertificateDateInvalid": "라이선스 서명날짜가 유효하지 않습니다 ({{- dateTime}})",
         "licenseOutOfDate": "라이선스가 만료되었습니다",
         "licenseSignatureInvalid": "라이선스 서명이 유효하지 않습니다",
         "licensed": "",

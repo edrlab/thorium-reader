@@ -594,7 +594,7 @@
         "lcpRightsPrint": "ბეჭდისთვის ნებადართული გვერდების რაოდენობა",
         "lcpStart": "დაწყება",
         "licenceLCP": "",
-        "licenseCertificateDateInvalid": "ვადაგასული LCP მომწოდებლის სერტიფიკატი.",
+        "licenseCertificateDateInvalid": "ვადაგასული LCP მომწოდებლის სერტიფიკატი. ({{- dateTime}})",
         "licenseOutOfDate": "მოძველებული LCP ლიცენზია.",
         "licenseSignatureInvalid": "არასწორი LCP ლიცენზიის ხელმოწერა.",
         "licensed": "",

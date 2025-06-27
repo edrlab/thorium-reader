@@ -594,7 +594,7 @@
         "lcpRightsPrint": "Copia de impresora",
         "lcpStart": "Inicio",
         "licenceLCP": "Licenza (LCP)",
-        "licenseCertificateDateInvalid": "A data da firma da licenza non é válida",
+        "licenseCertificateDateInvalid": "A data da firma da licenza non é válida ({{- dateTime}})",
         "licenseOutOfDate": "A licenza está  desactualizada.",
         "licenseSignatureInvalid": "A firma da licenza non é válida",
         "licensed": "Con licenza",

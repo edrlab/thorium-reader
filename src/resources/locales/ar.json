@@ -594,7 +594,7 @@
         "lcpRightsPrint": "الصفحات المطبوعة",
         "lcpStart": "البداية",
         "licenceLCP": "الترخيص (LCP)",
-        "licenseCertificateDateInvalid": "تاريخ توقيع ترخيص LCP غير صالح.",
+        "licenseCertificateDateInvalid": "تاريخ توقيع ترخيص LCP غير صالح. ({{- dateTime}})",
         "licenseOutOfDate": "ترخيص LCP قديم.",
         "licenseSignatureInvalid": "توقيع ترخيص LCP غير صالح.",
         "licensed": "مرخَّص",
