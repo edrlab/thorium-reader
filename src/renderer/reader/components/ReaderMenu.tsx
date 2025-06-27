@@ -142,9 +142,10 @@ const isRTL = (r2Publication: R2Publication) => (_link: ILink) => {
                 (
                     cv === "ar" || cv.startsWith("ar-") ||
                     cv === "he" || cv.startsWith("he-") ||
-                    cv === "fa" || cv.startsWith("fa-") ||
-                    cv === "zh-Hant" ||
-                    cv === "zh-TW"
+                    cv === "fa" || cv.startsWith("fa-")
+
+                    // https://github.com/edrlab/thorium-reader/pull/3027
+                    // cv === "zh-Hant" || cv === "zh-TW"
                 ) :
                 false;
             return pv || rtlExcludingJapanese;
