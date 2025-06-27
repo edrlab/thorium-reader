@@ -174,9 +174,9 @@
         "lcp": {
             "hint": "Podsjetnik: ",
             "open": "",
-            "password": "Lozinka",
-            "sentence": "Ova građa treba LCP lozinku za otvaranje: ",
-            "urlHint": "Zaboravljena lozinka? Pomoć",
+            "password": "Zaporka",
+            "sentence": "Ova građa treba LCP zaporku za otvaranje:",
+            "urlHint": "Zaboravljena zaporka? Pomoć",
             "whatIsLcp?": "",
             "whatIsLcpInfoDetails": "",
             "whatIsLcpInfoDetailsLink": ""
