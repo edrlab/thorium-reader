@@ -690,7 +690,7 @@
             "activate": "Sesli Okumayı Etkinleştir",
             "captions": "Altyazılar / sade görünüm",
             "captionsDescription": "Yalın altyazı stilinde sadeleştirilmiş metin görünümü.",
-            "disableContinuousPlay": "",
+            "disableContinuousPlay": "Sürekli oynatımı devredışı bırak",
             "disableContinuousPlayDescription": "",
             "ignoreAndUseTTS": "",
             "ignoreAndUseTTSDescription": "",
