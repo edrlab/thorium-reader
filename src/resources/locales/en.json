@@ -751,7 +751,7 @@
         },
         "print": {
             "descriptionLcpCount": "Remaining pages limit: {{- count}}",
-            "descriptionLcpLimit": "LCP DRM ard limit: {{- lcpLimitPages}}",
+            "descriptionLcpLimit": "LCP DRM hard limit: {{- lcpLimitPages}}",
             "descriptionLcpPrintable": "Printed and memorized pages: {{- printable}} ({{- count}})",
             "howTo": "How to select a range of pages to print",
             "lcpInfo": "The number of pages you can print in this publication is limited. Choose the pages you require here.",
