@@ -596,100 +596,100 @@
         "licenceLCP": "Lisans (LCP)",
         "licenseCertificateDateInvalid": "LCP sağlayıcı sertifikasının süresi doldu.",
         "licenseOutOfDate": "Güncel olmayan LCP Lisansı",
-        "licenseSignatureInvalid": "",
-        "licensed": "",
-        "markAsRead": "",
-        "notStarted": "",
-        "onGoing": "",
+        "licenseSignatureInvalid": "LCP lisans imzası geçersiz.",
+        "licensed": "Lisanslı",
+        "markAsRead": "Okundu olarak işaretle",
+        "notStarted": "Başlatılmadı",
+        "onGoing": "Devam ediyor",
         "progression": {
-            "title": ""
+            "title": "İlerleme"
         },
-        "read": "",
-        "remainingTime": "",
-        "renewButton": "",
-        "returnButton": "",
-        "returnedLcp": "",
-        "revokedLcp": "",
-        "seeLess": "",
-        "seeMore": "",
-        "timeLeft": "",
-        "title": "",
-        "userKeyCheckInvalid": ""
+        "read": "Bitti",
+        "remainingTime": "Ödünç alınan (kalan süre)",
+        "renewButton": "Yenile",
+        "returnButton": "İade et",
+        "returnedLcp": "Bu LCP-korumalı eser iade edildi.",
+        "revokedLcp": "Bu eserin LCP lisansı iptal edildi.",
+        "seeLess": "Daha az göster",
+        "seeMore": "Daha fazla göster",
+        "timeLeft": "Kalan süre",
+        "title": "Başlık",
+        "userKeyCheckInvalid": "Şifre hatalı girildi."
     },
     "reader": {
         "annotations": {
-            "Color": "",
-            "addNote": "",
-            "advancedMode": "",
+            "Color": "Renk",
+            "addNote": "Açıklayıcı not ekle",
+            "advancedMode": "Anlık mod (seçimden sonra otomatik oluştur)",
             "annotationsExport": {
-                "description": "",
-                "title": ""
+                "description": "Dışa aktarılan notları adlandır:",
+                "title": "Başlık"
             },
-            "annotationsOptions": "",
-            "date": "",
-            "export": "",
+            "annotationsOptions": "Açıklayıcı Notlar için  Seçenekler",
+            "date": "Değiştirme tarihi",
+            "export": "Notları farklı kaydet...",
             "filter": {
-                "all": "",
-                "filterByColor": "",
-                "filterByCreator": "",
-                "filterByDrawtype": "",
-                "filterByTag": "",
-                "filterOptions": "",
-                "none": ""
+                "all": "Tümü",
+                "filterByColor": "Renge göre Filtrele",
+                "filterByCreator": "Oluşturana göre Filtrele",
+                "filterByDrawtype": "Türe göre Filtrele",
+                "filterByTag": "Etikete göre Filtrele",
+                "filterOptions": "Filtreleme Seçenekleri",
+                "none": "Hiçbiri"
             },
-            "hide": "",
-            "highlight": "",
-            "noSelectionToast": "",
-            "note": "",
-            "quickAnnotations": "",
-            "saveNote": "",
+            "hide": "Gizle",
+            "highlight": "Vurgula",
+            "noSelectionToast": "Seçim yok",
+            "note": "{{- color}} Not",
+            "quickAnnotations": "Hızlı oluştur (düzenleyiciyi atla)",
+            "saveNote": "Kaydet",
             "sorting": {
-                "lastcreated": "",
-                "lastmodified": "",
-                "progression": "",
-                "sortingOptions": ""
+                "lastcreated": "Son oluşturulan",
+                "lastmodified": "Son değiştirilen",
+                "progression": "İlerleme",
+                "sortingOptions": "Sıralama Seçenekleri"
             },
-            "toggleMarginMarks": "",
+            "toggleMarginMarks": "Sayfa kenarlarında görüntüle",
             "type": {
-                "outline": "",
-                "solid": "",
-                "strikethrough": "",
-                "underline": ""
+                "outline": "Kenarlıklı",
+                "solid": "Vurgulu arkaplanlı",
+                "strikethrough": "Üstü çizili",
+                "underline": "Altı çizili"
             }
         },
         "bookmarks": {
-            "index": ""
+            "index": "Yer imi {{- index}}"
         },
         "divina": {
-            "mute": "",
-            "unmute": ""
+            "mute": "sesi kapat",
+            "unmute": "sesi aç"
         },
         "fxl": {
-            "fit": ""
+            "fit": "Sığdır"
         },
-        "goToContent": "",
+        "goToContent": "İçeriğe git",
         "imgViewer": {
-            "title": "",
-            "zoomIn": "",
-            "zoomOut": "",
-            "zoomReset": ""
+            "title": "Görsel görüntüleyici (yakınlaştırma/uzaklaştırma)",
+            "zoomIn": "Yakınlaştır",
+            "zoomOut": "Uzaklaştır",
+            "zoomReset": "Yakınlaştırmayı/Uzaklaştırmayı Sıfırla"
         },
         "marks": {
-            "annotations": "",
-            "bookmarks": "",
-            "delete": "",
-            "edit": "",
-            "goTo": "",
-            "landmarks": "",
-            "saveMark": "",
-            "search": "",
-            "searchResult": "",
-            "toc": ""
+            "annotations": "Açıklayıcı notlar",
+            "bookmarks": "Yer imleri",
+            "delete": "Sil",
+            "edit": "Düzenle",
+            "goTo": "Sayfaya git",
+            "landmarks": "Referans imleri",
+            "saveMark": "Kaydet",
+            "search": "Ara",
+            "searchResult": "Ara: [{{- searchText}}]",
+            "toc": "İçindekiler Tablosu"
         },
         "media-overlays": {
-            "activate": "",
-            "captions": "",
-            "captionsDescription": "",
+            "activate": "Sesli Okumayı Etkinleştir",
+            "captions": "Altyazılar / sade görünüm",
+            "captionsDescription": "Yalın altyazı stilinde sadeleştirilmiş metin görünümü.",
             "disableContinuousPlay": "",
             "disableContinuousPlayDescription": "",
             "ignoreAndUseTTS": "",
