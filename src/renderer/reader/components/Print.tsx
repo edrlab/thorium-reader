@@ -120,11 +120,11 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
 
     const [publicationView, setPubView] = React.useState<PublicationView>(publicationViewFromReduxState);
 
-    const isLcp = !!publicationView.lcp?.rights;
-    const isLcpWithPrintRights = isLcp && (!!publicationView.lcp?.rights?.print || publicationView.lcp.rights.print === 0);
+    const isLcpWithPrintRights = !!publicationView.lcp?.rights && (!!publicationView.lcp?.rights?.print && publicationView.lcp.rights.print > 0);
+    const publicationViewLcpRightsPrintNumber = isLcpWithPrintRights ? publicationView.lcp.rights.print : 0;
 
     const publicationViewLcpRightsPrintsConsumed = publicationView.lcpRightsPrints || [];
-    const lcpCountPages = isLcpWithPrintRights ? publicationView.lcp.rights.print - publicationViewLcpRightsPrintsConsumed.length : 0;
+    const lcpCountPages = isLcpWithPrintRights ? Math.max(0, publicationViewLcpRightsPrintNumber - publicationViewLcpRightsPrintsConsumed.length) : 0;
 
     // console.log(JSON.stringify(publicationView.lcp?.rights, null, 4));
     // console.log(JSON.stringify(publicationView.lcpRightsPrints, null, 4));
@@ -152,7 +152,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
     if (isLcpWithPrintRights) {
 
         const lcpRightsPrints = publicationViewLcpRightsPrintsConsumed;
-        const lcpRightsPrintsRemain = publicationView.lcp.rights.print - lcpRightsPrints.length;
+        const lcpRightsPrintsRemain = Math.max(0, publicationViewLcpRightsPrintNumber - lcpRightsPrints.length);
         const pagesToPrintSaved = pagesToPrint.filter((page) => lcpRightsPrints.some((pageSaved) => pageSaved === page));
         const pagesToPrintNotSaved = pagesToPrint.filter((page) => !pagesToPrintSaved.some((pageSaved) => pageSaved === page));
         const pagesToPrintNotSavedRightTruncated = pagesToPrintNotSaved.slice(0, lcpRightsPrintsRemain);
@@ -184,12 +184,12 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                     <div className={stylesPrint.info_text}>
                         <div style={{ display: "flex", flexDirection: "row", fontSize: "14px" }}>
                             <SVG ariaHidden svg={InfoIcon} />
-                            <p style={{ marginLeft: "10px" }}>{__("reader.print.lcpInfo")}</p>
+                            <p style={{ marginLeft: "10px" }}>{__("reader.print.lcpInfo", { count: publicationViewLcpRightsPrintNumber})}</p>
                         </div>
                         <div style={{ display: "flex", flexDirection: "column", marginLeft: "20px", marginBottom: "5px" }}>
                             <h4 style={{ marginTop: "0px" }}><SVG ariaHidden svg={KeyIcon} />{__("publication.licensed")}</h4>
                             <ul className={stylesPrint.print_lcp_list}>
-                                <li>{__("reader.print.descriptionLcpLimit", { lcpLimitPages: publicationView.lcp.rights.print })}</li>
+                                {/* <li>{__("reader.print.descriptionLcpLimit", { lcpLimitPages: publicationViewLcpRightsPrintNumber })}</li> */}
                                 <li>{__("reader.print.descriptionLcpCount", { count: lcpCountPages })}</li>
                                 <li>{__("reader.print.descriptionLcpPrintable", { printable: formatRanges(publicationViewLcpRightsPrintsConsumed), count: publicationViewLcpRightsPrintsConsumed.length.toString() })}</li>
                             </ul>

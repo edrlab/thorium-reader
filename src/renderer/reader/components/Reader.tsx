@@ -932,6 +932,7 @@ class Reader extends React.Component<IProps, IState> {
                         pdfThumbnailImageCacheArray={this.state.pdfThumbnailImageCacheArray}
                         pdfPrintOpen={this.state.printDialogOpen}
                         setPdfPrintOpen={(value: boolean) => this.setState({ printDialogOpen: value })}
+                        publicationView={this.props.publicationView}
                     />
                     :
                     <div className={stylesReader.exitZen_container}>

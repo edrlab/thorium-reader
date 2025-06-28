@@ -94,6 +94,7 @@ import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 import { PrintContainer } from "./Print";
 import * as PrinterIcon from "readium-desktop/renderer/assets/icons/printer-icon.svg";
+import { PublicationView } from "readium-desktop/common/views/publication";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -162,6 +163,8 @@ interface IBaseProps extends TranslatorProps {
 
     pdfPrintOpen: boolean;
     setPdfPrintOpen: (value: boolean) => void;
+
+    publicationView: PublicationView;
 }
 
 // IProps may typically extend:
@@ -821,7 +824,10 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                     <ul className={stylesReader.menu_option}>
 
                         {
-                            this.props.readerMenuProps.isPdf ?
+                            (this.props.readerMenuProps.isPdf
+                                && (!!this.props.publicationView.lcp?.rights && (this.props.publicationView.lcp?.rights?.print === null || typeof this.props.publicationView.lcp?.rights?.print === "undefined" || this.props.publicationView.lcp.rights.print > 0)
+                                    || !this.props.publicationView.lcp)
+                            ) ?
                                 <li
                                     {...(this.props.pdfPrintOpen &&
                                         { style: { backgroundColor: "var(--color-blue)" } })}

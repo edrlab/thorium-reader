@@ -754,7 +754,7 @@
             "descriptionLcpLimit": "LCP DRM hard limit: {{- lcpLimitPages}}",
             "descriptionLcpPrintable": "Printed and memorized pages: {{- printable}} ({{- count}})",
             "howTo": "How to select a range of pages to print",
-            "lcpInfo": "The number of pages you can print in this publication is limited. Choose the pages you require here.",
+            "lcpInfo": "The number of pages you can print in this publication is limited to {{- count}} pages. Choose the pages you require here.",
             "noPagesLcpLimitReached": "You have reached the LCP limit",
             "noPrintablePages": "No Printables pages",
             "pageHelpInfo": "Page selector syntax:",
