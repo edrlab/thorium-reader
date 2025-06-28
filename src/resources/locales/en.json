@@ -764,7 +764,8 @@
             "pageHelpInfo4": "leave out the first or last page of a range to reference the first or last page of the publication (e.g. \"-16\" is equivalent to \"1-16\", and \"34-\" is equivalent to \"34-100\" assuming a book with a total of 100 pages)",
             "pages": "Pages",
             "print": "Print",
-            "printablePages": "Printables pages"
+            "printablePages": "Printables pages",
+            "preview": "Preview"
         },
         "settings": {
             "column": {

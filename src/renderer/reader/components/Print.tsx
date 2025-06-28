@@ -200,7 +200,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
             }
 
             <div style={{ padding: "10px 15px 5px", backgroundColor: "var(--color-extralight-grey)" }}>
-                <p aria-label="Prévisualisation">Prévisualisation</p>
+                <p>{__("reader.print.preview")}</p>
                 <div id="print-dialog-image-container" className={stylesPrint.print_dialog_image_container}>
 
                     {

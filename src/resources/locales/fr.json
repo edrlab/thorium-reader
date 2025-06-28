@@ -764,7 +764,8 @@
             "pageHelpInfo4": "omettre la première ou la dernière page d'un intervalle pour faire référence à la première ou à la dernière page de la publication (par exemple, \"-16\" équivaut à \"1-16\", et \"34-\" équivaut à \"34-100\" dans l'hypothèse d'un livre de 100 pages au total).",
             "pages": "Pages",
             "print": "Imprimer",
-            "printablePages": "pages imprimables :"
+            "printablePages": "pages imprimables :",
+            "preview": "Prévisualisation"
         },
         "settings": {
             "column": {
