@@ -150,6 +150,7 @@ interface IBaseProps extends TranslatorProps {
     currentLocation: MiniLocatorExtended;
     isDivina: boolean;
     isPdf: boolean;
+    isAudiobook: boolean;
     divinaSoundPlay: (play: boolean) => void;
 
     showSearchResults: () => void;
@@ -998,6 +999,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     {...this.props.readerMenuProps}
                                                     isDivina={this.props.isDivina}
                                                     isPdf={this.props.isPdf}
+                                                    isAudiobook={this.props.isAudiobook}
                                                     currentLocation={this.props.currentLocation}
                                                     // focusNaviguationMenu={this.focusNaviguationMenuButton}
                                                     // handleMenuClick={this.props.handleMenuClick}
@@ -1050,6 +1052,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     }}
                                                     isDivina={this.props.isDivina}
                                                     isPdf={this.props.isPdf}
+                                                    isAudiobook={this.props.isAudiobook}
                                                     currentLocation={this.props.currentLocation}
                                                     // focusNaviguationMenu={this.focusNaviguationMenuButton}
                                                     // handleMenuClick={this.props.handleMenuClick}
