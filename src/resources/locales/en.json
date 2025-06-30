@@ -140,6 +140,7 @@
         "deleteBookmarksText": "Are you sure you want to delete {{- bookmarkListLength}} bookmark(s)?",
         "deleteFeed": "Delete catalog?",
         "deletePublication": "Delete publication?",
+        "deletePublicationWithNotes": "You have annotations and/or bookmarks in the publication. It will be removed with the publication",
         "import": "Confirm import:",
         "importError": "An error occurred, verify the file extension ({{acceptedExtension}})",
         "renew": "Renew/extend loan?",
