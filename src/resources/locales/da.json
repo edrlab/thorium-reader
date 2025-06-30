@@ -725,6 +725,7 @@
             "page": "Side",
             "pdfscalemode": "Tilpas til side eller skærmbredde",
             "print": "print",
+            "printDisabled": "",
             "settingsTitle": "indstillinger"
         },
         "notes": {
@@ -763,6 +764,7 @@
             "pageHelpInfo3": " - brug semikolon til at opdele flere enkeltsider eller kontinuerlige siderækker (fx. \"5;14-20;37\")",
             "pageHelpInfo4": " - undlad den første eller sidste del i en angivelse af siderække for at medtage alle sider hertil (fx. svarer \"-16\" til \"1-16\" og \"34-\" svarer til \"34-100\" antaget at bogen er på 100 sider)",
             "pages": "Sider",
+            "preview": "",
             "print": "Print",
             "printablePages": ""
         },

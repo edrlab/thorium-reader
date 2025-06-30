@@ -725,6 +725,7 @@
             "page": "頁",
             "pdfscalemode": "適合頁面寬度",
             "print": "",
+            "printDisabled": "",
             "settingsTitle": "設定"
         },
         "notes": {
@@ -763,6 +764,7 @@
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
+            "preview": "",
             "print": "",
             "printablePages": ""
         },

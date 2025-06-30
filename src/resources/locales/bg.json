@@ -725,6 +725,7 @@
             "page": "",
             "pdfscalemode": "Побиране в екрана или в ширината му",
             "print": "",
+            "printDisabled": "",
             "settingsTitle": "настройки"
         },
         "notes": {
@@ -763,6 +764,7 @@
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
+            "preview": "",
             "print": "",
             "printablePages": ""
         },

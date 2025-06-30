@@ -725,6 +725,7 @@
             "page": "",
             "pdfscalemode": "페이지 또는 너비 맞춤",
             "print": "",
+            "printDisabled": "",
             "settingsTitle": "설정"
         },
         "notes": {
@@ -763,6 +764,7 @@
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
+            "preview": "",
             "print": "",
             "printablePages": ""
         },

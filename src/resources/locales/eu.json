@@ -725,6 +725,7 @@
             "page": "Orria",
             "pdfscalemode": "Orriaren doikuntza edo zabalera",
             "print": "",
+            "printDisabled": "",
             "settingsTitle": "Konfigurazio-aukerak"
         },
         "notes": {
@@ -763,6 +764,7 @@
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
+            "preview": "",
             "print": "",
             "printablePages": ""
         },

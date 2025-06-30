@@ -1637,6 +1637,7 @@ declare namespace typed_i18n {
     readonly "page": string,
     readonly "pdfscalemode": string,
     readonly "print": string,
+    readonly "printDisabled": string,
     readonly "settingsTitle": string
   },
   readonly "notes": {
@@ -1675,9 +1676,9 @@ declare namespace typed_i18n {
     readonly "pageHelpInfo3": string,
     readonly "pageHelpInfo4": string,
     readonly "pages": string,
+    readonly "preview": string,
     readonly "print": string,
-    readonly "printablePages": string,
-    readonly "preview": string
+    readonly "printablePages": string
   },
   readonly "settings": {
     readonly "column": {
@@ -1953,6 +1954,7 @@ declare namespace typed_i18n {
   readonly "page": string,
   readonly "pdfscalemode": string,
   readonly "print": string,
+  readonly "printDisabled": string,
   readonly "settingsTitle": string
 };
   (_: "reader.navigation.ZenModeExit", __?: {}): string;
@@ -1975,6 +1977,7 @@ declare namespace typed_i18n {
   (_: "reader.navigation.page", __?: {}): string;
   (_: "reader.navigation.pdfscalemode", __?: {}): string;
   (_: "reader.navigation.print", __?: {}): string;
+  (_: "reader.navigation.printDisabled", __?: {}): string;
   (_: "reader.navigation.settingsTitle", __?: {}): string;
   (_: "reader.notes", __?: {}): {
   readonly "colors": {
@@ -2043,9 +2046,9 @@ declare namespace typed_i18n {
   readonly "pageHelpInfo3": string,
   readonly "pageHelpInfo4": string,
   readonly "pages": string,
+  readonly "preview": string,
   readonly "print": string,
-  readonly "printablePages": string,
-  readonly "preview": string
+  readonly "printablePages": string
 };
   (_: "reader.print.descriptionLcpCount", __?: {}): string;
   (_: "reader.print.descriptionLcpLimit", __?: {}): string;
@@ -2060,9 +2063,9 @@ declare namespace typed_i18n {
   (_: "reader.print.pageHelpInfo3", __?: {}): string;
   (_: "reader.print.pageHelpInfo4", __?: {}): string;
   (_: "reader.print.pages", __?: {}): string;
+  (_: "reader.print.preview", __?: {}): string;
   (_: "reader.print.print", __?: {}): string;
   (_: "reader.print.printablePages", __?: {}): string;
-  (_: "reader.print.preview", __?: {}): string;
   (_: "reader.settings", __?: {}): {
   readonly "column": {
     readonly "auto": string,

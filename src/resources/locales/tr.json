@@ -725,6 +725,7 @@
             "page": "",
             "pdfscalemode": "",
             "print": "",
+            "printDisabled": "",
             "settingsTitle": ""
         },
         "notes": {
@@ -763,6 +764,7 @@
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
+            "preview": "",
             "print": "Yazdır",
             "printablePages": ""
         },

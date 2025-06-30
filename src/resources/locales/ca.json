@@ -725,6 +725,7 @@
             "page": "Pàgina",
             "pdfscalemode": "Ajust o ample de pàgina",
             "print": "",
+            "printDisabled": "",
             "settingsTitle": "Opcions de configuració"
         },
         "notes": {
@@ -763,6 +764,7 @@
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
+            "preview": "",
             "print": "",
             "printablePages": ""
         },

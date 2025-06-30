@@ -725,6 +725,7 @@
             "page": "Stran",
             "pdfscalemode": "Prileganje strani ali širine",
             "print": "",
+            "printDisabled": "",
             "settingsTitle": "nastavitve"
         },
         "notes": {
@@ -763,6 +764,7 @@
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
+            "preview": "",
             "print": "",
             "printablePages": ""
         },

@@ -725,6 +725,7 @@
             "page": "Pagina",
             "pdfscalemode": "Pagina aanpassen aan breedte",
             "print": "druk af",
+            "printDisabled": "",
             "settingsTitle": "instellingen"
         },
         "notes": {
@@ -763,6 +764,7 @@
             "pageHelpInfo3": " - gebruik een puntkomma om meerdere pagina's of pagina bereiken te scheiden (b.v. \"5;14-20;37\")",
             "pageHelpInfo4": " - laat het eerste of laatste paginanummer weg in een bereik om te verwijzen naar de eerste of laatste pagina van een publicatie (b.v. \"-16\" is gelijk aan \"1-16\", en \"34-\" is gelijk aan \"34-100\" uitgaande van een boek met 100 pagina's in totaal)",
             "pages": "Pagina's",
+            "preview": "",
             "print": "Afdrukken",
             "printablePages": ""
         },

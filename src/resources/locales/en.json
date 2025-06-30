@@ -707,25 +707,26 @@
         "navigation": {
             "ZenModeExit": "Exit Zen mode",
             "ZenModeTitle": "Zen mode",
-            "annotationTitle": "annotation",
+            "annotationTitle": "Annotation",
             "backHomeTitle": "Close this reading window (back to bookshelf)",
-            "bookmarkTitle": "bookmark",
+            "bookmarkTitle": "Bookmark",
             "currentPage": "Current page: {{- current}}",
             "currentPageTotal": "Current page: {{- current}}/{{- total}}",
-            "detachWindowTitle": "show library / bookshelf window",
+            "detachWindowTitle": "Show library / bookshelf window",
             "goTo": "Go to",
             "goToError": "Page break does not exist",
             "goToPlaceHolder": "Enter page number",
             "goToTitle": "Go to page",
             "historyNext": "Jump forward",
             "historyPrevious": "Jump back",
-            "infoTitle": "information",
-            "magnifyingGlassButton": "search publication",
-            "openTableOfContentsTitle": "navigation",
+            "infoTitle": "Information",
+            "magnifyingGlassButton": "Search publication",
+            "openTableOfContentsTitle": "Navigation",
             "page": "Page",
             "pdfscalemode": "Page fit or width",
-            "print": "print",
-            "settingsTitle": "settings"
+            "print": "Print",
+            "printDisabled": "Print forbidden",
+            "settingsTitle": "Settings"
         },
         "notes": {
             "colors": {
@@ -763,9 +764,9 @@
             "pageHelpInfo3": "use the semicolon character to separate multiple pages or page ranges (e.g. \"5;14-20;37\")",
             "pageHelpInfo4": "leave out the first or last page of a range to reference the first or last page of the publication (e.g. \"-16\" is equivalent to \"1-16\", and \"34-\" is equivalent to \"34-100\" assuming a book with a total of 100 pages)",
             "pages": "Pages",
+            "preview": "Preview",
             "print": "Print",
-            "printablePages": "Printables pages",
-            "preview": "Preview"
+            "printablePages": "Printables pages"
         },
         "settings": {
             "column": {

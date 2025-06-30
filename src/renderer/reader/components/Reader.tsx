@@ -2026,8 +2026,15 @@ class Reader extends React.Component<IProps, IState> {
     };
 
     private onKeyboardPrint = () => {
-        if (this.props.isPdf) {
+        if (
+            this.props.isPdf
+            && (!!this.props.publicationView.lcp?.rights && (this.props.publicationView.lcp?.rights?.print === null || typeof this.props.publicationView.lcp?.rights?.print === "undefined" || this.props.publicationView.lcp.rights.print > 0)
+                || !this.props.publicationView.lcp
+            )
+        ) {
             this.setState({ printDialogOpen: true });
+        } else if (this.props.isPdf) {
+            this.props.toastError(this.props.__("reader.navigation.printDisabled"));
         }
     };
 
@@ -3217,8 +3224,10 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             }
         },
         toasty: (msg: string) => {
-
             dispatch(toastActions.openRequest.build(ToastType.Success, msg));
+        },
+        toastError: (msg: string) => {
+            dispatch(toastActions.openRequest.build(ToastType.Error, msg));
         },
         toggleFullscreen: (fullscreenOn: boolean) => {
             dispatch(readerActions.fullScreenRequest.build(fullscreenOn));

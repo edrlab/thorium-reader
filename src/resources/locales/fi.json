@@ -725,6 +725,7 @@
             "page": "Sivu",
             "pdfscalemode": "Sovita sivu tai leveyteen",
             "print": "Tulosta",
+            "printDisabled": "",
             "settingsTitle": "Asetukset"
         },
         "notes": {
@@ -763,6 +764,7 @@
             "pageHelpInfo3": " - erota puolipisteellä useat sivut tai sivualueet (esim. \"5;14-20;37\")",
             "pageHelpInfo4": " - jätä sivualueen ensimmäinen tai viimeinen numero pois, jos se viittaa julkaisun ensimmäiseen tai viimeiseen sivuun (esim. \"-16\" vastaa merkintää \"1-16\", ja \"34-\" vastaa merkintää \"34-100\" jos kirjassa on 100 sivua)",
             "pages": "Sivut",
+            "preview": "",
             "print": "Tulostus",
             "printablePages": ""
         },

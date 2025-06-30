@@ -825,7 +825,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
                         {
                             (this.props.readerMenuProps.isPdf
-                                && (!!this.props.publicationView.lcp?.rights && (this.props.publicationView.lcp?.rights?.print === null || typeof this.props.publicationView.lcp?.rights?.print === "undefined" || this.props.publicationView.lcp.rights.print > 0)
+                                && (!!this.props.publicationView.lcp?.rights && (this.props.publicationView.lcp?.rights?.print === null || typeof this.props.publicationView.lcp?.rights?.print === "undefined" || this.props.publicationView.lcp.rights.print >= 0)
                                     || !this.props.publicationView.lcp)
                             ) ?
                                 <li
@@ -838,10 +838,11 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     }}>
                                         <Dialog.Trigger asChild>
                                             <button
+                                                disabled={!!this.props.publicationView.lcp?.rights && this.props.publicationView.lcp.rights.print < 1}
                                                 aria-pressed={this.props.pdfPrintOpen}
                                                 aria-label={__("reader.navigation.print")}
                                                 className={stylesReader.menu_button}
-                                                title={__("reader.navigation.print")}
+                                                title={!!this.props.publicationView.lcp?.rights && this.props.publicationView.lcp.rights.print < 1 ? __("reader.navigation.printDisabled") : __("reader.navigation.print")}
                                             >
                                                 <SVG ariaHidden svg={PrinterIcon} className={this.props.pdfPrintOpen ? stylesReaderHeader.active_svg : ""} />
                                             </button>
@@ -853,7 +854,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
                                             >
                                                 <PrintContainer pdfPageRange={[1, this.props.pdfPlayerNumberOfPages]} pdfThumbnailImageCacheArray={this.props.pdfThumbnailImageCacheArray} />
-
                                             </Dialog.Content>
                                         </Dialog.Portal>
                                     </Dialog.Root>

@@ -707,25 +707,26 @@
         "navigation": {
             "ZenModeExit": "Sortir du mode Zen",
             "ZenModeTitle": "Mode Zen",
-            "annotationTitle": "annotation",
-            "backHomeTitle": "retour à la bibliothèque",
-            "bookmarkTitle": "marque-page",
+            "annotationTitle": "Annotation",
+            "backHomeTitle": "Retour à la bibliothèque",
+            "bookmarkTitle": "Marque-page",
             "currentPage": "Page courante: {{- current}}",
             "currentPageTotal": "Page courante: {{- current}}/{{- total}}",
-            "detachWindowTitle": "afficher la bibliothèque",
+            "detachWindowTitle": "Afficher la bibliothèque",
             "goTo": "Aller à",
             "goToError": "Cette page n'existe pas",
             "goToPlaceHolder": "Entrer un numéro de page",
             "goToTitle": "Aller à la page",
             "historyNext": "Suivant dans l'historique",
             "historyPrevious": "Précédent dans l'historique",
-            "infoTitle": "informations",
-            "magnifyingGlassButton": "recherche dans la publication",
-            "openTableOfContentsTitle": "navigation",
+            "infoTitle": "Informations",
+            "magnifyingGlassButton": "Recherche dans la publication",
+            "openTableOfContentsTitle": "Navigation",
             "page": "Page",
             "pdfscalemode": "Page entière ou pleine largeur",
             "print": "Imprimer",
-            "settingsTitle": "préférences"
+            "printDisabled": "Impression non autorisée",
+            "settingsTitle": "Préférences"
         },
         "notes": {
             "colors": {
@@ -750,7 +751,7 @@
             "searchTitle": "Recherche"
         },
         "print": {
-            "descriptionLcpCount":  "Limite de pages restantes : {{- count}}",
+            "descriptionLcpCount": "Limite de pages restantes : {{- count}}",
             "descriptionLcpLimit": "LCP DRM limite stricte : {{- lcpLimitPages}}",
             "descriptionLcpPrintable": "Pages imprimées et mémorisées : {{- printable}}",
             "howTo": "Comment sélectionner une série de pages à imprimer ?",
@@ -763,9 +764,9 @@
             "pageHelpInfo3": "utiliser le caractère point-virgule pour séparer plusieurs pages ou plages de pages (par exemple : \"5;14-20;37\")",
             "pageHelpInfo4": "omettre la première ou la dernière page d'un intervalle pour faire référence à la première ou à la dernière page de la publication (par exemple, \"-16\" équivaut à \"1-16\", et \"34-\" équivaut à \"34-100\" dans l'hypothèse d'un livre de 100 pages au total).",
             "pages": "Pages",
+            "preview": "Prévisualisation",
             "print": "Imprimer",
-            "printablePages": "pages imprimables :",
-            "preview": "Prévisualisation"
+            "printablePages": "pages imprimables :"
         },
         "settings": {
             "column": {

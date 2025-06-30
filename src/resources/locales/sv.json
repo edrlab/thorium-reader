@@ -725,6 +725,7 @@
             "page": "Sida",
             "pdfscalemode": "Anpassa till hel sida eller sidbredd",
             "print": "",
+            "printDisabled": "",
             "settingsTitle": "Inställningar"
         },
         "notes": {
@@ -763,6 +764,7 @@
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
+            "preview": "",
             "print": "",
             "printablePages": ""
         },
