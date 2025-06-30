@@ -2,6 +2,7 @@ export declare const CSS_END_components_print: string;
 export declare const CSS_START_components_print: string;
 export declare const info_text: string;
 export declare const info_text_description: string;
+export declare const modal_dialog_reader: string;
 export declare const print_dialog_actions_buttons: string;
 export declare const print_dialog_form: string;
 export declare const print_dialog_help_container: string;

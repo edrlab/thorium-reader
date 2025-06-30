@@ -752,6 +752,7 @@
         },
         "print": {
             "descriptionLcpCount": "Remaining pages limit: {{- count}}",
+            "descriptionLcpLimit": "",
             "descriptionLcpPrintable": "Previously printed pages: {{- printable}} ({{- count}})",
             "howTo": "How to select a range of pages to print",
             "lcpInfo": "The number of pages you can print in this publication is limited to {{- count}}. Choose the pages you require here.",
