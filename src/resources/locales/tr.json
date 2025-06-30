@@ -953,12 +953,12 @@
                     "name": "'Açıklayıcı Notlar' bölümüne odaklan"
                 },
                 "FocusReaderNavigationBookmarks": {
-                    "description": "Klavye odağını, okuma penceresinin 'yer imleri' bölümüne taşı",
+                    "description": "Klavye odağını, okuma penceresinin gezinme  panelindeki  'yer imleri' bölümüne taşı",
                     "name": "'Yerimleri' bölümüne odaklan"
                 },
                 "FocusReaderNavigationSearch": {
                     "description": "Klavye odağını, okuyucu penceresinin gezinme panelindeki 'ara' bölümüne taşı",
-                    "name": ""
+                    "name": "'Ara' bölümüne odaklan"
                 },
                 "FocusReaderNavigationTOC": {
                     "description": "",
