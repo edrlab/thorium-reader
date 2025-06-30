@@ -137,7 +137,7 @@
         "deleteAnnotations": "Poistetaanko muistiinpanot?",
         "deleteAnnotationsText": "Haluatko varmasti poistaa {{- annotationListLength}} muistiinpanoa?",
         "deleteBookmarks": "Poistetaanko kirjanmerkit?",
-        "deleteBookmarksText": "Haluatko varmasti poistaa {{- bookmarkListLength}} kirjanmerkit?",
+        "deleteBookmarksText": "Haluatko varmasti poistaa {{- bookmarkListLength}} kirjanmerkkiä?",
         "deleteFeed": "Haluatko poistaa tämän luettelon?",
         "deletePublication": "Haluatko poistaa tämän julkaisun?",
         "import": "Haluatko tuoda nämä tiedostot:",
@@ -669,7 +669,7 @@
         },
         "goToContent": "Siirry sisältöön",
         "imgViewer": {
-            "title": "Kuvan tarkasteluikkuna",
+            "title": "Kuvan tarkasteluikkuna (lähennä)",
             "zoomIn": "Lähennä",
             "zoomOut": "Loitonna",
             "zoomReset": "Nollaa zoom"
@@ -681,7 +681,7 @@
             "edit": "Muokkaa",
             "goTo": "Siirry sivulle",
             "landmarks": "Kiintopisteet",
-            "saveMark": "Tallenna kirjanmerkki",
+            "saveMark": "Tallenna",
             "search": "Hae",
             "searchResult": "Hae [{{- searchText}}]",
             "toc": "Sisällysluettelo"
@@ -692,7 +692,7 @@
             "captionsDescription": "Pelkistetty tekstinäkymä.",
             "disableContinuousPlay": "Älä käytä jatkuvaa luentaa",
             "disableContinuousPlayDescription": "Älä jatka luentaa automaattisesti seuraavaan kohteeseen vaan keskeytä luenta, kun nykyinen kohde on luettu.",
-            "ignoreAndUseTTS": "Älä käytä kirjan äänitettä, valitse teksti puheeksi -toiminto",
+            "ignoreAndUseTTS": "Älä käytä kirjan äänitettä, valitse tekstistä puheeksi -toiminto",
             "ignoreAndUseTTSDescription": "Älä käytä epub-kirjan synkronoitua äänitettä, valitse tekstistä puheeksi -toiminto",
             "next": "Seuraava",
             "pause": "Pysäytä",
@@ -724,7 +724,7 @@
             "openTableOfContentsTitle": "Navigaatio",
             "page": "Sivu",
             "pdfscalemode": "Sovita sivu tai leveyteen",
-            "print": "Tulosta",
+            "print": "tulosta",
             "settingsTitle": "Asetukset"
         },
         "notes": {
@@ -750,14 +750,14 @@
             "searchTitle": "Hae:"
         },
         "print": {
-            "description": "{{- appName}}tulostuksen valmistelu : valitse sivut, jotka haluat lähettää tulostettaviksi (tässä julkaisussa {{- count}} sivua)",
-            "descriptionLcp": "{{- appName}} tulostuksen valmistelu: valitse sivut, jotka haluat lähettää tulostettaviksi (tässä LCP-suojatusssa julkaisussa on {{- count}} sivua)",
+            "description": "{{- appName}}tulostuksen valmistelu: valitse sivut, jotka haluat lähettää tulostettaviksi (tässä julkaisussa on {{- count}} sivua)",
+            "descriptionLcp": "{{- appName}} tulostuksen valmistelu: valitse sivut, jotka haluat lähettää tulostettaviksi (tässä LCP-suojatussa julkaisussa on {{- count}} sivua)",
             "descriptionLcpLimit": "LCP-rajoitus: {{- lcpLimitPages}}, sivuja jäljellä: {{- count}}",
             "pageHelpInfo": "Sivunvalintasyntaksi:",
             "pageHelpInfo1": " - anna sivunumero viitataksesi yksittäiseen sivuun (esim. \"6\")",
             "pageHelpInfo2": " - anna kaksi yhdysmerkillä erotettua lukua, jotta voit viitata usean peräkkäisen sivun alueeseen (esim. \"6-13\")",
             "pageHelpInfo3": " - erota puolipisteellä useat sivut tai sivualueet (esim. \"5;14-20;37\")",
-            "pageHelpInfo4": " - jätä sivualueen ensimmäinen tai viimeinen numero pois, jos se viittaa julkaisun ensimmäiseen tai viimeiseen sivuun (esim. \"-16\" vastaa merkintää \"1-16\", ja \"34-\" vastaa merkintää \"34-100\" jos kirjassa on 100 sivua)",
+            "pageHelpInfo4": " - jätä sivualueen ensimmäinen tai viimeinen numero pois, jos se viittaa julkaisun ensimmäiseen tai viimeiseen sivuun (esim. \"-16\" vastaa merkintää \"1-16\", ja \"34-\" vastaa merkintää \"34-100\", jos kirjassa on yhteensä 100 sivua)",
             "pages": "Sivut",
             "print": "Tulostus"
         },
@@ -784,7 +784,7 @@
             "lineSpacing": "Riviväli",
             "margin": "Marginaali",
             "mathjax": "Ota MathJax käyttöön",
-            "noFootnotes": "Alaviitteet pois käytöstä",
+            "noFootnotes": "Älä näytä alaviitteitä popup-ikkunassa",
             "noRTLFlip": "Estä oikealta vasemmalle -käyttöliittymä",
             "noRuby": "Piilota japanin rubi-merkit",
             "noTemporaryNavTargetOutline": "Älä käytä visuaalista navigointijanaa",
@@ -872,20 +872,20 @@
         "keyboard": {
             "advancedMenu": "Valikko",
             "cancel": "Peruuta",
-            "disclaimer": "Pikanäppäimet perustuvat QWERTY-näppäinasetteluun.",
+            "disclaimer": "Oletuspikanäppäimet perustuvat QWERTY-näppäinasetteluun",
             "editUserJson": "Muokkaa käyttäjän tiedostoa...",
             "keyboardShortcuts": "Pikanäppäimet",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "Avaa kirjanmerkki-ikkuna ja muokkaa tekstiä (muistiinpano), väriä ja tunnistetta",
+                    "description": "Avaa kirjanmerkki-ikkuna ja muokkaa nimilappua (muistiinpano), väriä ja tunnistetta",
                     "name": "Luo kirjanmerkki, jolla on nimilappu"
                 },
                 "AnnotationsCreate": {
-                    "description": "Avaa muistiinpanojen luonti-ikkuna valittua tekstiä varten ja muokkaa muistiinpanoa, korostusta sekä tunnistetta",
+                    "description": "Avaa muistiinpanojen luonti-ikkuna valittua tekstiä varten ja muokkaa tekstiä, korostusta sekä tunnistetta",
                     "name": "Luo muistiinpano"
                 },
                 "AnnotationsCreateQuick": {
-                    "description": "Luo muistiinpano valitusta tekstistä, käytä edellistä korostustyyliä (toiminto ei avaa valintaikkunaa, joten tekstiä ja tunnistetta ei voi lisätä)",
+                    "description": "Luo pikamuistiinpano valitusta tekstistä, käytä edellistä korostustyyliä (tekstiä ja tunnistetta ei voi lisätä)",
                     "name": "Luo pikamuistiinpano"
                 },
                 "AnnotationsToggleMargin": {
@@ -893,27 +893,27 @@
                     "name": "Muuta muistiinpanojen marginaalia"
                 },
                 "AudioNext": {
-                    "description": "Siirry seuraavaan ääniosioon (EPUB3 teksti- ja äänikirja, tekstistä puheeksi -toiminto tai äänikirja)",
+                    "description": "Siirry seuraavaan ääniosioon (tekstiä ja ääntä yhdistävä kirja, tekstistä puheeksi -toiminto tai äänikirja)",
                     "name": "Seuraava ääniosio"
                 },
                 "AudioNextAlt": {
-                    "description": "Siirry seuraavaan äänijaksoon (EPUB3 teksti- ja äänikirja, tekstistä puheeksi -toiminto, äänikirja). Toiminto ohittaa rakenteet, jotka ovat ohitettavissa",
-                    "name": "Seuraava äänijakso (ohita)"
+                    "description": "Siirry seuraavaan ääniosioon (tekstiä ja ääntä yhdistävä kirja, tekstistä puheeksi -toiminto tai äänikirja). Toiminto ohittaa rakenteet, jotka ovat ohitettavissa",
+                    "name": "Seuraava ääniosio (ohita)"
                 },
                 "AudioPlayPause": {
-                    "description": "Aktivoi käynnistä/pysäytä kesken olevaan teokseen (EPUB3 teksti- ja äänikirja, tekstistä puheeksi -toiminto tai äänikirja)",
+                    "description": "Aktivoi käynnistä/pysäytä kesken olevassa teoksessa (tekstiä ja ääntä yhdistävä kirja, tekstistä puheeksi -toiminto tai äänikirja)",
                     "name": "Käynnistä/pysäytä ääni"
                 },
                 "AudioPrevious": {
-                    "description": "Siirry takaisin edelliseen äänijaksoon (toimi EPUB3 teksti- ja äänikirjojen, tekstistä puheeksi -toiminnon ja äänikirjojen kanssa)",
+                    "description": "Siirry edelliseen ääniosioon (tekstiä ja ääntä yhdistävä kirja, tekstistä puheeksi -toiminto tai äänikirja)",
                     "name": "Edellinen äänijakso"
                 },
                 "AudioPreviousAlt": {
-                    "description": "Siirry edelliseen äänijaksoon (toimii EPUB3 teksti- ja äänikirjojen, tekstistä puheeksi -toiminnon tai äänikirjan kanssa). Tämä ohittaa mahdollisen ohitettavissa olevan rakenteen",
+                    "description": "Siirry edelliseen ääniosioon (tekstiä ja ääntä yhdistävä kirja, tekstistä puheeksi -toiminto tai äänikirja). Toiminto ohittaa rakenteet, jotka ovat ohitettavissa",
                     "name": "Edellinen äänijakso (ohita)"
                 },
                 "AudioStop": {
-                    "description": "Pysäytä nykyinen ääni (EPUB3 teksti- ja äänikirja, tekstistä puheeksi -toiminto tai äänikirja)",
+                    "description": "Pysäytä nykyinen ääni (tekstiä ja ääntä yhdistävä kirja, tekstistä puheeksi -toiminto tai äänikirja)",
                     "name": "Lopeta ääni"
                 },
                 "CloseReader": {
@@ -949,7 +949,7 @@
                     "name": "Kohdista navigointipaneeliin"
                 },
                 "FocusReaderNavigationAnnotations": {
-                    "description": "Siirrä näppäimistökohdistus lukutilan navigointipaneelin \"muistiinpanot\"-osioon.",
+                    "description": "Siirrä näppäimistökohdistus lukutilan navigointipaneelin \"muistiinpanot\"-osioon",
                     "name": "Kohdista \"muistiinpanoihin\""
                 },
                 "FocusReaderNavigationBookmarks": {
@@ -957,7 +957,7 @@
                     "name": "Kohdista \"kirjanmerkkeihin\""
                 },
                 "FocusReaderNavigationSearch": {
-                    "description": "Siirrä näppäimistökohdistus lukutilan navigointipaneelin \"haku\"-osioon.",
+                    "description": "Siirrä näppäimistökohdistus lukutilan navigointipaneelin \"haku\"-osioon",
                     "name": "Kohdista \"hakuun\""
                 },
                 "FocusReaderNavigationTOC": {
@@ -973,31 +973,31 @@
                     "name": "Haku-komento"
                 },
                 "FocusToolbar": {
-                    "description": "Siirrä näppäimistökohdistus käyttöliittymän kiintopistealueeseen juuri ennen \"ohita linkki\" -toimintoa (joka puolestaan siirtää kohdistuksen kirjaston tai lukutilan pääsisältöön)",
+                    "description": "Siirrä näppäimistökohdistus käyttöliittymän kiintopistealueeseen juuri ennen \"ohituslinkki\"-toimintoa (joka puolestaan siirtää kohdistuksen kirjaston tai lukutilan pääsisältöön)",
                     "name": "Kohdista työkaluvalikkoon"
                 },
                 "NavigateNextChapter": {
-                    "description": "Siirry lukutilassa seuraavaan osioon teoksen lukemisjärjestyksessä (esim. seuraavaan lukuun kirjan rakenteessa). Huomaa, että toiminnolle saatavilla on vaihtoehtoinen näppäinoikotie",
+                    "description": "Siirry lukutilassa seuraavaan osioon teoksen lukemisjärjestyksessä (esim. seuraavaan lukuun kirjan rakenteessa). Huomaa, että oletuspikanäppäimelle on vaihtoehtoinen pikanäppäin",
                     "name": "Siirry seuraavaan lukuun"
                 },
                 "NavigateNextChapterAlt": {
-                    "description": "Siirry lukutilassa seuraavaan osioon teoksen lukemisjärjestyksessä (esim. seuraavaan lukuun kirjan rakenteessa). Huomaa, että tämä on toiminnon vaihtoehtoinen näppäinoikotie",
+                    "description": "Siirry lukutilassa seuraavaan osioon teoksen lukemisjärjestyksessä (esim. seuraavaan lukuun kirjan rakenteessa). Tämä on vaihtoehtoinen pikanäppäin",
                     "name": "Siirry seuraavaan lukuun (vaihtoehtoinen)"
                 },
                 "NavigateNextHistory": {
-                    "description": "Lukutilassa siirry askel eteenpäin navigointihistoriassa",
+                    "description": "Lukutilassa liiku askel eteenpäin navigointihistoriassa",
                     "name": "Siirry historiassa eteenpäin"
                 },
                 "NavigateNextLibraryPage": {
-                    "description": "Näytä kirjasto näkymässä sivutetun julkaisuluettelon seuraava sivu. Huomaa, että toiminnolle on tarjolla vaihtoehtoinen näppäinoikotie.",
+                    "description": "Näytä kirjastonäkymässä sivutetun julkaisuluettelon seuraava sivu. Huomaa, että oletuspikanäppäimelle on vaihtoehtoinen pikanäppäin",
                     "name": "Siirry julkaisujen seuraavalle sivulle"
                 },
                 "NavigateNextLibraryPageAlt": {
-                    "description": "Näytä kirjastonäkymässä sivutetun julkaisuluettelon seuraava sivu. Tämä on toiminnon vaihtoehtoinen näppäinoikotie.",
+                    "description": "Näytä kirjastonäkymässä sivutetun julkaisuluettelon seuraava sivu. Tämä on vaihtoehtoinen pikanäppäin",
                     "name": "Siirry julkaisujen seuraavalle sivulle (vaihtoehtoinen)"
                 },
                 "NavigateNextOPDSPage": {
-                    "description": "Seuraa kirjastonäkymän luettelonäkymässä/OPDS-syötteessä seuraavaa sivunumerolinkkiä. Huomaa, että oletuspikanäppäimelle on tarjolla vaihtoehtoinen pikanäppäin.",
+                    "description": "Seuraa kirjastonäkymän luettelonäkymässä/OPDS-syötteessä seuraavaa sivunumerolinkkiä. Huomaa, että oletuspikanäppäimelle on vaihtoehtoinen pikanäppäin",
                     "name": "Siirry seuraavalle OPDS-sivulle"
                 },
                 "NavigateNextOPDSPageAlt": {
@@ -1006,11 +1006,11 @@
                 },
                 "NavigateNextPage": {
                     "description": "Käännä lukutilassa julkaisun seuraava sivu. Huomaa, että oletuspikanäppäimelle on vaihtoehtoinen pikanäppäin",
-                    "name": "Käännä seuraava sivu"
+                    "name": "Siirry seuraavalle sivulle"
                 },
                 "NavigateNextPageAlt": {
                     "description": "Käännä lukutilassa julkaisun seuraava sivu. Tämä on vaihtoehtoinen pikanäppäin",
-                    "name": "Käännä seuraava sivu (vaihtoehtoinen)"
+                    "name": "Siirry seuraavalle sivulle (vaihtoehtoinen)"
                 },
                 "NavigatePreviousChapter": {
                     "description": "Siirry lukutilassa edelliseen osioon kirjan rakenteessa (esim. edelliseen lukuun). Huomaa, että oletuspikanäppäimelle on vaihtoehtoinen pikanäppäin",
@@ -1033,7 +1033,7 @@
                     "name": "Siirry julkaisuluettelon edelliselle sivulle (vaihtoehtoinen)"
                 },
                 "NavigatePreviousOPDSPage": {
-                    "description": "Seuraa luetteloiden/OPDS-syötteiden edellistä sivunumerolinkkiä. Huomaa, että oletuspikanäppäimelle on tarjolla vaihtoehtoinen pikanäppäin",
+                    "description": "Seuraa luetteloiden/OPDS-syötteiden edellistä sivunumerolinkkiä. Huomaa, että oletuspikanäppäimelle on vaihtoehtoinen pikanäppäin",
                     "name": "Siirry edelliselle OPDS-sivulle"
                 },
                 "NavigatePreviousOPDSPageAlt": {
@@ -1085,7 +1085,7 @@
                     "name": "Edellinen hakutulos (vaihtoehtoinen)"
                 },
                 "SpeakReaderInfoWhereAmI": {
-                    "description": "Kuvaile lukunäkymässä nykyisen luettevan kohdan ympäristö ja käytä ruudunlukijoiden kanssa toimivaa puheääntä",
+                    "description": "Kuvaile lukunäkymässä nykyisen luettavan kohdan ympäristö ja käytä siihen ruudunlukijoiden kanssa yhteensopivaa ääntä",
                     "name": "Kuvaile luettava kohta (ääneen)"
                 },
                 "ToggleBookmark": {
@@ -1093,15 +1093,15 @@
                     "name": "Siirrä kirjanmerkkiä"
                 },
                 "ToggleReaderFullscreen": {
-                    "description": "Ota lukunykymässä käyttöön tai poista käytöstä koko ruudun tila. Huomaa, että toiminto ei ole sama kuin keskittymistila, joka yksinkertaistaa käyttöliittymää",
+                    "description": "Ota lukunäkymässä käyttöön tai poista käytöstä koko ruudun tila. Huomaa, että toiminto ei ole sama kuin keskittymistila, joka yksinkertaistaa käyttöliittymää",
                     "name": "Muuta koko ruudun tila"
                 }
             },
             "loadUserJson": "Lataa käyttäjän tiedostosta",
-            "noShortcutFound": "Tällä nimellä ei löydy pikanäppäintä",
+            "noShortcutFound": "Tällä nimilapulla ei löydy pikanäppäintä",
             "resetDefaults": "Palauta (lataa oletusasetukset)",
             "save": "Tallenna",
-            "searchPlaceholder": "Hae pikanäppäimiä"
+            "searchPlaceholder": "Kirjoita hakeaksesi pikanäppäimiä"
         },
         "language": {
             "languageChoice": "Kieli"
@@ -1112,7 +1112,7 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "Käytä oletuspohjaa",
+                "applyDefaultTemplate": "Lataa oletusmalli",
                 "enableCheckbox": "Mukauta html-mallia",
                 "overrideHTMLTemplate": "Merkintöjen vienti (muistiinpanot ja kirjanmerkit)"
             }
@@ -1136,12 +1136,12 @@
     "tts": {
         "highlight": {
             "mainColor": "Pääväri",
-            "maskBlockWordOutline": "Sumenna, ympyröi sana",
-            "maskBlockWordSolidBackground": "Korosta rivit, sanan taustaväri",
-            "maskBlockWordUnderline": "Korosta rivit, alleviivaa sana",
-            "maskWordOutline": "Korosta virke, ympyröi sana",
-            "maskWordSolidBackground": "Korosta virke, sanan taustaväri",
-            "maskWordUnderline": "Korosta virke, alleviivaa sana",
+            "maskBlockWordOutline": "Sumenna ympäröivä teksti, ympyröi sana",
+            "maskBlockWordSolidBackground": "Sumenna ympäröivä teksti, sanan taustaväri",
+            "maskBlockWordUnderline": "Sumenna ympäröivä teksti, alleviivaa sana",
+            "maskWordOutline": "Sumenna, ympyröi sana",
+            "maskWordSolidBackground": "Sumenna, sanan taustaväri",
+            "maskWordUnderline": "Sumenna, alleviivaa sana",
             "outlineWordOutline": "Ympyröi virke, ympyröi sana",
             "outlineWordSolidBackground": "Ympyröi virke, sanan taustaväri",
             "outlineWordUnderline": "Ympyröi virke, alleviivaa sana",
