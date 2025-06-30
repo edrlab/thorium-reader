@@ -64,8 +64,6 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
             .find(({ id }) => id.split("__!!__")[1] === createNameId(selectedVoice).split("__!!__")[1])?.id
         : undefined;
 
-    console.log("selectedVoiceKey:", selectedVoice, selectedVoiceKey);
-
     return (
         <div className={stylesReader.ttsSelectVoice}>
             <ComboBox
