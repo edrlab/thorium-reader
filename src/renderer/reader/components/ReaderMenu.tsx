@@ -3086,7 +3086,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     };
 
     return (
-        <div>
+        <div style={{minHeight: "inherit"}}>
             {
                 dockedMode ?
                     <>
