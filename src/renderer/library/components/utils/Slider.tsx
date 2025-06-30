@@ -111,6 +111,7 @@ class Slider extends React.Component<IProps, IState> {
             transition: "left 0.5s",
         };
 
+
         return (
             <div className={(className ? className + " " : "") + stylesSlider.slider}>
                     <button
@@ -122,7 +123,7 @@ class Slider extends React.Component<IProps, IState> {
                     >
                     <SVG ariaHidden={true} svg={ArrowRightIcon} />
                 </button>
-                <div ref={this.wrapperRef} className={stylesSlider.slider_wrapper}
+                <div ref={this.wrapperRef} className={stylesSlider.slider_wrapper} onWheel={this.handleScrollWheel.bind(this)}
                     /* onScroll={(e) => {this.handleScroll(e)}} */>
                     <ul ref={this.contentRef} className={stylesSlider.slider_items} style={varStyle}>
                         {list}
@@ -163,6 +164,23 @@ class Slider extends React.Component<IProps, IState> {
     //     this.setState({ position, refreshVisible: true });
     //     console.log(position, step);
     // }
+
+    private handleScrollWheel(event: React.WheelEvent<HTMLDivElement>) {
+        if (!this.wrapperRef?.current || !this.contentRef?.current) {
+            return;
+        }
+        
+        let position = this.state.position - event.deltaX;
+        const max = -this.contentRef.current.offsetWidth + this.wrapperRef.current.offsetWidth;
+
+        if (position > 0) {
+            position = 0;
+        } else if (position < max) {
+            position = max;
+        }
+
+        this.setState({ position, refreshVisible: true });
+    }
 
 
     private handleMove(moveRight: number) {
