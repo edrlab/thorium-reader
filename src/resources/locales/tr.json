@@ -961,28 +961,28 @@
                     "name": "'Ara' bölümüne odaklan"
                 },
                 "FocusReaderNavigationTOC": {
-                    "description": "",
-                    "name": ""
+                    "description": "Klavye odağını, okuyucu penceresinin gezinme panelindeki 'İçindekiler' bölümüne taşı",
+                    "name": "'İçindekiler' bölümüne odaklan"
                 },
                 "FocusReaderSettings": {
-                    "description": "",
-                    "name": ""
+                    "description": "Klavye odağını, okuyucu penceresinin ayarlar paneline taşı (görüntüleme seçenekleri vs.)",
+                    "name": "Okuyucu Ayarları'na odaklan"
                 },
                 "FocusSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Klavye odağını okuyucu penceresindeki metin arama girdi alanına taşı veya kütüphane penceresinde kitaplığı veya aktif OPDS beslemesini araştır",
+                    "name": "Ara Komutu"
                 },
                 "FocusToolbar": {
-                    "description": "",
-                    "name": ""
+                    "description": "Klavye odağını, grafiksel kullanıcı arayüzündeki referans imine, 'bağlantıyı atla' ögesinden hemen öncesine taşı (bu , odağı kütüphane veya okuyucu penceresindeki ana içerik alanına taşır)",
+                    "name": "Araç Çubuğu'na odaklan"
                 },
                 "NavigateNextChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuyucu penceresinde, eserin okuma sırasına göre bir sonraki belgeye git (örneğin, kitap içerik dizinindeki bölüm). Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
+                    "name": "Sonraki Bölüm'e git"
                 },
                 "NavigateNextChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuyucu penceresinde, eserin okuma sırasına göre bir sonraki belgeye git (örneğin, kitap içerik dizinindeki bölüm). Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
+                    "name": "Sonraki Bölüm'e git (Alternatif)"
                 },
                 "NavigateNextHistory": {
                     "description": "",
