@@ -65,7 +65,7 @@ class Slider extends React.Component<IProps, IState> {
         window.removeEventListener("resize", this.update);
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate(prevProps: any) {
         if (this.state.refreshVisible) {
             this.contentElRefs.map((element, index) => {
                 /*The this.contentElRefs array is automatically populated in the render() > createContent() function,
@@ -89,7 +89,13 @@ class Slider extends React.Component<IProps, IState> {
             });
             this.setState({refreshVisible: false});
         }
+
+        if (prevProps.content !== this.props.content) {
+            const position = 0;
+            this.setState({position, refreshVisible: true});
+        }
     }
+
 
     public render(): React.ReactElement<{}>  {
         const { className, __ } = this.props;
@@ -157,6 +163,7 @@ class Slider extends React.Component<IProps, IState> {
     //     this.setState({ position, refreshVisible: true });
     //     console.log(position, step);
     // }
+
 
     private handleMove(moveRight: number) {
         if (!this.wrapperRef?.current || !this.contentRef?.current) {
