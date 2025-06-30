@@ -60,7 +60,7 @@ const DeletePublicationConfirm = (props: { publicationView: PublicationView, tri
                         {props.publicationView.documentTitle}
                     </AlertDialog.Description>
                     {hasNotes ? <div>
-                        <p style={{fontSize: "14px", color: "red"}}>{__("dialog.deletePublicationWithNotes")}</p>
+                        <p style={{fontSize: "14px", color: "var(--color-error-dark"}}>{__("dialog.deletePublicationWithNotes")}</p>
                     </div> : <></>}
                     <div className={stylesAlertModals.AlertDialogButtonContainer}>
                         <AlertDialog.Cancel asChild>
