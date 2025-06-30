@@ -594,7 +594,7 @@
         "lcpRightsPrint": "Printede sider",
         "lcpStart": "Start",
         "licenceLCP": "Licens (LCP)",
-        "licenseCertificateDateInvalid": "Licensens signatur-dato er ugyldig.",
+        "licenseCertificateDateInvalid": "Licensens signatur-dato er ugyldig. ({{- dateTime}})",
         "licenseOutOfDate": "Licensen er udløbet.",
         "licenseSignatureInvalid": "Licensens signatur er ugyldig.",
         "licensed": "Licenseret",

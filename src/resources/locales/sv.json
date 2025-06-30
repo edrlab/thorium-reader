@@ -36,7 +36,7 @@
                         "yes": "Ja"
                     },
                     "help": "Välj detta om du vill att läsfönster som är öppna när du stänger programmet ska öppnas automatiskt vid nästa start.",
-                    "message": "Sparar och återställer sessionen",
+                    "message": "Spara och återställ sessionen",
                     "title": "Spara session?"
                 }
             }
@@ -594,7 +594,7 @@
         "lcpRightsPrint": "Kopiera utskrift",
         "lcpStart": "Start",
         "licenceLCP": "Licens (LCP)",
-        "licenseCertificateDateInvalid": "Licensens signeringsdatum är ogiltigt.",
+        "licenseCertificateDateInvalid": "Licensens signeringsdatum är ogiltigt. ({{- dateTime}})",
         "licenseOutOfDate": "Licensen har löpt ut.",
         "licenseSignatureInvalid": "Licensens signatur är ogiltig.",
         "licensed": "Licensierad",
@@ -862,7 +862,7 @@
     },
     "settings": {
         "annotationCreator": {
-            "creator": "Skapare",
+            "creator": "Anteckningsförfattare (valfritt)",
             "help": "Namnet du anger här kommer att inkluderas i metadata för exporterade anteckningar.",
             "name": "Namn",
             "organization": "Organisation",

@@ -594,7 +594,7 @@
         "lcpRightsPrint": "许可证打印",
         "lcpStart": "开始",
         "licenceLCP": "许可证（LCP）",
-        "licenseCertificateDateInvalid": "许可证签名日期无效",
+        "licenseCertificateDateInvalid": "许可证签名日期无效 ({{- dateTime}})",
         "licenseOutOfDate": "许可证过期",
         "licenseSignatureInvalid": "许可证签名无效",
         "licensed": "已授权",

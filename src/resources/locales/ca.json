@@ -594,7 +594,7 @@
         "lcpRightsPrint": "Còpia d'impressora",
         "lcpStart": "Inici",
         "licenceLCP": "Llicència (LCP)",
-        "licenseCertificateDateInvalid": "La data de la firma de la llicència no és vàlida",
+        "licenseCertificateDateInvalid": "La data de la firma de la llicència no és vàlida ({{- dateTime}})",
         "licenseOutOfDate": "La llicència està desactualitzada",
         "licenseSignatureInvalid": "La firma de la llicència no és vàlida",
         "licensed": "Llicenciat",

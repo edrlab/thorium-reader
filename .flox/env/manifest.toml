@@ -140,6 +140,11 @@ common = '''
 
 export PATH="$NPM_CONFIG_PREFIX/bin:$PATH";
 
+# This seems to help Zed fetch its LSP updates?
+#NIX_SSL_CERT_FILE=/nix/store/yn6p7yzysbx5scq4ap7iq1sf58463b82-nss-cacert-3.108/etc/ssl/certs/ca-bundle.crt
+#SSL_CERT_FILE=/nix/store/yn6p7yzysbx5scq4ap7iq1sf58463b82-nss-cacert-3.108/etc/ssl/certs/ca-bundle.crt
+#NODE_EXTRA_CA_CERTS="${SSL_CERT_FILE:-}"
+
 alias lss='ls -alshF --color=auto'
 alias flx='flox activate'
 alias flxx='FLOX_VERBOSE=1 flox activate'

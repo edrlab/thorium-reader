@@ -594,7 +594,7 @@
         "lcpRightsPrint": "Gedruckte Seiten",
         "lcpStart": "Start",
         "licenceLCP": "Lizenz (LCP)",
-        "licenseCertificateDateInvalid": "Ungültiges Signaturdatum der LCP-Lizenz.",
+        "licenseCertificateDateInvalid": "Ungültiges Signaturdatum der LCP-Lizenz. ({{- dateTime}})",
         "licenseOutOfDate": "Veraltete LCP-Lizenz.",
         "licenseSignatureInvalid": "Ungültige LCP-Lizenzsignatur.",
         "licensed": "Lizenziert",
@@ -793,7 +793,7 @@
             "noRTLFlip": "Rechts-nach-links-Benutzeroberfläche deaktivieren",
             "noRuby": "Japanische Ruby-Notationen ausblenden",
             "noTemporaryNavTargetOutline": "Deaktiviere visuelle Navigationshinweise",
-            "paginated": "Seitendarstellung",
+            "paginated": "Paginiert",
             "paraSpacing": "Absatzabstand",
             "pdfZoom": {
                 "name": {

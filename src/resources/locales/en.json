@@ -594,7 +594,7 @@
         "lcpRightsPrint": "Printed pages",
         "lcpStart": "Start",
         "licenceLCP": "License (LCP)",
-        "licenseCertificateDateInvalid": "Expired LCP provider certificate.",
+        "licenseCertificateDateInvalid": "The LCP provider certificate expired before the license issue date ({{- dateTime}}).",
         "licenseOutOfDate": "Out of date LCP License.",
         "licenseSignatureInvalid": "Invalid LCP license signature.",
         "licensed": "Licensed",

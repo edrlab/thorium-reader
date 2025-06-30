@@ -25,6 +25,7 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER } from "readium-desktop/common/streamerProtocol";
+import { PublicationView } from "readium-desktop/common/views/publication";
 
 // import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
@@ -134,14 +135,19 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
                 yield* callTyped(() => lcpManager.unlockPublication(publicationDocument, undefined));
 
             if (typeof unlockPublicationRes !== "undefined") {
+                let publicationView: PublicationView;
+                try {
+                    publicationView = yield* callTyped(() => convertDoc(publicationDocument, publicationViewConverter));
+                } catch (error) {
+                    throw error;
+                }
+
                 const message =
                     // unlockPublicationRes === 11
                     // ? translator.translate("publication.expiredLcp") :
-                    lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes);
+                    lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes, publicationView.lcp?.issued || publicationDocument.lcp?.issued || "");
 
                 try {
-                    const publicationView = yield* callTyped(() => convertDoc(publicationDocument, publicationViewConverter));
-
                     // will call API.unlockPublicationWithPassphrase()
                     yield put(lcpActions.userKeyCheckRequest.build(
                         publicationView,
@@ -223,14 +229,20 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
                 yield* callTyped(() => lcpManager.unlockPublication(publicationDocument, undefined));
 
             if (typeof unlockPublicationRes !== "undefined") {
+                let publicationView: PublicationView;
+                try {
+                    publicationView = yield* callTyped(() => convertDoc(publicationDocument, publicationViewConverter));
+                } catch (error) {
+                    throw error;
+                }
+
                 const message =
                     // unlockPublicationRes === 11 ?
                     // translator.translate("publication.expiredLcp") :
-                    lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes);
+                    lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes, publicationView.lcp?.issued || publicationDocument.lcp?.issued || "");
                 debug(message);
 
                 try {
-                    const publicationView = yield* callTyped(() => convertDoc(publicationDocument, publicationViewConverter));
 
                     // will call API.unlockPublicationWithPassphrase()
                     yield put(lcpActions.userKeyCheckRequest.build(

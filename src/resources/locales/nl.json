@@ -594,7 +594,7 @@
         "lcpRightsPrint": "Toegestaan aantal af te drukken pagina's",
         "lcpStart": "Start",
         "licenceLCP": "Licentie (LCP)",
-        "licenseCertificateDateInvalid": "Certificaat LCP aanbieder verlopen.",
+        "licenseCertificateDateInvalid": "Certificaat LCP aanbieder verlopen. ({{- dateTime}})",
         "licenseOutOfDate": "LCP Licentie is verlopen.",
         "licenseSignatureInvalid": "Ongeldige LCP Licentie handtekening.",
         "licensed": "Gelicentieerd",
