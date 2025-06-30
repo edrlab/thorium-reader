@@ -925,39 +925,39 @@
                     "name": "FXL Yakınlaştır"
                 },
                 "FXLZoomOut": {
-                    "description": "Belirlenmiş düzende, tek sayfa veya çift sayfa görünümünü uzaklaştır.",
+                    "description": "Sabit düzende, tek sayfa veya çift sayfa görünümünü uzaklaştır.",
                     "name": "FXL Uzaklaştır"
                 },
                 "FXLZoomReset": {
-                    "description": "Belirlenmiş düzendeki tek sayfa veya çift sayfa görünümünün yakınlaştırmasını/uzaklaştırmasını sıfırla.",
+                    "description": "Sabit düzendeki tek sayfa veya çift sayfa görünümünün yakınlaştırmasını/uzaklaştırmasını sıfırla.",
                     "name": "FXL Yakınlaştırmasını/Uzaklaştırmasını Sıfırla"
                 },
                 "FocusMain": {
-                    "description": "",
-                    "name": ""
+                    "description": "Klavye odağını grafiksel kullanıcı arayüzündeki 'ana' refrans imine taşı. Okuyucu penceresinde bu, eser içeriğine geçer",
+                    "name": "Ana İçeriğe odaklan"
                 },
                 "FocusMainDeep": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuyucu penceresinde bu, ekran okuyucular için daha güvenilir bir teknik kullanarak klavye odağını eser içeriğine taşır",
+                    "name": "Ana İçeriğe Derinlemesine Odaklanma"
                 },
                 "FocusReaderGotoPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Klavye odağını, okuyucu penceresinin gezinme panelindeki 'sayfaya git' bölümüne taşı",
+                    "name": "'Sayfaya Git' bölümüne odaklan"
                 },
                 "FocusReaderNavigation": {
-                    "description": "",
-                    "name": ""
+                    "description": "Klavye odağını, okuyucu penceresinin gezinme paneline taşı",
+                    "name": "Gezinme Paneli'ne odaklan"
                 },
                 "FocusReaderNavigationAnnotations": {
-                    "description": "",
-                    "name": ""
+                    "description": "Klavye odağını okuyucu penceresinin gezinme panelindeki 'açıklayıcı notlar' bölümüne taşı",
+                    "name": "'Açıklayıcı Notlar' bölümüne odaklan"
                 },
                 "FocusReaderNavigationBookmarks": {
-                    "description": "",
-                    "name": ""
+                    "description": "Klavye odağını, okuma penceresinin 'yer imleri' bölümüne taşı",
+                    "name": "'Yerimleri' bölümüne odaklan"
                 },
                 "FocusReaderNavigationSearch": {
-                    "description": "",
+                    "description": "Klavye odağını, okuyucu penceresinin gezinme panelindeki 'ara' bölümüne taşı",
                     "name": ""
                 },
                 "FocusReaderNavigationTOC": {
