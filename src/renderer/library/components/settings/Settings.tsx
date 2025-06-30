@@ -429,9 +429,13 @@ export const Settings: React.FC<ISettingsProps> = () => {
         <Dialog.Portal>
             <div className={stylesModals.modal_dialog_overlay}></div>
             <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined}>
+                {
+                // FALSE this to test sourcemaps:
+                true &&
                 <VisuallyHidden.Root>
                     <Dialog.Title>{__("header.settings")}</Dialog.Title>
                 </VisuallyHidden.Root>
+                }
                 <Tabs.Root defaultValue="tab1" data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                     <Tabs.List className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
                         <Tabs.Trigger value="tab1">

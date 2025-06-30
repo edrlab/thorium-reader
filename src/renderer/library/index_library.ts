@@ -9,7 +9,7 @@ import { ipcRenderer } from "electron";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
-import { ActionWithSender } from "readium-desktop/common/models/sync";
+import { type ActionWithSender } from "readium-desktop/common/models/sync";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 
@@ -111,6 +111,11 @@ ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: syncIpc.EventPayload) => {
 });
 
 if (__TH__IS_DEV__) {
+    // // Uncomment to test sourcemaps:
+    // setTimeout(() => {
+    //     throw new Error("Test exception 1 ...");
+    // }, 1000);
+
     ipcRenderer.once("AXE_A11Y", () => {
         // https://github.com/dequelabs/axe-core/blob/master/doc/API.md#api-name-axeconfigure
         const config = {
