@@ -129,17 +129,6 @@ let config = Object.assign(
         module: {
             rules: [
                 {
-                    test: /\.(jsx?|tsx?)$/,
-                    use: [
-                        {
-                            loader: path.resolve("./scripts/webpack-loader-scope-checker.js"),
-                            options: {
-                                forbids: ["src/renderer/library", "src/main", "src/renderer/reader/components", "src/renderer/reader/redux", "src/common", "src/resources", "src/typings", "src/renderer/reader/common", "src/renderer/common"],
-                            },
-                        },
-                    ],
-                },
-                {
                     test: /\.tsx$/,
                     loader: useLegacyTypeScriptLoader ? "awesome-typescript-loader" : "ts-loader",
                     options: {
@@ -154,6 +143,7 @@ let config = Object.assign(
                             loader: "babel-loader",
                             options: {
                                 presets: [],
+                                // sourceMaps: "inline",
                                 plugins: ["macros"],
                             },
                         },
@@ -162,6 +152,17 @@ let config = Object.assign(
                             options: {
                                 transpileOnly: true, // checkTypeScriptSkip
                                 // compiler: "@typescript/native-preview",
+                            },
+                        },
+                    ],
+                },
+                {
+                    test: /\.(jsx?|tsx?)$/,
+                    use: [
+                        {
+                            loader: path.resolve("./scripts/webpack-loader-scope-checker.js"),
+                            options: {
+                                forbids: ["src/renderer/library", "src/main", "src/renderer/reader/components", "src/renderer/reader/redux", "src/common", "src/resources", "src/typings", "src/renderer/reader/common", "src/renderer/common"],
                             },
                         },
                     ],
@@ -198,7 +199,10 @@ if (nodeEnv !== "production") {
             new TerserPlugin({
                 extractComments: false,
                 exclude: /MathJax/,
+                // parallel: 3,
                 terserOptions: {
+                    // sourceMap: nodeEnv !== "production" ? true : false,
+                    sourceMap: false,
                     compress: {defaults:false, dead_code:true, booleans: true, passes: 1},
                     mangle: false,
                     output: {

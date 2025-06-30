@@ -32,6 +32,10 @@ function handler(source) {
         }
     }
 
+    // Uncomment to test sourcemaps:
+    // if (this.resourcePath.includes("index_library")) {
+    //     throw new Error(source);
+    // }
     return source;
 }
 
