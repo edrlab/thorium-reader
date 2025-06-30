@@ -752,7 +752,6 @@
         },
         "print": {
             "descriptionLcpCount": "",
-            "descriptionLcpLimit": "LCP περιορισμός: {{- lcpLimitPages}}, υπολειπόμενες σελίδες: {{- count}}",
             "descriptionLcpPrintable": "",
             "howTo": "",
             "lcpInfo": "",
@@ -766,7 +765,8 @@
             "pages": "Σελίδες",
             "preview": "",
             "print": "Εκτύπωση",
-            "printablePages": ""
+            "printablePages": "",
+            "title": ""
         },
         "settings": {
             "column": {

@@ -752,7 +752,6 @@
         },
         "print": {
             "descriptionLcpCount": "",
-            "descriptionLcpLimit": "LCP-rajoitus: {{- lcpLimitPages}}, sivuja jäljellä: {{- count}}",
             "descriptionLcpPrintable": "",
             "howTo": "",
             "lcpInfo": "",
@@ -766,7 +765,8 @@
             "pages": "Sivut",
             "preview": "",
             "print": "Tulostus",
-            "printablePages": ""
+            "printablePages": "",
+            "title": ""
         },
         "settings": {
             "column": {

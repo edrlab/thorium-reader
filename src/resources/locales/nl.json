@@ -752,7 +752,6 @@
         },
         "print": {
             "descriptionLcpCount": "",
-            "descriptionLcpLimit": "{{- count}} pagina's over (van {{- lcpLimitPages}} LCP limiet)",
             "descriptionLcpPrintable": "",
             "howTo": "",
             "lcpInfo": "",
@@ -766,7 +765,8 @@
             "pages": "Pagina's",
             "preview": "",
             "print": "Afdrukken",
-            "printablePages": ""
+            "printablePages": "",
+            "title": ""
         },
         "settings": {
             "column": {

@@ -1664,7 +1664,6 @@ declare namespace typed_i18n {
   },
   readonly "print": {
     readonly "descriptionLcpCount": string,
-    readonly "descriptionLcpLimit": string,
     readonly "descriptionLcpPrintable": string,
     readonly "howTo": string,
     readonly "lcpInfo": string,
@@ -1678,7 +1677,8 @@ declare namespace typed_i18n {
     readonly "pages": string,
     readonly "preview": string,
     readonly "print": string,
-    readonly "printablePages": string
+    readonly "printablePages": string,
+    readonly "title": string
   },
   readonly "settings": {
     readonly "column": {
@@ -2034,7 +2034,6 @@ declare namespace typed_i18n {
   (_: "reader.picker.searchTitle", __?: {}): string;
   (_: "reader.print", __?: {}): {
   readonly "descriptionLcpCount": string,
-  readonly "descriptionLcpLimit": string,
   readonly "descriptionLcpPrintable": string,
   readonly "howTo": string,
   readonly "lcpInfo": string,
@@ -2048,10 +2047,10 @@ declare namespace typed_i18n {
   readonly "pages": string,
   readonly "preview": string,
   readonly "print": string,
-  readonly "printablePages": string
+  readonly "printablePages": string,
+  readonly "title": string
 };
   (_: "reader.print.descriptionLcpCount", __?: {}): string;
-  (_: "reader.print.descriptionLcpLimit", __?: {}): string;
   (_: "reader.print.descriptionLcpPrintable", __?: {}): string;
   (_: "reader.print.howTo", __?: {}): string;
   (_: "reader.print.lcpInfo", __?: {}): string;
@@ -2066,6 +2065,7 @@ declare namespace typed_i18n {
   (_: "reader.print.preview", __?: {}): string;
   (_: "reader.print.print", __?: {}): string;
   (_: "reader.print.printablePages", __?: {}): string;
+  (_: "reader.print.title", __?: {}): string;
   (_: "reader.settings", __?: {}): {
   readonly "column": {
     readonly "auto": string,

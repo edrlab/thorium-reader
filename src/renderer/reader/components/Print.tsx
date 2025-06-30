@@ -22,7 +22,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import classNames from "classnames";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import * as ChevronUp from "readium-desktop/renderer/assets/icons/chevron-up.svg";
-import * as KeyIcon from "readium-desktop/renderer/assets/icons/key-icon.svg";
+import * as PrinterIcon from "readium-desktop/renderer/assets/icons/printer-icon.svg";
 
 // const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
@@ -171,8 +171,8 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
 
     return <>
         <form className={stylesPrint.print_dialog_form}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <h2>{__("reader.print.print")}</h2>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <h2>{__("reader.print.title")}</h2>
                 <Dialog.Close asChild>
                     <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
                         <SVG ariaHidden={true} svg={QuitIcon} />
@@ -182,25 +182,38 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
             {
                 isLcpWithPrintRights ?
                     <div className={stylesPrint.info_text}>
-                        <div style={{ display: "flex", flexDirection: "row", fontSize: "14px" }}>
+                        <div className={stylesPrint.info_text_description}>
                             <SVG ariaHidden svg={InfoIcon} />
-                            <p style={{ marginLeft: "10px" }}>{__("reader.print.lcpInfo", { count: publicationViewLcpRightsPrintNumber})}</p>
+                            <p>{__("reader.print.lcpInfo", { count: publicationViewLcpRightsPrintNumber})}</p>
                         </div>
                         <div style={{ display: "flex", flexDirection: "column", marginLeft: "20px", marginBottom: "5px" }}>
-                            <h4 style={{ marginTop: "0px" }}><SVG ariaHidden svg={KeyIcon} />{__("publication.licensed")}</h4>
                             <ul className={stylesPrint.print_lcp_list}>
                                 {/* <li>{__("reader.print.descriptionLcpLimit", { lcpLimitPages: publicationViewLcpRightsPrintNumber })}</li> */}
-                                <li>{__("reader.print.descriptionLcpCount", { count: lcpCountPages })}</li>
-                                <li>{__("reader.print.descriptionLcpPrintable", { printable: formatRanges(publicationViewLcpRightsPrintsConsumed), count: publicationViewLcpRightsPrintsConsumed.length.toString() })}</li>
+                                <li><p>{__("reader.print.descriptionLcpCount", { count: lcpCountPages })}</p></li>
+                                <li><p>{__("reader.print.descriptionLcpPrintable", { printable: formatRanges(publicationViewLcpRightsPrintsConsumed), count: publicationViewLcpRightsPrintsConsumed.length.toString() })}</p></li>
                             </ul>
                         </div>
                     </div>
                     : <div style={{ margin: "10px", borderBottom: "2px solid var(--color-extralight-grey)" }} />
 
             }
+            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px" }}>
+                <div className={stylesInput.form_group} style={{ minWidth: "360px", marginLeft: "5px" }}>
+                    <input type="text" name="print-range" style={{ width: "100%", marginLeft: "10px" }} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={__("reader.print.pages")} value={getV} onChange={(e) => {
+                        const v = e.target.value;
+                        setV(v);
+                    }}
+                    />
+                    <label htmlFor="print-range">{__("reader.print.pages")}</label>
+                </div>
+                <div>
+                    <label htmlFor="pages-to-print">{__("reader.print.printablePages")}</label>
+                    <p style={{ marginTop: "3px" }} id="pages-to-print">{formatRanges(pagesToPrint)} ({pagesToPrint.length})</p>
+                </div>
+            </div>
 
+            <h3>{__("reader.print.preview")}</h3>
             <div style={{ padding: "10px 15px 5px", backgroundColor: "var(--color-extralight-grey)" }}>
-                <p>{__("reader.print.preview")}</p>
                 <div id="print-dialog-image-container" className={stylesPrint.print_dialog_image_container}>
 
                     {
@@ -251,20 +264,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
 
                 </div>
             </div>
-            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px", minHeight: "85px" }}>
-                <div className={stylesInput.form_group} style={{ marginTop: "20px", minWidth: "360px", marginLeft: "5px" }}>
-                    <input type="text" name="print-range" style={{ width: "100%", marginLeft: "10px" }} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={__("reader.print.pages")} value={getV} onChange={(e) => {
-                        const v = e.target.value;
-                        setV(v);
-                    }} />
-                    <label htmlFor="print-range">{__("reader.print.pages")}</label>
-                </div>
-                <div style={{ marginTop: "20px" }}>
-                    <label htmlFor="pages-to-print">{__("reader.print.printablePages")}</label>
-                    <p style={{ marginTop: "3px" }} id="pages-to-print">{formatRanges(pagesToPrint)} ({pagesToPrint.length})</p>
-                </div>
-            </div>
-            <button className={classNames("button_catalog_infos")} onClick={(e) => { e.preventDefault(); setInfoOpen(!infoOpen); }}>
+            <button type="button" className={classNames("button_catalog_infos")} onClick={(e) => { e.preventDefault(); setInfoOpen(!infoOpen); }}>
                 <SVG ariaHidden svg={InfoIcon} />
                 {__("reader.print.howTo")}
                 <SVG ariaHidden svg={infoOpen ? ChevronUp : ChevronDown} />
@@ -295,6 +295,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                         dispatch(readerActions.print.build(publicationIdentifier, pagesToPrint)); // send to main process
                     }}
                 >
+                    <SVG ariaHidden svg={PrinterIcon} />
                     {__("reader.print.print")}
                 </Dialog.Close>
             </div>

@@ -752,7 +752,6 @@
         },
         "print": {
             "descriptionLcpCount": "",
-            "descriptionLcpLimit": "",
             "descriptionLcpPrintable": "",
             "howTo": "",
             "lcpInfo": "",
@@ -766,7 +765,8 @@
             "pages": "",
             "preview": "",
             "print": "",
-            "printablePages": ""
+            "printablePages": "",
+            "title": ""
         },
         "settings": {
             "column": {

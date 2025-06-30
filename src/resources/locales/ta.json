@@ -752,7 +752,6 @@
         },
         "print": {
             "descriptionLcpCount": "",
-            "descriptionLcpLimit": "எல்சிபி வரம்பு: {{- lcpLimitPages}}, மீதமுள்ள பக்கங்கள்: {{- count}}}",
             "descriptionLcpPrintable": "",
             "howTo": "",
             "lcpInfo": "",
@@ -766,7 +765,8 @@
             "pages": "பக்கங்கள்",
             "preview": "",
             "print": "அச்சிடுக",
-            "printablePages": ""
+            "printablePages": "",
+            "title": ""
         },
         "settings": {
             "column": {

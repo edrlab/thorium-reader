@@ -4,6 +4,10 @@
   display: none;
 }
 
+.modal_dialog_reader {
+    min-height: 500px
+}
+
 .print_dialog_form {
     @include mx.scrollbar_styling;
 
@@ -21,10 +25,16 @@
 
     p {
         padding: 0;
+        margin: 0;
     }
 
-    h2 {
+    
+    h2, h3{
         margin: 0;
+    }
+    
+    h2 {
+        margin-top: 20px;
     }
 
     h4 {
@@ -42,6 +52,18 @@
 
 .print_dialog_image_container {
     @include mx.scrollbar_styling;
+
+    &::-webkit-scrollbar {
+        height: 9px;
+
+        &-track {
+            background-color: var(--color-extralight-grey);
+        }
+
+    &-thumb {
+        border-radius: 5px;
+    }
+  }
 
     // display: flex;
     // flex-wrap: nowrap;
@@ -114,7 +136,6 @@
 }
 
 .print_lcp_list {
-    list-style-type: none;
     padding-inline-start: 20px;
     margin: 0;
 
@@ -124,27 +145,44 @@
 
     li {
         max-width: inherit;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        text-wrap: auto;
+
+        p {
+            margin: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-wrap: auto;
+        }
     }
 }
 
 .info_text {
     display: flex;
     flex-direction: column;
-    background-color: var(--color-extralight-grey);
+    background-color: var(--color-light-blue);
     color: var(--color-primary);
     padding: 5px 10px;
     border-radius: 5px;
     margin: 10px 0;
 
-    svg {
-        margin-top: 5px;
-        width: 25px;
-        height: 25px;
-        color: var(--color-blue);;
+    &_description {
+        display: flex;
+        flex-direction: row;
+        font-size: 14px;
+        align-items: center;
+        margin: 0;
+        gap: 5px;
+
+        p {
+            margin: 2px;
+        }
+
+        svg {
+            width: 15px;
+            height: 15px;
+            color: var(--color-blue);;
+        }
     }
+
 }
 
 .CSS_END_components_print {

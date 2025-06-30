@@ -752,10 +752,9 @@
         },
         "print": {
             "descriptionLcpCount": "Remaining pages limit: {{- count}}",
-            "descriptionLcpLimit": "LCP DRM hard limit: {{- lcpLimitPages}}",
-            "descriptionLcpPrintable": "Printed and memorized pages: {{- printable}} ({{- count}})",
+            "descriptionLcpPrintable": "Previously printed pages: {{- printable}} ({{- count}})",
             "howTo": "How to select a range of pages to print",
-            "lcpInfo": "The number of pages you can print in this publication is limited to {{- count}} pages. Choose the pages you require here.",
+            "lcpInfo": "The number of pages you can print in this publication is limited to {{- count}}. Choose the pages you require here.",
             "noPagesLcpLimitReached": "You have reached the LCP limit",
             "noPrintablePages": "No Printables pages",
             "pageHelpInfo": "Page selector syntax:",
@@ -766,7 +765,8 @@
             "pages": "Pages",
             "preview": "Preview",
             "print": "Print",
-            "printablePages": "Printables pages"
+            "printablePages": "Printables pages (total)",
+            "title": "Selection of printable pages"
         },
         "settings": {
             "column": {
