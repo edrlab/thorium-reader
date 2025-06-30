@@ -15,10 +15,12 @@
         "."
       ],
       "env": {
-        "DEBUG": "r2:*,readium-desktop:*",
+        "DEBUG": "r2:*,readium-desktop:*,-proxy-agent,-readium-desktop:main#streamerNoHttp,-readium-desktop:main:saga:persist,-r2:navigator#electron/common/readium-css-inject",
         "NODE_DEBUG": "1",
         "NODE_ENV": "development",
         "BUILD_ENV": "dev",
+        "SKIP_CHECK_TYPESCRIPT": "1",
+        "DEBUG_COLORS": "false",
         "VSCODE_LAUNCH": "true"
       },
       "console": "internalConsole",
@@ -39,7 +41,8 @@
       "runtimeArgs": [
         "--remote-debugging-port=9223",
         "--enable-logging",
-        "--nolazy"
+        "--nolazy",
+        "."
       ]
     },
     {
@@ -52,16 +55,18 @@
         "webpack.config.renderer-library.js"
       ],
       "env": {
-        "DEBUG": "r2:*,readium-desktop:*",
+        "DEBUG": "r2:*,readium-desktop:*,-proxy-agent,-readium-desktop:main#streamerNoHttp,-readium-desktop:main:saga:persist,-r2:navigator#electron/common/readium-css-inject",
         "NODE_DEBUG": "1",
         "NODE_ENV": "development",
         "BUILD_ENV": "dev",
+        "SKIP_CHECK_TYPESCRIPT": "1",
+        "DEBUG_COLORS": "false",
         "VSCODE_LAUNCH": "true"
       },
       "stopOnEntry": false,
       "cwd": "${workspaceRoot}",
       "internalConsoleOptions": "openOnSessionStart",
-      "console": "externalTerminal",
+      "console": "internalConsole",
       "timeout": 100000
     },
     {
@@ -74,16 +79,18 @@
         "webpack.config.renderer-reader.js"
       ],
       "env": {
-        "DEBUG": "r2:*,readium-desktop:*",
+        "DEBUG": "r2:*,readium-desktop:*,-proxy-agent,-readium-desktop:main#streamerNoHttp,-readium-desktop:main:saga:persist,-r2:navigator#electron/common/readium-css-inject",
         "NODE_DEBUG": "1",
         "NODE_ENV": "development",
         "BUILD_ENV": "dev",
+        "SKIP_CHECK_TYPESCRIPT": "1",
+        "DEBUG_COLORS": "false",
         "VSCODE_LAUNCH": "true"
       },
       "stopOnEntry": false,
       "cwd": "${workspaceRoot}",
       "internalConsoleOptions": "openOnSessionStart",
-      "console": "externalTerminal",
+      "console": "internalConsole",
       "timeout": 60000
     },
     {
