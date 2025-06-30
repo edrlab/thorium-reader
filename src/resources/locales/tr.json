@@ -913,7 +913,7 @@
                     "name": "Önceki sesli bölüme git (kaçın)"
                 },
                 "AudioStop": {
-                    "description": "Mevcut sesli oynatımı durdur (EPUB3 medya katmanları, metinden sese okumalar veya sesli kitaplar)",
+                    "description": "Mevcut sesli oynatımı durdur (EPUB3 medya katmanları, metinden sese okumalar veya önceden kaydedilmiş sesli kitaplar)",
                     "name": "Sesli Oynatımı Durdur"
                 },
                 "CloseReader": {
@@ -921,7 +921,7 @@
                     "name": "Okuyucuyu Kapat"
                 },
                 "FXLZoomIn": {
-                    "description": "Belirlenmiş düzende, tek sayfa veya çift sayfa görünümünü yakınlaştır.",
+                    "description": "Sabit düzende, tek sayfa veya çift sayfa görünümünü yakınlaştır.",
                     "name": "FXL Yakınlaştır"
                 },
                 "FXLZoomOut": {
