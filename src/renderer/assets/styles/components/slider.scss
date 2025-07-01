@@ -8,12 +8,8 @@
 
   &_wrapper {
     position: relative;
-    overflow: scroll;
+    overflow: hidden;
     min-height: 400px;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
   }
 
   &_items {

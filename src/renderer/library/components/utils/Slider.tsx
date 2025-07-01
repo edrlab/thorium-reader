@@ -63,9 +63,15 @@ class Slider extends React.Component<IProps, IState> {
 
     public componentWillUnmount() {
         window.removeEventListener("resize", this.update);
+        if (this.animationFrameId) {
+            cancelAnimationFrame(this.animationFrameId);
+        }
+        if (this.transitionTimeout) {
+            clearTimeout(this.transitionTimeout);
+        }
     }
 
-    public componentDidUpdate(prevProps: any) {
+    public componentDidUpdate(prevProps: IProps) {
         if (this.state.refreshVisible) {
             this.contentElRefs.map((element, index) => {
                 /*The this.contentElRefs array is automatically populated in the render() > createContent() function,
@@ -107,8 +113,8 @@ class Slider extends React.Component<IProps, IState> {
         }
 
         const varStyle: React.CSSProperties = {
-            left: this.state.position + "px",
-            transition: "left 0.5s",
+            transform: `translateX(${this.state.position}px)`,
+            // transition: "transform 0.5s",
         };
 
 
@@ -165,40 +171,71 @@ class Slider extends React.Component<IProps, IState> {
     //     console.log(position, step);
     // }
 
+    private currentPosition = 0;
+    private animationFrameId: number | null = null;
+    private transitionTimeout: NodeJS.Timeout | null = null;
+
     private handleScrollWheel(event: React.WheelEvent<HTMLDivElement>) {
-        if (!this.wrapperRef?.current || !this.contentRef?.current) {
-            return;
-        }
-        
-        let position = this.state.position - event.deltaX;
+        if (!this.wrapperRef?.current || !this.contentRef?.current) return;
+
+        const delta = event.deltaX;
         const max = -this.contentRef.current.offsetWidth + this.wrapperRef.current.offsetWidth;
 
-        if (position > 0) {
-            position = 0;
-        } else if (position < max) {
-            position = max;
+        this.currentPosition -= delta;
+
+        if (this.currentPosition > 0) this.currentPosition = 0;
+        if (this.currentPosition < max) this.currentPosition = max;
+
+        // Annule la transition pour un scroll immédiat
+        this.contentRef.current.style.transition = "none";
+
+        if (this.animationFrameId) {
+            cancelAnimationFrame(this.animationFrameId);
         }
 
-        this.setState({ position, refreshVisible: true });
+        this.animationFrameId = requestAnimationFrame(() => {
+            if (this.contentRef?.current) {
+                this.contentRef.current.style.transform = `translateX(${this.currentPosition}px)`;
+            }
+            this.animationFrameId = null;
+
+            this.setState({ position: this.currentPosition, refreshVisible: true });
+
+            // Optionnel : Réactive la transition après un délai (utile si le scroll s’arrête)
+            if (this.transitionTimeout) {
+                clearTimeout(this.transitionTimeout);
+            }
+            this.transitionTimeout = setTimeout(() => {
+                if (this.contentRef?.current) {
+                    this.contentRef.current.style.transition = "transform 0.5s";
+                }
+            }, 100);
+        });
     }
 
-
     private handleMove(moveRight: number) {
-        if (!this.wrapperRef?.current || !this.contentRef?.current) {
-            return;
-        }
-        let  step = this.wrapperRef.current.offsetWidth / 2;
+        if (!this.wrapperRef?.current || !this.contentRef?.current) return;
+
+        let step = this.wrapperRef.current.offsetWidth / 2;
         if (moveRight) {
             step = -step;
         }
+
         const max = -this.contentRef.current.offsetWidth + this.wrapperRef.current.offsetWidth;
         let position = this.state.position + step;
+
         if (position > 0) {
             position = 0;
         } else if (position < max) {
             position = max;
         }
-        this.setState({position, refreshVisible: true});
+
+        // Réactive la transition pour les mouvements au clic
+        this.contentRef.current.style.transition = "transform 0.5s";
+        this.contentRef.current.style.transform = `translateX(${position}px)`;
+
+        this.currentPosition = position;
+        this.setState({ position, refreshVisible: true });
     }
 
     private moveInView(elementIndex: number) {
