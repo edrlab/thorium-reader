@@ -54,8 +54,7 @@ export const noteExportHtmlMustacheTemplate = `
             <section class="annotations">
                 <!-- Annotation Body -->
                 <section class="annotation" style="border-color: {{#body.color}}{{body.color}}{{/body.color}};">
-                    <h2>Annotation</h2>
-                    <p>{{#motivation}}{{motivation}}{{/motivation}}</p>
+                    <h2>{{#motivation}}{{motivation}}{{/motivation}}</h2>
         
 <!-- Selected text is provided for context -->
                     <blockquote class="highlight">
