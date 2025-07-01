@@ -21,6 +21,7 @@ import { connect } from "react-redux";
 interface IBaseProps extends TranslatorProps {
     content: JSX.Element[];
     className?: string;
+    resetSliderPosition: boolean;
 }
 
 // IProps may typically extend:
@@ -65,7 +66,7 @@ class Slider extends React.Component<IProps, IState> {
         window.removeEventListener("resize", this.update);
     }
 
-    public componentDidUpdate() {
+    public componentDidUpdate(prevProps: IProps) {
         if (this.state.refreshVisible) {
             this.contentElRefs.map((element, index) => {
                 /*The this.contentElRefs array is automatically populated in the render() > createContent() function,
@@ -88,6 +89,10 @@ class Slider extends React.Component<IProps, IState> {
                 }
             });
             this.setState({refreshVisible: false});
+        }
+
+        if (this.props.resetSliderPosition && prevProps.content && prevProps.content !== this.props.content) {
+            this.setState({ position: 0 });
         }
     }
 
