@@ -140,6 +140,7 @@
         "deleteBookmarksText": "Êtes-vous certain de vouloir supprimer {{- bookmarkListLength}} marque-page(s) ?",
         "deleteFeed": "Supprimer ce catalogue ?",
         "deletePublication": "Supprimer ce livre ?",
+        "deletePublicationWithNotes": "Attention: cette publication contient des annotations et/ou des marque-pages, ils seront eux aussi supprimés ! (si vous voulez les conserver, assurez-vous d'avoir sauvegardé les notes avant de supprimer la publication)",
         "import": "Confirmer l'ajout :",
         "importError": "Une erreur est survenue, vérifiez l'extension du fichier ({{acceptedExtension}})",
         "renew": "Voulez-vous étendre la durée de l'emprunt ?",

@@ -140,6 +140,7 @@
         "deleteBookmarksText": "",
         "deleteFeed": "Willst du diesen Katalog wirklich löschen?",
         "deletePublication": "Willst du diese Publikation wirklich löschen?",
+        "deletePublicationWithNotes": "",
         "import": "Import bestätigen:",
         "importError": "Ein Fehler ist aufgetreten, überprüfen Sie die Dateiendung ({{acceptedExtension}})",
         "renew": "Ausleihe verlängern?",

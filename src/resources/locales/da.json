@@ -140,6 +140,7 @@
         "deleteBookmarksText": "Er du sikker på at du vil slette {{- bookmarkListLength}} bogmærke(r)?",
         "deleteFeed": "Er du sikker på at du vil slette dette katalog?",
         "deletePublication": "Er du sikker på at du vil fjerne bogen?",
+        "deletePublicationWithNotes": "",
         "import": "Bekræft at du vil importere disse filer:",
         "importError": "Der skete en fejl, tjek at filernes type er en af ({{acceptedExtension}})",
         "renew": "Vil du forlænge licensen til bogen?",

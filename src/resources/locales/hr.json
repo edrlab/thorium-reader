@@ -140,6 +140,7 @@
         "deleteBookmarksText": "",
         "deleteFeed": "Želiš li stvarno izbrisati ovaj katalog ?",
         "deletePublication": "Želiš li stvarno izbrisati ovu građu ?",
+        "deletePublicationWithNotes": "",
         "import": "Želiš li stvarno uvesti ove dokumente:",
         "importError": "došlo je do pogreške, provjeri ekstenziju dokumenta ({{acceptedExtension}})",
         "renew": "Želiš li ponovno posuditi ovu građu?",

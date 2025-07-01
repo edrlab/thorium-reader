@@ -140,6 +140,7 @@
         "deleteBookmarksText": "",
         "deleteFeed": "Odstranit katalog?",
         "deletePublication": "Odstranit publikaci?",
+        "deletePublicationWithNotes": "",
         "import": "Potvrdit import:",
         "importError": "Vyskytla se chyba, ověřte příponu souboru {{acceptedExtension}}",
         "renew": "Prodloužit výpůjčku?",

@@ -140,6 +140,7 @@
         "deleteBookmarksText": "确认删除{{- bookmarkListLength}}个书签？",
         "deleteFeed": "您真的要删除此出版目录吗？",
         "deletePublication": "您真的要删除此出版物吗?",
+        "deletePublicationWithNotes": "",
         "import": "您真的要导入这些文件吗:",
         "importError": "出现错误, 请确认文件的扩展名({{acceptedExtension}})",
         "renew": "您真的要更新此出版物的许可证吗?",

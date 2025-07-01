@@ -140,6 +140,7 @@
         "deleteBookmarksText": "{{- bookmarkListLength}} yer im(ler)ini silmek istediğinize emin misiniz?",
         "deleteFeed": "Katalogu silmek istiyor musunuz?",
         "deletePublication": "Eseri silmek istiyor musunuz?",
+        "deletePublicationWithNotes": "",
         "import": "İçe aktarmayı onayla:",
         "importError": "Hata oluştu, dosya uzantısının ({{acceptedExtension}}) olduğunu doğrulayın.",
         "renew": "Yenilemek ya da ödünç almayı uzatmak istiyor musunuz?",
@@ -699,66 +700,66 @@
             "play": "Sesli Okumayı Oynat",
             "previous": "Önceki Sesli Okuma",
             "skip": "Atlanabilirlik",
-            "skipDescription": "",
-            "speed": "",
-            "stop": "",
-            "title": ""
+            "skipDescription": "Sayfa geçişleri, dipnotlar/sonnotlar gibi yardımcı içerikleri atla/yoksay.",
+            "speed": "Sesli Okuma oynatım hızı",
+            "stop": "Sesli Okumayı durdur",
+            "title": "Sesli Okuma"
         },
         "navigation": {
-            "ZenModeExit": "",
-            "ZenModeTitle": "",
-            "annotationTitle": "",
-            "backHomeTitle": "",
-            "bookmarkTitle": "",
-            "currentPage": "",
-            "currentPageTotal": "",
-            "detachWindowTitle": "",
-            "goTo": "",
-            "goToError": "",
-            "goToPlaceHolder": "",
-            "goToTitle": "",
-            "historyNext": "",
-            "historyPrevious": "",
-            "infoTitle": "",
-            "magnifyingGlassButton": "",
-            "openTableOfContentsTitle": "",
-            "page": "",
-            "pdfscalemode": "",
-            "print": "",
+            "ZenModeExit": "Zen modundan çık",
+            "ZenModeTitle": "Zen modu",
+            "annotationTitle": "açıklayıcı not",
+            "backHomeTitle": "Bu okuma penceresini kapat (kitaplığa dön)",
+            "bookmarkTitle": "yer imi",
+            "currentPage": "Şu anki sayfa: {{- current}}",
+            "currentPageTotal": "Şu anki sayfa: {{- current}}/{{- total}}",
+            "detachWindowTitle": "kütüphane / kitaplık penceresini göster",
+            "goTo": "Git:",
+            "goToError": "Sayfa geçişi mevcut değil",
+            "goToPlaceHolder": "Sayfa numarasını gir",
+            "goToTitle": "Sayfaya git",
+            "historyNext": "İleriye atla",
+            "historyPrevious": "Geriye atla",
+            "infoTitle": "bilgi",
+            "magnifyingGlassButton": "eser ara",
+            "openTableOfContentsTitle": "gezinme",
+            "page": "Sayfa",
+            "pdfscalemode": "Sayfaya veya genişliğe sığdır",
+            "print": "yazdır",
             "printDisabled": "",
-            "settingsTitle": ""
+            "settingsTitle": "ayarlar"
         },
         "notes": {
             "colors": {
-                "cyan": "",
-                "green": "",
-                "orange": "",
-                "purple": "",
-                "red": "",
-                "yellow": ""
+                "cyan": "Camgöbeği",
+                "green": "Yeşil",
+                "orange": "Turuncu",
+                "purple": "Mor",
+                "red": "Kırmızı",
+                "yellow": "Sarı"
             }
         },
         "picker": {
             "search": {
-                "founds": "",
-                "input": "",
-                "next": "",
-                "notFound": "",
-                "previous": "",
-                "results": "",
-                "submit": ""
+                "founds": "{{- nResults}} eşleşme(ler)",
+                "input": "eşleşecek metin",
+                "next": "Sonraki",
+                "notFound": "eşleşme yok",
+                "previous": "Önceki",
+                "results": "Sonuçlar",
+                "submit": "Bul"
             },
-            "searchTitle": ""
+            "searchTitle": "Ara"
         },
         "print": {
             "descriptionLcpCount": "",
-            "descriptionLcpLimit": "",
+            "descriptionLcpLimit": "LCP sınırı: {{- lcpLimitPages}}, kalan sayfa: {{- count}}",
             "descriptionLcpPrintable": "",
             "howTo": "",
             "lcpInfo": "",
             "noPagesLcpLimitReached": "",
             "noPrintablePages": "",
-            "pageHelpInfo": "",
+            "pageHelpInfo": "Sayfa seçici dizilimleri:",
             "pageHelpInfo1": "",
             "pageHelpInfo2": "",
             "pageHelpInfo3": "",
@@ -921,7 +922,7 @@
                     "name": "Önceki sesli bölüme git (kaçın)"
                 },
                 "AudioStop": {
-                    "description": "Mevcut sesli oynatımı durdur (EPUB3 medya katmanları, metinden sese okumalar veya sesli kitaplar)",
+                    "description": "Mevcut sesli oynatımı durdur (EPUB3 medya katmanları, metinden sese okumalar veya önceden kaydedilmiş sesli kitaplar)",
                     "name": "Sesli Oynatımı Durdur"
                 },
                 "CloseReader": {
@@ -929,68 +930,68 @@
                     "name": "Okuyucuyu Kapat"
                 },
                 "FXLZoomIn": {
-                    "description": "Belirlenmiş düzende, tek sayfa veya çift sayfa görünümünü yakınlaştır.",
+                    "description": "Sabit düzende, tek sayfa veya çift sayfa görünümünü yakınlaştır.",
                     "name": "FXL Yakınlaştır"
                 },
                 "FXLZoomOut": {
-                    "description": "Belirlenmiş düzende, tek sayfa veya çift sayfa görünümünü uzaklaştır.",
+                    "description": "Sabit düzende, tek sayfa veya çift sayfa görünümünü uzaklaştır.",
                     "name": "FXL Uzaklaştır"
                 },
                 "FXLZoomReset": {
-                    "description": "Belirlenmiş düzendeki tek sayfa veya çift sayfa görünümünün yakınlaştırmasını/uzaklaştırmasını sıfırla.",
+                    "description": "Sabit düzendeki tek sayfa veya çift sayfa görünümünün yakınlaştırmasını/uzaklaştırmasını sıfırla.",
                     "name": "FXL Yakınlaştırmasını/Uzaklaştırmasını Sıfırla"
                 },
                 "FocusMain": {
-                    "description": "",
-                    "name": ""
+                    "description": "Klavye odağını grafiksel kullanıcı arayüzündeki 'ana' refrans imine taşı. Okuyucu penceresinde bu, eser içeriğine geçer",
+                    "name": "Ana İçeriğe odaklan"
                 },
                 "FocusMainDeep": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuyucu penceresinde bu, ekran okuyucular için daha güvenilir bir teknik kullanarak klavye odağını eser içeriğine taşır",
+                    "name": "Ana İçeriğe Derinlemesine Odaklanma"
                 },
                 "FocusReaderGotoPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Klavye odağını, okuyucu penceresinin gezinme panelindeki 'sayfaya git' bölümüne taşı",
+                    "name": "'Sayfaya Git' bölümüne odaklan"
                 },
                 "FocusReaderNavigation": {
-                    "description": "",
-                    "name": ""
+                    "description": "Klavye odağını, okuyucu penceresinin gezinme paneline taşı",
+                    "name": "Gezinme Paneli'ne odaklan"
                 },
                 "FocusReaderNavigationAnnotations": {
-                    "description": "",
-                    "name": ""
+                    "description": "Klavye odağını okuyucu penceresinin gezinme panelindeki 'açıklayıcı notlar' bölümüne taşı",
+                    "name": "'Açıklayıcı Notlar' bölümüne odaklan"
                 },
                 "FocusReaderNavigationBookmarks": {
-                    "description": "",
-                    "name": ""
+                    "description": "Klavye odağını, okuma penceresinin gezinme  panelindeki  'yer imleri' bölümüne taşı",
+                    "name": "'Yerimleri' bölümüne odaklan"
                 },
                 "FocusReaderNavigationSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Klavye odağını, okuyucu penceresinin gezinme panelindeki 'ara' bölümüne taşı",
+                    "name": "'Ara' bölümüne odaklan"
                 },
                 "FocusReaderNavigationTOC": {
-                    "description": "",
-                    "name": ""
+                    "description": "Klavye odağını, okuyucu penceresinin gezinme panelindeki 'İçindekiler' bölümüne taşı",
+                    "name": "'İçindekiler' bölümüne odaklan"
                 },
                 "FocusReaderSettings": {
-                    "description": "",
-                    "name": ""
+                    "description": "Klavye odağını, okuyucu penceresinin ayarlar paneline taşı (görüntüleme seçenekleri vs.)",
+                    "name": "Okuyucu Ayarları'na odaklan"
                 },
                 "FocusSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Klavye odağını okuyucu penceresindeki metin arama girdi alanına taşı veya kütüphane penceresinde kitaplığı veya aktif OPDS beslemesini araştır",
+                    "name": "Ara Komutu"
                 },
                 "FocusToolbar": {
-                    "description": "",
-                    "name": ""
+                    "description": "Klavye odağını, grafiksel kullanıcı arayüzündeki referans imine, 'bağlantıyı atla' ögesinden hemen öncesine taşı (bu , odağı kütüphane veya okuyucu penceresindeki ana içerik alanına taşır)",
+                    "name": "Araç Çubuğu'na odaklan"
                 },
                 "NavigateNextChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuyucu penceresinde, eserin okuma sırasına göre bir sonraki belgeye git (örneğin, kitap içerik dizinindeki bölüm). Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
+                    "name": "Sonraki Bölüm'e git"
                 },
                 "NavigateNextChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuyucu penceresinde, eserin okuma sırasına göre bir sonraki belgeye git (örneğin, kitap içerik dizinindeki bölüm). Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
+                    "name": "Sonraki Bölüm'e git (Alternatif)"
                 },
                 "NavigateNextHistory": {
                     "description": "",

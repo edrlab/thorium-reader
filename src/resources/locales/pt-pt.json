@@ -140,6 +140,7 @@
         "deleteBookmarksText": "Tem a certeza que quer eliminar {{- bookmarkListLength}} marcadores?",
         "deleteFeed": "Eliminar catálogo?",
         "deletePublication": "Eliminar documento?",
+        "deletePublicationWithNotes": "",
         "import": "Confirmar importação:",
         "importError": "Ocorreu um erro, verifique a extensão do ficheiro ({{acceptedExtension}})",
         "renew": "Renovar empréstimo?",

@@ -140,6 +140,7 @@
         "deleteBookmarksText": "",
         "deleteFeed": "Ziur zaude katalogo hau ezabatu nahi duzula?",
         "deletePublication": "Ziur zaude argitalpen hau ezabatu nahi duzula?",
+        "deletePublicationWithNotes": "",
         "import": "Ziur zaude fitxategi hauek inportatu nahi dituzula?",
         "importError": "Errore bat gertatu da. Egiaztatu zure fitxategiaren luzapena ({{acceptedExtension}})",
         "renew": "Ziur zaude argitalpen honetarako lizentzia berritu nahi duzula?",

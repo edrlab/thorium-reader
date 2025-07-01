@@ -140,6 +140,7 @@
         "deleteBookmarksText": "Sei sicuro di voler eliminare {{- bookmarkListLength}} segnalibri?",
         "deleteFeed": "Vuoi davvero eliminare questo catalogo ?",
         "deletePublication": "Vuoi davvero eliminare questa pubblicazione ?",
+        "deletePublicationWithNotes": "",
         "import": "Vuoi davvero importare questi files:",
         "importError": "si è verificato un errore, verifica l'estensione del file ({{acceptedExtension}})",
         "renew": "Vuoi davvero rinnovare la licenza per questa pubblicazione?",

@@ -140,6 +140,7 @@
         "deleteBookmarksText": "{{- bookmarkListLength}} புக்மார்க்குகளை நீக்க விரும்புகிறீர்களா?",
         "deleteFeed": "பட்டியலை நீக்கவா?",
         "deletePublication": "வெளியீட்டை நீக்கவா?",
+        "deletePublicationWithNotes": "",
         "import": "இறக்குமதியை உறுதிப்படுத்தவும்:",
         "importError": "பிழை ஏற்பட்டது, கோப்பு நீட்டிப்பை சரிபார்க்கவும் ({{acceptedExtension}})",
         "renew": "கடனைப் புதுப்பிக்க/நீட்டிக்கவா?",

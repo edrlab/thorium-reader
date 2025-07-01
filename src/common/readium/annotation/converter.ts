@@ -305,7 +305,7 @@ export function convertAnnotationStateToReadiumAnnotation(note: INoteState): IRe
             } : undefined,
             selector: readiumAnnotation?.export?.selector || [],
         },
-        motivation: isABookmark ? "bookmarking" : undefined, // isABookmark = drawType === EDrawType.bookmark
+        motivation: isABookmark ? "bookmarking" : "highlighting", // isABookmark = drawType === EDrawType.bookmark
     };
 }
 

@@ -140,6 +140,7 @@
         "deleteBookmarksText": "¿Seguro que quieres borrar {{- bookmarkListLength}} marcador/es?",
         "deleteFeed": "¿Seguro que quieres eliminar este catálogo?",
         "deletePublication": "¿Seguro que quieres eliminar esta publicación?",
+        "deletePublicationWithNotes": "",
         "import": "¿Seguro que quieres importar estos ficheros?",
         "importError": "Se ha producido un error, comprueba la extensión de tu fichero ({{acceptedExtension}})",
         "renew": "¿Seguro que quieres renovar la licencia para esta publicación?",

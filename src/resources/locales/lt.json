@@ -140,6 +140,7 @@
         "deleteBookmarksText": "Ar tikrai norite pašalinti {{- bookmarkListLength}} žymę(-es, -ų)?",
         "deleteFeed": "Pašalinti katalogą?",
         "deletePublication": "Pašalinti leidinį?",
+        "deletePublicationWithNotes": "",
         "import": "Patvirtinkite importą:",
         "importError": "Įvyko klaida, patikrinkite failo plėtinį ({{acceptedExtension}})",
         "renew": "Atnaujinti/pratęsti skolinimo terminą?",

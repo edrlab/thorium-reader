@@ -140,6 +140,7 @@
         "deleteBookmarksText": "هل تريد بالتأكيد حذف {{- bookmarkListLength}} إشارات مرجعية؟",
         "deleteFeed": "حذف الكتالوغ؟",
         "deletePublication": "حذف المنشور؟",
+        "deletePublicationWithNotes": "",
         "import": "تأكيد الاستيراد:",
         "importError": "حدث خطأ، تحقَّق من ملحق الملف ({{acceptedExtension}})",
         "renew": "تجديد/تمديد الاستعارة؟",

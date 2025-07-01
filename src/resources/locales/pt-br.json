@@ -140,6 +140,7 @@
         "deleteBookmarksText": "",
         "deleteFeed": "Deseja excluir este catálogo?",
         "deletePublication": "Deseja excluir esta publicação?",
+        "deletePublicationWithNotes": "",
         "import": "Deseja importar estes arquivos:",
         "importError": "ocorreu um erro, verifique a extensão do arquivo ({{acceptedExtension}})",
         "renew": "Renovar/estender o empréstimo?",

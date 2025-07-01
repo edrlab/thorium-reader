@@ -140,6 +140,7 @@
         "deleteBookmarksText": "",
         "deleteFeed": "你真的要刪除此出版目錄嗎？",
         "deletePublication": "你真的要刪除此出版物嗎？",
+        "deletePublicationWithNotes": "",
         "import": "你真的要匯入這些文件嗎：",
         "importError": "出現錯誤，請確認文件的副檔名（{{acceptedExtension}}）",
         "renew": "你真的要更新此出版物的許可證嗎？",

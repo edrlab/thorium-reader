@@ -140,6 +140,7 @@
         "deleteBookmarksText": "",
         "deleteFeed": "ნამდვილად გსურთ ამ კატალოგის წაშლა ?",
         "deletePublication": "ნამდვილად გსურთ ამ პუბლიკაციის წაშლა ?",
+        "deletePublicationWithNotes": "",
         "import": "ნამდვილად გსურთ ამ ფაილების შემოტანა :",
         "importError": "მოხდა შეცდომა, გადაამოწმეთ ფაილის გაფართოება ({{acceptedExtension}})",
         "renew": "ნამდვილად გსურთ ამ პუბლიკაციის ლიცენზიის განახლება?",

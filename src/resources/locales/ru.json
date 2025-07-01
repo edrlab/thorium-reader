@@ -140,6 +140,7 @@
         "deleteBookmarksText": "",
         "deleteFeed": "Вы действительно хотите удалить этот каталог ?",
         "deletePublication": "Вы действительно хотите удалить эту книгу ?",
+        "deletePublicationWithNotes": "",
         "import": "Подтвердите импорт:",
         "importError": "произошла ошибка, проверьте расширение вашего файла ({{acceptedExtension}})",
         "renew": "Возобновить/продлить кредит?",

@@ -140,6 +140,7 @@
         "deleteBookmarksText": "しおり、 {{- bookmarkListLength}} つを削除しますか？",
         "deleteFeed": "この図書目録を削除しますか？",
         "deletePublication": "この本を削除しますか？",
+        "deletePublicationWithNotes": "",
         "import": "追加します：",
         "importError": "エラーが発生しました。拡張子を確認してください（{{acceptedExtension}}）",
         "renew": "貸出期間を更新/延長しますか？",

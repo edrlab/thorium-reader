@@ -140,6 +140,7 @@
         "deleteBookmarksText": "",
         "deleteFeed": "Ali res želiš izbrisati katalog?",
         "deletePublication": "Ali res želiš izbrisati publikacijo?",
+        "deletePublicationWithNotes": "",
         "import": "Ali res želiš uvoziti te datoteke:",
         "importError": "napaka, preveri datotečno končnico ({{acceptedExtension}})",
         "renew": "Ali res želiš obnoviti licenco za to publikacijo?",
