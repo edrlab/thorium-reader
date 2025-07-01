@@ -176,6 +176,7 @@ class Slider extends React.Component<IProps, IState> {
     private transitionTimeout: NodeJS.Timeout | null = null;
 
     private handleScrollWheel(event: React.WheelEvent<HTMLDivElement>) {
+        this.currentPosition = this.state.position;
         if (!this.wrapperRef?.current || !this.contentRef?.current) return;
 
         const delta = event.deltaX;
@@ -186,7 +187,6 @@ class Slider extends React.Component<IProps, IState> {
         if (this.currentPosition > 0) this.currentPosition = 0;
         if (this.currentPosition < max) this.currentPosition = max;
 
-        // Annule la transition pour un scroll immédiat
         this.contentRef.current.style.transition = "none";
 
         if (this.animationFrameId) {
