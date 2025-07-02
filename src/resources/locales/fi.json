@@ -726,7 +726,7 @@
             "page": "Sivu",
             "pdfscalemode": "Sovita sivu tai leveyteen",
             "print": "Tulosta",
-            "printDisabled": "",
+            "printDisabled": "Tulostus kielletty",
             "settingsTitle": "Asetukset"
         },
         "notes": {
@@ -753,7 +753,7 @@
         },
         "print": {
             "descriptionLcpCount": "",
-            "descriptionLcpPrintable": "",
+            "descriptionLcpPrintable": "Aiemmin tulostettuja sivuja:",
             "howTo": "",
             "lcpInfo": "",
             "noPagesLcpLimitReached": "",
