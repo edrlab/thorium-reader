@@ -985,96 +985,96 @@
                     "name": "Εστίαση στη Γραμμή εργαλείων"
                 },
                 "NavigateNextChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "Στο παράθυρο ανάγνωσης, μεταβείτε στο επόμενο έγγραφο στη σειρά αναπαραγωγής δημοσιεύσεων (π.χ. επόμενος τίτλος στη βιβλιοστοιχία). Σημειώστε ότι υπάρχει μια εναλλακτική συντόμευση πληκτρολογίου σε αυτή την προεπιλεγμένη συντόμευση",
+                    "name": "Μετάβαση στο Επόμενο Κεφάλαιο"
                 },
                 "NavigateNextChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Στο παράθυρο ανάγνωσης, μεταβείτε στο επόμενο έγγραφο στη σειρά αναπαραγωγής δημοσιεύσεων (π.χ. επόμενος τίτλος στη βιβλιοστοιχία). Αυτή είναι μια εναλλακτική συντόμευση πληκτρολογίου στην προεπιλεγμένη",
+                    "name": "Μετάβαση στο Επόμενο Κεφάλαιο (Εναλλακτική)"
                 },
                 "NavigateNextHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "Στο παράθυρο ανάγνωσης, προχωρήστε ένα βήμα μπροστά στο ιστορικό πλοήγησης",
+                    "name": "Μετάβαση στο Επόμενο Ιστορικό"
                 },
                 "NavigateNextLibraryPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Μετάβαση στην Επόμενη Σελίδα Βιβλιοθήκης"
                 },
                 "NavigateNextLibraryPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Μετάβαση στην Επόμενη Σελίδα Βιβλιοθήκης (Εναλλακτική)"
                 },
                 "NavigateNextOPDSPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Μετάβαση στην Επόμενη OPDS Σελίδα"
                 },
                 "NavigateNextOPDSPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Μετάβαση στην Επόμενη OPDS Σελίδα (Εναλλακτική)"
                 },
                 "NavigateNextPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Μετάβαση στην Επόμενη Σελίδα"
                 },
                 "NavigateNextPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Μετάβαση στην Επόμενη Σελίδα (Εναλλακτική)"
                 },
                 "NavigatePreviousChapter": {
                     "description": "",
-                    "name": ""
+                    "name": "Μετάβαση στο Προηγούμενο Κεφάλαιο"
                 },
                 "NavigatePreviousChapterAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Μετάβαση στο Προηγούμενο Κεφάλαιο (Εναλλακτική)"
                 },
                 "NavigatePreviousHistory": {
                     "description": "",
-                    "name": ""
+                    "name": "Μετάβαση στο Προηγούμενο Ιστορικό"
                 },
                 "NavigatePreviousLibraryPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Μετάβαση στην Προηγούμενη Σελίδα Βιβλιοθήκης"
                 },
                 "NavigatePreviousLibraryPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Μετάβαση στην Προηγούμενη Σελίδα Βιβλιοθήκης (Εναλλακτική)"
                 },
                 "NavigatePreviousOPDSPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Μετάβαση στην Προηγούμενη OPDS Σελίδα"
                 },
                 "NavigatePreviousOPDSPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Μετάβαση στην Προηγούμενη OPDS Σελίδα (Εναλλακτική)"
                 },
                 "NavigatePreviousPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Μετάβαση στην Προηγούμενη Σελίδα"
                 },
                 "NavigatePreviousPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Μετάβαση στην Προηγούμενη Σελίδα (Εναλλακτική)"
                 },
                 "NavigateToBegin": {
-                    "description": "",
-                    "name": ""
+                    "description": "Στο παράθυρο ανάγνωσης, μετάβαση στην αρχής της δημοσίευσης",
+                    "name": "Μετάβαση στην Αρχή"
                 },
                 "NavigateToEnd": {
                     "description": "",
-                    "name": ""
+                    "name": "Μετάβαση στο Τέλος"
                 },
                 "OpenReaderInfo": {
                     "description": "",
-                    "name": ""
+                    "name": "Εμφάνιση Πληροφοριών Έκδοσης"
                 },
                 "OpenReaderInfoWhereAmI": {
                     "description": "",
-                    "name": ""
+                    "name": "Εμφάνιση Πληροφοριών Έκδοσης, Εμφάνιση Περιοχής Ανάγνωσης"
                 },
                 "Print": {
                     "description": "",
-                    "name": ""
+                    "name": "Εκτύπωση"
                 },
                 "SearchNext": {
                     "description": "",
