@@ -33,8 +33,8 @@ interface IProps extends IBaseProps {
 }
 
 interface IState {
-    position: number;
-    refreshVisible: boolean;
+    // position: number;
+    // refreshVisible: boolean;
 }
 
 class Slider extends React.Component<IProps, IState> {
@@ -50,55 +50,55 @@ class Slider extends React.Component<IProps, IState> {
         this.wrapperRef = React.createRef<HTMLDivElement>();
 
         this.state = {
-            position: 0,
-            refreshVisible: true,
+            // position: 0,
+            // refreshVisible: true,
         };
 
-        this.update = this.update.bind(this);
+        // this.update = this.update.bind(this);
     }
 
     public componentDidMount() {
-        this.setState({refreshVisible: true});
-        window.addEventListener("resize", this.update);
-          if (this.wrapperRef?.current) {
+        // this.setState({refreshVisible: true});
+        // window.addEventListener("resize", this.update);
+        if (this.wrapperRef?.current) {
             this.wrapperRef.current.addEventListener("scroll", this.updateScrollPosition);
         }
     }
 
     public componentWillUnmount() {
-        window.removeEventListener("resize", this.update);
+        // window.removeEventListener("resize", this.update);
         if (this.wrapperRef?.current) {
             this.wrapperRef.current.removeEventListener("scroll", this.updateScrollPosition);
         }
     }
 
     public componentDidUpdate(prevProps: IProps) {
-        if (this.state.refreshVisible) {
-            this.contentElRefs.map((element, index) => {
-                /*The this.contentElRefs array is automatically populated in the render() > createContent() function,
-                via the div element's ref callback (ref={(ref) => this.contentElRefs[index] = ref}),
-                which can be invoked with null during the element's "unmount"
-                lifecycle (see https://reactjs.org/docs/refs-and-the-dom.html ).
-                Consequently, we need to check for possibly-null values in the this.contentElRefs array,
-                in this componentDidUpdate() function. However, we can safely ignore usages of this.contentElRefs
-                in the moveInView() and isElementVisible() functions, as these are guaranteed to be invoked when
-                the element is still "mounted" (see the onFocus callback).*/
-                if (element) {
-                    const buttonList = element.getElementsByTagName("button");
-                    for (const button of buttonList) {
-                        if (!this.isElementVisible(index)) {
-                            button.tabIndex = -1;
-                        } else {
-                            button.tabIndex = 0;
-                        }
-                    }
-                }
-            });
-            this.setState({ refreshVisible: false });
-        }
+        // if (this.state.refreshVisible) {
+        //     this.contentElRefs.map((element, index) => {
+        //         /*The this.contentElRefs array is automatically populated in the render() > createContent() function,
+        //         via the div element's ref callback (ref={(ref) => this.contentElRefs[index] = ref}),
+        //         which can be invoked with null during the element's "unmount"
+        //         lifecycle (see https://reactjs.org/docs/refs-and-the-dom.html ).
+        //         Consequently, we need to check for possibly-null values in the this.contentElRefs array,
+        //         in this componentDidUpdate() function. However, we can safely ignore usages of this.contentElRefs
+        //         in the moveInView() and isElementVisible() functions, as these are guaranteed to be invoked when
+        //         the element is still "mounted" (see the onFocus callback).*/
+        //         if (element) {
+        //             const buttonList = element.getElementsByTagName("button");
+        //             for (const button of buttonList) {
+        //                 if (!this.isElementVisible(index)) {
+        //                     button.tabIndex = -1;
+        //                 } else {
+        //                     button.tabIndex = 0;
+        //                 }
+        //             }
+        //         }
+        //     });
+        //     this.setState({ refreshVisible: false });
+        // }
 
         if (this.props.resetSliderPosition && prevProps.content && prevProps.content !== this.props.content) {
-            this.setState({ position: 0 });
+            // this.setState({ position: 0 });
             this.wrapperRef.current.scrollTo({
                 left: 0,
                 behavior: "smooth",
@@ -124,7 +124,15 @@ class Slider extends React.Component<IProps, IState> {
                     >
                     <SVG ariaHidden={true} svg={ArrowRightIcon} />
                 </button>
-                <div ref={this.wrapperRef} className={stylesSlider.slider_wrapper}>
+                <div ref={this.wrapperRef} className={stylesSlider.slider_wrapper}
+                    onWheel={(_event) => {
+                        if (this.wrapperRef?.current) {
+                            if (this.wrapperRef.current.style.scrollSnapType === "none") {
+                                this.wrapperRef.current.style.scrollSnapType = "x mandatory";
+                            }
+                        }
+                    }}
+                >
                     <ul ref={this.contentRef} className={stylesSlider.slider_items}>
                         {list}
                     </ul>
@@ -145,13 +153,20 @@ class Slider extends React.Component<IProps, IState> {
     }
 
     private updateScrollPosition = () => {
-        if (this.wrapperRef?.current) {
-            this.setState({ position: this.wrapperRef.current.scrollLeft });
-        }
+        // if (this.wrapperRef?.current) {
+        //     this.setState({ position: this.wrapperRef.current.scrollLeft });
+        // }
+        this.forceUpdate();
     };
 
     private handleMove(direction: "left" | "right") {
         if (!this.wrapperRef?.current || !this.contentRef?.current) return;
+
+        if (this.wrapperRef?.current) {
+            if (this.wrapperRef.current.style.scrollSnapType === "none") {
+                this.wrapperRef.current.style.scrollSnapType = "x mandatory";
+            }
+        }
 
         const container = this.wrapperRef.current;
         const scrollAmount = container.offsetWidth * 0.5;
@@ -165,23 +180,23 @@ class Slider extends React.Component<IProps, IState> {
             left: newScrollLeft,
             behavior: "smooth",
         });
-        this.setState({ position: newScrollLeft, refreshVisible: true });
+        // this.setState({ /* position: newScrollLeft, */ refreshVisible: true });
     }
 
-    private moveInView(elementIndex: number) {
-        if (!this.wrapperRef?.current || !this.contentRef?.current) {
-            return;
-        }
-        const max = -this.contentRef.current.offsetWidth + this.wrapperRef.current.offsetWidth;
-        const element = this.contentElRefs[elementIndex];
+    // private moveInView(elementIndex: number) {
+    //     if (!this.wrapperRef?.current || !this.contentRef?.current) {
+    //         return;
+    //     }
+    //     const max = -this.contentRef.current.offsetWidth + this.wrapperRef.current.offsetWidth;
+    //     const element = this.contentElRefs[elementIndex];
 
-        let elementPosition = -element.offsetLeft;
-        const isVisible = this.isElementVisible(elementIndex);
-        if (!isVisible) {
-            elementPosition = elementPosition > 0 ? 0 : elementPosition < max ? max : elementPosition;
-            this.setState({position: elementPosition, refreshVisible: true});
-        }
-    }
+    //     let elementPosition = -element.offsetLeft;
+    //     const isVisible = this.isElementVisible(elementIndex);
+    //     if (!isVisible) {
+    //         elementPosition = elementPosition > 0 ? 0 : elementPosition < max ? max : elementPosition;
+    //         this.setState({position: elementPosition, refreshVisible: true});
+    //     }
+    // }
 
     private createContent(): JSX.Element[] {
         const content = this.props.content;
@@ -197,7 +212,25 @@ class Slider extends React.Component<IProps, IState> {
                 <li
                     ref={(ref) => this.contentElRefs[index] = ref}
                     key={index}
-                    onFocus={() => this.moveInView(index)}
+                    /* onFocus={() => this.moveInView(index)} */
+                    onFocus={(ev) => {
+                        // console.log("ONFOCUS", ev.target?.tagName, ev.target?.tabIndex);
+                        if (this.wrapperRef?.current) {
+                            this.wrapperRef.current.style.scrollSnapType = "none";
+                        }
+                        // this.contentElRefs?.forEach((el) => {
+                        //    el.style.scrollSnapAlign = ev.currentTarget === el ? "start end" : "none";
+                        // });
+                        if (ev.target?.tagName?.toUpperCase() === "A")
+                        setTimeout(() => {
+                            // ev.target?.tagName?.toUpperCase() === "A" && ((ev.target as any)?.scrollIntoViewIfNeeded ? (ev.target as any)?.scrollIntoViewIfNeeded(false) :
+                            ev.target?.scrollIntoView({
+                                behavior: "smooth",
+                                block: "nearest",
+                                inline: "nearest",
+                            });
+                        }, 100);
+                    }}
                     {...props}
                 >
                     {element}
@@ -206,23 +239,23 @@ class Slider extends React.Component<IProps, IState> {
         });
     }
 
-    private isElementVisible(elementIndex: number) {
-        if (!this.wrapperRef?.current) {
-            return false;
-        }
-        const element = this.contentElRefs[elementIndex];
-        const wrapperWidth = this.wrapperRef.current.offsetWidth;
-        const position = this.state.position;
-        const elementPosition = -element.offsetLeft;
-        const elementWidth = element.offsetWidth;
+    // private isElementVisible(elementIndex: number) {
+    //     if (!this.wrapperRef?.current) {
+    //         return false;
+    //     }
+    //     const element = this.contentElRefs[elementIndex];
+    //     const wrapperWidth = this.wrapperRef.current.offsetWidth;
+    //     const position = this.wrapperRef.current.scrollLeft;  // this.state.position;
+    //     const elementPosition = -element.offsetLeft;
+    //     const elementWidth = element.offsetWidth;
 
-        const isVisible = elementPosition <= position && elementPosition - elementWidth >= position - wrapperWidth;
-        return isVisible;
-    }
+    //     const isVisible = elementPosition <= position && elementPosition - elementWidth >= position - wrapperWidth;
+    //     return isVisible;
+    // }
 
-    private update() {
-        this.setState({refreshVisible: true});
-    }
+    // private update() {
+    //     this.setState({refreshVisible: true});
+    // }
 }
 
 const mapStateToProps = (state: IRendererCommonRootState) => ({

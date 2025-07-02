@@ -10,6 +10,7 @@
     position: relative;
     min-height: 400px;
     scroll-snap-type: x mandatory;
+    scroll-snap-stop: normal;
     -webkit-overflow-scrolling: touch;
     overflow: scroll hidden;
 
@@ -25,21 +26,25 @@
     left: 0;
     margin: 0;
     padding: 0;
-    
+
     & > *:not(:first-child) {
       margin-left: 15px;
     }
-    
+
     li {
       list-style-type: none;
       scroll-snap-align: start;
+
+      &:last-child {
+        scroll-snap-align: end;
+      }
     }
   }
 
   > button {
     display: flex;
   }
-  
+
   button:disabled {
     svg {
       fill: var(--color-disabled);
@@ -60,7 +65,7 @@
   &_next {
     right: 0;
     transform: translateY(-50%);
-    
+
     svg {
       margin: auto;
     }
