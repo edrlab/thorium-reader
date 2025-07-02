@@ -144,7 +144,8 @@
         "importError": "Virhe havaittiin. Varmista tiedostopääte ({{acceptedExtension}})",
         "renew": "Haluatko uusia tämän lainan?",
         "return": "Haluatko palauttaa tämän lainan?",
-        "yes": "Kyllä"
+        "yes": "Kyllä",
+        "deletePublicationWithNotes": "Varoitus: tämä julkaisu sisältää muistiinpanoja ja/tai kirjanmerkkejä, myös ne poistetaan! (Jos haluat säilyttää ne, muista viedä merkinnät ennen kuin poistat julkaisun)"
     },
     "error": {
         "errorBox": {
