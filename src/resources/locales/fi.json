@@ -708,7 +708,7 @@
         "navigation": {
             "ZenModeExit": "Poistu kokoruudun tilasta",
             "ZenModeTitle": "Kokoruudun tila",
-            "annotationTitle": "muistiinpano",
+            "annotationTitle": "Muistiinpano",
             "backHomeTitle": "Takaisin kirjahyllyyn",
             "bookmarkTitle": "Kirjanmerkki",
             "currentPage": "Nykyinen sivu: {{- current}}",
@@ -752,22 +752,22 @@
             "searchTitle": "Hae:"
         },
         "print": {
-            "descriptionLcpCount": "",
-            "descriptionLcpPrintable": "Aiemmin tulostettuja sivuja:",
-            "howTo": "",
-            "lcpInfo": "",
-            "noPagesLcpLimitReached": "",
-            "noPrintablePages": "",
+            "descriptionLcpCount": "Sivuja jäljellä: {{- count}}",
+            "descriptionLcpPrintable": "Aiemmin tulostettuja sivuja: {{- printable}} ({{- count}})",
+            "howTo": "Kuinka valitset sivut, jotka haluat tulostaa",
+            "lcpInfo": "Tämä julkaisu rajoittaa tulostettavien sivujen määrän: {{- count}}. Valitse tässä, mitkä sivut haluat tulostaa.",
+            "noPagesLcpLimitReached": "LCP-suojauksen raja on täyttynyt",
+            "noPrintablePages": "Ei tulostettavia sivuja",
             "pageHelpInfo": "Sivunvalintasyntaksi:",
-            "pageHelpInfo1": " - anna sivunumero viitataksesi yksittäiseen sivuun (esim. \"6\")",
-            "pageHelpInfo2": " - anna kaksi yhdysmerkillä erotettua lukua, jotta voit viitata usean peräkkäisen sivun alueeseen (esim. \"6-13\")",
-            "pageHelpInfo3": " - erota puolipisteellä useat sivut tai sivualueet (esim. \"5;14-20;37\")",
-            "pageHelpInfo4": " - jätä sivualueen ensimmäinen tai viimeinen numero pois, jos se viittaa julkaisun ensimmäiseen tai viimeiseen sivuun (esim. \"-16\" vastaa merkintää \"1-16\", ja \"34-\" vastaa merkintää \"34-100\", jos kirjassa on yhteensä 100 sivua)",
+            "pageHelpInfo1": "- anna sivunumero viitataksesi yksittäiseen sivuun (esim. \"6\")",
+            "pageHelpInfo2": "- anna kaksi yhdysmerkillä erotettua lukua, jotta voit viitata usean peräkkäisen sivun alueeseen (esim. \"6-13\")",
+            "pageHelpInfo3": "erota puolipisteellä useat sivut tai sivualueet (esim. \"5;14-20;37\")",
+            "pageHelpInfo4": "jätä sivualueen ensimmäinen tai viimeinen numero pois, jos se viittaa julkaisun ensimmäiseen tai viimeiseen sivuun (esim. \"-16\" vastaa merkintää \"1-16\", ja \"34-\" vastaa merkintää \"34-100\", jos kirjassa on yhteensä 100 sivua)",
             "pages": "Sivut",
-            "preview": "",
+            "preview": "Esikatselu",
             "print": "Tulostus",
-            "printablePages": "",
-            "title": ""
+            "printablePages": "Tulostettavia sivuja (yhteensä)",
+            "title": "Tulostettavien sivujen valinta"
         },
         "settings": {
             "column": {
