@@ -140,6 +140,7 @@
         "deleteBookmarksText": "Ar tikrai norite pašalinti {{- bookmarkListLength}} žymę(-es, -ų)?",
         "deleteFeed": "Pašalinti katalogą?",
         "deletePublication": "Pašalinti leidinį?",
+        "deletePublicationWithNotes": "",
         "import": "Patvirtinkite importą:",
         "importError": "Įvyko klaida, patikrinkite failo plėtinį ({{acceptedExtension}})",
         "renew": "Atnaujinti/pratęsti skolinimo terminą?",
@@ -725,6 +726,7 @@
             "page": "Puslapis",
             "pdfscalemode": "talpinti pritaikant prie puslapio aukščio/pločio",
             "print": "",
+            "printDisabled": "",
             "settingsTitle": "nuostatos"
         },
         "notes": {
@@ -750,16 +752,22 @@
             "searchTitle": "Paieška:"
         },
         "print": {
-            "description": "",
-            "descriptionLcp": "",
-            "descriptionLcpLimit": "",
+            "descriptionLcpCount": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
             "pageHelpInfo": "",
             "pageHelpInfo1": "",
             "pageHelpInfo2": "",
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
-            "print": ""
+            "preview": "",
+            "print": "",
+            "printablePages": "",
+            "title": ""
         },
         "settings": {
             "column": {

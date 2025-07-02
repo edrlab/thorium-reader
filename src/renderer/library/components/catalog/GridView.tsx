@@ -51,13 +51,16 @@ enum SortStatus {
 const EntrySection = ({entry, entryIndex}: {entry: CatalogEntryView, entryIndex: number}) => {
     const [__] = useTranslator();
     let title = "";
+    let resetSliderPosition = false;
 
     switch (entry.id) {
         case "lastAdditions":
             title = __("catalog.entry.lastAdditions");
+            resetSliderPosition = false;
             break;
         case "continueReading":
             title = __("catalog.entry.continueReading");
+            resetSliderPosition = true;
             break;
     }
 
@@ -66,6 +69,7 @@ const EntrySection = ({entry, entryIndex}: {entry: CatalogEntryView, entryIndex:
                 <h2>{title}</h2>
             {
                 <Slider
+                    resetSliderPosition={resetSliderPosition}
                     className={classNames(stylesSlider.slider)}
                     content={entry.publicationViews.map((pub) =>
                         <PublicationCard

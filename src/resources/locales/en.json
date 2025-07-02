@@ -140,6 +140,7 @@
         "deleteBookmarksText": "Are you sure you want to delete {{- bookmarkListLength}} bookmark(s)?",
         "deleteFeed": "Delete catalog?",
         "deletePublication": "Delete publication?",
+        "deletePublicationWithNotes": "Warning: this publication has annotations and/or bookmarks, they will be deleted too! (if you want to keep them, make sure to export the notes before removing the publication)",
         "import": "Confirm import:",
         "importError": "An error occurred, verify the file extension ({{acceptedExtension}})",
         "renew": "Renew/extend loan?",
@@ -707,25 +708,26 @@
         "navigation": {
             "ZenModeExit": "Exit Zen mode",
             "ZenModeTitle": "Zen mode",
-            "annotationTitle": "annotation",
+            "annotationTitle": "Annotation",
             "backHomeTitle": "Close this reading window (back to bookshelf)",
-            "bookmarkTitle": "bookmark",
+            "bookmarkTitle": "Bookmark",
             "currentPage": "Current page: {{- current}}",
             "currentPageTotal": "Current page: {{- current}}/{{- total}}",
-            "detachWindowTitle": "show library / bookshelf window",
+            "detachWindowTitle": "Show library / bookshelf window",
             "goTo": "Go to",
             "goToError": "Page break does not exist",
             "goToPlaceHolder": "Enter page number",
             "goToTitle": "Go to page",
             "historyNext": "Jump forward",
             "historyPrevious": "Jump back",
-            "infoTitle": "information",
-            "magnifyingGlassButton": "search publication",
-            "openTableOfContentsTitle": "navigation",
+            "infoTitle": "Information",
+            "magnifyingGlassButton": "Search publication",
+            "openTableOfContentsTitle": "Navigation",
             "page": "Page",
             "pdfscalemode": "Page fit or width",
-            "print": "print",
-            "settingsTitle": "settings"
+            "print": "Print",
+            "printDisabled": "Print forbidden",
+            "settingsTitle": "Settings"
         },
         "notes": {
             "colors": {
@@ -750,16 +752,22 @@
             "searchTitle": "Search:"
         },
         "print": {
-            "description": "{{- appName}} pre-print step: please select the pages you want to send to the system print dialog (this publication has {{- count}} pages)",
-            "descriptionLcp": "{{- appName}} pre-print step: please select the pages you want to send to the system print dialog (this LCP-protected publication has {{- count}} pages)",
-            "descriptionLcpLimit": "LCP limit: {{- lcpLimitPages}}, pages remaining: {{- count}}",
+            "descriptionLcpCount": "Remaining pages limit: {{- count}}",
+            "descriptionLcpPrintable": "Previously printed pages: {{- printable}} ({{- count}})",
+            "howTo": "How to select a range of pages to print",
+            "lcpInfo": "The number of pages you can print in this publication is limited to {{- count}}. Choose the pages you require here.",
+            "noPagesLcpLimitReached": "You have reached the LCP limit",
+            "noPrintablePages": "No Printables pages",
             "pageHelpInfo": "Page selector syntax:",
-            "pageHelpInfo1": " - enter a page number to reference a single page (e.g. \"6\")",
-            "pageHelpInfo2": " - enter two page numbers separated by a dash character to reference a range of contiguous pages (e.g. \"6-13\")",
-            "pageHelpInfo3": " - use the semicolon character to separate multiple pages or page ranges (e.g. \"5;14-20;37\")",
-            "pageHelpInfo4": " - leave out the first or last page of a range to reference the first or last page of the publication (e.g. \"-16\" is equivalent to \"1-16\", and \"34-\" is equivalent to \"34-100\" assuming a book with a total of 100 pages)",
+            "pageHelpInfo1": "enter a page number to reference a single page (e.g. \"6\")",
+            "pageHelpInfo2": "enter two page numbers separated by a dash character to reference a range of contiguous pages (e.g. \"6-13\")",
+            "pageHelpInfo3": "use the semicolon character to separate multiple pages or page ranges (e.g. \"5;14-20;37\")",
+            "pageHelpInfo4": "leave out the first or last page of a range to reference the first or last page of the publication (e.g. \"-16\" is equivalent to \"1-16\", and \"34-\" is equivalent to \"34-100\" assuming a book with a total of 100 pages)",
             "pages": "Pages",
-            "print": "Print"
+            "preview": "Preview",
+            "print": "Print",
+            "printablePages": "Printables pages (total)",
+            "title": "Selection of printable pages"
         },
         "settings": {
             "column": {
