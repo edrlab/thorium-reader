@@ -188,7 +188,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                         </div>
                         <div style={{ display: "flex", flexDirection: "column", marginLeft: "20px", marginBottom: "5px" }}>
                             <ul className={stylesPrint.print_lcp_list}>
-                                {/* <li>{__("reader.print.descriptionLcpLimit", { lcpLimitPages: publicationViewLcpRightsPrintNumber })}</li> */}
+                                {/* <li>{_---_("reader.print.descriptionLcpLimit", { lcpLimitPages: publicationViewLcpRightsPrintNumber })}</li> */}
                                 <li><p>{__("reader.print.descriptionLcpCount", { count: lcpCountPages })}</p></li>
                                 <li><p>{__("reader.print.descriptionLcpPrintable", { printable: formatRanges(publicationViewLcpRightsPrintsConsumed), count: publicationViewLcpRightsPrintsConsumed.length.toString() })}</p></li>
                             </ul>

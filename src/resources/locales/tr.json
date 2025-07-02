@@ -753,7 +753,6 @@
         },
         "print": {
             "descriptionLcpCount": "",
-            "descriptionLcpLimit": "LCP sınırı: {{- lcpLimitPages}}, kalan sayfa: {{- count}}",
             "descriptionLcpPrintable": "",
             "howTo": "",
             "lcpInfo": "",

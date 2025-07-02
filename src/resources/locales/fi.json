@@ -753,7 +753,6 @@
         },
         "print": {
             "descriptionLcpCount": "",
-            "descriptionLcpLimit": "LCP-rajoitus: {{- lcpLimitPages}}, sivuja jäljellä: {{- count}}",
             "descriptionLcpPrintable": "",
             "howTo": "",
             "lcpInfo": "",
