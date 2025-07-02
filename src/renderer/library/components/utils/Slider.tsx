@@ -60,15 +60,15 @@ class Slider extends React.Component<IProps, IState> {
     public componentDidMount() {
         this.setState({refreshVisible: true});
         window.addEventListener("resize", this.update);
+          if (this.wrapperRef?.current) {
+            this.wrapperRef.current.addEventListener("scroll", this.updateScrollPosition);
+        }
     }
 
     public componentWillUnmount() {
         window.removeEventListener("resize", this.update);
-        if (this.animationFrameId) {
-            cancelAnimationFrame(this.animationFrameId);
-        }
-        if (this.transitionTimeout) {
-            clearTimeout(this.transitionTimeout);
+        if (this.wrapperRef?.current) {
+            this.wrapperRef.current.removeEventListener("scroll", this.updateScrollPosition);
         }
     }
 
@@ -94,11 +94,15 @@ class Slider extends React.Component<IProps, IState> {
                     }
                 }
             });
-            this.setState({refreshVisible: false});
+            this.setState({ refreshVisible: false });
         }
 
         if (this.props.resetSliderPosition && prevProps.content && prevProps.content !== this.props.content) {
             this.setState({ position: 0 });
+            this.wrapperRef.current.scrollTo({
+                left: 0,
+                behavior: "smooth",
+            });
         }
     }
 
@@ -107,15 +111,6 @@ class Slider extends React.Component<IProps, IState> {
         const { className, __ } = this.props;
 
         const list = this.createContent();
-        let max = 0;
-        if (this.contentRef?.current && this.wrapperRef?.current) {
-            max = -this.contentRef.current.offsetWidth + this.wrapperRef.current.offsetWidth;
-        }
-
-        const varStyle: React.CSSProperties = {
-            transform: `translateX(${this.state.position}px)`,
-            // transition: "transform 0.5s",
-        };
 
 
         return (
@@ -123,23 +118,24 @@ class Slider extends React.Component<IProps, IState> {
                     <button
                         aria-label={__("accessibility.leftSlideButton")}
                         className={classNames(stylesSlider.slider_button_prev, stylesButtons.button_transparency_icon)}
-                        onClick={this.handleMove.bind(this, false)}
-                        disabled={this.state.position < 0 ? false : true}
+                        onClick={() => this.handleMove("left")}
+                        disabled={this.wrapperRef?.current?.scrollLeft <= 0}
                         aria-hidden
                     >
                     <SVG ariaHidden={true} svg={ArrowRightIcon} />
                 </button>
-                <div ref={this.wrapperRef} className={stylesSlider.slider_wrapper} onWheel={this.handleScrollWheel.bind(this)}
-                    /* onScroll={(e) => {this.handleScroll(e)}} */>
-                    <ul ref={this.contentRef} className={stylesSlider.slider_items} style={varStyle}>
+                <div ref={this.wrapperRef} className={stylesSlider.slider_wrapper}>
+                    <ul ref={this.contentRef} className={stylesSlider.slider_items}>
                         {list}
                     </ul>
                 </div>
                     <button
-                        onClick={this.handleMove.bind(this, true)}
+                        onClick={() => this.handleMove("right")}
                         aria-label={__("accessibility.rightSlideButton")}
                         className={classNames(stylesSlider.slider_button_next, stylesButtons.button_transparency_icon)}
-                        disabled={this.state.position > max ? false : true}
+                        disabled={this.wrapperRef?.current
+                            ? this.wrapperRef.current.scrollLeft + this.wrapperRef.current.offsetWidth >= this.wrapperRef.current.scrollWidth
+                            : true}
                         aria-hidden
                     >
                         <SVG ariaHidden={true} svg={ArrowRightIcon}/>
@@ -148,94 +144,28 @@ class Slider extends React.Component<IProps, IState> {
         );
     }
 
-    // private handleScroll(e: React.UIEvent<HTMLDivElement>): void {
-    //     if (!this.wrapperRef?.current || !this.contentRef?.current) {
-    //         return;
-    //     }
-    //     const max = - this.wrapperRef.current.scrollWidth + this.wrapperRef.current.offsetWidth;
-    //     let step = - e.currentTarget.scrollLeft;
+    private updateScrollPosition = () => {
+        if (this.wrapperRef?.current) {
+            this.setState({ position: this.wrapperRef.current.scrollLeft });
+        }
+    };
 
-    //     if (this.state.position === max) {
-    //         step = - step;
-    //     }
-
-    //     let position =  Math.round((this.state.position + step) / 10) * 10;
-
-    //     if (position > 0) {
-    //         position = 0;
-    //     } else if (position < max) {
-    //         position = max;
-    //     }
-
-    //     this.setState({ position, refreshVisible: true });
-    //     console.log(position, step);
-    // }
-
-    private currentPosition = 0;
-    private animationFrameId: number | null = null;
-    private transitionTimeout: NodeJS.Timeout | null = null;
-
-    private handleScrollWheel(event: React.WheelEvent<HTMLDivElement>) {
-        this.currentPosition = this.state.position;
+    private handleMove(direction: "left" | "right") {
         if (!this.wrapperRef?.current || !this.contentRef?.current) return;
 
-        const delta = event.deltaX;
-        const max = -this.contentRef.current.offsetWidth + this.wrapperRef.current.offsetWidth;
+        const container = this.wrapperRef.current;
+        const scrollAmount = container.offsetWidth * 0.5;
 
-        this.currentPosition -= delta;
+        const newScrollLeft =
+            direction === "left"
+            ? container.scrollLeft - scrollAmount
+            : container.scrollLeft + scrollAmount;
 
-        if (this.currentPosition > 0) this.currentPosition = 0;
-        if (this.currentPosition < max) this.currentPosition = max;
-
-        this.contentRef.current.style.transition = "none";
-
-        if (this.animationFrameId) {
-            cancelAnimationFrame(this.animationFrameId);
-        }
-
-        this.animationFrameId = requestAnimationFrame(() => {
-            if (this.contentRef?.current) {
-                this.contentRef.current.style.transform = `translateX(${this.currentPosition}px)`;
-            }
-            this.animationFrameId = null;
-
-            this.setState({ position: this.currentPosition, refreshVisible: true });
-
-            // Optionnel : Réactive la transition après un délai (utile si le scroll s’arrête)
-            if (this.transitionTimeout) {
-                clearTimeout(this.transitionTimeout);
-            }
-            this.transitionTimeout = setTimeout(() => {
-                if (this.contentRef?.current) {
-                    this.contentRef.current.style.transition = "transform 0.5s";
-                }
-            }, 100);
+        container.scrollTo({
+            left: newScrollLeft,
+            behavior: "smooth",
         });
-    }
-
-    private handleMove(moveRight: number) {
-        if (!this.wrapperRef?.current || !this.contentRef?.current) return;
-
-        let step = this.wrapperRef.current.offsetWidth / 2;
-        if (moveRight) {
-            step = -step;
-        }
-
-        const max = -this.contentRef.current.offsetWidth + this.wrapperRef.current.offsetWidth;
-        let position = this.state.position + step;
-
-        if (position > 0) {
-            position = 0;
-        } else if (position < max) {
-            position = max;
-        }
-
-        // Réactive la transition pour les mouvements au clic
-        this.contentRef.current.style.transition = "transform 0.5s";
-        this.contentRef.current.style.transform = `translateX(${position}px)`;
-
-        this.currentPosition = position;
-        this.setState({ position, refreshVisible: true });
+        this.setState({ position: newScrollLeft, refreshVisible: true });
     }
 
     private moveInView(elementIndex: number) {

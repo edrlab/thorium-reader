@@ -8,8 +8,14 @@
 
   &_wrapper {
     position: relative;
-    overflow: hidden;
     min-height: 400px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    overflow: scroll hidden;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   &_items {
@@ -19,13 +25,14 @@
     left: 0;
     margin: 0;
     padding: 0;
-  
+    
     & > *:not(:first-child) {
       margin-left: 15px;
     }
-
+    
     li {
       list-style-type: none;
+      scroll-snap-align: start;
     }
   }
 
