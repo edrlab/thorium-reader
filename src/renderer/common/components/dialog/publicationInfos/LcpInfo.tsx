@@ -186,7 +186,6 @@ class LcpInfo extends React.Component<IProps, undefined> {
                         <strong>{__("publication.lcpRightsPrint")}: </strong>
                         <span>{lcpRightsPrintCountPubInfo} / {lcpRightsPrint}  </span>
                         {lcpRightsPrintRangePubInfo.length ? ` [${lcpRightsPrintRangePubInfo}] ` : <></>}
-                        <span> {__("reader.print.descriptionLcpLimit", { count: lcpRightsPrint - lcpRightsPrintCountPubInfo, lcpLimitPages: lcpRightsPrint })}</span><br />
                     </> : <></>}
                 </div>
             </>

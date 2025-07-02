@@ -140,6 +140,7 @@
         "deleteBookmarksText": "Haluatko varmasti poistaa {{- bookmarkListLength}} kirjanmerkkiä?",
         "deleteFeed": "Haluatko poistaa tämän luettelon?",
         "deletePublication": "Haluatko poistaa tämän julkaisun?",
+        "deletePublicationWithNotes": "",
         "import": "Haluatko tuoda nämä tiedostot:",
         "importError": "Virhe havaittiin. Varmista tiedostopääte ({{acceptedExtension}})",
         "renew": "Haluatko uusia tämän lainan?",
@@ -725,7 +726,8 @@
             "openTableOfContentsTitle": "Navigaatio",
             "page": "Sivu",
             "pdfscalemode": "Sovita sivu tai leveyteen",
-            "print": "tulosta",
+            "print": "Tulosta",
+            "printDisabled": "",
             "settingsTitle": "Asetukset"
         },
         "notes": {
@@ -751,16 +753,23 @@
             "searchTitle": "Hae:"
         },
         "print": {
-            "description": "{{- appName}}tulostuksen valmistelu: valitse sivut, jotka haluat lähettää tulostettaviksi (tässä julkaisussa on {{- count}} sivua)",
-            "descriptionLcp": "{{- appName}} tulostuksen valmistelu: valitse sivut, jotka haluat lähettää tulostettaviksi (tässä LCP-suojatussa julkaisussa on {{- count}} sivua)",
+            "descriptionLcpCount": "",
             "descriptionLcpLimit": "LCP-rajoitus: {{- lcpLimitPages}}, sivuja jäljellä: {{- count}}",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
             "pageHelpInfo": "Sivunvalintasyntaksi:",
             "pageHelpInfo1": " - anna sivunumero viitataksesi yksittäiseen sivuun (esim. \"6\")",
             "pageHelpInfo2": " - anna kaksi yhdysmerkillä erotettua lukua, jotta voit viitata usean peräkkäisen sivun alueeseen (esim. \"6-13\")",
             "pageHelpInfo3": " - erota puolipisteellä useat sivut tai sivualueet (esim. \"5;14-20;37\")",
             "pageHelpInfo4": " - jätä sivualueen ensimmäinen tai viimeinen numero pois, jos se viittaa julkaisun ensimmäiseen tai viimeiseen sivuun (esim. \"-16\" vastaa merkintää \"1-16\", ja \"34-\" vastaa merkintää \"34-100\", jos kirjassa on yhteensä 100 sivua)",
             "pages": "Sivut",
-            "print": "Tulostus"
+            "preview": "",
+            "print": "Tulostus",
+            "printablePages": "",
+            "title": ""
         },
         "settings": {
             "column": {

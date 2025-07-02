@@ -24,5 +24,7 @@ export declare const colorPicker: string;
 export declare const form_group: string;
 export declare const my_combobox_container: string;
 export declare const my_item: string;
+export declare const popover_dialog_reader: string;
 export declare const react_aria_ComboBox: string;
 export declare const react_aria_Label: string;
+export declare const settings_tab: string;

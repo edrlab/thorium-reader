@@ -140,6 +140,7 @@
         "deleteBookmarksText": "Ben je zeker om {{- bookmarkListLength}} bladwijzer(s) te verwijderen?",
         "deleteFeed": "Wil je deze catalogus echt verwijderen ?",
         "deletePublication": "Wil je deze publicatie echt verwijderen ?",
+        "deletePublicationWithNotes": "",
         "import": "Wil je deze bestanden echt importeren :",
         "importError": "er is een fout opgetreden, controleer je bestandsextensie ({{acceptedExtension}})",
         "renew": "Wil je de licentie voor deze publicatie echt vernieuwen?",
@@ -725,6 +726,7 @@
             "page": "Pagina",
             "pdfscalemode": "Pagina aanpassen aan breedte",
             "print": "druk af",
+            "printDisabled": "",
             "settingsTitle": "instellingen"
         },
         "notes": {
@@ -750,16 +752,23 @@
             "searchTitle": "Zoek:"
         },
         "print": {
-            "description": "{{- appName}} dialoogvenster voor afdrukken van een publicatie met {{- count}} pagina's. Je moet het afdruk bereik zetten om de printdialoog op te roepen",
-            "descriptionLcp": "{{- appName}} dialoogvenster voor afdrukken van een LCP publicatie met {{- count}} pagina's. Je moet het afdruk bereik zetten om de printdialoog op te roepen",
-            "descriptionLcpLimit": "{{- count}} pagina's over (van {{- lcpLimitPages}} LCP limiet)",
+            "descriptionLcpCount": "",
+            "descriptionLcpLimit": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
             "pageHelpInfo": "pagina bereik hulp informatie :",
             "pageHelpInfo1": " - geef een pagina nummer op om naar een enkele pagina te verwijzen (b.v. \"6\")",
             "pageHelpInfo2": " - geef twee paginanummers op verbonden met een streepje om naar een aangesloten bereik van pagina's te verwijzen (b.v. \"6-13\")",
             "pageHelpInfo3": " - gebruik een puntkomma om meerdere pagina's of pagina bereiken te scheiden (b.v. \"5;14-20;37\")",
             "pageHelpInfo4": " - laat het eerste of laatste paginanummer weg in een bereik om te verwijzen naar de eerste of laatste pagina van een publicatie (b.v. \"-16\" is gelijk aan \"1-16\", en \"34-\" is gelijk aan \"34-100\" uitgaande van een boek met 100 pagina's in totaal)",
             "pages": "Pagina's",
-            "print": "Afdrukken"
+            "preview": "",
+            "print": "Afdrukken",
+            "printablePages": "",
+            "title": ""
         },
         "settings": {
             "column": {

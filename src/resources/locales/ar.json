@@ -140,6 +140,7 @@
         "deleteBookmarksText": "هل تريد بالتأكيد حذف {{- bookmarkListLength}} إشارات مرجعية؟",
         "deleteFeed": "حذف الكتالوغ؟",
         "deletePublication": "حذف المنشور؟",
+        "deletePublicationWithNotes": "",
         "import": "تأكيد الاستيراد:",
         "importError": "حدث خطأ، تحقَّق من ملحق الملف ({{acceptedExtension}})",
         "renew": "تجديد/تمديد الاستعارة؟",
@@ -725,6 +726,7 @@
             "page": "الصفحة",
             "pdfscalemode": "ملاءمة أو عرض الصفحة",
             "print": "",
+            "printDisabled": "",
             "settingsTitle": "إعدادات"
         },
         "notes": {
@@ -750,16 +752,23 @@
             "searchTitle": "البحث عن:"
         },
         "print": {
-            "description": "",
-            "descriptionLcp": "",
+            "descriptionLcpCount": "",
             "descriptionLcpLimit": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
             "pageHelpInfo": "",
             "pageHelpInfo1": "",
             "pageHelpInfo2": "",
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
-            "print": ""
+            "preview": "",
+            "print": "",
+            "printablePages": "",
+            "title": ""
         },
         "settings": {
             "column": {

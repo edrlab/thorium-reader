@@ -140,6 +140,7 @@
         "deleteBookmarksText": "",
         "deleteFeed": "Odstranit katalog?",
         "deletePublication": "Odstranit publikaci?",
+        "deletePublicationWithNotes": "",
         "import": "Potvrdit import:",
         "importError": "Vyskytla se chyba, ověřte příponu souboru {{acceptedExtension}}",
         "renew": "Prodloužit výpůjčku?",
@@ -725,6 +726,7 @@
             "page": "Stránka",
             "pdfscalemode": "",
             "print": "",
+            "printDisabled": "",
             "settingsTitle": "nastavení"
         },
         "notes": {
@@ -750,16 +752,23 @@
             "searchTitle": "Hledat:"
         },
         "print": {
-            "description": "",
-            "descriptionLcp": "",
+            "descriptionLcpCount": "",
             "descriptionLcpLimit": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
             "pageHelpInfo": "",
             "pageHelpInfo1": "",
             "pageHelpInfo2": "",
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
-            "print": ""
+            "preview": "",
+            "print": "",
+            "printablePages": "",
+            "title": ""
         },
         "settings": {
             "column": {

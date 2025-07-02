@@ -140,6 +140,7 @@
         "deleteBookmarksText": "Vill du radera {{- bookmarkListLength}} bokmärke(n)?",
         "deleteFeed": "Vill du ta bort den här katalogen?",
         "deletePublication": "Vill du ta bort den här publikationen?",
+        "deletePublicationWithNotes": "",
         "import": "Vill du importera följande filer:",
         "importError": "Det uppstod ett fel, kontrollera filtypen ({{acceptedExtension}})",
         "renew": "Vill du förnya lånet?",
@@ -725,6 +726,7 @@
             "page": "Sida",
             "pdfscalemode": "Anpassa till hel sida eller sidbredd",
             "print": "",
+            "printDisabled": "",
             "settingsTitle": "Inställningar"
         },
         "notes": {
@@ -750,16 +752,23 @@
             "searchTitle": "Sök:"
         },
         "print": {
-            "description": "",
-            "descriptionLcp": "",
+            "descriptionLcpCount": "",
             "descriptionLcpLimit": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
             "pageHelpInfo": "",
             "pageHelpInfo1": "",
             "pageHelpInfo2": "",
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
-            "print": ""
+            "preview": "",
+            "print": "",
+            "printablePages": "",
+            "title": ""
         },
         "settings": {
             "column": {

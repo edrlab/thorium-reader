@@ -140,6 +140,7 @@
         "deleteBookmarksText": "¿Seguro que quieres borrar {{- bookmarkListLength}} marcador/es?",
         "deleteFeed": "¿Seguro que quieres eliminar este catálogo?",
         "deletePublication": "¿Seguro que quieres eliminar esta publicación?",
+        "deletePublicationWithNotes": "",
         "import": "¿Seguro que quieres importar estos ficheros?",
         "importError": "Se ha producido un error, comprueba la extensión de tu fichero ({{acceptedExtension}})",
         "renew": "¿Seguro que quieres renovar la licencia para esta publicación?",
@@ -725,6 +726,7 @@
             "page": "Página",
             "pdfscalemode": "Ajuste o ancho de página",
             "print": "",
+            "printDisabled": "",
             "settingsTitle": "Opciones de configuración"
         },
         "notes": {
@@ -750,16 +752,23 @@
             "searchTitle": "Buscar:"
         },
         "print": {
-            "description": "",
-            "descriptionLcp": "",
+            "descriptionLcpCount": "",
             "descriptionLcpLimit": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
             "pageHelpInfo": "",
             "pageHelpInfo1": "",
             "pageHelpInfo2": "",
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
-            "print": ""
+            "preview": "",
+            "print": "",
+            "printablePages": "",
+            "title": ""
         },
         "settings": {
             "column": {

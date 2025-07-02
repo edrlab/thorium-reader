@@ -140,6 +140,7 @@
         "deleteBookmarksText": "",
         "deleteFeed": "ნამდვილად გსურთ ამ კატალოგის წაშლა ?",
         "deletePublication": "ნამდვილად გსურთ ამ პუბლიკაციის წაშლა ?",
+        "deletePublicationWithNotes": "",
         "import": "ნამდვილად გსურთ ამ ფაილების შემოტანა :",
         "importError": "მოხდა შეცდომა, გადაამოწმეთ ფაილის გაფართოება ({{acceptedExtension}})",
         "renew": "ნამდვილად გსურთ ამ პუბლიკაციის ლიცენზიის განახლება?",
@@ -725,6 +726,7 @@
             "page": "",
             "pdfscalemode": "გვერდზე მორგება ან სიგანე",
             "print": "",
+            "printDisabled": "",
             "settingsTitle": "პარამეტრები"
         },
         "notes": {
@@ -750,16 +752,23 @@
             "searchTitle": "ძიება:"
         },
         "print": {
-            "description": "",
-            "descriptionLcp": "",
+            "descriptionLcpCount": "",
             "descriptionLcpLimit": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
             "pageHelpInfo": "",
             "pageHelpInfo1": "",
             "pageHelpInfo2": "",
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
-            "print": ""
+            "preview": "",
+            "print": "",
+            "printablePages": "",
+            "title": ""
         },
         "settings": {
             "column": {

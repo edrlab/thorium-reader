@@ -140,6 +140,7 @@
         "deleteBookmarksText": "{{- bookmarkListLength}} yer im(ler)ini silmek istediğinize emin misiniz?",
         "deleteFeed": "Katalogu silmek istiyor musunuz?",
         "deletePublication": "Eseri silmek istiyor musunuz?",
+        "deletePublicationWithNotes": "",
         "import": "İçe aktarmayı onayla:",
         "importError": "Hata oluştu, dosya uzantısının ({{acceptedExtension}}) olduğunu doğrulayın.",
         "renew": "Yenilemek ya da ödünç almayı uzatmak istiyor musunuz?",
@@ -725,6 +726,7 @@
             "page": "Sayfa",
             "pdfscalemode": "Sayfaya veya genişliğe sığdır",
             "print": "yazdır",
+            "printDisabled": "",
             "settingsTitle": "ayarlar"
         },
         "notes": {
@@ -750,16 +752,23 @@
             "searchTitle": "Ara"
         },
         "print": {
-            "description": "{{- appName}} yazdırma öncesi adım: Lütfen sistem yazdırma iletişim kutusuna göndermek istediğiniz sayfaları seçin (Bu eserde, {{- count}} sayfa var)",
-            "descriptionLcp": "{{- appName}} yazdırma öncesi adım: Lütfen sistem yazdırma iletişim kutusuna göndermek istediğiniz sayfaları seçin (Bu LCP-korumalı eserde, {{- count}} sayfa var)",
+            "descriptionLcpCount": "",
             "descriptionLcpLimit": "LCP sınırı: {{- lcpLimitPages}}, kalan sayfa: {{- count}}",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
             "pageHelpInfo": "Sayfa seçici dizilimleri:",
             "pageHelpInfo1": "",
             "pageHelpInfo2": "",
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
-            "print": "Yazdır"
+            "preview": "",
+            "print": "Yazdır",
+            "printablePages": "",
+            "title": ""
         },
         "settings": {
             "column": {
