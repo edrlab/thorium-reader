@@ -626,7 +626,7 @@
                 "description": "Nimeä muistiinpanot:",
                 "title": "Otsikko"
             },
-            "annotationsOptions": "Asetukset",
+            "annotationsOptions": "Muistiinpanojen asetukset",
             "date": "Muokkauspäivä",
             "export": "Tallenna nimellä...",
             "filter": {
@@ -760,7 +760,7 @@
             "noPrintablePages": "Ei tulostettavia sivuja",
             "pageHelpInfo": "Sivunvalintasyntaksi:",
             "pageHelpInfo1": "- anna sivunumero viitataksesi yksittäiseen sivuun (esim. \"6\")",
-            "pageHelpInfo2": "- anna kaksi yhdysmerkillä erotettua lukua, jotta voit viitata usean peräkkäisen sivun alueeseen (esim. \"6-13\")",
+            "pageHelpInfo2": "anna kaksi yhdysmerkillä erotettua lukua, jotta voit viitata usean peräkkäisen sivun alueeseen (esim. \"6-13\")",
             "pageHelpInfo3": "erota puolipisteellä useat sivut tai sivualueet (esim. \"5;14-20;37\")",
             "pageHelpInfo4": "jätä sivualueen ensimmäinen tai viimeinen numero pois, jos se viittaa julkaisun ensimmäiseen tai viimeiseen sivuun (esim. \"-16\" vastaa merkintää \"1-16\", ja \"34-\" vastaa merkintää \"34-100\", jos kirjassa on yhteensä 100 sivua)",
             "pages": "Sivut",
