@@ -1094,10 +1094,10 @@
                 },
                 "SpeakReaderInfoWhereAmI": {
                     "description": "",
-                    "name": ""
+                    "name": "Περιγραφή Θέσης Ανάγνωσης (Ομιλία)"
                 },
                 "ToggleBookmark": {
-                    "description": "",
+                    "description": "Προσθήκη ενός νέου σελιδοδείκτη ή αφαίρεση ενός υπάρχοντος, εάν έχει ήδη επιλεγεί.",
                     "name": ""
                 },
                 "ToggleReaderFullscreen": {
@@ -1109,7 +1109,7 @@
             "noShortcutFound": "",
             "resetDefaults": "Επαναφορά (φόρτωση προεπιλογών)",
             "save": "Αποθήκευση",
-            "searchPlaceholder": ""
+            "searchPlaceholder": "Πληκτρολογήστε για αναζήτηση συντόμευσης"
         },
         "language": {
             "languageChoice": "Γλώσσα"
