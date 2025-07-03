@@ -20,7 +20,7 @@
             "copy": "Kopijuoti",
             "cut": "Iškirpti",
             "paste": "Įklijuoti",
-            "print": "",
+            "print": "Spausdinti",
             "redo": "Atkurti",
             "selectAll": "Pažymėti viską",
             "title": "Keisti",
@@ -250,7 +250,7 @@
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": ""
+            "accessibility-summary-title": "Prieinamumo santrauka"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
@@ -321,7 +321,7 @@
                 "descriptive": ""
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "Leidinį sertifikavo "
             },
             "conformance-certifier-credentials": {
                 "compact": ""
@@ -334,34 +334,34 @@
                 "descriptive": ""
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Accessibility 1.0",
+                "descriptive": "EPUB Accessibility 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Accessibility 1.1",
+                "descriptive": "EPUB Accessibility 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "A lygis",
+                "descriptive": "A lygis"
             },
             "conformance-details-level-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "AA lygis",
+                "descriptive": "AA lygis"
             },
             "conformance-details-level-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "AAA lygis",
+                "descriptive": "AAA lygis"
             },
             "conformance-details-wcag-2-0": {
-                "compact": ""
+                "compact": "WCAG 2.0"
             },
             "conformance-details-wcag-2-1": {
-                "compact": "",
+                "compact": "WCAG 2.1",
                 "descriptive": ""
             },
             "conformance-details-wcag-2-2": {
-                "compact": "",
+                "compact": "WCAG 2.2",
                 "descriptive": ""
             },
             "conformance-no": {
@@ -1121,7 +1121,7 @@
         "note": {
             "export": {
                 "applyDefaultTemplate": "TAIKYTI NUMATYTĄJĮ ŠABLONĄ",
-                "enableCheckbox": "",
+                "enableCheckbox": "Tinkinti HTML šabloną",
                 "overrideHTMLTemplate": ""
             }
         },
