@@ -258,12 +258,12 @@
                 "descriptive": ""
             },
             "additional-accessibility-information-audio-descriptions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Garsinis vaizdavimas",
+                "descriptive": "Garsinis vaizdavimas"
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Brailio raštas",
+                "descriptive": "Brailio raštas"
             },
             "additional-accessibility-information-full-ruby-annotations": {
                 "compact": "",
@@ -278,8 +278,8 @@
                 "descriptive": ""
             },
             "additional-accessibility-information-large-print": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Padidintas šriftas",
+                "descriptive": "Padidintas šriftas"
             },
             "additional-accessibility-information-page-breaks": {
                 "compact": "",
@@ -290,8 +290,8 @@
                 "descriptive": ""
             },
             "additional-accessibility-information-sign-language": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Gestų kalba",
+                "descriptive": "Gestų kalba"
             },
             "additional-accessibility-information-tactile-graphics": {
                 "compact": "",
@@ -528,7 +528,7 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "ways-of-reading-title": "",
+            "ways-of-reading-title": "Skaitymo būdai",
             "ways-of-reading-visual-adjustments-modifiable": {
                 "compact": "",
                 "descriptive": ""
@@ -595,7 +595,7 @@
         "lcpRightsPrint": "Spausdintos kopijos",
         "lcpStart": "Pradžia",
         "licenceLCP": "Licencija (LCP)",
-        "licenseCertificateDateInvalid": "Baigėsi LCP teikėjo sertifikato galiojimo laikas. ({{- dateTime}})",
+        "licenseCertificateDateInvalid": "LCP teikėjo sertifikato galiojimo laikas baigėsi anksčiau už licencijos išdavimo datą ({{- dateTime}}).",
         "licenseOutOfDate": "LCP licencijos galiojimas pasibaigęs.",
         "licenseSignatureInvalid": "Negaliojantis LCP licencijos parašas.",
         "licensed": "Licencijuotas",
@@ -671,9 +671,9 @@
         "goToContent": "Eiti į turinį",
         "imgViewer": {
             "title": "",
-            "zoomIn": "",
-            "zoomOut": "",
-            "zoomReset": ""
+            "zoomIn": "Didinti",
+            "zoomOut": "Mažinti",
+            "zoomReset": "Nustatyti mastelį iš naujo"
         },
         "marks": {
             "annotations": "Pastabos",
@@ -708,26 +708,26 @@
         "navigation": {
             "ZenModeExit": "Išeiti iš Zen režimo",
             "ZenModeTitle": "Zen režimas",
-            "annotationTitle": "pastaba",
+            "annotationTitle": "Pastaba",
             "backHomeTitle": "Užverti šį skaitymo langą (grįžti į knygų lentyną)",
-            "bookmarkTitle": "sukurti žymę",
+            "bookmarkTitle": "Sukurti žymę",
             "currentPage": "Dabartinis puslapis: {{- current}}",
             "currentPageTotal": "Dabartinis puslapis: {{- current}}/{{- total}}",
-            "detachWindowTitle": "rodyti bibliotekos / lentynos langą",
+            "detachWindowTitle": "Rodyti bibliotekos / lentynos langą",
             "goTo": "Eiti į",
             "goToError": "Toks puslapių skirtukas neegzistuoja",
             "goToPlaceHolder": "Įveskite puslapio numerį",
             "goToTitle": "Eiti į puslapį",
             "historyNext": "Peršokti į priekį",
             "historyPrevious": "Peršokti atgal",
-            "infoTitle": "informacija",
-            "magnifyingGlassButton": "ieškoti leidinyje",
-            "openTableOfContentsTitle": "naršymas",
+            "infoTitle": "Informacija",
+            "magnifyingGlassButton": "Ieškoti leidinyje",
+            "openTableOfContentsTitle": "Naršymas",
             "page": "Puslapis",
             "pdfscalemode": "talpinti pritaikant prie puslapio aukščio/pločio",
             "print": "",
-            "printDisabled": "",
-            "settingsTitle": "nuostatos"
+            "printDisabled": "Spausdinti draudžiama",
+            "settingsTitle": "Nuostatos"
         },
         "notes": {
             "colors": {
@@ -763,15 +763,15 @@
             "pageHelpInfo2": "",
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
-            "pages": "",
+            "pages": "Puslapiai",
             "preview": "",
-            "print": "",
+            "print": "Spausdinti",
             "printablePages": "",
             "title": ""
         },
         "settings": {
             "column": {
-                "auto": "Automatinis",
+                "auto": "Numatytasis",
                 "one": "1 stulpelis",
                 "title": "Stulpeliai",
                 "two": "2 stulpeliai"
@@ -1058,11 +1058,11 @@
                 },
                 "NavigateToBegin": {
                     "description": "",
-                    "name": ""
+                    "name": "Eiti į pradžią"
                 },
                 "NavigateToEnd": {
                     "description": "",
-                    "name": ""
+                    "name": "Eiti į pabaigą"
                 },
                 "OpenReaderInfo": {
                     "description": "",
@@ -1074,11 +1074,11 @@
                 },
                 "Print": {
                     "description": "",
-                    "name": ""
+                    "name": "Spausdinti"
                 },
                 "SearchNext": {
                     "description": "",
-                    "name": ""
+                    "name": "Tolesnis paieškos rezultatas"
                 },
                 "SearchNextAlt": {
                     "description": "",
@@ -1086,7 +1086,7 @@
                 },
                 "SearchPrevious": {
                     "description": "",
-                    "name": ""
+                    "name": "Ankstesnis paieškos rezultatas"
                 },
                 "SearchPreviousAlt": {
                     "description": "",
