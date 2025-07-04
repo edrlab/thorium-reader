@@ -140,7 +140,7 @@
         "deleteBookmarksText": "{{- bookmarkListLength}} yer im(ler)ini silmek istediğinize emin misiniz?",
         "deleteFeed": "Katalogu silmek istiyor musunuz?",
         "deletePublication": "Eseri silmek istiyor musunuz?",
-        "deletePublicationWithNotes": "",
+        "deletePublicationWithNotes": "Uyarı: Bu eserde açıklayıcı notlar ve/veya yer imleri bulunuyor, bunlar da silinecek! (Eğer bunları saklamak istiyorsanız, eseri silmeden önce notları dışa aktardığınızdan emin olun)",
         "import": "İçe aktarmayı onayla:",
         "importError": "Hata oluştu, dosya uzantısının ({{acceptedExtension}}) olduğunu doğrulayın.",
         "renew": "Yenilemek ya da ödünç almayı uzatmak istiyor musunuz?",
@@ -720,14 +720,14 @@
             "goToTitle": "Sayfaya git",
             "historyNext": "İleriye atla",
             "historyPrevious": "Geriye atla",
-            "infoTitle": "bilgi",
-            "magnifyingGlassButton": "eser ara",
-            "openTableOfContentsTitle": "gezinme",
+            "infoTitle": "Bilgi",
+            "magnifyingGlassButton": "Eser ara",
+            "openTableOfContentsTitle": "Gezinme",
             "page": "Sayfa",
             "pdfscalemode": "Sayfaya veya genişliğe sığdır",
-            "print": "yazdır",
-            "printDisabled": "",
-            "settingsTitle": "ayarlar"
+            "print": "Yazdır",
+            "printDisabled": "Yazdırma engellendi",
+            "settingsTitle": "Ayarlar"
         },
         "notes": {
             "colors": {
@@ -752,22 +752,22 @@
             "searchTitle": "Ara"
         },
         "print": {
-            "descriptionLcpCount": "",
-            "descriptionLcpPrintable": "",
-            "howTo": "",
-            "lcpInfo": "",
-            "noPagesLcpLimitReached": "",
-            "noPrintablePages": "",
+            "descriptionLcpCount": "Kalan sayfa limiti: {{- count}}",
+            "descriptionLcpPrintable": "Evvelce yazdırılmış sayfalar: {{- printable}} ({{- count}})",
+            "howTo": "Yazdırılacak sayfa aralığı/dizisi nasıl seçilir?",
+            "lcpInfo": "Bu eserde yazdırabileceğiniz sayfa sayısı {{- count}} ile sınırlıdır. Burada gerek duyduğunuz sayfaları seçin.",
+            "noPagesLcpLimitReached": "LCP limitine ulaştınız",
+            "noPrintablePages": "Yazdırılabilir sayfa yok",
             "pageHelpInfo": "Sayfa seçici dizilimleri:",
-            "pageHelpInfo1": "",
-            "pageHelpInfo2": "",
-            "pageHelpInfo3": "",
-            "pageHelpInfo4": "",
-            "pages": "",
-            "preview": "",
+            "pageHelpInfo1": "tek bir sayfayı belirtmek için bir sayfa numarası girin (örn. \"6\")",
+            "pageHelpInfo2": "Ardışık sayfaları belirtmek için tire karakteriyle ayrılmış iki sayfa numarası girin (örn. \"6-13\")",
+            "pageHelpInfo3": "Birden fazla sayfayı veya sayfa aralığını birbirlerinden ayırmak için noktalı virgül karakterini kullanın (örn. \"5;14-20;37\")",
+            "pageHelpInfo4": "Eserin ilk veya son sayfasından itibaren belirlenecek bir sayfaya kadar olan sayfa aralığını hariç tutmak için sayfa numaralarını belirtebilirsiniz. (örn. \"-16\", \"1-16\" aralığına tekabül eder; \"34-\", 100 sayfa olduğu farz edilen bir kitapta \"34-100\" anlamına gelir).",
+            "pages": "Sayfalar",
+            "preview": "Önizleme",
             "print": "Yazdır",
-            "printablePages": "",
-            "title": ""
+            "printablePages": "Yazdırılabilir sayfalar (toplamda)",
+            "title": "Yazdırılabilir sayfaların seçimi"
         },
         "settings": {
             "column": {
@@ -791,7 +791,7 @@
             "letterSpacing": "Harf aralığı",
             "lineSpacing": "Satır aralığı",
             "margin": "Kenar",
-            "mathjax": "",
+            "mathjax": "MathJax'ı etkinleştir",
             "noFootnotes": "Dipnot açılır pencerelerini devredışı bırak",
             "noRTLFlip": "Sağdan sola kullanıcı arayüzünü devredışı bırak",
             "noRuby": "Japonca Okutucuları Gizle",
@@ -806,79 +806,79 @@
                     "300pct": "%300",
                     "500pct": "%500",
                     "50pct": "%50",
-                    "fit": "",
-                    "width": ""
+                    "fit": "sayfaya sığdır",
+                    "width": "sayfa genişliği"
                 },
-                "title": ""
+                "title": "Yakınlaştırma"
             },
             "preset": {
-                "apply": "",
-                "applyDetails": "",
-                "detail": "",
-                "reset": "",
-                "resetDetails": "",
-                "save": "",
-                "saveDetails": "",
-                "title": ""
+                "apply": "Uygula",
+                "applyDetails": "Tercih ettiğiniz yapılandırmayı mevcut esere uygulayın.",
+                "detail": "Tercih ettiğiniz yapılandırmayı kaydedin / uygulayın / sıfırlayın.",
+                "reset": "Sıfırla",
+                "resetDetails": "Tercih ettiğiniz yapılandırmayı sıfırlayın (varsayılan ayarlar).",
+                "save": "Kaydet",
+                "saveDetails": "Bu eylem, geçerli yapılandırmayı, yani tercih ettiğiniz görüntüleme ve metin biçimlendirme seçeneklerini kaydeder. Ayarlar, daha sonra diğer okuyucu pencerelerindeki 'uygula' düğmesine tıklanarak diğer eserlere uygulanabilir.",
+                "title": "Tercihler"
             },
-            "preview": "",
-            "reduceMotion": "",
-            "scrolled": "",
-            "spacing": "",
-            "text": "",
+            "preview": "Önizleme",
+            "reduceMotion": "Hareketi azalt",
+            "scrolled": "Kaydırılabilir",
+            "spacing": "Aralık ayarları",
+            "text": "Metin ayarları",
             "theme": {
                 "name": {
-                    "Contrast1": "",
-                    "Contrast2": "",
-                    "Contrast3": "",
-                    "Contrast4": "",
-                    "Neutral": "",
-                    "Night": "",
-                    "Paper": "",
-                    "Sepia": ""
+                    "Contrast1": "Karşıt 1",
+                    "Contrast2": "Karşıt 2",
+                    "Contrast3": "Karşıt 3",
+                    "Contrast4": "Karşıt 4",
+                    "Neutral": "Nötral",
+                    "Night": "Gece",
+                    "Paper": "Kağıt",
+                    "Sepia": "Sepya"
                 },
-                "title": ""
+                "title": "Tema"
             },
-            "wordSpacing": ""
+            "wordSpacing": "Kelime aralığı"
         },
         "svg": {
-            "left": "",
-            "right": ""
+            "left": "Sol",
+            "right": "Sağ"
         },
         "toc": {
-            "publicationNoToc": ""
+            "publicationNoToc": "İçindekiler tablosu yok"
         },
         "tts": {
-            "activate": "",
-            "language": "",
-            "next": "",
-            "options": "",
-            "pause": "",
-            "play": "",
-            "previous": "",
-            "sentenceDetect": "",
-            "sentenceDetectDescription": "",
-            "speed": "",
-            "stop": "",
-            "voice": ""
+            "activate": "Metinden Sese (TTS) okumayı etkinleştir",
+            "language": "TTS dili",
+            "next": "Sonraki TTS",
+            "options": "TTS seçenekleri",
+            "pause": "TTS'i duraklat",
+            "play": "TTS'i oynat",
+            "previous": "Önceki TTS",
+            "sentenceDetect": "TTS için metni böl",
+            "sentenceDetectDescription": "Uzun paragrafları cümlelere böler.",
+            "speed": "TTS oynatım hızı",
+            "stop": "TTS'i durdur",
+            "voice": "TTS sesi"
         }
     },
     "settings": {
         "annotationCreator": {
-            "creator": "",
-            "help": "",
-            "name": "",
-            "organization": "",
-            "person": "",
-            "type": ""
+            "creator": "Açıklayıcı not oluşturucu (isteğe bağlı)",
+            "help": "Belirtilirse, bu isim dışa aktarılan notların meta verilerine dahil edilecektir.",
+            "name": "İsim",
+            "organization": "Organizasyon",
+            "person": "Şahıs",
+            "type": "Tür:"
         },
         "auth": {
-            "help": "",
-            "title": "",
-            "wipeData": ""
+            "help": "Bu işlem tüm OPDS oturum açma kimlik bilgilerini siler.",
+            "title": "Eser kataloglarına erişim",
+            "wipeData": "Oturum açma verilerini temizle"
         },
         "keyboard": {
-            "advancedMenu": "",
+            "advancedMenu": "Klavye kısayolları gelişmiş menüsü",
             "cancel": "",
             "disclaimer": "",
             "editUserJson": "",
