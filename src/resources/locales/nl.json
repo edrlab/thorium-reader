@@ -755,19 +755,19 @@
             "descriptionLcpCount": "Nog te lezen pagina's:",
             "descriptionLcpPrintable": "Voorgaand uitgeprinte pagina's:",
             "howTo": "Hoe selecteer je het bereik van uit te printen pagina's",
-            "lcpInfo": "Het aantal van pagina's die je kan uitprinten in deze publicatie is gelimiteerd tot. Kies hier de pagina's die je nodig hebt.",
-            "noPagesLcpLimitReached": "",
-            "noPrintablePages": "",
-            "pageHelpInfo": "pagina bereik hulp informatie :",
-            "pageHelpInfo1": " - geef een pagina nummer op om naar een enkele pagina te verwijzen (b.v. \"6\")",
-            "pageHelpInfo2": " - geef twee paginanummers op verbonden met een streepje om naar een aangesloten bereik van pagina's te verwijzen (b.v. \"6-13\")",
-            "pageHelpInfo3": " - gebruik een puntkomma om meerdere pagina's of pagina bereiken te scheiden (b.v. \"5;14-20;37\")",
-            "pageHelpInfo4": " - laat het eerste of laatste paginanummer weg in een bereik om te verwijzen naar de eerste of laatste pagina van een publicatie (b.v. \"-16\" is gelijk aan \"1-16\", en \"34-\" is gelijk aan \"34-100\" uitgaande van een boek met 100 pagina's in totaal)",
+            "lcpInfo": "Het aantal van pagina's die je kan uitprinten in deze publicatie is gelimiteerd tot {{- count}}. Kies hier de pagina's die je nodig hebt.",
+            "noPagesLcpLimitReached": "Je hebt het limiet van de LCP pagina lading bereikt",
+            "noPrintablePages": "Geen printbare pagina's",
+            "pageHelpInfo": "Pagina bereik hulp informatie:",
+            "pageHelpInfo1": "geef een pagina nummer op om naar een enkele pagina te verwijzen (b.v. \"6\")",
+            "pageHelpInfo2": "geef twee paginanummers op verbonden met een streepje om naar een aangesloten bereik van pagina's te verwijzen (b.v. \"6-13\")",
+            "pageHelpInfo3": "gebruik een puntkomma om meerdere pagina's of pagina bereiken te scheiden (b.v. \"5;14-20;37\")",
+            "pageHelpInfo4": "laat het eerste of laatste paginanummer weg in een bereik om te verwijzen naar de eerste of laatste pagina van een publicatie (b.v. \"-16\" is gelijk aan \"1-16\", en \"34-\" is gelijk aan \"34-100\" uitgaande van een boek met 100 pagina's in totaal)",
             "pages": "Pagina's",
-            "preview": "",
+            "preview": "Voorbeeld",
             "print": "Afdrukken",
-            "printablePages": "",
-            "title": ""
+            "printablePages": "Pintbare pagina's (totaal)",
+            "title": "Selectie van printbare pagina's"
         },
         "settings": {
             "column": {
@@ -791,7 +791,7 @@
             "letterSpacing": "Letterafstand",
             "lineSpacing": "Regelafstand",
             "margin": "Marge",
-            "mathjax": "",
+            "mathjax": "Schakel MathJax in",
             "noFootnotes": "Verberg pop-up voetnoten",
             "noRTLFlip": "Schakel de rechts-naar-links-UI uit",
             "noRuby": "Verberg Japanse Ruby",
@@ -880,41 +880,41 @@
         "keyboard": {
             "advancedMenu": "Menu",
             "cancel": "Annuleer",
-            "disclaimer": "Snelkoppelingen zijn gedefinieerd op basis van de QWERTY-toetsenbordindeling.",
+            "disclaimer": "Snelkoppelingen zijn gedefinieerd op basis van de QWERTY-toetsenbordindeling",
             "editUserJson": "Wijzig gebruikersbestand...",
             "keyboardShortcuts": "Toetsenbord shortcuts",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "",
-                    "name": ""
+                    "description": "Open het bladwijzer aanmaak venster en pas de tekst label (notitie), kleur en tag aan",
+                    "name": "Maak een Bladwijzer aan met Label"
                 },
                 "AnnotationsCreate": {
-                    "description": "",
-                    "name": ""
+                    "description": "Open het annotatie aanmaak venster voor de geselecteerde document tekst, en pas de tekst notitie, arceer kleur en type, en de tag aan",
+                    "name": "Maak Annotatie aan"
                 },
                 "AnnotationsCreateQuick": {
-                    "description": "",
-                    "name": ""
+                    "description": "Maak snel een annotatie voor de geselecteerde tekst aan, met de laatst gebruikte arceer kleur en type (notitie en tag zullen leeg zijn)",
+                    "name": "Maak Snelle Annotatie Aan"
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verwissel de visuele indicaties van de annotatie en bladwijzer, in of het document marge of de tekst",
+                    "name": "Schakelaar Annotatie Marge"
                 },
                 "AudioNext": {
                     "description": "",
-                    "name": ""
+                    "name": "Volgend Audio Fragment"
                 },
                 "AudioNextAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Volgend Audiofragment (verlaat)"
                 },
                 "AudioPlayPause": {
-                    "description": "",
-                    "name": ""
+                    "description": "Schakelaar speel/pauzeer voor huidige vertelling (EPUB3 Media Overlappingen, Tekst naar Spraak hardop voorlezen, of vooraf opgenomen audioboek)",
+                    "name": "Speel/Pauzeer Audio"
                 },
                 "AudioPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "Spring terug naar vorig audiofragment in de vertelling (EPUB3 Media Overlappingen, Tekst naar Spraak hardop voorlezen, of voorgaand opgenomen audioboek)",
+                    "name": "Vorig Audio Fragment"
                 },
                 "AudioPreviousAlt": {
                     "description": "",
