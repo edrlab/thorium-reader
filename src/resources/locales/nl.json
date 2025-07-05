@@ -1081,11 +1081,11 @@
                     "name": "Zoekresultaat Volgende"
                 },
                 "SearchNextAlt": {
-                    "description": "In de zoektool van het leesvenster, ga naar volgend zoekresultaat. Dit is een alternatief toetsenbord sneltoets dan de standaard.",
-                    "name": ""
+                    "description": "In de zoektool van het leesvenster, ga naar volgend zoekresultaat. Dit is een alternatief toetsenbord sneltoets dan de standaard",
+                    "name": "Zoekresultaat Volgende (Alternatief)"
                 },
                 "SearchPrevious": {
-                    "description": "",
+                    "description": "In de zoektool van het leesvenster, ga naar volgend zoekresultaat. Merk op dat er een alternatieve toetsenbord sneltoets is voor deze standaard sneltoets",
                     "name": ""
                 },
                 "SearchPreviousAlt": {
