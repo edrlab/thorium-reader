@@ -1022,59 +1022,59 @@
                 },
                 "NavigatePreviousChapter": {
                     "description": "In het leesvenster, navigeer naar het volgende document in de leesvolgorde van de publicatie (bijv. hoofdstuk in de boekenrug). Merk op dat er een alternatieve toetsenbord sneltoets is voor deze standaard sneltoets",
-                    "name": "Ga naar Volgend Hoofdstuk"
+                    "name": "Ga naar Vorig Hoofdstuk"
                 },
                 "NavigatePreviousChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, navigeer nar het vorige document in de voorleesvolgorde van de publicatie (bijv. hoofdstuk in de boekenrug). Dit is een alternatief toetsenbord sneltoets dan de standaard",
+                    "name": "Ga naar Vorig Hoofstuk (Alternatief)"
                 },
                 "NavigatePreviousHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, spring één stap terug in de navigatie geschiedenis",
+                    "name": "Ga naar Vorige Geschiedenis"
                 },
                 "NavigatePreviousLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het bibliotheekventer, laat vorige pagina van een gepagineerde lijst van publicaties zien. Merk op dat er een alternatieve toetsenbord sneltoets is voor deze standaard sneltoets",
+                    "name": "Ga naar Vorige Bibliotheek Pagina"
                 },
                 "NavigatePreviousLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het bibliotheekvenster, laat vorige pagina van een gepagineerde lijst van publicaties zien. Dit is een alternatief toetsenbord sneltoets dan de standaard",
+                    "name": "Ga naar Vorige Bibliotheek Pagina (Alternatief)"
                 },
                 "NavigatePreviousOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het bibliotheekventer voor catalogen / OPDS laadpagina, volg de vorige gepagineerde link. Merk op dat er een alternatieve toetsenbord sneltoets is voor deze standaard sneltoets",
+                    "name": "Ga naar de Vorige OPDS Cataloogpagina"
                 },
                 "NavigatePreviousOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het bibliotheekventer voor catalogen / OPDS laadpagina, volg de vorige gepagineerde link. Dit is een alternatief toetsenbord sneltoets dan de standaard",
+                    "name": "Ga naar de vorige OPDS Cataloogpagina (Alternatief)"
                 },
                 "NavigatePreviousPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het voorleesvenster, sla de vorige 'pagina' in de publicatie om. Merk op dat er een alternatieve toetsenbord sneltoets is voor deze standaard sneltoets",
+                    "name": "Ga naar de vorige pagina"
                 },
                 "NavigatePreviousPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, sla de vorige 'pagina' in de publicatie om. Dit is een alternatief toetsenbord sneltoets dan de standaard",
+                    "name": "Ga naar Vorige Pagina (Alternatief)"
                 },
                 "NavigateToBegin": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, ga naar het begin van de publicatie",
+                    "name": "Ga naar Begin"
                 },
                 "NavigateToEnd": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, ga naar einde van de publicatie",
+                    "name": "Ga naar einde"
                 },
                 "OpenReaderInfo": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, open het informatie dialoog voor de publicatie",
+                    "name": "Toon Publicatie Informatie"
                 },
                 "OpenReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, open het pop-up dialoog dat informatie toont over de publicatie, en focus het toetsenbord op de sectie dat de context van de huidige lees locatie toont",
+                    "name": "Toon Publicatie Informatie, Toon Lees Locatie"
                 },
                 "Print": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, open het print dialoog",
+                    "name": "Print"
                 },
                 "SearchNext": {
                     "description": "",
