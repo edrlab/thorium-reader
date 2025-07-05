@@ -1021,8 +1021,8 @@
                     "name": "Ga naar de Volgende Pagina (Alternatief)"
                 },
                 "NavigatePreviousChapter": {
-                    "description": "In het leesvenster, navigeer naar het volgende document in de leesvolgorde van de publicatie (bijv. hoofdstuk de boekenrug). Merk op dat er een alternatieve toetsenbord sneltoets is voor deze standaard sneltoets",
-                    "name": ""
+                    "description": "In het leesvenster, navigeer naar het volgende document in de leesvolgorde van de publicatie (bijv. hoofdstuk in de boekenrug). Merk op dat er een alternatieve toetsenbord sneltoets is voor deze standaard sneltoets",
+                    "name": "Ga naar Volgend Hoofdstuk"
                 },
                 "NavigatePreviousChapterAlt": {
                     "description": "",
