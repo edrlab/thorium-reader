@@ -595,7 +595,7 @@
         "lcpRightsPrint": "Toegestaan aantal af te drukken pagina's",
         "lcpStart": "Start",
         "licenceLCP": "Licentie (LCP)",
-        "licenseCertificateDateInvalid": "Certificaat LCP aanbieder verlopen. ({{- dateTime}})",
+        "licenseCertificateDateInvalid": "Certificaat LCP aanbieder verlopen. ({{- dateTime}}).",
         "licenseOutOfDate": "LCP Licentie is verlopen.",
         "licenseSignatureInvalid": "Ongeldige LCP Licentie handtekening.",
         "licensed": "Gelicentieerd",
@@ -752,8 +752,8 @@
             "searchTitle": "Zoek:"
         },
         "print": {
-            "descriptionLcpCount": "Nog te lezen pagina's:",
-            "descriptionLcpPrintable": "Voorgaand uitgeprinte pagina's:",
+            "descriptionLcpCount": "Nog te lezen pagina's: {{- count}}",
+            "descriptionLcpPrintable": "Voorgaand uitgeprinte pagina's: {{- printable}} ({{- count}})",
             "howTo": "Hoe selecteer je het bereik van uit te printen pagina's",
             "lcpInfo": "Het aantal van pagina's die je kan uitprinten in deze publicatie is gelimiteerd tot {{- count}}. Kies hier de pagina's die je nodig hebt.",
             "noPagesLcpLimitReached": "Je hebt het limiet van de LCP paginalading bereikt",
@@ -929,11 +929,11 @@
                     "name": "Sluit Lezer"
                 },
                 "FXLZoomIn": {
-                    "description": "Vergoot in een vast lay-out enkele pagina of twee pagina's",
+                    "description": "Vergoot in een vast lay-out enkele pagina of twee pagina's.",
                     "name": "FXL Vergroot In"
                 },
                 "FXLZoomOut": {
-                    "description": "Vergoot uit een vaste lay-out enkele pagina of twee pagina's",
+                    "description": "Vergoot uit een vaste lay-out enkele pagina of twee pagina's.",
                     "name": "FXL Vergroot Uit"
                 },
                 "FXLZoomReset": {
@@ -1129,7 +1129,7 @@
             "title": "Stel sessie bewaring in"
         },
         "tabs": {
-            "appearance": "Weergave",
+            "appearance": "Verschijning",
             "general": "Algemeen",
             "keyboardShortcuts": "Toetsenbord sneltoetsen"
         },
