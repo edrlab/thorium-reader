@@ -1085,29 +1085,29 @@
                     "name": "Zoekresultaat Volgende (Alternatief)"
                 },
                 "SearchPrevious": {
-                    "description": "In de zoektool van het leesvenster, ga naar volgend zoekresultaat. Merk op dat er een alternatieve toetsenbord sneltoets is voor deze standaard sneltoets",
-                    "name": ""
+                    "description": "In de zoektool van het leesvenster, ga naar vorig zoekresultaat. Merk op dat er een alternatieve toetsenbord sneltoets is voor deze standaard sneltoets",
+                    "name": "Zoekresultaat Vorige"
                 },
                 "SearchPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "In de zoektool van het leesvenster, ga naar het vorige zoekresultaat. Dit is een alternatief toetsenbord sneltoets dan de standaard",
+                    "name": "Zoekresultaat Vorige (Alternatief)"
                 },
                 "SpeakReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, beschrijf de context van de huidige lees locatie, doormiddel van spraak tekst dat compatibel is met schermlezers",
+                    "name": "Beschrijf Lees Locatie (Spraak)"
                 },
                 "ToggleBookmark": {
-                    "description": "",
-                    "name": ""
+                    "description": "Voeg een nieuwe bladwijzer toe of verwijder een bestaande als deze momenteel geselecteerd is",
+                    "name": "Schakelaar Bladwijzer"
                 },
                 "ToggleReaderFullscreen": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, activeer systeem volledig scherm of herstel normaal venster modus. Merk op dat dit anders is van de 'zen modus' wat het gebruikersinterface versimpelt",
+                    "name": "Schakelaar Volledig Scherm"
                 }
             },
-            "loadUserJson": "Haal uit gebruikersbestand",
-            "noShortcutFound": "",
-            "resetDefaults": "Terug (naar oorspronkelijke instellingen)",
+            "loadUserJson": "Laad uit gebruikersbestand",
+            "noShortcutFound": "Geen snelkoppeling/sneltoets gevonden met dit label",
+            "resetDefaults": "Terug (naar standaardinstellingen)",
             "save": "Bewaar",
             "searchPlaceholder": ""
         },
