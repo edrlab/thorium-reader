@@ -949,55 +949,55 @@
                     "name": "Diepe Focus op Hoofdinhoud"
                 },
                 "FocusReaderGotoPage": {
-                    "description": "Verplaats de toetsenbordfocus naar de 'ga naar pagina' sectie in het navigatie paneel van het leesvenster",
+                    "description": "Verplaats de toetsenbordfocus naar de 'ga naar pagina' sectie in het navigatiepaneel van het leesvenster",
                     "name": "Focus op 'Ga naar Pagina"
                 },
                 "FocusReaderNavigation": {
                     "description": "Verplaats de toetsenbordfocus naar het navigatiepaneel van het leesvenster",
-                    "name": ""
+                    "name": "Focus op Navigatiepaneel"
                 },
                 "FocusReaderNavigationAnnotations": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verplaats de toetsenbordfocus naar de 'annotatie' sectie van het navigatiepaneel van het leesvenster",
+                    "name": "Focus op 'Annotaties'"
                 },
                 "FocusReaderNavigationBookmarks": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verplaats de toetsenbordfocus naar de 'bladwijzers' sectie van het navigatie paneel van het leesvenster",
+                    "name": "Focus op 'Bladwijzers'"
                 },
                 "FocusReaderNavigationSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verplaats de toetsenbordfocus naar de 'zoek' sectie van het navigatie paneel van het leesvenster",
+                    "name": "Focus op 'Zoek'"
                 },
                 "FocusReaderNavigationTOC": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verplaats de toetsenbordfocus naar de 'inhoudsopgave' sectie van het navigatie paneel van het leesvenster",
+                    "name": "Focus op 'inhoudsopgave'"
                 },
                 "FocusReaderSettings": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verplaats de toetsenbordfocus naar het instellingspaneel van het leesvenster (voorvertoning voorkeuren, enz.)",
+                    "name": "Focus op Lezer Instellingen"
                 },
                 "FocusSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verplaats de toetsenbordfocus naar het tekst zoekveld van het leesvenster, of naar het bibliotheekvenster dit doorzoekt de boekenplanken of het actieve OPDS laadpagina",
+                    "name": "Zoek Commando"
                 },
                 "FocusToolbar": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verplaats de toetsenbordfocus direct naar het oriëntatiepunt gebied van de grafische gebruikersinterface voorgaand aan de 'overslaan-link' (deze verplaatst de focus van het hoofdcontent gebied naar de bibliotheek of het leesvenster)",
+                    "name": "Focus op Werkbalk"
                 },
                 "NavigateNextChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, navigeer naar het volgende document in de leesvolgorde van de publicatie (bijv. hoofdstuk in de boek rug). Houd er rekening mee dat er een alternatieve sneltoets is voor deze standaard",
+                    "name": "Ga naar Volgend Hoofdstuk"
                 },
                 "NavigateNextChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, navigeer naar het volgende document in de leesvolgorde van de publicatie (bijv. hoofdstuk in de boek rug). Dit is een alternatieve sneltoets dan de standaard",
+                    "name": "Ga naar Volgend Hoofdstuk (Alternatief)"
                 },
                 "NavigateNextHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, spring één stap vooruit naar de navigatie geschiedenis",
+                    "name": "Ga naar Volgende Geschiedenis"
                 },
                 "NavigateNextLibraryPage": {
-                    "description": "",
+                    "description": "In het bibliotheekventer, toon de volgende pagina van een gepagineerde lijst van publicaties. Merk op dat er een alternatieve toetsenbord sneltoets is voor deze standaard sneltoets.",
                     "name": ""
                 },
                 "NavigateNextLibraryPageAlt": {
