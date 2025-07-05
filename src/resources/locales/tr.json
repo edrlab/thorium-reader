@@ -879,46 +879,46 @@
         },
         "keyboard": {
             "advancedMenu": "Klavye kısayolları gelişmiş menüsü",
-            "cancel": "",
-            "disclaimer": "",
-            "editUserJson": "",
-            "keyboardShortcuts": "",
+            "cancel": "İptal",
+            "disclaimer": "Uygulama varsayılanları, QWERTY klavye düzenindeki tuşların fiziki konumları esas alınarak tasarlanmıştır",
+            "editUserJson": "Kullanıcı dosyasını düzenle...",
+            "keyboardShortcuts": "Klavye kısayolları",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "",
-                    "name": ""
+                    "description": "Yer imi oluşturma iletişim kutusunu aç ve metinsel etiketi (not), rengi ve etiketi düzenle",
+                    "name": "Etiket ile Yer İmi oluştur"
                 },
                 "AnnotationsCreate": {
-                    "description": "",
-                    "name": ""
+                    "description": "Seçilen belge metni için açıklayıcı not  oluşturma iletişim kutusunu aç ve metinsel notu, vurgu rengi ile türünü ve etiketi düzenle",
+                    "name": "Açıklayıcı Not Oluştur"
                 },
                 "AnnotationsCreateQuick": {
-                    "description": "",
-                    "name": ""
+                    "description": "Seçili metin için son kullanılan vurgu rengi ve türüyle hızlıca bir açıklayıcı not oluştur (not ve etiket boş olacaktır)",
+                    "name": "Hızlıca Açıklayıcı Not Oluştur"
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "",
-                    "name": ""
+                    "description": "Açıklayıcı not ve yer imi belirteçlerinin belge kenarında görüntülenmesi veya metinde görüntülenmesi arasında geçiş yap",
+                    "name": "Açıklayıcı Notların Belge Kenarında veya Metinde Görüntülenmesi Arasında Geçiş Yap"
                 },
                 "AudioNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "Sesli okuma esnasında, bir sonraki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya sesli kitap.)",
+                    "name": "Sonraki Sesli Bölüm"
                 },
                 "AudioNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Sesli okuma esnasında, bir sonraki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya sesli kitap.) Bu, mevcuttaki geçilebilir yapıları atlar",
+                    "name": "Sonraki sesli bölüm (kaçın)"
                 },
                 "AudioPlayPause": {
-                    "description": "",
-                    "name": ""
+                    "description": "Mevcut sesli oynatımı oynat/duraklat (EPUB3 medya katmanları, metinden sese okumalar veya önceden kaydedilmiş sesli kitaplar)",
+                    "name": "Oynat/Duraklat"
                 },
                 "AudioPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "Sesli okuma esnasında, bir önceki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya sesli kitap.)",
+                    "name": "Önceki Sesli Bölüm"
                 },
                 "AudioPreviousAlt": {
                     "description": "Sesli okuma esnasında, bir önceki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya sesli kitap.) Bu, mevcuttaki geçilebilir yapıları atlar",
-                    "name": "Önceki sesli bölüme git (kaçın)"
+                    "name": "Önceki sesli bölüm (kaçın)"
                 },
                 "AudioStop": {
                     "description": "Mevcut sesli oynatımı durdur (EPUB3 medya katmanları, metinden sese okumalar veya önceden kaydedilmiş sesli kitaplar)",
