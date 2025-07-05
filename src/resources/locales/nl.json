@@ -335,11 +335,11 @@
             },
             "conformance-details-epub-accessibility-1-0": {
                 "compact": "EPUB Toegankelijkheid 1.0",
-                "descriptive": "EPUB Accessibility 1.0"
+                "descriptive": "EPUB Toegankelijkheid 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "EPUB Accessibility 1.1",
-                "descriptive": "EPUB Accessibility 1.1"
+                "compact": "EPUB Toegankelijkheid 1.1",
+                "descriptive": "EPUB Toegankelijkheid 1.1"
             },
             "conformance-details-level-a": {
                 "compact": "Niveau A",
@@ -673,7 +673,7 @@
             "title": "Beeldviewer (zoom)",
             "zoomIn": "Inzoomen",
             "zoomOut": "Uitzoomen",
-            "zoomReset": "Herstel vergroting"
+            "zoomReset": "Herstel Vergroting"
         },
         "marks": {
             "annotations": "Annotaties",
@@ -682,7 +682,7 @@
             "edit": "Wijzig",
             "goTo": "Ga naar pagina",
             "landmarks": "structuur elementen",
-            "saveMark": "Opslaan",
+            "saveMark": "Sla op",
             "search": "Zoek",
             "searchResult": "Zoek [{{- searchText}}]",
             "toc": "Inhoudsopgave"
@@ -756,7 +756,7 @@
             "descriptionLcpPrintable": "Voorgaand uitgeprinte pagina's:",
             "howTo": "Hoe selecteer je het bereik van uit te printen pagina's",
             "lcpInfo": "Het aantal van pagina's die je kan uitprinten in deze publicatie is gelimiteerd tot {{- count}}. Kies hier de pagina's die je nodig hebt.",
-            "noPagesLcpLimitReached": "Je hebt het limiet van de LCP pagina lading bereikt",
+            "noPagesLcpLimitReached": "Je hebt het limiet van de LCP paginalading bereikt",
             "noPrintablePages": "Geen printbare pagina's",
             "pageHelpInfo": "Pagina bereik hulp informatie:",
             "pageHelpInfo1": "geef een pagina nummer op om naar een enkele pagina te verwijzen (b.v. \"6\")",
@@ -885,11 +885,11 @@
             "keyboardShortcuts": "Toetsenbord shortcuts",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "Open het bladwijzer aanmaak venster en pas de tekst label (notitie), kleur en tag aan",
+                    "description": "Open het bladwijzer aanmaakvenster en pas de tekst label (notitie), kleur en tag aan",
                     "name": "Maak een Bladwijzer aan met Label"
                 },
                 "AnnotationsCreate": {
-                    "description": "Open het annotatie aanmaak venster voor de geselecteerde document tekst, en pas de tekst notitie, arceer kleur en type, en de tag aan",
+                    "description": "Open het annotatie aanmaakvenster voor de geselecteerde document tekst, en pas de tekst notitie, arceer kleur en type, en de tag aan",
                     "name": "Maak Annotatie aan"
                 },
                 "AnnotationsCreateQuick": {
@@ -901,11 +901,11 @@
                     "name": "Schakelaar Annotatie Marge"
                 },
                 "AudioNext": {
-                    "description": "",
+                    "description": "Verplaats Vooruit naar het volgende audio fragment in de vertelling (EPUB3 Media Overlappingen, Tekst Naar Spraak, of voorafgaand opgenomen audioboek)",
                     "name": "Volgend Audiofragment"
                 },
                 "AudioNextAlt": {
-                    "description": "",
+                    "description": "Verplaats Vooruit naar volgend audio fragment in de vertelling (EPUB3 Media Overlappingen, Tekst Naar Spraak, of voorafgaand opgenomen audioboek). Dit slaat alle huidige verlaatbare structuren over",
                     "name": "Volgend Audiofragment (verlaat)"
                 },
                 "AudioPlayPause": {
@@ -1107,26 +1107,26 @@
             },
             "loadUserJson": "Laad uit gebruikersbestand",
             "noShortcutFound": "Geen snelkoppeling/sneltoets gevonden met dit label",
-            "resetDefaults": "Terug (naar standaardinstellingen)",
+            "resetDefaults": "Herstel (naar standaardinstellingen)",
             "save": "Bewaar",
-            "searchPlaceholder": ""
+            "searchPlaceholder": "Typ om een sneltoets/snelkoppeling te zoeken"
         },
         "language": {
-            "languageChoice": "Taal keuze"
+            "languageChoice": "Taal"
         },
         "library": {
             "enableAPIAPP": "Het 'PNB'-bibliotheeksysteem activeren",
-            "title": "Toegang tot Franse bibliotheek accounts"
+            "title": "Toegang tot Franse bibliotheekaccounts"
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "PAS STANDAARD TEMPLATE TOE",
-                "enableCheckbox": "",
-                "overrideHTMLTemplate": ""
+                "applyDefaultTemplate": "Laad standaard template",
+                "enableCheckbox": "Pas het standaard HTML template aan",
+                "overrideHTMLTemplate": "Notities exporteren (annotaties en bladwijzers)"
             }
         },
         "session": {
-            "title": "Bewaar sessie"
+            "title": "Stel sessie bewaring in"
         },
         "tabs": {
             "appearance": "Weergave",
@@ -1136,14 +1136,14 @@
         "theme": {
             "auto": "Automatisch",
             "dark": "Donker",
-            "description": "Het applicatiethema komt overeen met dat van het besturingssysteem.",
+            "description": "Het applicatiethema is gelijk aan het besturingssysteem.",
             "light": "Licht",
-            "title": "Applicatie thema"
+            "title": "Applicatie Thema"
         }
     },
     "tts": {
         "highlight": {
-            "mainColor": "Hoofd kleur",
+            "mainColor": "Hoofdkleur",
             "maskBlockWordOutline": "Maskeer Blok, Woord Omtrek",
             "maskBlockWordSolidBackground": "Maskeer Blok, Woord Effen Achtergrond",
             "maskBlockWordUnderline": "Maskeer Blok, Woord Onderstreept",
@@ -1153,11 +1153,11 @@
             "outlineWordOutline": "Omlijnt, Woord Omlijnt",
             "outlineWordSolidBackground": "Omlijnt, Woord Effen Achtergrond",
             "outlineWordUnderline": "Omlijnt, Woord Onderstreept",
-            "preview": "Tekst Naar Spraak Voorbeeld Stijl Markeren",
+            "preview": "Tekst Naar Spraak voorbeeld markeerstijl",
             "solidBackgroundWordOutline": "Effen Achtergrond, Woord Omlijnt",
-            "solidBackgroundWordSolidBackground": "Effen achtergrond, woord effen achtergrond",
+            "solidBackgroundWordSolidBackground": "Effen Achtergrond, Woord Effen Achtergrond",
             "solidBackgroundWordUnderline": "Effen Achtergrond, Woord Onderstreept",
-            "style": "Tekst Naar Spraak, Stijl Markeren",
+            "style": "Tekst Naar Spraak, markeer stijl",
             "underlineWordOutline": "Onderstreept, Woord Omlijnt",
             "underlineWordSolidBackground": "Onderstreept, Woord Effen Achtergrond",
             "underlineWordUnderline": "Onderstreept, Woord Onderstreept",
@@ -1171,24 +1171,24 @@
             "next": "Volgende"
         },
         "description": {
-            "annotations": "Markeer documenttekst, kies stijl en kleur, voeg persoonlijke notities toe. Maak annotaties in de 'snelle' modus om de editor te omzeilen (u kunt later tekst invoeren en stijlen aanpassen). Gebruik voor extra snelheid de 'instant'-modus die annotaties maakt onmiddellijk na het markeren van documenttekst!",
-            "catalogs": "Leen publicaties uit uw plaatselijke bibliotheek of ontdek publicaties via OPDS-feeds. Krijg toegang tot een verscheidenheid aan publicaties uit meerdere bronnen dankzij online catalogi.",
+            "annotations": "Markeer document tekst, kies stijl en kleur, voeg persoonlijke notities toe. Maak annotaties in de 'snelle' modus om de editor te omzeilen (je kunt later tekst invoeren en stijlen aanpassen). Gebruik voor extra snelheid de 'directe' modus die annotaties maakt onmiddellijk na het markeren van document tekst!",
+            "catalogs": "Leen publicaties uit je lokale bibliotheek of ontdek publicaties via de OPDS laadpagina. Krijg toegang tot een variatie aan publicaties uit meerdere bronnen dankzij online catalogi.",
             "home": "Thorium ziet er anders uit! Ontdek wat er nieuw is...",
-            "readingView1": "Pas uw lees- en luistervoorkeuren aan: Thorium biedt nu meerdere kleurthema's voor zowel de gebruikersinterface als voor de publicaties. Het is nu ook eenvoudiger om 'readaloud'-e-books te configureren met synthetische spraak en gesynchroniseerde tekst/audio-weergave.",
-            "readingView2": "De verbeterde gebruikersinterface van Thorium maakt het gemakkelijker om tekst in publicaties te vinden, zoekresultaten te verkennen, naar specifieke pagina's te gaan, door de inhoudsopgave te bladeren, bladwijzers te maken, enz. dankzij de nieuwe 'gedockte' panelen. De leesmodus op volledig scherm blijft een afleidingsvrije omgeving bieden.",
-            "yourBooks": "Welkom bij je opnieuw ontworpen persoonlijke boekenplank! In de 'raster'-weergave filter je eenvoudig op tags of vind je publicaties op trefwoorden. In de geavanceerde 'tabel'-weergave selecteert en sorteert u publicaties op specifieke auteurs, titel, datum, formaat, enz."
+            "readingView1": "Pas je lees- en luistervoorkeuren aan: Thorium biedt nu meerdere kleurthema's voor zowel de gebruikersinterface en de gepubliceerde documenten. Het is nu ook gemakkelijker om 'hardop voorlezende' e-books te configureren met synthetische spraak en gesynchroniseerde tekst/audio-weergave.",
+            "readingView2": "Thorium's verbeterde gebruikersinterface maakt het gemakkelijker om tekst in publicaties te vinden, zoekresultaten te verkennen, naar specifieke pagina's te gaan, door de inhoudsopgave te bladeren, bladwijzers te maken, enz. dankzij de nieuwe 'gekoppelde' panelen. De leesmodus op volledig scherm blijft een afleidingsvrije omgeving bieden.",
+            "yourBooks": "Welkom bij je herontworpen persoonlijke boekenplank! In de 'raster'-weergave, filter je makkelijk op tags of vind je publicaties met trefwoorden. In de geavanceerde 'tabel'-weergave selecteert en sorteert je publicaties op specifieke auteurs, titel, datum, formaat, enz."
         },
-        "dontShow": "Niet meer laten zien",
+        "dontShow": "Niet meer laten zien, verberg",
         "tab": {
             "annotations": "Annotaties",
             "catalogs": "Catalogi",
-            "home": "Home",
+            "home": "Startpagina",
             "readingView": "Leesweergave",
             "yourBooks": "Jouw publicaties"
         },
         "title": {
             "allBooks": "Al mijn publicaties",
-            "newFeature": "Nieuwe functie: annotaties",
+            "newFeature": "Nieuwe functie: Annotaties",
             "welcome": "Welkom bij Thorium 3.0"
         }
     }
