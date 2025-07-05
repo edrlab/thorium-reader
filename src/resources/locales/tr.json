@@ -918,10 +918,10 @@
                 },
                 "AudioPreviousAlt": {
                     "description": "Sesli okuma esnasında, bir önceki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya sesli kitap.) Bu, mevcuttaki geçilebilir yapıları atlar",
-                    "name": "Önceki sesli bölüm (kaçın)"
+                    "name": "Önceki Sesli Bölüm (kaçın)"
                 },
                 "AudioStop": {
-                    "description": "Mevcut sesli oynatımı durdur (EPUB3 medya katmanları, metinden sese okumalar veya önceden kaydedilmiş sesli kitaplar)",
+                    "description": "Mevcut sesli oynatımı durdur (EPUB3 Medya Katmanları, Metinden Sese okumalar veya önceden kaydedilmiş sesli kitaplar)",
                     "name": "Sesli Oynatımı Durdur"
                 },
                 "CloseReader": {
