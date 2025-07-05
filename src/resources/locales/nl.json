@@ -985,7 +985,7 @@
                     "name": "Focus op Werkbalk"
                 },
                 "NavigateNextChapter": {
-                    "description": "In het leesvenster, navigeer naar het volgende document in de leesvolgorde van de publicatie (bijv. hoofdstuk in de boek rug). Houd er rekening mee dat er een alternatieve sneltoets is voor deze standaard",
+                    "description": "In het leesvenster, navigeer naar het volgende document in de leesvolgorde van de publicatie (bijv. hoofdstuk in de boek rug).  Merk op dat er een alternatieve toetsenbord sneltoets is voor deze standaard sneltoets.",
                     "name": "Ga naar Volgend Hoofdstuk"
                 },
                 "NavigateNextChapterAlt": {
@@ -997,7 +997,7 @@
                     "name": "Ga naar Volgende Geschiedenis"
                 },
                 "NavigateNextLibraryPage": {
-                    "description": "In het bibliotheekventer, toon de volgende pagina van een gepagineerde lijst van publicaties. Merk op dat er een alternatieve toetsenbord sneltoets is voor deze standaard sneltoets.",
+                    "description": "In het bibliotheekventer, toon de volgende pagina van een gepagineerde lijst van publicaties. Merk op dat er een alternatieve toetsenbord sneltoets is voor deze standaard sneltoets",
                     "name": ""
                 },
                 "NavigateNextLibraryPageAlt": {
