@@ -1009,19 +1009,19 @@
                     "name": "Ga naar volgende OPDS Cataloogpagina"
                 },
                 "NavigateNextOPDSPageAlt": {
-                    "description": "In het bibliotheekventer voor catalogen / OPDS laadpagina, volg de volgende gepagineerde link. Dit is een alternatief toetsenbord sneltoets dan de standaard.",
-                    "name": ""
+                    "description": "In het bibliotheekventer voor catalogen / OPDS laadpagina, volg de volgende gepagineerde link. Dit is een alternatief toetsenbord sneltoets dan de standaard",
+                    "name": "Ga naar de Volgende OPDS Cataloogpagina (Alternatief)"
                 },
                 "NavigateNextPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, sla om naar de volgende 'pagina' in de publicatie. Merk op dat er een alternatieve toetsenbord sneltoets is voor deze standaard sneltoets",
+                    "name": "Ga naar Volgende Pagina"
                 },
                 "NavigateNextPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, sla om naar volgende 'pagina' in de publicatie. Dit is een alternatief toetsenbord sneltoets dan de standaard",
+                    "name": "Ga naar de Volgende Pagina (Alternatief)"
                 },
                 "NavigatePreviousChapter": {
-                    "description": "",
+                    "description": "In het leesvenster, navigeer naar het volgende document in de leesvolgorde van de publicatie (bijv. hoofdstuk de boekenrug). Merk op dat er een alternatieve toetsenbord sneltoets is voor deze standaard sneltoets",
                     "name": ""
                 },
                 "NavigatePreviousChapterAlt": {
