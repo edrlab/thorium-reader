@@ -902,7 +902,7 @@
                 },
                 "AudioNext": {
                     "description": "",
-                    "name": "Volgend Audio Fragment"
+                    "name": "Volgend Audiofragment"
                 },
                 "AudioNextAlt": {
                     "description": "",
@@ -914,30 +914,30 @@
                 },
                 "AudioPrevious": {
                     "description": "Spring terug naar vorig audiofragment in de vertelling (EPUB3 Media Overlappingen, Tekst naar Spraak hardop voorlezen, of voorgaand opgenomen audioboek)",
-                    "name": "Vorig Audio Fragment"
+                    "name": "Vorig Audiofragment"
                 },
                 "AudioPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Spring terug naar vorig audiofragment in de vertelling (EPUB3 Media Overlappingen, Tekst naar Spraak hardop voorlezen, of voorgaand opgenomen audioboek). Dit slaat huidige verlaatbare structuren over",
+                    "name": "Vorig Audiofragment (verlaat)"
                 },
                 "AudioStop": {
-                    "description": "",
-                    "name": ""
+                    "description": "Stop huidige audio (EPUB3 Media Overlappingen, Tekst naar Spraak hardop voorlezen, of voorgaand opgenomen audioboek)",
+                    "name": "Stop Audio"
                 },
                 "CloseReader": {
-                    "description": "",
-                    "name": ""
+                    "description": "Sluit de leesvenster en ga terug naar de bibliotheek",
+                    "name": "Sluit Lezer"
                 },
                 "FXLZoomIn": {
-                    "description": "",
-                    "name": ""
+                    "description": "Vergoot in een vast lay-out enkele pagina of twee pagina's",
+                    "name": "FXL Vergroot In"
                 },
                 "FXLZoomOut": {
-                    "description": "",
-                    "name": ""
+                    "description": "Vergoot uit een vaste lay-out enkele pagina of twee pagina's",
+                    "name": "FXL Vergroot Uit"
                 },
                 "FXLZoomReset": {
-                    "description": "",
+                    "description": "Herstel vergroting in een vaste lay-out enkele pagina of twee pagina's",
                     "name": ""
                 },
                 "FocusMain": {
