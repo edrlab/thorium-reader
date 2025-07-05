@@ -937,23 +937,23 @@
                     "name": "FXL Vergroot Uit"
                 },
                 "FXLZoomReset": {
-                    "description": "Herstel vergroting in een vaste lay-out enkele pagina of twee pagina's",
-                    "name": ""
+                    "description": "Herstel vergroting in een vaste lay-out enkele pagina of twee pagina's.",
+                    "name": "Herstel FXL Vergroting"
                 },
                 "FocusMain": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verplaats toetsenbordfocus naar 'hoofd' oriëntatiepunt in de grafische gebruikersinterface. In het leesvenster, dit verplaatst tot in de publicatie-inhoud",
+                    "name": "Focus op Hoofdinhoud"
                 },
                 "FocusMainDeep": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, dit verplaats de toetsenbordfocus tot in de publicatie-inhoud door gebruik van een betrouwbaardere techniek voor schermlezers",
+                    "name": "Diepe Focus op Hoofdinhoud"
                 },
                 "FocusReaderGotoPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verplaats de toetsenbordfocus naar de 'ga naar pagina' sectie in het navigatie paneel van het leesvenster",
+                    "name": "Focus op 'Ga naar Pagina"
                 },
                 "FocusReaderNavigation": {
-                    "description": "",
+                    "description": "Verplaats de toetsenbordfocus naar het navigatiepaneel van het leesvenster",
                     "name": ""
                 },
                 "FocusReaderNavigationAnnotations": {
