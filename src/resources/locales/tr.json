@@ -796,7 +796,7 @@
             "noRTLFlip": "Sağdan sola kullanıcı arayüzünü devredışı bırak",
             "noRuby": "Japonca Okutucuları Gizle",
             "noTemporaryNavTargetOutline": "Görsel gezinme belirteçlerini devredışı bırak",
-            "paginated": "Sayfalara ayrılmış",
+            "paginated": "Sayfalandırma",
             "paraSpacing": "Paragraf aralığı",
             "pdfZoom": {
                 "name": {
@@ -993,15 +993,15 @@
                     "name": "Sonraki Bölüm'e git (Alternatif)"
                 },
                 "NavigateNextHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuyucu penceresinde, gezinme geçmişinde bir adım ileri atla",
+                    "name": "Geçmiş'te, bir adım İLERİ Git"
                 },
                 "NavigateNextLibraryPage": {
-                    "description": "",
+                    "description": "Kütüphane penceresinde, sayfalandırılmış eser listesinin bir sonraki sayfasını gösterir. Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
                     "name": ""
                 },
                 "NavigateNextLibraryPageAlt": {
-                    "description": "",
+                    "description": "Kütüphane penceresinde, sayfalandırılmış eser listesinin bir sonraki sayfasını gösterir. Bu, varsayılan klavye kısayoluna alternatif bir klavye kısayoludur",
                     "name": ""
                 },
                 "NavigateNextOPDSPage": {
@@ -1033,11 +1033,11 @@
                     "name": ""
                 },
                 "NavigatePreviousLibraryPage": {
-                    "description": "",
+                    "description": "Kütüphane penceresinde, sayfalandırılmış eser listesinin bir sonraki sayfasını gösterir. Bu, varsayılan klavye kısayoluna alternatif bir klavye kısayoludur",
                     "name": ""
                 },
                 "NavigatePreviousLibraryPageAlt": {
-                    "description": "",
+                    "description": "Kütüphane penceresinde, sayfalandırılmış eser listesinin önceki sayfasını gösterir. Bu, varsayılan klavye kısayoluna alternatif bir klavye kısayoludur",
                     "name": ""
                 },
                 "NavigatePreviousOPDSPage": {
