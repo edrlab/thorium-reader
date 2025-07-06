@@ -985,11 +985,11 @@
                     "name": "Araç Çubuğu'na odaklan"
                 },
                 "NavigateNextChapter": {
-                    "description": "Okuyucu penceresinde, eserin okuma sırasına göre bir sonraki belgeye git (örneğin, kitap içerik dizinindeki bölüm). Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
+                    "description": "Okuyucu penceresinde, eserin okuma sırasına göre bir sonraki belgeye git (örn. kitap içerik dizinindeki bölüm). Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
                     "name": "Sonraki Bölüm'e git"
                 },
                 "NavigateNextChapterAlt": {
-                    "description": "Okuyucu penceresinde, eserin okuma sırasına göre bir sonraki belgeye git (örneğin, kitap içerik dizinindeki bölüm). Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
+                    "description": "Okuyucu penceresinde, eserin okuma sırasına göre bir sonraki belgeye git (örn. kitap içerik dizinindeki bölüm). Bu, varsayılan klavye kısayoluna alternatif bir klavye kısayoludur",
                     "name": "Sonraki Bölüm'e git (Alternatif)"
                 },
                 "NavigateNextHistory": {
@@ -998,34 +998,34 @@
                 },
                 "NavigateNextLibraryPage": {
                     "description": "Kütüphane penceresinde, sayfalandırılmış eser listesinin bir sonraki sayfasını gösterir. Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
-                    "name": ""
+                    "name": "Sonraki Kütüphane Sayfasına Git"
                 },
                 "NavigateNextLibraryPageAlt": {
                     "description": "Kütüphane penceresinde, sayfalandırılmış eser listesinin bir sonraki sayfasını gösterir. Bu, varsayılan klavye kısayoluna alternatif bir klavye kısayoludur",
-                    "name": ""
+                    "name": "Sonraki Kütüphane Sayfasına Git (Alternatif)"
                 },
                 "NavigateNextOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Kataloglar / OPDS beslemeleri için kütüphane penceresinde, bir sonraki sayfalandırma bağlantısını takip eder. Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
+                    "name": "Sonraki OPDS Sayfasına Git"
                 },
                 "NavigateNextOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Kataloglar / OPDS beslemeleri için kütüphane penceresinde, bir sonraki sayfalandırma bağlantısını takip eder. Bu, varsayılan olana alternatif bir klavye kısayoludur",
+                    "name": "Sonraki OPDS Sayfasına Git (Alternatif)"
                 },
                 "NavigateNextPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuma penceresinde, eserdeki bir sonraki 'sayfaya' geçer. Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
+                    "name": "Sonraki Sayfaya Git"
                 },
                 "NavigateNextPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuma penceresinde, eserdeki bir sonraki 'sayfaya' geçer. Bu, varsayılan klavye kısayoluna alternatif bir klavye kısayoludur",
+                    "name": "Sonraki Sayfaya Git (Alternatif)"
                 },
                 "NavigatePreviousChapter": {
-                    "description": "",
+                    "description": "Okuyucu penceresinde, eserin okuma sırasına göre bir önceki belgeye git (örn. kitap içerik dizinindeki bölüm). Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
                     "name": ""
                 },
                 "NavigatePreviousChapterAlt": {
-                    "description": "",
+                    "description": "Okuyucu penceresinde, eserin okuma sırasına göre bir önceki belgeye git (örn. kitap içerik dizinindeki bölüm). Bu, varsayılan klavye kısayoluna alternatif bir klavye kısayoludur",
                     "name": ""
                 },
                 "NavigatePreviousHistory": {
@@ -1033,7 +1033,7 @@
                     "name": ""
                 },
                 "NavigatePreviousLibraryPage": {
-                    "description": "Kütüphane penceresinde, sayfalandırılmış eser listesinin bir sonraki sayfasını gösterir. Bu, varsayılan klavye kısayoluna alternatif bir klavye kısayoludur",
+                    "description": "Kütüphane penceresinde, sayfalandırılmış eser listesinin önceki sayfasını gösterir. Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
                     "name": ""
                 },
                 "NavigatePreviousLibraryPageAlt": {
