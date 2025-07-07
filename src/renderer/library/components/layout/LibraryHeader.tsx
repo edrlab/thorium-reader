@@ -79,7 +79,7 @@ class Header extends React.Component<IProps, IState> {
     }
 
     private applySupplierLogo(profile: IProfile): void {
-        const logo = profile.links[0].properties.logo;
+        const logo = profile.logo;
 
         this.setState({ themeApplied: true, logo });
     }
@@ -96,7 +96,7 @@ class Header extends React.Component<IProps, IState> {
 
         const headerNav: NavigationHeader[] = [];
 
-        if (this.props.profile.name === "Default") {
+        if (this.props.profile.name === "Thorium") {
         headerNav.push({
             route: "/home",
             label: this.props.__("header.homeTitle"),
@@ -106,14 +106,14 @@ class Header extends React.Component<IProps, IState> {
             svg: HomeIcon,
         });
         } else if (this.props.profile.links) {
-        this.props.profile.links.forEach(link => {
+        this.props.profile.links.feeds.forEach((feed) => {
             headerNav.push({
             route: buildOpdsBrowserRoute(
                 this.props.profile.id.toString(),
-                link.title,
-                link.href,
+                feed.title,
+                feed.href,
             ),
-            label: link.title,
+            label: feed.title,
             matchRoutes: ["/", "/opds"],
             searchEnable: true,
             styles: [],
@@ -131,7 +131,7 @@ class Header extends React.Component<IProps, IState> {
         svg: ShelfIcon,
         });
 
-        if (this.props.profile.name === "Default") {
+        if (this.props.profile.name === "Thorium") {
         headerNav.push({
             route: "/opds",
             label: this.props.__("header.catalogs"),

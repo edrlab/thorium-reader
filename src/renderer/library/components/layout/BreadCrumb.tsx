@@ -116,7 +116,7 @@ const BreadCrumb = () => {
 
     const breadCrumbData = useSelector((state: ILibraryRootState) => state.opds.browser.breadcrumb);
     const profileSelected = useSelector((state: ICommonRootState) => state.profile);
-    const profileIsDefault: boolean = profileSelected.name === "Default";
+    const profileIsDefault: boolean = profileSelected.name === "Thorium";
 
     let firstOne: {name: string; path?: string;};
 

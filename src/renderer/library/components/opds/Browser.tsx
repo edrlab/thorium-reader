@@ -44,7 +44,7 @@ class Browser extends React.Component<IProps, undefined> {
         const breadCrumb = <BreadCrumb />;
         const search = <SearchForm />;
 
-        const profileIsDefault = this.props.profile.name === "Default";
+        const profileIsDefault = this.props.profile.name === "Thorium";
         const catalogTitle = profileIsDefault ? this.props.breadrumb[1]?.name : this.props.profile.name;
 
 

@@ -153,7 +153,7 @@ export default class App extends React.Component<{}, IState> {
 
     private applyThemeVariables(profile: IProfile): void {
         const root = document.documentElement;
-        const colors = profile.colors;
+        const colors = profile.palette;
 
         if (colors) {
             Object.entries(colors).forEach(([key, value]) => {

@@ -87,9 +87,12 @@ const LanguageSettings: React.FC<{}> = () => {
     };
     const selectedKey = options.find(({name}) => name === currentLanguageString);
     return (
+        <>
         <ComboBox label={__("settings.language.languageChoice")} defaultItems={options} defaultSelectedKey={selectedKey?.id} onSelectionChange={setLang} svg={LanguageIcon} style={{borderBottom: "2px solid var(--color-extralight-grey)"}}>
             {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
         </ComboBox>
+        <button onClick={() =>  dispatch(profileActions.setProfile.build(profiles[0]))}>Test</button>
+        </>
     );
 };
 
@@ -329,7 +332,7 @@ const ManageAccessToCatalogSettings = () => {
 
     const profile = useSelector((s: ICommonRootState) => s.profile);
 
-    const dilicomDisabled: boolean = profile.dilicom; 
+    const dilicomDisabled: boolean = profile.properties.dilicom; 
 
     return (
         dilicomDisabled === false ? <></> : 
@@ -422,11 +425,11 @@ const Profiles = () => {
         const profileChosen = allProfiles.find(({ id }) => id === profileSelected);
         dispatch(profileActions.setProfile.build(profileChosen));
         let redirect_path: string;
-        if (profileChosen.name !== "Default") {
+        if (profileChosen.name !== "Thorium") {
             redirect_path = buildOpdsBrowserRoute(
                 profileChosen.id.toString(),
                 profileChosen.name,
-                profileChosen.links[0].href,
+                profileChosen.links.feeds[0].href,
             );
         } else {
             redirect_path = "/";

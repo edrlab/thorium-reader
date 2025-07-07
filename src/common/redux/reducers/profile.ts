@@ -12,7 +12,8 @@ import { IProfile } from "../states/profile";
 
 const initialState = {
     id: 0,
-    name: "Default",
+    version: 1,
+    name: "Thorium",
     dilicom: true,
 };
 
