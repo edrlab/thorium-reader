@@ -51,6 +51,11 @@
         svg {
             fill: var(--color-secondary);
         }
+
+        &:focus {
+            outline: var(--color-blue) solid 2px !important;
+            outline-offset: 2px;
+        }
     }
 
     .button_secondary, .button_transparency {
@@ -118,7 +123,8 @@
               align-items: center;
 
               & p {
-                word-break: break-word;
+                word-break: normal;
+                overflow-wrap: anywhere;
                 display: -webkit-inline-box;
                 -webkit-line-clamp: 3;
                 line-clamp: 3;

@@ -97,12 +97,12 @@ import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { EDrawType, INoteState, noteColorCodeToColorTranslatorKeySet, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 
 import DOMPurify from "dompurify";
-import { marked } from "marked";
 
 import { shell } from "electron";
 import { exportAnnotationSet } from "readium-desktop/renderer/common/redux/sagas/readiumAnnotation/export";
 import { getSaga } from "../createStore";
 import { clone } from "ramda";
+import { marked } from "readium-desktop/renderer/common/marked/marked";
 (window as any).__shell_openExternal = (url: string) => url.startsWith("http") ? shell.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
 
 // console.log(window);
@@ -113,6 +113,7 @@ interface IBaseProps extends IReaderMenuProps {
     currentLocation: MiniLocatorExtended;
     isDivina: boolean;
     isPdf: boolean;
+    isAudiobook: boolean;
     pdfNumberOfPages: number;
     // handleMenuClick: (open: boolean) => void;
 }
@@ -142,9 +143,10 @@ const isRTL = (r2Publication: R2Publication) => (_link: ILink) => {
                 (
                     cv === "ar" || cv.startsWith("ar-") ||
                     cv === "he" || cv.startsWith("he-") ||
-                    cv === "fa" || cv.startsWith("fa-") ||
-                    cv === "zh-Hant" ||
-                    cv === "zh-TW"
+                    cv === "fa" || cv.startsWith("fa-")
+
+                    // https://github.com/edrlab/thorium-reader/pull/3027
+                    // cv === "zh-Hant" || cv === "zh-TW"
                 ) :
                 false;
             return pv || rtlExcludingJapanese;
@@ -469,10 +471,9 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
             if (textualValue) {
                 const parsed = DOMPurify.sanitize(await marked.parse(textualValue.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, ""), { gfm: true }), { FORBID_TAGS: ["style"], FORBID_ATTR: ["style"] });
                 const regex = new RegExp(/href=\"(.*?)\"/, "gm");
-                const hrefSanitized = parsed.replace(regex, (substring) => {
+                const hrefSanitized = parsed.replace(regex, (_substring, url) => {
 
-                    let url = /href=\"(.*?)\"/.exec(substring)[1];
-                    if (!url.startsWith("http")) {
+                    if (!url?.startsWith("http")) {
                         url = "http://" + url;
                     }
 
@@ -728,7 +729,7 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
                 }}
                 >
                     <SVG ariaHidden={true} svg={DeleteIcon} />
-                    {__("reader.marks.delete")}
+                    { !dockedMode ? __("reader.marks.delete") : undefined}
                 </button> :
                 <Popover.Root>
                     <Popover.Trigger asChild>
@@ -1041,7 +1042,7 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
                 }}
                 >
                     <SVG ariaHidden={true} svg={DeleteIcon} />
-                    {__("reader.marks.delete")}
+                    { !dockedMode ? __("reader.marks.delete") : undefined}
                 </button> :
                 <Popover.Root>
                     <Popover.Trigger asChild>
@@ -2829,9 +2830,9 @@ const TabTitle = ({ value }: { value: string }) => {
 };
 
 export const ReaderMenu: React.FC<IBaseProps> = (props) => {
-    const { /* toggleMenu */ pdfToc, isDivina, isPdf, focusMainAreaLandmarkAndCloseMenu,
+    const { /* toggleMenu */ pdfToc, isDivina, isPdf, isAudiobook, focusMainAreaLandmarkAndCloseMenu,
         pdfNumberOfPages, currentLocation, goToLocator /*openedSection: tabValue, setOpenedSection: setTabValue*/ } = props;
-    const isEpub = !isDivina && !isPdf;
+    const isEpub = !isDivina && !isPdf && !isAudiobook;
     const { /*doFocus, annotationUUID,*/ handleLinkClick /*, resetAnnotationUUID*/ } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const dockingMode = useReaderConfig("readerDockingMode");
@@ -2998,7 +2999,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     };
 
     const Separator =
-        <span key={"separator"} style={{ borderBottom: "1px solid var(--color-extralight-grey-alt)", width: "80%", margin: "0 10%" }}></span>;
+        <span key={"separator"} style={{ borderBottom: "2px solid var(--color-extralight-grey-alt)", width: "80%", margin: "0 10%" }}></span>;
 
     sectionsArray.push(TocTrigger);
     options.push(optionTocItem);
@@ -3091,26 +3092,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                 dockedMode ?
                     <>
                         <div key="docked-header" className={stylesPopoverDialog.docked_header}>
-                            <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls} style={{ justifyContent: "space-between", width: "100%" }}>
-                                <div style={{ display: "flex", gap: "5px" }}>
-                                    <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label={__("reader.svg.left")} onClick={setDockingModeLeftSide}>
-                                        <SVG ariaHidden={true} svg={DockLeftIcon} />
-                                    </button>
-                                    <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label={__("reader.svg.right")} onClick={setDockingModeRightSide}>
-                                        <SVG ariaHidden={true} svg={DockRightIcon} />
-                                    </button>
-                                    <button className={stylesButtons.button_transparency_icon} disabled={false} aria-label={__("reader.settings.column.auto")} onClick={setDockingModeFull}>
-                                        <SVG ariaHidden={true} svg={DockModalIcon} />
-                                    </button>
-                                </div>
-                                <Dialog.Close asChild>
-                                    <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
-                                        <SVG ariaHidden={true} svg={QuitIcon} />
-                                    </button>
-                                </Dialog.Close>
-                            </div>
-                        </div>
-                        <SelectRef
+                                                    <SelectRef
                             items={options}
                             selectedKey={optionSelected}
                             svg={options.find(({ value }) => value === section)?.svg}
@@ -3132,7 +3114,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 }
                             }}
                             disabledKeys={options.filter(option => option.disabled === true).map(option => option.id)}
-                            style={{ margin: "0", padding: "0", flexDirection: "row" }}
+                            style={{ padding: "0", flexDirection: "row", flex: "2"}}
                             // onInputChange={(v) => {
                             //     console.log("inputchange: ", v);
 
@@ -3151,6 +3133,25 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         >
                             {item => <SelectItem >{item.name}</SelectItem>}
                         </SelectRef>
+                            <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls} style={{ justifyContent: "end", width: "100%", flex: "1" }}>
+                                <div style={{ display: "flex", gap: "5px" }}>
+                                    <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label={__("reader.svg.left")} onClick={setDockingModeLeftSide}>
+                                        <SVG ariaHidden={true} svg={DockLeftIcon} />
+                                    </button>
+                                    <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label={__("reader.svg.right")} onClick={setDockingModeRightSide}>
+                                        <SVG ariaHidden={true} svg={DockRightIcon} />
+                                    </button>
+                                    <button className={stylesButtons.button_transparency_icon} disabled={false} aria-label={__("reader.settings.column.auto")} onClick={setDockingModeFull}>
+                                        <SVG ariaHidden={true} svg={DockModalIcon} />
+                                    </button>
+                                </div>
+                                <Dialog.Close asChild>
+                                    <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
+                                        <SVG ariaHidden={true} svg={QuitIcon} />
+                                    </button>
+                                </Dialog.Close>
+                            </div>
+                        </div>
                     </>
                     : <></>
             }
@@ -3184,7 +3185,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
 
                     <Tabs.Content value="tab-bookmark" tabIndex={-1} id={"reader-menu-tab-bookmark"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <TabHeader />
-                        <div className={stylesSettings.settings_tab}>
+                        <div className={classNames(stylesSettings.settings_tab, stylesBookmarks.bookmarks_tab)}>
                             <BookmarkList  popoverBoundary={popoverBoundary.current} goToLocator={goToLocator} hideBookmarkOnChange={hideAnnotationOnChange} />
                         </div>
                     </Tabs.Content>

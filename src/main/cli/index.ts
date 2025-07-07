@@ -9,8 +9,9 @@ import * as debug_ from "debug";
 import { app, dialog } from "electron";
 import * as path from "path";
 import { lockInstance } from "readium-desktop/main/cli/lock";
-import { IS_DEV, _APP_NAME, _APP_VERSION, _PACKAGING } from "readium-desktop/preprocessor-directives";
+import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import yargs from "yargs";
+// import { hideBin } from "yargs/helpers";
 import { closeProcessLock } from "../di";
 import { EOL } from "os";
 import { diMainGet } from "readium-desktop/main/di";
@@ -22,6 +23,7 @@ import { flushSession } from "../tools/flushSession";
 import { isOpenUrl, setOpenUrl } from "./url";
 import { globSync } from "glob";
 import { PublicationView } from "readium-desktop/common/views/publication";
+import { isAcceptedExtension } from "readium-desktop/common/extension";
 
 // Logger
 const debug = debug_("readium-desktop:cli:process");
@@ -51,7 +53,7 @@ let __pendingCmd = 0;
 
 // yargs configuration
 const yargsInit = () =>
-    yargs
+    yargs() // hideBin(process.argv)
         .scriptName(_APP_NAME)
         .version(_APP_VERSION)
         .usage("$0 <cmd> [args]")
@@ -141,6 +143,14 @@ const yargsInit = () =>
 
                     const pubApi = diMainGet("publication-api");
                     for (const fp of filePathArray) {
+
+                        const ext = path.extname(fp);
+                        const isPDF = isAcceptedExtension("pdf", ext);
+                        if (isPDF) {
+                            process.stderr.write("import PDF from CLI is not allowed: " + fp + EOL);
+                            __returnCode = 1;
+                            continue;
+                        }
 
                         debug("cliImport filePath in filePathArray: ", fp);
                         const pubViews = await sagaMiddleware.run(pubApi.importFromFs, fp).toPromise<PublicationView[]>();
@@ -262,7 +272,7 @@ export function commandLineMainEntry(
 ) {
 
     debug("process.argv", process.argv);
-    if (!IS_DEV && _PACKAGING === "1") {
+    if (!__TH__IS_DEV__ && __TH__IS_PACKAGED__) {
         // https://nodejs.org/fr/docs/guides/debugging-getting-started/#enable-inspector
         // SIGUSR1
 
@@ -287,7 +297,8 @@ export function commandLineMainEntry(
                 // https://www.electronjs.org/docs/api/command-line-switches#--inspect-publish-uidstderrhttp
                 // arg.includes("--inspect-publish-uid") ||
                 // https://www.electronjs.org/docs/api/command-line-switches#--js-flagsflags
-                arg.includes("--js-flags")
+                arg.includes("--js-flags") ||
+                arg.includes("--experimental-network-inspector")
             ) {
                 // process.exit1);
                 app.exit(1);
@@ -300,7 +311,7 @@ export function commandLineMainEntry(
 
     const argFormated = processArgv
         .filter((arg) => knownOption(arg) || !arg.startsWith("-"))
-        .slice((_PACKAGING === "0") ? 2 : 1);
+        .slice(!__TH__IS_PACKAGED__ ? 2 : 1);
 
     debug("processArgv", processArgv, "arg", argFormated);
 

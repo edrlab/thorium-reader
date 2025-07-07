@@ -13,20 +13,21 @@
         "documentation": "தோரியம் ஆவணம்",
         "howItWorks": "இது எவ்வாறு செயல்படுகிறது?",
         "informations": "பிரான்சில், பல பொது நூலகங்கள் இயந்திரத்தால் படிக்கக்கூடிய பட்டியலை வழங்குகின்றன (OPD கள் போன்றவை ஆனால் ஒரே மாதிரியாக இல்லை), புரவலர்கள் தங்கள் தனிப்பட்ட புத்தக அலமாரியில் இருந்து டிசிட்டல் வெளியீடுகளை பதிவிறக்கம் செய்ய அனுமதிக்கின்றன. இந்த தொழில்நுட்பத்தை தோரியம் ரீடரில் ஒருங்கிணைப்பது உடனடி வாசிப்புக்காக ஒரு புத்தக அல்லது ஆடியோபுக்கை நேரடியாக தோரியம் ரீடரில் பதிவிறக்கம் செய்ய உங்களை அனுமதிக்கிறது.\n உங்கள் பிரஞ்சு பொது நூலகக் கணக்கை தோரியம் ரீடருடன் எவ்வாறு இணைப்பது? இது எளிது. தேடல் புலத்தில் ஒரு பிரஞ்சு நகரம் ('பாரிச்') அல்லது நூலக பெயரின் ஒரு பகுதியை உள்ளிட்டு தேடல் பொத்தானை அழுத்தவும். உங்கள் தேடலுடன் தொடர்புடைய பொது நூலகங்களின் பட்டியல் தோன்றும். ஒரு நூலகத்தைத் தேர்ந்தெடுத்து சேர் அழுத்தவும். பட்டியல்களின் புதுப்பிக்கப்பட்ட பட்டியலில், இந்த நூலகத்தைத் தேர்ந்தெடுக்கவும்: அங்கீகார படிவம் காட்டப்படும். உங்கள் பயனர்பெயர்/மின்னஞ்சல் முகவரி மற்றும் கடவுச்சொல்லை உள்ளிட்டு, உள்நுழைவை அழுத்தவும். உங்கள் தனிப்பட்ட புத்தக அலமாரியின் உள்ளடக்கத்தை இப்போது நீங்கள் காணலாம், அதில் இருந்து நீங்கள் முன்பு கடன் வாங்கிய மின்புத்தகங்கள் மற்றும் ஆடியோபுக்குகளை பதிவிறக்கம் செய்து படிக்கலாம்.",
-        "noLibraryFound": "எந்த நூலகமும் கிடைக்கவில்லை ({{- பெயர்}})"
+        "noLibraryFound": "எந்த நூலகமும் கிடைக்கவில்லை ({{- name}})"
     },
     "app": {
         "edit": {
             "copy": "நகலெடு",
             "cut": "வெட்டு",
             "paste": "ஒட்டு",
+            "print": "அச்சிடுக",
             "redo": "மீண்டும்செய்",
             "selectAll": "அனைத்தையும் தெரிவுசெய்",
             "title": "தொகு",
             "undo": "செயல்தவிர்"
         },
         "hide": "{{- appName}} ஐ மறைக்கவும்",
-        "quit": "{{- appname}}",
+        "quit": "{{- appName}} வெளியேறு",
         "session": {
             "exit": {
                 "askBox": {
@@ -42,7 +43,7 @@
         },
         "update": {
             "message": "புதிய பதிப்பு கிடைக்கிறது, மேலும் அறிய சொடுக்கு செய்க.",
-            "title": "{{- AppName}} மென்பொருள் புதுப்பிப்பு."
+            "title": "{{- appName}} மென்பொருள் புதுப்பிப்பு."
         },
         "window": {
             "showLibrary": "நூலகம் / புத்தக அலமாரி காட்டு"
@@ -72,7 +73,7 @@
             "lastAdditions": "அண்மைக் காலத்தில் சேர்க்கப்பட்டது"
         },
         "export": "என சேமி",
-        "exportAnnotation": "ஏற்றுமதி குறிப்புகள் ...",
+        "exportAnnotation": "ஏற்றுமதி குறிப்புகள்",
         "format": "வடிவம்",
         "importAnnotation": "குறிப்புகளை இறக்குமதி செய்யுங்கள்",
         "lang": "மொழி",
@@ -80,7 +81,7 @@
         "moreInfo": "வெளியீட்டு விவரங்கள்",
         "myBooks": "எனது வெளியீடுகள்",
         "noPublicationHelpL1": "கோப்புகளை இங்கே விடுங்கள்",
-        "noPublicationHelpL2": "அல்லது மேலே உள்ள \"{{- இறக்குமதி}}\" பொத்தானைப் பயன்படுத்தவும்.",
+        "noPublicationHelpL2": "அல்லது மேலே உள்ள \"{{- importTitle }}\" பொத்தானைப் பயன்படுத்தவும்.",
         "noPublicationHelpL3": "எல்.சி.பி பாதுகாக்கப்பட்ட வெளியீடுகள் ஆதரிக்கப்படுகின்றன.",
         "noPublicationHelpL4": "உதவி நீட்டிப்புகள்:",
         "numberOfPages": "பக்கங்களின் எண்ணிக்கை",
@@ -121,24 +122,25 @@
     },
     "dialog": {
         "annotations": {
-            "descAuthor": "வழங்கியவர் '{{- ஆசிரியர்}}'",
+            "descAuthor": "வழங்கியவர் '{{- author}}'",
             "descCreator": "உருவாக்கியது",
             "descList": "{{- nb}} குறிப்பு(கள்) {{- creator}} இல் இறக்குமதி செய்யப்படும் '{{- title}}' {{- author}}",
-            "descNewer": "மோதல் (மற்றும்}} புதிய குறிப்புகள்)",
-            "descOlder": "மோதல் (}} பழைய குறிப்புகளில்)",
+            "descNewer": "மோதல்(கள்): {{- nb}} புதிய குறிப்புகள்",
+            "descOlder": "மோதல்(கள்): {{- nb}} பழைய குறிப்புகளில்",
             "descTitle": "சிறுகுறிப்பு தலைப்பு: ",
             "importAll": "எல்லா குறிப்புகளையும் இறக்குமதி செய்யுங்கள்",
             "importWithoutConflict": "மோதல் இல்லாத குறிப்புகளை மட்டுமே இறக்குமதி செய்க",
-            "origin": "தோற்றம் வெளியீடு: '{{- தலைப்பு}}' {{- ஆசிரியர்}}",
+            "origin": "தோற்றம் வெளியீடு: '{{- title}}' {{- author}}",
             "title": "குறிப்புகள் இறக்குமதி?"
         },
         "cancel": "ரத்துசெய்",
         "deleteAnnotations": "சிறுகுறிப்புகளை நீக்கவா?",
-        "deleteAnnotationsText": "நீங்கள் நிச்சயமாக {{- சிறுகுறிப்பு செட்ட்லெங்}} குறிப்புகளை நீக்க விரும்புகிறீர்களா?",
-        "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteAnnotationsText": "நீங்கள் நிச்சயமாக {{- annotationListLength}} குறிப்புகளை நீக்க விரும்புகிறீர்களா?",
+        "deleteBookmarks": "புக்மார்க்குகளை நீக்கவா?",
+        "deleteBookmarksText": "{{- bookmarkListLength}} புக்மார்க்குகளை நீக்க விரும்புகிறீர்களா?",
         "deleteFeed": "பட்டியலை நீக்கவா?",
         "deletePublication": "வெளியீட்டை நீக்கவா?",
+        "deletePublicationWithNotes": "",
         "import": "இறக்குமதியை உறுதிப்படுத்தவும்:",
         "importError": "பிழை ஏற்பட்டது, கோப்பு நீட்டிப்பை சரிபார்க்கவும் ({{acceptedExtension}})",
         "renew": "கடனைப் புதுப்பிக்க/நீட்டிக்கவா?",
@@ -148,7 +150,7 @@
     "error": {
         "errorBox": {
             "error": "பிழை செய்தி:",
-            "message": "{{- கோப்பு பெயர்}} இல் பிழை",
+            "message": "{{- filename}} இல் பிழை",
             "title": "உள் {{- appName}}} பிழை"
         }
     },
@@ -191,15 +193,15 @@
             "success": "இறக்குமதி வெற்றிகரமாக முடிந்தது."
         },
         "download": {
-            "error": "பதிவிறக்கம் [{{- தலைப்பு}}] தோல்வியுற்றது: [{{- பிழை}}]"
+            "error": "பதிவிறக்கம் [{{- title}}] தோல்வியுற்றது: [{{- err}}]"
         },
         "import": {
-            "alreadyImport": "[{{- தலைப்பு}}] ஏற்கனவே இறக்குமதி செய்யப்பட்டது.",
-            "fail": "இறக்குமதி [{{- பாதை}}] தோல்வியுற்றது: [{{- பிழை}}]",
-            "success": "இறக்குமதி [{{- தலைப்பு}}] நிறைவு செய்யப்பட்டது."
+            "alreadyImport": "[{{- title}}] ஏற்கனவே இறக்குமதி செய்யப்பட்டது.",
+            "fail": "இறக்குமதி [{{- path}}] தோல்வியுற்றது: [{{- err}}]",
+            "success": "இறக்குமதி [{{- title}}] நிறைவு செய்யப்பட்டது."
         },
         "open": {
-            "error": "வெளியீட்டை ஏற்றுவது தோல்வியுற்றது: [{{- பிழை}}]"
+            "error": "வெளியீட்டை ஏற்றுவது தோல்வியுற்றது: [{{- err}}]"
         }
     },
     "opds": {
@@ -248,292 +250,292 @@
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": ""
+            "accessibility-summary-title": "அணுகல் சுருக்கம்"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ஏரியா பாத்திரங்கள் சேர்க்கப்பட்டுள்ளன",
+                "descriptive": "அமைப்பை மேம்படுத்துவதற்கும் வழிசெலுத்தலை எளிதாக்குவதற்கும் ஏரியா பாத்திரங்களுடன் உள்ளடக்கம் மேம்படுத்தப்பட்டுள்ளது"
             },
             "additional-accessibility-information-audio-descriptions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ஆடியோ விளக்கங்கள்",
+                "descriptive": "ஆடியோ விளக்கங்கள்"
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "பிரெய்ல்",
+                "descriptive": "பிரெய்ல்"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "முழு ரூபி சிறுகுறிப்புகள்",
+                "descriptive": "முழு ரூபி சிறுகுறிப்புகள்"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "முன்புறம் மற்றும் பின்னணி ஆடியோவுக்கு இடையில் அதிக வேறுபாடு",
+                "descriptive": "முன்புறம் மற்றும் பின்னணி ஆடியோவுக்கு இடையில் அதிக வேறுபாடு"
             },
             "additional-accessibility-information-high-contrast-between-text-and-background": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "முன்புற உரை மற்றும் பின்னணிக்கு இடையில் அதிக வேறுபாடு",
+                "descriptive": "முன்புற உரை மற்றும் பின்னணிக்கு இடையில் அதிக வேறுபாடு"
             },
             "additional-accessibility-information-large-print": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "பெரிய அச்சு",
+                "descriptive": "பெரிய அச்சு"
             },
             "additional-accessibility-information-page-breaks": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "பக்க இடைவெளிகள் சேர்க்கப்பட்டுள்ளன",
+                "descriptive": "அசல் அச்சு மூலத்திலிருந்து பக்க இடைவெளிகள் சேர்க்கப்பட்டுள்ளன"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "சில ரூபி சிறுகுறிப்புகள்",
+                "descriptive": "சில ரூபி சிறுகுறிப்புகள்"
             },
             "additional-accessibility-information-sign-language": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "சைகை மொழி",
+                "descriptive": "சைகை மொழி"
             },
             "additional-accessibility-information-tactile-graphics": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "தொட்டுணரக்கூடிய கிராபிக்ச் சேர்க்கப்பட்டுள்ளது",
+                "descriptive": "பார்வையற்றவர்களுக்கு காட்சி கூறுகளை அணுகுவதற்கு தொட்டுணரக்கூடிய கிராபிக்ச் ஒருங்கிணைக்கப்பட்டுள்ளன"
             },
             "additional-accessibility-information-tactile-objects": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "தொட்டுணரக்கூடிய 3D பொருள்கள்",
+                "descriptive": "தொட்டுணரக்கூடிய 3D பொருள்கள்"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "உரை-க்கு-பேச்சு குறிப்பு வழங்கப்பட்டது",
+                "descriptive": "உரை-க்கு-பேச்சு குறிப்பு வழங்கப்பட்டது"
             },
-            "additional-accessibility-information-title": ""
+            "additional-accessibility-information-title": "கூடுதல் அணுகல் செய்தி"
         },
         "conformance": {
             "conformance-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "இந்த வெளியீடு குறைந்தபட்ச அணுகல் தரங்களை நிறைவு செய்கிறது",
+                "descriptive": "வெளியீட்டில் எபப் அணுகல் மற்றும் WCAG 2 நிலை ஒரு தரத்தை நிறைவு செய்கிறது என்ற இணக்க அறிக்கை உள்ளது"
             },
             "conformance-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "இந்த வெளியீடு ஏற்றுக்கொள்ளப்பட்ட அணுகல் தரங்களை நிறைவு செய்கிறது",
+                "descriptive": "வெளியீட்டில் EPUB அணுகல் மற்றும் WCAG 2 நிலை AA தரத்தை நிறைவு செய்கிறது என்ற இணக்க அறிக்கை உள்ளது"
             },
             "conformance-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "இந்த வெளியீடு ஏற்றுக்கொள்ளப்பட்ட அணுகல் தரங்களை மீறுகிறது",
+                "descriptive": "வெளியீட்டில் EPUB அணுகல் மற்றும் WCAG 2 நிலை AAA தரத்தை நிறைவு செய்கிறது என்ற இணக்க அறிக்கை உள்ளது"
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "வெளியீடு சான்றிதழ் பெற்றது "
             },
             "conformance-certifier-credentials": {
-                "compact": ""
+                "compact": "சான்றிதழின் நற்சான்றிதழ் "
             },
             "conformance-details-certifier-report": {
-                "compact": ""
+                "compact": "மேலும் தகவலுக்கு சான்றிதழின் அறிக்கையைப் பார்க்கவும்"
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "இந்த வெளியீடு சந்திப்பதாகக் கூறுகிறது",
+                "descriptive": "இந்த வெளியீடு சந்திப்பதாகக் கூறுகிறது"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "எபப் அணுகல் 1.0",
+                "descriptive": "எபப் அணுகல் 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "எபப் அணுகல் 1.1",
+                "descriptive": "எபப் அணுகல் 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "நிலை a",
+                "descriptive": "நிலை a"
             },
             "conformance-details-level-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "நிலை AA",
+                "descriptive": "நிலை AA"
             },
             "conformance-details-level-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "நிலை AAA",
+                "descriptive": "நிலை AAA"
             },
             "conformance-details-wcag-2-0": {
-                "compact": ""
+                "compact": "WCAG 2.0"
             },
             "conformance-details-wcag-2-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.1",
+                "descriptive": "வலை உள்ளடக்க அணுகல் வழிகாட்டுதல்கள் (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.2",
+                "descriptive": "வலை உள்ளடக்க அணுகல் வழிகாட்டுதல்கள் (WCAG) 2.2"
             },
             "conformance-no": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "எந்த தகவலும் கிடைக்கவில்லை",
+                "descriptive": "எந்த தகவலும் கிடைக்கவில்லை"
             },
-            "conformance-title": "",
+            "conformance-title": "இணக்கம்",
             "conformance-unknown-standard": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "இந்த வெளியீட்டின் அணுகலுக்கான ஏற்றுக்கொள்ளப்பட்ட தரங்களுக்கு இணங்குவதை தீர்மானிக்க முடியாது",
+                "descriptive": "இந்த வெளியீட்டின் அணுகலுக்கான ஏற்றுக்கொள்ளப்பட்ட தரங்களுக்கு இணங்குவதை தீர்மானிக்க முடியாது"
             }
         },
         "hazards": {
             "hazards-flashing": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ஒளிரும் உள்ளடக்கம்",
+                "descriptive": "வெளியீட்டில் ஒளிரும் உள்ளடக்கம் உள்ளது, இது ஒளிச்சேர்க்கை வலிப்புத்தாக்கங்களை ஏற்படுத்தும்"
             },
             "hazards-flashing-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ஒளிரும் உள்ளடக்கம் இல்லை",
+                "descriptive": "வெளியீட்டில் ஒளிரும் உள்ளடக்கம் இல்லை"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ஒளிரும் உள்ளடக்கத்தின் இருப்பு தெரியவில்லை",
+                "descriptive": "ஒளிரும் உள்ளடக்கத்தின் இருப்பு தெரியவில்லை"
             },
             "hazards-motion": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "இயக்க உருவகப்படுத்துதல்",
+                "descriptive": "இயக்க நோயை ஏற்படுத்தக்கூடிய இயக்க உருவகப்படுத்துதல்களை வெளியீட்டில் கொண்டுள்ளது"
             },
             "hazards-motion-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "இயக்க உருவகப்படுத்துதல் இல்லை",
+                "descriptive": "வெளியீட்டில் இயக்க உருவகப்படுத்துதல் இல்லை"
             },
             "hazards-motion-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "இயக்க உருவகப்படுத்துதலின் இருப்பு தெரியவில்லை",
+                "descriptive": "இயக்க உருவகப்படுத்துதலின் இருப்பு தெரியவில்லை"
             },
             "hazards-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "எந்த தகவலும் கிடைக்கவில்லை",
+                "descriptive": "எந்த தகவலும் கிடைக்கவில்லை"
             },
             "hazards-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ஆபத்துகள் இல்லை",
+                "descriptive": "வெளியீட்டில் எந்த ஆபத்துகளும் இல்லை"
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ஒலிகள்",
+                "descriptive": "வெளியீட்டில் சங்கடமான ஒலிகள் உள்ளன"
             },
             "hazards-sound-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ஒலிகள் இல்லை",
+                "descriptive": "வெளியீட்டில் எந்த ஒலிகளும் இல்லை"
             },
             "hazards-sound-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "ஒலிகளின் இருப்பு தெரியவில்லை",
+                "descriptive": "ஒலிகளின் இருப்பு தெரியவில்லை"
             },
-            "hazards-title": "",
+            "hazards-title": "ஆபத்துகள்",
             "hazards-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "அபாயங்களின் இருப்பு தெரியவில்லை",
+                "descriptive": "ஆபத்துகளின் பரிசுகள் தெரியவில்லை"
             }
         },
         "navigation": {
             "navigation-index": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "குறியெண்",
+                "descriptive": "குறிப்பிடப்பட்ட உள்ளீடுகளுக்கான இணைப்புகளுடன் குறியீடு"
             },
             "navigation-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "எந்த தகவலும் கிடைக்கவில்லை",
+                "descriptive": "எந்த தகவலும் கிடைக்கவில்லை"
             },
             "navigation-page-navigation": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "பக்கத்திற்குச் செல்லுங்கள்",
+                "descriptive": "அச்சு மூல பதிப்பிலிருந்து பக்கங்களுக்குச் செல்ல பக்க பட்டியல்"
             },
             "navigation-structural": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "தலைப்புகள்",
+                "descriptive": "கட்டமைக்கப்பட்ட வழிசெலுத்தலுக்கான தலைப்புகள், அட்டவணைகள் போன்ற கூறுகள்"
             },
-            "navigation-title": "",
+            "navigation-title": "வானோடல்",
             "navigation-toc": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "உள்ளடக்க அட்டவணை",
+                "descriptive": "இணைப்புகள் வழியாக உரையின் அனைத்து அத்தியாயங்களுக்கும் உள்ளடக்க அட்டவணை"
             }
         },
         "rich-content": {
             "rich-content-accessible-chemistry-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "லேடெக்சில் வேதியியல் சூத்திரங்கள்",
+                "descriptive": "அணுகக்கூடிய வடிவத்தில் வேதியியல் சூத்திரங்கள் (லேடெக்ச்)"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "கணிதத்தில் வேதியியல் சூத்திரங்கள்",
+                "descriptive": "அணுகக்கூடிய வடிவத்தில் வேதியியல் சூத்திரங்கள் (MATHML)"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "கணிதம் லேடெக்ச்",
+                "descriptive": "அணுகக்கூடிய வடிவத்தில் கணித சூத்திரங்கள் (லேடெக்ச்)"
             },
             "rich-content-accessible-math-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "கணிதமாக கணிதம்",
+                "descriptive": "அணுகக்கூடிய வடிவத்தில் கணித சூத்திரங்கள் (MATHML)"
             },
             "rich-content-accessible-math-described": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "கணிதத்தின் உரை விளக்கங்கள் வழங்கப்படுகின்றன",
+                "descriptive": "கணிதத்தின் உரை விளக்கங்கள் வழங்கப்படுகின்றன"
             },
             "rich-content-closed-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "வீடியோக்களில் மூடிய தலைப்புகள் உள்ளன",
+                "descriptive": "வெளியீடுகளில் சேர்க்கப்பட்ட வீடியோக்கள் மூடிய தலைப்புகளைக் கொண்டுள்ளன"
             },
             "rich-content-extended": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "செய்தி நிறைந்த படங்கள் நீட்டிக்கப்பட்ட விளக்கங்களால் விவரிக்கப்பட்டுள்ளன",
+                "descriptive": "செய்தி நிறைந்த படங்கள் நீட்டிக்கப்பட்ட விளக்கங்களால் விவரிக்கப்பட்டுள்ளன"
             },
             "rich-content-open-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "வீடியோக்களில் திறந்த தலைப்புகள் உள்ளன",
+                "descriptive": "வெளியீடுகளில் சேர்க்கப்பட்ட வீடியோக்கள் திறந்த தலைப்புகளைக் கொண்டுள்ளன"
             },
-            "rich-content-title": "",
+            "rich-content-title": "பணக்கார உள்ளடக்கம்",
             "rich-content-transcript": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "டிரான்ச்கிரிப்ட் (கள்) வழங்கப்பட்டது",
+                "descriptive": "டிரான்ச்கிரிப்ட் (கள்) வழங்கப்பட்டது"
             },
             "rich-content-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "எந்த தகவலும் கிடைக்கவில்லை",
+                "descriptive": "எந்த தகவலும் கிடைக்கவில்லை"
             }
         },
         "ways-of-reading": {
             "ways-of-reading-nonvisual-reading-alt-text": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "மாற்று உரை உள்ளது",
+                "descriptive": "படங்களுக்கான மாற்று உரை விளக்கங்கள் உள்ளன"
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "அல்லாத வாசிப்பு பற்றிய எந்த தகவலும் கிடைக்கவில்லை",
+                "descriptive": "அல்லாத வாசிப்பு பற்றிய எந்த தகவலும் கிடைக்கவில்லை"
             },
             "ways-of-reading-nonvisual-reading-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "சத்தமாக அல்லது மாறும் பிரெய்லில் படிக்க முடியாது",
+                "descriptive": "உரத்த பேச்சு அல்லது மாறும் பிரெய்ல் வாசிப்பதால் உள்ளடக்கம் படிக்க முடியாது"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "சத்தமாக அல்லது மாறும் பிரெயிலில் படிக்க முழுமையாக படிக்க முடியாது",
+                "descriptive": "உரத்த பேச்சு அல்லது மாறும் பிரெய்லைப் படிக்கும்போது எல்லா உள்ளடக்கங்களும் படிக்க முடியாது"
             },
             "ways-of-reading-nonvisual-reading-readable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "உரக்க அல்லது மாறும் பிரெயிலில் படிக்கக்கூடியது",
+                "descriptive": "எல்லா உள்ளடக்கத்தையும் உரத்த பேச்சு அல்லது மாறும் பிரெய்ல் படிக்கலாம்"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "முன்பதிவு செய்யப்பட்ட ஆடியோ கிளிப்புகள்",
+                "descriptive": "முன்பதிவு செய்யப்பட்ட ஆடியோ கிளிப்புகள் உள்ளடக்கத்தில் உட்பொதிக்கப்பட்டுள்ளன"
             },
             "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "முன்கூட்டியே பதிவுசெய்யப்பட்ட ஆடியோ பற்றிய தகவல்கள் எதுவும் கிடைக்கவில்லை",
+                "descriptive": "முன்கூட்டியே பதிவுசெய்யப்பட்ட ஆடியோ பற்றிய தகவல்கள் எதுவும் கிடைக்கவில்லை"
             },
             "ways-of-reading-prerecorded-audio-only": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "முன்பதிவு செய்யப்பட்ட ஆடியோ மட்டுமே",
+                "descriptive": "உரை மாற்று இல்லாத ஆடியோபுக்"
             },
             "ways-of-reading-prerecorded-audio-synchronized": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "முன்பதிவு செய்யப்பட்ட ஆடியோ உரையுடன் ஒத்திசைக்கப்பட்டது",
+                "descriptive": "அனைத்து உள்ளடக்கங்களும் உரையுடன் ஒத்திசைக்கப்பட்ட ஆடியோவை ஒத்திசைக்கின்றன"
             },
-            "ways-of-reading-title": "",
+            "ways-of-reading-title": "வாசிப்பதற்கான வழிகள்",
             "ways-of-reading-visual-adjustments-modifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "தோற்றத்தை மாற்றியமைக்கலாம்",
+                "descriptive": "உரை மற்றும் பக்க தளவமைப்பின் தோற்றத்தை வாசிப்பு அமைப்பின் திறன்களின்படி மாற்றலாம் (எழுத்துரு குடும்பம் மற்றும் எழுத்துரு அளவு, பத்திகள், வாக்கியங்கள், சொற்கள் மற்றும் கடிதங்கள், அத்துடன் பின்னணி மற்றும் உரையின் நிறம்)"
             },
             "ways-of-reading-visual-adjustments-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "தோற்றம் மாற்றியமைத்தல் பற்றிய எந்த தகவலும் கிடைக்கவில்லை",
+                "descriptive": "தோற்றம் மாற்றியமைத்தல் பற்றிய எந்த தகவலும் கிடைக்கவில்லை"
             }
         }
     },
@@ -593,7 +595,7 @@
         "lcpRightsPrint": "அச்சிடப்பட்ட பக்கங்கள்",
         "lcpStart": "தொடங்கு",
         "licenceLCP": "உரிமம் (எல்.சி.பி)",
-        "licenseCertificateDateInvalid": "காலாவதியான எல்.சி.பி வழங்குநர் சான்றிதழ்.",
+        "licenseCertificateDateInvalid": "காலாவதியான எல்.சி.பி வழங்குநர் சான்றிதழ். ({{- dateTime}})",
         "licenseOutOfDate": "எல்.சி.பி உரிமத்திற்கு வெளியே.",
         "licenseSignatureInvalid": "தவறான எல்.சி.பி உரிம கையொப்பம்.",
         "licensed": "உரிமம்",
@@ -639,7 +641,7 @@
             "hide": "காட்ட வேண்டாம்",
             "highlight": "சிறப்பம்சமாக",
             "noSelectionToast": "தேர்வு இல்லை",
-            "note": "{{- வண்ணம்}} குறிப்பு",
+            "note": "{{- color}} குறிப்பு",
             "quickAnnotations": "விரைவான உருவாக்கு (ச்கிப் எடிட்டரைத் தவிர்)",
             "saveNote": "சேமி",
             "sorting": {
@@ -657,7 +659,7 @@
             }
         },
         "bookmarks": {
-            "index": ""
+            "index": "புக்மார்க்கு {{- index}}"
         },
         "divina": {
             "mute": "முடக்கு ஆடியோ",
@@ -667,6 +669,12 @@
             "fit": "பொருத்தம்"
         },
         "goToContent": "உள்ளடக்கத்திற்குச் செல்லுங்கள்",
+        "imgViewer": {
+            "title": "பட பார்வையாளர் (பெரிதாக்கு)",
+            "zoomIn": "உள் பெரிதாக்கு",
+            "zoomOut": "சிறிதாக்கு",
+            "zoomReset": "பெரிதாக்கு மீட்டமைக்கவும்"
+        },
         "marks": {
             "annotations": "சிறுகுறிப்புகள்",
             "bookmarks": "புக்மார்க்குகள்",
@@ -674,9 +682,9 @@
             "edit": "தொகு",
             "goTo": "பக்கத்திற்குச் செல்லுங்கள்",
             "landmarks": "அடையாளங்கள்",
-            "saveMark": "புத்தகக்குறியை சேமிக்கவும்",
+            "saveMark": "சேமி",
             "search": "தேடல்",
-            "searchResult": "தேடு [{{- SearchText}}]",
+            "searchResult": "தேடு [{{- searchText}}]",
             "toc": "உள்ளடக்க அட்டவணை"
         },
         "media-overlays": {
@@ -703,8 +711,8 @@
             "annotationTitle": "சிறுகுறி",
             "backHomeTitle": "இந்த வாசிப்பு சாளரத்தை மூடு (புத்தக அலமாரிக்கு திரும்பவும்)",
             "bookmarkTitle": "புத்தககுறி",
-            "currentPage": "தற்போதைய பக்கம்: {{- தற்போதைய}}",
-            "currentPageTotal": "தற்போதைய பக்கம்: {{- தற்போதைய}}/{{- மொத்தம்}}",
+            "currentPage": "தற்போதைய பக்கம்: {{- current}}",
+            "currentPageTotal": "தற்போதைய பக்கம்: {{- current}}/{{- total}}",
             "detachWindowTitle": "நூலகம் / புத்தக அலமாரி சாளரத்தைக் காட்டு",
             "goTo": "செல்",
             "goToError": "பக்க இடைவெளி இல்லை",
@@ -717,6 +725,8 @@
             "openTableOfContentsTitle": "வானோடல்",
             "page": "பக்கம்",
             "pdfscalemode": "பக்க பொருத்தம் அல்லது அகலம்",
+            "print": "அச்சிடுக",
+            "printDisabled": "",
             "settingsTitle": "அமைப்புகள்"
         },
         "notes": {
@@ -731,7 +741,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- tnresults}} பொருந்துகிறது)",
+                "founds": "{{- nResults}} பொருந்துகிறது",
                 "input": "பொருத்த உரை",
                 "next": "அடுத்தது",
                 "notFound": "போட்டிகள் இல்லை",
@@ -740,6 +750,24 @@
                 "submit": "கண்டுபிடி"
             },
             "searchTitle": "தேடல்:"
+        },
+        "print": {
+            "descriptionLcpCount": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
+            "pageHelpInfo": "பக்க தேர்வாளர் தொடரியல்:",
+            "pageHelpInfo1": " - ஒரு பக்கத்தைக் குறிப்பிட ஒரு பக்க எண்ணை உள்ளிடவும் (எ.கா. \"6\")",
+            "pageHelpInfo2": " - தொடர்ச்சியான பக்கங்களின் வரம்பைக் குறிக்க ஒரு கோடு எழுத்துக்களால் பிரிக்கப்பட்ட இரண்டு பக்க எண்களை உள்ளிடவும் (எ.கா. \"6-13\")",
+            "pageHelpInfo3": " - பல பக்கங்கள் அல்லது பக்க வரம்புகளை பிரிக்க அரைக்கா தன்மையைப் பயன்படுத்தவும் (எ.கா. \"5; 14-20; 37\")",
+            "pageHelpInfo4": " -வெளியீட்டின் முதல் அல்லது கடைசி பக்கத்தைக் குறிப்பிடுவதற்கான வரம்பின் முதல் அல்லது கடைசி பக்கத்தை விட்டு விடுங்கள் (எ.கா. \"-16\" என்பது \"1-16\" க்கு சமம், மற்றும் \"34-\" என்பது \"34-100\" க்கு சமம், மொத்தம் 100 பக்கங்களைக் கொண்ட ஒரு புத்தகத்தை அனுமானிக்கிறது)",
+            "pages": "பக்கங்கள்",
+            "preview": "",
+            "print": "அச்சிடுக",
+            "printablePages": "",
+            "title": ""
         },
         "settings": {
             "column": {
@@ -763,6 +791,7 @@
             "letterSpacing": "கடிதம் இடைவெளி",
             "lineSpacing": "வரி இடைவெளி",
             "margin": "விளிம்பு",
+            "mathjax": "",
             "noFootnotes": "பாப்அப் அடிக்குறிப்புகளை முடக்கு",
             "noRTLFlip": "வலது-இடது இடைமுகம் ஐ முடக்கு",
             "noRuby": "சப்பானிய ரூபியை மறைக்கவும்",
@@ -851,12 +880,236 @@
         "keyboard": {
             "advancedMenu": "விசைப்பலகை குறுக்குவழிகள் மேம்பட்ட பட்டியல்",
             "cancel": "ரத்துசெய்",
-            "disclaimer": "qwerty விசைப்பலகை தளவமைப்பிலிருந்து குறுக்குவழிகள் வரையறுக்கப்பட்டன.",
+            "disclaimer": "பயன்பாட்டு இயல்புநிலைகள் qwerty தளவமைப்பில் விசைகளின் இயற்பியல் இருப்பிடத்தின் அடிப்படையில் வடிவமைக்கப்பட்டன",
             "editUserJson": "பயனர் கோப்பைத் திருத்து ...",
             "keyboardShortcuts": "விசைப்பலகை குறுக்குவழிகள்",
+            "list": {
+                "AddBookmarkWithLabel": {
+                    "description": "புக்மார்க்கு உருவாக்கும் உரையாடலைத் திறந்து உரை சிட்டை (குறிப்பு), வண்ணம் மற்றும் குறிச்சொல்லைத் திருத்தவும்",
+                    "name": "லேபிளுடன் புத்தகக்குறியை உருவாக்கவும்"
+                },
+                "AnnotationsCreate": {
+                    "description": "தேர்ந்தெடுக்கப்பட்ட ஆவண உரைக்கான சிறுகுறிப்பு உருவாக்கும் உரையாடலைத் திறந்து, உரை குறிப்பைத் திருத்தி, வண்ணம் மற்றும் வகையை முன்னிலைப்படுத்தவும், குறிச்சொல்லாகவும்",
+                    "name": "சிறுகுறிப்பை உருவாக்கவும்"
+                },
+                "AnnotationsCreateQuick": {
+                    "description": "தேர்ந்தெடுக்கப்பட்ட ஆவண உரைக்கு ஒரு சிறுகுறிப்பை உருவாக்கவும், கடைசியாக பயன்படுத்தப்பட்ட சிறப்பம்சமாக வண்ணம் மற்றும் வகையுடன் (இது எடிட்டர் உரையாடலைத் திறக்காது, எனவே உரை குறிப்பு மற்றும் குறிச்சொல் காலியாக உள்ளது)",
+                    "name": "விரைவான சிறுகுறிப்பை உருவாக்கவும்"
+                },
+                "AnnotationsToggleMargin": {
+                    "description": "ஆவண விளிம்பில் அல்லது உரையில் சிறுகுறிப்பு மற்றும் புக்மார்க்கு காட்சி குறிகாட்டிகளை மாற்றவும்",
+                    "name": "சிறுகுறிப்பு விளிம்பை மாற்றவும்"
+                },
+                "AudioNext": {
+                    "description": "EPUB3 மீடியா மேலடுக்கில் அடுத்த ஆடியோ நிகழ்வுக்கு முன்னேறவும், உரையின் உரை சத்தமாக வாசிக்கவும், ஆடியோபுக்குகளுக்கு",
+                    "name": "அடுத்த ஆடியோ"
+                },
+                "AudioNextAlt": {
+                    "description": "EPUB3 மீடியா மேலடுக்குகளில் அடுத்த ஆடியோ நிகழ்வுக்கு முன்னேறவும், உரையை உரக்கப் படிக்க உரை, ஆடியோபுக்குகளுக்கு. இது பொருந்தினால், தற்போதைய தப்பிக்கக்கூடிய கட்டமைப்பைத் தவிர்க்கிறது",
+                    "name": "அடுத்த ஆடியோ (தப்பித்தல்)"
+                },
+                "AudioPlayPause": {
+                    "description": "EPUB3 மீடியா மேலடுக்கில் நாடகம்/இடைநிறுத்தம், உரையின் உரை சத்தமாக வாசிக்கவும், ஆடியோபுக்குகளுக்கு",
+                    "name": "ஆடியோவை இயக்கவும்/இடைநிறுத்தவும்"
+                },
+                "AudioPrevious": {
+                    "description": "EPUB3 மீடியா மேலடுக்கில் முந்தைய ஆடியோ நிகழ்வுக்கு பின்னோக்கி நகர்த்தவும், உரைக்கு உரை உரக்கப் படிக்கவும், ஆடியோபுக்குகளுக்கு",
+                    "name": "முந்தைய ஆடியோ"
+                },
+                "AudioPreviousAlt": {
+                    "description": "EPUB3 மீடியா மேலடுக்குகளில் முந்தைய ஆடியோ நிகழ்வுக்கு பின்னோக்கி நகர்த்தவும், உரையை உரக்கப் படிக்க உரை, ஆடியோபுக்குகளுக்கு. இது பொருந்தினால், தற்போதைய தப்பிக்கக்கூடிய கட்டமைப்பைத் தவிர்க்கிறது",
+                    "name": "முந்தைய ஆடியோ (தப்பித்தல்)"
+                },
+                "AudioStop": {
+                    "description": "EPUB3 மீடியா மேலடுக்கில் ஆடியோவை நிறுத்துங்கள், உரைக்கு உரை உரக்கப் படிக்கவும், ஆடியோபுக்குகளுக்கு",
+                    "name": "ஆடியோவை நிறுத்து"
+                },
+                "CloseReader": {
+                    "description": "வாசகர் சாளரத்தை மூடி நூலகத்திற்குத் திரும்புக",
+                    "name": "மூடு வாசகர்"
+                },
+                "FXLZoomIn": {
+                    "description": "ஒரு நிலையான தளவமைப்பு ஒற்றை பக்கம் அல்லது 2 பக்க பரவலாக பெரிதாக்கவும்.",
+                    "name": "Fxl பெரிதாக்கு"
+                },
+                "FXLZoomOut": {
+                    "description": "ஒரு நிலையான தளவமைப்பு ஒற்றை பக்கம் அல்லது 2 பக்க பரவலில் இருந்து பெரிதாக்கவும்.",
+                    "name": "FXL பெரிதாக்கவும்"
+                },
+                "FXLZoomReset": {
+                    "description": "ஒரு நிலையான தளவமைப்பு ஒற்றை பக்கம் அல்லது 2 பக்க பரவலில் பெரிதாக்கத்தை மீட்டமைக்கவும்.",
+                    "name": "FXL சூம் மீட்டமைக்கவும்"
+                },
+                "FocusMain": {
+                    "description": "விசைப்பலகை மையத்தை வரைகலை பயனர் இடைமுகத்தில் உள்ள 'முதன்மையான' அடையாளத்திற்கு நகர்த்தவும். வாசகர் சாளரத்தில், இது வெளியீட்டு உள்ளடக்கத்தில் நகர்கிறது",
+                    "name": "முக்கிய உள்ளடக்கத்தில் கவனம் செலுத்துங்கள்"
+                },
+                "FocusMainDeep": {
+                    "description": "ரீடர் சாளரத்தில், இது விசைப்பலகை கவனம் செலுத்தும் உள்ளடக்கத்தில் வெளியீட்டு உள்ளடக்கத்தில் திரை வாசகர்களுக்கான நம்பகமான நுட்பத்தைப் பயன்படுத்தி நகர்த்துகிறது",
+                    "name": "முக்கிய உள்ளடக்கத்தில் ஆழ்ந்த கவனம்"
+                },
+                "FocusReaderGotoPage": {
+                    "description": "விசைப்பலகை மையத்தை ரீடர் சாளரத்தின் வழிசெலுத்தல் குழுவின் 'கோட்டோ பக்கம்' பகுதிக்கு நகர்த்தவும்",
+                    "name": "'பக்கத்திற்குச் செல்லுங்கள்' என்பதில் கவனம் செலுத்துங்கள்"
+                },
+                "FocusReaderNavigation": {
+                    "description": "விசைப்பலகை மையத்தை வாசகர் சாளரத்தின் வழிசெலுத்தல் பேனலுக்கு நகர்த்தவும்",
+                    "name": "வழிசெலுத்தல் குழுவில் கவனம் செலுத்துங்கள்"
+                },
+                "FocusReaderNavigationAnnotations": {
+                    "description": "விசைப்பலகை மையத்தை வாசகர் சாளரத்தின் வழிசெலுத்தல் குழுவின் 'சிறுகுறிப்புகள்' பகுதிக்கு நகர்த்தவும்",
+                    "name": "'சிறுகுறிப்புகளில்' கவனம் செலுத்துங்கள்"
+                },
+                "FocusReaderNavigationBookmarks": {
+                    "description": "விசைப்பலகை மையத்தை வாசகர் சாளரத்தின் வழிசெலுத்தல் குழுவின் 'புக்மார்க்ச்' பகுதிக்கு நகர்த்தவும்",
+                    "name": "'புக்மார்க்குகள்' மீது கவனம் செலுத்துங்கள்"
+                },
+                "FocusReaderNavigationSearch": {
+                    "description": "விசைப்பலகை மையத்தை வாசகர் சாளரத்தின் வழிசெலுத்தல் குழுவின் 'தேடல்' பகுதிக்கு நகர்த்தவும்",
+                    "name": "'தேடலில்' கவனம் செலுத்துங்கள்"
+                },
+                "FocusReaderNavigationTOC": {
+                    "description": "விசைப்பலகை மையத்தை வாசகர் சாளரத்தின் வழிசெலுத்தல் குழுவின் 'TOC' பிரிவுக்கு நகர்த்தவும்",
+                    "name": "'உள்ளடக்க அட்டவணையில்' கவனம் செலுத்துங்கள்"
+                },
+                "FocusReaderSettings": {
+                    "description": "விசைப்பலகை மையத்தை வாசகர் சாளரத்தின் அமைப்புகள் பேனலுக்கு நகர்த்தவும் (காட்சி விருப்பத்தேர்வுகள் போன்றவை)",
+                    "name": "வாசகர் அமைப்புகளில் கவனம் செலுத்துங்கள்"
+                },
+                "FocusSearch": {
+                    "description": "விசைப்பலகை மையத்தை வாசகர் சாளரத்தின் உரை தேடல் உள்ளீட்டிற்கு நகர்த்தவும் அல்லது நூலக சாளரத்தில் இது புத்தக அலமாரி அல்லது செயலில் உள்ள OPDS ஊட்டத்தைத் தேடுகிறது",
+                    "name": "தேடல் கட்டளை"
+                },
+                "FocusToolbar": {
+                    "description": "விசைப்பலகை மையத்தை 'ச்கிப் லிங்க்' க்கு முன் வரைகலை பயனர் இடைமுகத்தின் மைல்கல் பகுதிக்கு நகர்த்தவும் (இது நூலகத்தின் முக்கிய உள்ளடக்க பகுதிக்கு அல்லது வாசகர் சாளரத்திற்கு கவனம் செலுத்துகிறது)",
+                    "name": "கருவிப்பட்டியில் கவனம் செலுத்துங்கள்"
+                },
+                "NavigateNextChapter": {
+                    "description": "வாசகர் சாளரத்தில், வெளியீட்டின் வாசிப்பு வரிசையில் அடுத்த ஆவணத்திற்கு செல்லவும் (எ.கா. முதுகெலும்பு புத்தகத்தில் அத்தியாயம்). இந்த இயல்புநிலைக்கு மாற்று விசைப்பலகை குறுக்குவழி உள்ளது என்பதை நினைவில் கொள்க",
+                    "name": "அடுத்த அத்தியாயத்திற்குச் செல்லுங்கள்"
+                },
+                "NavigateNextChapterAlt": {
+                    "description": "வாசகர் சாளரத்தில், வெளியீட்டின் வாசிப்பு வரிசையில் அடுத்த ஆவணத்திற்கு செல்லவும் (எ.கா. முதுகெலும்பு புத்தகத்தில் அத்தியாயம்). இது இயல்புநிலைக்கு மாற்று விசைப்பலகை குறுக்குவழி",
+                    "name": "அடுத்த அத்தியாயத்திற்குச் செல்லுங்கள் (மாற்று)"
+                },
+                "NavigateNextHistory": {
+                    "description": "வாசகர் சாளரத்தில், வழிசெலுத்தல் வரலாற்றில் ஒரு படி மேலே செல்லவும்",
+                    "name": "அடுத்த வரலாற்றுக்குச் செல்லுங்கள்"
+                },
+                "NavigateNextLibraryPage": {
+                    "description": "நூலக சாளரத்தில், வெளியீடுகளின் சிறிய பட்டியலின் அடுத்த பக்கத்தைக் காட்டுங்கள். இந்த இயல்புநிலைக்கு மாற்று விசைப்பலகை குறுக்குவழி உள்ளது என்பதை நினைவில் கொள்க",
+                    "name": "அடுத்த நூலகப் பக்கத்திற்குச் செல்லவும்"
+                },
+                "NavigateNextLibraryPageAlt": {
+                    "description": "நூலக சாளரத்தில், வெளியீடுகளின் சிறிய பட்டியலின் அடுத்த பக்கத்தைக் காட்டுங்கள். இது இயல்புநிலைக்கு மாற்று விசைப்பலகை குறுக்குவழி",
+                    "name": "அடுத்த நூலகப் பக்கத்திற்குச் செல்லவும் (மாற்று)"
+                },
+                "NavigateNextOPDSPage": {
+                    "description": "பட்டியல்கள் / OPDS ஊட்டங்களுக்கான நூலக சாளரத்தில், அடுத்த மாசு இணைப்பைப் பின்பற்றவும். இந்த இயல்புநிலைக்கு மாற்று விசைப்பலகை குறுக்குவழி உள்ளது என்பதை நினைவில் கொள்க",
+                    "name": "அடுத்த OPDS பக்கத்திற்குச் செல்லவும்"
+                },
+                "NavigateNextOPDSPageAlt": {
+                    "description": "பட்டியல்கள் / OPDS ஊட்டங்களுக்கான நூலக சாளரத்தில், அடுத்த மாசு இணைப்பைப் பின்பற்றவும். இது இயல்புநிலைக்கு மாற்று விசைப்பலகை குறுக்குவழி",
+                    "name": "அடுத்த OPDS பக்கத்திற்குச் செல்லவும் (மாற்று)"
+                },
+                "NavigateNextPage": {
+                    "description": "வாசகர் சாளரத்தில், வெளியீட்டில் அடுத்த 'பக்கத்திற்கு' திரும்பவும். இந்த இயல்புநிலைக்கு மாற்று விசைப்பலகை குறுக்குவழி உள்ளது என்பதை நினைவில் கொள்க",
+                    "name": "அடுத்த பக்கத்திற்குச் செல்"
+                },
+                "NavigateNextPageAlt": {
+                    "description": "வாசகர் சாளரத்தில், வெளியீட்டில் அடுத்த 'பக்கத்திற்கு' திரும்பவும். இது இயல்புநிலைக்கு மாற்று விசைப்பலகை குறுக்குவழி",
+                    "name": "அடுத்த பக்கத்திற்குச் செல்லவும் (மாற்று)"
+                },
+                "NavigatePreviousChapter": {
+                    "description": "வாசகர் சாளரத்தில், வெளியீட்டின் வாசிப்பு வரிசையில் முந்தைய ஆவணத்திற்கு செல்லவும் (எ.கா. முதுகெலும்பில் அத்தியாயம்). இந்த இயல்புநிலைக்கு மாற்று விசைப்பலகை குறுக்குவழி உள்ளது என்பதை நினைவில் கொள்க",
+                    "name": "முந்தைய அத்தியாயத்திற்குச் செல்லுங்கள்"
+                },
+                "NavigatePreviousChapterAlt": {
+                    "description": "வாசகர் சாளரத்தில், வெளியீட்டின் வாசிப்பு வரிசையில் முந்தைய ஆவணத்திற்கு செல்லவும் (எ.கா. முதுகெலும்பில் அத்தியாயம்). இது இயல்புநிலைக்கு மாற்று விசைப்பலகை குறுக்குவழி",
+                    "name": "முந்தைய அத்தியாயத்திற்குச் செல்லவும் (மாற்று)"
+                },
+                "NavigatePreviousHistory": {
+                    "description": "வாசகர் சாளரத்தில், வழிசெலுத்தல் வரலாற்றில் ஒரு படி பின்னோக்கி செல்லவும்",
+                    "name": "முந்தைய வரலாற்றுக்குச் செல்லுங்கள்"
+                },
+                "NavigatePreviousLibraryPage": {
+                    "description": "நூலக சாளரத்தில், வெளியீடுகளின் சிறிய பட்டியலின் முந்தைய பக்கத்தைக் காட்டுங்கள். இந்த இயல்புநிலைக்கு மாற்று விசைப்பலகை குறுக்குவழி உள்ளது என்பதை நினைவில் கொள்க",
+                    "name": "முந்தைய நூலகப் பக்கத்திற்குச் செல்லவும்"
+                },
+                "NavigatePreviousLibraryPageAlt": {
+                    "description": "நூலக சாளரத்தில், வெளியீடுகளின் சிறிய பட்டியலின் முந்தைய பக்கத்தைக் காட்டுங்கள். இது இயல்புநிலைக்கு மாற்று விசைப்பலகை குறுக்குவழி",
+                    "name": "முந்தைய நூலகப் பக்கத்திற்குச் செல்லவும் (மாற்று)"
+                },
+                "NavigatePreviousOPDSPage": {
+                    "description": "பட்டியல்கள் / OPDS ஊட்டங்களுக்கான நூலக சாளரத்தில், முந்தைய மாசு இணைப்பைப் பின்பற்றவும். இந்த இயல்புநிலைக்கு மாற்று விசைப்பலகை குறுக்குவழி உள்ளது என்பதை நினைவில் கொள்க",
+                    "name": "முந்தைய OPDS பக்கத்திற்குச் செல்லவும்"
+                },
+                "NavigatePreviousOPDSPageAlt": {
+                    "description": "பட்டியல்கள் / OPDS ஊட்டங்களுக்கான நூலக சாளரத்தில், முந்தைய மாசு இணைப்பைப் பின்பற்றவும். இது இயல்புநிலைக்கு மாற்று விசைப்பலகை குறுக்குவழி",
+                    "name": "முந்தைய OPDS பக்கத்திற்குச் செல்லவும் (மாற்று)"
+                },
+                "NavigatePreviousPage": {
+                    "description": "வாசகர் சாளரத்தில், வெளியீட்டில் முந்தைய 'பக்கத்திற்கு' திரும்பவும். இந்த இயல்புநிலைக்கு மாற்று விசைப்பலகை குறுக்குவழி உள்ளது என்பதை நினைவில் கொள்க",
+                    "name": "முந்தைய பக்கத்திற்குச் செல்"
+                },
+                "NavigatePreviousPageAlt": {
+                    "description": "வாசகர் சாளரத்தில், வெளியீட்டில் முந்தைய 'பக்கத்திற்கு' திரும்பவும். இது இயல்புநிலைக்கு மாற்று விசைப்பலகை குறுக்குவழி",
+                    "name": "முந்தைய பக்கத்திற்குச் செல்லவும் (மாற்று)"
+                },
+                "NavigateToBegin": {
+                    "description": "வாசகர் சாளரத்தில், வெளியீட்டின் தொடக்கத்திற்குச் செல்லவும்",
+                    "name": "தொடக்கத்திற்குச் செல்லுங்கள்"
+                },
+                "NavigateToEnd": {
+                    "description": "வாசகர் சாளரத்தில், வெளியீட்டின் முடிவுக்குச் செல்லவும்",
+                    "name": "முடிவுக்குச் செல்லுங்கள்"
+                },
+                "OpenReaderInfo": {
+                    "description": "வாசகர் சாளரத்தில், வெளியீட்டைப் பற்றிய தகவல்களைக் காண்பிக்கும் மேல்தோன்றல் உரையாடலைத் திறக்கவும்",
+                    "name": "வெளியீட்டு தகவலைக் காண்பி"
+                },
+                "OpenReaderInfoWhereAmI": {
+                    "description": "வாசகர் சாளரத்தில், வெளியீட்டைப் பற்றிய தகவல்களைக் காண்பிக்கும் மேல்தோன்றல் உரையாடலைத் திறந்து, தற்போதைய வாசிப்பு இருப்பிடத்தின் சூழலைக் காட்டும் பிரிவில் விசைப்பலகை கவனம் செலுத்துங்கள்",
+                    "name": "வெளியீட்டு தகவலைக் காண்பி, வாசிப்பு இருப்பிடத்தைக் காண்பி"
+                },
+                "Print": {
+                    "description": "வாசகர் சாளரத்தில், அச்சு உரையாடலைத் திறக்கவும்",
+                    "name": "அச்சிடுக"
+                },
+                "SearchNext": {
+                    "description": "ரீடர் சாளரத்தின் தேடல் கருவியில், அடுத்ததாகக் காணப்பட்ட போட்டிக்குச் செல்லவும். இந்த இயல்புநிலைக்கு மாற்று விசைப்பலகை குறுக்குவழி உள்ளது என்பதை நினைவில் கொள்க",
+                    "name": "அடுத்து தேடுங்கள்"
+                },
+                "SearchNextAlt": {
+                    "description": "வாசகர் சாளரத்தின் தேடல் கருவியில், அடுத்ததாகக் காணப்படும் போட்டிக்குச் செல்லவும். இது இயல்புநிலைக்கு மாற்று விசைப்பலகை குறுக்குவழி",
+                    "name": "அடுத்து தேடுங்கள் (மாற்று)"
+                },
+                "SearchPrevious": {
+                    "description": "வாசகர் சாளரத்தின் தேடல் கருவியில், முந்தைய போட்டிக்குச் செல்லவும். இந்த இயல்புநிலைக்கு மாற்று விசைப்பலகை குறுக்குவழி உள்ளது என்பதை நினைவில் கொள்க",
+                    "name": "முன்பு தேடுங்கள்"
+                },
+                "SearchPreviousAlt": {
+                    "description": "வாசகர் சாளரத்தின் தேடல் கருவியில், முந்தைய போட்டிக்குச் செல்லவும். இது இயல்புநிலைக்கு மாற்று விசைப்பலகை குறுக்குவழி",
+                    "name": "முந்தையதைத் தேடுங்கள் (மாற்று)"
+                },
+                "SpeakReaderInfoWhereAmI": {
+                    "description": "வாசகர் சாளரத்தில், தற்போதைய வாசிப்பு இருப்பிடத்தின் சூழலை விவரிக்கவும், பேச்சு உரையை திரை வாசகர்களுடன் இணக்கமாகப் பயன்படுத்துங்கள்",
+                    "name": "வாசிப்பு இருப்பிடத்தை விவரிக்கவும் (பேச்சு)"
+                },
+                "ToggleBookmark": {
+                    "description": "புதிய புக்மார்க்கைச் சேர்க்கவும் அல்லது தற்போது தேர்ந்தெடுக்கப்பட்டால் ஏற்கனவே இருக்கும் ஒன்றை அகற்றவும்",
+                    "name": "புத்தக்குறியை மாற்று"
+                },
+                "ToggleReaderFullscreen": {
+                    "description": "ரீடர் சாளரத்தில், கணினி முழுத் திரையை செயல்படுத்தவும் அல்லது சாதாரண சாளர பயன்முறையை மீட்டெடுக்கவும். இது பயனர் இடைமுகத்தை எளிதாக்கும் 'சென் பயன்முறை' இலிருந்து வேறுபட்டது என்பதை நினைவில் கொள்க",
+                    "name": "மாற்று முழுத்திரை"
+                }
+            },
             "loadUserJson": "பயனர் கோப்பிலிருந்து ஏற்றவும்",
+            "noShortcutFound": "இந்த லேபிளுடன் குறுக்குவழி எதுவும் கிடைக்கவில்லை",
             "resetDefaults": "மீட்டமைக்கவும் (இயல்புநிலைகளை ஏற்றவும்)",
-            "save": "சேமி"
+            "save": "சேமி",
+            "searchPlaceholder": "குறுக்குவழியைத் தேட தட்டச்சு செய்க"
         },
         "language": {
             "languageChoice": "மொழி"
@@ -867,9 +1120,9 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "",
-                "enableCheckbox": "",
-                "overrideHTMLTemplate": ""
+                "applyDefaultTemplate": "இயல்புநிலை வார்ப்புருவை ஏற்றவும்",
+                "enableCheckbox": "உஉகுமொ வார்ப்புருவைத் தனிப்பயனாக்குங்கள்",
+                "overrideHTMLTemplate": "குறிப்புகள் ஏற்றுமதி (சிறுகுறிப்புகள் மற்றும் புக்மார்க்குகள்)"
             }
         },
         "session": {

@@ -27,7 +27,6 @@ import { decryptPersist, encryptPersist } from "readium-desktop/main/fs/persistC
 import { RootState } from "readium-desktop/main/redux/states";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { streamerCachedPublication } from "readium-desktop/main/streamer/streamerNoHttp";
-import { IS_DEV, LCP_SKIP_LSD } from "readium-desktop/preprocessor-directives";
 import { ContentType } from "readium-desktop/utils/contentType";
 import { toSha256Hex } from "readium-desktop/utils/lcp";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
@@ -647,7 +646,7 @@ export class LcpManager {
         }
     }
 
-    public convertUnlockPublicationResultToString(val: any): string | undefined {
+    public convertUnlockPublicationResultToString(val: any, licenseIssueDate: string): string | undefined {
         let message: string | undefined;
         if (typeof val === "string") {
             message = val;
@@ -679,7 +678,7 @@ export class LcpManager {
                 }
                 case 111: {
                     // message = "LICENSE_CERTIFICATE_DATE_INVALID (was LICENSE_SIGNATURE_DATE_INVALID): " + val;
-                    message = this.translator.translate("publication.licenseCertificateDateInvalid");
+                    message = this.translator.translate("publication.licenseCertificateDateInvalid", { dateTime: licenseIssueDate });
                     break;
                 }
                 case 112: {
@@ -1081,7 +1080,7 @@ export class LcpManager {
             };
 
             // use this to temporarily bypass LSD checks during dev
-            if (IS_DEV && LCP_SKIP_LSD) {
+            if (__TH__SKIP_LCP_LSD__) {
                 await callback(undefined);
                 return;
             }

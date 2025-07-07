@@ -7,7 +7,7 @@
   left: 50%;
   top: 50%;
   width: 776px;
-  min-height: 401px;
+  min-height: 550px;
   height: 597px;
   max-width: calc(100vw - 60px);
   max-height: calc(100vh - 60px);
@@ -61,7 +61,7 @@
 }
 
 .popover_dialog_reader {
-  width: 350px;
+  width: 370px;
   height: calc(100dvh - 114px);
   display: flex;
   margin-top: 50px;
@@ -84,7 +84,7 @@
   } 
 
   .settings_container {
-    height: calc(100dvh - 230px)!important;
+    height: calc(100dvh - 200px)!important;
     padding: 0;
     overflow: hidden auto;
 
@@ -100,6 +100,11 @@
   .display_options_item {
     background-color: transparent;
     color: var(--color-primary);
+    font-size: 12px;
+
+    &:disabled {
+      background-color: var(--color-extralight-grey);
+    }
   }
 
   .docked_header + .react_aria_ComboBox {
@@ -135,14 +140,19 @@
     padding-bottom: 15px;
 
     .my_combobox_container {
-      width: fit-content;
+      width: 100%;
       min-width: 110px;
-      height: 28px;
+      height: 25px;
       background-color: var(--color-light-blue);
       color: var(--color-blue);
       border-color: var(--color-blue) !important;
       display: flex;
       align-items: center;
+
+      &:has(#reader-settings-nav) {
+        width: 100%;
+        margin: 0 20px 0 5px;
+      }
 
       > button {
         color: var(--color-blue);
@@ -160,8 +170,8 @@
       }
 
       input, > button {
-        width: fit-content;
-        height: 25px;
+        width: 100%;
+        height: 20px;
         background-color: inherit;
         font-size: 14px;
         margin-left: 10px;
@@ -195,6 +205,7 @@
   background-color: var(--color-docked-header);
   border-bottom: 1px solid var(--color-extralight-grey-alt);
   height: 32px;
+  gap: 10px;
 
   .my_combobox_container button {
     min-width: 110px;
@@ -252,8 +263,9 @@
     width: fit-content;
     text-align: left;
     display: block;
-    padding: 5px 40px 5px 5px;
+    padding: 5px;
     margin: 5px 0;
+    border-radius: 4px;
     
     &.active:not(.inert) {
       &:hover {
@@ -287,6 +299,10 @@
   display: flex;
   flex-direction: column;
 
+  li a {
+    width: calc(100% - 20px)!important;
+  }
+
   .correspondances {
     padding: 0;
     margin: 0;
@@ -306,7 +322,7 @@
     width: 90%;
     text-align: left;
     display: block;
-    padding: 5px 40px 5px 5px;
+    padding: 5px;
     margin: 5px 0;
     background-color: var(--color-extralight-grey);
   }
@@ -618,7 +634,7 @@
     }
 
     input {
-      width: calc(100% - 45px);
+      // width: calc(100% - 45px);
       outline: none!important;
     }
 

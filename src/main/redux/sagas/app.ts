@@ -19,7 +19,7 @@ import {
 import { absorbDBToJson as absorbDBToJsonOpdsAuth } from "readium-desktop/main/network/http";
 import { needToPersistFinalState } from "readium-desktop/main/redux/sagas/persist";
 import { error } from "readium-desktop/main/tools/error";
-import { _APP_NAME, _PACKAGING, IS_DEV } from "readium-desktop/preprocessor-directives";
+import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, race, spawn, take } from "redux-saga/effects";
 import { delay as delayTyped, put as putTyped, race as raceTyped } from "typed-redux-saga/macro";
@@ -132,7 +132,7 @@ export function* init() {
     protocol.handle("filex", protocolHandler_FILEX);
     // protocol.unhandle("filex");
 
-    if (IS_DEV) {
+    if (__TH__IS_DEV__) {
         // https://github.com/MarshallOfSound/electron-devtools-installer
         // https://github.com/facebook/react/issues/25843
         // https://github.com/electron/electron/issues/36545
@@ -330,7 +330,7 @@ export function exit() {
         const shutdownEventChannel = getShutdownEventChannel();
         const windowAllClosedEventChannel = getWindowAllClosedEventChannel();
         const quitEventChannel = getQuitEventChannel();
-        let shouldExit = process.platform !== "darwin" || IS_DEV;
+        let shouldExit = process.platform !== "darwin" || __TH__IS_DEV__;
 
         /*
         // events order :

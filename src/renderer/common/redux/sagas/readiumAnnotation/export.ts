@@ -17,11 +17,11 @@ import Mustache from "mustache";
 // esModuleInterop?
 
 import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/annotation/htmlTemplate";
-import { marked } from "marked";
 import DOMPurify from "dompurify";
 import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
+import { marked } from "readium-desktop/renderer/common/marked/marked";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:common:redux:sagas:readiumAnnotation:export");
@@ -71,11 +71,6 @@ export function* exportAnnotationSet(notes: INoteState[], publicationView: Publi
     debug("PubView ok?", typeof publicationView);
     debug("label:", label);
     debug("fileType:", fileType);
-
-
-    // notes selector generation with cacheDocument included in note on export, computed after creation
-    // yield* callTyped(getResourceCache);
-    // const cacheDocuments = yield* selectTyped((state: IReaderRootState) => state.resourceCache);
 
     const locale = yield* selectTyped((state: ICommonRootState) => state.i18n.locale);
     const readiumAnnotationSet = yield* callTyped(() => convertAnnotationStateArrayToReadiumAnnotationSet(locale, notes, publicationView, label));

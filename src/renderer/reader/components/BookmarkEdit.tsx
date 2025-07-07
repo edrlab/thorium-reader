@@ -16,7 +16,7 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as SaveIcon from "readium-desktop/renderer/assets/icons/floppydisk-icon.svg";
 import * as TagIcon from "readium-desktop/renderer/assets/icons/tag-icon.svg";
-import { TextArea } from "react-aria-components";
+// import { TextArea } from "react-aria-components";
 import { BookmarkLocatorInfo } from "./BookmarkLocatorInfo";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/renderer/note";
@@ -27,6 +27,16 @@ import { readerLocalActionSetConfig } from "../redux/actions";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
+
+// TypeScript GO:
+// The current file is a CommonJS module whose imports will produce 'require' calls;
+// however, the referenced file is an ECMAScript module and cannot be imported with 'require'.
+// Consider writing a dynamic 'import("...")' call instead.
+// To convert this file to an ECMAScript module, change its file extension to '.mts',
+// or add the field `"type": "module"` to 'package.json'.
+// @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore TS1479
 import {subscribe} from "@github/paste-markdown";
 
 interface IProps {
@@ -35,7 +45,7 @@ interface IProps {
     dockedMode?: boolean;
     locatorExtended: MiniLocatorExtended;
     uuid?: string;
-    name: string;
+    name: string | undefined;
     color: IColor;
     tags: string[] | undefined;
 }
@@ -51,7 +61,7 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
 
     const textAreaRef = React.useRef<HTMLTextAreaElement>();
     const bookmarkMaxLength = 1500;
-    const [textAreaValue, setTextAreaValue] = React.useState(name);
+    const [textAreaValue, setTextAreaValue] = React.useState(name || "");
 
     const [colorSelected, setColor] = React.useState(() => rgbToHex(color));
     const previousColorSelected = React.useRef<string>(colorSelected);
@@ -90,11 +100,16 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
             `${bookmark.locatorExtended.selectionInfo.cleanText.slice(0, 200)}...` : bookmark.locatorExtended.selectionInfo.cleanText) : ""}</p> */}
             <p><BookmarkLocatorInfo fallback="" locatorExtended={locatorExtended}/></p>
             <div>
-                <TextArea value={textAreaValue} name="editBookmark" wrap="hard"
+                <textarea
+                    id={`${uuid}_edit`}
+                    value={textAreaValue}
+                    name="editBookmark"
+                    wrap="hard"
                     className={stylesBookmarks.bookmark_form_textarea}
-                    maxLength={bookmarkMaxLength} onChange={(a) => setTextAreaValue(a.currentTarget.value)}
-                    ref={textAreaRef} id={`${uuid}_edit`}
-                ></TextArea>
+                    maxLength={bookmarkMaxLength}
+                    onChange={(a) => setTextAreaValue(a.currentTarget.value)}
+                    ref={textAreaRef}
+                />
                 <div style={{ display: "flex" }}><span style={{ fontSize: "10px", color: "var(--color-medium-grey)", marginLeft: "auto" }}>{textAreaValue.length}/{bookmarkMaxLength}</span></div>
             </div>
             <div className={stylesBookmarks.bookmarks_actions_container} style={{ marginTop: "-15px" }}>

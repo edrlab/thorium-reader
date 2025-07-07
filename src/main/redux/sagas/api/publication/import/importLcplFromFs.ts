@@ -74,7 +74,7 @@ export function* importLcplFromFS(
                 debug(err);
             }
             if (res) {
-                const msg = lcpManager.convertUnlockPublicationResultToString(res);
+                const msg = lcpManager.convertUnlockPublicationResultToString(res, r2LCP.Issued?.toISOString() || "");
                 yield put(
                     toastActions.openRequest.build(
                         ToastType.Error, msg,
@@ -93,7 +93,7 @@ export function* importLcplFromFS(
                 // CERTIFICATE_REVOKED = 101
                 // LICENSE_CERTIFICATE_DATE_INVALID (was LICENSE_SIGNATURE_DATE_INVALID) = 111
                 // LICENSE_SIGNATURE_INVALID = 112
-                const msg = lcpManager.convertUnlockPublicationResultToString(err);
+                const msg = lcpManager.convertUnlockPublicationResultToString(err, r2LCP.Issued?.toISOString() || "");
                 yield put(
                     toastActions.openRequest.build(
                         ToastType.Error, msg,

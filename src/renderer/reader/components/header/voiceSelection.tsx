@@ -11,6 +11,16 @@ import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/componen
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { Collection, Header as ReactAriaHeader, ListBoxSection } from "react-aria-components";
 import { HoverEvent } from "@react-types/shared";
+
+// TypeScript GO:
+// The current file is a CommonJS module whose imports will produce 'require' calls;
+// however, the referenced file is an ECMAScript module and cannot be imported with 'require'.
+// Consider writing a dynamic 'import("...")' call instead.
+// To convert this file to an ECMAScript module, change its file extension to '.mts',
+// or add the field `"type": "module"` to 'package.json'.
+// @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore TS1479
 import { IVoices, ILanguages } from "readium-speech";
 
 export type TLanguageOptions = Array<{ id: string, name: string, count: number }>;
@@ -26,7 +36,7 @@ export interface IProps {
     setSelectedVoice: (v: IVoices) => void;
 }
 
-const createNameId = ({ name, voiceURI, language }: Pick<IVoices, "name" | "voiceURI" | "language">) => `${name}__!?__${voiceURI}__!?__${language}`;
+const createNameId = ({ name, voiceURI, language, index }: Pick<IVoices, "name" | "voiceURI" | "language"> & { index?: number }) => `${index || 0}__!!__${name}__!?__${voiceURI}__!?__${language}`;
 
 export const VoiceSelection: React.FC<IProps> = (props) => {
 
@@ -34,11 +44,11 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
 
     const { languages, selectedLanguage, setSelectedLanguage, voicesGroupByRegion, selectedVoice, setSelectedVoice } = props;
 
-    const languageOptions: TLanguageOptions = languages.map(({ label, count, code }) => ({ id: code, name: label, count }));
+    const languageOptions: TLanguageOptions = languages.map(({ label, count, code }, index) => ({ id: `${index}__!?__${code}`, name: label, count }));
     const voiceOptions: TVoiceOptions = voicesGroupByRegion.map(
-        ([langLocalized, voices]) => ({
-            id: langLocalized, name: langLocalized, children: voices.map(
-                ({ name, voiceURI, language }) => ({ id: createNameId({ name, voiceURI, language }), name })),
+        ([langLocalized, voices], index1) => ({
+            id: `${index1}__!!__${langLocalized}`, name: langLocalized, children: voices.map(
+                ({ name, voiceURI, language }, index2) => ({ id: createNameId({ name, voiceURI, language, index: index1 << 8 * index2}), name })),
         }));
 
     const voices = voicesGroupByRegion.reduce<IVoices[]>((acc, [__unusedLangLocalized, voices]) => [...acc, ...voices], []);
@@ -46,8 +56,13 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
     // console.log("LANGUAGEOPTIONS=", languageOptions);
     // console.log("VOICEOPTIONS", voiceOptions);
 
-    const selectedLanguageKey = selectedLanguage?.code;
-    const selectedVoiceKey = selectedVoice ? createNameId(selectedVoice) : undefined;
+    const selectedLanguageKey = languageOptions.find(({ id }) => id.split("__!?__")[1] === selectedLanguage?.code)?.id;
+    const selectedVoiceKey = selectedVoice
+        ? voiceOptions
+            .map(({ children }) => children)
+            .reduce((acc, cv) => [...acc, ...cv])
+            .find(({ id }) => id.split("__!!__")[1] === createNameId(selectedVoice).split("__!!__")[1])?.id
+        : undefined;
 
     return (
         <div className={stylesReader.ttsSelectVoice}>
@@ -64,7 +79,7 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
                         // nothing
                     } else {
 
-                        const found = languages.find(({ code }) => code === key);
+                        const found = languages.find(({ code }) => typeof key === "string" && code === key.split("__!?__")[1]);
                         if (found) {
                             setSelectedLanguage(found);
                         }
@@ -84,7 +99,7 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
                         // nothing
                     } else {
 
-                        const found = voices.find((voice) => createNameId(voice) === key);
+                        const found = voices.find((voice) => typeof key === "string" && createNameId(voice).split("__!!__")[1] === key.split("__!!__")[1]);
                         if (found) {
                             setSelectedVoice(found);
                         }

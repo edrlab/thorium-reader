@@ -20,6 +20,7 @@
             "copy": "Copia",
             "cut": "Taglia",
             "paste": "Incolla",
+            "print": "Stampa",
             "redo": "Ripeti",
             "selectAll": "Seleziona tutto",
             "title": "Modifica",
@@ -135,10 +136,11 @@
         "cancel": "Annulla",
         "deleteAnnotations": "Eliminare la nota?",
         "deleteAnnotationsText": "Si desidera eliminare {{- annotationListLength}} note?",
-        "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteBookmarks": "Cancellare i segnalibri?",
+        "deleteBookmarksText": "Sei sicuro di voler eliminare {{- bookmarkListLength}} segnalibri?",
         "deleteFeed": "Vuoi davvero eliminare questo catalogo ?",
         "deletePublication": "Vuoi davvero eliminare questa pubblicazione ?",
+        "deletePublicationWithNotes": "",
         "import": "Vuoi davvero importare questi files:",
         "importError": "si è verificato un errore, verifica l'estensione del file ({{acceptedExtension}})",
         "renew": "Vuoi davvero rinnovare la licenza per questa pubblicazione?",
@@ -593,7 +595,7 @@
         "lcpRightsPrint": "Pagine stampate",
         "lcpStart": "Inizio",
         "licenceLCP": "Licenza (LCP)",
-        "licenseCertificateDateInvalid": "La data della firma della licenza non è valida",
+        "licenseCertificateDateInvalid": "La data della firma della licenza non è valida ({{- dateTime}})",
         "licenseOutOfDate": "La licenza è scaduta",
         "licenseSignatureInvalid": "La firma della licenza non è valida",
         "licensed": "Concesso in licenza",
@@ -657,7 +659,7 @@
             }
         },
         "bookmarks": {
-            "index": ""
+            "index": "Segnalibro {{- index}}"
         },
         "divina": {
             "mute": "disattiva audio",
@@ -667,6 +669,12 @@
             "fit": "Adattare"
         },
         "goToContent": "Vai al contenuto",
+        "imgViewer": {
+            "title": "Modale del visualizzatore di immagini",
+            "zoomIn": "Ingrandimento",
+            "zoomOut": "Riduci",
+            "zoomReset": "Ripristino dello zoom"
+        },
         "marks": {
             "annotations": "Annotazioni",
             "bookmarks": "Segnalibri",
@@ -685,8 +693,8 @@
             "captionsDescription": "Visualizzazione del testo semplificata con uno stile didascalia minimo.",
             "disableContinuousPlay": "Disattivare la riproduzione continua",
             "disableContinuousPlayDescription": "Non riprodurre automaticamente l'elemento successivo, ma mettere in pausa subito dopo la fine della riproduzione dell'elemento corrente.",
-            "ignoreAndUseTTS": "",
-            "ignoreAndUseTTSDescription": "",
+            "ignoreAndUseTTS": "Ignorare l'audio preregistrato, usa la sintesi vocale",
+            "ignoreAndUseTTSDescription": "Ignora gli EPUB Media Overlay, leggi invece con la sintesi vocale",
             "next": "Prossima lettura ad alta voce",
             "pause": "Metti in pausa la lettura ad alta voce",
             "play": "Riproduci la lettura ad alta voce",
@@ -717,6 +725,8 @@
             "openTableOfContentsTitle": "navigazione",
             "page": "Pagina",
             "pdfscalemode": "Dimensioni della pagina o larghezza",
+            "print": "stampa",
+            "printDisabled": "",
             "settingsTitle": "impostazioni"
         },
         "notes": {
@@ -741,6 +751,24 @@
             },
             "searchTitle": "Cerca:"
         },
+        "print": {
+            "descriptionLcpCount": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
+            "pageHelpInfo": "informazioni di aiuto per gli intervalli di pagine:",
+            "pageHelpInfo1": " - inserire un numero di pagina per fare riferimento a una singola pagina (ad es. \"6\")",
+            "pageHelpInfo2": " - inserire due numeri di pagina separati da un trattino per fare riferimento a un intervallo di pagine contigue (ad esempio \"6-13\")",
+            "pageHelpInfo3": " - utilizzare il carattere punto e virgola per separare più pagine o intervalli di pagine (ad esempio \"5;14-20;37\")",
+            "pageHelpInfo4": " - tralasciare la prima o l'ultima pagina di un intervallo per fare riferimento alla prima o all'ultima pagina della pubblicazione (ad esempio, \"-16\" equivale a \"1-16\", e \"34-\" equivale a \"34-100\" nell'ipotesi di un libro con un totale di 100 pagine)",
+            "pages": "Pagine",
+            "preview": "",
+            "print": "Stampa",
+            "printablePages": "",
+            "title": ""
+        },
         "settings": {
             "column": {
                 "auto": "Automatico",
@@ -763,6 +791,7 @@
             "letterSpacing": "Spaziatura lettere",
             "lineSpacing": "Spaziatura linee",
             "margin": "Margine",
+            "mathjax": "",
             "noFootnotes": "Disattiva note a piè di pagina",
             "noRTLFlip": "Disabilita l'interfaccia utente da destra a sinistra",
             "noRuby": "Nascondi Ruby Giapponese",
@@ -851,12 +880,236 @@
         "keyboard": {
             "advancedMenu": "Menu",
             "cancel": "Annulla",
-            "disclaimer": "Le scorciatoie sono state definite partendo dal layout della tastiera QWERTY.",
+            "disclaimer": "Le impostazioni predefinite dell'applicazione sono state progettate in base alla posizione fisica dei tasti in una tastiera QWERTY",
             "editUserJson": "Modifica il file utente...",
             "keyboardShortcuts": "Scorciatoie da tastiera",
+            "list": {
+                "AddBookmarkWithLabel": {
+                    "description": "Apre la finestra di dialogo per la creazione del segnalibro e modificare l'etichetta testuale (nota), il colore e il tag",
+                    "name": "Crea un segnalibro con etichetta"
+                },
+                "AnnotationsCreate": {
+                    "description": "Apre la finestra di dialogo per la creazione di annotazioni per il testo selezionato e modificare la nota testuale, il colore e il tipo di evidenziazione e l'etichetta",
+                    "name": "Crea annotazione"
+                },
+                "AnnotationsCreateQuick": {
+                    "description": "Crea un'annotazione per il testo selezionato, con il colore e il tipo di evidenziazione usati nell'ultimo caso (non apre la finestra di dialogo dell'editor, quindi la nota testuale e il tag sono vuoti)",
+                    "name": "Creare un'annotazione rapida"
+                },
+                "AnnotationsToggleMargin": {
+                    "description": "Alternare gli indicatori visivi delle annotazioni e dei segnalibri, nel margine del documento o nel testo",
+                    "name": "Attiva/disattiva l'annotazione a margine"
+                },
+                "AudioNext": {
+                    "description": "Passa all'evento audio successivo negli EPUB3 Media Overlay, nella lettura a sintesi vocale o negli audiolibri",
+                    "name": "Audio successivo"
+                },
+                "AudioNextAlt": {
+                    "description": "Passa all'evento audio successivo negli EPUB3 Media Overlay, nella lettura a sintesi vocale o negli audiolibri. Salta la struttura superabile corrente, nel caso in cui sia presente",
+                    "name": "Audio successivo (esci)"
+                },
+                "AudioPlayPause": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioStop": {
+                    "description": "",
+                    "name": ""
+                },
+                "CloseReader": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomIn": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomOut": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomReset": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMain": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMainDeep": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderGotoPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigation": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationAnnotations": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationBookmarks": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationTOC": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderSettings": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusToolbar": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToBegin": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToEnd": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfo": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "Print": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SpeakReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleBookmark": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleReaderFullscreen": {
+                    "description": "",
+                    "name": ""
+                }
+            },
             "loadUserJson": "Carica da file utente",
+            "noShortcutFound": "",
             "resetDefaults": "Ripristina (carica predefiniti)",
-            "save": "Salva"
+            "save": "Salva",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "Scelta della lingua"
@@ -867,9 +1120,9 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "",
-                "enableCheckbox": "",
-                "overrideHTMLTemplate": ""
+                "applyDefaultTemplate": "APPLICARE IL MODELLO PREDEFINITO",
+                "enableCheckbox": "Abilitare/disabilitare la sovrascrittura del template mustache durante l'esportazione di note HTML",
+                "overrideHTMLTemplate": "Sovrascrivere il modello Mustache quando si esporta la nota in HTML"
             }
         },
         "session": {
@@ -890,25 +1143,25 @@
     },
     "tts": {
         "highlight": {
-            "mainColor": "",
-            "maskBlockWordOutline": "",
-            "maskBlockWordSolidBackground": "",
-            "maskBlockWordUnderline": "",
-            "maskWordOutline": "",
-            "maskWordSolidBackground": "",
-            "maskWordUnderline": "",
-            "outlineWordOutline": "",
-            "outlineWordSolidBackground": "",
-            "outlineWordUnderline": "",
-            "preview": "",
-            "solidBackgroundWordOutline": "",
-            "solidBackgroundWordSolidBackground": "",
-            "solidBackgroundWordUnderline": "",
-            "style": "",
-            "underlineWordOutline": "",
-            "underlineWordSolidBackground": "",
-            "underlineWordUnderline": "",
-            "wordColor": ""
+            "mainColor": "Colore principale",
+            "maskBlockWordOutline": "Blocco mascherato, parola contornata",
+            "maskBlockWordSolidBackground": "Blocco mascherato, parola con sfondo pieno",
+            "maskBlockWordUnderline": "Blocco mascherato, parola sottolineata",
+            "maskWordOutline": "Mascherato, parola contornata",
+            "maskWordSolidBackground": "Mascherato, parola con sfondo pieno",
+            "maskWordUnderline": "Mascherato, parola sottolineata",
+            "outlineWordOutline": "Contornato, parola contornata",
+            "outlineWordSolidBackground": "Contornato, parola con sfondo pieno",
+            "outlineWordUnderline": "Contornato, parola sottolineata",
+            "preview": "Anteprima dello stile di evidenziazione della sintesi vocale",
+            "solidBackgroundWordOutline": "Sfondo pieno, parola contornata",
+            "solidBackgroundWordSolidBackground": "Sfondo pieno, sfondo della parola pieno",
+            "solidBackgroundWordUnderline": "Sfondo pieno, parola sottolineata",
+            "style": "Stile di evidenziazione sintesi vocale",
+            "underlineWordOutline": "Sottolineato, parola contornata",
+            "underlineWordSolidBackground": "Sottolineato, parola con sfondo pieno",
+            "underlineWordUnderline": "Sottolineato, parola sottolineata",
+            "wordColor": "Colore della parola"
         }
     },
     "wizard": {

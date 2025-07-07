@@ -8,7 +8,6 @@
 import * as debug_ from "debug";
 import * as path from "path";
 import { commandLineMainEntry } from "readium-desktop/main/cli";
-import { _PACKAGING, _VSCODE_LAUNCH } from "readium-desktop/preprocessor-directives";
 
 import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
@@ -31,7 +30,7 @@ import { appActions } from "./main/redux/actions";
 // //     console.log("#".repeat(2000), normalizeUrl("//www.sindresorhus.com:80/../baz?b=bar&a=foo"));
 // // });
 
-if (_PACKAGING !== "0") {
+if (__TH__IS_PACKAGED__) {
     // Disable debug in packaged app
     delete process.env.DEBUG;
     debug_.disable();
@@ -75,7 +74,7 @@ setLcpNativePluginPath(lcpNativePluginPath);
 // }
 initSessionsNoHTTP();
 
-if (_VSCODE_LAUNCH === "true") {
+if (__TH__IS_VSCODE_LAUNCH__) {
     createStoreFromDi().then((store) => store.dispatch(appActions.initRequest.build()));
 } else {
     commandLineMainEntry(); // call main fct

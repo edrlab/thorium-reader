@@ -7,14 +7,19 @@
 
 import * as debug_ from "debug";
 
-import { getDocumentFromICacheDocument } from "readium-desktop/utils/xmlDom";
-import { ICssSelector, IProgressionSelector, ISelector, ITextPositionSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import { ICFIFragmentSelector, ICfiSelector, ICssSelector, IProgressionSelector, ISelector, ITextPositionSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { uniqueCssSelector } from "@r2-navigator-js/electron/renderer/common/cssselector3";
-import { ICacheDocument } from "readium-desktop/common/redux/states/renderer/resourceCache";
 import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import {  describeTextPosition, describeTextQuote } from "readium-desktop/third_party/apache-annotator/dom";
 import { convertRangeInfo } from "@r2-navigator-js/electron/renderer/webview/selection";
 import { /*select as selectTyped, take as takeTyped, all as allTyped,*/ call as callTyped, SagaGenerator /*put as putTyped, delay as delayTyped*/ } from "typed-redux-saga/macro";
+
+import { EpubCfiUtils } from "@r2-navigator-js/electron/common/colibrio-cfi/EpubCfiUtils";
+import { EpubCfiBuilderHelper } from "@r2-navigator-js/electron/common/colibrio-cfi/builder/EpubCfiBuilderHelper";
+import { EpubCfiStringifier } from "@r2-navigator-js/electron/common/colibrio-cfi/stringifier/EpubCfiStringifier";
+import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+
+import { select as selectTyped } from "typed-redux-saga/macro";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:redux:sagas:readiumAnnotation:selector");
@@ -43,7 +48,7 @@ const describeCssSelectorWithTextPosition = async (range: Range, document: Docum
     };
 };
 
-export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: boolean, cacheDocument: ICacheDocument): SagaGenerator<ISelector[]> {
+export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: boolean, sourceHref: string, xmlDom: Document): SagaGenerator<ISelector[]> {
 
     const { locatorExtended } = note;
     if (!locatorExtended) {
@@ -52,7 +57,6 @@ export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: bool
 
     const selector: ISelector<any>[] = [];
 
-    const xmlDom = getDocumentFromICacheDocument(cacheDocument);
     if (!xmlDom) {
         return [];
     }
@@ -107,12 +111,38 @@ export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: bool
     debug("ProgressionSelector : ", progressionSelector);
     selector.push(progressionSelector);
 
-    // Next TODO: CFI !?!
+
+    const { r2Publication } = yield* selectTyped((state: IReaderRootState) => state.reader.info);
+    const opfSpineItemIndex = r2Publication.Spine.findIndex((link) => link.Href === sourceHref);
+    const opfSpineItemCFIPath = opfSpineItemIndex > -1 ? `/6/${(opfSpineItemIndex*2+2)}` : "/6/0"; // TODO Fallback !?
+
+    const rootNode = EpubCfiUtils.createEmptyRootNode();
+    EpubCfiBuilderHelper.appendTerminalDomRange(range, rootNode);
+    let cfi = EpubCfiStringifier.stringifyRootNode(rootNode);
+    let cfi_ = cfi;
+    if (cfi) {
+        cfi = cfi.replace(/^epubcfi\(/, "").replace(/\)$/, "");
+        cfi_ = `epubcfi(${opfSpineItemCFIPath}!${cfi})`;
+    }
+
+    const cfiFragmentSelector: ICFIFragmentSelector = {
+        type: "FragmentSelector",
+        conformsTo: "http://www.idpf.org/epub/linking/cfi/epub-cfi.html",
+        value: cfi_,
+    };
+    selector.push(cfiFragmentSelector);
+
+    const cfiSelector: ICfiSelector = {
+        type: "CfiSelector",
+        value: cfi,
+    };
+    selector.push(cfiSelector);
+
 
     // this normally occurs at import time, but let's save debugging effort by checking immediately when exporting...
     // errors are non-fatal, just hunt for the "IRangeInfo DIFF" console logs
     // const isABookmark = drawType === EDrawType.bookmark; // rangeInfo.endContainerChildTextNodeIndex === rangeInfo.startContainerChildTextNodeIndex && rangeInfo.endContainerElementCssSelector === rangeInfo.startContainerElementCssSelector && rangeInfo.endOffset - rangeInfo.startOffset === 1;
-    // if (IS_DEV) {
+    // if (__TH__IS_DEV__) {
         // await convertSelectorTargetToLocatorExtended({ source: "", selector }, cacheDocument, rangeInfo, isABookmark);
     // }
     return selector;

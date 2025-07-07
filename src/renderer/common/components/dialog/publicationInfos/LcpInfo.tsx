@@ -22,7 +22,7 @@ import { TranslatorProps, withTranslator } from "../../hoc/translator";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    publicationLcp: Partial<Pick<PublicationView, "lcp" | "lcpRightsCopies">>;
+    publicationLcp: Partial<Pick<PublicationView, "lcp" | "lcpRightsCopies" | "lcpRightsPrints">>;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -53,7 +53,9 @@ class LcpInfo extends React.Component<IProps, undefined> {
 
         const lcpRightsPrint = (lcp?.rights?.print) ? lcp.rights.print : 0;
         const lcpRightsCopy = (lcp?.rights?.copy) ? lcp.rights.copy : 0;
-        const lcpRightsCopies = publicationLcp.lcpRightsCopies ?? 0;
+        const lcpRightsCopiesPubInfo = publicationLcp.lcpRightsCopies || 0;
+        const lcpRightsPrintRangePubInfo = publicationLcp.lcpRightsPrints || [];
+        const lcpRightsPrintCountPubInfo = lcpRightsPrintRangePubInfo.length;
 
         const now = moment();
 
@@ -177,13 +179,14 @@ class LcpInfo extends React.Component<IProps, undefined> {
 
                     {lcpRightsCopy ? <>
                         <strong>{__("publication.lcpRightsCopy")}: </strong>
-                        <span>{lcpRightsCopies} / {lcpRightsCopy}</span><br />
-                    </> : undefined}
+                        <span>{lcpRightsCopiesPubInfo} / {lcpRightsCopy}</span><br />
+                    </> : <></>}
 
                     {lcpRightsPrint ? <>
                         <strong>{__("publication.lcpRightsPrint")}: </strong>
-                        <span>0 / {lcpRightsPrint}</span><br />
-                    </> : undefined}
+                        <span>{lcpRightsPrintCountPubInfo} / {lcpRightsPrint}  </span>
+                        {lcpRightsPrintRangePubInfo.length ? ` [${lcpRightsPrintRangePubInfo}] ` : <></>}
+                    </> : <></>}
                 </div>
             </>
         );

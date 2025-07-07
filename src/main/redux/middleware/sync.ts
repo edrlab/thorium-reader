@@ -92,6 +92,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     noteExport.overrideHTMLTemplate.ID,
 
     profileActions.setProfile.ID,
+    readerActions.print.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware

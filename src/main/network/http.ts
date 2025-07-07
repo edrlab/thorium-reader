@@ -5,17 +5,37 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+// TypeScript GO:
+// The current file is a CommonJS module whose imports will produce 'require' calls;
+// however, the referenced file is an ECMAScript module and cannot be imported with 'require'.
+// Consider writing a dynamic 'import("...")' call instead.
+// To convert this file to an ECMAScript module, change its file extension to '.mts',
+// or add the field `"type": "module"` to 'package.json'.
+// @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore TS1479
 import timeoutSignal from "timeout-signal";
+
 import * as debug_ from "debug";
 import { promises as fsp } from "fs";
 import * as http from "http";
 import * as https from "https";
+
+// TypeScript GO:
+// The current file is a CommonJS module whose imports will produce 'require' calls;
+// however, the referenced file is an ECMAScript module and cannot be imported with 'require'.
+// Consider writing a dynamic 'import("...")' call instead.
+// To convert this file to an ECMAScript module, change its file extension to '.mts',
+// or add the field `"type": "module"` to 'package.json'.
+// @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore TS1479
 import { AbortError, Headers, RequestInit, Response } from "node-fetch";
+
 import {
     IHttpGetResult, THttpGetCallback, THttpOptions, THttpResponse,
 } from "readium-desktop/common/utils/http";
 import { decryptPersist, encryptPersist } from "readium-desktop/main/fs/persistCrypto";
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 
 import { diMainGet, opdsAuthFilePath } from "../di";
@@ -205,7 +225,7 @@ export async function httpFetchRawResponse(
     // https://github.com/edrlab/thorium-reader/issues/1323#issuecomment-911772951
     const httpsAgent = new https.Agent({
         timeout: options.timeout || DEFAULT_HTTP_TIMEOUT,
-        rejectUnauthorized: IS_DEV ? false : true,
+        rejectUnauthorized: !__TH__IS_DEV__,
     });
     const httpAgent = new http.Agent({
         timeout: options.timeout || DEFAULT_HTTP_TIMEOUT,
@@ -231,12 +251,21 @@ export async function httpFetchRawResponse(
     //     }
     // };
 
+    // TODO: @types/node regression (22.15.34) via node-fetch, mismatch with node proxy-agent/agent-base
+    // Type 'ProxyAgent' is not assignable to type 'boolean | Agent | ((parsedUrl: URL) => boolean | Agent)'.
+    // Type 'ProxyAgent' is not assignable to type 'Agent'.
+    // Types of property 'getName' are incompatible.
+    // Type '(options: AgentConnectOpts) => string' is not assignable to type '(options?: AgentGetNameOptions) => string'.
+    // Types of parameters 'options' and 'options' are incompatible.
+    // Type 'AgentGetNameOptions' is not assignable to type 'AgentConnectOpts'.
+    // Property 'secureEndpoint' is missing in type 'AgentGetNameOptions' but required in type 'HttpConnectOpts'. (ts 2322)
+    // @ts-expect-error TS2322
     options.agent = proxyAgent;
 
     // if (!options.agent && url.toString().startsWith("https:")) {
     //     const httpsAgent = new https.Agent({
     //         timeout: options.timeout || DEFAULT_HTTP_TIMEOUT,
-    //         rejectUnauthorized: IS_DEV ? false : true,
+    //         rejectUnauthorized: __TH__IS_DEV__ ? false : true,
     //     });
     //     options.agent = httpsAgent;
     // }
@@ -587,21 +616,20 @@ const httpGetUnauthorized =
                         const responseAfterRefresh = await httpGetUnauthorizedRefresh(
                             auth,
                         )(url, options, _callback, ..._arg);
-                        return responseAfterRefresh || response;
-                    } else {
-                        // Most likely because of a wrong access token.
-                        // In some cases the returned content won't launch a new authentication process
-                        // It's safer to just delete the access token and start afresh now.
-                        await deleteAuthenticationToken(url.host);
-                        (options.headers as Headers).delete("Authorization");
-                        const responseWithoutAuth = await httpGetWithAuth(
-                            false,
-                        )(url, options, _callback, ..._arg);
-                        return responseWithoutAuth || response;
+                        if (responseAfterRefresh) {
+                            return responseAfterRefresh;
+                        }
                     }
-                } else {
-                    return await handleCallback(response, _callback);
+                    // Most likely because of a wrong access token, rovoked/invalid token
+                    // In some cases the returned content won't launch a new authentication process
+                    // It's safer to just delete the access token and start afresh now.
+                    await deleteAuthenticationToken(url.host);
+                    (options.headers as Headers).delete("Authorization");
+                    return await httpGetWithAuth(
+                        false,
+                    )(url, options, _callback, ..._arg);
                 }
+                return await handleCallback(response, _callback);
             }
             return response;
         };

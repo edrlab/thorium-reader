@@ -12,6 +12,7 @@
 
   ol {
     padding: 0;
+    margin: 0;
   }
 }
 
@@ -208,6 +209,11 @@
     &[data-selected], &:has(input:checked), &[data-state="checked"] {
       color: var(--color-secondary);
       background-color: var(--color-blue);
+      
+        &:focus {
+            outline: var(--color-blue) solid 2px !important;
+            outline-offset: 2px;
+        }
     }
   }
 
@@ -579,6 +585,7 @@
       height: unset;
       font-family: Nunito, sans-serif;
       border-radius: 5px;
+      width: 100%;
 
       p {
         text-align: left;
@@ -635,7 +642,8 @@
       vertical-align: top;
       margin-top: 5px;
       word-wrap: break-word;
-      word-break: break-word;
+      word-break: normal;
+      overflow-wrap: anywhere;
       white-space: normal;
     }
 
@@ -729,6 +737,11 @@
 
     p {
       margin: 0;
+    }
+
+    select {
+      background-color: var(--color-secondary);
+      color: var(--color-primary);
     }
 
   }

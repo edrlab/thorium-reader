@@ -20,6 +20,7 @@
             "copy": "نسخ",
             "cut": "قص",
             "paste": "لصق",
+            "print": "",
             "redo": "إعادة",
             "selectAll": "اختيار الكل",
             "title": "تحرير",
@@ -34,7 +35,7 @@
                         "no": "لا",
                         "yes": "نعم"
                     },
-                    "help": "",
+                    "help": "قم بتنشيط هذا إذا كنت تريد عند التشغيل التالي أن يُعاد تلقائياً فتح نوافذ القارئ التي كانت مفتوحة عند إغلاق التطبيق.",
                     "message": "هل تريد حفظ الجلسة؟",
                     "title": "حفظ الجلسة"
                 }
@@ -72,9 +73,9 @@
             "lastAdditions": "المضافة مؤخراً"
         },
         "export": "حفظ بإسم",
-        "exportAnnotation": "",
+        "exportAnnotation": "تصدير الملاحظات",
         "format": "التنسيق",
-        "importAnnotation": "",
+        "importAnnotation": "استيراد الملاحظات",
         "lang": "اللغة",
         "lastRead": "آخر منشور مقروء",
         "moreInfo": "تفاصيل المنشور",
@@ -103,9 +104,9 @@
                 },
                 "availableUntil": "حتى",
                 "copyAvalaible": "متوفر",
-                "copyTotal": "",
-                "holdPosition": "",
-                "holdTotal": "",
+                "copyTotal": "عدد النُسخ",
+                "holdPosition": "الموقع في الطابور",
+                "holdTotal": "عدد المستخدمين في الطابور",
                 "numberOfItems": "عدد البنود",
                 "priveValue": "السعر",
                 "state": "الحالة"
@@ -121,24 +122,25 @@
     },
     "dialog": {
         "annotations": {
-            "descAuthor": "",
-            "descCreator": "",
-            "descList": "",
-            "descNewer": "",
-            "descOlder": "",
-            "descTitle": "",
-            "importAll": "",
-            "importWithoutConflict": "",
-            "origin": "",
-            "title": ""
+            "descAuthor": "تأليف '{{- author}}'",
+            "descCreator": "أنشأه",
+            "descList": "سيتم استيراد {{- nb}} ملاحظات لـ {{- creator}} إلى '{{- title}}' {{- author}}",
+            "descNewer": "تعارض: {{- nb}} ملاحظات أجدد",
+            "descOlder": "تعارض: {{- nb}} ملاحظات أقدم",
+            "descTitle": "عنوان التعليقات التوضيحية: ",
+            "importAll": "استيراد كل الملاحظات",
+            "importWithoutConflict": "استيراد فقط الملاحظات الخالية من التعارض",
+            "origin": "المنشور الأصلي: '{{- title}}' {{- author}}",
+            "title": "استيراد الملاحظات؟"
         },
         "cancel": "إلغاء الأمر",
-        "deleteAnnotations": "",
-        "deleteAnnotationsText": "",
-        "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteAnnotations": "حذف التعليقات التوضيحية؟",
+        "deleteAnnotationsText": "هل تريد بالتأكيد حذف {{- annotationListLength}} ملاحظات؟",
+        "deleteBookmarks": "حذف الإشارات المرجعية؟",
+        "deleteBookmarksText": "هل تريد بالتأكيد حذف {{- bookmarkListLength}} إشارات مرجعية؟",
         "deleteFeed": "حذف الكتالوغ؟",
         "deletePublication": "حذف المنشور؟",
+        "deletePublicationWithNotes": "",
         "import": "تأكيد الاستيراد:",
         "importError": "حدث خطأ، تحقَّق من ملحق الملف ({{acceptedExtension}})",
         "renew": "تجديد/تمديد الاستعارة؟",
@@ -172,7 +174,7 @@
     "library": {
         "lcp": {
             "hint": "تلميح: ",
-            "open": "",
+            "open": "فتح",
             "password": "عبارة المرور",
             "sentence": "اكتب عبارة المرور لهذا المنشور المحمي بـ LCP:",
             "urlHint": "هل نسيت عبارة مرورك؟ الدعم متوفر:",
@@ -183,12 +185,12 @@
     },
     "message": {
         "annotations": {
-            "alreadyImported": "",
-            "emptyFile": "",
-            "errorParsing": "",
-            "noBelongTo": "",
-            "nothing": "",
-            "success": ""
+            "alreadyImported": "تم استيراد كل الملاحظات من قبل.",
+            "emptyFile": "لا توجد ملاحظات في الملف.",
+            "errorParsing": "حدث خطأ أثناء تحليل الملف: ",
+            "noBelongTo": "تعذّر استيراد الملاحظات، فملاحظة واحدة على الأقل لا تنتمي إلى هذا المنشور.",
+            "nothing": "لا توجد أي ملاحظة جاهزة للاستيراد، جاري إلغاء عملية الاستيراد",
+            "success": "نجحت عملية الاستيراد."
         },
         "download": {
             "error": "فشل تنزيل [{{- title}}]: [{{- err}}]"
@@ -248,292 +250,292 @@
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": ""
+            "accessibility-summary-title": "ملخص سهولة الوصول"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "تضمين أدوار ARIA",
+                "descriptive": "يتم تعزيز المحتوى بأدوار ARIA لتحسين التنظيم وتسهيل التنقل"
             },
             "additional-accessibility-information-audio-descriptions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "الأوصاف الصوتية",
+                "descriptive": "الأوصاف الصوتية"
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "برايل",
+                "descriptive": "برايل"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "التعليقات التوضيحية باستخدام أحرف الروبي",
+                "descriptive": "التعليقات التوضيحية باستخدام أحرف الروبي"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "تباين عالي بين الصوت الأمامي والصوت الخلفي",
+                "descriptive": "تباين عالي بين الصوت الأمامي والصوت الخلفي"
             },
             "additional-accessibility-information-high-contrast-between-text-and-background": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "تباين عالي بين النص الأمامي والخلفية",
+                "descriptive": "تباين عالي بين النص الأمامي والخلفية"
             },
             "additional-accessibility-information-large-print": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "نص كبير",
+                "descriptive": "نص كبير"
             },
             "additional-accessibility-information-page-breaks": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "تضمين فواصل الصفحات",
+                "descriptive": "تضمين فواصل الصفحات من المصدر المطبوع الأصلي"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "بعض التعليقات التوضيحية باستخدام أحرف الروبي",
+                "descriptive": "بعض التعليقات التوضيحية باستخدام أحرف الروبي"
             },
             "additional-accessibility-information-sign-language": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "لغة الإشارات",
+                "descriptive": "لغة الإشارات"
             },
             "additional-accessibility-information-tactile-graphics": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "تضمين الرسوم اللمسية",
+                "descriptive": "تم دمج رسوم لمسية لتسهيل وصول المكفوفين إلى العناصر المرئية"
             },
             "additional-accessibility-information-tactile-objects": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "كائنات ثلاثية الأبعاد لمسية",
+                "descriptive": "كائنات ثلاثية الأبعاد لمسية"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "توفير تلميحات تحويل النص إلى كلام",
+                "descriptive": "توفير تلميحات تحويل النص إلى كلام"
             },
-            "additional-accessibility-information-title": ""
+            "additional-accessibility-information-title": "معلومات إضافية عن سهولة الوصول"
         },
         "conformance": {
             "conformance-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "هذا المنشور يستوفي المعايير الدنيا لسهولة الوصول",
+                "descriptive": "يحتوي المنشور على بيان توافق يُثبت أنه يستوفي معيار سهولة الوصول EPUB ومعيار WCAG 2 المستوى A"
             },
             "conformance-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "هذا المنشور يستوفي المعايير المقبولة لسهولة الوصول",
+                "descriptive": "يحتوي المنشور على بيان توافق يُثبت أنه يستوفي معيار سهولة الوصول EPUB ومعيار WCAG 2 المستوى AA"
             },
             "conformance-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "هذا المنشور يفوق المعايير المقبولة لسهولة الوصول",
+                "descriptive": "يحتوي المنشور على بيان توافق يُثبت أنه يستوفي معيار سهولة الوصول EPUB ومعيار WCAG 2 المستوى AAA"
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "هذا المنشور صادق عليه "
             },
             "conformance-certifier-credentials": {
-                "compact": ""
+                "compact": "بيانات اعتماد الجهة المصادقة "
             },
             "conformance-details-certifier-report": {
-                "compact": ""
+                "compact": "لمزيد من المعلومات، الرجاء الرجوع إلى تقرير الجهة المصادقة"
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "يدّعي هذا المنشور أنه يستوفي",
+                "descriptive": "يدّعي هذا المنشور أنه يستوفي"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "معيار سهولة الوصول EPUB الإصدار 1.0",
+                "descriptive": "معيار سهولة الوصول EPUB الإصدار 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "معيار سهولة الوصول EPUB الإصدار 1.1",
+                "descriptive": "معيار سهولة الوصول EPUB الإصدار 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "المستوى A",
+                "descriptive": "المستوى A"
             },
             "conformance-details-level-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "المستوى AA",
+                "descriptive": "المستوى AA"
             },
             "conformance-details-level-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "المستوى AAA",
+                "descriptive": "المستوى AAA"
             },
             "conformance-details-wcag-2-0": {
-                "compact": ""
+                "compact": "WCAG 2.0"
             },
             "conformance-details-wcag-2-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.1",
+                "descriptive": "إرشادات سهولة الوصول إلى محتوى الويب (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.2",
+                "descriptive": "إرشادات سهولة الوصول إلى محتوى الويب (WCAG) 2.2"
             },
             "conformance-no": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "لا تتوفر أي معلومات",
+                "descriptive": "لا تتوفر أي معلومات"
             },
-            "conformance-title": "",
+            "conformance-title": "التوافق",
             "conformance-unknown-standard": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "لا يمكن تحديد توافق هذا المنشور مع المعايير المقبولة لسهولة الوصول",
+                "descriptive": "لا يمكن تحديد توافق هذا المنشور مع المعايير المقبولة لسهولة الوصول"
             }
         },
         "hazards": {
             "hazards-flashing": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "محتوى وامض",
+                "descriptive": "يحتوي المنشور على محتوى وامض قد يسبّب نوبات حساسية من الضوء"
             },
             "hazards-flashing-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "لا يوجد محتوى وامض",
+                "descriptive": "لا يحتوي المنشور على محتوى وامض"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "غير معروف إن كان يوجد محتوى وامض أم لا",
+                "descriptive": "غير معروف إن كان يوجد محتوى وامض أم لا"
             },
             "hazards-motion": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "محاكاة الحركة",
+                "descriptive": "يحتوي المنشور على محاكاة حركة قد تسبّب دوار الحركة"
             },
             "hazards-motion-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "لا توجد محاكاة حركة",
+                "descriptive": "لا يحتوي المنشور على محاكاة حركة"
             },
             "hazards-motion-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "غير معروف إن كان يوجد محاكاة حركة أم لا",
+                "descriptive": "غير معروف إن كان يوجد محاكاة حركة أم لا"
             },
             "hazards-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "لا تتوفر أي معلومات",
+                "descriptive": "لا تتوفر أي معلومات"
             },
             "hazards-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "لا توجد مخاطر",
+                "descriptive": "لا يحتوي المنشور على أي مخاطر"
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "أصوات",
+                "descriptive": "يحتوي المنشور على أصوات قد تكون مزعجة"
             },
             "hazards-sound-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "لا توجد أصوات",
+                "descriptive": "لا يحتوي المنشور على أصوات"
             },
             "hazards-sound-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "غير معروف إن كان يوجد أصوات أم لا",
+                "descriptive": "غير معروف إن كان يوجد أصوات أم لا"
             },
-            "hazards-title": "",
+            "hazards-title": "مخاطر",
             "hazards-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "غير معروف إن كان يوجد مخاطر أم لا",
+                "descriptive": "غير معروف إن كان يوجد مخاطر أم لا"
             }
         },
         "navigation": {
             "navigation-index": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "فهرس",
+                "descriptive": "فهرس يحتوي على روابط إلى الإدخالات المشار إليها"
             },
             "navigation-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "لا تتوفر أي معلومات",
+                "descriptive": "لا تتوفر أي معلومات"
             },
             "navigation-page-navigation": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "الانتقال إلى الصفحة",
+                "descriptive": "قائمة الصفحات للانتقال إلى صفحات من النسخة المطبوعة الأصلية"
             },
             "navigation-structural": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "العناوين",
+                "descriptive": "عناصر مثل العناوين والجداول وغيرها للتنقل المنظّم"
             },
-            "navigation-title": "",
+            "navigation-title": "التنقل",
             "navigation-toc": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "جدول المحتويات",
+                "descriptive": "جدول المحتويات لكل فصول النص عبر روابط"
             }
         },
         "rich-content": {
             "rich-content-accessible-chemistry-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "الصيغ الكيميائية بتنسيق LaTeX (لاتخ)",
+                "descriptive": "الصيغ الكيميائية بتنسيق سهل الوصول (LaTeX)"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "الصيغ الكيميائية بتنسيق MathML",
+                "descriptive": "الصيغ الكيميائية بتنسيق سهل الوصول (MathML)"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "الرياضيات بتنسيق LaTeX",
+                "descriptive": "الصيغ الرياضية بتنسيق سهل الوصول (LaTeX)"
             },
             "rich-content-accessible-math-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "الرياضيات بتنسيق MathML",
+                "descriptive": "الصيغ الرياضية بتنسيق سهل الوصول (MathML)"
             },
             "rich-content-accessible-math-described": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "يتم توفير تفسيرات نصية للصيغ الرياضية",
+                "descriptive": "يتم توفير تفسيرات نصية للصيغ الرياضية"
             },
             "rich-content-closed-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "تحتوي الفيديوهات على ترجمات مغلقة",
+                "descriptive": "الفيديوهات الموجودة في المنشورات تحتوي على ترجمات مغلقة"
             },
             "rich-content-extended": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "يتم تفسير الصور الغنية بالمعلومات بأوصاف مفصّلة",
+                "descriptive": "يتم تفسير الصور الغنية بالمعلومات بأوصاف مفصّلة"
             },
             "rich-content-open-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "تحتوي الفيديوهات على ترجمات مفتوحة",
+                "descriptive": "الفيديوهات الموجودة في المنشورات تحتوي على ترجمات مفتوحة"
             },
-            "rich-content-title": "",
+            "rich-content-title": "محتوى غني",
             "rich-content-transcript": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "يتم توفير نص (نصوص)",
+                "descriptive": "يتم توفير نص (نصوص)"
             },
             "rich-content-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "لا تتوفر أي معلومات",
+                "descriptive": "لا تتوفر أي معلومات"
             }
         },
         "ways-of-reading": {
             "ways-of-reading-nonvisual-reading-alt-text": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "يحتوي على نص بديل",
+                "descriptive": "يحتوي على أوصاف نصية بديلة للصور"
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "لا توجد معلومات عن القراءة غير البصرية",
+                "descriptive": "لا توجد معلومات عن القراءة غير البصرية"
             },
             "ways-of-reading-nonvisual-reading-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "غير قابل للقراءة بصوتٍ عالٍ أو بطريقة برايل الديناميكية",
+                "descriptive": "المحتوى غير قابل للقراءة بصوتٍ عالٍ أو بطريقة برايل الديناميكية"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "غير قابل للقراءة بالكامل باستخدام القراءة بصوتٍ عالٍ أو طريقة برايل الديناميكية",
+                "descriptive": "لن يكون كل المحتوى قابلاً للقراءة بصوتٍ عالٍ أو بطريقة برايل الديناميكية"
             },
             "ways-of-reading-nonvisual-reading-readable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "قابل للقراءة بصوتٍ عالٍ أو بطريقة برايل الديناميكية",
+                "descriptive": "يمكن قراءة كل المحتوى بصوتٍ عالٍ أو بطريقة برايل الديناميكية"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "مقاطع الصوت المسجّلة مسبقاً",
+                "descriptive": "مقاطع الصوت المسجّلة مسبقاً مدمجة في المحتوى"
             },
             "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "لا توجد معلومات عن الصوت المسجّل مسبقاً",
+                "descriptive": "لا توجد معلومات عن الصوت المسجّل مسبقاً"
             },
             "ways-of-reading-prerecorded-audio-only": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "الصوت المسجّل مسبقاً فقط",
+                "descriptive": "كتاب صوتي بدون بديل نصي"
             },
             "ways-of-reading-prerecorded-audio-synchronized": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "الصوت المسجّل مسبقاً متزامن مع النص",
+                "descriptive": "كل المحتوى متوفر كصوت مسجّل مسبقاً متزامن مع النص"
             },
-            "ways-of-reading-title": "",
+            "ways-of-reading-title": "طرق القراءة",
             "ways-of-reading-visual-adjustments-modifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "يمكن تعديل المظهر",
+                "descriptive": "يمكن تعديل مظهر النص وتخطيط الصفحة وفقاً لإمكانات نظام القراءة (إسم الخط وحجمه، والمسافات بين الفقرات والجمل والكلمات والأحرف، بالإضافة إلى لون الخلفية والنص)"
             },
             "ways-of-reading-visual-adjustments-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "لا توجد معلومات عن إمكانية تعديل المظهر",
+                "descriptive": "لا توجد معلومات عن إمكانية تعديل المظهر"
             }
         }
     },
@@ -584,16 +586,16 @@
         "duration": {
             "title": "المدة"
         },
-        "encryptedNoLicense": "",
+        "encryptedNoLicense": "المنشور مشفّر لكنه يفتقر إلى ترخيص LCP!",
         "expired": "انتهت مدة الاستعارة",
         "expiredLcp": "انتهت صلاحية ترخيص LCP الخاص بهذا المنشور.",
-        "incorrectPassphrase": "",
-        "lcpEnd": "",
+        "incorrectPassphrase": "لا يوجد عبارة مرور مخزّنة تتناسب مع المنشور، أو أن عبارة المرور المكتوبة غير صحيحة.",
+        "lcpEnd": "النهاية",
         "lcpRightsCopy": "الأحرف المنسوخة",
         "lcpRightsPrint": "الصفحات المطبوعة",
-        "lcpStart": "",
+        "lcpStart": "البداية",
         "licenceLCP": "الترخيص (LCP)",
-        "licenseCertificateDateInvalid": "تاريخ توقيع ترخيص LCP غير صالح.",
+        "licenseCertificateDateInvalid": "تاريخ توقيع ترخيص LCP غير صالح. ({{- dateTime}})",
         "licenseOutOfDate": "ترخيص LCP قديم.",
         "licenseSignatureInvalid": "توقيع ترخيص LCP غير صالح.",
         "licensed": "مرخَّص",
@@ -604,14 +606,14 @@
             "title": "مقدار التقدّم"
         },
         "read": "انتهى",
-        "remainingTime": "",
+        "remainingTime": "الاستعارة (الوقت المتبقي)",
         "renewButton": "تجديد",
         "returnButton": "إرجاع",
         "returnedLcp": "تم إرجاع هذا المنشور المحمي بـ LCP.",
         "revokedLcp": "تم إبطال ترخيص LCP الخاص بهذا المنشور.",
         "seeLess": "رؤية مقدار أقل",
         "seeMore": "رؤية مقدار أكثر",
-        "timeLeft": "",
+        "timeLeft": "الوقت المتبقي",
         "title": "العنوان",
         "userKeyCheckInvalid": "عبارة المرور غير صحيحة"
     },
@@ -621,32 +623,32 @@
             "addNote": "تعليق",
             "advancedMode": "الصيغة الفورية (إنشاء تلقائي بعد الاختيار)",
             "annotationsExport": {
-                "description": "",
-                "title": ""
+                "description": "اكتب إسماً للملاحظات المصدَّرة:",
+                "title": "العنوان"
             },
             "annotationsOptions": "خيارات",
-            "date": "",
-            "export": "",
+            "date": "تاريخ التعديل",
+            "export": "حفظ الملاحظات بإسم...",
             "filter": {
-                "all": "",
-                "filterByColor": "",
-                "filterByCreator": "",
-                "filterByDrawtype": "",
-                "filterByTag": "",
-                "filterOptions": "",
-                "none": ""
+                "all": "الكل",
+                "filterByColor": "تصفية حسب اللون",
+                "filterByCreator": "تصفية حسب المُنشئ",
+                "filterByDrawtype": "تصفية حسب النوع",
+                "filterByTag": "تصفية حسب الوسم",
+                "filterOptions": "خيارات التصفية",
+                "none": "بلا"
             },
             "hide": "عدم الإظهار",
             "highlight": "تمييز",
             "noSelectionToast": "لم يتم اختيار شيء",
-            "note": "",
+            "note": "ملاحظة {{- color}}",
             "quickAnnotations": "إنشاء سريع (تخطي المحرِّر)",
             "saveNote": "حفظ",
             "sorting": {
-                "lastcreated": "",
-                "lastmodified": "",
-                "progression": "",
-                "sortingOptions": ""
+                "lastcreated": "الأحدث إنشاءً",
+                "lastmodified": "الأحدث تعديلاً",
+                "progression": "التقدّم",
+                "sortingOptions": "خيارات الفرز"
             },
             "toggleMarginMarks": "إظهار في الهوامش",
             "type": {
@@ -657,7 +659,7 @@
             }
         },
         "bookmarks": {
-            "index": ""
+            "index": "{{- index}} الإشارات المرجعية"
         },
         "divina": {
             "mute": "كتم الصوت",
@@ -666,7 +668,13 @@
         "fxl": {
             "fit": "ملاءمة"
         },
-        "goToContent": "",
+        "goToContent": "الانتقال إلى المحتوى",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "التعليقات",
             "bookmarks": "الإشارات المرجعية",
@@ -674,7 +682,7 @@
             "edit": "تحرير",
             "goTo": "الانتقال إلى صفحة",
             "landmarks": "المَعالم",
-            "saveMark": "حفظ الإشارة المرجعية",
+            "saveMark": "حفظ",
             "search": "بحث",
             "searchResult": "بحث عن [{{- searchText}}]",
             "toc": "جدول المحتويات"
@@ -683,10 +691,10 @@
             "activate": "تنشيط القراءة بصوت عالٍ",
             "captions": "التسميات التوضيحية / عرض نظيف",
             "captionsDescription": "عرض مبسَّط للنص مع الحد الأدنى لتصميم التسميات التوضيحية.",
-            "disableContinuousPlay": "",
-            "disableContinuousPlayDescription": "",
-            "ignoreAndUseTTS": "",
-            "ignoreAndUseTTSDescription": "",
+            "disableContinuousPlay": "تعطيل التشغيل المتواصل",
+            "disableContinuousPlayDescription": "عدم تشغيل العنصر التالي تلقائياً، والتوقف مؤقتاً فور انتهاء تشغيل العنصر الحالي.",
+            "ignoreAndUseTTS": "تجاهل الصوت المسجّل مسبقاً، واستخدام ميزة تحويل النص إلى كلام (TTS)",
+            "ignoreAndUseTTSDescription": "تجاهل مسارات الوسائط المشمولة في EPUB، واستخدام ميزة تحويل النص إلى كلام بدلاً منها",
             "next": "القراءة التالية بصوت عالٍ",
             "pause": "إيقاف القراءة بصوت عالٍ مؤقتاً",
             "play": "تشغيل القراءة بصوت عالٍ",
@@ -698,8 +706,8 @@
             "title": "القراءة بصوت عالٍ"
         },
         "navigation": {
-            "ZenModeExit": "",
-            "ZenModeTitle": "",
+            "ZenModeExit": "الخروج من وضع القراءة المبسّطة",
+            "ZenModeTitle": "وضع القراءة المبسّطة",
             "annotationTitle": "التعليق",
             "backHomeTitle": "عودة إلى رف الكتب",
             "bookmarkTitle": "الإشارة المرجعية",
@@ -717,16 +725,18 @@
             "openTableOfContentsTitle": "التنقّل",
             "page": "الصفحة",
             "pdfscalemode": "ملاءمة أو عرض الصفحة",
+            "print": "",
+            "printDisabled": "",
             "settingsTitle": "إعدادات"
         },
         "notes": {
             "colors": {
-                "cyan": "",
-                "green": "",
-                "orange": "",
-                "purple": "",
-                "red": "",
-                "yellow": ""
+                "cyan": "أزرق سماوي",
+                "green": "أخضر",
+                "orange": "برتقالي",
+                "purple": "أرجواني",
+                "red": "أحمر",
+                "yellow": "أصفر"
             }
         },
         "picker": {
@@ -741,6 +751,24 @@
             },
             "searchTitle": "البحث عن:"
         },
+        "print": {
+            "descriptionLcpCount": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "preview": "",
+            "print": "",
+            "printablePages": "",
+            "title": ""
+        },
         "settings": {
             "column": {
                 "auto": "افتراضي",
@@ -748,7 +776,7 @@
                 "title": "الأعمدة",
                 "two": "عمودان"
             },
-            "customFontSelected": "",
+            "customFontSelected": "لقد اخترت خطاً شخصياً",
             "customizeReader": "تخصيص تنسيق النص",
             "disabled": "تم تعطيله",
             "display": "العرض",
@@ -763,10 +791,11 @@
             "letterSpacing": "تباعد الأحرف",
             "lineSpacing": "تباعد الأسطر",
             "margin": "الهامش",
-            "noFootnotes": "تعطيل الحواشي السفلية",
+            "mathjax": "",
+            "noFootnotes": "تعطيل الحواشي السفلية المنبثقة",
             "noRTLFlip": "تعطيل واجهة اليمين إلى اليسار",
             "noRuby": "إخفاء علامات روبي اليابانية",
-            "noTemporaryNavTargetOutline": "",
+            "noTemporaryNavTargetOutline": "تعطيل مؤشرات التنقّل المرئية",
             "paginated": "مقسَّم إلى صفحات",
             "paraSpacing": "تباعد الفقرات",
             "pdfZoom": {
@@ -783,14 +812,14 @@
                 "title": "تكبير/تصغير"
             },
             "preset": {
-                "apply": "",
-                "applyDetails": "",
-                "detail": "",
-                "reset": "",
-                "resetDetails": "",
-                "save": "",
-                "saveDetails": "",
-                "title": ""
+                "apply": "تطبيق",
+                "applyDetails": "تطبيق إعداداتك المفضّلة على المنشور الحالي.",
+                "detail": "حفظ / تطبيق / إعادة ضبط إعداداتك المفضّلة.",
+                "reset": "إعادة ضبط",
+                "resetDetails": "إعادة ضبط إعداداتك المفضّلة (الإعدادات الافتراضية).",
+                "save": "حفظ",
+                "saveDetails": "هذا الإجراء يحفظ الإعدادات الحالية، أي، خيارات العرض وتنسيق النص المفضّلة لديك. يمكن بعد ذلك تطبيق هذه الإعدادات على منشورات أخرى من خلال ضغط زر \"تطبيق\" في نوافذ القراءة الأخرى.",
+                "title": "التفضيلات"
             },
             "preview": "معاينة تمهيدية",
             "reduceMotion": "تقليل الحركة",
@@ -821,9 +850,9 @@
         },
         "tts": {
             "activate": "تنشيط ميزة تحويل النص إلى كلام",
-            "language": "",
+            "language": "لغة ميزة تحويل النص إلى كلام",
             "next": "النص التالي المحوَّل إلى كلام",
-            "options": "",
+            "options": "خيارات ميزة تحويل النص إلى كلام",
             "pause": "إيقاف ميزة تحويل النص إلى كلام مؤقتاً",
             "play": "تشغيل ميزة تحويل النص إلى كلام",
             "previous": "النص السابق المحوَّل إلى كلام",
@@ -836,16 +865,16 @@
     },
     "settings": {
         "annotationCreator": {
-            "creator": "",
-            "help": "",
-            "name": "",
-            "organization": "",
-            "person": "",
-            "type": ""
+            "creator": "منشئ التعليقات التوضيحية (اختياري)",
+            "help": "في حال تحديد ذلك، سيتم تضمين هذا الاسم في البيانات المعيارية للملاحظات المُصدَّرة.",
+            "name": "الاسم",
+            "organization": "المنظمة",
+            "person": "الشخص",
+            "type": "النوع:"
         },
         "auth": {
-            "help": "",
-            "title": "",
+            "help": "هذا الإجراء يحذف كل بيانات تسجيل الدخول الخاصة بنظام توزيع المنشورات المفتوح (OPDS).",
+            "title": "الوصول إلى كتالوغات المنشورات",
             "wipeData": "حذف بيانات تسجيل الدخول"
         },
         "keyboard": {
@@ -854,22 +883,246 @@
             "disclaimer": "تم تعريف الاختصارات من تخطيط لوحة مفاتيح كويرتي.",
             "editUserJson": "تحرير ملف المستخدم...",
             "keyboardShortcuts": "اختصارات لوحة المفاتيح",
+            "list": {
+                "AddBookmarkWithLabel": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreate": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreateQuick": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsToggleMargin": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPlayPause": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioStop": {
+                    "description": "",
+                    "name": ""
+                },
+                "CloseReader": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomIn": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomOut": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomReset": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMain": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMainDeep": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderGotoPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigation": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationAnnotations": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationBookmarks": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationTOC": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderSettings": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusToolbar": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToBegin": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToEnd": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfo": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "Print": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SpeakReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleBookmark": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleReaderFullscreen": {
+                    "description": "",
+                    "name": ""
+                }
+            },
             "loadUserJson": "تحميل من ملف المستخدم",
+            "noShortcutFound": "",
             "resetDefaults": "إعادة ضبط (تحميل الافتراضيات)",
-            "save": "حفظ"
+            "save": "حفظ",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "اللغة"
         },
         "library": {
-            "enableAPIAPP": "",
-            "title": ""
+            "enableAPIAPP": "تنشيط نظام مكتبة PNB",
+            "title": "الوصول إلى حسابات المكتبة الفرنسية"
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "",
-                "enableCheckbox": "",
-                "overrideHTMLTemplate": ""
+                "applyDefaultTemplate": "تطبيق القالب الافتراضي",
+                "enableCheckbox": "تفعيل/تعطيل تجاوز قالب Mustache عند تصدير الملاحظات بصيغة HTML",
+                "overrideHTMLTemplate": "تجاوز قالب Mustache عند تصدير الملاحظة بصيغة HTML"
             }
         },
         "session": {
@@ -890,25 +1143,25 @@
     },
     "tts": {
         "highlight": {
-            "mainColor": "",
-            "maskBlockWordOutline": "",
-            "maskBlockWordSolidBackground": "",
-            "maskBlockWordUnderline": "",
-            "maskWordOutline": "",
-            "maskWordSolidBackground": "",
-            "maskWordUnderline": "",
-            "outlineWordOutline": "",
-            "outlineWordSolidBackground": "",
-            "outlineWordUnderline": "",
-            "preview": "",
-            "solidBackgroundWordOutline": "",
-            "solidBackgroundWordSolidBackground": "",
-            "solidBackgroundWordUnderline": "",
-            "style": "",
-            "underlineWordOutline": "",
-            "underlineWordSolidBackground": "",
-            "underlineWordUnderline": "",
-            "wordColor": ""
+            "mainColor": "اللون الرئيسي",
+            "maskBlockWordOutline": "تعتيم الكتلة، إبراز الكلمات بإطار",
+            "maskBlockWordSolidBackground": "تعتيم الكتلة، خلفية صلبة للكلمات",
+            "maskBlockWordUnderline": "تعتيم الكتلة، تسطير الكلمات",
+            "maskWordOutline": "تعتيم، إبراز الكلمات بإطار",
+            "maskWordSolidBackground": "تعتيم، خلفية صلبة للكلمات",
+            "maskWordUnderline": "تعتيم، تسطير الكلمات",
+            "outlineWordOutline": "إبراز، إبراز الكلمات بإطار",
+            "outlineWordSolidBackground": "إبراز، خلفية صلبة للكلمات",
+            "outlineWordUnderline": "إبراز، تسطير الكلمات",
+            "preview": "رؤية عيّنة عن نمط التمييز الذي تستخدمه ميزة تحويل النص إلى كلام",
+            "solidBackgroundWordOutline": "خلفية صلبة، إبراز الكلمات بإطار",
+            "solidBackgroundWordSolidBackground": "خلفية صلبة، خلفية صلبة للكلمات",
+            "solidBackgroundWordUnderline": "خلفية صلبة، تسطير الكلمات",
+            "style": "نمط التمييز الذي تستخدمه ميزة تحويل النص إلى كلام",
+            "underlineWordOutline": "تسطير، إبراز الكلمات بإطار",
+            "underlineWordSolidBackground": "تسطير، خلفية صلبة للكلمات",
+            "underlineWordUnderline": "تسطير، تسطير الكلمات",
+            "wordColor": "لون الكلمات"
         }
     },
     "wizard": {
