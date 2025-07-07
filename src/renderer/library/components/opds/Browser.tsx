@@ -43,7 +43,9 @@ class Browser extends React.Component<IProps, undefined> {
         const secondaryHeader = <Header/>;
         const breadCrumb = <BreadCrumb />;
         const search = <SearchForm />;
-        const catalogTitle = this.props.breadrumb[1]?.name;
+
+        const profileIsDefault = this.props.profile.name === "Default";
+        const catalogTitle = profileIsDefault ? this.props.breadrumb[1]?.name : this.props.profile.name;
 
 
         return (
@@ -71,6 +73,7 @@ const mapStateToProps = (state: ILibraryRootState) => ({
     breadrumb: state.opds.browser.breadcrumb,
     location: state.router.location,
     locale: state.i18n.locale, // refresh
+    profile: state.profile,
 });
 
 export default connect(mapStateToProps, undefined)(withTranslator(Browser));

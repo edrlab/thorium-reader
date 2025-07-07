@@ -21,12 +21,15 @@ import SecondaryHeader from "readium-desktop/renderer/library/components/Seconda
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { OpdsFeedAddFormDialog } from "../dialog/OpdsFeedAddForm";
 import { ApiappAddFormDialog } from "../dialog/ApiappAddForm";
+import { IProfile } from "readium-desktop/common/redux/states/profile";
+import PublicationAddButton from "../catalog/PublicationAddButton";
 // import { DisplayType, IRouterLocationState } from "readium-desktop/renderer/library/routing";
 // import * as CheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
+    profile: IProfile;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -48,13 +51,17 @@ class Header extends React.Component<IProps, undefined> {
         // const displayType = (location?.state && (location.state as IRouterLocationState).displayType) || DisplayType.Grid;
 
         // FIXME : css in code
+        const dilicomEnabled: boolean = this.props.profile.dilicom;
+        console.log(dilicomEnabled);
         return (
+            dilicomEnabled ?
             <SecondaryHeader style={{display: "flex", gap: "10px", alignItems: "end", height: "53px", justifyContent: "end", margin: "0px"}}>
                 <div style={{display: "flex", alignItems: "center", gap: "10px"}}>
                     <OpdsFeedAddFormDialog />
                     <ApiappAddFormDialog />
                 </div>
             </SecondaryHeader>
+            : <span style={{display: "flex", justifyContent: "end", alignItems: "end", height: "53px", borderBottom: "1px solid var(--color-verylight-grey-alt)", paddingBottom: "30px"}}><PublicationAddButton /></span>
         );
     }
 }
@@ -63,6 +70,7 @@ const mapStateToProps = (state: ILibraryRootState) => ({
     headerLinks: state.opds.browser.header,
     breadcrumb: state.opds.browser.breadcrumb,
     location: state.router.location,
+    profile: state.profile,
 });
 
 export default connect(mapStateToProps)(withTranslator(Header));

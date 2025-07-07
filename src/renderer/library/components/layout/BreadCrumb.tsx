@@ -19,6 +19,7 @@ import { DisplayType, IRouterLocationState } from "../../routing";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import useResizeObserver from "@react-hook/resize-observer";
 import debounce from "debounce";
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 
 function useSize<T extends Element>(target: React.RefObject<T>) {
     const [size, setSize] = React.useState<DOMRect | undefined>(undefined);
@@ -114,8 +115,17 @@ const BreadCrumb = () => {
     const containerWidth = Math.floor(containerSize?.width || -1);
 
     const breadCrumbData = useSelector((state: ILibraryRootState) => state.opds.browser.breadcrumb);
+    const profileSelected = useSelector((state: ICommonRootState) => state.profile);
+    const profileIsDefault: boolean = profileSelected.name === "Default";
 
-    const firstOne = {...(breadCrumbData.at(0) || {name: "", path: ""})};
+    let firstOne: {name: string; path?: string;};
+
+    if (profileIsDefault) {
+        firstOne = {...(breadCrumbData.at(0) || {name: "", path: ""})};
+    } else {
+        firstOne = {name: "", path: ""};
+    }
+
     // const lastOneFromBreadcrumbData = () => ({...(breadCrumbData.at(-1) || {name: "", path: ""})});
     const lastOneFromBreadcrumbData = {...(breadCrumbData.at(-1) || {name: "", path: ""})};
 
@@ -198,11 +208,12 @@ const BreadCrumb = () => {
             overflowX: displayFullBreadcrumb ? "auto" : "hidden",
         }} ref={container} className={stylesBreadcrumb.breadcrumb_container}>
             <ul className={stylesBreadcrumb.breadcrumb}>
-                {
+                { profileIsDefault ?
                     <li key={0} className={"breadcrumb-li-item"}>
                         <LinkItemBreadcrumb item={firstOne} isTheFirstOne />
                         <ChevronRightBreadCrumb />
                     </li>
+                    : <></>
                 }
                 {
                     between.map((item, index) => {

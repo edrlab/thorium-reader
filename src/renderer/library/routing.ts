@@ -95,6 +95,11 @@ const _routes = {
         // exact: false,
         component: Catalog,
     } as Route,
+    "/custom-home": {
+        path: "/custom-home",
+        // exact: true,
+        component: Browser,
+    } as Route,
 };
 
 export type TRoutesKey = keyof typeof _routes;

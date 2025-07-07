@@ -755,7 +755,7 @@ class Reader extends React.Component<IProps, IState> {
 
     private applyThemeVariables(profile: IProfile): void {
         const root = document.documentElement;
-        const colors: string[] = profile.colors;
+        const colors: IProfile["colors"] = profile.colors;
 
         Object.entries(colors).forEach(([key, value]) => {
         const cssVar = `--theme-${key}`;

@@ -27,6 +27,7 @@ import { Settings } from "../settings/Settings";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import { getStore } from "../../createStore";
 import { IProfile } from "readium-desktop/common/redux/states/profile";
+import { buildOpdsBrowserRoute } from "../../opds/route";
 // import { WizardModal } from "../Wizard";
 
 interface NavigationHeader {
@@ -51,7 +52,7 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 
 interface IState {
   themeApplied: boolean;
-  logo?: string;
+  logo?: {href: string, type: string};
 }
 
 class Header extends React.Component<IProps, IState> {
@@ -78,7 +79,7 @@ class Header extends React.Component<IProps, IState> {
     }
 
     private applySupplierLogo(profile: IProfile): void {
-        const logo = profile.logo;
+        const logo = profile.links[0].properties.logo;
 
         this.setState({ themeApplied: true, logo });
     }
@@ -93,37 +94,54 @@ class Header extends React.Component<IProps, IState> {
         const { __ } = this.props;
         const { logo } = this.state;
 
-        const headerNav: NavigationHeader[] = [
-            {
-                route: "/home",
-                label: this.props.__("header.homeTitle"),
-                matchRoutes: ["/", "/home"],
-                styles: [],
-                svg: HomeIcon,
-            },
-            {
-                route: "/library",
-                label: this.props.__("header.allBooks"),
-                matchRoutes: ["/library"],
-                searchEnable: false,
-                styles: [],
-                svg: ShelfIcon,
-            },
-            {
-                route: "/opds",
-                label: this.props.__("header.catalogs"),
-                matchRoutes: ["/opds"],
-                styles: [],
-                svg: CatalogsIcon,
-            },
-            // {
-            //     route: "/settings",
-            //     label: "settings",
-            //     matchRoutes: ["/settings"],
-            //     styles: [],
-            //     svg: GearIcon,
-            // },
-        ];
+const headerNav: NavigationHeader[] = [
+    ...(this.props.profile.name === "Default"
+        ? [{
+            route: "/home",
+            label: this.props.__("header.homeTitle"),
+            matchRoutes: ["/", "/home"],
+            styles: [],
+            svg: HomeIcon,
+        }]
+        : this.props.profile.links?.map((link) => ({
+            route: buildOpdsBrowserRoute(
+                this.props.profile.id.toString(),
+                link.title,
+                link.href,
+            ),
+            label: link.title,
+            matchRoutes: ["/", "/opds"],
+            styles: [],
+            svg: CatalogsIcon,
+        })) || []
+    ),
+    {
+        route: "/library",
+        label: this.props.__("header.allBooks"),
+        matchRoutes: ["/library"],
+        searchEnable: false,
+        styles: [],
+        svg: ShelfIcon,
+    },
+    ...(this.props.profile.name === "Default"
+        ? [{
+            route: "/opds",
+            label: this.props.__("header.catalogs"),
+            matchRoutes: ["/opds"],
+            styles: [],
+            svg: CatalogsIcon,
+        }]
+        : []
+    ),
+    // {
+    //     route: "/settings",
+    //     label: "settings",
+    //     matchRoutes: ["/settings"],
+    //     styles: [],
+    //     svg: GearIcon,
+    // },
+];
+
 
         return (<>
             <SkipLink
@@ -132,13 +150,20 @@ class Header extends React.Component<IProps, IState> {
                 label={__("accessibility.skipLink")}
             />
             <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>
-                {logo && (
+                {logo && logo.type === "svg" ? 
                     <div
                         className="logo"
                         style={{height: "60px", width: "60px", margin: " 20px auto"}}
-                        dangerouslySetInnerHTML={{ __html: logo }}
+                        dangerouslySetInnerHTML={{ __html: logo.href }}
                     />
-                    )}
+                    : logo && logo.type === "image/png" ?
+                     <div
+                        className="logo"
+                        style={{height: "60px", width: "60px", margin: " 20px auto"}}
+                    >
+                    <img src={logo.href} alt="" style={{height: "100%", width: "100%"}}/></div>
+                    : <></>
+                    }
                 <h1 className={stylesHeader.appName} aria-label="Thorium"></h1>
                 <ul style={{paddingTop: "10px", height: logo ? "calc(100% - 180px)" : ""}}>
                     <div>
@@ -160,7 +185,7 @@ class Header extends React.Component<IProps, IState> {
 
     private buildNavItem(item: NavigationHeader, index: number) {
 
-        if (!this.props.location) {
+        if (!this.props.location || !item) {
             return (<></>);
         }
 
@@ -168,6 +193,7 @@ class Header extends React.Component<IProps, IState> {
         const pathname = this.props.location.pathname;
 
         let active = false;
+
         for (const matchRoute of item.matchRoutes) {
             if (
                 pathname.startsWith(matchRoute)
@@ -207,6 +233,7 @@ class Header extends React.Component<IProps, IState> {
                     aria-pressed={active}
                     role={"button"}
                     className={classNames(active ? stylesButtons.button_nav_primary : "", !active ? "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" : "")}
+                    style={{minHeight: "20px", maxHeight: "30px", height: "unset"}}
                     title={item.label}
                     onClick={(e) => {
                         if (e.altKey || e.shiftKey || e.ctrlKey) {
@@ -244,6 +271,8 @@ const mapStateToProps = (state: ILibraryRootState) => ({
     history: state.history,
 
     locale: state.i18n.locale, // refresh
+    profile :state.profile,
 });
+
 
 export default connect(mapStateToProps)(withTranslator(Header));

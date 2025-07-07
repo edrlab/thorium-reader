@@ -52,6 +52,8 @@ import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
 import profiles from "readium-desktop/resources/profiles/testProfiles.json";
 import { IProfile } from "readium-desktop/common/redux/states/profile";
+import { useNavigate } from "react-router";
+import { buildOpdsBrowserRoute } from "../../opds/route";
 
 interface ISettingsProps {};
 
@@ -413,11 +415,23 @@ const Profiles = () => {
     const allProfiles: Array<IProfile> = (profiles);
     const dispatch = useDispatch();
     const profile = useSelector((s: ICommonRootState) => s.profile);
+    const navigate = useNavigate();
 
     const setProfile = (profileSelected: React.Key) => {
         if (typeof profileSelected !== "number") return;
-            const profileChosen = allProfiles.find(({ id }) => id === profileSelected);
-            dispatch(profileActions.setProfile.build(profileChosen));
+        const profileChosen = allProfiles.find(({ id }) => id === profileSelected);
+        dispatch(profileActions.setProfile.build(profileChosen));
+        let redirect_path: string;
+        if (profileChosen.name !== "Default") {
+            redirect_path = buildOpdsBrowserRoute(
+                profileChosen.id.toString(),
+                profileChosen.name,
+                profileChosen.links[0].href,
+            );
+        } else {
+            redirect_path = "/";
+        }
+        navigate(redirect_path, { replace: true });
     };
     const selectedKey = allProfiles.find(({ name }) => name === profile.name);
 
