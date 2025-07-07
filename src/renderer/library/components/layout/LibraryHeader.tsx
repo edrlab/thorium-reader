@@ -94,16 +94,20 @@ class Header extends React.Component<IProps, IState> {
         const { __ } = this.props;
         const { logo } = this.state;
 
-const headerNav: NavigationHeader[] = [
-    ...(this.props.profile.name === "Default"
-        ? [{
+        const headerNav: NavigationHeader[] = [];
+
+        if (this.props.profile.name === "Default") {
+        headerNav.push({
             route: "/home",
             label: this.props.__("header.homeTitle"),
             matchRoutes: ["/", "/home"],
+            searchEnable: true,
             styles: [],
             svg: HomeIcon,
-        }]
-        : this.props.profile.links?.map((link) => ({
+        });
+        } else if (this.props.profile.links) {
+        this.props.profile.links.forEach(link => {
+            headerNav.push({
             route: buildOpdsBrowserRoute(
                 this.props.profile.id.toString(),
                 link.title,
@@ -111,36 +115,39 @@ const headerNav: NavigationHeader[] = [
             ),
             label: link.title,
             matchRoutes: ["/", "/opds"],
+            searchEnable: true,
             styles: [],
             svg: CatalogsIcon,
-        })) || []
-    ),
-    {
+            });
+        });
+        }
+
+        headerNav.push({
         route: "/library",
         label: this.props.__("header.allBooks"),
         matchRoutes: ["/library"],
         searchEnable: false,
         styles: [],
         svg: ShelfIcon,
-    },
-    ...(this.props.profile.name === "Default"
-        ? [{
+        });
+
+        if (this.props.profile.name === "Default") {
+        headerNav.push({
             route: "/opds",
             label: this.props.__("header.catalogs"),
             matchRoutes: ["/opds"],
+            searchEnable: true,
             styles: [],
             svg: CatalogsIcon,
-        }]
-        : []
-    ),
-    // {
-    //     route: "/settings",
-    //     label: "settings",
-    //     matchRoutes: ["/settings"],
-    //     styles: [],
-    //     svg: GearIcon,
-    // },
-];
+        });
+        }
+        // {
+        //     route: "/settings",
+        //     label: "settings",
+        //     matchRoutes: ["/settings"],
+        //     styles: [],
+        //     svg: GearIcon,
+        // },
 
 
         return (<>
