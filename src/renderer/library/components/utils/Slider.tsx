@@ -64,9 +64,6 @@ class Slider extends React.Component<IProps, IState> {
     public componentDidMount() {
         // this.setState({refreshVisible: true});
         // window.addEventListener("resize", this.update);
-        if (this.wrapperRef?.current) {
-            this.wrapperRef.current.addEventListener("scroll", this.updateScrollPosition);
-        }
         this.updateButtonState();
         if (this.wrapperRef.current) {
             this.wrapperRef.current.addEventListener("scroll", this.updateButtonState);
@@ -75,9 +72,6 @@ class Slider extends React.Component<IProps, IState> {
 
     public componentWillUnmount() {
         // window.removeEventListener("resize", this.update);
-        if (this.wrapperRef?.current) {
-            this.wrapperRef.current.removeEventListener("scroll", this.updateScrollPosition);
-        }
         if (this.wrapperRef.current) {
             this.wrapperRef.current.removeEventListener("scroll", this.updateButtonState);
         }
@@ -169,13 +163,6 @@ class Slider extends React.Component<IProps, IState> {
             disableLeft: scrollLeft <= 0,
             disableRight: scrollLeft + offsetWidth >= scrollWidth,
         });
-    };
-
-    private updateScrollPosition = () => {
-        // if (this.wrapperRef?.current) {
-        //     this.setState({ position: this.wrapperRef.current.scrollLeft });
-        // }
-        this.forceUpdate();
     };
 
     private handleMove(direction: "left" | "right") {
