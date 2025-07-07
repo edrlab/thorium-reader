@@ -35,6 +35,8 @@ interface IProps extends IBaseProps {
 interface IState {
     // position: number;
     // refreshVisible: boolean;
+    disableLeft: boolean;
+    disableRight: boolean;
 }
 
 class Slider extends React.Component<IProps, IState> {
@@ -52,6 +54,8 @@ class Slider extends React.Component<IProps, IState> {
         this.state = {
             // position: 0,
             // refreshVisible: true,
+            disableLeft: true,
+            disableRight: true,
         };
 
         // this.update = this.update.bind(this);
@@ -63,12 +67,19 @@ class Slider extends React.Component<IProps, IState> {
         if (this.wrapperRef?.current) {
             this.wrapperRef.current.addEventListener("scroll", this.updateScrollPosition);
         }
+        this.updateButtonState();
+        if (this.wrapperRef.current) {
+            this.wrapperRef.current.addEventListener("scroll", this.updateButtonState);
+        }
     }
 
     public componentWillUnmount() {
         // window.removeEventListener("resize", this.update);
         if (this.wrapperRef?.current) {
             this.wrapperRef.current.removeEventListener("scroll", this.updateScrollPosition);
+        }
+        if (this.wrapperRef.current) {
+            this.wrapperRef.current.removeEventListener("scroll", this.updateButtonState);
         }
     }
 
@@ -112,14 +123,13 @@ class Slider extends React.Component<IProps, IState> {
 
         const list = this.createContent();
 
-
         return (
             <div className={(className ? className + " " : "") + stylesSlider.slider}>
                     <button
                         aria-label={__("accessibility.leftSlideButton")}
                         className={classNames(stylesSlider.slider_button_prev, stylesButtons.button_transparency_icon)}
                         onClick={() => this.handleMove("left")}
-                        disabled={this.wrapperRef?.current?.scrollLeft <= 0}
+                        disabled={this.state.disableLeft}
                         aria-hidden
                     >
                     <SVG ariaHidden={true} svg={ArrowRightIcon} />
@@ -141,9 +151,7 @@ class Slider extends React.Component<IProps, IState> {
                         onClick={() => this.handleMove("right")}
                         aria-label={__("accessibility.rightSlideButton")}
                         className={classNames(stylesSlider.slider_button_next, stylesButtons.button_transparency_icon)}
-                        disabled={this.wrapperRef?.current
-                            ? this.wrapperRef.current.scrollLeft + this.wrapperRef.current.offsetWidth >= this.wrapperRef.current.scrollWidth
-                            : true}
+                        disabled={this.state.disableRight}
                         aria-hidden
                     >
                         <SVG ariaHidden={true} svg={ArrowRightIcon}/>
@@ -151,6 +159,17 @@ class Slider extends React.Component<IProps, IState> {
             </div>
         );
     }
+
+    private updateButtonState = () => {
+        if (!this.wrapperRef.current) return;
+
+        const { scrollLeft, offsetWidth, scrollWidth } = this.wrapperRef.current;
+
+        this.setState({
+            disableLeft: scrollLeft <= 0,
+            disableRight: scrollLeft + offsetWidth >= scrollWidth,
+        });
+    };
 
     private updateScrollPosition = () => {
         // if (this.wrapperRef?.current) {
