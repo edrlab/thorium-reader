@@ -927,6 +927,16 @@ div[data-radix-popper-content-wrapper] {
       }
 }
 
+.my_item:has(span > .authIcon) {
+    display: flex;
+    align-items: center;
+
+    .authIcon {
+            height: 18px;
+            fill: var(--color-primary);
+    }
+}
+
 .CSS_END_components_settings {
     display: none;
 }

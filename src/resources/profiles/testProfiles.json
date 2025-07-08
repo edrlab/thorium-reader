@@ -135,7 +135,7 @@
             "allowDeletion": false,
             "dilicom": false,
             "authenticate": {
-                "href": "",
+                "href": "https://demoreader.cantookstation.com/v1/sign_in.opds2",
                 "type": "application/opds-authentication+json"
             }
         },
@@ -146,6 +146,63 @@
                     "href": "https://demoreader.cantookstation.com/v1/home.opds2",
                     "type": "application/opds+json",
                     "rel": "catalog"
+                }
+            ],
+            "publications" : [
+                {
+                    "title": "",
+                    "href": "",
+                    "type": "application/opds+json",
+                    "rel": "catalog"
+                }
+            ]
+        }
+    },
+            {
+        "id": 3,
+        "version": 1,
+        "name": "Archive.org",
+        "logo": {
+            "href": "https://www.mediatheques-cc2so.fr/images/article/en-ligne-24-24/internet-archive.png",
+            "type": "image/png"
+        },
+        "language": "en-EN",
+        "palette": {
+            "neutral-light": "",
+            "neutral-dark": "",
+            "primary-light": "",
+            "primary-dark": "",
+            "secondary-light": "",
+            "secondary-dark": "",
+            "border-light": "",
+            "border-dark": "",
+            "background-light": "",
+            "background-dark": "",
+            "appName-light": "",
+            "appName-dark": ""
+        },
+        "properties": {
+            "showOnHomepage": true,
+            "allowDeletion": false,
+            "dilicom": false,
+            "authenticate": {
+                "href": "https://archive.org/services/loans/loan/?action=user_bookshelf",
+                "type": "application/opds-authentication+json"
+            }
+        },
+        "links": {
+            "feeds": [
+                {
+                    "title": "Archive",
+                    "href": "opds://archive.org/services/opds",
+                    "type": "application/opds+json",
+                    "rel": "catalog"
+                },
+                {
+                    "title": "Bookshelf",
+                    "href": "https://archive.org/services/loans/loan/?action=user_bookshelf",
+                    "type": "application/opds+json",
+                    "rel": "bookshelf"
                 }
             ],
             "publications" : [

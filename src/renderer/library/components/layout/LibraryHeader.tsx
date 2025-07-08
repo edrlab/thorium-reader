@@ -242,7 +242,7 @@ class Header extends React.Component<IProps, IState> {
                     aria-pressed={active}
                     role={"button"}
                     className={classNames(active ? stylesButtons.button_nav_primary : "", !active ? "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" : "")}
-                    style={{minHeight: "20px", maxHeight: "30px", height: "unset"}}
+                    style={{minHeight: "20px"}}
                     title={item.label}
                     onClick={(e) => {
                         if (e.altKey || e.shiftKey || e.ctrlKey) {

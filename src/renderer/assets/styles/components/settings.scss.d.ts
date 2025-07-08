@@ -1,5 +1,6 @@
 export declare const advanced_trigger: string;
 export declare const allowCustom: string;
+export declare const authIcon: string;
 export declare const blink: string;
 export declare const btn_primary: string;
 export declare const button_transparency_icon: string;
@@ -17,6 +18,7 @@ export declare const label_fontFamily: string;
 export declare const label_fontSize: string;
 export declare const maths_options: string;
 export declare const modal_dialog_reader: string;
+export declare const my_item: string;
 export declare const notification_preset: string;
 export declare const off: string;
 export declare const on: string;

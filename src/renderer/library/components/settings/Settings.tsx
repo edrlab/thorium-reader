@@ -19,6 +19,7 @@ import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg"
 import * as CogIcon from "readium-desktop/renderer/assets/icons/cog-icon.svg";
 import * as PaletteIcon from "readium-desktop/renderer/assets/icons/palette-icon.svg";
 import * as KeyReturnIcon from "readium-desktop/renderer/assets/icons/keyreturn-icon.svg";
+import * as AuthIcon from "readium-desktop/renderer/assets/icons/authentication-icon.svg";
 import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 import classNames from "classnames";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
@@ -433,30 +434,49 @@ const Profiles = () => {
     };
 
     const setProfile = (profileSelected: React.Key) => {
-        if (typeof profileSelected !== "number") return;
-        const profileChosen = allProfiles.find(({ id }) => id === profileSelected);
-        dispatch(profileActions.setProfile.build(profileChosen));
+    if (typeof profileSelected !== "number") return;
+    const profileChosen = allProfiles.find(({ id }) => id === profileSelected);
+    if (!profileChosen) return;
 
-        setLanguage(profileChosen);
+    if (profileChosen.properties?.authenticate?.href) {
+        const authRoute = buildOpdsBrowserRoute(
+            profileChosen.id.toString(),
+            "Authentification",
+            profileChosen.properties.authenticate.href,
+            1,
+        );
+        navigate(authRoute, { replace: true });
+    }
+    dispatch(profileActions.setProfile.build(profileChosen));
+    setLanguage(profileChosen);
 
-        let redirect_path: string;
-        if (profileChosen.name !== "Thorium") {
-            redirect_path = buildOpdsBrowserRoute(
-                profileChosen.id.toString(),
-                profileChosen.links.feeds[0].title,
-                profileChosen.links.feeds[0].href,
-            );
-        } else {
-            redirect_path = "/";
-        }
-        navigate(redirect_path, { replace: true });
-    };
+    const redirect_path =
+        profileChosen.name !== "Thorium"
+            ? buildOpdsBrowserRoute(
+                  profileChosen.id.toString(),
+                  profileChosen.links.feeds[0].title,
+                  profileChosen.links.feeds[0].href,
+              )
+            : "/";
+
+    navigate(redirect_path, { replace: true });
+    console.log("HELLO WORLD !");
+};
+
     const selectedKey = allProfiles.find(({ name }) => name === profile.name);
 
     return (
         <div>
             <ComboBox label="Sélectionner un profil" items={allProfiles}  selectedKey={selectedKey?.id} onSelectionChange={setProfile}>
-                {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
+                {item =>         
+                <ComboBoxItem key={item.id} textValue={item.name}>
+                    <span style={{ display: "flex", alignItems: "center", gap: "0.5em" }}>
+                        {item.name}
+                        {item.properties.authenticate?.href ?
+                            <SVG className={stylesSettings.authIcon} ariaHidden svg={AuthIcon} />
+                        : <></>}
+                    </span>
+                </ComboBoxItem>}
             </ComboBox>
         </div>
     );
