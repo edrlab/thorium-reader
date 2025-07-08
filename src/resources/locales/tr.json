@@ -1022,14 +1022,14 @@
                 },
                 "NavigatePreviousChapter": {
                     "description": "Okuyucu penceresinde, eserin okuma sırasına göre bir önceki belgeye git (örn. kitap içerik dizinindeki bölüm). Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
-                    "name": ""
+                    "name": "Önceki Bölüme Git"
                 },
                 "NavigatePreviousChapterAlt": {
                     "description": "Okuyucu penceresinde, eserin okuma sırasına göre bir önceki belgeye git (örn. kitap içerik dizinindeki bölüm). Bu, varsayılan klavye kısayoluna alternatif bir klavye kısayoludur",
-                    "name": ""
+                    "name": "Önceki Bölüme Git (Alternatif)"
                 },
                 "NavigatePreviousHistory": {
-                    "description": "",
+                    "description": "Okuma penceresinde, gezinme geçmişinde bir adım geriye gider",
                     "name": ""
                 },
                 "NavigatePreviousLibraryPage": {
