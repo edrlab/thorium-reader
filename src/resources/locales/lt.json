@@ -305,19 +305,19 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "additional-accessibility-information-title": ""
+            "additional-accessibility-information-title": "Papildoma prieinamumo informacija"
         },
         "conformance": {
             "conformance-a": {
-                "compact": "",
+                "compact": "Šis leidinys atitinka minimalius prieinamumo standartus",
                 "descriptive": ""
             },
             "conformance-aa": {
-                "compact": "",
+                "compact": "Šis leidinys atitinka priimtus prieinamumo standartus",
                 "descriptive": ""
             },
             "conformance-aaa": {
-                "compact": "",
+                "compact": "Šis leidinys viršija priimtus prieinamumo standartus",
                 "descriptive": ""
             },
             "conformance-certifier": {
@@ -330,8 +330,8 @@
                 "compact": ""
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Šis leidinys teigia atitinkantis",
+                "descriptive": "Šis leidinys teigia atitinkantis"
             },
             "conformance-details-epub-accessibility-1-0": {
                 "compact": "EPUB Accessibility 1.0",
