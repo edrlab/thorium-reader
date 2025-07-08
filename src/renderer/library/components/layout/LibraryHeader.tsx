@@ -107,14 +107,15 @@ class Header extends React.Component<IProps, IState> {
         });
         } else if (this.props.profile.links) {
         this.props.profile.links.feeds.forEach((feed) => {
-            headerNav.push({
-            route: buildOpdsBrowserRoute(
+            const feedRoute = buildOpdsBrowserRoute(
                 this.props.profile.id.toString(),
                 feed.title,
                 feed.href,
-            ),
+            );
+            headerNav.push({
+            route: feedRoute,
             label: feed.title,
-            matchRoutes: ["/", "/opds"],
+            matchRoutes: [feedRoute],
             searchEnable: true,
             styles: [],
             svg: CatalogsIcon,
@@ -149,6 +150,7 @@ class Header extends React.Component<IProps, IState> {
         //     svg: GearIcon,
         // },
 
+        const hasLogo: boolean = logo && (logo.href.length > 1) && (logo.type.length > 1);
 
         return (<>
             <SkipLink
@@ -157,22 +159,22 @@ class Header extends React.Component<IProps, IState> {
                 label={__("accessibility.skipLink")}
             />
             <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>
-                {logo && logo.type === "svg" ? 
+                {hasLogo && (logo.type === "svg") ? 
                     <div
                         className="logo"
-                        style={{height: "60px", width: "60px", margin: " 20px auto"}}
+                        style={{height: "60px", width: "calc(100% - 20px)", margin: " 20px auto", display: "flex", justifyContent: "center"}}
                         dangerouslySetInnerHTML={{ __html: logo.href }}
                     />
-                    : logo && logo.type === "image/png" ?
+                    : hasLogo && (logo.type === "image/png") ?
                      <div
                         className="logo"
-                        style={{height: "60px", width: "60px", margin: " 20px auto"}}
+                        style={{height: "60px", width: "calc(100% - 20px)", margin: " 20px auto", display: "flex", justifyContent: "center"}}
                     >
-                    <img src={logo.href} alt="" style={{height: "100%", width: "100%"}}/></div>
+                    <img src={logo.href} alt="" style={{objectFit: "contain", maxHeight: "100px", maxWidth: "100%", width: "fit-content"}}/></div>
                     : <></>
                     }
                 <h1 className={stylesHeader.appName} aria-label="Thorium"></h1>
-                <ul style={{paddingTop: "10px", height: logo ? "calc(100% - 180px)" : ""}}>
+                <ul style={{paddingTop: "10px", height: hasLogo ? "calc(100% - 180px)" : ""}}>
                     <div>
                     {
                         headerNav.map(

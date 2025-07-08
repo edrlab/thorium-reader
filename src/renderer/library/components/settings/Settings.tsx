@@ -91,7 +91,6 @@ const LanguageSettings: React.FC<{}> = () => {
         <ComboBox label={__("settings.language.languageChoice")} defaultItems={options} defaultSelectedKey={selectedKey?.id} onSelectionChange={setLang} svg={LanguageIcon} style={{borderBottom: "2px solid var(--color-extralight-grey)"}}>
             {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
         </ComboBox>
-        <button onClick={() =>  dispatch(profileActions.setProfile.build(profiles[0]))}>Test</button>
         </>
     );
 };
@@ -420,15 +419,31 @@ const Profiles = () => {
     const profile = useSelector((s: ICommonRootState) => s.profile);
     const navigate = useNavigate();
 
+    const setLanguage = (profileChosen: IProfile) => {
+        const profileLanguage = profileChosen.language.split("-")[0] as keyof typeof availableLanguages; 
+        const systemLanguage = navigator.language as keyof typeof availableLanguages;
+        let selectedLanguage: keyof typeof availableLanguages;
+        
+        if (profileLanguage) {
+            selectedLanguage = profileLanguage;
+        } else {
+            selectedLanguage = systemLanguage;
+        }
+        dispatch(i18nActions.setLocale.build(selectedLanguage));
+    };
+
     const setProfile = (profileSelected: React.Key) => {
         if (typeof profileSelected !== "number") return;
         const profileChosen = allProfiles.find(({ id }) => id === profileSelected);
         dispatch(profileActions.setProfile.build(profileChosen));
+
+        setLanguage(profileChosen);
+
         let redirect_path: string;
         if (profileChosen.name !== "Thorium") {
             redirect_path = buildOpdsBrowserRoute(
                 profileChosen.id.toString(),
-                profileChosen.name,
+                profileChosen.links.feeds[0].title,
                 profileChosen.links.feeds[0].href,
             );
         } else {
