@@ -73,7 +73,7 @@
             "lastAdditions": "Son eklenen"
         },
         "export": "Farklı kaydet",
-        "exportAnnotation": "Notları dışarı aktar",
+        "exportAnnotation": "Notları dışa aktar",
         "format": "Biçim",
         "importAnnotation": "Notları içe aktar",
         "lang": "Dil",
@@ -141,9 +141,9 @@
         "deleteFeed": "Katalogu silmek istiyor musunuz?",
         "deletePublication": "Eseri silmek istiyor musunuz?",
         "deletePublicationWithNotes": "Uyarı: Bu eserde açıklayıcı notlar ve/veya yer imleri bulunuyor, bunlar da silinecek! (Eğer bunları saklamak istiyorsanız, eseri silmeden önce notları dışa aktardığınızdan emin olun)",
-        "import": "İçe aktarmayı onayla:",
-        "importError": "Hata oluştu, dosya uzantısının ({{acceptedExtension}}) olduğunu doğrulayın.",
-        "renew": "Yenilemek ya da ödünç almayı uzatmak istiyor musunuz?",
+        "import": "İçe aktarımı onayla:",
+        "importError": "Hata oluştu, dosya uzantısının ({{acceptedExtension}}) olduğunu teyit edin.",
+        "renew": "Yenilemek ya da ödünç alımı uzatmak istiyor musunuz?",
         "return": "Esere geri dönmek istiyor musunuz?",
         "yes": "Evet"
     },
@@ -176,7 +176,7 @@
             "hint": "İpucu:",
             "open": "Aç",
             "password": "Şifre",
-            "sentence": "Bu eserin açılabilmesi için bir LCP şifresi gerekir",
+            "sentence": "Bu eserin açılabilmesi için bir LCP şifresi gerekmektedir",
             "urlHint": "Şifrenizi mi unuttunuz? Destek almak için buraya tıklayın.",
             "whatIsLcp?": "LCP nedir?",
             "whatIsLcpInfoDetails": "LCP, 'Licensed Content Protection', Lisanslı İçerik Koruması anlamına gelir.",
@@ -220,7 +220,7 @@
         "documentation": "OPDS resmi web sitesi",
         "empty": "Hiç eser bulunamadı",
         "firstPage": "İlk",
-        "informations": "Sadece birkaç tıklamayla kamu kütüphanelerinden ve dijital kitap satıcılarından dijital yayınları keşfedebileceğiniz ve indirebileceğiniz bir dünya hayal edin. Açık Eser Dağıtım Sistemi olarak Türkçe'ye çevrilebilecek Open Publication Distribution System (OPDS) katalog biçimi tam olarak bunu sunar. OPDS ile çeşitli e-kitap sağlayıcılarının kataloglarında gezinebilir, kaydolabilir, bir eser ödünç alabilir, bir eser satın alabilir veya kişisel kitaplığınızı ziyaret edebilirsiniz. Hatta anında okumak için bir e-kitap veya sesli kitabı doğrudan Thorium Reader'a indirebilirsiniz.\nPeki, bir OPDS kataloğunu nasıl bulursunuz? Çok basit. Kataloğa giden bir köprü bağlantısı (URL) arayıp bulun. Bu URL'yi yukarıdaki Bağlantı alanına kopyalayın. Tüm aktif OPDS katalogları için tek bir hizmet sağlama noktası olmadığını unutmayın. Tercih ettiğiniz kütüphane veya kitap satıcısıyla iletişime geçmeniz ve OPDS katalog URL'sini istemeniz gerekebilir. Nereden başlayacağınızdan emin değilseniz, Wikipedia'da çeşitli dillerde size yardımcı olabilecek birkaç OPDS kataloğu kaydı mevcuttur.\nAd alanı sizin için kolay bir yere yerleştirilmiştir ve Thorium Reader'a besleme tanımlamanın kolay bir yolunu sağlar.",
+        "informations": "Sadece birkaç tıklamayla kamu kütüphanelerinden ve dijital kitap satıcılarından dijital yayınları keşfedebileceğiniz ve indirebileceğiniz bir dünya hayal edin. Açık Eser Dağıtım Sistemi olarak Türkçe'ye çevrilebilecek Open Publication Distribution System (OPDS) katalog biçimi tam olarak bunu sunar. OPDS ile çeşitli e-kitap sağlayıcılarının kataloglarında gezinebilir, kaydolabilir, bir eser ödünç alabilir, bir eser satın alabilir veya kişisel kitaplığınızı ziyaret edebilirsiniz. Hatta anında okumak için bir e-kitap veya sesli kitabı doğrudan Thorium Reader'a indirebilirsiniz.\nPeki, bir OPDS kataloğunu nasıl bulursunuz? Çok basit. Kataloğa giden bir köprü bağlantısı (URL) arayıp bulun. Bu URL'yi yukarıdaki Bağlantı alanına kopyalayın. Tüm aktif OPDS katalogları için tek bir hizmet sağlama noktası olmadığını unutmayın. Tercih ettiğiniz kütüphane veya kitap satıcısıyla iletişime geçmeniz ve OPDS katalog URL'sini istemeniz gerekebilir. Nereden başlayacağınızdan emin değilseniz, Wikipedia'da çeşitli dillerde size yardımcı olabilecek birkaç OPDS katalog dizini mevcuttur.\nAd alanı sizin için kolay bir yere yerleştirilmiştir ve Thorium Reader'a besleme tanımlamanın kolay bir yolunu sağlar.",
         "lastPage": "Son",
         "menu": {
             "aboutBook": "Eser hakkında",
@@ -1030,26 +1030,26 @@
                 },
                 "NavigatePreviousHistory": {
                     "description": "Okuma penceresinde, gezinme geçmişinde bir adım geriye gider",
-                    "name": ""
+                    "name": "Geçmiş'te, bir adım Geri Git"
                 },
                 "NavigatePreviousLibraryPage": {
                     "description": "Kütüphane penceresinde, sayfalandırılmış eser listesinin önceki sayfasını gösterir. Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
-                    "name": ""
+                    "name": "Önceki Kütüphane Sayfasına Git"
                 },
                 "NavigatePreviousLibraryPageAlt": {
                     "description": "Kütüphane penceresinde, sayfalandırılmış eser listesinin önceki sayfasını gösterir. Bu, varsayılan klavye kısayoluna alternatif bir klavye kısayoludur",
-                    "name": ""
+                    "name": "Öncekiki Kütüphane Sayfasına Git (Alternatif)"
                 },
                 "NavigatePreviousOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Kataloglar / OPDS beslemeleri için kütüphane penceresinde, bir önceki sayfalandırma bağlantısını takip eder. Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
+                    "name": "Önceki OPDS Sayfasına Git"
                 },
                 "NavigatePreviousOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Kataloglar / OPDS beslemeleri için kütüphane penceresinde, bir önceki sayfalandırma bağlantısını takip eder. Bu, varsayılan olana alternatif bir klavye kısayoludur",
+                    "name": "Önceki OPDS Sayfasına Git (Alternatif)"
                 },
                 "NavigatePreviousPage": {
-                    "description": "",
+                    "description": "Okuma penceresinde, eserdeki bir önceki 'sayfayı' çevirir. Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
                     "name": ""
                 },
                 "NavigatePreviousPageAlt": {
