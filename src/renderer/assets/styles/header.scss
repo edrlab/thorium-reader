@@ -27,6 +27,7 @@
   @media screen and (width <= 800px) {
     width: fit-content;
     flex: unset;
+    max-width: 70px;
 
     .appName::before {
       content: "Th"
