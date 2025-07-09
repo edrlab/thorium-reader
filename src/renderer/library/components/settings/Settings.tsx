@@ -51,10 +51,11 @@ import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/a
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
-import profiles from "readium-desktop/resources/profiles/testProfiles.json";
+// import profiles from "readium-desktop/resources/profiles/testProfiles.json";
 import { IProfile } from "readium-desktop/common/redux/states/profile";
 import { useNavigate } from "react-router";
 import { buildOpdsBrowserRoute } from "../../opds/route";
+import { ipcRenderer } from "electron";
 
 interface ISettingsProps {};
 
@@ -332,7 +333,7 @@ const ManageAccessToCatalogSettings = () => {
 
     const profile = useSelector((s: ICommonRootState) => s.profile);
 
-    const dilicomDisabled: boolean = profile.properties.dilicom; 
+    const dilicomDisabled: boolean = profile.properties?.dilicom; 
 
     return (
         dilicomDisabled === false ? <></> : 
@@ -415,10 +416,18 @@ const Themes = () => {
 
 const Profiles = () => {
 
-    const allProfiles: Array<IProfile> = (profiles);
+    const [allProfiles, setAllProfiles] = React.useState<IProfile[]>([]);
     const dispatch = useDispatch();
     const profile = useSelector((s: ICommonRootState) => s.profile);
     const navigate = useNavigate();
+
+    React.useEffect(() => {
+        const fetchProfiles = async () => {
+            const profiles = await ipcRenderer.invoke("get-profiles-secure");
+            setAllProfiles(profiles);
+        };
+        fetchProfiles();
+    }, []);
 
     const setLanguage = (profileChosen: IProfile) => {
         const profileLanguage = profileChosen.language.split("-")[0] as keyof typeof availableLanguages; 
@@ -460,7 +469,6 @@ const Profiles = () => {
             : "/";
 
     navigate(redirect_path, { replace: true });
-    console.log("HELLO WORLD !");
 };
 
     const selectedKey = allProfiles.find(({ name }) => name === profile.name);

@@ -19,6 +19,10 @@ import { initSessions as initSessionsNoHTTP } from "./main/streamer/streamerNoHt
 import { createStoreFromDi } from "./main/di";
 import { appActions } from "./main/redux/actions";
 
+import { ipcMain, IpcMainInvokeEvent } from "electron";
+import { loadProfilesAsync } from "./main/tools/profilLoader";
+import { IProfile } from "./common/redux/states/profile";
+
 // import { initSessions as initSessionsHTTP } from "@r2-navigator-js/electron/main/sessions";
 
 // TO TEST ESM (not COMMONJS):
@@ -73,6 +77,45 @@ setLcpNativePluginPath(lcpNativePluginPath);
 //     initSessionsNoHTTP();
 // }
 initSessionsNoHTTP();
+
+class ProfilesHandler {
+    private lastRequest = 0;
+    private readonly RATE_LIMIT_MS = 1000;
+
+    async handleGetProfiles(event: IpcMainInvokeEvent): Promise<IProfile[]> {
+        try {
+            // Rate limitation
+            const now = Date.now();
+            if (now - this.lastRequest < this.RATE_LIMIT_MS) {
+                console.warn("Profile requests too frequent, ignored");
+                throw new Error("Too many requests");
+            }
+            this.lastRequest = now;
+
+            // Source validation
+            if (!this.isValidSender(event)) {
+                console.warn("Requesting profiles from an unauthorised source");
+                throw new Error("Unauthorised source");
+            }
+
+            console.log("Profile upload request received");
+            const profiles = await loadProfilesAsync();
+            console.log(`${profiles.length} successfully loaded profiles`);
+            
+            return profiles;
+        } catch (error) {
+            console.error("Error while loading profiles :", error);
+            throw new Error("Unable to load profiles");
+        }
+    }
+
+    private isValidSender(event: IpcMainInvokeEvent): boolean {
+        // Security verifications
+        return event.sender && !event.sender.isDestroyed();
+    }
+}
+const profilesHandler = new ProfilesHandler();
+ipcMain.handle("get-profiles-secure", profilesHandler.handleGetProfiles.bind(profilesHandler));
 
 if (__TH__IS_VSCODE_LAUNCH__) {
     createStoreFromDi().then((store) => store.dispatch(appActions.initRequest.build()));

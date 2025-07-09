@@ -1,0 +1,51 @@
+    {
+        "id": 0,
+        "version": 1,
+        "name": "Thorium",
+        "logo": {
+            "href": "",
+            "type": ""
+        },
+        "language": "",
+        "palette": {
+            "neutral-light": "",
+            "neutral-dark": "",
+            "primary-light": "",
+            "primary-dark": "",
+            "secondary-light": "",
+            "secondary-dark": "",
+            "border-light": "",
+            "border-dark": "",
+            "background-light": "",
+            "background-dark": "",
+            "appName-light": "",
+            "appName-dark": ""
+        },
+        "properties": {
+            "showOnHomepage": true,
+            "allowDeletion": false,
+            "dilicom": true,
+            "authenticate": {
+                "href": "",
+                "type": "application/opds-authentication+json"
+            }
+        },
+        "links": {
+            "feeds": [
+                {
+                    "title": "",
+                    "href": "",
+                    "type": "application/opds+json",
+                    "rel": "catalog"
+                }
+            ],
+            "publications" : [
+                {
+                    "title": "",
+                    "href": "",
+                    "type": "application/opds+json",
+                    "rel": "catalog"
+                }
+            ]
+        }
+    }

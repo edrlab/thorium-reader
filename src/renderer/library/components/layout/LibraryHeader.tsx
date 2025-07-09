@@ -106,7 +106,7 @@ class Header extends React.Component<IProps, IState> {
             svg: HomeIcon,
         });
         } else if (this.props.profile.links) {
-        this.props.profile.links.feeds.forEach((feed) => {
+        this.props.profile?.links?.feeds?.forEach((feed) => {
             const feedRoute = buildOpdsBrowserRoute(
                 this.props.profile.id.toString(),
                 feed.title,
