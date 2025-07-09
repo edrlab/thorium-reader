@@ -37,6 +37,7 @@ interface NavigationHeader {
     searchEnable?: boolean;
     styles: string[];
     svg: any;
+    type?: "navigation" | "separator";
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -96,32 +97,14 @@ class Header extends React.Component<IProps, IState> {
 
         const headerNav: NavigationHeader[] = [];
 
-        if (this.props.profile.name === "Thorium") {
-        headerNav.push({
-            route: "/home",
-            label: this.props.__("header.homeTitle"),
-            matchRoutes: ["/", "/home"],
-            searchEnable: true,
-            styles: [],
-            svg: HomeIcon,
-        });
-        } else if (this.props.profile.links) {
-        this.props.profile?.links?.feeds?.forEach((feed) => {
-            const feedRoute = buildOpdsBrowserRoute(
-                this.props.profile.id.toString(),
-                feed.title,
-                feed.href,
-            );
-            headerNav.push({
-            route: feedRoute,
-            label: feed.title,
-            matchRoutes: [feedRoute],
-            searchEnable: true,
-            styles: [],
-            svg: CatalogsIcon,
-            });
-        });
-        }
+    headerNav.push({
+        route: "/home",
+        label: this.props.__("header.homeTitle"),
+        matchRoutes: ["/", "/home"],
+        searchEnable: true,
+        styles: [],
+        svg: HomeIcon,
+        }); 
 
         headerNav.push({
         route: "/library",
@@ -141,6 +124,32 @@ class Header extends React.Component<IProps, IState> {
             styles: [],
             svg: CatalogsIcon,
         });
+        } else if (this.props.profile?.links?.feeds?.length > 0) {
+
+        headerNav.push({
+            route: "",
+            label: "",
+            matchRoutes: [],
+            searchEnable: false,
+            styles: ["separator"],
+            svg: CatalogsIcon,
+            type: "separator",
+        });
+            this.props.profile?.links?.feeds?.forEach((feed) => {
+                const feedRoute = buildOpdsBrowserRoute(
+                    this.props.profile.id.toString(),
+                    feed.title,
+                    feed.href,
+                );
+                headerNav.push({
+                route: feedRoute,
+                label: feed.title,
+                matchRoutes: [feedRoute],
+                searchEnable: true,
+                styles: [],
+                svg: CatalogsIcon,
+                });
+            });
         }
         // {
         //     route: "/settings",
@@ -179,6 +188,9 @@ class Header extends React.Component<IProps, IState> {
                     {
                         headerNav.map(
                             (item, index) =>
+                                item.type === "separator" ? (
+                                     <span key={"separator"} style={{ borderBottom: "2px solid var(--color-light-grey)", width: "80%", margin: "0 10%", display: "block" }}></span>
+                                ) : 
                                 this.buildNavItem(item, index),
                         )
                     }
