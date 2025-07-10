@@ -400,20 +400,20 @@
                 "descriptive": ""
             },
             "hazards-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Informacijos nėra",
+                "descriptive": "Informacijos nėra"
             },
             "hazards-none": {
                 "compact": "",
                 "descriptive": ""
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Garsai",
+                "descriptive": "Leidinyje yra garsų, kurie gali būti nemalonūs"
             },
             "hazards-sound-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Nėra garsų",
+                "descriptive": "Leidinyje nėra garsų"
             },
             "hazards-sound-unknown": {
                 "compact": "",
@@ -427,22 +427,22 @@
         },
         "navigation": {
             "navigation-index": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Rodyklė",
+                "descriptive": "Rodyklė su nuorodomis į susietus įrašus"
             },
             "navigation-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Informacijos nėra",
+                "descriptive": "Informacijos nėra"
             },
             "navigation-page-navigation": {
                 "compact": "",
                 "descriptive": ""
             },
             "navigation-structural": {
-                "compact": "",
+                "compact": "Antraštės",
                 "descriptive": ""
             },
-            "navigation-title": "",
+            "navigation-title": "Navigacija",
             "navigation-toc": {
                 "compact": "",
                 "descriptive": ""
