@@ -404,8 +404,8 @@
                 "descriptive": "Informacijos nėra"
             },
             "hazards-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Pavojų nėra",
+                "descriptive": "Leidinyje nėra jokių pavojų"
             },
             "hazards-sound": {
                 "compact": "Garsai",
@@ -419,10 +419,10 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "hazards-title": "",
+            "hazards-title": "Pavojai",
             "hazards-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Pavojų buvimas nežinomas",
+                "descriptive": "Pavojų buvimas nežinomas"
             }
         },
         "navigation": {
@@ -442,9 +442,9 @@
                 "compact": "Antraštės",
                 "descriptive": ""
             },
-            "navigation-title": "Navigacija",
+            "navigation-title": "Naršymas",
             "navigation-toc": {
-                "compact": "",
+                "compact": "Turinys",
                 "descriptive": ""
             }
         },
