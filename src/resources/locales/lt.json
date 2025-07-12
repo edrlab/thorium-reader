@@ -435,7 +435,7 @@
                 "descriptive": "Informacijos nėra"
             },
             "navigation-page-navigation": {
-                "compact": "",
+                "compact": "Eiti į puslapį",
                 "descriptive": ""
             },
             "navigation-structural": {
@@ -487,8 +487,8 @@
                 "descriptive": ""
             },
             "rich-content-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Informacijos nėra",
+                "descriptive": "Informacijos nėra"
             }
         },
         "ways-of-reading": {
