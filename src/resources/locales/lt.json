@@ -73,7 +73,7 @@
             "lastAdditions": "Paskiausiai pridėti"
         },
         "export": "Eksportuoti",
-        "exportAnnotation": "Išsaugoti pastabas kaip...",
+        "exportAnnotation": "Eksportuoti pastabas",
         "format": "Formatas",
         "importAnnotation": "Importuoti pastabas",
         "lang": "Kalba",
@@ -299,7 +299,7 @@
             },
             "additional-accessibility-information-tactile-objects": {
                 "compact": "",
-                "descriptive": ""
+                "descriptive": "Taktiliniai 3D objektai"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
                 "compact": "",
@@ -365,10 +365,10 @@
                 "descriptive": ""
             },
             "conformance-no": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Informacijos nėra",
+                "descriptive": "Informacijos nėra"
             },
-            "conformance-title": "",
+            "conformance-title": "Atitiktis",
             "conformance-unknown-standard": {
                 "compact": "",
                 "descriptive": ""
@@ -376,11 +376,11 @@
         },
         "hazards": {
             "hazards-flashing": {
-                "compact": "",
+                "compact": "Blykčiojantis turinys",
                 "descriptive": ""
             },
             "hazards-flashing-none": {
-                "compact": "",
+                "compact": "Nėra blykčiojančio turinio",
                 "descriptive": ""
             },
             "hazards-flashing-unknown": {
@@ -556,7 +556,7 @@
             "accessibilityHazard": {
                 "flashing": "Blykčiojimas",
                 "motionSimulation": "Judesių imitavimas",
-                "name": "Rizika:",
+                "name": "Pavojus:",
                 "noFlashing": "Be blykčiojimo",
                 "noMotionSimulation": "Be judesių imitavimo",
                 "noSound": "Be garso",
