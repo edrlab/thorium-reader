@@ -73,7 +73,7 @@
             "lastAdditions": "Son eklenen"
         },
         "export": "Farklı kaydet",
-        "exportAnnotation": "Notları dışarı aktar",
+        "exportAnnotation": "Notları dışa aktar",
         "format": "Biçim",
         "importAnnotation": "Notları içe aktar",
         "lang": "Dil",
@@ -140,10 +140,10 @@
         "deleteBookmarksText": "{{- bookmarkListLength}} yer im(ler)ini silmek istediğinize emin misiniz?",
         "deleteFeed": "Katalogu silmek istiyor musunuz?",
         "deletePublication": "Eseri silmek istiyor musunuz?",
-        "deletePublicationWithNotes": "",
-        "import": "İçe aktarmayı onayla:",
-        "importError": "Hata oluştu, dosya uzantısının ({{acceptedExtension}}) olduğunu doğrulayın.",
-        "renew": "Yenilemek ya da ödünç almayı uzatmak istiyor musunuz?",
+        "deletePublicationWithNotes": "Uyarı: Bu eserde açıklayıcı notlar ve/veya yer imleri bulunuyor, bunlar da silinecek! (Eğer bunları saklamak istiyorsanız, eseri silmeden önce notları dışa aktardığınızdan emin olun)",
+        "import": "İçe aktarımı onayla:",
+        "importError": "Hata oluştu, dosya uzantısının ({{acceptedExtension}}) olduğunu teyit edin.",
+        "renew": "Yenilemek ya da ödünç alımı uzatmak istiyor musunuz?",
         "return": "Esere geri dönmek istiyor musunuz?",
         "yes": "Evet"
     },
@@ -176,7 +176,7 @@
             "hint": "İpucu:",
             "open": "Aç",
             "password": "Şifre",
-            "sentence": "Bu eserin açılabilmesi için bir LCP şifresi gerekir",
+            "sentence": "Bu eserin açılabilmesi için bir LCP şifresi gerekmektedir",
             "urlHint": "Şifrenizi mi unuttunuz? Destek almak için buraya tıklayın.",
             "whatIsLcp?": "LCP nedir?",
             "whatIsLcpInfoDetails": "LCP, 'Licensed Content Protection', Lisanslı İçerik Koruması anlamına gelir.",
@@ -220,7 +220,7 @@
         "documentation": "OPDS resmi web sitesi",
         "empty": "Hiç eser bulunamadı",
         "firstPage": "İlk",
-        "informations": "Sadece birkaç tıklamayla kamu kütüphanelerinden ve dijital kitap satıcılarından dijital yayınları keşfedebileceğiniz ve indirebileceğiniz bir dünya hayal edin. Açık Eser Dağıtım Sistemi olarak Türkçe'ye çevrilebilecek Open Publication Distribution System (OPDS) katalog biçimi tam olarak bunu sunar. OPDS ile çeşitli e-kitap sağlayıcılarının kataloglarında gezinebilir, kaydolabilir, bir eser ödünç alabilir, bir eser satın alabilir veya kişisel kitaplığınızı ziyaret edebilirsiniz. Hatta anında okumak için bir e-kitap veya sesli kitabı doğrudan Thorium Reader'a indirebilirsiniz.\nPeki, bir OPDS kataloğunu nasıl bulursunuz? Çok basit. Kataloğa giden bir köprü bağlantısı (URL) arayıp bulun. Bu URL'yi yukarıdaki Bağlantı alanına kopyalayın. Tüm aktif OPDS katalogları için tek bir hizmet sağlama noktası olmadığını unutmayın. Tercih ettiğiniz kütüphane veya kitap satıcısıyla iletişime geçmeniz ve OPDS katalog URL'sini istemeniz gerekebilir. Nereden başlayacağınızdan emin değilseniz, Wikipedia'da çeşitli dillerde size yardımcı olabilecek birkaç OPDS kataloğu kaydı mevcuttur.\nAd alanı sizin için kolay bir yere yerleştirilmiştir ve Thorium Reader'a besleme tanımlamanın kolay bir yolunu sağlar.",
+        "informations": "Sadece birkaç tıklamayla kamu kütüphanelerinden ve dijital kitap satıcılarından dijital yayınları keşfedebileceğiniz ve indirebileceğiniz bir dünya hayal edin. Açık Eser Dağıtım Sistemi olarak Türkçe'ye çevrilebilecek Open Publication Distribution System (OPDS) katalog biçimi tam olarak bunu sunar. OPDS ile çeşitli e-kitap sağlayıcılarının kataloglarında gezinebilir, kaydolabilir, bir eser ödünç alabilir, bir eser satın alabilir veya kişisel kitaplığınızı ziyaret edebilirsiniz. Hatta anında okumak için bir e-kitap veya sesli kitabı doğrudan Thorium Reader'a indirebilirsiniz.\nPeki, bir OPDS kataloğunu nasıl bulursunuz? Çok basit. Kataloğa giden bir köprü bağlantısı (URL) arayıp bulun. Bu URL'yi yukarıdaki Bağlantı alanına kopyalayın. Tüm aktif OPDS katalogları için tek bir hizmet sağlama noktası olmadığını unutmayın. Tercih ettiğiniz kütüphane veya kitap satıcısıyla iletişime geçmeniz ve OPDS katalog URL'sini istemeniz gerekebilir. Nereden başlayacağınızdan emin değilseniz, Wikipedia'da çeşitli dillerde size yardımcı olabilecek birkaç OPDS katalog dizini mevcuttur.\nAd alanı sizin için kolay bir yere yerleştirilmiştir ve Thorium Reader'a besleme tanımlamanın kolay bir yolunu sağlar.",
         "lastPage": "Son",
         "menu": {
             "aboutBook": "Eser hakkında",
@@ -720,14 +720,14 @@
             "goToTitle": "Sayfaya git",
             "historyNext": "İleriye atla",
             "historyPrevious": "Geriye atla",
-            "infoTitle": "bilgi",
-            "magnifyingGlassButton": "eser ara",
-            "openTableOfContentsTitle": "gezinme",
+            "infoTitle": "Bilgi",
+            "magnifyingGlassButton": "Eser ara",
+            "openTableOfContentsTitle": "Gezinme",
             "page": "Sayfa",
             "pdfscalemode": "Sayfaya veya genişliğe sığdır",
-            "print": "yazdır",
-            "printDisabled": "",
-            "settingsTitle": "ayarlar"
+            "print": "Yazdır",
+            "printDisabled": "Yazdırma engellendi",
+            "settingsTitle": "Ayarlar"
         },
         "notes": {
             "colors": {
@@ -752,22 +752,22 @@
             "searchTitle": "Ara"
         },
         "print": {
-            "descriptionLcpCount": "",
-            "descriptionLcpPrintable": "",
-            "howTo": "",
-            "lcpInfo": "",
-            "noPagesLcpLimitReached": "",
-            "noPrintablePages": "",
+            "descriptionLcpCount": "Kalan sayfa limiti: {{- count}}",
+            "descriptionLcpPrintable": "Evvelce yazdırılmış sayfalar: {{- printable}} ({{- count}})",
+            "howTo": "Yazdırılacak sayfa aralığı/dizisi nasıl seçilir?",
+            "lcpInfo": "Bu eserde yazdırabileceğiniz sayfa sayısı {{- count}} ile sınırlıdır. Burada gerek duyduğunuz sayfaları seçin.",
+            "noPagesLcpLimitReached": "LCP limitine ulaştınız",
+            "noPrintablePages": "Yazdırılabilir sayfa yok",
             "pageHelpInfo": "Sayfa seçici dizilimleri:",
-            "pageHelpInfo1": "",
-            "pageHelpInfo2": "",
-            "pageHelpInfo3": "",
-            "pageHelpInfo4": "",
-            "pages": "",
-            "preview": "",
+            "pageHelpInfo1": "tek bir sayfayı belirtmek için bir sayfa numarası girin (örn. \"6\")",
+            "pageHelpInfo2": "Ardışık sayfaları belirtmek için tire karakteriyle ayrılmış iki sayfa numarası girin (örn. \"6-13\")",
+            "pageHelpInfo3": "Birden fazla sayfayı veya sayfa aralığını birbirlerinden ayırmak için noktalı virgül karakterini kullanın (örn. \"5;14-20;37\")",
+            "pageHelpInfo4": "Eserin ilk veya son sayfasından itibaren belirlenecek bir sayfaya kadar olan sayfa aralığını hariç tutmak için sayfa numaralarını belirtebilirsiniz. (örn. \"-16\", \"1-16\" aralığına tekabül eder; \"34-\", 100 sayfa olduğu farz edilen bir kitapta \"34-100\" anlamına gelir).",
+            "pages": "Sayfalar",
+            "preview": "Önizleme",
             "print": "Yazdır",
-            "printablePages": "",
-            "title": ""
+            "printablePages": "Yazdırılabilir sayfalar (toplamda)",
+            "title": "Yazdırılabilir sayfaların seçimi"
         },
         "settings": {
             "column": {
@@ -791,12 +791,12 @@
             "letterSpacing": "Harf aralığı",
             "lineSpacing": "Satır aralığı",
             "margin": "Kenar",
-            "mathjax": "",
+            "mathjax": "MathJax'ı etkinleştir",
             "noFootnotes": "Dipnot açılır pencerelerini devredışı bırak",
             "noRTLFlip": "Sağdan sola kullanıcı arayüzünü devredışı bırak",
             "noRuby": "Japonca Okutucuları Gizle",
             "noTemporaryNavTargetOutline": "Görsel gezinme belirteçlerini devredışı bırak",
-            "paginated": "Sayfalara ayrılmış",
+            "paginated": "Sayfalandırma",
             "paraSpacing": "Paragraf aralığı",
             "pdfZoom": {
                 "name": {
@@ -806,122 +806,122 @@
                     "300pct": "%300",
                     "500pct": "%500",
                     "50pct": "%50",
-                    "fit": "",
-                    "width": ""
+                    "fit": "sayfaya sığdır",
+                    "width": "sayfa genişliği"
                 },
-                "title": ""
+                "title": "Yakınlaştırma"
             },
             "preset": {
-                "apply": "",
-                "applyDetails": "",
-                "detail": "",
-                "reset": "",
-                "resetDetails": "",
-                "save": "",
-                "saveDetails": "",
-                "title": ""
+                "apply": "Uygula",
+                "applyDetails": "Tercih ettiğiniz yapılandırmayı mevcut esere uygulayın.",
+                "detail": "Tercih ettiğiniz yapılandırmayı kaydedin / uygulayın / sıfırlayın.",
+                "reset": "Sıfırla",
+                "resetDetails": "Tercih ettiğiniz yapılandırmayı sıfırlayın (varsayılan ayarlar).",
+                "save": "Kaydet",
+                "saveDetails": "Bu eylem, geçerli yapılandırmayı, yani tercih ettiğiniz görüntüleme ve metin biçimlendirme seçeneklerini kaydeder. Ayarlar, daha sonra diğer okuyucu pencerelerindeki 'uygula' düğmesine tıklanarak diğer eserlere uygulanabilir.",
+                "title": "Tercihler"
             },
-            "preview": "",
-            "reduceMotion": "",
-            "scrolled": "",
-            "spacing": "",
-            "text": "",
+            "preview": "Önizleme",
+            "reduceMotion": "Hareketi azalt",
+            "scrolled": "Kaydırılabilir",
+            "spacing": "Aralık ayarları",
+            "text": "Metin ayarları",
             "theme": {
                 "name": {
-                    "Contrast1": "",
-                    "Contrast2": "",
-                    "Contrast3": "",
-                    "Contrast4": "",
-                    "Neutral": "",
-                    "Night": "",
-                    "Paper": "",
-                    "Sepia": ""
+                    "Contrast1": "Karşıt 1",
+                    "Contrast2": "Karşıt 2",
+                    "Contrast3": "Karşıt 3",
+                    "Contrast4": "Karşıt 4",
+                    "Neutral": "Nötral",
+                    "Night": "Gece",
+                    "Paper": "Kağıt",
+                    "Sepia": "Sepya"
                 },
-                "title": ""
+                "title": "Tema"
             },
-            "wordSpacing": ""
+            "wordSpacing": "Kelime aralığı"
         },
         "svg": {
-            "left": "",
-            "right": ""
+            "left": "Sol",
+            "right": "Sağ"
         },
         "toc": {
-            "publicationNoToc": ""
+            "publicationNoToc": "İçindekiler tablosu yok"
         },
         "tts": {
-            "activate": "",
-            "language": "",
-            "next": "",
-            "options": "",
-            "pause": "",
-            "play": "",
-            "previous": "",
-            "sentenceDetect": "",
-            "sentenceDetectDescription": "",
-            "speed": "",
-            "stop": "",
-            "voice": ""
+            "activate": "Metinden Sese (TTS) okumayı etkinleştir",
+            "language": "TTS dili",
+            "next": "Sonraki TTS",
+            "options": "TTS seçenekleri",
+            "pause": "TTS'i duraklat",
+            "play": "TTS'i oynat",
+            "previous": "Önceki TTS",
+            "sentenceDetect": "TTS için metni böl",
+            "sentenceDetectDescription": "Uzun paragrafları cümlelere böler.",
+            "speed": "TTS oynatım hızı",
+            "stop": "TTS'i durdur",
+            "voice": "TTS sesi"
         }
     },
     "settings": {
         "annotationCreator": {
-            "creator": "",
-            "help": "",
-            "name": "",
-            "organization": "",
-            "person": "",
-            "type": ""
+            "creator": "Açıklayıcı not oluşturucu (isteğe bağlı)",
+            "help": "Belirtilirse, bu isim dışa aktarılan notların meta verilerine dahil edilecektir.",
+            "name": "İsim",
+            "organization": "Organizasyon",
+            "person": "Şahıs",
+            "type": "Tür:"
         },
         "auth": {
-            "help": "",
-            "title": "",
-            "wipeData": ""
+            "help": "Bu işlem tüm OPDS oturum açma kimlik bilgilerini siler.",
+            "title": "Eser kataloglarına erişim",
+            "wipeData": "Oturum açma verilerini temizle"
         },
         "keyboard": {
-            "advancedMenu": "",
-            "cancel": "",
-            "disclaimer": "",
-            "editUserJson": "",
-            "keyboardShortcuts": "",
+            "advancedMenu": "Klavye kısayolları gelişmiş menüsü",
+            "cancel": "İptal",
+            "disclaimer": "Uygulama varsayılanları, QWERTY klavye düzenindeki tuşların fiziki konumları esas alınarak tasarlanmıştır",
+            "editUserJson": "Kullanıcı dosyasını düzenle...",
+            "keyboardShortcuts": "Klavye kısayolları",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "",
-                    "name": ""
+                    "description": "Yer imi oluşturma iletişim kutusunu aç ve metinsel etiketi (not), rengi ve etiketi düzenle",
+                    "name": "Etiket ile Yer İmi oluştur"
                 },
                 "AnnotationsCreate": {
-                    "description": "",
-                    "name": ""
+                    "description": "Seçilen belge metni için açıklayıcı not  oluşturma iletişim kutusunu aç ve metinsel notu, vurgu rengi ile türünü ve etiketi düzenle",
+                    "name": "Açıklayıcı Not Oluştur"
                 },
                 "AnnotationsCreateQuick": {
-                    "description": "",
-                    "name": ""
+                    "description": "Seçili metin için son kullanılan vurgu rengi ve türüyle hızlıca bir açıklayıcı not oluştur (not ve etiket boş olacaktır)",
+                    "name": "Hızlıca Açıklayıcı Not Oluştur"
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "",
-                    "name": ""
+                    "description": "Açıklayıcı not ve yer imi belirteçlerinin belge kenarında görüntülenmesi veya metinde görüntülenmesi arasında geçiş yap",
+                    "name": "Açıklayıcı Notların Belge Kenarında veya Metinde Görüntülenmesi Arasında Geçiş Yap"
                 },
                 "AudioNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "Sesli okuma esnasında, bir sonraki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya sesli kitap.)",
+                    "name": "Sonraki Sesli Bölüm"
                 },
                 "AudioNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Sesli okuma esnasında, bir sonraki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya sesli kitap.) Bu, mevcuttaki geçilebilir yapıları atlar",
+                    "name": "Sonraki sesli bölüm (kaçın)"
                 },
                 "AudioPlayPause": {
-                    "description": "",
-                    "name": ""
+                    "description": "Mevcut sesli oynatımı oynat/duraklat (EPUB3 medya katmanları, metinden sese okumalar veya önceden kaydedilmiş sesli kitaplar)",
+                    "name": "Oynat/Duraklat"
                 },
                 "AudioPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "Sesli okuma esnasında, bir önceki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya sesli kitap.)",
+                    "name": "Önceki Sesli Bölüm"
                 },
                 "AudioPreviousAlt": {
                     "description": "Sesli okuma esnasında, bir önceki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya sesli kitap.) Bu, mevcuttaki geçilebilir yapıları atlar",
-                    "name": "Önceki sesli bölüme git (kaçın)"
+                    "name": "Önceki Sesli Bölüm (kaçın)"
                 },
                 "AudioStop": {
-                    "description": "Mevcut sesli oynatımı durdur (EPUB3 medya katmanları, metinden sese okumalar veya önceden kaydedilmiş sesli kitaplar)",
+                    "description": "Mevcut sesli oynatımı durdur (EPUB3 Medya Katmanları, Metinden Sese okumalar veya önceden kaydedilmiş sesli kitaplar)",
                     "name": "Sesli Oynatımı Durdur"
                 },
                 "CloseReader": {
@@ -985,71 +985,71 @@
                     "name": "Araç Çubuğu'na odaklan"
                 },
                 "NavigateNextChapter": {
-                    "description": "Okuyucu penceresinde, eserin okuma sırasına göre bir sonraki belgeye git (örneğin, kitap içerik dizinindeki bölüm). Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
+                    "description": "Okuyucu penceresinde, eserin okuma sırasına göre bir sonraki belgeye git (örn. kitap içerik dizinindeki bölüm). Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
                     "name": "Sonraki Bölüm'e git"
                 },
                 "NavigateNextChapterAlt": {
-                    "description": "Okuyucu penceresinde, eserin okuma sırasına göre bir sonraki belgeye git (örneğin, kitap içerik dizinindeki bölüm). Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
+                    "description": "Okuyucu penceresinde, eserin okuma sırasına göre bir sonraki belgeye git (örn. kitap içerik dizinindeki bölüm). Bu, varsayılan klavye kısayoluna alternatif bir klavye kısayoludur",
                     "name": "Sonraki Bölüm'e git (Alternatif)"
                 },
                 "NavigateNextHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuyucu penceresinde, gezinme geçmişinde bir adım ileri atla",
+                    "name": "Geçmiş'te, bir adım İLERİ Git"
                 },
                 "NavigateNextLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Kütüphane penceresinde, sayfalandırılmış eser listesinin bir sonraki sayfasını gösterir. Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
+                    "name": "Sonraki Kütüphane Sayfasına Git"
                 },
                 "NavigateNextLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Kütüphane penceresinde, sayfalandırılmış eser listesinin bir sonraki sayfasını gösterir. Bu, varsayılan klavye kısayoluna alternatif bir klavye kısayoludur",
+                    "name": "Sonraki Kütüphane Sayfasına Git (Alternatif)"
                 },
                 "NavigateNextOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Kataloglar / OPDS beslemeleri için kütüphane penceresinde, bir sonraki sayfalandırma bağlantısını takip eder. Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
+                    "name": "Sonraki OPDS Sayfasına Git"
                 },
                 "NavigateNextOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Kataloglar / OPDS beslemeleri için kütüphane penceresinde, bir sonraki sayfalandırma bağlantısını takip eder. Bu, varsayılan olana alternatif bir klavye kısayoludur",
+                    "name": "Sonraki OPDS Sayfasına Git (Alternatif)"
                 },
                 "NavigateNextPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuma penceresinde, eserdeki bir sonraki 'sayfaya' geçer. Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
+                    "name": "Sonraki Sayfaya Git"
                 },
                 "NavigateNextPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuma penceresinde, eserdeki bir sonraki 'sayfaya' geçer. Bu, varsayılan klavye kısayoluna alternatif bir klavye kısayoludur",
+                    "name": "Sonraki Sayfaya Git (Alternatif)"
                 },
                 "NavigatePreviousChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuyucu penceresinde, eserin okuma sırasına göre bir önceki belgeye git (örn. kitap içerik dizinindeki bölüm). Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
+                    "name": "Önceki Bölüme Git"
                 },
                 "NavigatePreviousChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuyucu penceresinde, eserin okuma sırasına göre bir önceki belgeye git (örn. kitap içerik dizinindeki bölüm). Bu, varsayılan klavye kısayoluna alternatif bir klavye kısayoludur",
+                    "name": "Önceki Bölüme Git (Alternatif)"
                 },
                 "NavigatePreviousHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuma penceresinde, gezinme geçmişinde bir adım geriye gider",
+                    "name": "Geçmiş'te, bir adım Geri Git"
                 },
                 "NavigatePreviousLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Kütüphane penceresinde, sayfalandırılmış eser listesinin önceki sayfasını gösterir. Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
+                    "name": "Önceki Kütüphane Sayfasına Git"
                 },
                 "NavigatePreviousLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Kütüphane penceresinde, sayfalandırılmış eser listesinin önceki sayfasını gösterir. Bu, varsayılan klavye kısayoluna alternatif bir klavye kısayoludur",
+                    "name": "Öncekiki Kütüphane Sayfasına Git (Alternatif)"
                 },
                 "NavigatePreviousOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Kataloglar / OPDS beslemeleri için kütüphane penceresinde, bir önceki sayfalandırma bağlantısını takip eder. Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
+                    "name": "Önceki OPDS Sayfasına Git"
                 },
                 "NavigatePreviousOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Kataloglar / OPDS beslemeleri için kütüphane penceresinde, bir önceki sayfalandırma bağlantısını takip eder. Bu, varsayılan olana alternatif bir klavye kısayoludur",
+                    "name": "Önceki OPDS Sayfasına Git (Alternatif)"
                 },
                 "NavigatePreviousPage": {
-                    "description": "",
+                    "description": "Okuma penceresinde, eserdeki bir önceki 'sayfayı' çevirir. Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
                     "name": ""
                 },
                 "NavigatePreviousPageAlt": {
