@@ -1,0 +1,190 @@
+@use '../partials/mixin' as mx;
+
+.CSS_START_components_print {
+  display: none;
+}
+
+.modal_dialog_reader {
+    min-height: 500px
+}
+
+.print_dialog_form {
+    @include mx.scrollbar_styling;
+
+    background-color: var(--color-secondary);
+    border-radius: 10px;
+    border: 1px solid var(--color-light-grey);
+    display: flex;
+    flex-direction: column;
+    padding: 10px 20px;
+    color: var(--color-primary);
+    height: 100%;
+    overflow: auto;
+    padding-bottom: 20px;
+    gap: 5px;
+
+    p {
+        padding: 0;
+        margin: 0;
+    }
+
+    
+    h2, h3{
+        margin: 0;
+    }
+    
+    h2 {
+        margin-top: 20px;
+    }
+
+    h4 {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 0;
+        margin-bottom: 0;
+
+        svg {
+            width: 15px;
+        }
+    }
+}
+
+.print_dialog_image_container {
+    @include mx.scrollbar_styling;
+
+    &::-webkit-scrollbar {
+        height: 9px;
+
+        &-track {
+            background-color: var(--color-extralight-grey);
+        }
+
+    &-thumb {
+        border-radius: 5px;
+    }
+  }
+
+    // display: flex;
+    // flex-wrap: nowrap;
+    overflow: auto hidden;
+    // width: 430px;
+    height: 200px;
+    background-color: var(--color-extralight-grey);
+    padding-bottom: 5px;
+}
+
+.print_dialog_image_container img {
+    height: 100%;
+    width: 100%;
+}
+
+.print_dialog_page_icon {
+    position: relative;
+}
+
+.print_dialog_page_icon::after {
+    content: '';
+    width: 1.2em;
+    height: 1.2em;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' stroke='%23007bff' stroke-width='2' fill='none'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='14' fill='%23007bff'%3E?%3C/text%3E%3C/svg%3E");
+    background-size: contain;
+    position: absolute;
+    right: -30px;
+    top: -7px;
+}
+
+.print_dialog_thumbnail_pagination_bubble {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgb(0 0 0 / 70%);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.9em;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    box-shadow: 0 2px 4px rgb(0 0 0 / 20%);
+}
+
+.print_dialog_thumbnail_container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border: 1px solid var(--color-light-grey);
+    outline: 4px;
+}
+
+.print_dialog_actions_buttons {
+    margin: 5px 0;
+    display: flex;
+    gap: 5px;
+    justify-content: end;
+}
+
+.print_dialog_help_container {
+    p {
+        margin: 0;
+    }
+
+    ul {
+        padding-inline-start: 20px;
+    }
+}
+
+.print_lcp_list {
+    padding-inline-start: 20px;
+    margin: 0;
+
+    h4 {
+        margin-top: 0;
+    }
+
+    li {
+        max-width: inherit;
+
+        p {
+            margin: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-wrap: auto;
+        }
+    }
+}
+
+.info_text {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-light-blue);
+    color: var(--color-primary);
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+
+    &_description {
+        display: flex;
+        flex-direction: row;
+        font-size: 14px;
+        align-items: center;
+        margin: 0;
+        gap: 5px;
+
+        p {
+            margin: 2px;
+        }
+
+        svg {
+            width: 15px;
+            height: 15px;
+            color: var(--color-blue);;
+        }
+    }
+
+}
+
+.CSS_END_components_print {
+  display: none;
+}

@@ -251,6 +251,15 @@ export async function httpFetchRawResponse(
     //     }
     // };
 
+    // TODO: @types/node regression (22.15.34) via node-fetch, mismatch with node proxy-agent/agent-base
+    // Type 'ProxyAgent' is not assignable to type 'boolean | Agent | ((parsedUrl: URL) => boolean | Agent)'.
+    // Type 'ProxyAgent' is not assignable to type 'Agent'.
+    // Types of property 'getName' are incompatible.
+    // Type '(options: AgentConnectOpts) => string' is not assignable to type '(options?: AgentGetNameOptions) => string'.
+    // Types of parameters 'options' and 'options' are incompatible.
+    // Type 'AgentGetNameOptions' is not assignable to type 'AgentConnectOpts'.
+    // Property 'secureEndpoint' is missing in type 'AgentGetNameOptions' but required in type 'HttpConnectOpts'. (ts 2322)
+    // @ts-expect-error TS2322
     options.agent = proxyAgent;
 
     // if (!options.agent && url.toString().startsWith("https:")) {

@@ -156,6 +156,7 @@
         "deleteBookmarksText": "",
         "deleteFeed": "Willst du diesen Katalog wirklich löschen?",
         "deletePublication": "Willst du diese Publikation wirklich löschen?",
+        "deletePublicationWithNotes": "",
         "import": "Import bestätigen:",
         "importError": "Ein Fehler ist aufgetreten, überprüfen Sie die Dateiendung ({{acceptedExtension}})",
         "renew": "Ausleihe verlängern?",
@@ -610,7 +611,7 @@
         "lcpRightsPrint": "Gedruckte Seiten",
         "lcpStart": "Start",
         "licenceLCP": "Lizenz (LCP)",
-        "licenseCertificateDateInvalid": "Ungültiges Signaturdatum der LCP-Lizenz.",
+        "licenseCertificateDateInvalid": "Ungültiges Signaturdatum der LCP-Lizenz. ({{- dateTime}})",
         "licenseOutOfDate": "Veraltete LCP-Lizenz.",
         "licenseSignatureInvalid": "Ungültige LCP-Lizenzsignatur.",
         "licensed": "Lizenziert",
@@ -741,6 +742,7 @@
             "page": "Seite",
             "pdfscalemode": "Seitenbreite / Seitenanpassung",
             "print": "",
+            "printDisabled": "",
             "settingsTitle": "Einstellungen"
         },
         "notes": {
@@ -766,16 +768,22 @@
             "searchTitle": "Suche:"
         },
         "print": {
-            "description": "",
-            "descriptionLcp": "",
-            "descriptionLcpLimit": "",
+            "descriptionLcpCount": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
             "pageHelpInfo": "",
             "pageHelpInfo1": "",
             "pageHelpInfo2": "",
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
-            "print": ""
+            "preview": "",
+            "print": "",
+            "printablePages": "",
+            "title": ""
         },
         "settings": {
             "column": {
@@ -804,7 +812,7 @@
             "noRTLFlip": "Rechts-nach-links-Benutzeroberfläche deaktivieren",
             "noRuby": "Japanische Ruby-Notationen ausblenden",
             "noTemporaryNavTargetOutline": "Deaktiviere visuelle Navigationshinweise",
-            "paginated": "Seitendarstellung",
+            "paginated": "Paginiert",
             "paraSpacing": "Absatzabstand",
             "pdfZoom": {
                 "name": {

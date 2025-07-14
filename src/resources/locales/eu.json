@@ -156,6 +156,7 @@
         "deleteBookmarksText": "",
         "deleteFeed": "Ziur zaude katalogo hau ezabatu nahi duzula?",
         "deletePublication": "Ziur zaude argitalpen hau ezabatu nahi duzula?",
+        "deletePublicationWithNotes": "",
         "import": "Ziur zaude fitxategi hauek inportatu nahi dituzula?",
         "importError": "Errore bat gertatu da. Egiaztatu zure fitxategiaren luzapena ({{acceptedExtension}})",
         "renew": "Ziur zaude argitalpen honetarako lizentzia berritu nahi duzula?",
@@ -610,7 +611,7 @@
         "lcpRightsPrint": "Inprimagailuaren kopia",
         "lcpStart": "Hasiera",
         "licenceLCP": "Lizentzia (LCP)",
-        "licenseCertificateDateInvalid": "Lizentzia-sinaduraren data ez da baliozkoa",
+        "licenseCertificateDateInvalid": "Lizentzia-sinaduraren data ez da baliozkoa ({{- dateTime}})",
         "licenseOutOfDate": "Lizentzia ez dago eguneratuta",
         "licenseSignatureInvalid": "Lizentziaren sinadura ez da baliozkoa",
         "licensed": "Lizentziarekin",
@@ -741,6 +742,7 @@
             "page": "Orria",
             "pdfscalemode": "Orriaren doikuntza edo zabalera",
             "print": "",
+            "printDisabled": "",
             "settingsTitle": "Konfigurazio-aukerak"
         },
         "notes": {
@@ -766,16 +768,22 @@
             "searchTitle": "Bilatu:"
         },
         "print": {
-            "description": "",
-            "descriptionLcp": "",
-            "descriptionLcpLimit": "",
+            "descriptionLcpCount": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
             "pageHelpInfo": "",
             "pageHelpInfo1": "",
             "pageHelpInfo2": "",
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
-            "print": ""
+            "preview": "",
+            "print": "",
+            "printablePages": "",
+            "title": ""
         },
         "settings": {
             "column": {

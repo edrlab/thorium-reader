@@ -36,7 +36,7 @@
                         "yes": "Ja"
                     },
                     "help": "Välj detta om du vill att läsfönster som är öppna när du stänger programmet ska öppnas automatiskt vid nästa start.",
-                    "message": "Sparar och återställer sessionen",
+                    "message": "Spara och återställ sessionen",
                     "title": "Spara session?"
                 }
             }
@@ -156,6 +156,7 @@
         "deleteBookmarksText": "Vill du radera {{- bookmarkListLength}} bokmärke(n)?",
         "deleteFeed": "Vill du ta bort den här katalogen?",
         "deletePublication": "Vill du ta bort den här publikationen?",
+        "deletePublicationWithNotes": "",
         "import": "Vill du importera följande filer:",
         "importError": "Det uppstod ett fel, kontrollera filtypen ({{acceptedExtension}})",
         "renew": "Vill du förnya lånet?",
@@ -610,7 +611,7 @@
         "lcpRightsPrint": "Kopiera utskrift",
         "lcpStart": "Start",
         "licenceLCP": "Licens (LCP)",
-        "licenseCertificateDateInvalid": "Licensens signeringsdatum är ogiltigt.",
+        "licenseCertificateDateInvalid": "Licensens signeringsdatum är ogiltigt. ({{- dateTime}})",
         "licenseOutOfDate": "Licensen har löpt ut.",
         "licenseSignatureInvalid": "Licensens signatur är ogiltig.",
         "licensed": "Licensierad",
@@ -741,6 +742,7 @@
             "page": "Sida",
             "pdfscalemode": "Anpassa till hel sida eller sidbredd",
             "print": "",
+            "printDisabled": "",
             "settingsTitle": "Inställningar"
         },
         "notes": {
@@ -766,16 +768,22 @@
             "searchTitle": "Sök:"
         },
         "print": {
-            "description": "",
-            "descriptionLcp": "",
-            "descriptionLcpLimit": "",
+            "descriptionLcpCount": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
             "pageHelpInfo": "",
             "pageHelpInfo1": "",
             "pageHelpInfo2": "",
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
-            "print": ""
+            "preview": "",
+            "print": "",
+            "printablePages": "",
+            "title": ""
         },
         "settings": {
             "column": {
@@ -873,7 +881,7 @@
     },
     "settings": {
         "annotationCreator": {
-            "creator": "Skapare",
+            "creator": "Anteckningsförfattare (valfritt)",
             "help": "Namnet du anger här kommer att inkluderas i metadata för exporterade anteckningar.",
             "name": "Namn",
             "organization": "Organisation",

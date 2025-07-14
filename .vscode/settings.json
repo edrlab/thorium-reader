@@ -2,6 +2,7 @@
   "typescript.tsdk": "./node_modules/typescript/lib",
   "typescript.tsserver.trace": "off",
   "files.exclude": {
+    "**/.flox": true,
     "**/.git": true,
     "**/.DS_Store": true,
     "**/.vscode": false,

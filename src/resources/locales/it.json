@@ -156,6 +156,7 @@
         "deleteBookmarksText": "Sei sicuro di voler eliminare {{- bookmarkListLength}} segnalibri?",
         "deleteFeed": "Vuoi davvero eliminare questo catalogo ?",
         "deletePublication": "Vuoi davvero eliminare questa pubblicazione ?",
+        "deletePublicationWithNotes": "",
         "import": "Vuoi davvero importare questi files:",
         "importError": "si è verificato un errore, verifica l'estensione del file ({{acceptedExtension}})",
         "renew": "Vuoi davvero rinnovare la licenza per questa pubblicazione?",
@@ -610,7 +611,7 @@
         "lcpRightsPrint": "Pagine stampate",
         "lcpStart": "Inizio",
         "licenceLCP": "Licenza (LCP)",
-        "licenseCertificateDateInvalid": "La data della firma della licenza non è valida",
+        "licenseCertificateDateInvalid": "La data della firma della licenza non è valida ({{- dateTime}})",
         "licenseOutOfDate": "La licenza è scaduta",
         "licenseSignatureInvalid": "La firma della licenza non è valida",
         "licensed": "Concesso in licenza",
@@ -741,6 +742,7 @@
             "page": "Pagina",
             "pdfscalemode": "Dimensioni della pagina o larghezza",
             "print": "stampa",
+            "printDisabled": "",
             "settingsTitle": "impostazioni"
         },
         "notes": {
@@ -766,16 +768,22 @@
             "searchTitle": "Cerca:"
         },
         "print": {
-            "description": "Finestra di dialogo di prestampa {{- appName}} con una pubblicazione di {{- count}} pagine. È necessario impostare l'intervallo di pagine che si desidera stampare per attivare la finestra di dialogo di stampa del sistema",
-            "descriptionLcp": "Finestra di dialogo di prestampa {{- appName}} con una pubblicazione LCP di {{- count}} pagine. Per attivare la finestra di dialogo di stampa del sistema, è necessario impostare l'intervallo di pagine che si desidera stampare",
-            "descriptionLcpLimit": "{{- count}} pagine rimanenti (del limite LCP di {{- lcpLimitPages}})",
+            "descriptionLcpCount": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
             "pageHelpInfo": "informazioni di aiuto per gli intervalli di pagine:",
             "pageHelpInfo1": " - inserire un numero di pagina per fare riferimento a una singola pagina (ad es. \"6\")",
             "pageHelpInfo2": " - inserire due numeri di pagina separati da un trattino per fare riferimento a un intervallo di pagine contigue (ad esempio \"6-13\")",
             "pageHelpInfo3": " - utilizzare il carattere punto e virgola per separare più pagine o intervalli di pagine (ad esempio \"5;14-20;37\")",
             "pageHelpInfo4": " - tralasciare la prima o l'ultima pagina di un intervallo per fare riferimento alla prima o all'ultima pagina della pubblicazione (ad esempio, \"-16\" equivale a \"1-16\", e \"34-\" equivale a \"34-100\" nell'ipotesi di un libro con un totale di 100 pagine)",
             "pages": "Pagine",
-            "print": "Stampa"
+            "preview": "",
+            "print": "Stampa",
+            "printablePages": "",
+            "title": ""
         },
         "settings": {
             "column": {

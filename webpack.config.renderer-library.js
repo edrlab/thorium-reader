@@ -52,7 +52,7 @@ const _externalsCache = new Set();
 if (nodeEnv !== "production") {
     const nodeExternals = require("webpack-node-externals");
     const neFunc = nodeExternals({
-        allowlist: ["color", "pdf.js", "readium-speech", "@github/paste-markdown", "yargs", "timeout-signal", "nanoid", "normalize-url", "node-fetch", "data-uri-to-buffer", /^fetch-blob/, /^formdata-polyfill/],
+        allowlist: ["marked", "color", "pdf.js", "readium-speech", "@github/paste-markdown", "yargs", "timeout-signal", "nanoid", "normalize-url", "node-fetch", "data-uri-to-buffer", /^fetch-blob/, /^formdata-polyfill/],
         importType: function (moduleName) {
             if (!_externalsCache.has(moduleName)) {
                 console.log(`WEBPACK EXTERNAL (LIBRARY): [${moduleName}]`);
@@ -285,17 +285,6 @@ let config = Object.assign(
         module: {
             rules: [
                 {
-                    test: /\.(jsx?|tsx?)$/,
-                    use: [
-                        {
-                            loader: path.resolve("./scripts/webpack-loader-scope-checker.js"),
-                            options: {
-                                forbids: ["src/renderer/reader", "src/main"],
-                            },
-                        },
-                    ],
-                },
-                {
                     test: /\.tsx$/,
                     loader: useLegacyTypeScriptLoader ? "awesome-typescript-loader" : "ts-loader",
                     options: {
@@ -310,6 +299,7 @@ let config = Object.assign(
                             loader: "babel-loader",
                             options: {
                                 presets: [],
+                                sourceMaps: "inline",
                                 plugins: ["macros"],
                             },
                         },
@@ -373,6 +363,17 @@ let config = Object.assign(
                         },
                     ],
                 },
+                {
+                    test: /\.(jsx?|tsx?)$/,
+                    use: [
+                        {
+                            loader: path.resolve("./scripts/webpack-loader-scope-checker.js"),
+                            options: {
+                                forbids: ["src/renderer/reader", "src/main"],
+                            },
+                        },
+                    ],
+                },
             ],
         },
 
@@ -419,8 +420,8 @@ if (nodeEnv !== "production") {
 
     // Renderer config for DEV environment
     config = Object.assign({}, config, {
-        // Enable sourcemaps for debugging webpack's output.
-        devtool: "inline-source-map",
+        // https://webpack.js.org/configuration/devtool/
+        devtool: "source-map",
 
         devServer: {
             static: {
@@ -470,7 +471,10 @@ if (nodeEnv !== "production") {
             new TerserPlugin({
                 extractComments: false,
                 exclude: /MathJax/,
+                // parallel: 3,
                 terserOptions: {
+                    // sourceMap: nodeEnv !== "production" ? true : false,
+                    sourceMap: false,
                     compress: {defaults:false, dead_code:true, booleans: true, passes: 1},
                     mangle: false,
                     output: {

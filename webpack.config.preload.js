@@ -44,7 +44,10 @@ config.optimization = {
         new TerserPlugin({
             extractComments: false,
             exclude: /MathJax/,
+            // parallel: 3,
             terserOptions: {
+                // sourceMap: nodeEnv !== "production" ? true : false,
+                sourceMap: false,
                 compress: {defaults:false, dead_code:true, booleans: true, passes: 1},
                 mangle: false,
                 output: {

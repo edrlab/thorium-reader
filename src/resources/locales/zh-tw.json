@@ -156,6 +156,7 @@
         "deleteBookmarksText": "",
         "deleteFeed": "你真的要刪除此出版目錄嗎？",
         "deletePublication": "你真的要刪除此出版物嗎？",
+        "deletePublicationWithNotes": "",
         "import": "你真的要匯入這些文件嗎：",
         "importError": "出現錯誤，請確認文件的副檔名（{{acceptedExtension}}）",
         "renew": "你真的要更新此出版物的許可證嗎？",
@@ -610,7 +611,7 @@
         "lcpRightsPrint": "列印頁數",
         "lcpStart": "開始",
         "licenceLCP": "授權（LCP）",
-        "licenseCertificateDateInvalid": "LCP 提供者憑證已過期。",
+        "licenseCertificateDateInvalid": "LCP 提供者憑證已過期。 ({{- dateTime}})",
         "licenseOutOfDate": "LCP 許可證已過期。",
         "licenseSignatureInvalid": "LCP 許可證簽章無效。",
         "licensed": "已授權",
@@ -741,6 +742,7 @@
             "page": "頁",
             "pdfscalemode": "適合頁面寬度",
             "print": "",
+            "printDisabled": "",
             "settingsTitle": "設定"
         },
         "notes": {
@@ -766,16 +768,22 @@
             "searchTitle": "搜索："
         },
         "print": {
-            "description": "",
-            "descriptionLcp": "",
-            "descriptionLcpLimit": "",
+            "descriptionLcpCount": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
             "pageHelpInfo": "",
             "pageHelpInfo1": "",
             "pageHelpInfo2": "",
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
-            "print": ""
+            "preview": "",
+            "print": "",
+            "printablePages": "",
+            "title": ""
         },
         "settings": {
             "column": {

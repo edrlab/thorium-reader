@@ -156,6 +156,7 @@
         "deleteBookmarksText": "Tem a certeza que quer eliminar {{- bookmarkListLength}} marcadores?",
         "deleteFeed": "Eliminar catálogo?",
         "deletePublication": "Eliminar documento?",
+        "deletePublicationWithNotes": "",
         "import": "Confirmar importação:",
         "importError": "Ocorreu um erro, verifique a extensão do ficheiro ({{acceptedExtension}})",
         "renew": "Renovar empréstimo?",
@@ -610,7 +611,7 @@
         "lcpRightsPrint": "Páginas impressas",
         "lcpStart": "Início",
         "licenceLCP": "Licença (PCL)",
-        "licenseCertificateDateInvalid": "Certificado do fornecedor da licença PCL expirado.",
+        "licenseCertificateDateInvalid": "Certificado do fornecedor da licença PCL expirado. ({{- dateTime}})",
         "licenseOutOfDate": "Licença PCL caducada.",
         "licenseSignatureInvalid": "A assinatura da licença PCL é inválida.",
         "licensed": "Licenciado",
@@ -741,6 +742,7 @@
             "page": "Página",
             "pdfscalemode": "Ajustar à página ou largura",
             "print": "",
+            "printDisabled": "",
             "settingsTitle": "Configurações"
         },
         "notes": {
@@ -766,16 +768,22 @@
             "searchTitle": "Pesquisar:"
         },
         "print": {
-            "description": "",
-            "descriptionLcp": "",
-            "descriptionLcpLimit": "",
+            "descriptionLcpCount": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
             "pageHelpInfo": "",
             "pageHelpInfo1": "",
             "pageHelpInfo2": "",
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
-            "print": ""
+            "preview": "",
+            "print": "",
+            "printablePages": "",
+            "title": ""
         },
         "settings": {
             "column": {

@@ -922,6 +922,7 @@ class Reader extends React.Component<IProps, IState> {
                         currentLocation={this.props.isDivina || this.props.isPdf ? this.props.locator : this.state.currentLocation}
                         isDivina={this.props.isDivina}
                         isPdf={this.props.isPdf}
+                        isAudiobook={this.props.isAudioBook}
                         divinaSoundPlay={this.handleDivinaSound}
 
                         showSearchResults={this.showSearchResults}
@@ -932,6 +933,7 @@ class Reader extends React.Component<IProps, IState> {
                         pdfThumbnailImageCacheArray={this.state.pdfThumbnailImageCacheArray}
                         pdfPrintOpen={this.state.printDialogOpen}
                         setPdfPrintOpen={(value: boolean) => this.setState({ printDialogOpen: value })}
+                        publicationView={this.props.publicationView}
                     />
                     :
                     <div className={stylesReader.exitZen_container}>
@@ -2025,8 +2027,15 @@ class Reader extends React.Component<IProps, IState> {
     };
 
     private onKeyboardPrint = () => {
-        if (this.props.isPdf) {
+        if (
+            this.props.isPdf
+            && (!!this.props.publicationView.lcp?.rights && (this.props.publicationView.lcp?.rights?.print === null || typeof this.props.publicationView.lcp?.rights?.print === "undefined" || this.props.publicationView.lcp.rights.print > 0)
+                || !this.props.publicationView.lcp
+            )
+        ) {
             this.setState({ printDialogOpen: true });
+        } else if (this.props.isPdf) {
+            this.props.toastError(this.props.__("reader.navigation.printDisabled"));
         }
     };
 
@@ -2587,7 +2596,11 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        this.props.toggleMenu({ open: true, section: "tab-search", id: "reader-menu-tab-search", focus: true });
+        if (this.props.isAudioBook || this.props.isDivina) {
+
+        } else {
+            this.props.toggleMenu({ open: true, section: "tab-search", id: "reader-menu-tab-search", focus: true });
+        }
     }
 
 
@@ -3170,10 +3183,12 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     // const isDivina = path.extname(state?.reader?.info?.filesystemPath).toLowerCase() === acceptedExtensionObject.divina;
     const isDivina = isDivinaFn(state.reader.info.r2Publication);
     const isPdf = isPdfFn(state.reader.info.r2Publication);
+    const isAudioBook = isAudiobookFn(state.reader.info.r2Publication);
 
     return {
         isDivina,
         isPdf,
+        isAudioBook,
         publicationView: state.reader.info.publicationView,
         r2Publication: state.reader.info.r2Publication,
         readerConfig: state.reader.config,
@@ -3216,8 +3231,10 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             }
         },
         toasty: (msg: string) => {
-
             dispatch(toastActions.openRequest.build(ToastType.Success, msg));
+        },
+        toastError: (msg: string) => {
+            dispatch(toastActions.openRequest.build(ToastType.Error, msg));
         },
         toggleFullscreen: (fullscreenOn: boolean) => {
             dispatch(readerActions.fullScreenRequest.build(fullscreenOn));

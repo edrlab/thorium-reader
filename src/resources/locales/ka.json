@@ -156,6 +156,7 @@
         "deleteBookmarksText": "",
         "deleteFeed": "ნამდვილად გსურთ ამ კატალოგის წაშლა ?",
         "deletePublication": "ნამდვილად გსურთ ამ პუბლიკაციის წაშლა ?",
+        "deletePublicationWithNotes": "",
         "import": "ნამდვილად გსურთ ამ ფაილების შემოტანა :",
         "importError": "მოხდა შეცდომა, გადაამოწმეთ ფაილის გაფართოება ({{acceptedExtension}})",
         "renew": "ნამდვილად გსურთ ამ პუბლიკაციის ლიცენზიის განახლება?",
@@ -610,7 +611,7 @@
         "lcpRightsPrint": "ბეჭდისთვის ნებადართული გვერდების რაოდენობა",
         "lcpStart": "დაწყება",
         "licenceLCP": "",
-        "licenseCertificateDateInvalid": "ვადაგასული LCP მომწოდებლის სერტიფიკატი.",
+        "licenseCertificateDateInvalid": "ვადაგასული LCP მომწოდებლის სერტიფიკატი. ({{- dateTime}})",
         "licenseOutOfDate": "მოძველებული LCP ლიცენზია.",
         "licenseSignatureInvalid": "არასწორი LCP ლიცენზიის ხელმოწერა.",
         "licensed": "",
@@ -741,6 +742,7 @@
             "page": "",
             "pdfscalemode": "გვერდზე მორგება ან სიგანე",
             "print": "",
+            "printDisabled": "",
             "settingsTitle": "პარამეტრები"
         },
         "notes": {
@@ -766,16 +768,22 @@
             "searchTitle": "ძიება:"
         },
         "print": {
-            "description": "",
-            "descriptionLcp": "",
-            "descriptionLcpLimit": "",
+            "descriptionLcpCount": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
             "pageHelpInfo": "",
             "pageHelpInfo1": "",
             "pageHelpInfo2": "",
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
-            "print": ""
+            "preview": "",
+            "print": "",
+            "printablePages": "",
+            "title": ""
         },
         "settings": {
             "column": {

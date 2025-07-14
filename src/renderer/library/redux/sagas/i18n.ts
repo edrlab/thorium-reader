@@ -11,6 +11,12 @@ import { getTranslator } from "readium-desktop/common/services/translator";
 import { call as callTyped } from "typed-redux-saga/macro";
 
 function* setLocale(action: i18nActions.setLocale.TAction) {
+
+    // // Uncomment to test sourcemaps:
+    // setTimeout(() => {
+    //     throw new Error("Test exception 2 ...");
+    // }, 1000);
+
     yield* callTyped(() => getTranslator().setLocale(action.payload.locale));
 }
 

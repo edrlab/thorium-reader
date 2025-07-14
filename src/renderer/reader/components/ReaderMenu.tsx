@@ -113,6 +113,7 @@ interface IBaseProps extends IReaderMenuProps {
     currentLocation: MiniLocatorExtended;
     isDivina: boolean;
     isPdf: boolean;
+    isAudiobook: boolean;
     pdfNumberOfPages: number;
     // handleMenuClick: (open: boolean) => void;
 }
@@ -142,9 +143,10 @@ const isRTL = (r2Publication: R2Publication) => (_link: ILink) => {
                 (
                     cv === "ar" || cv.startsWith("ar-") ||
                     cv === "he" || cv.startsWith("he-") ||
-                    cv === "fa" || cv.startsWith("fa-") ||
-                    cv === "zh-Hant" ||
-                    cv === "zh-TW"
+                    cv === "fa" || cv.startsWith("fa-")
+
+                    // https://github.com/edrlab/thorium-reader/pull/3027
+                    // cv === "zh-Hant" || cv === "zh-TW"
                 ) :
                 false;
             return pv || rtlExcludingJapanese;
@@ -2828,9 +2830,9 @@ const TabTitle = ({ value }: { value: string }) => {
 };
 
 export const ReaderMenu: React.FC<IBaseProps> = (props) => {
-    const { /* toggleMenu */ pdfToc, isDivina, isPdf, focusMainAreaLandmarkAndCloseMenu,
+    const { /* toggleMenu */ pdfToc, isDivina, isPdf, isAudiobook, focusMainAreaLandmarkAndCloseMenu,
         pdfNumberOfPages, currentLocation, goToLocator /*openedSection: tabValue, setOpenedSection: setTabValue*/ } = props;
-    const isEpub = !isDivina && !isPdf;
+    const isEpub = !isDivina && !isPdf && !isAudiobook;
     const { /*doFocus, annotationUUID,*/ handleLinkClick /*, resetAnnotationUUID*/ } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const dockingMode = useReaderConfig("readerDockingMode");
@@ -3183,7 +3185,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
 
                     <Tabs.Content value="tab-bookmark" tabIndex={-1} id={"reader-menu-tab-bookmark"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <TabHeader />
-                        <div className={stylesSettings.settings_tab}>
+                        <div className={classNames(stylesSettings.settings_tab, stylesBookmarks.bookmarks_tab)}>
                             <BookmarkList  popoverBoundary={popoverBoundary.current} goToLocator={goToLocator} hideBookmarkOnChange={hideAnnotationOnChange} />
                         </div>
                     </Tabs.Content>

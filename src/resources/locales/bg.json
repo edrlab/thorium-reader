@@ -156,6 +156,7 @@
         "deleteBookmarksText": "",
         "deleteFeed": "Наистина ли искате да изтриете този каталог?",
         "deletePublication": "Наистина ли искате да изтриете тази книга?",
+        "deletePublicationWithNotes": "",
         "import": "Наистина ли искате да добавите тези файлове:",
         "importError": "възникна грешка, проверете файловото разширение ({{acceptedExtension}})",
         "renew": "Наистина ли искате да подновите лиценза за тази книга?",
@@ -610,7 +611,7 @@
         "lcpRightsPrint": "Печат на страници",
         "lcpStart": "Начало",
         "licenceLCP": "",
-        "licenseCertificateDateInvalid": "Датата на ключа за лиценза е невалидна.",
+        "licenseCertificateDateInvalid": "Датата на ключа за лиценза е невалидна. ({{- dateTime}})",
         "licenseOutOfDate": "Изтекъл срок на лиценза.",
         "licenseSignatureInvalid": "Ключа за лиценза е невалиден.",
         "licensed": "",
@@ -741,6 +742,7 @@
             "page": "",
             "pdfscalemode": "Побиране в екрана или в ширината му",
             "print": "",
+            "printDisabled": "",
             "settingsTitle": "настройки"
         },
         "notes": {
@@ -766,16 +768,22 @@
             "searchTitle": "Търси:"
         },
         "print": {
-            "description": "",
-            "descriptionLcp": "",
-            "descriptionLcpLimit": "",
+            "descriptionLcpCount": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
             "pageHelpInfo": "",
             "pageHelpInfo1": "",
             "pageHelpInfo2": "",
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
-            "print": ""
+            "preview": "",
+            "print": "",
+            "printablePages": "",
+            "title": ""
         },
         "settings": {
             "column": {

@@ -156,6 +156,7 @@
         "deleteBookmarksText": "",
         "deleteFeed": "Segur que vols eliminar aquest catàleg?",
         "deletePublication": "Segur que vols eliminar aquesta publicació?",
+        "deletePublicationWithNotes": "",
         "import": "Segur que vols importar aquests fitxers?",
         "importError": "S'ha produït un error, comprova l'extensió del teu fitxer ({{acceptedExtension}})",
         "renew": "Segur que vols renovar d'aquest préstec?",
@@ -610,7 +611,7 @@
         "lcpRightsPrint": "Còpia d'impressora",
         "lcpStart": "Inici",
         "licenceLCP": "Llicència (LCP)",
-        "licenseCertificateDateInvalid": "La data de la firma de la llicència no és vàlida",
+        "licenseCertificateDateInvalid": "La data de la firma de la llicència no és vàlida ({{- dateTime}})",
         "licenseOutOfDate": "La llicència està desactualitzada",
         "licenseSignatureInvalid": "La firma de la llicència no és vàlida",
         "licensed": "Llicenciat",
@@ -741,6 +742,7 @@
             "page": "Pàgina",
             "pdfscalemode": "Ajust o ample de pàgina",
             "print": "",
+            "printDisabled": "",
             "settingsTitle": "Opcions de configuració"
         },
         "notes": {
@@ -766,16 +768,22 @@
             "searchTitle": "Cercar:"
         },
         "print": {
-            "description": "",
-            "descriptionLcp": "",
-            "descriptionLcpLimit": "",
+            "descriptionLcpCount": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
             "pageHelpInfo": "",
             "pageHelpInfo1": "",
             "pageHelpInfo2": "",
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
-            "print": ""
+            "preview": "",
+            "print": "",
+            "printablePages": "",
+            "title": ""
         },
         "settings": {
             "column": {
