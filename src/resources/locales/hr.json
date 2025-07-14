@@ -140,6 +140,7 @@
         "deleteBookmarksText": "",
         "deleteFeed": "Želiš li stvarno izbrisati ovaj katalog ?",
         "deletePublication": "Želiš li stvarno izbrisati ovu građu ?",
+        "deletePublicationWithNotes": "",
         "import": "Želiš li stvarno uvesti ove dokumente:",
         "importError": "došlo je do pogreške, provjeri ekstenziju dokumenta ({{acceptedExtension}})",
         "renew": "Želiš li ponovno posuditi ovu građu?",
@@ -725,6 +726,7 @@
             "page": "",
             "pdfscalemode": "Širina stranice",
             "print": "",
+            "printDisabled": "",
             "settingsTitle": "postavke"
         },
         "notes": {
@@ -750,16 +752,22 @@
             "searchTitle": "Pretraga:"
         },
         "print": {
-            "description": "",
-            "descriptionLcp": "",
-            "descriptionLcpLimit": "",
+            "descriptionLcpCount": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
             "pageHelpInfo": "",
             "pageHelpInfo1": "",
             "pageHelpInfo2": "",
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
-            "print": ""
+            "preview": "",
+            "print": "",
+            "printablePages": "",
+            "title": ""
         },
         "settings": {
             "column": {

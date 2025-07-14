@@ -317,6 +317,7 @@ declare namespace typed_i18n {
   readonly "deleteBookmarksText": string,
   readonly "deleteFeed": string,
   readonly "deletePublication": string,
+  readonly "deletePublicationWithNotes": string,
   readonly "import": string,
   readonly "importError": string,
   readonly "renew": string,
@@ -352,6 +353,7 @@ declare namespace typed_i18n {
   (_: "dialog.deleteBookmarksText", __?: {}): string;
   (_: "dialog.deleteFeed", __?: {}): string;
   (_: "dialog.deletePublication", __?: {}): string;
+  (_: "dialog.deletePublicationWithNotes", __?: {}): string;
   (_: "dialog.import", __?: {}): string;
   (_: "dialog.importError", __?: {}): string;
   (_: "dialog.renew", __?: {}): string;
@@ -1637,6 +1639,7 @@ declare namespace typed_i18n {
     readonly "page": string,
     readonly "pdfscalemode": string,
     readonly "print": string,
+    readonly "printDisabled": string,
     readonly "settingsTitle": string
   },
   readonly "notes": {
@@ -1662,16 +1665,22 @@ declare namespace typed_i18n {
     readonly "searchTitle": string
   },
   readonly "print": {
-    readonly "description": string,
-    readonly "descriptionLcp": string,
-    readonly "descriptionLcpLimit": string,
+    readonly "descriptionLcpCount": string,
+    readonly "descriptionLcpPrintable": string,
+    readonly "howTo": string,
+    readonly "lcpInfo": string,
+    readonly "noPagesLcpLimitReached": string,
+    readonly "noPrintablePages": string,
     readonly "pageHelpInfo": string,
     readonly "pageHelpInfo1": string,
     readonly "pageHelpInfo2": string,
     readonly "pageHelpInfo3": string,
     readonly "pageHelpInfo4": string,
     readonly "pages": string,
-    readonly "print": string
+    readonly "preview": string,
+    readonly "print": string,
+    readonly "printablePages": string,
+    readonly "title": string
   },
   readonly "settings": {
     readonly "column": {
@@ -1947,6 +1956,7 @@ declare namespace typed_i18n {
   readonly "page": string,
   readonly "pdfscalemode": string,
   readonly "print": string,
+  readonly "printDisabled": string,
   readonly "settingsTitle": string
 };
   (_: "reader.navigation.ZenModeExit", __?: {}): string;
@@ -1969,6 +1979,7 @@ declare namespace typed_i18n {
   (_: "reader.navigation.page", __?: {}): string;
   (_: "reader.navigation.pdfscalemode", __?: {}): string;
   (_: "reader.navigation.print", __?: {}): string;
+  (_: "reader.navigation.printDisabled", __?: {}): string;
   (_: "reader.navigation.settingsTitle", __?: {}): string;
   (_: "reader.notes", __?: {}): {
   readonly "colors": {
@@ -2024,27 +2035,39 @@ declare namespace typed_i18n {
   (_: "reader.picker.search.submit", __?: {}): string;
   (_: "reader.picker.searchTitle", __?: {}): string;
   (_: "reader.print", __?: {}): {
-  readonly "description": string,
-  readonly "descriptionLcp": string,
-  readonly "descriptionLcpLimit": string,
+  readonly "descriptionLcpCount": string,
+  readonly "descriptionLcpPrintable": string,
+  readonly "howTo": string,
+  readonly "lcpInfo": string,
+  readonly "noPagesLcpLimitReached": string,
+  readonly "noPrintablePages": string,
   readonly "pageHelpInfo": string,
   readonly "pageHelpInfo1": string,
   readonly "pageHelpInfo2": string,
   readonly "pageHelpInfo3": string,
   readonly "pageHelpInfo4": string,
   readonly "pages": string,
-  readonly "print": string
+  readonly "preview": string,
+  readonly "print": string,
+  readonly "printablePages": string,
+  readonly "title": string
 };
-  (_: "reader.print.description", __?: {}): string;
-  (_: "reader.print.descriptionLcp", __?: {}): string;
-  (_: "reader.print.descriptionLcpLimit", __?: {}): string;
+  (_: "reader.print.descriptionLcpCount", __?: {}): string;
+  (_: "reader.print.descriptionLcpPrintable", __?: {}): string;
+  (_: "reader.print.howTo", __?: {}): string;
+  (_: "reader.print.lcpInfo", __?: {}): string;
+  (_: "reader.print.noPagesLcpLimitReached", __?: {}): string;
+  (_: "reader.print.noPrintablePages", __?: {}): string;
   (_: "reader.print.pageHelpInfo", __?: {}): string;
   (_: "reader.print.pageHelpInfo1", __?: {}): string;
   (_: "reader.print.pageHelpInfo2", __?: {}): string;
   (_: "reader.print.pageHelpInfo3", __?: {}): string;
   (_: "reader.print.pageHelpInfo4", __?: {}): string;
   (_: "reader.print.pages", __?: {}): string;
+  (_: "reader.print.preview", __?: {}): string;
   (_: "reader.print.print", __?: {}): string;
+  (_: "reader.print.printablePages", __?: {}): string;
+  (_: "reader.print.title", __?: {}): string;
   (_: "reader.settings", __?: {}): {
   readonly "column": {
     readonly "auto": string,

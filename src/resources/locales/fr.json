@@ -4,14 +4,14 @@
         "closeDialog": "Fermer",
         "importFile": "Ajouter un livre",
         "leftSlideButton": "Faire défiler vers la gauche",
-        "mainContent": "contenu principal",
+        "mainContent": "Contenu principal",
         "rightSlideButton": "Faire défiler vers la droite",
         "skipLink": "Aller au contenu",
-        "toolbar": "barre d'outils"
+        "toolbar": "Barre d'outils"
     },
     "apiapp": {
         "documentation": "Documentation Thorium",
-        "howItWorks": "Comment ça marche ?",
+        "howItWorks": "Comment ça marche ?",
         "informations": "En France, de nombreuses bibliothèques publiques proposent un catalogue lisible par machine (similaire à l'OPDS mais pas identique), permettant aux usagers de télécharger des publications numériques à partir de leur bibliothèque personnelle. L'intégration de cette technologie dans Thorium Reader vous permet de télécharger un livre électronique ou un livre audio directement dans Thorium Reader pour une lecture instantanée.\nComment connecter votre compte de bibliothèque publique française à Thorium Reader ? C'est très simple. Entrez une ville française (\"Paris\") ou une partie du nom de la bibliothèque dans le champ de recherche et cliquez sur le bouton Rechercher. Une liste de bibliothèques publiques correspondant à votre recherche apparaîtra. Sélectionnez une bibliothèque et cliquez sur Ajouter. Dans la liste actualisée des catalogues, sélectionnez cette bibliothèque : un formulaire d'authentification s'affiche. Saisissez votre nom d'utilisateur/adresse électronique et votre mot de passe, puis cliquez sur Connexion. Vous pouvez maintenant voir le contenu de votre bibliothèque personnelle, à partir de laquelle vous pouvez télécharger et lire les livres électroniques et les livres audio que vous avez précédemment empruntés.",
         "noLibraryFound": "Aucune bibliothèque trouvée ({{- name}})"
     },
@@ -20,7 +20,7 @@
             "copy": "Copier",
             "cut": "Couper",
             "paste": "Coller",
-            "print": "",
+            "print": "Imprimer",
             "redo": "Refaire",
             "selectAll": "Tout sélectionner",
             "title": "Éditer",
@@ -59,9 +59,9 @@
         "allBooks": "Tous mes livres",
         "bookInfo": "À propos",
         "column": {
-            "ascending": "ordre croissant",
+            "ascending": "Ordre croissant",
             "descending": "Ordre décroissant",
-            "unsorted": "non trié"
+            "unsorted": "Non trié"
         },
         "delete": "Supprimer",
         "deleteBook": "Supprimer",
@@ -81,7 +81,7 @@
         "moreInfo": "Plus d'informations",
         "myBooks": "Mes livres",
         "noPublicationHelpL1": "Déposez les fichiers ici",
-        "noPublicationHelpL2": "ou bien utilisez le bouton \"{{- importTitle }}\" ci-dessus.",
+        "noPublicationHelpL2": "Ou bien utilisez le bouton \"{{- importTitle }}\" ci-dessus.",
         "noPublicationHelpL3": "Les fichiers protégés par LCP sont pris en charge.",
         "noPublicationHelpL4": "Extensions prises en charge :",
         "numberOfPages": "Nombre de pages",
@@ -136,10 +136,11 @@
         "cancel": "Annuler",
         "deleteAnnotations": "Supprimer la note",
         "deleteAnnotationsText": "Voulez-vous supprimer {{- annotationListLength}} note(s) ?",
-        "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteBookmarks": "Supprimer les marque-pages ?",
+        "deleteBookmarksText": "Êtes-vous certain de vouloir supprimer {{- bookmarkListLength}} marque-page(s) ?",
         "deleteFeed": "Supprimer ce catalogue ?",
         "deletePublication": "Supprimer ce livre ?",
+        "deletePublicationWithNotes": "Attention: cette publication contient des annotations et/ou des marque-pages, ils seront eux aussi supprimés ! (si vous voulez les conserver, assurez-vous d'avoir sauvegardé les notes avant de supprimer la publication)",
         "import": "Confirmer l'ajout :",
         "importError": "Une erreur est survenue, vérifiez l'extension du fichier ({{acceptedExtension}})",
         "renew": "Voulez-vous étendre la durée de l'emprunt ?",
@@ -661,18 +662,18 @@
             "index": "Bookmark N°{{- index}}"
         },
         "divina": {
-            "mute": "désactiver le son",
-            "unmute": "activer le son"
+            "mute": "Désactiver le son",
+            "unmute": "Activer le son"
         },
         "fxl": {
             "fit": "Remplir"
         },
         "goToContent": "Aller au contenu",
         "imgViewer": {
-            "title": "",
-            "zoomIn": "",
-            "zoomOut": "",
-            "zoomReset": ""
+            "title": "Visualiseur d'image (zoom)",
+            "zoomIn": "Agrandir le zoom",
+            "zoomOut": "Rétrécir le zoom",
+            "zoomReset": "Réinitialiser le zoom"
         },
         "marks": {
             "annotations": "Annotations",
@@ -707,25 +708,26 @@
         "navigation": {
             "ZenModeExit": "Sortir du mode Zen",
             "ZenModeTitle": "Mode Zen",
-            "annotationTitle": "annotation",
-            "backHomeTitle": "retour à la bibliothèque",
-            "bookmarkTitle": "marque-page",
+            "annotationTitle": "Annotation",
+            "backHomeTitle": "Retour à la bibliothèque",
+            "bookmarkTitle": "Marque-page",
             "currentPage": "Page courante: {{- current}}",
             "currentPageTotal": "Page courante: {{- current}}/{{- total}}",
-            "detachWindowTitle": "afficher la bibliothèque",
+            "detachWindowTitle": "Afficher la bibliothèque",
             "goTo": "Aller à",
             "goToError": "Cette page n'existe pas",
             "goToPlaceHolder": "Entrer un numéro de page",
             "goToTitle": "Aller à la page",
             "historyNext": "Suivant dans l'historique",
             "historyPrevious": "Précédent dans l'historique",
-            "infoTitle": "informations",
-            "magnifyingGlassButton": "recherche dans la publication",
-            "openTableOfContentsTitle": "navigation",
+            "infoTitle": "Informations",
+            "magnifyingGlassButton": "Recherche dans la publication",
+            "openTableOfContentsTitle": "Navigation",
             "page": "Page",
             "pdfscalemode": "Page entière ou pleine largeur",
-            "print": "",
-            "settingsTitle": "préférences"
+            "print": "Imprimer",
+            "printDisabled": "Impression non autorisée",
+            "settingsTitle": "Préférences"
         },
         "notes": {
             "colors": {
@@ -750,16 +752,22 @@
             "searchTitle": "Recherche"
         },
         "print": {
-            "description": "",
-            "descriptionLcp": "",
-            "descriptionLcpLimit": "",
-            "pageHelpInfo": "",
-            "pageHelpInfo1": "",
-            "pageHelpInfo2": "",
-            "pageHelpInfo3": "",
-            "pageHelpInfo4": "",
-            "pages": "",
-            "print": ""
+            "descriptionLcpCount": "Limite de pages restantes : {{- count}}",
+            "descriptionLcpPrintable": "Pages précédemment imprimées : {{- printable}}",
+            "howTo": "Comment sélectionner une série de pages à imprimer ?",
+            "lcpInfo": "Le nombre de pages que vous pouvez imprimer dans cette publication est limité à {{- count}}. Choisissez ici les pages désirées.",
+            "noPagesLcpLimitReached": "Vous avez atteint la limite LCP",
+            "noPrintablePages": "Aucune page imprimable",
+            "pageHelpInfo": "Syntaxe du sélecteur de page :",
+            "pageHelpInfo1": "Saisir un numéro de page pour faire référence à une seule page (par exemple : \"6\")",
+            "pageHelpInfo2": "Saisir deux numéros de page séparés par un tiret pour faire référence à une série de pages contiguës (par exemple, \"6-13\")",
+            "pageHelpInfo3": "Utiliser le caractère point-virgule pour séparer plusieurs pages ou plages de pages (par exemple : \"5;14-20;37\")",
+            "pageHelpInfo4": "Omettre la première ou la dernière page d'un intervalle pour faire référence à la première ou à la dernière page de la publication (par exemple, \"-16\" équivaut à \"1-16\", et \"34-\" équivaut à \"34-100\" dans l'hypothèse d'un livre de 100 pages au total).",
+            "pages": "Pages",
+            "preview": "Prévisualisation",
+            "print": "Imprimer",
+            "printablePages": "Pages imprimables (total) :",
+            "title": "Sélection des pages à imprimer"
         },
         "settings": {
             "column": {
@@ -770,7 +778,7 @@
             },
             "customFontSelected": "Vous avez sélectionné une police personnelle",
             "customizeReader": "Personnaliser la mise en forme",
-            "disabled": "désactivé",
+            "disabled": "Désactivé",
             "display": "Affichage",
             "disposition": {
                 "title": "Pagination"
@@ -877,7 +885,7 @@
             "keyboardShortcuts": "Raccourcis clavier",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "",
+                    "description": "Ouvrir la modal de creation de marque-pages et éditer les labels (notes)",
                     "name": "Ajouter un Signet avec Libellé"
                 },
                 "AnnotationsCreate": {
@@ -893,31 +901,31 @@
                     "name": "Basculer la Marge d'Annotation"
                 },
                 "AudioNext": {
-                    "description": "dans la fenêtre du lecteur, appelle la commande \"suivant\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3, ou \"avance rapide\" pour les livres audio).",
+                    "description": "Dans la fenêtre du lecteur, appelle la commande \"suivant\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3, ou \"avance rapide\" pour les livres audio).",
                     "name": "Audio Suivant"
                 },
                 "AudioNextAlt": {
-                    "description": "dans la fenêtre du lecteur, appelle la commande \"suivant\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3, ou \"avance rapide\" pour les livres audio).",
+                    "description": "Dans la fenêtre du lecteur, appelle la commande \"suivant\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3, ou \"avance rapide\" pour les livres audio).",
                     "name": "Audio Suivant (Alternatif)"
                 },
                 "AudioPlayPause": {
-                    "description": "dans la fenêtre du lecteur, appelle les commandes de basculement \"lecture\" ou \"pause\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3).",
+                    "description": "Dans la fenêtre du lecteur, appelle les commandes de basculement \"lecture\" ou \"pause\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3).",
                     "name": "Lire/Pause Audio"
                 },
                 "AudioPrevious": {
-                    "description": "dans la fenêtre du lecteur, appelle la commande \"précédent\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3, ou \"rembobiner\" pour les livres audio).",
+                    "description": "Dans la fenêtre du lecteur, appelle la commande \"précédent\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3, ou \"rembobiner\" pour les livres audio).",
                     "name": "Audio Précédent"
                 },
                 "AudioPreviousAlt": {
-                    "description": "dans la fenêtre du lecteur, appelle la commande \"précédent\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3, ou \"rembobiner\" pour les livres audio). Raccourci clavier alternatif.",
+                    "description": "Dans la fenêtre du lecteur, appelle la commande \"précédent\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3, ou \"rembobiner\" pour les livres audio). Raccourci clavier alternatif.",
                     "name": "Audio Précédent (Alternatif)"
                 },
                 "AudioStop": {
-                    "description": "dans la fenêtre du lecteur, appelle la commande \"arrêter\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3, ou \"pause\" pour les livres audio).",
+                    "description": "Dans la fenêtre du lecteur, appelle la commande \"arrêter\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3, ou \"pause\" pour les livres audio).",
                     "name": "Arrêter l'Audio"
                 },
                 "CloseReader": {
-                    "description": "dans la fenêtre du lecteur, ferme la fenêtre et retourne à la vue de la bibliothèque.",
+                    "description": "Dans la fenêtre du lecteur, ferme la fenêtre et retourne à la vue de la bibliothèque.",
                     "name": "Fermer le Lecteur"
                 },
                 "FXLZoomIn": {
@@ -941,31 +949,31 @@
                     "name": "Focus Profond sur le Contenu Principal"
                 },
                 "FocusReaderGotoPage": {
-                    "description": "dans la fenêtre du lecteur, déplace le focus clavier vers la section \"aller à la page\" dans le panneau de navigation.",
+                    "description": "Dans la fenêtre du lecteur, déplace le focus clavier vers la section \"aller à la page\" dans le panneau de navigation.",
                     "name": "Aller à la Page du Lecteur"
                 },
                 "FocusReaderNavigation": {
-                    "description": "dans la fenêtre du lecteur, déplace le focus clavier vers le panneau de navigation (table des matières, signets, etc.).",
+                    "description": "Dans la fenêtre du lecteur, déplace le focus clavier vers le panneau de navigation (table des matières, signets, etc.).",
                     "name": "Focus sur la Navigation du Lecteur"
                 },
                 "FocusReaderNavigationAnnotations": {
-                    "description": "",
+                    "description": "Dans la fenêtre du lecteur, déplace le focus clavier vers la section Annotations du panneau de navigation.",
                     "name": "Focus sur les Annotations de Navigation du Lecteur"
                 },
                 "FocusReaderNavigationBookmarks": {
-                    "description": "",
+                    "description": "Dans la fenêtre du lecteur, déplace le focus clavier vers la section Marque-pages du panneau de navigation",
                     "name": "Focus sur les Signets de Navigation du Lecteur"
                 },
                 "FocusReaderNavigationSearch": {
-                    "description": "",
+                    "description": "Dans la fenêtre du lecteur, déplace le focus clavier vers la section Recherche du panneau de navigation",
                     "name": "Focus sur la Recherche de Navigation du Lecteur"
                 },
                 "FocusReaderNavigationTOC": {
-                    "description": "dans la fenêtre du lecteur, déplace le focus clavier vers le panneau de navigation, mais plus spécifiquement dans la table des matières, et si possible au niveau du titre détecté / le plus proche de l'emplacement de lecture.",
+                    "description": "Dans la fenêtre du lecteur, déplace le focus clavier vers le panneau de navigation, mais plus spécifiquement dans la table des matières, et si possible au niveau du titre détecté / le plus proche de l'emplacement de lecture.",
                     "name": "Focus sur la Table des Matières de Navigation du Lecteur"
                 },
                 "FocusReaderSettings": {
-                    "description": "dans la fenêtre du lecteur, déplace le focus clavier vers le panneau des paramètres (préférences utilisateur pour l'affichage du contenu de la publication).",
+                    "description": "Dans la fenêtre du lecteur, déplace le focus clavier vers le panneau des paramètres (préférences utilisateur pour l'affichage du contenu de la publication).",
                     "name": "Focus sur les Paramètres du Lecteur"
                 },
                 "FocusSearch": {
@@ -973,15 +981,15 @@
                     "name": "Focus sur la Recherche"
                 },
                 "FocusToolbar": {
-                    "description": "dans les fenêtres du lecteur et de la bibliothèque, déplace le focus clavier vers la barre d'outils horizontale supérieure, juste avant le lien \"sauter\" (qui lui-même déplace le focus vers le repère de la zone \"principale\").",
+                    "description": "Dans les fenêtres du lecteur et de la bibliothèque, déplace le focus clavier vers la barre d'outils horizontale supérieure, juste avant le lien \"sauter\" (qui lui-même déplace le focus vers le repère de la zone \"principale\").",
                     "name": "Focus sur la Barre d'Outils"
                 },
                 "NavigateNextChapter": {
-                    "description": "dans la fenêtre du lecteur, se déplace vers le \"chapitre\" précédent ou suivant (élément de la colonne vertébrale dans l'ordre de lecture de la publication). Notez que le focus clavier est automatiquement déplacé vers le repère de la zone \"principale\", qui se trouve juste avant le cadre affichant le contenu de la publication (comme lors du suivi / activation d'un lien dans la table des matières).",
+                    "description": "Dans la fenêtre du lecteur, se déplace vers le \"chapitre\" précédent ou suivant (élément de la colonne vertébrale dans l'ordre de lecture de la publication). Notez que le focus clavier est automatiquement déplacé vers le repère de la zone \"principale\", qui se trouve juste avant le cadre affichant le contenu de la publication (comme lors du suivi / activation d'un lien dans la table des matières).",
                     "name": "Aller au Chapitre Suivant"
                 },
                 "NavigateNextChapterAlt": {
-                    "description": "dans la fenêtre du lecteur, se déplace vers le \"chapitre\" précédent ou suivant (élément de la colonne vertébrale dans l'ordre de lecture de la publication). Notez que le focus clavier est automatiquement déplacé vers le repère de la zone \"principale\", qui se trouve juste avant le cadre affichant le contenu de la publication (comme lors du suivi / activation d'un lien dans la table des matières).",
+                    "description": "Dans la fenêtre du lecteur, se déplace vers le \"chapitre\" précédent ou suivant (élément de la colonne vertébrale dans l'ordre de lecture de la publication). Notez que le focus clavier est automatiquement déplacé vers le repère de la zone \"principale\", qui se trouve juste avant le cadre affichant le contenu de la publication (comme lors du suivi / activation d'un lien dans la table des matières).",
                     "name": "Aller au Chapitre Suivant (Alternatif)"
                 },
                 "NavigateNextHistory": {
@@ -997,11 +1005,11 @@
                     "name": "Aller à la Page Suivante de la Bibliothèque (Alternatif)"
                 },
                 "NavigateNextOPDSPage": {
-                    "description": "dans la fenêtre de la bibliothèque pour les flux de Catalogues (OPD), active les liens de pagination suivants.",
+                    "description": "Dans la fenêtre de la bibliothèque pour les flux de Catalogues (OPD), active les liens de pagination suivants.",
                     "name": "Aller à la Page OPDS Suivante"
                 },
                 "NavigateNextOPDSPageAlt": {
-                    "description": "dans la fenêtre de la bibliothèque pour les flux de Catalogues (OPD), active les liens de pagination suivants (raccourci clavier alternatif).",
+                    "description": "Dans la fenêtre de la bibliothèque pour les flux de Catalogues (OPD), active les liens de pagination suivants (raccourci clavier alternatif).",
                     "name": "Aller à la Page OPDS Suivante (Alternatif)"
                 },
                 "NavigateNextPage": {
@@ -1009,7 +1017,7 @@
                     "name": "Aller à la Page Suivante"
                 },
                 "NavigateNextPageAlt": {
-                    "description": "dans la fenêtre du lecteur, se déplace vers la \"page\" précédente ou suivante (ou unité de défilement, si la pagination est désactivée).",
+                    "description": "Dans la fenêtre du lecteur, se déplace vers la \"page\" précédente ou suivante (ou unité de défilement, si la pagination est désactivée).",
                     "name": "Aller à la Page Suivante (Alternatif)"
                 },
                 "NavigatePreviousChapter": {
@@ -1017,11 +1025,11 @@
                     "name": "Aller au Chapitre Précédent"
                 },
                 "NavigatePreviousChapterAlt": {
-                    "description": "dans la fenêtre du lecteur, se déplace vers le \"chapitre\" précédent (élément de la colonne vertébrale dans l'ordre de lecture de la publication). Notez que le focus clavier est automatiquement déplacé vers le repère de la zone \"principale\", qui se trouve juste avant le cadre affichant le contenu de la publication (comme lors du suivi / activation d'un lien dans la table des matières).",
+                    "description": "Dans la fenêtre du lecteur, se déplace vers le \"chapitre\" précédent (élément de la colonne vertébrale dans l'ordre de lecture de la publication). Notez que le focus clavier est automatiquement déplacé vers le repère de la zone \"principale\", qui se trouve juste avant le cadre affichant le contenu de la publication (comme lors du suivi / activation d'un lien dans la table des matières).",
                     "name": "Aller au Chapitre Précédent (Alternatif)"
                 },
                 "NavigatePreviousHistory": {
-                    "description": "dans la fenêtre du lecteur, revenir en arrière ou en avant dans l'historique de navigation : Début ou Fin de la publication.",
+                    "description": "Dans la fenêtre du lecteur, revenir en arrière ou en avant dans l'historique de navigation : Début ou Fin de la publication.",
                     "name": "Aller à l'Historique Précédent"
                 },
                 "NavigatePreviousLibraryPage": {
@@ -1033,19 +1041,19 @@
                     "name": "Aller à la Page Précédente de la Bibliothèque (Alternatif)"
                 },
                 "NavigatePreviousOPDSPage": {
-                    "description": "dans la fenêtre de la bibliothèque pour les flux de Catalogues (OPD), active les liens de pagination précédents.",
+                    "description": "Dans la fenêtre de la bibliothèque pour les flux de Catalogues (OPD), active les liens de pagination précédents.",
                     "name": "Aller à la Page OPDS Précédente"
                 },
                 "NavigatePreviousOPDSPageAlt": {
-                    "description": "dans la fenêtre de la bibliothèque pour les flux de Catalogues (OPD), active les liens de pagination précédents (raccourci clavier alternatif).",
+                    "description": "Dans la fenêtre de la bibliothèque pour les flux de Catalogues (OPD), active les liens de pagination précédents (raccourci clavier alternatif).",
                     "name": "Aller à la Page OPDS Précédente (Alternatif)"
                 },
                 "NavigatePreviousPage": {
-                    "description": "dans la fenêtre du lecteur, se déplace vers la \"page\" précédente ou suivante (ou unité de défilement, si la pagination est désactivée).",
+                    "description": "Dans la fenêtre du lecteur, se déplace vers la \"page\" précédente ou suivante (ou unité de défilement, si la pagination est désactivée).",
                     "name": "Aller à la Page Précédente"
                 },
                 "NavigatePreviousPageAlt": {
-                    "description": "dans la fenêtre du lecteur, se déplace vers la \"page\" précédente ou suivante (ou unité de défilement, si la pagination est désactivée).",
+                    "description": "Dans la fenêtre du lecteur, se déplace vers la \"page\" précédente ou suivante (ou unité de défilement, si la pagination est désactivée).",
                     "name": "Aller à la Page Précédente (Alternatif)"
                 },
                 "NavigateToBegin": {
@@ -1053,43 +1061,43 @@
                     "name": "Aller au Début"
                 },
                 "NavigateToEnd": {
-                    "description": "dans la fenêtre du lecteur, va à la fin de la publication.",
+                    "description": "Dans la fenêtre du lecteur, va à la fin de la publication.",
                     "name": "Aller à la Fin"
                 },
                 "OpenReaderInfo": {
-                    "description": "dans la fenêtre du lecteur, ouvre une boîte de dialogue modale d'informations sur la publication (peut être utilisée dans une future version de Thorium pour une fonctionnalité similaire dans la fenêtre de la bibliothèque).",
+                    "description": "Dans la fenêtre du lecteur, ouvre une boîte de dialogue modale d'informations sur la publication (peut être utilisée dans une future version de Thorium pour une fonctionnalité similaire dans la fenêtre de la bibliothèque).",
                     "name": "Ouvrir les Infos du Lecteur"
                 },
                 "OpenReaderInfoWhereAmI": {
-                    "description": "dans la fenêtre du lecteur, ouvre une boîte de dialogue modale d'informations sur la publication avec un focus clavier direct sur la section qui affiche la hiérarchie des titres et d'autres informations contextuelles pour l'emplacement de lecture actuel, telles que la pause de page précédente la plus proche, ainsi que l'index du document dans l'ordre de lecture (c'est la fonctionnalité \"où suis-je\").",
+                    "description": "Dans la fenêtre du lecteur, ouvre une boîte de dialogue modale d'informations sur la publication avec un focus clavier direct sur la section qui affiche la hiérarchie des titres et d'autres informations contextuelles pour l'emplacement de lecture actuel, telles que la pause de page précédente la plus proche, ainsi que l'index du document dans l'ordre de lecture (c'est la fonctionnalité \"où suis-je\").",
                     "name": "Ouvrir les Infos du Lecteur : Où Suis-je ?"
                 },
                 "Print": {
-                    "description": "dans la fenêtre du lecteur, ouvre une boîte de dialogue d'impression",
+                    "description": "Dans la fenêtre du lecteur, ouvre une boîte de dialogue d'impression",
                     "name": "Imprimmer"
                 },
                 "SearchNext": {
-                    "description": "dans la fenêtre du lecteur, lorsque l'entrée de texte de recherche globale de la publication est ouverte, trouve la correspondance précédente / suivante.",
+                    "description": "Dans la fenêtre du lecteur, lorsque l'entrée de texte de recherche globale de la publication est ouverte, trouve la correspondance précédente / suivante.",
                     "name": "Rechercher Suivant"
                 },
                 "SearchNextAlt": {
-                    "description": "identique à ci-dessus (raccourci clavier alternatif).",
+                    "description": "Identique à ci-dessus (raccourci clavier alternatif).",
                     "name": "Rechercher Suivant (Alternatif)"
                 },
                 "SearchPrevious": {
-                    "description": "dans la fenêtre du lecteur, lorsque l'entrée de texte de recherche globale de la publication est ouverte, trouve la correspondance précédente / suivante.",
+                    "description": "Dans la fenêtre du lecteur, lorsque l'entrée de texte de recherche globale de la publication est ouverte, trouve la correspondance précédente / suivante.",
                     "name": "Rechercher Précédent"
                 },
                 "SearchPreviousAlt": {
-                    "description": "identique à ci-dessus (raccourci clavier alternatif).",
+                    "description": "Identique à ci-dessus (raccourci clavier alternatif).",
                     "name": "Rechercher Précédent (Alternatif)"
                 },
                 "SpeakReaderInfoWhereAmI": {
-                    "description": "dans la fenêtre du lecteur, c'est la fonctionnalité \"où suis-je\", exactement comme ci-dessus, mais uniquement parlée via le lecteur d'écran TTS grâce à une région en direct ARIA avec une parole assertive qui interrompt la narration en cours.",
+                    "description": "Dans la fenêtre du lecteur, c'est la fonctionnalité \"où suis-je\", exactement comme ci-dessus, mais uniquement parlée via le lecteur d'écran TTS grâce à une région en direct ARIA avec une parole assertive qui interrompt la narration en cours.",
                     "name": "Lire les Infos du Lecteur : Où Suis-je ?"
                 },
                 "ToggleBookmark": {
-                    "description": "dans la fenêtre du lecteur, bascule le signet (une notification est produite pour que les lecteurs d'écran annoncent le changement).",
+                    "description": "Dans la fenêtre du lecteur, bascule le signet (une notification est produite pour que les lecteurs d'écran annoncent le changement).",
                     "name": "Basculer le Signet"
                 },
                 "ToggleReaderFullscreen": {
@@ -1112,9 +1120,9 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "",
-                "enableCheckbox": "",
-                "overrideHTMLTemplate": ""
+                "applyDefaultTemplate": "Charger le modèle par défaut",
+                "enableCheckbox": "Personnaliser le modèle HTML",
+                "overrideHTMLTemplate": "Exportation de notes (annotations et marque-pages)"
             }
         },
         "session": {

@@ -140,6 +140,7 @@
         "deleteBookmarksText": "Ben je zeker om {{- bookmarkListLength}} bladwijzer(s) te verwijderen?",
         "deleteFeed": "Wil je deze catalogus echt verwijderen ?",
         "deletePublication": "Wil je deze publicatie echt verwijderen ?",
+        "deletePublicationWithNotes": "Waarschuwing: deze publicatie bevat annotaties en/of bladwijzers, deze zullen ook verwijderd worden! (als je deze wilt bewaren, zorg ervoor dat je deze notities exporteert voordat je de publicatie verwijderd)",
         "import": "Wil je deze bestanden echt importeren :",
         "importError": "er is een fout opgetreden, controleer je bestandsextensie ({{acceptedExtension}})",
         "renew": "Wil je de licentie voor deze publicatie echt vernieuwen?",
@@ -333,12 +334,12 @@
                 "descriptive": "Deze publicatie zegt te voldoen aan"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "EPUB Accessibility 1.0",
-                "descriptive": "EPUB Accessibility 1.0"
+                "compact": "EPUB Toegankelijkheid 1.0",
+                "descriptive": "EPUB Toegankelijkheid 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "EPUB Accessibility 1.1",
-                "descriptive": "EPUB Accessibility 1.1"
+                "compact": "EPUB Toegankelijkheid 1.1",
+                "descriptive": "EPUB Toegankelijkheid 1.1"
             },
             "conformance-details-level-a": {
                 "compact": "Niveau A",
@@ -357,11 +358,11 @@
             },
             "conformance-details-wcag-2-1": {
                 "compact": "WCAG 2.1",
-                "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.1"
+                "descriptive": "De Richtlijnen voor Toegankelijkheid van Webcontent (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
                 "compact": "WCAG 2.2",
-                "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.2"
+                "descriptive": "De Richtlijnen voor Toegankelijkheid van Webcontent (WCAG) 2.2"
             },
             "conformance-no": {
                 "compact": "Geen informatie beschikbaar",
@@ -594,7 +595,7 @@
         "lcpRightsPrint": "Toegestaan aantal af te drukken pagina's",
         "lcpStart": "Start",
         "licenceLCP": "Licentie (LCP)",
-        "licenseCertificateDateInvalid": "Certificaat LCP aanbieder verlopen. ({{- dateTime}})",
+        "licenseCertificateDateInvalid": "Certificaat LCP aanbieder verlopen. ({{- dateTime}}).",
         "licenseOutOfDate": "LCP Licentie is verlopen.",
         "licenseSignatureInvalid": "Ongeldige LCP Licentie handtekening.",
         "licensed": "Gelicentieerd",
@@ -669,10 +670,10 @@
         },
         "goToContent": "Ga naar de Inhoud",
         "imgViewer": {
-            "title": "",
+            "title": "Beeldviewer (zoom)",
             "zoomIn": "Inzoomen",
             "zoomOut": "Uitzoomen",
-            "zoomReset": "Reset zoom"
+            "zoomReset": "Herstel Vergroting"
         },
         "marks": {
             "annotations": "Annotaties",
@@ -681,7 +682,7 @@
             "edit": "Wijzig",
             "goTo": "Ga naar pagina",
             "landmarks": "structuur elementen",
-            "saveMark": "Bladwijzer opslaan",
+            "saveMark": "Sla op",
             "search": "Zoek",
             "searchResult": "Zoek [{{- searchText}}]",
             "toc": "Inhoudsopgave"
@@ -707,25 +708,26 @@
         "navigation": {
             "ZenModeExit": "Verlaat Zen modus",
             "ZenModeTitle": "Zen modus",
-            "annotationTitle": "annotatie",
+            "annotationTitle": "Annotatie",
             "backHomeTitle": "terug naar de boekenplank",
-            "bookmarkTitle": "bladwijzer",
+            "bookmarkTitle": "Bladwijzer",
             "currentPage": "Huidige pagina: {{- current}}",
             "currentPageTotal": "Huidige pagina: {{- current}}/{{- total}}",
-            "detachWindowTitle": "maak het venster los",
+            "detachWindowTitle": "Maak het venster los",
             "goTo": "Ga naar",
             "goToError": "Deze paginaovergang bestaat niet",
             "goToPlaceHolder": "Voer een paginanummer in",
             "goToTitle": "Ga naar pagina",
             "historyNext": "Spring vooruit",
             "historyPrevious": "Spring terug",
-            "infoTitle": "informatie",
+            "infoTitle": "Informatie",
             "magnifyingGlassButton": "Zoek in publicatie",
-            "openTableOfContentsTitle": "navigatie",
+            "openTableOfContentsTitle": "Navigatie",
             "page": "Pagina",
             "pdfscalemode": "Pagina aanpassen aan breedte",
-            "print": "druk af",
-            "settingsTitle": "instellingen"
+            "print": "Druk af",
+            "printDisabled": "Verboden te printen",
+            "settingsTitle": "Instellingen"
         },
         "notes": {
             "colors": {
@@ -750,16 +752,22 @@
             "searchTitle": "Zoek:"
         },
         "print": {
-            "description": "{{- appName}} dialoogvenster voor afdrukken van een publicatie met {{- count}} pagina's. Je moet het afdruk bereik zetten om de printdialoog op te roepen",
-            "descriptionLcp": "{{- appName}} dialoogvenster voor afdrukken van een LCP publicatie met {{- count}} pagina's. Je moet het afdruk bereik zetten om de printdialoog op te roepen",
-            "descriptionLcpLimit": "{{- count}} pagina's over (van {{- lcpLimitPages}} LCP limiet)",
-            "pageHelpInfo": "pagina bereik hulp informatie :",
-            "pageHelpInfo1": " - geef een pagina nummer op om naar een enkele pagina te verwijzen (b.v. \"6\")",
-            "pageHelpInfo2": " - geef twee paginanummers op verbonden met een streepje om naar een aangesloten bereik van pagina's te verwijzen (b.v. \"6-13\")",
-            "pageHelpInfo3": " - gebruik een puntkomma om meerdere pagina's of pagina bereiken te scheiden (b.v. \"5;14-20;37\")",
-            "pageHelpInfo4": " - laat het eerste of laatste paginanummer weg in een bereik om te verwijzen naar de eerste of laatste pagina van een publicatie (b.v. \"-16\" is gelijk aan \"1-16\", en \"34-\" is gelijk aan \"34-100\" uitgaande van een boek met 100 pagina's in totaal)",
+            "descriptionLcpCount": "Nog te lezen pagina's: {{- count}}",
+            "descriptionLcpPrintable": "Voorgaand uitgeprinte pagina's: {{- printable}} ({{- count}})",
+            "howTo": "Hoe selecteer je het bereik van uit te printen pagina's",
+            "lcpInfo": "Het aantal van pagina's die je kan uitprinten in deze publicatie is gelimiteerd tot {{- count}}. Kies hier de pagina's die je nodig hebt.",
+            "noPagesLcpLimitReached": "Je hebt het limiet van de LCP paginalading bereikt",
+            "noPrintablePages": "Geen printbare pagina's",
+            "pageHelpInfo": "Pagina bereik hulp informatie:",
+            "pageHelpInfo1": "geef een pagina nummer op om naar een enkele pagina te verwijzen (b.v. \"6\")",
+            "pageHelpInfo2": "geef twee paginanummers op verbonden met een streepje om naar een aangesloten bereik van pagina's te verwijzen (b.v. \"6-13\")",
+            "pageHelpInfo3": "gebruik een puntkomma om meerdere pagina's of pagina bereiken te scheiden (b.v. \"5;14-20;37\")",
+            "pageHelpInfo4": "laat het eerste of laatste paginanummer weg in een bereik om te verwijzen naar de eerste of laatste pagina van een publicatie (b.v. \"-16\" is gelijk aan \"1-16\", en \"34-\" is gelijk aan \"34-100\" uitgaande van een boek met 100 pagina's in totaal)",
             "pages": "Pagina's",
-            "print": "Afdrukken"
+            "preview": "Voorbeeld",
+            "print": "Afdrukken",
+            "printablePages": "Pintbare pagina's (totaal)",
+            "title": "Selectie van printbare pagina's"
         },
         "settings": {
             "column": {
@@ -783,7 +791,7 @@
             "letterSpacing": "Letterafstand",
             "lineSpacing": "Regelafstand",
             "margin": "Marge",
-            "mathjax": "",
+            "mathjax": "Schakel MathJax in",
             "noFootnotes": "Verberg pop-up voetnoten",
             "noRTLFlip": "Schakel de rechts-naar-links-UI uit",
             "noRuby": "Verberg Japanse Ruby",
@@ -872,270 +880,270 @@
         "keyboard": {
             "advancedMenu": "Menu",
             "cancel": "Annuleer",
-            "disclaimer": "Snelkoppelingen zijn gedefinieerd op basis van de QWERTY-toetsenbordindeling.",
+            "disclaimer": "Snelkoppelingen zijn gedefinieerd op basis van de QWERTY-toetsenbordindeling",
             "editUserJson": "Wijzig gebruikersbestand...",
             "keyboardShortcuts": "Toetsenbord shortcuts",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "",
-                    "name": ""
+                    "description": "Open het bladwijzer aanmaakvenster en pas de tekst label (notitie), kleur en tag aan",
+                    "name": "Maak een Bladwijzer aan met Label"
                 },
                 "AnnotationsCreate": {
-                    "description": "",
-                    "name": ""
+                    "description": "Open het annotatie aanmaakvenster voor de geselecteerde document tekst, en pas de tekst notitie, arceer kleur en type, en de tag aan",
+                    "name": "Maak Annotatie aan"
                 },
                 "AnnotationsCreateQuick": {
-                    "description": "",
-                    "name": ""
+                    "description": "Maak snel een annotatie voor de geselecteerde tekst aan, met de laatst gebruikte arceer kleur en type (notitie en tag zullen leeg zijn)",
+                    "name": "Maak Snelle Annotatie Aan"
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verwissel de visuele indicaties van de annotatie en bladwijzer, in of het document marge of de tekst",
+                    "name": "Schakelaar Annotatie Marge"
                 },
                 "AudioNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verplaats Vooruit naar het volgende audio fragment in de vertelling (EPUB3 Media Overlappingen, Tekst Naar Spraak, of voorafgaand opgenomen audioboek)",
+                    "name": "Volgend Audiofragment"
                 },
                 "AudioNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verplaats Vooruit naar volgend audio fragment in de vertelling (EPUB3 Media Overlappingen, Tekst Naar Spraak, of voorafgaand opgenomen audioboek). Dit slaat alle huidige verlaatbare structuren over",
+                    "name": "Volgend Audiofragment (verlaat)"
                 },
                 "AudioPlayPause": {
-                    "description": "",
-                    "name": ""
+                    "description": "Schakelaar speel/pauzeer voor huidige vertelling (EPUB3 Media Overlappingen, Tekst naar Spraak hardop voorlezen, of vooraf opgenomen audioboek)",
+                    "name": "Speel/Pauzeer Audio"
                 },
                 "AudioPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "Spring terug naar vorig audiofragment in de vertelling (EPUB3 Media Overlappingen, Tekst naar Spraak hardop voorlezen, of voorgaand opgenomen audioboek)",
+                    "name": "Vorig Audiofragment"
                 },
                 "AudioPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Spring terug naar vorig audiofragment in de vertelling (EPUB3 Media Overlappingen, Tekst naar Spraak hardop voorlezen, of voorgaand opgenomen audioboek). Dit slaat huidige verlaatbare structuren over",
+                    "name": "Vorig Audiofragment (verlaat)"
                 },
                 "AudioStop": {
-                    "description": "",
-                    "name": ""
+                    "description": "Stop huidige audio (EPUB3 Media Overlappingen, Tekst naar Spraak hardop voorlezen, of voorgaand opgenomen audioboek)",
+                    "name": "Stop Audio"
                 },
                 "CloseReader": {
-                    "description": "",
-                    "name": ""
+                    "description": "Sluit de leesvenster en ga terug naar de bibliotheek",
+                    "name": "Sluit Lezer"
                 },
                 "FXLZoomIn": {
-                    "description": "",
-                    "name": ""
+                    "description": "Vergoot in een vast lay-out enkele pagina of twee pagina's.",
+                    "name": "FXL Vergroot In"
                 },
                 "FXLZoomOut": {
-                    "description": "",
-                    "name": ""
+                    "description": "Vergoot uit een vaste lay-out enkele pagina of twee pagina's.",
+                    "name": "FXL Vergroot Uit"
                 },
                 "FXLZoomReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Herstel vergroting in een vaste lay-out enkele pagina of twee pagina's.",
+                    "name": "Herstel FXL Vergroting"
                 },
                 "FocusMain": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verplaats toetsenbordfocus naar 'hoofd' oriëntatiepunt in de grafische gebruikersinterface. In het leesvenster, dit verplaatst tot in de publicatie-inhoud",
+                    "name": "Focus op Hoofdinhoud"
                 },
                 "FocusMainDeep": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, dit verplaats de toetsenbordfocus tot in de publicatie-inhoud door gebruik van een betrouwbaardere techniek voor schermlezers",
+                    "name": "Diepe Focus op Hoofdinhoud"
                 },
                 "FocusReaderGotoPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verplaats de toetsenbordfocus naar de 'ga naar pagina' sectie in het navigatiepaneel van het leesvenster",
+                    "name": "Focus op 'Ga naar Pagina"
                 },
                 "FocusReaderNavigation": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verplaats de toetsenbordfocus naar het navigatiepaneel van het leesvenster",
+                    "name": "Focus op Navigatiepaneel"
                 },
                 "FocusReaderNavigationAnnotations": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verplaats de toetsenbordfocus naar de 'annotatie' sectie van het navigatiepaneel van het leesvenster",
+                    "name": "Focus op 'Annotaties'"
                 },
                 "FocusReaderNavigationBookmarks": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verplaats de toetsenbordfocus naar de 'bladwijzers' sectie van het navigatie paneel van het leesvenster",
+                    "name": "Focus op 'Bladwijzers'"
                 },
                 "FocusReaderNavigationSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verplaats de toetsenbordfocus naar de 'zoek' sectie van het navigatie paneel van het leesvenster",
+                    "name": "Focus op 'Zoek'"
                 },
                 "FocusReaderNavigationTOC": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verplaats de toetsenbordfocus naar de 'inhoudsopgave' sectie van het navigatie paneel van het leesvenster",
+                    "name": "Focus op 'inhoudsopgave'"
                 },
                 "FocusReaderSettings": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verplaats de toetsenbordfocus naar het instellingspaneel van het leesvenster (voorvertoning voorkeuren, enz.)",
+                    "name": "Focus op Lezer Instellingen"
                 },
                 "FocusSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verplaats de toetsenbordfocus naar het tekst zoekveld van het leesvenster, of naar het bibliotheekvenster dit doorzoekt de boekenplanken of het actieve OPDS laadpagina",
+                    "name": "Zoek Commando"
                 },
                 "FocusToolbar": {
-                    "description": "",
-                    "name": ""
+                    "description": "Verplaats de toetsenbordfocus direct naar het oriëntatiepunt gebied van de grafische gebruikersinterface voorgaand aan de 'overslaan-link' (deze verplaatst de focus van het hoofdcontent gebied naar de bibliotheek of het leesvenster)",
+                    "name": "Focus op Werkbalk"
                 },
                 "NavigateNextChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, navigeer naar het volgende document in de leesvolgorde van de publicatie (bijv. hoofdstuk in de boek rug). Merk op dat er een alternatieve toetsenbord sneltoets is voor deze standaard sneltoets",
+                    "name": "Ga naar Volgend Hoofdstuk"
                 },
                 "NavigateNextChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, navigeer naar het volgende document in de leesvolgorde van de publicatie (bijv. hoofdstuk in de boek rug). Dit is een alternatieve sneltoets dan de standaard",
+                    "name": "Ga naar Volgend Hoofdstuk (Alternatief)"
                 },
                 "NavigateNextHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, spring één stap vooruit naar de navigatie geschiedenis",
+                    "name": "Ga naar Volgende Geschiedenis"
                 },
                 "NavigateNextLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het bibliotheekventer, toon de volgende pagina van een gepagineerde lijst van publicaties. Merk op dat er een alternatieve toetsenbord sneltoets is voor deze standaard sneltoets",
+                    "name": "Ga naar Volgende Bibliotheek Pagina"
                 },
                 "NavigateNextLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het bibliotheekventer, toon de volgende pagina van een gepagineerde lijst van publicaties. Dit is een alternatieve toetsenbord sneltoets dan de standaard",
+                    "name": "Ga naar Volgende Bibliotheek Pagina (Alternatief)"
                 },
                 "NavigateNextOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het bibliotheekventer voor catalogen / OPDS laadpagina, volg de volgende gepagineerde link. Merk op dat er een alternatieve toetsenbord sneltoets is voor deze standaard sneltoets",
+                    "name": "Ga naar volgende OPDS Cataloogpagina"
                 },
                 "NavigateNextOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het bibliotheekventer voor catalogen / OPDS laadpagina, volg de volgende gepagineerde link. Dit is een alternatief toetsenbord sneltoets dan de standaard",
+                    "name": "Ga naar de Volgende OPDS Cataloogpagina (Alternatief)"
                 },
                 "NavigateNextPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, sla om naar de volgende 'pagina' in de publicatie. Merk op dat er een alternatieve toetsenbord sneltoets is voor deze standaard sneltoets",
+                    "name": "Ga naar Volgende Pagina"
                 },
                 "NavigateNextPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, sla om naar volgende 'pagina' in de publicatie. Dit is een alternatief toetsenbord sneltoets dan de standaard",
+                    "name": "Ga naar de Volgende Pagina (Alternatief)"
                 },
                 "NavigatePreviousChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, navigeer naar het volgende document in de leesvolgorde van de publicatie (bijv. hoofdstuk in de boekenrug). Merk op dat er een alternatieve toetsenbord sneltoets is voor deze standaard sneltoets",
+                    "name": "Ga naar Vorig Hoofdstuk"
                 },
                 "NavigatePreviousChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, navigeer nar het vorige document in de voorleesvolgorde van de publicatie (bijv. hoofdstuk in de boekenrug). Dit is een alternatief toetsenbord sneltoets dan de standaard",
+                    "name": "Ga naar Vorig Hoofstuk (Alternatief)"
                 },
                 "NavigatePreviousHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, spring één stap terug in de navigatie geschiedenis",
+                    "name": "Ga naar Vorige Geschiedenis"
                 },
                 "NavigatePreviousLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het bibliotheekventer, laat vorige pagina van een gepagineerde lijst van publicaties zien. Merk op dat er een alternatieve toetsenbord sneltoets is voor deze standaard sneltoets",
+                    "name": "Ga naar Vorige Bibliotheek Pagina"
                 },
                 "NavigatePreviousLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het bibliotheekvenster, laat vorige pagina van een gepagineerde lijst van publicaties zien. Dit is een alternatief toetsenbord sneltoets dan de standaard",
+                    "name": "Ga naar Vorige Bibliotheek Pagina (Alternatief)"
                 },
                 "NavigatePreviousOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het bibliotheekventer voor catalogen / OPDS laadpagina, volg de vorige gepagineerde link. Merk op dat er een alternatieve toetsenbord sneltoets is voor deze standaard sneltoets",
+                    "name": "Ga naar de Vorige OPDS Cataloogpagina"
                 },
                 "NavigatePreviousOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het bibliotheekventer voor catalogen / OPDS laadpagina, volg de vorige gepagineerde link. Dit is een alternatief toetsenbord sneltoets dan de standaard",
+                    "name": "Ga naar de vorige OPDS Cataloogpagina (Alternatief)"
                 },
                 "NavigatePreviousPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het voorleesvenster, sla de vorige 'pagina' in de publicatie om. Merk op dat er een alternatieve toetsenbord sneltoets is voor deze standaard sneltoets",
+                    "name": "Ga naar de vorige pagina"
                 },
                 "NavigatePreviousPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, sla de vorige 'pagina' in de publicatie om. Dit is een alternatief toetsenbord sneltoets dan de standaard",
+                    "name": "Ga naar Vorige Pagina (Alternatief)"
                 },
                 "NavigateToBegin": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, ga naar het begin van de publicatie",
+                    "name": "Ga naar Begin"
                 },
                 "NavigateToEnd": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, ga naar einde van de publicatie",
+                    "name": "Ga naar einde"
                 },
                 "OpenReaderInfo": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, open het informatie dialoog voor de publicatie",
+                    "name": "Toon Publicatie Informatie"
                 },
                 "OpenReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, open het pop-up dialoog dat informatie toont over de publicatie, en focus het toetsenbord op de sectie dat de context van de huidige lees locatie toont",
+                    "name": "Toon Publicatie Informatie, Toon Lees Locatie"
                 },
                 "Print": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, open het print dialoog",
+                    "name": "Uitprinten"
                 },
                 "SearchNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "In de zoektool van het leesvenster, ga naar volgend zoekresultaat. Merk op dat er een alternatieve toetsenbord sneltoets is voor deze standaard sneltoets",
+                    "name": "Zoekresultaat Volgende"
                 },
                 "SearchNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "In de zoektool van het leesvenster, ga naar volgend zoekresultaat. Dit is een alternatief toetsenbord sneltoets dan de standaard",
+                    "name": "Zoekresultaat Volgende (Alternatief)"
                 },
                 "SearchPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "In de zoektool van het leesvenster, ga naar vorig zoekresultaat. Merk op dat er een alternatieve toetsenbord sneltoets is voor deze standaard sneltoets",
+                    "name": "Zoekresultaat Vorige"
                 },
                 "SearchPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "In de zoektool van het leesvenster, ga naar het vorige zoekresultaat. Dit is een alternatief toetsenbord sneltoets dan de standaard",
+                    "name": "Zoekresultaat Vorige (Alternatief)"
                 },
                 "SpeakReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, beschrijf de context van de huidige lees locatie, doormiddel van spraak tekst dat compatibel is met schermlezers",
+                    "name": "Beschrijf Lees Locatie (Spraak)"
                 },
                 "ToggleBookmark": {
-                    "description": "",
-                    "name": ""
+                    "description": "Voeg een nieuwe bladwijzer toe of verwijder een bestaande als deze momenteel geselecteerd is",
+                    "name": "Schakelaar Bladwijzer"
                 },
                 "ToggleReaderFullscreen": {
-                    "description": "",
-                    "name": ""
+                    "description": "In het leesvenster, activeer systeem volledig scherm of herstel normaal venster modus. Merk op dat dit anders is van de 'zen modus' wat het gebruikersinterface versimpelt",
+                    "name": "Schakelaar Volledig Scherm"
                 }
             },
-            "loadUserJson": "Haal uit gebruikersbestand",
-            "noShortcutFound": "",
-            "resetDefaults": "Terug (naar oorspronkelijke instellingen)",
+            "loadUserJson": "Laad uit gebruikersbestand",
+            "noShortcutFound": "Geen snelkoppeling/sneltoets gevonden met dit label",
+            "resetDefaults": "Herstel (naar standaardinstellingen)",
             "save": "Bewaar",
-            "searchPlaceholder": ""
+            "searchPlaceholder": "Typ om een sneltoets/snelkoppeling te zoeken"
         },
         "language": {
-            "languageChoice": "Taal keuze"
+            "languageChoice": "Taal"
         },
         "library": {
             "enableAPIAPP": "Het 'PNB'-bibliotheeksysteem activeren",
-            "title": "Toegang tot Franse bibliotheek accounts"
+            "title": "Toegang tot Franse bibliotheekaccounts"
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "PAS STANDAARD TEMPLATE TOE",
-                "enableCheckbox": "",
-                "overrideHTMLTemplate": ""
+                "applyDefaultTemplate": "Laad standaard template",
+                "enableCheckbox": "Pas het standaard HTML template aan",
+                "overrideHTMLTemplate": "Notities exporteren (annotaties en bladwijzers)"
             }
         },
         "session": {
-            "title": "Bewaar sessie"
+            "title": "Stel sessie bewaring in"
         },
         "tabs": {
-            "appearance": "Weergave",
+            "appearance": "Verschijning",
             "general": "Algemeen",
             "keyboardShortcuts": "Toetsenbord sneltoetsen"
         },
         "theme": {
             "auto": "Automatisch",
             "dark": "Donker",
-            "description": "Het applicatiethema komt overeen met dat van het besturingssysteem.",
+            "description": "Het applicatiethema is gelijk aan het besturingssysteem.",
             "light": "Licht",
-            "title": "Applicatie thema"
+            "title": "Applicatie Thema"
         }
     },
     "tts": {
         "highlight": {
-            "mainColor": "Hoofd kleur",
+            "mainColor": "Hoofdkleur",
             "maskBlockWordOutline": "Maskeer Blok, Woord Omtrek",
             "maskBlockWordSolidBackground": "Maskeer Blok, Woord Effen Achtergrond",
             "maskBlockWordUnderline": "Maskeer Blok, Woord Onderstreept",
@@ -1145,11 +1153,11 @@
             "outlineWordOutline": "Omlijnt, Woord Omlijnt",
             "outlineWordSolidBackground": "Omlijnt, Woord Effen Achtergrond",
             "outlineWordUnderline": "Omlijnt, Woord Onderstreept",
-            "preview": "Tekst Naar Spraak Voorbeeld Stijl Markeren",
+            "preview": "Tekst Naar Spraak voorbeeld markeerstijl",
             "solidBackgroundWordOutline": "Effen Achtergrond, Woord Omlijnt",
-            "solidBackgroundWordSolidBackground": "Effen achtergrond, woord effen achtergrond",
+            "solidBackgroundWordSolidBackground": "Effen Achtergrond, Woord Effen Achtergrond",
             "solidBackgroundWordUnderline": "Effen Achtergrond, Woord Onderstreept",
-            "style": "Tekst Naar Spraak, Stijl Markeren",
+            "style": "Tekst Naar Spraak, markeer stijl",
             "underlineWordOutline": "Onderstreept, Woord Omlijnt",
             "underlineWordSolidBackground": "Onderstreept, Woord Effen Achtergrond",
             "underlineWordUnderline": "Onderstreept, Woord Onderstreept",
@@ -1163,24 +1171,24 @@
             "next": "Volgende"
         },
         "description": {
-            "annotations": "Markeer documenttekst, kies stijl en kleur, voeg persoonlijke notities toe. Maak annotaties in de 'snelle' modus om de editor te omzeilen (u kunt later tekst invoeren en stijlen aanpassen). Gebruik voor extra snelheid de 'instant'-modus die annotaties maakt onmiddellijk na het markeren van documenttekst!",
-            "catalogs": "Leen publicaties uit uw plaatselijke bibliotheek of ontdek publicaties via OPDS-feeds. Krijg toegang tot een verscheidenheid aan publicaties uit meerdere bronnen dankzij online catalogi.",
+            "annotations": "Markeer document tekst, kies stijl en kleur, voeg persoonlijke notities toe. Maak annotaties in de 'snelle' modus om de editor te omzeilen (je kunt later tekst invoeren en stijlen aanpassen). Gebruik voor extra snelheid de 'directe' modus die annotaties maakt onmiddellijk na het markeren van document tekst!",
+            "catalogs": "Leen publicaties uit je lokale bibliotheek of ontdek publicaties via de OPDS laadpagina. Krijg toegang tot een variatie aan publicaties uit meerdere bronnen dankzij online catalogi.",
             "home": "Thorium ziet er anders uit! Ontdek wat er nieuw is...",
-            "readingView1": "Pas uw lees- en luistervoorkeuren aan: Thorium biedt nu meerdere kleurthema's voor zowel de gebruikersinterface als voor de publicaties. Het is nu ook eenvoudiger om 'readaloud'-e-books te configureren met synthetische spraak en gesynchroniseerde tekst/audio-weergave.",
-            "readingView2": "De verbeterde gebruikersinterface van Thorium maakt het gemakkelijker om tekst in publicaties te vinden, zoekresultaten te verkennen, naar specifieke pagina's te gaan, door de inhoudsopgave te bladeren, bladwijzers te maken, enz. dankzij de nieuwe 'gedockte' panelen. De leesmodus op volledig scherm blijft een afleidingsvrije omgeving bieden.",
-            "yourBooks": "Welkom bij je opnieuw ontworpen persoonlijke boekenplank! In de 'raster'-weergave filter je eenvoudig op tags of vind je publicaties op trefwoorden. In de geavanceerde 'tabel'-weergave selecteert en sorteert u publicaties op specifieke auteurs, titel, datum, formaat, enz."
+            "readingView1": "Pas je lees- en luistervoorkeuren aan: Thorium biedt nu meerdere kleurthema's voor zowel de gebruikersinterface en de gepubliceerde documenten. Het is nu ook gemakkelijker om 'hardop voorlezende' e-books te configureren met synthetische spraak en gesynchroniseerde tekst/audio-weergave.",
+            "readingView2": "Thorium's verbeterde gebruikersinterface maakt het gemakkelijker om tekst in publicaties te vinden, zoekresultaten te verkennen, naar specifieke pagina's te gaan, door de inhoudsopgave te bladeren, bladwijzers te maken, enz. dankzij de nieuwe 'gekoppelde' panelen. De leesmodus op volledig scherm blijft een afleidingsvrije omgeving bieden.",
+            "yourBooks": "Welkom bij je herontworpen persoonlijke boekenplank! In de 'raster'-weergave, filter je makkelijk op tags of vind je publicaties met trefwoorden. In de geavanceerde 'tabel'-weergave selecteert en sorteert je publicaties op specifieke auteurs, titel, datum, formaat, enz."
         },
-        "dontShow": "Niet meer laten zien",
+        "dontShow": "Niet meer laten zien, verberg",
         "tab": {
             "annotations": "Annotaties",
             "catalogs": "Catalogi",
-            "home": "Home",
+            "home": "Startpagina",
             "readingView": "Leesweergave",
             "yourBooks": "Jouw publicaties"
         },
         "title": {
             "allBooks": "Al mijn publicaties",
-            "newFeature": "Nieuwe functie: annotaties",
+            "newFeature": "Nieuwe functie: Annotaties",
             "welcome": "Welkom bij Thorium 3.0"
         }
     }

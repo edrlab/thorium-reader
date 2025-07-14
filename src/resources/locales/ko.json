@@ -140,6 +140,7 @@
         "deleteBookmarksText": "",
         "deleteFeed": "카탈로그를 제거하겠습니까?",
         "deletePublication": "출판물을 제거하겠습니까?",
+        "deletePublicationWithNotes": "",
         "import": "파일들을 열겠습니까:",
         "importError": "오류가 발생했습니다. 파일 확장자를 확인하십시오. ({{acceptedExtension}})",
         "renew": "출판물의 라이선스를 갱신하겠습니까?",
@@ -725,6 +726,7 @@
             "page": "",
             "pdfscalemode": "페이지 또는 너비 맞춤",
             "print": "",
+            "printDisabled": "",
             "settingsTitle": "설정"
         },
         "notes": {
@@ -750,16 +752,22 @@
             "searchTitle": "검색:"
         },
         "print": {
-            "description": "",
-            "descriptionLcp": "",
-            "descriptionLcpLimit": "",
+            "descriptionLcpCount": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
             "pageHelpInfo": "",
             "pageHelpInfo1": "",
             "pageHelpInfo2": "",
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "",
-            "print": ""
+            "preview": "",
+            "print": "",
+            "printablePages": "",
+            "title": ""
         },
         "settings": {
             "column": {

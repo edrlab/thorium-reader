@@ -170,12 +170,17 @@ class HeaderSearch extends React.Component<IProps> {
             return;
         }
 
-        if (this.props.isPdf) {
-            if (!v) {
-                createOrGetPdfEventBus().dispatch("search-wipe");
+        if (this.props.isAudiobook || this.props.isDivina) {
+
+        } else {
+
+            if (this.props.isPdf) {
+                if (!v) {
+                    createOrGetPdfEventBus().dispatch("search-wipe");
+                }
             }
+            this.props.enableSearch(v || !this.props.isOnSearch);
         }
-        this.props.enableSearch(v || !this.props.isOnSearch);
     };
 
 }

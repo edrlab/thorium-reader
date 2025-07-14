@@ -2,6 +2,9 @@
   "compilerOptions": {
     "outDir": "./dist/",
     "sourceMap": true,
+    "inlineSourceMap": false,
+    "inlineSources": false,
+    "removeComments": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
@@ -19,8 +22,6 @@
     "noLib": false,
     "noResolve": false,
     "forceConsistentCasingInFileNames": false,
-    "inlineSources": true,
-    "inlineSourceMap": false,
     "preserveConstEnums": true,
     "isolatedModules": true,
     "allowJs": false,
@@ -41,7 +42,6 @@
     "listEmittedFiles": false,
     "traceResolution": false,
     "disableSizeLimit": false,
-    "removeComments": true,
     "skipLibCheck": true,
     // NODENEXT does not work because of "typed-redux-saga/macro" in WebPack Babel config
     "module": "esnext", // 99

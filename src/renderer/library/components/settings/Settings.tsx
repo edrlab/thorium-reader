@@ -45,6 +45,10 @@ import { ApiappHowDoesItWorkInfoBox } from "../dialog/ApiappAddForm";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import { TextArea } from "react-aria-components";
 import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/annotation/htmlTemplate";
+
+// import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
 
 interface ISettingsProps {};
@@ -231,7 +235,7 @@ const SaveCreatorSettings: React.FC<{}> = () => {
 };
 
 const OverloadNoteExportToHtml: React.FC<{}> = () => {
-    
+
     const MAX_LEN = 100 * 1024;
     const [__] = useTranslator();
     const dispatch = useDispatch();
@@ -425,6 +429,13 @@ export const Settings: React.FC<ISettingsProps> = () => {
         <Dialog.Portal>
             <div className={stylesModals.modal_dialog_overlay}></div>
             <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined}>
+                {
+                // FALSE this to test sourcemaps:
+                true &&
+                <VisuallyHidden.Root>
+                    <Dialog.Title>{__("header.settings")}</Dialog.Title>
+                </VisuallyHidden.Root>
+                }
                 <Tabs.Root defaultValue="tab1" data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                     <Tabs.List className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
                         <Tabs.Trigger value="tab1">
