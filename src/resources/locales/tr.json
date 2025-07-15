@@ -1057,7 +1057,7 @@
                     "name": "Önceki Sayfaya Git (Alternatif)"
                 },
                 "NavigateToBegin": {
-                    "description": "Okuma penceresinde, eserin başlangıcına gider",
+                    "description": "Okuma penceresinde, eserin başına gider",
                     "name": "Başlangıca Git"
                 },
                 "NavigateToEnd": {
