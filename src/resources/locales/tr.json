@@ -1050,15 +1050,15 @@
                 },
                 "NavigatePreviousPage": {
                     "description": "Okuma penceresinde, eserdeki bir önceki 'sayfayı' çevirir. Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
-                    "name": ""
+                    "name": "Önceki Sayfaya Git"
                 },
                 "NavigatePreviousPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuma penceresinde, eserdeki önceki 'sayfaya' geçer. Bu, varsayılan klavye kısayoluna alternatif bir klavye kısayoludur",
+                    "name": "Önceki Sayfaya Git (Alternatif)"
                 },
                 "NavigateToBegin": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuma penceresinde, eserin başına gider",
+                    "name": "Başlangıca Git"
                 },
                 "NavigateToEnd": {
                     "description": "",
