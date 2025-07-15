@@ -20,7 +20,7 @@
             "copy": "複製",
             "cut": "剪下",
             "paste": "貼上",
-            "print": "",
+            "print": "列印",
             "redo": "重做",
             "selectAll": "全選",
             "title": "編輯",
@@ -250,24 +250,24 @@
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": ""
+            "accessibility-summary-title": "輔助功能摘要"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "包括 ARIA 角色",
+                "descriptive": "內容透過ARIA角色增強，以優化組織並便利導航"
             },
             "additional-accessibility-information-audio-descriptions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "音訊描述",
+                "descriptive": "音訊描述"
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "點字",
+                "descriptive": "點字"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "完整的Ruby註釋",
+                "descriptive": "完整的 Ruby 註釋"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
                 "compact": "",
@@ -278,47 +278,47 @@
                 "descriptive": ""
             },
             "additional-accessibility-information-large-print": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "大字體",
+                "descriptive": "大字體"
             },
             "additional-accessibility-information-page-breaks": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "包含分頁符",
+                "descriptive": "包含原始印刷來源的分頁符"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "一些 Ruby 註釋",
+                "descriptive": "一些 Ruby 註釋"
             },
             "additional-accessibility-information-sign-language": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "手語",
+                "descriptive": "手語"
             },
             "additional-accessibility-information-tactile-graphics": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "包含觸覺圖形",
+                "descriptive": "融入觸覺圖形，方便盲人取得視覺元素"
             },
             "additional-accessibility-information-tactile-objects": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "觸覺 3D 物體",
+                "descriptive": "觸覺 3D 物體"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "提供文字轉語音提示",
+                "descriptive": "提供文字轉語音提示"
             },
-            "additional-accessibility-information-title": ""
+            "additional-accessibility-information-title": "其他無障礙訊息"
         },
         "conformance": {
             "conformance-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "本出版品符合最低無障礙標準",
+                "descriptive": "該出版物包含符合 EPUB 可訪問性和 WCAG 2 級別 A 標準的一致性聲明"
             },
             "conformance-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "本出版品符合公認的無障礙標準",
+                "descriptive": "該出版物包含符合 EPUB 可訪問性和 WCAG 2 AA 級標準的一致性聲明"
             },
             "conformance-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "本出版品超出了公認的無障礙標準",
+                "descriptive": "該出版品包含一份符合聲明，表示其符合EPUB無障礙性和WCAG 2等級AAA標準"
             },
             "conformance-certifier": {
                 "compact": ""
