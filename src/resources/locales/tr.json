@@ -1168,28 +1168,28 @@
         "buttons": {
             "discover": "Yenilikleri keşfet",
             "goToBooks": "Eserlerime git",
-            "next": "Sonraki"
+            "next": "İleri"
         },
         "description": {
             "annotations": "Belge metnini vurgulayın, biçim ve renk seçin, kişisel notlar ekleyin. Düzenleyiciyi atlamak için 'hızlı' modda açıklayıcı notlar oluşturun (daha sonra metin girebilir ve biçimleri özelleştirebilirsiniz). İlave hız için, belge metnini vurguladıktan hemen sonra notlar oluşturan 'anlık' modu kullanın!",
-            "catalogs": "",
-            "home": "",
-            "readingView1": "",
-            "readingView2": "",
-            "yourBooks": ""
+            "catalogs": "Yerel kütüphanenizden eser ödünç alın veya OPDS beslemeleri vasıtasıyla eserleri keşfedin. Çevrimiçi kataloglar sayesinde birden fazla kaynaktan çeşitli eserlere erişin.",
+            "home": "Toryum artık farklı görünüyor! Haydi yenilikleri keşfedelim...",
+            "readingView1": "Okuma ve dinleme tercihlerinizi özelleştirin: Thorium artık hem kullanıcı arayüzü hem de eser belgeleri için birden fazla renk teması sunuyor. Sentetik konuşma ve senkronize metin/ses oynatım içeren \"sesli okunan\" e-kitapları yapılandırmak artık daha kolay.",
+            "readingView2": "Thorium'un geliştirilmiş kullanıcı arayüzü, yeni \"yerleşik\" paneller sayesinde eserlerde metin bulmayı, arama sonuçlarını keşfetmeyi, belirli sayfalara gitmeyi, içindekiler tablosunu incelemeyi, yer imleri oluşturmayı vb. kolaylaştırıyor. Tam ekran okuma modu, dikkat dağıtıcı unsurlardan ari bir ortam sunmaya devam ediyor.",
+            "yourBooks": "Yeniden tasarlanan kişisel kitaplığınıza hoş geldiniz! 'Izgara' görünümünde, eserleri etiketlere göre kolayca filtreleyin veya anahtar kelimelere göre bulun. Gelişmiş 'Tablo' görünümünde ise eserleri belirli yazarlara, başlığa, tarihe, biçime vb. göre seçip sıralayın."
         },
-        "dontShow": "",
+        "dontShow": "Bir daha gösterme",
         "tab": {
-            "annotations": "",
-            "catalogs": "",
-            "home": "",
-            "readingView": "",
-            "yourBooks": ""
+            "annotations": "Açıklayıcı Notlar",
+            "catalogs": "Kataloglar",
+            "home": "Anasayfa",
+            "readingView": "Okuma görünümü",
+            "yourBooks": "Eserleriniz"
         },
         "title": {
-            "allBooks": "",
-            "newFeature": "",
-            "welcome": ""
+            "allBooks": "Tüm Eserlerim",
+            "newFeature": "Yeni özellik: Açıklayıcı Notlar",
+            "welcome": "Thorium 3.0'a Hoşgeldiniz"
         }
     }
 }
