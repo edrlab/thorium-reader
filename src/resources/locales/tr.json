@@ -710,7 +710,7 @@
             "ZenModeTitle": "Zen modu",
             "annotationTitle": "açıklayıcı not",
             "backHomeTitle": "Bu okuma penceresini kapat (kitaplığa dön)",
-            "bookmarkTitle": "yer imi",
+            "bookmarkTitle": "Yer imi",
             "currentPage": "Şu anki sayfa: {{- current}}",
             "currentPageTotal": "Şu anki sayfa: {{- current}}/{{- total}}",
             "detachWindowTitle": "kütüphane / kitaplık penceresini göster",
@@ -1057,58 +1057,58 @@
                     "name": "Önceki Sayfaya Git (Alternatif)"
                 },
                 "NavigateToBegin": {
-                    "description": "Okuma penceresinde, eserin başına gider",
+                    "description": "Okuma penceresinde, eserin başlangıcına gider",
                     "name": "Başlangıca Git"
                 },
                 "NavigateToEnd": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuma penceresinde, eserin bitimine gider",
+                    "name": "Bitime Git"
                 },
                 "OpenReaderInfo": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuma penceresinde, eser için bilgi iletişim kutusunu açar",
+                    "name": "Eser Bilgilerini Görüntüle"
                 },
                 "OpenReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuma penceresinde, eserle ilgili bilgileri gösteren açılır iletişim kutusunu açar ve klavye odağını geçerli okuma konumunun bağlamını gösteren kesime getirir",
+                    "name": "Eser  Bilgilerini Görüntüle, Okuma Konumunu Göster"
                 },
                 "Print": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuma penceresinde yazdırma iletişim kutusunu açar",
+                    "name": "Yazdır"
                 },
                 "SearchNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuma penceresinin arama aracında bir sonraki arama sonucuna gider. Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
+                    "name": "Sonraki Arama Sonucu"
                 },
                 "SearchNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuma penceresinin arama aracında bir sonraki arama sonucuna gider. Bu, varsayılan klavye kısayoluna alternatif bir klavye kısayoludur",
+                    "name": "Sonraki Arama Sonucu (Alternatif)"
                 },
                 "SearchPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuma penceresinin arama aracında bir önceki arama sonucuna gider. Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
+                    "name": "Önceki Arama Sonucu"
                 },
                 "SearchPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuma penceresinin arama aracında bir önceki arama sonucuna gider. Bu, varsayılan klavye kısayoluna alternatif bir klavye kısayoludur",
+                    "name": "Önceki Arama Sonucu (Alternatif)"
                 },
                 "SpeakReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuma penceresinde, ekran okuyucularla seslendirilen metin uyumluluğunu kullanarak geçerli okuma konumunun bağlamını tanımlar",
+                    "name": "Okuma Konumunu Tanımlayın (Konuşma)"
                 },
                 "ToggleBookmark": {
-                    "description": "",
-                    "name": ""
+                    "description": "Yeni bir yer imi ekler veya halihazırda seçiliyse mevcut olanı kaldırır",
+                    "name": "Yer İmi Ekle veya Kaldır"
                 },
                 "ToggleReaderFullscreen": {
-                    "description": "",
-                    "name": ""
+                    "description": "Okuma penceresinde, sistem tam ekran modunu etkinleştirir veya normal pencere modunu geri yükler. Bunun, kullanıcı arayüzünü basitleştiren 'zen modu'ndan farklı olduğunu unutmayın",
+                    "name": "Tam Ekrana Geç veya Tam Ekrandan Çık"
                 }
             },
-            "loadUserJson": "",
-            "noShortcutFound": "",
-            "resetDefaults": "",
-            "save": "",
+            "loadUserJson": "Kullanıcı dosyasından yükle",
+            "noShortcutFound": "Bu etiketle eşleşen kısayol bulunamadı",
+            "resetDefaults": "Sıfırla (varsayılanları yükle)",
+            "save": "Kaydet",
             "searchPlaceholder": "Bir kısayol aramak için yazın"
         },
         "language": {
@@ -1144,34 +1144,34 @@
     "tts": {
         "highlight": {
             "mainColor": "Ana renk",
-            "maskBlockWordOutline": "",
-            "maskBlockWordSolidBackground": "",
-            "maskBlockWordUnderline": "",
-            "maskWordOutline": "",
-            "maskWordSolidBackground": "",
-            "maskWordUnderline": "",
-            "outlineWordOutline": "",
-            "outlineWordSolidBackground": "",
-            "outlineWordUnderline": "",
-            "preview": "",
-            "solidBackgroundWordOutline": "",
-            "solidBackgroundWordSolidBackground": "",
-            "solidBackgroundWordUnderline": "",
-            "style": "",
-            "underlineWordOutline": "",
-            "underlineWordSolidBackground": "",
-            "underlineWordUnderline": "",
-            "wordColor": ""
+            "maskBlockWordOutline": "Bloğu Gizle, Kelimeyi Öne Çıkar",
+            "maskBlockWordSolidBackground": "Bloğu Gizle, Kelimeyi Sade Arkaplanda Göster",
+            "maskBlockWordUnderline": "Bloğu Gizle, Kelimenin Altını Çiz",
+            "maskWordOutline": "Gizle, Kelimeyi Öne Çıkar",
+            "maskWordSolidBackground": "Gizle, Kelimeyi Sade Arkaplanda Göster",
+            "maskWordUnderline": "Gizle, Kelimenin Altını Çiz",
+            "outlineWordOutline": "Öne Çıkar, Kelimeyi Öne Çıkar",
+            "outlineWordSolidBackground": "Öne Çıkar, Kelimeyi Sade Arkaplanda Göster",
+            "outlineWordUnderline": "ÖNe Çıkar, Kelimenin Altını Çiz",
+            "preview": "TTS vurgulama biçimini önizle",
+            "solidBackgroundWordOutline": "Sade Arkaplan, Kelimeyi Öne Çıkar",
+            "solidBackgroundWordSolidBackground": "Sade Arkaplan, Kelimeyi Sade Arkaplanda Göster",
+            "solidBackgroundWordUnderline": "Sade Arkaplan, Kelimenin Altını Çiz",
+            "style": "TTS vurgulama biçimi",
+            "underlineWordOutline": "Altını Çiz, Kelimeyi Öne Çıkar",
+            "underlineWordSolidBackground": "Altını Çiz, Kelimeyi Sade Arkaplanda Göster",
+            "underlineWordUnderline": "Altını Çiz, Kelimenin Altını Çiz",
+            "wordColor": "Kelime rengi"
         }
     },
     "wizard": {
         "buttons": {
-            "discover": "",
-            "goToBooks": "",
-            "next": ""
+            "discover": "Yenilikleri keşfet",
+            "goToBooks": "Eserlerime git",
+            "next": "Sonraki"
         },
         "description": {
-            "annotations": "",
+            "annotations": "Belge metnini vurgulayın, biçim ve renk seçin, kişisel notlar ekleyin. Düzenleyiciyi atlamak için 'hızlı' modda açıklayıcı notlar oluşturun (daha sonra metin girebilir ve biçimleri özelleştirebilirsiniz). İlave hız için, belge metnini vurguladıktan hemen sonra notlar oluşturan 'anlık' modu kullanın!",
             "catalogs": "",
             "home": "",
             "readingView1": "",
