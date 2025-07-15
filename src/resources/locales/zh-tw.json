@@ -318,28 +318,28 @@
             },
             "conformance-aaa": {
                 "compact": "本出版品超出了公認的無障礙標準",
-                "descriptive": "該出版品包含一份符合聲明，表示其符合EPUB無障礙性和WCAG 2等級AAA標準"
+                "descriptive": "該出版品包含一份符合聲明，表示其符合 EPUB 無障礙性和 WCAG 2 等級 AAA 標準"
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "該出版物已通過以下機構認證 "
             },
             "conformance-certifier-credentials": {
-                "compact": ""
+                "compact": "認證人的憑證是 "
             },
             "conformance-details-certifier-report": {
-                "compact": ""
+                "compact": "更多資訊請參閱認證機構的報告"
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "本出版品聲稱滿足",
+                "descriptive": "本出版品聲稱滿足"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB 無障礙功能 1.0",
+                "descriptive": "EPUB 無障礙功能 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB 無障礙功能 1.1",
+                "descriptive": "EPUB 無障礙功能 1.1"
             },
             "conformance-details-level-a": {
                 "compact": "",
