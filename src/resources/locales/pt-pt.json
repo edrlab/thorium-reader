@@ -595,7 +595,7 @@
         "lcpRightsPrint": "Páginas impressas",
         "lcpStart": "Início",
         "licenceLCP": "Licença (PCL)",
-        "licenseCertificateDateInvalid": "Certificado do fornecedor da licença PCL expirado. ({{- dateTime}})",
+        "licenseCertificateDateInvalid": "Certificado do fornecedor da licença PCL expirou antes da data de emissão da licença ({{- dateTime}}).",
         "licenseOutOfDate": "Licença PCL caducada.",
         "licenseSignatureInvalid": "A assinatura da licença PCL é inválida.",
         "licensed": "Licenciado",
