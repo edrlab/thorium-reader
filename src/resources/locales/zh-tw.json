@@ -3,9 +3,9 @@
         "bookMenu": "菜單",
         "closeDialog": "關閉",
         "importFile": "匯入出版物",
-        "leftSlideButton": "將列表劃至左側",
+        "leftSlideButton": "將列表移至左側",
         "mainContent": "主要內容",
-        "rightSlideButton": "將列表劃至右側",
+        "rightSlideButton": "將列表移至右側",
         "skipLink": "跳轉至內容",
         "toolbar": "工具欄"
     },
@@ -13,7 +13,7 @@
         "documentation": "Thorium 文件",
         "howItWorks": "它是如何運作的？",
         "informations": "在法國，許多公共圖書館提供程式可讀的目錄（類似於 OPDS，但不相同），讓顧客從個人書架下載數位出版物。將此技術整合到 Thorium Reader 中，您可以將電子書或有聲書直接下載到 Thorium Reader 中進行即時閱讀。\n如何將您的法國公共圖書館帳戶連接到 Thorium Reader？這很簡單。在搜尋欄位中輸入法國城市（「巴黎」）或圖書館名稱的一部分，然後按一下搜尋按鈕。將出現與您的搜尋相對應的公共圖書館清單。選擇一個庫並點擊\"新增\"。在更新的目錄清單中，選擇該圖書館：將顯示身份驗證表單。輸入您的使用者名稱/電子郵件地址和密碼，然後點擊「登入」。現在您可以看到您的個人書架的內容，您可以從中下載和閱讀之前借閱的電子書和有聲書。",
-        "noLibraryFound": "未找到套件庫 ({{- name}})"
+        "noLibraryFound": "未找到圖書館 ({{- name}})"
     },
     "app": {
         "edit": {
@@ -21,7 +21,7 @@
             "cut": "剪下",
             "paste": "貼上",
             "print": "",
-            "redo": "重做",
+            "redo": "復原",
             "selectAll": "全選",
             "title": "編輯",
             "undo": "復原"
