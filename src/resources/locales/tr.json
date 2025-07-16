@@ -12,7 +12,7 @@
     "apiapp": {
         "documentation": "Thorium Belgeleri",
         "howItWorks": "Nasıl çalışır?",
-        "informations": "Fransa'da birçok halk kütüphanesi, üylerin kişisel kitaplıklarından dijital yayınları indirmelerine izin veren makine tarafından okunabilir bir katalog (OPDS'ye benzer ancak aynı olmayan) sağlar. Bu teknolojinin Thorium Reader'a entegre edilmesi, anında okumak için bir e-kitabı veya sesli kitabı doğrudan Thorium Reader'a indirmenize olanak tanır.\nFransız halk kütüphanesi hesabınızı Thorium Reader'a nasıl bağlarsınız? Çok basit. Arama alanına bir Fransız şehri (‘Paris’) veya kütüphane adının bir kısmını girin ve Ara düğmesine basın. Aramanıza karşılık gelen halk kütüphanelerinin bir listesi görünecektir. Bir kütüphane seçin ve Ekle düğmesine basın. Güncellenen katalog listesinde bu kütüphaneyi seçin: bir kimlik doğrulama formu görüntülenir. Kullanıcı adınızı/e-posta adresinizi ve şifrenizi girin ve Giriş düğmesine basın. Artık daha önce ödünç aldığınız e-kitapları ve sesli kitapları indirip okuyabileceğiniz kişisel kitaplığınızın içeriğini görebilirsiniz.",
+        "informations": "Fransa'da birçok halk kütüphanesi, üyelerin kişisel kitaplıklarından dijital eserleri indirmelerine izin veren makine tarafından okunabilir bir katalog (OPDS'ye benzer ancak aynı olmayan) sağlar. Bu teknolojinin Thorium Reader'a entegre edilmesi, anında okumak için bir e-kitabı veya sesli kitabı doğrudan Thorium Reader'a indirmenize izin verir.\nFransız halk kütüphanesi hesabınızı Thorium Reader'a nasıl bağlarsınız? Çok basit. Arama alanına bir Fransız şehri (‘Paris’) veya kütüphane adının bir kısmını girin ve Ara düğmesine basın. Aramanıza uygun düşen halk kütüphanelerinin bir listesi görünecektir. Bir kütüphane seçin ve Ekle düğmesine basın. Güncellenen katalog listesinde bu kütüphaneyi seçin: bir kimlik doğrulama formu görüntülenir. Kullanıcı adınızı/e-posta adresinizi ve şifrenizi girin ve Giriş düğmesine basın. Artık daha önce ödünç aldığınız e-kitapları ve sesli kitapları indirip okuyabileceğiniz kişisel kitaplığınızın içeriğini görebilirsiniz.",
         "noLibraryFound": "({{- name}}) -- Herhangi bir kütüphane bulunamadı"
     },
     "app": {
@@ -53,7 +53,7 @@
         "about": {
             "title": "{{- appName}} Hakkında (online)"
         },
-        "addBookToLib": "İçeri aktar",
+        "addBookToLib": "İçe aktar",
         "addTags": "Etiket ekle",
         "addTagsButton": "Ekle",
         "allBooks": "Tüm eserler",
@@ -67,7 +67,7 @@
         "deleteBook": "Sil",
         "deleteTag": "Etiketi sil",
         "description": "Tanım",
-        "emptyTagList": "Etiketsiz eserler",
+        "emptyTagList": "Etiketsiz eserler.",
         "entry": {
             "continueReading": "Okumayı duraklat",
             "lastAdditions": "Son eklenen"
@@ -84,7 +84,7 @@
         "noPublicationHelpL2": "veya yukarıdaki \"{{- importTitle }}\" düğmesini kullanın.",
         "noPublicationHelpL3": "LCP-korumalı eserler desteklenmektedir.",
         "noPublicationHelpL4": "Desteklenen uzantılar:",
-        "numberOfPages": "Sayfa Sayısı",
+        "numberOfPages": "Sayfa sayısı",
         "opds": {
             "auth": {
                 "cancel": "İptal",
@@ -106,7 +106,7 @@
                 "copyAvalaible": "Mevcut",
                 "copyTotal": "Kopyalar",
                 "holdPosition": "Konumu koru",
-                "holdTotal": "Rezerve",
+                "holdTotal": "Ayrılmış",
                 "numberOfItems": "Öğe sayısı",
                 "priveValue": "Fiyat",
                 "state": "Durum"
@@ -114,8 +114,8 @@
         },
         "publisher": "Yayımcı",
         "readBook": "Oku",
-        "released": "Yayın tarihi",
-        "sort": "Şuna göre sırala",
+        "released": "Yayın tarihi:",
+        "sort": "Şuna göre sırala:",
         "tag": "Etiket",
         "tags": "Etiketler",
         "update": "Düzenle"
