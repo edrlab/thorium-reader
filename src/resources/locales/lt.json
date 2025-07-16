@@ -381,11 +381,11 @@
             },
             "hazards-flashing-none": {
                 "compact": "Nėra blykčiojančio turinio",
-                "descriptive": ""
+                "descriptive": "Leidinyje nėra blykčiojančio turinio"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Blykčiojančio turinio buvimas nežinomas",
+                "descriptive": "Blykčiojančio turinio buvimas nežinomas"
             },
             "hazards-motion": {
                 "compact": "",
@@ -416,8 +416,8 @@
                 "descriptive": "Leidinyje nėra garsų"
             },
             "hazards-sound-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Garsų buvimas nežinomas",
+                "descriptive": "Garsų buvimas nežinomas"
             },
             "hazards-title": "Pavojai",
             "hazards-unknown": {
@@ -445,7 +445,7 @@
             "navigation-title": "Naršymas",
             "navigation-toc": {
                 "compact": "Turinys",
-                "descriptive": ""
+                "descriptive": "Turinys su nuorodomis į visus teksto skyrius"
             }
         },
         "rich-content": {
@@ -525,12 +525,12 @@
                 "descriptive": ""
             },
             "ways-of-reading-prerecorded-audio-synchronized": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Garso įrašas, sinchronizuotas su tekstu",
+                "descriptive": "Visas turinys prieinamas kaip garso įrašas, sinchronizuotas su tekstu"
             },
             "ways-of-reading-title": "Skaitymo būdai",
             "ways-of-reading-visual-adjustments-modifiable": {
-                "compact": "",
+                "compact": "Galima keisti išvaizdą",
                 "descriptive": ""
             },
             "ways-of-reading-visual-adjustments-unknown": {
