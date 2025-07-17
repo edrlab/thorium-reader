@@ -334,7 +334,7 @@
             },
             "conformance-aaa": {
                 "compact": "",
-                "descriptive": ""
+                "descriptive": "A publicação indica cumprir as diretrizes de acessibilidade EPUB e WCAG 2 nível AAA"
             },
             "conformance-certifier": {
                 "compact": "Acessibilidade avaliada por "
@@ -359,32 +359,32 @@
             },
             "conformance-details-level-a": {
                 "compact": "Nível A",
-                "descriptive": ""
+                "descriptive": "Nível A"
             },
             "conformance-details-level-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Nível AA",
+                "descriptive": "Nível AA"
             },
             "conformance-details-level-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Nível AAA",
+                "descriptive": "Nível AAA"
             },
             "conformance-details-wcag-2-0": {
-                "compact": ""
+                "compact": "WCAG 2.0"
             },
             "conformance-details-wcag-2-1": {
-                "compact": "",
+                "compact": "WCAG 2.1",
                 "descriptive": ""
             },
             "conformance-details-wcag-2-2": {
-                "compact": "",
+                "compact": "WCAG 2.2",
                 "descriptive": ""
             },
             "conformance-no": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sem informações disponíveis",
+                "descriptive": "Sem informações disponíveis"
             },
-            "conformance-title": "",
+            "conformance-title": "Regras de acessibilidade",
             "conformance-unknown-standard": {
                 "compact": "",
                 "descriptive": ""
@@ -611,7 +611,7 @@
         "lcpRightsPrint": "Páginas impressas",
         "lcpStart": "Início",
         "licenceLCP": "Licença (PCL)",
-        "licenseCertificateDateInvalid": "Certificado do fornecedor da licença PCL expirado. ({{- dateTime}})",
+        "licenseCertificateDateInvalid": "Certificado do fornecedor da licença PCL expirou antes da data de emissão da licença ({{- dateTime}}).",
         "licenseOutOfDate": "Licença PCL caducada.",
         "licenseSignatureInvalid": "A assinatura da licença PCL é inválida.",
         "licensed": "Licenciado",
@@ -726,10 +726,10 @@
             "ZenModeTitle": "Modo Zen",
             "annotationTitle": "Anotação",
             "backHomeTitle": "Fechar janela de leitura (voltar à estante)",
-            "bookmarkTitle": "marcador",
+            "bookmarkTitle": "Marcador",
             "currentPage": "Página atual: {{- current}}",
             "currentPageTotal": "Página atual: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Mostrar biblioteca / janela da estante",
+            "detachWindowTitle": "Mostrar janela da biblioteca / estante",
             "goTo": "Ir para",
             "goToError": "A quebra de página não existe",
             "goToPlaceHolder": "Digitar n.º de página",
@@ -1146,9 +1146,9 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "",
+                "applyDefaultTemplate": "Carregar o modelo padrão",
                 "enableCheckbox": "Personalizar o modelo HTML",
-                "overrideHTMLTemplate": "Exportação de anotações (anotações e marcadores)"
+                "overrideHTMLTemplate": "Exportação de notas (anotações e marcadores)"
             }
         },
         "session": {
