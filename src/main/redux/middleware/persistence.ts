@@ -43,6 +43,7 @@ export const reduxPersistMiddleware: Middleware
                     wizard: prevState.wizard,
                     settings: prevState.settings,
                     creator: prevState.creator,
+                    aiApiKeys: prevState.aiApiKeys,
                     noteExport: prevState.noteExport,
                 };
 
@@ -63,6 +64,7 @@ export const reduxPersistMiddleware: Middleware
                     wizard: nextState.wizard,
                     settings: nextState.settings,
                     creator: nextState.creator,
+                    aiApiKeys: nextState.aiApiKeys,
                     noteExport: nextState.noteExport,
                 };
 

@@ -120,6 +120,22 @@
         "tags": "Etiketler",
         "update": "Düzenle"
     },
+    "chatbot": {
+        "detailedDescTitle": "",
+        "detailedDescription": "",
+        "editorDescription": "",
+        "generateDescription": "",
+        "generateDescriptionTitle": "",
+        "inputPlaceholder": "",
+        "noApiKey": "",
+        "noDescription": "",
+        "reset": "",
+        "sendQuestion": "",
+        "shortDescTitle": "",
+        "shortDescription": "",
+        "systemPromptEditor": "",
+        "title": ""
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "'{{- author}}'a göre",
@@ -872,6 +888,16 @@
             "person": "Şahıs",
             "type": "Tür:"
         },
+        "apiKey": {
+            "help": "",
+            "howTo1": "",
+            "howTo2": "",
+            "howTo3": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "title": ""
+        },
         "auth": {
             "help": "Bu işlem tüm OPDS oturum açma kimlik bilgilerini siler.",
             "title": "Eser kataloglarına erişim",
@@ -1129,6 +1155,7 @@
             "title": "Oturum kaydetmeyi etkinleştir"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Görünüm",
             "general": "Genel",
             "keyboardShortcuts": "Klavye kısayolları"

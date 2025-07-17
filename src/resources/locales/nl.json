@@ -120,6 +120,22 @@
         "tags": "Labels",
         "update": "Wijzig"
     },
+    "chatbot": {
+        "detailedDescTitle": "",
+        "detailedDescription": "",
+        "editorDescription": "",
+        "generateDescription": "",
+        "generateDescriptionTitle": "",
+        "inputPlaceholder": "",
+        "noApiKey": "",
+        "noDescription": "",
+        "reset": "",
+        "sendQuestion": "",
+        "shortDescTitle": "",
+        "shortDescription": "",
+        "systemPromptEditor": "",
+        "title": ""
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "door '{{- author}}'",
@@ -872,6 +888,16 @@
             "person": "Persoon",
             "type": "Type:"
         },
+        "apiKey": {
+            "help": "",
+            "howTo1": "",
+            "howTo2": "",
+            "howTo3": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "title": ""
+        },
         "auth": {
             "help": "Deze actie verwijdert alle OPDS aanmeldingsgegevens.",
             "title": "Toegang tot publicatiecatalogi",
@@ -1129,6 +1155,7 @@
             "title": "Stel sessie bewaring in"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Verschijning",
             "general": "Algemeen",
             "keyboardShortcuts": "Toetsenbord sneltoetsen"

@@ -47,6 +47,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const config = reader?.reduxState?.config || readerConfigInitialState;
     const transientConfigMerge = {...readerConfigInitialState, ...config};
     const creator = yield* selectTyped((_state: RootState) => _state.creator);
+    const aiApiKeys = yield* selectTyped((_state: RootState) => _state.aiApiKeys);
     const lcp = yield* selectTyped((state: RootState) => state.lcp);
     const noteExport = yield* selectTyped((state: RootState) => state.noteExport);
 
@@ -109,6 +110,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
             publication: {
                 tag,
             },
+            aiApiKeys,
             lcp,
             noteExport,
         },

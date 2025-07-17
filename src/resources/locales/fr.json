@@ -120,6 +120,22 @@
         "tags": "Mots-clefs",
         "update": "Éditer"
     },
+    "chatbot": {
+        "detailedDescTitle": "description détaillée",
+        "detailedDescription": "Décris cette illustration en détail (nature de l'image, technique, format, symbolisme, personnages, scène, couleurs, style, période, etc..).",
+        "editorDescription": "Description de l'éditeur",
+        "generateDescription": "Vous pouvez demander à l'IA de générer soit une description courte, soit une description détaillée.",
+        "generateDescriptionTitle": "Générer une description textuelle",
+        "inputPlaceholder": "Poser une question. Par example: peux-tu me décrire cette image ?",
+        "noApiKey": "Vous pouvez générer une description et discuter avec une IA en renseignant une clé d'API dans les préférences de l'application.",
+        "noDescription": "Aucune description n'a été fournie par l'éditeur. ",
+        "reset": "Réinitialiser",
+        "sendQuestion": "Envoyer la question",
+        "shortDescTitle": "description courte",
+        "shortDescription": "décris cette image en deux phrases.",
+        "systemPromptEditor": "Éditeur de prompt système",
+        "title": "Décrire l'image avec {{- title}}"
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "par {{- author}}",
@@ -872,6 +888,16 @@
             "person": "Personne",
             "type": "Type"
         },
+        "apiKey": {
+            "help": "Ajoutez une clé d'API depuis le fournisseur de votre choix pour utiliser la fonctionnalité de description d'image.",
+            "howTo1": "Créez une clé API sur la console de {{- provider}}",
+            "howTo2": "Assurez-vous que votre compte {{- provider}} a suffisament de crédits",
+            "howTo3": "Copiez votre clé d'API ci-dessous pour utilisez l'assistant",
+            "keyLabel": "Clé d'API",
+            "mistral": "Mistral",
+            "openAi": "OpenAI",
+            "title": "Ajouter une clé API (fonctionnalité de description d'image)"
+        },
         "auth": {
             "help": "Souhaitez-vous supprimer vos identifiants de connexion à l'OPDS ?",
             "title": "Gérer l'accès aux catalogues",
@@ -1129,6 +1155,7 @@
             "title": "Sauvegarder la session"
         },
         "tabs": {
+            "aiKeyManager": "Gestionnaire de clé API",
             "appearance": "Apparence",
             "general": "Géneral",
             "keyboardShortcuts": "Raccourcis clavier"

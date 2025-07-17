@@ -35,7 +35,7 @@ import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducer
 import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
 import { versionUpdateReducer } from "readium-desktop/common/redux/reducers/version-update";
 import { annotationModeEnableReducer } from "./annotationModeEnable";
-import { readerActions } from "readium-desktop/common/redux/actions";
+import { apiKeysActions, readerActions } from "readium-desktop/common/redux/actions";
 import { readerMediaOverlayReducer } from "./mediaOverlay";
 import { readerTTSReducer } from "./tts";
 import { readerTransientConfigReducer } from "./readerTransientConfig";
@@ -47,9 +47,11 @@ import { readerLockReducer } from "./lock";
 import { imageClickReducer } from "./imageClick";
 import { dockReducer } from "readium-desktop/common/redux/reducers/dock";
 import { readerBookmarkTotalCountReducer } from "readium-desktop/common/redux/reducers/reader/bookmarkTotalCount";
+// import { apiKeysReducer } from "readium-desktop/common/redux/reducers/api_key";
 import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 import { arrayReducer } from "readium-desktop/utils/redux-reducers/array.reducer";
 import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import { IAiApiKey } from "readium-desktop/common/redux/states/ai_apiKey";
 import { noteExportReducer } from "readium-desktop/common/redux/reducers/noteExport";
 
 export const rootReducer = () => {
@@ -204,6 +206,18 @@ export const rootReducer = () => {
         publication: combineReducers({
             tag: tagReducer,
         }),
+        aiApiKeys: arrayReducer<apiKeysActions.setKey.TAction, undefined, IAiApiKey, Pick<IAiApiKey, "provider">>(
+            {
+                add: 
+                {
+                    type: apiKeysActions.setKey.ID,
+                    selector: (payload) => {
+                        return [payload.aiKey];
+                    },
+                },
+                getId: (item) => item.provider, // Ajoutez la fonction getId ici
+            },
+        ),
         img: imageClickReducer,
         lcp: lcpReducer,
         noteExport: noteExportReducer,

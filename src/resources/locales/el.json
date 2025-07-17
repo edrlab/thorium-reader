@@ -120,6 +120,22 @@
         "tags": "Ετικέτες",
         "update": "Επεξεργασία"
     },
+    "chatbot": {
+        "detailedDescTitle": "",
+        "detailedDescription": "",
+        "editorDescription": "",
+        "generateDescription": "",
+        "generateDescriptionTitle": "",
+        "inputPlaceholder": "",
+        "noApiKey": "",
+        "noDescription": "",
+        "reset": "",
+        "sendQuestion": "",
+        "shortDescTitle": "",
+        "shortDescription": "",
+        "systemPromptEditor": "",
+        "title": ""
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "από '{{- author}}'",
@@ -872,6 +888,16 @@
             "person": "Πρόσωπο",
             "type": "Τύπος:"
         },
+        "apiKey": {
+            "help": "",
+            "howTo1": "",
+            "howTo2": "",
+            "howTo3": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "title": ""
+        },
         "auth": {
             "help": "Αυτή η ενέργεια διαγράφει όλα τα OPDS διαπιστευτήρια σύνδεσης.",
             "title": "Πρόσβαση στους καταλόγους βιβλίων",
@@ -1129,6 +1155,7 @@
             "title": "Αποθήκευση συνεδρίας"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Εμφάνιση",
             "general": "Γενικά",
             "keyboardShortcuts": "Συντομεύσεις πληκτρολογίου"

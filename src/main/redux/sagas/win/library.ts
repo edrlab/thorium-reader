@@ -114,6 +114,7 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
         },
         creator: state.creator,
         settings: state.settings,
+        aiApiKeys: state.aiApiKeys,
         lcp: state.lcp,
         noteExport: state.noteExport,
     };

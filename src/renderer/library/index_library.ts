@@ -79,6 +79,7 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
                 publication: data.payload.publication,
                 session: data.payload.session,
                 creator: data.payload.creator,
+                aiApiKeys: data.payload.aiApiKeys,
                 lcp: data.payload.lcp,
                 noteExport: data.payload.noteExport,
             };

@@ -19,6 +19,7 @@ import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg"
 import * as CogIcon from "readium-desktop/renderer/assets/icons/cog-icon.svg";
 import * as PaletteIcon from "readium-desktop/renderer/assets/icons/palette-icon.svg";
 import * as KeyReturnIcon from "readium-desktop/renderer/assets/icons/keyreturn-icon.svg";
+import * as AiIcon from "readium-desktop/renderer/assets/icons/ai-icon.svg";
 import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 import classNames from "classnames";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
@@ -50,6 +51,8 @@ import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/a
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
+
+import { ApiKeysList } from "./AiKeyManager";
 
 interface ISettingsProps {};
 
@@ -450,8 +453,16 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             <SVG ariaHidden svg={KeyReturnIcon} />
                             <h3>{__("settings.tabs.keyboardShortcuts")}</h3>
                         </Tabs.Trigger>
+                        {__TH__ENABLE_AI__
+                            ?
+                            <Tabs.Trigger value="tab5">
+                                <SVG ariaHidden svg={AiIcon} />
+                                <h3>{__("settings.tabs.aiKeyManager")}</h3>
+                            </Tabs.Trigger>
+                            : <></>
+                        }
                     </Tabs.List>
-                    <div className={stylesSettings.settings_content} style={{marginTop: "70px"}}>
+                    <div className={stylesSettings.settings_content} style={{ marginTop: "70px" }}>
                         <Tabs.Content value="tab1" tabIndex={-1}>
                             <TabHeader title={__("settings.tabs.general")} />
                             <div className={stylesSettings.settings_tab}>
@@ -477,6 +488,16 @@ export const Settings: React.FC<ISettingsProps> = () => {
                                 <KeyboardSettings />
                             </div>
                         </Tabs.Content>
+                        {__TH__ENABLE_AI__ ?
+                            <Tabs.Content value="tab5" tabIndex={-1}>
+                                <TabHeader title={__("settings.tabs.aiKeyManager")}>
+                                </TabHeader>
+                                <div className={stylesSettings.settings_tab}>
+                                    <ApiKeysList />
+                                </div>
+                            </Tabs.Content>
+                            : <></>
+                        }
                     </div>
                 </Tabs.Root>
 

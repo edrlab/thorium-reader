@@ -46,3 +46,4 @@ declare const __TH__IS_PACKAGED__: boolean;
 declare const __TH__SKIP_LCP_LSD__: boolean;
 declare const __TH__IS_VSCODE_LAUNCH__: boolean;
 declare const __TH__IS_CI__: boolean;
+declare const __TH__ENABLE_AI__: boolean;

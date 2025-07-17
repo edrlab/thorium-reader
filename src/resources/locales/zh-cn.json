@@ -120,6 +120,22 @@
         "tags": "标签",
         "update": "编辑"
     },
+    "chatbot": {
+        "detailedDescTitle": "",
+        "detailedDescription": "",
+        "editorDescription": "",
+        "generateDescription": "",
+        "generateDescriptionTitle": "",
+        "inputPlaceholder": "",
+        "noApiKey": "",
+        "noDescription": "",
+        "reset": "",
+        "sendQuestion": "",
+        "shortDescTitle": "",
+        "shortDescription": "",
+        "systemPromptEditor": "",
+        "title": ""
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "作者 “{{- author}}”",
@@ -872,6 +888,16 @@
             "person": "个人",
             "type": "类型"
         },
+        "apiKey": {
+            "help": "",
+            "howTo1": "",
+            "howTo2": "",
+            "howTo3": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "title": ""
+        },
         "auth": {
             "help": "此操作将删除所有 OPDS 登录凭据。",
             "title": "访问出版物目录",
@@ -1129,6 +1155,7 @@
             "title": "保存登录状态"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "外观",
             "general": "常规",
             "keyboardShortcuts": "键盘快捷键"

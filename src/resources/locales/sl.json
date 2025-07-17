@@ -120,6 +120,22 @@
         "tags": "Oznake",
         "update": "Uredi"
     },
+    "chatbot": {
+        "detailedDescTitle": "",
+        "detailedDescription": "",
+        "editorDescription": "",
+        "generateDescription": "",
+        "generateDescriptionTitle": "",
+        "inputPlaceholder": "",
+        "noApiKey": "",
+        "noDescription": "",
+        "reset": "",
+        "sendQuestion": "",
+        "shortDescTitle": "",
+        "shortDescription": "",
+        "systemPromptEditor": "",
+        "title": ""
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "avtor '{{- avtor}}'",
@@ -872,6 +888,16 @@
             "person": "Oseba",
             "type": "Tip:"
         },
+        "apiKey": {
+            "help": "",
+            "howTo1": "",
+            "howTo2": "",
+            "howTo3": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "title": ""
+        },
         "auth": {
             "help": "To dejanje izbriše vse poverilnice za prijavo v OPDS.",
             "title": "Dostop do katalogov publikacij",
@@ -1129,6 +1155,7 @@
             "title": "Shrani sejo"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Izgled",
             "general": "Splošno",
             "keyboardShortcuts": "Bližnjice tipkovnice"

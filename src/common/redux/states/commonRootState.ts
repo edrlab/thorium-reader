@@ -13,6 +13,7 @@ import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { ITheme } from "./theme";
 import { INoteCreator } from "./creator";
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
+import { IAiApiKey } from "readium-desktop/common/redux/states/ai_apiKey";
 import { ILcpState } from "./lcp";
 import { INoteExportState } from "./renderer/note";
 
@@ -27,6 +28,7 @@ export interface ICommonRootState {
     };
     theme: ITheme;
     creator: INoteCreator;
+    aiApiKeys: Array<IAiApiKey>;
     noteExport: INoteExportState;
     lcp: ILcpState;
 }

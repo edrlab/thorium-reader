@@ -120,6 +120,22 @@
         "tags": "Štítky",
         "update": "Upravit"
     },
+    "chatbot": {
+        "detailedDescTitle": "",
+        "detailedDescription": "",
+        "editorDescription": "",
+        "generateDescription": "",
+        "generateDescriptionTitle": "",
+        "inputPlaceholder": "",
+        "noApiKey": "",
+        "noDescription": "",
+        "reset": "",
+        "sendQuestion": "",
+        "shortDescTitle": "",
+        "shortDescription": "",
+        "systemPromptEditor": "",
+        "title": ""
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "autor: {{- author}}",
@@ -872,6 +888,16 @@
             "person": "Osoba",
             "type": "Typ:"
         },
+        "apiKey": {
+            "help": "",
+            "howTo1": "",
+            "howTo2": "",
+            "howTo3": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "title": ""
+        },
         "auth": {
             "help": "Tento krok odstraní všechny přihlašovací údaje OPDS.",
             "title": "",
@@ -1129,6 +1155,7 @@
             "title": "Povolit ukládání relací"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Vzhled",
             "general": "Obecné",
             "keyboardShortcuts": "Klávesové zkratky"

@@ -120,6 +120,22 @@
         "tags": "குறிச்சொற்கள்",
         "update": "தொகு"
     },
+    "chatbot": {
+        "detailedDescTitle": "",
+        "detailedDescription": "",
+        "editorDescription": "",
+        "generateDescription": "",
+        "generateDescriptionTitle": "",
+        "inputPlaceholder": "",
+        "noApiKey": "",
+        "noDescription": "",
+        "reset": "",
+        "sendQuestion": "",
+        "shortDescTitle": "",
+        "shortDescription": "",
+        "systemPromptEditor": "",
+        "title": ""
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "வழங்கியவர் '{{- author}}'",
@@ -872,6 +888,16 @@
             "person": "ஆள்",
             "type": "தட்டச்சு:"
         },
+        "apiKey": {
+            "help": "",
+            "howTo1": "",
+            "howTo2": "",
+            "howTo3": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "title": ""
+        },
         "auth": {
             "help": "இந்த செயல் அனைத்து OPDS உள்நுழைவு நற்சான்றுகளையும் நீக்குகிறது.",
             "title": "வெளியீட்டு பட்டியல்களுக்கான அணுகல்",
@@ -1129,6 +1155,7 @@
             "title": "அமர்வு சேமிப்பை இயக்கவும்"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "தோற்றம்",
             "general": "பொது",
             "keyboardShortcuts": "விசைப்பலகை குறுக்குவழிகள்"

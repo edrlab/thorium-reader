@@ -120,6 +120,22 @@
         "tags": "Tags",
         "update": "Rediger"
     },
+    "chatbot": {
+        "detailedDescTitle": "",
+        "detailedDescription": "",
+        "editorDescription": "",
+        "generateDescription": "",
+        "generateDescriptionTitle": "",
+        "inputPlaceholder": "",
+        "noApiKey": "",
+        "noDescription": "",
+        "reset": "",
+        "sendQuestion": "",
+        "shortDescTitle": "",
+        "shortDescription": "",
+        "systemPromptEditor": "",
+        "title": ""
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "af {{- author}}",
@@ -872,6 +888,16 @@
             "person": "Person",
             "type": "Type:"
         },
+        "apiKey": {
+            "help": "",
+            "howTo1": "",
+            "howTo2": "",
+            "howTo3": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "title": ""
+        },
         "auth": {
             "help": "Denne handling sletter alle OPDS loginoplysninger.",
             "title": "Administrér adgang til kataloger",
@@ -1129,6 +1155,7 @@
             "title": "Gem session"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Udseende",
             "general": "Generelt",
             "keyboardShortcuts": "Tastaturgenveje"

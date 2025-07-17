@@ -120,6 +120,22 @@
         "tags": "الوسوم",
         "update": "تحرير"
     },
+    "chatbot": {
+        "detailedDescTitle": "",
+        "detailedDescription": "",
+        "editorDescription": "",
+        "generateDescription": "",
+        "generateDescriptionTitle": "",
+        "inputPlaceholder": "",
+        "noApiKey": "",
+        "noDescription": "",
+        "reset": "",
+        "sendQuestion": "",
+        "shortDescTitle": "",
+        "shortDescription": "",
+        "systemPromptEditor": "",
+        "title": ""
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "تأليف '{{- author}}'",
@@ -872,6 +888,16 @@
             "person": "الشخص",
             "type": "النوع:"
         },
+        "apiKey": {
+            "help": "",
+            "howTo1": "",
+            "howTo2": "",
+            "howTo3": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "title": ""
+        },
         "auth": {
             "help": "هذا الإجراء يحذف كل بيانات تسجيل الدخول الخاصة بنظام توزيع المنشورات المفتوح (OPDS).",
             "title": "الوصول إلى كتالوغات المنشورات",
@@ -1129,6 +1155,7 @@
             "title": "حفظ الجلسة"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "المظهر",
             "general": "عام",
             "keyboardShortcuts": "اختصارات لوحة المفاتيح"

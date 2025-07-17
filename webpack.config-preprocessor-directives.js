@@ -45,6 +45,8 @@ const telemetrySecret = process.env.THORIUM_TELEMETRY_SECRET || "";
 
 // const USE_HTTP_STREAMER = false;
 
+const isAIFeatureEnabled = false; // process.env.ENABLE_AI_FEATURE ? true : false;
+
 const data = {
     // used for dead code removal (see typings.d.ts):
     __TH__IS_DEV__: JSON.stringify(isDev),
@@ -52,6 +54,7 @@ const data = {
     __TH__SKIP_LCP_LSD__: JSON.stringify(false && isDev),
     __TH__IS_VSCODE_LAUNCH__: JSON.stringify(process.env.VSCODE_LAUNCH === "true"),
     __TH__IS_CI__: JSON.stringify(isContinuousIntegrationDeploy),
+    __TH__ENABLE_AI__: JSON.stringify(isAIFeatureEnabled),
 
     "process.env.NODE_ENV": JSON.stringify(nodeEnv),
 

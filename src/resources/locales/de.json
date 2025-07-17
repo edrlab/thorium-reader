@@ -120,6 +120,22 @@
         "tags": "Tags",
         "update": "Bearbeiten"
     },
+    "chatbot": {
+        "detailedDescTitle": "",
+        "detailedDescription": "",
+        "editorDescription": "",
+        "generateDescription": "",
+        "generateDescriptionTitle": "",
+        "inputPlaceholder": "",
+        "noApiKey": "",
+        "noDescription": "",
+        "reset": "",
+        "sendQuestion": "",
+        "shortDescTitle": "",
+        "shortDescription": "",
+        "systemPromptEditor": "",
+        "title": ""
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "nach '{{- author}}'",
@@ -872,6 +888,16 @@
             "person": "Person",
             "type": "Typ:"
         },
+        "apiKey": {
+            "help": "",
+            "howTo1": "",
+            "howTo2": "",
+            "howTo3": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "title": ""
+        },
         "auth": {
             "help": "Diese Aktion löscht alle OPDS-Anmeldedaten.",
             "title": "Zugang zu Publikationskatalogen",
@@ -1129,6 +1155,7 @@
             "title": "Sitzung speichern"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Erscheinungsbild",
             "general": "Allgemein",
             "keyboardShortcuts": "Tastaturkürzel"

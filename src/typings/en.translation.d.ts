@@ -297,6 +297,36 @@ declare namespace typed_i18n {
   (_: "catalog.sort", __?: {}): string; (_: "catalog.tag", __?: {}): string;
   (_: "catalog.tags", __?: {}): string;
   (_: "catalog.update", __?: {}): string;
+  (_: "chatbot", __?: {}): {
+  readonly "detailedDescTitle": string,
+  readonly "detailedDescription": string,
+  readonly "editorDescription": string,
+  readonly "generateDescription": string,
+  readonly "generateDescriptionTitle": string,
+  readonly "inputPlaceholder": string,
+  readonly "noApiKey": string,
+  readonly "noDescription": string,
+  readonly "reset": string,
+  readonly "sendQuestion": string,
+  readonly "shortDescTitle": string,
+  readonly "shortDescription": string,
+  readonly "systemPromptEditor": string,
+  readonly "title": string
+};
+  (_: "chatbot.detailedDescTitle", __?: {}): string;
+  (_: "chatbot.detailedDescription", __?: {}): string;
+  (_: "chatbot.editorDescription", __?: {}): string;
+  (_: "chatbot.generateDescription", __?: {}): string;
+  (_: "chatbot.generateDescriptionTitle", __?: {}): string;
+  (_: "chatbot.inputPlaceholder", __?: {}): string;
+  (_: "chatbot.noApiKey", __?: {}): string;
+  (_: "chatbot.noDescription", __?: {}): string;
+  (_: "chatbot.reset", __?: {}): string;
+  (_: "chatbot.sendQuestion", __?: {}): string;
+  (_: "chatbot.shortDescTitle", __?: {}): string;
+  (_: "chatbot.shortDescription", __?: {}): string;
+  (_: "chatbot.systemPromptEditor", __?: {}): string;
+  (_: "chatbot.title", __?: {}): string;
   (_: "dialog", __?: {}): {
   readonly "annotations": {
     readonly "descAuthor": string,
@@ -2297,6 +2327,16 @@ declare namespace typed_i18n {
     readonly "person": string,
     readonly "type": string
   },
+  readonly "apiKey": {
+    readonly "help": string,
+    readonly "howTo1": string,
+    readonly "howTo2": string,
+    readonly "howTo3": string,
+    readonly "keyLabel": string,
+    readonly "mistral": string,
+    readonly "openAi": string,
+    readonly "title": string
+  },
   readonly "auth": {
     readonly "help": string,
     readonly "title": string,
@@ -2550,6 +2590,7 @@ declare namespace typed_i18n {
   },
   readonly "session": { readonly "title": string },
   readonly "tabs": {
+    readonly "aiKeyManager": string,
     readonly "appearance": string,
     readonly "general": string,
     readonly "keyboardShortcuts": string
@@ -2576,6 +2617,24 @@ declare namespace typed_i18n {
   (_: "settings.annotationCreator.organization", __?: {}): string;
   (_: "settings.annotationCreator.person", __?: {}): string;
   (_: "settings.annotationCreator.type", __?: {}): string;
+  (_: "settings.apiKey", __?: {}): {
+  readonly "help": string,
+  readonly "howTo1": string,
+  readonly "howTo2": string,
+  readonly "howTo3": string,
+  readonly "keyLabel": string,
+  readonly "mistral": string,
+  readonly "openAi": string,
+  readonly "title": string
+};
+  (_: "settings.apiKey.help", __?: {}): string;
+  (_: "settings.apiKey.howTo1", __?: {}): string;
+  (_: "settings.apiKey.howTo2", __?: {}): string;
+  (_: "settings.apiKey.howTo3", __?: {}): string;
+  (_: "settings.apiKey.keyLabel", __?: {}): string;
+  (_: "settings.apiKey.mistral", __?: {}): string;
+  (_: "settings.apiKey.openAi", __?: {}): string;
+  (_: "settings.apiKey.title", __?: {}): string;
   (_: "settings.auth", __?: {}): {
   readonly "help": string,
   readonly "title": string,
@@ -3238,10 +3297,12 @@ declare namespace typed_i18n {
   (_: "settings.session", __?: {}): { readonly "title": string };
   (_: "settings.session.title", __?: {}): string;
   (_: "settings.tabs", __?: {}): {
+  readonly "aiKeyManager": string,
   readonly "appearance": string,
   readonly "general": string,
   readonly "keyboardShortcuts": string
 };
+  (_: "settings.tabs.aiKeyManager", __?: {}): string;
   (_: "settings.tabs.appearance", __?: {}): string;
   (_: "settings.tabs.general", __?: {}): string;
   (_: "settings.tabs.keyboardShortcuts", __?: {}): string;

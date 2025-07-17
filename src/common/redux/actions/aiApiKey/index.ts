@@ -4,3 +4,9 @@
 // Use of this source code is governed by a BSD-style license
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
+
+// import * as enable from "./enable";
+import * as setKey from "./setKey";
+export {
+    setKey,
+};

@@ -120,6 +120,22 @@
         "tags": "Tags",
         "update": "Edit"
     },
+    "chatbot": {
+        "detailedDescTitle": "extended description",
+        "detailedDescription": "Describe this image in one or more paragraphs, provide details about the contents of the image, also give meta information about the context of the image from any relevant perspective (for example: historical, technical, artistic, etc.)",
+        "editorDescription": "Authored description(s):",
+        "generateDescription": "Ask the AI to generate:",
+        "generateDescriptionTitle": "AI image description...",
+        "inputPlaceholder": "Ask something, For example: can you describe this image?",
+        "noApiKey": "Please go to the application settings and enter an API key for your AI provider",
+        "noDescription": "No authored description.",
+        "reset": "Reset",
+        "sendQuestion": "Send",
+        "shortDescTitle": "short description",
+        "shortDescription": "Describe this image in one or two sentences",
+        "systemPromptEditor": "System prompt editor",
+        "title": "AI model: {{- title}}"
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "by '{{- author}}'",
@@ -872,6 +888,16 @@
             "person": "Person",
             "type": "Type:"
         },
+        "apiKey": {
+            "help": "Add a personal API Key from a provider to use the chatbot image description feature.",
+            "howTo1": "Create an API key by visiting {{- provider }}'s console",
+            "howTo2": "Ensure your {{- provider }} account has credits",
+            "howTo3": "Paste your API key below to start using the assistant",
+            "keyLabel": "API Key",
+            "mistral": "Mistral",
+            "openAi": "OpenAI",
+            "title": "Add an API Key (Image Description feature)"
+        },
         "auth": {
             "help": "This action deletes all OPDS login credentials.",
             "title": "Access to publication catalogs",
@@ -1129,6 +1155,7 @@
             "title": "Enable session saving"
         },
         "tabs": {
+            "aiKeyManager": "AI Key Manager",
             "appearance": "Appearance",
             "general": "General",
             "keyboardShortcuts": "Keyboard shortcuts"

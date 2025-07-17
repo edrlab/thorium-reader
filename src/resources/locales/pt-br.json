@@ -120,6 +120,22 @@
         "tags": "Tags",
         "update": "Editar"
     },
+    "chatbot": {
+        "detailedDescTitle": "",
+        "detailedDescription": "",
+        "editorDescription": "",
+        "generateDescription": "",
+        "generateDescriptionTitle": "",
+        "inputPlaceholder": "",
+        "noApiKey": "",
+        "noDescription": "",
+        "reset": "",
+        "sendQuestion": "",
+        "shortDescTitle": "",
+        "shortDescription": "",
+        "systemPromptEditor": "",
+        "title": ""
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "por '{{- author}} '",
@@ -872,6 +888,16 @@
             "person": "Pessoa",
             "type": "Tipo:"
         },
+        "apiKey": {
+            "help": "",
+            "howTo1": "",
+            "howTo2": "",
+            "howTo3": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "title": ""
+        },
         "auth": {
             "help": "Esta ação exclui todas as credenciais de login OPDS.",
             "title": "Acesso a catálogos de publicação",
@@ -1129,6 +1155,7 @@
             "title": "Salvar sessão"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Aparência",
             "general": "Geral",
             "keyboardShortcuts": "Atalhos do teclado"

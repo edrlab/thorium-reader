@@ -120,6 +120,22 @@
         "tags": "Теги",
         "update": "Изменить"
     },
+    "chatbot": {
+        "detailedDescTitle": "",
+        "detailedDescription": "",
+        "editorDescription": "",
+        "generateDescription": "",
+        "generateDescriptionTitle": "",
+        "inputPlaceholder": "",
+        "noApiKey": "",
+        "noDescription": "",
+        "reset": "",
+        "sendQuestion": "",
+        "shortDescTitle": "",
+        "shortDescription": "",
+        "systemPromptEditor": "",
+        "title": ""
+    },
     "dialog": {
         "annotations": {
             "descAuthor": "",
@@ -872,6 +888,16 @@
             "person": "",
             "type": ""
         },
+        "apiKey": {
+            "help": "",
+            "howTo1": "",
+            "howTo2": "",
+            "howTo3": "",
+            "keyLabel": "",
+            "mistral": "",
+            "openAi": "",
+            "title": ""
+        },
         "auth": {
             "help": "",
             "title": "",
@@ -1129,6 +1155,7 @@
             "title": "Сохранение сеанса"
         },
         "tabs": {
+            "aiKeyManager": "",
             "appearance": "Внешний вид",
             "general": "Общие",
             "keyboardShortcuts": "Горячие клавиши"
