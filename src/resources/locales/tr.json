@@ -135,16 +135,16 @@
         },
         "cancel": "İptal",
         "deleteAnnotations": "Açıklayıcı notları silmek istiyor musunuz?",
-        "deleteAnnotationsText": "{{- annotationListLength}} Not(larını)? silmek istediğinize emin misiniz?",
+        "deleteAnnotationsText": "{{- annotationListLength}} Not(lar)ını silmek istediğinize emin misiniz?",
         "deleteBookmarks": "Yer imlerini silmek istiyor musunuz?",
         "deleteBookmarksText": "{{- bookmarkListLength}} yer im(ler)ini silmek istediğinize emin misiniz?",
         "deleteFeed": "Katalogu silmek istiyor musunuz?",
         "deletePublication": "Eseri silmek istiyor musunuz?",
-        "deletePublicationWithNotes": "Uyarı: Bu eserde açıklayıcı notlar ve/veya yer imleri bulunuyor, bunlar da silinecek! (Eğer bunları saklamak istiyorsanız, eseri silmeden önce notları dışa aktardığınızdan emin olun)",
+        "deletePublicationWithNotes": "Uyarı: Bu eserde açıklayıcı notlar ve/veya yer imleri bulunuyor, bunlar da silinecek! (Eğer bunları saklamak istiyorsanız, eseri kaldırmadan önce notları dışa aktardığınızdan emin olun)",
         "import": "İçe aktarımı onayla:",
-        "importError": "Hata oluştu, dosya uzantısının ({{acceptedExtension}}) olduğunu teyit edin.",
-        "renew": "Yenilemek ya da ödünç alımı uzatmak istiyor musunuz?",
-        "return": "Esere geri dönmek istiyor musunuz?",
+        "importError": "Hata oluştu, dosya uzantısının ({{acceptedExtension}}) olduğunu teyit edin",
+        "renew": "Yenilemeyi/ ödünç alımı uzatmak istiyor musunuz?",
+        "return": "Eseri iade etmek istiyor musunuz?",
         "yes": "Evet"
     },
     "error": {
@@ -175,9 +175,9 @@
         "lcp": {
             "hint": "İpucu:",
             "open": "Aç",
-            "password": "Şifre",
-            "sentence": "Bu eserin açılabilmesi için bir LCP şifresi gerekmektedir",
-            "urlHint": "Şifrenizi mi unuttunuz? Destek almak için buraya tıklayın.",
+            "password": "Parola",
+            "sentence": "Bu eserin açılabilmesi için bir LCP parolası gerekir",
+            "urlHint": "Parolanızı mı unuttunuz? Destek almak için buraya tıklayın.",
             "whatIsLcp?": "LCP nedir?",
             "whatIsLcpInfoDetails": "LCP, 'Licensed Content Protection', Lisanslı İçerik Koruması anlamına gelir.",
             "whatIsLcpInfoDetailsLink": "EDRLab  web sitesinde Daha fazlasını öğrenmek için bu bağlantıyı tıklayın."
@@ -196,7 +196,7 @@
             "error": "[{{- title}}] İndirmesi başarısız: [{{- err}}]"
         },
         "import": {
-            "alreadyImport": "[{{- title}}] dosyası zaten içe aktarılmış.",
+            "alreadyImport": "[{{- title}}] zaten içe aktarılmış.",
             "fail": "[{{- path}}] İçe aktarması başarısız: [{{- err}}]",
             "success": "[{{- title}}]: İçe aktarımı tamamlandı."
         },
@@ -207,7 +207,7 @@
     "opds": {
         "addForm": {
             "addButton": "Ekle",
-            "name": "İsim",
+            "name": "İsim:",
             "namePlaceholder": "İsim",
             "url": "Link:",
             "urlPlaceholder": "Link"
@@ -218,7 +218,7 @@
         "addMenu": "OPDS Beslemesi ekle",
         "breadcrumbRoot": "Kataloglar",
         "documentation": "OPDS resmi web sitesi",
-        "empty": "Hiç eser bulunamadı",
+        "empty": "Eser bulunamadı",
         "firstPage": "İlk",
         "informations": "Sadece birkaç tıklamayla kamu kütüphanelerinden ve dijital kitap satıcılarından dijital yayınları keşfedebileceğiniz ve indirebileceğiniz bir dünya hayal edin. Açık Eser Dağıtım Sistemi olarak Türkçe'ye çevrilebilecek Open Publication Distribution System (OPDS) katalog biçimi tam olarak bunu sunar. OPDS ile çeşitli e-kitap sağlayıcılarının kataloglarında gezinebilir, kaydolabilir, bir eser ödünç alabilir, bir eser satın alabilir veya kişisel kitaplığınızı ziyaret edebilirsiniz. Hatta anında okumak için bir e-kitap veya sesli kitabı doğrudan Thorium Reader'a indirebilirsiniz.\nPeki, bir OPDS kataloğunu nasıl bulursunuz? Çok basit. Kataloğa giden bir köprü bağlantısı (URL) arayıp bulun. Bu URL'yi yukarıdaki Bağlantı alanına kopyalayın. Tüm aktif OPDS katalogları için tek bir hizmet sağlama noktası olmadığını unutmayın. Tercih ettiğiniz kütüphane veya kitap satıcısıyla iletişime geçmeniz ve OPDS katalog URL'sini istemeniz gerekebilir. Nereden başlayacağınızdan emin değilseniz, Wikipedia'da çeşitli dillerde size yardımcı olabilecek birkaç OPDS katalog dizini mevcuttur.\nAd alanı sizin için kolay bir yere yerleştirilmiştir ve Thorium Reader'a besleme tanımlamanın kolay bir yolunu sağlar.",
         "lastPage": "Son",
