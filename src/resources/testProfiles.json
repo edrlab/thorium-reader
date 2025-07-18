@@ -25,7 +25,7 @@
         "properties": {
             "showOnHomepage": true,
             "allowDeletion": false,
-            "dilicom": true,
+            "apiapp": true,
             "authenticate": {
                 "href": "",
                 "type": "application/opds-authentication+json"
@@ -76,7 +76,7 @@
         "properties": {
             "showOnHomepage": true,
             "allowDeletion": false,
-            "dilicom": false,
+            "apiapp": false,
             "authenticate": {
                 "href": "",
                 "type": "application/opds-authentication+json" 
@@ -133,7 +133,7 @@
         "properties": {
             "showOnHomepage": true,
             "allowDeletion": false,
-            "dilicom": false,
+            "apiapp": false,
             "authenticate": {
                 "href": "https://demoreader.cantookstation.com/v1/sign_in.opds2",
                 "type": "application/opds-authentication+json"
@@ -184,7 +184,7 @@
         "properties": {
             "showOnHomepage": true,
             "allowDeletion": false,
-            "dilicom": false,
+            "apiapp": false,
             "authenticate": {
                 "href": "https://archive.org/services/loans/loan/?action=user_bookshelf",
                 "type": "application/opds-authentication+json"

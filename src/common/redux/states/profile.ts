@@ -47,7 +47,7 @@ export interface IProfile {
     properties?: {
         showOnHomepage?: boolean;
         allowDeletion?: boolean;
-        dilicom: boolean;
+        apiapp: boolean;
         authenticate?: {
             href: string;
             type: string;

@@ -24,7 +24,7 @@
     "properties": {
         "showOnHomepage": true,
         "allowDeletion": false,
-        "dilicom": false,
+        "apiapp": false,
         "authenticate": {
             "href": "https://demoreader.cantookstation.com/v1/sign_in.opds2",
             "type": "application/opds-authentication+json"
@@ -33,10 +33,16 @@
     "links": {
         "feeds": [
             {
-                "title": "Demo Reader",
-                "href": "https://demoreader.cantookstation.com/v1/home.opds2",
+                "title": "Cantook Catalog",
+                "href": "https://demoreader.cantookstation.com/v1/resources.opds2?available_now_for_opds=1",
                 "type": "application/opds+json",
                 "rel": "catalog"
+            },
+            {
+                "title": "Bookshelf",
+                "href": "https://demoreader.cantookstation.com/v1/my_profile/activity.opds2",
+                "type": "application/opds+json",
+                "rel": "bookshelf"
             }
         ],
         "publications" : [

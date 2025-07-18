@@ -115,7 +115,7 @@ class Header extends React.Component<IProps, IState> {
         svg: ShelfIcon,
         });
 
-        if (this.props.profile.name === "Thorium") {
+        if (this.props.profile.name === "Thorium" || this.props.profile.properties.apiapp === true) {
         headerNav.push({
             route: "/opds",
             label: this.props.__("header.catalogs"),
@@ -124,17 +124,17 @@ class Header extends React.Component<IProps, IState> {
             styles: [],
             svg: CatalogsIcon,
         });
-        } else if (this.props.profile?.links?.feeds?.length > 0) {
-
-        headerNav.push({
-            route: "",
-            label: "",
-            matchRoutes: [],
-            searchEnable: false,
-            styles: ["separator"],
-            svg: CatalogsIcon,
-            type: "separator",
-        });
+        }
+        if (this.props.profile.name !== "Thorium" && this.props.profile?.links?.feeds?.length > 0) {
+            headerNav.push({
+                route: "",
+                label: "",
+                matchRoutes: [],
+                searchEnable: false,
+                styles: ["separator"],
+                svg: CatalogsIcon,
+                type: "separator",
+            });
             this.props.profile?.links?.feeds?.forEach((feed) => {
                 const feedRoute = buildOpdsBrowserRoute(
                     this.props.profile.id.toString(),

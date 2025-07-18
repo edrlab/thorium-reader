@@ -14,7 +14,7 @@ const initialState = {
     id: 0,
     version: 1,
     name: "Thorium",
-    dilicom: true,
+    apiapp: true,
 };
 
 function profileReducer_(

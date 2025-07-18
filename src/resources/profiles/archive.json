@@ -24,7 +24,7 @@
     "properties": {
         "showOnHomepage": true,
         "allowDeletion": false,
-        "dilicom": false,
+        "apiapp": false,
         "authenticate": {
             "href": "https://archive.org/services/loans/loan/?action=user_bookshelf",
             "type": "application/opds-authentication+json"

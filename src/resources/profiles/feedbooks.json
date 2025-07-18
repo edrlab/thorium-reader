@@ -24,7 +24,7 @@
         "properties": {
             "showOnHomepage": true,
             "allowDeletion": false,
-            "dilicom": false,
+            "apiapp": false,
             "authenticate": {
                 "href": "",
                 "type": "application/opds-authentication+json" 

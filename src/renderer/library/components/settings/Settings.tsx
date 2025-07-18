@@ -333,10 +333,10 @@ const ManageAccessToCatalogSettings = () => {
 
     const profile = useSelector((s: ICommonRootState) => s.profile);
 
-    const dilicomDisabled: boolean = profile.properties?.dilicom; 
+    const apiappDisabled: boolean = profile.properties?.apiapp; 
 
     return (
-        dilicomDisabled === false ? <></> : 
+        apiappDisabled === false ? <></> : 
             <section className={stylesSettings.section} style={{ gap: "10px" }}>
                 <h4>{__("settings.library.title")}</h4>
                 <div className={stylesAnnotations.annotations_checkbox}>
