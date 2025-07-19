@@ -725,7 +725,7 @@
             "openTableOfContentsTitle": "Naršymas",
             "page": "Puslapis",
             "pdfscalemode": "talpinti pritaikant prie puslapio aukščio/pločio",
-            "print": "",
+            "print": "Spausdinti",
             "printDisabled": "Spausdinti draudžiama",
             "settingsTitle": "Nuostatos"
         },
@@ -764,7 +764,7 @@
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
             "pages": "Puslapiai",
-            "preview": "",
+            "preview": "Peržiūra",
             "print": "Spausdinti",
             "printablePages": "",
             "title": ""
