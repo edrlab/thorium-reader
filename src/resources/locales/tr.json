@@ -180,7 +180,7 @@
             "urlHint": "Parolanızı mı unuttunuz? Destek almak için buraya tıklayın.",
             "whatIsLcp?": "LCP nedir?",
             "whatIsLcpInfoDetails": "LCP, 'Licensed Content Protection', Lisanslı İçerik Koruması anlamına gelir.",
-            "whatIsLcpInfoDetailsLink": "EDRLab  web sitesinde Daha fazlasını öğrenmek için bu bağlantıyı tıklayın."
+            "whatIsLcpInfoDetailsLink": "EDRLab web sitesinde daha fazlasını öğrenmek için bu bağlantıyı tıklayın."
         }
     },
     "message": {
@@ -189,7 +189,7 @@
             "emptyFile": "Dosyada not mevcut değil.",
             "errorParsing": "Dosya işlenirken hata oluştu: ",
             "noBelongTo": "Notlar içe aktarılamadı: En az bir not, Eser'e ait değil.",
-            "nothing": "İçe aktarmaya hazır hiç not yok, içe aktarma durduruluyor",
+            "nothing": "İçe aktarmaya hazır hiç not yok, içe aktarım durduruluyor",
             "success": "İçe aktarma başarıyla tamamlandı."
         },
         "download": {
@@ -209,7 +209,7 @@
             "addButton": "Ekle",
             "name": "İsim:",
             "namePlaceholder": "İsim",
-            "url": "Link:",
+            "url": "Bağlantı:",
             "urlPlaceholder": "Link"
         },
         "addFormApiapp": {
@@ -220,7 +220,7 @@
         "documentation": "OPDS resmi web sitesi",
         "empty": "Eser bulunamadı",
         "firstPage": "İlk",
-        "informations": "Sadece birkaç tıklamayla kamu kütüphanelerinden ve dijital kitap satıcılarından dijital yayınları keşfedebileceğiniz ve indirebileceğiniz bir dünya hayal edin. Açık Eser Dağıtım Sistemi olarak Türkçe'ye çevrilebilecek Open Publication Distribution System (OPDS) katalog biçimi tam olarak bunu sunar. OPDS ile çeşitli e-kitap sağlayıcılarının kataloglarında gezinebilir, kaydolabilir, bir eser ödünç alabilir, bir eser satın alabilir veya kişisel kitaplığınızı ziyaret edebilirsiniz. Hatta anında okumak için bir e-kitap veya sesli kitabı doğrudan Thorium Reader'a indirebilirsiniz.\nPeki, bir OPDS kataloğunu nasıl bulursunuz? Çok basit. Kataloğa giden bir köprü bağlantısı (URL) arayıp bulun. Bu URL'yi yukarıdaki Bağlantı alanına kopyalayın. Tüm aktif OPDS katalogları için tek bir hizmet sağlama noktası olmadığını unutmayın. Tercih ettiğiniz kütüphane veya kitap satıcısıyla iletişime geçmeniz ve OPDS katalog URL'sini istemeniz gerekebilir. Nereden başlayacağınızdan emin değilseniz, Wikipedia'da çeşitli dillerde size yardımcı olabilecek birkaç OPDS katalog dizini mevcuttur.\nAd alanı sizin için kolay bir yere yerleştirilmiştir ve Thorium Reader'a besleme tanımlamanın kolay bir yolunu sağlar.",
+        "informations": "Sadece birkaç tıkla, kamu kütüphanelerinden ve dijital kitap satıcılarından dijital eserleri keşfedebileceğiniz ve indirebileceğiniz bir dünya hayal edin. Açık Eser Dağıtım Sistemi olarak Türkçeleştirebileceğimiz Open Publication Distribution System (OPDS) katalog biçimi, tam olarak bunu sunar. OPDS ile çeşitli e-kitap sağlayıcılarının kataloglarında gezinebilir, kaydolabilir, bir eseri ödünç alabilir, bir eseri satın alabilir veya kişisel kitaplığınızı ziyaret edebilirsiniz. Hatta anında okumak için bir e-kitap veya sesli kitabı doğrudan Thorium Reader'a indirebilirsiniz.\nPeki, bir OPDS kataloğunu nasıl bulursunuz? Gayet basit. Kataloğa yönlendiren  bir köprü bağlantısını (URL) arayıp bulun. Bu URL'yi yukarıdaki Bağlantı alanına kopyalayın. Tüm aktif OPDS katalogları için tek bir hizmet sağlama noktası olmadığını unutmayın. Tercih ettiğiniz kütüphane veya kitap satıcısıyla iletişime geçmeniz ve OPDS katalog URL'sini istemeniz gerekebilir. Nereden başlayacağınızdan emin değilseniz, Wikipedia'da çeşitli dillerde size yardımcı olabilecek birkaç OPDS katalog dizini mevcuttur.\nİsim alanı sizin için kolay bir yere yerleştirilmiştir ve Thorium Reader'a besleme tanımlamanın kolay bir yolunu sağlar.",
         "lastPage": "Son",
         "menu": {
             "aboutBook": "Eser hakkında",
@@ -233,20 +233,20 @@
         "network": {
             "error": "Beslemeye erişim hatası",
             "noInternet": "İnternet yok",
-            "noInternetMessage": "Ağ kablosunu, modemi, yönlendiriciyi veya wifiyi kontrol etmeyi deneyin",
-            "reject": "Üzgünüm, beklenmedik hata",
+            "noInternetMessage": "Ağ kablosunu, modemi, yönlendiriciyi veya wifi'ı kontrol etmeyi deneyin",
+            "reject": "Üzgünüm, beklenmedik bir hata!",
             "timeout": "Bağlantı zaman aşımına uğradı, lütfen daha sonra tekrar deneyin"
         },
         "next": "Sonraki",
         "previous": "Önceki",
         "shelf": "Raf",
         "updateForm": {
-            "name": "İsim",
+            "name": "İsim:",
             "title": "OPDS beslemesini düzenle",
             "updateButton": "Düzenle",
             "url": "Bağlantı:"
         },
-        "whatIsOpds": "OPDS nedir?"
+        "whatIsOpds": "OPDS Nedir?"
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
@@ -254,20 +254,20 @@
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "ARIA satırları içerir",
-                "descriptive": "İçerik, düzeni en iyi hale getirmek ve gezinmeyi kolaylaştırmak için ARIA satırlarıyla iyileştirilmiştir"
+                "compact": "ARIA rolleri içerir",
+                "descriptive": "İçerik, düzeni en iyi hale getirmek ve gezinmeyi kolaylaştırmak için ARIA rolleriyle iyileştirilmiştir"
             },
             "additional-accessibility-information-audio-descriptions": {
-                "compact": "Sesli açıklamalar",
-                "descriptive": "Sesli açıklamalar"
+                "compact": "Sesli betimlemeler",
+                "descriptive": "Sesli betimlemeler"
             },
             "additional-accessibility-information-braille": {
                 "compact": "Braille",
                 "descriptive": "Braille"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "Asya dillerinde tam okutucu belirtimleri",
-                "descriptive": "Asya dillerinde tam okutucu belirtimleri"
+                "compact": "Asya dillerinde tam okutucu açıklamaları",
+                "descriptive": "Asya dillerinde tam okutucu açıklamaları"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
                 "compact": "Önplan ve arkaplan sesleri arasında yüksek karşıtlık",
@@ -278,23 +278,23 @@
                 "descriptive": "Önplan metni ve arkaplan arasında yüksek karşıtlık"
             },
             "additional-accessibility-information-large-print": {
-                "compact": "Büyük puntolu",
-                "descriptive": "Büyük puntolu"
+                "compact": "Büyük punto",
+                "descriptive": "Büyük punto"
             },
             "additional-accessibility-information-page-breaks": {
-                "compact": "Sayfa geçişleri dahil",
-                "descriptive": "Orjinal basılı kaynaktaki sayfa geçişleri dahil"
+                "compact": "Sayfa geçişleri dahildir",
+                "descriptive": "Orjinal basılı kaynaktaki sayfa geçişleri dahildir"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "Asya dillerinde bazı Okutucu belirtimleri",
-                "descriptive": "Asya dillerinde bazı Okutucu belirtimleri"
+                "compact": "Asya dillerinde kısmi Okutucu açıklamaları",
+                "descriptive": "Asya dillerinde kısmi Okutucu açıklamaları"
             },
             "additional-accessibility-information-sign-language": {
                 "compact": "İşaret dili",
                 "descriptive": "İşaret dili"
             },
             "additional-accessibility-information-tactile-graphics": {
-                "compact": "Dokunsal grafikler dahil",
+                "compact": "Dokunsal grafikler dahildir",
                 "descriptive": "Görme engelli kişilerin görsel öğelere erişimini kolaylaştırmak için dokunsal grafikler entegre edilmiştir"
             },
             "additional-accessibility-information-tactile-objects": {
@@ -1189,7 +1189,7 @@
         "title": {
             "allBooks": "Tüm Eserlerim",
             "newFeature": "Yeni özellik: Açıklayıcı Notlar",
-            "welcome": "Thorium 3.0'a Hoşgeldiniz"
+            "welcome": "Thorium 3.0 Uygulamasına Hoşgeldiniz"
         }
     }
 }
