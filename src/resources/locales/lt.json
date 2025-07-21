@@ -756,8 +756,8 @@
             "descriptionLcpPrintable": "",
             "howTo": "",
             "lcpInfo": "",
-            "noPagesLcpLimitReached": "",
-            "noPrintablePages": "",
+            "noPagesLcpLimitReached": "Pasiekėte LCP ribą",
+            "noPrintablePages": "Spausdintinų puslapių nėra",
             "pageHelpInfo": "",
             "pageHelpInfo1": "",
             "pageHelpInfo2": "",
@@ -766,7 +766,7 @@
             "pages": "Puslapiai",
             "preview": "Peržiūra",
             "print": "Spausdinti",
-            "printablePages": "",
+            "printablePages": "Spausdintini puslapiai (iš viso)",
             "title": ""
         },
         "settings": {
