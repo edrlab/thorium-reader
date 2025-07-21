@@ -876,15 +876,14 @@ const streamProtocolHandler = async (
         }
         debug("streamProtocolHandler mediaType", mediaType);
 
-        // // const ct = req.headers["Content-Type"] || req.headers["content-type"];
+        // const ct = req.headers["Content-Type"] || req.headers["content-type"];
         // if (mediaType.startsWith("audio")) {
-        //     debug("streamProtocolHandler AUDIO redirect...");
+        //     debug("streamProtocolHandler AUDIO redirect...", req.headers);
         //     callback({
         //         data: null,
-        //         headers: req.headers,
+        //         // headers: req.headers,
+        //         headers: { ...req.headers, Location: "https://woolyss.com/f/audio-sample.mp3" }, // https://tools.woolyss.com/html5-audio-video-tester/?u=woolyss.com/f/audio-sample.mp3
         //         statusCode: 301,
-        //         // https://tools.woolyss.com/html5-audio-video-tester/?u=woolyss.com/f/audio-sample.mp3
-        //         url: "https://woolyss.com/f/audio-sample.mp3",
         //     });
         //     return;
         // }
