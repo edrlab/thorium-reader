@@ -347,17 +347,17 @@ const streamProtocolHandler = async (
 
     // const headers: Record<string, (string) | (string[])> = {};
     const headers: Record<string, string> = {};
-    if (ref && ref !== "null" && !/^https?:\/\/localhost.+/.test(ref) && !/^https?:\/\/127\.0\.0\.1.+/.test(ref)) {
-        headers.referer = ref;
-    } else {
-        headers.referer = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/`;
-    }
+    // if (ref && ref !== "null" && !/^https?:\/\/localhost.+/.test(ref) && !/^https?:\/\/127\.0\.0\.1.+/.test(ref)) {
+    //     headers.referer = ref;
+    // } else {
+    //     headers.referer = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/`;
+    // }
 
     // CORS everything!
-    headers["Access-Control-Allow-Origin"] = "*";
-    headers["Access-Control-Allow-Methods"] = "GET, HEAD, OPTIONS"; // POST, DELETE, PUT, PATCH
-    headers["Access-Control-Allow-Headers"] = "Content-Type, Content-Length, Accept-Ranges, Content-Range, Range, Link, Transfer-Encoding, X-Requested-With, Authorization, Accept, Origin, User-Agent, DNT, Cache-Control, Keep-Alive, If-Modified-Since";
-    headers["Access-Control-Expose-Headers"] = "Content-Type, Content-Length, Accept-Ranges, Content-Range, Range, Link, Transfer-Encoding, X-Requested-With, Authorization, Accept, Origin, User-Agent, DNT, Cache-Control, Keep-Alive, If-Modified-Since";
+    // headers["Access-Control-Allow-Origin"] = "*";
+    // headers["Access-Control-Allow-Methods"] = "GET, HEAD, OPTIONS"; // POST, DELETE, PUT, PATCH
+    // headers["Access-Control-Allow-Headers"] = "Content-Type, Content-Length, Accept-Ranges, Content-Range, Range, Link, Transfer-Encoding, X-Requested-With, Authorization, Accept, Origin, User-Agent, DNT, Cache-Control, Keep-Alive, If-Modified-Since";
+    // headers["Access-Control-Expose-Headers"] = "Content-Type, Content-Length, Accept-Ranges, Content-Range, Range, Link, Transfer-Encoding, X-Requested-With, Authorization, Accept, Origin, User-Agent, DNT, Cache-Control, Keep-Alive, If-Modified-Since";
 
     if (isNotesFromPublicationRequest) {
 
@@ -827,9 +827,9 @@ const streamProtocolHandler = async (
         //         || link.Properties.Encrypted.Algorithm === "http://www.idpf.org/2008/embedding");
         debug("streamProtocolHandler isEncrypted", isEncrypted);
 
-        req.headers.Range = req.headers.range;
+        const headersRange = req.headers.Range || req.headers.range;
 
-        const isPartialByteRangeRequest = ((req.headers && req.headers.Range) ? true : false);
+        const isPartialByteRangeRequest = ((req.headers && headersRange) ? true : false);
         debug("streamProtocolHandler isPartialByteRangeRequest", isPartialByteRangeRequest);
 
         // if (isEncrypted && isPartialByteRangeRequest) {
@@ -843,14 +843,14 @@ const streamProtocolHandler = async (
         let partialByteBegin = 0; // inclusive boundaries
         let partialByteEnd = -1;
         if (isPartialByteRangeRequest) {
-            debug("streamProtocolHandler isPartialByteRangeRequest", req.headers.Range);
+            debug("streamProtocolHandler isPartialByteRangeRequest", headersRange);
 
-            const ranges = parseRangeHeader(req.headers.Range);
+            const ranges = parseRangeHeader(headersRange);
             // debug(ranges);
 
             if (ranges && ranges.length) {
                 if (ranges.length > 1) {
-                    const err = "Too many HTTP ranges: " + req.headers.Range;
+                    const err = "Too many HTTP ranges: " + headersRange;
                     debug(err);
                     const buff =
                         Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
@@ -877,9 +877,11 @@ const streamProtocolHandler = async (
         }
         let zipStream_: IStreamAndLength;
         try {
-            zipStream_ = isPartialByteRangeRequest && !isEncrypted ?
-                await zip.entryStreamRangePromise(pathInZip, partialByteBegin, partialByteEnd) :
-                await zip.entryStreamPromise(pathInZip);
+            if (isPartialByteRangeRequest && !isEncrypted && !(partialByteBegin === 0 && partialByteEnd === -1)) {
+                zipStream_ = await zip.entryStreamRangePromise(pathInZip, partialByteBegin, partialByteEnd);
+            } else {
+                zipStream_ = await zip.entryStreamPromise(pathInZip);
+            }
         } catch (err) {
             debug(err);
             const buff = Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
@@ -951,13 +953,13 @@ const streamProtocolHandler = async (
             }
         }
 
-        if (isPartialByteRangeRequest) {
-            headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
-            headers.Pragma = "no-cache";
-            headers.Expires = "0";
-        } else {
-            headers["Cache-Control"] = "public,max-age=86400";
-        }
+        // if (isPartialByteRangeRequest) {
+        //     headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+        //     headers.Pragma = "no-cache";
+        //     headers.Expires = "0";
+        // } else {
+        //     headers["Cache-Control"] = "public,max-age=86400";
+        // }
 
         if (mediaType) {
             headers["Content-Type"] = mediaType;
@@ -965,7 +967,7 @@ const streamProtocolHandler = async (
         }
 
         headers["Accept-Ranges"] = "bytes";
-        headers["X-Content-Type-Options"] = "nosniff";
+        // headers["X-Content-Type-Options"] = "nosniff";
 
         let statusCode = 200;
         if (isPartialByteRangeRequest) {
