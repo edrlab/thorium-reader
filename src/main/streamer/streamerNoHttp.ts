@@ -5,6 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { Readable } from "node:stream";
+import { ReadableStream } from "node:stream/web";
+
 import * as crypto from "crypto";
 import * as debug_ from "debug";
 import { app, protocol, ProtocolRequest, ProtocolResponse, session } from "electron";
@@ -189,6 +192,61 @@ function getPreFetchResources(publication: R2Publication): Link[] {
     return links;
 }
 
+// https://github.com/laurent22/joplin/blob/984bb0f3ef3943a3abd0e3de1110ce1723363ef7/packages/app-desktop/utils/customProtocols/handleCustomProtocols.ts#L32
+// https://github.com/nodejs/node/issues/54205
+const nodeStreamToWeb = (resultStream: Readable): ReadableStream => { // NodeJS.ReadStream
+    return Readable.toWeb(resultStream);
+
+	// resultStream.pause();
+
+	// let closed = false;
+
+	// return new ReadableStream({
+	// 	start: (controller) => {
+	// 		resultStream.on('data', (chunk) => {
+	// 			if (closed) {
+	// 				return;
+	// 			}
+
+	// 			if (Buffer.isBuffer(chunk)) {
+	// 				controller.enqueue(new Uint8Array(chunk));
+	// 			} else {
+	// 				controller.enqueue(chunk);
+	// 			}
+
+	// 			if (controller.desiredSize <= 0) {
+	// 				resultStream.pause();
+	// 			}
+	// 		});
+
+	// 		resultStream.on('error', (error) => {
+	// 			controller.error(error);
+	// 		});
+
+	// 		resultStream.on('end', () => {
+	// 			if (!closed) {
+	// 				closed = true;
+	// 				controller.close();
+	// 			}
+	// 		});
+	// 	},
+	// 	pull: (_controller) => {
+	// 		if (closed) {
+	// 			return;
+	// 		}
+
+	// 		resultStream.resume();
+	// 	},
+	// 	cancel: () => {
+	// 		if (!closed) {
+	// 			closed = true;
+	// 			// resultStream.close();
+ //                resultStream.destroy();
+	// 		}
+	// 	},
+	// }, { highWaterMark: resultStream.readableHighWaterMark });
+};
+
 // handler: (request: GlobalRequest) => (GlobalResponse) | (Promise<GlobalResponse>)
 const streamProtocolHandlerTunnel_NEW = async (req: GlobalRequest): Promise<GlobalResponse> => {
 
@@ -206,13 +264,21 @@ const streamProtocolHandlerTunnel_NEW = async (req: GlobalRequest): Promise<Glob
         },
         // (res: (NodeJS.ReadableStream) | (ProtocolResponse)) => {
         (res: ProtocolResponse) => {
-            debug("BEFORE NEW RESPONSE TUNNEL...", req.method, req.url, req.referrer, headers, typeof Response, res.statusCode, res.headers, typeof res.data, res.data instanceof ReadableStream, (res.data as any).readable, (res.data as any).writable);
+            const arr: Array<[string, string]> = [];
+            const keys = Object.keys(res.headers as Record<string, string>);
+            for (const key of keys) {
+                const value = (res.headers as Record<string, string>)[key];
+                arr.push([key, value]);
+            }
+            const resHeaders = new Headers(arr);
+            debug("BEFORE NEW RESPONSE TUNNEL...", req.method, req.url, req.referrer, headers, typeof Response, res.statusCode, res.headers, typeof res.data, res.data instanceof ReadableStream, (res.data as any).readable, (res.data as any).writable, arr);
             // as import("undici-types").Response
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-expect-error TS 2345
-            resolve(new Response(res.data as NodeJS.ReadableStream, {
+            // @ ts-expect-error TS 2345
+            // resolve(new Response(res.data as NodeJS.ReadableStream, {
+            resolve(new Response(nodeStreamToWeb(res.data as NodeJS.ReadStream), {
                 status: res.statusCode,
-                headers: res.headers,
+                headers: resHeaders,
             }));
         },
         );
@@ -251,13 +317,21 @@ const streamProtocolHandler_NEW = async (req: GlobalRequest): Promise<GlobalResp
         },
         // (res: (NodeJS.ReadableStream) | (ProtocolResponse)) => {
         (res: ProtocolResponse) => {
-            debug("BEFORE NEW RESPONSE...", req.method, req.url, req.referrer, headers, typeof Response, res.statusCode, res.headers, typeof res.data, res.data instanceof ReadableStream, (res.data as any).readable, (res.data as any).writable);
+            const arr: Array<[string, string]> = [];
+            const keys = Object.keys(res.headers as Record<string, string>);
+            for (const key of keys) {
+                const value = (res.headers as Record<string, string>)[key];
+                arr.push([key, value]);
+            }
+            const resHeaders = new Headers(arr);
+            debug("BEFORE NEW RESPONSE...", req.method, req.url, req.referrer, headers, typeof Response, res.statusCode, res.headers, typeof res.data, res.data instanceof ReadableStream, (res.data as any).readable, (res.data as any).writable, arr);
             // as import("undici-types").Response
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-expect-error TS 2345
-            resolve(new Response(res.data as NodeJS.ReadableStream, {
+            // @ ts-expect-error TS 2345
+            // resolve(new Response(res.data as NodeJS.ReadableStream, {
+            resolve(new Response(nodeStreamToWeb(res.data as NodeJS.ReadStream), {
                 status: res.statusCode,
-                headers: res.headers,
+                headers: resHeaders,
             }));
         },
         );
@@ -967,7 +1041,7 @@ const streamProtocolHandler = async (
         }
 
         headers["Accept-Ranges"] = "bytes";
-        // headers["X-Content-Type-Options"] = "nosniff";
+        headers["X-Content-Type-Options"] = "nosniff";
 
         let statusCode = 200;
         if (isPartialByteRangeRequest) {
