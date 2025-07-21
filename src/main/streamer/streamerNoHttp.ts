@@ -876,7 +876,15 @@ const streamProtocolHandler = async (
         }
         debug("streamProtocolHandler mediaType", mediaType);
 
-        // const ct = req.headers["Content-Type"] || req.headers["content-type"];
+
+        // https://www.electronjs.org/docs/latest/api/client-request
+        // https://developer.mozilla.org/en-US/docs/Web/API/Window/fetch#redirect
+        // protocol.handle("http", (request) => {
+        //     return net.fetch(request.url, { redirect: "manual" });
+        // });
+        // session.defaultSession.interceptHttpProtocol("http", (request, callback) => {
+        //     callback({...request, redirect: "manual", session: null});
+        // });
         // if (mediaType.startsWith("audio")) {
         //     debug("streamProtocolHandler AUDIO redirect...", req.headers);
         //     callback({
