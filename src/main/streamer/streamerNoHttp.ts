@@ -55,6 +55,8 @@ import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 const debug = debug_("readium-desktop:main#streamerNoHttp");
 debug("_");
 
+const USE_NEW_PROTOCOL_HANDLER = true;
+
 // !!!!!!
 /// BE CAREFUL DEBUG HAS BEED DISABLED IN package.json
 // !!!!!!
@@ -187,22 +189,86 @@ function getPreFetchResources(publication: R2Publication): Link[] {
     return links;
 }
 
+// handler: (request: GlobalRequest) => (GlobalResponse) | (Promise<GlobalResponse>)
+const streamProtocolHandlerTunnel_NEW = async (req: GlobalRequest): Promise<GlobalResponse> => {
+
+    const headers: Record<string, string> = {};
+    for (const entry of req.headers.entries()) {
+        headers[entry[0]] = entry[1];
+    }
+
+    return new Promise<GlobalResponse>(async (resolve) => {
+        await streamProtocolHandlerTunnel({
+            headers,
+            method: req.method,
+            referrer: req.referrer,
+            url: req.url,
+        },
+        // (res: (NodeJS.ReadableStream) | (ProtocolResponse)) => {
+        (res: ProtocolResponse) => {
+            debug("BEFORE NEW RESPONSE TUNNEL...", req.method, req.url, req.referrer, headers, typeof Response, res.statusCode, res.headers, typeof res.data, res.data instanceof ReadableStream, (res.data as any).readable, (res.data as any).writable);
+            // as import("undici-types").Response
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error TS 2345
+            resolve(new Response(res.data as NodeJS.ReadableStream, {
+                status: res.statusCode,
+                headers: res.headers,
+            }));
+        },
+        );
+    });
+};
+
 const streamProtocolHandlerTunnel = async (
     req: ProtocolRequest,
-    callback: (stream: (NodeJS.ReadableStream) | (ProtocolResponse)) => void) => {
+    // callback: (stream: (NodeJS.ReadableStream) | (ProtocolResponse)) => void,
+    callback: (res: ProtocolResponse) => void,
+) => {
 
     debug("............... streamProtocolHandlerTunnel req.url", req.url);
     req.url = convertCustomSchemeToHttpUrl(req.url);
-    streamProtocolHandler(req, callback);
+    await streamProtocolHandler(req, callback);
 };
 
 // super hacky!! :(
 // see usages of this boolean...
 let _customUrlProtocolSchemeHandlerWasCalled = false;
 
+// handler: (request: GlobalRequest) => (GlobalResponse) | (Promise<GlobalResponse>)
+const streamProtocolHandler_NEW = async (req: GlobalRequest): Promise<GlobalResponse> => {
+
+    const headers: Record<string, string> = {};
+    for (const entry of req.headers.entries()) {
+        headers[entry[0]] = entry[1];
+    }
+
+    return new Promise<GlobalResponse>(async (resolve) => {
+        await streamProtocolHandler({
+            headers,
+            method: req.method,
+            referrer: req.referrer,
+            url: req.url,
+        },
+        // (res: (NodeJS.ReadableStream) | (ProtocolResponse)) => {
+        (res: ProtocolResponse) => {
+            debug("BEFORE NEW RESPONSE...", req.method, req.url, req.referrer, headers, typeof Response, res.statusCode, res.headers, typeof res.data, res.data instanceof ReadableStream, (res.data as any).readable, (res.data as any).writable);
+            // as import("undici-types").Response
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error TS 2345
+            resolve(new Response(res.data as NodeJS.ReadableStream, {
+                status: res.statusCode,
+                headers: res.headers,
+            }));
+        },
+        );
+    });
+};
+
 const streamProtocolHandler = async (
     req: ProtocolRequest,
-    callback: (stream: (NodeJS.ReadableStream) | (ProtocolResponse)) => void) => {
+    // callback: (stream: (NodeJS.ReadableStream) | (ProtocolResponse)) => void,
+    callback: (res: ProtocolResponse) => void,
+) => {
 
     _customUrlProtocolSchemeHandlerWasCalled = true;
 
@@ -279,7 +345,8 @@ const streamProtocolHandler = async (
         });
     }
 
-    const headers: Record<string, (string) | (string[])> = {};
+    // const headers: Record<string, (string) | (string[])> = {};
+    const headers: Record<string, string> = {};
     if (ref && ref !== "null" && !/^https?:\/\/localhost.+/.test(ref) && !/^https?:\/\/127\.0\.0\.1.+/.test(ref)) {
         headers.referer = ref;
     } else {
@@ -760,6 +827,8 @@ const streamProtocolHandler = async (
         //         || link.Properties.Encrypted.Algorithm === "http://www.idpf.org/2008/embedding");
         debug("streamProtocolHandler isEncrypted", isEncrypted);
 
+        req.headers.Range = req.headers.range;
+
         const isPartialByteRangeRequest = ((req.headers && req.headers.Range) ? true : false);
         debug("streamProtocolHandler isPartialByteRangeRequest", isPartialByteRangeRequest);
 
@@ -896,6 +965,7 @@ const streamProtocolHandler = async (
         }
 
         headers["Accept-Ranges"] = "bytes";
+        headers["X-Content-Type-Options"] = "nosniff";
 
         let statusCode = 200;
         if (isPartialByteRangeRequest) {
@@ -1233,26 +1303,26 @@ export function initSessions() {
     // },
     {
         privileges: {
-            allowServiceWorkers: false,
-            bypassCSP: false,
+            allowServiceWorkers: true,
+            bypassCSP: true,
             corsEnabled: true,
             secure: true,
             stream: true,
             supportFetchAPI: true,
             standard: true, // Default false
-            codeCache: false, // Default false (only works with standard=true)
+            codeCache: true, // Default false (only works with standard=true)
         },
         scheme: THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
     }, {
         privileges: {
-            allowServiceWorkers: false,
-            bypassCSP: false,
+            allowServiceWorkers: true,
+            bypassCSP: true,
             corsEnabled: true,
             secure: true,
             stream: true,
             supportFetchAPI: true,
             standard: true, // Default false
-            codeCache: false, // Default false (only works with standard=true)
+            codeCache: true, // Default false (only works with standard=true)
         },
         scheme: READIUM2_ELECTRON_HTTP_PROTOCOL,
     }]);
@@ -1267,22 +1337,31 @@ export function initSessions() {
         }
 
         if (session.defaultSession) {
-            session.defaultSession.protocol.registerStreamProtocol(
-                THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
-                streamProtocolHandler);
-            session.defaultSession.protocol.registerStreamProtocol(
-                READIUM2_ELECTRON_HTTP_PROTOCOL,
-                streamProtocolHandlerTunnel);
+            if (USE_NEW_PROTOCOL_HANDLER) {
+                session.defaultSession.protocol.handle(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandler_NEW);
+                session.defaultSession.protocol.handle(READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandlerTunnel_NEW);
+            } else {
+                session.defaultSession.protocol.registerStreamProtocol(
+                    THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
+                    streamProtocolHandler);
+                session.defaultSession.protocol.registerStreamProtocol(
+                    READIUM2_ELECTRON_HTTP_PROTOCOL,
+                    streamProtocolHandlerTunnel);
+            }
         }
         const webViewSession = getWebViewSession();
         if (webViewSession) {
-            webViewSession.protocol.registerStreamProtocol(
-                THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
-                streamProtocolHandler);
-
-            webViewSession.protocol.registerStreamProtocol(
-                READIUM2_ELECTRON_HTTP_PROTOCOL,
-                streamProtocolHandlerTunnel);
+            if (USE_NEW_PROTOCOL_HANDLER) {
+                webViewSession.protocol.handle(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandler_NEW);
+                webViewSession.protocol.handle(READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandlerTunnel_NEW);
+            } else {
+                webViewSession.protocol.registerStreamProtocol(
+                    THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
+                    streamProtocolHandler);
+                webViewSession.protocol.registerStreamProtocol(
+                    READIUM2_ELECTRON_HTTP_PROTOCOL,
+                    streamProtocolHandlerTunnel);
+            }
 
             webViewSession.setPermissionRequestHandler((wc, permission, callback) => {
                 debug("setPermissionRequestHandler");
