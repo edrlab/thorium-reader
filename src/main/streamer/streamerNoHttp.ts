@@ -10,7 +10,7 @@ import { ReadableStream } from "node:stream/web";
 
 import * as crypto from "crypto";
 import * as debug_ from "debug";
-import { app, protocol, ProtocolRequest, ProtocolResponse, session } from "electron";
+import { app, BeforeSendResponse, HeadersReceivedResponse, OnBeforeSendHeadersListenerDetails, OnHeadersReceivedListenerDetails, protocol, ProtocolRequest, ProtocolResponse, session } from "electron";
 import * as fs from "fs";
 import * as mime from "mime-types";
 import * as path from "path";
@@ -58,7 +58,7 @@ import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 const debug = debug_("readium-desktop:main#streamerNoHttp");
 debug("_");
 
-const USE_NEW_PROTOCOL_HANDLER = true;
+const USE_NEW_PROTOCOL_HANDLER = false;
 
 // !!!!!!
 /// BE CAREFUL DEBUG HAS BEED DISABLED IN package.json
@@ -421,17 +421,19 @@ const streamProtocolHandler = async (
 
     // const headers: Record<string, (string) | (string[])> = {};
     const headers: Record<string, string> = {};
-    // if (ref && ref !== "null" && !/^https?:\/\/localhost.+/.test(ref) && !/^https?:\/\/127\.0\.0\.1.+/.test(ref)) {
-    //     headers.referer = ref;
-    // } else {
-    //     headers.referer = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/`;
-    // }
+    if (ref && ref !== "null" && !/^https?:\/\/localhost.+/.test(ref) && !/^https?:\/\/127\.0\.0\.1.+/.test(ref)) {
+        headers.referer = ref;
+    } else {
+        headers.referer = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/`;
+    }
+
+    // headers["Content-Security-Policy"] = `default-src 'self' 'unsafe-inline' 'unsafe-eval' data: http: https: ${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}: ${READIUM2_ELECTRON_HTTP_PROTOCOL}:`;
 
     // CORS everything!
-    // headers["Access-Control-Allow-Origin"] = "*";
-    // headers["Access-Control-Allow-Methods"] = "GET, HEAD, OPTIONS"; // POST, DELETE, PUT, PATCH
-    // headers["Access-Control-Allow-Headers"] = "Content-Type, Content-Length, Accept-Ranges, Content-Range, Range, Link, Transfer-Encoding, X-Requested-With, Authorization, Accept, Origin, User-Agent, DNT, Cache-Control, Keep-Alive, If-Modified-Since";
-    // headers["Access-Control-Expose-Headers"] = "Content-Type, Content-Length, Accept-Ranges, Content-Range, Range, Link, Transfer-Encoding, X-Requested-With, Authorization, Accept, Origin, User-Agent, DNT, Cache-Control, Keep-Alive, If-Modified-Since";
+    headers["Access-Control-Allow-Origin"] = "*";
+    headers["Access-Control-Allow-Methods"] = "GET, HEAD, OPTIONS"; // POST, DELETE, PUT, PATCH
+    headers["Access-Control-Allow-Headers"] = "Content-Type, Content-Length, Accept-Ranges, Content-Range, Range, Link, Transfer-Encoding, X-Requested-With, Authorization, Accept, Origin, User-Agent, DNT, Cache-Control, Keep-Alive, If-Modified-Since";
+    headers["Access-Control-Expose-Headers"] = "Content-Type, Content-Length, Accept-Ranges, Content-Range, Range, Link, Transfer-Encoding, X-Requested-With, Authorization, Accept, Origin, User-Agent, DNT, Cache-Control, Keep-Alive, If-Modified-Since";
 
     if (isNotesFromPublicationRequest) {
 
@@ -1027,13 +1029,13 @@ const streamProtocolHandler = async (
             }
         }
 
-        // if (isPartialByteRangeRequest) {
-        //     headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
-        //     headers.Pragma = "no-cache";
-        //     headers.Expires = "0";
-        // } else {
-        //     headers["Cache-Control"] = "public,max-age=86400";
-        // }
+        if (isPartialByteRangeRequest) {
+            headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            headers.Pragma = "no-cache";
+            headers.Expires = "0";
+        } else {
+            headers["Cache-Control"] = "public,max-age=86400";
+        }
 
         if (mediaType) {
             headers["Content-Type"] = mediaType;
@@ -1379,29 +1381,107 @@ export function initSessions() {
     // },
     {
         privileges: {
-            allowServiceWorkers: true,
-            bypassCSP: true,
+            allowServiceWorkers: false,
+            bypassCSP: false,
             corsEnabled: true,
             secure: true,
             stream: true,
             supportFetchAPI: true,
             standard: true, // Default false
-            codeCache: true, // Default false (only works with standard=true)
+            codeCache: false, // Default false (only works with standard=true)
         },
         scheme: THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
     }, {
         privileges: {
-            allowServiceWorkers: true,
-            bypassCSP: true,
+            allowServiceWorkers: false,
+            bypassCSP: false,
             corsEnabled: true,
             secure: true,
             stream: true,
             supportFetchAPI: true,
             standard: true, // Default false
-            codeCache: true, // Default false (only works with standard=true)
+            codeCache: false, // Default false (only works with standard=true)
         },
         scheme: READIUM2_ELECTRON_HTTP_PROTOCOL,
     }]);
+
+    const filter = { urls: ["*://*/*", THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://*/*", READIUM2_ELECTRON_HTTP_PROTOCOL + "://*/*"] };
+
+    const onBeforeSendHeadersCB = (
+        details: OnBeforeSendHeadersListenerDetails,
+        callback: (beforeSendResponse: BeforeSendResponse) => void) => {
+
+        debug("onBeforeSendHeaders");
+        debug(details);
+
+        // details.requestHeaders["User-Agent"] = "R2 Electron";
+
+        if (!details.url) {
+            callback({});
+            return;
+        }
+
+        if (details.url.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") || details.url.startsWith(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://")) {
+            debug("onBeforeSendHeaders YES");
+            details.requestHeaders["X-Thorium-Test"] = "Header";
+            callback({
+                cancel: false,
+                requestHeaders: {
+                    ...details.requestHeaders,
+                },
+            });
+        } else {
+            debug("onBeforeSendHeaders NO");
+            // HTTP headers passthrough
+            // https://github.com/electron/electron/issues/23988
+            callback({
+                cancel: false,
+                requestHeaders: {
+                    ...details.requestHeaders,
+                },
+            });
+        }
+    };
+
+    const onHeadersReceivedCB = (
+        details: OnHeadersReceivedListenerDetails,
+        callback: (headersReceivedResponse: HeadersReceivedResponse) => void) => {
+
+        debug("onHeadersReceived");
+        debug(details);
+
+        if (!details.url) {
+            callback({});
+            return;
+        }
+
+        if (details.url.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") || details.url.startsWith(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://")) {
+            debug("onHeadersReceived YES CSP");
+            callback({
+                cancel: false,
+                responseHeaders: {
+                    ...details.responseHeaders,
+                    "cross-origin-resource-policy": "cross-origin",
+                    // https://github.com/electron/electron/blob/master/docs/tutorial/security.md#csp-http-header
+                    "Content-Security-Policy":
+                        // "default-src 'none'; style-src 'unsafe-inline'; sandbox"
+                        `default-src 'self' 'unsafe-inline' 'unsafe-eval' data: http: https: ${READIUM2_ELECTRON_HTTP_PROTOCOL}: ${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}:`,
+                },
+                // statusLine
+            });
+        } else {
+            debug("onHeadersReceived NO CSP");
+            // HTTP headers passthrough
+            // https://github.com/electron/electron/issues/23988
+            callback({
+                cancel: false,
+                responseHeaders: {
+                    ...details.responseHeaders,
+                },
+                // statusLine
+            });
+        }
+    };
 
     app.on("ready", async () => {
         debug("app ready");
@@ -1413,6 +1493,10 @@ export function initSessions() {
         }
 
         if (session.defaultSession) {
+            session.defaultSession.webRequest.onHeadersReceived(filter, onHeadersReceivedCB);
+            session.defaultSession.webRequest.onBeforeSendHeaders(filter, onBeforeSendHeadersCB);
+            // session.defaultSession.setCertificateVerifyProc(setCertificateVerifyProcCB);
+
             if (USE_NEW_PROTOCOL_HANDLER) {
                 session.defaultSession.protocol.handle(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandler_NEW);
                 session.defaultSession.protocol.handle(READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandlerTunnel_NEW);
@@ -1427,6 +1511,10 @@ export function initSessions() {
         }
         const webViewSession = getWebViewSession();
         if (webViewSession) {
+            webViewSession.webRequest.onHeadersReceived(filter, onHeadersReceivedCB);
+            webViewSession.webRequest.onBeforeSendHeaders(filter, onBeforeSendHeadersCB);
+            // webViewSession.setCertificateVerifyProc(setCertificateVerifyProcCB);
+
             if (USE_NEW_PROTOCOL_HANDLER) {
                 webViewSession.protocol.handle(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandler_NEW);
                 webViewSession.protocol.handle(READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandlerTunnel_NEW);

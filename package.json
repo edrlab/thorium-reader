@@ -401,7 +401,7 @@
     "css-loader": "^7.1.2",
     "devtron": "^1.4.0",
     "dotenv": "^17.2.0",
-    "electron": "^37.2.3",
+    "electron": "^38.0.0-alpha.7",
     "electron-builder": "^26.0.12",
     "electron-devtools-installer": "^4.0.0",
     "eslint": "^8.57.1",
