@@ -343,7 +343,6 @@ const streamProtocolHandler = async (
     // callback: (stream: (NodeJS.ReadableStream) | (ProtocolResponse)) => void,
     callback: (res: ProtocolResponse) => void,
 ) => {
-
     _customUrlProtocolSchemeHandlerWasCalled = true;
 
     // debug("streamProtocolHandler:");
@@ -876,6 +875,19 @@ const streamProtocolHandler = async (
             mediaType = link.TypeLink;
         }
         debug("streamProtocolHandler mediaType", mediaType);
+
+        // // const ct = req.headers["Content-Type"] || req.headers["content-type"];
+        // if (mediaType.startsWith("audio")) {
+        //     debug("streamProtocolHandler AUDIO redirect...");
+        //     callback({
+        //         data: null,
+        //         headers: req.headers,
+        //         statusCode: 301,
+        //         // https://tools.woolyss.com/html5-audio-video-tester/?u=woolyss.com/f/audio-sample.mp3
+        //         url: "https://woolyss.com/f/audio-sample.mp3",
+        //     });
+        //     return;
+        // }
 
         // const isText = (typeof mediaType === "string") && (
         //     mediaType.indexOf("text/") === 0 ||
@@ -1463,6 +1475,8 @@ export function initSessions() {
                     ...details.responseHeaders,
                     "cross-origin-resource-policy": "cross-origin",
                     // https://github.com/electron/electron/blob/master/docs/tutorial/security.md#csp-http-header
+                    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy#fetch_directives
+                    // https://www.electronjs.org/docs/latest/tutorial/security
                     "Content-Security-Policy":
                         // "default-src 'none'; style-src 'unsafe-inline'; sandbox"
                         `default-src 'self' 'unsafe-inline' 'unsafe-eval' data: http: https: ${READIUM2_ELECTRON_HTTP_PROTOCOL}: ${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}:`,
