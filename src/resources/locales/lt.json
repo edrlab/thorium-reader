@@ -140,7 +140,7 @@
         "deleteBookmarksText": "Ar tikrai norite pašalinti {{- bookmarkListLength}} žymę(-es, -ų)?",
         "deleteFeed": "Pašalinti katalogą?",
         "deletePublication": "Pašalinti leidinį?",
-        "deletePublicationWithNotes": "",
+        "deletePublicationWithNotes": "Įspėjimas: šiame leidinyje yra pastabų ir (arba) žymių, jos taip pat bus pašalintos! (jei norite jas išsaugoti, prieš pašalindami leidinį eksportuokite pastabas)",
         "import": "Patvirtinkite importą:",
         "importError": "Įvyko klaida, patikrinkite failo plėtinį ({{acceptedExtension}})",
         "renew": "Atnaujinti/pratęsti skolinimo terminą?",
@@ -310,15 +310,15 @@
         "conformance": {
             "conformance-a": {
                 "compact": "Šis leidinys atitinka minimalius prieinamumo standartus",
-                "descriptive": ""
+                "descriptive": "Leidinyje yra atitikties pareiškimas, jog jis atitinka EPUB Accessibility ir WCAG 2 A lygio standartą"
             },
             "conformance-aa": {
                 "compact": "Šis leidinys atitinka priimtus prieinamumo standartus",
-                "descriptive": ""
+                "descriptive": "Leidinyje yra atitikties pareiškimas, jog jis atitinka EPUB Accessibility ir WCAG 2 AA lygio standartą"
             },
             "conformance-aaa": {
                 "compact": "Šis leidinys viršija priimtus prieinamumo standartus",
-                "descriptive": ""
+                "descriptive": "Leidinyje yra atitikties pareiškimas, jog jis atitinka EPUB Accessibility ir WCAG 2 AAA lygio standartą"
             },
             "conformance-certifier": {
                 "compact": "Leidinį sertifikavo "
@@ -327,7 +327,7 @@
                 "compact": ""
             },
             "conformance-details-certifier-report": {
-                "compact": ""
+                "compact": "Daugiau informacijos rasite sertifikuotojo ataskaitoje"
             },
             "conformance-details-claim": {
                 "compact": "Šis leidinys teigia atitinkantis",
@@ -342,16 +342,16 @@
                 "descriptive": "EPUB Accessibility 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "A lygis",
-                "descriptive": "A lygis"
+                "compact": "A lygį",
+                "descriptive": "A lygį"
             },
             "conformance-details-level-aa": {
-                "compact": "AA lygis",
-                "descriptive": "AA lygis"
+                "compact": "AA lygį",
+                "descriptive": "AA lygį"
             },
             "conformance-details-level-aaa": {
-                "compact": "AAA lygis",
-                "descriptive": "AAA lygis"
+                "compact": "AAA lygį",
+                "descriptive": "AAA lygį"
             },
             "conformance-details-wcag-2-0": {
                 "compact": "WCAG 2.0"
@@ -370,8 +370,8 @@
             },
             "conformance-title": "Atitiktis",
             "conformance-unknown-standard": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Šio leidinio atitikties priimtiems prieinamumo standartams nustatyti negalima",
+                "descriptive": "Šio leidinio atitikties priimtiems prieinamumo standartams nustatyti negalima"
             }
         },
         "hazards": {
@@ -483,8 +483,8 @@
             },
             "rich-content-title": "",
             "rich-content-transcript": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Pateikiamas(-i) transkriptas(-ai)",
+                "descriptive": "Pateikiamas(-i) transkriptas(-ai)"
             },
             "rich-content-unknown": {
                 "compact": "Informacijos nėra",
@@ -767,7 +767,7 @@
             "preview": "Peržiūra",
             "print": "Spausdinti",
             "printablePages": "Spausdintini puslapiai (iš viso)",
-            "title": ""
+            "title": "Spausdintinų puslapių atranka"
         },
         "settings": {
             "column": {
@@ -1097,7 +1097,7 @@
                     "name": ""
                 },
                 "ToggleBookmark": {
-                    "description": "",
+                    "description": "Pridėti naują žymę arba šalinti egzistuojančią, jei ji šiuo metu pažymėta",
                     "name": ""
                 },
                 "ToggleReaderFullscreen": {
@@ -1120,7 +1120,7 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "TAIKYTI NUMATYTĄJĮ ŠABLONĄ",
+                "applyDefaultTemplate": "Įkelti numatytąjį šabloną",
                 "enableCheckbox": "Tinkinti HTML šabloną",
                 "overrideHTMLTemplate": ""
             }
