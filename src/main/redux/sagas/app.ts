@@ -45,12 +45,28 @@ export function* init() {
     // https://www.electronjs.org/fr/docs/latest/api/app#appsetasdefaultprotocolclientprotocol-path-args
     // https://www.electron.build/generated/platformspecificbuildoptions
     // Define custom protocol handler. Deep linking works on packaged versions of the application!
-    if (!app.isDefaultProtocolClient("opds")) {
-        app.setAsDefaultProtocolClient("opds");
-    }
+    
+    // In development, we need to specify the path and args for proper protocol handling
+    if (__TH__IS_DEV__) {
+        const electronPath = process.execPath;
+        const appPath = app.getAppPath();
+        
+        if (!app.isDefaultProtocolClient("opds", electronPath, [appPath])) {
+            app.setAsDefaultProtocolClient("opds", electronPath, [appPath]);
+        }
+        
+        if (!app.isDefaultProtocolClient("thorium", electronPath, [appPath])) {
+            app.setAsDefaultProtocolClient("thorium", electronPath, [appPath]);
+        }
+    } else {
+        // Production mode - simple registration
+        if (!app.isDefaultProtocolClient("opds")) {
+            app.setAsDefaultProtocolClient("opds");
+        }
 
-    if (!app.isDefaultProtocolClient("thorium")) {
-        app.setAsDefaultProtocolClient("thorium");
+        if (!app.isDefaultProtocolClient("thorium")) {
+            app.setAsDefaultProtocolClient("thorium");
+        }
     }
 
     // moved to saga/persist.ts
