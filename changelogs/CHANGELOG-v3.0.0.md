@@ -24,7 +24,7 @@ This release includes the following (notable) new features, improvements and bug
 Git commit diff since `v2.4.1`:
 https://github.com/edrlab/thorium-reader/compare/v2.4.1...v3.0.0
 
-=> *292** GitHub Git commits:
+=> **292** GitHub Git commits:
 
 * [(_)](https://github.com/edrlab/thorium-reader/commit/afa662ab288d4338d0b3a63039af659b60af1c02) __chore(NPM):__ package updates, notably navigator package which fixes some keyboard focus management issues
 * [(_)](https://github.com/edrlab/thorium-reader/commit/5bfd95b6598d6d30ac3c59e89d051c371bd59847) __chore(dev):__ keyboard focus handling in preparation for navigator update [skip ci]

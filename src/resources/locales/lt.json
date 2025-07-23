@@ -20,7 +20,7 @@
             "copy": "Kopijuoti",
             "cut": "Iškirpti",
             "paste": "Įklijuoti",
-            "print": "",
+            "print": "Spausdinti",
             "redo": "Atkurti",
             "selectAll": "Pažymėti viską",
             "title": "Keisti",
@@ -73,7 +73,7 @@
             "lastAdditions": "Paskiausiai pridėti"
         },
         "export": "Eksportuoti",
-        "exportAnnotation": "Išsaugoti pastabas kaip...",
+        "exportAnnotation": "Eksportuoti pastabas",
         "format": "Formatas",
         "importAnnotation": "Importuoti pastabas",
         "lang": "Kalba",
@@ -250,7 +250,7 @@
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": ""
+            "accessibility-summary-title": "Prieinamumo santrauka"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
@@ -258,12 +258,12 @@
                 "descriptive": ""
             },
             "additional-accessibility-information-audio-descriptions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Garsinis vaizdavimas",
+                "descriptive": "Garsinis vaizdavimas"
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Brailio raštas",
+                "descriptive": "Brailio raštas"
             },
             "additional-accessibility-information-full-ruby-annotations": {
                 "compact": "",
@@ -278,8 +278,8 @@
                 "descriptive": ""
             },
             "additional-accessibility-information-large-print": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Padidintas šriftas",
+                "descriptive": "Padidintas šriftas"
             },
             "additional-accessibility-information-page-breaks": {
                 "compact": "",
@@ -290,8 +290,8 @@
                 "descriptive": ""
             },
             "additional-accessibility-information-sign-language": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Gestų kalba",
+                "descriptive": "Gestų kalba"
             },
             "additional-accessibility-information-tactile-graphics": {
                 "compact": "",
@@ -299,29 +299,29 @@
             },
             "additional-accessibility-information-tactile-objects": {
                 "compact": "",
-                "descriptive": ""
+                "descriptive": "Taktiliniai 3D objektai"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
                 "compact": "",
                 "descriptive": ""
             },
-            "additional-accessibility-information-title": ""
+            "additional-accessibility-information-title": "Papildoma prieinamumo informacija"
         },
         "conformance": {
             "conformance-a": {
-                "compact": "",
+                "compact": "Šis leidinys atitinka minimalius prieinamumo standartus",
                 "descriptive": ""
             },
             "conformance-aa": {
-                "compact": "",
+                "compact": "Šis leidinys atitinka priimtus prieinamumo standartus",
                 "descriptive": ""
             },
             "conformance-aaa": {
-                "compact": "",
+                "compact": "Šis leidinys viršija priimtus prieinamumo standartus",
                 "descriptive": ""
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "Leidinį sertifikavo "
             },
             "conformance-certifier-credentials": {
                 "compact": ""
@@ -330,45 +330,45 @@
                 "compact": ""
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Šis leidinys teigia atitinkantis",
+                "descriptive": "Šis leidinys teigia atitinkantis"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Accessibility 1.0",
+                "descriptive": "EPUB Accessibility 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Accessibility 1.1",
+                "descriptive": "EPUB Accessibility 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "A lygis",
+                "descriptive": "A lygis"
             },
             "conformance-details-level-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "AA lygis",
+                "descriptive": "AA lygis"
             },
             "conformance-details-level-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "AAA lygis",
+                "descriptive": "AAA lygis"
             },
             "conformance-details-wcag-2-0": {
-                "compact": ""
+                "compact": "WCAG 2.0"
             },
             "conformance-details-wcag-2-1": {
-                "compact": "",
+                "compact": "WCAG 2.1",
                 "descriptive": ""
             },
             "conformance-details-wcag-2-2": {
-                "compact": "",
+                "compact": "WCAG 2.2",
                 "descriptive": ""
             },
             "conformance-no": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Informacijos nėra",
+                "descriptive": "Informacijos nėra"
             },
-            "conformance-title": "",
+            "conformance-title": "Atitiktis",
             "conformance-unknown-standard": {
                 "compact": "",
                 "descriptive": ""
@@ -376,16 +376,16 @@
         },
         "hazards": {
             "hazards-flashing": {
-                "compact": "",
+                "compact": "Blykčiojantis turinys",
                 "descriptive": ""
             },
             "hazards-flashing-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Nėra blykčiojančio turinio",
+                "descriptive": "Leidinyje nėra blykčiojančio turinio"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Blykčiojančio turinio buvimas nežinomas",
+                "descriptive": "Blykčiojančio turinio buvimas nežinomas"
             },
             "hazards-motion": {
                 "compact": "",
@@ -400,52 +400,52 @@
                 "descriptive": ""
             },
             "hazards-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Informacijos nėra",
+                "descriptive": "Informacijos nėra"
             },
             "hazards-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Pavojų nėra",
+                "descriptive": "Leidinyje nėra jokių pavojų"
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Garsai",
+                "descriptive": "Leidinyje yra garsų, kurie gali būti nemalonūs"
             },
             "hazards-sound-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Nėra garsų",
+                "descriptive": "Leidinyje nėra garsų"
             },
             "hazards-sound-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Garsų buvimas nežinomas",
+                "descriptive": "Garsų buvimas nežinomas"
             },
-            "hazards-title": "",
+            "hazards-title": "Pavojai",
             "hazards-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Pavojų buvimas nežinomas",
+                "descriptive": "Pavojų buvimas nežinomas"
             }
         },
         "navigation": {
             "navigation-index": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Rodyklė",
+                "descriptive": "Rodyklė su nuorodomis į susietus įrašus"
             },
             "navigation-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Informacijos nėra",
+                "descriptive": "Informacijos nėra"
             },
             "navigation-page-navigation": {
-                "compact": "",
+                "compact": "Eiti į puslapį",
                 "descriptive": ""
             },
             "navigation-structural": {
-                "compact": "",
+                "compact": "Antraštės",
                 "descriptive": ""
             },
-            "navigation-title": "",
+            "navigation-title": "Naršymas",
             "navigation-toc": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Turinys",
+                "descriptive": "Turinys su nuorodomis į visus teksto skyrius"
             }
         },
         "rich-content": {
@@ -487,8 +487,8 @@
                 "descriptive": ""
             },
             "rich-content-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Informacijos nėra",
+                "descriptive": "Informacijos nėra"
             }
         },
         "ways-of-reading": {
@@ -525,12 +525,12 @@
                 "descriptive": ""
             },
             "ways-of-reading-prerecorded-audio-synchronized": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Garso įrašas, sinchronizuotas su tekstu",
+                "descriptive": "Visas turinys prieinamas kaip garso įrašas, sinchronizuotas su tekstu"
             },
-            "ways-of-reading-title": "",
+            "ways-of-reading-title": "Skaitymo būdai",
             "ways-of-reading-visual-adjustments-modifiable": {
-                "compact": "",
+                "compact": "Galima keisti išvaizdą",
                 "descriptive": ""
             },
             "ways-of-reading-visual-adjustments-unknown": {
@@ -556,7 +556,7 @@
             "accessibilityHazard": {
                 "flashing": "Blykčiojimas",
                 "motionSimulation": "Judesių imitavimas",
-                "name": "Rizika:",
+                "name": "Pavojus:",
                 "noFlashing": "Be blykčiojimo",
                 "noMotionSimulation": "Be judesių imitavimo",
                 "noSound": "Be garso",
@@ -595,7 +595,7 @@
         "lcpRightsPrint": "Spausdintos kopijos",
         "lcpStart": "Pradžia",
         "licenceLCP": "Licencija (LCP)",
-        "licenseCertificateDateInvalid": "Baigėsi LCP teikėjo sertifikato galiojimo laikas. ({{- dateTime}})",
+        "licenseCertificateDateInvalid": "LCP teikėjo sertifikato galiojimo laikas baigėsi anksčiau už licencijos išdavimo datą ({{- dateTime}}).",
         "licenseOutOfDate": "LCP licencijos galiojimas pasibaigęs.",
         "licenseSignatureInvalid": "Negaliojantis LCP licencijos parašas.",
         "licensed": "Licencijuotas",
@@ -671,9 +671,9 @@
         "goToContent": "Eiti į turinį",
         "imgViewer": {
             "title": "",
-            "zoomIn": "",
-            "zoomOut": "",
-            "zoomReset": ""
+            "zoomIn": "Didinti",
+            "zoomOut": "Mažinti",
+            "zoomReset": "Nustatyti mastelį iš naujo"
         },
         "marks": {
             "annotations": "Pastabos",
@@ -708,26 +708,26 @@
         "navigation": {
             "ZenModeExit": "Išeiti iš Zen režimo",
             "ZenModeTitle": "Zen režimas",
-            "annotationTitle": "pastaba",
+            "annotationTitle": "Pastaba",
             "backHomeTitle": "Užverti šį skaitymo langą (grįžti į knygų lentyną)",
-            "bookmarkTitle": "sukurti žymę",
+            "bookmarkTitle": "Sukurti žymę",
             "currentPage": "Dabartinis puslapis: {{- current}}",
             "currentPageTotal": "Dabartinis puslapis: {{- current}}/{{- total}}",
-            "detachWindowTitle": "rodyti bibliotekos / lentynos langą",
+            "detachWindowTitle": "Rodyti bibliotekos / lentynos langą",
             "goTo": "Eiti į",
             "goToError": "Toks puslapių skirtukas neegzistuoja",
             "goToPlaceHolder": "Įveskite puslapio numerį",
             "goToTitle": "Eiti į puslapį",
             "historyNext": "Peršokti į priekį",
             "historyPrevious": "Peršokti atgal",
-            "infoTitle": "informacija",
-            "magnifyingGlassButton": "ieškoti leidinyje",
-            "openTableOfContentsTitle": "naršymas",
+            "infoTitle": "Informacija",
+            "magnifyingGlassButton": "Ieškoti leidinyje",
+            "openTableOfContentsTitle": "Naršymas",
             "page": "Puslapis",
             "pdfscalemode": "talpinti pritaikant prie puslapio aukščio/pločio",
             "print": "",
-            "printDisabled": "",
-            "settingsTitle": "nuostatos"
+            "printDisabled": "Spausdinti draudžiama",
+            "settingsTitle": "Nuostatos"
         },
         "notes": {
             "colors": {
@@ -763,15 +763,15 @@
             "pageHelpInfo2": "",
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
-            "pages": "",
+            "pages": "Puslapiai",
             "preview": "",
-            "print": "",
+            "print": "Spausdinti",
             "printablePages": "",
             "title": ""
         },
         "settings": {
             "column": {
-                "auto": "Automatinis",
+                "auto": "Numatytasis",
                 "one": "1 stulpelis",
                 "title": "Stulpeliai",
                 "two": "2 stulpeliai"
@@ -1058,11 +1058,11 @@
                 },
                 "NavigateToBegin": {
                     "description": "",
-                    "name": ""
+                    "name": "Eiti į pradžią"
                 },
                 "NavigateToEnd": {
                     "description": "",
-                    "name": ""
+                    "name": "Eiti į pabaigą"
                 },
                 "OpenReaderInfo": {
                     "description": "",
@@ -1074,11 +1074,11 @@
                 },
                 "Print": {
                     "description": "",
-                    "name": ""
+                    "name": "Spausdinti"
                 },
                 "SearchNext": {
                     "description": "",
-                    "name": ""
+                    "name": "Tolesnis paieškos rezultatas"
                 },
                 "SearchNextAlt": {
                     "description": "",
@@ -1086,7 +1086,7 @@
                 },
                 "SearchPrevious": {
                     "description": "",
-                    "name": ""
+                    "name": "Ankstesnis paieškos rezultatas"
                 },
                 "SearchPreviousAlt": {
                     "description": "",
@@ -1121,7 +1121,7 @@
         "note": {
             "export": {
                 "applyDefaultTemplate": "TAIKYTI NUMATYTĄJĮ ŠABLONĄ",
-                "enableCheckbox": "",
+                "enableCheckbox": "Tinkinti HTML šabloną",
                 "overrideHTMLTemplate": ""
             }
         },
