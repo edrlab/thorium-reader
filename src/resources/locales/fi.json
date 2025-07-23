@@ -134,13 +134,13 @@
             "title": "Tuodaanko muistiinpanot?"
         },
         "cancel": "Peru",
-        "deleteAnnotations": "Poistetaanko kommentit?",
+        "deleteAnnotations": "Poistetaanko muistiinpanot?",
         "deleteAnnotationsText": "Haluatko varmasti poistaa {{- annotationListLength}} muistiinpanoa?",
         "deleteBookmarks": "Poistetaanko kirjanmerkit?",
         "deleteBookmarksText": "Haluatko varmasti poistaa {{- bookmarkListLength}} kirjanmerkkiä?",
         "deleteFeed": "Haluatko poistaa tämän luettelon?",
         "deletePublication": "Haluatko poistaa tämän julkaisun?",
-        "deletePublicationWithNotes": "Varoitus: tämä julkaisu sisältää muistiinpanoja ja/tai kirjanmerkkejä, myös ne poistetaan! (Jos haluat säilyttää ne, muista viedä merkinnät ennen kuin poistat julkaisun)",
+        "deletePublicationWithNotes": "Varoitus: tämä julkaisu sisältää muistiinpanoja ja/tai kirjanmerkkejä, myös ne poistetaan! (Jos haluat säilyttää ne, muista viedä muistiinpanot talteen ennen kuin poistat julkaisun)",
         "import": "Haluatko tuoda nämä tiedostot:",
         "importError": "Virhe havaittiin. Varmista tiedostopääte ({{acceptedExtension}})",
         "renew": "Haluatko uusia tämän lainan?",
@@ -299,7 +299,7 @@
             },
             "additional-accessibility-information-tactile-objects": {
                 "compact": "Kolmiulotteisia taktiiliosia",
-                "descriptive": "Kolmiuloitteisia taktiiliosia"
+                "descriptive": "Kolmiulotteisia taktiiliosia"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
                 "compact": "Tekstistä puheeksi -vihjeitä",
@@ -689,7 +689,7 @@
         },
         "media-overlays": {
             "activate": "Käynnistä luenta",
-            "captions": "Synkronoitu teksti: pelkistetty",
+            "captions": "Synkronoitu teksti: pelkistetty näkymä",
             "captionsDescription": "Pelkistetty tekstinäkymä.",
             "disableContinuousPlay": "Älä käytä jatkuvaa luentaa",
             "disableContinuousPlayDescription": "Älä jatka luentaa automaattisesti seuraavaan kohteeseen vaan keskeytä luenta, kun nykyinen kohde on luettu.",
@@ -709,7 +709,7 @@
             "ZenModeExit": "Poistu kokoruudun tilasta",
             "ZenModeTitle": "Kokoruudun tila",
             "annotationTitle": "Muistiinpano",
-            "backHomeTitle": "Sulje tämä ikkuna (siirry takaisin kirjahyllyyn)",
+            "backHomeTitle": "Sulje tämä lukuikkuna (siirry takaisin kirjahyllyyn)",
             "bookmarkTitle": "Kirjanmerkki",
             "currentPage": "Nykyinen sivu: {{- current}}",
             "currentPageTotal": "Nykyinen sivu: {{- current}}/{{- total}}",
@@ -724,7 +724,7 @@
             "magnifyingGlassButton": "Hae julkaisusta",
             "openTableOfContentsTitle": "Navigaatio",
             "page": "Sivu",
-            "pdfscalemode": "Sovita sivu tai leveyteen",
+            "pdfscalemode": "Sovita sivun kokoon tai leveyteen",
             "print": "Tulosta",
             "printDisabled": "Tulostus kielletty",
             "settingsTitle": "Asetukset"
@@ -918,7 +918,7 @@
                 },
                 "AudioPreviousAlt": {
                     "description": "Siirry edelliseen ääniosioon (tekstiä ja ääntä yhdistävä kirja, tekstistä puheeksi -toiminto tai äänikirja). Toiminto ohittaa rakenteet, jotka ovat ohitettavissa",
-                    "name": "Edellinen äänijakso (ohita)"
+                    "name": "Edellinen ääniosio (ohita)"
                 },
                 "AudioStop": {
                     "description": "Pysäytä nykyinen ääni (tekstiä ja ääntä yhdistävä kirja, tekstistä puheeksi -toiminto tai äänikirja)",
@@ -1144,14 +1144,14 @@
     "tts": {
         "highlight": {
             "mainColor": "Pääväri",
-            "maskBlockWordOutline": "Sumenna ympäröivä teksti, ympyröi sana",
-            "maskBlockWordSolidBackground": "Sumenna ympäröivä teksti, anna sanalle taustaväri",
-            "maskBlockWordUnderline": "Sumenna ympäröivä teksti, alleviivaa sana",
+            "maskBlockWordOutline": "Sumenna ympärillä, ympyröi sana",
+            "maskBlockWordSolidBackground": "Sumenna ympärillä, sanalle taustaväri",
+            "maskBlockWordUnderline": "Sumenna ympärillä, alleviivaa sana",
             "maskWordOutline": "Sumennus, ympyröi sana",
-            "maskWordSolidBackground": "Sumennus, sanan taustaväri",
+            "maskWordSolidBackground": "Sumennus, sanalle taustaväri",
             "maskWordUnderline": "Sumennus, alleviivaa sana",
             "outlineWordOutline": "Ympyröi virke, ympyröi sana",
-            "outlineWordSolidBackground": "Ympyröi virke, anna sanalle taustaväri",
+            "outlineWordSolidBackground": "Ympyröi virke, sanalle taustaväri",
             "outlineWordUnderline": "Ympyröi virke, alleviivaa sana",
             "preview": "Tekstistä puheeksi -korostusvalinnan esikatselu",
             "solidBackgroundWordOutline": "Virkkeen taustaväri, ympyröi sana",
@@ -1159,7 +1159,7 @@
             "solidBackgroundWordUnderline": "Virkkeen taustaväri, alleviivaa sana",
             "style": "Tekstistä puheeksi -korostustyylit",
             "underlineWordOutline": "Alleviivaa virke, ympyröi sana",
-            "underlineWordSolidBackground": "Alleviivaa virke, anna sanalle taustaväri",
+            "underlineWordSolidBackground": "Alleviivaa virke, sanalle taustaväri",
             "underlineWordUnderline": "Alleviivaa virke, alleviivaa sana",
             "wordColor": "Sanan väri"
         }
