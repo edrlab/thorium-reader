@@ -254,7 +254,7 @@
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "",
+                "compact": "Įtrauktos ARIA rolės",
                 "descriptive": ""
             },
             "additional-accessibility-information-audio-descriptions": {
@@ -274,16 +274,16 @@
                 "descriptive": ""
             },
             "additional-accessibility-information-high-contrast-between-text-and-background": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Didelis kontrastas tarp priekinio plano teksto ir fono",
+                "descriptive": "Didelis kontrastas tarp priekinio plano teksto ir fono"
             },
             "additional-accessibility-information-large-print": {
                 "compact": "Padidintas šriftas",
                 "descriptive": "Padidintas šriftas"
             },
             "additional-accessibility-information-page-breaks": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Įtraukti puslapių skirtukai",
+                "descriptive": "Įtraukti puslapių skirtukai iš pradinio spausdinto šaltinio"
             },
             "additional-accessibility-information-ruby-annotations": {
                 "compact": "",
@@ -324,7 +324,7 @@
                 "compact": "Leidinį sertifikavo "
             },
             "conformance-certifier-credentials": {
-                "compact": ""
+                "compact": "Sertifikuotojo įgaliojimas yra "
             },
             "conformance-details-certifier-report": {
                 "compact": "Daugiau informacijos rasite sertifikuotojo ataskaitoje"
@@ -358,11 +358,11 @@
             },
             "conformance-details-wcag-2-1": {
                 "compact": "WCAG 2.1",
-                "descriptive": ""
+                "descriptive": "Žiniatinklio turinio prieinamumo gairės (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
                 "compact": "WCAG 2.2",
-                "descriptive": ""
+                "descriptive": "Žiniatinklio turinio prieinamumo gairės (WCAG) 2.2"
             },
             "conformance-no": {
                 "compact": "Informacijos nėra",
@@ -377,7 +377,7 @@
         "hazards": {
             "hazards-flashing": {
                 "compact": "Blykčiojantis turinys",
-                "descriptive": ""
+                "descriptive": "Leidinyje yra blykčiojančio turinio, galinčio sukelti jautrumo šviesai priepuolius"
             },
             "hazards-flashing-none": {
                 "compact": "Nėra blykčiojančio turinio",
@@ -388,16 +388,16 @@
                 "descriptive": "Blykčiojančio turinio buvimas nežinomas"
             },
             "hazards-motion": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Judesio imitavimas",
+                "descriptive": "Leidinyje yra judesio imitacijų, galinčių sukelti jūros ligą"
             },
             "hazards-motion-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Nėra judesio imitacijų",
+                "descriptive": "Leidinyje nėra judesio imitacijų"
             },
             "hazards-motion-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Judesio imitacijų buvimas nežinomas",
+                "descriptive": "Judesio imitacijų buvimas nežinomas"
             },
             "hazards-no-metadata": {
                 "compact": "Informacijos nėra",
@@ -555,10 +555,10 @@
             },
             "accessibilityHazard": {
                 "flashing": "Blykčiojimas",
-                "motionSimulation": "Judesių imitavimas",
+                "motionSimulation": "Judesio imitavimas",
                 "name": "Pavojus:",
                 "noFlashing": "Be blykčiojimo",
-                "noMotionSimulation": "Be judesių imitavimo",
+                "noMotionSimulation": "Nėra judesio imitacijų",
                 "noSound": "Be garso",
                 "none": "Nėra",
                 "sound": "Garsas",
@@ -878,7 +878,7 @@
             "wipeData": "Išvalyti prisijungimo duomenis"
         },
         "keyboard": {
-            "advancedMenu": "Meniu",
+            "advancedMenu": "Išplėstinis sparčiųjų klavišų meniu",
             "cancel": "Nutraukti",
             "disclaimer": "Spartieji klavišai nustatyti remiantis QWERTY klaviatūros išdėstymu.",
             "editUserJson": "Keisti naudotojo failą...",
@@ -1014,7 +1014,7 @@
                 },
                 "NavigateNextPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Eiti į kitą puslapį"
                 },
                 "NavigateNextPageAlt": {
                     "description": "",
@@ -1022,7 +1022,7 @@
                 },
                 "NavigatePreviousChapter": {
                     "description": "",
-                    "name": ""
+                    "name": "Eiti į ankstesnį skyrių"
                 },
                 "NavigatePreviousChapterAlt": {
                     "description": "",
@@ -1050,7 +1050,7 @@
                 },
                 "NavigatePreviousPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Eiti į ankstesnį puslapį"
                 },
                 "NavigatePreviousPageAlt": {
                     "description": "",
@@ -1066,7 +1066,7 @@
                 },
                 "OpenReaderInfo": {
                     "description": "",
-                    "name": ""
+                    "name": "Rodyti leidinio informaciją"
                 },
                 "OpenReaderInfoWhereAmI": {
                     "description": "",
