@@ -255,7 +255,7 @@
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
                 "compact": "Įtrauktos ARIA rolės",
-                "descriptive": ""
+                "descriptive": "Turinys papildytas ARIA rolėmis, siekiant optimizuoti organizavimą ir palengvinti naršymą"
             },
             "additional-accessibility-information-audio-descriptions": {
                 "compact": "Garsinis vaizdavimas",
@@ -270,8 +270,8 @@
                 "descriptive": ""
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Didelis kontrastas tarp priekinio plano ir foninio garso",
+                "descriptive": "Didelis kontrastas tarp priekinio plano ir foninio garso"
             },
             "additional-accessibility-information-high-contrast-between-text-and-background": {
                 "compact": "Didelis kontrastas tarp priekinio plano teksto ir fono",
@@ -450,38 +450,38 @@
         },
         "rich-content": {
             "rich-content-accessible-chemistry-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Cheminės formulės kaip LaTeX",
+                "descriptive": "Cheminės formulės prieinamu formatu (LaTeX)"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Cheminės formulės kaip MathML",
+                "descriptive": "Cheminės formulės prieinamu formatu (MathML)"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Matematinės formulės kaip LaTeX",
+                "descriptive": "Matematinės formulės prieinamu formatu (LaTeX)"
             },
             "rich-content-accessible-math-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Matematinės formulės kaip MathML",
+                "descriptive": "Matematinės formulės prieinamu formatu (MathML)"
             },
             "rich-content-accessible-math-described": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Pateikiami tekstiniai matematinių formulių aprašymai",
+                "descriptive": "Pateikiami tekstiniai matematinių formulių aprašymai"
             },
             "rich-content-closed-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Vaizdo įrašuose yra uždarieji subtitrai",
+                "descriptive": "Leidiniuose esantys vaizdo įrašai turi uždaruosius subtitrus"
             },
             "rich-content-extended": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Informaciniai vaizdai aprašomi išplėstiniais aprašymais",
+                "descriptive": "Informaciniai vaizdai aprašomi išplėstiniais aprašymais"
             },
             "rich-content-open-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Vaizdo įrašuose yra atvirieji subtitrai",
+                "descriptive": "Leidiniuose esantys vaizdo įrašai turi atviruosius subtitrus"
             },
-            "rich-content-title": "",
+            "rich-content-title": "Raiškusis turinys",
             "rich-content-transcript": {
                 "compact": "Pateikiamas(-i) transkriptas(-ai)",
                 "descriptive": "Pateikiamas(-i) transkriptas(-ai)"
@@ -493,12 +493,12 @@
         },
         "ways-of-reading": {
             "ways-of-reading-nonvisual-reading-alt-text": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Turi alternatyvųjį tekstą",
+                "descriptive": "Turi alternatyviojo teksto aprašymus vaizdams"
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Informacijos apie nevizualinį skaitymą nėra",
+                "descriptive": "Informacijos apie nevizualinį skaitymą nėra"
             },
             "ways-of-reading-nonvisual-reading-none": {
                 "compact": "",
@@ -510,19 +510,19 @@
             },
             "ways-of-reading-nonvisual-reading-readable": {
                 "compact": "",
-                "descriptive": ""
+                "descriptive": "Visas turinys gali būti perskaitytas balso sinteze ar Brailio eilute"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Iš anksto įrašyti garso įrašai",
+                "descriptive": "Turinyje įterpti iš anksto įrašyti garso įrašai"
             },
             "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Informacijos apie iš anksto įrašytus garso įrašus nėra",
+                "descriptive": "Informacijos apie iš anksto įrašytus garso įrašus nėra"
             },
             "ways-of-reading-prerecorded-audio-only": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Tik iš anksto įrašytas garsas",
+                "descriptive": "Garsinė knyga be teksto alternatyvos"
             },
             "ways-of-reading-prerecorded-audio-synchronized": {
                 "compact": "Garso įrašas, sinchronizuotas su tekstu",
@@ -531,7 +531,7 @@
             "ways-of-reading-title": "Skaitymo būdai",
             "ways-of-reading-visual-adjustments-modifiable": {
                 "compact": "Galima keisti išvaizdą",
-                "descriptive": ""
+                "descriptive": "Priklausomai nuo skaitymo sistemos galimybių galima keisti teksto išvaizdą ir puslapio išdėstymą (šriftų šeimą ir dydį, tarpus tarp pastraipų, sakinių, žodžių ir raidžių, fono ir teksto spalvą)"
             },
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Informacijos apie išvaizdos keitimo galimybes nėra",
@@ -670,7 +670,7 @@
         },
         "goToContent": "Eiti į turinį",
         "imgViewer": {
-            "title": "",
+            "title": "Vaizdų peržiūra (mastelio keitimas)",
             "zoomIn": "Didinti",
             "zoomOut": "Mažinti",
             "zoomReset": "Nustatyti mastelį iš naujo"
@@ -880,7 +880,7 @@
         "keyboard": {
             "advancedMenu": "Išplėstinis sparčiųjų klavišų meniu",
             "cancel": "Nutraukti",
-            "disclaimer": "Spartieji klavišai nustatyti remiantis QWERTY klaviatūros išdėstymu.",
+            "disclaimer": "Programos numatytieji nustatymai buvo sukurti atsižvelgiant į fizinę klavišų vietą QWERTY klaviatūroje",
             "editUserJson": "Keisti naudotojo failą...",
             "keyboardShortcuts": "Spartieji klavišai",
             "list": {
@@ -890,7 +890,7 @@
                 },
                 "AnnotationsCreate": {
                     "description": "",
-                    "name": ""
+                    "name": "Kurti pastabą"
                 },
                 "AnnotationsCreateQuick": {
                     "description": "",
@@ -986,11 +986,11 @@
                 },
                 "NavigateNextChapter": {
                     "description": "",
-                    "name": ""
+                    "name": "Eiti į kitą skyrių"
                 },
                 "NavigateNextChapterAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Eiti į kitą skyrių (alternatyvus)"
                 },
                 "NavigateNextHistory": {
                     "description": "",
@@ -1006,27 +1006,27 @@
                 },
                 "NavigateNextOPDSPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Eiti į kitą OPDS puslapį"
                 },
                 "NavigateNextOPDSPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Eiti į kitą OPDS puslapį (alternatyvus)"
                 },
                 "NavigateNextPage": {
-                    "description": "",
+                    "description": "Skaitymo lange atversti kitą leidinio „puslapį“. Atkreipkite dėmesį, kad yra alternatyvus spartusis klavišas šiam numatytajam",
                     "name": "Eiti į kitą puslapį"
                 },
                 "NavigateNextPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Skaitymo lange atversti kitą leidinio „puslapį“. Šis spartusis klavišas yra alternatyvus numatytajam",
+                    "name": "Eiti į kitą puslapį (alternatyvus)"
                 },
                 "NavigatePreviousChapter": {
-                    "description": "",
+                    "description": "Skaitymo lange atversti ankstesnį dokumentą pagal leidinio skaitymo tvarką (pvz. skyrių). Atkreipkite dėmesį, kad yra alternatyvus spartusis klavišas šiam numatytajam",
                     "name": "Eiti į ankstesnį skyrių"
                 },
                 "NavigatePreviousChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Skaitymo lange atversti ankstesnį dokumentą pagal leidinio skaitymo tvarką (pvz. skyrių). Šis spartusis klavišas yra alternatyvus numatytajam",
+                    "name": "Eiti į ankstesnį skyrių (alternatyvus)"
                 },
                 "NavigatePreviousHistory": {
                     "description": "",
@@ -1042,11 +1042,11 @@
                 },
                 "NavigatePreviousOPDSPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Eiti į ankstesnį OPDS puslapį"
                 },
                 "NavigatePreviousOPDSPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Eiti į ankstesnį OPDS puslapį (alternatyvus)"
                 },
                 "NavigatePreviousPage": {
                     "description": "",
@@ -1054,26 +1054,26 @@
                 },
                 "NavigatePreviousPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Eiti į ankstesnį puslapį (alternatyvus)"
                 },
                 "NavigateToBegin": {
-                    "description": "",
+                    "description": "Skaitymo lange eiti į leidinio pradžią",
                     "name": "Eiti į pradžią"
                 },
                 "NavigateToEnd": {
-                    "description": "",
+                    "description": "Skaitymo lange eiti į leidinio pabaigą",
                     "name": "Eiti į pabaigą"
                 },
                 "OpenReaderInfo": {
-                    "description": "",
+                    "description": "Skaitymo lange atverti leidinio informacijos dialogo langą",
                     "name": "Rodyti leidinio informaciją"
                 },
                 "OpenReaderInfoWhereAmI": {
                     "description": "",
-                    "name": ""
+                    "name": "Rodyti leidinio informaciją, rodyti skaitymo vietą"
                 },
                 "Print": {
-                    "description": "",
+                    "description": "Skaitymo lange atverti spausdinimo dialogo langą",
                     "name": "Spausdinti"
                 },
                 "SearchNext": {
