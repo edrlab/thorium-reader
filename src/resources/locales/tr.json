@@ -342,16 +342,16 @@
                 "descriptive": "EPUB Erişilebilirliği 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "A Seviye",
-                "descriptive": "A Seviye"
+                "compact": "A Seviyesi",
+                "descriptive": "A Seviyesi"
             },
             "conformance-details-level-aa": {
-                "compact": "AA Seviye",
-                "descriptive": "AA Seviye"
+                "compact": "AA Seviyesi",
+                "descriptive": "AA Seviyesi"
             },
             "conformance-details-level-aaa": {
-                "compact": "AAA Seviye",
-                "descriptive": "AAA Seviye"
+                "compact": "AAA Seviyesi",
+                "descriptive": "AAA Seviyesi"
             },
             "conformance-details-wcag-2-0": {
                 "compact": "WCAG 2.0"
@@ -370,8 +370,8 @@
             },
             "conformance-title": "Uygunluk",
             "conformance-unknown-standard": {
-                "compact": "Bu eserin erişilebilirliğe ilişkin kabul görmüş standartlara uygunluğu belirlenemiyor",
-                "descriptive": "Bu eserin erişilebilirliğe ilişkin kabul görmüş standartlara uygunluğu belirlenemiyor"
+                "compact": "Bu eserin erişilebilirliğinin kabul edilen standartlara uygunluğu belirlenemiyor",
+                "descriptive": "Bu eserin erişilebilirliğinin kabul edilen standartlara uygunluğu belirlenemiyor"
             }
         },
         "hazards": {
@@ -381,7 +381,7 @@
             },
             "hazards-flashing-none": {
                 "compact": "Yanıp sönen içerik yok",
-                "descriptive": "Eserde, yanıp sönen içerik bulunmuyor"
+                "descriptive": "Eserde yanıp sönen içerik bulunmuyor"
             },
             "hazards-flashing-unknown": {
                 "compact": "Yanıp sönen içerik mevcudiyeti bilinmiyor",
@@ -393,7 +393,7 @@
             },
             "hazards-motion-none": {
                 "compact": "Hareket simülasyonu yok",
-                "descriptive": "Eser, hareket simülasyonu içermiyor"
+                "descriptive": "Eser hareket simülasyonu içermiyor"
             },
             "hazards-motion-unknown": {
                 "compact": "Hareket simülasyonu mevcudiyeti bilinmiyor",
