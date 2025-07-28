@@ -752,7 +752,7 @@
             "searchTitle": "Paieška:"
         },
         "print": {
-            "descriptionLcpCount": "",
+            "descriptionLcpCount": "Likusių puslapių apribojimas: {{- count}}",
             "descriptionLcpPrintable": "",
             "howTo": "",
             "lcpInfo": "",
