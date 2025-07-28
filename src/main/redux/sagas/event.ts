@@ -17,7 +17,7 @@ import {
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, put, spawn } from "redux-saga/effects";
 import { call as callTyped, take as takeTyped } from "typed-redux-saga/macro";
-import { opdsApi } from "./api";
+// import { opdsApi } from "./api"; // Removed: using direct import of addFeed instead
 import { browse } from "./api/browser/browse";
 import { addFeed } from "./api/opds/feed";
 
@@ -119,22 +119,36 @@ export function saga() {
 
                 try {
                     const url = yield* takeTyped(chan);
+                    debug("Processing OPDS URL from scheme:", url);
 
-                    const feed = yield* callTyped(opdsApi.addFeed, { title : url, url});
+                    // Extract a better title from the URL if possible
+                    let title: string;
+                    try {
+                        const urlObj = new URL(url);
+                        title = urlObj.hostname || urlObj.pathname.split("/").filter(Boolean).pop() || url;
+                    } catch (urlError) {
+                        debug("Failed to parse URL for title, using URL as title:", urlError);
+                        title = url;
+                    }
+
+                    debug("Adding OPDS feed with title:", title, "and URL:", url);
+                    const feed = yield* callTyped(addFeed, { title, url});
+                    
                     if (feed) {
+                        debug("Feed successfully added:", feed);
 
+                        // Ensure library window is active before navigating
                         yield* callTyped(appActivate);
 
-                        debug("Feed added ", feed);
-                        debug("Open in library catalogs");
+                        debug("Navigating to feed in library");
                         // open the feed in libraryWindow
                         yield put(historyActions.pushFeed.build(feed));
+                    } else {
+                        debug("Failed to add OPDS feed - no feed returned");
                     }
 
                 } catch (e) {
-
-                    debug("ERROR to importFromLink and to open the publication");
-                    debug(e);
+                    debug("ERROR processing OPDS URL:", e);
                 }
             }
 
