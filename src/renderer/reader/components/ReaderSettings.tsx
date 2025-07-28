@@ -1820,7 +1820,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
         );
     };
     return (
-        <div>
+        <div style={{minHeight: "inherit"}}>
             {
                 dockedMode ?
                     <>

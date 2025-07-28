@@ -7,15 +7,13 @@
   left: 50%;
   top: 50%;
   width: 776px;
-  min-height: 550px;
-  height: 597px;
+  min-height: calc(100vh - 300px);
   max-width: calc(100vw - 60px);
   max-height: calc(100vh - 60px);
   border-radius: 10px;
   z-index: 100;
   display: flex;
   flex-direction: column;
-
   // overflow: hidden auto;
   align-content: flex-start;
   color: var(--color-primary);
@@ -23,6 +21,15 @@
   box-sizing: border-box;
   overflow: hidden;
   border: 1px solid var(--color-verylight-grey-alt);
+
+  @media only screen and (height <= 700px) {
+    min-height: 550px;
+  }
+
+  .settings_container {
+    min-height: inherit;
+  }
+
 
   > .settings_container {
     padding: 0 20px 0 30px;
@@ -38,10 +45,6 @@
       height: calc(100vh - 100px);
     }
   }
-
-  @media screen and (height <= 750px) {
-    height: calc(100dvh - 150px);
-}
 }
 
 [data-theme="light"] {
