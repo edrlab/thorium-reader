@@ -271,7 +271,9 @@ const streamProtocolHandlerTunnel_NEW = async (req: GlobalRequest): Promise<Glob
                 arr.push([key, value]);
             }
             const resHeaders = new Headers(arr);
-            debug("BEFORE NEW RESPONSE TUNNEL...", req.method, req.url, req.referrer, headers, typeof Response, res.statusCode, res.headers, typeof res.data, res.data instanceof ReadableStream, (res.data as any).readable, (res.data as any).writable, arr);
+            if (__TH__IS_DEV__) {
+                debug("BEFORE NEW RESPONSE TUNNEL...", req.method, req.url, req.referrer, headers, typeof Response, res.statusCode, res.headers, typeof res.data, res.data instanceof ReadableStream, (res.data as any).readable, (res.data as any).writable, arr);
+            }
             // as import("undici-types").Response
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ ts-expect-error TS 2345
@@ -324,7 +326,9 @@ const streamProtocolHandler_NEW = async (req: GlobalRequest): Promise<GlobalResp
                 arr.push([key, value]);
             }
             const resHeaders = new Headers(arr);
-            debug("BEFORE NEW RESPONSE...", req.method, req.url, req.referrer, headers, typeof Response, res.statusCode, res.headers, typeof res.data, res.data instanceof ReadableStream, (res.data as any).readable, (res.data as any).writable, arr);
+            if (__TH__IS_DEV__) {
+                debug("BEFORE NEW RESPONSE...", req.method, req.url, req.referrer, headers, typeof Response, res.statusCode, res.headers, typeof res.data, res.data instanceof ReadableStream, (res.data as any).readable, (res.data as any).writable, arr);
+            }
             // as import("undici-types").Response
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ ts-expect-error TS 2345
@@ -1424,85 +1428,85 @@ export function initSessions() {
         scheme: READIUM2_ELECTRON_HTTP_PROTOCOL,
     }]);
 
-    const filter = { urls: ["*://*/*", THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://*/*", READIUM2_ELECTRON_HTTP_PROTOCOL + "://*/*"] };
+    // const filter = { urls: ["*://*/*", THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://*/*", READIUM2_ELECTRON_HTTP_PROTOCOL + "://*/*"] };
 
-    const onBeforeSendHeadersCB = (
-        details: OnBeforeSendHeadersListenerDetails,
-        callback: (beforeSendResponse: BeforeSendResponse) => void) => {
+    // const onBeforeSendHeadersCB = (
+    //     details: OnBeforeSendHeadersListenerDetails,
+    //     callback: (beforeSendResponse: BeforeSendResponse) => void) => {
 
-        debug("onBeforeSendHeaders");
-        debug(details);
+    //     debug("onBeforeSendHeaders");
+    //     debug(details);
 
-        // details.requestHeaders["User-Agent"] = "R2 Electron";
+    //     // details.requestHeaders["User-Agent"] = "R2 Electron";
 
-        if (!details.url) {
-            callback({});
-            return;
-        }
+    //     if (!details.url) {
+    //         callback({});
+    //         return;
+    //     }
 
-        if (details.url.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") || details.url.startsWith(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://")) {
-            debug("onBeforeSendHeaders YES");
-            details.requestHeaders["X-Thorium-Test"] = "Header";
-            callback({
-                cancel: false,
-                requestHeaders: {
-                    ...details.requestHeaders,
-                },
-            });
-        } else {
-            debug("onBeforeSendHeaders NO");
-            // HTTP headers passthrough
-            // https://github.com/electron/electron/issues/23988
-            callback({
-                cancel: false,
-                requestHeaders: {
-                    ...details.requestHeaders,
-                },
-            });
-        }
-    };
+    //     if (details.url.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") || details.url.startsWith(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://")) {
+    //         debug("onBeforeSendHeaders YES");
+    //         details.requestHeaders["X-Thorium-Test"] = "Header";
+    //         callback({
+    //             cancel: false,
+    //             requestHeaders: {
+    //                 ...details.requestHeaders,
+    //             },
+    //         });
+    //     } else {
+    //         debug("onBeforeSendHeaders NO");
+    //         // HTTP headers passthrough
+    //         // https://github.com/electron/electron/issues/23988
+    //         callback({
+    //             cancel: false,
+    //             requestHeaders: {
+    //                 ...details.requestHeaders,
+    //             },
+    //         });
+    //     }
+    // };
 
-    const onHeadersReceivedCB = (
-        details: OnHeadersReceivedListenerDetails,
-        callback: (headersReceivedResponse: HeadersReceivedResponse) => void) => {
+    // const onHeadersReceivedCB = (
+    //     details: OnHeadersReceivedListenerDetails,
+    //     callback: (headersReceivedResponse: HeadersReceivedResponse) => void) => {
 
-        debug("onHeadersReceived");
-        debug(details);
+    //     debug("onHeadersReceived");
+    //     debug(details);
 
-        if (!details.url) {
-            callback({});
-            return;
-        }
+    //     if (!details.url) {
+    //         callback({});
+    //         return;
+    //     }
 
-        if (details.url.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") || details.url.startsWith(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://")) {
-            debug("onHeadersReceived YES CSP");
-            callback({
-                cancel: false,
-                responseHeaders: {
-                    ...details.responseHeaders,
-                    "cross-origin-resource-policy": "cross-origin",
-                    // https://github.com/electron/electron/blob/master/docs/tutorial/security.md#csp-http-header
-                    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy#fetch_directives
-                    // https://www.electronjs.org/docs/latest/tutorial/security
-                    "Content-Security-Policy":
-                        // "default-src 'none'; style-src 'unsafe-inline'; sandbox"
-                        `default-src 'self' 'unsafe-inline' 'unsafe-eval' data: http: https: ${READIUM2_ELECTRON_HTTP_PROTOCOL}: ${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}:`,
-                },
-                // statusLine
-            });
-        } else {
-            debug("onHeadersReceived NO CSP");
-            // HTTP headers passthrough
-            // https://github.com/electron/electron/issues/23988
-            callback({
-                cancel: false,
-                responseHeaders: {
-                    ...details.responseHeaders,
-                },
-                // statusLine
-            });
-        }
-    };
+    //     if (details.url.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") || details.url.startsWith(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://")) {
+    //         debug("onHeadersReceived YES CSP");
+    //         callback({
+    //             cancel: false,
+    //             responseHeaders: {
+    //                 ...details.responseHeaders,
+    //                 "cross-origin-resource-policy": "cross-origin",
+    //                 // https://github.com/electron/electron/blob/master/docs/tutorial/security.md#csp-http-header
+    //                 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy#fetch_directives
+    //                 // https://www.electronjs.org/docs/latest/tutorial/security
+    //                 "Content-Security-Policy":
+    //                     // "default-src 'none'; style-src 'unsafe-inline'; sandbox"
+    //                     `default-src 'self' 'unsafe-inline' 'unsafe-eval' data: http: https: ${READIUM2_ELECTRON_HTTP_PROTOCOL}: ${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}:`,
+    //             },
+    //             // statusLine
+    //         });
+    //     } else {
+    //         debug("onHeadersReceived NO CSP");
+    //         // HTTP headers passthrough
+    //         // https://github.com/electron/electron/issues/23988
+    //         callback({
+    //             cancel: false,
+    //             responseHeaders: {
+    //                 ...details.responseHeaders,
+    //             },
+    //             // statusLine
+    //         });
+    //     }
+    // };
 
     app.on("ready", async () => {
         debug("app ready");
@@ -1514,8 +1518,8 @@ export function initSessions() {
         }
 
         if (session.defaultSession) {
-            session.defaultSession.webRequest.onHeadersReceived(filter, onHeadersReceivedCB);
-            session.defaultSession.webRequest.onBeforeSendHeaders(filter, onBeforeSendHeadersCB);
+            // session.defaultSession.webRequest.onHeadersReceived(filter, onHeadersReceivedCB);
+            // session.defaultSession.webRequest.onBeforeSendHeaders(filter, onBeforeSendHeadersCB);
             // session.defaultSession.setCertificateVerifyProc(setCertificateVerifyProcCB);
 
             if (USE_NEW_PROTOCOL_HANDLER) {
@@ -1532,8 +1536,8 @@ export function initSessions() {
         }
         const webViewSession = getWebViewSession();
         if (webViewSession) {
-            webViewSession.webRequest.onHeadersReceived(filter, onHeadersReceivedCB);
-            webViewSession.webRequest.onBeforeSendHeaders(filter, onBeforeSendHeadersCB);
+            // webViewSession.webRequest.onHeadersReceived(filter, onHeadersReceivedCB);
+            // webViewSession.webRequest.onBeforeSendHeaders(filter, onBeforeSendHeadersCB);
             // webViewSession.setCertificateVerifyProc(setCertificateVerifyProcCB);
 
             if (USE_NEW_PROTOCOL_HANDLER) {
