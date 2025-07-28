@@ -281,7 +281,7 @@ function main() {
                 }, 500);
             }
         }
-    });
+    }, true);
 
     window.document.documentElement.addEventListener("keydown", (_ev: KeyboardEvent) => {
         window.document.documentElement.classList.add("ROOT_CLASS_KEYBOARD_INTERACT");
