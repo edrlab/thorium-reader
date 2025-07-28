@@ -5,9 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { Readable } from "node:stream";
+import { ReadableStream } from "node:stream/web";
+
 import * as crypto from "crypto";
 import * as debug_ from "debug";
-import { app, protocol, ProtocolRequest, ProtocolResponse, session } from "electron";
+import { app, BeforeSendResponse, HeadersReceivedResponse, OnBeforeSendHeadersListenerDetails, OnHeadersReceivedListenerDetails, protocol, ProtocolRequest, ProtocolResponse, session } from "electron";
 import * as fs from "fs";
 import * as mime from "mime-types";
 import * as path from "path";
@@ -54,6 +57,8 @@ import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 
 const debug = debug_("readium-desktop:main#streamerNoHttp");
 debug("_");
+
+const USE_NEW_PROTOCOL_HANDLER = false;
 
 // !!!!!!
 /// BE CAREFUL DEBUG HAS BEED DISABLED IN package.json
@@ -187,23 +192,161 @@ function getPreFetchResources(publication: R2Publication): Link[] {
     return links;
 }
 
+// https://github.com/laurent22/joplin/blob/984bb0f3ef3943a3abd0e3de1110ce1723363ef7/packages/app-desktop/utils/customProtocols/handleCustomProtocols.ts#L32
+// https://github.com/nodejs/node/issues/54205
+const nodeStreamToWeb = (resultStream: Readable): ReadableStream => { // NodeJS.ReadStream
+    return Readable.toWeb(resultStream);
+
+	// resultStream.pause();
+
+	// let closed = false;
+
+	// return new ReadableStream({
+	// 	start: (controller) => {
+	// 		resultStream.on('data', (chunk) => {
+	// 			if (closed) {
+	// 				return;
+	// 			}
+
+	// 			if (Buffer.isBuffer(chunk)) {
+	// 				controller.enqueue(new Uint8Array(chunk));
+	// 			} else {
+	// 				controller.enqueue(chunk);
+	// 			}
+
+	// 			if (controller.desiredSize <= 0) {
+	// 				resultStream.pause();
+	// 			}
+	// 		});
+
+	// 		resultStream.on('error', (error) => {
+	// 			controller.error(error);
+	// 		});
+
+	// 		resultStream.on('end', () => {
+	// 			if (!closed) {
+	// 				closed = true;
+	// 				controller.close();
+	// 			}
+	// 		});
+	// 	},
+	// 	pull: (_controller) => {
+	// 		if (closed) {
+	// 			return;
+	// 		}
+
+	// 		resultStream.resume();
+	// 	},
+	// 	cancel: () => {
+	// 		if (!closed) {
+	// 			closed = true;
+	// 			// resultStream.close();
+ //                resultStream.destroy();
+	// 		}
+	// 	},
+	// }, { highWaterMark: resultStream.readableHighWaterMark });
+};
+
+// handler: (request: GlobalRequest) => (GlobalResponse) | (Promise<GlobalResponse>)
+const streamProtocolHandlerTunnel_NEW = async (req: GlobalRequest): Promise<GlobalResponse> => {
+
+    const headers: Record<string, string> = {};
+    for (const entry of req.headers.entries()) {
+        headers[entry[0]] = entry[1];
+    }
+
+    return new Promise<GlobalResponse>(async (resolve) => {
+        await streamProtocolHandlerTunnel({
+            headers,
+            method: req.method,
+            referrer: req.referrer,
+            url: req.url,
+        },
+        // (res: (NodeJS.ReadableStream) | (ProtocolResponse)) => {
+        (res: ProtocolResponse) => {
+            const arr: Array<[string, string]> = [];
+            const keys = Object.keys(res.headers as Record<string, string>);
+            for (const key of keys) {
+                const value = (res.headers as Record<string, string>)[key];
+                arr.push([key, value]);
+            }
+            const resHeaders = new Headers(arr);
+            if (__TH__IS_DEV__) {
+                debug("BEFORE NEW RESPONSE TUNNEL...", req.method, req.url, req.referrer, headers, typeof Response, res.statusCode, res.headers, typeof res.data, res.data instanceof ReadableStream, (res.data as any).readable, (res.data as any).writable, arr);
+            }
+            // as import("undici-types").Response
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ ts-expect-error TS 2345
+            // resolve(new Response(res.data as NodeJS.ReadableStream, {
+            resolve(new Response(nodeStreamToWeb(res.data as NodeJS.ReadStream), {
+                status: res.statusCode,
+                headers: resHeaders,
+            }));
+        },
+        );
+    });
+};
+
 const streamProtocolHandlerTunnel = async (
     req: ProtocolRequest,
-    callback: (stream: (NodeJS.ReadableStream) | (ProtocolResponse)) => void) => {
+    // callback: (stream: (NodeJS.ReadableStream) | (ProtocolResponse)) => void,
+    callback: (res: ProtocolResponse) => void,
+) => {
 
     debug("............... streamProtocolHandlerTunnel req.url", req.url);
     req.url = convertCustomSchemeToHttpUrl(req.url);
-    streamProtocolHandler(req, callback);
+    await streamProtocolHandler(req, callback);
 };
 
 // super hacky!! :(
 // see usages of this boolean...
 let _customUrlProtocolSchemeHandlerWasCalled = false;
 
+// handler: (request: GlobalRequest) => (GlobalResponse) | (Promise<GlobalResponse>)
+const streamProtocolHandler_NEW = async (req: GlobalRequest): Promise<GlobalResponse> => {
+
+    const headers: Record<string, string> = {};
+    for (const entry of req.headers.entries()) {
+        headers[entry[0]] = entry[1];
+    }
+
+    return new Promise<GlobalResponse>(async (resolve) => {
+        await streamProtocolHandler({
+            headers,
+            method: req.method,
+            referrer: req.referrer,
+            url: req.url,
+        },
+        // (res: (NodeJS.ReadableStream) | (ProtocolResponse)) => {
+        (res: ProtocolResponse) => {
+            const arr: Array<[string, string]> = [];
+            const keys = Object.keys(res.headers as Record<string, string>);
+            for (const key of keys) {
+                const value = (res.headers as Record<string, string>)[key];
+                arr.push([key, value]);
+            }
+            const resHeaders = new Headers(arr);
+            if (__TH__IS_DEV__) {
+                debug("BEFORE NEW RESPONSE...", req.method, req.url, req.referrer, headers, typeof Response, res.statusCode, res.headers, typeof res.data, res.data instanceof ReadableStream, (res.data as any).readable, (res.data as any).writable, arr);
+            }
+            // as import("undici-types").Response
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ ts-expect-error TS 2345
+            // resolve(new Response(res.data as NodeJS.ReadableStream, {
+            resolve(new Response(nodeStreamToWeb(res.data as NodeJS.ReadStream), {
+                status: res.statusCode,
+                headers: resHeaders,
+            }));
+        },
+        );
+    });
+};
+
 const streamProtocolHandler = async (
     req: ProtocolRequest,
-    callback: (stream: (NodeJS.ReadableStream) | (ProtocolResponse)) => void) => {
-
+    // callback: (stream: (NodeJS.ReadableStream) | (ProtocolResponse)) => void,
+    callback: (res: ProtocolResponse) => void,
+) => {
     _customUrlProtocolSchemeHandlerWasCalled = true;
 
     // debug("streamProtocolHandler:");
@@ -279,12 +422,15 @@ const streamProtocolHandler = async (
         });
     }
 
-    const headers: Record<string, (string) | (string[])> = {};
+    // const headers: Record<string, (string) | (string[])> = {};
+    const headers: Record<string, string> = {};
     if (ref && ref !== "null" && !/^https?:\/\/localhost.+/.test(ref) && !/^https?:\/\/127\.0\.0\.1.+/.test(ref)) {
         headers.referer = ref;
     } else {
         headers.referer = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/`;
     }
+
+    // headers["Content-Security-Policy"] = `default-src 'self' 'unsafe-inline' 'unsafe-eval' data: http: https: ${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}: ${READIUM2_ELECTRON_HTTP_PROTOCOL}:`;
 
     // CORS everything!
     headers["Access-Control-Allow-Origin"] = "*";
@@ -734,6 +880,26 @@ const streamProtocolHandler = async (
         }
         debug("streamProtocolHandler mediaType", mediaType);
 
+
+        // https://www.electronjs.org/docs/latest/api/client-request
+        // https://developer.mozilla.org/en-US/docs/Web/API/Window/fetch#redirect
+        // protocol.handle("http", (request) => {
+        //     return net.fetch(request.url, { redirect: "manual" });
+        // });
+        // session.defaultSession.interceptHttpProtocol("http", (request, callback) => {
+        //     callback({...request, redirect: "manual", session: null});
+        // });
+        // if (mediaType.startsWith("audio")) {
+        //     debug("streamProtocolHandler AUDIO redirect...", req.headers);
+        //     callback({
+        //         data: null,
+        //         // headers: req.headers,
+        //         headers: { ...req.headers, Location: "https://woolyss.com/f/audio-sample.mp3" }, // https://tools.woolyss.com/html5-audio-video-tester/?u=woolyss.com/f/audio-sample.mp3
+        //         statusCode: 301,
+        //     });
+        //     return;
+        // }
+
         // const isText = (typeof mediaType === "string") && (
         //     mediaType.indexOf("text/") === 0 ||
         //     mediaType.indexOf("application/xhtml") === 0 ||
@@ -760,7 +926,9 @@ const streamProtocolHandler = async (
         //         || link.Properties.Encrypted.Algorithm === "http://www.idpf.org/2008/embedding");
         debug("streamProtocolHandler isEncrypted", isEncrypted);
 
-        const isPartialByteRangeRequest = ((req.headers && req.headers.Range) ? true : false);
+        const headersRange = req.headers.Range || req.headers.range;
+
+        const isPartialByteRangeRequest = ((req.headers && headersRange) ? true : false);
         debug("streamProtocolHandler isPartialByteRangeRequest", isPartialByteRangeRequest);
 
         // if (isEncrypted && isPartialByteRangeRequest) {
@@ -774,14 +942,14 @@ const streamProtocolHandler = async (
         let partialByteBegin = 0; // inclusive boundaries
         let partialByteEnd = -1;
         if (isPartialByteRangeRequest) {
-            debug("streamProtocolHandler isPartialByteRangeRequest", req.headers.Range);
+            debug("streamProtocolHandler isPartialByteRangeRequest", headersRange);
 
-            const ranges = parseRangeHeader(req.headers.Range);
+            const ranges = parseRangeHeader(headersRange);
             // debug(ranges);
 
             if (ranges && ranges.length) {
                 if (ranges.length > 1) {
-                    const err = "Too many HTTP ranges: " + req.headers.Range;
+                    const err = "Too many HTTP ranges: " + headersRange;
                     debug(err);
                     const buff =
                         Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
@@ -808,9 +976,11 @@ const streamProtocolHandler = async (
         }
         let zipStream_: IStreamAndLength;
         try {
-            zipStream_ = isPartialByteRangeRequest && !isEncrypted ?
-                await zip.entryStreamRangePromise(pathInZip, partialByteBegin, partialByteEnd) :
-                await zip.entryStreamPromise(pathInZip);
+            if (isPartialByteRangeRequest && !isEncrypted && !(partialByteBegin === 0 && partialByteEnd === -1)) {
+                zipStream_ = await zip.entryStreamRangePromise(pathInZip, partialByteBegin, partialByteEnd);
+            } else {
+                zipStream_ = await zip.entryStreamPromise(pathInZip);
+            }
         } catch (err) {
             debug(err);
             const buff = Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
@@ -896,6 +1066,7 @@ const streamProtocolHandler = async (
         }
 
         headers["Accept-Ranges"] = "bytes";
+        headers["X-Content-Type-Options"] = "nosniff";
 
         let statusCode = 200;
         if (isPartialByteRangeRequest) {
@@ -1257,6 +1428,86 @@ export function initSessions() {
         scheme: READIUM2_ELECTRON_HTTP_PROTOCOL,
     }]);
 
+    // const filter = { urls: ["*://*/*", THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://*/*", READIUM2_ELECTRON_HTTP_PROTOCOL + "://*/*"] };
+
+    // const onBeforeSendHeadersCB = (
+    //     details: OnBeforeSendHeadersListenerDetails,
+    //     callback: (beforeSendResponse: BeforeSendResponse) => void) => {
+
+    //     debug("onBeforeSendHeaders");
+    //     debug(details);
+
+    //     // details.requestHeaders["User-Agent"] = "R2 Electron";
+
+    //     if (!details.url) {
+    //         callback({});
+    //         return;
+    //     }
+
+    //     if (details.url.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") || details.url.startsWith(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://")) {
+    //         debug("onBeforeSendHeaders YES");
+    //         details.requestHeaders["X-Thorium-Test"] = "Header";
+    //         callback({
+    //             cancel: false,
+    //             requestHeaders: {
+    //                 ...details.requestHeaders,
+    //             },
+    //         });
+    //     } else {
+    //         debug("onBeforeSendHeaders NO");
+    //         // HTTP headers passthrough
+    //         // https://github.com/electron/electron/issues/23988
+    //         callback({
+    //             cancel: false,
+    //             requestHeaders: {
+    //                 ...details.requestHeaders,
+    //             },
+    //         });
+    //     }
+    // };
+
+    // const onHeadersReceivedCB = (
+    //     details: OnHeadersReceivedListenerDetails,
+    //     callback: (headersReceivedResponse: HeadersReceivedResponse) => void) => {
+
+    //     debug("onHeadersReceived");
+    //     debug(details);
+
+    //     if (!details.url) {
+    //         callback({});
+    //         return;
+    //     }
+
+    //     if (details.url.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") || details.url.startsWith(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://")) {
+    //         debug("onHeadersReceived YES CSP");
+    //         callback({
+    //             cancel: false,
+    //             responseHeaders: {
+    //                 ...details.responseHeaders,
+    //                 "cross-origin-resource-policy": "cross-origin",
+    //                 // https://github.com/electron/electron/blob/master/docs/tutorial/security.md#csp-http-header
+    //                 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy#fetch_directives
+    //                 // https://www.electronjs.org/docs/latest/tutorial/security
+    //                 "Content-Security-Policy":
+    //                     // "default-src 'none'; style-src 'unsafe-inline'; sandbox"
+    //                     `default-src 'self' 'unsafe-inline' 'unsafe-eval' data: http: https: ${READIUM2_ELECTRON_HTTP_PROTOCOL}: ${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}:`,
+    //             },
+    //             // statusLine
+    //         });
+    //     } else {
+    //         debug("onHeadersReceived NO CSP");
+    //         // HTTP headers passthrough
+    //         // https://github.com/electron/electron/issues/23988
+    //         callback({
+    //             cancel: false,
+    //             responseHeaders: {
+    //                 ...details.responseHeaders,
+    //             },
+    //             // statusLine
+    //         });
+    //     }
+    // };
+
     app.on("ready", async () => {
         debug("app ready");
 
@@ -1267,22 +1518,39 @@ export function initSessions() {
         }
 
         if (session.defaultSession) {
-            session.defaultSession.protocol.registerStreamProtocol(
-                THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
-                streamProtocolHandler);
-            session.defaultSession.protocol.registerStreamProtocol(
-                READIUM2_ELECTRON_HTTP_PROTOCOL,
-                streamProtocolHandlerTunnel);
+            // session.defaultSession.webRequest.onHeadersReceived(filter, onHeadersReceivedCB);
+            // session.defaultSession.webRequest.onBeforeSendHeaders(filter, onBeforeSendHeadersCB);
+            // session.defaultSession.setCertificateVerifyProc(setCertificateVerifyProcCB);
+
+            if (USE_NEW_PROTOCOL_HANDLER) {
+                session.defaultSession.protocol.handle(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandler_NEW);
+                session.defaultSession.protocol.handle(READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandlerTunnel_NEW);
+            } else {
+                session.defaultSession.protocol.registerStreamProtocol(
+                    THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
+                    streamProtocolHandler);
+                session.defaultSession.protocol.registerStreamProtocol(
+                    READIUM2_ELECTRON_HTTP_PROTOCOL,
+                    streamProtocolHandlerTunnel);
+            }
         }
         const webViewSession = getWebViewSession();
         if (webViewSession) {
-            webViewSession.protocol.registerStreamProtocol(
-                THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
-                streamProtocolHandler);
+            // webViewSession.webRequest.onHeadersReceived(filter, onHeadersReceivedCB);
+            // webViewSession.webRequest.onBeforeSendHeaders(filter, onBeforeSendHeadersCB);
+            // webViewSession.setCertificateVerifyProc(setCertificateVerifyProcCB);
 
-            webViewSession.protocol.registerStreamProtocol(
-                READIUM2_ELECTRON_HTTP_PROTOCOL,
-                streamProtocolHandlerTunnel);
+            if (USE_NEW_PROTOCOL_HANDLER) {
+                webViewSession.protocol.handle(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandler_NEW);
+                webViewSession.protocol.handle(READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandlerTunnel_NEW);
+            } else {
+                webViewSession.protocol.registerStreamProtocol(
+                    THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
+                    streamProtocolHandler);
+                webViewSession.protocol.registerStreamProtocol(
+                    READIUM2_ELECTRON_HTTP_PROTOCOL,
+                    streamProtocolHandlerTunnel);
+            }
 
             webViewSession.setPermissionRequestHandler((wc, permission, callback) => {
                 debug("setPermissionRequestHandler");
