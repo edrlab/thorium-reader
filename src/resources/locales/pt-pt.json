@@ -305,11 +305,11 @@
                 "compact": "Sugestões Texto para voz disponíveis",
                 "descriptive": "Sugestões Texto para voz disponíveis"
             },
-            "additional-accessibility-information-title": ""
+            "additional-accessibility-information-title": "Informações adicionais sobre acessibilidade"
         },
         "conformance": {
             "conformance-a": {
-                "compact": "",
+                "compact": "Esta publicação cumpre os padrões mínimos de acessibilidade",
                 "descriptive": ""
             },
             "conformance-aa": {
@@ -371,7 +371,7 @@
             "conformance-title": "Regras de acessibilidade",
             "conformance-unknown-standard": {
                 "compact": "",
-                "descriptive": ""
+                "descriptive": "Não foi possível determinar a conformidade com as normas de acessibilidade desta publicação"
             }
         },
         "hazards": {
@@ -388,7 +388,7 @@
                 "descriptive": ""
             },
             "hazards-motion": {
-                "compact": "",
+                "compact": "Simulação de movimento",
                 "descriptive": ""
             },
             "hazards-motion-none": {

@@ -8,6 +8,7 @@
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
+import * as stylesPrint from "readium-desktop/renderer/assets/styles/components/print.scss";
 // import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 
 import classNames from "classnames";
@@ -850,7 +851,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         </Dialog.Trigger>
                                         <Dialog.Portal container={appOverlayElement}>
                                             <Dialog.Content style={{ zIndex: 101, height: "fit-content" }}
-                                            className={stylesPopoverDialog.modal_dialog_reader}
+                                            className={classNames(stylesPopoverDialog.modal_dialog_reader, stylesPrint.modal_dialog_print)}
                                             // onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
                                             // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
                                             >

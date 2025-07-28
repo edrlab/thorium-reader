@@ -50,6 +50,37 @@ const pdfDocument = new Promise<PDFDocumentProxy>((resolve) =>
         resolve(_pdfDocument);
     }));
 
+// https://github.com/mozilla/pdf.js/blob/aa4b9ffd4ac985230cbbfca329322fa578b630dd/web/ui_utils.js#L193-L207
+const InvisibleCharsRegExp = /[\x00-\x1F]/g;
+function removeNullCharacters(str: string, replaceInvisible = false) {
+    if (!InvisibleCharsRegExp.test(str)) {
+        return str;
+    }
+    if (replaceInvisible) {
+        return str.replace(InvisibleCharsRegExp, m => (m === "\x00" ? "" : " "));
+    }
+    return str.replace(/\x00/g, "");
+}
+
+// https://github.com/mozilla/pdf.js/blob/aa4b9ffd4ac985230cbbfca329322fa578b630dd/src/shared/util.js#L1110-L1127
+let NormalizeRegex: RegExp = null;
+let NormalizationMap: Map<string, string> = null;
+function normalizeUnicode(str: string) {
+    if (!NormalizeRegex) {
+        // In order to generate the following regex:
+        //  - create a PDF containing all the chars in the range 0000-FFFF with
+        //    a NFKC which is different of the char.
+        //  - copy and paste all those chars and get the ones where NFKC is
+        //    required.
+        // It appears that most the chars here contain some ligatures.
+        NormalizeRegex =
+        /([\u00a0\u00b5\u037e\u0eb3\u2000-\u200a\u202f\u2126\ufb00-\ufb04\ufb06\ufb20-\ufb36\ufb38-\ufb3c\ufb3e\ufb40-\ufb41\ufb43-\ufb44\ufb46-\ufba1\ufba4-\ufba9\ufbae-\ufbb1\ufbd3-\ufbdc\ufbde-\ufbe7\ufbea-\ufbf8\ufbfc-\ufbfd\ufc00-\ufc5d\ufc64-\ufcf1\ufcf5-\ufd3d\ufd88\ufdf4\ufdfa-\ufdfb\ufe71\ufe77\ufe79\ufe7b\ufe7d]+)|(\ufb05+)/gu;
+        NormalizationMap = new Map([["ﬅ", "ſt"]]);
+    }
+
+    return str.replace(NormalizeRegex, (_, p1, p2) => p1 ? p1.normalize("NFKC") : NormalizationMap.get(p2));
+}
+
 function main() {
 
     const bus: IPdfBus = eventBus(
@@ -277,11 +308,17 @@ function main() {
                 evt.preventDefault();
 
                 setTimeout(() => {
-                    bus.dispatch("copy", str);
+                    // https://github.com/mozilla/pdf.js/blob/aa4b9ffd4ac985230cbbfca329322fa578b630dd/web/text_layer_builder.js#L167-L176
+                    const txt = removeNullCharacters(normalizeUnicode(str));
+
+                    // if (txt !== str) {
+                    //     console.log("PDF clipboard copy text normalize: ", str, " ===> ", txt);
+                    // }
+                    bus.dispatch("copy", txt);
                 }, 500);
             }
         }
-    });
+    }, true);
 
     window.document.documentElement.addEventListener("keydown", (_ev: KeyboardEvent) => {
         window.document.documentElement.classList.add("ROOT_CLASS_KEYBOARD_INTERACT");

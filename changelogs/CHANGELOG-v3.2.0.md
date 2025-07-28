@@ -2,7 +2,7 @@
 
 ## Summary
 
-Version `3.2.0` was released on **17 July 2025**.
+Version `3.2.0` was released on **30 July 2025**.
 
 This release includes the following (notable) new features, improvements and bug fixes:
 
@@ -61,9 +61,22 @@ This release includes the following (notable) new features, improvements and bug
 Git commit diff since `3.1.0`:
 https://github.com/edrlab/thorium-reader/compare/v3.1.0...v3.2.0
 
-=> **311** GitHub Git commits:
+=> **324** GitHub Git commits:
 
-* [(_)](https://github.com/edrlab/thorium-reader/commit/9ccadc2af740146e71050ae030d5b06507c61a93) (HEAD -> develop, origin/develop, origin/HEAD) [skip ci] Merge remote-tracking branch 'weblate/develop' into develop
+* [(_)](https://github.com/edrlab/thorium-reader/commit/3ad695b6ce73b3d8b8e2fb6c5042d7fa36d058a5) __fix(GUI):__ modal dialogs stretched responsive height, annotations list background color (PR [#3052](https://github.com/edrlab/thorium-reader/pull/3052) Fixes [#3017](https://github.com/edrlab/thorium-reader/issues/3017) Fixes [#3006](https://github.com/edrlab/thorium-reader/issues/3006))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/f8a0b96a590fd067dbd3f7beec6e82286ba3bae7) __fix(l10n):__ updated translations via Weblate: Lithuanian, Turkish, Portuguese (Portugal), Finnish (PR [#3073](https://github.com/edrlab/thorium-reader/pull/3073))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/e8f6b368eb2fbc8bc9fabc30bf1a17a507147318) __chore(NPM):__ package updates
+* [(_)](https://github.com/edrlab/thorium-reader/commit/3e7bf808320e32178b5a3b027642d1a140c7b394) __chore(dev):__ Flox/Nix 1.6.0 [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/896155cbf13143bfe67272b11db130eb6acb08a0) __fix(PDF):__ null characters and unicode normalization during clipboard copy (mimics PDF.js logic)
+* [(_)](https://github.com/edrlab/thorium-reader/commit/22d1b595e8880977d7b6117f3f8949ab83f74999) __fix(PDF):__ clipoard copy event must be captured (regression since after v3.0.0, probably PDF.js intercept?)
+* [(_)](https://github.com/edrlab/thorium-reader/commit/131d446fcf093d5d3c2089261d7166e4bc5bcec9) __chore(dev):__ empty-commit test (sorry :)
+* [(_)](https://github.com/edrlab/thorium-reader/commit/f5b1b14bdf66c9db813c7d74fb5857fcc33fe2a0) __chore(dev):__ introduce shell.nix and .envrc with direnv [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/ed0232e40794e18895fd02d19202d0a3c9b17122) __chore(NPM):__ package updates, notably r2-navigator-js that fixes Electron v37+ CSS Columns regression bug (Fixes [#3072](https://github.com/edrlab/thorium-reader/issues/3072) )
+* [(_)](https://github.com/edrlab/thorium-reader/commit/cdd821a60304b7a307dfd6d4d46d6cf9ddb59c34) __chore(dev):__ Flox/Nix update [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/9eac039e0fc509aa50fe24499328e98b0cf111f6) __chore(NPM):__ package update, minor Electron bump
+* [(_)](https://github.com/edrlab/thorium-reader/commit/7c319b729aa75eaeefeccf1f506d89905a384d52) __chore(NPM):__ updated packages
+* [(_)](https://github.com/edrlab/thorium-reader/commit/f62dfed6c43e4b116d9b9025b3f1d9e8a8329fd6) __chore(release):__ changelog [skip ci]
+* [(_)](https://github.com/edrlab/thorium-reader/commit/9ccadc2af740146e71050ae030d5b06507c61a93) [skip ci] Merge remote-tracking branch 'weblate/develop' into develop
 * [(_)](https://github.com/edrlab/thorium-reader/commit/cdb49e73ffa4d102e7f6c78c82352d3a171f625c) Translated using Weblate (Turkish)
 * [(_)](https://github.com/edrlab/thorium-reader/commit/ab1ea3f422fc544cae58d79297b964be4944c656) Translated using Weblate (Turkish)
 * [(_)](https://github.com/edrlab/thorium-reader/commit/ff9ced1a1cba6f4c0c56e43327dc127e9e01b9f2) Translated using Weblate (Turkish)
