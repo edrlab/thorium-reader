@@ -140,7 +140,7 @@
         "deleteBookmarksText": "Haluatko varmasti poistaa {{- bookmarkListLength}} kirjanmerkkiä?",
         "deleteFeed": "Haluatko poistaa tämän luettelon?",
         "deletePublication": "Haluatko poistaa tämän julkaisun?",
-        "deletePublicationWithNotes": "Varoitus: tämä julkaisu sisältää muistiinpanoja ja/tai kirjanmerkkejä, myös ne poistetaan! (Jos haluat säilyttää ne, muista viedä merkinnät ennen kuin poistat julkaisun)",
+        "deletePublicationWithNotes": "Varoitus: tämä julkaisu sisältää muistiinpanoja ja/tai kirjanmerkkejä, myös ne poistetaan! (Jos haluat säilyttää ne, muista viedä muistiinpanot talteen ennen kuin poistat julkaisun)",
         "import": "Haluatko tuoda nämä tiedostot:",
         "importError": "Virhe havaittiin. Varmista tiedostopääte ({{acceptedExtension}})",
         "renew": "Haluatko uusia tämän lainan?",
@@ -180,7 +180,7 @@
             "urlHint": "Unohtuiko salasana? Lisätietoja:",
             "whatIsLcp?": "Mikä on LCP?",
             "whatIsLcpInfoDetails": "LCP (Licensed Content Protection) on sisällön suojaustapa.",
-            "whatIsLcpInfoDetailsLink": "Lisätietoja EDRLabin sivustolla."
+            "whatIsLcpInfoDetailsLink": "Lisätietoja on EDRLabin sivustolla."
         }
     },
     "message": {
@@ -188,7 +188,7 @@
             "alreadyImported": "Kaikki muistiinpanot on jo tuotu.",
             "emptyFile": "Tiedostossa ei ole muistiinpanoja.",
             "errorParsing": "Virhe tiedoston jäsentämisessä: ",
-            "noBelongTo": "Muistiinpanoja ei voida tuoda, ainakaan yksi muistiinpano ei kuulu julkaisuun.",
+            "noBelongTo": "Muistiinpanoja ei voida tuoda, vähintään yksi muistiinpano ei kuulu julkaisuun.",
             "nothing": "Yhtään muistiinpanoa ei ole valmiina tuontiin, tuonti keskeytetty.",
             "success": "Tuonti onnistui."
         },
@@ -298,8 +298,8 @@
                 "descriptive": "Sisältää kohokuvia sokeille henkilöille"
             },
             "additional-accessibility-information-tactile-objects": {
-                "compact": "Kolmiuloitteisia taktiiliosia",
-                "descriptive": "Kolmiuloitteisia taktiiliosia"
+                "compact": "Kolmiulotteisia taktiiliosia",
+                "descriptive": "Kolmiulotteisia taktiiliosia"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
                 "compact": "Tekstistä puheeksi -vihjeitä",
@@ -324,7 +324,7 @@
                 "compact": "Julkaisun saavutettavuuden on arvioinut "
             },
             "conformance-certifier-credentials": {
-                "compact": "Arvioijan sertifiointitunnus "
+                "compact": "Arvioijan sertifiointitunnus on "
             },
             "conformance-details-certifier-report": {
                 "compact": "Lisätietoja arvioijan raportissa"
@@ -542,15 +542,15 @@
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": "Yhteensopiva tekstistä puheeksi -toiminnon ja ruudunlukuohjelmien kanssa"
+                "textual": "Sisältö on luettavissa tekstistä puheeksi -toiminnon tai ruudunlukuohjelman avulla"
             },
             "accessibilityFeature": {
                 "alternativeText": "Kuvilla on vaihtoehtoiset tekstit",
                 "displayTransformability": "Tekstin ulkoasua voi mukauttaa",
                 "longDescription": "Kuvallisella sisällöllä on kattavia selostuksia",
-                "printPageNumbers": "Sisältää painetun kirjan sivunumeroinnin",
+                "printPageNumbers": "Sisältää sivuluettelon, josta voi siirtyä painetun kirjan tiettyä sivua vastaavaan kohtaan",
                 "readingOrder": "Lukemisjärjestys on määritelty",
-                "synchronizedAudioText": "Tekstin kanssa synkronoitu äänite",
+                "synchronizedAudioText": "Teksti ja äänite on synkronoitu",
                 "tableOfContents": "Sisältää sisällysluettelon"
             },
             "accessibilityHazard": {
@@ -589,7 +589,7 @@
         "encryptedNoLicense": "Julkaisu on suojattu, mutta siitä puuttuu LCP-lisenssi.",
         "expired": "Laina-aika on päättynyt",
         "expiredLcp": "LCP-käyttöoikeus on päättynyt.",
-        "incorrectPassphrase": "Yksinään tallennettu salasana ei käy julkaisuun tai annettu salasana on väärä.",
+        "incorrectPassphrase": "Yksikään tallennettu salasana ei käy julkaisuun tai annettu salasana on väärä.",
         "lcpEnd": "Loppu",
         "lcpRightsCopy": "Kopioidut merkit",
         "lcpRightsPrint": "Tulostetut sivut",
@@ -689,7 +689,7 @@
         },
         "media-overlays": {
             "activate": "Käynnistä luenta",
-            "captions": "Synkronoitu teksti: pelkistetty",
+            "captions": "Synkronoitu teksti: pelkistetty näkymä",
             "captionsDescription": "Pelkistetty tekstinäkymä.",
             "disableContinuousPlay": "Älä käytä jatkuvaa luentaa",
             "disableContinuousPlayDescription": "Älä jatka luentaa automaattisesti seuraavaan kohteeseen vaan keskeytä luenta, kun nykyinen kohde on luettu.",
@@ -709,7 +709,7 @@
             "ZenModeExit": "Poistu kokoruudun tilasta",
             "ZenModeTitle": "Kokoruudun tila",
             "annotationTitle": "Muistiinpano",
-            "backHomeTitle": "Takaisin kirjahyllyyn",
+            "backHomeTitle": "Sulje tämä lukuikkuna (siirry takaisin kirjahyllyyn)",
             "bookmarkTitle": "Kirjanmerkki",
             "currentPage": "Nykyinen sivu: {{- current}}",
             "currentPageTotal": "Nykyinen sivu: {{- current}}/{{- total}}",
@@ -724,7 +724,7 @@
             "magnifyingGlassButton": "Hae julkaisusta",
             "openTableOfContentsTitle": "Navigaatio",
             "page": "Sivu",
-            "pdfscalemode": "Sovita sivu tai leveyteen",
+            "pdfscalemode": "Sovita sivun kokoon tai leveyteen",
             "print": "Tulosta",
             "printDisabled": "Tulostus kielletty",
             "settingsTitle": "Asetukset"
@@ -878,7 +878,7 @@
             "wipeData": "Poista kirjautumistiedot"
         },
         "keyboard": {
-            "advancedMenu": "Valikko",
+            "advancedMenu": "Pikanäppäinten valikko",
             "cancel": "Peruuta",
             "disclaimer": "Oletuspikanäppäimet perustuvat QWERTY-näppäinasetteluun",
             "editUserJson": "Muokkaa käyttäjän tiedostoa...",
@@ -918,7 +918,7 @@
                 },
                 "AudioPreviousAlt": {
                     "description": "Siirry edelliseen ääniosioon (tekstiä ja ääntä yhdistävä kirja, tekstistä puheeksi -toiminto tai äänikirja). Toiminto ohittaa rakenteet, jotka ovat ohitettavissa",
-                    "name": "Edellinen äänijakso (ohita)"
+                    "name": "Edellinen ääniosio (ohita)"
                 },
                 "AudioStop": {
                     "description": "Pysäytä nykyinen ääni (tekstiä ja ääntä yhdistävä kirja, tekstistä puheeksi -toiminto tai äänikirja)",
@@ -1144,14 +1144,14 @@
     "tts": {
         "highlight": {
             "mainColor": "Pääväri",
-            "maskBlockWordOutline": "Sumenna ympäröivä teksti, ympyröi sana",
-            "maskBlockWordSolidBackground": "Sumenna ympäröivä teksti, sanan taustaväri",
-            "maskBlockWordUnderline": "Sumenna ympäröivä teksti, alleviivaa sana",
-            "maskWordOutline": "Sumenna, ympyröi sana",
-            "maskWordSolidBackground": "Sumenna, sanan taustaväri",
-            "maskWordUnderline": "Sumenna, alleviivaa sana",
+            "maskBlockWordOutline": "Sumenna ympärillä, ympyröi sana",
+            "maskBlockWordSolidBackground": "Sumenna ympärillä, sanalle taustaväri",
+            "maskBlockWordUnderline": "Sumenna ympärillä, alleviivaa sana",
+            "maskWordOutline": "Sumennus, ympyröi sana",
+            "maskWordSolidBackground": "Sumennus, sanalle taustaväri",
+            "maskWordUnderline": "Sumennus, alleviivaa sana",
             "outlineWordOutline": "Ympyröi virke, ympyröi sana",
-            "outlineWordSolidBackground": "Ympyröi virke, sanan taustaväri",
+            "outlineWordSolidBackground": "Ympyröi virke, sanalle taustaväri",
             "outlineWordUnderline": "Ympyröi virke, alleviivaa sana",
             "preview": "Tekstistä puheeksi -korostusvalinnan esikatselu",
             "solidBackgroundWordOutline": "Virkkeen taustaväri, ympyröi sana",
@@ -1159,7 +1159,7 @@
             "solidBackgroundWordUnderline": "Virkkeen taustaväri, alleviivaa sana",
             "style": "Tekstistä puheeksi -korostustyylit",
             "underlineWordOutline": "Alleviivaa virke, ympyröi sana",
-            "underlineWordSolidBackground": "Alleviivaa virke, sanan taustaväri",
+            "underlineWordSolidBackground": "Alleviivaa virke, sanalle taustaväri",
             "underlineWordUnderline": "Alleviivaa virke, alleviivaa sana",
             "wordColor": "Sanan väri"
         }
