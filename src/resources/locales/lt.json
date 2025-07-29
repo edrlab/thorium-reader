@@ -754,7 +754,7 @@
         "print": {
             "descriptionLcpCount": "Likusių puslapių apribojimas: {{- count}}",
             "descriptionLcpPrintable": "",
-            "howTo": "",
+            "howTo": "Kaip pasirinkti spausdintinų puslapių rėžį",
             "lcpInfo": "",
             "noPagesLcpLimitReached": "Pasiekėte LCP ribą",
             "noPrintablePages": "Spausdintinų puslapių nėra",
@@ -885,8 +885,8 @@
             "keyboardShortcuts": "Spartieji klavišai",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "",
-                    "name": ""
+                    "description": "Atverti žymės kūrimo dialogo langą ir redaguoti tekstinę etiketę (pastabą), spalvą ir žymę",
+                    "name": "Kurti žymę su etikete"
                 },
                 "AnnotationsCreate": {
                     "description": "",
