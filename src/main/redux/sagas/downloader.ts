@@ -381,7 +381,13 @@ function downloadCreateFilename(contentType: string | undefined, contentDisposit
         }
     }
 
-    return contentDispositionFilename || contentTypeFilename || filename;
+    let contentDispositionFilenameSanitize = "";
+    if (contentDispositionFilename) {
+        contentDispositionFilenameSanitize = contentDispositionFilename.replace(/\/|\\/g, "_");
+        debug(`contentDispositionFilenameSanitize: ${contentDispositionFilenameSanitize}`);
+    }
+
+    return contentDispositionFilenameSanitize || contentTypeFilename || filename;
 }
 
 interface IDownloadProgression {
