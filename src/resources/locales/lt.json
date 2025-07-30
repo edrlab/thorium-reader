@@ -266,8 +266,8 @@
                 "descriptive": "Brailio raštas"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Pilnos „ruby“ anotacijos",
+                "descriptive": "Pilnos „ruby“ anotacijos"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
                 "compact": "Didelis kontrastas tarp priekinio plano ir foninio garso",
@@ -286,8 +286,8 @@
                 "descriptive": "Įtraukti puslapių skirtukai iš pradinio spausdinto šaltinio"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Dalinės „ruby“ anotacijos",
+                "descriptive": "Dalinės „ruby“ anotacijos"
             },
             "additional-accessibility-information-sign-language": {
                 "compact": "Gestų kalba",
@@ -753,13 +753,13 @@
         },
         "print": {
             "descriptionLcpCount": "Likusių puslapių apribojimas: {{- count}}",
-            "descriptionLcpPrintable": "",
+            "descriptionLcpPrintable": "Anksčiau atspausdinti puslapiai: {{- printable}} ({{- count}})",
             "howTo": "Kaip pasirinkti spausdintinų puslapių rėžį",
-            "lcpInfo": "",
+            "lcpInfo": "Šio leidinio puslapių, kuriuos galite spausdinti, kiekis apribotas iki {{- count}}. Pasirinkite reikiamus puslapius čia.",
             "noPagesLcpLimitReached": "Pasiekėte LCP ribą",
             "noPrintablePages": "Spausdintinų puslapių nėra",
-            "pageHelpInfo": "",
-            "pageHelpInfo1": "",
+            "pageHelpInfo": "Puslapių pasirinkimo sintaksė:",
+            "pageHelpInfo1": "jei norite įtraukti vieną puslapį, įveskite jo numerį (pvz. „6“)",
             "pageHelpInfo2": "",
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
@@ -794,7 +794,7 @@
             "mathjax": "",
             "noFootnotes": "Išjungti iššokančias išnašas",
             "noRTLFlip": "Išjungti iš-dešinės-į-kairę naudotojo sąsają",
-            "noRuby": "Slėpti japonų kalbos Ruby simbolius",
+            "noRuby": "Slėpti japonų kalbos „ruby“ simbolius",
             "noTemporaryNavTargetOutline": "Išjungti vaizdinius naršymo indikatorius",
             "paginated": "Skaidyti į puslapius",
             "paraSpacing": "Tarpas tarp pastraipų",
