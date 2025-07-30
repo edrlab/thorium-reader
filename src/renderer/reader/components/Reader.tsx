@@ -110,7 +110,7 @@ import { getStore } from "../createStore";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
 import { DockTypeName } from "readium-desktop/common/models/dock";
 import { TDrawView } from "readium-desktop/common/redux/states/renderer/note";
-import { IProfile } from "readium-desktop/common/redux/states/profile";
+import { IPalette, IProfile } from "readium-desktop/common/redux/states/profile";
 
 const debug = debug_("readium-desktop:renderer:reader:components:Reader");
 debug("_");
@@ -755,14 +755,22 @@ class Reader extends React.Component<IProps, IState> {
 
     private applyThemeVariables(profile: IProfile): void {
         const root = document.documentElement;
-        const colors: IProfile["palette"] = profile.palette;
+        const { theme } = profile || {};
 
-        Object.entries(colors).forEach(([key, value]) => {
-        const cssVar = `--theme-${key}`;
-        root.style.setProperty(cssVar, value);
-        });
+        if (theme?.light && theme?.dark) {
+            const applyColorSet = (colors: IPalette, suffix: string) => {
+                Object.keys(colors).forEach(([key, value]) => {
+                    const cssVar = `--theme-${key}_${suffix}`;
+                    root.style.setProperty(cssVar, value);
+                });
+            };
+    
+            // Application des thèmes
+            applyColorSet(theme.light, "light");
+            applyColorSet(theme.dark, "dark");
 
-        this.setState({ themeApplied: true });
+            this.setState({ themeApplied: true });
+        }
     }
 
     private isFixedLayout(): boolean {

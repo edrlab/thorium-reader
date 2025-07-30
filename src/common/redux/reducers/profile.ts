@@ -12,9 +12,27 @@ import { IProfile } from "../states/profile";
 
 const initialState = {
     id: 0,
-    version: 1,
+    manifest_version: 1,
+    version: "1.0",
     name: "Thorium",
-    apiapp: true,
+    show_apiapp: true,
+    show_catalogs: true,
+    navigation: [
+        {
+            "title": "",
+            "href": "",
+            "type": "application/opds+json",
+            "rel": "bookshelf",
+            "properties": {
+                "show_on_homepage": false,
+                "authenticate_on_launch": false,
+                "authenticate": {
+                    "href": "",
+                    "type": "application/opds-authentication+json",
+                },
+            },
+        },
+    ],
 };
 
 function profileReducer_(

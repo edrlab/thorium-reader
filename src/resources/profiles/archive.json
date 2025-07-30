@@ -1,57 +1,72 @@
- {
+{
     "id": 3,
-    "version": 1,
+    "manifest_version": 1,
+    "version": "1.0",
     "name": "Archive.org",
-    "logo": {
-        "href": "https://www.mediatheques-cc2so.fr/images/article/en-ligne-24-24/internet-archive.png",
-        "type": "image/png"
-    },
     "language": "en-EN",
-    "palette": {
-        "neutral-light": "",
-        "neutral-dark": "",
-        "primary-light": "",
-        "primary-dark": "",
-        "secondary-light": "",
-        "secondary-dark": "",
-        "border-light": "",
-        "border-dark": "",
-        "background-light": "",
-        "background-dark": "",
-        "appName-light": "",
-        "appName-dark": ""
-    },
-    "properties": {
-        "showOnHomepage": true,
-        "allowDeletion": false,
-        "apiapp": false,
-        "authenticate": {
-            "href": "https://archive.org/services/loans/loan/?action=user_bookshelf",
-            "type": "application/opds-authentication+json"
+    "theme": {
+        "light": {
+            "neutral": "",
+            "primary": "",
+            "secondary": "",
+            "border": "",
+            "background": "",
+            "app_name": ""
+        },
+        "dark": {
+            "neutral": "",
+            "primary": "",
+            "secondary": "",
+            "border": "",
+            "background": "",
+            "app_name": ""
         }
     },
-    "links": {
-        "feeds": [
-            {
-                "title": "Archive",
-                "href": "opds://archive.org/services/opds",
-                "type": "application/opds+json",
-                "rel": "catalog"
-            },
-            {
-                "title": "Bookshelf",
-                "href": "https://archive.org/services/loans/loan/?action=user_bookshelf",
-                "type": "application/opds+json",
-                "rel": "bookshelf"
+    "show_apiapp": false,
+    "show_catalogs": false,
+    "images": [
+        {
+            "href": "https://www.mediatheques-cc2so.fr/images/article/en-ligne-24-24/internet-archive.png",
+            "type": "image/png",
+            "rel": "logo",
+            "alt": "Archive logo"
+        }
+    ],
+    "navigation": [
+        {
+            "title": "Archive",
+            "href": "opds://archive.org/services/opds",
+            "type": "application/opds+json",
+            "rel": "catalog",
+            "properties": {}
+        },
+        {
+            "title": "Bookshelf",
+            "href": "https://archive.org/services/loans/loan/?action=user_bookshelf",
+            "type": "application/opds+json",
+            "rel": "bookshelf",
+            "properties": {
+                "show_on_homepage": true,
+                "authenticate_on_launch": true,
+                "authenticate": {
+                    "href": "https://archive.org/services/loans/loan/?action=user_bookshelf",
+                    "type": "application/opds-authentication+json"
+                }
             }
-        ],
-        "publications" : [
-            {
-                "title": "",
-                "href": "",
-                "type": "application/opds+json",
-                "rel": "catalog"
-            }
-        ]
-    }
+        }
+    ],
+    "publications": [
+        {
+            "href": "./example.epub",
+            "type": "application/epub+zip"
+        }
+    ],
+    "links": [
+        {
+            "title": "FAQ",
+            "href": "",
+            "type": "text/html",
+            "rel": "faq"
+        }
+    ]
 }

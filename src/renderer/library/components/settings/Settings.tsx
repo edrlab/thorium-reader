@@ -19,7 +19,7 @@ import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg"
 import * as CogIcon from "readium-desktop/renderer/assets/icons/cog-icon.svg";
 import * as PaletteIcon from "readium-desktop/renderer/assets/icons/palette-icon.svg";
 import * as KeyReturnIcon from "readium-desktop/renderer/assets/icons/keyreturn-icon.svg";
-import * as AuthIcon from "readium-desktop/renderer/assets/icons/authentication-icon.svg";
+// import * as AuthIcon from "readium-desktop/renderer/assets/icons/authentication-icon.svg";
 import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 import classNames from "classnames";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
@@ -333,7 +333,7 @@ const ManageAccessToCatalogSettings = () => {
 
     const profile = useSelector((s: ICommonRootState) => s.profile);
 
-    const apiappDisabled: boolean = profile.properties?.apiapp; 
+    const apiappDisabled: boolean = profile.show_apiapp; 
 
     return (
         apiappDisabled === false ? <></> : 
@@ -447,15 +447,15 @@ const Profiles = () => {
     const profileChosen = allProfiles.find(({ id }) => id === profileSelected);
     if (!profileChosen) return;
 
-    if (profileChosen.properties?.authenticate?.href) {
-        const authRoute = buildOpdsBrowserRoute(
-            profileChosen.id.toString(),
-            "Authentification",
-            profileChosen.properties.authenticate.href,
-            1,
-        );
-        navigate(authRoute, { replace: true });
-    }
+    // if (profileChosen.properties?.authenticate?.href) {
+    //     const authRoute = buildOpdsBrowserRoute(
+    //         profileChosen.id.toString(),
+    //         "Authentification",
+    //         profileChosen.properties.authenticate.href,
+    //         1,
+    //     );
+    //     navigate(authRoute, { replace: true });
+    // }
     dispatch(profileActions.setProfile.build(profileChosen));
     setLanguage(profileChosen);
 
@@ -463,8 +463,8 @@ const Profiles = () => {
         profileChosen.name !== "Thorium"
             ? buildOpdsBrowserRoute(
                   profileChosen.id.toString(),
-                  profileChosen.links.feeds[0].title,
-                  profileChosen.links.feeds[0].href,
+                  profileChosen.navigation[0].title,
+                  profileChosen.navigation[0].href,
               )
             : "/";
 
@@ -480,9 +480,9 @@ const Profiles = () => {
                 <ComboBoxItem key={item.id} textValue={item.name}>
                     <span style={{ display: "flex", alignItems: "center", gap: "0.5em" }}>
                         {item.name}
-                        {item.properties.authenticate?.href ?
+                        {/* {item.properties.authenticate?.href ?
                             <SVG className={stylesSettings.authIcon} ariaHidden svg={AuthIcon} />
-                        : <></>}
+                        : <></>} */}
                     </span>
                 </ComboBoxItem>}
             </ComboBox>

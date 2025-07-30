@@ -34,22 +34,22 @@ $thorium-theme-button-hover-dark: #48484b;
 
 // CUSTOM SET OF COLORS (DEFAULT TO THORIUM)
 
-$theme-neutral-light: var(--theme-neutral-light, $thorium-theme-neutral-light);
-$theme-neutral-dark: var(--theme-neutral-dark, $thorium-theme-neutral-dark);
-$theme-main-primary-light: var(--theme-primary-light, $thorium-theme-primary-light);
-$theme-main-primary-dark: var(--theme-primary-dark, $thorium-theme-primary-dark);
-$theme-main-secondary-light: var(--theme-secondary-light, $thorium-theme-secondary-light);
-$theme-main-secondary-dark: var(--theme-secondary-dark, $thorium-theme-secondary-dark);
-$theme-border-light: var(--theme-border-light, $thorium-theme-border-light);
-$theme-border-dark: var(--theme-border-dark, $thorium-theme-border-dark);
-$theme-background-light: var(--theme-background-light, $thorium-theme-background-light);
-$theme-background-dark: var(--theme-background-dark, $thorium-theme-background-dark);
-$theme-appName-light: var(--theme-appName-light, $thorium-theme-appName-light);
-$theme-appName-dark: var(--theme-appName-dark, $thorium-theme-appName-dark);
-$-theme-scrollbar-thumb-light: var(--theme-primary-light, $thorium-theme-scrollbar-thumb);
-$-theme-scrollbar-thumb-dark: var(--theme-primary-dark, $thorium-theme-scrollbar-thumb);
-$-theme-button-hover-light: var(--theme-neutral-light, $thorium-theme-button-hover-light);
-$-theme-button-hover-dark: var(--theme-neutral-dark, $thorium-theme-button-hover-dark);
+$theme-neutral-light: var(--theme-neutral_light, $thorium-theme-neutral-light);
+$theme-neutral-dark: var(--theme-neutral_dark, $thorium-theme-neutral-dark);
+$theme-main-primary-light: var(--theme-primary_light, $thorium-theme-primary-light);
+$theme-main-primary-dark: var(--theme-primary_dark, $thorium-theme-primary-dark);
+$theme-main-secondary-light: var(--theme-secondary_light, $thorium-theme-secondary-light);
+$theme-main-secondary-dark: var(--theme-secondary_dark, $thorium-theme-secondary-dark);
+$theme-border-light: var(--theme-border_light, $thorium-theme-border-light);
+$theme-border-dark: var(--theme-border_dark, $thorium-theme-border-dark);
+$theme-background-light: var(--theme-background_light, $thorium-theme-background-light);
+$theme-background-dark: var(--theme-background_dark, $thorium-theme-background-dark);
+$theme-appName-light: var(--theme-app_name_light, $thorium-theme-appName-light);
+$theme-appName-dark: var(--theme-app_name_dark, $thorium-theme-appName-dark);
+$-theme-scrollbar-thumb-light: var(--theme-primary_light, $thorium-theme-scrollbar-thumb);
+$-theme-scrollbar-thumb-dark: var(--theme-primary_dark, $thorium-theme-scrollbar-thumb);
+$-theme-button-hover-light: var(--theme-neutral_light, $thorium-theme-button-hover-light);
+$-theme-button-hover-dark: var(--theme-neutral_dark, $thorium-theme-button-hover-dark);
 
 // FINAL VARIABLES PALETTE
 

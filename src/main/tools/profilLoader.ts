@@ -16,8 +16,8 @@ const profilesDir = path.join(app.getAppPath(), "src", "resources", "profiles");
 const isValidProfile = (profile: any): profile is IProfile => {
     return profile && 
            typeof profile === "object" && 
-           profile.version === 1 &&
-           profile.links.feeds.length > 0 &&
+           profile.manifest_version === 1 &&
+           profile.navigation.length > 0 &&
            // Required properties from IProfile
            // For example : typeof profile.id === 'string' && typeof profile.name === 'string'
            true;

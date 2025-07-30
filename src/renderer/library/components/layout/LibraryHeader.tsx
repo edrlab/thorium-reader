@@ -80,7 +80,7 @@ class Header extends React.Component<IProps, IState> {
     }
 
     private applySupplierLogo(profile: IProfile): void {
-        const logo = profile.logo;
+        const logo = profile.images?.filter((object) => object.rel === "logo")[0];
 
         this.setState({ themeApplied: true, logo });
     }
@@ -115,7 +115,7 @@ class Header extends React.Component<IProps, IState> {
         svg: ShelfIcon,
         });
 
-        if (this.props.profile.name === "Thorium" || this.props.profile.properties.apiapp === true) {
+        if (this.props.profile.name === "Thorium" || this.props.profile.show_catalogs === true) {
         headerNav.push({
             route: "/opds",
             label: this.props.__("header.catalogs"),
@@ -125,7 +125,7 @@ class Header extends React.Component<IProps, IState> {
             svg: CatalogsIcon,
         });
         }
-        if (this.props.profile.name !== "Thorium" && this.props.profile?.links?.feeds?.length > 0) {
+        if (this.props.profile.name !== "Thorium" && this.props.profile?.navigation?.length > 0) {
             headerNav.push({
                 route: "",
                 label: "",
@@ -135,9 +135,9 @@ class Header extends React.Component<IProps, IState> {
                 svg: CatalogsIcon,
                 type: "separator",
             });
-            this.props.profile?.links?.feeds?.forEach((feed) => {
+            this.props.profile?.navigation?.forEach((feed) => {
                 const feedRoute = buildOpdsBrowserRoute(
-                    this.props.profile.id.toString(),
+                    this.props.profile?.id?.toString(),
                     feed.title,
                     feed.href,
                 );
@@ -168,7 +168,7 @@ class Header extends React.Component<IProps, IState> {
                 label={__("accessibility.skipLink")}
             />
             <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>
-                {hasLogo && (logo.type === "svg") ? 
+                {hasLogo && (logo.type === "image/svg+xml") ? 
                     <div
                         className="logo"
                         style={{height: "60px", width: "calc(100% - 20px)", margin: " 20px auto", display: "flex", justifyContent: "center"}}

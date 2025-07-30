@@ -40,7 +40,7 @@ import NunitoBold from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-Se
 import { WizardModal } from "./Wizard";
 import { getReduxHistory, getStore } from "../createStore";
 import { getTranslator } from "readium-desktop/common/services/translator";
-import { IProfile } from "readium-desktop/common/redux/states/profile";
+import { IPalette, IProfile } from "readium-desktop/common/redux/states/profile";
 // eslintxx-disable-next-line @typescript-eslint/no-unused-expressions
 // globalScssStyle.__LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__;
 
@@ -153,16 +153,22 @@ export default class App extends React.Component<{}, IState> {
 
     private applyThemeVariables(profile: IProfile): void {
         const root = document.documentElement;
-        const colors = profile.palette;
+        const { theme } = profile || {};
 
-        if (colors) {
-            Object.entries(colors).forEach(([key, value]) => {
-            const cssVar = `--theme-${key}`;
-            root.style.setProperty(cssVar, value);
-            });
+        if (theme?.light && theme?.dark) {
+            const applyColorSet = (colors: IPalette, suffix: string) => {
+                Object.keys(colors).forEach(([key, value]) => {
+                    const cssVar = `--theme-${key}_${suffix}`;
+                    root.style.setProperty(cssVar, value);
+                });
+            };
+    
+            // Application des thèmes
+            applyColorSet(theme.light, "light");
+            applyColorSet(theme.dark, "dark");
+
+            this.setState({ themeApplied: true });
         }
-
-        this.setState({ themeApplied: true });
     }
 
     public componentWillUnmount() {

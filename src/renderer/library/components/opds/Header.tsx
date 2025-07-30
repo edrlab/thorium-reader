@@ -51,7 +51,7 @@ class Header extends React.Component<IProps, undefined> {
         // const displayType = (location?.state && (location.state as IRouterLocationState).displayType) || DisplayType.Grid;
 
         // FIXME : css in code
-        const apiappEnabled: boolean = this.props.profile.properties.apiapp;
+        const apiappEnabled: boolean = this.props.profile.show_apiapp;
         return (
             apiappEnabled ?
             <SecondaryHeader style={{display: "flex", gap: "10px", alignItems: "end", height: "53px", justifyContent: "end", margin: "0px"}}>

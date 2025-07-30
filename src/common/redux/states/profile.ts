@@ -5,53 +5,55 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-interface IPalette {
-    "neutral-light": string;
-    "neutral-dark": string;
-    "primary-light": string;
-    "primary-dark": string;
-    "secondary-light": string;
-    "secondary-dark": string;
-    "border-light": string;
-    "border-dark": string;
-    "background-light": string;
-    "background-dark": string;
-    "appName-light": string;
-    "appName-dark": string;
+export interface IPalette {
+    "neutral": string;
+    "primary": string;
+    "secondary": string;
+    "border": string;
+    "background": string;
+    "app_name": string;
 }
 
-interface ILink {
-    feeds?:
-        {
-            title: string;
+interface INavigation {
+    title: string;
+    href: string;
+    type: string;
+    rel: string;
+    properties?: {
+        show_on_homepage: boolean;
+        authenticate_on_launch: boolean;
+        authenticate: {
             href: string;
             type: string;
-            rel: string;
-        }[];
-    publications?:
-        {
-            title: string;
-            href: string;
-            type: string;
-            rel: string;
-        }[]
+        }
+    }
 }
+
+interface IPublication {
+    href: string;
+    type: string;
+}
+
+interface ILinks {
+    title: string;
+    href: string;
+    type: string;
+    rel: string;
+ }
 
 export interface IProfile {
     id: number,
-    version: number,
+    manifest_version: number;
+    version: string,
     name: string,
-    logo?: {href: string, type: string},
     language?: string,
-    palette?: IPalette;
-    properties?: {
-        showOnHomepage?: boolean;
-        allowDeletion?: boolean;
-        apiapp: boolean;
-        authenticate?: {
-            href: string;
-            type: string;
-        };
-    }
-    links?: ILink
+    splash_screen?: string,
+    theme?: {light: IPalette, dark: IPalette};
+    show_apiapp: boolean;
+    show_catalogs: boolean;
+    images?: {href: string, type: string, rel: string, alt: string}[],
+    navigation: INavigation[];
+    publications?: IPublication[];
+    links?: ILinks[];
+    signature?: {key: string, value: string, algorithm: string}
 }

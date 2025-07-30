@@ -1,57 +1,65 @@
- {    
-        "id": 1,
-        "version": 1,
-        "name": "FeedBooks",
-        "logo": {
-            "href": "https://bibliotheque-louis-garret.vesoul.fr/images/article/en-ligne-24-24/feedbooks.png",
-            "type": "image/png"
+{
+    "id": 1,
+    "manifest_version": 1,
+    "version": "1.0",
+    "name": "FeedBooks",
+    "language": "fr-FR",
+    "theme": {
+        "light": {
+            "neutral": "#F8F8F7",
+            "primary": "#841C26",
+            "secondary": "#F2B4B4",
+            "border": "#DADADA",
+            "background": "#FBEAEA",
+            "app_name": "#841C26"
         },
-        "language": "fr-FR",
-        "palette": {
-            "neutral-light": "#F8F8F7",
-            "neutral-dark": "#1E1E1E",
-            "primary-light": "#841C26",
-            "primary-dark": "#F87171",
-            "secondary-light": "#F2B4B4",
-            "secondary-dark": "#7A2E2E",
-            "border-light": "#DADADA",
-            "border-dark": "#3A3A3A",
-            "background-light": "#FBEAEA",
-            "background-dark": "#2A1B1B",
-            "appName-light": "#841C26",
-            "appName-dark": "#F87171"
-        },
-        "properties": {
-            "showOnHomepage": true,
-            "allowDeletion": false,
-            "apiapp": false,
-            "authenticate": {
-                "href": "",
-                "type": "application/opds-authentication+json" 
-            }
-        },
-        "links": {
-            "feeds": [
-                {
-                    "title": "En ce moment",
-                    "href": "https://catalog.feedbooks.com/featured.json?languages=fr",
-                    "type": "application/opds+json",
-                    "rel": "catalog"
-                },
-                {
-                    "title": "Nos coups de coeur",
-                    "href": "https://catalog.feedbooks.com/picks.json?languages=fr",
-                    "type": "application/opds+json",
-                    "rel": "catalog"
-                }
-            ],
-            "publications" : [
-                {
-                    "title": "",
-                    "href": "",
-                    "type": "application/opds+json",
-                    "rel": "catalog"
-                }
-            ]
+        "dark": {
+            "neutral": "#1E1E1E",
+            "primary": "#F87171",
+            "secondary": "#7A2E2E",
+            "border": "#3A3A3A",
+            "background": "#2A1B1B",
+            "app_name": "#F87171"
         }
-    }
+    },
+    "show_apiapp": false,
+    "show_catalogs": false,
+    "images": [
+        {
+            "href": "https://bibliotheque-louis-garret.vesoul.fr/images/article/en-ligne-24-24/feedbooks.png",
+            "type": "image/png",
+            "rel": "logo",
+            "alt": "feedbooks logo"
+        }
+    ],
+    "navigation": [
+        {
+            "title": "En ce moment",
+            "href": "https://catalog.feedbooks.com/featured.json?languages=fr",
+            "type": "application/opds+json",
+            "rel": "catalog",
+            "properties": {}
+        },
+        {
+            "title": "Nos coups de coeur",
+            "href": "https://catalog.feedbooks.com/picks.json?languages=fr",
+            "type": "application/opds+json",
+            "rel": "catalog",
+            "properties": {}
+        }
+    ],
+    "publications": [
+        {
+            "href": "./example.epub",
+            "type": "application/epub+zip"
+        }
+    ],
+    "links": [
+        {
+            "title": "FAQ",
+            "href": "",
+            "type": "text/html",
+            "rel": "faq"
+        }
+    ]
+}
