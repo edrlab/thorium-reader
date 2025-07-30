@@ -383,7 +383,7 @@ function downloadCreateFilename(contentType: string | undefined, contentDisposit
 
     let contentDispositionFilenameSanitize = "";
     if (contentDispositionFilename) {
-        contentDispositionFilenameSanitize = contentDispositionFilename.replace(/\/|\\/g, "_");
+        contentDispositionFilenameSanitize = contentDispositionFilename.replace(/\/|\\/g, "_").replace(/:/g, "-"); // also see usage of slugify() on publication.title to create a valid filename on Linux, Mac, Windows
         debug(`contentDispositionFilenameSanitize: ${contentDispositionFilenameSanitize}`);
     }
 
