@@ -193,9 +193,12 @@ function getPreFetchResources(publication: R2Publication): Link[] {
     return links;
 }
 
-// https://github.com/laurent22/joplin/blob/984bb0f3ef3943a3abd0e3de1110ce1723363ef7/packages/app-desktop/utils/customProtocols/handleCustomProtocols.ts#L32
-// https://github.com/nodejs/node/issues/54205
 const nodeStreamToWeb = (resultStream: Readable): ReadableStream => { // NodeJS.ReadStream
+
+    // TODO: in some cases, NodeJS Readable.toWeb closes its controller twice!
+    // https://github.com/nodejs/node/blob/e578c0b1e8d3dd817e692a0c5df1b97580bc7c7f/lib/internal/webstreams/adapters.js#L454
+    // https://github.com/laurent22/joplin/blob/984bb0f3ef3943a3abd0e3de1110ce1723363ef7/packages/app-desktop/utils/customProtocols/handleCustomProtocols.ts#L32
+    // https://github.com/nodejs/node/issues/54205
     return Readable.toWeb(resultStream);
 
 	// resultStream.pause();
