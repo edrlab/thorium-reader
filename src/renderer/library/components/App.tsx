@@ -157,7 +157,7 @@ export default class App extends React.Component<{}, IState> {
 
         if (theme?.light && theme?.dark) {
             const applyColorSet = (colors: IPalette, suffix: string) => {
-                Object.keys(colors).forEach(([key, value]) => {
+                Object.entries(colors).forEach(([key, value]) => {
                     const cssVar = `--theme-${key}_${suffix}`;
                     root.style.setProperty(cssVar, value);
                 });
