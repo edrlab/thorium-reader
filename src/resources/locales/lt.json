@@ -35,7 +35,7 @@
                         "no": "Ne",
                         "yes": "Taip"
                     },
-                    "help": "Aktyvuokite, jei norite, kad programos uždarymo metu atverti langai automatiškai atsivertų kito paleidimo metu.",
+                    "help": "Aktyvuokite, jei norite, kad programos uždarymo metu atverti skaitytuvės langai automatiškai atsivertų kito paleidimo metu.",
                     "message": "Skaitymo sesijos išsaugojimas ir atkūrimas",
                     "title": "Išsaugoti sesiją?"
                 }
@@ -294,16 +294,16 @@
                 "descriptive": "Gestų kalba"
             },
             "additional-accessibility-information-tactile-graphics": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Įtraukta taktilinė grafika",
+                "descriptive": "Integruota taktilinė grafika, kad vaizdiniai elementai būtų lengviau prieinami neregiams"
             },
             "additional-accessibility-information-tactile-objects": {
                 "compact": "Taktiliniai 3D objektai",
                 "descriptive": "Taktiliniai 3D objektai"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Pateikiamos balso sintezės užuominos",
+                "descriptive": "Pateikiamos balso sintezės užuominos"
             },
             "additional-accessibility-information-title": "Papildoma prieinamumo informacija"
         },
@@ -436,11 +436,11 @@
             },
             "navigation-page-navigation": {
                 "compact": "Eiti į puslapį",
-                "descriptive": ""
+                "descriptive": "Puslapių sąrašas, skirtas pereiti į spausdintinos leidinio versijos puslapius"
             },
             "navigation-structural": {
                 "compact": "Antraštės",
-                "descriptive": ""
+                "descriptive": "Elementai, tokie kaip antraštės, lentelės ir kt., skirti struktūrizuotam naršymui"
             },
             "navigation-title": "Naršymas",
             "navigation-toc": {
@@ -501,15 +501,15 @@
                 "descriptive": "Informacijos apie nevizualinį skaitymą nėra"
             },
             "ways-of-reading-nonvisual-reading-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Neįskaitomas balso sinteze ar Brailio eilute",
+                "descriptive": "Turinys negali būti perskaitytas balso sinteze ar Brailio eilute"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Nepilnai skaitomas balso sinteze ar Brailio eilute",
+                "descriptive": "Ne visas turinys gali būti perskaitytas balso sinteze ar Brailio eilute"
             },
             "ways-of-reading-nonvisual-reading-readable": {
-                "compact": "",
+                "compact": "Skaitomas balso sinteze ar Brailio eilute",
                 "descriptive": "Visas turinys gali būti perskaitytas balso sinteze ar Brailio eilute"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
@@ -709,7 +709,7 @@
             "ZenModeExit": "Išeiti iš Zen režimo",
             "ZenModeTitle": "Zen režimas",
             "annotationTitle": "Pastaba",
-            "backHomeTitle": "Užverti šį skaitymo langą (grįžti į knygų lentyną)",
+            "backHomeTitle": "Užverti šį skaitytuvės langą (grįžti į knygų lentyną)",
             "bookmarkTitle": "Sukurti žymę",
             "currentPage": "Dabartinis puslapis: {{- current}}",
             "currentPageTotal": "Dabartinis puslapis: {{- current}}/{{- total}}",
@@ -760,9 +760,9 @@
             "noPrintablePages": "Spausdintinų puslapių nėra",
             "pageHelpInfo": "Puslapių pasirinkimo sintaksė:",
             "pageHelpInfo1": "jei norite įtraukti vieną puslapį, įveskite jo numerį (pvz. „6“)",
-            "pageHelpInfo2": "",
-            "pageHelpInfo3": "",
-            "pageHelpInfo4": "",
+            "pageHelpInfo2": "jei norite įtraukti iš eilės einančių puslapių rėžį, įveskite du brūkšnio simboliu atskirtus puslapio numerius (pvz. „6-13“)",
+            "pageHelpInfo3": "jei norite atskirti kelis puslapius ar puslapių rėžius, naudokite kabliataškio simbolį (pvz. „5;14-20;37“)",
+            "pageHelpInfo4": "jei norite įtraukti puslapius nuo pirmo ar iki paskutinio leidinio puslapio, praleiskite pirmą ar paskutinį rėžio puslapį (pvz. „-16“ yra ekvivalentus „1-16“, o „34-“ yra ekvivalentus „34-100“, jei leidinyje iš viso yra 100 puslapių)",
             "pages": "Puslapiai",
             "preview": "Peržiūra",
             "print": "Spausdinti",
@@ -791,7 +791,7 @@
             "letterSpacing": "Raidžių išretinimas",
             "lineSpacing": "Eilučių išretinimas",
             "margin": "Paraštė",
-            "mathjax": "",
+            "mathjax": "Įgalinti MathJax",
             "noFootnotes": "Išjungti iššokančias išnašas",
             "noRTLFlip": "Išjungti iš-dešinės-į-kairę naudotojo sąsają",
             "noRuby": "Slėpti japonų kalbos „ruby“ simbolius",
@@ -818,7 +818,7 @@
                 "reset": "Nustatyti iš naujo",
                 "resetDetails": "Nustatyti pageidautiną konfigūraciją į numatytąsias reikšmes.",
                 "save": "Išsaugoti",
-                "saveDetails": "Šis veiksmas išsaugo dabartinę konfigūraciją, t. y. Jūsų pageidautinus išvaizdos ir teksto formatavimo parametrus. Šias nuostatas galėsite taikyti kitiems leidiniams jų skaitymo lange paspaudę mygtuką „Taikyti“.",
+                "saveDetails": "Šis veiksmas išsaugo dabartinę konfigūraciją, t. y. Jūsų pageidautinus išvaizdos ir teksto formatavimo parametrus. Šias nuostatas galėsite taikyti kitiems leidiniams skaitytuvės lange paspaudę mygtuką „Taikyti“.",
                 "title": "Nuostatos"
             },
             "preview": "Peržiūrėti",
@@ -889,56 +889,56 @@
                     "name": "Kurti žymę su etikete"
                 },
                 "AnnotationsCreate": {
-                    "description": "",
+                    "description": "Atverti pasirinkto dokumento teksto anotacijos kūrimo dialogo langą ir redaguoti tekstinę pastabą, paryškinimo spalvą ir tipą bei žymę",
                     "name": "Kurti pastabą"
                 },
                 "AnnotationsCreateQuick": {
-                    "description": "",
-                    "name": ""
+                    "description": "Greitai sukurti pasirinkto teksto pastabą su paskiausiai naudota paryškinimo spalva ir tipu (pastaba ir žymė bus tuščios)",
+                    "name": "Kurti greitą pastabą"
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "",
-                    "name": ""
+                    "description": "Perjungti pastabų ir žymių vaizdinius indikatorius dokumento paraštėje arba tekste",
+                    "name": "Perjungti paraštės pastabą"
                 },
                 "AudioNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "Pereiti prie kito garso segmento pasakojime (EPUB3 leidinyje su teksto ir garso sinchronizacija, balso sintezėje arba iš anksto įrašytoje garsinėje knygoje)",
+                    "name": "Kitas garso segmentas"
                 },
                 "AudioNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Pereiti prie kito garso segmento pasakojime (EPUB3 leidinyje su teksto ir garso sinchronizacija, balso sintezėje arba iš anksto įrašytoje garsinėje knygoje). Bet kokia šiuo metu aktyvi teksto struktūra su išėjimo galimybe praleidžiama",
+                    "name": "Kitas garso segmentas (išėjimas)"
                 },
                 "AudioPlayPause": {
-                    "description": "",
-                    "name": ""
+                    "description": "Perjungti dabartinio pasakojimo atkūrimą/pristabdymą (EPUB3 leidinyje su teksto ir garso sinchronizacija, balso sintezėje arba iš anksto įrašytoje garsinėje knygoje)",
+                    "name": "Atkurti/pristabdyti garsą"
                 },
                 "AudioPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "Grįžti į ankstesnį garso segmentą pasakojime (EPUB3 leidinyje su teksto ir garso sinchronizacija, balso sintezėje arba iš anksto įrašytoje garsinėje knygoje)",
+                    "name": "Ankstesnis garso segmentas"
                 },
                 "AudioPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Grįžti į ankstesnį garso segmentą pasakojime (EPUB3 leidinyje su teksto ir garso sinchronizacija, balso sintezėje arba iš anksto įrašytoje garsinėje knygoje). Bet kokia šiuo metu aktyvi teksto struktūra su išėjimo galimybe praleidžiama",
+                    "name": "Ankstesnis garso segmentas (išėjimas)"
                 },
                 "AudioStop": {
-                    "description": "",
-                    "name": ""
+                    "description": "Stabdyti dabartinį garso įrašą (EPUB3 leidinyje su teksto ir garso sinchronizacija, balso sintezėje arba iš anksto įrašytoje garsinėje knygoje)",
+                    "name": "Stabdyti garso įrašą"
                 },
                 "CloseReader": {
-                    "description": "",
-                    "name": ""
+                    "description": "Uždaryti skaitytuvės langą ir grįžti į biblioteką",
+                    "name": "Uždaryti skaitytuvę"
                 },
                 "FXLZoomIn": {
-                    "description": "",
-                    "name": ""
+                    "description": "Didinti fiksuotame vieno ar dviejų puslapių išdėstyme.",
+                    "name": "Didinti fiksuotame išdėstyme"
                 },
                 "FXLZoomOut": {
-                    "description": "",
-                    "name": ""
+                    "description": "Mažinti fiksuotame vieno ar dviejų puslapių išdėstyme.",
+                    "name": "Mažinti fiksuotame išdėstyme"
                 },
                 "FXLZoomReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nustatyti mastelį iš naujo fiksuotame vieno ar dviejų puslapių išdėstyme.",
+                    "name": "Nustatyti fiksuoto išdėstymo mastelį iš naujo"
                 },
                 "FocusMain": {
                     "description": "",
@@ -1013,7 +1013,7 @@
                     "name": "Eiti į kitą OPDS puslapį (alternatyvus)"
                 },
                 "NavigateNextPage": {
-                    "description": "Skaitymo lange atversti kitą leidinio „puslapį“. Atkreipkite dėmesį, kad yra alternatyvus spartusis klavišas šiam numatytajam",
+                    "description": "Skaitytuvės lange atversti kitą leidinio „puslapį“. Atkreipkite dėmesį, kad yra alternatyvus spartusis klavišas šiam numatytajam",
                     "name": "Eiti į kitą puslapį"
                 },
                 "NavigateNextPageAlt": {
@@ -1021,11 +1021,11 @@
                     "name": "Eiti į kitą puslapį (alternatyvus)"
                 },
                 "NavigatePreviousChapter": {
-                    "description": "Skaitymo lange atversti ankstesnį dokumentą pagal leidinio skaitymo tvarką (pvz. skyrių). Atkreipkite dėmesį, kad yra alternatyvus spartusis klavišas šiam numatytajam",
+                    "description": "Skaitytuvės lange atversti ankstesnį dokumentą pagal leidinio skaitymo tvarką (pvz. skyrių). Atkreipkite dėmesį, kad yra alternatyvus spartusis klavišas šiam numatytajam",
                     "name": "Eiti į ankstesnį skyrių"
                 },
                 "NavigatePreviousChapterAlt": {
-                    "description": "Skaitymo lange atversti ankstesnį dokumentą pagal leidinio skaitymo tvarką (pvz. skyrių). Šis spartusis klavišas yra alternatyvus numatytajam",
+                    "description": "Skaitytuvės lange atversti ankstesnį dokumentą pagal leidinio skaitymo tvarką (pvz. skyrių). Šis spartusis klavišas yra alternatyvus numatytajam",
                     "name": "Eiti į ankstesnį skyrių (alternatyvus)"
                 },
                 "NavigatePreviousHistory": {
@@ -1057,15 +1057,15 @@
                     "name": "Eiti į ankstesnį puslapį (alternatyvus)"
                 },
                 "NavigateToBegin": {
-                    "description": "Skaitymo lange eiti į leidinio pradžią",
+                    "description": "Skaitytuvės lange eiti į leidinio pradžią",
                     "name": "Eiti į pradžią"
                 },
                 "NavigateToEnd": {
-                    "description": "Skaitymo lange eiti į leidinio pabaigą",
+                    "description": "Skaitytuvės lange eiti į leidinio pabaigą",
                     "name": "Eiti į pabaigą"
                 },
                 "OpenReaderInfo": {
-                    "description": "Skaitymo lange atverti leidinio informacijos dialogo langą",
+                    "description": "Skaitytuvės lange atverti leidinio informacijos dialogo langą",
                     "name": "Rodyti leidinio informaciją"
                 },
                 "OpenReaderInfoWhereAmI": {
@@ -1073,7 +1073,7 @@
                     "name": "Rodyti leidinio informaciją, rodyti skaitymo vietą"
                 },
                 "Print": {
-                    "description": "Skaitymo lange atverti spausdinimo dialogo langą",
+                    "description": "Skaitytuvės lange atverti spausdinimo dialogo langą",
                     "name": "Spausdinti"
                 },
                 "SearchNext": {

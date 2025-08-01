@@ -1,0 +1,55 @@
+{
+    "accessibility": {
+        "bookMenu": "Menu",
+        "closeDialog": "Zamknij",
+        "toolbar": "pasek narzędzi"
+    },
+    "app": {
+        "edit": {
+            "copy": "Kopiuj",
+            "cut": "Wytnij",
+            "paste": "Wklej",
+            "print": "Drukuj",
+            "redo": "Ponów",
+            "title": "Edytuj",
+            "undo": "Cofnij"
+        },
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Nie",
+                        "yes": "Tak"
+                    }
+                }
+            }
+        }
+    },
+    "catalog": {
+        "addBookToLib": "Importuj",
+        "addTagsButton": "Dodaj",
+        "column": {
+            "ascending": "rosnąco",
+            "descending": "malejąco"
+        },
+        "delete": "Usuń",
+        "deleteBook": "Usuń",
+        "description": "Opis",
+        "format": "Format",
+        "lang": "Język",
+        "opds": {
+            "auth": {
+                "cancel": "Anuluj",
+                "login": "Login",
+                "password": "Hasło",
+                "register": "Rejestracja"
+            },
+            "info": {
+                "availableState": {
+                    "available": "Dostępne",
+                    "ready": "Gotowe"
+                }
+            }
+        }
+    }
+}
