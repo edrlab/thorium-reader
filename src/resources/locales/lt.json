@@ -929,16 +929,16 @@
                     "name": "Uždaryti skaitytuvę"
                 },
                 "FXLZoomIn": {
-                    "description": "",
-                    "name": ""
+                    "description": "Didinti fiksuotame vieno ar dviejų puslapių išdėstyme.",
+                    "name": "Didinti fiksuotame išdėstyme"
                 },
                 "FXLZoomOut": {
-                    "description": "",
-                    "name": ""
+                    "description": "Mažinti fiksuotame vieno ar dviejų puslapių išdėstyme.",
+                    "name": "Mažinti fiksuotame išdėstyme"
                 },
                 "FXLZoomReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nustatyti mastelį iš naujo fiksuotame vieno ar dviejų puslapių išdėstyme.",
+                    "name": "Nustatyti fiksuoto išdėstymo mastelį iš naujo"
                 },
                 "FocusMain": {
                     "description": "",
