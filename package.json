@@ -301,7 +301,7 @@
     "glob": "^11.0.3",
     "history": "^5.3.0",
     "i18next": "^25.3.2",
-    "inversify": "^7.6.1",
+    "inversify": "^7.7.0",
     "jsdom": "^26.1.0",
     "lunr": "^2.3.9",
     "lunr-languages": "^1.14.0",
@@ -357,7 +357,7 @@
   "devDependencies": {
     "@axe-core/react": "^4.10.2",
     "@babel/generator": "^7.28.0",
-    "@electron/fuses": "^1.8.0",
+    "@electron/fuses": "^2.0.0",
     "@electron/notarize": "^3.0.1",
     "@electron/rebuild": "^4.0.1",
     "@jest/globals": "^30.0.5",
@@ -390,7 +390,7 @@
     "@types/yazl": "^3.3.0",
     "@typescript-eslint/eslint-plugin": "^8.38.0",
     "@typescript-eslint/parser": "^8.38.0",
-    "@typescript/native-preview": "^7.0.0-dev.20250731.1",
+    "@typescript/native-preview": "^7.0.0-dev.20250801.1",
     "babel-loader": "^10.0.0",
     "babel-plugin-macros": "^3.1.0",
     "chromium-pickle-js": "^0.2.0",
@@ -439,36 +439,21 @@
     "ts-unused-exports": "^11.0.1",
     "tsconfig-paths": "^4.2.0",
     "typed-scss-modules": "^8.1.1",
-    "typescript": "^5.8.3",
+    "typescript": "^5.9.2",
     "webpack": "^5.101.0",
     "webpack-bundle-analyzer": "^4.10.2",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.2",
     "webpack-node-externals": "^3.0.0"
   },
-  "overrides____UNEEDED": {
-    "@parcel/watcher": "~2.1.0 ___ https://github.com/parcel-bundler/watcher/issues/156#issuecomment-1961552001",
+  "overrides": {
     "@typescript-eslint/eslint-plugin": {
-      "eslint": "^9.0.0"
-    },
-    "@typescript-eslint/parser": {
-      "eslint": "^9.0.0"
-    },
-    "eslint-plugin-react": {
-      "eslint": "^9.0.0"
-    }
-  },
-  "overrides_NOT_NEEDED": {
-    "typed-scss-modules": {
-      "node-sass": "^9.0.0"
-    },
-    "@typescript-eslint/parser": {
-      "typescript": "^5.8.2",
-      "eslint": "^8.57.1"
-    },
-    "@typescript-eslint/eslint-plugin": {
-      "typescript": "^5.8.2",
-      "eslint": "^8.57.1"
+      ".": "$@typescript-eslint/eslint-plugin",
+      "typescript": "$typescript",
+      "@typescript-eslint/parser": {
+        ".": "$@typescript-eslint/parser",
+        "typescript": "$typescript"
+      }
     }
   }
 }

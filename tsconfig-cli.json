@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig",
   "watchOptions": {
-    "excludeDirectories": ["**/node_modules", "dist", "release"]
+    "excludeDirectories": ["./**/node_modules", "./dist", "./release"]
   },
   "compilerOptions": {
     // "skipLibCheck": true,

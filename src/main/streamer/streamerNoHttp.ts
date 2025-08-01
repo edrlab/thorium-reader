@@ -279,10 +279,11 @@ const streamProtocolHandlerTunnel_NEW = async (req: GlobalRequest): Promise<Glob
                 debug("BEFORE NEW RESPONSE TUNNEL...", req.method, req.url, req.referrer, headers, typeof Response, res.statusCode, res.headers, typeof res.data, res.data instanceof ReadableStream, (res.data as any).readable, (res.data as any).writable, arr);
             }
             // as import("undici-types").Response
+            // typeof import("@types/node").Response
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ ts-expect-error TS 2345
-            // resolve(new Response(res.data as NodeJS.ReadableStream, {
-            resolve(new Response(nodeStreamToWeb(res.data as NodeJS.ReadStream), {
+            // resolve(new global.Response(res.data as NodeJS.ReadableStream, {
+            resolve(new Response(nodeStreamToWeb(res.data as NodeJS.ReadStream) as BodyInit, {
                 status: res.statusCode,
                 headers: resHeaders,
             }));
@@ -337,7 +338,7 @@ const streamProtocolHandler_NEW = async (req: GlobalRequest): Promise<GlobalResp
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ ts-expect-error TS 2345
             // resolve(new Response(res.data as NodeJS.ReadableStream, {
-            resolve(new Response(nodeStreamToWeb(res.data as NodeJS.ReadStream), {
+            resolve(new Response(nodeStreamToWeb(res.data as NodeJS.ReadStream) as BodyInit, {
                 status: res.statusCode,
                 headers: resHeaders,
             }));

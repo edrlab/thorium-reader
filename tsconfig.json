@@ -13,7 +13,6 @@
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noImplicitUseStrict": false,
     "declaration": true,
     "noEmit": false,
     "noEmitHelpers": true,
@@ -28,8 +27,9 @@
     "maxNodeModuleJsDepth": 0,
     "checkJs": false,
     "stripInternal": false,
-    "suppressExcessPropertyErrors": false,
-    "suppressImplicitAnyIndexErrors": false,
+    // "noImplicitUseStrict": false,
+    // "suppressExcessPropertyErrors": false,
+    // "suppressImplicitAnyIndexErrors": false,
     "downlevelIteration": false,
     "emitBOM": false,
     "esModuleInterop": false,
@@ -60,8 +60,11 @@
     "jsx": "react",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "baseUrl": ".",
+    // "baseUrl": ".",
     "paths": {
+      "*": [
+        "./*",
+      ],
       // "file-selector": [
       //   "src/typings/noop.d.ts"
       // ],
@@ -72,25 +75,25 @@
         "./test/*"
       ],
       "@r2-utils-js/*": [
-        "node_modules/r2-utils-js/dist/es8-es2017/src/*"
+        "./node_modules/r2-utils-js/dist/es8-es2017/src/*"
       ],
       "@r2-opds-js/*": [
-        "node_modules/r2-opds-js/dist/es8-es2017/src/*"
+        "./node_modules/r2-opds-js/dist/es8-es2017/src/*"
       ],
       "@r2-shared-js/*": [
-        "node_modules/r2-shared-js/dist/es8-es2017/src/*"
+        "./node_modules/r2-shared-js/dist/es8-es2017/src/*"
       ],
       "@r2-streamer-js/*": [
-        "node_modules/r2-streamer-js/dist/es8-es2017/src/*"
+        "./node_modules/r2-streamer-js/dist/es8-es2017/src/*"
       ],
       "@r2-navigator-js/*": [
-        "node_modules/r2-navigator-js/dist/es8-es2017/src/*"
+        "./node_modules/r2-navigator-js/dist/es8-es2017/src/*"
       ],
       "@r2-lcp-js/*": [
-        "node_modules/r2-lcp-js/dist/es8-es2017/src/*"
+        "./node_modules/r2-lcp-js/dist/es8-es2017/src/*"
       ],
       "@lunr-languages/*": [
-        "node_modules/lunr-languages/*"
+        "./node_modules/lunr-languages/*"
       ]
     }
   },
@@ -99,9 +102,9 @@
     "./test/**/*"
   ],
   "exclude": [
-    "node_modules"
+    "./node_modules"
   ],
   "files": [
-    "typings.d.ts"
+    "./typings.d.ts"
   ]
 }
