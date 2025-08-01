@@ -35,8 +35,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # osarch: [windows-intel, windows-arm, macos-intel, macos-arm, linux-intel, linux-arm]
-        osarch: [windows-intel, windows-arm]
+        osarch: [windows-intel, windows-arm, macos-intel, macos-arm, linux-intel, linux-arm]
+        # osarch: [windows-intel, windows-arm]
 # Thorium for MacOS x64 and arm64 is built on GitHub Actions arm64 runners
 # Thorium for Linux x64 and arm64 is built on GitHub Actions x64 runners
 # Thorium for Windows x64 and arm64 is built on GitHub Actions x64 runners
@@ -70,22 +70,22 @@ jobs:
             runson: windows-2025
             packname: win
             release_tag: latest-windows-arm
-          # - osarch: macos-intel
-          #   runson: macos-latest #macos-14-arm64
-          #   packname: 'mac:skip-notarize'
-          #   release_tag: latest-macos-intel
-          # - osarch: macos-arm
-          #   runson: macos-latest #macos-14-arm64
-          #   packname: 'mac:skip-notarize'
-          #   release_tag: latest-macos-arm
-          # - osarch: linux-intel
-          #   runson: ubuntu-22.04 #ubuntu-latest is ubuntu-24.04
-          #   packname: linux
-          #   release_tag: latest-linux-intel
-          # - osarch: linux-arm
-          #   runson: ubuntu-22.04 #ubuntu-latest is ubuntu-24.04
-          #   packname: linux
-          #   release_tag: latest-linux-arm
+          - osarch: macos-intel
+            runson: macos-latest #macos-14-arm64
+            packname: 'mac:skip-notarize'
+            release_tag: latest-macos-intel
+          - osarch: macos-arm
+            runson: macos-latest #macos-14-arm64
+            packname: 'mac:skip-notarize'
+            release_tag: latest-macos-arm
+          - osarch: linux-intel
+            runson: ubuntu-22.04 #ubuntu-latest is ubuntu-24.04
+            packname: linux
+            release_tag: latest-linux-intel
+          - osarch: linux-arm
+            runson: ubuntu-22.04 #ubuntu-latest is ubuntu-24.04
+            packname: linux
+            release_tag: latest-linux-arm
     env:
       RELEASE_TAG: ${{ matrix.release_tag }}
     steps:
@@ -112,7 +112,7 @@ jobs:
 # "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\bin\amd64"
 # "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x64"
 # "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64"
-    - run: exit 1
+    #- run: exit 1
     - run: echo 'RELEASE_TAG:' ${{ env.RELEASE_TAG }}
     - run: 'echo "GITHUB_RUN_NUMBER: ${{ github.run_number }}"'
     - run: 'echo "GITHUB_RUN_ID: ${{ github.run_id }}"'
