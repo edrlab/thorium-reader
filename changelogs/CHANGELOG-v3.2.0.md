@@ -2,11 +2,11 @@
 
 ## Summary
 
-Version `3.2.0` was released on **30 July 2025**.
+Version `3.2.0` was released on **01 August 2025**.
 
 This release includes the following (notable) new features, improvements and bug fixes:
 
-* Thorium is now based on Electron v37 (and its updated Chromium version)
+* Thorium is now based on Electron v36 (and its updated Chromium version) ... unfortunately v37 introduces a regression bug with audio/video streaming (time seeking).
 * Localisation: added and updated translations, fixed Chinese handling (was incorrectly triggering RTL)
 * PDF: new print feature, updated PDF.js rendering library
 * Annotations/bookmarks: exports raw data (JSON format, W3C standard) as well as HTML template. Export is possible outside of a reader window (from the library / local bookshelf)
@@ -53,6 +53,7 @@ This release includes the following (notable) new features, improvements and bug
 * Image zoom/pan GUI now implemented in Thorium via localizable React GUI
 * Fixed Arabic and other Right To Left metadata accessibility summary and author/publisher/contributor in publication info dialog
 * Fixed zoom in pre-paginated / fixed-layout EPUB, and keyboard shortcuts for zoom in/out/reset which were not working in "zen mode"
+* Fixed HTTP header content-disposition filename handling (sanitization for cross-platform Windows, Linux, Mac filesystems)
 
 (previous [v3.1.0 changelog](./CHANGELOG-v3.1.0.md))
 
@@ -61,8 +62,23 @@ This release includes the following (notable) new features, improvements and bug
 Git commit diff since `3.1.0`:
 https://github.com/edrlab/thorium-reader/compare/v3.1.0...v3.2.0
 
-=> **324** GitHub Git commits:
+=> **339** GitHub Git commits:
 
+* [(_)](https://github.com/edrlab/thorium-reader/commit/fef4238fc7dec3f8e2978a05bbe62b3a60518f23) __chore(CI):__ after windows-2025 successful checks, restore normal build matrix
+* [(_)](https://github.com/edrlab/thorium-reader/commit/6e35022a926fcf41bc6b0028d87b23160437881f) __chore(CI):__ Windows 2022 dumpbin.exe discovery
+* [(_)](https://github.com/edrlab/thorium-reader/commit/384b4aeedd3003e4ba364b097d7bfa99d35bc74a) __chore(CI):__ Windows Microsoft Visual Studio 2022 Enterprise MSVC versions discovery (dumpbin.exe)
+* [(_)](https://github.com/edrlab/thorium-reader/commit/2c576de36cddc2d345496485659760b99a0b1020) __chore(CI):__ testing windows-2025 which will become default for windows-latest in September, windows-2022 will remain supported for 3 years
+* [(_)](https://github.com/edrlab/thorium-reader/commit/855cf5f63f39f1eda4448d4544a8638890433203) __Merge branch 'develop' of github.com:__edrlab/thorium-reader into develop
+* [(_)](https://github.com/edrlab/thorium-reader/commit/14d2a60065f5e5c444abeefcadd24e3d0fcaf446) __chore(NPM):__ updated packages
+* [(_)](https://github.com/edrlab/thorium-reader/commit/ffffebfb5ee1433287e68aae070f23add6b2a69c) __fix(l10n):__ updated translation via Weblate, Lithuanian and Polish (new) (PR [#3091](https://github.com/edrlab/thorium-reader/pull/3091))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/a5007603a5a8f6c761b4c4f59ffbd56c09c02c33) __fix(l10n):__ updated translations via Weblate, Lithuanian (PR [#3081](https://github.com/edrlab/thorium-reader/pull/3081))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/2b16c8f24f7fde79f966d2ff4fa665b8c7c301a7) __fix(audio/video):__ downgrade to Electron v36 (was 37) (Fixes [#3066](https://github.com/edrlab/thorium-reader/issues/3066) )
+* [(_)](https://github.com/edrlab/thorium-reader/commit/650042a313d852c9fad73baa8964e21c8a74141a) __fix:__ HTTP header content-disposition filename sanitization, follow-up to previous commit 60baf89a34f6f5274073d4ad89561bef8e14d699
+* [(_)](https://github.com/edrlab/thorium-reader/commit/60baf89a34f6f5274073d4ad89561bef8e14d699) __fix(opds):__ sanitize http content-disposition filename when publication downloaded and imported
+* [(_)](https://github.com/edrlab/thorium-reader/commit/39d736f56721ad1b391865b94b96c817e5d7d0d0) __fix:__ opds and thorium URL protocol handlers now work in DEV mode too (from PR [#3076](https://github.com/edrlab/thorium-reader/pull/3076) thank you)
+* [(_)](https://github.com/edrlab/thorium-reader/commit/b8823408664df3da320e280dba5a9d031bee423d) __fix(lint):__ sorry, unused imports in previous commit
+* [(_)](https://github.com/edrlab/thorium-reader/commit/c11aaa5201e52d4352c1bf1ef82ca2c7a1010d93) __fix:__ protocol stream handler API deprecation preparation for evolution (related to regression bug Electron v37+ broken audio/video stream seeking) (PR [#3079](https://github.com/edrlab/thorium-reader/pull/3079))
+* [(_)](https://github.com/edrlab/thorium-reader/commit/b4085f18d055256028fac7131bccaf2ff39c57fc) __chore(release):__ changelog v3.2.0 [skip ci]
 * [(_)](https://github.com/edrlab/thorium-reader/commit/3ad695b6ce73b3d8b8e2fb6c5042d7fa36d058a5) __fix(GUI):__ modal dialogs stretched responsive height, annotations list background color (PR [#3052](https://github.com/edrlab/thorium-reader/pull/3052) Fixes [#3017](https://github.com/edrlab/thorium-reader/issues/3017) Fixes [#3006](https://github.com/edrlab/thorium-reader/issues/3006))
 * [(_)](https://github.com/edrlab/thorium-reader/commit/f8a0b96a590fd067dbd3f7beec6e82286ba3bae7) __fix(l10n):__ updated translations via Weblate: Lithuanian, Turkish, Portuguese (Portugal), Finnish (PR [#3073](https://github.com/edrlab/thorium-reader/pull/3073))
 * [(_)](https://github.com/edrlab/thorium-reader/commit/e8f6b368eb2fbc8bc9fabc30bf1a17a507147318) __chore(NPM):__ package updates
