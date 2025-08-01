@@ -58,7 +58,7 @@
     "_NOT_NEEDED_package": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --x64 --publish never",
     "prepackage:win": "npm run package:build",
     "package:win": "cross-env DEBUG=* CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --win --x64 --publish never",
-    "postpackage:win": "npx @electron/fuses read --app ./release/win-unpacked/thorium.exe || echo ok",
+    "postpackage:win": "(npx @electron/fuses read --app ./release/win-unpacked/thorium.exe || npx @electron/fuses read --app ./release/win-arm64-unpacked/thorium.exe) || echo ok",
     "prepackage:linux": "npm run package:build",
     "package:linux": "cross-env DEBUG=* CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --linux --x64 --publish never",
     "postpackage:linux": "(ls -alsR ./release/linux-arm64-unpacked/ || ls -alsR ./release/linux-unpacked/) && (npx @electron/fuses read --app ./release/linux-arm64-unpacked/thorium || npx @electron/fuses read --app ./release/linux-unpacked/thorium) || echo ok",
