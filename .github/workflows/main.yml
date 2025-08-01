@@ -102,7 +102,7 @@ jobs:
     - name: Microsoft Windows dumpbin check
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dir /A "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC"; dumpbin /headers "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\17.14.36310.24\bin\Hostx64\x64\dumpbin.exe" | findstr /i machine
+        dir /A "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC" && dumpbin /headers "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\dumpbin.exe" | findstr /i machine
       shell: cmd
 # - name: Microsoft Windows msbuild to PATH
 #   if: startsWith(matrix.osarch, 'windows-')
@@ -110,9 +110,7 @@ jobs:
 # "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin"
 # "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools"
 # "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\bin\amd64"
-# "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64"
-# "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.42.34433\bin\Hostx64\x64"
-# "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.43.34808\bin\Hostx64\x64"
+# "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x64"
 # "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64"
     - run: exit 1
     - run: echo 'RELEASE_TAG:' ${{ env.RELEASE_TAG }}
