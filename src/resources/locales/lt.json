@@ -136,11 +136,11 @@
         "cancel": "Nutraukti",
         "deleteAnnotations": "Šalinti pastabas?",
         "deleteAnnotationsText": "Ar tikrai norite pašalinti {{- annotationListLength}} pastabą(-as, -ų)?",
-        "deleteBookmarks": "Šalinti žymes?",
-        "deleteBookmarksText": "Ar tikrai norite pašalinti {{- bookmarkListLength}} žymę(-es, -ų)?",
+        "deleteBookmarks": "Šalinti skirtukus?",
+        "deleteBookmarksText": "Ar tikrai norite pašalinti {{- bookmarkListLength}} skirtuką(-us, -ų)?",
         "deleteFeed": "Pašalinti katalogą?",
         "deletePublication": "Pašalinti leidinį?",
-        "deletePublicationWithNotes": "Įspėjimas: šiame leidinyje yra pastabų ir (arba) žymių, jos taip pat bus pašalintos! (jei norite jas išsaugoti, prieš pašalindami leidinį eksportuokite pastabas)",
+        "deletePublicationWithNotes": "Įspėjimas: šiame leidinyje yra pastabų ir (arba) skirtukų, kurios taip pat bus pašalintos! (jei norite jas išsaugoti, prieš pašalindami leidinį eksportuokite pastabas)",
         "import": "Patvirtinkite importą:",
         "importError": "Įvyko klaida, patikrinkite failo plėtinį ({{acceptedExtension}})",
         "renew": "Atnaujinti/pratęsti skolinimo terminą?",
@@ -659,7 +659,7 @@
             }
         },
         "bookmarks": {
-            "index": "{{- index}} žymė"
+            "index": "{{- index}} skirtukas"
         },
         "divina": {
             "mute": "išjungti garsą",
@@ -677,7 +677,7 @@
         },
         "marks": {
             "annotations": "Pastabos",
-            "bookmarks": "Žymės",
+            "bookmarks": "Skirtukai",
             "delete": "Šalinti",
             "edit": "Keisti",
             "goTo": "Eiti į puslapį",
@@ -710,7 +710,7 @@
             "ZenModeTitle": "Zen režimas",
             "annotationTitle": "Pastaba",
             "backHomeTitle": "Užverti šį skaitytuvės langą (grįžti į knygų lentyną)",
-            "bookmarkTitle": "Sukurti žymę",
+            "bookmarkTitle": "Sukurti skirtuką",
             "currentPage": "Dabartinis puslapis: {{- current}}",
             "currentPageTotal": "Dabartinis puslapis: {{- current}}/{{- total}}",
             "detachWindowTitle": "Rodyti bibliotekos / lentynos langą",
@@ -885,8 +885,8 @@
             "keyboardShortcuts": "Spartieji klavišai",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "Atverti žymės kūrimo dialogo langą ir redaguoti tekstinę etiketę (pastabą), spalvą ir žymę",
-                    "name": "Kurti žymę su etikete"
+                    "description": "Atverti skirtuko kūrimo dialogo langą ir redaguoti tekstinę etiketę (pastabą), spalvą ir žymę",
+                    "name": "Kurti skirtuką su etikete"
                 },
                 "AnnotationsCreate": {
                     "description": "Atverti pasirinkto dokumento teksto anotacijos kūrimo dialogo langą ir redaguoti tekstinę pastabą, paryškinimo spalvą ir tipą bei žymę",
@@ -897,7 +897,7 @@
                     "name": "Kurti greitą pastabą"
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "Perjungti pastabų ir žymių vaizdinius indikatorius dokumento paraštėje arba tekste",
+                    "description": "Perjungti pastabų ir skirtukų vaizdinius indikatorius dokumento paraštėje arba tekste",
                     "name": "Perjungti paraštės pastabą"
                 },
                 "AudioNext": {
@@ -961,8 +961,8 @@
                     "name": "Fokusuoti „Pastabos“"
                 },
                 "FocusReaderNavigationBookmarks": {
-                    "description": "Perkelti klaviatūros fokusą į „Žymės“ skiltį skaitytuvės lango naršymo skydelyje",
-                    "name": "Fokusuoti „Žymės“"
+                    "description": "Perkelti klaviatūros fokusą į „Skirtukai“ skiltį skaitytuvės lango naršymo skydelyje",
+                    "name": "Fokusuoti „Skirtukai“"
                 },
                 "FocusReaderNavigationSearch": {
                     "description": "Perkelti klaviatūros fokusą į „Paieška“ skiltį skaitytuvės lango naršymo skydelyje",
@@ -1097,8 +1097,8 @@
                     "name": "Apibūdinti skaitymo vietą (balsu)"
                 },
                 "ToggleBookmark": {
-                    "description": "Pridėti naują žymę arba šalinti egzistuojančią, jei ji šiuo metu pažymėta",
-                    "name": "Perjungti žymę"
+                    "description": "Pridėti naują skirtuką arba šalinti egzistuojantį, jei jis šiuo metu pažymėtas",
+                    "name": "Perjungti skirtuką"
                 },
                 "ToggleReaderFullscreen": {
                     "description": "Skaitytuvės lange įjungti sistemos viso ekrano režimą arba atkurti įprastą lango režimą. Atkreipkite dėmesį, jog tai skiriasi nuo „zen“ režimo, kuris supaprastina naudotojo sąsają",
@@ -1122,7 +1122,7 @@
             "export": {
                 "applyDefaultTemplate": "Įkelti numatytąjį šabloną",
                 "enableCheckbox": "Tinkinti HTML šabloną",
-                "overrideHTMLTemplate": "Užrašų eksportavimas (pastabos ir žymės)"
+                "overrideHTMLTemplate": "Užrašų eksportavimas (pastabos ir skirtukai)"
             }
         },
         "session": {
@@ -1175,7 +1175,7 @@
             "catalogs": "Pasiskolinkite leidinius iš savo vietinės bibliotekos bei atraskite leidinius OPDS sklaidos kanaluose. Internetinių katalogų dėka gaukite prieigą prie gausybės leidinių iš skirtingų šaltinių.",
             "home": "Thorium atrodo kitaip! Sužinokite, kas naujo...",
             "readingView1": "Tinkinkite savo skaitymo ir klausymosi nuostatas: nuo šiol Thorium siūlo keletą spalvų temų naudotojo sąsajai bei leidinių dokumentams. Dabar taip pat tapo lengviau konfigūruoti „readaloud“ el. knygas su sintetinio balso ir sinchronizuoto teksto/garso skaitymu.",
-            "readingView2": "Patobulinta Thorium naudotojo sąsaja leidžia lengviau rasti tekstą leidiniuose, peržvelgti paieškos rezultatus, atversti tam tikrą puslapį, naršyti turinyje, kurti žymes ir t.t. naujų „pritvirtintų“ skydelių dėka, o viso ekrano skaitymo režimas ir toliau suteikia aplinką be dėmesio išblaškymo.",
+            "readingView2": "Patobulinta Thorium naudotojo sąsaja leidžia lengviau rasti tekstą leidiniuose, peržvelgti paieškos rezultatus, atversti tam tikrą puslapį, naršyti turinyje, kurti skirtukus ir t.t. naujų „pritvirtintų“ skydelių dėka, o viso ekrano skaitymo režimas ir toliau suteikia aplinką be dėmesio išblaškymo.",
             "yourBooks": "Su jumis sveikinasi iš naujo suprojektuota asmeninė knygų lentyna! „Tinklelio“ peržiūros režime be vargo galėsite filtruoti pagal žymes arba rasti leidinius pagal raktinius žodžius. „Sąrašo“ režime galėsite peržiurėti, pažymėti ir rikiuoti leidinius pagal konkretų autorių, pavadinimą, datą, formatą ir t.t."
         },
         "dontShow": "Daugiau neberodyti",
