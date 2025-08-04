@@ -136,11 +136,11 @@
         "cancel": "Nutraukti",
         "deleteAnnotations": "Šalinti pastabas?",
         "deleteAnnotationsText": "Ar tikrai norite pašalinti {{- annotationListLength}} pastabą(-as, -ų)?",
-        "deleteBookmarks": "Šalinti žymes?",
-        "deleteBookmarksText": "Ar tikrai norite pašalinti {{- bookmarkListLength}} žymę(-es, -ų)?",
+        "deleteBookmarks": "Šalinti skirtukus?",
+        "deleteBookmarksText": "Ar tikrai norite pašalinti {{- bookmarkListLength}} skirtuką(-us, -ų)?",
         "deleteFeed": "Pašalinti katalogą?",
         "deletePublication": "Pašalinti leidinį?",
-        "deletePublicationWithNotes": "Įspėjimas: šiame leidinyje yra pastabų ir (arba) žymių, jos taip pat bus pašalintos! (jei norite jas išsaugoti, prieš pašalindami leidinį eksportuokite pastabas)",
+        "deletePublicationWithNotes": "Įspėjimas: šiame leidinyje yra pastabų ir (arba) skirtukų, kurios taip pat bus pašalintos! (jei norite jas išsaugoti, prieš pašalindami leidinį eksportuokite pastabas)",
         "import": "Patvirtinkite importą:",
         "importError": "Įvyko klaida, patikrinkite failo plėtinį ({{acceptedExtension}})",
         "renew": "Atnaujinti/pratęsti skolinimo terminą?",
@@ -659,7 +659,7 @@
             }
         },
         "bookmarks": {
-            "index": "{{- index}} žymė"
+            "index": "{{- index}} skirtukas"
         },
         "divina": {
             "mute": "išjungti garsą",
@@ -677,7 +677,7 @@
         },
         "marks": {
             "annotations": "Pastabos",
-            "bookmarks": "Žymės",
+            "bookmarks": "Skirtukai",
             "delete": "Šalinti",
             "edit": "Keisti",
             "goTo": "Eiti į puslapį",
@@ -710,7 +710,7 @@
             "ZenModeTitle": "Zen režimas",
             "annotationTitle": "Pastaba",
             "backHomeTitle": "Užverti šį skaitytuvės langą (grįžti į knygų lentyną)",
-            "bookmarkTitle": "Sukurti žymę",
+            "bookmarkTitle": "Sukurti skirtuką",
             "currentPage": "Dabartinis puslapis: {{- current}}",
             "currentPageTotal": "Dabartinis puslapis: {{- current}}/{{- total}}",
             "detachWindowTitle": "Rodyti bibliotekos / lentynos langą",
@@ -885,8 +885,8 @@
             "keyboardShortcuts": "Spartieji klavišai",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "Atverti žymės kūrimo dialogo langą ir redaguoti tekstinę etiketę (pastabą), spalvą ir žymę",
-                    "name": "Kurti žymę su etikete"
+                    "description": "Atverti skirtuko kūrimo dialogo langą ir redaguoti tekstinę etiketę (pastabą), spalvą ir žymę",
+                    "name": "Kurti skirtuką su etikete"
                 },
                 "AnnotationsCreate": {
                     "description": "Atverti pasirinkto dokumento teksto anotacijos kūrimo dialogo langą ir redaguoti tekstinę pastabą, paryškinimo spalvą ir tipą bei žymę",
@@ -897,7 +897,7 @@
                     "name": "Kurti greitą pastabą"
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "Perjungti pastabų ir žymių vaizdinius indikatorius dokumento paraštėje arba tekste",
+                    "description": "Perjungti pastabų ir skirtukų vaizdinius indikatorius dokumento paraštėje arba tekste",
                     "name": "Perjungti paraštės pastabą"
                 },
                 "AudioNext": {
@@ -941,75 +941,75 @@
                     "name": "Nustatyti fiksuoto išdėstymo mastelį iš naujo"
                 },
                 "FocusMain": {
-                    "description": "",
-                    "name": ""
+                    "description": "Perkelti klaviatūros fokusą į pagrindinę turinio gairę grafinėje sąsajoje. Skaitytuvės lange fokusas perkeliamas į leidinio turinį",
+                    "name": "Fokusuoti pagrindinį turinį"
                 },
                 "FocusMainDeep": {
-                    "description": "",
-                    "name": ""
+                    "description": "Skaitytuvės lange perkelti klaviatūros fokusą į leidinio turinį naudojant patikimesnį ekrano skaitytuvams skirtą metodą",
+                    "name": "Giliau fokusuoti pagrindinį turinį"
                 },
                 "FocusReaderGotoPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Perkelti klaviatūros fokusą į „Eiti į puslapį“ skiltį skaitytuvės lango naršymo skydelyje",
+                    "name": "Fokusuoti „Eiti į puslapį“"
                 },
                 "FocusReaderNavigation": {
-                    "description": "",
-                    "name": ""
+                    "description": "Perkelti klaviatūros fokusą į skaitytuvės lango naršymo skydelį",
+                    "name": "Fokusuoti naršymo skydelį"
                 },
                 "FocusReaderNavigationAnnotations": {
-                    "description": "",
-                    "name": ""
+                    "description": "Perkelti klaviatūros fokusą į „Pastabos“ skiltį skaitytuvės lango naršymo skydelyje",
+                    "name": "Fokusuoti „Pastabos“"
                 },
                 "FocusReaderNavigationBookmarks": {
-                    "description": "",
-                    "name": ""
+                    "description": "Perkelti klaviatūros fokusą į „Skirtukai“ skiltį skaitytuvės lango naršymo skydelyje",
+                    "name": "Fokusuoti „Skirtukai“"
                 },
                 "FocusReaderNavigationSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Perkelti klaviatūros fokusą į „Paieška“ skiltį skaitytuvės lango naršymo skydelyje",
+                    "name": "Fokusuoti „Paieška“"
                 },
                 "FocusReaderNavigationTOC": {
-                    "description": "",
-                    "name": ""
+                    "description": "Perkelti klaviatūros fokusą į „Turinys“ skiltį skaitytuvės lango naršymo skydelyje",
+                    "name": "Fokusuoti „Turinys“"
                 },
                 "FocusReaderSettings": {
-                    "description": "",
-                    "name": ""
+                    "description": "Perkelti klaviatūros fokusą į skaitytuvės lango nuostatų skydelį (atvaizdavimo nuostatos ir t. t.)",
+                    "name": "Fokusuoti skaitytuvės nuostatas"
                 },
                 "FocusSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Perkelti klaviatūros fokusą į paieškos laukelį skaitytuvės lange arba bibliotekos lange — ieškoti lentynoje arba aktyviame OPDS sklaidos kanale",
+                    "name": "Paieškos komanda"
                 },
                 "FocusToolbar": {
-                    "description": "",
-                    "name": ""
+                    "description": "Perkelti klaviatūros fokusą į grafinės sąsajos gairių sritį prieš pat „praleidimo nuorodą“ (kuri pati perkelia fokusą į pagrindinę bibliotekos arba skaitytuvės lango turinio sritį)",
+                    "name": "Fokusuoti įrankių juostą"
                 },
                 "NavigateNextChapter": {
-                    "description": "",
+                    "description": "Skaitytuvės lange atversti kitą dokumentą pagal leidinio skaitymo tvarką (pvz. skyrių). Atkreipkite dėmesį, kad yra alternatyvus spartusis klavišas šiam numatytajam",
                     "name": "Eiti į kitą skyrių"
                 },
                 "NavigateNextChapterAlt": {
-                    "description": "",
+                    "description": "Skaitytuvės lange atversti kitą dokumentą pagal leidinio skaitymo tvarką (pvz. skyrių). Šis spartusis klavišas yra alternatyvus numatytajam",
                     "name": "Eiti į kitą skyrių (alternatyvus)"
                 },
                 "NavigateNextHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "Skaitytuvės lange peršokti vienu žingsniu į priekį naršymo istorijoje",
+                    "name": "Eiti į priekį istorijoje"
                 },
                 "NavigateNextLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Bibliotekos lange rodyti kitą leidinių sąrašo puslapį. Atkreipkite dėmesį, kad yra alternatyvus spartusis klavišas šiam numatytajam",
+                    "name": "Eiti į kitą bibliotekos puslapį"
                 },
                 "NavigateNextLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Bibliotekos lange rodyti kitą leidinių sąrašo puslapį. Šis spartusis klavišas yra alternatyvus numatytajam",
+                    "name": "Eiti į kitą bibliotekos puslapį (alternatyvus)"
                 },
                 "NavigateNextOPDSPage": {
-                    "description": "",
+                    "description": "Katalogų / OPDS sklaidos kanalų bibliotekos lange atverti kitą puslapiavimo nuorodą. Atkreipkite dėmesį, kad yra alternatyvus spartusis klavišas šiam numatytajam",
                     "name": "Eiti į kitą OPDS puslapį"
                 },
                 "NavigateNextOPDSPageAlt": {
-                    "description": "",
+                    "description": "Katalogų / OPDS sklaidos kanalų bibliotekos lange atverti kitą puslapiavimo nuorodą. Šis spartusis klavišas yra alternatyvus numatytajam",
                     "name": "Eiti į kitą OPDS puslapį (alternatyvus)"
                 },
                 "NavigateNextPage": {
@@ -1017,7 +1017,7 @@
                     "name": "Eiti į kitą puslapį"
                 },
                 "NavigateNextPageAlt": {
-                    "description": "Skaitymo lange atversti kitą leidinio „puslapį“. Šis spartusis klavišas yra alternatyvus numatytajam",
+                    "description": "Skaitytuvės lange atversti kitą leidinio „puslapį“. Šis spartusis klavišas yra alternatyvus numatytajam",
                     "name": "Eiti į kitą puslapį (alternatyvus)"
                 },
                 "NavigatePreviousChapter": {
@@ -1029,31 +1029,31 @@
                     "name": "Eiti į ankstesnį skyrių (alternatyvus)"
                 },
                 "NavigatePreviousHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "Skaitytuvės lange peršokti vienu žingsniu atgal naršymo istorijoje",
+                    "name": "Eiti atgal istorijoje"
                 },
                 "NavigatePreviousLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Bibliotekos lange rodyti ankstesnį leidinių sąrašo puslapį. Atkreipkite dėmesį, kad yra alternatyvus spartusis klavišas šiam numatytajam",
+                    "name": "Eiti į ankstesnį bibliotekos puslapį"
                 },
                 "NavigatePreviousLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Bibliotekos lange rodyti ankstesnį leidinių sąrašo puslapį. Šis spartusis klavišas yra alternatyvus numatytajam",
+                    "name": "Eiti į ankstesnį bibliotekos puslapį (alternatyvus)"
                 },
                 "NavigatePreviousOPDSPage": {
-                    "description": "",
+                    "description": "Katalogų / OPDS sklaidos kanalų bibliotekos lange atverti ankstesnę puslapiavimo nuorodą. Atkreipkite dėmesį, kad yra alternatyvus spartusis klavišas šiam numatytajam",
                     "name": "Eiti į ankstesnį OPDS puslapį"
                 },
                 "NavigatePreviousOPDSPageAlt": {
-                    "description": "",
+                    "description": "Katalogų / OPDS sklaidos kanalų bibliotekos lange atverti ankstesnę puslapiavimo nuorodą. Šis spartusis klavišas yra alternatyvus numatytajam",
                     "name": "Eiti į ankstesnį OPDS puslapį (alternatyvus)"
                 },
                 "NavigatePreviousPage": {
-                    "description": "",
+                    "description": "Skaitytuvės lange atversti ankstesnį leidinio „puslapį“. Atkreipkite dėmesį, kad yra alternatyvus spartusis klavišas šiam numatytajam",
                     "name": "Eiti į ankstesnį puslapį"
                 },
                 "NavigatePreviousPageAlt": {
-                    "description": "",
+                    "description": "Skaitytuvės lange atversti ankstesnį leidinio „puslapį“. Šis spartusis klavišas yra alternatyvus numatytajam",
                     "name": "Eiti į ankstesnį puslapį (alternatyvus)"
                 },
                 "NavigateToBegin": {
@@ -1069,7 +1069,7 @@
                     "name": "Rodyti leidinio informaciją"
                 },
                 "OpenReaderInfoWhereAmI": {
-                    "description": "",
+                    "description": "Skaitytuvės lange atverti iššokantį dialogo langą, kuriame atvaizduojama informacija apie leidinį, ir sufokusuoti klaviatūrą į sritį, kurioje rodomas dabartinės skaitymo vietos kontekstas",
                     "name": "Rodyti leidinio informaciją, rodyti skaitymo vietą"
                 },
                 "Print": {
@@ -1077,39 +1077,39 @@
                     "name": "Spausdinti"
                 },
                 "SearchNext": {
-                    "description": "",
+                    "description": "Skaitytuvės lango paieškos įrankyje eiti į kitą paieškos rezultatą. Atkreipkite dėmesį, kad yra alternatyvus spartusis klavišas šiam numatytajam",
                     "name": "Tolesnis paieškos rezultatas"
                 },
                 "SearchNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Skaitytuvės lango paieškos įrankyje eiti į kitą paieškos rezultatą. Šis spartusis klavišas yra alternatyvus numatytajam",
+                    "name": "Tolesnis paieškos rezultatas (alternatyvus)"
                 },
                 "SearchPrevious": {
-                    "description": "",
+                    "description": "Skaitytuvės lango paieškos įrankyje eiti į ankstesnį paieškos rezultatą. Atkreipkite dėmesį, kad yra alternatyvus spartusis klavišas šiam numatytajam",
                     "name": "Ankstesnis paieškos rezultatas"
                 },
                 "SearchPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Skaitytuvės lango paieškos įrankyje eiti į ankstesnį paieškos rezultatą. Šis spartusis klavišas yra alternatyvus numatytajam",
+                    "name": "Ankstesnis paieškos rezultatas (alternatyvus)"
                 },
                 "SpeakReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "Skaitytuvės lange apibūdinti dabartinės skaitymo vietos kontekstą naudojant su ekrano skaitytuvais suderinamą tekstą",
+                    "name": "Apibūdinti skaitymo vietą (balsu)"
                 },
                 "ToggleBookmark": {
-                    "description": "Pridėti naują žymę arba šalinti egzistuojančią, jei ji šiuo metu pažymėta",
-                    "name": ""
+                    "description": "Pridėti naują skirtuką arba šalinti egzistuojantį, jei jis šiuo metu pažymėtas",
+                    "name": "Perjungti skirtuką"
                 },
                 "ToggleReaderFullscreen": {
-                    "description": "",
-                    "name": ""
+                    "description": "Skaitytuvės lange įjungti sistemos viso ekrano režimą arba atkurti įprastą lango režimą. Atkreipkite dėmesį, jog tai skiriasi nuo „zen“ režimo, kuris supaprastina naudotojo sąsają",
+                    "name": "Perjungti viso ekrano režimą"
                 }
             },
             "loadUserJson": "Įkelti iš naudotojo failo",
-            "noShortcutFound": "",
+            "noShortcutFound": "Sparčiųjų klavišų su tokia etikete nerasta",
             "resetDefaults": "Atkurti numatytuosius",
             "save": "Įrašyti",
-            "searchPlaceholder": ""
+            "searchPlaceholder": "Įveskite, kad ieškotumėte sparčiojo klavišo"
         },
         "language": {
             "languageChoice": "Kalba"
@@ -1122,7 +1122,7 @@
             "export": {
                 "applyDefaultTemplate": "Įkelti numatytąjį šabloną",
                 "enableCheckbox": "Tinkinti HTML šabloną",
-                "overrideHTMLTemplate": ""
+                "overrideHTMLTemplate": "Užrašų eksportavimas (pastabos ir skirtukai)"
             }
         },
         "session": {
@@ -1175,7 +1175,7 @@
             "catalogs": "Pasiskolinkite leidinius iš savo vietinės bibliotekos bei atraskite leidinius OPDS sklaidos kanaluose. Internetinių katalogų dėka gaukite prieigą prie gausybės leidinių iš skirtingų šaltinių.",
             "home": "Thorium atrodo kitaip! Sužinokite, kas naujo...",
             "readingView1": "Tinkinkite savo skaitymo ir klausymosi nuostatas: nuo šiol Thorium siūlo keletą spalvų temų naudotojo sąsajai bei leidinių dokumentams. Dabar taip pat tapo lengviau konfigūruoti „readaloud“ el. knygas su sintetinio balso ir sinchronizuoto teksto/garso skaitymu.",
-            "readingView2": "Patobulinta Thorium naudotojo sąsaja leidžia lengviau rasti tekstą leidiniuose, peržvelgti paieškos rezultatus, atversti tam tikrą puslapį, naršyti turinyje, kurti žymes ir t.t. naujų „pritvirtintų“ skydelių dėka, o viso ekrano skaitymo režimas ir toliau suteikia aplinką be dėmesio išblaškymo.",
+            "readingView2": "Patobulinta Thorium naudotojo sąsaja leidžia lengviau rasti tekstą leidiniuose, peržvelgti paieškos rezultatus, atversti tam tikrą puslapį, naršyti turinyje, kurti skirtukus ir t.t. naujų „pritvirtintų“ skydelių dėka, o viso ekrano skaitymo režimas ir toliau suteikia aplinką be dėmesio išblaškymo.",
             "yourBooks": "Su jumis sveikinasi iš naujo suprojektuota asmeninė knygų lentyna! „Tinklelio“ peržiūros režime be vargo galėsite filtruoti pagal žymes arba rasti leidinius pagal raktinius žodžius. „Sąrašo“ režime galėsite peržiurėti, pažymėti ir rikiuoti leidinius pagal konkretų autorių, pavadinimą, datą, formatą ir t.t."
         },
         "dontShow": "Daugiau neberodyti",
