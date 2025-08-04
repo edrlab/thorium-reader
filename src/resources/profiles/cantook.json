@@ -3,6 +3,7 @@
     "manifest_version": 1,
     "version": "1.0",
     "name": "Cantook Station",
+    "description": " Sed a elementum nibh. Integer vulputate suscipit tincidunt. Nullam iaculis enim quis tempor posuere. Curabitur et turpis ut felis fermentum mattis.",
     "language": "en-EN",
     "theme": {
         "light": {

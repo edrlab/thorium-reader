@@ -36,6 +36,7 @@ import { TTheme } from "readium-desktop/common/redux/states/theme";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import * as LanguageIcon from "readium-desktop/renderer/assets/icons/language.svg";
 import * as BrushIcon from "readium-desktop/renderer/assets/icons/paintbrush-icon.svg";
+import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar-icon.svg";
 import KeyboardSettings, { AdvancedTrigger } from "readium-desktop/renderer/library/components/settings/KeyboardSettings";
 import * as GearIcon from "readium-desktop/renderer/assets/icons/gear-icon.svg";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
@@ -474,19 +475,70 @@ const Profiles = () => {
     const selectedKey = allProfiles.find(({ name }) => name === profile.name);
 
     return (
-        <div>
-            <ComboBox label="Sélectionner un profil" items={allProfiles}  selectedKey={selectedKey?.id} onSelectionChange={setProfile}>
-                {item =>         
-                <ComboBoxItem key={item.id} textValue={item.name}>
-                    <span style={{ display: "flex", alignItems: "center", gap: "0.5em" }}>
-                        {item.name}
-                        {/* {item.properties.authenticate?.href ?
-                            <SVG className={stylesSettings.authIcon} ariaHidden svg={AuthIcon} />
-                        : <></>} */}
-                    </span>
-                </ComboBoxItem>}
-            </ComboBox>
-        </div>
+        <>
+            {/* <div>
+                <ComboBox label="Sélectionner un profil" items={allProfiles}  selectedKey={selectedKey?.id} onSelectionChange={setProfile}>
+                    {item =>         
+                    <ComboBoxItem key={item.id} textValue={item.name}>
+                        <span style={{ display: "flex", alignItems: "center", gap: "0.5em" }}>
+                            {item.name}
+                            {/* {item.properties.authenticate?.href ?
+                                <SVG className={stylesSettings.authIcon} ariaHidden svg={AuthIcon} />
+                            : <></>}
+                        </span>
+                    </ComboBoxItem>}
+                </ComboBox>
+            </div> */}
+            <div className={stylesSettings.session_text}>
+                <SVG ariaHidden svg={InfoIcon} />
+                <p>Switch profiles to customize the app with a partner vendor’s branding and colors. Each profile offers a tailored experience.</p>
+            </div>
+            <form 
+                className={stylesSettings.profile_selection_form}
+                onChange={(e) => {
+                    const target = e.target as HTMLInputElement;
+                    setProfile(parseInt(target.value));
+                }}
+            >
+                {
+                    allProfiles.map((profile) => {
+                        const logo = profile.images?.filter((object) => object.rel === "logo")[0];
+
+                        return (
+                            <div
+                                key={profile.id} // Ajout de la key manquante pour React
+                                className={stylesSettings.profile_selection_input}
+                            >
+                                <input 
+                                    type="radio" 
+                                    id={profile.id.toString()} 
+                                    value={profile.id} 
+                                    name="profile_selection" 
+                                    checked={selectedKey?.id === profile.id}
+                                />
+                                <label htmlFor={profile.id.toString()} className={stylesSettings.profile_selection_label}>
+                                    {logo && logo.type === "image/svg+xml" ? (
+                                        <div
+                                            className="logo"
+                                            dangerouslySetInnerHTML={{ __html: logo.href }}
+                                        />
+                                    ) : (
+                                        <img 
+                                            src={logo?.href || "./resources/icons/512x512.png"} 
+                                            alt={`Logo ${profile.name}`}
+                                        />
+                                    )}
+                                    <div className={stylesSettings.profile_selection_description}>
+                                        <h5>{profile.name}</h5>
+                                        <p>{profile.description}</p>
+                                    </div>
+                                </label>
+                            </div>
+                        );
+                    })
+                }
+            </form>
+        </>
     );
 };
 
@@ -541,6 +593,10 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             <SVG ariaHidden svg={KeyReturnIcon} />
                             <h3>{__("settings.tabs.keyboardShortcuts")}</h3>
                         </Tabs.Trigger>
+                        <Tabs.Trigger value="tab5">
+                            <SVG ariaHidden svg={AvatarIcon} />
+                            <h3>Profiles</h3>
+                        </Tabs.Trigger>
                     </Tabs.List>
                     <div className={stylesSettings.settings_content} style={{marginTop: "70px"}}>
                         <Tabs.Content value="tab1" tabIndex={-1}>
@@ -558,7 +614,6 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             <TabHeader title={__("settings.tabs.appearance")} />
                             <div className={stylesSettings.settings_tab}>
                                 <Themes />
-                                <Profiles />
                             </div>
                         </Tabs.Content>
                         <Tabs.Content value="tab4" tabIndex={-1}>
@@ -567,6 +622,13 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             </TabHeader>
                             <div className={stylesSettings.settings_tab}>
                                 <KeyboardSettings />
+                            </div>
+                        </Tabs.Content>
+                        <Tabs.Content value="tab5" tabIndex={-1}>
+                            <TabHeader title="Profiles">
+                            </TabHeader>
+                            <div className={stylesSettings.settings_tab}>
+                                <Profiles />
                             </div>
                         </Tabs.Content>
                     </div>

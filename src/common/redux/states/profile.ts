@@ -46,6 +46,7 @@ export interface IProfile {
     manifest_version: number;
     version: string,
     name: string,
+    description?: string,
     language?: string,
     splash_screen?: string,
     theme?: {light: IPalette, dark: IPalette};

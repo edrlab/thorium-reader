@@ -3,6 +3,7 @@
     "manifest_version": 1,
     "version": "1.0",
     "name": "Thorium",
+    "description": "Thorium Reader is the EPUB reader of choice for Windows 10 and 11, MacOS and Linux.",
     "language": "",
     "splash_screen": "",
     "theme": {

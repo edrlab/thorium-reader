@@ -3,6 +3,7 @@
     "manifest_version": 1,
     "version": "1.0",
     "name": "Archive.org",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis massa mauris, bibendum et ipsum eu, aliquet vehicula nisl. Donec consectetur elit ac urna elementum malesuada.",
     "language": "en-EN",
     "theme": {
         "light": {

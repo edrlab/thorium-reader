@@ -3,6 +3,7 @@
     "manifest_version": 1,
     "version": "1.0",
     "name": "FeedBooks",
+    "description": "Ut pretium purus enim, ac varius orci scelerisque ac. Vestibulum dictum vel lorem quis dapibus. Nulla a nibh condimentum, tincidunt ipsum at, auctor eros.",
     "language": "fr-FR",
     "theme": {
         "light": {
