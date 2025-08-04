@@ -28,6 +28,17 @@ const nodeModuleRelativeUrl = isPackaged ? "node_modules" : "../node_modules";
 
 const distRelativeUrl = isPackaged ? "dist" : "../dist";
 
+// node scripts/profile-generate-key-pair.js 
+const pubkey = `-----BEGIN PUBLIC KEY-----
+MFIwEAYHKoZIzj0CAQYFK4EEAAMDPgAEHSejvBFWB/vIgEJfDwz0HNO6MIsWjsf2
+5JKKOC4tQPIaFq8v+CSonSJUC0bZS1obT3GSSFjDE3Ya/pEV
+-----END PUBLIC KEY-----`;
+const privateKey = `-----BEGIN PRIVATE KEY-----
+MH4CAQAwEAYHKoZIzj0CAQYFK4EEAAMEZzBlAgEBBB4Sbux7zumM81y2f1YsxfVa
+3EzWlSi/ye/upPWJMlihQAM+AAQdJ6O8EVYH+8iAQl8PDPQc07owixaOx/bkkoo4
+Li1A8hoWry/4JKidIlQLRtlLWhtPcZJIWMMTdhr+kRU=
+-----END PRIVATE KEY-----`;
+
 // "http://localhost:8080/";
 // MUST END WITH FORWARD SLASH!
 const telemetryUrl =
@@ -66,6 +77,8 @@ const data = {
     __TH__RENDERER_PDF_WEBVIEW_BASE_URL__: JSON.stringify(rendererPdfWebviewBaseUrl),
     __TH__TELEMETRY_URL__: JSON.stringify(telemetryUrl),
     __TH__TELEMETRY_SECRET__: JSON.stringify(telemetrySecret),
+    __TH__CUSTOMIZATION_PROFILE_PUB_KEY__: JSON.stringify(pubkey),
+    __TH__CUSTOMIZATION_PROFILE_PRIVATE_KEY__: JSON.stringify(privateKey),
 
     // __PACKAGING__: JSON.stringify(envPackaging),
     // __NODE_ENV__: JSON.stringify(nodeEnv),

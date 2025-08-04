@@ -6,7 +6,7 @@
 // ==LICENSE-END=
 
 import * as debug_ from "debug";
-import { createWriteStream } from "fs";
+import { createWriteStream, readdirSync, statSync, readFileSync, unlinkSync } from "fs";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
@@ -24,6 +24,13 @@ import { ZipFile } from "yazl";
 import { EventEmitter } from "events";
 
 import { createTempDir } from "../fs/path";
+import { extractCrc32OnZip } from "../tools/crc";
+import { createSign } from "crypto";
+
+import { _CUSTOMIZATION_PROFILE_PRIVATE_KEY, _CUSTOMIZATION_PROFILE_PUB_KEY } from "readium-desktop/preprocessor-directives";
+import { ICustomizationManifest } from "src/common/readium/customization/manifest";
+import slugify from "slugify";
+import { injectManifestToZip } from "../w3c/lpf/tools";
 
 // Logger
 const debug = debug_("readium-desktop:main#utils/zip/create");
@@ -41,18 +48,13 @@ const doDeflate = (_zipPath: string) => true;
 
 export type TResourcesFSCreateZip = Array<[fsPath: string, zipPath: string]>;
 export type TResourcesBUFFERCreateZip = Array<[chuncks: Buffer, zipPath: string]>;
-export async function createWebpubZip(
-    manifestBuffer: Buffer,
+
+export async function createZip(
+    packagePath: string,
     resourcesMapFs: TResourcesFSCreateZip,
     resourcesMapBuffer?: TResourcesBUFFERCreateZip,
-    name = "misc",
-) {
-    const pathFile = await createTempDir(nanoid(8), name);
-    const packagePath = path.resolve(pathFile, "package.webpub");
-
-    debug("createWebpubZip", packagePath);
-
-    await new Promise<void>((resolve, reject) => {
+): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
         const zipfile = new ZipFile();
 
         // https://unpkg.com/browse/@types/yazl@2.4.5/index.d.ts
@@ -97,9 +99,6 @@ export async function createWebpubZip(
 
         zipfile.outputStream.pipe(writeStream);
 
-        debug("createWebpubZip addBuffer", "manifest.json");
-        zipfile.addBuffer(manifestBuffer, "manifest.json", { compress: true });
-
         resourcesMapFs.forEach(([fsPath, zipPath]) => {
             const compress = doDeflate(zipPath);
             debug("createWebpubZip addFile", zipPath, compress);
@@ -115,6 +114,127 @@ export async function createWebpubZip(
         debug("createWebpubZip ENDING ...", packagePath);
         zipfile.end();
     });
+}
+
+const signManifest = (manifest: ICustomizationManifest) => {
+
+    const manifestStringified = JSON.stringify(manifest);
+
+    const sign = createSign("SHA256");
+    sign.update(manifestStringified);
+    sign.end();
+    const signature = sign.sign(_CUSTOMIZATION_PROFILE_PRIVATE_KEY, "hex");
+
+    return {
+        key: _CUSTOMIZATION_PROFILE_PUB_KEY, // PUBLIC Not PRIVATE !?!
+        value: signature,
+        algorithm: "https://www.w3.org/2008/xmlsec/namespaces.html#ECKeyValue", // see scripts/profile-generate-key-pair.js
+    };
+};
+
+export async function createWebpubZip(
+    manifestBuffer: Buffer,
+    resourcesMapFs: TResourcesFSCreateZip,
+    resourcesMapBuffer?: TResourcesBUFFERCreateZip,
+    name = "misc",
+) {
+    const pathFile = await createTempDir(nanoid(8), name);
+    const packagePath = path.resolve(pathFile, "package.webpub");
+    debug("createWebpubZip", packagePath);
+    await createZip(packagePath, resourcesMapFs, [...(resourcesMapBuffer || []), [manifestBuffer, "manifeat.json"]]);
+    return packagePath;
+}
+
+export async function createProfilePackageZip(
+    manifest: ICustomizationManifest,
+    resourcesMapFs: TResourcesFSCreateZip,
+    outputProfilePath: string,
+    signed = false,
+) {
+    const packagePath = path.resolve(outputProfilePath, `${slugify(manifest.name)}.thor`);
+    const packagePathTMP = packagePath + ".tmp";
+
+    debug("Ouput path =", packagePath);
+
+    if (resourcesMapFs.length) {
+        await createZip(packagePathTMP, resourcesMapFs, []);
+        const content_hash = await extractCrc32OnZip(packagePath, "profile");
+        debug("ZIP CRC = ", content_hash);
+        manifest.content_hash = content_hash;
+        manifest.signature = undefined;
+
+        if (signed) {
+            const signature = signManifest(manifest);
+            debug("Manifest signed", JSON.stringify(signature));
+            manifest.signature = signature;
+        }
+        const manifestBuffer = Buffer.from(JSON.stringify(manifest, null, 4));
+        await injectManifestToZip(packagePathTMP, packagePath, manifestBuffer);
+        unlinkSync(packagePathTMP);
+    } else {
+        manifest.content_hash = "";
+        manifest.signature = undefined;
+
+        if (signed) {
+            const signature = signManifest(manifest);
+            debug("Manifest signed", JSON.stringify(signature));
+            manifest.signature = signature;
+        }
+        const manifestBuffer = Buffer.from(JSON.stringify(manifest, null, 4));
+        await createZip(packagePath, resourcesMapFs, [[manifestBuffer, "manifest.json"]]);
+    }
+
+
 
     return packagePath;
+}
+
+// console.log(require.main);
+// console.log(process.argv[1]);
+if (process.argv[1] === path.resolve(process.cwd(), "./dist/make-package.js")) {
+
+
+    if (process.argv.length !== 5) {
+        console.error(`usage: ${process.argv[0]} ${process.argv[1]} --signed=[false|true] inputDirectory outputDirectory`);
+        process.exit(1);
+    }
+    const signed = process.argv[2] === "--signed=true"; 
+    const inputDir = path.resolve(process.cwd(), process.argv[3]);
+    const outputDir = path.resolve(process.cwd(), process.argv[4]);
+
+    const resourcesMap: Array<[string, string]> = [];
+
+    const toBeVisit = ["./"];
+    while (toBeVisit.length) {
+
+        const dirPath = toBeVisit.shift();
+        const dirAbsolutePath = path.join(inputDir, dirPath);
+        const fileNameArray = readdirSync(dirAbsolutePath);
+        for (const fileName of fileNameArray) {
+            const filePath = path.join(dirPath, fileName);
+            const fileAbsolutePath = path.join(inputDir, filePath);
+            const stat = statSync(fileAbsolutePath);
+            if (stat.isDirectory()) {
+                toBeVisit.push(filePath);
+            } else {
+                if (filePath !== "manifest.json")
+                    resourcesMap.push([fileAbsolutePath, filePath]);
+            }
+        }
+    } // BFS
+
+
+    let manifest: ICustomizationManifest;
+    try {
+        manifest = JSON.parse(readFileSync(path.join(inputDir, "manifest.json"), "utf-8"));
+    } catch {
+        console.error("manifest not found!!!");
+        process.exit(1);
+    }
+
+
+    createProfilePackageZip(manifest, resourcesMap, outputDir, signed).then((outPath) => {
+        console.log("OUTPUT=", outPath);
+    }).catch((e) => console.error("ERROR!? ", e));
+
 }
