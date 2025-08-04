@@ -20,7 +20,7 @@
             "copy": "نسخ",
             "cut": "قص",
             "paste": "لصق",
-            "print": "",
+            "print": "طباعة",
             "redo": "إعادة",
             "selectAll": "اختيار الكل",
             "title": "تحرير",
@@ -140,7 +140,7 @@
         "deleteBookmarksText": "هل تريد بالتأكيد حذف {{- bookmarkListLength}} إشارات مرجعية؟",
         "deleteFeed": "حذف الكتالوغ؟",
         "deletePublication": "حذف المنشور؟",
-        "deletePublicationWithNotes": "",
+        "deletePublicationWithNotes": "تحذير:  يحتوي هذا المنشور على تعليقات توضيحية و/أو إشارات مرجعية، وسيتم حذفها أيضًا! (إذا كنت ترغب في الاحتفاظ بها، تأكد من تصدير الملاحظات قبل إزالة المنشور)",
         "import": "تأكيد الاستيراد:",
         "importError": "حدث خطأ، تحقَّق من ملحق الملف ({{acceptedExtension}})",
         "renew": "تجديد/تمديد الاستعارة؟",
@@ -670,10 +670,10 @@
         },
         "goToContent": "الانتقال إلى المحتوى",
         "imgViewer": {
-            "title": "",
-            "zoomIn": "",
-            "zoomOut": "",
-            "zoomReset": ""
+            "title": "عارض الصور (تكبير)",
+            "zoomIn": "تكبير",
+            "zoomOut": "تصغير",
+            "zoomReset": "إعادة ضبط التكبير"
         },
         "marks": {
             "annotations": "التعليقات",
@@ -708,7 +708,7 @@
         "navigation": {
             "ZenModeExit": "الخروج من وضع القراءة المبسّطة",
             "ZenModeTitle": "وضع القراءة المبسّطة",
-            "annotationTitle": "التعليق",
+            "annotationTitle": "تعليق توضيحي",
             "backHomeTitle": "عودة إلى رف الكتب",
             "bookmarkTitle": "الإشارة المرجعية",
             "currentPage": "الصفحة الحالية: {{- current}}",
@@ -725,8 +725,8 @@
             "openTableOfContentsTitle": "التنقّل",
             "page": "الصفحة",
             "pdfscalemode": "ملاءمة أو عرض الصفحة",
-            "print": "",
-            "printDisabled": "",
+            "print": "طباعة",
+            "printDisabled": "الطباعة محظورة",
             "settingsTitle": "إعدادات"
         },
         "notes": {
@@ -752,22 +752,22 @@
             "searchTitle": "البحث عن:"
         },
         "print": {
-            "descriptionLcpCount": "",
-            "descriptionLcpPrintable": "",
-            "howTo": "",
-            "lcpInfo": "",
-            "noPagesLcpLimitReached": "",
-            "noPrintablePages": "",
-            "pageHelpInfo": "",
-            "pageHelpInfo1": "",
-            "pageHelpInfo2": "",
-            "pageHelpInfo3": "",
-            "pageHelpInfo4": "",
-            "pages": "",
-            "preview": "",
-            "print": "",
-            "printablePages": "",
-            "title": ""
+            "descriptionLcpCount": "الحد المتبقي لعدد الصفحات: {{- count}}",
+            "descriptionLcpPrintable": "الصفحات المطبوعة سابقًا: {{- printable}} ({{- count}})",
+            "howTo": "كيفية اختيار نطاق صفحات للطباعة",
+            "lcpInfo": "عدد الصفحات التي يمكن طباعتها في هذا المنشور  محدود ب  {{- count}} اختر الصفحات المطلوبة هنا",
+            "noPagesLcpLimitReached": "لقد بلغت الحد المسموح به وفق سياسة LCP",
+            "noPrintablePages": "لا توجد صفحات قابلة للطباعة",
+            "pageHelpInfo": "صيغة تحديد الصفحات:",
+            "pageHelpInfo1": "أدخل رقم صفحة للإشارة إلى صفحة واحدة (مثال \"6\")",
+            "pageHelpInfo2": "أدخل رقمي صفحتين وبينهما شرطة للإشارة إلى صفحات متتالية (مثال \"6-13\")",
+            "pageHelpInfo3": "استخدم الفاصلة المنقوطة لفصل صفحات متعددة أو نطاقات صفحات (مثال \"5؛14-20؛37\")",
+            "pageHelpInfo4": "احذف رقم الصفحة الأولى أو الأخيرة لنطاق الصفحات للإشارة إلى الصفحة الأولى أو الأخيرة للمنشور (مثال \"-16\" تساوي \"1-16\" و \"34-\" تساوي \"34-100\" بافتراض أن عدد صفحات المنشور هو 100 صفحة)",
+            "pages": "صفحات",
+            "preview": "معاينة",
+            "print": "طباعة",
+            "printablePages": "الصفحات القابلة للطباعة(إجمالي)",
+            "title": "تحديد الصفحات القابلة للطباعة"
         },
         "settings": {
             "column": {
@@ -791,7 +791,7 @@
             "letterSpacing": "تباعد الأحرف",
             "lineSpacing": "تباعد الأسطر",
             "margin": "الهامش",
-            "mathjax": "",
+            "mathjax": "تفعيل MathJax",
             "noFootnotes": "تعطيل الحواشي السفلية المنبثقة",
             "noRTLFlip": "تعطيل واجهة اليمين إلى اليسار",
             "noRuby": "إخفاء علامات روبي اليابانية",
@@ -880,33 +880,33 @@
         "keyboard": {
             "advancedMenu": "قائمة",
             "cancel": "إلغاء الأمر",
-            "disclaimer": "تم تعريف الاختصارات من تخطيط لوحة مفاتيح كويرتي.",
+            "disclaimer": "تم تصميم الإعدادات الافتراضية للتطبيق بناءً على تخطيط لوحة مفاتيح كويرتي",
             "editUserJson": "تحرير ملف المستخدم...",
             "keyboardShortcuts": "اختصارات لوحة المفاتيح",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "",
-                    "name": ""
+                    "description": "افتح مربع حوار انشاء الإشارة المرجعية قم بتحرير التسمية النصية (ملاحظة)، واللون والوسم",
+                    "name": "إنشاء إشارة مرجعية مع تسمية"
                 },
                 "AnnotationsCreate": {
-                    "description": "",
-                    "name": ""
+                    "description": "افتح مربع حوار إنشاء التعليق التوضيحي للنص المحدد في المستند، و قم بتعديل الملاحظة النصية، ولون التمييز والنوع والوسم",
+                    "name": "إنشاء تعليق توضيحي"
                 },
                 "AnnotationsCreateQuick": {
-                    "description": "",
-                    "name": ""
+                    "description": "إنشاء تعليق توضيحي سريع للنص المحدد، باستخدام بلون التمييز والنوع السابقين (ستترك الملاحظة والوسم فارغين)",
+                    "name": "إنشاء تعليق توضيحي سريع"
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "",
-                    "name": ""
+                    "description": "بدّل بين المؤشرات البصرية للتعليقات التوضيحية والإشارات المرجعية، سواء في الهامش أو داخل النص",
+                    "name": "تبديل هامش التعليات التوضيحية"
                 },
                 "AudioNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "انتقل إلى المقطع الصوتي التالي في السرد (EPUB Media Overlays، Text To Speech ، أو الكتاب الصوتي المسجل مسبقًا)",
+                    "name": "المقطع الصوتي التالي"
                 },
                 "AudioNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "انتقل إلى المقطع الصوتي التالي في السرد (EPUB Media Overlays، Text To Speech ، أو الكتاب الصوتي المسجل مسبقًا) يتخطى أي عنصر قابل للتخطي",
+                    "name": "المقطع الصوتي التالي (تخطي)"
                 },
                 "AudioPlayPause": {
                     "description": "",
@@ -985,56 +985,56 @@
                     "name": ""
                 },
                 "NavigateNextChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "في نافذة القارئ، تنقل للمستند التالي في ترتيب القراءة في المنشور (مثل الفصل التالي في تسلسل فصول الكتاب). ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "name": "الفصل التالي"
                 },
                 "NavigateNextChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "في نافذة القارئ، تنقل للمستند التالي في ترتيب القراءة في المنشور (مثل الفصل التالي في تسلسل فصول الكتاب). ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "name": "الفصل التالي (بديل)"
                 },
                 "NavigateNextHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "في نافذة القارئ، انتقل خطوة واحدة إلى الأمام في سجل التنقل",
+                    "name": "التالي في سجل التنقل"
                 },
                 "NavigateNextLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "في نافذة المكتبة، عرض الصفحة التالية من قائمة المنشورات المقسمة لصفحات. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "name": "الصفحة التالية في المكتبة"
                 },
                 "NavigateNextLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "في نافذة القارئ، انتقل للمستند التالي في ترتيب القراءة في المنشور (مثل الفصل التالي في تسلسل فصول الكتاب). ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "name": "الصفحة التالية في المكتبة(بديل)"
                 },
                 "NavigateNextOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "في نافذة الكتالوجات/ تغذية OPDS، اتبع رابط الصفحة التالية.. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "name": "صفحة OPDS التالية"
                 },
                 "NavigateNextOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "في نافذة الكتالوجات/ تغذية OPDS، اتبع رابط الصفحة التالية.. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "name": "صفحة OPDS التاليةى(بديل)"
                 },
                 "NavigateNextPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "في نافذة القارئ، انتقل إلى الصفحة التالية. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "name": "الصفحة التالية"
                 },
                 "NavigateNextPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "في نافذة القارئ، انتقل إلى \"الصفحة\" التالية. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "name": "الصفحة التالية (بديل)"
                 },
                 "NavigatePreviousChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "في نافذة القارئ، انتقل للمستند السابق في ترتيب القراءة في المنشور (مثل الفصل التالي في تسلسل فصول الكتاب). ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "name": "الفصل السابق"
                 },
                 "NavigatePreviousChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "في نافذة القارئ، انتقل إلى \"الصفحة\" التالية. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "name": "الفصل السابق (بديل)"
                 },
                 "NavigatePreviousHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "في نافذة القارئ، انتقل خطوة للخلف في سجل التنقل",
+                    "name": "الرجوع في سجل التنقل"
                 },
                 "NavigatePreviousLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "في نافذة القارئ، اعرض الصفحة السابقة  من قائمة المنشورات. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "name": "صفحة المكتبة السابقة"
                 },
                 "NavigatePreviousLibraryPageAlt": {
                     "description": "",
