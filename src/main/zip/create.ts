@@ -141,7 +141,7 @@ export async function createWebpubZip(
     const pathFile = await createTempDir(nanoid(8), name);
     const packagePath = path.resolve(pathFile, "package.webpub");
     debug("createWebpubZip", packagePath);
-    await createZip(packagePath, resourcesMapFs, [...(resourcesMapBuffer || []), [manifestBuffer, "manifeat.json"]]);
+    await createZip(packagePath, resourcesMapFs, [...(resourcesMapBuffer || []), [manifestBuffer, "manifest.json"]]);
     return packagePath;
 }
 
