@@ -41,7 +41,7 @@ const DEBUG_VERBOSE = false;
 
 // type TCrcFile = [string, number];
 
-export async function extractCrc32OnZip(inputZipFilePath: string) {
+export async function extractCrc32OnZip(inputZipFilePath: string, type: "profile" | "pub" = "pub") {
     // const zipEntryFileNameCrcArray: TCrcFile[] = [];
     const cryptoHash = crypto.createHash("sha1").update("|");
 
@@ -89,7 +89,10 @@ export async function extractCrc32OnZip(inputZipFilePath: string) {
                 // (see "redoHash" or more generally "__LCP_LSD_UPDATE_COUNT")
                 // which is okay because legacy / pubs imported before this change
                 // benefit from the removal of "META-INF/license.lcpl" from the calculation.
-                if (inputZipEntry.fileName !== "META-INF/license.lcpl") {
+                if (
+                    (type === "pub" && inputZipEntry.fileName !== "META-INF/license.lcpl" )
+                    || (type === "profile" && inputZipEntry.fileName !== "manifest.json")
+                ) {
                     // zipEntryFileNameCrcArray.push([inputZipEntry.fileName, inputZipEntry.crc32 || 0]);
                     cryptoHash.update((inputZipEntry.crc32 || 0).toString(16) + "|");
                 }

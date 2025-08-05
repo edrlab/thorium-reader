@@ -8,6 +8,25 @@
 import { app, powerMonitor, protocol } from "electron";
 import { OPDS_MEDIA_SCHEME } from "readium-desktop/common/streamerProtocol";
 import { channel as channelSaga, eventChannel } from "redux-saga";
+import { customizationStartFileWatcherFromWellKnownFolder } from "readium-desktop/main/customization/watcher";
+
+export function getAndStartCustomizationWellKnownFileWatchingEventChannel(wellKnownFolder: string) {
+
+    const channel = eventChannel<string>(
+        (emit) => {
+
+            const handler = (filePath: string) => emit(filePath);
+
+            const watcher = customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder, handler);
+
+            return async () => {
+                await watcher.close();
+            };
+        },
+    );
+
+    return channel;
+}
 
 export function getWindowAllClosedEventChannel() {
 

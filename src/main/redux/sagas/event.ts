@@ -6,7 +6,7 @@
 // ==LICENSE-END=
 
 import * as debug_ from "debug";
-import { historyActions, readerActions } from "readium-desktop/common/redux/actions";
+import { customizationActions, historyActions, readerActions } from "readium-desktop/common/redux/actions";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import {
@@ -16,7 +16,7 @@ import {
 } from "readium-desktop/main/event";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, put, spawn } from "redux-saga/effects";
-import { call as callTyped, take as takeTyped } from "typed-redux-saga/macro";
+import { call as callTyped, take as takeTyped, select as selectTyped, put as putTyped } from "typed-redux-saga/macro";
 import { opdsApi } from "./api";
 import { browse } from "./api/browser/browse";
 import { addFeed } from "./api/opds/feed";
@@ -24,12 +24,44 @@ import { addFeed } from "./api/opds/feed";
 import { importFromFs, importFromLink } from "./api/publication/import";
 import { search } from "./api/publication/search";
 import { appActivate } from "./win/library";
+import { getAndStartCustomizationWellKnownFileWatchingEventChannel } from "./getEventChannel";
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
+import path from "path";
+import { customizationPackageProvisioningAccumulator, customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
 
 // Logger
 const debug = debug_("readium-desktop:main:saga:event");
 
 export function saga() {
     return all([
+        spawn(function*() {
+
+            const chan = getAndStartCustomizationWellKnownFileWatchingEventChannel(customizationWellKnownFolder);
+
+            while (true) {
+
+                try {
+                    const fileName = yield* takeTyped(chan);
+                    const zipPath = path.join(customizationWellKnownFolder, fileName);
+
+                    const customizationState = yield* selectTyped((state: ICommonRootState) => state.customization);
+
+                    const packagesArray = yield* callTyped(() => customizationPackageProvisioningAccumulator(customizationState.provision, zipPath));
+                    yield* putTyped(customizationActions.provisioning.build(customizationState.provision, packagesArray));
+
+                    // TODO: how to warn user of potentially a new version of the packages id, we have to put a diff between version for a same id !
+                    // And mostly a technical issue, how to update the view with the update. package streamer follow a package id 
+                    
+
+                } catch (e) {
+
+                    debug("ERROR to importFromFs and to open the publication");
+                    debug(e);
+                }
+            }
+
+
+        }),
         spawn(function*() {
 
             const chan = getOpenFileFromCliChannel();
