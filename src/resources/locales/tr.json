@@ -404,8 +404,8 @@
                 "descriptive": "Bilgi mevcut değil"
             },
             "hazards-none": {
-                "compact": "Risk yok",
-                "descriptive": "Eser, risk içermiyor"
+                "compact": "Tehlike yok",
+                "descriptive": "Eser, tehlike içermiyor"
             },
             "hazards-sound": {
                 "compact": "Sesler",
@@ -419,16 +419,16 @@
                 "compact": "Ses mevcudiyeti bilinmiyor",
                 "descriptive": "Ses mevcudiyeti bilinmiyor"
             },
-            "hazards-title": "Riskler",
+            "hazards-title": "Tehlikeler",
             "hazards-unknown": {
-                "compact": "Risk mevcudiyeti bilinmiyor",
-                "descriptive": "Risk mevcudiyeti bilinmiyor"
+                "compact": "Tehlike mevcudiyeti bilinmiyor",
+                "descriptive": "Tehlike mevcudiyeti bilinmiyor"
             }
         },
         "navigation": {
             "navigation-index": {
                 "compact": "Dizin",
-                "descriptive": "Gönderme  yapılan girdilere bağlantılar içeren dizin"
+                "descriptive": "Atıf yapılan girdilere bağlantılar içeren dizin"
             },
             "navigation-no-metadata": {
                 "compact": "Bilgi mevcut değil",
@@ -440,7 +440,7 @@
             },
             "navigation-structural": {
                 "compact": "Başlıklar",
-                "descriptive": "Yapılandırılmış gezinme için başlıklar, tablolar ve benzeri  gibi öğeler"
+                "descriptive": "Yapılandırılmış gezinme için başlıklar, tablolar ve benzeri öğeler"
             },
             "navigation-title": "Gezinme",
             "navigation-toc": {

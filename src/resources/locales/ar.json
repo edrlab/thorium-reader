@@ -905,40 +905,40 @@
                     "name": "المقطع الصوتي التالي"
                 },
                 "AudioNextAlt": {
-                    "description": "انتقل إلى المقطع الصوتي التالي في السرد (EPUB Media Overlays، Text To Speech ، أو الكتاب الصوتي المسجل مسبقًا) يتخطى أي عنصر قابل للتخطي",
+                    "description": "انتقل إلى المقطع الصوتي التالي في السرد (EPUB Media Overlays، Text To Speech ، أو الكتاب الصوتي المسجل مسبقًا) هذا يتخطى أي عنصر قابل للتخطي",
                     "name": "المقطع الصوتي التالي (تخطي)"
                 },
                 "AudioPlayPause": {
-                    "description": "",
-                    "name": ""
+                    "description": "تشغيل/إيقاف مؤقت للسرد الحالي (EPUB Media Overlays، Text To Speech ، أو الكتاب الصوتي المسجل مسبقًا)",
+                    "name": "تشغيل/ إيقاف مؤقت الصوت"
                 },
                 "AudioPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "انتقل إلى المقطع الصوتي السابق في السرد (EPUB Media Overlays، Text To Speech ، أو الكتاب الصوتي المسجل مسبقًا)",
+                    "name": "المقطع الصوتي السابق"
                 },
                 "AudioPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "انتقل إلى المقطع الصوتي السابق في السرد (EPUB Media Overlays، Text To Speech ، أو الكتاب الصوتي المسجل مسبقًا) هذا يتخطى أي عنصر قابل للتخطي",
+                    "name": "المقطع الصوتي السابق (بديل)"
                 },
                 "AudioStop": {
-                    "description": "",
-                    "name": ""
+                    "description": "إيقاف الصوت الحالي (EPUB Media Overlays، Text To Speech ، أو الكتاب الصوتي المسجل مسبقًا)",
+                    "name": "إيقاف الصوت"
                 },
                 "CloseReader": {
-                    "description": "",
-                    "name": ""
+                    "description": "إغلاق نافذة القارئ والرجوع إلى المكتبة",
+                    "name": "إغلاق القارئ"
                 },
                 "FXLZoomIn": {
-                    "description": "",
-                    "name": ""
+                    "description": "تكبير صفحة أو صفحتين في تخطيط ثابت",
+                    "name": "تكبير تخطيط ثابت"
                 },
                 "FXLZoomOut": {
-                    "description": "",
-                    "name": ""
+                    "description": "تصغير صفحة أو صفحتين في تخطيط ثابت",
+                    "name": "تصغير تخطيط ثابت"
                 },
                 "FXLZoomReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "إعادة ضبط تكبير صفحة أو صفحتين في تخطيط ثابت",
+                    "name": "إعادة ضبط تكبير التخطيط الثابت"
                 },
                 "FocusMain": {
                     "description": "",
@@ -1070,31 +1070,31 @@
                 },
                 "OpenReaderInfoWhereAmI": {
                     "description": "",
-                    "name": ""
+                    "name": "عرض معلومات المنشور، عرض موقع القراءة"
                 },
                 "Print": {
-                    "description": "",
-                    "name": ""
+                    "description": "في نافذة القارئ، افتح مربع حوار الطباعة",
+                    "name": "طباعة"
                 },
                 "SearchNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "في أداة البحث في نافذة القارئ، انتقل لنتيجة البحث التالية. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "name": "التالي في البحث"
                 },
                 "SearchNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "في أداة البحث في نافذة القارئ، انتقل لنتيجة البحث التالية. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "name": "التالي في البحث (بديل)"
                 },
                 "SearchPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "في أداة البحث في نافذة القارئ، انتقل لنتيجة البحث السابقة. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "name": "السابق في البحث"
                 },
                 "SearchPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "في أداة البحث في نافذة القارئ، انتقل لنتيجة البحث السابقة. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "name": "السابق في البحث (بديل)"
                 },
                 "SpeakReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "في نافذة القارئ، وصف سياق موقع القراءة الحالي باستخدام نص منطوق متوافق مع قارئات الشاشة",
+                    "name": "وصف موقع القراءة (صوتي)"
                 },
                 "ToggleBookmark": {
                     "description": "",
@@ -1122,7 +1122,7 @@
             "export": {
                 "applyDefaultTemplate": "تطبيق القالب الافتراضي",
                 "enableCheckbox": "تفعيل/تعطيل تجاوز قالب Mustache عند تصدير الملاحظات بصيغة HTML",
-                "overrideHTMLTemplate": "تجاوز قالب Mustache عند تصدير الملاحظة بصيغة HTML"
+                "overrideHTMLTemplate": "تصدير الملاحظات (التعليقات إضافية والإشارات مرجعية)"
             }
         },
         "session": {
