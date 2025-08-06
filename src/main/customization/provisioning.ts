@@ -17,7 +17,7 @@ import * as semver from "semver";
 import { readdirSync, existsSync, mkdirSync } from "fs";
 import { ICustomizationProfileProvisioned } from "readium-desktop/common/redux/states/customization";
 import { app } from "electron";
-import { _CUSTOMIZATION_PROFILE_PUB_KEY } from "src/preprocessor-directives";
+import { _CUSTOMIZATION_PROFILE_PUB_KEY } from "readium-desktop/preprocessor-directives";
 
 
 // Logger
