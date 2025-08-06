@@ -5,7 +5,7 @@ const {
 } = require('node:crypto');
 
 const { privateKey, publicKey } = generateKeyPairSync('ec', {
-    namedCurve: 'sect239k1',
+    namedCurve: 'secp521r1',
     publicKeyEncoding: {
         type: 'spki',
         format: 'pem',
@@ -16,11 +16,17 @@ const { privateKey, publicKey } = generateKeyPairSync('ec', {
     },
 });
 
-console.log("PUBKEY=");
-console.log(publicKey);
-console.log("");
-console.log("PRIVATEKEY=");
-console.log(privateKey);
+// console.log("PUBKEY=");
+// console.log(publicKey);
+// console.log("");
+// console.log("PRIVATEKEY=");
+// console.log(privateKey);
+
+console.log(`
+// node scripts/profile-generate-key-pair.js 
+const pubkey = \`${publicKey}\`;
+const privateKey = \`${privateKey}\`;
+`)
 
 const sign = createSign('SHA256');
 sign.write('some data to sign');
