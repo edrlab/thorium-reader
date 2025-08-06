@@ -12,10 +12,15 @@ import path from "path";
 const debug = debug_("readium-desktop:main#utils/customization/watcher");
 
 import chokidar, { FSWatcher } from "chokidar";
+import { existsSync } from "fs";
 
 export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder: string, callback: (fileName: string, removed: boolean) => void): FSWatcher {
 
     wellKnownFolder = path.join(wellKnownFolder, "/");
+
+    if (!existsSync(wellKnownFolder)) {
+        return undefined;
+    }
 
     debug("START FILE WATCHING FROM ", wellKnownFolder);
 

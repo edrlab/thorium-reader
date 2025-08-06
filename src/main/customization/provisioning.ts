@@ -30,7 +30,9 @@ try {
         mkdirSync(customizationWellKnownFolder);
         debug(`Customization well-known folder created \"${customizationWellKnownFolder}\"`);
     }
-} catch {}
+} catch (e) {
+    debug("ERROR!!: Customization well-known folder not created", e);
+}
 
 async function getManifestFromPackageFileName(packageFileName: string): Promise<ICustomizationManifest> {
     const packageAbsolutePath = path.join(customizationWellKnownFolder, packageFileName);
