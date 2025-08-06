@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import path from "path";
 import { customizationActions } from "readium-desktop/common/redux/actions";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { customizationPackageProvisioning, customizationPackageProvisionningFromFolder, customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
@@ -27,21 +26,21 @@ export function* sagaCustomizationProfileProvisioning() {
     if (customizationState.activate.id) {
 
         let error = false;
-        const fileName = customizationState.provision.find(({identifier}) => identifier === customizationState.activate.id)?.fileName;
-        if (!fileName) {
-            debug(`CRITICAL ERROR: no pointer to ${customizationState.activate.id} found in provisioned array`);
+        const packageFileName = customizationState.provision.find(({identifier}) => identifier === customizationState.activate.id)?.fileName;
+        if (!packageFileName) {
+            debug(`CRITICAL ERROR: no pointer to identifier:"${customizationState.activate.id}" found in provisioned array`);
             error = true;
-        }
-        const zipPath = path.join(customizationWellKnownFolder, fileName);
-        const manifest = yield* callTyped(() => tryCatch(() => customizationPackageProvisioning(zipPath), filename_));
-        if (!manifest) {
-            debug(`CRITICAL ERROR: package not signed or correct in ${zipPath}`);
-            error = true;
+        } else {
+            const manifest = yield* callTyped(() => tryCatch(() => customizationPackageProvisioning(packageFileName), filename_));
+            if (!manifest) {
+                debug(`CRITICAL ERROR: package not signed or correct in ${packageFileName}`);
+                error = true;
+            }
         }
         if (error) {
-            // rollback to thorium vanilla profile
             // TODO: need to tell to the user, the action, how !?
 
+            debug("rollback to thorium vanilla profile");
             yield* putTyped(customizationActions.activating.build("")); // no profile
         }
     }
