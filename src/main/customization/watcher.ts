@@ -13,7 +13,7 @@ const debug = debug_("readium-desktop:main#utils/customization/watcher");
 
 import chokidar, { FSWatcher } from "chokidar";
 
-export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder: string, callback: (path: string) => void): FSWatcher {
+export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder: string, callback: (fileName: string) => void): FSWatcher {
 
     wellKnownFolder = path.join(wellKnownFolder, "/");
 
@@ -52,34 +52,52 @@ export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder
 
 
     watcher
-        .on("add", (path) => {
-            debug(`FSWatch: File ${path} has been added`);
+        .on("add", (absoluteFilePath) => {
+            debug(`FSWatch: File ${absoluteFilePath} has been added`);
             debug("START callback");
-            callback(path);
+
+            if (path.extname(absoluteFilePath) !== ".thor") {
+                debug("FSWatch: WATCHER ERROR!: Not in .thor !!?", absoluteFilePath);
+                return;
+            }
+            const fileName = path.basename(absoluteFilePath);
+            callback(fileName);
         })
-        .on("change", (path) => {
-            debug(`FSWatch: File ${path} has been changed`);
+        .on("change", (absoluteFilePath) => {
+            debug(`FSWatch: File ${absoluteFilePath} has been changed`);
             debug("START callback");
-            callback(path);
+
+            if (path.extname(absoluteFilePath) !== ".thor") {
+                debug("FSWatch: WATCHER ERROR!: Not in .thor !!?", absoluteFilePath);
+                return;
+            }
+            const fileName = path.basename(absoluteFilePath);
+            callback(fileName);
         })
-        .on("unlink", (path) => {
-            debug(`FSWatch: File ${path} has been removed`);
-            callback(path);
+        .on("unlink", (absoluteFilePath) => {
+            debug(`FSWatch: File ${absoluteFilePath} has been removed`);
+
+            if (path.extname(absoluteFilePath) !== ".thor") {
+                debug("FSWatch: WATCHER ERROR!: Not in .thor !!?", absoluteFilePath);
+                return;
+            }
+            const fileName = path.basename(absoluteFilePath);
+            callback(fileName);
         });
 
     // More possible events.
     watcher
-        .on("addDir", (path) => debug(`FSWatch: Directory ${path} has been added`))
-        .on("unlinkDir", (path) => debug(`FSWatch: Directory ${path} has been removed`))
+        .on("addDir", (absoluteFilePath) => debug(`FSWatch: Directory ${absoluteFilePath} has been added`))
+        .on("unlinkDir", (absoluteFilePath) => debug(`FSWatch: Directory ${absoluteFilePath} has been removed`))
         .on("error", (error) => {
             debug(`FSWatch: Watcher error: ${error}`);
 
             // TODO pentotially send an event to do manually profile checking/provisioning
         })
         .on("ready", () => debug("FSWatch: Initial scan complete. Ready for changes in " + wellKnownFolder))
-        .on("raw", (event, path, details) => {
+        .on("raw", (event, absoluteFilePath, details) => {
             // internal
-            debug("FSWatch: Raw event info:", event, path, details);
+            debug("FSWatch: Raw event info:", event, absoluteFilePath, details);
         });
 
     return watcher;

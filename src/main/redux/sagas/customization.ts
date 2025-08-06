@@ -22,6 +22,8 @@ export function* sagaCustomizationProfileProvisioning() {
 
     const customizationState = yield* selectTyped((state: ICommonRootState) => state.customization);
 
+    debug("INIT Customization with Persisted REDUX State :=> ", JSON.stringify(customizationState, null, 4));
+
     if (customizationState.activate.id) {
 
         let error = false;

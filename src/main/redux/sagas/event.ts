@@ -26,7 +26,6 @@ import { search } from "./api/publication/search";
 import { appActivate } from "./win/library";
 import { getAndStartCustomizationWellKnownFileWatchingEventChannel } from "./getEventChannel";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
-import path from "path";
 import { customizationPackageProvisioningAccumulator, customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
 
 // Logger
@@ -41,12 +40,11 @@ export function saga() {
             while (true) {
 
                 try {
-                    const fileName = yield* takeTyped(chan);
-                    const zipPath = path.join(customizationWellKnownFolder, fileName);
+                    const packageAbsolutePath = yield* takeTyped(chan);
 
                     const customizationState = yield* selectTyped((state: ICommonRootState) => state.customization);
 
-                    const packagesArray = yield* callTyped(() => customizationPackageProvisioningAccumulator(customizationState.provision, zipPath));
+                    const packagesArray = yield* callTyped(() => customizationPackageProvisioningAccumulator(customizationState.provision, packageAbsolutePath));
                     yield* putTyped(customizationActions.provisioning.build(customizationState.provision, packagesArray));
 
                     // TODO: how to warn user of potentially a new version of the packages id, we have to put a diff between version for a same id !

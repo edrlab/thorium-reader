@@ -23,9 +23,12 @@ import { app } from "electron";
 const debug = debug_("readium-desktop:main#utils/customization/provisioning");
 
 const pubkey = `-----BEGIN PUBLIC KEY-----
-MFIwEAYHKoZIzj0CAQYFK4EEAAMDPgAEHSejvBFWB/vIgEJfDwz0HNO6MIsWjsf2
-5JKKOC4tQPIaFq8v+CSonSJUC0bZS1obT3GSSFjDE3Ya/pEV
------END PUBLIC KEY-----`;
+MIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQBfuZMzJiHFuYrPHXkrzFvE4TLJCtt
+KH2trb1daSymrTwrULHNVa68ci1du2qO1QCJfRyzXhM3Xb1EClcjLc7wQFgAaw+2
+y9rrRYgNAPwvst6FjzS6ZSxNLmc+iubRYSpZaW4OOXk65cbwY1tcws2o+RtCoKlK
+z/sqIdxiPLBfKh+CGU4=
+-----END PUBLIC KEY-----
+`;
 
 export const customizationWellKnownFolder = path.join(app.getPath("userData"), ".well-known");
 
@@ -36,8 +39,9 @@ try {
     }
 } catch {}
 
-async function getManifestFromZipPath(zipPath: string): Promise<ICustomizationManifest> {
-    const zip = await tryCatch(() => zipLoadPromise(zipPath), "");
+async function getManifestFromPackageFileName(packageFileName: string): Promise<ICustomizationManifest> {
+    const packageAbsolutePath = path.join(customizationWellKnownFolder, packageFileName);
+    const zip = await tryCatch(() => zipLoadPromise(packageAbsolutePath), "");
     if (!zip) {
         return Promise.reject("Not a ZIP package");
     }
@@ -62,13 +66,13 @@ async function getManifestFromZipPath(zipPath: string): Promise<ICustomizationMa
     return manifest;
 }
 
-async function checkIfProfilePackageSigned(manifest: ICustomizationManifest, zipPath: string) {
+async function checkIfProfilePackageSigned(manifest: ICustomizationManifest, packageFileName: string) {
 
     if (__TH__IS_DEV__ && manifest.signature === undefined) {
         return true;
     }
 
-    if (!manifest.signature) {
+    if (!manifest.signature || !manifest.signature.value) {
         return Promise.reject("no signature found");
     }
 
@@ -77,18 +81,21 @@ async function checkIfProfilePackageSigned(manifest: ICustomizationManifest, zip
 
     }
 
-    const signature = JSON.parse(JSON.stringify(manifest.signature));
-    manifest.signature = undefined;
+    const signatureValue = manifest.signature.value;
+    const signatureKey = manifest.signature.key;
+    const stringifiedManifest = JSON.stringify({...manifest, signature: undefined});
 
     const verify = createVerify("SHA256");
-    verify.write(JSON.stringify(manifest));;
+    verify.write(stringifiedManifest);
     verify.end();
 
-    if (!verify.verify(pubkey, signature.value, "hex")) {
+    const verified = verify.verify(signatureKey, signatureValue, "hex");
+    if (!verified) {
         return Promise.reject("manifest not verified from signature");
     }
 
-    const content_hash = await extractCrc32OnZip(zipPath, "profile");
+    const packageAbsolutePath = path.join(customizationWellKnownFolder, packageFileName);
+    const content_hash = await extractCrc32OnZip(packageAbsolutePath, "profile");
     if (manifest.content_hash !== content_hash) {
         return Promise.reject("manifest content_hash missmatch");
     }
@@ -103,45 +110,50 @@ export async function customizationPackageProvisionningFromFolder(wellKnownFolde
 
     for (const dirent of results) {
         if (dirent.isFile() && path.extname(dirent.name) === ".thor") { 
-            packagesArray = await customizationPackageProvisioningAccumulator(packagesArray, dirent.name);
+            const packageFileName = dirent.name;
+            debug("Found => ", packageFileName);
+            packagesArray = await customizationPackageProvisioningAccumulator(packagesArray, packageFileName);
         }
     }
 
     return packagesArray;
 }
 
-export async function customizationPackageProvisioningAccumulator(packagesArray: ICustomizationProfileProvisioned[], zipPath: string): Promise<ICustomizationProfileProvisioned[]> {
+export async function customizationPackageProvisioningAccumulator(packagesArray: ICustomizationProfileProvisioned[], packageFileName: string): Promise<ICustomizationProfileProvisioned[]> {
     try {
-        const manifest = await customizationPackageProvisioning(zipPath);
+        const manifest = await customizationPackageProvisioning(packageFileName);
         const packageProvisionedWithTheSameIdentifier = packagesArray.find(({identifier}) => identifier === manifest.identifier);
-        const { version: provisionedVersion } = packageProvisionedWithTheSameIdentifier;
         if (
-            !packageProvisionedWithTheSameIdentifier || semver.gt(manifest.version, provisionedVersion)
+            !packageProvisionedWithTheSameIdentifier || semver.gt(manifest.version, packageProvisionedWithTheSameIdentifier.version)
         ) {
+
+            const packageProvisionedObj = { identifier: manifest.identifier, fileName: path.basename(packageFileName), version: manifest.version };
+            debug(`package "${packageFileName}" provisonned :=>`, packageProvisionedObj);
             return [
                 ...packagesArray.filter(({ identifier }) => identifier !== manifest.identifier),
-                { identifier: manifest.identifier, fileName: path.basename(zipPath), version: manifest.version },
+                packageProvisionedObj,
             ];
         }
     } catch (e) {
-        debug("Error when provisioning this profile=", zipPath);
+        debug("Error when provisioning this profile =>", packageFileName);
         debug(e);
     }
 
+    debug("Something went wrong", packageFileName, "not provisioned, return : ", JSON.stringify(packagesArray, null, 4));
     return packagesArray;
 }
 
-export async function customizationPackageProvisioning(zipPath: string): Promise<ICustomizationManifest> {
+export async function customizationPackageProvisioning(packageFileName: string): Promise<ICustomizationManifest> {
 
-    debug("start provisioning => ", zipPath);
+    debug("start provisioning => ", packageFileName);
 
-    const manifest = await getManifestFromZipPath(zipPath);
-    await checkIfProfilePackageSigned(manifest, zipPath);
+    const manifest = await getManifestFromPackageFileName(packageFileName);
+    await checkIfProfilePackageSigned(manifest, packageFileName);
 
     // TODO check ressources !?
 
 
-    debug("Read manifest.json from ", zipPath);
+    debug("Read manifest.json from ", packageFileName);
     debug(JSON.stringify(manifest, null, 4));
     return manifest;
 }
