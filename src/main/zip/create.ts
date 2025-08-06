@@ -25,7 +25,7 @@ import { EventEmitter } from "events";
 
 import { createTempDir } from "../fs/path";
 import { extractCrc32OnZip } from "../tools/crc";
-import { createSign } from "crypto";
+import { createSign, createVerify } from "crypto";
 
 import { _CUSTOMIZATION_PROFILE_PRIVATE_KEY, _CUSTOMIZATION_PROFILE_PUB_KEY } from "readium-desktop/preprocessor-directives";
 import { ICustomizationManifest } from "src/common/readium/customization/manifest";
@@ -116,6 +116,19 @@ export async function createZip(
     });
 }
 
+export async function createWebpubZip(
+    manifestBuffer: Buffer,
+    resourcesMapFs: TResourcesFSCreateZip,
+    resourcesMapBuffer?: TResourcesBUFFERCreateZip,
+    name = "misc",
+) {
+    const pathFile = await createTempDir(nanoid(8), name);
+    const packagePath = path.resolve(pathFile, "package.webpub");
+    debug("createWebpubZip", packagePath);
+    await createZip(packagePath, resourcesMapFs, [...(resourcesMapBuffer || []), [manifestBuffer, "manifest.json"]]);
+    return packagePath;
+}
+
 const signManifest = (manifest: ICustomizationManifest) => {
 
     const manifestStringified = JSON.stringify(manifest);
@@ -131,25 +144,24 @@ const signManifest = (manifest: ICustomizationManifest) => {
         algorithm: "https://www.w3.org/2008/xmlsec/namespaces.html#ECKeyValue", // see scripts/profile-generate-key-pair.js
     };
 };
+const verifyManifest = (manifest: ICustomizationManifest) => {
 
-export async function createWebpubZip(
-    manifestBuffer: Buffer,
-    resourcesMapFs: TResourcesFSCreateZip,
-    resourcesMapBuffer?: TResourcesBUFFERCreateZip,
-    name = "misc",
-) {
-    const pathFile = await createTempDir(nanoid(8), name);
-    const packagePath = path.resolve(pathFile, "package.webpub");
-    debug("createWebpubZip", packagePath);
-    await createZip(packagePath, resourcesMapFs, [...(resourcesMapBuffer || []), [manifestBuffer, "manifest.json"]]);
-    return packagePath;
-}
+    const signatureValue = manifest.signature.value;
+    const signatureKey = manifest.signature.key;
+    const stringifiedManifest = JSON.stringify({...manifest, signature: undefined});
 
+    const verify = createVerify("SHA256");
+    verify.write(stringifiedManifest);
+    verify.end();
+    const verified = verify.verify(signatureKey, signatureValue, "hex");
+    return verified;
+};
 export async function createProfilePackageZip(
     manifest: ICustomizationManifest,
     resourcesMapFs: TResourcesFSCreateZip,
     outputProfilePath: string,
     signed = false,
+    testSignature = false,
 ) {
     const packagePath = path.resolve(outputProfilePath, `${slugify(manifest.name)}.thor`);
     // const packagePathTMP = packagePath + ".tmp";
@@ -212,6 +224,14 @@ export async function createProfilePackageZip(
     }
 
 
+    if (signed && testSignature) {
+        if (verifyManifest(manifest)) {
+            debug("PASS!: Manifest Signed And Verifed");
+        } else {
+            throw new Error("KO ERRRO!: Manifest not verified after signature");
+        }
+    }
+
 
     return packagePath;
 }
@@ -263,7 +283,7 @@ if (__TH__IS_DEV__) {
         }
     
     
-        createProfilePackageZip(manifest, resourcesMap, outputDir, signed).then((outPath) => {
+        createProfilePackageZip(manifest, resourcesMap, outputDir, signed, true).then((outPath) => {
             console.log("OUTPUT=", outPath);
         }).catch((e) => console.error("ERROR!? ", e));
     
