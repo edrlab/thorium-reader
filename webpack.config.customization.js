@@ -1,4 +1,7 @@
 
+// npm run make-customization-profile -- --signed=true /tmp/test-profile /tmp
+
+
 const path = require("path");
 const webpack = require("webpack");
 
