@@ -17,18 +17,11 @@ import * as semver from "semver";
 import { readdirSync, existsSync, mkdirSync } from "fs";
 import { ICustomizationProfileProvisioned } from "readium-desktop/common/redux/states/customization";
 import { app } from "electron";
+import { _CUSTOMIZATION_PROFILE_PUB_KEY } from "src/preprocessor-directives";
 
 
 // Logger
 const debug = debug_("readium-desktop:main#utils/customization/provisioning");
-
-const pubkey = `-----BEGIN PUBLIC KEY-----
-MIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQBfuZMzJiHFuYrPHXkrzFvE4TLJCtt
-KH2trb1daSymrTwrULHNVa68ci1du2qO1QCJfRyzXhM3Xb1EClcjLc7wQFgAaw+2
-y9rrRYgNAPwvst6FjzS6ZSxNLmc+iubRYSpZaW4OOXk65cbwY1tcws2o+RtCoKlK
-z/sqIdxiPLBfKh+CGU4=
------END PUBLIC KEY-----
-`;
 
 export const customizationWellKnownFolder = path.join(app.getPath("userData"), ".well-known");
 
@@ -76,7 +69,7 @@ async function checkIfProfilePackageSigned(manifest: ICustomizationManifest, pac
         return Promise.reject("no signature found");
     }
 
-    if (manifest.signature.key !== pubkey) {
+    if (manifest.signature.key !== _CUSTOMIZATION_PROFILE_PUB_KEY) {
         return Promise.reject("manifest public key different from shipped public key");
 
     }
