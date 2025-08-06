@@ -27,7 +27,7 @@ export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder
 
 
         // keep .thor files
-        ignored: (file, stats) => stats?.isFile() && !file.endsWith(".thor"),
+        ignored: (file, stats) => !(stats?.isFile() && file.endsWith(".thor")),
 
         awaitWriteFinish: true, // emit single event when chunked writes are completed
         atomic: true, // emit proper events when "atomic writes" (mv _tmp file) are used // default true
