@@ -37,6 +37,7 @@ import * as catalog from "./catalog";
 import * as annotation from "./note";
 
 import { getTranslator } from "readium-desktop/common/services/translator";
+import { sagaCustomizationProfileProvisioning } from "./customization";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -58,6 +59,7 @@ export function* rootSaga() {
             // wait for the app.whenReady()
             call(appSaga.init),
             call(keyboardShortcuts.init),
+            call(sagaCustomizationProfileProvisioning),
         ]);
 
     } catch (e) {
