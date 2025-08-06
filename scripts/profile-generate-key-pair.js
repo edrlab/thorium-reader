@@ -5,6 +5,8 @@ const {
 } = require('node:crypto');
 
 const { privateKey, publicKey } = generateKeyPairSync('ec', {
+
+    // https://github.com/electron/electron/issues/28027#issuecomment-792967322
     namedCurve: 'secp521r1',
     publicKeyEncoding: {
         type: 'spki',
@@ -23,7 +25,7 @@ const { privateKey, publicKey } = generateKeyPairSync('ec', {
 // console.log(privateKey);
 
 console.log(`
-// node scripts/profile-generate-key-pair.js 
+// node scripts/profile-generate-key-pair.js
 const pubkey = \`${publicKey}\`;
 const privateKey = \`${privateKey}\`;
 `)
