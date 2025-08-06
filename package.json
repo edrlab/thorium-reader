@@ -305,7 +305,7 @@
     "jsdom": "^26.1.0",
     "lunr": "^2.3.9",
     "lunr-languages": "^1.14.0",
-    "marked": "^16.1.1",
+    "marked": "^16.1.2",
     "marked-emoji": "^2.0.1",
     "match-sorter": "^8.1.0",
     "mathjax": "^3.2.2",
@@ -317,7 +317,7 @@
     "pdf.js": "github:edrlab/pdf.js#build",
     "proxy-agent": "^6.5.0",
     "r2-lcp-js": "^1.0.44",
-    "r2-navigator-js": "^1.23.1",
+    "r2-navigator-js": "^1.23.2",
     "r2-opds-js": "^1.0.47",
     "r2-shared-js": "^1.0.84",
     "r2-streamer-js": "^1.0.51",
@@ -388,9 +388,9 @@
     "@types/yargs": "^17.0.33",
     "@types/yauzl": "^2.10.3",
     "@types/yazl": "^3.3.0",
-    "@typescript-eslint/eslint-plugin": "^8.38.0",
-    "@typescript-eslint/parser": "^8.38.0",
-    "@typescript/native-preview": "^7.0.0-dev.20250803.1",
+    "@typescript-eslint/eslint-plugin": "^8.39.0",
+    "@typescript-eslint/parser": "^8.39.0",
+    "@typescript/native-preview": "^7.0.0-dev.20250805.1",
     "babel-loader": "^10.0.0",
     "babel-plugin-macros": "^3.1.0",
     "chokidar": "^4.0.3",
@@ -419,13 +419,13 @@
     "jest": "^30.0.5",
     "json-diff": "^1.0.6",
     "markdown-loader": "^8.0.0",
-    "mini-css-extract-plugin": "^2.9.2",
+    "mini-css-extract-plugin": "^2.9.3",
     "ncp": "^2.0.0",
     "npm-scripts-lifecycle": "^1.0.0",
     "prettier": "^3.6.2",
     "remote-redux-devtools": "^0.5.16",
     "rimraf": "^6.0.1",
-    "sass": "^1.89.2",
+    "sass": "^1.90.0",
     "sass-loader": "^16.0.5",
     "schema-utils": "^4.3.2",
     "style-loader": "^4.0.0",
@@ -446,15 +446,5 @@
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.2",
     "webpack-node-externals": "^3.0.0"
-  },
-  "overrides": {
-    "@typescript-eslint/eslint-plugin": {
-      ".": "$@typescript-eslint/eslint-plugin",
-      "typescript": "$typescript",
-      "@typescript-eslint/parser": {
-        ".": "$@typescript-eslint/parser",
-        "typescript": "$typescript"
-      }
-    }
   }
 }
