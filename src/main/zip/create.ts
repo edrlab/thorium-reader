@@ -6,7 +6,7 @@
 // ==LICENSE-END=
 
 import * as debug_ from "debug";
-import { createWriteStream, readdirSync, statSync, readFileSync, unlinkSync } from "fs";
+import { createWriteStream, readdirSync, statSync, readFileSync, unlinkSync, renameSync } from "fs";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
@@ -30,7 +30,7 @@ import { createSign } from "crypto";
 import { _CUSTOMIZATION_PROFILE_PRIVATE_KEY, _CUSTOMIZATION_PROFILE_PUB_KEY } from "readium-desktop/preprocessor-directives";
 import { ICustomizationManifest } from "src/common/readium/customization/manifest";
 import slugify from "slugify";
-import { injectManifestToZip } from "../w3c/lpf/tools";
+import { injectBufferInZip } from "../tools/zipInjector";
 
 // Logger
 const debug = debug_("readium-desktop:main#utils/zip/create");
@@ -152,12 +152,12 @@ export async function createProfilePackageZip(
     signed = false,
 ) {
     const packagePath = path.resolve(outputProfilePath, `${slugify(manifest.name)}.thor`);
-    const packagePathTMP = packagePath + ".tmp";
+    // const packagePathTMP = packagePath + ".tmp";
 
     debug("Ouput path =", packagePath);
 
     if (resourcesMapFs.length) {
-        await createZip(packagePathTMP, resourcesMapFs, []);
+        await createZip(packagePath, resourcesMapFs, []);
         const content_hash = await extractCrc32OnZip(packagePath, "profile");
         debug("ZIP CRC = ", content_hash);
         manifest.content_hash = content_hash;
@@ -169,8 +169,35 @@ export async function createProfilePackageZip(
             manifest.signature = signature;
         }
         const manifestBuffer = Buffer.from(JSON.stringify(manifest, null, 4));
-        await injectManifestToZip(packagePathTMP, packagePath, manifestBuffer);
-        unlinkSync(packagePathTMP);
+        const packagePathTMP = packagePath + ".tmpzip";
+        await new Promise<void>((resolve, reject) => {
+            injectBufferInZip(
+                packagePath,
+                packagePathTMP,
+                manifestBuffer,
+                "manifest.json",
+                (e: any) => {
+                    debug("injectManifestToZip - injectBufferInZip ERROR!");
+                    debug(e);
+                    reject(e);
+                },
+                () => {
+                    resolve();
+                });
+        });
+
+        unlinkSync(packagePath);
+        await new Promise<void>((resolve, _reject) => {
+            setTimeout(() => {
+                resolve();
+            }, 200); // to avoid issues with some filesystems (allow extra completion time)
+        });
+        renameSync(packagePathTMP, packagePath);
+        await new Promise<void>((resolve, _reject) => {
+            setTimeout(() => {
+                resolve();
+            }, 200); // to avoid issues with some filesystems (allow extra completion time)
+        });
     } else {
         manifest.content_hash = "";
         manifest.signature = undefined;
