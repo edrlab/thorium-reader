@@ -13,7 +13,7 @@ const debug = debug_("readium-desktop:main#utils/customization/watcher");
 
 import chokidar, { FSWatcher } from "chokidar";
 
-export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder: string, callback: (fileName: string) => void): FSWatcher {
+export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder: string, callback: (fileName: string, removed: boolean) => void): FSWatcher {
 
     wellKnownFolder = path.join(wellKnownFolder, "/");
 
@@ -27,7 +27,25 @@ export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder
 
 
         // keep .thor files
-        ignored: (file, stats) => !(stats?.isFile() && file.endsWith(".thor")),
+        ignored: (file, stats) => {
+
+            const ignor = !(
+                file === wellKnownFolder ||
+                (/*stats?.isFile() &&*/ file.endsWith(".thor"))
+            );
+            debug(`IGNORED TEST? \"${file}\", Directory=${stats?.isDirectory()}, file=${stats?.isFile()} =====> ${ignor ? "IGNORED" : "KEEPED"}`);
+            return ignor;
+            // return false;
+
+            /* /!\ There is an issue with the ignored callback, 2 consecutive test are executed, the first with the absolute file path and the stats obj BUT not for the second test, The file is then Falsy IGNORED /!\
+             SEE BELOW :
+
+            [2]   readium-desktop:main#utils/customization/watcher IGNORED TEST? "/Users/edrlab/Library/Application Support/EDRLab.ThoriumReader/.well-known/an-another-test-extension.thor", Directory=false, file=true =====> KEEPED +1ms
+            [2]   readium-desktop:main#utils/customization/watcher IGNORED TEST? "/Users/edrlab/Library/Application Support/EDRLab.ThoriumReader/.well-known/an-another-test-extension.thor", Directory=undefined, file=undefined =====> IGNORED +0ms
+            [2]   readium-desktop:main#utils/customization/watcher IGNORED TEST? "/Users/edrlab/Library/Application Support/EDRLab.ThoriumReader/.well-known/first-test-extension.thor", Directory=false, file=true =====> KEEPED +0ms
+            [2]   readium-desktop:main#utils/customization/watcher IGNORED TEST? "/Users/edrlab/Library/Application Support/EDRLab.ThoriumReader/.well-known/first-test-extension.thor", Directory=undefined, file=undefined =====> IGNORED +0ms
+            */
+        },
 
         awaitWriteFinish: true, // emit single event when chunked writes are completed
         atomic: true, // emit proper events when "atomic writes" (mv _tmp file) are used // default true
@@ -46,8 +64,8 @@ export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder
         depth: 0, // only current directory
 
         followSymlinks: true, // symlinks are authorized !?
-        ignoreInitial: true, // doesn't emit when instanciate
-        ignorePermissionErrors: true, // If watching fails due to EPERM or EACCES with this set to true, the errors will be suppressed silently.
+        ignoreInitial: false, // doesn't emit when instanciate // default false
+        ignorePermissionErrors: !__TH__IS_DEV__, // If watching fails due to EPERM or EACCES with this set to true, the errors will be suppressed silently.
     });
 
 
@@ -61,7 +79,7 @@ export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder
                 return;
             }
             const fileName = path.basename(absoluteFilePath);
-            callback(fileName);
+            callback(fileName, false);
         })
         .on("change", (absoluteFilePath) => {
             debug(`FSWatch: File ${absoluteFilePath} has been changed`);
@@ -72,7 +90,7 @@ export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder
                 return;
             }
             const fileName = path.basename(absoluteFilePath);
-            callback(fileName);
+            callback(fileName, false);
         })
         .on("unlink", (absoluteFilePath) => {
             debug(`FSWatch: File ${absoluteFilePath} has been removed`);
@@ -82,7 +100,7 @@ export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder
                 return;
             }
             const fileName = path.basename(absoluteFilePath);
-            callback(fileName);
+            callback(fileName, true);
         });
 
     // More possible events.

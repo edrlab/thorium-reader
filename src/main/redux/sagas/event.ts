@@ -40,11 +40,22 @@ export function saga() {
             while (true) {
 
                 try {
-                    const packageAbsolutePath = yield* takeTyped(chan);
+                    const [packageFileName, removed] = yield* takeTyped(chan);
 
                     const customizationState = yield* selectTyped((state: ICommonRootState) => state.customization);
+                    let packagesArray = customizationState.provision;
 
-                    const packagesArray = yield* callTyped(() => customizationPackageProvisioningAccumulator(customizationState.provision, packageAbsolutePath));
+                    if (removed) {
+                        const packageFound = packagesArray.find(({ fileName }) => fileName === packageFileName);
+                        if (packageFound && packageFound.identifier === customizationState.activate.id && packageFound.fileName === packageFileName) {
+                            debug("rollback to thorium vanilla profile");
+                            yield* putTyped(customizationActions.activating.build("")); // no profile
+                        }
+                        packagesArray = packagesArray.filter(({ fileName }) => fileName !== packageFileName);
+                    } else {
+                        packagesArray = yield* callTyped(() => customizationPackageProvisioningAccumulator(packagesArray, packageFileName));
+                    }
+
                     yield* putTyped(customizationActions.provisioning.build(customizationState.provision, packagesArray));
 
                     // TODO: how to warn user of potentially a new version of the packages id, we have to put a diff between version for a same id !

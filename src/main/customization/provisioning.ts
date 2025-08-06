@@ -113,6 +113,12 @@ export async function customizationPackageProvisionningFromFolder(wellKnownFolde
 }
 
 export async function customizationPackageProvisioningAccumulator(packagesArray: ICustomizationProfileProvisioned[], packageFileName: string): Promise<ICustomizationProfileProvisioned[]> {
+
+    const packageFileNameFound = packagesArray.find(({ fileName }) => fileName === packageFileName);
+    if (packageFileNameFound) {
+        packagesArray = packagesArray.filter(({ fileName }) => fileName !== packageFileName);
+    }
+
     try {
         const manifest = await customizationPackageProvisioning(packageFileName);
         const packageProvisionedWithTheSameIdentifier = packagesArray.find(({identifier}) => identifier === manifest.identifier);

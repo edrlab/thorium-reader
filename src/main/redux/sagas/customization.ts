@@ -23,10 +23,18 @@ export function* sagaCustomizationProfileProvisioning() {
 
     debug("INIT Customization with Persisted REDUX State :=> ", JSON.stringify(customizationState, null, 4));
 
+    const packagesArray = yield* callTyped(() => tryCatch(() => customizationPackageProvisionningFromFolder(customizationWellKnownFolder), filename_));
+    if (!packagesArray || !packagesArray.length) {
+        debug("no package profile found");
+    } else {
+        debug("packages profile found =", JSON.stringify(packagesArray, null, 4));
+    }
+    yield* putTyped(customizationActions.provisioning.build(customizationState.provision, packagesArray || []));
+
     if (customizationState.activate.id) {
 
         let error = false;
-        const packageFileName = customizationState.provision.find(({identifier}) => identifier === customizationState.activate.id)?.fileName;
+        const packageFileName = packagesArray.find(({identifier}) => identifier === customizationState.activate.id)?.fileName;
         if (!packageFileName) {
             debug(`CRITICAL ERROR: no pointer to identifier:"${customizationState.activate.id}" found in provisioned array`);
             error = true;
@@ -44,12 +52,4 @@ export function* sagaCustomizationProfileProvisioning() {
             yield* putTyped(customizationActions.activating.build("")); // no profile
         }
     }
-
-    const packagesArray = yield* callTyped(() => tryCatch(() => customizationPackageProvisionningFromFolder(customizationWellKnownFolder), filename_));
-    if (!packagesArray || !packagesArray.length) {
-        debug("no package profile found");
-    } else {
-        debug("packages profile found =", JSON.stringify(packagesArray, null, 4));
-    }
-    yield* putTyped(customizationActions.provisioning.build(customizationState.provision, packagesArray || []));
 }

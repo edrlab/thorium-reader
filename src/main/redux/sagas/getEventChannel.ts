@@ -12,10 +12,10 @@ import { customizationStartFileWatcherFromWellKnownFolder } from "readium-deskto
 
 export function getAndStartCustomizationWellKnownFileWatchingEventChannel(wellKnownFolder: string) {
 
-    const channel = eventChannel<string>(
+    const channel = eventChannel<[string, boolean]>(
         (emit) => {
 
-            const handler = (filePath: string) => emit(filePath);
+            const handler = (filePath: string, removed: boolean) => emit([filePath, removed]);
 
             const watcher = customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder, handler);
 
