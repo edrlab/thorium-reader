@@ -19,6 +19,7 @@ import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg"
 import * as CogIcon from "readium-desktop/renderer/assets/icons/cog-icon.svg";
 import * as PaletteIcon from "readium-desktop/renderer/assets/icons/palette-icon.svg";
 import * as KeyReturnIcon from "readium-desktop/renderer/assets/icons/keyreturn-icon.svg";
+import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar-icon.svg";
 import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 import classNames from "classnames";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
@@ -28,7 +29,7 @@ import { availableLanguages } from "readium-desktop/common/services/translator";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { authActions, creatorActions, i18nActions, noteExport, sessionActions, settingsActions, themeActions } from "readium-desktop/common/redux/actions";
+import { authActions, creatorActions, customizationActions, i18nActions, noteExport, sessionActions, settingsActions, themeActions } from "readium-desktop/common/redux/actions";
 import * as BinIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { TTheme } from "readium-desktop/common/redux/states/theme";
@@ -399,6 +400,113 @@ const Themes = () => {
     );
 };
 
+const Profiles = () => {
+
+    const { provision: packageProfileProvisioned, activate: { id: profileActivatedId } } = useSelector((s: ICommonRootState) => s.customization);
+    const selectedProfile = packageProfileProvisioned.find(({identifier}) => identifier && identifier === profileActivatedId);
+    const dispatch = useDispatch();
+
+    return (
+        <>
+            {/* <div>
+                <ComboBox label="Sélectionner un profil" items={allProfiles}  selectedKey={selectedKey?.id} onSelectionChange={setProfile}>
+                    {item =>         
+                    <ComboBoxItem key={item.id} textValue={item.name}>
+                        <span style={{ display: "flex", alignItems: "center", gap: "0.5em" }}>
+                            {item.name}
+                            {/* {item.properties.authenticate?.href ?
+                                <SVG className={stylesSettings.authIcon} ariaHidden svg={AuthIcon} />
+                            : <></>}
+                        </span>
+                    </ComboBoxItem>}
+                </ComboBox>
+            </div> */}
+            <div className={stylesSettings.session_text}>
+                <SVG ariaHidden svg={InfoIcon} />
+                <p>Switch profiles to customize the app with a partner vendor’s branding and colors. Each profile offers a tailored experience.</p>
+            </div>
+            <div
+                className={stylesSettings.profile_selection_form}
+            >
+                {
+                    packageProfileProvisioned.map((profile) => {
+
+                        return (
+                            <div
+                                key={profile.identifier} // Ajout de la key manquante pour React
+                                className={stylesSettings.profile_selection_input}
+                            >
+                                <input
+                                    type="radio"
+                                    id={profile.identifier}
+                                    value={profile.fileName}
+                                    name="profile_selection"
+                                    checked={selectedProfile?.identifier === profile.identifier}
+                                    onChange={(e) => {
+                                        console.log("PROFILE Input change", e);
+                                        dispatch(customizationActions.activating.build(profile.identifier));
+                                    }}
+                                />
+                                <label htmlFor={profile.identifier} className={stylesSettings.profile_selection_label}>
+                                    {/* {logo && logo.type === "image/svg+xml" ? (
+                                        <div
+                                            className="logo"
+                                            dangerouslySetInnerHTML={{ __html: logo.href }}
+                                        />
+                                    ) : (
+                                        <img
+                                            src={logo?.href || "./resources/icons/512x512.png"}
+                                            alt={`Logo ${profile.name}`}
+                                        />
+                                    )} */}
+                                    <div className={stylesSettings.profile_selection_description}>
+                                        <h5>{profile.fileName}</h5>
+                                        {/* <p>{profile.description}</p> */}
+                                    </div>
+                                </label>
+                            </div>
+                        );
+                    })
+                }
+
+                <div
+                    key={"vanilla"} // Ajout de la key manquante pour React
+                    className={stylesSettings.profile_selection_input}
+                >
+                    <input
+                        type="radio"
+                        id={"Thorium vanilla"}
+                        value={"Thorium vanilla"}
+                        name="profile_selection"
+                        checked={!selectedProfile}
+                        onChange={(e) => {
+                            console.log("PROFILE Input change", e);
+                            dispatch(customizationActions.activating.build(""));
+                        }}
+                    />
+                    <label htmlFor={"Thorium vanilla"} className={stylesSettings.profile_selection_label}>
+                        {/* {logo && logo.type === "image/svg+xml" ? (
+                                        <div
+                                            className="logo"
+                                            dangerouslySetInnerHTML={{ __html: logo.href }}
+                                        />
+                                    ) : (
+                                        <img
+                                            src={logo?.href || "./resources/icons/512x512.png"}
+                                            alt={`Logo ${profile.name}`}
+                                        />
+                                    )} */}
+                        <div className={stylesSettings.profile_selection_description}>
+                            <h5>{"Thorium vanilla"}</h5>
+                            {/* <p>{profile.description}</p> */}
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </>
+    );
+};
+
 const TabHeader = (props: React.PropsWithChildren<{title: string}>) => {
     const [__] = useTranslator();
     return (
@@ -421,20 +529,20 @@ export const Settings: React.FC<ISettingsProps> = () => {
 
     return <Dialog.Root>
         <Dialog.Trigger asChild>
-        <button title={__("header.settings")} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-            <SVG ariaHidden svg={GearIcon} />
-            <h3>{__("header.settings")}</h3>
-        </button>
+            <button title={__("header.settings")} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                <SVG ariaHidden svg={GearIcon} />
+                <h3>{__("header.settings")}</h3>
+            </button>
         </Dialog.Trigger>
         <Dialog.Portal>
             <div className={stylesModals.modal_dialog_overlay}></div>
             <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined}>
                 {
-                // FALSE this to test sourcemaps:
-                true &&
-                <VisuallyHidden.Root>
-                    <Dialog.Title>{__("header.settings")}</Dialog.Title>
-                </VisuallyHidden.Root>
+                    // FALSE this to test sourcemaps:
+                    true &&
+                    <VisuallyHidden.Root>
+                        <Dialog.Title>{__("header.settings")}</Dialog.Title>
+                    </VisuallyHidden.Root>
                 }
                 <Tabs.Root defaultValue="tab1" data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                     <Tabs.List className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
@@ -450,8 +558,12 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             <SVG ariaHidden svg={KeyReturnIcon} />
                             <h3>{__("settings.tabs.keyboardShortcuts")}</h3>
                         </Tabs.Trigger>
+                        <Tabs.Trigger value="tab5">
+                            <SVG ariaHidden svg={AvatarIcon} />
+                            <h3>Profiles</h3>
+                        </Tabs.Trigger>
                     </Tabs.List>
-                    <div className={stylesSettings.settings_content} style={{marginTop: "70px"}}>
+                    <div className={stylesSettings.settings_content} style={{ marginTop: "70px" }}>
                         <Tabs.Content value="tab1" tabIndex={-1}>
                             <TabHeader title={__("settings.tabs.general")} />
                             <div className={stylesSettings.settings_tab}>
@@ -475,6 +587,12 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             </TabHeader>
                             <div className={stylesSettings.settings_tab}>
                                 <KeyboardSettings />
+                            </div>
+                        </Tabs.Content>
+                        <Tabs.Content value="tab5" tabIndex={-1}>
+                            <TabHeader title="Profiles" />
+                            <div className={stylesSettings.settings_tab}>
+                                <Profiles />
                             </div>
                         </Tabs.Content>
                     </div>
