@@ -278,8 +278,12 @@ class Reader extends React.Component<IProps, IState> {
     // private resizeObserver: ResizeObserver;
     // private blackoutDebounced: () => void;
 
+    private screenPreviousNextTimerDebounce: number | undefined;
+
     constructor(props: IProps) {
         super(props);
+
+        this.screenPreviousNextTimerDebounce = undefined;
 
         this._ttsOrMoStateTimeout = undefined;
 
@@ -2756,6 +2760,23 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private navLeftOrRight_(left: boolean, spineNav?: boolean) {
+
+        if (this.state.accessibilitySupportEnabled) {
+            const isRTL = this.isRTLFlip();
+            const str = isRTL ?
+                (left ? this.props.__("reader.navigation.screenNext") : this.props.__("reader.navigation.screenPrevious")) :
+                (left ? this.props.__("reader.navigation.screenPrevious") : this.props.__("reader.navigation.screenNext"));
+            if (typeof this.screenPreviousNextTimerDebounce !== "undefined") {
+                clearTimeout(this.screenPreviousNextTimerDebounce);
+                this.screenPreviousNextTimerDebounce = undefined;
+            }
+            this.screenPreviousNextTimerDebounce = window.setTimeout(() => {
+                this.screenPreviousNextTimerDebounce = undefined;
+                this.props.toasty(str);
+            }, 800);
+        } else {
+            this.screenPreviousNextTimerDebounce = undefined;
+        }
 
         if (this.props.isPdf) {
             if (left) {
