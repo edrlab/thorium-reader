@@ -1001,7 +1001,6 @@ class Reader extends React.Component<IProps, IState> {
                                     <div className={stylesReaderFooter.arrows}>
                                         <button onClick={(ev) => {
                                             if (ev.shiftKey) {
-                                                const isRTL = false; // TODO RTL (see ReaderMenu.tsx)
                                                 if (isRTL) {
                                                     this.onKeyboardNavigationToEnd.bind(this);
                                                 } else {
@@ -1065,7 +1064,6 @@ class Reader extends React.Component<IProps, IState> {
                                     <div className={stylesReaderFooter.arrows}>
                                         <button onClick={(ev) => {
                                             if (ev.shiftKey) {
-                                                const isRTL = false; // TODO RTL (see ReaderMenu.tsx)
                                                 if (isRTL) {
                                                     this.onKeyboardNavigationToBegin.bind(this);
                                                 } else {
