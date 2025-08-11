@@ -727,8 +727,8 @@
             "pdfscalemode": "talpinti pritaikant prie puslapio aukščio/pločio",
             "print": "Spausdinti",
             "printDisabled": "Spausdinti draudžiama",
-            "screenNext": "",
-            "screenPrevious": "",
+            "screenNext": "Kitas puslapis / slinkti pirmyn",
+            "screenPrevious": "Ankstesnis puslapis / slinkti atgal",
             "settingsTitle": "Nuostatos"
         },
         "notes": {
