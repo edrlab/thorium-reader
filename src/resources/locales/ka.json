@@ -727,6 +727,8 @@
             "pdfscalemode": "გვერდზე მორგება ან სიგანე",
             "print": "",
             "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "პარამეტრები"
         },
         "notes": {

@@ -727,6 +727,8 @@
             "pdfscalemode": "Orriaren doikuntza edo zabalera",
             "print": "",
             "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "Konfigurazio-aukerak"
         },
         "notes": {

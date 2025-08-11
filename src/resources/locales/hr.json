@@ -727,6 +727,8 @@
             "pdfscalemode": "Širina stranice",
             "print": "",
             "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "postavke"
         },
         "notes": {

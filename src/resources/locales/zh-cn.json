@@ -727,6 +727,8 @@
             "pdfscalemode": "适合页面宽度",
             "print": "",
             "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "设置"
         },
         "notes": {

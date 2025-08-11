@@ -727,6 +727,8 @@
             "pdfscalemode": "Pagina aanpassen aan breedte",
             "print": "Druk af",
             "printDisabled": "Verboden te printen",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "Instellingen"
         },
         "notes": {

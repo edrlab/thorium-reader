@@ -727,6 +727,8 @@
             "pdfscalemode": "Axuste ou ancho de páxina",
             "print": "",
             "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "Opcións de configuración"
         },
         "notes": {

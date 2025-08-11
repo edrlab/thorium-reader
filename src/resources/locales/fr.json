@@ -727,6 +727,8 @@
             "pdfscalemode": "Page entière ou pleine largeur",
             "print": "Imprimer",
             "printDisabled": "Impression non autorisée",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "Préférences"
         },
         "notes": {

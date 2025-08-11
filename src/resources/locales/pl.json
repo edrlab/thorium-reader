@@ -2,7 +2,18 @@
     "accessibility": {
         "bookMenu": "Menu",
         "closeDialog": "Zamknij",
+        "importFile": "",
+        "leftSlideButton": "",
+        "mainContent": "",
+        "rightSlideButton": "",
+        "skipLink": "",
         "toolbar": "pasek narzędzi"
+    },
+    "apiapp": {
+        "documentation": "",
+        "howItWorks": "",
+        "informations": "",
+        "noLibraryFound": ""
     },
     "app": {
         "edit": {
@@ -11,45 +22,1176 @@
             "paste": "Wklej",
             "print": "Drukuj",
             "redo": "Ponów",
+            "selectAll": "",
             "title": "Edytuj",
             "undo": "Cofnij"
         },
+        "hide": "",
+        "quit": "",
         "session": {
             "exit": {
                 "askBox": {
                     "button": {
                         "no": "Nie",
                         "yes": "Tak"
-                    }
+                    },
+                    "help": "",
+                    "message": "",
+                    "title": ""
                 }
             }
+        },
+        "update": {
+            "message": "",
+            "title": ""
+        },
+        "window": {
+            "showLibrary": ""
         }
     },
     "catalog": {
+        "about": {
+            "title": ""
+        },
         "addBookToLib": "Importuj",
+        "addTags": "",
         "addTagsButton": "Dodaj",
+        "allBooks": "",
+        "bookInfo": "",
         "column": {
             "ascending": "rosnąco",
-            "descending": "malejąco"
+            "descending": "malejąco",
+            "unsorted": ""
         },
         "delete": "Usuń",
         "deleteBook": "Usuń",
+        "deleteTag": "",
         "description": "Opis",
+        "emptyTagList": "",
+        "entry": {
+            "continueReading": "",
+            "lastAdditions": ""
+        },
+        "export": "",
+        "exportAnnotation": "",
         "format": "Format",
+        "importAnnotation": "",
         "lang": "Język",
+        "lastRead": "",
+        "moreInfo": "",
+        "myBooks": "",
+        "noPublicationHelpL1": "",
+        "noPublicationHelpL2": "",
+        "noPublicationHelpL3": "",
+        "noPublicationHelpL4": "",
+        "numberOfPages": "",
         "opds": {
             "auth": {
                 "cancel": "Anuluj",
                 "login": "Login",
                 "password": "Hasło",
-                "register": "Rejestracja"
+                "register": "Rejestracja",
+                "username": ""
             },
             "info": {
+                "availableSince": "",
                 "availableState": {
                     "available": "Dostępne",
-                    "ready": "Gotowe"
-                }
+                    "ready": "Gotowe",
+                    "reserved": "",
+                    "unavailable": "",
+                    "unknown": ""
+                },
+                "availableUntil": "",
+                "copyAvalaible": "",
+                "copyTotal": "",
+                "holdPosition": "",
+                "holdTotal": "",
+                "numberOfItems": "",
+                "priveValue": "",
+                "state": ""
             }
+        },
+        "publisher": "",
+        "readBook": "",
+        "released": "",
+        "sort": "",
+        "tag": "",
+        "tags": "",
+        "update": ""
+    },
+    "dialog": {
+        "annotations": {
+            "descAuthor": "",
+            "descCreator": "",
+            "descList": "",
+            "descNewer": "",
+            "descOlder": "",
+            "descTitle": "",
+            "importAll": "",
+            "importWithoutConflict": "",
+            "origin": "",
+            "title": ""
+        },
+        "cancel": "",
+        "deleteAnnotations": "",
+        "deleteAnnotationsText": "",
+        "deleteBookmarks": "",
+        "deleteBookmarksText": "",
+        "deleteFeed": "",
+        "deletePublication": "",
+        "deletePublicationWithNotes": "",
+        "import": "",
+        "importError": "",
+        "renew": "",
+        "return": "",
+        "yes": ""
+    },
+    "error": {
+        "errorBox": {
+            "error": "",
+            "message": "",
+            "title": ""
+        }
+    },
+    "header": {
+        "allBooks": "",
+        "catalogs": "",
+        "downloads": "",
+        "fitlerTagTitle": "",
+        "gridTitle": "",
+        "home": "",
+        "homeTitle": "",
+        "importTitle": "",
+        "listTitle": "",
+        "myCatalogs": "",
+        "refreshTitle": "",
+        "searchPlaceholder": "",
+        "searchTitle": "",
+        "settings": "",
+        "viewMode": ""
+    },
+    "library": {
+        "lcp": {
+            "hint": "",
+            "open": "",
+            "password": "",
+            "sentence": "",
+            "urlHint": "",
+            "whatIsLcp?": "",
+            "whatIsLcpInfoDetails": "",
+            "whatIsLcpInfoDetailsLink": ""
+        }
+    },
+    "message": {
+        "annotations": {
+            "alreadyImported": "",
+            "emptyFile": "",
+            "errorParsing": "",
+            "noBelongTo": "",
+            "nothing": "",
+            "success": ""
+        },
+        "download": {
+            "error": ""
+        },
+        "import": {
+            "alreadyImport": "",
+            "fail": "",
+            "success": ""
+        },
+        "open": {
+            "error": ""
+        }
+    },
+    "opds": {
+        "addForm": {
+            "addButton": "",
+            "name": "",
+            "namePlaceholder": "",
+            "url": "",
+            "urlPlaceholder": ""
+        },
+        "addFormApiapp": {
+            "title": ""
+        },
+        "addMenu": "",
+        "breadcrumbRoot": "",
+        "documentation": "",
+        "empty": "",
+        "firstPage": "",
+        "informations": "",
+        "lastPage": "",
+        "menu": {
+            "aboutBook": "",
+            "addExtract": "",
+            "goBuyBook": "",
+            "goLoanBook": "",
+            "goRevokeLoanBook": "",
+            "goSubBook": ""
+        },
+        "network": {
+            "error": "",
+            "noInternet": "",
+            "noInternetMessage": "",
+            "reject": "",
+            "timeout": ""
+        },
+        "next": "",
+        "previous": "",
+        "shelf": "",
+        "updateForm": {
+            "name": "",
+            "title": "",
+            "updateButton": "",
+            "url": ""
+        },
+        "whatIsOpds": ""
+    },
+    "publ-a11y-display-guide": {
+        "accessibility-summary": {
+            "accessibility-summary-title": ""
+        },
+        "additional-accessibility-information": {
+            "additional-accessibility-information-aria": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-audio-descriptions": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-braille": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-full-ruby-annotations": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-high-contrast-between-text-and-background": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-large-print": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-page-breaks": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-ruby-annotations": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-sign-language": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-tactile-graphics": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-tactile-objects": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-text-to-speech-hinting": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "additional-accessibility-information-title": ""
+        },
+        "conformance": {
+            "conformance-a": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-aa": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-aaa": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-certifier": {
+                "compact": ""
+            },
+            "conformance-certifier-credentials": {
+                "compact": ""
+            },
+            "conformance-details-certifier-report": {
+                "compact": ""
+            },
+            "conformance-details-claim": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-details-epub-accessibility-1-0": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-details-epub-accessibility-1-1": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-details-level-a": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-details-level-aa": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-details-level-aaa": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-details-wcag-2-0": {
+                "compact": ""
+            },
+            "conformance-details-wcag-2-1": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-details-wcag-2-2": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-no": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "conformance-title": "",
+            "conformance-unknown-standard": {
+                "compact": "",
+                "descriptive": ""
+            }
+        },
+        "hazards": {
+            "hazards-flashing": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-flashing-none": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-flashing-unknown": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-motion": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-motion-none": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-motion-unknown": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-no-metadata": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-none": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-sound": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-sound-none": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-sound-unknown": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "hazards-title": "",
+            "hazards-unknown": {
+                "compact": "",
+                "descriptive": ""
+            }
+        },
+        "navigation": {
+            "navigation-index": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "navigation-no-metadata": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "navigation-page-navigation": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "navigation-structural": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "navigation-title": "",
+            "navigation-toc": {
+                "compact": "",
+                "descriptive": ""
+            }
+        },
+        "rich-content": {
+            "rich-content-accessible-chemistry-as-latex": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-accessible-chemistry-as-mathml": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-accessible-math-as-latex": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-accessible-math-as-mathml": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-accessible-math-described": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-closed-captions": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-extended": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-open-captions": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-title": "",
+            "rich-content-transcript": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "rich-content-unknown": {
+                "compact": "",
+                "descriptive": ""
+            }
+        },
+        "ways-of-reading": {
+            "ways-of-reading-nonvisual-reading-alt-text": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-nonvisual-reading-no-metadata": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-nonvisual-reading-none": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-nonvisual-reading-not-fully": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-nonvisual-reading-readable": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-prerecorded-audio-complementary": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-prerecorded-audio-no-metadata": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-prerecorded-audio-only": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-prerecorded-audio-synchronized": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-title": "",
+            "ways-of-reading-visual-adjustments-modifiable": {
+                "compact": "",
+                "descriptive": ""
+            },
+            "ways-of-reading-visual-adjustments-unknown": {
+                "compact": "",
+                "descriptive": ""
+            }
+        }
+    },
+    "publication": {
+        "accessibility": {
+            "accessModeSufficient": {
+                "textual": ""
+            },
+            "accessibilityFeature": {
+                "alternativeText": "",
+                "displayTransformability": "",
+                "longDescription": "",
+                "printPageNumbers": "",
+                "readingOrder": "",
+                "synchronizedAudioText": "",
+                "tableOfContents": ""
+            },
+            "accessibilityHazard": {
+                "flashing": "",
+                "motionSimulation": "",
+                "name": "",
+                "noFlashing": "",
+                "noMotionSimulation": "",
+                "noSound": "",
+                "none": "",
+                "sound": "",
+                "unknown": ""
+            },
+            "certifierReport": "",
+            "conformsTo": "",
+            "moreInformation": "",
+            "name": "",
+            "noA11y": ""
+        },
+        "actions": "",
+        "audio": {
+            "tracks": ""
+        },
+        "author": "",
+        "cancelledLcp": "",
+        "certificateRevoked": "",
+        "certificateSignatureInvalid": "",
+        "cover": {
+            "img": ""
+        },
+        "day": "",
+        "days": "",
+        "duration": {
+            "title": ""
+        },
+        "encryptedNoLicense": "",
+        "expired": "",
+        "expiredLcp": "",
+        "incorrectPassphrase": "",
+        "lcpEnd": "",
+        "lcpRightsCopy": "",
+        "lcpRightsPrint": "",
+        "lcpStart": "",
+        "licenceLCP": "",
+        "licenseCertificateDateInvalid": "",
+        "licenseOutOfDate": "",
+        "licenseSignatureInvalid": "",
+        "licensed": "",
+        "markAsRead": "",
+        "notStarted": "",
+        "onGoing": "",
+        "progression": {
+            "title": ""
+        },
+        "read": "",
+        "remainingTime": "",
+        "renewButton": "",
+        "returnButton": "",
+        "returnedLcp": "",
+        "revokedLcp": "",
+        "seeLess": "",
+        "seeMore": "",
+        "timeLeft": "",
+        "title": "",
+        "userKeyCheckInvalid": ""
+    },
+    "reader": {
+        "annotations": {
+            "Color": "",
+            "addNote": "",
+            "advancedMode": "",
+            "annotationsExport": {
+                "description": "",
+                "title": ""
+            },
+            "annotationsOptions": "",
+            "date": "",
+            "export": "",
+            "filter": {
+                "all": "",
+                "filterByColor": "",
+                "filterByCreator": "",
+                "filterByDrawtype": "",
+                "filterByTag": "",
+                "filterOptions": "",
+                "none": ""
+            },
+            "hide": "",
+            "highlight": "",
+            "noSelectionToast": "",
+            "note": "",
+            "quickAnnotations": "",
+            "saveNote": "",
+            "sorting": {
+                "lastcreated": "",
+                "lastmodified": "",
+                "progression": "",
+                "sortingOptions": ""
+            },
+            "toggleMarginMarks": "",
+            "type": {
+                "outline": "",
+                "solid": "",
+                "strikethrough": "",
+                "underline": ""
+            }
+        },
+        "bookmarks": {
+            "index": ""
+        },
+        "divina": {
+            "mute": "",
+            "unmute": ""
+        },
+        "fxl": {
+            "fit": ""
+        },
+        "goToContent": "",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
+        "marks": {
+            "annotations": "",
+            "bookmarks": "",
+            "delete": "",
+            "edit": "",
+            "goTo": "",
+            "landmarks": "",
+            "saveMark": "",
+            "search": "",
+            "searchResult": "",
+            "toc": ""
+        },
+        "media-overlays": {
+            "activate": "",
+            "captions": "",
+            "captionsDescription": "",
+            "disableContinuousPlay": "",
+            "disableContinuousPlayDescription": "",
+            "ignoreAndUseTTS": "",
+            "ignoreAndUseTTSDescription": "",
+            "next": "",
+            "pause": "",
+            "play": "",
+            "previous": "",
+            "skip": "",
+            "skipDescription": "",
+            "speed": "",
+            "stop": "",
+            "title": ""
+        },
+        "navigation": {
+            "ZenModeExit": "",
+            "ZenModeTitle": "",
+            "annotationTitle": "",
+            "backHomeTitle": "",
+            "bookmarkTitle": "",
+            "currentPage": "",
+            "currentPageTotal": "",
+            "detachWindowTitle": "",
+            "goTo": "",
+            "goToError": "",
+            "goToPlaceHolder": "",
+            "goToTitle": "",
+            "historyNext": "",
+            "historyPrevious": "",
+            "infoTitle": "",
+            "magnifyingGlassButton": "",
+            "openTableOfContentsTitle": "",
+            "page": "",
+            "pdfscalemode": "",
+            "print": "",
+            "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
+            "settingsTitle": ""
+        },
+        "notes": {
+            "colors": {
+                "cyan": "",
+                "green": "",
+                "orange": "",
+                "purple": "",
+                "red": "",
+                "yellow": ""
+            }
+        },
+        "picker": {
+            "search": {
+                "founds": "",
+                "input": "",
+                "next": "",
+                "notFound": "",
+                "previous": "",
+                "results": "",
+                "submit": ""
+            },
+            "searchTitle": ""
+        },
+        "print": {
+            "descriptionLcpCount": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "preview": "",
+            "print": "",
+            "printablePages": "",
+            "title": ""
+        },
+        "settings": {
+            "column": {
+                "auto": "",
+                "one": "",
+                "title": "",
+                "two": ""
+            },
+            "customFontSelected": "",
+            "customizeReader": "",
+            "disabled": "",
+            "display": "",
+            "disposition": {
+                "title": ""
+            },
+            "font": "",
+            "fontSize": "",
+            "infoCustomFont": "",
+            "justification": "",
+            "justify": "",
+            "letterSpacing": "",
+            "lineSpacing": "",
+            "margin": "",
+            "mathjax": "",
+            "noFootnotes": "",
+            "noRTLFlip": "",
+            "noRuby": "",
+            "noTemporaryNavTargetOutline": "",
+            "paginated": "",
+            "paraSpacing": "",
+            "pdfZoom": {
+                "name": {
+                    "100pct": "",
+                    "150pct": "",
+                    "200pct": "",
+                    "300pct": "",
+                    "500pct": "",
+                    "50pct": "",
+                    "fit": "",
+                    "width": ""
+                },
+                "title": ""
+            },
+            "preset": {
+                "apply": "",
+                "applyDetails": "",
+                "detail": "",
+                "reset": "",
+                "resetDetails": "",
+                "save": "",
+                "saveDetails": "",
+                "title": ""
+            },
+            "preview": "",
+            "reduceMotion": "",
+            "scrolled": "",
+            "spacing": "",
+            "text": "",
+            "theme": {
+                "name": {
+                    "Contrast1": "",
+                    "Contrast2": "",
+                    "Contrast3": "",
+                    "Contrast4": "",
+                    "Neutral": "",
+                    "Night": "",
+                    "Paper": "",
+                    "Sepia": ""
+                },
+                "title": ""
+            },
+            "wordSpacing": ""
+        },
+        "svg": {
+            "left": "",
+            "right": ""
+        },
+        "toc": {
+            "publicationNoToc": ""
+        },
+        "tts": {
+            "activate": "",
+            "language": "",
+            "next": "",
+            "options": "",
+            "pause": "",
+            "play": "",
+            "previous": "",
+            "sentenceDetect": "",
+            "sentenceDetectDescription": "",
+            "speed": "",
+            "stop": "",
+            "voice": ""
+        }
+    },
+    "settings": {
+        "annotationCreator": {
+            "creator": "",
+            "help": "",
+            "name": "",
+            "organization": "",
+            "person": "",
+            "type": ""
+        },
+        "auth": {
+            "help": "",
+            "title": "",
+            "wipeData": ""
+        },
+        "keyboard": {
+            "advancedMenu": "",
+            "cancel": "",
+            "disclaimer": "",
+            "editUserJson": "",
+            "keyboardShortcuts": "",
+            "list": {
+                "AddBookmarkWithLabel": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreate": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreateQuick": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsToggleMargin": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPlayPause": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioStop": {
+                    "description": "",
+                    "name": ""
+                },
+                "CloseReader": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomIn": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomOut": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomReset": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMain": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMainDeep": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderGotoPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigation": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationAnnotations": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationBookmarks": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationTOC": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderSettings": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusToolbar": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToBegin": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToEnd": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfo": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "Print": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SpeakReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleBookmark": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleReaderFullscreen": {
+                    "description": "",
+                    "name": ""
+                }
+            },
+            "loadUserJson": "",
+            "noShortcutFound": "",
+            "resetDefaults": "",
+            "save": "",
+            "searchPlaceholder": ""
+        },
+        "language": {
+            "languageChoice": ""
+        },
+        "library": {
+            "enableAPIAPP": "",
+            "title": ""
+        },
+        "note": {
+            "export": {
+                "applyDefaultTemplate": "",
+                "enableCheckbox": "",
+                "overrideHTMLTemplate": ""
+            }
+        },
+        "session": {
+            "title": ""
+        },
+        "tabs": {
+            "appearance": "",
+            "general": "",
+            "keyboardShortcuts": ""
+        },
+        "theme": {
+            "auto": "",
+            "dark": "",
+            "description": "",
+            "light": "",
+            "title": ""
+        }
+    },
+    "tts": {
+        "highlight": {
+            "mainColor": "",
+            "maskBlockWordOutline": "",
+            "maskBlockWordSolidBackground": "",
+            "maskBlockWordUnderline": "",
+            "maskWordOutline": "",
+            "maskWordSolidBackground": "",
+            "maskWordUnderline": "",
+            "outlineWordOutline": "",
+            "outlineWordSolidBackground": "",
+            "outlineWordUnderline": "",
+            "preview": "",
+            "solidBackgroundWordOutline": "",
+            "solidBackgroundWordSolidBackground": "",
+            "solidBackgroundWordUnderline": "",
+            "style": "",
+            "underlineWordOutline": "",
+            "underlineWordSolidBackground": "",
+            "underlineWordUnderline": "",
+            "wordColor": ""
+        }
+    },
+    "wizard": {
+        "buttons": {
+            "discover": "",
+            "goToBooks": "",
+            "next": ""
+        },
+        "description": {
+            "annotations": "",
+            "catalogs": "",
+            "home": "",
+            "readingView1": "",
+            "readingView2": "",
+            "yourBooks": ""
+        },
+        "dontShow": "",
+        "tab": {
+            "annotations": "",
+            "catalogs": "",
+            "home": "",
+            "readingView": "",
+            "yourBooks": ""
+        },
+        "title": {
+            "allBooks": "",
+            "newFeature": "",
+            "welcome": ""
         }
     }
 }

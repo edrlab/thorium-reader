@@ -727,6 +727,8 @@
             "pdfscalemode": "Размер или ширина страницы",
             "print": "",
             "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "настройки"
         },
         "notes": {

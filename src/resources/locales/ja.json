@@ -727,6 +727,8 @@
             "pdfscalemode": "画面にページを収める / 画面横幅にページを合わせる",
             "print": "",
             "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "設定"
         },
         "notes": {

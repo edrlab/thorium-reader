@@ -1640,6 +1640,8 @@ declare namespace typed_i18n {
     readonly "pdfscalemode": string,
     readonly "print": string,
     readonly "printDisabled": string,
+    readonly "screenNext": string,
+    readonly "screenPrevious": string,
     readonly "settingsTitle": string
   },
   readonly "notes": {
@@ -1957,6 +1959,8 @@ declare namespace typed_i18n {
   readonly "pdfscalemode": string,
   readonly "print": string,
   readonly "printDisabled": string,
+  readonly "screenNext": string,
+  readonly "screenPrevious": string,
   readonly "settingsTitle": string
 };
   (_: "reader.navigation.ZenModeExit", __?: {}): string;
@@ -1980,6 +1984,8 @@ declare namespace typed_i18n {
   (_: "reader.navigation.pdfscalemode", __?: {}): string;
   (_: "reader.navigation.print", __?: {}): string;
   (_: "reader.navigation.printDisabled", __?: {}): string;
+  (_: "reader.navigation.screenNext", __?: {}): string;
+  (_: "reader.navigation.screenPrevious", __?: {}): string;
   (_: "reader.navigation.settingsTitle", __?: {}): string;
   (_: "reader.notes", __?: {}): {
   readonly "colors": {

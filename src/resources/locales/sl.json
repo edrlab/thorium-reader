@@ -727,6 +727,8 @@
             "pdfscalemode": "Prileganje strani ali širine",
             "print": "",
             "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "nastavitve"
         },
         "notes": {

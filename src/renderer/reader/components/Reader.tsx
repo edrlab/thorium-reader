@@ -847,6 +847,8 @@ class Reader extends React.Component<IProps, IState> {
 
         const arrowEnabled = !arrowDisabledNotEpub /* && (isFXL || isPaginated) */;
 
+        const isRTL = this.isRTLFlip();
+
         return (
             <>
             <div className={classNames(
@@ -1009,11 +1011,11 @@ class Reader extends React.Component<IProps, IState> {
                                                 this.navLeftOrRight_(true);
                                             }
                                         }}
-                                            title={this.props.__("reader.svg.left")}
+                                            title={!isRTL ? this.props.__("reader.navigation.screenPrevious") : this.props.__("reader.navigation.screenNext")}
                                             className={(this.props.settingsOpen || this.props.menuOpen) ? (this.props.readerConfig.readerDockingMode === "left" ? stylesReaderFooter.navigation_arrow_docked_left :  stylesReaderFooter.navigation_arrow_left) : stylesReaderFooter.navigation_arrow_left}
                                             style={{ opacity: isPaginated ? "1" : "0"}}
                                         >
-                                            <SVG ariaHidden={true} svg={ArrowLeftIcon} />
+                                            <SVG ariaHidden={true} svg={ArrowLeftIcon} aria-label={this.props.__("reader.svg.left")}/>
                                         </button>
                                     </div>
                                     :
@@ -1073,11 +1075,11 @@ class Reader extends React.Component<IProps, IState> {
                                                 this.navLeftOrRight_(false);
                                             }
                                         }}
-                                            title={this.props.__("reader.svg.right")}
+                                            title={isRTL ? this.props.__("reader.navigation.screenPrevious") : this.props.__("reader.navigation.screenNext")}
                                             className={(this.props.settingsOpen || this.props.menuOpen) ? (this.props.readerConfig.readerDockingMode === "right" ? stylesReaderFooter.navigation_arrow_docked_right :  stylesReaderFooter.navigation_arrow_right) : stylesReaderFooter.navigation_arrow_right}
                                             style={{ opacity: isPaginated ? "1" : "0"}}
                                         >
-                                            <SVG ariaHidden={true} svg={ArrowRightIcon} />
+                                            <SVG ariaHidden={true} svg={ArrowRightIcon} aria-label={this.props.__("reader.svg.right")}/>
                                         </button>
                                     </div>
                                     :

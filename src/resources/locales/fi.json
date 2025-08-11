@@ -727,6 +727,8 @@
             "pdfscalemode": "Sovita sivun kokoon tai leveyteen",
             "print": "Tulosta",
             "printDisabled": "Tulostus kielletty",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "Asetukset"
         },
         "notes": {

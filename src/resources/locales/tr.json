@@ -727,6 +727,8 @@
             "pdfscalemode": "Sayfaya veya genişliğe sığdır",
             "print": "Yazdır",
             "printDisabled": "Yazdırma engellendi",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "Ayarlar"
         },
         "notes": {

@@ -727,6 +727,8 @@
             "pdfscalemode": "Anpassa till hel sida eller sidbredd",
             "print": "",
             "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "Inställningar"
         },
         "notes": {
