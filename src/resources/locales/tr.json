@@ -900,10 +900,10 @@
                 },
                 "AnnotationsToggleMargin": {
                     "description": "Açıklayıcı not ve yer imi görsel belirteçlerinin belge kenar boşluğunda veya metinde görüntülenmesi arasında geçiş yap",
-                    "name": "Açıklayıcı Notların Belge Kenarında veya Metinde Görüntülenmesi Arasında Geçiş Yap"
+                    "name": "Açıklayıcı Notların Belge Kenar Boşluğunda  Görüntülenmesini aç veya kapat"
                 },
                 "AudioNext": {
-                    "description": "Sesli okuma esnasında, bir sonraki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya sesli kitap.)",
+                    "description": "Sesli okuma esnasında, bir sonraki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya önceden kaydedilmiş sesli kitap)",
                     "name": "Sonraki Sesli Bölüm"
                 },
                 "AudioNextAlt": {
