@@ -718,8 +718,8 @@
             "goToError": "Toks puslapių skirtukas neegzistuoja",
             "goToPlaceHolder": "Įveskite puslapio numerį",
             "goToTitle": "Eiti į puslapį",
-            "historyNext": "Peršokti į priekį",
-            "historyPrevious": "Peršokti atgal",
+            "historyNext": "Peršokti į priekį naršymo istorijoje",
+            "historyPrevious": "Peršokti atgal naršymo istorijoje",
             "infoTitle": "Informacija",
             "magnifyingGlassButton": "Ieškoti leidinyje",
             "openTableOfContentsTitle": "Naršymas",
@@ -727,8 +727,8 @@
             "pdfscalemode": "talpinti pritaikant prie puslapio aukščio/pločio",
             "print": "Spausdinti",
             "printDisabled": "Spausdinti draudžiama",
-            "screenNext": "Kitas puslapis / slinkti pirmyn",
-            "screenPrevious": "Ankstesnis puslapis / slinkti atgal",
+            "screenNext": "Eiti pirmyn",
+            "screenPrevious": "Eiti atgal",
             "settingsTitle": "Nuostatos"
         },
         "notes": {
