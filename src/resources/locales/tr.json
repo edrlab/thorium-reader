@@ -899,7 +899,7 @@
                     "name": "Hızlıca Açıklayıcı Not Oluştur"
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "Açıklayıcı not ve yer imi belirteçlerinin belge kenarında görüntülenmesi veya metinde görüntülenmesi arasında geçiş yap",
+                    "description": "Açıklayıcı not ve yer imi görsel belirteçlerinin belge kenar boşluğunda veya metinde görüntülenmesi arasında geçiş yap",
                     "name": "Açıklayıcı Notların Belge Kenarında veya Metinde Görüntülenmesi Arasında Geçiş Yap"
                 },
                 "AudioNext": {
