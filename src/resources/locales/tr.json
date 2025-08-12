@@ -793,9 +793,9 @@
             "letterSpacing": "Harf aralığı",
             "lineSpacing": "Satır aralığı",
             "margin": "Kenar boşluğu",
-            "mathjax": "MathJax'ı etkinleştir",
+            "mathjax": "MathJax'i etkinleştir",
             "noFootnotes": "Dipnot açılır pencerelerini devredışı bırak",
-            "noRTLFlip": "Sağdan sola kullanıcı arayüzünü devredışı bırak",
+            "noRTLFlip": "Sağdan Sola Kullanıcı Arayüzü'nü devredışı bırak",
             "noRuby": "Japonca Okutucuları gizle",
             "noTemporaryNavTargetOutline": "Görsel gezinme belirteçlerini devredışı bırak",
             "paginated": "Sayfalandırma",
@@ -816,7 +816,7 @@
             "preset": {
                 "apply": "Uygula",
                 "applyDetails": "Tercih ettiğiniz yapılandırmayı mevcut esere uygulayın.",
-                "detail": "Tercih ettiğiniz yapılandırmayı kaydedin / uygulayın / sıfırlayın.",
+                "detail": "Tercih ettiğiniz yapılandırmayı Kaydedin / Uygulayın / Sıfırlayın.",
                 "reset": "Sıfırla",
                 "resetDetails": "Tercih ettiğiniz yapılandırmayı sıfırlayın (varsayılan ayarlar).",
                 "save": "Kaydet",
@@ -837,7 +837,7 @@
                     "Neutral": "Nötral",
                     "Night": "Gece",
                     "Paper": "Kağıt",
-                    "Sepia": "Sepya"
+                    "Sepia": "Sepya renkli"
                 },
                 "title": "Tema"
             },
@@ -868,14 +868,14 @@
     "settings": {
         "annotationCreator": {
             "creator": "Açıklayıcı not oluşturucu (isteğe bağlı)",
-            "help": "Belirtilirse, bu isim dışa aktarılan notların meta verilerine dahil edilecektir.",
+            "help": "Belirtilirse, bu isim dışa aktarılan notların üstverilerine dahil edilecektir.",
             "name": "İsim",
             "organization": "Organizasyon",
             "person": "Şahıs",
             "type": "Tür:"
         },
         "auth": {
-            "help": "Bu işlem tüm OPDS oturum açma kimlik bilgilerini siler.",
+            "help": "Bu işlem, tüm OPDS oturum açma kimlik bilgilerini siler.",
             "title": "Eser kataloglarına erişim",
             "wipeData": "Oturum açma verilerini temizle"
         },
