@@ -907,12 +907,12 @@
                     "name": "Sonraki Sesli Bölüm"
                 },
                 "AudioNextAlt": {
-                    "description": "Sesli okuma esnasında, bir sonraki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya sesli kitap.) Bu, mevcuttaki geçilebilir yapıları atlar",
-                    "name": "Sonraki sesli bölüm (kaçın)"
+                    "description": "Sesli okuma esnasında, bir sonraki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya önceden kaydedilmiş sesli kitap). Bu, mevcuttaki geçilebilir yapıları atlar",
+                    "name": "Sonraki Sesli Bölüm (kaçın)"
                 },
                 "AudioPlayPause": {
-                    "description": "Mevcut sesli oynatımı oynat/duraklat (EPUB3 medya katmanları, metinden sese okumalar veya önceden kaydedilmiş sesli kitaplar)",
-                    "name": "Oynat/Duraklat"
+                    "description": "Mevcut sesli oynatımı oynat/duraklat (EPUB3 Medya Katmanları, Metinden Sese okuma veya önceden kaydedilmiş sesli kitap)",
+                    "name": "Sesi Oynat/Duraklat"
                 },
                 "AudioPrevious": {
                     "description": "Sesli okuma esnasında, bir önceki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya sesli kitap.)",
