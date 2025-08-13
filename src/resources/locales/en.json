@@ -718,8 +718,8 @@
             "goToError": "Page break does not exist",
             "goToPlaceHolder": "Enter page number",
             "goToTitle": "Go to page",
-            "historyNext": "Jump forward",
-            "historyPrevious": "Jump back",
+            "historyNext": "Jump forward in navigation history",
+            "historyPrevious": "Jump back in navigation history",
             "infoTitle": "Information",
             "magnifyingGlassButton": "Search publication",
             "openTableOfContentsTitle": "Navigation",
@@ -727,8 +727,8 @@
             "pdfscalemode": "Page fit or width",
             "print": "Print",
             "printDisabled": "Print forbidden",
-            "screenNext": "Next page / forward scroll",
-            "screenPrevious": "Previous page / backward scroll",
+            "screenNext": "Go forward",
+            "screenPrevious": "Go backward",
             "settingsTitle": "Settings"
         },
         "notes": {

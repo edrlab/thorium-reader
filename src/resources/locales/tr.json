@@ -727,8 +727,8 @@
             "pdfscalemode": "Sayfaya veya genişliğe sığdır",
             "print": "Yazdır",
             "printDisabled": "Yazdırma engellendi",
-            "screenNext": "",
-            "screenPrevious": "",
+            "screenNext": "Sonraki sayfa / ileri kaydır",
+            "screenPrevious": "Önceki sayfa / geri kaydır",
             "settingsTitle": "Ayarlar"
         },
         "notes": {
@@ -787,16 +787,16 @@
             },
             "font": "Yazı tipi",
             "fontSize": "Yazı tipi boyutu",
-            "infoCustomFont": "Adını yazarak işletim sisteminden yazı tipini seçin",
+            "infoCustomFont": "Adını yazarak işletim sisteminden özel yazı tipini seçin",
             "justification": "Hizalama",
             "justify": "İki yana yaslama",
             "letterSpacing": "Harf aralığı",
             "lineSpacing": "Satır aralığı",
-            "margin": "Kenar",
-            "mathjax": "MathJax'ı etkinleştir",
+            "margin": "Kenar boşluğu",
+            "mathjax": "MathJax'i etkinleştir",
             "noFootnotes": "Dipnot açılır pencerelerini devredışı bırak",
-            "noRTLFlip": "Sağdan sola kullanıcı arayüzünü devredışı bırak",
-            "noRuby": "Japonca Okutucuları Gizle",
+            "noRTLFlip": "Sağdan Sola Kullanıcı Arayüzü'nü devredışı bırak",
+            "noRuby": "Japonca Okutucuları gizle",
             "noTemporaryNavTargetOutline": "Görsel gezinme belirteçlerini devredışı bırak",
             "paginated": "Sayfalandırma",
             "paraSpacing": "Paragraf aralığı",
@@ -816,7 +816,7 @@
             "preset": {
                 "apply": "Uygula",
                 "applyDetails": "Tercih ettiğiniz yapılandırmayı mevcut esere uygulayın.",
-                "detail": "Tercih ettiğiniz yapılandırmayı kaydedin / uygulayın / sıfırlayın.",
+                "detail": "Tercih ettiğiniz yapılandırmayı Kaydedin / Uygulayın / Sıfırlayın.",
                 "reset": "Sıfırla",
                 "resetDetails": "Tercih ettiğiniz yapılandırmayı sıfırlayın (varsayılan ayarlar).",
                 "save": "Kaydet",
@@ -837,7 +837,7 @@
                     "Neutral": "Nötral",
                     "Night": "Gece",
                     "Paper": "Kağıt",
-                    "Sepia": "Sepya"
+                    "Sepia": "Sepya renkli"
                 },
                 "title": "Tema"
             },
@@ -868,14 +868,14 @@
     "settings": {
         "annotationCreator": {
             "creator": "Açıklayıcı not oluşturucu (isteğe bağlı)",
-            "help": "Belirtilirse, bu isim dışa aktarılan notların meta verilerine dahil edilecektir.",
+            "help": "Belirtilirse, bu isim dışa aktarılan notların üstverilerine dahil edilecektir.",
             "name": "İsim",
             "organization": "Organizasyon",
             "person": "Şahıs",
             "type": "Tür:"
         },
         "auth": {
-            "help": "Bu işlem tüm OPDS oturum açma kimlik bilgilerini siler.",
+            "help": "Bu işlem, tüm OPDS oturum açma kimlik bilgilerini siler.",
             "title": "Eser kataloglarına erişim",
             "wipeData": "Oturum açma verilerini temizle"
         },
@@ -899,31 +899,31 @@
                     "name": "Hızlıca Açıklayıcı Not Oluştur"
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "Açıklayıcı not ve yer imi belirteçlerinin belge kenarında görüntülenmesi veya metinde görüntülenmesi arasında geçiş yap",
-                    "name": "Açıklayıcı Notların Belge Kenarında veya Metinde Görüntülenmesi Arasında Geçiş Yap"
+                    "description": "Açıklayıcı not ve yer imi görsel belirteçlerinin belge kenar boşluğunda veya metinde görüntülenmesi arasında geçiş yap",
+                    "name": "Açıklayıcı Notların Belge Kenar Boşluğunda  Görüntülenmesini aç veya kapat"
                 },
                 "AudioNext": {
-                    "description": "Sesli okuma esnasında, bir sonraki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya sesli kitap.)",
+                    "description": "Sesli okuma esnasında, bir sonraki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya önceden kaydedilmiş sesli kitap)",
                     "name": "Sonraki Sesli Bölüm"
                 },
                 "AudioNextAlt": {
-                    "description": "Sesli okuma esnasında, bir sonraki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya sesli kitap.) Bu, mevcuttaki geçilebilir yapıları atlar",
-                    "name": "Sonraki sesli bölüm (kaçın)"
+                    "description": "Sesli okuma esnasında, bir sonraki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya önceden kaydedilmiş sesli kitap). Bu, mevcuttaki geçilebilir yapıları atlar",
+                    "name": "Sonraki Sesli Bölüm (kaçın)"
                 },
                 "AudioPlayPause": {
-                    "description": "Mevcut sesli oynatımı oynat/duraklat (EPUB3 medya katmanları, metinden sese okumalar veya önceden kaydedilmiş sesli kitaplar)",
-                    "name": "Oynat/Duraklat"
+                    "description": "Mevcut sesli oynatımı oynat/duraklat (EPUB3 Medya Katmanları, Metinden Sese okuma veya önceden kaydedilmiş sesli kitap)",
+                    "name": "Sesi Oynat/Duraklat"
                 },
                 "AudioPrevious": {
-                    "description": "Sesli okuma esnasında, bir önceki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya sesli kitap.)",
+                    "description": "Sesli okuma esnasında, bir önceki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya önceden kaydedilmiş sesli kitap)",
                     "name": "Önceki Sesli Bölüm"
                 },
                 "AudioPreviousAlt": {
-                    "description": "Sesli okuma esnasında, bir önceki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya sesli kitap.) Bu, mevcuttaki geçilebilir yapıları atlar",
+                    "description": "Sesli okuma esnasında, bir önceki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya sesli kitap). Bu, mevcuttaki geçilebilir yapıları atlar",
                     "name": "Önceki Sesli Bölüm (kaçın)"
                 },
                 "AudioStop": {
-                    "description": "Mevcut sesli oynatımı durdur (EPUB3 Medya Katmanları, Metinden Sese okumalar veya önceden kaydedilmiş sesli kitaplar)",
+                    "description": "Mevcut sesli oynatımı durdur (EPUB3 Medya Katmanları, Metinden Sese okuma veya önceden kaydedilmiş sesli kitap)",
                     "name": "Sesli Oynatımı Durdur"
                 },
                 "CloseReader": {

@@ -140,7 +140,7 @@
         "deleteBookmarksText": "Er du sikker på at du vil slette {{- bookmarkListLength}} bogmærke(r)?",
         "deleteFeed": "Er du sikker på at du vil slette dette katalog?",
         "deletePublication": "Er du sikker på at du vil fjerne bogen?",
-        "deletePublicationWithNotes": "",
+        "deletePublicationWithNotes": "Advarsel: denne bog har noter og/eller bogmærker, som også vil blive slettet! (hvis du vil beholde dem, så eksporter dem venligst inden du sletter bogen)",
         "import": "Bekræft at du vil importere disse filer:",
         "importError": "Der skete en fejl, tjek at filernes type er en af ({{acceptedExtension}})",
         "renew": "Vil du forlænge licensen til bogen?",
@@ -708,28 +708,28 @@
         "navigation": {
             "ZenModeExit": "Forlad fokuseret læsetilstand",
             "ZenModeTitle": "Fokuseret læsetilstand",
-            "annotationTitle": "lav note",
+            "annotationTitle": "Note",
             "backHomeTitle": "tilbage til boghylden",
-            "bookmarkTitle": "bogmærke",
+            "bookmarkTitle": "Bogmærke",
             "currentPage": "Nuværende side: {{- current}}",
             "currentPageTotal": "Nuværende side: {{- current}}/{{- total}}",
-            "detachWindowTitle": "vis bibliotek / boghylde-vindue",
+            "detachWindowTitle": "Vis bibliotek / boghylde-vindue",
             "goTo": "Gå til",
             "goToError": "Siden kunne ikke findes",
             "goToPlaceHolder": "Indtast et sidetal",
             "goToTitle": "Gå til side",
             "historyNext": "Hop frem",
             "historyPrevious": "Hop tilbage",
-            "infoTitle": "information",
-            "magnifyingGlassButton": "søg i bogen",
-            "openTableOfContentsTitle": "indholdsfortegnelse",
+            "infoTitle": "Information",
+            "magnifyingGlassButton": "Søg i bogen",
+            "openTableOfContentsTitle": "Indholdsfortegnelse",
             "page": "Side",
             "pdfscalemode": "Tilpas til side eller skærmbredde",
-            "print": "print",
-            "printDisabled": "",
-            "screenNext": "",
-            "screenPrevious": "",
-            "settingsTitle": "indstillinger"
+            "print": "Print",
+            "printDisabled": "Print ikke tilladt",
+            "screenNext": "Gå frem",
+            "screenPrevious": "Gå tilbage",
+            "settingsTitle": "Indstillinger"
         },
         "notes": {
             "colors": {
@@ -754,22 +754,22 @@
             "searchTitle": "Søg:"
         },
         "print": {
-            "descriptionLcpCount": "",
-            "descriptionLcpPrintable": "",
-            "howTo": "",
-            "lcpInfo": "",
-            "noPagesLcpLimitReached": "",
-            "noPrintablePages": "",
+            "descriptionLcpCount": "Grænse for antal printede sider: {{- count}}",
+            "descriptionLcpPrintable": "Printede sider: {{- printable}} ({{- count}})",
+            "howTo": "Hvordan man vælger side-intervaller til print",
+            "lcpInfo": "Antallet af sider du kan printe er begrænset til {{- count}}. Vælg de sider du ønsker at printe her.",
+            "noPagesLcpLimitReached": "Du har nået grænsen for tilladte antal print i din LCP licens",
+            "noPrintablePages": "Ingen printbare sider fundet",
             "pageHelpInfo": "Syntaks for angivelse af sider:",
-            "pageHelpInfo1": " - indtast et nummer på en side (fx. \"6\")",
-            "pageHelpInfo2": " - indtast to sidetal med en bindestreg imellem, for at angive en kontinuerlig række af sider (fx. \"6-13\")",
-            "pageHelpInfo3": " - brug semikolon til at opdele flere enkeltsider eller kontinuerlige siderækker (fx. \"5;14-20;37\")",
-            "pageHelpInfo4": " - undlad den første eller sidste del i en angivelse af siderække for at medtage alle sider hertil (fx. svarer \"-16\" til \"1-16\" og \"34-\" svarer til \"34-100\" antaget at bogen er på 100 sider)",
+            "pageHelpInfo1": "indtast et nummer på en side (fx. \"6\")",
+            "pageHelpInfo2": "indtast to sidetal med en bindestreg imellem, for at angive et side-interval (fx. \"6-13\")",
+            "pageHelpInfo3": "brug semikolon til at opdele flere enkeltsider eller side-intervaller (fx. \"5;14-20;37\")",
+            "pageHelpInfo4": "undlad den første eller sidste del i et side-interval for at medtage alle sider hertil (fx. svarer \"-16\" til \"1-16\" og \"34-\" svarer til \"34-100\" antaget at bogen er på 100 sider)",
             "pages": "Sider",
-            "preview": "",
+            "preview": "Forhåndsvisning",
             "print": "Print",
-            "printablePages": "",
-            "title": ""
+            "printablePages": "Antal sider der kan printes (totalt)",
+            "title": "Valg af printbare sider"
         },
         "settings": {
             "column": {
@@ -793,7 +793,7 @@
             "letterSpacing": "Bogstav-mellemrum",
             "lineSpacing": "Linje-mellemrum",
             "margin": "Margen",
-            "mathjax": "",
+            "mathjax": "Slå MathJax til",
             "noFootnotes": "Slå popup med fodnoter fra",
             "noRTLFlip": "Slå højre-til-venstre UI fra",
             "noRuby": "Skjul japansk læsehjælp (Ruby)",
@@ -895,7 +895,7 @@
                     "name": "Opret Note"
                 },
                 "AnnotationsCreateQuick": {
-                    "description": "Opret en note for den markerede tekst, med den senest brugte overstregnings-farve og type (dette åbner ikke redigerings-dialogen)",
+                    "description": "Opret hurtigt en note for den markerede tekst, med den senest brugte overstregnings-farve og type (dette åbner ikke redigerings-dialogen)",
                     "name": "Opret Hurtig-note"
                 },
                 "AnnotationsToggleMargin": {
@@ -903,27 +903,27 @@
                     "name": "Slå noter i side-margen til/fra"
                 },
                 "AudioNext": {
-                    "description": "Gå frem til næste lydklip i en bog med tilhørende medier, tekst-til-tale oplæsning eller lydbøger",
+                    "description": "Gå frem til næste lydklip i en bog med tilhørende medier, tekst-til-tale eller oplæsning",
                     "name": "Næste Lydklip"
                 },
                 "AudioNextAlt": {
-                    "description": "Gå frem til næste lydklip i en bog med tilhørende medier, tekst-til-tale oplæsning eller lydbøger. Dette springer over den nuværende struktur, hvis muligt",
-                    "name": "Næste Lydklip (spring over)"
+                    "description": "Gå frem til næste lydklip i en bog med tilhørende medier, tekst-til-tale eller oplæsning. Dette springer ud af den nuværende struktur, hvis muligt",
+                    "name": "Næste Lydklip (spring ud)"
                 },
                 "AudioPlayPause": {
-                    "description": "Skift imellem afspilning/pause i tilhørende medier, tekst-til-tale oplæsning eller lydbøger",
+                    "description": "Skift imellem afspilning/pause i tilhørende medier, tekst-til-tale eller oplæsning",
                     "name": "Afspil/Pause Lyd"
                 },
                 "AudioPrevious": {
-                    "description": "Gå tilbage til forrige lydklip i en bog med tilhørende medier, tekst-til-tale oplæsning eller lydbøger",
-                    "name": "Forrige Lyd"
+                    "description": "Gå tilbage til forrige lydklip i en bog med tilhørende medier, tekst-til-tale eller oplæsning",
+                    "name": "Forrige Lydklip"
                 },
                 "AudioPreviousAlt": {
-                    "description": "Gå tilbage til forrige lydklip i en bog med tilhørende medier, tekst-til-tale oplæsning eller lydbøger. Dette springer over den nuværende struktur, hvis muligt",
-                    "name": "Forrige Lyd (spring over)"
+                    "description": "Gå tilbage til forrige lydklip i en bog med tilhørende medier, tekst-til-tale eller oplæsning. Dette springer ud af den nuværende struktur, hvis muligt",
+                    "name": "Forrige Lyd (spring ud)"
                 },
                 "AudioStop": {
-                    "description": "Stop afspilning af tilhørende medier, tekst-til-tale oplæsning eller lydbøger",
+                    "description": "Stop afspilning af tilhørende medier, tekst-til-tale eller oplæsning",
                     "name": "Stop Afspilning"
                 },
                 "CloseReader": {
@@ -1079,19 +1079,19 @@
                     "name": "Print"
                 },
                 "SearchNext": {
-                    "description": "I læserens søgeværktøj - gå til næste match. Bemærk at der findes en alternativ tastaturgenvej til denne",
+                    "description": "I læserens søgeværktøj - gå til næste resultat. Bemærk at der findes en alternativ tastaturgenvej til denne",
                     "name": "Søgning - Næste"
                 },
                 "SearchNextAlt": {
-                    "description": "I læserens søgeværktøj - gå til næste match. Dette er et alternativ til standard tastaturgenvejen",
+                    "description": "I læserens søgeværktøj - gå til næste resultat. Dette er et alternativ til standard tastaturgenvejen",
                     "name": "Søgning - Næste (Alternativ)"
                 },
                 "SearchPrevious": {
-                    "description": "I læserens søgeværktøj - gå til forrige match. Bemærk at der findes en alternativ tastaturgenvej til denne",
+                    "description": "I læserens søgeværktøj - gå til forrige resultat. Bemærk at der findes en alternativ tastaturgenvej til denne",
                     "name": "Søgning - Forrige"
                 },
                 "SearchPreviousAlt": {
-                    "description": "I læserens søgeværktøj - gå til forrige match. Dette er et alternativ til standard tastaturgenvejen",
+                    "description": "I læserens søgeværktøj - gå til forrige resultat. Dette er et alternativ til standard tastaturgenvejen",
                     "name": "Søgning - Forrige (Alternativ)"
                 },
                 "SpeakReaderInfoWhereAmI": {
