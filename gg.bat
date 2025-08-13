@@ -4,9 +4,6 @@ chcp 65001 > nul
 :: 确保当前分支是 main
 git branch -M main
 
-:: 获取远程仓库的最新信息
-git fetch origin
-
 
 :: 显示当前的 Git 状态
 git status
