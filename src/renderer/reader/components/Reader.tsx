@@ -278,12 +278,8 @@ class Reader extends React.Component<IProps, IState> {
     // private resizeObserver: ResizeObserver;
     // private blackoutDebounced: () => void;
 
-    private screenPreviousNextTimerDebounce: number | undefined;
-
     constructor(props: IProps) {
         super(props);
-
-        this.screenPreviousNextTimerDebounce = undefined;
 
         this._ttsOrMoStateTimeout = undefined;
 
@@ -851,8 +847,6 @@ class Reader extends React.Component<IProps, IState> {
 
         const arrowEnabled = !arrowDisabledNotEpub /* && (isFXL || isPaginated) */;
 
-        const isRTL = this.isRTLFlip();
-
         return (
             <>
             <div className={classNames(
@@ -1005,6 +999,7 @@ class Reader extends React.Component<IProps, IState> {
                                     <div className={stylesReaderFooter.arrows}>
                                         <button onClick={(ev) => {
                                             if (ev.shiftKey) {
+                                                const isRTL = false; // TODO RTL (see ReaderMenu.tsx)
                                                 if (isRTL) {
                                                     this.onKeyboardNavigationToEnd.bind(this);
                                                 } else {
@@ -1014,11 +1009,11 @@ class Reader extends React.Component<IProps, IState> {
                                                 this.navLeftOrRight_(true);
                                             }
                                         }}
-                                            title={!isRTL ? this.props.__("reader.navigation.screenPrevious") : this.props.__("reader.navigation.screenNext")}
+                                            title={this.props.__("reader.svg.left")}
                                             className={(this.props.settingsOpen || this.props.menuOpen) ? (this.props.readerConfig.readerDockingMode === "left" ? stylesReaderFooter.navigation_arrow_docked_left :  stylesReaderFooter.navigation_arrow_left) : stylesReaderFooter.navigation_arrow_left}
                                             style={{ opacity: isPaginated ? "1" : "0"}}
                                         >
-                                            <SVG ariaHidden={true} svg={ArrowLeftIcon} aria-label={this.props.__("reader.svg.left")}/>
+                                            <SVG ariaHidden={true} svg={ArrowLeftIcon} />
                                         </button>
                                     </div>
                                     :
@@ -1068,6 +1063,7 @@ class Reader extends React.Component<IProps, IState> {
                                     <div className={stylesReaderFooter.arrows}>
                                         <button onClick={(ev) => {
                                             if (ev.shiftKey) {
+                                                const isRTL = false; // TODO RTL (see ReaderMenu.tsx)
                                                 if (isRTL) {
                                                     this.onKeyboardNavigationToBegin.bind(this);
                                                 } else {
@@ -1077,11 +1073,11 @@ class Reader extends React.Component<IProps, IState> {
                                                 this.navLeftOrRight_(false);
                                             }
                                         }}
-                                            title={isRTL ? this.props.__("reader.navigation.screenPrevious") : this.props.__("reader.navigation.screenNext")}
+                                            title={this.props.__("reader.svg.right")}
                                             className={(this.props.settingsOpen || this.props.menuOpen) ? (this.props.readerConfig.readerDockingMode === "right" ? stylesReaderFooter.navigation_arrow_docked_right :  stylesReaderFooter.navigation_arrow_right) : stylesReaderFooter.navigation_arrow_right}
                                             style={{ opacity: isPaginated ? "1" : "0"}}
                                         >
-                                            <SVG ariaHidden={true} svg={ArrowRightIcon} aria-label={this.props.__("reader.svg.right")}/>
+                                            <SVG ariaHidden={true} svg={ArrowRightIcon} />
                                         </button>
                                     </div>
                                     :
@@ -2760,23 +2756,6 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private navLeftOrRight_(left: boolean, spineNav?: boolean) {
-
-        if (this.state.accessibilitySupportEnabled) {
-            const isRTL = this.isRTLFlip();
-            const str = isRTL ?
-                (left ? this.props.__("reader.navigation.screenNext") : this.props.__("reader.navigation.screenPrevious")) :
-                (left ? this.props.__("reader.navigation.screenPrevious") : this.props.__("reader.navigation.screenNext"));
-            if (typeof this.screenPreviousNextTimerDebounce !== "undefined") {
-                clearTimeout(this.screenPreviousNextTimerDebounce);
-                this.screenPreviousNextTimerDebounce = undefined;
-            }
-            this.screenPreviousNextTimerDebounce = window.setTimeout(() => {
-                this.screenPreviousNextTimerDebounce = undefined;
-                this.props.toasty(str);
-            }, 800);
-        } else {
-            this.screenPreviousNextTimerDebounce = undefined;
-        }
 
         if (this.props.isPdf) {
             if (left) {

@@ -20,7 +20,6 @@ import { all, put } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
 import { createReaderWindow } from "./browserWindow/createReaderWindow";
-import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import { comparePublisherReaderConfig } from "readium-desktop/common/publisherConfig";
 import { readerActions } from "readium-desktop/common/redux/actions";
 
@@ -44,8 +43,8 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const keyboard = yield* selectTyped((_state: RootState) => _state.keyboard);
     const mode = yield* selectTyped((state: RootState) => state.mode);
     const theme = yield* selectTyped((state: RootState) => state.theme);
-    const config = reader?.reduxState?.config || readerConfigInitialState;
-    const transientConfigMerge = {...readerConfigInitialState, ...config};
+    const config = reader?.reduxState?.config || readerDefaultConfig;
+    const transientConfigMerge = {...readerDefaultConfig, ...config};
     const creator = yield* selectTyped((_state: RootState) => _state.creator);
     const lcp = yield* selectTyped((state: RootState) => state.lcp);
     const noteExport = yield* selectTyped((state: RootState) => state.noteExport);
@@ -97,7 +96,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
                     lineHeight: transientConfigMerge.lineHeight,
                 },
                 allowCustomConfig: {
-                    state: !comparePublisherReaderConfig(config, readerConfigInitialState),
+                    state: !comparePublisherReaderConfig(config, readerDefaultConfig),
                 },
                 config,
                 lock: gotTheLock,

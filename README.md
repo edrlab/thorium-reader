@@ -1,3 +1,16 @@
+
+### 修改官方的代码。 增加自己的喜好。
+
+![1](效果图/a1.jpg)
+![2](效果图/a3.jpg)
+![3](效果图/a2.jpg)
+
+1. 增加3个主题，目的是为了能长时间阅读, 保护视力，减少暴躁。
+2. 打开一本新书，能自动加载自己的喜好设置。
+
+
+--- 
+
 # Thorium Reader
 
 Thorium Reader is an easy to use EPUB reading application for Windows 10/10S, MacOS and Linux. After importing e-books from a directory or OPDS feed, you'll be able to read on any screen size, customize layout settings, navigate via the table of contents or page list, set bookmarks ... A great care is taken to ensure the accessibility of the application for visual impaired people using NVDA, JAWS or Narrator.

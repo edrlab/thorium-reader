@@ -209,16 +209,18 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
                 state.win.registry.reader[publicationIdentifier]?.reduxState || {},
         );
 
-        // session always enabled
-        // const sessionIsEnabled = yield* selectTyped(
-        //     (state: RootState) => state.session.state,
-        // );
-        // if (!sessionIsEnabled) {
-        //     const reduxDefaultConfig = yield* selectTyped(
-        //         (state: RootState) => state.reader.defaultConfig,
-        //     );
-        //     reduxState.config = reduxDefaultConfig;
-        // }
+        // 确保使用用户保存的默认配置，如果注册表中没有配置或配置不完整
+        const userDefaultConfig = yield* selectTyped(
+            (state: RootState) => state.reader.defaultConfig,
+        );
+        
+        // 如果注册表中没有配置，或者配置不完整，则使用用户的默认配置
+        if (!reduxState.config) {
+            reduxState.config = userDefaultConfig;
+        } else {
+            // 合并用户默认配置和注册表中的配置，确保新的配置项能够被应用
+            reduxState.config = { ...userDefaultConfig, ...reduxState.config };
+        }
 
         const winBound = yield* callTyped(getWinBound, publicationIdentifier);
 

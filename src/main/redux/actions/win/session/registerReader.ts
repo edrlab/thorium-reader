@@ -45,6 +45,8 @@ export function build(
     const store = diMainGet("store");
 
     const disableRTLFlip = store.getState().reader.disableRTLFlip;
+    // 获取用户保存的默认配置，如果不存在则使用系统默认配置
+    const userDefaultConfig = store.getState().reader.defaultConfig || readerConfigInitialState;
 
     const manifestUrlR2Protocol = manifestUrl.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)
         ? manifestUrl : convertHttpUrlToCustomScheme(manifestUrl);
@@ -52,7 +54,8 @@ export function build(
     const reduxStateReaderHydrated: IReaderStateReaderSession = {
         ...{
             // see issue https://github.com/edrlab/thorium-reader/issues/2532
-            config: readerConfigInitialState,
+            // 使用用户保存的默认配置而不是系统默认配置
+            config: userDefaultConfig,
             disableRTLFlip,
             locator: locatorInitialState,
         },

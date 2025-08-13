@@ -58,6 +58,9 @@ export const computeReadiumCssJsonMessage = (settings: ReaderConfig): IEventPayl
             settings.theme === "contrast2" ? "#000000" :
             settings.theme === "contrast3" ? "#181842" :
             settings.theme === "contrast4" ? "#C5E7CD" :
+            settings.theme === "brown" ? "#bcc17b" :
+            settings.theme === "grayblue" ? "#88a8d3" :
+            settings.theme === "purpleblue" ? "#9aabdf" :
             readiumCSSDefaults.backgroundColor,
         textColor: (!settings.theme || settings.theme === "neutral") ? readiumCSSDefaults.textColor :
             settings.theme === "sepia" ? "black" :
@@ -67,6 +70,9 @@ export const computeReadiumCssJsonMessage = (settings: ReaderConfig): IEventPayl
             settings.theme === "contrast2" ? "#FFFF00" :
             settings.theme === "contrast3" ? "#FFFF" :
             settings.theme === "contrast4" ? "#000000" :
+            settings.theme === "brown" ? "#000000" :
+            settings.theme === "grayblue" ? "#000000" :
+            settings.theme === "purpleblue" ? "#000000" :
             readiumCSSDefaults.textColor,
 
         selectionBackgroundColor: (!settings.theme || settings.theme === "neutral") ? readiumCSSDefaults.selectionBackgroundColor :
@@ -77,6 +83,9 @@ export const computeReadiumCssJsonMessage = (settings: ReaderConfig): IEventPayl
             settings.theme === "contrast2" ? "rgb(100, 122, 177)" :
             settings.theme === "contrast3" ? "rgb(100, 122, 177)" :
             settings.theme === "contrast4" ? "rgb(155, 179, 240)" :
+            settings.theme === "brown" ? "rgb(155, 179, 240)" :
+            settings.theme === "grayblue" ? "rgb(104, 140, 180)" : // #688cb4 - 深一点的灰蓝色，与主题背景 #88a8d3 协调
+            settings.theme === "purpleblue" ? "rgb(120, 140, 200)" : // #788cc8 - 深一点的紫蓝色，与主题背景 #9aabdf 协调
             readiumCSSDefaults.selectionBackgroundColor,
         selectionTextColor: (!settings.theme || settings.theme === "neutral") ? readiumCSSDefaults.selectionTextColor :
             settings.theme === "sepia" ? "inherit" :
@@ -86,6 +95,9 @@ export const computeReadiumCssJsonMessage = (settings: ReaderConfig): IEventPayl
             settings.theme === "contrast2" ? "inherit" :
             settings.theme === "contrast3" ? "inherit" :
             settings.theme === "contrast4" ? "inherit" :
+            settings.theme === "brown" ? "inherit" :
+            settings.theme === "grayblue" ? "inherit" :
+            settings.theme === "purpleblue" ? "inherit" :
             readiumCSSDefaults.selectionTextColor,
 
         linkColor: (!settings.theme || settings.theme === "neutral") ? readiumCSSDefaults.linkColor :

@@ -125,56 +125,77 @@ const Theme = ({ dockedMode }: { dockedMode: boolean }) => {
     const theme = useReaderConfig("theme");
     const set = useSaveReaderConfigDebounced();
 
-    const [themeOptions] = React.useState(() => [
-        {
-            id: 1,
-            name: `${__("reader.settings.theme.name.Neutral")}`,
-            value: "neutral",
-            style: { backgroundColor: "#fefefe", color: "black" },
-        },
-        {
-            id: 2,
-            name: `${__("reader.settings.theme.name.Sepia")}`,
-            value: "sepia",
-            style: { backgroundColor: "#faf4e8", color: "black" },
-        },
-        {
-            id: 3,
-            name: `${__("reader.settings.theme.name.Night")}`,
-            value: "night",
-            style: { backgroundColor: "#121212", color: "#fff" },
-        },
-        {
-            id: 4,
-            name: `${__("reader.settings.theme.name.Paper")}`,
-            value: "paper",
-            style: { backgroundColor: "#E9DDC8", color: "#000000" },
-        },
-        {
-            id: 5,
-            name: `${__("reader.settings.theme.name.Contrast1")}`,
-            value: "contrast1",
-            style: { backgroundColor: "#000000", color: "#fff" },
-        },
-        {
-            id: 6,
-            name: `${__("reader.settings.theme.name.Contrast2")}`,
-            value: "contrast2",
-            style: { backgroundColor: "#000000", color: "#FFFF00" },
-        },
-        {
-            id: 7,
-            name: `${__("reader.settings.theme.name.Contrast3")}`,
-            value: "contrast3",
-            style: { backgroundColor: "#181842", color: "#FFFF" },
-        },
-        {
-            id: 8,
-            name: `${__("reader.settings.theme.name.Contrast4")}`,
-            value: "contrast4",
-            style: { backgroundColor: "#C5E7CD", color: "#000000" },
-        },
-    ]);
+    const [themeOptions] = React.useState(() => {
+        console.log("Loading theme options with new themes");
+        return [
+            {
+                id: 1,
+                name: `${__("reader.settings.theme.name.Neutral")}`,
+                value: "neutral",
+                style: { backgroundColor: "#fefefe", color: "black" },
+            },
+            {
+                id: 2,
+                name: `${__("reader.settings.theme.name.Sepia")}`,
+                value: "sepia",
+                style: { backgroundColor: "#faf4e8", color: "black" },
+            },
+            {
+                id: 3,
+                name: `${__("reader.settings.theme.name.Night")}`,
+                value: "night",
+                style: { backgroundColor: "#121212", color: "#fff" },
+            },
+            {
+                id: 4,
+                name: `${__("reader.settings.theme.name.Paper")}`,
+                value: "paper",
+                style: { backgroundColor: "#E9DDC8", color: "#000000" },
+            },
+            {
+                id: 5,
+                name: `${__("reader.settings.theme.name.Contrast1")}`,
+                value: "contrast1",
+                style: { backgroundColor: "#000000", color: "#fff" },
+            },
+            {
+                id: 6,
+                name: `${__("reader.settings.theme.name.Contrast2")}`,
+                value: "contrast2",
+                style: { backgroundColor: "#000000", color: "#FFFF00" },
+            },
+            {
+                id: 7,
+                name: `${__("reader.settings.theme.name.Contrast3")}`,
+                value: "contrast3",
+                style: { backgroundColor: "#181842", color: "#FFFF" },
+            },
+            {
+                id: 8,
+                name: `${__("reader.settings.theme.name.Contrast4")}`,
+                value: "contrast4",
+                style: { backgroundColor: "#C5E7CD", color: "#000000" },
+            },
+            {
+                id: 9,
+                name: "中度棕色",
+                value: "brown",
+                style: { backgroundColor: "#bcc17b", color: "#000000" },
+            },
+            {
+                id: 10,
+                name: "灰蓝色",
+                value: "grayblue",
+                style: { backgroundColor: "#88a8d3", color: "#000000" },
+            },
+            {
+                id: 11,
+                name: "紫蓝色",
+                value: "purpleblue",
+                style: { backgroundColor: "#9aabdf", color: "#000000" },
+            },
+        ];
+    });
 
 
     const defaultKey =
@@ -186,7 +207,10 @@ const Theme = ({ dockedMode }: { dockedMode: boolean }) => {
                             : theme === "contrast2" ? 6
                                 : theme === "contrast3" ? 7
                                     : theme === "contrast4" ? 8
-                                        : 1;
+                                        : theme === "brown" ? 9
+                                            : theme === "grayblue" ? 10
+                                                : theme === "purpleblue" ? 11
+                                                    : 1;
 
     return (
         <section className={stylesSettings.section}>
@@ -384,9 +408,9 @@ export const FontFamily = () => {
                 <SVG ariaHidden svg={InfoIcon} />
                 {
                     options.find((v) => v.name === inputval) ?
-                    <p>{__("reader.settings.infoCustomFont")}</p>
-                    :
-                    <p>{__("reader.settings.customFontSelected")}</p>
+                        <p>{__("reader.settings.infoCustomFont")}</p>
+                        :
+                        <p>{__("reader.settings.customFontSelected")}</p>
                 }
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
@@ -417,11 +441,11 @@ interface ITable {
 
 const Slider = ({ value, option, set }: { value: string, option: ITable, set: (a: Pick<ReaderConfig, "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight">) => void }) => {
     const [currentSliderValue, setCurrentSliderValue] = React.useState(option.defaultValue);
-    const [currentIndex, setCurrentIndex] = React.useState(() => (optionsValues[option.parameter] ||  [] ).findIndex((el) => el === option.defaultValue) || 0);
+    const [currentIndex, setCurrentIndex] = React.useState(() => (optionsValues[option.parameter] || []).findIndex((el) => el === option.defaultValue) || 0);
 
     React.useEffect(() => {
         setCurrentSliderValue(value);
-        const newIndex = (optionsValues[option.parameter] || [] ).findIndex((el) => el === value) || 0;
+        const newIndex = (optionsValues[option.parameter] || []).findIndex((el) => el === value) || 0;
         setCurrentIndex(newIndex);
     }, [value, option.parameter]);
 
@@ -682,46 +706,46 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
         value?: string,
         onChange: React.ChangeEventHandler<HTMLInputElement>,
     })[] = [
-        {
-            id: "captions",
-            name: "Captions",
-            label: `${__("reader.media-overlays.captions")}`,
-            description: `${__("reader.media-overlays.captionsDescription")}`,
-            checked: useMO ? moCaptions : ttsCaptions,
-            onChange: () => {
-                if (useMO) {
-                    set({ mediaOverlaysEnableCaptionsMode: !moCaptions });
-                } else {
-                    // see readerConfig.ts Redux Saga readerConfigChanged (TTS STOP)
-                    // ttsTogglePlayResume(() => {
-                    //     set({ ttsEnableOverlayMode: !ttsCaptions });
-                    // });
-                    set({ ttsEnableOverlayMode: !ttsCaptions });
-                }
+            {
+                id: "captions",
+                name: "Captions",
+                label: `${__("reader.media-overlays.captions")}`,
+                description: `${__("reader.media-overlays.captionsDescription")}`,
+                checked: useMO ? moCaptions : ttsCaptions,
+                onChange: () => {
+                    if (useMO) {
+                        set({ mediaOverlaysEnableCaptionsMode: !moCaptions });
+                    } else {
+                        // see readerConfig.ts Redux Saga readerConfigChanged (TTS STOP)
+                        // ttsTogglePlayResume(() => {
+                        //     set({ ttsEnableOverlayMode: !ttsCaptions });
+                        // });
+                        set({ ttsEnableOverlayMode: !ttsCaptions });
+                    }
+                },
             },
-        },
-        {
-            id: "skippability",
-            name: "Skippability",
-            label: `${__("reader.media-overlays.skip")}`,
-            description: `${__("reader.media-overlays.skipDescription")}`,
-            checked: skippability,
-            onChange: () => {
-                // This is shared with TTS
-                set({ mediaOverlaysEnableSkippability: !skippability });
+            {
+                id: "skippability",
+                name: "Skippability",
+                label: `${__("reader.media-overlays.skip")}`,
+                description: `${__("reader.media-overlays.skipDescription")}`,
+                checked: skippability,
+                onChange: () => {
+                    // This is shared with TTS
+                    set({ mediaOverlaysEnableSkippability: !skippability });
+                },
             },
-        },
-        {
-            id: "disableContinuousPlay",
-            name: "DisableContinuousPlay",
-            label: `${__("reader.media-overlays.disableContinuousPlay")}`,
-            description: `${__("reader.media-overlays.disableContinuousPlayDescription")}`,
-            checked: disableContinuousPlay,
-            onChange: () => {
-                set({ ttsAndMediaOverlaysDisableContinuousPlay: !disableContinuousPlay });
+            {
+                id: "disableContinuousPlay",
+                name: "DisableContinuousPlay",
+                label: `${__("reader.media-overlays.disableContinuousPlay")}`,
+                description: `${__("reader.media-overlays.disableContinuousPlayDescription")}`,
+                checked: disableContinuousPlay,
+                onChange: () => {
+                    set({ ttsAndMediaOverlaysDisableContinuousPlay: !disableContinuousPlay });
+                },
             },
-        },
-    ];
+        ];
 
     if (!useMO) {
         options.push({
@@ -780,17 +804,17 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
         ttsHS: HighlightDrawTypeOutline,
         ttsHSW: HighlightDrawTypeBackground,
     }, {
-       description: __("tts.highlight.underlineWordUnderline"),
-       ttsHS: HighlightDrawTypeUnderline,
-       ttsHSW: HighlightDrawTypeUnderline,
+        description: __("tts.highlight.underlineWordUnderline"),
+        ttsHS: HighlightDrawTypeUnderline,
+        ttsHSW: HighlightDrawTypeUnderline,
     }, {
-       description: __("tts.highlight.underlineWordOutline"),
-       ttsHS: HighlightDrawTypeUnderline,
-       ttsHSW: HighlightDrawTypeOutline,
+        description: __("tts.highlight.underlineWordOutline"),
+        ttsHS: HighlightDrawTypeUnderline,
+        ttsHSW: HighlightDrawTypeOutline,
     }, {
-       description: __("tts.highlight.underlineWordSolidBackground"),
-       ttsHS: HighlightDrawTypeUnderline,
-       ttsHSW: HighlightDrawTypeBackground,
+        description: __("tts.highlight.underlineWordSolidBackground"),
+        ttsHS: HighlightDrawTypeUnderline,
+        ttsHSW: HighlightDrawTypeBackground,
     }, {
         description: __("tts.highlight.maskWordUnderline"),
         ttsHS: HighlightDrawTypeOpacityMask,
@@ -831,288 +855,288 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
     const styleSentence = {
         background:
             ttsHighlightStyle_ === HighlightDrawTypeBackground ?
-            rgbToHex(ttsHighlightColor_) :
-            undefined,
+                rgbToHex(ttsHighlightColor_) :
+                undefined,
         textDecorationLine:
             ttsHighlightStyle_ === HighlightDrawTypeUnderline ?
-            "underline" :
-            undefined,
+                "underline" :
+                undefined,
         textDecorationColor:
             ttsHighlightStyle_ === HighlightDrawTypeUnderline ?
-            rgbToHex(ttsHighlightColor_) :
-            undefined,
+                rgbToHex(ttsHighlightColor_) :
+                undefined,
         textDecorationThickness: "3px",
         outlineWidth: "3px",
         textUnderlineOffset: "3px",
         outlineStyle:
             ttsHighlightStyle_ === HighlightDrawTypeOutline ?
-            "solid" :
-            undefined,
+                "solid" :
+                undefined,
         outlineOffset:
             ttsHighlightStyle_ === HighlightDrawTypeOutline ?
-            "2px" :
-            undefined,
+                "2px" :
+                undefined,
         outlineColor:
             ttsHighlightStyle_ === HighlightDrawTypeOutline ?
-            rgbToHex(ttsHighlightColor_) :
-            undefined,
+                rgbToHex(ttsHighlightColor_) :
+                undefined,
         color: "black",
     } satisfies React.CSSProperties;
     const styleWord = {
         background:
             ttsHighlightStyle_WORD_ === HighlightDrawTypeBackground ?
-            rgbToHex(ttsHighlightColor_WORD_) :
-            undefined,
+                rgbToHex(ttsHighlightColor_WORD_) :
+                undefined,
         textDecorationLine:
             ttsHighlightStyle_WORD_ === HighlightDrawTypeUnderline ?
-            "underline" :
-            undefined,
+                "underline" :
+                undefined,
         textDecorationColor:
             ttsHighlightStyle_WORD_ === HighlightDrawTypeUnderline ?
-            rgbToHex(ttsHighlightColor_WORD_) :
-            undefined,
+                rgbToHex(ttsHighlightColor_WORD_) :
+                undefined,
         textDecorationThickness: "3px",
         outlineWidth: "3px",
         textUnderlineOffset: "3px",
         outlineStyle:
             ttsHighlightStyle_WORD_ === HighlightDrawTypeOutline ?
-            "solid" :
-            undefined,
+                "solid" :
+                undefined,
         outlineColor:
             ttsHighlightStyle_WORD_ === HighlightDrawTypeOutline ?
-            rgbToHex(ttsHighlightColor_WORD_) :
-            undefined,
+                rgbToHex(ttsHighlightColor_WORD_) :
+                undefined,
         color: "black",
     } satisfies React.CSSProperties;
 
     return (
         <>
-        {
-            //gridTemplateColumns: "repeat(auto-fill, minmax(300px,1fr)"
-        }
-        <div style={{ display: "grid", paddingRight: 25 }}>
-            {options.map((option) =>
-            <div style={{ padding: "10px 0" }} key={option.id}>
-                <input
-                    id={option.id}
-                    type="checkbox"
-                    name={option.name}
-                    onChange={option.onChange}
-                    defaultChecked={option.checked}
-                    className={stylesGlobal.checkbox_custom_input}
-                />
-                <label htmlFor={option.id} className={stylesGlobal.checkbox_custom_label}>
-                    <div
-                        tabIndex={0}
-                        role="checkbox"
-                        aria-checked={option.checked}
-                        aria-label={option.label}
-                        title={option.description}
-                        onKeyDown={(e) => {
-                            // if (e.code === "Space") {
-                            if (e.key === " ") {
-                                e.preventDefault(); // prevent scroll
-                            }
-                        }}
-                        onKeyUp={(e) => {
-                            // if (e.code === "Space") {
-                            if (e.key === " ") {
-                                e.preventDefault();
-                                // @ts-expect-error unused function argument (boolean toggle from state)
-                                option.onChange();
-                            }
-                        }}
-                        className={stylesGlobal.checkbox_custom}
-                        style={{ border: option.checked ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: option.checked ? "var(--color-blue)" : "transparent" }}>
-                        {option.checked ?
-                            <SVG ariaHidden svg={CheckIcon} />
-                            :
-                            <></>
-                        }
-                    </div>
-                    <span aria-hidden>
-                        {option.label}
-                    </span>
-                </label>
-                {/* <p className={stylesSettings.session_text}>{option.description}</p> */}
-            </div>)}
-        </div>
+            {
+                //gridTemplateColumns: "repeat(auto-fill, minmax(300px,1fr)"
+            }
+            <div style={{ display: "grid", paddingRight: 25 }}>
+                {options.map((option) =>
+                    <div style={{ padding: "10px 0" }} key={option.id}>
+                        <input
+                            id={option.id}
+                            type="checkbox"
+                            name={option.name}
+                            onChange={option.onChange}
+                            defaultChecked={option.checked}
+                            className={stylesGlobal.checkbox_custom_input}
+                        />
+                        <label htmlFor={option.id} className={stylesGlobal.checkbox_custom_label}>
+                            <div
+                                tabIndex={0}
+                                role="checkbox"
+                                aria-checked={option.checked}
+                                aria-label={option.label}
+                                title={option.description}
+                                onKeyDown={(e) => {
+                                    // if (e.code === "Space") {
+                                    if (e.key === " ") {
+                                        e.preventDefault(); // prevent scroll
+                                    }
+                                }}
+                                onKeyUp={(e) => {
+                                    // if (e.code === "Space") {
+                                    if (e.key === " ") {
+                                        e.preventDefault();
+                                        // @ts-expect-error unused function argument (boolean toggle from state)
+                                        option.onChange();
+                                    }
+                                }}
+                                className={stylesGlobal.checkbox_custom}
+                                style={{ border: option.checked ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: option.checked ? "var(--color-blue)" : "transparent" }}>
+                                {option.checked ?
+                                    <SVG ariaHidden svg={CheckIcon} />
+                                    :
+                                    <></>
+                                }
+                            </div>
+                            <span aria-hidden>
+                                {option.label}
+                            </span>
+                        </label>
+                        {/* <p className={stylesSettings.session_text}>{option.description}</p> */}
+                    </div>)}
+            </div>
 
-        {!useMO ?
-        (
-        <>
-        <div style={{ border: "2px dotted var(--color-verylight-grey-alt)", borderRadius: "1em", padding: 6 }}>
-        <div className={stylesReader.ttsSelectRate}>
-        <ComboBox label={__("tts.highlight.style")}
-            defaultItems={ttsHighlightStyles}
-            defaultSelectedKey={ ttsHighlightStylesKey === -1 ? 0 : ttsHighlightStylesKey }
-            selectedKey={ ttsHighlightStylesKey === -1 ? 0 : ttsHighlightStylesKey }
-            onSelectionChange={(key) => {
-                if (key == null || key == undefined) return;
-                // const obj = ttsHighlightStyles.find((_obj, index) => index === key);
-                const obj = ttsHighlightStyles.find((obj) => obj.id === key);
-                if (obj)
-                ttsTogglePlayResume(() => {
-                    set({ ttsHighlightStyle: obj.ttsHS, ttsHighlightStyle_WORD: obj.ttsHSW });
-                });
-            }}>
-            {item => <ComboBoxItem>{item.description}</ComboBoxItem>}
-        </ComboBox>
-        </div>
-        <div role="radiogroup">
-        <p style={{marginBottom:4, paddingBottom: 0, fontWeight:"bold", fontSize:"120%"}}>{__("tts.highlight.mainColor")}</p>
-            <div style={{width:"fit-content"}} className={stylesAnnotations.colorPicker} role="radiogroup">
-            {
-            Object.entries(noteColorCodeToColorTranslatorKeySet_).map(([colorHex, translatorKey]) => {
-                const ttsHighlightColorHex = rgbToHex(ttsHighlightColor || readerConfigInitialState.ttsHighlightColor);
-                return (
-                    <div key={`color_${colorHex}_key`}>
-                        <input type="radio" id={`ttscolorpick${colorHex}`} name="ttscolorpick" value={colorHex}
-                            onChange={() => {
-                                ttsTogglePlayResume(() => {
-                                    set({ ttsHighlightColor: hexToRgb(colorHex) });
-                                });
-                            }}
-                            checked={ttsHighlightColorHex === colorHex}
-                            aria-label={__(translatorKey)}
-                        />
-                        <label aria-hidden={true} title={__(translatorKey)} htmlFor={`ttscolorpick${colorHex}`}
-                            style={{ backgroundColor: colorHex, border: ttsHighlightColorHex === colorHex ? "1px solid var(--color-dark-grey)" : "" }}
-                        >
-                            {ttsHighlightColorHex === colorHex ? <SVG ariaHidden svg={DoubleCheckIcon} /> : <></>}
-                        </label>
-                    </div>
-                );
-            })
-            }
-            </div>
-            <p style={{ marginBottom: 4, paddingBottom: 0, fontWeight: "bold", fontSize: "120%" }}>{__("tts.highlight.wordColor")}</p>
-            <div style={{width:"fit-content"}} className={stylesAnnotations.colorPicker} role="radiogroup">
-            {
-            Object.entries(noteColorCodeToColorTranslatorKeySet_).map(([colorHex, translatorKey]) => {
-                const ttsHighlightColor_WORDHex = rgbToHex(ttsHighlightColor_WORD || readerConfigInitialState.ttsHighlightColor_WORD);
-                return (
-                    <div key={`colorx_${colorHex}_key`}>
-                        <input type="radio" id={`ttscolorpickword${colorHex}`} name="ttscolorpickword" value={colorHex}
-                            onChange={() => {
-                                ttsTogglePlayResume(() => {
-                                    set({ ttsHighlightColor_WORD: hexToRgb(colorHex) });
-                                });
-                            }}
-                            checked={ttsHighlightColor_WORDHex === colorHex}
-                            aria-label={__(translatorKey)}
-                        />
-                        <label aria-hidden={true} title={__(translatorKey)} htmlFor={`ttscolorpickword${colorHex}`}
-                            style={{ backgroundColor: colorHex, border: ttsHighlightColor_WORDHex === colorHex ? "1px solid var(--color-dark-grey)" : "" }}
-                        >
-                            {ttsHighlightColor_WORDHex === colorHex ? <SVG ariaHidden svg={DoubleCheckIcon} /> : <></>}
-                        </label>
-                    </div>
-                );
-            })
-            }
-            </div>
-        </div>
-        </div>
-<div style={{flexBasis: "100%", height: 0}}></div>
-<details
-aria-hidden={true}
-open={false}
-style={
-{
-    width: 0,
-    flexBasis: "100%",
-    marginTop: 10,
-    border: "1px solid var(--color-verylight-grey-alt)",
-    padding: 6,
-}
-}>
-<summary style={
-{
-cursor: "pointer",
-}
-}>{__("tts.highlight.preview")}</summary>
-{
-ttsHighlightStyle_ === HighlightDrawTypeOpacityMaskRuler
-?
-(
-<div style={
-{
-background: "white",
-color: "black",
-fontFamily: "serif",
-marginTop: 6,
-padding: 6,
-paddingLeft: 50,
-paddingRight: 50,
-lineHeight: "2em",
-}
-}>
-<p style={
-{
-fontSize: "1.5em",
-}}>
-<span style={
-{
-color: "silver",
-}
-}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nec purus sodales, rhoncus nisl ac,</span><br/>
-<div style={
-{
-border: "2px solid black",
-borderRadius: "8px",
-padding: "4px",
-}
-}><span>fringilla metus.</span> <span style={styleSentence}>Sed eu dignissim dui. <span style={styleWord}>Curabitur</span> venenatis sollicitudin ultrices. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</span> <span>Aenean laoreet justo vitae</span><br/></div>
-<span style={
-{
-color: "silver",
-}
-}>mauris fermentum, eget ultrices augue placerat. Proin massa est, gravida feugiat ipsum feugiat, dapibus porttitor felis.</span>
-</p>
-</div>
-)
-:
-(
-<div style={
-{
-background: "white",
-color: "black",
-fontFamily: "serif",
-marginTop: 6,
-padding: 6,
-paddingLeft: 50,
-paddingRight: 50,
-lineHeight: "2em",
-}
-}>
-<p style={
-{
-fontSize: "1.5em",
-}}>
-<span style={
-{
-color:
-ttsHighlightStyle_ === HighlightDrawTypeOpacityMask ?
-"silver" :
-undefined,
-}
-}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nec purus sodales, rhoncus nisl ac, fringilla metus.</span> <span style={styleSentence}>Sed eu dignissim dui. <span style={styleWord}>Curabitur</span> venenatis sollicitudin ultrices. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</span> <span style={
-{
-color:
-ttsHighlightStyle_ === HighlightDrawTypeOpacityMask ?
-"silver" :
-undefined,
-}
-}>Aenean laoreet justo vitae mauris fermentum, eget ultrices augue placerat. Proin massa est, gravida feugiat ipsum feugiat, dapibus porttitor felis.</span>
-</p>
-</div>
-)
-}
-</details>
-        </>
-        )
-        : <></> }
+            {!useMO ?
+                (
+                    <>
+                        <div style={{ border: "2px dotted var(--color-verylight-grey-alt)", borderRadius: "1em", padding: 6 }}>
+                            <div className={stylesReader.ttsSelectRate}>
+                                <ComboBox label={__("tts.highlight.style")}
+                                    defaultItems={ttsHighlightStyles}
+                                    defaultSelectedKey={ttsHighlightStylesKey === -1 ? 0 : ttsHighlightStylesKey}
+                                    selectedKey={ttsHighlightStylesKey === -1 ? 0 : ttsHighlightStylesKey}
+                                    onSelectionChange={(key) => {
+                                        if (key == null || key == undefined) return;
+                                        // const obj = ttsHighlightStyles.find((_obj, index) => index === key);
+                                        const obj = ttsHighlightStyles.find((obj) => obj.id === key);
+                                        if (obj)
+                                            ttsTogglePlayResume(() => {
+                                                set({ ttsHighlightStyle: obj.ttsHS, ttsHighlightStyle_WORD: obj.ttsHSW });
+                                            });
+                                    }}>
+                                    {item => <ComboBoxItem>{item.description}</ComboBoxItem>}
+                                </ComboBox>
+                            </div>
+                            <div role="radiogroup">
+                                <p style={{ marginBottom: 4, paddingBottom: 0, fontWeight: "bold", fontSize: "120%" }}>{__("tts.highlight.mainColor")}</p>
+                                <div style={{ width: "fit-content" }} className={stylesAnnotations.colorPicker} role="radiogroup">
+                                    {
+                                        Object.entries(noteColorCodeToColorTranslatorKeySet_).map(([colorHex, translatorKey]) => {
+                                            const ttsHighlightColorHex = rgbToHex(ttsHighlightColor || readerConfigInitialState.ttsHighlightColor);
+                                            return (
+                                                <div key={`color_${colorHex}_key`}>
+                                                    <input type="radio" id={`ttscolorpick${colorHex}`} name="ttscolorpick" value={colorHex}
+                                                        onChange={() => {
+                                                            ttsTogglePlayResume(() => {
+                                                                set({ ttsHighlightColor: hexToRgb(colorHex) });
+                                                            });
+                                                        }}
+                                                        checked={ttsHighlightColorHex === colorHex}
+                                                        aria-label={__(translatorKey)}
+                                                    />
+                                                    <label aria-hidden={true} title={__(translatorKey)} htmlFor={`ttscolorpick${colorHex}`}
+                                                        style={{ backgroundColor: colorHex, border: ttsHighlightColorHex === colorHex ? "1px solid var(--color-dark-grey)" : "" }}
+                                                    >
+                                                        {ttsHighlightColorHex === colorHex ? <SVG ariaHidden svg={DoubleCheckIcon} /> : <></>}
+                                                    </label>
+                                                </div>
+                                            );
+                                        })
+                                    }
+                                </div>
+                                <p style={{ marginBottom: 4, paddingBottom: 0, fontWeight: "bold", fontSize: "120%" }}>{__("tts.highlight.wordColor")}</p>
+                                <div style={{ width: "fit-content" }} className={stylesAnnotations.colorPicker} role="radiogroup">
+                                    {
+                                        Object.entries(noteColorCodeToColorTranslatorKeySet_).map(([colorHex, translatorKey]) => {
+                                            const ttsHighlightColor_WORDHex = rgbToHex(ttsHighlightColor_WORD || readerConfigInitialState.ttsHighlightColor_WORD);
+                                            return (
+                                                <div key={`colorx_${colorHex}_key`}>
+                                                    <input type="radio" id={`ttscolorpickword${colorHex}`} name="ttscolorpickword" value={colorHex}
+                                                        onChange={() => {
+                                                            ttsTogglePlayResume(() => {
+                                                                set({ ttsHighlightColor_WORD: hexToRgb(colorHex) });
+                                                            });
+                                                        }}
+                                                        checked={ttsHighlightColor_WORDHex === colorHex}
+                                                        aria-label={__(translatorKey)}
+                                                    />
+                                                    <label aria-hidden={true} title={__(translatorKey)} htmlFor={`ttscolorpickword${colorHex}`}
+                                                        style={{ backgroundColor: colorHex, border: ttsHighlightColor_WORDHex === colorHex ? "1px solid var(--color-dark-grey)" : "" }}
+                                                    >
+                                                        {ttsHighlightColor_WORDHex === colorHex ? <SVG ariaHidden svg={DoubleCheckIcon} /> : <></>}
+                                                    </label>
+                                                </div>
+                                            );
+                                        })
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div style={{ flexBasis: "100%", height: 0 }}></div>
+                        <details
+                            aria-hidden={true}
+                            open={false}
+                            style={
+                                {
+                                    width: 0,
+                                    flexBasis: "100%",
+                                    marginTop: 10,
+                                    border: "1px solid var(--color-verylight-grey-alt)",
+                                    padding: 6,
+                                }
+                            }>
+                            <summary style={
+                                {
+                                    cursor: "pointer",
+                                }
+                            }>{__("tts.highlight.preview")}</summary>
+                            {
+                                ttsHighlightStyle_ === HighlightDrawTypeOpacityMaskRuler
+                                    ?
+                                    (
+                                        <div style={
+                                            {
+                                                background: "white",
+                                                color: "black",
+                                                fontFamily: "serif",
+                                                marginTop: 6,
+                                                padding: 6,
+                                                paddingLeft: 50,
+                                                paddingRight: 50,
+                                                lineHeight: "2em",
+                                            }
+                                        }>
+                                            <p style={
+                                                {
+                                                    fontSize: "1.5em",
+                                                }}>
+                                                <span style={
+                                                    {
+                                                        color: "silver",
+                                                    }
+                                                }>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nec purus sodales, rhoncus nisl ac,</span><br />
+                                                <div style={
+                                                    {
+                                                        border: "2px solid black",
+                                                        borderRadius: "8px",
+                                                        padding: "4px",
+                                                    }
+                                                }><span>fringilla metus.</span> <span style={styleSentence}>Sed eu dignissim dui. <span style={styleWord}>Curabitur</span> venenatis sollicitudin ultrices. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</span> <span>Aenean laoreet justo vitae</span><br /></div>
+                                                <span style={
+                                                    {
+                                                        color: "silver",
+                                                    }
+                                                }>mauris fermentum, eget ultrices augue placerat. Proin massa est, gravida feugiat ipsum feugiat, dapibus porttitor felis.</span>
+                                            </p>
+                                        </div>
+                                    )
+                                    :
+                                    (
+                                        <div style={
+                                            {
+                                                background: "white",
+                                                color: "black",
+                                                fontFamily: "serif",
+                                                marginTop: 6,
+                                                padding: 6,
+                                                paddingLeft: 50,
+                                                paddingRight: 50,
+                                                lineHeight: "2em",
+                                            }
+                                        }>
+                                            <p style={
+                                                {
+                                                    fontSize: "1.5em",
+                                                }}>
+                                                <span style={
+                                                    {
+                                                        color:
+                                                            ttsHighlightStyle_ === HighlightDrawTypeOpacityMask ?
+                                                                "silver" :
+                                                                undefined,
+                                                    }
+                                                }>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nec purus sodales, rhoncus nisl ac, fringilla metus.</span> <span style={styleSentence}>Sed eu dignissim dui. <span style={styleWord}>Curabitur</span> venenatis sollicitudin ultrices. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</span> <span style={
+                                                    {
+                                                        color:
+                                                            ttsHighlightStyle_ === HighlightDrawTypeOpacityMask ?
+                                                                "silver" :
+                                                                undefined,
+                                                    }
+                                                }>Aenean laoreet justo vitae mauris fermentum, eget ultrices augue placerat. Proin massa est, gravida feugiat ipsum feugiat, dapibus porttitor felis.</span>
+                                            </p>
+                                        </div>
+                                    )
+                            }
+                        </details>
+                    </>
+                )
+                : <></>}
         </>
     );
 };
@@ -1439,7 +1463,7 @@ const SaveResetApplyPreset = () => {
 
     const cb = React.useCallback(() => {
 
-        const { ttsVoices: __ttsVoiceUNUSED, readerSettingsSection: __readerSettingsSectionUNUSED, readerMenuSection: __readerMenuSectionUNUSED, ...readerDefaultConfigWithoutSomeDefaultKeys} = readerDefaultConfig;
+        const { ttsVoices: __ttsVoiceUNUSED, readerSettingsSection: __readerSettingsSectionUNUSED, readerMenuSection: __readerMenuSectionUNUSED, ...readerDefaultConfigWithoutSomeDefaultKeys } = readerDefaultConfig;
         setReaderConfig(readerDefaultConfigWithoutSomeDefaultKeys);
 
         if (allowCustomCheckboxChecked) {
@@ -1464,7 +1488,7 @@ const SaveResetApplyPreset = () => {
 
         <div className={stylesSettings.preset_settings_container}>
             <div>
-                <button className={stylesButtons.button_secondary_blue} style={{maxWidth: dockedMode ? "284px" : "", height: dockedMode ? "fit-content" : "30px"}} onClick={() => {
+                <button className={stylesButtons.button_secondary_blue} style={{ maxWidth: dockedMode ? "284px" : "", height: dockedMode ? "fit-content" : "30px" }} onClick={() => {
                     dispatch(readerActions.configSetDefault.build(readerConfig));
                 }} disabled={!diffBetweenDefaultConfigAndConfig}>
                     <SVG ariaHidden={true} svg={SaveIcon} />
@@ -1473,7 +1497,7 @@ const SaveResetApplyPreset = () => {
             </div>
 
             <div>
-                <button className={stylesButtons.button_secondary_blue} style={{maxWidth: dockedMode ? "284px" : "", height: dockedMode ? "fit-content" : "30px"}} onClick={applyPreferredConfig}>
+                <button className={stylesButtons.button_secondary_blue} style={{ maxWidth: dockedMode ? "284px" : "", height: dockedMode ? "fit-content" : "30px" }} onClick={applyPreferredConfig}>
                     <SVG ariaHidden={true} svg={DoubleCheckIcon} />
                     {__("reader.settings.preset.apply")}
                 </button>
@@ -1481,7 +1505,7 @@ const SaveResetApplyPreset = () => {
             </div>
 
             <div>
-                <button className={stylesButtons.button_secondary_blue} style={{maxWidth: dockedMode ? "284px" : "", height: dockedMode ? "fit-content" : "30px"}} onClick={() => {
+                <button className={stylesButtons.button_secondary_blue} style={{ maxWidth: dockedMode ? "284px" : "", height: dockedMode ? "fit-content" : "30px" }} onClick={() => {
                     dispatch(readerActions.configSetDefault.build(readerConfigInitialState));
                     applyPreferredConfig();
                 }}>
@@ -1511,7 +1535,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     };
     const section = useReaderConfig("readerSettingsSection");
     const setSection = (value: string) => {
-        setReaderConfig({ readerSettingsSection: value});
+        setReaderConfig({ readerSettingsSection: value });
     };
 
     const diffBetweenDefaultConfigAndConfig = useDiffBoolBetweenReaderConfigAndDefaultConfig();
@@ -1691,12 +1715,12 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const PresetTrigger =
         <React.Fragment key="tab-preset">
             <span style={{ width: "80%", height: "2px", backgroundColor: "var(--color-extralight-grey-alt)", margin: "10px auto" }}></span>
-            <Tabs.Trigger value="tab-preset" disabled={false} title={__("reader.settings.preset.title")} data-value="tab-preset" style={{position: "relative"}}>
+            <Tabs.Trigger value="tab-preset" disabled={false} title={__("reader.settings.preset.title")} data-value="tab-preset" style={{ position: "relative" }}>
                 <SVG ariaHidden svg={GuearIcon} />
                 <h3>{__("reader.settings.preset.title")}</h3>
                 {diffBetweenDefaultConfigAndConfig ? <span className={stylesSettings.notification_preset}></span> : <></>}
             </Tabs.Trigger>
-            <p style={{margin: "-5px 20px 0 60px"}}>{__("reader.settings.preset.detail")}</p>
+            <p style={{ margin: "-5px 20px 0 60px" }}>{__("reader.settings.preset.detail")}</p>
         </ React.Fragment>;
     const optionPresetItem = { id: 6, value: "tab-preset", name: __("reader.settings.preset.title"), disabled: false, svg: GuearIcon };
 
@@ -1752,8 +1776,8 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
 
     const SelectRefComponent = () => {
         return (
-             <SelectRef
-                id="reader-settings-nav" 
+            <SelectRef
+                id="reader-settings-nav"
                 items={options}
                 selectedKey={optionSelected}
                 disabledKeys={optionDisabled}
@@ -1792,7 +1816,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
             </SelectRef>
         );
-    }; 
+    };
 
     const TabHeader = () => {
 
@@ -1820,7 +1844,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
         );
     };
     return (
-        <div style={{minHeight: "inherit"}}>
+        <div style={{ minHeight: "inherit" }}>
             {
                 dockedMode ?
                     <>

@@ -727,8 +727,6 @@
             "pdfscalemode": "Page fit or width",
             "print": "Print",
             "printDisabled": "Print forbidden",
-            "screenNext": "Next page / forward scroll",
-            "screenPrevious": "Previous page / backward scroll",
             "settingsTitle": "Settings"
         },
         "notes": {

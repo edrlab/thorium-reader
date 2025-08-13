@@ -61,7 +61,7 @@ export interface ReaderConfigStringsAdjustables {
     lineHeight: string;
 }
 
-export type TTheme = "neutral" | "sepia" | "night" | "contrast1" | "contrast2" | "contrast3"   | "contrast4" | "paper";
+export type TTheme = "neutral" | "sepia" | "night" | "contrast1" | "contrast2" | "contrast3" | "contrast4" | "paper" | "brown" | "grayblue" | "purpleblue";
 
 export interface ReaderConfigStrings extends ReaderConfigStringsAdjustables {
     // using string instead of enum here, because values provided dynamically in code (mapped types)
