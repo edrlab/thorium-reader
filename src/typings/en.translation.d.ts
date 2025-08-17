@@ -1631,6 +1631,7 @@ declare namespace typed_i18n {
     readonly "goToError": string,
     readonly "goToPlaceHolder": string,
     readonly "goToTitle": string,
+    readonly "history": string,
     readonly "historyNext": string,
     readonly "historyPrevious": string,
     readonly "infoTitle": string,
@@ -1950,6 +1951,7 @@ declare namespace typed_i18n {
   readonly "goToError": string,
   readonly "goToPlaceHolder": string,
   readonly "goToTitle": string,
+  readonly "history": string,
   readonly "historyNext": string,
   readonly "historyPrevious": string,
   readonly "infoTitle": string,
@@ -1975,6 +1977,7 @@ declare namespace typed_i18n {
   (_: "reader.navigation.goToError", __?: {}): string;
   (_: "reader.navigation.goToPlaceHolder", __?: {}): string;
   (_: "reader.navigation.goToTitle", __?: {}): string;
+  (_: "reader.navigation.history", __?: {}): string;
   (_: "reader.navigation.historyNext", __?: {}): string;
   (_: "reader.navigation.historyPrevious", __?: {}): string;
   (_: "reader.navigation.infoTitle", __?: {}): string;

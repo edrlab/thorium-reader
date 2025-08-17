@@ -718,6 +718,7 @@
             "goToError": "Этот разрыв страницы не существует",
             "goToPlaceHolder": "Введите номер страницы",
             "goToTitle": "Перейти на страницу",
+            "history": "",
             "historyNext": "Перейти вперед",
             "historyPrevious": "Перейти назад",
             "infoTitle": "информация",

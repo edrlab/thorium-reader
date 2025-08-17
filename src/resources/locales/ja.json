@@ -718,6 +718,7 @@
             "goToError": "そのページは存在しません",
             "goToPlaceHolder": "移動先のページ番号",
             "goToTitle": "ページを移動",
+            "history": "",
             "historyNext": "先に飛ぶ",
             "historyPrevious": "前にもどる",
             "infoTitle": "本の情報",

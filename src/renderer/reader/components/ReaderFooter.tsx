@@ -197,7 +197,9 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                 }}>
                 {
                 // !this.props.fullscreen &&
-                <div className={stylesReaderFooter.history}>
+                        <nav className={stylesReaderFooter.history}
+                            role="navigation"
+                            aria-label={this.props.__("reader.navigation.history")}>
                             <button
                                 className={(isRTL ? this.props.historyCanGoForward : this.props.historyCanGoBack) ? undefined : stylesReaderFooter.disabled}
                                 aria-disabled={(isRTL ? this.props.historyCanGoForward : this.props.historyCanGoBack) ? undefined : true}
@@ -234,7 +236,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                             >
                                 <SVG ariaHidden={true} svg={ForwardIcon} />
                             </button>
-                        </div>
+                        </nav>
                 }
                 {/* {!isAudioBook &&
                     <div className={stylesReaderFooter.arrows}>

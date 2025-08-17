@@ -718,6 +718,7 @@
             "goToError": "页码不存在",
             "goToPlaceHolder": "输入页码",
             "goToTitle": "转到页",
+            "history": "",
             "historyNext": "前进",
             "historyPrevious": "后退",
             "infoTitle": "信息",

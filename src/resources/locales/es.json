@@ -718,6 +718,7 @@
             "goToError": "Este salto de página no existe",
             "goToPlaceHolder": "Introduce un número de página",
             "goToTitle": "Ir a página",
+            "history": "",
             "historyNext": "Avanzar",
             "historyPrevious": "Retroceder",
             "infoTitle": "Información",

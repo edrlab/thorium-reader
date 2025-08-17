@@ -718,6 +718,7 @@
             "goToError": "此頁不存在",
             "goToPlaceHolder": "輸入頁碼",
             "goToTitle": "轉到頁",
+            "history": "",
             "historyNext": "向前跳",
             "historyPrevious": "跳回來",
             "infoTitle": "訊息",

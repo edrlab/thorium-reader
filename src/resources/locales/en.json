@@ -718,6 +718,7 @@
             "goToError": "Page break does not exist",
             "goToPlaceHolder": "Enter page number",
             "goToTitle": "Go to page",
+            "history": "Navigation history",
             "historyNext": "Jump forward in navigation history",
             "historyPrevious": "Jump back in navigation history",
             "infoTitle": "Information",
