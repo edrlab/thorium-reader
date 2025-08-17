@@ -200,6 +200,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                 <div className={stylesReaderFooter.history}>
                             <button
                                 className={(isRTL ? this.props.historyCanGoForward : this.props.historyCanGoBack) ? undefined : stylesReaderFooter.disabled}
+                                aria-disabled={(isRTL ? this.props.historyCanGoForward : this.props.historyCanGoBack) ? undefined : true}
                                 onClick={() => {
 
                                     // console.log("#+$%".repeat(5)  + " history back()", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
@@ -217,6 +218,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
                             </button>
                             <button
                                 className={(isRTL ? this.props.historyCanGoBack : this.props.historyCanGoForward) ? undefined : stylesReaderFooter.disabled}
+                                aria-disabled={(isRTL ? this.props.historyCanGoBack : this.props.historyCanGoForward) ? undefined : true}
                                 onClick={() => {
 
                                     // console.log("#+$%".repeat(5)  + " history forward()", JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length);
