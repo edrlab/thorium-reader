@@ -6,7 +6,7 @@ Version `3.2.2` was released on **18 August 2025**.
 
 This release includes the following (notable) new features, improvements and bug fixes:
 
-* Upgraded to Electron v37 (was 36) which fixes the screen reader detection regression introduced in Thorium v3.2.1
+* Upgraded to the Electron v37 revision which fixes the screen reader detection regression introduced in Thorium v3.2.1
 * Fixed accessibility issues related to previous/next backward/forward GUI buttons (labelling and semantic region containers for screen readers, and inert/disabled commands)
 * Updated translations
 
