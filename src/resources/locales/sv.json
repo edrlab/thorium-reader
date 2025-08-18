@@ -671,8 +671,8 @@
         "goToContent": "Gå till innehållet",
         "imgViewer": {
             "title": "",
-            "zoomIn": "",
-            "zoomOut": "",
+            "zoomIn": "Zooma in",
+            "zoomOut": "Zooma ut",
             "zoomReset": ""
         },
         "marks": {
