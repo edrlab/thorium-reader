@@ -91,7 +91,7 @@
                 "login": "Giriş Yap",
                 "password": "Şifre",
                 "register": "Kaydol",
-                "username": "Kullanıcı Adı / E-Posta Adresi"
+                "username": "Kullanıcı adı / E-posta adresi"
             },
             "info": {
                 "availableSince": "Tarihinden beri",
