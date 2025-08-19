@@ -44,6 +44,7 @@ const persistStateToFs = async (nextState: RootState) => {
         settings: nextState.settings,
         creator: nextState.creator,
         noteExport: nextState.noteExport,
+        customization: nextState.customization,
     };
 
     await fsp.writeFile(stateFilePath, JSON.stringify(value), {encoding: "utf8"});
