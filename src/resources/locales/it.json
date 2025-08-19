@@ -36,8 +36,8 @@
                         "yes": "Sì"
                     },
                     "help": "Attivare questa opzione se si desidera che le finestre di lettura che sono aperte quando si chiude l'applicazione si riaprano automaticamente al successivo avvio.",
-                    "message": "Vuoi salvare la sessione ?",
-                    "title": "Salva la sessione"
+                    "message": "Risparmio e ripristino della sessione di lettura",
+                    "title": "Salvare la sessione?"
                 }
             }
         },
@@ -88,7 +88,7 @@
         "opds": {
             "auth": {
                 "cancel": "Annulla",
-                "login": "Login",
+                "login": "Accedi",
                 "password": "Password",
                 "register": "Registrati",
                 "username": "Nome utente / indirizzo e-mail"
