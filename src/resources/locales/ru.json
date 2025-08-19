@@ -91,7 +91,7 @@
                 "login": "Логин",
                 "password": "Паполь",
                 "register": "Регистрация",
-                "username": "Имя пользователя / Email адрес"
+                "username": "Имя пользователя / Адрес электронной почты"
             },
             "info": {
                 "availableSince": "C",
