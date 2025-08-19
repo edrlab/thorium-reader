@@ -486,7 +486,7 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
                 console.log(parsed, hrefSanitized);
             }
         };
-        fc();
+        void fc();
     }, [textualValue]);
 
     const dispatch = useDispatch();
@@ -799,7 +799,7 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
                 console.log(parsed, hrefSanitized);
             }
         };
-        fc();
+        void fc();
     }, [bookmark.textualValue]);
 
     const dispatch = useDispatch();

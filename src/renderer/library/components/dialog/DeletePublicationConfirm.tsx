@@ -32,16 +32,16 @@ const DeletePublicationConfirm = (props: { publicationView: PublicationView, tri
 
     React.useEffect(() => {
 
-        (async () => {
+        void (async () => {
 
             try {
                 const notes: INoteState[] = await(await fetch(`${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_PUB_NOTES}/publication-notes/${props.publicationView.identifier}`)).json();
-    
+
                 if (Array.isArray(notes) && notes.length) {
                     setHasNotes(true);
                 }
             } catch (_) {
-                // nothing 
+                // nothing
             }
         })();
 

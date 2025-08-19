@@ -75,7 +75,7 @@ setLcpNativePluginPath(lcpNativePluginPath);
 initSessionsNoHTTP();
 
 if (__TH__IS_VSCODE_LAUNCH__) {
-    createStoreFromDi().then((store) => store.dispatch(appActions.initRequest.build()));
+    void createStoreFromDi().then((store) => store.dispatch(appActions.initRequest.build()));
 } else {
     commandLineMainEntry(); // call main fct
 }
