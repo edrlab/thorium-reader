@@ -91,7 +91,7 @@
                 "login": "Login",
                 "password": "Wachtwoord",
                 "register": "Registreer",
-                "username": "Gebruikersnaam / Email adres"
+                "username": "Gebruikersnaam / e-mailadres"
             },
             "info": {
                 "availableSince": "Sinds",
