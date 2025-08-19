@@ -29,11 +29,13 @@
     width: 50px;
     z-index: 1;
 
-    &:hover {
-        button {
-            opacity: 1 !important;
-        }
+    &:not(.isPaginated) button {
+      opacity: 0;
     }
+}
+
+:root.R2_CSS_CLASS__KEYBOARD_INTERACT .arrows button:focus {
+    opacity: 1 !important;
 }
 
 .arrows button {
@@ -43,6 +45,10 @@
     top: calc(50dvh - 220px);
     z-index: 10;
     transition: 200ms;
+
+    &:hover {
+        opacity: 1 !important;
+    }
 
     svg {
         fill: var(--color-blue);
@@ -71,7 +77,7 @@
     cursor: pointer;
     margin: 0;
 }
-  
+
 
 .reader_footer {
     position: fixed;
@@ -150,7 +156,7 @@
     & .track_reading_wrapper {
         padding: 1rem 5rem 1rem 8rem;
         bottom: 0;
-        
+
         // margin-top: 1rem;
         color: var(--color-primary);
         background-color: var(--color-secondary);

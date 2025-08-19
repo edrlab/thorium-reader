@@ -1002,8 +1002,9 @@ class Reader extends React.Component<IProps, IState> {
                                 </div>
 
                                 {arrowEnabled && !this.state.zenMode ?
-                                    <nav role="navigation" aria-label={this.props.__("reader.navigation.openTableOfContentsTitle")}>
-                                    <div className={stylesReaderFooter.arrows}>
+                                    <nav role="navigation" aria-label={this.props.__("reader.navigation.openTableOfContentsTitle")}
+                                        className={classNames(stylesReaderFooter.arrows, isPaginated ? stylesReaderFooter.isPaginated : undefined)}
+                                    >
                                         <button onClick={(ev) => {
                                             if (ev.shiftKey) {
                                                 if (isRTL) {
@@ -1017,12 +1018,9 @@ class Reader extends React.Component<IProps, IState> {
                                         }}
                                             title={!isRTL ? this.props.__("reader.navigation.screenPrevious") : this.props.__("reader.navigation.screenNext")}
                                             className={(this.props.settingsOpen || this.props.menuOpen) ? (this.props.readerConfig.readerDockingMode === "left" ? stylesReaderFooter.navigation_arrow_docked_left :  stylesReaderFooter.navigation_arrow_left) : stylesReaderFooter.navigation_arrow_left}
-                                            style={{ opacity: isPaginated ? "1" : "0"}}
                                         >
                                             <SVG ariaHidden={true} svg={ArrowLeftIcon} aria-label={this.props.__("reader.svg.left")}/>
                                         </button>
-                                    </div>
-                                    <div className={stylesReaderFooter.arrows}>
                                         <button onClick={(ev) => {
                                             if (ev.shiftKey) {
                                                 if (isRTL) {
@@ -1036,11 +1034,9 @@ class Reader extends React.Component<IProps, IState> {
                                         }}
                                             title={isRTL ? this.props.__("reader.navigation.screenPrevious") : this.props.__("reader.navigation.screenNext")}
                                             className={(this.props.settingsOpen || this.props.menuOpen) ? (this.props.readerConfig.readerDockingMode === "right" ? stylesReaderFooter.navigation_arrow_docked_right :  stylesReaderFooter.navigation_arrow_right) : stylesReaderFooter.navigation_arrow_right}
-                                            style={{ opacity: isPaginated ? "1" : "0"}}
                                         >
                                             <SVG ariaHidden={true} svg={ArrowRightIcon} aria-label={this.props.__("reader.svg.right")}/>
                                         </button>
-                                    </div>
                                     </nav>
                                     :
                                     <></>}
