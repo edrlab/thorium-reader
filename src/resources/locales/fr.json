@@ -23,7 +23,7 @@
             "print": "Imprimer",
             "redo": "Refaire",
             "selectAll": "Tout sélectionner",
-            "title": "Éditer",
+            "title": "Modifier",
             "undo": "Annuler"
         },
         "hide": "Masquer {{- appName}}",
@@ -54,7 +54,7 @@
             "title": "À propos de {{- appName}} (en ligne)"
         },
         "addBookToLib": "Ajouter",
-        "addTags": "Ajouter un mot-clef",
+        "addTags": "Ajouter un mot-clé",
         "addTagsButton": "Ajouter",
         "allBooks": "Tous mes livres",
         "bookInfo": "À propos",
@@ -65,15 +65,15 @@
         },
         "delete": "Supprimer",
         "deleteBook": "Supprimer",
-        "deleteTag": "Supprimer le mot-clef",
+        "deleteTag": "Supprimer le mot-clé",
         "description": "Description",
-        "emptyTagList": "Les livres ne contiennent pas de mots-clefs.",
+        "emptyTagList": "Aucune publication contenant des mots-clés.",
         "entry": {
             "continueReading": "Reprendre la lecture",
             "lastAdditions": "Récemment ajouté"
         },
         "export": "Sauvegarder sous",
-        "exportAnnotation": "Sauvegarder les notes",
+        "exportAnnotation": "Exporter les notes",
         "format": "Format",
         "importAnnotation": "Importer les notes",
         "lang": "Langue",
@@ -91,7 +91,7 @@
                 "login": "Connexion",
                 "password": "Mot de passe",
                 "register": "Créer un compte",
-                "username": "Nom d'utilisateur / Adresse email"
+                "username": "Nom d'utilisateur / Adresse courriel"
             },
             "info": {
                 "availableSince": "Depuis le",
@@ -116,9 +116,9 @@
         "readBook": "Lire",
         "released": "Publié le",
         "sort": "Trier par",
-        "tag": "Mot-clef",
-        "tags": "Mots-clefs",
-        "update": "Éditer"
+        "tag": "Mot-clé",
+        "tags": "Mots-clés",
+        "update": "Modifier"
     },
     "dialog": {
         "annotations": {
@@ -682,7 +682,7 @@
             "edit": "Éditer",
             "goTo": "Aller à la page",
             "landmarks": "Repères",
-            "saveMark": "Sauvegarder le marque-page",
+            "saveMark": "Enregistrer",
             "search": "Rechercher",
             "searchResult": "Recherche - « {{- searchText}} »",
             "toc": "Table des matières"
@@ -693,7 +693,7 @@
             "captionsDescription": "Affichage du texte simplifié avec un formatage minimal des légendes.",
             "disableContinuousPlay": "Désactiver la progression automatique",
             "disableContinuousPlayDescription": "Ne pas jouer automatiquement l'élément audio suivant, faire une pause immediatement après la fin de l'audio en cours.",
-            "ignoreAndUseTTS": "Ignorer l'enregistrement audio, utiliser la voix de synthèse",
+            "ignoreAndUseTTS": "Ignorer l'enregistrement audio, utiliser la synthèse vocale",
             "ignoreAndUseTTSDescription": "Ignorer EPUB Media Overlays, lire avec la synthèse vocale",
             "next": "Suivant",
             "pause": "Mettre en pause",
@@ -719,8 +719,8 @@
             "goToPlaceHolder": "Entrer un numéro de page",
             "goToTitle": "Aller à la page",
             "history": "Historique de navigation",
-            "historyNext": "Suivant dans l'historique",
-            "historyPrevious": "Précédent dans l'historique",
+            "historyNext": "Avancer dans l'historique de la navigation",
+            "historyPrevious": "Retourner en arrière dans l'historique de la navigation",
             "infoTitle": "Informations",
             "magnifyingGlassButton": "Recherche dans la publication",
             "openTableOfContentsTitle": "Navigation",
@@ -852,10 +852,10 @@
             "publicationNoToc": "Pas de table des matières"
         },
         "tts": {
-            "activate": "Activer l'audio de synthèse",
-            "language": "Langue",
+            "activate": "Activer la synthèse vocale",
+            "language": "Langue de la synthèse vocale",
             "next": "Suivant",
-            "options": "Options TTS",
+            "options": "Options synthèse vocale",
             "pause": "Pause",
             "play": "Lire",
             "previous": "Précédent",
@@ -883,8 +883,8 @@
         "keyboard": {
             "advancedMenu": "Menu avancé raccourcis clavier",
             "cancel": "Annuler",
-            "disclaimer": "Les raccourcis clavier sont actuellement basés sur une disposition QWERTY.",
-            "editUserJson": "Éditer le fichier ...",
+            "disclaimer": "Les paramètres par défaut de l'application ont été conçus en fonction de l'emplacement physique des touches sur une disposition QWERTY",
+            "editUserJson": "Modifier le fichier utilisateur…",
             "keyboardShortcuts": "Raccourcis clavier",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -896,32 +896,32 @@
                     "name": "Créer une Annotation"
                 },
                 "AnnotationsCreateQuick": {
-                    "description": "Lorsqu'un texte est sélectionné, il sera marqué comme annotation sans ouvrir la boîte de dialogue d'annotation.",
-                    "name": "Créer une Annotation Rapide"
+                    "description": "Créez rapidement une annotation pour le texte sélectionné, avec la dernière couleur et le type (note et étiquette seront vides)",
+                    "name": "Créer une annotation rapide"
                 },
                 "AnnotationsToggleMargin": {
                     "description": "Change les marques d'annotations du texte à la marge ou inversement.",
-                    "name": "Basculer la Marge d'Annotation"
+                    "name": "Basculer la marge d'annotation"
                 },
                 "AudioNext": {
-                    "description": "Dans la fenêtre du lecteur, appelle la commande \"suivant\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3, ou \"avance rapide\" pour les livres audio).",
-                    "name": "Audio Suivant"
+                    "description": "Dans la fenêtre du lecteur, appelle la commande « suivant » pour l'audio (synthède vocale, lecture à voix haute des superpositions multimédias EPUB3, ou « avance rapide » pour les livres audio).",
+                    "name": "Segment audio suivant"
                 },
                 "AudioNextAlt": {
-                    "description": "Dans la fenêtre du lecteur, appelle la commande \"suivant\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3, ou \"avance rapide\" pour les livres audio).",
-                    "name": "Audio Suivant (Alternatif)"
+                    "description": "Dans la fenêtre du lecteur, appelle la commande « suivant » pour l'audio (synthèse vocale, lecture à voix haute des superpositions multimédias EPUB3, ou « avance rapide » pour les livres audio).",
+                    "name": "Segment audio suivant (alternatif)"
                 },
                 "AudioPlayPause": {
                     "description": "Dans la fenêtre du lecteur, appelle les commandes de basculement \"lecture\" ou \"pause\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3).",
                     "name": "Lire/Pause Audio"
                 },
                 "AudioPrevious": {
-                    "description": "Dans la fenêtre du lecteur, appelle la commande \"précédent\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3, ou \"rembobiner\" pour les livres audio).",
-                    "name": "Audio Précédent"
+                    "description": "Dans la fenêtre du lecteur, appelle la commande « précédent » pour l'audio (synthèse vocale, lecture à voix haute des superpositions multimédias EPUB3, ou « rembobiner » pour les livres audio).",
+                    "name": "Segment audio précédent"
                 },
                 "AudioPreviousAlt": {
-                    "description": "Dans la fenêtre du lecteur, appelle la commande \"précédent\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3, ou \"rembobiner\" pour les livres audio). Raccourci clavier alternatif.",
-                    "name": "Audio Précédent (Alternatif)"
+                    "description": "Dans la fenêtre du lecteur, appelle la commande « précédent » pour l'audio (synthèse vocale, lecture à voix haute des superpositions multimédias EPUB3, ou « rembobiner » pour les livres audio). Raccourci clavier alternatif.",
+                    "name": "Segment audio précédent (alternatif)"
                 },
                 "AudioStop": {
                     "description": "Dans la fenêtre du lecteur, appelle la commande \"arrêter\" pour l'audio (TTS ou lecture à voix haute des superpositions multimédias EPUB3, ou \"pause\" pour les livres audio).",
@@ -929,7 +929,7 @@
                 },
                 "CloseReader": {
                     "description": "Dans la fenêtre du lecteur, ferme la fenêtre et retourne à la vue de la bibliothèque.",
-                    "name": "Fermer le Lecteur"
+                    "name": "Fermer le lecteur"
                 },
                 "FXLZoomIn": {
                     "description": "Zoom avant sur une page à mise en page fixe.",
@@ -937,31 +937,31 @@
                 },
                 "FXLZoomOut": {
                     "description": "Zoom arrière sur une page à mise en page fixe.",
-                    "name": "Zoom Arrière FXL"
+                    "name": "Zoom arrière FXL"
                 },
                 "FXLZoomReset": {
-                    "description": "Réinitialiser à 100% de zoom sur une page à mise en page fixe.",
-                    "name": "Réinitialiser le Zoom FXL"
+                    "description": "Réinitialiser à 100 % de zoom sur une page à mise en page fixe.",
+                    "name": "Réinitialiser le zoom FXL"
                 },
                 "FocusMain": {
-                    "description": "Dans les fenêtres du lecteur et de la bibliothèque, déplace le focus clavier vers le repère de la zone \"principale\". Dans la vue du lecteur, le focus clavier se déplace d'un pas supplémentaire dans le cadre qui affiche le contenu de la publication (les lecteurs d'écran lisent automatiquement l'élément HTML actuellement focalisé à l'intérieur du document affiché).",
-                    "name": "Focus sur le Contenu Principal"
+                    "description": "Dans les fenêtres du lecteur et de la bibliothèque, déplace le focus clavier vers le repère de la zone « principale ». Dans la vue du lecteur, le focus clavier se déplace d'un pas supplémentaire dans le cadre qui affiche le contenu de la publication (les lecteurs d'écran lisent automatiquement l'élément HTML actuellement focalisé à l'intérieur du document affiché).",
+                    "name": "Focus sur le contenu principal"
                 },
                 "FocusMainDeep": {
                     "description": "Tout comme \"Contenu principal\" / FocusMainDeep dans la vue du lecteur (voir ci-dessus), mais le focus clavier est forcé plus profondément dans le cadre qui affiche le contenu de la publication (cela peut aider dans les cas où les lecteurs d'écran ne lisent pas automatiquement l'élément HTML actuellement focalisé à l'intérieur du document affiché).",
-                    "name": "Focus Profond sur le Contenu Principal"
+                    "name": "Focus profond sur le contenu principal"
                 },
                 "FocusReaderGotoPage": {
-                    "description": "Dans la fenêtre du lecteur, déplace le focus clavier vers la section \"aller à la page\" dans le panneau de navigation.",
-                    "name": "Aller à la Page du Lecteur"
+                    "description": "Dans la fenêtre du lecteur, déplace le focus clavier vers la section « aller à la page » dans le panneau de navigation.",
+                    "name": "Aller à la Page du lecteur"
                 },
                 "FocusReaderNavigation": {
                     "description": "Dans la fenêtre du lecteur, déplace le focus clavier vers le panneau de navigation (table des matières, signets, etc.).",
-                    "name": "Focus sur la Navigation du Lecteur"
+                    "name": "Focus sur la navigation du lecteur"
                 },
                 "FocusReaderNavigationAnnotations": {
                     "description": "Dans la fenêtre du lecteur, déplace le focus clavier vers la section Annotations du panneau de navigation.",
-                    "name": "Focus sur les Annotations de Navigation du Lecteur"
+                    "name": "Focus sur les annotations"
                 },
                 "FocusReaderNavigationBookmarks": {
                     "description": "Dans la fenêtre du lecteur, déplace le focus clavier vers la section Marque-pages du panneau de navigation",
@@ -969,11 +969,11 @@
                 },
                 "FocusReaderNavigationSearch": {
                     "description": "Dans la fenêtre du lecteur, déplace le focus clavier vers la section Recherche du panneau de navigation",
-                    "name": "Focus sur la Recherche de Navigation du Lecteur"
+                    "name": "Focus sur la recherche"
                 },
                 "FocusReaderNavigationTOC": {
                     "description": "Dans la fenêtre du lecteur, déplace le focus clavier vers le panneau de navigation, mais plus spécifiquement dans la table des matières, et si possible au niveau du titre détecté / le plus proche de l'emplacement de lecture.",
-                    "name": "Focus sur la Table des Matières de Navigation du Lecteur"
+                    "name": "Focus sur la Table des matières"
                 },
                 "FocusReaderSettings": {
                     "description": "Dans la fenêtre du lecteur, déplace le focus clavier vers le panneau des paramètres (préférences utilisateur pour l'affichage du contenu de la publication).",
@@ -1081,44 +1081,44 @@
                 },
                 "SearchNext": {
                     "description": "Dans la fenêtre du lecteur, lorsque l'entrée de texte de recherche globale de la publication est ouverte, trouve la correspondance précédente / suivante.",
-                    "name": "Rechercher Suivant"
+                    "name": "Rechercher le résultat suivant"
                 },
                 "SearchNextAlt": {
                     "description": "Identique à ci-dessus (raccourci clavier alternatif).",
-                    "name": "Rechercher Suivant (Alternatif)"
+                    "name": "Rechercher le résultat suivant (alternatif)"
                 },
                 "SearchPrevious": {
                     "description": "Dans la fenêtre du lecteur, lorsque l'entrée de texte de recherche globale de la publication est ouverte, trouve la correspondance précédente / suivante.",
-                    "name": "Rechercher Précédent"
+                    "name": "Rechercher le résultat précédent"
                 },
                 "SearchPreviousAlt": {
                     "description": "Identique à ci-dessus (raccourci clavier alternatif).",
-                    "name": "Rechercher Précédent (Alternatif)"
+                    "name": "Rechercher le résultat précédent (alternatif)"
                 },
                 "SpeakReaderInfoWhereAmI": {
                     "description": "Dans la fenêtre du lecteur, c'est la fonctionnalité \"où suis-je\", exactement comme ci-dessus, mais uniquement parlée via le lecteur d'écran TTS grâce à une région en direct ARIA avec une parole assertive qui interrompt la narration en cours.",
-                    "name": "Lire les Infos du Lecteur : Où Suis-je ?"
+                    "name": "Décrire le lieu de lecture (Oral)"
                 },
                 "ToggleBookmark": {
                     "description": "Dans la fenêtre du lecteur, bascule le signet (une notification est produite pour que les lecteurs d'écran annoncent le changement).",
-                    "name": "Basculer le Signet"
+                    "name": "Basculer le signet"
                 },
                 "ToggleReaderFullscreen": {
                     "description": "Dans la fenêtre du lecteur, bascule en plein écran. Notez que cela est différent du mode Zen. Le raccourci clavier est le seul moyen de passer en plein écran.",
-                    "name": "Basculer en Plein Écran"
+                    "name": "Basculer en plein écran"
                 }
             },
             "loadUserJson": "Charger le fichier",
             "noShortcutFound": "Aucun raccourci trouvé avec ce label",
             "resetDefaults": "Réinitialiser (défaut)",
-            "save": "Sauvegarder",
+            "save": "Enregistrer",
             "searchPlaceholder": "Cherchez un raccourci"
         },
         "language": {
             "languageChoice": "Choix de la langue"
         },
         "library": {
-            "enableAPIAPP": "Activer l'accès à l'API Dilicom PNB (Prêt Numérique en Bibliothèque)",
+            "enableAPIAPP": "Activer l'accès à l'API Dilicom PNB (Prêt numérique en bibliothèque)",
             "title": "Ajouter un compte bibliothèque"
         },
         "note": {
