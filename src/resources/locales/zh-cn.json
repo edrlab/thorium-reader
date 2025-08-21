@@ -36,14 +36,14 @@
                         "yes": "是"
                     },
                     "help": "如果您希望在关闭应用程序时，已打开的阅读器窗口在下次启动时自动重新打开，请激活此选项。",
-                    "message": "是否保存当前会话？",
-                    "title": "保存会话"
+                    "message": "保存和恢复阅读会话",
+                    "title": "保存会话？"
                 }
             }
         },
         "update": {
             "message": "有新版本可用，点击了解更多信息。",
-            "title": "{{- appName}} 软件更新"
+            "title": "{{- appName}} 软件更新。"
         },
         "window": {
             "showLibrary": "显示 书库/书架"
@@ -51,7 +51,7 @@
     },
     "catalog": {
         "about": {
-            "title": "关于{{appName}}"
+            "title": "关于 {{- appName}} （在线）"
         },
         "addBookToLib": "导入",
         "addTags": "添加标签",
@@ -67,20 +67,20 @@
         "deleteBook": "删除图书",
         "deleteTag": "删除标签",
         "description": "概要",
-        "emptyTagList": "尚无带标签电子书",
+        "emptyTagList": "未带标签的电子书。",
         "entry": {
             "continueReading": "继续阅读",
             "lastAdditions": "最近添加"
         },
         "export": "导出",
-        "exportAnnotation": "导出笔记...",
+        "exportAnnotation": "导出笔记",
         "format": "格式",
-        "importAnnotation": "导入笔记...",
+        "importAnnotation": "导入笔记",
         "lang": "语言",
         "lastRead": "上次阅读",
         "moreInfo": "更多信息",
         "myBooks": "我的图书",
-        "noPublicationHelpL1": "拖放 EPUB 至此处。",
+        "noPublicationHelpL1": "将文件拖放到此处",
         "noPublicationHelpL2": "或者使用上面的\"{{- importTitle }}\"按钮。",
         "noPublicationHelpL3": "支持受 LCP 保护的文件。",
         "noPublicationHelpL4": "支持的扩展名：",
@@ -124,13 +124,13 @@
         "annotations": {
             "descAuthor": "作者 “{{- author}}”",
             "descCreator": "创建者",
-            "descList": "{{- nb}} 条笔记（{{- creator}}）将被导入到《{{- title}}》（{{- author}}）中。",
+            "descList": "{{- nb}} 条笔记（由 {{- creator}} 创建）将被导入到“{{- title}}”（{{- author}} 著）中",
             "descNewer": "冲突：{{- nb}} 条较新的笔记",
             "descOlder": "冲突：{{- nb}} 条较旧的笔记",
-            "descTitle": "笔记标题：",
+            "descTitle": "注释标题： ",
             "importAll": "导入所有笔记",
             "importWithoutConflict": "仅导入无冲突的笔记",
-            "origin": "原始出版物：《{{- title}}》（{{- author}}）\n",
+            "origin": "原始出版物：“{{- title}}”（{{- author}} 著）",
             "title": "您要导入笔记吗？"
         },
         "cancel": "取消",
@@ -140,7 +140,7 @@
         "deleteBookmarksText": "确认删除{{- bookmarkListLength}}个书签？",
         "deleteFeed": "您真的要删除此出版目录吗？",
         "deletePublication": "您真的要删除此出版物吗?",
-        "deletePublicationWithNotes": "",
+        "deletePublicationWithNotes": "警告：此出版物包含注释和/或书签，这些也将被删除！（如果您想保留它们，请在移除该出版物前确保已导出笔记）",
         "import": "您真的要导入这些文件吗:",
         "importError": "出现错误, 请确认文件的扩展名({{acceptedExtension}})",
         "renew": "您真的要更新此出版物的许可证吗?",
@@ -173,11 +173,11 @@
     },
     "library": {
         "lcp": {
-            "hint": "提示: ",
+            "hint": "提示：",
             "open": "打开",
             "password": "密码",
-            "sentence": "打开此出版物需要 LCP 密码: ",
-            "urlHint": "忘记密码？在此获取帮助",
+            "sentence": "此出版物需要 LCP 密码才能打开：",
+            "urlHint": "忘记密码？点击此处获取帮助。",
             "whatIsLcp?": "什么是LCP？",
             "whatIsLcpInfoDetails": "LCP 表示“许可内容保护”。",
             "whatIsLcpInfoDetailsLink": "要了解更多信息，请单击此链接前往 EDRLab 网站。"
@@ -187,16 +187,16 @@
         "annotations": {
             "alreadyImported": "所有笔记已经导入。",
             "emptyFile": "文件中没有可用的笔记。",
-            "errorParsing": "文件解析错误：",
+            "errorParsing": "文件解析时发生错误： ",
             "noBelongTo": "无法导入笔记，至少有一条笔记不属于此出版物。",
-            "nothing": "没有可导入的笔记，导入终止。",
-            "success": "导入成功完成"
+            "nothing": "没有可导入的笔记，导入已终止",
+            "success": "导入已成功完成。"
         },
         "download": {
             "error": "下载{{- title}}失败: [{{- err}}]"
         },
         "import": {
-            "alreadyImport": "{{- title}}已被导入",
+            "alreadyImport": "[{{- title}}] 已被导入。",
             "fail": "导入{{- path}}失败。{{- err}}",
             "success": "导入{{- title}}完成。"
         },
@@ -234,97 +234,97 @@
             "error": "无法访问 OPDS 订阅源",
             "noInternet": "未接入因特网",
             "noInternetMessage": "请尝试: 检查网线, 调制解调器, 路由或wifi",
-            "reject": "抱歉，处理 OPDS 订阅源时出现意外错误",
+            "reject": "抱歉，意外错误！",
             "timeout": "网络连接超时, 请稍后重试"
         },
         "next": "下一个",
         "previous": "上一个",
         "shelf": "书架",
         "updateForm": {
-            "name": "名称",
+            "name": "名称：",
             "title": "编辑 OPDS 订阅源",
             "updateButton": "编辑",
-            "url": "链接"
+            "url": "链接："
         },
         "whatIsOpds": "什么是 OPDS？"
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": ""
+            "accessibility-summary-title": "辅助功能摘要"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "包含 ARIA 角色",
+                "descriptive": "内容通过添加 ARIA 角色得到增强，以优化结构并便于导航"
             },
             "additional-accessibility-information-audio-descriptions": {
                 "compact": "音频描述",
                 "descriptive": "音频描述"
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "点字",
+                "descriptive": "点字"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "完整的 Ruby 注释",
+                "descriptive": "完整的 Ruby 注释"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "前景音与背景音之间的对比度高",
+                "descriptive": "前景音与背景音之间的对比度高"
             },
             "additional-accessibility-information-high-contrast-between-text-and-background": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "前景文本与背景之间的对比度高",
+                "descriptive": "前景文本与背景之间的对比度高"
             },
             "additional-accessibility-information-large-print": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "大字印刷",
+                "descriptive": "大字印刷"
             },
             "additional-accessibility-information-page-breaks": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "包含分页符",
+                "descriptive": "包含原始来源的分页符"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "一些 Ruby 注释",
+                "descriptive": "一些 Ruby 注释"
             },
             "additional-accessibility-information-sign-language": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "手语",
+                "descriptive": "手语"
             },
             "additional-accessibility-information-tactile-graphics": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "包含触觉图形",
+                "descriptive": "已整合触觉图形，以方便盲人获取视觉元素"
             },
             "additional-accessibility-information-tactile-objects": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "触觉 3D 物体",
+                "descriptive": "触觉 3D 物体"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "提供文本转语音提示",
+                "descriptive": "提供文本转语音提示"
             },
-            "additional-accessibility-information-title": ""
+            "additional-accessibility-information-title": "额外的无障碍信息"
         },
         "conformance": {
             "conformance-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "本出版物符合最低无障碍标准",
+                "descriptive": "该出版物包含一份符合性声明，表明其符合 EPUB 无障碍标准和 WCAG 2 A 级标准"
             },
             "conformance-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "本出版物符合公认的无障碍标准",
+                "descriptive": "该出版物包含一份符合性声明，表明其符合 EPUB 无障碍标准和 WCAG 2 AA 级标准"
             },
             "conformance-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "本出版物超出了公认的无障碍标准",
+                "descriptive": "该出版物包含一份符合性声明，表明其符合 EPUB 无障碍标准和 WCAG 2 AAA 级标准"
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "该出版物已通过以下机构认证 "
             },
             "conformance-certifier-credentials": {
-                "compact": ""
+                "compact": "认证机构的资质为 "
             },
             "conformance-details-certifier-report": {
                 "compact": ""
@@ -564,8 +564,8 @@
                 "sound": "声音",
                 "unknown": "未知"
             },
-            "certifierReport": "认证报告",
-            "conformsTo": "符合",
+            "certifierReport": "认证报告：",
+            "conformsTo": "符合：",
             "moreInformation": "更多信息",
             "name": "可访问性",
             "noA11y": "无可用的可访问性信息"
@@ -576,8 +576,8 @@
         },
         "author": "作者",
         "cancelledLcp": "此书无法阅读，因为LCP许可证已被取消。",
-        "certificateRevoked": "认证撤销",
-        "certificateSignatureInvalid": "认证签名无效",
+        "certificateRevoked": "LCP 授权已被撤销。",
+        "certificateSignatureInvalid": "无效的 LCP 许可证证书签名。",
         "cover": {
             "img": "封面图像"
         },
@@ -589,15 +589,15 @@
         "encryptedNoLicense": "出版物已加密，但缺少 LCP 许可证！",
         "expired": "借阅已到期",
         "expiredLcp": "此书无法阅读，因为LCP许可证已到期。",
-        "incorrectPassphrase": "未找到匹配的密码，或输入的密码有误。\n",
+        "incorrectPassphrase": "没有任何已存储的密码与该出版物匹配，或输入的密码错误。",
         "lcpEnd": "结束",
         "lcpRightsCopy": "许可证拷贝",
         "lcpRightsPrint": "许可证打印",
         "lcpStart": "开始",
         "licenceLCP": "许可证（LCP）",
-        "licenseCertificateDateInvalid": "许可证签名日期无效 ({{- dateTime}})",
-        "licenseOutOfDate": "许可证过期",
-        "licenseSignatureInvalid": "许可证签名无效",
+        "licenseCertificateDateInvalid": "LCP 提供商证书在许可证颁发日期（{{- dateTime}}）之前已过期。",
+        "licenseOutOfDate": "过期的 LCP 许可证。",
+        "licenseSignatureInvalid": "无效的 LCP 许可证签名。",
         "licensed": "已授权",
         "markAsRead": "标记为已读",
         "notStarted": "尚未开始",
@@ -615,7 +615,7 @@
         "seeMore": "查看更多",
         "timeLeft": "剩余时间",
         "title": "标题",
-        "userKeyCheckInvalid": "密码不正确"
+        "userKeyCheckInvalid": "密码不正确。"
     },
     "reader": {
         "annotations": {
@@ -631,7 +631,7 @@
             "export": "将笔记另存为...",
             "filter": {
                 "all": "全部",
-                "filterByColor": "按颜色筛选\n",
+                "filterByColor": "按颜色筛选",
                 "filterByCreator": "按创建者筛选",
                 "filterByDrawtype": "按类型筛选",
                 "filterByTag": "按标签筛选",
@@ -719,8 +719,8 @@
             "goToPlaceHolder": "输入页码",
             "goToTitle": "转到页",
             "history": "",
-            "historyNext": "前进",
-            "historyPrevious": "后退",
+            "historyNext": "在导航历史中向前跳转",
+            "historyPrevious": "在导航历史中向后跳转",
             "infoTitle": "信息",
             "magnifyingGlassButton": "在出版物中搜索",
             "openTableOfContentsTitle": "导航",
@@ -873,7 +873,7 @@
             "name": "名称",
             "organization": "组织",
             "person": "个人",
-            "type": "类型"
+            "type": "类型："
         },
         "auth": {
             "help": "此操作将删除所有 OPDS 登录凭据。",
@@ -883,7 +883,7 @@
         "keyboard": {
             "advancedMenu": "菜单",
             "cancel": "取消",
-            "disclaimer": "快捷键是根据 QWERTY 键盘布局定义的。",
+            "disclaimer": "应用程序的默认设置是根据 QWERTY 键盘布局上按键的物理位置设计的",
             "editUserJson": "编辑用户文件...",
             "keyboardShortcuts": "键盘快捷键",
             "list": {
