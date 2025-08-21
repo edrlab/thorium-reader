@@ -124,7 +124,7 @@
         "annotations": {
             "descAuthor": "autor: {{- author}}",
             "descCreator": "vytvořil",
-            "descList": "{{- nb}} poznámek od {{- creator}} bude importováno do „{{- title}}“, {{- author}}",
+            "descList": "{{- count}} poznámek od {{- creator}} bude importováno do „{{- title}}“, {{- author}}",
             "descNewer": "",
             "descOlder": "",
             "descTitle": "Anotace titulu: ",
@@ -135,7 +135,7 @@
         },
         "cancel": "Zrušit",
         "deleteAnnotations": "Odstranit anotace?",
-        "deleteAnnotationsText": "Opravdu chcete odstranit {{- annotationListLength}} poznámek?",
+        "deleteAnnotationsText": "Opravdu chcete odstranit {{- count}} poznámek?",
         "deleteBookmarks": "",
         "deleteBookmarksText": "",
         "deleteFeed": "Odstranit katalog?",
@@ -744,7 +744,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} shod",
+                "founds": "{{- count}} shod",
                 "input": "přesná shoda",
                 "next": "Další",
                 "notFound": "žádná shoda",
