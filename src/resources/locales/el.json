@@ -718,9 +718,9 @@
             "goToError": "Δεν υπάρχει αλλαγή σελίδας",
             "goToPlaceHolder": "Συμπλήρωσε σελιδαρίθμηση",
             "goToTitle": "Μετάβαση σε σελίδα",
-            "history": "",
-            "historyNext": "Μετάβαση προς τα εμπρός",
-            "historyPrevious": "Μετάβαση προς τα πίσω",
+            "history": "Ιστορικό πλοήγησης",
+            "historyNext": "Μετάβαση μπροστά στο ιστορικό πλοήγησης",
+            "historyPrevious": "Επιστροφή στο ιστορικό πλοήγησης",
             "infoTitle": "Πληροφορίες",
             "magnifyingGlassButton": "Αναζήτηση βιβλίου",
             "openTableOfContentsTitle": "Πλοήγηση",
@@ -728,8 +728,8 @@
             "pdfscalemode": "Προσαρμογή στη σελίδα ή στο πλάτος",
             "print": "Εκτύπωση",
             "printDisabled": "Η εκτύπωση απαγορεύεται",
-            "screenNext": "",
-            "screenPrevious": "",
+            "screenNext": "Μετάβαση μπροστά",
+            "screenPrevious": "Μετάβαση πίσω",
             "settingsTitle": "Ρυθμίσεις"
         },
         "notes": {
