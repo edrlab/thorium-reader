@@ -1125,7 +1125,7 @@
             "export": {
                 "applyDefaultTemplate": "",
                 "enableCheckbox": "",
-                "overrideHTMLTemplate": ""
+                "overrideHTMLTemplate": "导出笔记 (注释和书签)"
             }
         },
         "session": {
