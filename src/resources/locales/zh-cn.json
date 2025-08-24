@@ -327,215 +327,215 @@
                 "compact": "认证机构的资质为 "
             },
             "conformance-details-certifier-report": {
-                "compact": ""
+                "compact": "有关更多信息，请参阅认证机构的报告"
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "本出版物声称符合",
+                "descriptive": "本出版物声称符合"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB 可访问性 1.0",
+                "descriptive": "EPUB 可访问性 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB 可访问性 1.1",
+                "descriptive": "EPUB 可访问性 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "A 级",
+                "descriptive": "A 级"
             },
             "conformance-details-level-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "AA 级",
+                "descriptive": "AA 级"
             },
             "conformance-details-level-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "AAA 级",
+                "descriptive": "AAA 级"
             },
             "conformance-details-wcag-2-0": {
-                "compact": ""
+                "compact": "WCAG 2.0"
             },
             "conformance-details-wcag-2-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.1",
+                "descriptive": "Web 内容可访问性指南 (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.2",
+                "descriptive": "Web 内容可访问性指南 (WCAG) 2.2"
             },
             "conformance-no": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "无可用信息",
+                "descriptive": "无可用信息"
             },
-            "conformance-title": "",
+            "conformance-title": "符合性",
             "conformance-unknown-standard": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "无法确定本出版物在可访问性方面是否符合公认标准",
+                "descriptive": "无法确定本出版物在可访问性方面是否符合公认标准"
             }
         },
         "hazards": {
             "hazards-flashing": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "闪烁内容",
+                "descriptive": "该出版物包含闪烁内容，可能引发光敏性癫痫发作"
             },
             "hazards-flashing-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "无闪烁内容",
+                "descriptive": "该出版物不包含闪烁内容"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "闪烁内容的存在未知",
+                "descriptive": "闪烁内容的存在未知"
             },
             "hazards-motion": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "运动模拟",
+                "descriptive": "该出版物包含可能引发晕动症的运动模拟内容"
             },
             "hazards-motion-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "无运动模拟",
+                "descriptive": "该出版物不包含运动模拟内容"
             },
             "hazards-motion-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "运动模拟的存在未知",
+                "descriptive": "运动模拟的存在未知"
             },
             "hazards-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "无可用信息",
+                "descriptive": "无可用信息"
             },
             "hazards-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "无危害内容",
+                "descriptive": "该出版物不包含任何危害内容"
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "声音",
+                "descriptive": "该出版物包含可能令人不适的声音"
             },
             "hazards-sound-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "无声音",
+                "descriptive": "该出版物不包含声音"
             },
             "hazards-sound-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "该出版物不包含声音",
+                "descriptive": "该出版物不包含声音"
             },
-            "hazards-title": "",
+            "hazards-title": "危害内容",
             "hazards-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "危害内容的存在未知",
+                "descriptive": "危害内容的存在未知"
             }
         },
         "navigation": {
             "navigation-index": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "索引",
+                "descriptive": "包含指向引用条目的链接的索引"
             },
             "navigation-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "无可用信息",
+                "descriptive": "无可用信息"
             },
             "navigation-page-navigation": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "转到页面",
+                "descriptive": "用于从纸质版来源跳转到页面的页码列表"
             },
             "navigation-structural": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "标题",
+                "descriptive": "用于结构化导航的元素，如标题、表格等"
             },
-            "navigation-title": "",
+            "navigation-title": "导航",
             "navigation-toc": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "目录",
+                "descriptive": "通过链接跳转到文本所有章节的目录"
             }
         },
         "rich-content": {
             "rich-content-accessible-chemistry-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "LaTeX 中的化学式",
+                "descriptive": "以可访问格式（LaTeX）呈现的化学式"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "MathML 中的化学式",
+                "descriptive": "以可访问格式（MathML）呈现的化学式"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "数学公式（LaTeX）",
+                "descriptive": "以可访问格式（LaTeX）呈现的数学公式"
             },
             "rich-content-accessible-math-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "数学公式（MathML）",
+                "descriptive": "以可访问格式（MathML）呈现的数学公式"
             },
             "rich-content-accessible-math-described": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "提供了数学公式的文本描述",
+                "descriptive": "提供了数学公式的文本描述"
             },
             "rich-content-closed-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "视频配有隐藏式字幕",
+                "descriptive": "出版物中包含的视频配有隐藏式字幕"
             },
             "rich-content-extended": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "信息丰富的图像由扩展描述进行说明",
+                "descriptive": "信息丰富的图像由扩展描述进行说明"
             },
             "rich-content-open-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "视频配有开放式字幕",
+                "descriptive": "出版物中包含的视频配有开放式字幕"
             },
-            "rich-content-title": "",
+            "rich-content-title": "富媒体内容",
             "rich-content-transcript": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "提供了文字记录",
+                "descriptive": "提供了文字记录"
             },
             "rich-content-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "无可用信息",
+                "descriptive": "无可用信息"
             }
         },
         "ways-of-reading": {
             "ways-of-reading-nonvisual-reading-alt-text": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "包含替代文本",
+                "descriptive": "为图像提供了替代文本描述"
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "关于非视觉阅读的信息不可用",
+                "descriptive": "关于非视觉阅读的信息不可用"
             },
             "ways-of-reading-nonvisual-reading-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "无法通过朗读或动态盲文阅读",
+                "descriptive": "内容无法以朗读语音或动态盲文形式阅读"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "无法完全通过朗读或动态盲文阅读",
+                "descriptive": "并非所有内容都可作为朗读语音或动态盲文阅读"
             },
             "ways-of-reading-nonvisual-reading-readable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "可通过朗读或动态盲文阅读",
+                "descriptive": "所有内容均可作为朗读语音或动态盲文阅读"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "预录的音频片段",
+                "descriptive": "内容中嵌入了预录的音频片段"
             },
             "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "关于预录音频的信息不可用",
+                "descriptive": "关于预录音频的信息不可用"
             },
             "ways-of-reading-prerecorded-audio-only": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "仅包含预录音频",
+                "descriptive": "有声书，无文本替代"
             },
             "ways-of-reading-prerecorded-audio-synchronized": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "预录音频与文本同步",
+                "descriptive": "所有内容均以与文本同步的预录音频形式提供"
             },
-            "ways-of-reading-title": "",
+            "ways-of-reading-title": "阅读方式",
             "ways-of-reading-visual-adjustments-modifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "可修改外观",
+                "descriptive": "文本和页面布局的外观可根据阅读系统的功能进行修改（包括字体、字号、段落、句子、单词和字母间的间距，以及背景和文本的颜色）"
             },
             "ways-of-reading-visual-adjustments-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "关于外观可修改性的信息不可用",
+                "descriptive": "关于外观可修改性的信息不可用"
             }
         }
     },
@@ -659,7 +659,7 @@
             }
         },
         "bookmarks": {
-            "index": ""
+            "index": "书签 {{- index}}"
         },
         "divina": {
             "mute": "静音",
@@ -670,10 +670,10 @@
         },
         "goToContent": "跳转到正文",
         "imgViewer": {
-            "title": "",
-            "zoomIn": "",
-            "zoomOut": "",
-            "zoomReset": ""
+            "title": "图片查看器（缩放）",
+            "zoomIn": "放大",
+            "zoomOut": "缩小",
+            "zoomReset": "重置缩放"
         },
         "marks": {
             "annotations": "注解",
@@ -693,8 +693,8 @@
             "captionsDescription": "具有最少字幕样式的简化文本视图。",
             "disableContinuousPlay": "禁用连续播放",
             "disableContinuousPlayDescription": "当前项播放结束后立即暂停，不自动播放下一项内容。",
-            "ignoreAndUseTTS": "",
-            "ignoreAndUseTTSDescription": "",
+            "ignoreAndUseTTS": "忽略预录音频，使用 TTS",
+            "ignoreAndUseTTSDescription": "忽略 EPUB 媒体覆盖，改用文本转语音朗读",
             "next": "朗读下一段",
             "pause": "暂停朗读",
             "play": "开始朗读",
@@ -718,7 +718,7 @@
             "goToError": "页码不存在",
             "goToPlaceHolder": "输入页码",
             "goToTitle": "转到页",
-            "history": "",
+            "history": "导航历史",
             "historyNext": "在导航历史中向前跳转",
             "historyPrevious": "在导航历史中向后跳转",
             "infoTitle": "信息",
@@ -726,10 +726,10 @@
             "openTableOfContentsTitle": "导航",
             "page": "页",
             "pdfscalemode": "适合页面宽度",
-            "print": "",
-            "printDisabled": "",
-            "screenNext": "",
-            "screenPrevious": "",
+            "print": "打印",
+            "printDisabled": "禁止打印",
+            "screenNext": "向前浏览",
+            "screenPrevious": "向后浏览",
             "settingsTitle": "设置"
         },
         "notes": {
@@ -755,22 +755,22 @@
             "searchTitle": "搜索："
         },
         "print": {
-            "descriptionLcpCount": "",
-            "descriptionLcpPrintable": "",
-            "howTo": "",
-            "lcpInfo": "",
-            "noPagesLcpLimitReached": "",
-            "noPrintablePages": "",
-            "pageHelpInfo": "",
-            "pageHelpInfo1": "",
-            "pageHelpInfo2": "",
-            "pageHelpInfo3": "",
-            "pageHelpInfo4": "",
-            "pages": "",
-            "preview": "",
-            "print": "",
-            "printablePages": "",
-            "title": ""
+            "descriptionLcpCount": "剩余页面限制：{{- count}}",
+            "descriptionLcpPrintable": "先前已打印的页面：{{- printable}}（{{- count}}）",
+            "howTo": "如何选择要打印的页面范围",
+            "lcpInfo": "本出版物的可打印页数限制为 {{- count}} 页。请在此选择您需要的页面。",
+            "noPagesLcpLimitReached": "您已达到 LCP 限制",
+            "noPrintablePages": "无可打印页面",
+            "pageHelpInfo": "页面选择器语法：",
+            "pageHelpInfo1": "输入页码以引用单个页面（例如“6”）",
+            "pageHelpInfo2": "输入两个由短横线分隔的页码以引用连续的页面范围（例如“6-13”）",
+            "pageHelpInfo3": "使用分号分隔多个页面或页面范围（例如“5;14-20;37”）",
+            "pageHelpInfo4": "省略范围的起始页或结束页，以引用出版物的第一页或最后一页（例如，“-16”等同于“1-16”，“34-”等同于“34-100”，假设图书总页数为100页）",
+            "pages": "页面",
+            "preview": "预览",
+            "print": "打印",
+            "printablePages": "可打印页面（总计）",
+            "title": "可打印页面的选择"
         },
         "settings": {
             "column": {
@@ -794,7 +794,7 @@
             "letterSpacing": "字符间距",
             "lineSpacing": "行间距",
             "margin": "页边距",
-            "mathjax": "",
+            "mathjax": "启用 MathJax",
             "noFootnotes": "禁用脚注",
             "noRTLFlip": "禁用从右到左的界面布局",
             "noRuby": "隐藏日文振假名",
@@ -888,87 +888,87 @@
             "keyboardShortcuts": "键盘快捷键",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "",
-                    "name": ""
+                    "description": "打开书签创建对话框，编辑文本标签（注释）、颜色和标签",
+                    "name": "创建带标签的书签"
                 },
                 "AnnotationsCreate": {
-                    "description": "",
-                    "name": ""
+                    "description": "打开所选文档文本的注释创建对话框，并编辑文本注释、高亮颜色和类型，以及标签",
+                    "name": "创建注释"
                 },
                 "AnnotationsCreateQuick": {
-                    "description": "",
-                    "name": ""
+                    "description": "为所选文本快速创建注释，使用上一次使用的高亮颜色和类型（注释和标签将为空）",
+                    "name": "快速创建注释"
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "",
-                    "name": ""
+                    "description": "交替显示注释和书签的视觉标记，位置可在文档页边或文本中",
+                    "name": "切换注释边距"
                 },
                 "AudioNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "向前移动到叙述中的下一个音频片段（EPUB3 媒体覆盖、文本转语音或预录有声读物）",
+                    "name": "下一个音频片段"
                 },
                 "AudioNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "向前移动到叙述中的下一个音频片段（EPUB3 媒体覆盖、文本转语音朗读或预录有声读物）。此操作将跳过当前任何可跳过的结构",
+                    "name": "下一个音频片段（跳过）"
                 },
                 "AudioPlayPause": {
-                    "description": "",
-                    "name": ""
+                    "description": "切换当前叙述的播放/暂停（EPUB3 媒体覆盖、文本转语音朗读或预录有声读物）",
+                    "name": "播放/暂停音频"
                 },
                 "AudioPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "返回到叙述中的上一个音频片段（EPUB3 媒体覆盖、文本转语音朗读或预录有声读物）",
+                    "name": "上一个音频片段"
                 },
                 "AudioPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "返回到叙述中的上一个音频片段（EPUB3 媒体覆盖、文本转语音朗读或预录有声读物）。此操作将跳过当前任何可跳过的结构",
+                    "name": "上一个音频片段（跳过）"
                 },
                 "AudioStop": {
-                    "description": "",
-                    "name": ""
+                    "description": "停止当前音频（EPUB3 媒体覆盖、文本转语音朗读或预录有声读物）",
+                    "name": "停止音频"
                 },
                 "CloseReader": {
-                    "description": "",
-                    "name": ""
+                    "description": "关闭阅读器窗口并返回到书架",
+                    "name": "关闭阅读器"
                 },
                 "FXLZoomIn": {
-                    "description": "",
-                    "name": ""
+                    "description": "放大固定布局的单页或双页跨页。",
+                    "name": "FXL 放大"
                 },
                 "FXLZoomOut": {
-                    "description": "",
-                    "name": ""
+                    "description": "缩小固定布局的单页或双页跨页。",
+                    "name": "FXL 缩小"
                 },
                 "FXLZoomReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "重置固定布局的单页或双页跨页的缩放。",
+                    "name": "重置 FXL 缩放"
                 },
                 "FocusMain": {
-                    "description": "",
-                    "name": ""
+                    "description": "将键盘焦点移动到图形用户界面的“主”区域。在阅读器窗口中，这会进入出版物内容",
+                    "name": "聚焦主要内容"
                 },
                 "FocusMainDeep": {
-                    "description": "",
-                    "name": ""
+                    "description": "在阅读器窗口中，此操作使用对屏幕阅读器更可靠的技巧将键盘焦点移至出版物内容",
+                    "name": "深度聚焦主要内容"
                 },
                 "FocusReaderGotoPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "将键盘焦点移动到阅读器窗口导航面板的“转到页面”部分",
+                    "name": "聚焦“转到页面”"
                 },
                 "FocusReaderNavigation": {
-                    "description": "",
-                    "name": ""
+                    "description": "将键盘焦点移动到阅读器窗口的导航面板",
+                    "name": "聚焦导航面板"
                 },
                 "FocusReaderNavigationAnnotations": {
-                    "description": "",
-                    "name": ""
+                    "description": "将键盘焦点移动到阅读器窗口导航面板的“注释”部分",
+                    "name": "聚焦“注释”"
                 },
                 "FocusReaderNavigationBookmarks": {
-                    "description": "",
-                    "name": ""
+                    "description": "将键盘焦点移动到阅读器窗口导航面板的“书签”部分",
+                    "name": "聚焦“书签”"
                 },
                 "FocusReaderNavigationSearch": {
-                    "description": "",
+                    "description": "将键盘焦点移动到阅读器窗口导航面板的“搜索”部分",
                     "name": ""
                 },
                 "FocusReaderNavigationTOC": {
