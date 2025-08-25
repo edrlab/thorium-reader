@@ -901,10 +901,10 @@
                 },
                 "AnnotationsToggleMargin": {
                     "description": "بدّل بين المؤشرات البصرية للتعليقات التوضيحية والإشارات المرجعية، سواء في الهامش أو داخل النص",
-                    "name": "تبديل هامش التعليات التوضيحية"
+                    "name": "تبديل هامش التعليقات التوضيحية"
                 },
                 "AudioNext": {
-                    "description": "انتقل إلى المقطع الصوتي التالي في السرد (EPUB Media Overlays، Text To Speech ، أو الكتاب الصوتي المسجل مسبقًا)",
+                    "description": "التنقل إلى المقطع الصوتي التالي في السرد (EPUB Media Overlays، Text To Speech ، أو الكتاب الصوتي المسجل مسبقًا)",
                     "name": "المقطع الصوتي التالي"
                 },
                 "AudioNextAlt": {
@@ -1041,7 +1041,7 @@
                 },
                 "NavigatePreviousLibraryPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "نقل تركيز لوحة المفاتيح إلى لوحة إعدادات نافذة القارئ (تفضيلات العرض، إلخ)"
                 },
                 "NavigatePreviousOPDSPage": {
                     "description": "",
