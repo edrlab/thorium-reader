@@ -20,6 +20,7 @@ import * as load from "./load";
 import * as opds from "./opds";
 import * as sameFileImport from "./sameFileImport";
 import * as winInit from "./win";
+import * as customization from "./customization";
 
 // Logger
 const filename_ = "readium-desktop:renderer:library:saga:index";
@@ -50,5 +51,7 @@ export function* rootSaga() {
         publicationInfoSyncTags.saga(),
 
         load.saga(),
+
+        customization.saga(),
     ]);
 }

@@ -40,6 +40,7 @@ import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 import { noteExportReducer } from "readium-desktop/common/redux/reducers/noteExport";
 import { customizationPackageActivatingReducer } from "readium-desktop/common/redux/reducers/customization/activate";
 import { customizationPackageProvisioningReducer } from "readium-desktop/common/redux/reducers/customization/provision";
+import { customizationPackageActivatingLockReducer } from "readium-desktop/common/redux/reducers/customization/lock";
 
 export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reducer<Partial<ILibraryRootState>>
     return combineReducers({ // ILibraryRootState
@@ -101,6 +102,7 @@ export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reduc
         customization: combineReducers({
             activate: customizationPackageActivatingReducer,
             provision: customizationPackageProvisioningReducer,
+            lock: customizationPackageActivatingLockReducer,
         }),
     });
 };

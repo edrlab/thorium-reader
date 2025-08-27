@@ -70,6 +70,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     noteExport.overrideHTMLTemplate.ID,
 
     customizationActions.activating.ID,
+    customizationActions.acquire.ID,
+    customizationActions.lock.ID,
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);

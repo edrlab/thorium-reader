@@ -16,7 +16,7 @@ import {
 } from "readium-desktop/main/event";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, put, spawn } from "redux-saga/effects";
-import { call as callTyped, take as takeTyped, select as selectTyped, put as putTyped } from "typed-redux-saga/macro";
+import { call as callTyped, take as takeTyped, select as selectTyped, put as putTyped, race as raceTyped, delay as delayTyped } from "typed-redux-saga/macro";
 import { opdsApi } from "./api";
 import { browse } from "./api/browser/browse";
 import { addFeed } from "./api/opds/feed";
@@ -27,6 +27,9 @@ import { appActivate } from "./win/library";
 import { getAndStartCustomizationWellKnownFileWatchingEventChannel } from "./getEventChannel";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { customizationPackageProvisioningAccumulator, customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
+import * as path from "path";
+import { net } from "electron";
+import { mimeTypes } from "readium-desktop/utils/mimeTypes";
 
 // Logger
 const debug = debug_("readium-desktop:main:saga:event");
@@ -56,6 +59,7 @@ export function saga() {
                         packagesArray = yield* callTyped(() => customizationPackageProvisioningAccumulator(packagesArray, packageFileName));
                     }
 
+                    debug("dispatch provisionning action with ", JSON.stringify(packagesArray));
                     yield* putTyped(customizationActions.provisioning.build(customizationState.provision, packagesArray));
 
                     // TODO: how to warn user of potentially a new version of the packages id, we have to put a diff between version for a same id !
@@ -79,6 +83,14 @@ export function saga() {
 
                 try {
                     const filePath = yield* takeTyped(chan);
+
+                    const fileName = path.basename(filePath);
+                    const extension = path.extname(fileName);
+                    if (extension === ".thor") {
+                    
+                        yield put(customizationActions.acquire.build(filePath));
+                        return ;
+                    }
 
                     const pubViewArray = yield* callTyped(importFromFs, filePath);
                     const pubView = Array.isArray(pubViewArray) ? pubViewArray[0] : pubViewArray;
@@ -131,6 +143,31 @@ export function saga() {
 
                 try {
                     const url = yield* takeTyped(chan);
+
+                    const prom = new Promise<boolean>(
+                        (res, _rej) => {
+
+                            const request = net.request({ method: "HEAD", url });
+                            request.on("response", (response) => {
+                                debug(`URL: ${url}`);
+                                debug(`STATUS: ${response.statusCode}`);
+                                debug(`HEADERS: ${JSON.stringify(response.headers)}`);
+
+                                if (response.headers["content-type"] === mimeTypes["thor"]) {
+                                    debug("This is a thorium custom profile extension");
+
+                                    res(true);
+                                }
+                            });
+                        });
+
+                    debug("THORIUM event custom url scheme received :");
+                    debug("HEAD request to ", url);
+                    const {a: __isATimeout, b: isAProfileExtension} = yield* raceTyped({ a: delayTyped(10000), b: callTyped(() => prom) });
+                    if (isAProfileExtension) {
+                        yield* putTyped(customizationActions.acquire.build(url));
+                        return ;
+                    }
 
                     const link: IOpdsLinkView = {
                         url,

@@ -14,7 +14,7 @@ export const initialState: ICustomizationProfileActivated = {
     id: "",
 };
 
-function readerAllowCustomConfigReducer_(
+function customizationPackageActivatingReducer_(
     state: ICustomizationProfileActivated = initialState, // (preloaded state?) see registerReader
     action: customizationActions.activating.TAction,
 ): ICustomizationProfileActivated {
@@ -27,4 +27,4 @@ function readerAllowCustomConfigReducer_(
             return state;
     }
 }
-export const customizationPackageActivatingReducer = readerAllowCustomConfigReducer_ as Reducer<ReturnType<typeof readerAllowCustomConfigReducer_>>;
+export const customizationPackageActivatingReducer = customizationPackageActivatingReducer_ as Reducer<ReturnType<typeof customizationPackageActivatingReducer_>>;
