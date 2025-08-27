@@ -231,6 +231,11 @@
         "ext": "lcpdf",
         "role": "Viewer",
         "mimeType": "application/pdf+lcp"
+      },
+      {
+        "ext": "thor",
+        "role": "Viewer",
+        "mimeType": "application/vnd.edrlab.thorium"
       }
     ],
     "win": {

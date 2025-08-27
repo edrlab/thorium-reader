@@ -28,7 +28,7 @@ import { extractCrc32OnZip } from "../tools/crc";
 import { createSign, createVerify } from "crypto";
 
 import { _CUSTOMIZATION_PROFILE_PRIVATE_KEY, _CUSTOMIZATION_PROFILE_PUB_KEY } from "readium-desktop/preprocessor-directives";
-import { ICustomizationManifest } from "src/common/readium/customization/manifest";
+import { ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
 import slugify from "slugify";
 import { injectBufferInZip } from "../tools/zipInjector";
 

@@ -15,7 +15,7 @@ import { INoteCreator } from "./creator";
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
 import { ILcpState } from "./lcp";
 import { INoteExportState } from "./renderer/note";
-import { ICustomizationProfileActivated, ICustomizationProfileProvisioned } from "./customization";
+import { ICustomizationProfileActivated, ICustomizationProfileLock, ICustomizationProfileProvisioned } from "./customization";
 
 export interface ICommonRootState {
     i18n: I18NState;
@@ -33,5 +33,6 @@ export interface ICommonRootState {
     customization: {
         activate: ICustomizationProfileActivated,
         provision: ICustomizationProfileProvisioned[],
+        lock: ICustomizationProfileLock,
     }
 }

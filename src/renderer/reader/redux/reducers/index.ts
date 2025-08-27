@@ -53,6 +53,7 @@ import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import { noteExportReducer } from "readium-desktop/common/redux/reducers/noteExport";
 import { customizationPackageProvisioningReducer } from "readium-desktop/common/redux/reducers/customization/provision";
 import { customizationPackageActivatingReducer } from "readium-desktop/common/redux/reducers/customization/activate";
+import { customizationPackageActivatingLockReducer } from "readium-desktop/common/redux/reducers/customization/lock";
 
 export const rootReducer = () => {
 
@@ -212,6 +213,7 @@ export const rootReducer = () => {
         customization: combineReducers({
             activate: customizationPackageActivatingReducer,
             provision: customizationPackageProvisioningReducer,
+            lock: customizationPackageActivatingLockReducer,
         }),
     });
 };

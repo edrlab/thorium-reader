@@ -121,6 +121,8 @@ export async function customizationPackageProvisioningAccumulator(packagesArray:
         packagesArray = packagesArray.filter(({ fileName }) => fileName !== packageFileName);
     }
 
+    // TODO: refactor this, and do not exclude older or same semver package, just mark it are not available.
+    // Will be useful to tell to the user that the profile in provisioning/activating wished is not available and then activate the good one.
     try {
         const manifest = await customizationPackageProvisioning(packageFileName);
         const packageProvisionedWithTheSameIdentifier = packagesArray.find(({identifier}) => identifier === manifest.identifier);
@@ -128,7 +130,7 @@ export async function customizationPackageProvisioningAccumulator(packagesArray:
             !packageProvisionedWithTheSameIdentifier || semver.gt(manifest.version, packageProvisionedWithTheSameIdentifier.version)
         ) {
 
-            const packageProvisionedObj = { identifier: manifest.identifier, fileName: path.basename(packageFileName), version: manifest.version };
+            const packageProvisionedObj = { identifier: manifest.identifier, fileName: packageFileName, version: manifest.version };
             debug(`package "${packageFileName}" provisonned :=>`, packageProvisionedObj);
             return [
                 ...packagesArray.filter(({ identifier }) => identifier !== manifest.identifier),
@@ -140,6 +142,7 @@ export async function customizationPackageProvisioningAccumulator(packagesArray:
         debug(e);
     }
 
+    // TODO: save and return provisioned profile error, to mitigate and print to user the error
     debug("Something went wrong", packageFileName, "not provisioned, return : ", JSON.stringify(packagesArray, null, 4));
     return packagesArray;
 }
