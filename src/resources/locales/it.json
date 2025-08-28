@@ -73,7 +73,7 @@
             "lastAdditions": "Aggiunti di recente"
         },
         "export": "Esporta",
-        "exportAnnotation": "Salvare le note come",
+        "exportAnnotation": "Esportare le note...",
         "format": "Formato",
         "importAnnotation": "Importa note",
         "lang": "Lingua",
@@ -670,7 +670,7 @@
         },
         "goToContent": "Vai al contenuto",
         "imgViewer": {
-            "title": "Modale del visualizzatore di immagini",
+            "title": "Visualizzatore di immagini (zoom)",
             "zoomIn": "Ingrandimento",
             "zoomOut": "Riduci",
             "zoomReset": "Ripristino dello zoom"
@@ -682,7 +682,7 @@
             "edit": "Modifica",
             "goTo": "Vai alla pagina",
             "landmarks": "Punti di riferimento",
-            "saveMark": "Salva segnalibro",
+            "saveMark": "Salva",
             "search": "Ricerca",
             "searchResult": "Cerca [{{- searchText}}]",
             "toc": "Tabella dei contenuti"
@@ -708,29 +708,29 @@
         "navigation": {
             "ZenModeExit": "Uscire dalla modalità Zen",
             "ZenModeTitle": "Modalità Zen",
-            "annotationTitle": "annotazione",
+            "annotationTitle": "Annotazione",
             "backHomeTitle": "ritorna alla libreria",
-            "bookmarkTitle": "segnalibro",
+            "bookmarkTitle": "Segnalibro",
             "currentPage": "Pagina attuale: {{- current}}",
             "currentPageTotal": "Pagina attuale: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Separa la finestra",
+            "detachWindowTitle": "Mostra finestra libreria / scaffale",
             "goTo": "Vai a",
             "goToError": "Questa interruzione di pagina non esiste",
             "goToPlaceHolder": "Inserisci il numero della pagina",
             "goToTitle": "Vai alla pagina",
-            "history": "",
-            "historyNext": "Vai avanti",
-            "historyPrevious": "Torna indietro",
-            "infoTitle": "informazione",
-            "magnifyingGlassButton": "cerca nella pubblicazione",
-            "openTableOfContentsTitle": "navigazione",
+            "history": "Cronologia di navigazione",
+            "historyNext": "Vai avanti nella cronologia di navigazione",
+            "historyPrevious": "Torna indietro nella cronologia di navigazione",
+            "infoTitle": "Informazioni",
+            "magnifyingGlassButton": "Cerca pubblicazione",
+            "openTableOfContentsTitle": "Navigazione",
             "page": "Pagina",
             "pdfscalemode": "Dimensioni della pagina o larghezza",
-            "print": "stampa",
+            "print": "Stampa",
             "printDisabled": "Non è permesso stampare",
-            "screenNext": "Pagina successiva / scorrimento avanti",
-            "screenPrevious": "Pagina precedente / scorrimento indietro",
-            "settingsTitle": "impostazioni"
+            "screenNext": "Vai avanti",
+            "screenPrevious": "Vai indietro",
+            "settingsTitle": "Impostazioni"
         },
         "notes": {
             "colors": {
@@ -761,11 +761,11 @@
             "lcpInfo": "Il numero di pagine che è possibile stampare in questa pubblicazione è limitato a {{- count}}. Selezionare qui le pagine desiderate.",
             "noPagesLcpLimitReached": "Hai raggiunto il limite di LCP",
             "noPrintablePages": "Nessuna pagina stampabile",
-            "pageHelpInfo": "informazioni di aiuto per gli intervalli di pagine:",
-            "pageHelpInfo1": " - inserire un numero di pagina per fare riferimento a una singola pagina (ad es. \"6\")",
-            "pageHelpInfo2": " - inserire due numeri di pagina separati da un trattino per fare riferimento a un intervallo di pagine contigue (ad esempio \"6-13\")",
-            "pageHelpInfo3": " - utilizzare il carattere punto e virgola per separare più pagine o intervalli di pagine (ad esempio \"5;14-20;37\")",
-            "pageHelpInfo4": " - tralasciare la prima o l'ultima pagina di un intervallo per fare riferimento alla prima o all'ultima pagina della pubblicazione (ad esempio, \"-16\" equivale a \"1-16\", e \"34-\" equivale a \"34-100\" nell'ipotesi di un libro con un totale di 100 pagine)",
+            "pageHelpInfo": "Sintassi del selettore di pagine:",
+            "pageHelpInfo1": "inserire un numero di pagina per fare riferimento a una singola pagina (ad es. \"6\")",
+            "pageHelpInfo2": "inserire due numeri di pagina separati da un trattino per fare riferimento a un intervallo di pagine contigue (ad esempio \"6-13\")",
+            "pageHelpInfo3": "utilizzare il carattere punto e virgola per separare più pagine o intervalli di pagine (ad esempio \"5;14-20;37\")",
+            "pageHelpInfo4": "tralasciare la prima o l'ultima pagina di un intervallo per fare riferimento alla prima o all'ultima pagina della pubblicazione (ad esempio, \"-16\" equivale a \"1-16\", e \"34-\" equivale a \"34-100\" nell'ipotesi di un libro con un totale di 100 pagine)",
             "pages": "Pagine",
             "preview": "Anteprima",
             "print": "Stampa",
@@ -795,7 +795,7 @@
             "lineSpacing": "Spaziatura linee",
             "margin": "Margine",
             "mathjax": "Abilita MathJax",
-            "noFootnotes": "Disattiva note a piè di pagina",
+            "noFootnotes": "Disattiva note a piè di pagina in elementi a comparsa",
             "noRTLFlip": "Disabilita l'interfaccia utente da destra a sinistra",
             "noRuby": "Nascondi Ruby Giapponese",
             "noTemporaryNavTargetOutline": "Disattivare gli indicatori visivi di navigazione",
@@ -896,7 +896,7 @@
                     "name": "Crea annotazione"
                 },
                 "AnnotationsCreateQuick": {
-                    "description": "Crea un'annotazione per il testo selezionato, con il colore e il tipo di evidenziazione usati nell'ultimo caso (non apre la finestra di dialogo dell'editor, quindi la nota testuale e il tag sono vuoti)",
+                    "description": "Crea rapidamente un'annotazione per il testo selezionato, con l'ultimo colore e tipo di evidenziazione utilizzati (la nota e il tag saranno vuoti)",
                     "name": "Creare un'annotazione rapida"
                 },
                 "AnnotationsToggleMargin": {
@@ -904,12 +904,12 @@
                     "name": "Attiva/disattiva l'annotazione a margine"
                 },
                 "AudioNext": {
-                    "description": "Passa all'evento audio successivo negli EPUB3 Media Overlay, nella lettura a sintesi vocale o negli audiolibri",
-                    "name": "Audio successivo"
+                    "description": "Passa al segmento audio successivo nella narrazione (EPUB3 Media Overlays, sintesi vocale o audiolibro preregistrato)",
+                    "name": "Segmento audio successivo"
                 },
                 "AudioNextAlt": {
-                    "description": "Passa all'evento audio successivo negli EPUB3 Media Overlay, nella lettura a sintesi vocale o negli audiolibri. Salta la struttura superabile corrente, nel caso in cui sia presente",
-                    "name": "Audio successivo (esci)"
+                    "description": "Passa al segmento audio successivo nella narrazione (EPUB3 Media Overlays, sintesi vocale o audiolibro preregistrato). Questo salta qualsiasi struttura intermedia.",
+                    "name": "Segmento audio successivo (esci)"
                 },
                 "AudioPlayPause": {
                     "description": "Attiva/disattiva la riproduzione/pausa della narrazione corrente (EPUB3 con Media Overlays, lettura ad alta voce con sintesi vocale o audiolibro preregistrato)",
@@ -932,23 +932,23 @@
                     "name": "Chiudi il lettore"
                 },
                 "FXLZoomIn": {
-                    "description": "",
-                    "name": ""
+                    "description": "Aumenta lo zoom di una pagina singola o una doppia pagina con layout fisso.",
+                    "name": "Aumenta zoom layout fisso"
                 },
                 "FXLZoomOut": {
-                    "description": "",
-                    "name": ""
+                    "description": "Riduci lo zoom di una pagina singola o di una doppia pagina con layout fisso.",
+                    "name": "Riduci zoom layout fisso"
                 },
                 "FXLZoomReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Reimposta lo zoom su una pagina singola o doppia con layout fisso.",
+                    "name": "Reset zoom layout fisso"
                 },
                 "FocusMain": {
-                    "description": "",
-                    "name": ""
+                    "description": "Sposta il focus della tastiera sul punto di riferimento \"principale\" nell'interfaccia grafica utente. Nella finestra del lettore, questo sposta il focus sul contenuto della pubblicazione.",
+                    "name": "Focus sul contenuto principale"
                 },
                 "FocusMainDeep": {
-                    "description": "",
+                    "description": "Nella finestra di lettura, questa funzione sposta il focus della tastiera nel contenuto della pubblicazione utilizzando una tecnica più affidabile per gli screen reader",
                     "name": ""
                 },
                 "FocusReaderGotoPage": {
