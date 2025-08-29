@@ -949,170 +949,170 @@
                 },
                 "FocusMainDeep": {
                     "description": "Nella finestra di lettura, questa funzione sposta il focus della tastiera nel contenuto della pubblicazione utilizzando una tecnica più affidabile per gli screen reader",
-                    "name": ""
+                    "name": "Focus intenso sul contenuto principale"
                 },
                 "FocusReaderGotoPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Sposta il focus della tastiera sulla sezione \"Vai alla pagina\" del pannello di navigazione della finestra del lettore",
+                    "name": "Focus su \"Vai alla pagina\""
                 },
                 "FocusReaderNavigation": {
-                    "description": "",
-                    "name": ""
+                    "description": "Sposta il focus della tastiera sul pannello di navigazione della finestra del lettore",
+                    "name": "Focus sul pannello di navigazione"
                 },
                 "FocusReaderNavigationAnnotations": {
-                    "description": "",
-                    "name": ""
+                    "description": "Sposta il focus della tastiera sulla sezione \"annotazioni\" del pannello di navigazione della finestra del lettore",
+                    "name": "Focus su \"Annotazioni\""
                 },
                 "FocusReaderNavigationBookmarks": {
-                    "description": "",
-                    "name": ""
+                    "description": "Sposta il focus della tastiera sulla sezione \"segnalibri\" del pannello di navigazione della finestra del lettore",
+                    "name": "Focus su \"Segnalibri\""
                 },
                 "FocusReaderNavigationSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Sposta il focus della tastiera sulla sezione \"Cerca\" del pannello di navigazione della finestra del lettore",
+                    "name": "Focus su \"Cerca\""
                 },
                 "FocusReaderNavigationTOC": {
-                    "description": "",
-                    "name": ""
+                    "description": "Sposta il focus della tastiera sulla sezione \"Indice\" del pannello di navigazione della finestra del lettore",
+                    "name": "Focus su \"Indice\""
                 },
                 "FocusReaderSettings": {
-                    "description": "",
-                    "name": ""
+                    "description": "Sposta il focus della tastiera sul pannello delle impostazioni della finestra del lettore (preferenze di visualizzazione, ecc.)",
+                    "name": "Focus sulle impostazioni del lettore"
                 },
                 "FocusSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Sposta il focus della tastiera sul campo di ricerca testuale della finestra di lettura oppure, nella finestra della libreria, questa operazione effettua una ricerca nella biblioteca o nel feed OPDS attivo",
+                    "name": "Comando di ricerca"
                 },
                 "FocusToolbar": {
-                    "description": "",
-                    "name": ""
+                    "description": "Sposta il focus della tastiera sull'area di riferimento dell'interfaccia grafica utente immediatamente prima dello \"skip link\" (che a sua volta sposta il focus sull'area di contenuto principale della finestra della libreria o del lettore)",
+                    "name": "Focus sulla barra degli strumenti"
                 },
                 "NavigateNextChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nella finestra del lettore, passa al documento successivo nell'ordine di lettura della pubblicazione (ad esempio, capitolo successivo del libro). Esiste una scorciatoia da tastiera alternativa a quella predefinita",
+                    "name": "Vai al capitolo successivo"
                 },
                 "NavigateNextChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nella finestra di lettura, passa al documento successivo nell'ordine di lettura della pubblicazione (ad esempio, capitolo successivo del libro). Si tratta di una scorciatoia da tastiera alternativa a quella predefinita",
+                    "name": "Vai al capitolo successivo (alternativa)"
                 },
                 "NavigateNextHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nella finestra di lettura, vai avanti di un passo nella cronologia di navigazione",
+                    "name": "Vai all'elemento successivo della cronologia"
                 },
                 "NavigateNextLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nella finestra della libreria, mostra la pagina successiva di un elenco di pubblicazioni. Esiste una scorciatoia da tastiera alternativa a quella predefinita",
+                    "name": "Vai alla pagina successiva della libreria"
                 },
                 "NavigateNextLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nella finestra della libreria, mostra la pagina successiva di un elenco di pubblicazioni. Si tratta di una scorciatoia da tastiera alternativa a quella predefinita",
+                    "name": "Vai alla pagina successiva della libreria (alternativa)"
                 },
                 "NavigateNextOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nella finestra della libreria per i cataloghi / feed OPDS, va alla pagina successiva. Esiste una scorciatoia da tastiera alternativa a quella predefinita",
+                    "name": "Vai alla pagina OPDS successiva"
                 },
                 "NavigateNextOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nella finestra della libreria per cataloghi / feed OPDS, va alla pagina successiva. Questa è una scorciatoia da tastiera alternativa a quella predefinita",
+                    "name": "Vai alla pagina OPDS successiva (alternativa)"
                 },
                 "NavigateNextPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nella finestra di lettura, passa alla \"pagina\" successiva della pubblicazione. Esiste una scorciatoia da tastiera alternativa a quella predefinita",
+                    "name": "Vai alla pagina successiva"
                 },
                 "NavigateNextPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nella finestra di lettura, passa alla \"pagina\" successiva della pubblicazione. Si tratta di una scorciatoia da tastiera alternativa a quella predefinita",
+                    "name": "Vai alla pagina successiva (alternativa)"
                 },
                 "NavigatePreviousChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nella finestra di lettura, passa al documento precedente nell'ordine di lettura della pubblicazione (ad esempio, il capitolo precedente del libro). Esiste una scorciatoia da tastiera alternativa a quella predefinita",
+                    "name": "Vai al capitolo precedente"
                 },
                 "NavigatePreviousChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nella finestra di lettura, passa al documento precedente nell'ordine di lettura della pubblicazione (ad esempio, capitolo precedente del libro). Si tratta di una scorciatoia da tastiera alternativa a quella predefinita",
+                    "name": "Vai al capitolo precedente (alternativa)"
                 },
                 "NavigatePreviousHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nella finestra di lettura, torna indietro di un passo nella cronologia di navigazione",
+                    "name": "Vai alla cronologia precedente"
                 },
                 "NavigatePreviousLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nella finestra della libreria, mostra la pagina precedente di un elenco di pubblicazioni. Esiste una scorciatoia da tastiera alternativa a quella predefinita",
+                    "name": "Vai alla pagina precedente della libreria"
                 },
                 "NavigatePreviousLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nella finestra della libreria, mostra la pagina precedente di un elenco di pubblicazioni. Si tratta di una scorciatoia da tastiera alternativa a quella predefinita",
+                    "name": "Vai alla pagina precedente della libreria (alternativa)"
                 },
                 "NavigatePreviousOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nella finestra della libreria per i cataloghi / feed OPDS, va alla pagina precedente. Esiste una scorciatoia da tastiera alternativa a quella predefinita",
+                    "name": "Vai alla pagina OPDS precedente"
                 },
                 "NavigatePreviousOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nella finestra della libreria per cataloghi / feed OPDS, va alla pagina precedente. Questa è una scorciatoia da tastiera alternativa a quella predefinita",
+                    "name": "Vai alla pagina OPDS precedente (alternativa)"
                 },
                 "NavigatePreviousPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nella finestra di lettura, passa alla \"pagina\" precedente della pubblicazione. Esiste una scorciatoia da tastiera alternativa a quella predefinita",
+                    "name": "Vai alla pagina precedente"
                 },
                 "NavigatePreviousPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nella finestra di lettura, passa alla \"pagina\" precedente della pubblicazione. Si tratta di una scorciatoia da tastiera alternativa a quella predefinita",
+                    "name": "Vai alla pagina precedente (alternativa)"
                 },
                 "NavigateToBegin": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nella finestra del lettore, vai all'inizio della pubblicazione",
+                    "name": "Vai all'inizio"
                 },
                 "NavigateToEnd": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nella finestra di lettura, vai alla fine della pubblicazione",
+                    "name": "Vai alla fine"
                 },
                 "OpenReaderInfo": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nella finestra di lettura, apre la finestra di dialogo delle informazioni relative alla pubblicazione",
+                    "name": "Visualizza le informazioni sulla pubblicazione"
                 },
                 "OpenReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nella finestra del lettore, apre la finestra di dialogo che mostra le informazioni sulla pubblicazione e posiziona il cursore della tastiera sulla sezione che mostra il contesto della posizione di lettura corrente",
+                    "name": "Visualizza le informazioni sulla pubblicazione, mostra posizione di lettura"
                 },
                 "Print": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nella finestra di lettura, apre la finestra di dialogo di stampa",
+                    "name": "Stampa"
                 },
                 "SearchNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nello strumento di ricerca della finestra di lettura, vai al risultato successivo della ricerca. Esiste una scorciatoia da tastiera alternativa a quella predefinita",
+                    "name": "Risultato della ricerca successivo"
                 },
                 "SearchNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nello strumento di ricerca della finestra di lettura, passa al risultato di ricerca successivo. Questa è una scorciatoia da tastiera alternativa a quella predefinita",
+                    "name": "Risultato della ricerca successivo (alternativo)"
                 },
                 "SearchPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nello strumento di ricerca della finestra di lettura, vai al risultato della ricerca precedente. Esiste una scorciatoia da tastiera alternativa a quella predefinita",
+                    "name": "Risultato della ricerca precedente"
                 },
                 "SearchPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nello strumento di ricerca della finestra di lettura, vai al risultato della ricerca precedente. Questa è una scorciatoia da tastiera alternativa a quella predefinita",
+                    "name": "Risultato della ricerca precedente (alternativo)"
                 },
                 "SpeakReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nella finestra di lettura, descrivere il contesto della posizione di lettura corrente, utilizzando un testo compatibile con gli screen reader",
+                    "name": "Descrivi il luogo di lettura (vocale)"
                 },
                 "ToggleBookmark": {
-                    "description": "",
-                    "name": ""
+                    "description": "Aggiungi un nuovo segnalibro o rimuovi uno esistente, se è attualmente selezionato",
+                    "name": "Aggiungi/rimuovi segnalibro"
                 },
                 "ToggleReaderFullscreen": {
-                    "description": "",
-                    "name": ""
+                    "description": "Nella finestra di lettura, attiva la modalità a schermo intero o ripristina la modalità finestra normale. Questa funzione è diversa dalla \"modalità zen\", che semplifica l'interfaccia utente",
+                    "name": "Attiva/disattiva schermo intero"
                 }
             },
             "loadUserJson": "Carica da file utente",
-            "noShortcutFound": "",
+            "noShortcutFound": "Nessuna scorciatoia trovata con questa etichetta",
             "resetDefaults": "Ripristina (carica predefiniti)",
             "save": "Salva",
-            "searchPlaceholder": ""
+            "searchPlaceholder": "Digita per cercare una scorciatoia"
         },
         "language": {
             "languageChoice": "Scelta della lingua"
@@ -1123,9 +1123,9 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "APPLICARE IL MODELLO PREDEFINITO",
-                "enableCheckbox": "Abilitare/disabilitare la sovrascrittura del template mustache durante l'esportazione di note HTML",
-                "overrideHTMLTemplate": "Sovrascrivere il modello Mustache quando si esporta la nota in HTML"
+                "applyDefaultTemplate": "Carica modello predefinito",
+                "enableCheckbox": "Personalizza il modello HTML",
+                "overrideHTMLTemplate": "Esportazione delle note (annotazioni e segnalibri)"
             }
         },
         "session": {
