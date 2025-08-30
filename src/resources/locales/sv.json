@@ -140,7 +140,7 @@
         "deleteBookmarksText": "Vill du radera {{- bookmarkListLength}} bokmärke(n)?",
         "deleteFeed": "Vill du ta bort den här katalogen?",
         "deletePublication": "Vill du ta bort den här publikationen?",
-        "deletePublicationWithNotes": "",
+        "deletePublicationWithNotes": "Varning: Det finns anteckningar och/eller bokmärken som också kommer raderas! (Om du vill behålla dem så måste du exportera anteckningar och bokmärken innan du tar bort boken)",
         "import": "Vill du importera följande filer:",
         "importError": "Det uppstod ett fel, kontrollera filtypen ({{acceptedExtension}})",
         "renew": "Vill du förnya lånet?",
