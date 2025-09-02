@@ -7,7 +7,13 @@
 
 export type TTheme = "system" | "dark" | "light";
 
+export interface ICustomizationTheme {
+    enable: boolean;
+    logo: string;
+}
+
 export interface ITheme {
     name: TTheme,
+    customization: ICustomizationTheme
 }
 export const themesList: Array<TTheme> = ["system", "dark", "light"];

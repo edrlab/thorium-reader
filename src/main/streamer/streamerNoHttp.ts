@@ -457,7 +457,8 @@ const streamProtocolHandler = async (
         const route = uPathname.substr(customProfileZipAssetsPrefix.length);
         const [idEncoded, pathInZipEncoded] = route.split(/\/(.*)/s);
         const id = decodeURIComponent(Buffer.from(idEncoded, "base64").toString());
-        const pathInZip = decodeURIComponent(Buffer.from(pathInZipEncoded, "base64").toString());
+        const pathInZip = path.resolve("/", decodeURIComponent(Buffer.from(pathInZipEncoded, "base64").toString())).substr(1); // remove first '/'
+
 
         const state = diMainGet("store").getState();
         const profile = state.customization.provision.find(({identifier}) => identifier === id);
