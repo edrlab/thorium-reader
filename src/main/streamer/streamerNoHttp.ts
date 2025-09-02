@@ -53,6 +53,8 @@ import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
 import { diMainGet } from "../di";
 import { getNotesFromMainWinState } from "../redux/sagas/note";
 import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
+import { customizationWellKnownFolder } from "../customization/provisioning";
 
 // import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
@@ -378,6 +380,9 @@ const streamProtocolHandler = async (
         }
     }
 
+    const customProfileZipAssetsPrefix = "/custom-profile-zip/";
+    const isCustomProfileZipAssets = uPathname.startsWith(customProfileZipAssetsPrefix);
+
     const notesFromPublicationPrefix = "/publication-notes/";
     const isNotesFromPublicationRequest = uPathname.startsWith(notesFromPublicationPrefix);
 
@@ -397,6 +402,8 @@ const streamProtocolHandler = async (
     const isMediaOverlays = uPathname.endsWith(mediaOverlaysPrefix);
 
     debug("streamProtocolHandler uPathname", uPathname);
+    debug("streamProtocolHandler isCustomProfileZipAssets", isCustomProfileZipAssets);
+    debug("streamProtocolHandler isNotesFromPublicationRequest", isNotesFromPublicationRequest);
     debug("streamProtocolHandler isPdfjsAssets", isPdfjsAssets);
     debug("streamProtocolHandler isPublicationAssets", isPublicationAssets);
     debug("streamProtocolHandler isMathJax", isMathJax);
@@ -443,7 +450,296 @@ const streamProtocolHandler = async (
     headers["Access-Control-Allow-Headers"] = "Content-Type, Content-Length, Accept-Ranges, Content-Range, Range, Link, Transfer-Encoding, X-Requested-With, Authorization, Accept, Origin, User-Agent, DNT, Cache-Control, Keep-Alive, If-Modified-Since";
     headers["Access-Control-Expose-Headers"] = "Content-Type, Content-Length, Accept-Ranges, Content-Range, Range, Link, Transfer-Encoding, X-Requested-With, Authorization, Accept, Origin, User-Agent, DNT, Cache-Control, Keep-Alive, If-Modified-Since";
 
-    if (isNotesFromPublicationRequest) {
+    if (isCustomProfileZipAssets) {
+
+        // /custom-profile-zip/<id-encoded>/<path-to-zip-encoded>/
+
+        const route = uPathname.substr(customProfileZipAssetsPrefix.length);
+        const [idEncoded, pathInZipEncoded] = route.split(/\/(.*)/s);
+        const id = decodeURIComponent(Buffer.from(idEncoded, "base64").toString());
+        const pathInZip = decodeURIComponent(Buffer.from(pathInZipEncoded, "base64").toString());
+
+        const state = diMainGet("store").getState();
+        const profile = state.customization.provision.find(({identifier}) => identifier === id);
+
+        if (!profile) {
+            const err = "PROFILE ID " + uPathname + " ; " + id;
+            debug(err);
+            const buff = Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
+            headers["Content-Length"] = buff.length.toString();
+            const obj = {
+                // NodeJS.ReadableStream
+                data: bufferToStream(buff),
+                headers,
+                statusCode: 500,
+            };
+            callback(obj);
+            return;
+        }
+
+        const fileName = profile.fileName;
+        const fileAbsolutePath = path.resolve(customizationWellKnownFolder, fileName);
+        debug("profileFilePath", fileAbsolutePath);
+
+        debug("streamProtocolHandler pathInZip", pathInZip);
+
+        if (!pathInZip) {
+            const err = "PATH IN ZIP?? " + uPathname;
+            debug(err);
+            const buff = Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
+            headers["Content-Length"] = buff.length.toString();
+            const obj = {
+                // NodeJS.ReadableStream
+                data: bufferToStream(buff),
+                headers,
+                statusCode: 500,
+            };
+            callback(obj);
+            return;
+        }
+
+        // https://github.com/edrlab/r2-shared-js/blob/develop/src/parser/epub.ts#L171C1-L183C6
+        let zip: IZip;
+        try {
+            zip = await zipLoadPromise(fileAbsolutePath);
+        } catch (err) {
+            debug(err);
+            // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+            // return Promise.reject(err);
+            zip = undefined;
+        }
+
+        if (!zip.hasEntries()) {
+            // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+            // return Promise.reject("EPUB zip empty");
+            zip = undefined;
+        }
+
+        if (!zip) {
+            const err = "No publication zip!";
+            debug(err);
+            const buff = Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
+            headers["Content-Length"] = buff.length.toString();
+            const obj = {
+                // NodeJS.ReadableStream
+                data: bufferToStream(buff),
+                headers,
+                statusCode: 500,
+            };
+            callback(obj);
+            return;
+        }
+
+        if (!zipHasEntry(zip, pathInZip, undefined)) {
+            const err = "Asset not in zip! " + pathInZip;
+            debug(err);
+            const buff = Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
+            headers["Content-Length"] = buff.length.toString();
+            const obj = {
+                // NodeJS.ReadableStream
+                data: bufferToStream(buff),
+                headers,
+                statusCode: 500,
+            };
+            callback(obj);
+            return;
+        }
+
+
+        // TODO: find link in manifest.json
+
+        const mediaType = mime.lookup(pathInZip) || "stream/octet";
+        // if (link && link.TypeLink) {
+        //     mediaType = link.TypeLink;
+        // }
+        debug("streamProtocolHandler mediaType", mediaType);
+
+        const isEncrypted = false;
+        const headersRange = req.headers.Range || req.headers.range;
+
+        const isPartialByteRangeRequest = ((req.headers && headersRange) ? true : false);
+        debug("streamProtocolHandler isPartialByteRangeRequest", isPartialByteRangeRequest);
+
+        // if (isEncrypted && isPartialByteRangeRequest) {
+        //     const err = "Encrypted video/audio not supported (HTTP 206 partial request byte range)";
+        //     debug(err);
+        //     res.status(500).send("<html><body><p>Internal Server Error</p><p>"
+        //         + err + "</p></body></html>");
+        //     return;
+        // }
+
+        let partialByteBegin = 0; // inclusive boundaries
+        let partialByteEnd = -1;
+        if (isPartialByteRangeRequest) {
+            debug("streamProtocolHandler isPartialByteRangeRequest", headersRange);
+
+            const ranges = parseRangeHeader(headersRange);
+            // debug(ranges);
+
+            if (ranges && ranges.length) {
+                if (ranges.length > 1) {
+                    const err = "Too many HTTP ranges: " + headersRange;
+                    debug(err);
+                    const buff =
+                        Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
+                    headers["Content-Length"] = buff.length.toString();
+                    // headers["Content-Range"] = `*/${contentLength}`;
+                    const obj = {
+                        // NodeJS.ReadableStream
+                        data: bufferToStream(buff),
+                        headers,
+                        statusCode: 416,
+                    };
+                    callback(obj);
+                    return;
+                }
+                partialByteBegin = ranges[0].begin;
+                partialByteEnd = ranges[0].end;
+
+                if (partialByteBegin < 0) {
+                    partialByteBegin = 0;
+                }
+            }
+
+            debug("streamProtocolHandler isPartialByteRangeRequest", `${pathInZip} >> ${partialByteBegin}-${partialByteEnd}`);
+        }
+        let zipStream_: IStreamAndLength;
+        try {
+            if (isPartialByteRangeRequest && !isEncrypted && !(partialByteBegin === 0 && partialByteEnd === -1)) {
+                zipStream_ = await zip.entryStreamRangePromise(pathInZip, partialByteBegin, partialByteEnd);
+            } else {
+                zipStream_ = await zip.entryStreamPromise(pathInZip);
+            }
+        } catch (err) {
+            debug(err);
+            const buff = Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
+            headers["Content-Length"] = buff.length.toString();
+            const obj = {
+                // NodeJS.ReadableStream
+                data: bufferToStream(buff),
+                headers,
+                statusCode: 500,
+            };
+            callback(obj);
+            return;
+        }
+
+        // The HTML transforms are chained here too, so cannot check server.disableDecryption at this level!
+        // const doTransform = false; // !isEncrypted || (isObfuscatedFont || !server.disableDecryption);
+
+        // decodeURIComponent already done
+        const sessionInfo = u.searchParams.get(URL_PARAM_SESSION_INFO) || undefined;
+        debug("streamProtocolHandler sessionInfo", sessionInfo);
+
+        // if (doTransform && link) {
+
+        //     const fullUrl = req.url; // `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}${uPathname}`;
+
+        //     let transformedStream: IStreamAndLength;
+        //     try {
+        //         transformedStream = await Transformers.tryStream(
+        //             publication,
+        //             link,
+        //             fullUrl,
+        //             zipStream_,
+        //             isPartialByteRangeRequest,
+        //             partialByteBegin,
+        //             partialByteEnd,
+        //             sessionInfo,
+        //         );
+        //     } catch (err) {
+        //         debug(err);
+        //         const buff = Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
+        //         headers["Content-Length"] = buff.length.toString();
+        //         const obj = {
+        //             // NodeJS.ReadableStream
+        //             data: bufferToStream(buff),
+        //             headers,
+        //             statusCode: 500,
+        //         };
+        //         callback(obj);
+        //         return;
+        //     }
+        //     if (transformedStream) {
+        //         if (transformedStream !== zipStream_) {
+        //             debug("streamProtocolHandler Asset transformed ok", link.Href);
+        //         }
+        //         zipStream_ = transformedStream; // can be unchanged
+        //     } else {
+        //         const err = "Transform fail (encryption scheme not supported?)";
+        //         debug(err);
+        //         const buff = Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
+        //         headers["Content-Length"] = buff.length.toString();
+        //         const obj = {
+        //             // NodeJS.ReadableStream
+        //             data: bufferToStream(buff),
+        //             headers,
+        //             statusCode: 500,
+        //         };
+        //         callback(obj);
+        //         return;
+        //     }
+        // }
+
+        if (isPartialByteRangeRequest) {
+            headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            headers.Pragma = "no-cache";
+            headers.Expires = "0";
+        } else {
+            headers["Cache-Control"] = "public,max-age=86400";
+        }
+
+        if (mediaType) {
+            headers["Content-Type"] = mediaType;
+            // res.type(mediaType);
+        }
+
+        headers["Accept-Ranges"] = "bytes";
+        headers["X-Content-Type-Options"] = "nosniff";
+
+        let statusCode = 200;
+        if (isPartialByteRangeRequest) {
+            if (partialByteEnd < 0) {
+                partialByteEnd = zipStream_.length - 1;
+            }
+            const partialByteLength = isPartialByteRangeRequest ?
+                partialByteEnd - partialByteBegin + 1 :
+                zipStream_.length;
+            // res.setHeader("Connection", "close");
+            // res.setHeader("Transfer-Encoding", "chunked");
+            headers["Content-Length"] = `${partialByteLength}`;
+            const rangeHeader = `bytes ${partialByteBegin}-${partialByteEnd}/${zipStream_.length}`;
+            debug("streamProtocolHandler +++> " + rangeHeader + " (( " + partialByteLength);
+            headers["Content-Range"] = rangeHeader;
+            statusCode = 206;
+        } else {
+            headers["Content-Length"] = `${zipStream_.length}`;
+            debug("streamProtocolHandler ---> " + zipStream_.length);
+            statusCode = 200;
+        }
+
+        if (isHead) {
+            debug("streamProtocolHandler HEAD RESPONSE HEADERS: ", headers);
+            const obj: ProtocolResponse = {
+                // NodeJS.ReadableStream
+                data: null,
+                headers,
+                statusCode,
+            };
+            callback(obj);
+        } else {
+            debug("streamProtocolHandler GET RESPONSE HEADERS: ", headers);
+            const obj = {
+                // NodeJS.ReadableStream
+                data: zipStream_.stream,
+                headers,
+                statusCode,
+            };
+            callback(obj);
+        }
+
+        return ;
+    } else if (isNotesFromPublicationRequest) {
 
         const publicationUUID = uPathname.substr(notesFromPublicationPrefix.length);
 
