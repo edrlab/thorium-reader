@@ -298,6 +298,9 @@ declare namespace typed_i18n {
   (_: "catalog.tags", __?: {}): string;
   (_: "catalog.update", __?: {}): string;
   (_: "dialog", __?: {}): {
+  readonly "customization": {
+    readonly "splashscreen": { readonly "title": string }
+  },
   readonly "annotations": {
     readonly "descAuthor": string,
     readonly "descCreator": string,
@@ -324,6 +327,9 @@ declare namespace typed_i18n {
   readonly "return": string,
   readonly "yes": string
 };
+  (_: "dialog.customization", __?: {}): { readonly "splashscreen": { readonly "title": string } };
+  (_: "dialog.customization.splashscreen", __?: {}): { readonly "title": string };
+  (_: "dialog.customization.splashscreen.title", __?: {}): string;
   (_: "dialog.annotations", __?: {}): {
   readonly "descAuthor": string,
   readonly "descCreator": string,

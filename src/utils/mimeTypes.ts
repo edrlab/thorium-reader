@@ -1177,6 +1177,7 @@ export const mimeTypes = {
     "lcpdivina": "application/divina+lcp",
     "lcpdf": "application/pdf+lcp",
     [ADOBE_ADEPT_XML]: "application/vnd.adobe.adept+xml",
+    "thor": "application/vnd.edrlab.thorium",
 };
 
 export const findMimeTypeWithExtension = (ext: string): string | undefined => {

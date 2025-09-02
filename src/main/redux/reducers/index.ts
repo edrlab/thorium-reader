@@ -34,6 +34,7 @@ import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 import { noteExportReducer } from "readium-desktop/common/redux/reducers/noteExport";
 import { customizationPackageActivatingReducer } from "readium-desktop/common/redux/reducers/customization/activate";
 import { customizationPackageProvisioningReducer } from "readium-desktop/common/redux/reducers/customization/provision";
+import { customizationPackageActivatingLockReducer } from "readium-desktop/common/redux/reducers/customization/lock";
 
 export const rootReducer = combineReducers({ // RootState
     versionUpdate: versionUpdateReducer,
@@ -112,5 +113,6 @@ export const rootReducer = combineReducers({ // RootState
     customization: combineReducers({
         activate: customizationPackageActivatingReducer,
         provision: customizationPackageProvisioningReducer,
+        lock: customizationPackageActivatingLockReducer,
     }),
 });

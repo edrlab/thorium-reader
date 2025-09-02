@@ -8,8 +8,12 @@
 // import * as enable from "./enable";
 import * as activate from "./activate";
 import * as provision from "./provision";
+import * as acquire from "./acquire";
+import * as lock from "./lock";
 
 export {
     activate as activating,
     provision as provisioning,
+    acquire,
+    lock,
 };

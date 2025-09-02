@@ -13,6 +13,25 @@ export interface ICustomizationProfileProvisioned {
     version: string; // semantic versionning from manifest
 }
 
+export interface ICustomizationProfileError {
+fileName: string; error: boolean; message: string;
+}
+
+export type ICustomizationProfileProvisionedWithError = ICustomizationProfileProvisioned | ICustomizationProfileError;
+
 export interface ICustomizationProfileActivated {
     id: string, // identifier URI from manifest // pointer to ICustomizationProfileProvisioned.id
+}
+
+export interface ICustomizationLockInfo {
+    uuid: string;
+    id?: string;
+    fileName?: string;
+    filePath?: string;
+    packagePath?: string;
+    fileSize?: number;
+}
+export interface ICustomizationProfileLock {
+    state: "IDLE" | "DOWNLOAD" | "COPY" | "PROVISIONING" | "ACTIVATING", // finite state machine
+    lockInfo: ICustomizationLockInfo,
 }
