@@ -11,7 +11,7 @@ import { customizationActions, toastActions } from "readium-desktop/common/redux
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { ICustomizationLockInfo } from "readium-desktop/common/redux/states/customization";
-import { ToastType } from "src/common/models/toast";
+import { ToastType } from "readium-desktop/common/models/toast";
 
 import { call as callTyped, select as selectTyped, put as putTyped, /*take as takeTyped, race as raceTyped,*/ delay, SagaGenerator } from "typed-redux-saga/macro";
 

@@ -24,8 +24,6 @@ import { isOpenUrl, setOpenUrl } from "./url";
 import { globSync } from "glob";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { isAcceptedExtension } from "readium-desktop/common/extension";
-import { customizationActions } from "readium-desktop/common/redux/actions";
-import { sagaCustomizationProfileProvisioning } from "../redux/sagas/customization";
 
 // Logger
 const debug = debug_("readium-desktop:cli:process");
@@ -206,15 +204,15 @@ const yargsInit = () =>
                 }
             },
         )
-        .command("$0 [profile] [path..]",
+        .command("$0 [path..]",
             "import and read an epub or lcpl file. Can also be to provisioned and activate a custom profile extension",
             (y) =>
                 y
-                .positional("profile", {
-                    describe: "unique profile identifier (if already loaded) of the custom profile extension",
-                    type: "string",
-                    array: false,
-                })
+                // .positional("profile", {
+                //     describe: "unique profile identifier (if already loaded) of the custom profile extension",
+                //     type: "string",
+                //     array: false,
+                // })
                 .positional("path", {
                     describe: "path of your publication, it can be an absolute, relative path",
                     type: "string",
@@ -231,52 +229,13 @@ const yargsInit = () =>
                     app.whenReady(),
                 ]);
 
-                const { path: pathArgv, profile } = argv;
+                const { path: pathArgv } = argv;
 
                 debug("lauch command", argv);
 
 
-                // if (profilePath) {
+                // TODO: profile option, ...
 
-                //     debug("--profile", profilePath);
-
-
-                //     if (profilePath.startsWith("http")) {
-                //         debug("TODO: profile on http url");
-
-                //     } else {
-                //         debug("copy profile to wellKnownFolder");
-
-                //         const fileName = path.basename(profilePath);
-                //         const extension = path.extname(profilePath);
-
-                //         if (extension === ".thor") {
-
-                //             const packageAbsolutePath = path.join(customizationWellKnownFolder, fileName);
-                //             debug(`COPY "${profilePath}" to "${packageAbsolutePath}"`);
-                //             try {
-                //                 await copyFile(profilePath, packageAbsolutePath);
-                //                 debug("COPY SUCCESS");
-                //             } catch (e) {
-                //                 debug("ERROR: copy", profilePath, e);
-                //             }
-                //         }
-                //     }
-                // }
-
-                if (profile) {
-
-                    debug("dispatch", profile);
-                    diMainGet("store").dispatch(customizationActions.activating.build(profile));
-
-                    await diMainGet("saga-middleware").run(sagaCustomizationProfileProvisioning).toPromise();
-
-
-                    // TODO: evolution:  potentially lock this profile from the launch command line.
-                    // In this case the user can not change the profile, even comeback to vanilla thorium
-
-
-                }
 
                 const openPublicationRequestedBool = Array.isArray(pathArgv) ? pathArgv.length > 0 : !!pathArgv;
                 if (openPublicationRequestedBool) {

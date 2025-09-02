@@ -16,7 +16,7 @@ import { copyFile } from "node:fs/promises";
 import { nanoid } from "nanoid";
 
 
-import { fork as forkTyped, call as callTyped, select as selectTyped, put as putTyped, take as takeTyped, race as raceTyped, delay } from "typed-redux-saga/macro";
+import { fork as forkTyped, call as callTyped, select as selectTyped, put as putTyped, take as takeTyped, race as raceTyped, delay, SagaGenerator } from "typed-redux-saga/macro";
 import { existsSync, statSync } from "node:fs";
 import path from "node:path";
 import { ICustomizationLockInfo } from "readium-desktop/common/redux/states/customization";
@@ -32,13 +32,13 @@ export function* sagaCustomizationProfileProvisioning() {
 
     debug("INIT Customization with Persisted REDUX State :=> ", JSON.stringify(customizationState, null, 4));
 
-    const packagesArray = yield* callTyped(() => tryCatch(() => customizationPackageProvisionningFromFolder(customizationWellKnownFolder), filename_));
+    const [packagesArray, errorPackages] = yield* callTyped(() => tryCatch(() => customizationPackageProvisionningFromFolder(customizationWellKnownFolder), filename_));
     if (!packagesArray || !packagesArray.length) {
         debug("no package profile found");
     } else {
         debug("packages profile found =", JSON.stringify(packagesArray, null, 4));
     }
-    yield* putTyped(customizationActions.provisioning.build(customizationState.provision, packagesArray || []));
+    yield* putTyped(customizationActions.provisioning.build(customizationState.provision, packagesArray || [], errorPackages || []));
 
     if (customizationState.activate.id) {
 
@@ -105,7 +105,7 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
 
     const lock = yield* selectTyped((state: ICommonRootState) => state.customization.lock);
     let copyAndQuit = false;
-    if (lock.lockInfo) {
+    if (lock.state !== "IDLE") {
         debug("ERROR: already in profile activating phase, need a manual action to activate this profile !!!");
 
         copyAndQuit = true;
@@ -142,7 +142,7 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
 
     const { a: timeoutResult, b: fileNameProvisioned } = yield* raceTyped({
         a: delay(20000),
-        b: callTyped(function* () {
+        b: callTyped(function* (): SagaGenerator<boolean> {
             if (copyAndQuit) {
                 return undefined;
             }
@@ -155,17 +155,32 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
 
                 const fileNameProvisionedFound = provisioningAction.payload.newPackagesProvisioned.find(({ fileName: fileNameProvisioned }) => fileNameProvisioned === fileName);
                 if (fileNameProvisionedFound) {
-                    return fileNameProvisionedFound;
-                } else {
-                    // TODO: need to return every profiles, provisioned or not, to the array !
-                    return undefined;
-                }
 
+                    // TODO: in the case of a drag-and-drop of an older profile than one already provisioned,
+                    // it can be better to activate the newer profile vendor and do not provisioned the older profile
+                    const packageId = fileNameProvisionedFound.identifier;
+                    lockInfo.id = packageId;
+                    yield* putTyped(customizationActions.lock.build("ACTIVATING", lockInfo));
+                    yield* putTyped(customizationActions.activating.build(packageId));
+                    return true;
+                } else {
+                    const fileNameErrorFound = provisioningAction.payload.errorPackages.find(({ fileName: fileNameProvisioned }) => fileNameProvisioned === fileName);
+                    if (fileNameErrorFound) {
+                        debug(`ERROR: profile (${fileName}) [${fileNameErrorFound.message}]`);
+                        yield* putTyped(toastActions.openRequest.build(ToastType.Error, `ERROR: profile (${fileName}) [${fileNameErrorFound.message}]`));
+                        yield* putTyped(customizationActions.lock.build("IDLE"));
+                        return true;
+                    }
+                }
             }
 
-            return undefined; // never returned
+            return false; // never returned
         }),
     });
+
+    if (copyAndQuit) {
+        return ;
+    }
 
     if (!fileNameProvisioned) {
 
@@ -179,13 +194,6 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
         yield* putTyped(customizationActions.lock.build("IDLE"));
         return;
     }
-    
-    // TODO: in the case of a drag-and-drop of an older profile than one already provisioned,
-    // it can be better to activate the newer profile vendor and do not provisioned the older profile
-    const packageId = fileNameProvisioned.identifier;
-    lockInfo.id = packageId;
-    yield* putTyped(customizationActions.lock.build("ACTIVATING", lockInfo));
-    yield* putTyped(customizationActions.activating.build(packageId));
 }
 
 export function saga() {

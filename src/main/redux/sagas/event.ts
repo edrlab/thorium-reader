@@ -30,6 +30,7 @@ import { customizationPackageProvisioningAccumulator, customizationWellKnownFold
 import * as path from "path";
 import { net } from "electron";
 import { mimeTypes } from "readium-desktop/utils/mimeTypes";
+import { ICustomizationProfileError, ICustomizationProfileProvisioned } from "readium-desktop/common/redux/states/customization";
 
 // Logger
 const debug = debug_("readium-desktop:main:saga:event");
@@ -47,6 +48,7 @@ export function saga() {
 
                     const customizationState = yield* selectTyped((state: ICommonRootState) => state.customization);
                     let packagesArray = customizationState.provision;
+                    const errorPackages: ICustomizationProfileError[] = [];
 
                     if (removed) {
                         const packageFound = packagesArray.find(({ fileName }) => fileName === packageFileName);
@@ -56,11 +58,20 @@ export function saga() {
                         }
                         packagesArray = packagesArray.filter(({ fileName }) => fileName !== packageFileName);
                     } else {
-                        packagesArray = yield* callTyped(() => customizationPackageProvisioningAccumulator(packagesArray, packageFileName));
+                        const profileProvisioned = yield* callTyped(() => customizationPackageProvisioningAccumulator(packagesArray, packageFileName));
+                        if ((profileProvisioned as ICustomizationProfileError).error) {
+                            debug("ERROR: Profile not provisioned, due to error :", (profileProvisioned as ICustomizationProfileError).message);
+                            errorPackages.push((profileProvisioned as ICustomizationProfileError));
+                        } else {
+                            packagesArray = [
+                                ...packagesArray.filter(({ identifier }) => (profileProvisioned as ICustomizationProfileProvisioned).identifier !== identifier),
+                                profileProvisioned as ICustomizationProfileProvisioned,
+                            ];
+                        }
                     }
 
                     debug("dispatch provisionning action with ", JSON.stringify(packagesArray));
-                    yield* putTyped(customizationActions.provisioning.build(customizationState.provision, packagesArray));
+                    yield* putTyped(customizationActions.provisioning.build(customizationState.provision, packagesArray, errorPackages));
 
                     // TODO: how to warn user of potentially a new version of the packages id, we have to put a diff between version for a same id !
                     // And mostly a technical issue, how to update the view with the update. package streamer follow a package id 

@@ -15,10 +15,9 @@ import { extractCrc32OnZip } from "../tools/crc";
 import * as path from "path";
 import * as semver from "semver";
 import { readdirSync, existsSync, mkdirSync } from "fs";
-import { ICustomizationProfileProvisioned } from "readium-desktop/common/redux/states/customization";
+import { ICustomizationProfileProvisioned, ICustomizationProfileError, ICustomizationProfileProvisionedWithError } from "readium-desktop/common/redux/states/customization";
 import { app } from "electron";
 import { _CUSTOMIZATION_PROFILE_PUB_KEY } from "readium-desktop/preprocessor-directives";
-
 
 // Logger
 const debug = debug_("readium-desktop:main#utils/customization/provisioning");
@@ -98,53 +97,57 @@ async function checkIfProfilePackageSigned(manifest: ICustomizationManifest, pac
     return true;
 }
 
-export async function customizationPackageProvisionningFromFolder(wellKnownFolder: string): Promise<ICustomizationProfileProvisioned[]>{
+export async function customizationPackageProvisionningFromFolder(wellKnownFolder: string): Promise<[ICustomizationProfileProvisioned[], ICustomizationProfileError[]]>{
 
     let packagesArray: ICustomizationProfileProvisioned[] = [];
+    const packagesErrorArray: ICustomizationProfileError[] = [];
     const results = readdirSync(wellKnownFolder, {withFileTypes: true});
 
     for (const dirent of results) {
         if (dirent.isFile() && path.extname(dirent.name) === ".thor") { 
             const packageFileName = dirent.name;
             debug("Found => ", packageFileName);
-            packagesArray = await customizationPackageProvisioningAccumulator(packagesArray, packageFileName);
+            const profileProvisioned = await customizationPackageProvisioningAccumulator(packagesArray, packageFileName);
+            if ((profileProvisioned as ICustomizationProfileError).error) {
+                debug("ERROR: Profile not provisioned, due to error :", (profileProvisioned as ICustomizationProfileError).message);
+                packagesErrorArray.push((profileProvisioned as ICustomizationProfileError));
+            } else {
+                packagesArray = [
+                    ...packagesArray.filter(({identifier}) => (profileProvisioned as ICustomizationProfileProvisioned).identifier !== identifier),
+                    profileProvisioned as ICustomizationProfileProvisioned,
+                ];
+            }
         }
     }
 
-    return packagesArray;
+    return [packagesArray, packagesErrorArray];
 }
 
-export async function customizationPackageProvisioningAccumulator(packagesArray: ICustomizationProfileProvisioned[], packageFileName: string): Promise<ICustomizationProfileProvisioned[]> {
+export async function customizationPackageProvisioningAccumulator(packagesArray: ICustomizationProfileProvisioned[], packageFileName: string): Promise<ICustomizationProfileProvisionedWithError> {
 
     const packageFileNameFound = packagesArray.find(({ fileName }) => fileName === packageFileName);
     if (packageFileNameFound) {
         packagesArray = packagesArray.filter(({ fileName }) => fileName !== packageFileName);
     }
-
-    // TODO: refactor this, and do not exclude older or same semver package, just mark it are not available.
-    // Will be useful to tell to the user that the profile in provisioning/activating wished is not available and then activate the good one.
+    let manifest: ICustomizationManifest;
+    let error = "";
     try {
-        const manifest = await customizationPackageProvisioning(packageFileName);
-        const packageProvisionedWithTheSameIdentifier = packagesArray.find(({identifier}) => identifier === manifest.identifier);
-        if (
-            !packageProvisionedWithTheSameIdentifier || semver.gt(manifest.version, packageProvisionedWithTheSameIdentifier.version)
-        ) {
-
-            const packageProvisionedObj = { identifier: manifest.identifier, fileName: packageFileName, version: manifest.version };
-            debug(`package "${packageFileName}" provisonned :=>`, packageProvisionedObj);
-            return [
-                ...packagesArray.filter(({ identifier }) => identifier !== manifest.identifier),
-                packageProvisionedObj,
-            ];
-        }
+        manifest = await customizationPackageProvisioning(packageFileName);
     } catch (e) {
         debug("Error when provisioning this profile =>", packageFileName);
-        debug(e);
+        error = `${e}`;
     }
 
-    // TODO: save and return provisioned profile error, to mitigate and print to user the error
-    debug("Something went wrong", packageFileName, "not provisioned, return : ", JSON.stringify(packagesArray, null, 4));
-    return packagesArray;
+    if (!manifest) {
+        return { fileName: packageFileName, error: true, message: error };
+    }
+
+    const packageProvisionedWithTheSameIdentifier = packagesArray.find(({ identifier }) => identifier === manifest.identifier);
+    if (!packageProvisionedWithTheSameIdentifier || semver.gt(packageProvisionedWithTheSameIdentifier.version, manifest.version)) {
+        return { identifier: manifest.identifier, fileName: packageFileName, version: manifest.version };
+    }
+
+    return { fileName: packageFileName, error: true, message: "profile version is under or equal to the currrent provisioned profile version" };
 }
 
 export async function customizationPackageProvisioning(packageFileName: string): Promise<ICustomizationManifest> {

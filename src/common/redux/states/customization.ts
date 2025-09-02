@@ -13,6 +13,12 @@ export interface ICustomizationProfileProvisioned {
     version: string; // semantic versionning from manifest
 }
 
+export interface ICustomizationProfileError {
+fileName: string; error: boolean; message: string;
+}
+
+export type ICustomizationProfileProvisionedWithError = ICustomizationProfileProvisioned | ICustomizationProfileError;
+
 export interface ICustomizationProfileActivated {
     id: string, // identifier URI from manifest // pointer to ICustomizationProfileProvisioned.id
 }
