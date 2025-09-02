@@ -12,7 +12,7 @@ export const ID = "CUSTOMIZATION_ACTIVATING_LOCK";
 
 export interface Payload {
     state: "IDLE" | "DOWNLOAD" | "COPY" | "PROVISIONING" | "ACTIVATING";
-    lockInfo: ICustomizationLockInfo;
+    lockInfo?: ICustomizationLockInfo;
 }
 
 export function build(state: "IDLE" | "DOWNLOAD" | "COPY" | "PROVISIONING" | "ACTIVATING", lockInfo?: ICustomizationLockInfo  ): Action<typeof ID, Payload> {

@@ -11,7 +11,7 @@ import { customizationActions } from "../../actions";
 
 
 export const initialState: ICustomizationProfileLock = {
-    lockInfo: undefined,
+    lockInfo: {uuid: ""},
     state: "IDLE",
 };
 
@@ -22,7 +22,7 @@ function customizationPackageActivatingLockReducer_(
     switch (action.type) {
         case customizationActions.lock.ID:
             return {
-                lockInfo: action.payload.lockInfo ? { ...action.payload.lockInfo } : undefined,
+                lockInfo: action.payload.lockInfo ? { ...action.payload.lockInfo } : state.lockInfo,
                 state: action.payload.state,
             };
         default:
