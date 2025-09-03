@@ -27,7 +27,7 @@
     "images": [
         {
             "rel": "logo",
-            "href": "./images/logo"
+            "href": "./images/logo.svg"
         }
     ]
 }

@@ -1,6 +1,6 @@
 {
     "manifest_version": 1,
-    "identifier": "thorium-manifest://org.edrlab.thorium.romanesco",
+    "identifier": "thorium-manifest://org.edrlab.thorium.troublion",
     "version": "1.0.0",
     "name": "troublion test customization profile",
     "default_locale": "en",
@@ -27,7 +27,7 @@
     "images": [
         {
             "rel": "logo",
-            "href": "./images/logo"
+            "href": "./images/logo.svg"
         }
     ]
 }

@@ -114,7 +114,7 @@ function* profileActivating(id: string): SagaGenerator<void> {
 
     const logoObj = manifestJson.images?.find((ln) => ln?.rel === "logo");
     debug("Manifest LOGO Obj:", logoObj);
-    const logoUrl = baseUrl + encodeURIComponent_RFC3986(Buffer.from("./images/logo.svg").toString("base64"));
+    const logoUrl = baseUrl + encodeURIComponent_RFC3986(Buffer.from(logoObj.href).toString("base64"));
 
     const colorsDarkLight = manifestJson.theme.color;
 
