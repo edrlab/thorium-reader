@@ -99,7 +99,7 @@ class Header extends React.Component<IProps, undefined> {
 
             {
                 customizationEnable ?
-                    <div className="logo" style={{ height: "60px", width: "", margin: " 20px auto", display: "flex", justifyContent: "center" }}>
+                    <div className="logo" style={{ position: "absolute", height: "60px", width: "", margin: " 20px auto", display: "flex", justifyContent: "center" }}>
                         <img src={this.props.customizationTheme.logo} alt="" style={{ objectFit: "contain", maxHeight: "100px", maxWidth: "100%", width: "fit-content" }} />
                     </div>
                     : <></>
