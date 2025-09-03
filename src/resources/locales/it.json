@@ -140,7 +140,7 @@
         "deleteBookmarksText": "Sei sicuro di voler eliminare {{- bookmarkListLength}} segnalibri?",
         "deleteFeed": "Vuoi davvero eliminare questo catalogo ?",
         "deletePublication": "Vuoi davvero eliminare questa pubblicazione ?",
-        "deletePublicationWithNotes": "",
+        "deletePublicationWithNotes": "Attenzione: questa pubblicazione contiene annotazioni e/o segnalibri, che verranno eliminati anch'essi! (se desideri conservarli, assicurati di esportare le note prima di rimuovere la pubblicazione)",
         "import": "Vuoi davvero importare questi files:",
         "importError": "si è verificato un errore, verifica l'estensione del file ({{acceptedExtension}})",
         "renew": "Vuoi davvero rinnovare la licenza per questa pubblicazione?",
@@ -718,6 +718,7 @@
             "goToError": "Questa interruzione di pagina non esiste",
             "goToPlaceHolder": "Inserisci il numero della pagina",
             "goToTitle": "Vai alla pagina",
+            "history": "",
             "historyNext": "Vai avanti",
             "historyPrevious": "Torna indietro",
             "infoTitle": "informazione",
@@ -726,7 +727,9 @@
             "page": "Pagina",
             "pdfscalemode": "Dimensioni della pagina o larghezza",
             "print": "stampa",
-            "printDisabled": "",
+            "printDisabled": "Non è permesso stampare",
+            "screenNext": "Pagina successiva / scorrimento avanti",
+            "screenPrevious": "Pagina precedente / scorrimento indietro",
             "settingsTitle": "impostazioni"
         },
         "notes": {
@@ -752,22 +755,22 @@
             "searchTitle": "Cerca:"
         },
         "print": {
-            "descriptionLcpCount": "",
-            "descriptionLcpPrintable": "",
-            "howTo": "",
-            "lcpInfo": "",
-            "noPagesLcpLimitReached": "",
-            "noPrintablePages": "",
+            "descriptionLcpCount": "Limite pagine rimanenti: {{- count}}",
+            "descriptionLcpPrintable": "Pagine stampate in precedenza: {{- printable}} ({{- count}})",
+            "howTo": "Come selezionare un intervallo di pagine da stampare",
+            "lcpInfo": "Il numero di pagine che è possibile stampare in questa pubblicazione è limitato a {{- count}}. Selezionare qui le pagine desiderate.",
+            "noPagesLcpLimitReached": "Hai raggiunto il limite di LCP",
+            "noPrintablePages": "Nessuna pagina stampabile",
             "pageHelpInfo": "informazioni di aiuto per gli intervalli di pagine:",
             "pageHelpInfo1": " - inserire un numero di pagina per fare riferimento a una singola pagina (ad es. \"6\")",
             "pageHelpInfo2": " - inserire due numeri di pagina separati da un trattino per fare riferimento a un intervallo di pagine contigue (ad esempio \"6-13\")",
             "pageHelpInfo3": " - utilizzare il carattere punto e virgola per separare più pagine o intervalli di pagine (ad esempio \"5;14-20;37\")",
             "pageHelpInfo4": " - tralasciare la prima o l'ultima pagina di un intervallo per fare riferimento alla prima o all'ultima pagina della pubblicazione (ad esempio, \"-16\" equivale a \"1-16\", e \"34-\" equivale a \"34-100\" nell'ipotesi di un libro con un totale di 100 pagine)",
             "pages": "Pagine",
-            "preview": "",
+            "preview": "Anteprima",
             "print": "Stampa",
-            "printablePages": "",
-            "title": ""
+            "printablePages": "Pagine stampabili (totale)",
+            "title": "Selezione delle pagine stampabili"
         },
         "settings": {
             "column": {
@@ -791,7 +794,7 @@
             "letterSpacing": "Spaziatura lettere",
             "lineSpacing": "Spaziatura linee",
             "margin": "Margine",
-            "mathjax": "",
+            "mathjax": "Abilita MathJax",
             "noFootnotes": "Disattiva note a piè di pagina",
             "noRTLFlip": "Disabilita l'interfaccia utente da destra a sinistra",
             "noRuby": "Nascondi Ruby Giapponese",
@@ -909,24 +912,24 @@
                     "name": "Audio successivo (esci)"
                 },
                 "AudioPlayPause": {
-                    "description": "",
-                    "name": ""
+                    "description": "Attiva/disattiva la riproduzione/pausa della narrazione corrente (EPUB3 con Media Overlays, lettura ad alta voce con sintesi vocale o audiolibro preregistrato)",
+                    "name": "Play/pausa audio"
                 },
                 "AudioPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "Torna al segmento audio precedente nella narrazione (EPUB3 con Media Overlays, lettura ad alta voce con sintesi vocale o audiolibro preregistrato)",
+                    "name": "Segmento audio precedente"
                 },
                 "AudioPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Torna al segmento audio precedente nella narrazione (EPUB3 con Media Overlays, lettura ad alta voce con sintesi vocale o audiolibro preregistrato). Questo salta qualsiasi struttura saltabile",
+                    "name": "Segmento audio precedente (esci)"
                 },
                 "AudioStop": {
-                    "description": "",
-                    "name": ""
+                    "description": "Interrompi l'audio corrente (EPUB3 con Media Overlays, lettura ad alta voce con sintesi vocale o audiolibro preregistrato)",
+                    "name": "Interrompi audio"
                 },
                 "CloseReader": {
-                    "description": "",
-                    "name": ""
+                    "description": "Chiudi la finestra del lettore e torna alla libreria",
+                    "name": "Chiudi il lettore"
                 },
                 "FXLZoomIn": {
                     "description": "",
@@ -1189,7 +1192,7 @@
         "title": {
             "allBooks": "Tutte le mie pubblicazioni",
             "newFeature": "Nuova funzionalità: annotazioni",
-            "welcome": "Benvenuti in Thorium 3.0"
+            "welcome": "Benvenuti in Thorium 3"
         }
     }
 }

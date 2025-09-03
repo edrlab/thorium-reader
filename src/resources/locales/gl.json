@@ -718,6 +718,7 @@
             "goToError": "Este salto de páxina non existe",
             "goToPlaceHolder": "Introduce un número de páxina",
             "goToTitle": "Ir a páxina",
+            "history": "",
             "historyNext": "Avanzar",
             "historyPrevious": "Retroceder",
             "infoTitle": "Información",
@@ -727,6 +728,8 @@
             "pdfscalemode": "Axuste ou ancho de páxina",
             "print": "",
             "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "Opcións de configuración"
         },
         "notes": {
@@ -1189,7 +1192,7 @@
         "title": {
             "allBooks": "Todas as miñas publicacións",
             "newFeature": "Nova función: Anotacións",
-            "welcome": "Bienvenido a Thorium 3.0"
+            "welcome": "Bienvenido a Thorium 3"
         }
     }
 }

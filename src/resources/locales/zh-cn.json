@@ -718,6 +718,7 @@
             "goToError": "页码不存在",
             "goToPlaceHolder": "输入页码",
             "goToTitle": "转到页",
+            "history": "",
             "historyNext": "前进",
             "historyPrevious": "后退",
             "infoTitle": "信息",
@@ -727,6 +728,8 @@
             "pdfscalemode": "适合页面宽度",
             "print": "",
             "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "设置"
         },
         "notes": {
@@ -1189,7 +1192,7 @@
         "title": {
             "allBooks": "我的所有出版物",
             "newFeature": "新功能：注解",
-            "welcome": "欢迎使用 Thorium 3.0"
+            "welcome": "欢迎使用 Thorium 3"
         }
     }
 }

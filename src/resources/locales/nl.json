@@ -718,6 +718,7 @@
             "goToError": "Deze paginaovergang bestaat niet",
             "goToPlaceHolder": "Voer een paginanummer in",
             "goToTitle": "Ga naar pagina",
+            "history": "",
             "historyNext": "Spring vooruit",
             "historyPrevious": "Spring terug",
             "infoTitle": "Informatie",
@@ -727,6 +728,8 @@
             "pdfscalemode": "Pagina aanpassen aan breedte",
             "print": "Druk af",
             "printDisabled": "Verboden te printen",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "Instellingen"
         },
         "notes": {
@@ -1189,7 +1192,7 @@
         "title": {
             "allBooks": "Al mijn publicaties",
             "newFeature": "Nieuwe functie: Annotaties",
-            "welcome": "Welkom bij Thorium 3.0"
+            "welcome": "Welkom bij Thorium 3"
         }
     }
 }

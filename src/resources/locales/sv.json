@@ -20,7 +20,7 @@
             "copy": "Kopiera",
             "cut": "Klipp ut",
             "paste": "Klistra in",
-            "print": "",
+            "print": "Skriv ut",
             "redo": "Gör om",
             "selectAll": "Markera allt",
             "title": "Redigera",
@@ -671,8 +671,8 @@
         "goToContent": "Gå till innehållet",
         "imgViewer": {
             "title": "",
-            "zoomIn": "",
-            "zoomOut": "",
+            "zoomIn": "Zooma in",
+            "zoomOut": "Zooma ut",
             "zoomReset": ""
         },
         "marks": {
@@ -718,6 +718,7 @@
             "goToError": "Sidnumret finns inte",
             "goToPlaceHolder": "Ange ett sidnummer",
             "goToTitle": "Gå till sida",
+            "history": "",
             "historyNext": "Hoppa framåt",
             "historyPrevious": "Hoppa tillbaka",
             "infoTitle": "Information",
@@ -727,6 +728,8 @@
             "pdfscalemode": "Anpassa till hel sida eller sidbredd",
             "print": "",
             "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "Inställningar"
         },
         "notes": {
@@ -1189,7 +1192,7 @@
         "title": {
             "allBooks": "Alla mina publikationer",
             "newFeature": "Ny funktion: Anteckningar",
-            "welcome": "Välkommen till Thorium 3.0"
+            "welcome": "Välkommen till Thorium 3"
         }
     }
 }

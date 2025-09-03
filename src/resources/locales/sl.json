@@ -718,6 +718,7 @@
             "goToError": "Prelom strani ne obstaja",
             "goToPlaceHolder": "Vnesi številko strani",
             "goToTitle": "Pojdi na stran",
+            "history": "",
             "historyNext": "Skok naprej",
             "historyPrevious": "Skok nazaj",
             "infoTitle": "informacije",
@@ -727,6 +728,8 @@
             "pdfscalemode": "Prileganje strani ali širine",
             "print": "",
             "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "nastavitve"
         },
         "notes": {
@@ -1189,7 +1192,7 @@
         "title": {
             "allBooks": "Vse publikacije",
             "newFeature": "Nova funkcija: opombe",
-            "welcome": "Dobrodošli v Thorium 3.0"
+            "welcome": "Dobrodošli v Thorium 3"
         }
     }
 }

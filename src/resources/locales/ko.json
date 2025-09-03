@@ -718,6 +718,7 @@
             "goToError": "페이지 구분이 존재하지 않습니다.",
             "goToPlaceHolder": "페이지 번호를 입력하세요.",
             "goToTitle": "페이지로 이동",
+            "history": "",
             "historyNext": "앞으로 이동",
             "historyPrevious": "뒤로 이동",
             "infoTitle": "정보",
@@ -727,6 +728,8 @@
             "pdfscalemode": "페이지 또는 너비 맞춤",
             "print": "",
             "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "설정"
         },
         "notes": {

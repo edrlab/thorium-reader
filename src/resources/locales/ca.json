@@ -718,6 +718,7 @@
             "goToError": "Aquest salt de pàgina no existeix",
             "goToPlaceHolder": "Introdueix un número de pàgina",
             "goToTitle": "Anar a pàgina",
+            "history": "",
             "historyNext": "Salta endavant",
             "historyPrevious": "Salta enrere",
             "infoTitle": "Informació",
@@ -727,6 +728,8 @@
             "pdfscalemode": "Ajust o ample de pàgina",
             "print": "",
             "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "Opcions de configuració"
         },
         "notes": {
@@ -1189,7 +1192,7 @@
         "title": {
             "allBooks": "Totes les meves publicacions",
             "newFeature": "Nova característica: Anotacions",
-            "welcome": "Benvinguts a Thorium 3.0"
+            "welcome": "Benvinguts a Thorium 3"
         }
     }
 }

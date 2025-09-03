@@ -718,8 +718,9 @@
             "goToError": "Toks puslapių skirtukas neegzistuoja",
             "goToPlaceHolder": "Įveskite puslapio numerį",
             "goToTitle": "Eiti į puslapį",
-            "historyNext": "Peršokti į priekį",
-            "historyPrevious": "Peršokti atgal",
+            "history": "Naršymo istorija",
+            "historyNext": "Peršokti į priekį naršymo istorijoje",
+            "historyPrevious": "Peršokti atgal naršymo istorijoje",
             "infoTitle": "Informacija",
             "magnifyingGlassButton": "Ieškoti leidinyje",
             "openTableOfContentsTitle": "Naršymas",
@@ -727,6 +728,8 @@
             "pdfscalemode": "talpinti pritaikant prie puslapio aukščio/pločio",
             "print": "Spausdinti",
             "printDisabled": "Spausdinti draudžiama",
+            "screenNext": "Eiti pirmyn",
+            "screenPrevious": "Eiti atgal",
             "settingsTitle": "Nuostatos"
         },
         "notes": {
@@ -1189,7 +1192,7 @@
         "title": {
             "allBooks": "Visi mano leidiniai",
             "newFeature": "Nauja funkcija: Pastabos",
-            "welcome": "Su jumis sveikinasi Thorium 3.0"
+            "welcome": "Su jumis sveikinasi Thorium 3"
         }
     }
 }

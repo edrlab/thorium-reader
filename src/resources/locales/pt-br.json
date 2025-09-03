@@ -718,6 +718,7 @@
             "goToError": "Esta quebra de página não existe",
             "goToPlaceHolder": "Digite um número de página",
             "goToTitle": "Ir para a página",
+            "history": "",
             "historyNext": "Ir para frente",
             "historyPrevious": "Ir para trás",
             "infoTitle": "informação",
@@ -727,6 +728,8 @@
             "pdfscalemode": "Ajustar página ou largura",
             "print": "",
             "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "configurações"
         },
         "notes": {
@@ -1189,7 +1192,7 @@
         "title": {
             "allBooks": "Todas as minhas publicações",
             "newFeature": "Novo recurso: Anotações",
-            "welcome": "Bem-vindo ao Thorium 3.0"
+            "welcome": "Bem-vindo ao Thorium 3"
         }
     }
 }

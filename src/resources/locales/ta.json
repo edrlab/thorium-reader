@@ -718,6 +718,7 @@
             "goToError": "பக்க இடைவெளி இல்லை",
             "goToPlaceHolder": "பக்க எண்ணை உள்ளிடவும்",
             "goToTitle": "பக்கத்திற்குச் செல்லுங்கள்",
+            "history": "",
             "historyNext": "முன்னோக்கி செல்லவும்",
             "historyPrevious": "பின்னால் செல்லவும்",
             "infoTitle": "தகவல்",
@@ -727,6 +728,8 @@
             "pdfscalemode": "பக்க பொருத்தம் அல்லது அகலம்",
             "print": "அச்சிடுக",
             "printDisabled": "தடைசெய்யப்பட்ட அச்சு",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "அமைப்புகள்"
         },
         "notes": {
@@ -1189,7 +1192,7 @@
         "title": {
             "allBooks": "எனது வெளியீடுகள் அனைத்தும்",
             "newFeature": "புதிய அம்சம்: சிறுகுறிப்புகள்",
-            "welcome": "தோரியம் 3.0 க்கு வருக"
+            "welcome": "தோரியம் 3 க்கு வருக"
         }
     }
 }

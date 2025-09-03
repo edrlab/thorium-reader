@@ -531,7 +531,7 @@
             "ways-of-reading-title": "Okuma biçimleri",
             "ways-of-reading-visual-adjustments-modifiable": {
                 "compact": "Görünümde değişiklik yapılabilir",
-                "descriptive": "Metnin görünümünde ve sayfa düzeninde, okuma sisteminin kaabiliyetlerine bağlı olarak değişiklik yapılabilir(yazı biçimi türleri ve yazı boyutu; paragraflar, cümleler, kelimeler ve harfler arasındaki boşluklar ile metin ve arkaplan rengi gibi)"
+                "descriptive": "Metnin görünümünde ve sayfa düzeninde, okuma sisteminin kaabiliyetlerine bağlı olarak değişiklik yapılabilir (yazı biçimi türleri ve yazı boyutu; paragraflar, cümleler, kelimeler ve harfler arasındaki boşluklar ile metin ve arkaplan rengi gibi)"
             },
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Görünümün değiştirilip değiştirilemeyeceği hakkında bilgi mevcut değil",
@@ -545,11 +545,11 @@
                 "textual": "Tüm içerik, sesli okuma veya dinamik braille ile okunabilir"
             },
             "accessibilityFeature": {
-                "alternativeText": "İçerikteki görsellerde alt metin bulunmaktadır",
+                "alternativeText": "Görsellerde alt metin bulunmaktadır",
                 "displayTransformability": "Metin ve sayfa düzeninin görünümü değiştirilebilir",
                 "longDescription": "Tamamen betimlenmiş grafiksel kaynaklar",
                 "printPageNumbers": "Basılı kaynak sürümdeki sayfalara gidebilmek için  bir sayfa listesi içerir",
-                "readingOrder": "Okuma düzeni içerir",
+                "readingOrder": "Bir okuma düzeni içerir",
                 "synchronizedAudioText": "Metin ve ses eşzamanlanmıştır",
                 "tableOfContents": "İçindekiler Tablosu içerir"
             },
@@ -557,7 +557,7 @@
                 "flashing": "Yanıp sönen görsel uyarıcı",
                 "motionSimulation": "Hareket simülasyonu",
                 "name": "Tehlike:",
-                "noFlashing": "Yanıp sönen uyarıcı yok",
+                "noFlashing": "Yanıp sönen görsel uyarıcı yok",
                 "noMotionSimulation": "Hareket simülasyonu yok",
                 "noSound": "Ses yok",
                 "none": "Hiç",
@@ -577,36 +577,36 @@
         "author": "Yazar",
         "cancelledLcp": "Bu eserin LCP lisansı iptal edilmiştir.",
         "certificateRevoked": "LCP lisans sertifikası geçersizleştirildi.",
-        "certificateSignatureInvalid": "LCP lisans sertifikasının imzası geçersiz.",
+        "certificateSignatureInvalid": "Geçersiz LCP lisans sertifikası imzası",
         "cover": {
             "img": "kapak görseli"
         },
         "day": "gün",
-        "days": "günler",
+        "days": "gün",
         "duration": {
             "title": "Süre"
         },
-        "encryptedNoLicense": "Eser şifrelenmiş ancak bir LCP lisansı bulunmuyor'!",
+        "encryptedNoLicense": "Eser şifrelenmiş ancak bir LCP lisansı bulunmuyor!",
         "expired": "Ödünç alma süresi doldu",
         "expiredLcp": "Bu eserin LCP lisans süresi doldu.",
         "incorrectPassphrase": "Eserle eşleşen kayıtlı bir şifre yok veya girilen şifre hatalı.",
         "lcpEnd": "Son",
-        "lcpRightsCopy": "Karakterler kopyalandı",
-        "lcpRightsPrint": "Sayfalar basıldı",
+        "lcpRightsCopy": "Kopyalanmış karakterler",
+        "lcpRightsPrint": "Basılı sayfalar",
         "lcpStart": "Başlat",
         "licenceLCP": "Lisans (LCP)",
-        "licenseCertificateDateInvalid": "LCP sağlayıcı sertifikasının süresi doldu. ({{- dateTime}})",
-        "licenseOutOfDate": "Güncel olmayan LCP Lisansı",
+        "licenseCertificateDateInvalid": "LCP sağlayıcı sertifikası lisans düzenleme tarihinden önce sona erdi ({{- dateTime}}).",
+        "licenseOutOfDate": "Güncel olmayan LCP Lisansı.",
         "licenseSignatureInvalid": "LCP lisans imzası geçersiz.",
         "licensed": "Lisanslı",
         "markAsRead": "Okundu olarak işaretle",
         "notStarted": "Başlatılmadı",
-        "onGoing": "Devam ediyor",
+        "onGoing": "Devam Ediyor",
         "progression": {
             "title": "İlerleme"
         },
         "read": "Bitti",
-        "remainingTime": "Ödünç alınan (kalan süre)",
+        "remainingTime": "Ödünç alım (kalan süre)",
         "renewButton": "Yenile",
         "returnButton": "İade et",
         "returnedLcp": "Bu LCP-korumalı eser iade edildi.",
@@ -626,7 +626,7 @@
                 "description": "Dışa aktarılan notları adlandır:",
                 "title": "Başlık"
             },
-            "annotationsOptions": "Açıklayıcı Notlar için  Seçenekler",
+            "annotationsOptions": "Açıklayıcı Not Seçenekleri",
             "date": "Değiştirme tarihi",
             "export": "Notları farklı kaydet...",
             "filter": {
@@ -650,10 +650,10 @@
                 "progression": "İlerleme",
                 "sortingOptions": "Sıralama Seçenekleri"
             },
-            "toggleMarginMarks": "Sayfa kenarlarında görüntüle",
+            "toggleMarginMarks": "Sayfa kenar boşluklarında görüntüle",
             "type": {
                 "outline": "Kenarlıklı",
-                "solid": "Vurgulu arkaplanlı",
+                "solid": "Sade arkaplanlı",
                 "strikethrough": "Üstü çizili",
                 "underline": "Altı çizili"
             }
@@ -670,7 +670,7 @@
         },
         "goToContent": "İçeriğe git",
         "imgViewer": {
-            "title": "Görsel görüntüleyici (yakınlaştırma/uzaklaştırma)",
+            "title": "Görsel görüntüleyici (yakınlaştır/uzaklaştır)",
             "zoomIn": "Yakınlaştır",
             "zoomOut": "Uzaklaştır",
             "zoomReset": "Yakınlaştırmayı/Uzaklaştırmayı Sıfırla"
@@ -684,7 +684,7 @@
             "landmarks": "Referans imleri",
             "saveMark": "Kaydet",
             "search": "Ara",
-            "searchResult": "Ara: [{{- searchText}}]",
+            "searchResult": "Ara [{{- searchText}}]",
             "toc": "İçindekiler Tablosu"
         },
         "media-overlays": {
@@ -693,40 +693,43 @@
             "captionsDescription": "Yalın altyazı stilinde sadeleştirilmiş metin görünümü.",
             "disableContinuousPlay": "Sürekli oynatımı devredışı bırak",
             "disableContinuousPlayDescription": "Bir sonraki öğeyi otomatik olarak oynatma, geçerli öğe bittikten hemen sonra oynatımı duraklat.",
-            "ignoreAndUseTTS": "Önceden kaydedilmiş sesi çalma, TTS'i kullan",
+            "ignoreAndUseTTS": "Önceden kaydedilmiş sesi göz ardı et, TTS'i kullan",
             "ignoreAndUseTTSDescription": "EPUB Medya Katmanlarını göz ardı et, bunun yerine Metinden Sese Konuşma ile oku",
             "next": "Sonraki Sesli Okuma",
             "pause": "Sesli Okumayı Duraklat",
             "play": "Sesli Okumayı Oynat",
             "previous": "Önceki Sesli Okuma",
             "skip": "Atlanabilirlik",
-            "skipDescription": "Sayfa geçişleri, dipnotlar/sonnotlar gibi yardımcı içerikleri atla/yoksay.",
+            "skipDescription": "Sayfa geçişleri, dipnotlar/sonnotlar gibi tali içerikleri atla/yoksay.",
             "speed": "Sesli Okuma oynatım hızı",
-            "stop": "Sesli Okumayı durdur",
+            "stop": "Sesli Okumayı Durdur",
             "title": "Sesli Okuma"
         },
         "navigation": {
             "ZenModeExit": "Zen modundan çık",
             "ZenModeTitle": "Zen modu",
-            "annotationTitle": "açıklayıcı not",
+            "annotationTitle": "açıklayıcı Not",
             "backHomeTitle": "Bu okuma penceresini kapat (kitaplığa dön)",
-            "bookmarkTitle": "Yer imi",
+            "bookmarkTitle": "Yer İmi",
             "currentPage": "Şu anki sayfa: {{- current}}",
             "currentPageTotal": "Şu anki sayfa: {{- current}}/{{- total}}",
-            "detachWindowTitle": "kütüphane / kitaplık penceresini göster",
+            "detachWindowTitle": "Kütüphane / kitaplık penceresini göster",
             "goTo": "Git:",
             "goToError": "Sayfa geçişi mevcut değil",
             "goToPlaceHolder": "Sayfa numarasını gir",
             "goToTitle": "Sayfaya git",
-            "historyNext": "İleriye atla",
-            "historyPrevious": "Geriye atla",
+            "history": "Gezinme geçmişi",
+            "historyNext": "Gezinme geçmişinde ileri atla",
+            "historyPrevious": "Gezinme geçmişinde geri atla",
             "infoTitle": "Bilgi",
-            "magnifyingGlassButton": "Eser ara",
+            "magnifyingGlassButton": "Eserde ara",
             "openTableOfContentsTitle": "Gezinme",
             "page": "Sayfa",
             "pdfscalemode": "Sayfaya veya genişliğe sığdır",
             "print": "Yazdır",
             "printDisabled": "Yazdırma engellendi",
+            "screenNext": "İleri git",
+            "screenPrevious": "Geri git",
             "settingsTitle": "Ayarlar"
         },
         "notes": {
@@ -749,7 +752,7 @@
                 "results": "Sonuçlar",
                 "submit": "Bul"
             },
-            "searchTitle": "Ara"
+            "searchTitle": "Ara:"
         },
         "print": {
             "descriptionLcpCount": "Kalan sayfa limiti: {{- count}}",
@@ -757,24 +760,24 @@
             "howTo": "Yazdırılacak sayfa aralığı/dizisi nasıl seçilir?",
             "lcpInfo": "Bu eserde yazdırabileceğiniz sayfa sayısı {{- count}} ile sınırlıdır. Burada gerek duyduğunuz sayfaları seçin.",
             "noPagesLcpLimitReached": "LCP limitine ulaştınız",
-            "noPrintablePages": "Yazdırılabilir sayfa yok",
+            "noPrintablePages": "Yazdırılabilir Sayfa yok",
             "pageHelpInfo": "Sayfa seçici dizilimleri:",
-            "pageHelpInfo1": "tek bir sayfayı belirtmek için bir sayfa numarası girin (örn. \"6\")",
+            "pageHelpInfo1": "Tek bir sayfayı belirtmek için bir sayfa numarası girin (örn. \"6\")",
             "pageHelpInfo2": "Ardışık sayfaları belirtmek için tire karakteriyle ayrılmış iki sayfa numarası girin (örn. \"6-13\")",
             "pageHelpInfo3": "Birden fazla sayfayı veya sayfa aralığını birbirlerinden ayırmak için noktalı virgül karakterini kullanın (örn. \"5;14-20;37\")",
-            "pageHelpInfo4": "Eserin ilk veya son sayfasından itibaren belirlenecek bir sayfaya kadar olan sayfa aralığını hariç tutmak için sayfa numaralarını belirtebilirsiniz. (örn. \"-16\", \"1-16\" aralığına tekabül eder; \"34-\", 100 sayfa olduğu farz edilen bir kitapta \"34-100\" anlamına gelir).",
+            "pageHelpInfo4": "Eserin ilk veya son sayfasından itibaren belirlenecek bir sayfaya kadar olan sayfa aralığını hariç tutmak için sayfa numaralarını belirtebilirsiniz. (örn. \"-16\", \"1-16\" sayfa aralığına tekabül eder; \"34-\", 100 sayfa olduğu farz edilen bir kitapta \"34-100\" sayfa aralığı anlamına gelir).",
             "pages": "Sayfalar",
             "preview": "Önizleme",
             "print": "Yazdır",
-            "printablePages": "Yazdırılabilir sayfalar (toplamda)",
+            "printablePages": "Yazdırılabilir sayfalar (toplam)",
             "title": "Yazdırılabilir sayfaların seçimi"
         },
         "settings": {
             "column": {
                 "auto": "Varsayılan",
-                "one": "Sütun 1",
+                "one": "1 sütun",
                 "title": "Sütunlar",
-                "two": "Sütun 2"
+                "two": "2 sütun"
             },
             "customFontSelected": "Kişisel bir yazı tipi seçtiniz",
             "customizeReader": "Metin biçimlendirmesini özelleştir",
@@ -785,16 +788,16 @@
             },
             "font": "Yazı tipi",
             "fontSize": "Yazı tipi boyutu",
-            "infoCustomFont": "Adını yazarak işletim sisteminden yazı tipini seçin",
+            "infoCustomFont": "Adını yazarak işletim sisteminden özel yazı tipini seçin",
             "justification": "Hizalama",
             "justify": "İki yana yaslama",
             "letterSpacing": "Harf aralığı",
             "lineSpacing": "Satır aralığı",
-            "margin": "Kenar",
-            "mathjax": "MathJax'ı etkinleştir",
+            "margin": "Kenar boşluğu",
+            "mathjax": "MathJax'i etkinleştir",
             "noFootnotes": "Dipnot açılır pencerelerini devredışı bırak",
-            "noRTLFlip": "Sağdan sola kullanıcı arayüzünü devredışı bırak",
-            "noRuby": "Japonca Okutucuları Gizle",
+            "noRTLFlip": "Sağdan Sola Kullanıcı Arayüzü'nü devredışı bırak",
+            "noRuby": "Japonca Okutucuları gizle",
             "noTemporaryNavTargetOutline": "Görsel gezinme belirteçlerini devredışı bırak",
             "paginated": "Sayfalandırma",
             "paraSpacing": "Paragraf aralığı",
@@ -814,7 +817,7 @@
             "preset": {
                 "apply": "Uygula",
                 "applyDetails": "Tercih ettiğiniz yapılandırmayı mevcut esere uygulayın.",
-                "detail": "Tercih ettiğiniz yapılandırmayı kaydedin / uygulayın / sıfırlayın.",
+                "detail": "Tercih ettiğiniz yapılandırmayı Kaydedin / Uygulayın / Sıfırlayın.",
                 "reset": "Sıfırla",
                 "resetDetails": "Tercih ettiğiniz yapılandırmayı sıfırlayın (varsayılan ayarlar).",
                 "save": "Kaydet",
@@ -835,7 +838,7 @@
                     "Neutral": "Nötral",
                     "Night": "Gece",
                     "Paper": "Kağıt",
-                    "Sepia": "Sepya"
+                    "Sepia": "Sepya renkli"
                 },
                 "title": "Tema"
             },
@@ -866,14 +869,14 @@
     "settings": {
         "annotationCreator": {
             "creator": "Açıklayıcı not oluşturucu (isteğe bağlı)",
-            "help": "Belirtilirse, bu isim dışa aktarılan notların meta verilerine dahil edilecektir.",
+            "help": "Belirtilirse, bu isim dışa aktarılan notların üstverilerine dahil edilecektir.",
             "name": "İsim",
             "organization": "Organizasyon",
             "person": "Şahıs",
             "type": "Tür:"
         },
         "auth": {
-            "help": "Bu işlem tüm OPDS oturum açma kimlik bilgilerini siler.",
+            "help": "Bu işlem, tüm OPDS oturum açma kimlik bilgilerini siler.",
             "title": "Eser kataloglarına erişim",
             "wipeData": "Oturum açma verilerini temizle"
         },
@@ -897,31 +900,31 @@
                     "name": "Hızlıca Açıklayıcı Not Oluştur"
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "Açıklayıcı not ve yer imi belirteçlerinin belge kenarında görüntülenmesi veya metinde görüntülenmesi arasında geçiş yap",
-                    "name": "Açıklayıcı Notların Belge Kenarında veya Metinde Görüntülenmesi Arasında Geçiş Yap"
+                    "description": "Açıklayıcı not ve yer imi görsel belirteçlerinin belge kenar boşluğunda veya metinde görüntülenmesi arasında geçiş yap",
+                    "name": "Açıklayıcı Notların Belge Kenar Boşluğunda  Görüntülenmesini aç veya kapat"
                 },
                 "AudioNext": {
-                    "description": "Sesli okuma esnasında, bir sonraki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya sesli kitap.)",
+                    "description": "Sesli okuma esnasında, bir sonraki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya önceden kaydedilmiş sesli kitap)",
                     "name": "Sonraki Sesli Bölüm"
                 },
                 "AudioNextAlt": {
-                    "description": "Sesli okuma esnasında, bir sonraki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya sesli kitap.) Bu, mevcuttaki geçilebilir yapıları atlar",
-                    "name": "Sonraki sesli bölüm (kaçın)"
+                    "description": "Sesli okuma esnasında, bir sonraki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya önceden kaydedilmiş sesli kitap). Bu, mevcuttaki geçilebilir yapıları atlar",
+                    "name": "Sonraki Sesli Bölüm (kaçın)"
                 },
                 "AudioPlayPause": {
-                    "description": "Mevcut sesli oynatımı oynat/duraklat (EPUB3 medya katmanları, metinden sese okumalar veya önceden kaydedilmiş sesli kitaplar)",
-                    "name": "Oynat/Duraklat"
+                    "description": "Mevcut sesli oynatımı oynat/duraklat (EPUB3 Medya Katmanları, Metinden Sese okuma veya önceden kaydedilmiş sesli kitap)",
+                    "name": "Sesi Oynat/Duraklat"
                 },
                 "AudioPrevious": {
-                    "description": "Sesli okuma esnasında, bir önceki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya sesli kitap.)",
+                    "description": "Sesli okuma esnasında, bir önceki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya önceden kaydedilmiş sesli kitap)",
                     "name": "Önceki Sesli Bölüm"
                 },
                 "AudioPreviousAlt": {
-                    "description": "Sesli okuma esnasında, bir önceki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya sesli kitap.) Bu, mevcuttaki geçilebilir yapıları atlar",
+                    "description": "Sesli okuma esnasında, bir önceki sesli bölüme git (EPUB3 Medya Katmanları, Metinden Sese okuma veya sesli kitap). Bu, mevcuttaki geçilebilir yapıları atlar",
                     "name": "Önceki Sesli Bölüm (kaçın)"
                 },
                 "AudioStop": {
-                    "description": "Mevcut sesli oynatımı durdur (EPUB3 Medya Katmanları, Metinden Sese okumalar veya önceden kaydedilmiş sesli kitaplar)",
+                    "description": "Mevcut sesli oynatımı durdur (EPUB3 Medya Katmanları, Metinden Sese okuma veya önceden kaydedilmiş sesli kitap)",
                     "name": "Sesli Oynatımı Durdur"
                 },
                 "CloseReader": {
@@ -929,44 +932,44 @@
                     "name": "Okuyucuyu Kapat"
                 },
                 "FXLZoomIn": {
-                    "description": "Sabit düzende, tek sayfa veya çift sayfa görünümünü yakınlaştır.",
+                    "description": "Sabit düzende, tek sayfa veya 2-sayfa görünümünü yakınlaştır.",
                     "name": "FXL Yakınlaştır"
                 },
                 "FXLZoomOut": {
-                    "description": "Sabit düzende, tek sayfa veya çift sayfa görünümünü uzaklaştır.",
+                    "description": "Sabit düzende, tek sayfa veya 2-sayfa görünümünü uzaklaştır.",
                     "name": "FXL Uzaklaştır"
                 },
                 "FXLZoomReset": {
-                    "description": "Sabit düzendeki tek sayfa veya çift sayfa görünümünün yakınlaştırmasını/uzaklaştırmasını sıfırla.",
+                    "description": "Sabit düzendeki tek sayfa veya 2-sayfa görünümünün yakınlaştırmasını/uzaklaştırmasını sıfırla.",
                     "name": "FXL Yakınlaştırmasını/Uzaklaştırmasını Sıfırla"
                 },
                 "FocusMain": {
-                    "description": "Klavye odağını grafiksel kullanıcı arayüzündeki 'ana' refrans imine taşı. Okuyucu penceresinde bu, eser içeriğine geçer",
-                    "name": "Ana İçeriğe odaklan"
+                    "description": "Klavye odağını, grafiksel kullanıcı arayüzündeki 'ana' referans imine taşı. Okuyucu penceresinde bu, eser içeriğine geçer",
+                    "name": "Ana İçeriğe Odaklan"
                 },
                 "FocusMainDeep": {
                     "description": "Okuyucu penceresinde bu, ekran okuyucular için daha güvenilir bir teknik kullanarak klavye odağını eser içeriğine taşır",
-                    "name": "Ana İçeriğe Derinlemesine Odaklanma"
+                    "name": "Ana İçeriğe Derinlemesine Odaklan"
                 },
                 "FocusReaderGotoPage": {
-                    "description": "Klavye odağını, okuyucu penceresinin gezinme panelindeki 'sayfaya git' bölümüne taşı",
-                    "name": "'Sayfaya Git' bölümüne odaklan"
+                    "description": "Klavye odağını, okuyucu penceresinin gezinme panelindeki 'sayfaya git' bölümüne taşır",
+                    "name": "'Sayfaya Git' bölümüne Odaklan"
                 },
                 "FocusReaderNavigation": {
-                    "description": "Klavye odağını, okuyucu penceresinin gezinme paneline taşı",
-                    "name": "Gezinme Paneli'ne odaklan"
+                    "description": "Klavye odağını, okuyucu penceresinin gezinme paneline taşır",
+                    "name": "Gezinme Paneli'ne Odaklan"
                 },
                 "FocusReaderNavigationAnnotations": {
-                    "description": "Klavye odağını okuyucu penceresinin gezinme panelindeki 'açıklayıcı notlar' bölümüne taşı",
-                    "name": "'Açıklayıcı Notlar' bölümüne odaklan"
+                    "description": "Klavye odağını, okuyucu penceresinin gezinme panelindeki 'açıklayıcı notlar' bölümüne taşır",
+                    "name": "'Açıklayıcı Notlar' bölümüne Odaklan"
                 },
                 "FocusReaderNavigationBookmarks": {
-                    "description": "Klavye odağını, okuma penceresinin gezinme  panelindeki  'yer imleri' bölümüne taşı",
-                    "name": "'Yerimleri' bölümüne odaklan"
+                    "description": "Klavye odağını, okuma penceresinin gezinme  panelindeki  'yer imleri' bölümüne taşır",
+                    "name": "'Yerimleri' bölümüne Odaklan"
                 },
                 "FocusReaderNavigationSearch": {
-                    "description": "Klavye odağını, okuyucu penceresinin gezinme panelindeki 'ara' bölümüne taşı",
-                    "name": "'Ara' bölümüne odaklan"
+                    "description": "Klavye odağını, okuyucu penceresinin gezinme panelindeki 'ara' bölümüne taşır",
+                    "name": "'Ara' bölümüne Odaklan"
                 },
                 "FocusReaderNavigationTOC": {
                     "description": "Klavye odağını, okuyucu penceresinin gezinme panelindeki 'İçindekiler' bölümüne taşı",
@@ -1189,7 +1192,7 @@
         "title": {
             "allBooks": "Tüm Eserlerim",
             "newFeature": "Yeni özellik: Açıklayıcı Notlar",
-            "welcome": "Thorium 3.0 Uygulamasına Hoşgeldiniz"
+            "welcome": "Thorium 3 Uygulamasına Hoşgeldiniz"
         }
     }
 }

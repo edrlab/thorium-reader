@@ -718,6 +718,7 @@
             "goToError": "Orrialde-jauzi hori ez dago",
             "goToPlaceHolder": "Sartu orrialde-zenbaki bat",
             "goToTitle": "Orrialdera joan",
+            "history": "",
             "historyNext": "Aurrera egin",
             "historyPrevious": "Jauzi atzera",
             "infoTitle": "Informazioa",
@@ -727,6 +728,8 @@
             "pdfscalemode": "Orriaren doikuntza edo zabalera",
             "print": "",
             "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "Konfigurazio-aukerak"
         },
         "notes": {
@@ -1189,7 +1192,7 @@
         "title": {
             "allBooks": "Nire argitalpen guztiak",
             "newFeature": "Ezaugarri berria: oharrak",
-            "welcome": "Ongi etorri Thorium 3.0ra"
+            "welcome": "Ongi etorri Thorium 3ra"
         }
     }
 }

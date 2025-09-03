@@ -718,6 +718,7 @@
             "goToError": "此頁不存在",
             "goToPlaceHolder": "輸入頁碼",
             "goToTitle": "轉到頁",
+            "history": "",
             "historyNext": "向前跳",
             "historyPrevious": "跳回來",
             "infoTitle": "訊息",
@@ -727,6 +728,8 @@
             "pdfscalemode": "適合頁面寬度",
             "print": "",
             "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "設定"
         },
         "notes": {
@@ -1189,7 +1192,7 @@
         "title": {
             "allBooks": "我所有的出版物",
             "newFeature": "新功能：註解",
-            "welcome": "歡迎來到 Thorium 3.0"
+            "welcome": "歡迎來到 Thorium 3"
         }
     }
 }

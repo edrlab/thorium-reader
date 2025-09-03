@@ -718,6 +718,7 @@
             "goToError": "Diese Seite existiert nicht",
             "goToPlaceHolder": "Eingabe der Seitenzahl",
             "goToTitle": "Gehe zur Seite",
+            "history": "",
             "historyNext": "Vorwärts springen",
             "historyPrevious": "Zurückspringen",
             "infoTitle": "Informationen",
@@ -727,6 +728,8 @@
             "pdfscalemode": "Seitenbreite / Seitenanpassung",
             "print": "",
             "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "Einstellungen"
         },
         "notes": {
@@ -1189,7 +1192,7 @@
         "title": {
             "allBooks": "Alle meine Publikationen",
             "newFeature": "Neue Funktion: Anmerkungen",
-            "welcome": "Willkommen bei Thorium 3.0"
+            "welcome": "Willkommen bei Thorium 3"
         }
     }
 }

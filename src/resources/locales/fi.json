@@ -718,6 +718,7 @@
             "goToError": "Sivua ei löydy",
             "goToPlaceHolder": "Syötä sivunumero",
             "goToTitle": "Siirry sivulle",
+            "history": "",
             "historyNext": "Hyppää eteenpäin",
             "historyPrevious": "Hyppää taaksepäin",
             "infoTitle": "Tiedot",
@@ -727,6 +728,8 @@
             "pdfscalemode": "Sovita sivun kokoon tai leveyteen",
             "print": "Tulosta",
             "printDisabled": "Tulostus kielletty",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "Asetukset"
         },
         "notes": {
@@ -1189,7 +1192,7 @@
         "title": {
             "allBooks": "Kaikki omat julkaisut",
             "newFeature": "Uusi ominaisuus: Muistiinpanot",
-            "welcome": "Tervetuloa Thorium 3.0 -sovellukseen"
+            "welcome": "Tervetuloa Thorium 3 -sovellukseen"
         }
     }
 }

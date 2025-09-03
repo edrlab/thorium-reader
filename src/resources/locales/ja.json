@@ -718,6 +718,7 @@
             "goToError": "そのページは存在しません",
             "goToPlaceHolder": "移動先のページ番号",
             "goToTitle": "ページを移動",
+            "history": "",
             "historyNext": "先に飛ぶ",
             "historyPrevious": "前にもどる",
             "infoTitle": "本の情報",
@@ -727,6 +728,8 @@
             "pdfscalemode": "画面にページを収める / 画面横幅にページを合わせる",
             "print": "",
             "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "設定"
         },
         "notes": {
@@ -1189,7 +1192,7 @@
         "title": {
             "allBooks": "自分の本棚",
             "newFeature": "新機能：メモ",
-            "welcome": "Thorium 3.0へようこそ"
+            "welcome": "Thorium 3へようこそ"
         }
     }
 }

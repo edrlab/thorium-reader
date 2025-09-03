@@ -718,6 +718,7 @@
             "goToError": "Cette page n'existe pas",
             "goToPlaceHolder": "Entrer un numéro de page",
             "goToTitle": "Aller à la page",
+            "history": "Historique de navigation",
             "historyNext": "Suivant dans l'historique",
             "historyPrevious": "Précédent dans l'historique",
             "infoTitle": "Informations",
@@ -727,6 +728,8 @@
             "pdfscalemode": "Page entière ou pleine largeur",
             "print": "Imprimer",
             "printDisabled": "Impression non autorisée",
+            "screenNext": "Avancer",
+            "screenPrevious": "Reculer",
             "settingsTitle": "Préférences"
         },
         "notes": {
@@ -1189,7 +1192,7 @@
         "title": {
             "allBooks": "Mes livres",
             "newFeature": "Nouveauté : les annotations",
-            "welcome": "Bienvenue dans Thorium 3.0"
+            "welcome": "Bienvenue dans Thorium 3"
         }
     }
 }

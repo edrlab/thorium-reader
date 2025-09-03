@@ -723,8 +723,9 @@
             "goToError": "Page break does not exist",
             "goToPlaceHolder": "Enter page number",
             "goToTitle": "Go to page",
-            "historyNext": "Jump forward",
-            "historyPrevious": "Jump back",
+            "history": "Navigation history",
+            "historyNext": "Jump forward in navigation history",
+            "historyPrevious": "Jump back in navigation history",
             "infoTitle": "Information",
             "magnifyingGlassButton": "Search publication",
             "openTableOfContentsTitle": "Navigation",
@@ -732,6 +733,8 @@
             "pdfscalemode": "Page fit or width",
             "print": "Print",
             "printDisabled": "Print forbidden",
+            "screenNext": "Go forward",
+            "screenPrevious": "Go backward",
             "settingsTitle": "Settings"
         },
         "notes": {
@@ -1194,7 +1197,7 @@
         "title": {
             "allBooks": "All my publications",
             "newFeature": "New feature: Annotations",
-            "welcome": "Welcome to Thorium 3.0"
+            "welcome": "Welcome to Thorium 3"
         }
     }
 }

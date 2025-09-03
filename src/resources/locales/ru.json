@@ -718,6 +718,7 @@
             "goToError": "Этот разрыв страницы не существует",
             "goToPlaceHolder": "Введите номер страницы",
             "goToTitle": "Перейти на страницу",
+            "history": "",
             "historyNext": "Перейти вперед",
             "historyPrevious": "Перейти назад",
             "infoTitle": "информация",
@@ -727,6 +728,8 @@
             "pdfscalemode": "Размер или ширина страницы",
             "print": "",
             "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "настройки"
         },
         "notes": {
@@ -1189,7 +1192,7 @@
         "title": {
             "allBooks": "Все мои публикации",
             "newFeature": "Новая функция: Аннотации",
-            "welcome": "Добро пожаловать в Thorium 3.0"
+            "welcome": "Добро пожаловать в Thorium 3"
         }
     }
 }
