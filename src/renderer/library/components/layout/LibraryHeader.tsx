@@ -25,8 +25,6 @@ import * as ShelfIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { Settings } from "../settings/Settings";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
-import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER } from "readium-desktop/common/streamerProtocol";
-import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 // import { WizardModal } from "../Wizard";
 
 interface NavigationHeader {
@@ -90,12 +88,7 @@ class Header extends React.Component<IProps, undefined> {
             // },
         ];
 
-        const customizationEnable = false;
-        let customLogoUrl = "";
-        if (customizationEnable && this.props.customization.activate.id) {
-            customLogoUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/custom-profile-zip/${encodeURIComponent_RFC3986(Buffer.from(this.props.customization.activate.id).toString("base64"))}/${encodeURIComponent_RFC3986(Buffer.from("images/logo.svg").toString("base64"))}`;
-
-        }
+        const customizationEnable = true && this.props.customizationTheme?.enable && this.props.customizationTheme?.logo;
 
         return (<>
             <SkipLink
@@ -104,10 +97,16 @@ class Header extends React.Component<IProps, undefined> {
                 label={__("accessibility.skipLink")}
             />
 
-            { customLogoUrl ? <img src={customLogoUrl}></img> : <></> }
+            {
+                customizationEnable ?
+                    <div className="logo" style={{ position: "absolute", height: "60px", width: "", margin: " 20px auto", display: "flex", justifyContent: "center" }}>
+                        <img src={this.props.customizationTheme.logo} alt="" style={{ objectFit: "contain", maxHeight: "100px", maxWidth: "100%", width: "fit-content" }} />
+                    </div>
+                    : <></>
+            }
             <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>
                 <h1 className={stylesHeader.appName} aria-label="Thorium"></h1>
-                <ul style={{paddingTop: "10px"}}>
+                <ul style={{paddingTop: "10px", height: customizationEnable ? "calc(100% - 180px)" : ""}}>
                     <div>
                     {
                         headerNav.map(
@@ -209,7 +208,7 @@ class Header extends React.Component<IProps, undefined> {
 const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
     history: state.history,
-    customization: state.customization,
+    customizationTheme: state.theme.customization,
 
     locale: state.i18n.locale, // refresh
 });
