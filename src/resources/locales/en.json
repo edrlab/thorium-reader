@@ -121,6 +121,11 @@
         "update": "Edit"
     },
     "dialog": {
+        "customization": {
+            "splashscreen": {
+                "title": "Provionning and Activating customization profile"
+            }
+        },
         "annotations": {
             "descAuthor": "by '{{- author}}'",
             "descCreator": "created by",
