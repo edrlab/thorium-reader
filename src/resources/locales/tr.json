@@ -940,7 +940,7 @@
                     "name": "FXL Uzaklaştır"
                 },
                 "FXLZoomReset": {
-                    "description": "Sabit düzendeki tek sayfa veya 2-sayfa görünümünün yakınlaştırmasını/uzaklaştırmasını sıfırla.",
+                    "description": "Sabit düzende, tek sayfa veya 2-sayfa görünümünün yakınlaştırmasını/uzaklaştırmasını sıfırla.",
                     "name": "FXL Yakınlaştırmasını/Uzaklaştırmasını Sıfırla"
                 },
                 "FocusMain": {
@@ -952,15 +952,15 @@
                     "name": "Ana İçeriğe Derinlemesine Odaklan"
                 },
                 "FocusReaderGotoPage": {
-                    "description": "Klavye odağını, okuyucu penceresinin gezinme panelindeki 'sayfaya git' bölümüne taşır",
-                    "name": "'Sayfaya Git' bölümüne Odaklan"
+                    "description": "Klavye odağını, okuyucu penceresinin gezinme panelindeki 'sayfaya git' bölümüne taşı",
+                    "name": "'Sayfaya Git' Bölümüne Odaklan"
                 },
                 "FocusReaderNavigation": {
-                    "description": "Klavye odağını, okuyucu penceresinin gezinme paneline taşır",
+                    "description": "Klavye odağını, okuyucu penceresinin gezinme paneline taşı",
                     "name": "Gezinme Paneli'ne Odaklan"
                 },
                 "FocusReaderNavigationAnnotations": {
-                    "description": "Klavye odağını, okuyucu penceresinin gezinme panelindeki 'açıklayıcı notlar' bölümüne taşır",
+                    "description": "Klavye odağını, okuyucu penceresinin gezinme panelindeki 'açıklayıcı notlar' bölümüne taşı",
                     "name": "'Açıklayıcı Notlar' bölümüne Odaklan"
                 },
                 "FocusReaderNavigationBookmarks": {
