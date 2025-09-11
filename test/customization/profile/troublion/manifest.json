@@ -7,20 +7,20 @@
     "theme": {
         "color": {
             "dark": {
-                "neutral": "#333333",
-                "primary": "#444444",
-                "secondary": "#555555",
-                "border": "#666666",
-                "background": "#222222",
-                "app_name": "#666666"
+                "neutral": "#003300",
+                "primary": "#004d00",
+                "secondary": "#006600",
+                "border": "#008000",
+                "background": "#001a00",
+                "app_name": "#008000"
             },
             "light": {
                 "neutral": "#FFFFFF",
-                "primary": "#F5F5F5",
-                "secondary": "#E8E8E8",
-                "border": "#E0E0E0",
-                "background": "#F0F0F0",
-                "app_name": "#E8E8E8"
+                "primary": "#E5FFE5",
+                "secondary": "#CCFFCC",
+                "border": "#B3FFB3",
+                "background": "#F0FFF0",
+                "app_name": "#CCFFCC"
             }
         }
     },
