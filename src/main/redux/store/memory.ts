@@ -25,9 +25,10 @@ import { readerConfigInitialState } from "readium-desktop/common/redux/states/re
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 import { minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 import { EDrawType, INoteState, NOTE_DEFAULT_COLOR_OBJ, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
-import { clone } from "ramda";
 import { TBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { TAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
+import { sqliteInitTableNote, sqliteTableNoteInsert } from "readium-desktop/main/db/sqlite/note";
+import { sqliteInitialisation } from "readium-desktop/main/db/sqlite";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -244,6 +245,11 @@ export async function initStore()
         ...reduxState,
     } : {};
 
+    // SQLITE 
+    sqliteInitialisation();
+    sqliteInitTableNote();
+    const __sqlite_migration_dry_run = true;
+
     if (preloadedState.win?.registry?.reader) {
         for (const id in preloadedState.win.registry.reader) {
             const state = preloadedState.win.registry.reader[id];
@@ -348,8 +354,18 @@ export async function initStore()
             }
 
             if (state?.reduxState) {
-                if (!state.reduxState.note) {
-                    state.reduxState.note = [];
+                if (!(state.reduxState as any).note) {
+                    (state.reduxState as any).note = [];
+                } else if ((state.reduxState as any).note?.length) {
+                    if (sqliteTableNoteInsert(id, (state.reduxState as any).note)) {
+                        debug("SQLITE NOTE MIGRATION DONE, let's remove note array for this publicationId=", id);
+                        if (__sqlite_migration_dry_run) {
+                            (state.reduxState as any).note = [];
+                        }
+                    } else {
+                        debug("ERROR on SQLITE NOTE MIGRATION, publicationId=", id);
+                    }
+
                 }
             }
 
@@ -382,7 +398,7 @@ export async function initStore()
                         group: "bookmark",
                     };
 
-                    state.reduxState.note.push(clone(note));
+                    sqliteTableNoteInsert(id, [ note ]);
                 }
                 (state.reduxState as any).bookmark = undefined;
 
@@ -413,7 +429,7 @@ export async function initStore()
                         group: "annotation",
                     };
 
-                    state.reduxState.note.push(clone(note));
+                    sqliteTableNoteInsert(id, [ note ]);
                 }
                 (state.reduxState as any).annotation = undefined;
 

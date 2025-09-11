@@ -55,11 +55,11 @@ export const reduxPersistMiddleware: Middleware
                     readerState.disableRTLFlip = nextState.reader.disableRTLFlip;
                     dispatchFlag = true;
                 }
-                if (!ramda.equals(prevState.reader.note, nextState.reader.note)) {
+                // if (!ramda.equals(prevState.reader.note, nextState.reader.note)) {
 
-                    readerState.note = nextState.reader.note;
-                    dispatchFlag = true;
-                }
+                //     readerState.note = nextState.reader.note;
+                //     dispatchFlag = true;
+                // }
                 if (!ramda.equals(prevState.reader.allowCustomConfig, nextState.reader.allowCustomConfig)) {
 
                     readerState.allowCustomConfig = nextState.reader.allowCustomConfig;

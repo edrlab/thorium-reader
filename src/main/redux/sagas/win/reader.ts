@@ -23,6 +23,7 @@ import { createReaderWindow } from "./browserWindow/createReaderWindow";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import { comparePublisherReaderConfig } from "readium-desktop/common/publisherConfig";
 import { readerActions } from "readium-desktop/common/redux/actions";
+import { sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:win:reader";
@@ -70,6 +71,8 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
         debug(`reader ${identifier} got the lock !!!`);
     }
 
+    const notes = yield* callTyped(() => sqliteTableSelectAllNotesWherePubId(reader.publicationIdentifier));
+
     webContents.send(readerIpc.CHANNEL, {
         type: readerIpc.EventType.request,
         payload: {
@@ -101,6 +104,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
                 },
                 config,
                 lock: gotTheLock,
+                note: notes,
             },
             keyboard,
             mode,
