@@ -28,7 +28,7 @@ import { EDrawType, INoteState, NOTE_DEFAULT_COLOR_OBJ, TDrawType } from "readiu
 import { TBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { TAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 import { sqliteInitTableNote, sqliteTableNoteInsert } from "readium-desktop/main/db/sqlite/note";
-import { sqliteInitialisation } from "readium-desktop/main/db/sqlite";
+import { __sqlite_migration_dry_run, sqliteInitialisation } from "readium-desktop/main/db/sqlite";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -248,7 +248,6 @@ export async function initStore()
     // SQLITE 
     sqliteInitialisation();
     sqliteInitTableNote();
-    const __sqlite_migration_dry_run = true;
 
     if (preloadedState.win?.registry?.reader) {
         for (const id in preloadedState.win.registry.reader) {

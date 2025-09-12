@@ -17,6 +17,8 @@ const debug = debug_("readium-desktop:main:db:sqlite");
 const { DatabaseSync } = sqlite;
 let database: sqlite.DatabaseSync = undefined;
 
+export const __sqlite_migration_dry_run = false;
+
 const userDataPath = app.getPath("userData");
 
 const sqliteFolder = path.join(
