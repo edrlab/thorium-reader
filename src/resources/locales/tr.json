@@ -972,11 +972,11 @@
                     "name": "'Ara' bölümüne Odaklan"
                 },
                 "FocusReaderNavigationTOC": {
-                    "description": "Klavye odağını, okuyucu penceresinin gezinme panelindeki 'İçindekiler Tablosu' bölümüne taşı",
+                    "description": "Klavye odağını, okuyucu penceresinin gezinme panelindeki 'İçindekiler Tablosu' bölümüne taşır",
                     "name": "'İçindekiler Tablosu' bölümüne Odaklan"
                 },
                 "FocusReaderSettings": {
-                    "description": "Klavye odağını, okuyucu penceresinin ayarlar paneline taşı (görüntüleme seçenekleri vs.)",
+                    "description": "Klavye odağını, okuyucu penceresinin ayarlar paneline taşır (görüntüleme seçenekleri vs.)",
                     "name": "Okuyucu Ayarları bölümüne Odaklan"
                 },
                 "FocusSearch": {
@@ -997,7 +997,7 @@
                 },
                 "NavigateNextHistory": {
                     "description": "Okuyucu penceresinde, gezinme geçmişinde bir adım ileri atlar",
-                    "name": "Geçmiş'te, Bir Adım İleri Git"
+                    "name": "Geçmiş'te İleri Git"
                 },
                 "NavigateNextLibraryPage": {
                     "description": "Kütüphane penceresinde, sayfalandırılmış eser listesinin bir sonraki sayfasını gösterir. Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
@@ -1012,7 +1012,7 @@
                     "name": "Sonraki OPDS Sayfasına Git"
                 },
                 "NavigateNextOPDSPageAlt": {
-                    "description": "Kataloglar / OPDS beslemeleri için kütüphane penceresinde, bir sonraki sayfalandırma bağlantısını takip eder. Bu, varsayılan olana alternatif bir klavye kısayoludur",
+                    "description": "Kataloglar / OPDS beslemeleri için kütüphane penceresinde, bir sonraki sayfalandırma bağlantısını takip eder. Bu, varsayılan klavye kısayoluna alternatif bir klavye kısayoludur",
                     "name": "Sonraki OPDS Sayfasına Git (Alternatif)"
                 },
                 "NavigateNextPage": {
@@ -1033,10 +1033,10 @@
                 },
                 "NavigatePreviousHistory": {
                     "description": "Okuma penceresinde, gezinme geçmişinde bir adım geriye gider",
-                    "name": "Geçmiş'te, bir adım Geri Git"
+                    "name": "Geçmiş'te Geri Git"
                 },
                 "NavigatePreviousLibraryPage": {
-                    "description": "Kütüphane penceresinde, sayfalandırılmış eser listesinin önceki sayfasını gösterir. Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
+                    "description": "Kütüphane penceresinde, sayfalandırılmış eser listesinin önceki sayfasını gösterir. Bu varsayılan klavye kısayoluna alternatif bir klavye kısayolu olduğunu unutmayın",
                     "name": "Önceki Kütüphane Sayfasına Git"
                 },
                 "NavigatePreviousLibraryPageAlt": {
