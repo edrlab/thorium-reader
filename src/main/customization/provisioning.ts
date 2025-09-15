@@ -143,7 +143,7 @@ export async function customizationPackageProvisioningAccumulator(packagesArray:
     }
 
     const packageProvisionedWithTheSameIdentifier = packagesArray.find(({ identifier }) => identifier === manifest.identifier);
-    if (!packageProvisionedWithTheSameIdentifier || semver.gt(packageProvisionedWithTheSameIdentifier.version, manifest.version)) {
+    if (!packageProvisionedWithTheSameIdentifier || semver.gt(manifest.version, packageProvisionedWithTheSameIdentifier.version)) {
         return { identifier: manifest.identifier, fileName: packageFileName, version: manifest.version };
     }
 
