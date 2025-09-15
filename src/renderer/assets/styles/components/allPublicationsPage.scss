@@ -31,7 +31,7 @@
 
             &_inputs {
                 display: flex;
-                align-items: end; 
+                align-items: end;
                 gap: 10px;
                 height: 56px;
 
@@ -43,7 +43,7 @@
                 }
             }
 
-            .form_group { 
+            .form_group {
                 width: 260px!important;
                 height: 30px!important;
 
@@ -380,7 +380,7 @@
     &_body {
         grid-template-columns: repeat(auto-fill, 210px);
         // grid-gap: 15px;
-        grid-row-gap: 30px;
+        row-gap: 30px;
         margin-bottom: 20px;
         background-color: var(--color-secondary);
 
