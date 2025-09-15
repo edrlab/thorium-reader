@@ -134,13 +134,13 @@
             "title": "استيراد الملاحظات؟"
         },
         "cancel": "إلغاء",
-        "deleteAnnotations": "حذف التعليقات التوضيحية؟",
-        "deleteAnnotationsText": "هل تريد بالتأكيد حذف {{- annotationListLength}} ملاحظات؟",
+        "deleteAnnotations": "حذف التعليقات؟",
+        "deleteAnnotationsText": "هل أنت متأكد من حذف {{- annotationListLength}} ملاحظة (ملاحظات)؟",
         "deleteBookmarks": "حذف الإشارات المرجعية؟",
         "deleteBookmarksText": "هل أنت متأكد من حذف {{- bookmarkListLength}} إشارة (إشارات) مرجعية؟",
         "deleteFeed": "حذف الفهرس؟",
         "deletePublication": "حذف المنشور؟",
-        "deletePublicationWithNotes": "تحذير: يحتوي هذا المنشور على تعليقات و/أو إشارات مرجعية، وسيتم حذفها أيضًا! (إذا كنت ترغب في الاحتفاظ بها، تأكد من تصدير الملاحظات قبل إزالة المنشور)",
+        "deletePublicationWithNotes": "تحذير: يحتوي هذا المنشور على تعليقات و/أو إشارات مرجعية، سيتم حذفها أيضًا! (إذا كنت ترغب في الاحتفاظ بها، تأكد من تصدير الملاحظات قبل إزالة المنشور)",
         "import": "تأكيد الاستيراد:",
         "importError": "حدث خطأ، يرجى التحقق من امتداد الملف ({{acceptedExtension}})",
         "renew": "تجديد/تمديد الاستعارة؟",
@@ -232,8 +232,8 @@
         },
         "network": {
             "error": "خطأ في الوصول إلى المصدر",
-            "noInternet": "لا يوجد اتصال بالانترنت",
-            "noInternetMessage": "حاول فحص كبل الشبكة، أو المودم، أو الموجِّه، أو الاتصال اللاسلكي",
+            "noInternet": "لا يوجد اتصال بالإنترنت",
+            "noInternetMessage": "تحقق من كابل الشبكة أو المودم أو جهاز التوجيه (الراوتر) أو الاتصال اللاسلكي (الواي فاي)",
             "reject": "عذراً، حدث خطأ غير متوقَّع!",
             "timeout": "انتهت مهلة الشبكة، يرجى إعادة المحاولة لاحقاً"
         },
@@ -259,7 +259,7 @@
             },
             "additional-accessibility-information-audio-descriptions": {
                 "compact": "الوصف الصوتي",
-                "descriptive": "الأوصاف الصوتية"
+                "descriptive": "الوصف الصوتي"
             },
             "additional-accessibility-information-braille": {
                 "compact": "برايل",
@@ -309,8 +309,8 @@
         },
         "conformance": {
             "conformance-a": {
-                "compact": "هذا المنشور يفي بالمعايير الدنيا لإمكانية الوصول",
-                "descriptive": "يحتوي هذا المنشور على بيان مطابقة يفيد بأنه يفي بمعيار إمكانية الوصول لـ EPUB ومستوى A من معيار WCAG 2"
+                "compact": "هذا المنشور يستوفي المعايير الدنيا لإمكانية الوصول",
+                "descriptive": "يحتوي هذا المنشور على بيان مطابقة يفيد بأنه يستوفي معيار إمكانية الوصول لـ EPUB ومستوى A من معيار WCAG 2"
             },
             "conformance-aa": {
                 "compact": "هذا المنشور يستوفي المعايير المقبولة لإمكانية الوصول",
@@ -377,7 +377,7 @@
         "hazards": {
             "hazards-flashing": {
                 "compact": "محتوى وامض",
-                "descriptive": "يحتوي هذا المنشور على محتوى وامض قد يسبب نوبات حساسة للضوء"
+                "descriptive": "يحتوي هذا المنشور على محتوى وامض قد يسبب نوبات حساسية للضوء"
             },
             "hazards-flashing-none": {
                 "compact": "لا يوجد محتوى وامض",
@@ -450,32 +450,32 @@
         },
         "rich-content": {
             "rich-content-accessible-chemistry-as-latex": {
-                "compact": "الصيغ الكيميائية بصيغة LaTeX",
-                "descriptive": "الصيغ الكيميائية بشكل ميسر (LaTeX)"
+                "compact": "المعادلات الكيميائية بصيغة LaTeX",
+                "descriptive": "المعادلات الكيميائية بشكل ميسر (LaTeX)"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "الصيغ الكيميائية بصيغة MathML",
-                "descriptive": "الصيغ الكيميائية بشكل ميسر (MathML)"
+                "compact": "المعادلات الكيميائية بصيغة MathML",
+                "descriptive": "المعادلات الكيميائية بشكل ميسر (MathML)"
             },
             "rich-content-accessible-math-as-latex": {
                 "compact": "الرياضيات بصيغة LaTeX",
-                "descriptive": "الصيغ الرياضية بشكل ميسر (LaTeX)"
+                "descriptive": "المعادلات الرياضية بشكل ميسر (LaTeX)"
             },
             "rich-content-accessible-math-as-mathml": {
                 "compact": "الرياضيات بصيغة MathML",
-                "descriptive": "الصيغ الرياضية بشكل ميسر(MathML)"
+                "descriptive": "المعادلات الرياضية بشكل ميسر(MathML)"
             },
             "rich-content-accessible-math-described": {
-                "compact": "تتوفر تفسيرات نصية للصيغ الرياضية",
-                "descriptive": "تتوفر تفسيرات نصية للصيغ الرياضية"
+                "compact": "تتوفر أوصاف نصية للمعادلات الرياضية",
+                "descriptive": "تتوفر أوصاف نصية للمعادلات الرياضية"
             },
             "rich-content-closed-captions": {
                 "compact": "تحتوي الفيديوهات على شروح مغلقة",
                 "descriptive": "الفيديوهات الموجودة في المنشورات تحتوي على شروح مغلقة"
             },
             "rich-content-extended": {
-                "compact": "يتم تفسير الصور الغنية بالمعلومات بأوصاف مفصّلة",
-                "descriptive": "يتم تفسير الصور الغنية بالمعلومات بأوصاف مفصّلة"
+                "compact": "يتم وصف الصور الغنية بالمعلومات بأوصاف مفصّلة",
+                "descriptive": "يتم وصف الصور الغنية بالمعلومات بأوصاف مفصّلة"
             },
             "rich-content-open-captions": {
                 "compact": "تحتوي الفيديوهات على شروح مدمجة",
@@ -505,8 +505,8 @@
                 "descriptive": "المحتوى غير قابل للقراءة بصوتٍ عالٍ أو بطريقة برايل الديناميكية"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
-                "compact": "غير قابل للقراءة بالكامل باستخدام القراءة بصوتٍ عالٍ أو طريقة برايل الديناميكية",
-                "descriptive": "لن يكون كل المحتوى قابلاً للقراءة بصوتٍ عالٍ أو بطريقة برايل الديناميكية"
+                "compact": "غير قابل للقراءة بالكامل بصوتٍ عالٍ أو بطريقة برايل الديناميكية",
+                "descriptive": "لن يكون كل المحتوى قابلًا للقراءة بصوتٍ عالٍ أو بطريقة برايل الديناميكية"
             },
             "ways-of-reading-nonvisual-reading-readable": {
                 "compact": "قابل للقراءة بصوتٍ عالٍ أو بطريقة برايل الديناميكية",
@@ -525,7 +525,7 @@
                 "descriptive": "كتاب صوتي بدون بديل نصي"
             },
             "ways-of-reading-prerecorded-audio-synchronized": {
-                "compact": "الصوت المسجّل مسبقًا متزامن مع النص",
+                "compact": "صوت مسجّل مسبقًا متزامن مع النص",
                 "descriptive": "كل المحتوى متوفر كصوت مسجّل مسبقًا متزامن مع النص"
             },
             "ways-of-reading-title": "طرق القراءة",
