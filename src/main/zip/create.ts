@@ -170,9 +170,9 @@ export async function createProfilePackageZip(
 
     if (resourcesMapFs.length) {
         await createZip(packagePath, resourcesMapFs, []);
-        const content_hash = await extractCrc32OnZip(packagePath, "profile");
-        debug("ZIP CRC = ", content_hash);
-        manifest.content_hash = content_hash;
+        const contentHash = await extractCrc32OnZip(packagePath, "profile");
+        debug("ZIP CRC = ", contentHash);
+        manifest.contentHash = contentHash;
         manifest.signature = undefined;
 
         if (signed) {
@@ -211,7 +211,7 @@ export async function createProfilePackageZip(
             }, 200); // to avoid issues with some filesystems (allow extra completion time)
         });
     } else {
-        manifest.content_hash = "";
+        manifest.contentHash = "";
         manifest.signature = undefined;
 
         if (signed) {

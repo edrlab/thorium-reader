@@ -14,10 +14,10 @@ import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 
 export interface ICustomizationManifest {
 
-    manifest_version: number;
+    manifestVersion: number;
     identifier: string; // URI
     version: string; // semantic versionning
-    content_hash: string;
+    contentHash: string;
     name: string;
     description: string;
     default_locale: string; // BCP47
@@ -52,9 +52,9 @@ export interface ICustomizationManifestSignature {
 }
 
 export interface ICustomizationManifestLinkPropertiesExtension extends OPDSProperties {
-    show_on_home_section?: boolean;
-    show_deletion?: boolean;
-    default_profile?: boolean;
+    showOnHomeSection?: boolean;
+    // showDeletion?: boolean;
+    // defaultProfile?: boolean;
     authenticate?: { // OPDSLink authenticate
         href: string;
         type: string;

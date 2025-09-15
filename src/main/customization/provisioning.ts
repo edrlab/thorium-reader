@@ -53,8 +53,8 @@ async function getManifestFromPackageFileName(packageFileName: string): Promise<
     const manifestBuffer = await streamToBufferPromise(manifestStream.stream);
     const manifest: ICustomizationManifest = JSON.parse(manifestBuffer.toString());
 
-    if (manifest.manifest_version !== 1) {
-        return Promise.reject("Not a valid manifest_version");
+    if (manifest.manifestVersion !== 1) {
+        return Promise.reject("Not a valid manifestVersion");
     }
 
     return manifest;
@@ -89,9 +89,9 @@ async function checkIfProfilePackageSigned(manifest: ICustomizationManifest, pac
     }
 
     const packageAbsolutePath = path.join(customizationWellKnownFolder, packageFileName);
-    const content_hash = await extractCrc32OnZip(packageAbsolutePath, "profile");
-    if (manifest.content_hash !== content_hash) {
-        return Promise.reject("manifest content_hash missmatch");
+    const contentHash = await extractCrc32OnZip(packageAbsolutePath, "profile");
+    if (manifest.contentHash !== contentHash) {
+        return Promise.reject("manifest contentHash missmatch");
     }
 
     return true;
