@@ -163,7 +163,7 @@ export async function createProfilePackageZip(
     signed = false,
     testSignature = false,
 ) {
-    const packagePath = path.resolve(outputProfilePath, `${slugify(manifest.name)}.thor`);
+    const packagePath = path.resolve(outputProfilePath, `${slugify(manifest.name + "_" + manifest.version)}.thor`);
     // const packagePathTMP = packagePath + ".tmp";
 
     debug("Ouput path =", packagePath);
