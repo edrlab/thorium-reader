@@ -972,7 +972,7 @@
                     "name": ""
                 },
                 "FocusReaderNavigationTOC": {
-                    "description": "",
+                    "description": "将键盘焦点移到阅读器窗口导航面板的 '目录' 部分",
                     "name": ""
                 },
                 "FocusReaderSettings": {
@@ -988,19 +988,19 @@
                     "name": ""
                 },
                 "NavigateNextChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "在阅读器窗口中，导航到出版物阅读顺序中的下一个文档(例如书脊中的章节)。请注意，除了这个默认快捷键，还有一个可选的快捷键",
+                    "name": "转到下一章"
                 },
                 "NavigateNextChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "在阅读器窗口中，按照出版物的阅读顺序（例如书脊中的章节）导航到下一个文档。这是默认快捷键的替代快捷键",
+                    "name": "转到下一章（替代）"
                 },
                 "NavigateNextHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "在阅读器窗口中，向前单步跳转至导航历史记录",
+                    "name": "转到下一历史记录"
                 },
                 "NavigateNextLibraryPage": {
-                    "description": "",
+                    "description": "在图书馆窗口中，显示出版物分页列表的下一页。请注意，此默认快捷键有一个替代的键盘快捷键",
                     "name": ""
                 },
                 "NavigateNextLibraryPageAlt": {
