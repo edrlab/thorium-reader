@@ -28,6 +28,7 @@ import { delay as delayTyped, call as callTyped, race as raceTyped } from "typed
 import { downloader } from "../../../downloader";
 import { packageFromLink } from "../packager/packageLink";
 import { importFromFsService } from "./importFromFs";
+import { createHash } from "crypto";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/importFromLinkService");
@@ -48,6 +49,32 @@ function* importLinkFromPath(
 
     let returnPublicationDocument = publicationDocument;
     if (!alreadyImported && publicationDocument) {
+
+
+        if (pub?.r2OpdsPublicationStringifyBase64) {
+
+            const tupleIdentifier = pub.workIdentifier ? `${pub.baseUrl}_;-;_${pub.workIdentifier}` : undefined;
+
+            const OPDSPublicationComputeHash = () => {
+                const opdsPublicationHash = createHash("sha1");
+                opdsPublicationHash.update(pub.r2OpdsPublicationStringifyBase64);
+                const opdsPublicationHashValue = opdsPublicationHash.digest("hex");
+                return opdsPublicationHashValue;
+            };
+
+            publicationDocument.opds_publicationHashValue = OPDSPublicationComputeHash();
+
+            debug("importLinkFromPath: r2OpdsPublicationStringifyBase64=");
+            debug(publicationDocument.opds_publicationHashValue);
+            debug("importLinkFromPath: HASH_VALUE", publicationDocument.opds_publicationHashValue);
+
+            publicationDocument.opds_tupleIdentifier = tupleIdentifier;
+        }
+
+        if (pub) {
+            publicationDocument.opds_selfLinkUrlAsOpdsPublication = pub.selfLinkUrlAsOpdsPublication;
+            publicationDocument.opds_selfLinkUrlAsAnyType = pub.selfLinkUrlAsAnyType;
+        }
 
         const tags = pub?.tags?.map((v) => v.name) || [];
 

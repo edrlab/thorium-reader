@@ -39,6 +39,7 @@ import { ILinkFilter } from "./type/linkFilter.interface";
 import { diSymbolTable } from "../diSymbolTable";
 import { type Store } from "redux";
 import { RootState } from "../redux/states";
+import { PublicationRepository } from "../db/repository/publication";
 
 // Logger
 const debug = debug_("readium-desktop:main/converter/opds");
@@ -68,6 +69,9 @@ export class OpdsFeedViewConverter {
 
     @inject(diSymbolTable.store)
     private readonly store!: Store<RootState>;
+
+    @inject(diSymbolTable["publication-repository"])
+    private readonly publicationRepository!: PublicationRepository;
 
     public convertDocumentToView(document: OpdsFeedDocument): IOpdsFeedView {
         return {
@@ -387,6 +391,29 @@ export class OpdsFeedViewConverter {
         const duration = typeof r2OpdsPublication.Metadata.Duration === "number" ? r2OpdsPublication.Metadata.Duration : undefined;
         const nbOfTracks = typeof r2OpdsPublication.Metadata.AdditionalJSON?.tracks === "number" ? r2OpdsPublication.Metadata.AdditionalJSON?.tracks : undefined;
 
+        const selfLinkViewAsOpdsPublication = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
+            rel: [
+                "self",
+            ],
+            type: "application/opds-publication+json",
+        });
+        const selfLinkUrlAsOpdsPublication = selfLinkViewAsOpdsPublication.length === 1 ? selfLinkViewAsOpdsPublication[0].url : undefined;
+
+        const selfLinkViewAsAnyType = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
+            rel: [
+                "self",
+            ],
+        });
+        const selfLinkUrlAsAnyType = selfLinkViewAsAnyType.length === 1 ? selfLinkViewAsAnyType[0].url : undefined;
+
+        const r2OpdsPublicationStringifyBase64 = Buffer.from(JSON.stringify(r2OpdsPublication)).toString("base64");
+        const publicationFound = this.publicationRepository.findByOPDSPublicationAssociation(baseUrl, workIdentifier, selfLinkUrlAsOpdsPublication, selfLinkUrlAsAnyType, r2OpdsPublicationStringifyBase64);
+
+        let localBookshelfPublicationIdentifier: string | undefined = undefined;
+        if (publicationFound) {
+            localBookshelfPublicationIdentifier = publicationFound.identifier;
+        }
+
         return {
             baseUrl,
             // r2OpdsPublicationJson,
@@ -425,6 +452,14 @@ export class OpdsFeedViewConverter {
 
             // convertMultiLangStringToLangString()
             a11y_accessibilitySummary: r2OpdsPublication.Metadata.Accessibility?.Summary || r2OpdsPublication.Metadata.AccessibilitySummary, // string | IStringMap
+
+            localBookshelfPublicationIdentifier,
+            
+            r2OpdsPublicationStringifyBase64,
+
+            selfLinkUrlAsOpdsPublication,
+            selfLinkUrlAsAnyType,
+
 
         };
     }

@@ -53,5 +53,11 @@ export interface PublicationDocument extends Identifiable, Timestampable {
     // when true, was removed via Thorium 1.7+ but data is preserved here to avoid re-migration
     // from PouchDB (Sqlite3 / Leveldown database storage adapters) to Redux state (with JSON serialization) at subsequent app launches
     removedButPreservedToAvoidReMigration?: boolean;
+
+    opds_selfLinkUrlAsOpdsPublication?: string;
+    opds_selfLinkUrlAsAnyType?: string;
+    opds_tupleIdentifier?: string; // base_url_;-;_identifier
+    opds_publicationHashValue?: string; // sha1 of the OPDSPublication normalize
+
 }
 export type PublicationDocumentWithoutTimestampable = Omit<PublicationDocument, keyof Timestampable>;

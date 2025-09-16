@@ -23,6 +23,7 @@ import * as lunrfr from "@lunr-languages/lunr.fr.js";
 import * as lunrmulti from "@lunr-languages/lunr.multi.js";
 import * as lunrstemmer from "@lunr-languages/lunr.stemmer.support.js";
 import { convertMultiLangStringToLangString } from "readium-desktop/common/language-string";
+import { createHash } from "crypto";
 
 const debug = debug_("readium-desktop:main:db:repository:publication");
 
@@ -132,7 +133,68 @@ export class PublicationRepository {
         return pub;
     }
 
-    public async findAll(): Promise<PublicationDocument[]> {
+    public findByOPDSPublicationAssociation(baseUrl: string, identifier: string, selfLinkUrlAsOpdsPublication: string, selfLinkUrlAsAnyType: string, r2OpdsPublicationStringifyBase64: string): PublicationDocument {
+
+        const tupleIdentifier = identifier ? `${baseUrl}_;-;_${identifier}` : undefined;
+
+        const OPDSPublicationComputeHash = () => {
+            const opdsPublicationHash = createHash("sha1");
+            opdsPublicationHash.update(r2OpdsPublicationStringifyBase64);
+            const opdsPublicationHashValue = opdsPublicationHash.digest("hex");
+            return opdsPublicationHashValue;
+        };
+
+        const pubs = this.findAll();
+        ok(Array.isArray(pubs));
+
+        let hashValue = "";
+
+        if (__TH__IS_DEV__) {
+            
+            hashValue = OPDSPublicationComputeHash();
+            debug("r2OpdsPublicationStringifyBase64=");
+            debug(r2OpdsPublicationStringifyBase64);
+            debug("findByOPDSPublicationAssociation: HASH_VALUE", hashValue);
+        }
+
+
+        if (selfLinkUrlAsOpdsPublication) {
+            const found = Object.values(pubs.filter((publicationDocument) => publicationDocument.opds_selfLinkUrlAsOpdsPublication === selfLinkUrlAsOpdsPublication));
+            if (found.length > 1) {
+                debug(`findByOPDSPublicationAssociation: selfLinkUrlAsOpdsPublication="${selfLinkUrlAsOpdsPublication}" more than one publication associated with this url as been found !!`);
+            } else if (found.length) {
+                return found[0];
+            }
+        }
+        if (selfLinkUrlAsAnyType && tupleIdentifier) {
+            const found = Object.values(pubs.filter((publicationDocument) => publicationDocument.opds_selfLinkUrlAsAnyType === selfLinkUrlAsAnyType && tupleIdentifier === publicationDocument.opds_tupleIdentifier));
+            if (found.length > 1) {
+                debug(`findByOPDSPublicationAssociation: selfLinkUrlAsAnyType="${selfLinkUrlAsAnyType}" AND tupleIdentifier="${tupleIdentifier}" more than one publication associated with this url as been found !!`);
+                hashValue = OPDSPublicationComputeHash();
+                const found2 = Object.values(pubs.filter((publicationDocument) => publicationDocument.opds_selfLinkUrlAsAnyType === selfLinkUrlAsAnyType && tupleIdentifier === publicationDocument.opds_tupleIdentifier && hashValue === publicationDocument.opds_publicationHashValue));
+                if (found2.length === 1) {
+                    return found2[0];
+                }
+
+            } else if (found.length) {
+                return found[0];
+            }
+        }
+        if (!hashValue) {
+            hashValue = OPDSPublicationComputeHash();
+        }
+        if (tupleIdentifier && hashValue) {
+            const found = Object.values(pubs.filter((publicationDocument) => tupleIdentifier === publicationDocument.opds_tupleIdentifier && hashValue === publicationDocument.opds_publicationHashValue));
+            if (found.length === 1) {
+                return found[0];
+            }
+        }
+
+        debug("findByOPDSPublicationAssociation: not found matching");
+        return undefined;
+    }
+
+    public findAll(): PublicationDocument[] {
 
         const store = diMainGet("store");
         const state = store.getState();
@@ -146,9 +208,9 @@ export class PublicationRepository {
             .filter((v) => !v.removedButPreservedToAvoidReMigration);
     }
 
-    public async findAllSortDesc(): Promise<PublicationDocument[]> {
+    public findAllSortDesc(): PublicationDocument[] {
 
-        const pubs = await this.findAll();
+        const pubs = this.findAll();
         ok(Array.isArray(pubs));
         // WARNING: .sort() is in-place same-array mutation! (not a new array)
         // ... which is fine because findAll() creates a local array instance
@@ -157,33 +219,33 @@ export class PublicationRepository {
         return docsSorted;
     }
 
-    public async findByHashId(hash: string): Promise<PublicationDocument | undefined> {
+    public findByHashId(hash: string): PublicationDocument | undefined {
 
-        const pubs = await this.findAll();
+        const pubs = this.findAll();
         ok(Array.isArray(pubs));
         const pub = pubs.find((f) => f.hash === hash);
         return pub;
     }
 
-    public async findByTag(tag: string): Promise<PublicationDocument[]> {
+    public findByTag(tag: string): PublicationDocument[] {
 
-        const pubs = await this.findAll();
+        const pubs = this.findAll();
         ok(Array.isArray(pubs));
         const pubsFiltered = pubs.filter((f) => f.tags.includes(tag));
         return pubsFiltered;
     }
 
-    public async findByTitle(title: string): Promise<PublicationDocument[]> {
+    public findByTitle(title: string): PublicationDocument[] {
 
-        const pubs = await this.findAll();
+        const pubs = this.findAll();
         ok(Array.isArray(pubs));
         const pubsFiltered = pubs.filter((f) => f.title === title);
         return pubsFiltered;
     }
 
-    public async findByPublicationIdentifier(publicationIdentifier: string): Promise<PublicationDocument[]> {
+    public findByPublicationIdentifier(publicationIdentifier: string): PublicationDocument[] {
 
-        const pubs = await this.findAll();
+        const pubs = this.findAll();
         ok(Array.isArray(pubs));
         const pubsFiltered = pubs.filter((f) => f.identifier === publicationIdentifier);
         return pubsFiltered;
@@ -264,7 +326,7 @@ export class PublicationRepository {
     /** Returns all publication tags */
     public async getAllTags(): Promise<string[]> {
 
-        const pubs = aboutFilteredDocs(await this.findAll());
+        const pubs = aboutFilteredDocs(this.findAll());
         ok(Array.isArray(pubs));
         const tags: string[] = [];
 

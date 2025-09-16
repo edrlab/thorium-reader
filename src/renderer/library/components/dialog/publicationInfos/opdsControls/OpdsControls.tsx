@@ -157,6 +157,28 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                 )
                 : <></>;
 
+        const readButton = () => {
+
+
+
+            return opdsPublicationView.localBookshelfPublicationIdentifier ?
+                <div key={"readButton"}>
+                    <button
+                        onClick={() => {
+
+                            console.log("READ !!!!");
+                        }}
+                        className={stylesButtons.button_secondary}
+                        title={"read"}
+                    >
+                        <SVG ariaHidden={true} svg={ImportIcon} />
+                        {"READ"}
+                    </button>
+                </div>
+                : <></>;
+
+        };
+
         const feedLinksList = () => {
 
             const buyList = () =>
@@ -281,6 +303,9 @@ export class OpdsControls extends React.Component<IProps, undefined> {
             <>
                 {
                     openAccessLinksButton()
+                }
+                {
+                    readButton()
                 }
                 {
                     sampleOrPreviewLinksButton()

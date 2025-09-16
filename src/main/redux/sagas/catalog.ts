@@ -57,9 +57,9 @@ const NB_PUB = 10;
 // };
 
 
-const getLastAddedPublicationDocument = async (publicationRepository: PublicationRepository) => {
+const getLastAddedPublicationDocument = (publicationRepository: PublicationRepository) => {
 
-    const lastAddedPublications = await publicationRepository.findAllSortDesc();
+    const lastAddedPublications = publicationRepository.findAllSortDesc();
     return lastAddedPublications;
 };
 
