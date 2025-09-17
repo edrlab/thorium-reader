@@ -228,7 +228,8 @@
             "goBuyBook": "Dieses Buch kaufen",
             "goLoanBook": "Dieses Buch ausleihen",
             "goRevokeLoanBook": "Ausleihe widerrufen",
-            "goSubBook": "Abonnieren"
+            "goSubBook": "Abonnieren",
+            "read": ""
         },
         "network": {
             "error": "Ein Fehler ist aufgetreten",

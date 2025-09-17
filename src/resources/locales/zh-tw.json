@@ -228,7 +228,8 @@
             "goBuyBook": "購買此書",
             "goLoanBook": "借閱此書",
             "goRevokeLoanBook": "歸還此書",
-            "goSubBook": "訂閱"
+            "goSubBook": "訂閱",
+            "read": ""
         },
         "network": {
             "error": "無法訪問 OPDS 訂閱來源",

@@ -228,7 +228,8 @@
             "goBuyBook": "წიგნის შესყიდვა",
             "goLoanBook": "წიგნის სესხება",
             "goRevokeLoanBook": "სესხის ანულირება",
-            "goSubBook": "გამოწერა"
+            "goSubBook": "გამოწერა",
+            "read": ""
         },
         "network": {
             "error": "OPDS წყარო მიუწვდომელია",

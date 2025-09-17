@@ -228,7 +228,8 @@
             "goBuyBook": "Comprar este libro",
             "goLoanBook": "Pedir prestado este libro",
             "goRevokeLoanBook": "Cancelar préstamo",
-            "goSubBook": "Suscribirse"
+            "goSubBook": "Suscribirse",
+            "read": ""
         },
         "network": {
             "error": "No se puede acceder al catálogo OPDS",

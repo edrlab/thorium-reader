@@ -228,7 +228,8 @@
             "goBuyBook": "شراء المنشور",
             "goLoanBook": "استعارة المنشور",
             "goRevokeLoanBook": "إلغاء الاستعارة",
-            "goSubBook": "اشتراك"
+            "goSubBook": "اشتراك",
+            "read": ""
         },
         "network": {
             "error": "حدث خطأ أثناء الوصول إلى الموجز",

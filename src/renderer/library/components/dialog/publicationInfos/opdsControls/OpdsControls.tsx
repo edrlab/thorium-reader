@@ -11,7 +11,7 @@ import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scs
 import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
-import { dialogActions, importActions } from "readium-desktop/common/redux/actions/";
+import { dialogActions, importActions, readerActions } from "readium-desktop/common/redux/actions/";
 import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import * as CartFillIcon from "readium-desktop/renderer/assets/icons/cart-icon.svg";
 import * as BorrowIcon from "readium-desktop/renderer/assets/icons/borrow-icon.svg";
@@ -165,14 +165,12 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                 <div key={"readButton"}>
                     <button
                         onClick={() => {
-
-                            console.log("READ !!!!");
+                            this.props.read(opdsPublicationView.localBookshelfPublicationIdentifier);
                         }}
                         className={stylesButtons.button_secondary}
-                        title={"read"}
+                        title={__("opds.menu.read")}
                     >
-                        <SVG ariaHidden={true} svg={ImportIcon} />
-                        {"READ"}
+                        {__("opds.menu.read")}
                     </button>
                 </div>
                 : <></>;
@@ -326,6 +324,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
         link: (...data: Parameters<ReturnType<typeof dispatchOpdsLink>>) =>
             dispatchOpdsLink(dispatch)(...data),
+        read: (pubIdentifier: string) => {
+            dispatch(readerActions.openRequest.build(pubIdentifier));
+        },
     };
 };
 

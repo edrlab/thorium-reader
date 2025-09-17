@@ -228,7 +228,8 @@
             "goBuyBook": "Comprar documento",
             "goLoanBook": "Emprestar documento",
             "goRevokeLoanBook": "Revogar empréstimo",
-            "goSubBook": "Subscrever"
+            "goSubBook": "Subscrever",
+            "read": ""
         },
         "network": {
             "error": "Erro ao processar o sinal",

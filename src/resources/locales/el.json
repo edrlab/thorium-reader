@@ -228,7 +228,8 @@
             "goBuyBook": "Αγορά βιβλίου",
             "goLoanBook": "Δανεισμός βιβλίου",
             "goRevokeLoanBook": "Ανάκληση δανεισμού",
-            "goSubBook": "Εγγραφή"
+            "goSubBook": "Εγγραφή",
+            "read": ""
         },
         "network": {
             "error": "Σφάλμα πρόσβασης στη ροή",

@@ -228,7 +228,8 @@
             "goBuyBook": "本を購入する",
             "goLoanBook": "本を借りる",
             "goRevokeLoanBook": "返却する",
-            "goSubBook": "購読する"
+            "goSubBook": "購読する",
+            "read": ""
         },
         "network": {
             "error": "OPDSフィードにアクセスできません",

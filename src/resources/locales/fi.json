@@ -228,7 +228,8 @@
             "goBuyBook": "Osta kirja",
             "goLoanBook": "Lainaa kirja",
             "goRevokeLoanBook": "Peruuta laina",
-            "goSubBook": "Tilaa"
+            "goSubBook": "Tilaa",
+            "read": ""
         },
         "network": {
             "error": "OPDS-syöte ei ole saatavilla",

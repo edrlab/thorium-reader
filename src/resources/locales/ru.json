@@ -228,7 +228,8 @@
             "goBuyBook": "Купить эту книгу",
             "goLoanBook": "Арендовать книгу",
             "goRevokeLoanBook": "Отозвать кредит",
-            "goSubBook": "Подписаться"
+            "goSubBook": "Подписаться",
+            "read": ""
         },
         "network": {
             "error": "Невозможно получить доступ к каталогу opds",

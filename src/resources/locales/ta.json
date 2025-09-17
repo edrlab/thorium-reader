@@ -228,7 +228,8 @@
             "goBuyBook": "வெளியீடு வாங்கவும்",
             "goLoanBook": "கடன் வெளியீடு",
             "goRevokeLoanBook": "கடனைத் திரும்பப் பெறுங்கள்",
-            "goSubBook": "குழுசேர்"
+            "goSubBook": "குழுசேர்",
+            "read": ""
         },
         "network": {
             "error": "ஊட்டத்தை அணுகுவதில் பிழை",

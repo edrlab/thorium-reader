@@ -228,7 +228,8 @@
             "goBuyBook": "Buy publication",
             "goLoanBook": "Borrow publication",
             "goRevokeLoanBook": "Revoke loan",
-            "goSubBook": "Subscribe"
+            "goSubBook": "Subscribe",
+            "read": "Read"
         },
         "network": {
             "error": "Error accessing feed",

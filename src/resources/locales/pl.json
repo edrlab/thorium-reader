@@ -228,7 +228,8 @@
             "goBuyBook": "",
             "goLoanBook": "",
             "goRevokeLoanBook": "",
-            "goSubBook": ""
+            "goSubBook": "",
+            "read": ""
         },
         "network": {
             "error": "",

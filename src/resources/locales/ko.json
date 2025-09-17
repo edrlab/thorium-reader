@@ -228,7 +228,8 @@
             "goBuyBook": "책 구매",
             "goLoanBook": "책 대여",
             "goRevokeLoanBook": "반납하기",
-            "goSubBook": "구독하기"
+            "goSubBook": "구독하기",
+            "read": ""
         },
         "network": {
             "error": "opds feed에 연결할 수 없습니다",

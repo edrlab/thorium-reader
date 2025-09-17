@@ -228,7 +228,8 @@
             "goBuyBook": "Aller sur la page d'achat",
             "goLoanBook": "Aller sur la page d'emprunt",
             "goRevokeLoanBook": "Mettre fin au prêt",
-            "goSubBook": "Aller sur la page d'abonnement"
+            "goSubBook": "Aller sur la page d'abonnement",
+            "read": "Lire"
         },
         "network": {
             "error": "Une erreur est survenue",

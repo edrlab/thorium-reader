@@ -228,7 +228,8 @@
             "goBuyBook": "Купи тази книга",
             "goLoanBook": "Заеми тази книга",
             "goRevokeLoanBook": "Откажи заемането",
-            "goSubBook": "Абонирай се"
+            "goSubBook": "Абонирай се",
+            "read": ""
         },
         "network": {
             "error": "Грешка при достъпа до канала",

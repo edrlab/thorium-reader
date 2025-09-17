@@ -228,7 +228,8 @@
             "goBuyBook": "Köp den här boken",
             "goLoanBook": "Låna den här boken",
             "goRevokeLoanBook": "Återkalla lånet",
-            "goSubBook": "Prenumerera"
+            "goSubBook": "Prenumerera",
+            "read": ""
         },
         "network": {
             "error": "Kunde inte nå OPDS-flödet",

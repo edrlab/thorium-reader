@@ -228,7 +228,8 @@
             "goBuyBook": "Kupi",
             "goLoanBook": "Izposodi",
             "goRevokeLoanBook": "Preklic izposoje",
-            "goSubBook": "Naroči se"
+            "goSubBook": "Naroči se",
+            "read": ""
         },
         "network": {
             "error": "Težava pri dostopu do strežnika",
