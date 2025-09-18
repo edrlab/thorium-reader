@@ -127,6 +127,12 @@ function* profileActivating(id: string): SagaGenerator<void> {
 
     applyColorSet(colorsDarkLight.light, "light");
     applyColorSet(colorsDarkLight.dark, "dark");
+
+    const catalogsLinks = manifestJson.links?.find((ln) => ln.rel === "catalog");
+    debug("Manifest CATALOGS links", catalogsLinks);
+
+    // dispatch new opds-catalogs to the redux state attached to this profile
+
 }
 
 

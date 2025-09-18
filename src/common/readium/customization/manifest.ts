@@ -5,10 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
-import { Link } from "@r2-shared-js/models/publication-link";
-import { OPDSProperties } from "@r2-opds-js/opds/opds2/opds2-properties";
-import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
+import { JsonArray } from "src/typings/json";
 
 // https://www.notion.so/edrlab/Thorium-Reader-Profiles-1d8a1ca5712f80619738c2f26e700355
 
@@ -22,9 +19,9 @@ export interface ICustomizationManifest {
     description: string;
     default_locale: string; // BCP47
     theme: ICustomizationManifestTheme;
-    images: ICustomizationManifestImage[];
-    links?: Array<OPDSLink & { properties: ICustomizationManifestLinkPropertiesExtension }>;
-    publications?: OPDSPublication;
+    images: ICustomizationLink[];
+    links?: Array<ICustomizationLink & { properties: ICustomizationManifestLinkPropertiesExtension }>;
+    publications?: JsonArray; // OPDSPublication;
     signature: ICustomizationManifestSignature | undefined;
 }
 
@@ -51,18 +48,16 @@ export interface ICustomizationManifestSignature {
     algorithm: string; // URI
 }
 
-export interface ICustomizationManifestLinkPropertiesExtension extends OPDSProperties {
+export interface ICustomizationManifestLinkPropertiesExtension {
     showOnHomeSection?: boolean;
     // showDeletion?: boolean;
     // defaultProfile?: boolean;
-    authenticate?: { // OPDSLink authenticate
-        href: string;
-        type: string;
-    };
-    logo?: Link;
+    authenticate?: ICustomizationLink;
+    logo?: ICustomizationLink;
 }
 
-export interface ICustomizationManifestImage {
-    href: string; // relative file path in zip directory
+export interface ICustomizationLink {
+    href: string; // relative file path in zip directory or http(s) link => not fully an URI
     rel: string;
+    type: string;
 }
