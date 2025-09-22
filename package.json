@@ -93,7 +93,8 @@
     "unpatch-types": "",
     "typescript-check": "npm run patch-types && tsc --showConfig --project ./tsconfig-cli.json && echo \"####################\" && tsc --listFilesOnly --project ./tsconfig-cli.json && echo \"####################\" && tsc --project ./tsconfig-cli.json --extendedDiagnostics --diagnostics && npm run unpatch-types",
     "typescript-check-GO": "npm run patch-types && tsgo --showConfig --project ./tsconfig-cli.json && echo \"####################\" && tsgo --project ./tsconfig-cli.json --listFiles --extendedDiagnostics --diagnostics && npm run unpatch-types",
-    "typescript-check-GO:watch": "npm run patch-types && concurrently \"tsgo --project ./tsconfig-cli.json --watch --excludeDirectories **/node_modules\" \"npm run unpatch-types\""
+    "typescript-check-GO:watch": "npm run patch-types && concurrently \"tsgo --project ./tsconfig-cli.json --watch --excludeDirectories **/node_modules\" \"npm run unpatch-types\"",
+    "make-customization-profile": "webpack --config webpack.config.customization.js && DEBUG=r2:*,readium-desktop:* node ./dist/make-package.js"
   },
   "repository": {
     "type": "git",
@@ -230,6 +231,11 @@
         "ext": "lcpdf",
         "role": "Viewer",
         "mimeType": "application/pdf+lcp"
+      },
+      {
+        "ext": "thorium",
+        "role": "Viewer",
+        "mimeType": "application/vnd.edrlab.thorium+zip"
       }
     ],
     "win": {
@@ -393,6 +399,7 @@
     "@typescript/native-preview": "^7.0.0-dev.20250912.1",
     "babel-loader": "^10.0.0",
     "babel-plugin-macros": "^3.1.0",
+    "chokidar": "^4.0.3",
     "chromium-pickle-js": "^0.2.0",
     "concurrently": "^9.2.1",
     "copy-webpack-plugin": "^13.0.1",

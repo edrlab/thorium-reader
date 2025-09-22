@@ -1,0 +1,32 @@
+{
+    "manifestVersion": 1,
+    "identifier": "thorium-manifest://org.edrlab.thorium.troublion",
+    "version": "1.0.0",
+    "name": "troublion test customization profile",
+    "theme": {
+        "color": {
+            "dark": {
+                "neutral": "#003300",
+                "primary": "#004d00",
+                "secondary": "#006600",
+                "border": "#008000",
+                "background": "#001a00",
+                "app_name": "#008000"
+            },
+            "light": {
+                "neutral": "#FFFFFF",
+                "primary": "#E5FFE5",
+                "secondary": "#CCFFCC",
+                "border": "#B3FFB3",
+                "background": "#F0FFF0",
+                "app_name": "#CCFFCC"
+            }
+        }
+    },
+    "images": [
+        {
+            "rel": "logo",
+            "href": "./images/logo.svg"
+        }
+    ]
+}
