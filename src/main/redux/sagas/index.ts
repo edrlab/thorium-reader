@@ -35,8 +35,10 @@ import * as telemetry from "./telemetry";
 import * as lcp from "./lcp";
 import * as catalog from "./catalog";
 import * as annotation from "./note";
+import * as customization from "./customization";
 
 import { getTranslator } from "readium-desktop/common/services/translator";
+import { sagaCustomizationProfileProvisioning } from "./customization";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -58,6 +60,7 @@ export function* rootSaga() {
             // wait for the app.whenReady()
             call(appSaga.init),
             call(keyboardShortcuts.init),
+            call(sagaCustomizationProfileProvisioning),
         ]);
 
     } catch (e) {
@@ -73,6 +76,9 @@ export function* rootSaga() {
 
         app.exit(code);
     }
+
+    // customization profile acquire, provisioned and activate
+    yield customization.saga();
 
     // watch all electon exit event
     yield appSaga.exit();

@@ -38,6 +38,9 @@ import { settingsReducer } from "readium-desktop/common/redux/reducers/settings"
 import { importAnnotationReducer } from "readium-desktop/renderer/common/redux/reducers/importAnnotation";
 import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 import { noteExportReducer } from "readium-desktop/common/redux/reducers/noteExport";
+import { customizationPackageActivatingReducer } from "readium-desktop/common/redux/reducers/customization/activate";
+import { customizationPackageProvisioningReducer } from "readium-desktop/common/redux/reducers/customization/provision";
+import { customizationPackageActivatingLockReducer } from "readium-desktop/common/redux/reducers/customization/lock";
 
 export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reducer<Partial<ILibraryRootState>>
     return combineReducers({ // ILibraryRootState
@@ -86,7 +89,7 @@ export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reduc
         history: historyReducer,
         keyboard: keyboardReducer,
         load: loadReducer,
-        publication:  combineReducers({
+        publication: combineReducers({
             catalog: catalogViewReducer,
             tag: tagReducer,
         }),
@@ -96,5 +99,10 @@ export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reduc
         importAnnotations: importAnnotationReducer,
         lcp: lcpReducer,
         noteExport: noteExportReducer,
+        customization: combineReducers({
+            activate: customizationPackageActivatingReducer,
+            provision: customizationPackageProvisioningReducer,
+            lock: customizationPackageActivatingLockReducer,
+        }),
     });
 };

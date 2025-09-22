@@ -5,6 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { BaseError } from "readium-desktop/main/exceptions/base";
+// import * as enable from "./enable";
+import * as activate from "./activate";
+import * as provision from "./provision";
+import * as acquire from "./acquire";
+import * as lock from "./lock";
 
-export class NotFoundError extends BaseError { }
+export {
+    activate as activating,
+    provision as provisioning,
+    acquire,
+    lock,
+};

@@ -51,6 +51,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const creator = yield* selectTyped((_state: RootState) => _state.creator);
     const lcp = yield* selectTyped((state: RootState) => state.lcp);
     const noteExport = yield* selectTyped((state: RootState) => state.noteExport);
+    const customization = yield* selectTyped((state: RootState) => state.customization);
 
     const publicationRepository = diMainGet("publication-repository");
     let tag: string[] = [];
@@ -116,6 +117,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
             },
             lcp,
             noteExport,
+            customization,
         },
     } as readerIpc.EventPayload);
 }

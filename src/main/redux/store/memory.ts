@@ -461,6 +461,16 @@ export async function initStore()
         // (preloadedState as any).annotationImportQueue = undefined;
     }
 
+    // initLockInfo
+    if (preloadedState?.customization?.lock) {
+        preloadedState.customization.lock = {
+            state: "IDLE",
+            lockInfo: {
+                uuid: "",
+            },
+        };
+    }
+
     const sagaMiddleware = createSagaMiddleware();
 
     const mware = applyMiddleware(

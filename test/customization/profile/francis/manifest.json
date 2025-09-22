@@ -1,0 +1,32 @@
+{
+    "manifestVersion": 1,
+    "identifier": "thorium-manifest://org.edrlab.thorium.francis",
+    "version": "1.0.0",
+    "name": "francis test customization profile",
+    "theme": {
+        "color": {
+            "dark": {
+                "neutral": "#4B0000",
+                "primary": "#660000",
+                "secondary": "#800000",
+                "border": "#990000",
+                "background": "#330000",
+                "app_name": "#990000"
+            },
+            "light": {
+                "neutral": "#FFFFFF",
+                "primary": "#FFE5E5",
+                "secondary": "#FFCCCC",
+                "border": "#FFB3B3",
+                "background": "#FFF0F0",
+                "app_name": "#FFCCCC"
+            }
+        }
+    },
+    "images": [
+        {
+            "rel": "logo",
+            "href": "./images/logo.svg"
+        }
+    ]
+}

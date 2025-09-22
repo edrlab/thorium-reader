@@ -205,9 +205,15 @@ const yargsInit = () =>
             },
         )
         .command("$0 [path..]",
-            "import and read an epub or lcpl file",
+            "import and read an epub or lcpl file. Can also be used to provision and activate a custom profile extension",
             (y) =>
-                y.positional("path", {
+                y
+                // .positional("profile", {
+                //     describe: "unique profile identifier (if already loaded) of the custom profile extension",
+                //     type: "string",
+                //     array: false,
+                // })
+                .positional("path", {
                     describe: "path of your publication, it can be an absolute, relative path",
                     type: "string",
                     array: true,
@@ -224,6 +230,13 @@ const yargsInit = () =>
                 ]);
 
                 const { path: pathArgv } = argv;
+
+                debug("lauch command", argv);
+
+
+                // TODO: profile option, ...
+
+
                 const openPublicationRequestedBool = Array.isArray(pathArgv) ? pathArgv.length > 0 : !!pathArgv;
                 if (openPublicationRequestedBool) {
 

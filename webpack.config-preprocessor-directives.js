@@ -28,6 +28,24 @@ const nodeModuleRelativeUrl = isPackaged ? "node_modules" : "../node_modules";
 
 const distRelativeUrl = isPackaged ? "dist" : "../dist";
 
+// node scripts/profile-generate-key-pair.js 
+const pubkey = `-----BEGIN PUBLIC KEY-----
+MIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQBfuZMzJiHFuYrPHXkrzFvE4TLJCtt
+KH2trb1daSymrTwrULHNVa68ci1du2qO1QCJfRyzXhM3Xb1EClcjLc7wQFgAaw+2
+y9rrRYgNAPwvst6FjzS6ZSxNLmc+iubRYSpZaW4OOXk65cbwY1tcws2o+RtCoKlK
+z/sqIdxiPLBfKh+CGU4=
+-----END PUBLIC KEY-----
+`;
+const privateKey = `-----BEGIN PRIVATE KEY-----
+MIHuAgEAMBAGByqGSM49AgEGBSuBBAAjBIHWMIHTAgEBBEIAmpB0szkvKDuibCa0
+Wjex5O3pDgsgE2X2w1EsiEksLXZdSDTgMk32WUgcYnuHT0oE/FtrMPQVJEDzirjb
+y8ZkCkGhgYkDgYYABAF+5kzMmIcW5is8deSvMW8ThMskK20ofa2tvV1pLKatPCtQ
+sc1VrrxyLV27ao7VAIl9HLNeEzddvUQKVyMtzvBAWABrD7bL2utFiA0A/C+y3oWP
+NLplLE0uZz6K5tFhKllpbg45eTrlxvBjW1zCzaj5G0KgqUrP+yoh3GI8sF8qH4IZ
+Tg==
+-----END PRIVATE KEY-----
+`;
+
 // "http://localhost:8080/";
 // MUST END WITH FORWARD SLASH!
 const telemetryUrl =
@@ -66,6 +84,8 @@ const data = {
     __TH__RENDERER_PDF_WEBVIEW_BASE_URL__: JSON.stringify(rendererPdfWebviewBaseUrl),
     __TH__TELEMETRY_URL__: JSON.stringify(telemetryUrl),
     __TH__TELEMETRY_SECRET__: JSON.stringify(telemetrySecret),
+    __TH__CUSTOMIZATION_PROFILE_PUB_KEY__: JSON.stringify(pubkey),
+    __TH__CUSTOMIZATION_PROFILE_PRIVATE_KEY__: JSON.stringify(privateKey),
 
     // __PACKAGING__: JSON.stringify(envPackaging),
     // __NODE_ENV__: JSON.stringify(nodeEnv),
