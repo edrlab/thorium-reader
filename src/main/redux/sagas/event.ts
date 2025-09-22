@@ -97,7 +97,7 @@ export function saga() {
 
                     const fileName = path.basename(filePath);
                     const extension = path.extname(fileName);
-                    if (extension === ".thor") {
+                    if (extension === ".thorium") {
                     
                         yield put(customizationActions.acquire.build(filePath));
                         return ;
@@ -164,7 +164,7 @@ export function saga() {
                                 debug(`STATUS: ${response.statusCode}`);
                                 debug(`HEADERS: ${JSON.stringify(response.headers)}`);
 
-                                if (response.headers["content-type"] === mimeTypes["thor"]) {
+                                if (response.headers["content-type"] === mimeTypes["thorium"]) {
                                     debug("This is a thorium custom profile extension");
 
                                     res(true);

@@ -89,8 +89,8 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
         return;
     }
     const fileName = `${nanoid(10)}_${path.basename(filePath)}`;
-    if (path.extname(fileName) !== ".thor") {
-        debug("ERROR: file is not a .thor extension", fileName);
+    if (path.extname(fileName) !== ".thorium") {
+        debug("ERROR: file is not a .thorium extension", fileName);
         return;
     }
 

@@ -25,7 +25,7 @@ export const acceptedExtensionObject = {
     zip: ".zip",
     opf: ".opf",
     nccHtml: "ncc.html",
-    // customizationProfilePackage: ".thor",
+    // customizationProfilePackage: ".thorium",
 
     // cbz: ".cbz",
 };

@@ -31,12 +31,12 @@ export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder
         alwaysStat: false, // default false
 
 
-        // keep .thor files
+        // keep .thorium files
         ignored: (file, stats) => {
 
             const ignor = !(
                 file === wellKnownFolder ||
-                (/*stats?.isFile() &&*/ file.endsWith(".thor"))
+                (/*stats?.isFile() &&*/ file.endsWith(".thorium"))
             );
             debug(`IGNORED TEST? \"${file}\", Directory=${stats?.isDirectory()}, file=${stats?.isFile()} =====> ${ignor ? "IGNORED" : "KEEPED"}`);
             return ignor;

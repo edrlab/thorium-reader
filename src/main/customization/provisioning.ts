@@ -104,7 +104,7 @@ export async function customizationPackageProvisionningFromFolder(wellKnownFolde
     const results = readdirSync(wellKnownFolder, {withFileTypes: true});
 
     for (const dirent of results) {
-        if (dirent.isFile() && path.extname(dirent.name) === ".thor") { 
+        if (dirent.isFile() && path.extname(dirent.name) === ".thorium") { 
             const packageFileName = dirent.name;
             debug("Found => ", packageFileName);
             const profileProvisioned = await customizationPackageProvisioningAccumulator(packagesArray, packageFileName);

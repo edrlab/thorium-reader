@@ -101,7 +101,7 @@ export default class App extends React.Component<{}, undefined> {
             // console.log("absolutePath 3: " + absolutePath);
 
 
-            if (path.extname(absolutePath) === ".thor") {
+            if (path.extname(absolutePath) === ".thorium") {
 
                 console.log("dispatch thorium customization filePath: copy, provisions and activates profile =>", absolutePath);
                 store.dispatch(customizationActions.acquire.build(absolutePath));

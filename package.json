@@ -233,9 +233,9 @@
         "mimeType": "application/pdf+lcp"
       },
       {
-        "ext": "thor",
+        "ext": "thorium",
         "role": "Viewer",
-        "mimeType": "application/vnd.edrlab.thorium"
+        "mimeType": "application/vnd.edrlab.thorium+zip"
       }
     ],
     "win": {
