@@ -22,7 +22,7 @@ import { _CUSTOMIZATION_PROFILE_PUB_KEY } from "readium-desktop/preprocessor-dir
 // Logger
 const debug = debug_("readium-desktop:main#utils/customization/provisioning");
 
-export const customizationWellKnownFolder = path.join(app.getPath("userData"), "customization-profile");
+export const customizationWellKnownFolder = path.join(app.getPath("userData"), "customization-profile-well-known-folder");
 
 try {
     if (!existsSync(customizationWellKnownFolder)) {
