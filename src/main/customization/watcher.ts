@@ -41,15 +41,6 @@ export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder
             debug(`IGNORED TEST? \"${file}\", Directory=${stats?.isDirectory()}, file=${stats?.isFile()} =====> ${ignor ? "IGNORED" : "KEEPED"}`);
             return ignor;
             // return false;
-
-            /* /!\ There is an issue with the ignored callback, 2 consecutive test are executed, the first with the absolute file path and the stats obj BUT not for the second test, The file is then Falsy IGNORED /!\
-             SEE BELOW :
-
-            [2]   readium-desktop:main#utils/customization/watcher IGNORED TEST? "/Users/edrlab/Library/Application Support/EDRLab.ThoriumReader/.well-known/an-another-test-extension.thor", Directory=false, file=true =====> KEEPED +1ms
-            [2]   readium-desktop:main#utils/customization/watcher IGNORED TEST? "/Users/edrlab/Library/Application Support/EDRLab.ThoriumReader/.well-known/an-another-test-extension.thor", Directory=undefined, file=undefined =====> IGNORED +0ms
-            [2]   readium-desktop:main#utils/customization/watcher IGNORED TEST? "/Users/edrlab/Library/Application Support/EDRLab.ThoriumReader/.well-known/first-test-extension.thor", Directory=false, file=true =====> KEEPED +0ms
-            [2]   readium-desktop:main#utils/customization/watcher IGNORED TEST? "/Users/edrlab/Library/Application Support/EDRLab.ThoriumReader/.well-known/first-test-extension.thor", Directory=undefined, file=undefined =====> IGNORED +0ms
-            */
         },
 
         awaitWriteFinish: true, // emit single event when chunked writes are completed
