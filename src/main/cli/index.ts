@@ -205,7 +205,7 @@ const yargsInit = () =>
             },
         )
         .command("$0 [path..]",
-            "import and read an epub or lcpl file. Can also be to provisioned and activate a custom profile extension",
+            "import and read an epub or lcpl file. Can also be used to provision and activate a custom profile extension",
             (y) =>
                 y
                 // .positional("profile", {
