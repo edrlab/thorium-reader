@@ -17,7 +17,7 @@ import { convertMultiLangStringToString } from "readium-desktop/common/language-
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { ContentType } from "readium-desktop/utils/contentType";
 
-import { IWithAdditionalJSON } from "@r2-lcp-js/serializable";
+import { IWithAdditionalJSON, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { OPDSAvailabilityEnum } from "@r2-opds-js/opds/opds2/opds2-availability";
@@ -39,6 +39,7 @@ import { ILinkFilter } from "./type/linkFilter.interface";
 import { diSymbolTable } from "../diSymbolTable";
 import { type Store } from "redux";
 import { RootState } from "../redux/states";
+import { PublicationRepository } from "../db/repository/publication";
 
 // Logger
 const debug = debug_("readium-desktop:main/converter/opds");
@@ -68,6 +69,9 @@ export class OpdsFeedViewConverter {
 
     @inject(diSymbolTable.store)
     private readonly store!: Store<RootState>;
+
+    @inject(diSymbolTable["publication-repository"])
+    private readonly publicationRepository!: PublicationRepository;
 
     public convertDocumentToView(document: OpdsFeedDocument): IOpdsFeedView {
         return {
@@ -207,7 +211,6 @@ export class OpdsFeedViewConverter {
 
         // transform to absolute url
         ln.Href = urlPathResolve(baseUrl, ln.Href);
-
         // safe copy on each filtered links
         return {
             url: ln.Href,
@@ -322,6 +325,27 @@ export class OpdsFeedViewConverter {
             };
         }
 
+
+        const selfLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
+            rel: "self",
+            type: "application/opds-publication+json",
+        });
+        const selfLinkUrl = selfLinkView.length === 1 ? selfLinkView[0].url : undefined;
+
+
+        const attachLocalBookshelfPubId = (opdsLinkView: IOpdsLinkView) => {
+            const { url, type } = opdsLinkView;
+            const pubs = this.publicationRepository.findByOpdsPublication(url, type, workIdentifier, selfLinkUrl);
+            if (pubs.length > 1) {
+                debug("attachLocalBookshelf on ", opdsLinkView);
+                debug("too many publications !!!", "attached to", workIdentifier, selfLinkUrl);
+                debug(pubs);
+            } else if (pubs.length) {
+                opdsLinkView.localBookshelfPublicationId = pubs[0].identifier;
+            }
+            return opdsLinkView;
+        };
+
         // Get opds entry
         const sampleLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
             rel: [
@@ -329,20 +353,24 @@ export class OpdsFeedViewConverter {
                 "http://opds-spec.org/acquisition/preview",
             ],
             type: supportedFileTypeLinkArray,
-        });
+        }).map(attachLocalBookshelfPubId);
+
         const acquisitionLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
             rel: [
                 "http://opds-spec.org/acquisition",
                 "http://opds-spec.org/acquisition/open-access",
             ],
             type: supportedFileTypeLinkArray,
-        });
+        }).map(attachLocalBookshelfPubId);
+
         const buyLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
             rel: "http://opds-spec.org/acquisition/buy",
-        });
+        }).map(attachLocalBookshelfPubId);
+
         const borrowLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
             rel: "http://opds-spec.org/acquisition/borrow",
-        });
+        }).map(attachLocalBookshelfPubId);
+
         const subscribeLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
             rel: "http://opds-spec.org/acquisition/subscribe",
         });
@@ -426,6 +454,8 @@ export class OpdsFeedViewConverter {
             // convertMultiLangStringToLangString()
             a11y_accessibilitySummary: r2OpdsPublication.Metadata.Accessibility?.Summary || r2OpdsPublication.Metadata.AccessibilitySummary, // string | IStringMap
 
+            opdsPublicationStringified: JSON.stringify(TaJsonSerialize(r2OpdsPublication)), // TODO: bug not an strict json serialization from the original !! we have to serialize the original jsonObj response
+            selfLink: selfLinkView.length === 1 ? selfLinkView[0] : undefined,
         };
     }
     public convertOpdsAuthToView(r2OpdsAuth: OPDSAuthenticationDoc, baseUrl: string): IOpdsResultView {

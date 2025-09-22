@@ -72,6 +72,9 @@ export interface IOpdsPublicationView {
     a11y_accessModeSufficient?: (string[])[];
 
     a11y_accessibilitySummary?: string | IStringMap; // convertMultiLangStringToLangString()
+
+    opdsPublicationStringified?: string;
+    selfLink?: IOpdsLinkView;
 }
 
 export interface IOpdsNavigationLinkView {
@@ -155,6 +158,8 @@ export interface IOpdsLinkView {
     type?: string | undefined;
     properties?: IOPDSPropertiesView;
     rel?: string;
+
+    localBookshelfPublicationId?: string | undefined;
 }
 
 export interface IOpdsNavigationLink {

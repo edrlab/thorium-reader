@@ -46,6 +46,26 @@ function* importLinkFromPath(
         b: callTyped(importFromFsService, downloadPath, lcpHashedPassphrase),
     });
 
+    if (link.localBookshelfPublicationId) {
+
+        // download link already attached to a publication
+        // need to double check if the publication still exists
+        // What to do if a publication is attached !?
+        // - We can invalidate the publicationId associated with this downloadLink/opdsPublication
+        // - Just ignore it 
+
+        const publicationRepository  = diMainGet("publication-repository");
+        const publicationAttachedToLocalBookshelfPubId = yield* callTyped(() => publicationRepository.findByPublicationIdentifier(link.localBookshelfPublicationId));
+
+        if (publicationAttachedToLocalBookshelfPubId) {
+
+            debug("publication found");
+            debug(publicationAttachedToLocalBookshelfPubId.opdsPublicationStringified);
+            debug(pub?.opdsPublicationStringified);
+            debug(publicationAttachedToLocalBookshelfPubId.opdsPublicationStringified === pub?.opdsPublicationStringified);
+        }
+    }
+
     let returnPublicationDocument = publicationDocument;
     if (!alreadyImported && publicationDocument) {
 
@@ -70,6 +90,8 @@ function* importLinkFromPath(
                 //     // r2OpdsPublicationBase64: pub?.r2OpdsPublicationBase64 || "",
                 // } as Resources,
                 tags,
+                opdsPublicationStringified: pub?.opdsPublicationStringified,
+                opdsPublication: { url: link.url, type: link.type, selfLinkUrl: pub?.selfLink?.url, identifier: pub?.workIdentifier },
             },
         );
 
