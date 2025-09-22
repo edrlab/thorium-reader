@@ -27,8 +27,9 @@ import { minimizeLocatorExtended } from "readium-desktop/common/redux/states/loc
 import { EDrawType, INoteState, NOTE_DEFAULT_COLOR_OBJ, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 import { TBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { TAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
-import { sqliteInitTableNote, sqliteTableNoteInsert } from "readium-desktop/main/db/sqlite/note";
-import { __sqlite_migration_dry_run, sqliteInitialisation } from "readium-desktop/main/db/sqlite";
+import { sqliteInitTableNote, sqliteTableNoteDeleteWherePubId, sqliteTableNoteInsert, sqliteTableSelectLastModifiedDateWherePubId } from "readium-desktop/main/db/sqlite/note";
+import { sqliteInitialisation } from "readium-desktop/main/db/sqlite";
+import { IReaderStateReaderSession } from "src/common/redux/states/renderer/readerRootState";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -355,16 +356,40 @@ export async function initStore()
             if (state?.reduxState) {
                 if (!(state.reduxState as any).note) {
                     (state.reduxState as any).note = [];
-                } else if ((state.reduxState as any).note?.length) {
-                    if (sqliteTableNoteInsert(id, (state.reduxState as any).note)) {
-                        debug("SQLITE NOTE MIGRATION DONE, let's remove note array for this publicationId=", id);
-                        if (__sqlite_migration_dry_run) {
-                            (state.reduxState as any).note = [];
-                        }
-                    } else {
-                        debug("ERROR on SQLITE NOTE MIGRATION, publicationId=", id);
-                    }
+                } else if ((state.reduxState as Partial<IReaderStateReaderSession>).note?.length) {
 
+
+                    debug("We are checking notes (", (state.reduxState as Partial<IReaderStateReaderSession>).note?.length, "); json to sqlite migration for pubicationId=", id);
+
+                    const lastNoteModifiedEpochFromJson = (state.reduxState as Partial<IReaderStateReaderSession>).note.reduce((acc, cv) => {
+
+                        const currentModifiedEpoch = cv.modified || cv.created;
+                        if (currentModifiedEpoch > acc) {
+                            return currentModifiedEpoch;
+                        }
+                        return acc;
+
+                    }, 0);
+
+                    const lastNotesModifiedEpochFromSqlite = sqliteTableSelectLastModifiedDateWherePubId(id);
+
+
+                    debug("lastNoteModifiedEpochFromJson=", lastNoteModifiedEpochFromJson, "lastNotesModifiedEpochFromSqlite=", lastNotesModifiedEpochFromSqlite);
+
+                    if (lastNotesModifiedEpochFromSqlite >= lastNoteModifiedEpochFromJson) {
+                        debug("SQLITE WON, no migration");
+                    } else {
+                        debug("JSON WON, migration needed!!");
+                        if (sqliteTableNoteDeleteWherePubId(id)) {
+                            if (sqliteTableNoteInsert(id, (state.reduxState as any).note)) {
+                                debug("SQLITE NOTE MIGRATION DONE for this publicationId=", id);
+                            } else {
+                                debug("ERROR on SQLITE NOTE MIGRATION, publicationId=", id);
+                            }
+                        } else {
+                            debug("ERROR cannot delete note attached to pubId=", id);
+                        }
+                    }
                 }
             }
 

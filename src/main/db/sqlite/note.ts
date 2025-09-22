@@ -12,7 +12,7 @@ export const sqliteInitTableNote = () => {
 
     try {
         database.exec(`
-            CREATE TABLE IF NOT EXISTS note_experimental (
+            CREATE TABLE IF NOT EXISTS notes (
             id INTEGER PRIMARY KEY,
             created_at INTEGER NOT NULL DEFAULT (strftime('%s','now')),
             updated_at INTEGER NOT NULL DEFAULT (strftime('%s','now')),
@@ -25,7 +25,7 @@ export const sqliteInitTableNote = () => {
         debug("SQLITE INIT TABLE NOTE ERROR !!!");
         debug(e);
 
-        throw new Error("Cannot instanciate sqlite database with the table 'note_experimental'");
+        throw new Error("Cannot instanciate sqlite database with the table 'notes'");
     }
 
 
@@ -39,11 +39,11 @@ export const sqliteTableNoteInsert = (pubId: string, notes: INoteState[]): boole
     const database = getSqliteDatabaseSync();
 
     try {
-        const stm = database.prepare("INSERT OR IGNORE INTO note_experimental (pub_id, note_id, note_json) VALUES (?, ?, ?)");
+        const stm = database.prepare("INSERT OR IGNORE INTO notes (pub_id, note_id, note_json) VALUES (?, ?, ?)");
         debug("SQLITE INSERT STATEMENT:", stm.sourceSQL);
         for (const note of notes) {
             const result = stm.run(pubId, note.uuid, JSON.stringify(note));
-            debug(`TRYING TO INSERT ${note.uuid} in sqlite note_experimental table, result=`, result);
+            debug(`TRYING TO INSERT ${note.uuid} from ${pubId} in sqlite notes table, result=`, result);
         }
 
     } catch (e) {
@@ -59,10 +59,10 @@ export const sqliteTableNoteUpdate = (note: INoteState): boolean => {
     const database = getSqliteDatabaseSync();
 
     try {
-        const stm = database.prepare("UPDATE note_experimental SET updated_at=(strftime('%s','now')),note_json=? WHERE note_id=?");
+        const stm = database.prepare("UPDATE notes SET updated_at=(strftime('%s','now')),note_json=? WHERE note_id=?");
         debug("SQLITE UPDATE STATEMENT:", stm.sourceSQL);
         const result = stm.run(JSON.stringify(note), note.uuid);
-        debug(`TRYING TO UPDATE ${note.uuid} in sqlite note_experimental table, result=`, result);
+        debug(`TRYING TO UPDATE ${note.uuid} in sqlite notes table, result=`, result);
 
     } catch (e) {
         debug(`SQLITE UPDATE note (${note.uuid}) ERROR !!!`);
@@ -78,10 +78,10 @@ export const sqliteTableSelectAllNotesWherePubId = (pubId: string): INoteState[]
     const database = getSqliteDatabaseSync();
 
     try {
-        const stm = database.prepare("SELECT (note_json) FROM note_experimental where pub_id=? ORDER BY updated_at");
+        const stm = database.prepare("SELECT (note_json) FROM notes where pub_id=? ORDER BY updated_at");
         debug("SQLITE SELECT STATEMENT:", stm.sourceSQL);
         const result = stm.all(pubId);
-        debug(`TRYING TO SELECT all note from pubId=${pubId} in sqlite note_experimental table, result=`);
+        debug(`TRYING TO SELECT all note from pubId=${pubId} in sqlite notes table, result=`);
         // debug(JSON.stringify(result, null, 4)); // debug
 
         const notes_raw = result.map((rec) => rec["note_json"]);
@@ -99,15 +99,37 @@ export const sqliteTableSelectAllNotesWherePubId = (pubId: string): INoteState[]
     return [];
 };
 
+export const sqliteTableSelectLastModifiedDateWherePubId = (pubId: string): number => {
+
+    const database = getSqliteDatabaseSync();
+
+        try {
+        const stm = database.prepare("SELECT (updated_at) FROM notes where pub_id=? ORDER BY updated_at DESC LIMIT 1");
+        debug("SQLITE SELECT STATEMENT:", stm.sourceSQL);
+        const result = stm.all(pubId);
+        debug(`TRYING TO SELECT last updated_at(modified) from pubId=${pubId} in sqlite notes table, result=`);
+        // debug(JSON.stringify(result, null, 4)); // debug
+
+        const updated_at = (result[0]?.updated_at || 0) as number * 1000 + 999; // json epoch is in ms sqlite is in second, so let's add artificially less than 1sec to trigger sqlite as winner between both
+        return updated_at;
+
+
+    } catch (e) {
+        debug("SQLITE SELECT note ERROR !!!");
+        debug(e);
+    }
+    return 0;
+};
+
 export const sqliteTableNoteDelete = (noteId: string): boolean => {
 
     const database = getSqliteDatabaseSync();
 
     try {
-        const stm = database.prepare("DELETE FROM note_experimental WHERE note_id=?");
+        const stm = database.prepare("DELETE FROM notes WHERE note_id=?");
         debug("SQLITE DELETE STATEMENT:", stm.sourceSQL);
         const result = stm.run(noteId);
-        debug(`TRYING TO DELETE ${noteId} in sqlite note_experimental table, result=`, result);
+        debug(`TRYING TO DELETE ${noteId} in sqlite notes table, result=`, result);
 
     } catch (e) {
         debug(`SQLITE DELETE note (${noteId}) ERROR !!!`);
@@ -117,3 +139,23 @@ export const sqliteTableNoteDelete = (noteId: string): boolean => {
 
     return true;
 };
+
+export const sqliteTableNoteDeleteWherePubId = (pubId: string): boolean => {
+
+    const database = getSqliteDatabaseSync();
+
+    try {
+        const stm = database.prepare("DELETE FROM notes WHERE pub_id=?");
+        debug("SQLITE DELETE STATEMENT:", stm.sourceSQL);
+        const result = stm.run(pubId);
+        debug(`TRYING TO DELETE all notes attached to ${pubId} publicationId in sqlite notes table, result=`, result);
+
+    } catch (e) {
+        debug(`SQLITE DELETE note (${pubId}) ERROR !!!`);
+        debug(e);
+        return false;
+    }
+
+    return true;
+};
+

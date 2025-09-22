@@ -24,7 +24,6 @@ import { readerConfigInitialState } from "readium-desktop/common/redux/states/re
 import { comparePublisherReaderConfig } from "readium-desktop/common/publisherConfig";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
-import { __sqlite_migration_dry_run } from "readium-desktop/main/db/sqlite";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:win:reader";
@@ -143,12 +142,11 @@ function* winClose(action: winActions.reader.closed.TAction) {
 
             const reduxState = reader.reduxState;
 
-            if (!__sqlite_migration_dry_run) {
-                const notes = yield* callTyped(() => sqliteTableSelectAllNotesWherePubId(publicationIdentifier));
-                reduxState.note = (notes && notes.length) ? notes : [];
-    
-                yield put(winActions.session.setReduxState.build(winId, publicationIdentifier, reduxState));
-            }
+            const notes = yield* callTyped(() => sqliteTableSelectAllNotesWherePubId(publicationIdentifier));
+            reduxState.note = (notes && notes.length) ? notes : [];
+
+            // It takes too mutch time on reader closing now
+            yield put(winActions.session.setReduxState.build(winId, publicationIdentifier, reduxState));
 
             yield put(winActions.session.unregisterReader.build(winId));
 
