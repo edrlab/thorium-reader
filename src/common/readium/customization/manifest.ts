@@ -17,7 +17,7 @@ export interface ICustomizationManifest {
     contentHash: string;
     name: string;
     description: string;
-    default_locale: string; // BCP47
+    // default_locale: string; // BCP47 // not used anymore but still in notion example manifest
     theme: ICustomizationManifestTheme;
     images: ICustomizationLink[];
     links?: Array<ICustomizationLink & { properties: ICustomizationManifestLinkPropertiesExtension }>;

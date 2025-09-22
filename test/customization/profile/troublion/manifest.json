@@ -1,9 +1,8 @@
 {
-    "manifest_version": 1,
+    "manifestVersion": 1,
     "identifier": "thorium-manifest://org.edrlab.thorium.troublion",
     "version": "1.0.0",
     "name": "troublion test customization profile",
-    "default_locale": "en",
     "theme": {
         "color": {
             "dark": {

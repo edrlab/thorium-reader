@@ -1,9 +1,8 @@
 {
-    "manifest_version": 1,
+    "manifestVersion": 1,
     "identifier": "thorium-manifest://org.edrlab.thorium.francis",
     "version": "1.0.0",
     "name": "francis test customization profile",
-    "default_locale": "en",
     "theme": {
         "color": {
             "dark": {
