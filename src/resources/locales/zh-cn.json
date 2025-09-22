@@ -969,23 +969,23 @@
                 },
                 "FocusReaderNavigationSearch": {
                     "description": "将键盘焦点移动到阅读器窗口导航面板的“搜索”部分",
-                    "name": ""
+                    "name": "聚焦“搜索”"
                 },
                 "FocusReaderNavigationTOC": {
                     "description": "将键盘焦点移到阅读器窗口导航面板的 '目录' 部分",
-                    "name": ""
+                    "name": "聚焦“目录”"
                 },
                 "FocusReaderSettings": {
-                    "description": "",
-                    "name": ""
+                    "description": "将键盘焦点移至阅读器窗口的设置面板（显示偏好设置等）",
+                    "name": "聚焦于阅读器设置"
                 },
                 "FocusSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "将键盘焦点移动到阅读器窗口的文本搜索输入框，或在图书馆窗口中搜索书架或活动的 OPDS 提要",
+                    "name": "搜索命令"
                 },
                 "FocusToolbar": {
-                    "description": "",
-                    "name": ""
+                    "description": "将键盘焦点移至图形用户界面中紧邻“跳过链接”的定位区域（该链接本身会将焦点移至图书馆或阅读器窗口的主内容区域）",
+                    "name": "聚焦工具栏"
                 },
                 "NavigateNextChapter": {
                     "description": "在阅读器窗口中，导航到出版物阅读顺序中的下一个文档(例如书脊中的章节)。请注意，除了这个默认快捷键，还有一个可选的快捷键",
@@ -1001,27 +1001,27 @@
                 },
                 "NavigateNextLibraryPage": {
                     "description": "在图书馆窗口中，显示出版物分页列表的下一页。请注意，此默认快捷键有一个替代的键盘快捷键",
-                    "name": ""
+                    "name": "转到下一个图书馆页面"
                 },
                 "NavigateNextLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "在库窗口中，显示出版物分页列表的下一页。这是默认快捷键的另一种快捷键",
+                    "name": "转到下一个库页（可选）"
                 },
                 "NavigateNextOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "在目录/ OPDS提要的库窗口中，点击下一个分页链接。请注意，对于这个默认快捷键，还有一个可选的键盘快捷键",
+                    "name": "转到下一个OPDS页面"
                 },
                 "NavigateNextOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "在目录/OPDS提要的库窗口中，点击下一个分页链接。这是默认快捷键的替代快捷键",
+                    "name": "转到下一个OPDS页面（备选）"
                 },
                 "NavigateNextPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "在阅读器窗口中，转到出版物的下一个“页面”。请注意，此默认键盘快捷键有一个替代快捷键",
+                    "name": "转到下一页"
                 },
                 "NavigateNextPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "在阅读器窗口中，转到出版物的下一个“页面”。这是默认快捷键的替代快捷键",
+                    "name": "转到下一页 (备选)"
                 },
                 "NavigatePreviousChapter": {
                     "description": "",
@@ -1061,46 +1061,46 @@
                 },
                 "NavigateToBegin": {
                     "description": "",
-                    "name": ""
+                    "name": "转到开始"
                 },
                 "NavigateToEnd": {
-                    "description": "",
-                    "name": ""
+                    "description": "在阅读器窗口中，转到出版物的末尾",
+                    "name": "转到结尾"
                 },
                 "OpenReaderInfo": {
-                    "description": "",
-                    "name": ""
+                    "description": "在阅读窗口中，打开出版物的信息对话框",
+                    "name": "显示书籍信息"
                 },
                 "OpenReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "在阅读窗口中，打开弹出对话框以显示有关出版物的信息，并将键盘焦点放在显示当前阅读位置上下文的部分上",
+                    "name": "显示出版信息，显示阅读位置"
                 },
                 "Print": {
-                    "description": "",
-                    "name": ""
+                    "description": "在阅读器窗口中，打开打印对话框",
+                    "name": "打印"
                 },
                 "SearchNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "在阅读器窗口的搜索工具中，转到下一个搜索结果。请注意，还有一个替代的键盘快捷键可以使用",
+                    "name": "下一个搜索结果"
                 },
                 "SearchNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "在阅读器窗口的搜索工具中，转到下一个搜索结果。这是一个替代默认快捷键的组合",
+                    "name": "下一个搜索结果（备选）"
                 },
                 "SearchPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "在阅读器窗口的搜索工具中，转到上一个搜索结果。请注意，还有一个替代的键盘快捷键可以使用",
+                    "name": "上一个搜索结果"
                 },
                 "SearchPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "在阅读器窗口的搜索工具中，返回上一个搜索结果。这是一个替代默认快捷键的快捷方式",
+                    "name": "上一个搜索结果（备选）"
                 },
                 "SpeakReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "在阅读器窗口中，描述当前阅读位置的上下文，使用与屏幕阅读器兼容的语音文本",
+                    "name": "描述阅读地点（演讲）"
                 },
                 "ToggleBookmark": {
-                    "description": "",
+                    "description": "添加新书签或删除当前选中的现有书签",
                     "name": ""
                 },
                 "ToggleReaderFullscreen": {
