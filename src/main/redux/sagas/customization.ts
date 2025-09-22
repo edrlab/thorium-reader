@@ -16,7 +16,7 @@ import { copyFile } from "node:fs/promises";
 import { nanoid } from "nanoid";
 
 
-import { fork as forkTyped, call as callTyped, select as selectTyped, put as putTyped, take as takeTyped, race as raceTyped, delay, SagaGenerator } from "typed-redux-saga/macro";
+import { fork as forkTyped, call as callTyped, select as selectTyped, put as putTyped, take as takeTyped, race as raceTyped, delay, SagaGenerator, all as allTyped } from "typed-redux-saga/macro";
 import { existsSync, statSync } from "node:fs";
 import path from "node:path";
 import { ICustomizationLockInfo } from "readium-desktop/common/redux/states/customization";
@@ -198,9 +198,23 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
 
 export function saga() {
 
-    return takeSpawnLeading(
-        customizationActions.acquire.ID,
-        acquireProvisionsActivates,
-        (e) => error(filename_, e),
-    );
+    return allTyped([
+        takeSpawnLeading(
+            customizationActions.acquire.ID,
+            acquireProvisionsActivates,
+            (e) => error(filename_, e),
+        ),
+        takeSpawnLeading(
+            customizationActions.activating.ID,
+            function* (action: customizationActions.activating.TAction) {
+
+                const payload = action.payload;
+                const id = payload.id;
+
+
+                debug("TODO need to persist activate ID profile HERE", id);
+
+            },
+            (e) => debug(e),
+        )]);
 }
