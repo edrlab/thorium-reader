@@ -70,8 +70,8 @@ export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder
             debug(`FSWatch: File ${absoluteFilePath} has been added`);
             debug("START callback");
 
-            if (path.extname(absoluteFilePath) !== ".thor") {
-                debug("FSWatch: WATCHER ERROR!: Not in .thor !!?", absoluteFilePath);
+            if (path.extname(absoluteFilePath) !== ".thorium") {
+                debug("FSWatch: WATCHER ERROR!: Not in .thorium !!?", absoluteFilePath);
                 return;
             }
             const fileName = path.basename(absoluteFilePath);
@@ -81,8 +81,8 @@ export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder
             debug(`FSWatch: File ${absoluteFilePath} has been changed`);
             debug("START callback");
 
-            if (path.extname(absoluteFilePath) !== ".thor") {
-                debug("FSWatch: WATCHER ERROR!: Not in .thor !!?", absoluteFilePath);
+            if (path.extname(absoluteFilePath) !== ".thorium") {
+                debug("FSWatch: WATCHER ERROR!: Not in .thorium !!?", absoluteFilePath);
                 return;
             }
             const fileName = path.basename(absoluteFilePath);
@@ -91,8 +91,8 @@ export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder
         .on("unlink", (absoluteFilePath) => {
             debug(`FSWatch: File ${absoluteFilePath} has been removed`);
 
-            if (path.extname(absoluteFilePath) !== ".thor") {
-                debug("FSWatch: WATCHER ERROR!: Not in .thor !!?", absoluteFilePath);
+            if (path.extname(absoluteFilePath) !== ".thorium") {
+                debug("FSWatch: WATCHER ERROR!: Not in .thorium !!?", absoluteFilePath);
                 return;
             }
             const fileName = path.basename(absoluteFilePath);
