@@ -23,6 +23,7 @@ import { createReaderWindow } from "./browserWindow/createReaderWindow";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import { comparePublisherReaderConfig } from "readium-desktop/common/publisherConfig";
 import { readerActions } from "readium-desktop/common/redux/actions";
+import { sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:win:reader";
@@ -71,6 +72,8 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
         debug(`reader ${identifier} got the lock !!!`);
     }
 
+    const notes = yield* callTyped(() => sqliteTableSelectAllNotesWherePubId(reader.publicationIdentifier));
+
     webContents.send(readerIpc.CHANNEL, {
         type: readerIpc.EventType.request,
         payload: {
@@ -102,6 +105,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
                 },
                 config,
                 lock: gotTheLock,
+                note: notes,
             },
             keyboard,
             mode,
@@ -119,31 +123,38 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
 
 function* winClose(action: winActions.reader.closed.TAction) {
 
-    const identifier = action.payload.identifier;
+    const winId = action.payload.identifier;
     let publicationIdentifier = "";
-    debug(`reader ${identifier} -> winClose`);
-    deleteReaderWindowInDi(identifier);
+    debug(`reader ${winId} -> winClose`);
+    deleteReaderWindowInDi(winId);
 
     {
         const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
-        const reader = readers[identifier];
+        const reader = readers[winId];
 
         if (reader) {
 
             publicationIdentifier = reader.publicationIdentifier;
             const winIdGotTheLock = __readerWithSamePubIdGotTheLockMap.get(publicationIdentifier);
-            if (identifier === winIdGotTheLock) {
+            if (winId === winIdGotTheLock) {
                 __readerWithSamePubIdGotTheLockMap.delete(publicationIdentifier);
             }
 
-            yield put(winActions.session.unregisterReader.build(identifier));
+            const reduxState = reader.reduxState;
 
-            // fixes #1744 // do not dispatch to registry on close, there are no states change at this step
-            // yield put(winActions.registry.registerReaderPublication.build(
-            //     publicationIdentifier,
-            //     reader.windowBound,
-            //     reader.reduxState),
-            //     );
+            const notes = yield* callTyped(() => sqliteTableSelectAllNotesWherePubId(publicationIdentifier));
+            reduxState.note = (notes && notes.length) ? notes : [];
+
+            // It takes too mutch time on reader closing now
+            yield put(winActions.session.setReduxState.build(winId, publicationIdentifier, reduxState));
+
+            yield put(winActions.session.unregisterReader.build(winId));
+
+            yield put(winActions.registry.registerReaderPublication.build(
+                publicationIdentifier,
+                reader.windowBound,
+                reduxState),
+                );
 
             yield put(streamerActions.publicationCloseRequest.build(publicationIdentifier));
         }
@@ -176,7 +187,7 @@ function* winClose(action: winActions.reader.closed.TAction) {
                     // yield put(readerActions.attachModeRequest.build());
 
                 } else {
-                    const readerWin = yield* callTyped(() => getReaderWindowFromDi(identifier));
+                    const readerWin = yield* callTyped(() => getReaderWindowFromDi(winId));
                     if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
                         try {
                             const winBound = readerWin.getBounds();

@@ -13,7 +13,7 @@ import { annotationActions, readerActions, toastActions } from "readium-desktop/
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
 import { SagaGenerator } from "typed-redux-saga";
-import { call as callTyped, put as putTyped, select as selectTyped, take as takeTyped, delay as delayTyped } from "typed-redux-saga/macro";
+import { call as callTyped, put as putTyped, select as selectTyped, take as takeTyped, delay as delayTyped, all as allTyped } from "typed-redux-saga/macro";
 import { hexToRgb } from "readium-desktop/common/rgb";
 import { isNil } from "readium-desktop/utils/nil";
 import { RootState } from "../states";
@@ -29,6 +29,8 @@ import { getTranslator } from "readium-desktop/common/services/translator";
 import { EDrawType, INoteState, NOTE_DEFAULT_COLOR, noteColorCodeToColorSet, noteColorSetToColorCode } from "readium-desktop/common/redux/states/renderer/note";
 import { winActions } from "../actions";
 import { WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/constant";
+import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
+import { sqliteTableNoteDelete, sqliteTableNoteInsert, sqliteTableNoteUpdate, sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
 
 
 // Logger
@@ -39,25 +41,27 @@ debug("_");
 export function* getNotesFromMainWinState(publicationIdentifier: string): SagaGenerator<INoteState[]> {
 
     let notes: INoteState[] = [];
-    const sessionReader = yield* selectTyped((state: RootState) => state.win.session.reader);
-    const winSessionReaderStateArray = Object.values(sessionReader).filter((v) => v.publicationIdentifier === publicationIdentifier);
-    if (winSessionReaderStateArray.length) {
-        const winSessionReaderStateFirst = winSessionReaderStateArray[0]; // TODO: get the first only !?!
-        notes = winSessionReaderStateFirst?.reduxState?.note || [];
 
-        debug("current publication AnnotationsList come from the readerSession (there are one or many readerWin currently open)");
-    } else {
-        const sessionRegistry = yield* selectTyped((state: RootState) => state.win.registry.reader);
-        if (Object.keys(sessionRegistry).find((v) => v === publicationIdentifier)) {
-            notes = sessionRegistry[publicationIdentifier]?.reduxState?.note || [];
+    notes = yield* callTyped(() => sqliteTableSelectAllNotesWherePubId(publicationIdentifier));
+    // const sessionReader = yield* selectTyped((state: RootState) => state.win.session.reader);
+    // const winSessionReaderStateArray = Object.values(sessionReader).filter((v) => v.publicationIdentifier === publicationIdentifier);
+    // if (winSessionReaderStateArray.length) {
+    //     const winSessionReaderStateFirst = winSessionReaderStateArray[0]; // TODO: get the first only !?!
+    //     notes = winSessionReaderStateFirst?.reduxState?.note || [];
 
-            debug("current publication AnnotationsList come from the readerRegistry (no readerWin currently open)");
-        }
-    }
-    debug("There are", notes.length, "annotation(s) loaded from the current publicationIdentifier");
-    if (!notes.length) {
-        debug("Be careful, there are no annotation loaded for this publication!");
-    }
+    //     debug("current publication AnnotationsList come from the readerSession (there are one or many readerWin currently open)");
+    // } else {
+    //     const sessionRegistry = yield* selectTyped((state: RootState) => state.win.registry.reader);
+    //     if (Object.keys(sessionRegistry).find((v) => v === publicationIdentifier)) {
+    //         notes = sessionRegistry[publicationIdentifier]?.reduxState?.note || [];
+
+    //         debug("current publication AnnotationsList come from the readerRegistry (no readerWin currently open)");
+    //     }
+    // }
+    // debug("There are", notes.length, "annotation(s) loaded from the current publicationIdentifier");
+    // if (!notes.length) {
+    //     debug("Be careful, there are no annotation loaded for this publication!");
+    // }
 
     return notes;
 }
@@ -77,7 +81,7 @@ function* pushNotesFromMainWindow(publicationIdentifier: string, notes: INoteSta
     } else {
         const sessionRegistry = yield* selectTyped((state: RootState) => state.win.registry.reader);
         const reduxState = sessionRegistry[publicationIdentifier]?.reduxState || {};
-        reduxState.note = [...(reduxState.note || []), ...notes];
+        // reduxState.note = [...(reduxState.note || []), ...notes];
         const winBound = sessionRegistry[publicationIdentifier]?.windowBound || { height: WINDOW_MIN_HEIGHT, width: WINDOW_MIN_WIDTH, x: 0, y: 0 };
 
         yield* putTyped(winActions.registry.registerReaderPublication.build(
@@ -343,9 +347,44 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
 
 
 export function saga() {
-    return takeSpawnLatest(
-        annotationActions.importAnnotationSet.ID,
-        importAnnotationSet,
-        (e) => error(filename_, e),
-    );
+    return allTyped([
+        takeSpawnLatest(
+            annotationActions.importAnnotationSet.ID,
+            importAnnotationSet,
+            (e) => error(filename_, e),
+        ),
+        takeSpawnLeading(
+            readerActions.note.addUpdate.ID,
+            function* (action: readerActions.note.addUpdate.TAction): SagaGenerator<void> {
+                debug("RECEIVE ADD/UPDATE ACTION");
+                debug(action);
+
+                const payload = action.payload;
+                const pubId = action.destination.publicationIdentifier;
+                const { previousNote, newNote } = payload;
+
+                if (!previousNote) {
+                    debug("NO PreviousNote ==> INSERT new note");
+                    yield* callTyped(() => sqliteTableNoteInsert(pubId, [ newNote ]));
+                } else {
+                    debug("PreviousNote ==> UPDATE new note");
+                    yield* callTyped(() => sqliteTableNoteUpdate(newNote));
+                }
+            },
+            (e) => error(filename_, e),
+        ),
+        takeSpawnLeading(
+            readerActions.note.remove.ID,
+            function* (action: readerActions.note.remove.TAction): SagaGenerator<void> {
+                debug("RECEIVE REMOVE ACTION");
+                debug(action);
+                
+                const payload = action.payload;
+                const { note } = payload;
+                
+                yield* callTyped(() => sqliteTableNoteDelete(note.uuid));
+            },
+            (e) => error(filename_, e),
+        ),
+    ]);
 }

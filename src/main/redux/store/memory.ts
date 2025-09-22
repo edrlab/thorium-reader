@@ -25,9 +25,11 @@ import { readerConfigInitialState } from "readium-desktop/common/redux/states/re
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 import { minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 import { EDrawType, INoteState, NOTE_DEFAULT_COLOR_OBJ, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
-import { clone } from "ramda";
 import { TBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { TAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
+import { sqliteInitTableNote, sqliteTableNoteDeleteWherePubId, sqliteTableNoteInsert, sqliteTableSelectLastModifiedDateWherePubId } from "readium-desktop/main/db/sqlite/note";
+import { sqliteInitialisation } from "readium-desktop/main/db/sqlite";
+import { IReaderStateReaderSession } from "src/common/redux/states/renderer/readerRootState";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -244,6 +246,10 @@ export async function initStore()
         ...reduxState,
     } : {};
 
+    // SQLITE 
+    sqliteInitialisation();
+    sqliteInitTableNote();
+
     if (preloadedState.win?.registry?.reader) {
         for (const id in preloadedState.win.registry.reader) {
             const state = preloadedState.win.registry.reader[id];
@@ -348,8 +354,42 @@ export async function initStore()
             }
 
             if (state?.reduxState) {
-                if (!state.reduxState.note) {
-                    state.reduxState.note = [];
+                if (!(state.reduxState as any).note) {
+                    (state.reduxState as any).note = [];
+                } else if ((state.reduxState as Partial<IReaderStateReaderSession>).note?.length) {
+
+
+                    debug("We are checking notes (", (state.reduxState as Partial<IReaderStateReaderSession>).note?.length, "); json to sqlite migration for pubicationId=", id);
+
+                    const lastNoteModifiedEpochFromJson = (state.reduxState as Partial<IReaderStateReaderSession>).note.reduce((acc, cv) => {
+
+                        const currentModifiedEpoch = cv.modified || cv.created;
+                        if (currentModifiedEpoch > acc) {
+                            return currentModifiedEpoch;
+                        }
+                        return acc;
+
+                    }, 0);
+
+                    const lastNotesModifiedEpochFromSqlite = sqliteTableSelectLastModifiedDateWherePubId(id);
+
+
+                    debug("lastNoteModifiedEpochFromJson=", lastNoteModifiedEpochFromJson, "lastNotesModifiedEpochFromSqlite=", lastNotesModifiedEpochFromSqlite);
+
+                    if (lastNotesModifiedEpochFromSqlite >= lastNoteModifiedEpochFromJson) {
+                        debug("SQLITE WON, no migration");
+                    } else {
+                        debug("JSON WON, migration needed!!");
+                        if (sqliteTableNoteDeleteWherePubId(id)) {
+                            if (sqliteTableNoteInsert(id, (state.reduxState as any).note)) {
+                                debug("SQLITE NOTE MIGRATION DONE for this publicationId=", id);
+                            } else {
+                                debug("ERROR on SQLITE NOTE MIGRATION, publicationId=", id);
+                            }
+                        } else {
+                            debug("ERROR cannot delete note attached to pubId=", id);
+                        }
+                    }
                 }
             }
 
@@ -382,7 +422,7 @@ export async function initStore()
                         group: "bookmark",
                     };
 
-                    state.reduxState.note.push(clone(note));
+                    sqliteTableNoteInsert(id, [ note ]);
                 }
                 (state.reduxState as any).bookmark = undefined;
 
@@ -413,7 +453,7 @@ export async function initStore()
                         group: "annotation",
                     };
 
-                    state.reduxState.note.push(clone(note));
+                    sqliteTableNoteInsert(id, [ note ]);
                 }
                 (state.reduxState as any).annotation = undefined;
 
