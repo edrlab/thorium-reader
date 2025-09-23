@@ -6,13 +6,13 @@
         "leftSlideButton": "سحب إلى اليسار",
         "mainContent": "المحتوى الرئيسي",
         "rightSlideButton": "سحب إلى اليمين",
-        "skipLink": "تخطى الى المحتوى",
+        "skipLink": "تخطَّ إلى المحتوى",
         "toolbar": "شريط الأدوات"
     },
     "apiapp": {
-        "documentation": "وثائق ثوريوم",
+        "documentation": "توثيق ثوريوم",
         "howItWorks": "كيف يعمل؟",
-        "informations": "توفّر العديد من المكتبات العامة في فرنسا كتالوغاً يمكن قراءته آلياً (مشابه لنظام توزيع المنشورات المفتوح OPDS لكن ليس مطابقاً له)، مما يتيح للمستخدمين تنزيل منشورات رقمية من رفوف كتبهم الشخصية. يتيح لك دمج هذه التكنولوجيا في ثوريوم ريدر تنزيل كتاب إلكتروني أو كتاب صوتي مباشرة إلى ثوريوم ريدر لقراءته فوراً. كيف تربط حسابك في المكتبة العامة الفرنسية بثوريوم ريدر؟ الأمر بسيط. اكتب إسم مدينة فرنسية ('باريس') أو جزءاً من إسم المكتبة في حقل البحث واضغط زر البحث، فتظهر لائحة بالمكتبات العامة المطابقة لبحثك. اختر مكتبةً، واضغط \"إضافة\"، ثم اختر هذه المكتبة في اللائحة المحدَّثة للكتالوغات، فيظهر نموذج مصادقة. اكتب إسم المستخدم/عنوان البريد الإلكتروني وكلمة المرور الخاصين بك، واضغط \"تسجيل الدخول\". يمكنك الآن رؤية محتوى رف كتبك الشخصية، حيث يمكنك تنزيل وقراءة الكتب الإلكترونية والكتب الصوتية التي استعرتها سابقاً.",
+        "informations": "في فرنسا، توفر العديد من المكتبات العامة فهرسًا قابلاً للقراءة آليًا (مشابهًا لنظام توزيع المنشورات المفتوح OPDS لكنه غير مطابقًا له)، مما يتيح للمستفيدين تنزيل المنشورات الرقمية من رف كتبهم الشخصي. إن دمج هذه التقنية في قارئ ثوريوم يتيح لك تنزيل كتاب إلكتروني أو كتاب صوتي مباشرةً إلى التطبيق للقراءة الفورية.\nكيف تربط حسابك في المكتبة العامة الفرنسية بقارئ ثوريوم؟ الأمر بسيط. أدخل اسم مدينة فرنسية (مثل 'باريس') أو جزءًا من اسم المكتبة في حقل البحث واضغط على زر بحث. ستظهر قائمة بالمكتبات العامة المطابقة لبحثك. اختر المكتبة واضغط 'إضافة'. في قائمة الفهارس المحدثة، حدد هذه المكتبة ليظهر نموذج المصادقة. أدخل اسم المستخدم/عنوان البريد الإلكتروني وكلمة المرور، ثم اضغط تسجيل الدخول. ستتمكن الآن من رؤية محتوى رف كتبك الشخصي، ومنه يمكنك تنزيل وقراءة الكتب الإلكترونية والكتب الصوتية التي استعرتها مسبقًا.",
         "noLibraryFound": "لم يتم العثور على مكتبة ({{- name}})"
     },
     "app": {
@@ -22,7 +22,7 @@
             "paste": "لصق",
             "print": "طباعة",
             "redo": "إعادة",
-            "selectAll": "اختيار الكل",
+            "selectAll": "تحديد الكل",
             "title": "تحرير",
             "undo": "تراجع"
         },
@@ -35,9 +35,9 @@
                         "no": "لا",
                         "yes": "نعم"
                     },
-                    "help": "قم بتنشيط هذا إذا كنت تريد عند التشغيل التالي أن يُعاد تلقائياً فتح نوافذ القارئ التي كانت مفتوحة عند إغلاق التطبيق.",
-                    "message": "هل تريد حفظ الجلسة؟",
-                    "title": "حفظ الجلسة"
+                    "help": "فعِّل هذا الخيار إذا كنت تريد إعادة فتح نوافذ القارئ المفتوحة عند إغلاق التطبيق تلقائيًا عند تشغيله في المرة التالية.",
+                    "message": "حفظ واستعادة جلسة القراءة",
+                    "title": "حفظ الجلسة؟"
                 }
             }
         },
@@ -61,7 +61,7 @@
         "column": {
             "ascending": "تصاعدي",
             "descending": "تنازلي",
-            "unsorted": "غير مفروز"
+            "unsorted": "غير مرتب"
         },
         "delete": "حذف",
         "deleteBook": "حذف",
@@ -70,28 +70,28 @@
         "emptyTagList": "لا توجد منشورات موسومة.",
         "entry": {
             "continueReading": "استئناف القراءة",
-            "lastAdditions": "المضافة مؤخراً"
+            "lastAdditions": "المضاف حديثًا"
         },
-        "export": "حفظ بإسم",
+        "export": "حفظ باسم",
         "exportAnnotation": "تصدير الملاحظات",
         "format": "التنسيق",
         "importAnnotation": "استيراد الملاحظات",
         "lang": "اللغة",
-        "lastRead": "آخر منشور مقروء",
+        "lastRead": "آخر قراءة",
         "moreInfo": "تفاصيل المنشور",
         "myBooks": "منشوراتي",
         "noPublicationHelpL1": "أفلت الملفات هنا",
         "noPublicationHelpL2": "أو استخدم زر \"{{- importTitle }}\" أعلاه.",
-        "noPublicationHelpL3": "المنشورات المحمية بـ LCP مدعومة.",
-        "noPublicationHelpL4": "الملاحق المدعومة:",
+        "noPublicationHelpL3": "المنشورات المحمية بنظام LCP مدعومة.",
+        "noPublicationHelpL4": "الامتدادات المدعومة:",
         "numberOfPages": "عدد الصفحات",
         "opds": {
             "auth": {
-                "cancel": "إلغاء الأمر",
+                "cancel": "إلغاء",
                 "login": "تسجيل الدخول",
                 "password": "كلمة المرور",
                 "register": "تسجيل",
-                "username": "إسم المستخدم / عنوان البريد الإلكتروني"
+                "username": "اسم المستخدم / البريد الإلكتروني"
             },
             "info": {
                 "availableSince": "منذ",
@@ -104,9 +104,9 @@
                 },
                 "availableUntil": "حتى",
                 "copyAvalaible": "متوفر",
-                "copyTotal": "عدد النُسخ",
+                "copyTotal": "النُّسخ",
                 "holdPosition": "الموقع في الطابور",
-                "holdTotal": "عدد المستخدمين في الطابور",
+                "holdTotal": "تم الحجز",
                 "numberOfItems": "عدد البنود",
                 "priveValue": "السعر",
                 "state": "الحالة"
@@ -114,8 +114,8 @@
         },
         "publisher": "الناشر",
         "readBook": "اقرأ",
-        "released": "تم نشره بتاريخ",
-        "sort": "الفرز حسب",
+        "released": "تاريخ النشر",
+        "sort": "فرز حسب",
         "tag": "الوسم",
         "tags": "الوسوم",
         "update": "تحرير"
@@ -124,25 +124,25 @@
         "annotations": {
             "descAuthor": "تأليف '{{- author}}'",
             "descCreator": "أنشأه",
-            "descList": "سيتم استيراد {{- nb}} ملاحظات لـ {{- creator}} إلى '{{- title}}' {{- author}}",
-            "descNewer": "تعارض: {{- nb}} ملاحظات أجدد",
-            "descOlder": "تعارض: {{- nb}} ملاحظات أقدم",
-            "descTitle": "عنوان التعليقات التوضيحية: ",
+            "descList": "سيتم استيراد {{- nb}} ملاحظة (ملاحظات) من {{- creator}} إلى '{{- title}}' لـ {{- author}}",
+            "descNewer": "تعارض: {{- nb}} ملاحظة (ملاحظات) أحدث",
+            "descOlder": "تعارض: {{- nb}} ملاحظة (ملاحظات) أقدم",
+            "descTitle": "عنوان التعليقات: ",
             "importAll": "استيراد كل الملاحظات",
-            "importWithoutConflict": "استيراد فقط الملاحظات الخالية من التعارض",
+            "importWithoutConflict": "استيراد الملاحظات غير المتعارضة فقط",
             "origin": "المنشور الأصلي: '{{- title}}' {{- author}}",
             "title": "استيراد الملاحظات؟"
         },
-        "cancel": "إلغاء الأمر",
-        "deleteAnnotations": "حذف التعليقات التوضيحية؟",
-        "deleteAnnotationsText": "هل تريد بالتأكيد حذف {{- annotationListLength}} ملاحظات؟",
+        "cancel": "إلغاء",
+        "deleteAnnotations": "حذف التعليقات؟",
+        "deleteAnnotationsText": "هل أنت متأكد من حذف {{- annotationListLength}} ملاحظة (ملاحظات)؟",
         "deleteBookmarks": "حذف الإشارات المرجعية؟",
-        "deleteBookmarksText": "هل تريد بالتأكيد حذف {{- bookmarkListLength}} إشارات مرجعية؟",
-        "deleteFeed": "حذف الكتالوغ؟",
+        "deleteBookmarksText": "هل أنت متأكد من حذف {{- bookmarkListLength}} إشارة (إشارات) مرجعية؟",
+        "deleteFeed": "حذف الفهرس؟",
         "deletePublication": "حذف المنشور؟",
-        "deletePublicationWithNotes": "تحذير:  يحتوي هذا المنشور على تعليقات توضيحية و/أو إشارات مرجعية، وسيتم حذفها أيضًا! (إذا كنت ترغب في الاحتفاظ بها، تأكد من تصدير الملاحظات قبل إزالة المنشور)",
+        "deletePublicationWithNotes": "تحذير: يحتوي هذا المنشور على تعليقات و/أو إشارات مرجعية، سيتم حذفها أيضًا! (إذا كنت ترغب في الاحتفاظ بها، تأكد من تصدير الملاحظات قبل إزالة المنشور)",
         "import": "تأكيد الاستيراد:",
-        "importError": "حدث خطأ، تحقَّق من ملحق الملف ({{acceptedExtension}})",
+        "importError": "حدث خطأ، يرجى التحقق من امتداد الملف ({{acceptedExtension}})",
         "renew": "تجديد/تمديد الاستعارة؟",
         "return": "إرجاع المنشور؟",
         "yes": "نعم"
@@ -156,47 +156,47 @@
     },
     "header": {
         "allBooks": "كل المنشورات",
-        "catalogs": "الكتالوغات",
+        "catalogs": "الفهارس",
         "downloads": "التنزيلات",
         "fitlerTagTitle": "تصفية حسب الوسم",
         "gridTitle": "شبكة",
         "home": "قائمة رف الكتب",
-        "homeTitle": "البداية",
+        "homeTitle": "الرئيسية",
         "importTitle": "استيراد منشور",
         "listTitle": "جدول",
-        "myCatalogs": "كتالوغاتي",
+        "myCatalogs": "فهارسي",
         "refreshTitle": "إعادة تحميل",
         "searchPlaceholder": "بحث",
         "searchTitle": "بحث",
         "settings": "إعدادات",
-        "viewMode": "طريقة العرض"
+        "viewMode": "وضع العرض"
     },
     "library": {
         "lcp": {
-            "hint": "تلميح: ",
+            "hint": "تلميح:",
             "open": "فتح",
             "password": "عبارة المرور",
-            "sentence": "اكتب عبارة المرور لهذا المنشور المحمي بـ LCP:",
-            "urlHint": "هل نسيت عبارة مرورك؟ الدعم متوفر:",
+            "sentence": "لفتح هذا المنشور، تحتاج إلى عبارة مرور LCP",
+            "urlHint": "هل نسيت عبارة مرورك؟ اضغط هنا للحصول على الدعم.",
             "whatIsLcp?": "ما هي LCP؟",
             "whatIsLcpInfoDetails": "ترمز LCP إلى 'حماية المحتوى المرخَّص'.",
-            "whatIsLcpInfoDetailsLink": "لمعرفة المزيد، اضغط هذا الرابط إلى موقع EDRLab على الويب."
+            "whatIsLcpInfoDetailsLink": "لمعرفة المزيد، اضغط على هذا الرابط لزيارة موقع EDRLab."
         }
     },
     "message": {
         "annotations": {
-            "alreadyImported": "تم استيراد كل الملاحظات من قبل.",
-            "emptyFile": "لا توجد ملاحظات في الملف.",
+            "alreadyImported": "تم استيراد جميع الملاحظات مسبقاً.",
+            "emptyFile": "لا توجد ملاحظات جاهزة للاستيراد، سيتم إلغاء العملية.",
             "errorParsing": "حدث خطأ أثناء تحليل الملف: ",
             "noBelongTo": "تعذّر استيراد الملاحظات، فملاحظة واحدة على الأقل لا تنتمي إلى هذا المنشور.",
             "nothing": "لا توجد أي ملاحظة جاهزة للاستيراد، جاري إلغاء عملية الاستيراد",
-            "success": "نجحت عملية الاستيراد."
+            "success": "اكتمل الاستيراد بنجاح."
         },
         "download": {
             "error": "فشل تنزيل [{{- title}}]: [{{- err}}]"
         },
         "import": {
-            "alreadyImport": "تم استيراد [{{- title}}] من قبل.",
+            "alreadyImport": "تم استيراد [{{- title}}] مسبقًا.",
             "fail": "فشل استيراد [{{- path}}]: [{{- err}}]",
             "success": "اكتمل استيراد [{{- title}}]."
         },
@@ -207,33 +207,33 @@
     "opds": {
         "addForm": {
             "addButton": "إضافة",
-            "name": "الإسم:",
-            "namePlaceholder": "الإسم",
+            "name": "الاسم:",
+            "namePlaceholder": "الاسم",
             "url": "الرابط:",
             "urlPlaceholder": "الرابط"
         },
         "addFormApiapp": {
-            "title": "إضافة حساب المكتبة"
+            "title": "إضافة حساب مكتبة"
         },
-        "addMenu": "إضافة موجز نظام توزيع المنشورات المفتوح",
-        "breadcrumbRoot": "الكتالوغات",
-        "documentation": "موقع الويب الرسمي لنظام توزيع المنشورات المفتوح",
+        "addMenu": "إضافة مصدر OPDS",
+        "breadcrumbRoot": "الفهارس",
+        "documentation": "موقع OPDS الرسمي",
         "empty": "لم يتم العثور على أي منشور",
-        "firstPage": "الأولى",
-        "informations": "تخيَّل عالماً يمكنك فيه استكشاف وتنزيل منشورات رقمية من المكتبات العامة وباعة الكتب الرقمية ببضع ضغطات فقط. هذا بالضبط ما يقدِّمه تنسيق كتالوغ نظام توزيع المنشور المفتوح (OPDS). يتيح لك OPDS التنقّل بين الكتالوغات من مزوِّدي كتب إلكترونية مختلفين، أو الاشتراك بمنشور أو استعارته أو شرائه، أو زيارة رف كتبك الشخصية. حتى أنه يمكنك تنزيل كتاب إلكتروني أو كتاب صوتي إلى ثوريوم ريدر مباشرة لقراءته فوراً.\nإذاً كيف تجد أحد كتالوغات OPDS؟ الأمر بسيط. ابحث عن رابط تشعبي (عنوان) يقود إلى الكتالوغ، وانسخه إلى حقل \"الرابط\" أعلاه. تذكَّر أنه لا يوجد متجر شامل لكل كتالوغات OPDS النشطة، لذا عليك الاتصال بمكتبتك أو بائع الكتب المفضَّل لديك وتطلب رابط كتالوغ OPDS الخاص بها/به. إذا لم تكن متأكداً من أين تبدأ، فإن ويكيبيديا تحتوي على بعض سجلات كتالوغات OPDS بلغات مختلفة قد تكون مفيدة.\nيمكنك أن تكتب أي شيء في حقل الإسم يكون مفيداً لك، فغايته هي أن يوفّر لك طريقة سهلة لتتعرّف على الموجز في ثوريوم ريدر.",
-        "lastPage": "الأخيرة",
+        "firstPage": "الأول",
+        "informations": "تخيَّل عالماً يمكنك فيه استكشاف وتنزيل المنشورات الرقمية من المكتبات العامة وبائعي الكتب الرقمية ببضع نقرات فقط. هذا بالضبط ما يوفره تنسيق فهارس نظام توزيع المنشورات المفتوح (OPDS). فباستخدام OPDS، يمكنك تصفح فهارس مختلف مزودي الكتب الإلكترونية، والتسجيل، واستعارة المنشورات أو شرائها، وزيارة رف كتبك الشخصي. بل ويمكنك تنزيل كتاب إلكتروني أو صوتي مباشرة إلى قارئ ثوريوم لقراءته فوراً.\nإذًا، كيف تعثر على فهرس OPDS؟ الأمر بسيط. ابحث عن رابط تشعبي (URL) يؤدي إلى الفهرس، ثم انسخه في حقل \"\"الرابط\"\" أعلاه. تذكر أنه لا يوجد مكان واحد يجمع كل فهارس OPDS النشطة، لذا عليك أن تتواصل مع مكتبتك أو بائع كتبك المفضل لطلب رابط فهرس OPDS الخاص بهم. إن لم تكن متأكداً من أين تبدأ، فلدى ويكيبيديا بعض سجلات فهارس OPDS بلغات مختلفة قد تفيدك.\nأما حقل الاسم، فيمكنك تعبئته بما تراه مناسباً؛ فهو يساعدك على تمييز المصدر بسهولة داخل قارئ ثوريوم.",
+        "lastPage": "الأخير",
         "menu": {
             "aboutBook": "حول المنشور",
-            "addExtract": "استيراد مقتطف",
+            "addExtract": "استيراد مقطع",
             "goBuyBook": "شراء المنشور",
             "goLoanBook": "استعارة المنشور",
             "goRevokeLoanBook": "إلغاء الاستعارة",
             "goSubBook": "اشتراك"
         },
         "network": {
-            "error": "حدث خطأ أثناء الوصول إلى الموجز",
-            "noInternet": "لا يوجد اتصال بالانترنت",
-            "noInternetMessage": "حاول فحص كبل الشبكة، أو المودم، أو الموجِّه، أو الاتصال اللاسلكي",
+            "error": "خطأ في الوصول إلى المصدر",
+            "noInternet": "لا يوجد اتصال بالإنترنت",
+            "noInternetMessage": "تحقق من كابل الشبكة أو المودم أو جهاز التوجيه (الراوتر) أو الاتصال اللاسلكي (الواي فاي)",
             "reject": "عذراً، حدث خطأ غير متوقَّع!",
             "timeout": "انتهت مهلة الشبكة، يرجى إعادة المحاولة لاحقاً"
         },
@@ -241,25 +241,25 @@
         "previous": "السابق",
         "shelf": "الرف",
         "updateForm": {
-            "name": "الإسم:",
-            "title": "تحرير موجز نظام توزيع المنشورات المفتوح",
+            "name": "الاسم:",
+            "title": "تحرير مصدر OPDS",
             "updateButton": "تحرير",
             "url": "الرابط:"
         },
-        "whatIsOpds": "ما هو نظام توزيع المنشورات المفتوح؟"
+        "whatIsOpds": "ما هو نظام توزيع المنشورات المفتوح (OPDS)؟"
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": "ملخص سهولة الوصول"
+            "accessibility-summary-title": "ملخص إمكانية الوصول"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "تضمين أدوار ARIA",
-                "descriptive": "يتم تعزيز المحتوى بأدوار ARIA لتحسين التنظيم وتسهيل التنقل"
+                "compact": "أدوار ARIA مدرَجة",
+                "descriptive": "يتم تعزيز المحتوى باستخدام أدوار ARIA لتحسين التنظيم وتيسير التنقّل"
             },
             "additional-accessibility-information-audio-descriptions": {
-                "compact": "الأوصاف الصوتية",
-                "descriptive": "الأوصاف الصوتية"
+                "compact": "الوصف الصوتي",
+                "descriptive": "الوصف الصوتي"
             },
             "additional-accessibility-information-braille": {
                 "compact": "برايل",
@@ -270,76 +270,76 @@
                 "descriptive": "التعليقات التوضيحية باستخدام أحرف الروبي"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
-                "compact": "تباين عالي بين الصوت الأمامي والصوت الخلفي",
-                "descriptive": "تباين عالي بين الصوت الأمامي والصوت الخلفي"
+                "compact": "تباين عالٍ بين الصوت الرئيسي وصوت الخلفية",
+                "descriptive": "تباين عالٍ بين الصوت الرئيسي وصوت الخلفية"
             },
             "additional-accessibility-information-high-contrast-between-text-and-background": {
-                "compact": "تباين عالي بين النص الأمامي والخلفية",
-                "descriptive": "تباين عالي بين النص الأمامي والخلفية"
+                "compact": "تباين عالٍ بين النص والخلفية",
+                "descriptive": "تباين عالٍ بين النص والخلفية"
             },
             "additional-accessibility-information-large-print": {
-                "compact": "نص كبير",
-                "descriptive": "نص كبير"
+                "compact": "خط كبير",
+                "descriptive": "خط كبير"
             },
             "additional-accessibility-information-page-breaks": {
-                "compact": "تضمين فواصل الصفحات",
-                "descriptive": "تضمين فواصل الصفحات من المصدر المطبوع الأصلي"
+                "compact": "فواصل الصفحات متضمَّنة",
+                "descriptive": "فواصل الصفحات متضمَّنة من المصدر المطبوع الأصلي"
             },
             "additional-accessibility-information-ruby-annotations": {
                 "compact": "بعض التعليقات التوضيحية باستخدام أحرف الروبي",
                 "descriptive": "بعض التعليقات التوضيحية باستخدام أحرف الروبي"
             },
             "additional-accessibility-information-sign-language": {
-                "compact": "لغة الإشارات",
-                "descriptive": "لغة الإشارات"
+                "compact": "لغة الإشارة",
+                "descriptive": "لغة الإشاراة"
             },
             "additional-accessibility-information-tactile-graphics": {
-                "compact": "تضمين الرسوم اللمسية",
-                "descriptive": "تم دمج رسوم لمسية لتسهيل وصول المكفوفين إلى العناصر المرئية"
+                "compact": "الرسوم اللمسية مدرجة",
+                "descriptive": "تم دمج الرسوم اللمسية لتيسير الوصول إلى العناصر البصرية للأشخاص المكفوفين"
             },
             "additional-accessibility-information-tactile-objects": {
-                "compact": "كائنات ثلاثية الأبعاد لمسية",
-                "descriptive": "كائنات ثلاثية الأبعاد لمسية"
+                "compact": "مجسمات لمسية ثلاثية الأبعاد",
+                "descriptive": "مجسمات لمسية ثلاثية الأبعاد"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "توفير تلميحات تحويل النص إلى كلام",
-                "descriptive": "توفير تلميحات تحويل النص إلى كلام"
+                "compact": "إرشادات تحويل النص إلى كلام (TTS)متوفرة",
+                "descriptive": "إرشادات تحويل النص إلى كلام (TTS)متوفرة"
             },
-            "additional-accessibility-information-title": "معلومات إضافية عن سهولة الوصول"
+            "additional-accessibility-information-title": "معلومات إضافية عن إمكانية الوصول"
         },
         "conformance": {
             "conformance-a": {
-                "compact": "هذا المنشور يستوفي المعايير الدنيا لسهولة الوصول",
-                "descriptive": "يحتوي المنشور على بيان توافق يُثبت أنه يستوفي معيار سهولة الوصول EPUB ومعيار WCAG 2 المستوى A"
+                "compact": "هذا المنشور يستوفي المعايير الدنيا لإمكانية الوصول",
+                "descriptive": "يحتوي هذا المنشور على بيان مطابقة يفيد بأنه يستوفي معيار إمكانية الوصول لـ EPUB ومستوى A من معيار WCAG 2"
             },
             "conformance-aa": {
-                "compact": "هذا المنشور يستوفي المعايير المقبولة لسهولة الوصول",
-                "descriptive": "يحتوي المنشور على بيان توافق يُثبت أنه يستوفي معيار سهولة الوصول EPUB ومعيار WCAG 2 المستوى AA"
+                "compact": "هذا المنشور يستوفي المعايير المقبولة لإمكانية الوصول",
+                "descriptive": "يحتوي هذا المنشور على بيان مطابقة يفيد بأنه يفي بمعيار إمكانية الوصول في EPUB وبمستوى AA من معيار WCAG 2"
             },
             "conformance-aaa": {
-                "compact": "هذا المنشور يفوق المعايير المقبولة لسهولة الوصول",
-                "descriptive": "يحتوي المنشور على بيان توافق يُثبت أنه يستوفي معيار سهولة الوصول EPUB ومعيار WCAG 2 المستوى AAA"
+                "compact": "هذا المنشور يفوق المعايير المقبولة لإمكانية الوصول",
+                "descriptive": "يحتوي هذا المنشور على بيان مطابقة يفيد بأنه يفي بمعيار إمكانية الوصول في EPUB وبمستوى AAA من معيار WCAG 2"
             },
             "conformance-certifier": {
-                "compact": "هذا المنشور صادق عليه "
+                "compact": "تم اعتماد هذا المنشور من قبل "
             },
             "conformance-certifier-credentials": {
-                "compact": "بيانات اعتماد الجهة المصادقة "
+                "compact": "بيانات اعتماد جهة التصديق "
             },
             "conformance-details-certifier-report": {
-                "compact": "لمزيد من المعلومات، الرجاء الرجوع إلى تقرير الجهة المصادقة"
+                "compact": "لمزيد من المعلومات، يرجى الرجوع إلى تقرير جهة التصديق"
             },
             "conformance-details-claim": {
                 "compact": "يدّعي هذا المنشور أنه يستوفي",
                 "descriptive": "يدّعي هذا المنشور أنه يستوفي"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "معيار سهولة الوصول EPUB الإصدار 1.0",
-                "descriptive": "معيار سهولة الوصول EPUB الإصدار 1.0"
+                "compact": "معيار إمكانية الوصول لـ EPUB إصدار 1.0",
+                "descriptive": "معيار إمكانية الوصول لـ EPUB إصدار 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "معيار سهولة الوصول EPUB الإصدار 1.1",
-                "descriptive": "معيار سهولة الوصول EPUB الإصدار 1.1"
+                "compact": "معيار إمكانية الوصول لـ EPUB إصدار 1.1",
+                "descriptive": "معيار إمكانية الوصول لـ EPUB إصدار 1.1"
             },
             "conformance-details-level-a": {
                 "compact": "المستوى A",
@@ -358,34 +358,34 @@
             },
             "conformance-details-wcag-2-1": {
                 "compact": "WCAG 2.1",
-                "descriptive": "إرشادات سهولة الوصول إلى محتوى الويب (WCAG) 2.1"
+                "descriptive": "مبادئ النفاذ إلى محتوى الويب (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
                 "compact": "WCAG 2.2",
-                "descriptive": "إرشادات سهولة الوصول إلى محتوى الويب (WCAG) 2.2"
+                "descriptive": "مبادئ النفاذ إلى محتوى الويب (WCAG) 2.2"
             },
             "conformance-no": {
                 "compact": "لا تتوفر أي معلومات",
                 "descriptive": "لا تتوفر أي معلومات"
             },
-            "conformance-title": "التوافق",
+            "conformance-title": "المطابقة",
             "conformance-unknown-standard": {
-                "compact": "لا يمكن تحديد توافق هذا المنشور مع المعايير المقبولة لسهولة الوصول",
-                "descriptive": "لا يمكن تحديد توافق هذا المنشور مع المعايير المقبولة لسهولة الوصول"
+                "compact": "لا يمكن التأكد من مدى مطابقة هذا المنشور للمعايير المقبولة لإمكانية الوصول",
+                "descriptive": "لا يمكن التأكد من مدى مطابقة هذا المنشور للمعايير المقبولة لإمكانية الوصول"
             }
         },
         "hazards": {
             "hazards-flashing": {
                 "compact": "محتوى وامض",
-                "descriptive": "يحتوي المنشور على محتوى وامض قد يسبّب نوبات حساسية من الضوء"
+                "descriptive": "يحتوي هذا المنشور على محتوى وامض قد يسبب نوبات حساسية للضوء"
             },
             "hazards-flashing-none": {
                 "compact": "لا يوجد محتوى وامض",
                 "descriptive": "لا يحتوي المنشور على محتوى وامض"
             },
             "hazards-flashing-unknown": {
-                "compact": "غير معروف إن كان يوجد محتوى وامض أم لا",
-                "descriptive": "غير معروف إن كان يوجد محتوى وامض أم لا"
+                "compact": "وجود محتوى وامض غير معروف",
+                "descriptive": "وجود محتوى وامض غير معروف"
             },
             "hazards-motion": {
                 "compact": "محاكاة الحركة",
@@ -396,8 +396,8 @@
                 "descriptive": "لا يحتوي المنشور على محاكاة حركة"
             },
             "hazards-motion-unknown": {
-                "compact": "غير معروف إن كان يوجد محاكاة حركة أم لا",
-                "descriptive": "غير معروف إن كان يوجد محاكاة حركة أم لا"
+                "compact": "وجود محاكاة للحركة غير معروف",
+                "descriptive": "وجود محاكاة للحركة غير معروف"
             },
             "hazards-no-metadata": {
                 "compact": "لا تتوفر أي معلومات",
@@ -427,15 +427,15 @@
         },
         "navigation": {
             "navigation-index": {
-                "compact": "فهرس",
-                "descriptive": "فهرس يحتوي على روابط إلى الإدخالات المشار إليها"
+                "compact": "كشاف",
+                "descriptive": "كشاف يحتوي على روابط إلى الإدخالات المشار إليها"
             },
             "navigation-no-metadata": {
                 "compact": "لا تتوفر أي معلومات",
                 "descriptive": "لا تتوفر أي معلومات"
             },
             "navigation-page-navigation": {
-                "compact": "الانتقال إلى الصفحة",
+                "compact": "الانتقال إلى صفحة",
                 "descriptive": "قائمة الصفحات للانتقال إلى صفحات من النسخة المطبوعة الأصلية"
             },
             "navigation-structural": {
@@ -450,41 +450,41 @@
         },
         "rich-content": {
             "rich-content-accessible-chemistry-as-latex": {
-                "compact": "الصيغ الكيميائية بتنسيق LaTeX (لاتخ)",
-                "descriptive": "الصيغ الكيميائية بتنسيق سهل الوصول (LaTeX)"
+                "compact": "المعادلات الكيميائية بصيغة LaTeX",
+                "descriptive": "المعادلات الكيميائية بشكل ميسر (LaTeX)"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "الصيغ الكيميائية بتنسيق MathML",
-                "descriptive": "الصيغ الكيميائية بتنسيق سهل الوصول (MathML)"
+                "compact": "المعادلات الكيميائية بصيغة MathML",
+                "descriptive": "المعادلات الكيميائية بشكل ميسر (MathML)"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "الرياضيات بتنسيق LaTeX",
-                "descriptive": "الصيغ الرياضية بتنسيق سهل الوصول (LaTeX)"
+                "compact": "الرياضيات بصيغة LaTeX",
+                "descriptive": "المعادلات الرياضية بشكل ميسر (LaTeX)"
             },
             "rich-content-accessible-math-as-mathml": {
-                "compact": "الرياضيات بتنسيق MathML",
-                "descriptive": "الصيغ الرياضية بتنسيق سهل الوصول (MathML)"
+                "compact": "الرياضيات بصيغة MathML",
+                "descriptive": "المعادلات الرياضية بشكل ميسر(MathML)"
             },
             "rich-content-accessible-math-described": {
-                "compact": "يتم توفير تفسيرات نصية للصيغ الرياضية",
-                "descriptive": "يتم توفير تفسيرات نصية للصيغ الرياضية"
+                "compact": "تتوفر أوصاف نصية للمعادلات الرياضية",
+                "descriptive": "تتوفر أوصاف نصية للمعادلات الرياضية"
             },
             "rich-content-closed-captions": {
-                "compact": "تحتوي الفيديوهات على ترجمات مغلقة",
-                "descriptive": "الفيديوهات الموجودة في المنشورات تحتوي على ترجمات مغلقة"
+                "compact": "تحتوي الفيديوهات على شروح مغلقة",
+                "descriptive": "الفيديوهات الموجودة في المنشورات تحتوي على شروح مغلقة"
             },
             "rich-content-extended": {
-                "compact": "يتم تفسير الصور الغنية بالمعلومات بأوصاف مفصّلة",
-                "descriptive": "يتم تفسير الصور الغنية بالمعلومات بأوصاف مفصّلة"
+                "compact": "يتم وصف الصور الغنية بالمعلومات بأوصاف مفصّلة",
+                "descriptive": "يتم وصف الصور الغنية بالمعلومات بأوصاف مفصّلة"
             },
             "rich-content-open-captions": {
-                "compact": "تحتوي الفيديوهات على ترجمات مفتوحة",
-                "descriptive": "الفيديوهات الموجودة في المنشورات تحتوي على ترجمات مفتوحة"
+                "compact": "تحتوي الفيديوهات على شروح مدمجة",
+                "descriptive": "الفيديوهات الموجودة في المنشورات تحتوي على شروح مدمجة"
             },
             "rich-content-title": "محتوى غني",
             "rich-content-transcript": {
-                "compact": "يتم توفير نص (نصوص)",
-                "descriptive": "يتم توفير نص (نصوص)"
+                "compact": "يتوفر نص (نصوص)",
+                "descriptive": "يتوفر نص(نصوص)"
             },
             "rich-content-unknown": {
                 "compact": "لا تتوفر أي معلومات",
@@ -505,33 +505,33 @@
                 "descriptive": "المحتوى غير قابل للقراءة بصوتٍ عالٍ أو بطريقة برايل الديناميكية"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
-                "compact": "غير قابل للقراءة بالكامل باستخدام القراءة بصوتٍ عالٍ أو طريقة برايل الديناميكية",
-                "descriptive": "لن يكون كل المحتوى قابلاً للقراءة بصوتٍ عالٍ أو بطريقة برايل الديناميكية"
+                "compact": "غير قابل للقراءة بالكامل بصوتٍ عالٍ أو بطريقة برايل الديناميكية",
+                "descriptive": "لن يكون كل المحتوى قابلًا للقراءة بصوتٍ عالٍ أو بطريقة برايل الديناميكية"
             },
             "ways-of-reading-nonvisual-reading-readable": {
                 "compact": "قابل للقراءة بصوتٍ عالٍ أو بطريقة برايل الديناميكية",
                 "descriptive": "يمكن قراءة كل المحتوى بصوتٍ عالٍ أو بطريقة برايل الديناميكية"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "مقاطع الصوت المسجّلة مسبقاً",
-                "descriptive": "مقاطع الصوت المسجّلة مسبقاً مدمجة في المحتوى"
+                "compact": "مقاطع الصوت المسجّلة مسبقًا",
+                "descriptive": "مقاطع الصوت المسجّلة مسبقًا مدمجة في المحتوى"
             },
             "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "لا توجد معلومات عن الصوت المسجّل مسبقاً",
-                "descriptive": "لا توجد معلومات عن الصوت المسجّل مسبقاً"
+                "compact": "لا توجد معلومات عن الصوت المسجّل مسبقًا",
+                "descriptive": "لا توجد معلومات عن الصوت المسجّل مسبقًا"
             },
             "ways-of-reading-prerecorded-audio-only": {
-                "compact": "الصوت المسجّل مسبقاً فقط",
+                "compact": "الصوت المسجّل مسبقًا فقط",
                 "descriptive": "كتاب صوتي بدون بديل نصي"
             },
             "ways-of-reading-prerecorded-audio-synchronized": {
-                "compact": "الصوت المسجّل مسبقاً متزامن مع النص",
-                "descriptive": "كل المحتوى متوفر كصوت مسجّل مسبقاً متزامن مع النص"
+                "compact": "صوت مسجّل مسبقًا متزامن مع النص",
+                "descriptive": "كل المحتوى متوفر كصوت مسجّل مسبقًا متزامن مع النص"
             },
             "ways-of-reading-title": "طرق القراءة",
             "ways-of-reading-visual-adjustments-modifiable": {
                 "compact": "يمكن تعديل المظهر",
-                "descriptive": "يمكن تعديل مظهر النص وتخطيط الصفحة وفقاً لإمكانات نظام القراءة (إسم الخط وحجمه، والمسافات بين الفقرات والجمل والكلمات والأحرف، بالإضافة إلى لون الخلفية والنص)"
+                "descriptive": "يمكن تعديل مظهر النص وتخطيط الصفحة وفقاً لإمكانات نظام القراءة (اسم الخط وحجمه، والمسافات بين الفقرات والجمل والكلمات والأحرف، بالإضافة إلى لون الخلفية والنص)"
             },
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "لا توجد معلومات عن إمكانية تعديل المظهر",
@@ -542,29 +542,29 @@
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": "يدعم تحويل النص إلى كلام وقارئ الشاشة"
+                "textual": "يمكن قراءة كل المحتوى بصوتٍ عالٍ أو بطريقة برايل الديناميكية"
             },
             "accessibilityFeature": {
-                "alternativeText": "يحتوي على نص بديل",
-                "displayTransformability": "نص وتخطيط قابلان للتكيّف",
+                "alternativeText": "الصور مرفقة بنص بديل",
+                "displayTransformability": "يمكن تعديل مظهر النص وتنسيق الصفحة",
                 "longDescription": "الموارد الرسومية مشروحة بالكامل",
-                "printPageNumbers": "مرجع ترقيم صفحات الكتاب المطبوع",
-                "readingOrder": "يحتوي على ترتيب قراءة",
+                "printPageNumbers": "يحتوي على قائمة بالصفحات للانتقال إلى الصفحات من النسخة المطبوعة الأصلية",
+                "readingOrder": "يحتوي على تسلسل منطقي للقراءة",
                 "synchronizedAudioText": "مزامنة النص والصوت",
                 "tableOfContents": "يحتوي على جدول محتويات"
             },
             "accessibilityHazard": {
-                "flashing": "الوميض",
+                "flashing": "وميض",
                 "motionSimulation": "محاكاة الحركة",
-                "name": "الخطر:",
-                "noFlashing": "لا وميض",
-                "noMotionSimulation": "لا محاكاة للحركة",
-                "noSound": "لا صوت",
-                "none": "بلا",
+                "name": "خطر:",
+                "noFlashing": "بدون وميض",
+                "noMotionSimulation": "بدون محاكاة للحركة",
+                "noSound": "بدون صوت",
+                "none": "لا شيء",
                 "sound": "الصوت",
                 "unknown": "مجهول"
             },
-            "certifierReport": "تقرير جهة التصديق",
+            "certifierReport": "تقرير جهة التصديق:",
             "conformsTo": "يتوافق مع:",
             "moreInformation": "مزيد من المعلومات",
             "name": "إمكانية الوصول",
@@ -594,14 +594,14 @@
         "lcpRightsCopy": "الأحرف المنسوخة",
         "lcpRightsPrint": "الصفحات المطبوعة",
         "lcpStart": "البداية",
-        "licenceLCP": "الترخيص (LCP)",
-        "licenseCertificateDateInvalid": "تاريخ توقيع ترخيص LCP غير صالح. ({{- dateTime}})",
+        "licenceLCP": "ترخيص (LCP)",
+        "licenseCertificateDateInvalid": "تاريخ توقيع ترخيص LCP غير صالح ({{- dateTime}}).",
         "licenseOutOfDate": "ترخيص LCP قديم.",
         "licenseSignatureInvalid": "توقيع ترخيص LCP غير صالح.",
         "licensed": "مرخَّص",
         "markAsRead": "وضع علامة كمقروء",
         "notStarted": "لم يبدأ",
-        "onGoing": "قيد التقدّم",
+        "onGoing": "جارٍ التنفيذ",
         "progression": {
             "title": "مقدار التقدّم"
         },
@@ -611,24 +611,24 @@
         "returnButton": "إرجاع",
         "returnedLcp": "تم إرجاع هذا المنشور المحمي بـ LCP.",
         "revokedLcp": "تم إبطال ترخيص LCP الخاص بهذا المنشور.",
-        "seeLess": "رؤية مقدار أقل",
-        "seeMore": "رؤية مقدار أكثر",
+        "seeLess": "عرض أقل",
+        "seeMore": "عرض المزيد",
         "timeLeft": "الوقت المتبقي",
         "title": "العنوان",
-        "userKeyCheckInvalid": "عبارة المرور غير صحيحة"
+        "userKeyCheckInvalid": "عبارة المرور غير صحيحة."
     },
     "reader": {
         "annotations": {
             "Color": "اللون",
             "addNote": "تعليق",
-            "advancedMode": "الصيغة الفورية (إنشاء تلقائي بعد الاختيار)",
+            "advancedMode": "الوضع الفوري (إنشاء تلقائي بعد التحديد)",
             "annotationsExport": {
-                "description": "اكتب إسماً للملاحظات المصدَّرة:",
+                "description": "تسمية الملاحظات المصدَّرة:",
                 "title": "العنوان"
             },
-            "annotationsOptions": "خيارات",
+            "annotationsOptions": "‪خيارات التعليق",
             "date": "تاريخ التعديل",
-            "export": "حفظ الملاحظات بإسم...",
+            "export": "حفظ الملاحظات باسم...",
             "filter": {
                 "all": "الكل",
                 "filterByColor": "تصفية حسب اللون",
@@ -636,11 +636,11 @@
                 "filterByDrawtype": "تصفية حسب النوع",
                 "filterByTag": "تصفية حسب الوسم",
                 "filterOptions": "خيارات التصفية",
-                "none": "بلا"
+                "none": "لا شيء"
             },
-            "hide": "عدم الإظهار",
+            "hide": "عدم العرض",
             "highlight": "تمييز",
-            "noSelectionToast": "لم يتم اختيار شيء",
+            "noSelectionToast": "لم يتم تحديد شيء",
             "note": "ملاحظة {{- color}}",
             "quickAnnotations": "إنشاء سريع (تخطي المحرِّر)",
             "saveNote": "حفظ",
@@ -653,13 +653,13 @@
             "toggleMarginMarks": "إظهار في الهوامش",
             "type": {
                 "outline": "حدود",
-                "solid": "خلفية صلبة",
+                "solid": "خلفية بلون ثابت",
                 "strikethrough": "يتوسطه خط",
                 "underline": "تسطير"
             }
         },
         "bookmarks": {
-            "index": "{{- index}} الإشارات المرجعية"
+            "index": "{{- index}} الإشاراة المرجعية"
         },
         "divina": {
             "mute": "كتم الصوت",
@@ -690,17 +690,17 @@
         "media-overlays": {
             "activate": "تنشيط القراءة بصوت عالٍ",
             "captions": "التسميات التوضيحية / عرض نظيف",
-            "captionsDescription": "عرض مبسَّط للنص مع الحد الأدنى لتصميم التسميات التوضيحية.",
+            "captionsDescription": "عرض مبسَّط للنص مع الحد الأدنى للتنسيق التسميات التوضيحية.",
             "disableContinuousPlay": "تعطيل التشغيل المتواصل",
             "disableContinuousPlayDescription": "عدم تشغيل العنصر التالي تلقائياً، والتوقف مؤقتاً فور انتهاء تشغيل العنصر الحالي.",
             "ignoreAndUseTTS": "تجاهل الصوت المسجّل مسبقاً، واستخدام ميزة تحويل النص إلى كلام (TTS)",
-            "ignoreAndUseTTSDescription": "تجاهل مسارات الوسائط المشمولة في EPUB، واستخدام ميزة تحويل النص إلى كلام بدلاً منها",
+            "ignoreAndUseTTSDescription": "تجاهل التسجيل الصوتي في EPUB، واستخدام خاصية تحويل النص إلى كلام (TTS) بدلًا منها",
             "next": "القراءة التالية بصوت عالٍ",
             "pause": "إيقاف القراءة بصوت عالٍ مؤقتاً",
             "play": "تشغيل القراءة بصوت عالٍ",
             "previous": "القراءة السابقة بصوت عالٍ",
             "skip": "قابلية التخطي",
-            "skipDescription": "تخطي / تجاهل المحتوى الإضافي مثل فواصل الصفحات، الحواشي السفلية/التعليقات الختامية، الخ",
+            "skipDescription": "تخطي / تجاهل المحتوى الإضافي مثل فواصل الصفحات، الحواشي السفلية/التعليقات الختامية، الخ.",
             "speed": "سرعة القراءة بصوت عالٍ",
             "stop": "إيقاف القراءة بصوت عالٍ",
             "title": "القراءة بصوت عالٍ"
@@ -710,7 +710,7 @@
             "ZenModeTitle": "وضع القراءة المبسّطة",
             "annotationTitle": "تعليق توضيحي",
             "backHomeTitle": "عودة إلى رف الكتب",
-            "bookmarkTitle": "الإشارة المرجعية",
+            "bookmarkTitle": "إشارة مرجعية",
             "currentPage": "الصفحة الحالية: {{- current}}",
             "currentPageTotal": "الصفحة الحالية: {{- current}}/{{- total}}",
             "detachWindowTitle": "إظهار نافذة المكتبة / رف الكتب",
@@ -718,12 +718,12 @@
             "goToError": "لا يوجد فاصل صفحات",
             "goToPlaceHolder": "اكتب رقم الصفحة",
             "goToTitle": "الانتقال إلى صفحة",
-            "history": "",
+            "history": "تاريخ التصفح",
             "historyNext": "القفز إلى الأمام",
             "historyPrevious": "القفز إلى الخلف",
             "infoTitle": "معلومات",
             "magnifyingGlassButton": "بحث في المنشور",
-            "openTableOfContentsTitle": "التنقّل",
+            "openTableOfContentsTitle": "التنقل",
             "page": "الصفحة",
             "pdfscalemode": "ملاءمة أو عرض الصفحة",
             "print": "طباعة",
@@ -758,10 +758,10 @@
             "descriptionLcpCount": "الحد المتبقي لعدد الصفحات: {{- count}}",
             "descriptionLcpPrintable": "الصفحات المطبوعة سابقًا: {{- printable}} ({{- count}})",
             "howTo": "كيفية اختيار نطاق صفحات للطباعة",
-            "lcpInfo": "عدد الصفحات التي يمكن طباعتها في هذا المنشور  محدود ب  {{- count}} اختر الصفحات المطلوبة هنا",
+            "lcpInfo": "عدد الصفحات التي يمكن طباعتها في هذا المنشور محدود ب {{- count}} اختر الصفحات المطلوبة هنا.",
             "noPagesLcpLimitReached": "لقد بلغت الحد المسموح به وفق سياسة LCP",
             "noPrintablePages": "لا توجد صفحات قابلة للطباعة",
-            "pageHelpInfo": "صيغة تحديد الصفحات:",
+            "pageHelpInfo": "صيغة محدد الصفحات:",
             "pageHelpInfo1": "أدخل رقم صفحة للإشارة إلى صفحة واحدة (مثال \"6\")",
             "pageHelpInfo2": "أدخل رقمي صفحتين وبينهما شرطة للإشارة إلى صفحات متتالية (مثال \"6-13\")",
             "pageHelpInfo3": "استخدم الفاصلة المنقوطة لفصل صفحات متعددة أو نطاقات صفحات (مثال \"5؛14-20؛37\")",
@@ -824,7 +824,7 @@
                 "saveDetails": "هذا الإجراء يحفظ الإعدادات الحالية، أي، خيارات العرض وتنسيق النص المفضّلة لديك. يمكن بعد ذلك تطبيق هذه الإعدادات على منشورات أخرى من خلال ضغط زر \"تطبيق\" في نوافذ القراءة الأخرى.",
                 "title": "التفضيلات"
             },
-            "preview": "معاينة تمهيدية",
+            "preview": "معاينة",
             "reduceMotion": "تقليل الحركة",
             "scrolled": "قابل للتمرير",
             "spacing": "التباعد",
@@ -836,8 +836,8 @@
                     "Contrast3": "تباين 3",
                     "Contrast4": "تباين 4",
                     "Neutral": "محايد",
-                    "Night": "ليل",
-                    "Paper": "ورق",
+                    "Night": "ليلي",
+                    "Paper": "ورقي",
                     "Sepia": "سيبيا"
                 },
                 "title": "النسق"
@@ -852,18 +852,18 @@
             "publicationNoToc": "لا يوجد جدول محتويات"
         },
         "tts": {
-            "activate": "تنشيط ميزة تحويل النص إلى كلام",
-            "language": "لغة ميزة تحويل النص إلى كلام",
-            "next": "النص التالي المحوَّل إلى كلام",
-            "options": "خيارات ميزة تحويل النص إلى كلام",
-            "pause": "إيقاف ميزة تحويل النص إلى كلام مؤقتاً",
-            "play": "تشغيل ميزة تحويل النص إلى كلام",
-            "previous": "النص السابق المحوَّل إلى كلام",
-            "sentenceDetect": "تقسيم النص المحوَّل إلى كلام",
+            "activate": "تفعيل تحويل النص إلى كلام (TTS)",
+            "language": "لغة ميزة تحويل النص إلى كلام (TTS)",
+            "next": "النص التالي المحوَّل إلى كلام (TTS)",
+            "options": "خيارات ميزة تحويل النص إلى كلام(TTS)",
+            "pause": "إيقاف مؤقت لميزة تحويل النص إلى كلام (TTS) مؤقتاً",
+            "play": "تشغيل ميزة تحويل النص إلى كلام (TTS)",
+            "previous": "النص السابق المحوَّل إلى كلام (TTS)",
+            "sentenceDetect": "تقسيم النص المحوَّل إلى كلام (TTS)",
             "sentenceDetectDescription": "تقسيم الفقرات الطويلة إلى جمل.",
-            "speed": "سرعة تحويل النص إلى كلام",
-            "stop": "إيقاف ميزة تحويل النص إلى كلام",
-            "voice": "الصوت المستخدم لتحويل النص إلى كلام"
+            "speed": "سرعة تحويل النص إلى كلام (TTS)",
+            "stop": "إيقاف ميزة تحويل النص إلى كلام (TTS)",
+            "voice": "الصوت المستخدم لتحويل النص إلى كلام (TTS)"
         }
     },
     "settings": {
@@ -881,9 +881,9 @@
             "wipeData": "حذف بيانات تسجيل الدخول"
         },
         "keyboard": {
-            "advancedMenu": "قائمة",
-            "cancel": "إلغاء الأمر",
-            "disclaimer": "تم تصميم الإعدادات الافتراضية للتطبيق بناءً على تخطيط لوحة مفاتيح كويرتي",
+            "advancedMenu": "قائمة متقدمة لاختصارات لوحة المفاتيح",
+            "cancel": "إلغاء",
+            "disclaimer": "تم تصميم الإعدادات الافتراضية للتطبيق بناءً على تخطيط لوحة مفاتيح كويرتي (QWERTY)",
             "editUserJson": "تحرير ملف المستخدم...",
             "keyboardShortcuts": "اختصارات لوحة المفاتيح",
             "list": {
@@ -901,10 +901,10 @@
                 },
                 "AnnotationsToggleMargin": {
                     "description": "بدّل بين المؤشرات البصرية للتعليقات التوضيحية والإشارات المرجعية، سواء في الهامش أو داخل النص",
-                    "name": "تبديل هامش التعليات التوضيحية"
+                    "name": "تبديل هامش التعليقات"
                 },
                 "AudioNext": {
-                    "description": "انتقل إلى المقطع الصوتي التالي في السرد (EPUB Media Overlays، Text To Speech ، أو الكتاب الصوتي المسجل مسبقًا)",
+                    "description": "التنقل إلى المقطع الصوتي التالي في السرد (EPUB Media Overlays، Text To Speech ، أو الكتاب الصوتي المسجل مسبقًا)",
                     "name": "المقطع الصوتي التالي"
                 },
                 "AudioNextAlt": {
@@ -913,7 +913,7 @@
                 },
                 "AudioPlayPause": {
                     "description": "تشغيل/إيقاف مؤقت للسرد الحالي (EPUB Media Overlays، Text To Speech ، أو الكتاب الصوتي المسجل مسبقًا)",
-                    "name": "تشغيل/ إيقاف مؤقت الصوت"
+                    "name": "تشغيل/ إيقاف مؤقت للصوت"
                 },
                 "AudioPrevious": {
                     "description": "انتقل إلى المقطع الصوتي السابق في السرد (EPUB Media Overlays، Text To Speech ، أو الكتاب الصوتي المسجل مسبقًا)",
@@ -921,7 +921,7 @@
                 },
                 "AudioPreviousAlt": {
                     "description": "انتقل إلى المقطع الصوتي السابق في السرد (EPUB Media Overlays، Text To Speech ، أو الكتاب الصوتي المسجل مسبقًا) هذا يتخطى أي عنصر قابل للتخطي",
-                    "name": "المقطع الصوتي السابق (بديل)"
+                    "name": "المقطع الصوتي السابق (تخطي)"
                 },
                 "AudioStop": {
                     "description": "إيقاف الصوت الحالي (EPUB Media Overlays، Text To Speech ، أو الكتاب الصوتي المسجل مسبقًا)",
@@ -932,147 +932,147 @@
                     "name": "إغلاق القارئ"
                 },
                 "FXLZoomIn": {
-                    "description": "تكبير صفحة أو صفحتين في تخطيط ثابت",
+                    "description": "تكبير صفحة أو صفحتين في تخطيط ثابت.",
                     "name": "تكبير تخطيط ثابت"
                 },
                 "FXLZoomOut": {
-                    "description": "تصغير صفحة أو صفحتين في تخطيط ثابت",
+                    "description": "تصغير صفحة أو صفحتين في تخطيط ثابت.",
                     "name": "تصغير تخطيط ثابت"
                 },
                 "FXLZoomReset": {
-                    "description": "إعادة ضبط تكبير صفحة أو صفحتين في تخطيط ثابت",
+                    "description": "إعادة ضبط تكبير صفحة أو صفحتين في تخطيط ثابت.",
                     "name": "إعادة ضبط تكبير التخطيط الثابت"
                 },
                 "FocusMain": {
-                    "description": "تحريك تركيز لوحة المفاتيح إلى معلم \"الرئيسي\" في واجهة المستخدم. في نافذة القارئ، يؤدي ذلك إلى الانتقال إلى محتوى المنشور.",
+                    "description": "نقل تركيز لوحة المفاتيح إلى المعلم \"الرئيسي\" في واجهة المستخدم. في نافذة القارئ، يؤدي ذلك إلى الانتقال إلى محتوى المنشور",
                     "name": "التركيز على المحتوى الرئيسي"
                 },
                 "FocusMainDeep": {
-                    "description": "في نافذة القراء، هذا يُحوّل تركيز لوحة المفاتيح إلى محتوى المنشور باستخدام تقنية أكثر إعتمادا لقراء الشاشة",
+                    "description": "في نافذة القارىء، هذا يُحوّل تركيز لوحة المفاتيح إلى محتوى المنشور باستخدام تقنية أكثر إعتمادا لقراء الشاشة",
                     "name": "تركيز عميق على المحتوى الرئيسي"
                 },
                 "FocusReaderGotoPage": {
-                    "description": "تحريك تركيز لوحة المفاتيح إلى قسم \"الانتقال إلى صفحة\" من في لوحة التنقل الخاصة بنافذة القارئ\"",
-                    "name": "تركيز على \"الانتقال إلى صفحة\""
+                    "description": "نقل تركيز لوحة المفاتيح إلى قسم \"الانتقال إلى الصفحة\" ضمن لوحة التنقل في نافذة القارئ",
+                    "name": "تركيز على 'الانتقال إلى صفحة'"
                 },
                 "FocusReaderNavigation": {
-                    "description": "تحريك تركيز لوحة المفاتيح إلى لوحة التنقل الخاصة بنافذة القارئ",
+                    "description": "نقل تركيز لوحة المفاتيح إلى لوحة التنقل الخاصة بنافذة القارئ",
                     "name": "التركيز على لوحة التنقل"
                 },
                 "FocusReaderNavigationAnnotations": {
-                    "description": "",
-                    "name": ""
+                    "description": "نقل تركيز لوحة المفاتيح إلى قسم \"التعليقات التوضيحية\" في لوحة التنقل الخاصة بنافذة القارىء",
+                    "name": "التركيز على ' التعليقات'"
                 },
                 "FocusReaderNavigationBookmarks": {
-                    "description": "",
-                    "name": ""
+                    "description": "نقل تركيز لوحة المفاتيح إلى قسم \"الإشارة المرجعية\" في لوحة التنقل في نافذة القارئ",
+                    "name": "التركيز على \"الإشارات المرجعية\""
                 },
                 "FocusReaderNavigationSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "نقل تركيز لوحة المفاتيح إلى قسم 'البحث' ضمن لوحة التنقل في نافذة القارئ",
+                    "name": "التركيز على 'البحث'"
                 },
                 "FocusReaderNavigationTOC": {
-                    "description": "",
-                    "name": ""
+                    "description": "نقل تركيز لوحة المفاتيح إلى قسم 'جدول المحتويات' ضمن لوحة التنقل في نافذة القارئ",
+                    "name": "التركيز على 'جدول المحتويات'"
                 },
                 "FocusReaderSettings": {
-                    "description": "",
-                    "name": ""
+                    "description": "نقل تركيز لوحة المفاتيح إلى إعدادات الخاصة بنافذة القارئ (تفضيلات العرض، إلخ)",
+                    "name": "التركيز على إعدادات القارىء"
                 },
                 "FocusSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "نقل تركيز لوحة المفاتيح إلى مربع البحث عن النص في نافذة القارئ، أو إلى البحث في رف الكتب أو مصدر OPDS النشط داخل نافذة المكتبة",
+                    "name": "أمر البحث"
                 },
                 "FocusToolbar": {
-                    "description": "",
-                    "name": ""
+                    "description": "نقل تركيز لوحة المفاتيح إلى منطقة العلامة المميزة في واجهة المستخدم الرسومية مباشرةً قبل 'رابط تخطي'(الذي ينقل التركيز بدوره إلى منطقة المحتوى الرئيسي في نافذة المكتبة أو نافذة القارئ)",
+                    "name": "التركيز على شريط الأدوات"
                 },
                 "NavigateNextChapter": {
                     "description": "في نافذة القارئ، تنقل للمستند التالي في ترتيب القراءة في المنشور (مثل الفصل التالي في تسلسل فصول الكتاب). ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
-                    "name": "الفصل التالي"
+                    "name": "الانتقال إلى الفصل التالي"
                 },
                 "NavigateNextChapterAlt": {
-                    "description": "في نافذة القارئ، تنقل للمستند التالي في ترتيب القراءة في المنشور (مثل الفصل التالي في تسلسل فصول الكتاب). ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
-                    "name": "الفصل التالي (بديل)"
+                    "description": "في نافذة القارئ، تنقل للمستند التالي في ترتيب القراءة في المنشور (مثل الفصل التالي في تسلسل فصول الكتاب). هذا اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "name": "الانتقال إلى الفصل التالي (بديل)"
                 },
                 "NavigateNextHistory": {
                     "description": "في نافذة القارئ، انتقل خطوة واحدة إلى الأمام في سجل التنقل",
-                    "name": "التالي في سجل التنقل"
+                    "name": "الانتقال إلى التالي في سجل التنقل"
                 },
                 "NavigateNextLibraryPage": {
                     "description": "في نافذة المكتبة، عرض الصفحة التالية من قائمة المنشورات المقسمة لصفحات. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
-                    "name": "الصفحة التالية في المكتبة"
+                    "name": "الانتقال إلى الصفحة التالية في المكتبة"
                 },
                 "NavigateNextLibraryPageAlt": {
-                    "description": "في نافذة القارئ، انتقل للمستند التالي في ترتيب القراءة في المنشور (مثل الفصل التالي في تسلسل فصول الكتاب). ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
-                    "name": "الصفحة التالية في المكتبة(بديل)"
+                    "description": "في نافذة القارئ، انتقل إلى لمستند التالي في ترتيب القراءة في المنشور (مثل الفصل التالي في تسلسل فصول الكتاب). ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "name": "الانتقال إلى الصفحة التالية في المكتبة (بديل)"
                 },
                 "NavigateNextOPDSPage": {
-                    "description": "في نافذة الكتالوجات/ تغذية OPDS، اتبع رابط الصفحة التالية.. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
-                    "name": "صفحة OPDS التالية"
+                    "description": "في نافذة المكتبة الخاصة بالفهارس/ OPDS feeds، اتبع رابط الصفحة التالية. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "name": "الانتقال إلى صفحة OPDS التالية"
                 },
                 "NavigateNextOPDSPageAlt": {
-                    "description": "في نافذة الكتالوجات/ تغذية OPDS، اتبع رابط الصفحة التالية.. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
-                    "name": "صفحة OPDS التاليةى(بديل)"
+                    "description": "في نافذة المكتبة الخاصة بالفهارس/ OPDS feeds، اتبع رابط الصفحة التالية. هذا اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "name": "الانتقال إلى صفحة OPDS التالية (بديل)"
                 },
                 "NavigateNextPage": {
-                    "description": "في نافذة القارئ، انتقل إلى الصفحة التالية. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
-                    "name": "الصفحة التالية"
+                    "description": "في نافذة القارئ، انتقل إلى 'الصفحة' التالية. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "name": "الانتقال إلى الصفحة التالية"
                 },
                 "NavigateNextPageAlt": {
-                    "description": "في نافذة القارئ، انتقل إلى \"الصفحة\" التالية. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
-                    "name": "الصفحة التالية (بديل)"
+                    "description": "في نافذة القارئ، انتقل إلى 'الصفحة' التالية. ملحوظة: هذا اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "name": "الانتقال إلى الصفحة التالية (بديل)"
                 },
                 "NavigatePreviousChapter": {
                     "description": "في نافذة القارئ، انتقل للمستند السابق في ترتيب القراءة في المنشور (مثل الفصل التالي في تسلسل فصول الكتاب). ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
-                    "name": "الفصل السابق"
+                    "name": "الانتقال إلى الفصل السابق"
                 },
                 "NavigatePreviousChapterAlt": {
-                    "description": "في نافذة القارئ، انتقل إلى \"الصفحة\" التالية. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
-                    "name": "الفصل السابق (بديل)"
+                    "description": "في نافذة القارئ، انتقل إلى المستند السابق وفق ترتيب القراءة في المنشور (مثل فصل في تسلسل فهرس الكتاب). هذا اختصارًا بديلًا على لوحة المفاتيح للاختصار الافتراضي",
+                    "name": "الانتقال إلى الفصل السابق (بديل)"
                 },
                 "NavigatePreviousHistory": {
-                    "description": "في نافذة القارئ، انتقل خطوة للخلف في سجل التنقل",
-                    "name": "الرجوع في سجل التنقل"
+                    "description": "في نافذة القارئ، انتقل خطوة إلى الخلف في سجل التنقل",
+                    "name": "الانتقال إلى السابق في سجل التنقل"
                 },
                 "NavigatePreviousLibraryPage": {
-                    "description": "في نافذة القارئ، اعرض الصفحة السابقة  من قائمة المنشورات. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
-                    "name": "صفحة المكتبة السابقة"
+                    "description": "في نافذة المكتبة، عرض الصفحة السابقة من قائمة المنشورات المرقمة. ملاحظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "name": "الانتقال إلى صفحة المكتبة السابقة"
                 },
                 "NavigatePreviousLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "في نافذة المكتبة، اعرض الصفحة السابقة من قائمة المنشورات المجزأة (متعددة الصفحات). هذا اختصار لوحة مفاتيح بديل للاختصار الافتراضي",
+                    "name": "الانتقال إلى صفحة المكتبة السابقة (بديل)"
                 },
                 "NavigatePreviousOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "في نافذة المكتبة الخاصة بالفهارس/ OPDS feeds، اتبِع رابط الترقيم السابق. لاحظ أن هناك اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "name": "الانتقال إلى صفحة OPDS السابقة"
                 },
                 "NavigatePreviousOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "في نافذة المكتبة الخاصة بالفهارس/ OPDS feeds، اتبِع رابط الترقيم السابق. هذا اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "name": "الانتقال إلى صفحة OPDS السابقة (بديل)"
                 },
                 "NavigatePreviousPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "في نافذة القارئ، انتقل إلى 'الصفحة' السابقة في المنشور. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "name": "الانتقال إلى الصفحة السابقة"
                 },
                 "NavigatePreviousPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "في نافذة القارئ، انتقل إلى 'الصفحة' السابقة. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "name": "الانتقال إلى الصفحة السابقة (بديل)"
                 },
                 "NavigateToBegin": {
-                    "description": "",
-                    "name": ""
+                    "description": "في نافذة القارئ، انتقل إلى بداية المنشور",
+                    "name": "الانتقال إلى البداية"
                 },
                 "NavigateToEnd": {
-                    "description": "",
-                    "name": ""
+                    "description": "في نافذة القارئ، انتقل إلى نهاية المنشور",
+                    "name": "الانتقال إلى النهاية"
                 },
                 "OpenReaderInfo": {
-                    "description": "",
-                    "name": ""
+                    "description": "في نافذة القارئ، افتح مربع حوار المعلومات الخاصة بالمنشور",
+                    "name": "عرض المعلومات الخاصة بالمنشور"
                 },
                 "OpenReaderInfoWhereAmI": {
-                    "description": "",
+                    "description": "في نافذة القارئ، افتح مربع الحوار المنبثق الذي يعرض معلومات حول المنشور، وضع تركيز لوحة المفاتيح على القسم الذي يظهر سياق موقع القراءة الحالي",
                     "name": "عرض معلومات المنشور، عرض موقع القراءة"
                 },
                 "Print": {
@@ -1081,55 +1081,55 @@
                 },
                 "SearchNext": {
                     "description": "في أداة البحث في نافذة القارئ، انتقل لنتيجة البحث التالية. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
-                    "name": "التالي في البحث"
+                    "name": "نتيجة البحث التالية"
                 },
                 "SearchNextAlt": {
                     "description": "في أداة البحث في نافذة القارئ، انتقل لنتيجة البحث التالية. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
-                    "name": "التالي في البحث (بديل)"
+                    "name": "نتيجة البحث التالية (بديل)"
                 },
                 "SearchPrevious": {
                     "description": "في أداة البحث في نافذة القارئ، انتقل لنتيجة البحث السابقة. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
-                    "name": "السابق في البحث"
+                    "name": "نتيجة البحث السابقة"
                 },
                 "SearchPreviousAlt": {
                     "description": "في أداة البحث في نافذة القارئ، انتقل لنتيجة البحث السابقة. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
-                    "name": "السابق في البحث (بديل)"
+                    "name": "نتيجة البحث السابقة (بديل)"
                 },
                 "SpeakReaderInfoWhereAmI": {
                     "description": "في نافذة القارئ، وصف سياق موقع القراءة الحالي باستخدام نص منطوق متوافق مع قارئات الشاشة",
                     "name": "وصف موقع القراءة (صوتي)"
                 },
                 "ToggleBookmark": {
-                    "description": "",
-                    "name": ""
+                    "description": "إضافة إشارة مرجعية جديدة أو حذف الإشارة الحالية لو كانت محددة",
+                    "name": "إضافة/إزالة إشارة مرجعية"
                 },
                 "ToggleReaderFullscreen": {
-                    "description": "",
-                    "name": ""
+                    "description": "في نافذة القارئ، تفعيل وضع ملء الشاشة للنظام أو استعد الوضع العادي للنافذة. لاحظ أن هذا يختلف عن \"وضع zen\" الذي يبسط واجهة المستخدم",
+                    "name": "تبديل وضع ملء الشاشة"
                 }
             },
             "loadUserJson": "تحميل من ملف المستخدم",
-            "noShortcutFound": "",
-            "resetDefaults": "إعادة ضبط (تحميل الافتراضيات)",
+            "noShortcutFound": "لا يوجد اختصار مرتبط بهذا التصنيف",
+            "resetDefaults": "إعادة ضبط (استعادة الإعدادات الافتراضية)",
             "save": "حفظ",
-            "searchPlaceholder": ""
+            "searchPlaceholder": "اكتب للبحث عن اختصار"
         },
         "language": {
             "languageChoice": "اللغة"
         },
         "library": {
-            "enableAPIAPP": "تنشيط نظام مكتبة PNB",
+            "enableAPIAPP": "تنشيط نظام مكتبة 'PNB'",
             "title": "الوصول إلى حسابات المكتبة الفرنسية"
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "تطبيق القالب الافتراضي",
-                "enableCheckbox": "تفعيل/تعطيل تجاوز قالب Mustache عند تصدير الملاحظات بصيغة HTML",
-                "overrideHTMLTemplate": "تصدير الملاحظات (التعليقات إضافية والإشارات مرجعية)"
+                "applyDefaultTemplate": "تحميل القالب الافتراضي",
+                "enableCheckbox": "تخصيص قالب HTML",
+                "overrideHTMLTemplate": "تصدير الملاحظات (التعليقات والإشارات مرجعية)"
             }
         },
         "session": {
-            "title": "حفظ الجلسة"
+            "title": "تفعيل حفظ الجلسة"
         },
         "tabs": {
             "appearance": "المظهر",
@@ -1147,22 +1147,22 @@
     "tts": {
         "highlight": {
             "mainColor": "اللون الرئيسي",
-            "maskBlockWordOutline": "تعتيم الكتلة، إبراز الكلمات بإطار",
-            "maskBlockWordSolidBackground": "تعتيم الكتلة، خلفية صلبة للكلمات",
-            "maskBlockWordUnderline": "تعتيم الكتلة، تسطير الكلمات",
-            "maskWordOutline": "تعتيم، إبراز الكلمات بإطار",
-            "maskWordSolidBackground": "تعتيم، خلفية صلبة للكلمات",
-            "maskWordUnderline": "تعتيم، تسطير الكلمات",
-            "outlineWordOutline": "إبراز، إبراز الكلمات بإطار",
-            "outlineWordSolidBackground": "إبراز، خلفية صلبة للكلمات",
+            "maskBlockWordOutline": "حجب، إبراز الكلمة بإطار",
+            "maskBlockWordSolidBackground": "حجب، تلوين خلفية الكلمة",
+            "maskBlockWordUnderline": "حجب، تسطير الكلمات",
+            "maskWordOutline": "حجب، إبراز الكلمة بإطار",
+            "maskWordSolidBackground": "حجب، تلوين خلفية الكلمة",
+            "maskWordUnderline": "حجب، تسطير الكلمات",
+            "outlineWordOutline": "إبراز، إبراز الكلمة بإطار",
+            "outlineWordSolidBackground": "إبراز، تلوين خلفية الكلمة",
             "outlineWordUnderline": "إبراز، تسطير الكلمات",
-            "preview": "رؤية عيّنة عن نمط التمييز الذي تستخدمه ميزة تحويل النص إلى كلام",
-            "solidBackgroundWordOutline": "خلفية صلبة، إبراز الكلمات بإطار",
-            "solidBackgroundWordSolidBackground": "خلفية صلبة، خلفية صلبة للكلمات",
-            "solidBackgroundWordUnderline": "خلفية صلبة، تسطير الكلمات",
-            "style": "نمط التمييز الذي تستخدمه ميزة تحويل النص إلى كلام",
-            "underlineWordOutline": "تسطير، إبراز الكلمات بإطار",
-            "underlineWordSolidBackground": "تسطير، خلفية صلبة للكلمات",
+            "preview": "معاينة نمط إبراز ميزة تحويل النص إلى كلام (TTS)",
+            "solidBackgroundWordOutline": "خلفية ملوّنة، إبراز الكلمة بإطار",
+            "solidBackgroundWordSolidBackground": "خلفية ملوّنة، تلوين خلفية الكلمة",
+            "solidBackgroundWordUnderline": "خلفية ملوّنة، تسطير الكلمات",
+            "style": "نمط إبراز ميزة تحويل النص إلى كلام (TTS)",
+            "underlineWordOutline": "تسطير، إبراز الكلمة بإطار",
+            "underlineWordSolidBackground": "تسطير، تلوين خلفية الكلمة",
             "underlineWordUnderline": "تسطير، تسطير الكلمات",
             "wordColor": "لون الكلمات"
         }
@@ -1175,18 +1175,18 @@
         },
         "description": {
             "annotations": "تمييز نص المستند، واختيار النمط واللون، وإرفاق ملاحظات شخصية. أنشئ التعليقات في الصيغة 'السريعة' لكي تتخطى المحرِّر (يمكنك كتابة النص وتخصيص الأنماط لاحقاً). ولتحقيق سرعة إضافية، استخدم الصيغة 'الفورية' التي تنشئ التعليقات فوراً بعد تمييز نص المستند!",
-            "catalogs": "استعِر منشورات من مكتبتك المحلية، أو اكتشف المنشورات من خلال مواجز نظام توزيع المنشورات المفتوح. احصل على تشكيلة متنوعة من المنشورات من مصادر متعددة بفضل الكتالوغات المتوفرة على الانترنت.",
+            "catalogs": "يمكنك استعارة منشورات من مكتبتك المحلية، أو اكتشاف منشورات جديدة عبر OPDS feeds. كما تستطيع الوصول إلى مجموعة متنوعة من المنشورات من مصادر مختلفة بفضل الفهارس الإلكترونية.",
             "home": "يبدو ثوريوم مختلفاً! دعنا نكتشف ما الجديد فيه...",
-            "readingView1": "خصِّص تفضيلات القراءة والاستماع لديك: يقدِّم ثوريوم الآن العديد من النُسُق اللونية لواجهته والمنشورات على حد سواء. كما أنه أصبح من الأسهل الآن تعديل إعدادات عملية 'القراءة بصوت عالٍ' للكتب الإلكترونية باستخدام الكلام الاصطناعي ومزامنة السرد النصي/الصوتي.",
-            "readingView2": "تسهّل واجهة ثوريوم المحسَّنة العثور على النصوص في المنشورات، واستكشاف نتائج عمليات البحث، والانتقال إلى صفحات محدَّدة، واستعراض جدول المحتويات، وإنشاء إشارات مرجعية، وما إلى ذلك بفضل الألواح 'الراسية' الجديدة. كما تستمر صيغة القراءة على ملء الشاشة بتوفير بيئة خالية من الإلهاءات.",
-            "yourBooks": "مرحباً بك في رف كتبك الشخصية المُعاد تصميمه! في طريقة العرض 'شبكة'، يمكنك بسهولة التصفية حسب الوسوم، أو العثور على المنشورات باستخدام كلمات أساسية. وفي طريقة العرض المتقدمة 'جدول'، يمكنك اختيار المنشورات وفرزها حسب مؤلفين محدَّدين، أو العنوان، أو التاريخ، أو التنسيق، الخ."
+            "readingView1": "يمكنك الآن تخصيص تفضيلاتك في القراءة والاستماع: يتيح ثورِيوم عدة سمات لونية لواجهة المستخدم والمنشورات. كما أصبح من الأسهل تهيئة الكتب الالكترونية بخاصية'القراءة بصوت عالٍ' باستخدام تقنية الكلام الاصطناعي مع المزامنة بين النص والسرد الصوتي.",
+            "readingView2": "واجهة ثورِيوم المحسّنة تسهل العثور على النصوص داخل المنشورات، استكشاف نتائج البحث، الانتقال إلى صفحات محددة، تصفح جدول المحتويات، وإنشاء الإشارات المرجعية، وذلك بفضل اللوحات 'المثبتة' الجديدة. أما وضع القراءة بملء الشاشة فيستمر بتقديم بيئة قراءة مريحة وخالية من المشتتات.",
+            "yourBooks": "مرحبًا بك في رف كتبك الشخصية المُعاد تصميمه! في عرض \"الشبكة\" يمكنك بسهولة التصفية باستخدام الوسوم أو العثور على منشورات بالكلمات المفتاحية. أما في عرض \"الجدول\" المتقدم، فيمكنك اختيار وفرز المنشورات حسب مؤلفين محددين، العنوان، التاريخ، التنسيق، وغير ذلك."
         },
         "dontShow": "عدم الإظهار مرة أخرى",
         "tab": {
             "annotations": "التعليقات",
-            "catalogs": "الكتالوغات",
-            "home": "البداية",
-            "readingView": "طريقة عرض القراءة",
+            "catalogs": "الفهارس",
+            "home": "الرئيسية",
+            "readingView": "وضع القراءة",
             "yourBooks": "منشوراتك"
         },
         "title": {

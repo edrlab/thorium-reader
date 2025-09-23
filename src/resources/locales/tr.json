@@ -91,7 +91,7 @@
                 "login": "Giriş Yap",
                 "password": "Şifre",
                 "register": "Kaydol",
-                "username": "Kullanıcı Adı / E-Posta Adresi"
+                "username": "Kullanıcı adı / E-posta adresi"
             },
             "info": {
                 "availableSince": "Tarihinden beri",
@@ -940,7 +940,7 @@
                     "name": "FXL Uzaklaştır"
                 },
                 "FXLZoomReset": {
-                    "description": "Sabit düzendeki tek sayfa veya 2-sayfa görünümünün yakınlaştırmasını/uzaklaştırmasını sıfırla.",
+                    "description": "Sabit düzende, tek sayfa veya 2-sayfa görünümünün yakınlaştırmasını/uzaklaştırmasını sıfırla.",
                     "name": "FXL Yakınlaştırmasını/Uzaklaştırmasını Sıfırla"
                 },
                 "FocusMain": {
@@ -952,19 +952,19 @@
                     "name": "Ana İçeriğe Derinlemesine Odaklan"
                 },
                 "FocusReaderGotoPage": {
-                    "description": "Klavye odağını, okuyucu penceresinin gezinme panelindeki 'sayfaya git' bölümüne taşır",
-                    "name": "'Sayfaya Git' bölümüne Odaklan"
+                    "description": "Klavye odağını, okuyucu penceresinin gezinme panelindeki 'sayfaya git' bölümüne taşı",
+                    "name": "'Sayfaya Git' Bölümüne Odaklan"
                 },
                 "FocusReaderNavigation": {
-                    "description": "Klavye odağını, okuyucu penceresinin gezinme paneline taşır",
+                    "description": "Klavye odağını, okuyucu penceresinin gezinme paneline taşı",
                     "name": "Gezinme Paneli'ne Odaklan"
                 },
                 "FocusReaderNavigationAnnotations": {
-                    "description": "Klavye odağını, okuyucu penceresinin gezinme panelindeki 'açıklayıcı notlar' bölümüne taşır",
+                    "description": "Klavye odağını, okuyucu penceresinin gezinme panelindeki 'açıklayıcı notlar' bölümüne taşı",
                     "name": "'Açıklayıcı Notlar' bölümüne Odaklan"
                 },
                 "FocusReaderNavigationBookmarks": {
-                    "description": "Klavye odağını, okuma penceresinin gezinme  panelindeki  'yer imleri' bölümüne taşır",
+                    "description": "Klavye odağını, okuma penceresinin gezinme  panelindeki 'yerimleri' bölümüne taşır",
                     "name": "'Yerimleri' bölümüne Odaklan"
                 },
                 "FocusReaderNavigationSearch": {
@@ -972,32 +972,32 @@
                     "name": "'Ara' bölümüne Odaklan"
                 },
                 "FocusReaderNavigationTOC": {
-                    "description": "Klavye odağını, okuyucu penceresinin gezinme panelindeki 'İçindekiler' bölümüne taşı",
-                    "name": "'İçindekiler' bölümüne odaklan"
+                    "description": "Klavye odağını, okuyucu penceresinin gezinme panelindeki 'İçindekiler Tablosu' bölümüne taşır",
+                    "name": "'İçindekiler Tablosu' bölümüne Odaklan"
                 },
                 "FocusReaderSettings": {
-                    "description": "Klavye odağını, okuyucu penceresinin ayarlar paneline taşı (görüntüleme seçenekleri vs.)",
-                    "name": "Okuyucu Ayarları'na odaklan"
+                    "description": "Klavye odağını, okuyucu penceresinin ayarlar paneline taşır (görüntüleme seçenekleri vs.)",
+                    "name": "Okuyucu Ayarları bölümüne Odaklan"
                 },
                 "FocusSearch": {
-                    "description": "Klavye odağını okuyucu penceresindeki metin arama girdi alanına taşı veya kütüphane penceresinde kitaplığı veya aktif OPDS beslemesini araştır",
+                    "description": "Klavye odağını, okuyucu penceresindeki metin arama girdi alanına taşır; veya kütüphane penceresinde, kitaplığı veya aktif OPDS beslemesini araştırır",
                     "name": "Ara Komutu"
                 },
                 "FocusToolbar": {
-                    "description": "Klavye odağını, grafiksel kullanıcı arayüzündeki referans imine, 'bağlantıyı atla' ögesinden hemen öncesine taşı (bu , odağı kütüphane veya okuyucu penceresindeki ana içerik alanına taşır)",
-                    "name": "Araç Çubuğu'na odaklan"
+                    "description": "Klavye odağını, grafiksel kullanıcı arayüzündeki 'atla bağlantısı'ndan hemen önceki referans imi alanına taşır (bu, odak noktasını kütüphanenin veya okuyucu penceresinin ana içerik alanına taşır)",
+                    "name": "Araç Çubuğu'na Odaklan"
                 },
                 "NavigateNextChapter": {
-                    "description": "Okuyucu penceresinde, eserin okuma sırasına göre bir sonraki belgeye git (örn. kitap içerik dizinindeki bölüm). Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
-                    "name": "Sonraki Bölüm'e git"
+                    "description": "Okuyucu penceresinde, eserin okuma sırasına göre bir sonraki belgeye gider (örn. kitap içerik dizinindeki bölüm). Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
+                    "name": "Sonraki Bölüm'e Git"
                 },
                 "NavigateNextChapterAlt": {
-                    "description": "Okuyucu penceresinde, eserin okuma sırasına göre bir sonraki belgeye git (örn. kitap içerik dizinindeki bölüm). Bu, varsayılan klavye kısayoluna alternatif bir klavye kısayoludur",
-                    "name": "Sonraki Bölüm'e git (Alternatif)"
+                    "description": "Okuyucu penceresinde, eserin okuma sırasına göre bir sonraki belgeye gider (örn. kitap içerik dizinindeki bölüm). Bu, varsayılan klavye kısayoluna alternatif bir klavye kısayoludur",
+                    "name": "Sonraki Bölüme Git (Alternatif)"
                 },
                 "NavigateNextHistory": {
-                    "description": "Okuyucu penceresinde, gezinme geçmişinde bir adım ileri atla",
-                    "name": "Geçmiş'te, bir adım İLERİ Git"
+                    "description": "Okuyucu penceresinde, gezinme geçmişinde bir adım ileri atlar",
+                    "name": "Geçmiş'te İleri Git"
                 },
                 "NavigateNextLibraryPage": {
                     "description": "Kütüphane penceresinde, sayfalandırılmış eser listesinin bir sonraki sayfasını gösterir. Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
@@ -1012,7 +1012,7 @@
                     "name": "Sonraki OPDS Sayfasına Git"
                 },
                 "NavigateNextOPDSPageAlt": {
-                    "description": "Kataloglar / OPDS beslemeleri için kütüphane penceresinde, bir sonraki sayfalandırma bağlantısını takip eder. Bu, varsayılan olana alternatif bir klavye kısayoludur",
+                    "description": "Kataloglar / OPDS beslemeleri için kütüphane penceresinde, bir sonraki sayfalandırma bağlantısını takip eder. Bu, varsayılan klavye kısayoluna alternatif bir klavye kısayoludur",
                     "name": "Sonraki OPDS Sayfasına Git (Alternatif)"
                 },
                 "NavigateNextPage": {
@@ -1033,10 +1033,10 @@
                 },
                 "NavigatePreviousHistory": {
                     "description": "Okuma penceresinde, gezinme geçmişinde bir adım geriye gider",
-                    "name": "Geçmiş'te, bir adım Geri Git"
+                    "name": "Geçmiş'te Geri Git"
                 },
                 "NavigatePreviousLibraryPage": {
-                    "description": "Kütüphane penceresinde, sayfalandırılmış eser listesinin önceki sayfasını gösterir. Bu varsayılan kısayola alternatif bir klavye kısayolu olduğunu unutmayın",
+                    "description": "Kütüphane penceresinde, sayfalandırılmış eser listesinin önceki sayfasını gösterir. Bu varsayılan klavye kısayoluna alternatif bir klavye kısayolu olduğunu unutmayın",
                     "name": "Önceki Kütüphane Sayfasına Git"
                 },
                 "NavigatePreviousLibraryPageAlt": {

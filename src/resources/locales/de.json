@@ -88,7 +88,7 @@
         "opds": {
             "auth": {
                 "cancel": "Abbrechen",
-                "login": "Login",
+                "login": "Anmelden",
                 "password": "Passwort",
                 "register": "Registrieren",
                 "username": "Benutzername / E-Mail-Adresse"

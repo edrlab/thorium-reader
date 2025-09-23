@@ -91,7 +91,7 @@
                 "login": "Login",
                 "password": "Wachtwoord",
                 "register": "Registreer",
-                "username": "Gebruikersnaam / Email adres"
+                "username": "Gebruikersnaam / e-mailadres"
             },
             "info": {
                 "availableSince": "Sinds",
@@ -718,9 +718,9 @@
             "goToError": "Deze paginaovergang bestaat niet",
             "goToPlaceHolder": "Voer een paginanummer in",
             "goToTitle": "Ga naar pagina",
-            "history": "",
-            "historyNext": "Spring vooruit",
-            "historyPrevious": "Spring terug",
+            "history": "Zoekgeschiedenis",
+            "historyNext": "Spring vooruit in de zoekgeschiedenis",
+            "historyPrevious": "Spring terug in de zoekgeschiedenis",
             "infoTitle": "Informatie",
             "magnifyingGlassButton": "Zoek in publicatie",
             "openTableOfContentsTitle": "Navigatie",
@@ -728,8 +728,8 @@
             "pdfscalemode": "Pagina aanpassen aan breedte",
             "print": "Druk af",
             "printDisabled": "Verboden te printen",
-            "screenNext": "",
-            "screenPrevious": "",
+            "screenNext": "Ga vooruit",
+            "screenPrevious": "Ga terug",
             "settingsTitle": "Instellingen"
         },
         "notes": {
