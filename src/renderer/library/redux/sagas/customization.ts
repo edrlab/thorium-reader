@@ -46,7 +46,7 @@ function* profileActivating(id: string): SagaGenerator<void> {
 // $color-grey-1: #61646B;
 // $color-grey-2: #7c7d86;
 
-// // THORIUM SET OF COLORS 
+// // THORIUM SET OF COLORS
 
 // $thorium-theme-neutral-light: $color-white;
 // $thorium-theme-neutral-dark: #1D1D1E;
@@ -149,7 +149,7 @@ function* profileActivatingAction(action: customizationActions.activating.TActio
     if (lock.state === "ACTIVATING" && lock.lockInfo.id === id) {
 
         yield* callTyped(profileActivating, id);
-        
+
         yield* putTyped(customizationActions.lock.build("IDLE"));
 
     } else {
@@ -186,7 +186,7 @@ export function saga() {
         const customization = yield* selectTyped((state: ICommonRootState) => state.customization);
         const theme = yield* selectTyped((state: ICommonRootState) => state.theme);
         const id = customization.activate.id;
-        if (customization.lock.state !== "IDLE" || (!theme.customization.enable && !id)) {
+        if (customization.lock.state !== "IDLE" || (!theme.customization?.enable && !id)) {
             return ;
         }
         const action = customizationActions.activating.build(id);
