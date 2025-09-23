@@ -41,6 +41,14 @@ export interface PublicationDocument extends Identifiable, Timestampable {
 
     hash: string;
 
+    opdsPublicationStringified?: string;
+    opdsPublication?: {
+        url?: string;
+        type?: string;
+        selfLinkUrl?: string;
+        identifier?: string;
+    }
+
     // when true, signifies that pub was migrated from 1.6 PouchDB
     // (Sqlite3 / Leveldown database storage adapters) to Redux state (with JSON serialization)
     migratedFrom1_6Database?: boolean;

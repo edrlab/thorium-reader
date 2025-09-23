@@ -132,7 +132,7 @@ export class PublicationRepository {
         return pub;
     }
 
-    public async findAll(): Promise<PublicationDocument[]> {
+    public findAll(): PublicationDocument[] {
 
         const store = diMainGet("store");
         const state = store.getState();
@@ -148,7 +148,7 @@ export class PublicationRepository {
 
     public async findAllSortDesc(): Promise<PublicationDocument[]> {
 
-        const pubs = await this.findAll();
+        const pubs = this.findAll();
         ok(Array.isArray(pubs));
         // WARNING: .sort() is in-place same-array mutation! (not a new array)
         // ... which is fine because findAll() creates a local array instance
@@ -159,7 +159,7 @@ export class PublicationRepository {
 
     public async findByHashId(hash: string): Promise<PublicationDocument | undefined> {
 
-        const pubs = await this.findAll();
+        const pubs = this.findAll();
         ok(Array.isArray(pubs));
         const pub = pubs.find((f) => f.hash === hash);
         return pub;
@@ -167,7 +167,7 @@ export class PublicationRepository {
 
     public async findByTag(tag: string): Promise<PublicationDocument[]> {
 
-        const pubs = await this.findAll();
+        const pubs = this.findAll();
         ok(Array.isArray(pubs));
         const pubsFiltered = pubs.filter((f) => f.tags.includes(tag));
         return pubsFiltered;
@@ -175,20 +175,37 @@ export class PublicationRepository {
 
     public async findByTitle(title: string): Promise<PublicationDocument[]> {
 
-        const pubs = await this.findAll();
+        const pubs = this.findAll();
         ok(Array.isArray(pubs));
         const pubsFiltered = pubs.filter((f) => f.title === title);
         return pubsFiltered;
     }
 
-    public async findByPublicationIdentifier(publicationIdentifier: string): Promise<PublicationDocument[]> {
+    public async findByPublicationIdentifier(publicationIdentifier: string): Promise<PublicationDocument> {
 
-        const pubs = await this.findAll();
+        const pubs = this.findAll();
         ok(Array.isArray(pubs));
-        const pubsFiltered = pubs.filter((f) => f.identifier === publicationIdentifier);
-        return pubsFiltered;
+        const pub = pubs.find((f) => f.identifier === publicationIdentifier);
+        return pub;
     }
 
+    public findByOpdsPublication(url: string, type: string, identifier: string, selfLinkUrl: string): PublicationDocument[] {
+        const pubs = this.findAll();
+        ok(Array.isArray(pubs));
+        const pubsFiltered = pubs.filter((f) => {
+
+            if (!url || !(identifier || selfLinkUrl)) {
+                return false;
+            }
+
+            if (((url && f.opdsPublication?.url === url) || (type && f.opdsPublication?.type === type))
+                && ((identifier && f.opdsPublication?.identifier === identifier) || (selfLinkUrl && f.opdsPublication.selfLinkUrl === selfLinkUrl))) {
+                return true;
+            }
+            return false;
+        });
+        return pubsFiltered;
+    }
 
     public async searchByTitleAndAuthor(titleOrAuthor: string): Promise<PublicationDocument[]> {
 
@@ -264,7 +281,7 @@ export class PublicationRepository {
     /** Returns all publication tags */
     public async getAllTags(): Promise<string[]> {
 
-        const pubs = aboutFilteredDocs(await this.findAll());
+        const pubs = aboutFilteredDocs(this.findAll());
         ok(Array.isArray(pubs));
         const tags: string[] = [];
 

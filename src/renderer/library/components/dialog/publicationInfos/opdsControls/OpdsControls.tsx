@@ -11,7 +11,7 @@ import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scs
 import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
-import { dialogActions, importActions } from "readium-desktop/common/redux/actions/";
+import { dialogActions, importActions, readerActions } from "readium-desktop/common/redux/actions/";
 import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import * as CartFillIcon from "readium-desktop/renderer/assets/icons/cart-icon.svg";
 import * as BorrowIcon from "readium-desktop/renderer/assets/icons/borrow-icon.svg";
@@ -115,6 +115,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                             >
                                 {`${__("catalog.addBookToLib")}${typeStr(ln)}`}
                             </button>
+                            {ln.localBookshelfPublicationId ? <button className={stylesButtons.button_secondary} onClick={() => this.props.read(ln.localBookshelfPublicationId)}>{__("catalog.readBook")}</button> : <></>} 
                             <OpdsLinkProperties
                                 properties={ln.properties}
                             />
@@ -150,6 +151,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 <SVG ariaHidden={true} svg={ImportIcon} />
                                 {`${__("opds.menu.addExtract")}${typeStr(ln)}`}
                             </button>
+                            {ln.localBookshelfPublicationId ? <button className={stylesButtons.button_secondary} onClick={() => this.props.read(ln.localBookshelfPublicationId)}>{__("catalog.readBook")}</button> : <></>} 
                             <OpdsLinkProperties
                                 properties={ln.properties}
                             />
@@ -178,6 +180,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                     <SVG ariaHidden={true} svg={CartFillIcon} />
                                     {__("opds.menu.goBuyBook")}
                                 </button>
+                                {ln.localBookshelfPublicationId ? <button className={stylesButtons.button_secondary} onClick={() => this.props.read(ln.localBookshelfPublicationId)}>{__("catalog.readBook")}</button> : <></>} 
                                 <OpdsLinkProperties properties={ln.properties} />
                             </div>,
                     )
@@ -199,6 +202,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                     <SVG ariaHidden svg={BorrowIcon} />
                                     {__("opds.menu.goLoanBook")}
                                 </button>
+                                {ln.localBookshelfPublicationId ? <button className={stylesButtons.button_secondary} onClick={() => this.props.read(ln.localBookshelfPublicationId)}>{__("catalog.readBook")}</button> : <></>} 
                                 <OpdsLinkProperties properties={ln.properties} />
                             </div>,
                     )
@@ -301,6 +305,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
         link: (...data: Parameters<ReturnType<typeof dispatchOpdsLink>>) =>
             dispatchOpdsLink(dispatch)(...data),
+        read: (pubIdentifier: string) => {
+            dispatch(readerActions.openRequest.build(pubIdentifier));
+        },
     };
 };
 
