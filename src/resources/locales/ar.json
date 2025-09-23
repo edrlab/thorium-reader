@@ -134,6 +134,11 @@
             "title": "استيراد الملاحظات؟"
         },
         "cancel": "إلغاء",
+        "customization": {
+            "splashscreen": {
+                "title": ""
+            }
+        },
         "deleteAnnotations": "حذف التعليقات؟",
         "deleteAnnotationsText": "هل أنت متأكد من حذف {{- annotationListLength}} ملاحظة (ملاحظات)؟",
         "deleteBookmarks": "حذف الإشارات المرجعية؟",

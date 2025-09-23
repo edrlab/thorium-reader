@@ -134,6 +134,11 @@
             "title": "Importovat poznámky?"
         },
         "cancel": "Zrušit",
+        "customization": {
+            "splashscreen": {
+                "title": ""
+            }
+        },
         "deleteAnnotations": "Odstranit anotace?",
         "deleteAnnotationsText": "Opravdu chcete odstranit {{- annotationListLength}} poznámek?",
         "deleteBookmarks": "",

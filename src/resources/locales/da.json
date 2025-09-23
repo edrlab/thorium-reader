@@ -134,6 +134,11 @@
             "title": "Ønsker du at importere disse noter?"
         },
         "cancel": "Annullér",
+        "customization": {
+            "splashscreen": {
+                "title": ""
+            }
+        },
         "deleteAnnotations": "Slet alle noter?",
         "deleteAnnotationsText": "Vil du slette {{- annotationListLength}} note(r)?",
         "deleteBookmarks": "Slet bogmærker?",

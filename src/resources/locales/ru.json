@@ -134,6 +134,11 @@
             "title": ""
         },
         "cancel": "Отменить",
+        "customization": {
+            "splashscreen": {
+                "title": ""
+            }
+        },
         "deleteAnnotations": "",
         "deleteAnnotationsText": "",
         "deleteBookmarks": "",

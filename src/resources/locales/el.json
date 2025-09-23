@@ -134,6 +134,11 @@
             "title": "Εισαγωγή σημειώσεων;"
         },
         "cancel": "Ακύρωση",
+        "customization": {
+            "splashscreen": {
+                "title": ""
+            }
+        },
         "deleteAnnotations": "Διαγραφή σχολίων;",
         "deleteAnnotationsText": "Είσαι σίγουρος/η για τη διαγραφή σημειώσεων {{- annotationListLength}};",
         "deleteBookmarks": "Διαγραφή σελιδοδεικτών;",

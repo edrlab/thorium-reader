@@ -121,11 +121,6 @@
         "update": "Edit"
     },
     "dialog": {
-        "customization": {
-            "splashscreen": {
-                "title": "Provionning and Activating customization profile"
-            }
-        },
         "annotations": {
             "descAuthor": "by '{{- author}}'",
             "descCreator": "created by",
@@ -139,6 +134,11 @@
             "title": "Import notes?"
         },
         "cancel": "Cancel",
+        "customization": {
+            "splashscreen": {
+                "title": "Provisionning and activating customization profile"
+            }
+        },
         "deleteAnnotations": "Delete annotations?",
         "deleteAnnotationsText": "Are you sure you want to delete {{- annotationListLength}} note(s)?",
         "deleteBookmarks": "Delete bookmarks?",

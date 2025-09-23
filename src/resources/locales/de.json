@@ -134,6 +134,11 @@
             "title": "Notizen importieren?"
         },
         "cancel": "Abbrechen",
+        "customization": {
+            "splashscreen": {
+                "title": ""
+            }
+        },
         "deleteAnnotations": "Anmerkungen löschen?",
         "deleteAnnotationsText": "Sind Sie sicher, dass Sie {{- annotationListLength}} Notiz(en) löschen wollen?",
         "deleteBookmarks": "",

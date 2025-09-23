@@ -134,6 +134,11 @@
             "title": "Notları içe aktarmak istiyor musunuz?"
         },
         "cancel": "İptal",
+        "customization": {
+            "splashscreen": {
+                "title": ""
+            }
+        },
         "deleteAnnotations": "Açıklayıcı notları silmek istiyor musunuz?",
         "deleteAnnotationsText": "{{- annotationListLength}} Not(lar)ını silmek istediğinize emin misiniz?",
         "deleteBookmarks": "Yer imlerini silmek istiyor musunuz?",

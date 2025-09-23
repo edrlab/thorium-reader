@@ -134,6 +134,11 @@
             "title": "Uvozim opombe?"
         },
         "cancel": "Prekliči",
+        "customization": {
+            "splashscreen": {
+                "title": ""
+            }
+        },
         "deleteAnnotations": "Želiš izbrisati opombe?",
         "deleteAnnotationsText": "Ali si prepričan, da želiš izbrisati {{- annotationListLength}} opombe?",
         "deleteBookmarks": "",

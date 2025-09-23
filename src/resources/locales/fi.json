@@ -134,6 +134,11 @@
             "title": "Tuodaanko muistiinpanot?"
         },
         "cancel": "Peru",
+        "customization": {
+            "splashscreen": {
+                "title": ""
+            }
+        },
         "deleteAnnotations": "Poistetaanko muistiinpanot?",
         "deleteAnnotationsText": "Haluatko varmasti poistaa {{- annotationListLength}} muistiinpanoa?",
         "deleteBookmarks": "Poistetaanko kirjanmerkit?",

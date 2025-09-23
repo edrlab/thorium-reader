@@ -134,6 +134,11 @@
             "title": "メモを取りこみますか？"
         },
         "cancel": "キャンセル",
+        "customization": {
+            "splashscreen": {
+                "title": ""
+            }
+        },
         "deleteAnnotations": "メモを削除しますか？",
         "deleteAnnotationsText": "{{-annotationListLength}} 件のメモを削除しますか？",
         "deleteBookmarks": "しおりを削除しますか？",

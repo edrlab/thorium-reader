@@ -134,6 +134,11 @@
             "title": "Vill du importera de här anteckningarna?"
         },
         "cancel": "Avbryt",
+        "customization": {
+            "splashscreen": {
+                "title": ""
+            }
+        },
         "deleteAnnotations": "Radera anteckningar?",
         "deleteAnnotationsText": "Vill du radera {{- annotationListLength}} anteckning(ar)?",
         "deleteBookmarks": "Radera bokmärken?",

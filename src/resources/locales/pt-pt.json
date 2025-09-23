@@ -134,6 +134,11 @@
             "title": "Importar anotações?"
         },
         "cancel": "Cancelar",
+        "customization": {
+            "splashscreen": {
+                "title": ""
+            }
+        },
         "deleteAnnotations": "Eliminar anotações?",
         "deleteAnnotationsText": "Quer mesmo eliminar {{- annotationListLength}} anotações?",
         "deleteBookmarks": "Eliminar marcadores?",

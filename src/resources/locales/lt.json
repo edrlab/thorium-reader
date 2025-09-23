@@ -134,6 +134,11 @@
             "title": "Importuoti pastabas?"
         },
         "cancel": "Nutraukti",
+        "customization": {
+            "splashscreen": {
+                "title": ""
+            }
+        },
         "deleteAnnotations": "Šalinti pastabas?",
         "deleteAnnotationsText": "Ar tikrai norite pašalinti {{- annotationListLength}} pastabą(-as, -ų)?",
         "deleteBookmarks": "Šalinti skirtukus?",

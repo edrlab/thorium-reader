@@ -134,6 +134,11 @@
             "title": ""
         },
         "cancel": "გადაფიქრება",
+        "customization": {
+            "splashscreen": {
+                "title": ""
+            }
+        },
         "deleteAnnotations": "",
         "deleteAnnotationsText": "",
         "deleteBookmarks": "",

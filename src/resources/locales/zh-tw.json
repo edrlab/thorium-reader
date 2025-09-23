@@ -134,6 +134,11 @@
             "title": "導入註解？"
         },
         "cancel": "取消",
+        "customization": {
+            "splashscreen": {
+                "title": ""
+            }
+        },
         "deleteAnnotations": "刪除註解？",
         "deleteAnnotationsText": "您確定要刪除 {{- annotationListLength}} 條註解嗎？",
         "deleteBookmarks": "刪除書籤？",

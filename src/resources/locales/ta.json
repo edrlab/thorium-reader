@@ -134,6 +134,11 @@
             "title": "குறிப்புகள் இறக்குமதி?"
         },
         "cancel": "ரத்துசெய்",
+        "customization": {
+            "splashscreen": {
+                "title": ""
+            }
+        },
         "deleteAnnotations": "சிறுகுறிப்புகளை நீக்கவா?",
         "deleteAnnotationsText": "நீங்கள் நிச்சயமாக {{- annotationListLength}} குறிப்புகளை நீக்க விரும்புகிறீர்களா?",
         "deleteBookmarks": "புக்மார்க்குகளை நீக்கவா?",

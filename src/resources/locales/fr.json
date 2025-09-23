@@ -134,6 +134,11 @@
             "title": "Voulez-vous importer toutes ces notes ?"
         },
         "cancel": "Annuler",
+        "customization": {
+            "splashscreen": {
+                "title": ""
+            }
+        },
         "deleteAnnotations": "Supprimer la note",
         "deleteAnnotationsText": "Voulez-vous supprimer {{- annotationListLength}} note(s) ?",
         "deleteBookmarks": "Supprimer les marque-pages ?",

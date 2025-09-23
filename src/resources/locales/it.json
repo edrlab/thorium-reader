@@ -134,6 +134,11 @@
             "title": "Vuoi importare queste note?"
         },
         "cancel": "Annulla",
+        "customization": {
+            "splashscreen": {
+                "title": ""
+            }
+        },
         "deleteAnnotations": "Eliminare la nota?",
         "deleteAnnotationsText": "Si desidera eliminare {{- annotationListLength}} note?",
         "deleteBookmarks": "Cancellare i segnalibri?",

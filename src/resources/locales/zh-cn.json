@@ -134,6 +134,11 @@
             "title": "您要导入笔记吗？"
         },
         "cancel": "取消",
+        "customization": {
+            "splashscreen": {
+                "title": "提供并激活自定义配置文件"
+            }
+        },
         "deleteAnnotations": "您要删除笔记吗？",
         "deleteAnnotationsText": "您确定要删除 {{- annotationListLength}} 条笔记吗？",
         "deleteBookmarks": "删除书签？",
@@ -145,12 +150,7 @@
         "importError": "出现错误, 请确认文件的扩展名({{acceptedExtension}})",
         "renew": "您真的要更新此出版物的许可证吗?",
         "return": "您真的要归还此出版物的许可证吗?",
-        "yes": "是",
-        "customization": {
-            "splashscreen": {
-                "title": "提供并激活自定义配置文件"
-            }
-        }
+        "yes": "是"
     },
     "error": {
         "errorBox": {

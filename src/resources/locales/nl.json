@@ -134,6 +134,11 @@
             "title": "Importeer aantekeningen?"
         },
         "cancel": "Annuleer",
+        "customization": {
+            "splashscreen": {
+                "title": ""
+            }
+        },
         "deleteAnnotations": "Verwijder aantekeningen?",
         "deleteAnnotationsText": "Weet je zeker dat je {{- annotationListLength}} aantekening(en) wil verwijderen?",
         "deleteBookmarks": "Bladwijzers verwijderen?",
