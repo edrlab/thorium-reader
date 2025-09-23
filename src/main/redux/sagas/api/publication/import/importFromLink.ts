@@ -98,6 +98,33 @@ function* importLinkFromPath(
         const publicationRepository = diMainGet("publication-repository");
         returnPublicationDocument = yield* callTyped(() => publicationRepository.save(publicationDocumentAssigned));
 
+    } else if (alreadyImported && publicationDocument) {
+
+        // Merge with the original publication
+        const publicationDocumentAssigned = Object.assign(
+            {},
+            publicationDocument,
+            {
+                // resources: {
+                //     r2PublicationJson: publicationDocument.resources.r2PublicationJson,
+                //     // r2LCPJson: publicationDocument.resources.r2LCPJson,
+                //     // r2LSDJson: publicationDocument.resources.r2LSDJson,
+                //     // r2OpdsPublicationJson: pub?.r2OpdsPublicationJson || undefined,
+
+                //     // Legacy Base64 data blobs
+                //     //
+                //     // r2PublicationBase64: publicationDocument.resources.r2PublicationBase64,
+                //     // r2LCPBase64: publicationDocument.resources.r2LCPBase64,
+                //     // r2LSDBase64: publicationDocument.resources.r2LSDBase64,
+                //     // r2OpdsPublicationBase64: pub?.r2OpdsPublicationBase64 || "",
+                // } as Resources,
+                opdsPublicationStringified: pub?.opdsPublicationStringified,
+                opdsPublication: { url: link.url, type: link.type, selfLinkUrl: pub?.selfLink?.url, identifier: pub?.workIdentifier },
+            },
+        );
+
+        const publicationRepository = diMainGet("publication-repository");
+        returnPublicationDocument = yield* callTyped(() => publicationRepository.save(publicationDocumentAssigned));
     }
 
     return [returnPublicationDocument, alreadyImported];

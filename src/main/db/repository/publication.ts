@@ -194,14 +194,13 @@ export class PublicationRepository {
         ok(Array.isArray(pubs));
         const pubsFiltered = pubs.filter((f) => {
 
-            if (!url || (!identifier || !selfLinkUrl)) {
+            if (!url || !(identifier || selfLinkUrl)) {
                 return false;
             }
-            
-            if (f.opdsPublication?.url === url && f.opdsPublication.type === type) {
-                if (f.opdsPublication?.identifier === identifier || f.opdsPublication.selfLinkUrl === selfLinkUrl) {
-                    return true;
-                }
+
+            if (((url && f.opdsPublication?.url === url) || (type && f.opdsPublication?.type === type))
+                && ((identifier && f.opdsPublication?.identifier === identifier) || (selfLinkUrl && f.opdsPublication.selfLinkUrl === selfLinkUrl))) {
+                return true;
             }
             return false;
         });

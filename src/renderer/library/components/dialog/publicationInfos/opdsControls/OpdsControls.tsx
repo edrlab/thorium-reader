@@ -115,6 +115,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                             >
                                 {`${__("catalog.addBookToLib")}${typeStr(ln)}`}
                             </button>
+                            {ln.localBookshelfPublicationId ? <button className={stylesButtons.button_secondary} onClick={() => this.props.read(ln.localBookshelfPublicationId)}>{__("catalog.readBook")}</button> : <></>} 
                             <OpdsLinkProperties
                                 properties={ln.properties}
                             />
@@ -150,7 +151,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 <SVG ariaHidden={true} svg={ImportIcon} />
                                 {`${__("opds.menu.addExtract")}${typeStr(ln)}`}
                             </button>
-                            {ln.localBookshelfPublicationId && <button className={stylesButtons.button_secondary} onClick={() => this.props.read(ln.localBookshelfPublicationId)}>READ</button>} 
+                            {ln.localBookshelfPublicationId ? <button className={stylesButtons.button_secondary} onClick={() => this.props.read(ln.localBookshelfPublicationId)}>{__("catalog.readBook")}</button> : <></>} 
                             <OpdsLinkProperties
                                 properties={ln.properties}
                             />
@@ -179,6 +180,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                     <SVG ariaHidden={true} svg={CartFillIcon} />
                                     {__("opds.menu.goBuyBook")}
                                 </button>
+                                {ln.localBookshelfPublicationId ? <button className={stylesButtons.button_secondary} onClick={() => this.props.read(ln.localBookshelfPublicationId)}>{__("catalog.readBook")}</button> : <></>} 
                                 <OpdsLinkProperties properties={ln.properties} />
                             </div>,
                     )
@@ -200,6 +202,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                     <SVG ariaHidden svg={BorrowIcon} />
                                     {__("opds.menu.goLoanBook")}
                                 </button>
+                                {ln.localBookshelfPublicationId ? <button className={stylesButtons.button_secondary} onClick={() => this.props.read(ln.localBookshelfPublicationId)}>{__("catalog.readBook")}</button> : <></>} 
                                 <OpdsLinkProperties properties={ln.properties} />
                             </div>,
                     )

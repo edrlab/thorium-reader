@@ -454,7 +454,7 @@ export class OpdsFeedViewConverter {
             // convertMultiLangStringToLangString()
             a11y_accessibilitySummary: r2OpdsPublication.Metadata.Accessibility?.Summary || r2OpdsPublication.Metadata.AccessibilitySummary, // string | IStringMap
 
-            opdsPublicationStringified: JSON.stringify(TaJsonSerialize(r2OpdsPublication)), // TODO: bug not an strict json serialization from the original !! we have to serialize the original jsonObj response
+            opdsPublicationStringified: JSON.stringify(TaJsonSerialize(r2OpdsPublication)), // NOTE: This is not a idempotent json serialization from the original json , strict comparaison between json response request will not be equal to this !
             selfLink: selfLinkView.length === 1 ? selfLinkView[0] : undefined,
         };
     }
