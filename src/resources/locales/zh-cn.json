@@ -145,7 +145,12 @@
         "importError": "出现错误, 请确认文件的扩展名({{acceptedExtension}})",
         "renew": "您真的要更新此出版物的许可证吗?",
         "return": "您真的要归还此出版物的许可证吗?",
-        "yes": "是"
+        "yes": "是",
+        "customization": {
+            "splashscreen": {
+                "title": "提供并激活自定义配置文件"
+            }
+        }
     },
     "error": {
         "errorBox": {
@@ -1024,8 +1029,8 @@
                     "name": "转到下一页 (备选)"
                 },
                 "NavigatePreviousChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "在阅读器窗口中，导航到书籍阅读顺序中的前一个文档（例如，书脊中的章节）。请注意，还有一个替代的键盘快捷键可以使用",
+                    "name": "转到上一章"
                 },
                 "NavigatePreviousChapterAlt": {
                     "description": "",
