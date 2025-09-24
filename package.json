@@ -367,6 +367,7 @@
     "@redux-devtools/extension": "^3.3.0",
     "@rollup/plugin-terser": "^0.4.4",
     "@statoscope/webpack-plugin": "^5.29.0",
+    "@types/debug": "^4.1.12",
     "@types/jsdom": "^21.1.7",
     "@types/lunr": "^2.3.7",
     "@types/mime-types": "^3.0.1",
