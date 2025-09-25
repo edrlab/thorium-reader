@@ -71,6 +71,7 @@ function* profileActivating(id: string): SagaGenerator<void> {
             border: "#48484b",
             background: "#27272a",
             app_name: "#EAEAEA",
+            scrollbar_thumb: "#7c7d86",
         };
 
         const colorLight: ICustomizationManifestColor = {
@@ -80,6 +81,7 @@ function* profileActivating(id: string): SagaGenerator<void> {
             border: "#afb1b6",
             background: "#f5f5f5",
             app_name: "#afb1b6",
+            scrollbar_thumb: "#7c7d86",
         };
 
         applyColorSet(colorLight, "light");
@@ -118,7 +120,7 @@ function* profileActivating(id: string): SagaGenerator<void> {
 
     const colorsDarkLight = manifestJson.theme.color;
 
-    yield* putTyped(themeActions.setTheme.build(undefined, { enable: true, logo: logoUrl, color: colorsDarkLight }));
+    yield* putTyped(themeActions.setTheme.build(undefined, { enable: true, logo: logoUrl, color: colorsDarkLight, links: manifestJson.links }));
 
 
     // TODO https://github.com/edrlab/thorium-reader/pull/3095/files#diff-c6b317c691e2e0831a6aeebdf7b5dba7ca96d4abff06bf95d8ccfbed69475618R159-R167

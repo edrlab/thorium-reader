@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { IStringMap } from "r2-shared-js/dist/es8-es2017/src/models/metadata-multilang";
 import { JsonArray } from "src/typings/json";
 
 // https://www.notion.so/edrlab/Thorium-Reader-Profiles-1d8a1ca5712f80619738c2f26e700355
@@ -16,7 +17,8 @@ export interface ICustomizationManifest {
     version: string; // semantic versionning
     contentHash: string;
     name: string;
-    description: string;
+    title: IStringMap;
+    description: IStringMap;
     // default_locale: string; // BCP47 // not used anymore but still in notion example manifest
     theme: ICustomizationManifestTheme;
     images: ICustomizationLink[];
@@ -40,6 +42,7 @@ export interface ICustomizationManifestColor {
     border: string;
     background: string;
     app_name: string;
+    scrollbar_thumb: string;
 }
 
 export interface ICustomizationManifestSignature {
@@ -60,4 +63,5 @@ export interface ICustomizationLink {
     href: string; // relative file path in zip directory or http(s) link => not fully an URI
     rel: string;
     type: string;
+    title: IStringMap;
 }

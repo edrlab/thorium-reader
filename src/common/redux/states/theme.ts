@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ICustomizationManifest } from "src/common/readium/customization/manifest";
+import { ICustomizationLink, ICustomizationManifest, ICustomizationManifestLinkPropertiesExtension } from "src/common/readium/customization/manifest";
 
 export type TTheme = "system" | "dark" | "light";
 
@@ -13,6 +13,8 @@ export interface ICustomizationTheme {
     enable: boolean;
     logo?: string;
     color?: ICustomizationManifest["theme"]["color"];
+    links?: Array<ICustomizationLink & { properties: ICustomizationManifestLinkPropertiesExtension }>;
+    title?: string;
 }
 
 export interface ITheme {

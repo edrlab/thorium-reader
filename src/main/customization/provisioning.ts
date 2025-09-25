@@ -19,6 +19,9 @@ import { ICustomizationProfileProvisioned, ICustomizationProfileError, ICustomiz
 import { app } from "electron";
 import { _CUSTOMIZATION_PROFILE_PUB_KEY } from "readium-desktop/preprocessor-directives";
 
+import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER } from "readium-desktop/common/streamerProtocol";
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
+
 // Logger
 const debug = debug_("readium-desktop:main#utils/customization/provisioning");
 
@@ -142,9 +145,12 @@ export async function customizationPackageProvisioningAccumulator(packagesArray:
         return { fileName: packageFileName, error: true, message: error };
     }
 
+    const baseUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/custom-profile-zip/${encodeURIComponent_RFC3986(Buffer.from(manifest.identifier).toString("base64"))}/`;
+    const logoUrl = baseUrl + encodeURIComponent_RFC3986(Buffer.from(manifest.images[0].href).toString("base64"));
+
     const packageProvisionedWithTheSameIdentifier = packagesArray.find(({ identifier }) => identifier === manifest.identifier);
     if (!packageProvisionedWithTheSameIdentifier || semver.gt(manifest.version, packageProvisionedWithTheSameIdentifier.version)) {
-        return { identifier: manifest.identifier, fileName: packageFileName, version: manifest.version };
+        return { identifier: manifest.identifier, fileName: packageFileName, version: manifest.version, logo: logoUrl, description: manifest.description, title: manifest.title };
     }
 
     return { fileName: packageFileName, error: true, message: "profile version is under or equal to the currrent provisioned profile version" };
