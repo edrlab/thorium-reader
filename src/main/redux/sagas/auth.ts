@@ -737,9 +737,9 @@ function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefine
                 backgroundThrottling: true,
                 devTools: __TH__IS_DEV__, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
                 nodeIntegration: false,
-                contextIsolation: false,
+                contextIsolation: true,
                 nodeIntegrationInWorker: false,
-                sandbox: false,
+                sandbox: true,
                 webSecurity: true,
                 webviewTag: false,
             },
