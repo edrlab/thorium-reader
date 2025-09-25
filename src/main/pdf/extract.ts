@@ -56,9 +56,9 @@ export const extractPDFData =
                     backgroundThrottling: true,
                     devTools: __TH__IS_DEV__, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
                     nodeIntegration: false,
+                    sandbox: true,
                     contextIsolation: true,
                     nodeIntegrationInWorker: false,
-                    sandbox: true,
                     webSecurity: true,
                     webviewTag: false,
                     preload: preloadPath, // "file://" + ... when setting the "preload" attribute on webview, but not with webPreferences

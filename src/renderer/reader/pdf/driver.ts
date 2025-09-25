@@ -154,7 +154,7 @@ export function pdfMount(
         "display: flex; margin: 0; padding: 0; box-sizing: border-box; position: absolute; left: 0; right: 0; bottom: 0; top: 0;");
     // webview.setAttribute("partition", "persist:pdfjsreader");
     webview.setAttribute("webpreferences",
-        `enableRemoteModule=0, allowRunningInsecureContent=0, backgroundThrottling=0, devTools=${__TH__IS_DEV__ ? "1" : "0"}, nodeIntegration=0, contextIsolation=0, nodeIntegrationInWorker=0, sandbox=1, webSecurity=1, webviewTag=0`);
+        `enableRemoteModule=0, allowRunningInsecureContent=0, backgroundThrottling=0, devTools=${__TH__IS_DEV__ ? "1" : "0"}, nodeIntegration=0, sandbox=1, contextIsolation=0, nodeIntegrationInWorker=0, webSecurity=1, webviewTag=0`);
     // webview.setAttribute("disablewebsecurity", "");
 
     webview.setAttribute("preload", preloadPath);
