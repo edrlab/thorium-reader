@@ -6,7 +6,7 @@
 // ==LICENSE-END
 
 import debounce from "debounce";
-import { ipcRenderer } from "electron";
+import { ipcRenderer } from "electron"; // contextBridge
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
@@ -27,7 +27,9 @@ import { eventBus } from "../common/eventBus";
 import {
     IEventBusPdfPlayer, IPdfPlayerColumn, IPdfPlayerScale, IPdfPlayerView,
 } from "../common/pdfReader.type";
-import { EventBus } from "./pdfEventBus";
+
+// import { EventBus_ } from "./pdfEventBus";
+
 // import { pdfReaderInit } from "./init";
 import { getToc } from "./toc";
 
@@ -41,14 +43,47 @@ export interface IPdfState {
 
 export type IPdfBus = IEventBusPdfPlayer;
 
-const pdfjsEventBus = new EventBus();
-// pdfjsEventBus.onAll((_key: any) => (..._arg: any[]) => /*console.log("PDFJS EVENTBUS", key, arg)*/ {});
-(window as any).pdfjsEventBus = pdfjsEventBus;
+// const pdfjsEventBus = new EventBus_();
+// (window as any).pdfjsEventBus = pdfjsEventBus;
 
-const pdfDocument = new Promise<PDFDocumentProxy>((resolve) =>
-    pdfjsEventBus.on("__pdfdocument", (_pdfDocument: PDFDocumentProxy) => {
-        resolve(_pdfDocument);
-    }));
+// (window as any).pdfjsEventBus = pdfjsEventBus;
+// contextBridge.exposeInMainWorld(
+//     "pdfjsEventBus",
+//     {
+//         dispatch: function () {
+//             console.log("exposeInMainWorld pdfjsEventBus dispatch", JSON.stringify(arguments, null, 4));
+
+//             return pdfjsEventBus.dispatch.apply(pdfjsEventBus, arguments);
+//         },
+//         onAll: function () {
+//             console.log("exposeInMainWorld pdfjsEventBus onAll", JSON.stringify(arguments, null, 4));
+
+//             return pdfjsEventBus.onAll.apply(pdfjsEventBus, arguments);
+//         },
+//         on: function () {
+//             console.log("exposeInMainWorld pdfjsEventBus on", JSON.stringify(arguments, null, 4));
+
+//             return pdfjsEventBus.on.apply(pdfjsEventBus, arguments);
+//         },
+//         off: function () {
+//             console.log("exposeInMainWorld pdfjsEventBus off", JSON.stringify(arguments, null, 4));
+
+//             return pdfjsEventBus.off.apply(pdfjsEventBus, arguments);
+//         },
+//         _on: function () {
+//             console.log("exposeInMainWorld pdfjsEventBus _on", JSON.stringify(arguments, null, 4));
+
+//             return pdfjsEventBus._on.apply(pdfjsEventBus, arguments);
+//         },
+//         _off: function () {
+//             console.log("exposeInMainWorld pdfjsEventBus _off", JSON.stringify(arguments, null, 4));
+
+//             return pdfjsEventBus._off.apply(pdfjsEventBus, arguments);
+//         },
+//     }
+// );
+
+// pdfjsEventBus.onAll((_key: any) => (..._arg: any[]) => /*console.log("PDFJS EVENTBUS", key, arg)*/ {});
 
 // https://github.com/mozilla/pdf.js/blob/aa4b9ffd4ac985230cbbfca329322fa578b630dd/web/ui_utils.js#L193-L207
 const InvisibleCharsRegExp = /[\x00-\x1F]/g;
@@ -82,6 +117,14 @@ function normalizeUnicode(str: string) {
 }
 
 function main() {
+
+    const pdfjsEventBus = (window as any).PDFViewerApplication?.eventBus;
+    (window as any).pdfjsEventBus = pdfjsEventBus;
+
+    const pdfDocument = new Promise<PDFDocumentProxy>((resolve) =>
+        pdfjsEventBus.on("__pdfdocument", (_pdfDocument: PDFDocumentProxy) => {
+            resolve(_pdfDocument);
+        }));
 
     const bus: IPdfBus = eventBus(
         (key, ...a) => {
@@ -367,7 +410,6 @@ function main() {
             once: false,
             passive: false,
         });
-
 }
 
 document.addEventListener("DOMContentLoaded", () => {

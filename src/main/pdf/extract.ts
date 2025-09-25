@@ -6,6 +6,8 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import * as path from "path";
+// import * as fs from "fs";
 import { BrowserWindow } from "electron";
 
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
@@ -38,8 +40,11 @@ export const extractPDFData =
         debug("extractPDFData", pdfPath);
 
         let win: BrowserWindow;
-
         try {
+
+            //`${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_EXTRACT_PDF}/pdfjs/../../../index_pdf.js`
+            const preloadPath = path.normalize(path.join(__dirname, "index_pdf_extract.js")).replace(/\\/g, "/");
+            debug("extractPDFData preload", preloadPath); // fs.existsSync(preloadPath)
 
             win = new BrowserWindow({
                 width: 800,
@@ -50,12 +55,13 @@ export const extractPDFData =
                     allowRunningInsecureContent: false,
                     backgroundThrottling: true,
                     devTools: __TH__IS_DEV__, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
-                    nodeIntegration: true,
-                    contextIsolation: false,
+                    nodeIntegration: false,
+                    contextIsolation: true,
                     nodeIntegrationInWorker: false,
-                    sandbox: false,
+                    sandbox: true,
                     webSecurity: true,
                     webviewTag: false,
+                    preload: preloadPath, // "file://" + ... when setting the "preload" attribute on webview, but not with webPreferences
                 },
             });
 

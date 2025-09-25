@@ -4,6 +4,7 @@ const mainConfig = require("./webpack.config.main");
 const libraryConfig = require("./webpack.config.renderer-library");
 const readerConfig = require("./webpack.config.renderer-reader");
 const pdfConfig = require("./webpack.config.renderer-pdf");
+const pdfExtractConfig = require("./webpack.config.renderer-pdf-extract");
 const preloadConfig = require("./webpack.config.preload");
 
 // console.log("-------------------- MAIN config:");
@@ -21,4 +22,4 @@ const preloadConfig = require("./webpack.config.preload");
 // console.log("-------------------- PRELOAD config:");
 // console.log(util.inspect(preloadConfig, { colors: true, depth: null, compact: false, customInspect: true }));
 
-module.exports = [mainConfig, libraryConfig, readerConfig, pdfConfig, preloadConfig];
+module.exports = [mainConfig, libraryConfig, readerConfig, pdfConfig, pdfExtractConfig, preloadConfig];
