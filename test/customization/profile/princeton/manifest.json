@@ -1,0 +1,73 @@
+{
+    "manifestVersion": 1,
+    "identifier": "thorium-manifest://org.edrlab.thorium.princeton",
+    "version": "1.0.0",
+    "title": {
+      "en": "Princeton University Press"
+    },
+    "description": {
+      "en": "Princeton University Press publishes peer-reviewed books that connect authors and readers across spheres of knowledge to advance and enrich the global conversation."
+    },
+    "theme": {
+        "color": {
+            "dark": {
+                "neutral": "#1C1C1C",
+                "primary": "#FF8C1A",
+                "secondary": "#483a3a",
+                "border": "#FF7A00",
+                "background": "#121212",
+                "app_name": "#E0E0E0"
+            },
+            "light": {
+                "neutral": "#FFFFFF",
+                "primary": "#E77500",
+                "secondary": "#FFF",
+                "border": "#E16100",
+                "background": "#e6e8e6",
+                "app_name": "#C9C5C9"
+            }
+        }
+    },
+    "links": [
+      {
+        "rel": "catalog", 
+        "href": "http://catalog.example.com/feed",
+        "title": {
+          "en": "Princeton Library"
+        },
+        "properties": {
+          "showOnHomeSection": true,
+          "authenticate": {
+             "rel": "authentication",
+             "href": "https://auth.example.com/login"
+            },
+          "logo": {
+            "rel": "logo",
+            "href": "./images/catalog_logo.svg"
+          }
+        }
+      },
+      {
+        "rel": "catalog", 
+        "href": "http://catalog.example.com/feed",
+        "title": "Do not show in navigation",
+        "properties": {
+          "showOnHomeSection": false,
+          "authenticate": {
+             "rel": "authentication",
+             "href": "https://auth.example.com/login"
+            },
+          "logo": {
+            "rel": "logo",
+            "href": "./images/catalog_logo.svg"
+          }
+        }
+      }
+    ],
+    "images": [
+        {
+            "rel": "logo",
+            "href": "./images/logo.svg"
+        }
+    ]
+}
