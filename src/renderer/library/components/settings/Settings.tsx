@@ -49,6 +49,7 @@ import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/a
 
 // import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import { IStringMap } from "r2-shared-js/dist/es8-es2017/src/models/metadata-multilang";
 
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
 
@@ -405,6 +406,7 @@ const Profiles = () => {
     const { provision: packageProfileProvisioned, activate: { id: profileActivatedId } } = useSelector((s: ICommonRootState) => s.customization);
     const selectedProfile = packageProfileProvisioned.find(({identifier}) => identifier && identifier === profileActivatedId);
     const dispatch = useDispatch();
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
 
     return (
         <>
@@ -430,10 +432,26 @@ const Profiles = () => {
             >
                 {
                     packageProfileProvisioned.map((profile) => {
+                        console.log(profile);
+                        let profileTitle: string;
+                        let profileDescription: string;
+                        if (profile.title && profile.description) {
+                            if (locale in profile.title) {
+                                profileTitle = (profile.title as IStringMap)[locale];
+                            } else {
+                                profileTitle = (profile.title as IStringMap)["en"];
+                            }
+    
+                            if (locale in profile.title) {
+                                profileDescription = (profile.description as IStringMap)[locale];
+                            } else {
+                                profileDescription = (profile.description as IStringMap)["en"];
+                            }
+                        }
 
                         return (
                             <div
-                                key={profile.identifier} // Ajout de la key manquante pour React
+                                key={profile.identifier}
                                 className={stylesSettings.profile_selection_input}
                             >
                                 <input
@@ -459,9 +477,10 @@ const Profiles = () => {
                                             alt={`Logo ${profile.name}`}
                                         />
                                     )} */}
+                                    <img src={profile.logo ? profile.logo : ""} alt=""/>
                                     <div className={stylesSettings.profile_selection_description}>
-                                        <h5>{profile.fileName}</h5>
-                                        {/* <p>{profile.description}</p> */}
+                                        <h5>{profileTitle}</h5>
+                                        <p>{profileDescription}</p>
                                     </div>
                                 </label>
                             </div>
@@ -470,7 +489,7 @@ const Profiles = () => {
                 }
 
                 <div
-                    key={"vanilla"} // Ajout de la key manquante pour React
+                    key={"vanilla"}
                     className={stylesSettings.profile_selection_input}
                 >
                     <input
@@ -496,9 +515,10 @@ const Profiles = () => {
                                             alt={`Logo ${profile.name}`}
                                         />
                                     )} */}
+                        <img src="./resources/icons/512x512.png" alt=""/>
                         <div className={stylesSettings.profile_selection_description}>
                             <h5>{"Thorium vanilla"}</h5>
-                            {/* <p>{profile.description}</p> */}
+                            <p>Thorium Reader is the EPUB reader of choice for Windows 10 and 11, MacOS and Linux. </p>
                         </div>
                     </label>
                 </div>

@@ -46,8 +46,8 @@ $theme-background-light: var(--theme-background_light, $thorium-theme-background
 $theme-background-dark: var(--theme-background_dark, $thorium-theme-background-dark);
 $theme-appName-light: var(--theme-app_name_light, $thorium-theme-appName-light);
 $theme-appName-dark: var(--theme-app_name_dark, $thorium-theme-appName-dark);
-$-theme-scrollbar-thumb-light: var(--theme-primary_light, $thorium-theme-scrollbar-thumb);
-$-theme-scrollbar-thumb-dark: var(--theme-primary_dark, $thorium-theme-scrollbar-thumb);
+$-theme-scrollbar-thumb-light: var(--theme-scrollbar_thumb_light, $thorium-theme-scrollbar-thumb);
+$-theme-scrollbar-thumb-dark: var(--theme-scrollbar_thumb_dark, $thorium-theme-scrollbar-thumb);
 $-theme-button-hover-light: var(--theme-neutral_light, $thorium-theme-button-hover-light);
 $-theme-button-hover-dark: var(--theme-neutral_dark, $thorium-theme-button-hover-dark);
 
@@ -74,7 +74,7 @@ $color-palette: (
     --color-accent: #00BCD4,
     --color-accent-contrast: $color-white,
     --reader-fontColor: #000,
-    --scrollbar-thumb: $-theme-scrollbar-thumb-light,
+    --scrollbar-thumb: $-theme-scrollbar_thumb_light,
     --color-disabled: $color-grey-1,
     --color-error: #FCEEF1,
     --color-error-dark: #D52A54,
@@ -107,7 +107,7 @@ $color-palette: (
     --color-accent: #00BCD4,
     --color-accent-contrast: $color-white,
     --reader-fontColor: #000,
-    --scrollbar-thumb: $-theme-scrollbar-thumb-dark,
+    --scrollbar-thumb: $-theme-scrollbar_thumb_dark,
     --color-disabled: #a7a9b3,
     --color-error: #4f1d1d,
     --color-error-dark: #F590A9,
