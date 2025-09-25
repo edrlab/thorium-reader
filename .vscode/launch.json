@@ -15,7 +15,7 @@
         "."
       ],
       "env": {
-        "DEBUG": "r2:*,readium-desktop:*,-proxy-agent,-readium-desktop:main#streamerNoHttp,-readium-desktop:main:saga:persist,-r2:navigator#electron/common/readium-css-inject",
+        "DEBUG": "r2:*,readium-desktop:*,-proxy-agent",
         "NODE_DEBUG": "1",
         "NODE_ENV": "development",
         "BUILD_ENV": "dev",
@@ -55,7 +55,7 @@
         "webpack.config.renderer-library.js"
       ],
       "env": {
-        "DEBUG": "r2:*,readium-desktop:*,-proxy-agent,-readium-desktop:main#streamerNoHttp,-readium-desktop:main:saga:persist,-r2:navigator#electron/common/readium-css-inject",
+        "DEBUG": "r2:*,readium-desktop:*,-proxy-agent",
         "NODE_DEBUG": "1",
         "NODE_ENV": "development",
         "BUILD_ENV": "dev",
@@ -79,7 +79,7 @@
         "webpack.config.renderer-reader.js"
       ],
       "env": {
-        "DEBUG": "r2:*,readium-desktop:*,-proxy-agent,-readium-desktop:main#streamerNoHttp,-readium-desktop:main:saga:persist,-r2:navigator#electron/common/readium-css-inject",
+        "DEBUG": "r2:*,readium-desktop:*,-proxy-agent",
         "NODE_DEBUG": "1",
         "NODE_ENV": "development",
         "BUILD_ENV": "dev",
