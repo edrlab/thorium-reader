@@ -461,7 +461,7 @@ const streamProtocolHandler = async (
 
 
         const state = diMainGet("store").getState();
-        const profile = state.customization.provision.find(({identifier}) => identifier === id);
+        const profile = state.customization.provision.find((profile) => profile.id === id);
 
         if (!profile) {
             const err = "PROFILE ID " + uPathname + " ; " + id;

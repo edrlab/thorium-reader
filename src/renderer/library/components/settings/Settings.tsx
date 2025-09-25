@@ -403,7 +403,7 @@ const Themes = () => {
 const Profiles = () => {
 
     const { provision: packageProfileProvisioned, activate: { id: profileActivatedId } } = useSelector((s: ICommonRootState) => s.customization);
-    const selectedProfile = packageProfileProvisioned.find(({identifier}) => identifier && identifier === profileActivatedId);
+    const selectedProfile = packageProfileProvisioned.find(({id}) => id && id === profileActivatedId);
     const dispatch = useDispatch();
 
     return (
@@ -433,21 +433,21 @@ const Profiles = () => {
 
                         return (
                             <div
-                                key={profile.identifier} // Ajout de la key manquante pour React
+                                key={profile.id} // Ajout de la key manquante pour React
                                 className={stylesSettings.profile_selection_input}
                             >
                                 <input
                                     type="radio"
-                                    id={profile.identifier}
+                                    id={profile.id}
                                     value={profile.fileName}
                                     name="profile_selection"
-                                    checked={selectedProfile?.identifier === profile.identifier}
+                                    checked={selectedProfile?.id === profile.id}
                                     onChange={(e) => {
                                         console.log("PROFILE Input change", e);
-                                        dispatch(customizationActions.activating.build(profile.identifier));
+                                        dispatch(customizationActions.activating.build(profile.id));
                                     }}
                                 />
-                                <label htmlFor={profile.identifier} className={stylesSettings.profile_selection_label}>
+                                <label htmlFor={profile.id} className={stylesSettings.profile_selection_label}>
                                     {/* {logo && logo.type === "image/svg+xml" ? (
                                         <div
                                             className="logo"

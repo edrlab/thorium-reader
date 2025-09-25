@@ -113,7 +113,7 @@ export async function customizationPackageProvisionningFromFolder(wellKnownFolde
                 packagesErrorArray.push((profileProvisioned as ICustomizationProfileError));
             } else {
                 packagesArray = [
-                    ...packagesArray.filter(({identifier}) => (profileProvisioned as ICustomizationProfileProvisioned).identifier !== identifier),
+                    ...packagesArray.filter(({id}) => (profileProvisioned as ICustomizationProfileProvisioned).id !== id),
                     profileProvisioned as ICustomizationProfileProvisioned,
                 ];
             }
@@ -142,9 +142,9 @@ export async function customizationPackageProvisioningAccumulator(packagesArray:
         return { fileName: packageFileName, error: true, message: error };
     }
 
-    const packageProvisionedWithTheSameIdentifier = packagesArray.find(({ identifier }) => identifier === manifest.identifier);
+    const packageProvisionedWithTheSameIdentifier = packagesArray.find(({ id }) => id === manifest.identifier);
     if (!packageProvisionedWithTheSameIdentifier || semver.gt(manifest.version, packageProvisionedWithTheSameIdentifier.version)) {
-        return { identifier: manifest.identifier, fileName: packageFileName, version: manifest.version };
+        return { id: manifest.identifier, fileName: packageFileName, version: manifest.version };
     }
 
     return { fileName: packageFileName, error: true, message: "profile version is under or equal to the currrent provisioned profile version" };

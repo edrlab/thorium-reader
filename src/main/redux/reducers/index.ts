@@ -14,7 +14,7 @@ import { priorityQueueReducer } from "readium-desktop/utils/redux-reducers/pqueu
 import { combineReducers } from "redux";
 
 import { publicationActions, winActions } from "../actions";
-import { publicationActions as publicationActionsFromCommonAction } from "readium-desktop/common/redux/actions";
+import { customizationActions, publicationActions as publicationActionsFromCommonAction } from "readium-desktop/common/redux/actions";
 import { readerDefaultConfigReducer } from "../../../common/redux/reducers/reader/defaultConfig";
 import { winRegistryReaderReducer } from "./win/registry/reader";
 import { winSessionLibraryReducer } from "./win/session/library";
@@ -35,6 +35,9 @@ import { noteExportReducer } from "readium-desktop/common/redux/reducers/noteExp
 import { customizationPackageActivatingReducer } from "readium-desktop/common/redux/reducers/customization/activate";
 import { customizationPackageProvisioningReducer } from "readium-desktop/common/redux/reducers/customization/provision";
 import { customizationPackageActivatingLockReducer } from "readium-desktop/common/redux/reducers/customization/lock";
+import { arrayReducer } from "readium-desktop/utils/redux-reducers/array.reducer";
+import { ICustomizationProfileHistory } from "readium-desktop/common/redux/states/customization";
+import { customizationPackageWelcomeScreenReducer } from "readium-desktop/common/redux/reducers/customization/welcomeScreen";
 
 export const rootReducer = combineReducers({ // RootState
     versionUpdate: versionUpdateReducer,
@@ -111,8 +114,22 @@ export const rootReducer = combineReducers({ // RootState
     creator: creatorReducer,
     noteExport: noteExportReducer,
     customization: combineReducers({
+        history: arrayReducer<customizationActions.addHistory.TAction, undefined, ICustomizationProfileHistory, Pick<ICustomizationProfileHistory, "id">>(
+                {
+                    add: {
+                        type: customizationActions.addHistory.ID,
+                        selector: (payload, _state) => {
+                            const { id, version } = payload;
+                            return [{id, version}];
+                        },
+                    },
+                    remove: undefined,
+                    getId: (item) => item.id,
+                },
+            ),
         activate: customizationPackageActivatingReducer,
         provision: customizationPackageProvisioningReducer,
         lock: customizationPackageActivatingLockReducer,
+        welcomeScreen: customizationPackageWelcomeScreenReducer,
     }),
 });

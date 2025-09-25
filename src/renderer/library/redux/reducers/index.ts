@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { downloadActions } from "readium-desktop/common/redux/actions";
+import { customizationActions, downloadActions } from "readium-desktop/common/redux/actions";
 import { dialogReducer } from "readium-desktop/common/redux/reducers/dialog";
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard";
@@ -41,6 +41,9 @@ import { noteExportReducer } from "readium-desktop/common/redux/reducers/noteExp
 import { customizationPackageActivatingReducer } from "readium-desktop/common/redux/reducers/customization/activate";
 import { customizationPackageProvisioningReducer } from "readium-desktop/common/redux/reducers/customization/provision";
 import { customizationPackageActivatingLockReducer } from "readium-desktop/common/redux/reducers/customization/lock";
+import { arrayReducer } from "readium-desktop/utils/redux-reducers/array.reducer";
+import { ICustomizationProfileHistory } from "readium-desktop/common/redux/states/customization";
+import { customizationPackageWelcomeScreenReducer } from "readium-desktop/common/redux/reducers/customization/welcomeScreen";
 
 export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reducer<Partial<ILibraryRootState>>
     return combineReducers({ // ILibraryRootState
@@ -100,9 +103,23 @@ export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reduc
         lcp: lcpReducer,
         noteExport: noteExportReducer,
         customization: combineReducers({
+            history: arrayReducer<customizationActions.addHistory.TAction, undefined, ICustomizationProfileHistory, Pick<ICustomizationProfileHistory, "id">>(
+                {
+                    add: {
+                        type: customizationActions.addHistory.ID,
+                        selector: (payload, _state) => {
+                            const { id, version } = payload;
+                            return [{ id, version }];
+                        },
+                    },
+                    remove: undefined,
+                    getId: (item) => item.id,
+                },
+            ),
             activate: customizationPackageActivatingReducer,
             provision: customizationPackageProvisioningReducer,
             lock: customizationPackageActivatingLockReducer,
+            welcomeScreen: customizationPackageWelcomeScreenReducer,
         }),
     });
 };

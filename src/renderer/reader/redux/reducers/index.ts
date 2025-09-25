@@ -35,7 +35,7 @@ import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducer
 import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
 import { versionUpdateReducer } from "readium-desktop/common/redux/reducers/version-update";
 import { annotationModeEnableReducer } from "./annotationModeEnable";
-import { readerActions } from "readium-desktop/common/redux/actions";
+import { customizationActions, readerActions } from "readium-desktop/common/redux/actions";
 import { readerMediaOverlayReducer } from "./mediaOverlay";
 import { readerTTSReducer } from "./tts";
 import { readerTransientConfigReducer } from "./readerTransientConfig";
@@ -54,6 +54,8 @@ import { noteExportReducer } from "readium-desktop/common/redux/reducers/noteExp
 import { customizationPackageProvisioningReducer } from "readium-desktop/common/redux/reducers/customization/provision";
 import { customizationPackageActivatingReducer } from "readium-desktop/common/redux/reducers/customization/activate";
 import { customizationPackageActivatingLockReducer } from "readium-desktop/common/redux/reducers/customization/lock";
+import { ICustomizationProfileHistory } from "readium-desktop/common/redux/states/customization";
+import { customizationPackageWelcomeScreenReducer } from "readium-desktop/common/redux/reducers/customization/welcomeScreen";
 
 export const rootReducer = () => {
 
@@ -211,9 +213,23 @@ export const rootReducer = () => {
         lcp: lcpReducer,
         noteExport: noteExportReducer,
         customization: combineReducers({
+            history: arrayReducer<customizationActions.addHistory.TAction, undefined, ICustomizationProfileHistory, Pick<ICustomizationProfileHistory, "id">>(
+                {
+                    add: {
+                        type: customizationActions.addHistory.ID,
+                        selector: (payload, _state) => {
+                            const { id, version } = payload;
+                            return [{ id, version }];
+                        },
+                    },
+                    remove: undefined,
+                    getId: (item) => item.id,
+                },
+            ),
             activate: customizationPackageActivatingReducer,
             provision: customizationPackageProvisioningReducer,
             lock: customizationPackageActivatingLockReducer,
+            welcomeScreen: customizationPackageWelcomeScreenReducer,
         }),
     });
 };

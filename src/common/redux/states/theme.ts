@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ICustomizationManifest } from "src/common/readium/customization/manifest";
+import { ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
 
 export type TTheme = "system" | "dark" | "light";
 

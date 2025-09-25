@@ -8,7 +8,7 @@
 // export type TCustomizationProvisioningPackage = Array<[identifier: string, fileName: string, version: string]>;
 
 export interface ICustomizationProfileProvisioned {
-    identifier: string; // identifier URI from manifest
+    id: string; // identifier URI from manifest
     fileName: string; // relative file from well-known folder, not an absolute file path. Allow to move well-known folder without compromise internal redux state
     version: string; // semantic versionning from manifest
 }
@@ -19,8 +19,18 @@ fileName: string; error: boolean; message: string;
 
 export type ICustomizationProfileProvisionedWithError = ICustomizationProfileProvisioned | ICustomizationProfileError;
 
+export interface ICustomizationProfileHistory {
+    id: string,
+    version: string,
+    welcomeScreenShowAgain?: boolean;
+}
+
 export interface ICustomizationProfileActivated {
     id: string, // identifier URI from manifest // pointer to ICustomizationProfileProvisioned.id
+}
+
+export interface ICustomizationProfileWelcomeScreen {
+    enable: boolean;
 }
 
 export interface ICustomizationLockInfo {

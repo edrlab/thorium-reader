@@ -1,7 +1,7 @@
 
 import * as debug_ from "debug";
 import { getSqliteDatabaseSync } from ".";
-import { INoteState } from "src/common/redux/states/renderer/note";
+import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 
 const debug = debug_("readium-desktop:main:db:sqlite:note"); 
 
