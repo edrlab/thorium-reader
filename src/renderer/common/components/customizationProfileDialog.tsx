@@ -23,6 +23,8 @@ import { customizationActions } from "readium-desktop/common/redux/actions";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 
+import DOMPurify from "dompurify";
+
 export const CustomizationProfileDialog: React.FC = () => {
 
     const customization = useSelector((state: ICommonRootState) => state.customization);
@@ -61,7 +63,7 @@ export const CustomizationProfileDialog: React.FC = () => {
                         <div style={{position: "relative"}}>
                             {
                                 manifest?.welcomeScreen ?
-                                    <div dangerouslySetInnerHTML={{__html: `${manifest.welcomeScreen}`}} />
+                                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(manifest.welcomeScreen, { FORBID_TAGS: [/*"style"*/], FORBID_ATTR: [/*"style"*/] /* TODO: handle external https links */ }) }} />
                                     : <></>
                             }
                             {
