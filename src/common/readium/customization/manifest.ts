@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { JsonArray } from "readium-desktop/typings/json";
 
 // https://www.notion.so/edrlab/Thorium-Reader-Profiles-1d8a1ca5712f80619738c2f26e700355
@@ -15,8 +16,9 @@ export interface ICustomizationManifest {
     identifier: string; // URI
     version: string; // semantic versionning
     contentHash: string;
-    name: string;
-    description: string;
+    title: IStringMap;
+    description: IStringMap;
+    welcomeScreen: string;
     // default_locale: string; // BCP47 // not used anymore but still in notion example manifest
     theme: ICustomizationManifestTheme;
     images: ICustomizationLink[];
@@ -39,7 +41,9 @@ export interface ICustomizationManifestColor {
     secondary: string;
     border: string;
     background: string;
-    app_name: string;
+    appName: string;
+    scrollbarThumb: string;
+    buttonsBorder: string;
 }
 
 export interface ICustomizationManifestSignature {
@@ -61,3 +65,149 @@ export interface ICustomizationLink {
     rel: string;
     type: string;
 }
+
+export const customizationManifestJsonSchema = {
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Thorium Manifest Schema",
+  "type": "object",
+  "required": [
+    "manifestVersion",
+    "identifier",
+    "version",
+    "contentHash",
+    "title",
+    "description",
+    "theme",
+    "images",
+    "welcomeScreen",
+  ],
+  "properties": {
+    "manifestVersion": {
+      "type": "integer",
+    },
+    "identifier": {
+      "type": "string",
+      "format": "uri",
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+    },
+    "contentHash": {
+      "type": "string",
+    },
+    "title": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+      },
+      "minProperties": 1,
+    },
+    "description": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+      },
+      "minProperties": 1,
+    },
+    "welcomeScreen": {
+	    "type": "string",
+	  },
+    "theme": {
+      "type": "object",
+      "properties": {
+        "color": {
+          "type": "object",
+          "properties": {
+            "dark": {
+                "$ref": "#/definitions/ICustomizationManifestThemeColor",
+            },
+            "light": {
+                "$ref": "#/definitions/ICustomizationManifestThemeColor",
+            },
+          },
+          "required": [
+            "dark",
+            "light",
+          ],
+        },
+      },
+      "required": [
+        "color",
+      ],
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+      },
+    },
+    "publications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+      },
+    },
+    "images": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "rel",
+          "href",
+        ],
+        "properties": {
+          "rel": {
+            "type": "string",
+          },
+          "href": {
+            "type": "string",
+          },
+        },
+      },
+    },
+  },
+  "definitions": {
+    "ICustomizationManifestThemeColor": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Theme color",
+      "type": "object",
+      "properties": {
+        "neutral": {
+          "type": "string",
+        },
+        "primary": {
+          "type": "string",
+        },
+        "secondary": {
+          "type": "string",
+        },
+        "border": {
+          "type": "string",
+        },
+        "background": {
+          "type": "string",
+        },
+        "appName": {
+          "type": "string",
+        },
+        "scrollbarThumb": {
+          "type": "string",
+        },
+        "buttonsBorder": {
+          "type": "string",
+        },
+      },
+      "required": [
+        "neutral",
+        "primary",
+        "secondary",
+        "border",
+        "background",
+        "appName",
+        "scrollbarThumb",
+        "buttonsBorder",
+      ],
+    },
+  },
+};
