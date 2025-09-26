@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
+
 // export type TCustomizationProvisioningPackage = Array<[identifier: string, fileName: string, version: string]>;
 
 export interface ICustomizationProfileProvisioned {
@@ -12,7 +14,8 @@ export interface ICustomizationProfileProvisioned {
     fileName: string; // relative file from well-known folder, not an absolute file path. Allow to move well-known folder without compromise internal redux state
     version: string; // semantic versionning from manifest
     logoUrl: string;
-    name: string;
+    title: IStringMap;
+    description: IStringMap;
 }
 
 export interface ICustomizationProfileError {
