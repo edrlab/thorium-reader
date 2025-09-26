@@ -47,14 +47,14 @@ $theme-border-light: var(--theme-border_light, $thorium-theme-border-light);
 $theme-border-dark: var(--theme-border_dark, $thorium-theme-border-dark);
 $theme-background-light: var(--theme-background_light, $thorium-theme-background-light);
 $theme-background-dark: var(--theme-background_dark, $thorium-theme-background-dark);
-$theme-appName-light: var(--theme-app_name_light, $thorium-theme-appName-light);
-$theme-appName-dark: var(--theme-app_name_dark, $thorium-theme-appName-dark);
-$theme-scrollbar-thumb-light: var(--theme-scrollbar_thumb_light, $thorium-theme-scrollbar-thumb);
-$theme-scrollbar-thumb-dark: var(--theme-scrollbar_thumb_dark, $thorium-theme-scrollbar-thumb);
+$theme-appName-light: var(--theme-appName_light, $thorium-theme-appName-light);
+$theme-appName-dark: var(--theme-appName_dark, $thorium-theme-appName-dark);
+$theme-scrollbar-thumb-light: var(--theme-scrollbarThumb_light, $thorium-theme-scrollbar-thumb);
+$theme-scrollbar-thumb-dark: var(--theme-scrollbarThumb_dark, $thorium-theme-scrollbar-thumb);
 $theme-button-hover-light: var(--theme-neutral_light, $thorium-theme-button-hover-light);
 $theme-button-hover-dark: var(--theme-neutral_dark, $thorium-theme-button-hover-dark);
-$theme-buttons-border-light: var(--theme-buttons_border_light, $thorium-theme-buttons-border-light);
-$theme-buttons-border-dark: var(--theme-buttons_border_dark, $thorium-theme-buttons-border-dark);
+$theme-buttons-border-light: var(--theme-buttonsBorder_light, $thorium-theme-buttons-border-light);
+$theme-buttons-border-dark: var(--theme-buttonsBorder_dark, $thorium-theme-buttons-border-dark);
 
 // FINAL VARIABLES PALETTE
 

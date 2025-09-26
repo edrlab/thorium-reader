@@ -39,7 +39,6 @@ export const CustomizationProfileDialog: React.FC = () => {
         setChecked(profileInHistoryFound && manifest?.version && profileInHistoryFound.version === manifest?.version);
     }, [setChecked, manifest?.version, profileInHistoryFound]);
 
-
     return (
         <AlertDialog.Root open={open} onOpenChange={(_requestOpen) => {
         }}>
@@ -57,10 +56,20 @@ export const CustomizationProfileDialog: React.FC = () => {
                             </button>
                         </AlertDialog.Action>
                         </AlertDialog.Title>
-                    <AlertDialog.Description className={stylesModals.modal_dialog_body} style={{ display: "flex", flexDirection: "column", gap: "5px", justifyContent: "center" }}>
-                        <span>STATE={customization.lock.state}</span>
-                        <span>ID={customization.lock.lockInfo?.id === "" && customization.lock.state === "ACTIVATING" ? "THorium Default Profile" : customization.lock.lockInfo?.id || "undefined"}</span>
-                        <span>LOCKINFO={JSON.stringify(customization.lock.lockInfo, null, 4)}</span>
+                    <AlertDialog.Description className={stylesModals.modal_dialog_body} style={{ display: "flex", gap: "20px", flexDirection: "row", justifyContent: "normal"}}>
+                        <img style={{maxWidth: "250px", maxHeight: "500px", objectFit: "contain"}} src={manifest?.images?.find((ln) => ln.rel === "welcome-screen")?.href || ""}/>
+                        <div style={{position: "relative"}}>
+                            {
+                                manifest?.welcomeScreen ?
+                                    <div dangerouslySetInnerHTML={{__html: `${manifest.welcomeScreen}`}} />
+                                    : <></>
+                            }
+                            <div style={{display: "none"}}>
+                                <span>STATE={customization.lock.state}</span>
+                                <span>ID={customization.lock.lockInfo?.id === "" && customization.lock.state === "ACTIVATING" ? "THorium Default Profile" : customization.lock.lockInfo?.id || "undefined"}</span>
+                                <span>LOCKINFO={JSON.stringify(customization.lock.lockInfo, null, 4)}</span>
+                            </div>
+                        </div>
                     </AlertDialog.Description>
                     <div className={stylesAlertModals.AlertDialogButtonContainer} style={{justifyContent: "space-between", padding: "10px 20px"}}>
                         {/* <AlertDialog.Cancel asChild onClick={() => { dispatch(customizationActions.lock.build("IDLE")); dispatch(customizationActions.activating.build("")); }}>

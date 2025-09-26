@@ -32,12 +32,13 @@ const applyColorSet = (colors: ICustomizationManifestColor, suffix: string) => {
 function* profileActivating(id: string): SagaGenerator<void> {
 
     debug(`TODO activate ${id} profile`);
-    yield* delay(1000);
     if (!id) {
         // THorium vanilla rollback, clear the local redux state
         yield* putTyped(themeActions.setTheme.build(undefined, { enable: false }));
 
         yield* putTyped(customizationActions.welcomeScreen.build(false));
+
+        yield* putTyped(customizationActions.manifest.build(null));
 
         // TODO: switch to default color css variable
 
@@ -94,6 +95,7 @@ function* profileActivating(id: string): SagaGenerator<void> {
         return;
     }
 
+    yield* delay(1000);
 
     const baseUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/custom-profile-zip/${encodeURIComponent_RFC3986(Buffer.from(id).toString("base64"))}/`;
     const manifestURL = baseUrl + encodeURIComponent_RFC3986(Buffer.from("manifest.json").toString("base64"));

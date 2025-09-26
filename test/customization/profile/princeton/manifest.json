@@ -8,6 +8,7 @@
     "description": {
       "en": "Princeton University Press publishes peer-reviewed books that connect authors and readers across spheres of knowledge to advance and enrich the global conversation."
     },
+    "welcomeScreen": "<div style='background-color: white; border-radius: 10px; padding: 20px; height: 500px; font-family: PlantinMTPro, serif, sans-serif;'><h1 style='font-size: 32px; color: #2c3e50; margin-bottom: 20px;'><span style='color: #E77500; font-weight: bold;'>Princeton University Press</span> brings scholarly ideas to the world.</h1><p style='line-height: 1.6; margin-bottom: 20px; font-size: 18px;'>We publish peer-reviewed books that connect authors and readers across spheres of knowledge to advance and enrich the global conversation.</p><p style='font-size: 18px;'>We embrace the highest standards of scholarship, inclusivity, and diversity in our publishing.</p><p style='font-size: 18px;'>In keeping with Princeton University’s commitment to serve the nation and the world, we publish for scholars, students, and engaged readers everywhere.</p><p style='font-size: 16px; font-style: italic;'>For more informations, go to <a href='https://press.princeton.edu/'>our website</a>.</p></div>",
     "theme": {
         "color": {
             "dark": {
@@ -16,9 +17,9 @@
                 "secondary": "#483a3a",
                 "border": "#FF7A00",
                 "background": "#121212",
-                "app_name": "#E0E0E0",
-                "scrollbar_thumb": "",
-                "buttons_border": "#FF8C1A"
+                "appName": "#E0E0E0",
+                "scrollbarThumb": "",
+                "buttonsBorder": "#FF8C1A"
             },
             "light": {
                 "neutral": "#FFFFFF",
@@ -26,9 +27,9 @@
                 "secondary": "#fff8f2",
                 "border": "#E16100",
                 "background": "#e6e8e6",
-                "app_name": "#C9C5C9",
-                "scrollbar_thumb": "",
-                "buttons_border": "#E77500"
+                "appName": "#C9C5C9",
+                "scrollbarThumb": "",
+                "buttonsBorder": "#E77500"
             }
         }
     },
@@ -68,10 +69,17 @@
         }
       }
     ],
+    "publications": [
+      
+    ],
     "images": [
         {
             "rel": "logo",
             "href": "./images/logo.svg"
+        },
+        {
+          "rel": "welcome-screen",
+          "href": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Princeton_University_Press_logo.svg/320px-Princeton_University_Press_logo.svg.png"
         }
     ]
 }

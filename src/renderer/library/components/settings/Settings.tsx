@@ -405,7 +405,7 @@ const Profiles = () => {
     const { provision: packageProfileProvisioned, activate: { id: profileActivatedId } } = useSelector((s: ICommonRootState) => s.customization);
     const selectedProfile = packageProfileProvisioned.find(({id}) => id && id === profileActivatedId);
     const dispatch = useDispatch();
-    // const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
     const [__] = useTranslator();
 
     return (
@@ -432,8 +432,8 @@ const Profiles = () => {
             >
                 {
                     packageProfileProvisioned.map((profile) => {
-                        // const profileTitle = profile.title?.[locale] || profile.title?.["en"] || "";
-                        // const profileDescription = profile.description?.[locale] || profile.description?.["en"] || "";
+                        const profileTitle = profile.title?.[locale] || profile.title?.["en"] || "";
+                        const profileDescription = profile.description?.[locale] || profile.description?.["en"] || "";
 
                         return (
                             <div
@@ -452,13 +452,11 @@ const Profiles = () => {
                                     }}
                                 />
                                 <label htmlFor={profile.id} className={stylesSettings.profile_selection_label}>
-                                    <img src={profile.logoUrl} alt=""></img>
+                                    <img src={profile.logoUrl} alt="" />
                                     <div className={stylesSettings.profile_selection_description}>
-                                        <h5>{profile.fileName}</h5>
-                                        <p>{profile.title["en"]}</p>
-                                        <p>{profile.description["en"]}</p>
-                                        <img style={{width: "20px", height: "20px"}} src={profile.logoUrl}></img>
-                                        {/* <p>{profile.description}</p> */}
+                                        <h5>{profileTitle}</h5>
+                                        <p>{profileDescription}</p>
+                                        <p style={{fontSize: "8px"}}>{profile.fileName}</p>
                                     </div>
                                 </label>
                             </div>
