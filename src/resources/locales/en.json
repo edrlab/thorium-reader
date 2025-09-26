@@ -1147,6 +1147,11 @@
             "description": "Application theme matches operating system.",
             "light": "Light",
             "title": "Application Theme"
+        },
+        "profiles": {
+            "thorium": {
+                "description": "The Thorium Vanilla profile is the orignal one, designed by EDRLab."
+            }
         }
     },
     "tts": {

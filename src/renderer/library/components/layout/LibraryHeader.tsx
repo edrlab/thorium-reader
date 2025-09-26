@@ -93,7 +93,7 @@ class Header extends React.Component<IProps, undefined> {
             .filter(item => item.properties?.showOnHomeSection === true)
             .map<NavigationHeader>(item => ({
                 route: /*item.href*/ "",
-                label: item.title[0],
+                label: item.title?.[this.props.locale] || item.title?.["en"] || "",
                 matchRoutes: [item.href],
                 styles: [],
                 // svg: item.properties.logo.href,
@@ -126,6 +126,9 @@ class Header extends React.Component<IProps, undefined> {
                                 this.buildNavItem(item, index),
                         )
                     }
+                    {profileLinksNavigation.length > 0 ? 
+                    <span key={"separator"} style={{ borderBottom: "2px solid var(--color-light-grey)", width: "80%", margin: "0 10%", display: "block" }}></span>
+                : <></>}
                     {
                         profileLinksNavigation.map(
                             (item, index) => 

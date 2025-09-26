@@ -16,15 +16,19 @@
                 "secondary": "#483a3a",
                 "border": "#FF7A00",
                 "background": "#121212",
-                "app_name": "#E0E0E0"
+                "app_name": "#E0E0E0",
+                "scrollbar_thumb": "",
+                "buttons_border": "#FF8C1A"
             },
             "light": {
                 "neutral": "#FFFFFF",
-                "primary": "#E77500",
-                "secondary": "#FFF",
+                "primary": "#121212",
+                "secondary": "#fff8f2",
                 "border": "#E16100",
                 "background": "#e6e8e6",
-                "app_name": "#C9C5C9"
+                "app_name": "#C9C5C9",
+                "scrollbar_thumb": "",
+                "buttons_border": "#E77500"
             }
         }
     },

@@ -58,7 +58,7 @@ $setting_color: var(--color-blue);
             width: fit-content;
             padding: 0 5px;
             height: 35px;
-            border: 1px solid $setting_color;
+            border: 1px solid var(--color-buttons-border);
             border-radius: 5px;
             background-color: $settings_bg;
             display: flex;
@@ -142,7 +142,7 @@ $setting_color: var(--color-blue);
 
         &:hover {
             background-color: var(--color-secondary);
-            border: 1px solid var(--color-blue);
+            border: 1px solid var(--color-buttons-border);
             color: var(--color-blue);
 
             svg {
@@ -154,7 +154,7 @@ $setting_color: var(--color-blue);
         &[data-state="active"]{ 
             color: $setting_color;
             background-color: $settings_bg;
-            border: 1px solid $setting_color;
+            border: 1px solid var(--color-buttons-border);
 
             svg {
                 fill: $setting_color;
@@ -955,7 +955,7 @@ div[data-radix-popper-content-wrapper] {
         &:has(input:checked) {
             color: var(--color-blue);
             background-color: var(--color-light-blue);
-            border: 1px solid var(--color-blue);
+            border: 1px solid var(--color-buttons-border);
         }
     }
 

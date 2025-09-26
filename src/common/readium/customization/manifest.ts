@@ -43,6 +43,7 @@ export interface ICustomizationManifestColor {
     background: string;
     app_name: string;
     scrollbar_thumb: string;
+    buttons_border: string;
 }
 
 export interface ICustomizationManifestSignature {

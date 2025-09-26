@@ -49,7 +49,6 @@ import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/a
 
 // import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
-import { IStringMap } from "r2-shared-js/dist/es8-es2017/src/models/metadata-multilang";
 
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
 
@@ -407,6 +406,7 @@ const Profiles = () => {
     const selectedProfile = packageProfileProvisioned.find(({identifier}) => identifier && identifier === profileActivatedId);
     const dispatch = useDispatch();
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const [__] = useTranslator();
 
     return (
         <>
@@ -432,22 +432,8 @@ const Profiles = () => {
             >
                 {
                     packageProfileProvisioned.map((profile) => {
-                        console.log(profile);
-                        let profileTitle: string;
-                        let profileDescription: string;
-                        if (profile.title && profile.description) {
-                            if (locale in profile.title) {
-                                profileTitle = (profile.title as IStringMap)[locale];
-                            } else {
-                                profileTitle = (profile.title as IStringMap)["en"];
-                            }
-    
-                            if (locale in profile.title) {
-                                profileDescription = (profile.description as IStringMap)[locale];
-                            } else {
-                                profileDescription = (profile.description as IStringMap)["en"];
-                            }
-                        }
+                        const profileTitle = profile.title?.[locale] || profile.title?.["en"] || "";
+                        const profileDescription = profile.description?.[locale] || profile.description?.["en"] || "";
 
                         return (
                             <div
@@ -466,17 +452,6 @@ const Profiles = () => {
                                     }}
                                 />
                                 <label htmlFor={profile.identifier} className={stylesSettings.profile_selection_label}>
-                                    {/* {logo && logo.type === "image/svg+xml" ? (
-                                        <div
-                                            className="logo"
-                                            dangerouslySetInnerHTML={{ __html: logo.href }}
-                                        />
-                                    ) : (
-                                        <img
-                                            src={logo?.href || "./resources/icons/512x512.png"}
-                                            alt={`Logo ${profile.name}`}
-                                        />
-                                    )} */}
                                     <img src={profile.logo ? profile.logo : ""} alt=""/>
                                     <div className={stylesSettings.profile_selection_description}>
                                         <h5>{profileTitle}</h5>
@@ -504,21 +479,10 @@ const Profiles = () => {
                         }}
                     />
                     <label htmlFor={"Thorium vanilla"} className={stylesSettings.profile_selection_label}>
-                        {/* {logo && logo.type === "image/svg+xml" ? (
-                                        <div
-                                            className="logo"
-                                            dangerouslySetInnerHTML={{ __html: logo.href }}
-                                        />
-                                    ) : (
-                                        <img
-                                            src={logo?.href || "./resources/icons/512x512.png"}
-                                            alt={`Logo ${profile.name}`}
-                                        />
-                                    )} */}
                         <img src="./resources/icons/512x512.png" alt=""/>
                         <div className={stylesSettings.profile_selection_description}>
                             <h5>{"Thorium vanilla"}</h5>
-                            <p>Thorium Reader is the EPUB reader of choice for Windows 10 and 11, MacOS and Linux. </p>
+                            <p>{__("settings.profiles.thorium.description")}</p>
                         </div>
                     </label>
                 </div>

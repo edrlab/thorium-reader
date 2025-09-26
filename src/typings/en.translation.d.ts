@@ -298,9 +298,6 @@ declare namespace typed_i18n {
   (_: "catalog.tags", __?: {}): string;
   (_: "catalog.update", __?: {}): string;
   (_: "dialog", __?: {}): {
-  readonly "customization": {
-    readonly "splashscreen": { readonly "title": string }
-  },
   readonly "annotations": {
     readonly "descAuthor": string,
     readonly "descCreator": string,
@@ -314,6 +311,9 @@ declare namespace typed_i18n {
     readonly "title": string
   },
   readonly "cancel": string,
+  readonly "customization": {
+    readonly "splashscreen": { readonly "title": string }
+  },
   readonly "deleteAnnotations": string,
   readonly "deleteAnnotationsText": string,
   readonly "deleteBookmarks": string,
@@ -327,9 +327,6 @@ declare namespace typed_i18n {
   readonly "return": string,
   readonly "yes": string
 };
-  (_: "dialog.customization", __?: {}): { readonly "splashscreen": { readonly "title": string } };
-  (_: "dialog.customization.splashscreen", __?: {}): { readonly "title": string };
-  (_: "dialog.customization.splashscreen.title", __?: {}): string;
   (_: "dialog.annotations", __?: {}): {
   readonly "descAuthor": string,
   readonly "descCreator": string,
@@ -353,6 +350,9 @@ declare namespace typed_i18n {
   (_: "dialog.annotations.origin", __?: {}): string;
   (_: "dialog.annotations.title", __?: {}): string;
   (_: "dialog.cancel", __?: {}): string;
+  (_: "dialog.customization", __?: {}): { readonly "splashscreen": { readonly "title": string } };
+  (_: "dialog.customization.splashscreen", __?: {}): { readonly "title": string };
+  (_: "dialog.customization.splashscreen.title", __?: {}): string;
   (_: "dialog.deleteAnnotations", __?: {}): string;
   (_: "dialog.deleteAnnotationsText", __?: {}): string;
   (_: "dialog.deleteBookmarks", __?: {}): string;
@@ -2575,6 +2575,9 @@ declare namespace typed_i18n {
     readonly "description": string,
     readonly "light": string,
     readonly "title": string
+  },
+  readonly "profiles": {
+    readonly "thorium": { readonly "description": string }
   }
 };
   (_: "settings.annotationCreator", __?: {}): {
@@ -3272,6 +3275,9 @@ declare namespace typed_i18n {
   (_: "settings.theme.description", __?: {}): string;
   (_: "settings.theme.light", __?: {}): string;
   (_: "settings.theme.title", __?: {}): string;
+  (_: "settings.profiles", __?: {}): { readonly "thorium": { readonly "description": string } };
+  (_: "settings.profiles.thorium", __?: {}): { readonly "description": string };
+  (_: "settings.profiles.thorium.description", __?: {}): string;
   (_: "tts", __?: {}): {
   readonly "highlight": {
     readonly "mainColor": string,

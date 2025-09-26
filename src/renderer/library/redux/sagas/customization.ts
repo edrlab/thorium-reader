@@ -72,6 +72,7 @@ function* profileActivating(id: string): SagaGenerator<void> {
             background: "#27272a",
             app_name: "#EAEAEA",
             scrollbar_thumb: "#7c7d86",
+            buttons_border: "#99A9E3",
         };
 
         const colorLight: ICustomizationManifestColor = {
@@ -82,6 +83,7 @@ function* profileActivating(id: string): SagaGenerator<void> {
             background: "#f5f5f5",
             app_name: "#afb1b6",
             scrollbar_thumb: "#7c7d86",
+            buttons_border: "#1053C8",
         };
 
         applyColorSet(colorLight, "light");
