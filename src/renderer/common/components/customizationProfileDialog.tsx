@@ -8,31 +8,34 @@
 import * as React from "react";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 // import { annotationActions } from "readium-desktop/common/redux/actions";
-// import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
+import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
-// import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
-// import SVG from "readium-desktop/renderer/common/components/SVG";
+import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 // import * as PlusIcon from "readium-desktop/renderer/assets/icons/Plus-bold.svg";
 // import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { customizationActions } from "readium-desktop/common/redux/actions";
-import { useDispatch } from "../hooks/useDispatch";
-// import SVG from "./SVG";
-// import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
+import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 
-export const CustomizationProfileModal: React.FC = () => {
+export const CustomizationProfileDialog: React.FC = () => {
 
     const customization = useSelector((state: ICommonRootState) => state.customization);
     const open = customization.lock.state !== "IDLE" || customization.welcomeScreen.enable;
+    const manifest = customization.manifest;
 
     const dispatch = useDispatch();
     const [__] = useTranslator();
 
-    // const profileInHistoryFound = customization.history.find(({id}) => id && id === customization.activate.id);
-    // const [checked, setChecked] = React.useState<boolean>((profileInHistoryFound && profileInHistoryFound.welcomeScreenShowAgain) ? profileInHistoryFound.welcomeScreenShowAgain : true);
+    const profileInHistoryFound = customization.history.find(({id}) => id && id === customization.activate.id);
+    const [checked, setChecked] = React.useState<boolean>(profileInHistoryFound && manifest?.version && profileInHistoryFound.version === manifest?.version);
+
+    React.useEffect(() => {
+        setChecked(profileInHistoryFound && manifest?.version && profileInHistoryFound.version === manifest?.version);
+    }, [setChecked, manifest?.version, profileInHistoryFound]);
 
 
     return (
@@ -60,8 +63,8 @@ export const CustomizationProfileModal: React.FC = () => {
                             </button>
                         </AlertDialog.Action>
                     </div>
-                    {/* customization.welcomeScreen.enable && profileInHistoryFound ? <div style={{ display: "flex", alignItems: "center", gap: "10px", position: "absolute", bottom: "30px", left: "30px" }}>
-                        <input type="checkbox" checked={checked} onChange={() => { setChecked(!checked); dispatch(customizationActions.addHistory.build(profileInHistoryFound.id, profileInHistoryFound.version, checked ? true : false)); }} id="wizardCheckbox" name="wizardCheckbox" className={stylesGlobal.checkbox_custom_input} />
+                    {customization.welcomeScreen.enable && profileInHistoryFound ? <div style={{ display: "flex", alignItems: "center", gap: "10px", position: "absolute", bottom: "30px", left: "30px" }}>
+                        <input type="checkbox" checked={checked} onChange={() => { setChecked(!checked); dispatch(customizationActions.addHistory.build(profileInHistoryFound.id, checked ? "" : profileInHistoryFound.version)); }} id="wizardCheckbox" name="wizardCheckbox" className={stylesGlobal.checkbox_custom_input} />
                         <label htmlFor="wizardCheckbox" className={stylesGlobal.checkbox_custom_label}>
                             <div
                                 tabIndex={0}
@@ -82,7 +85,7 @@ export const CustomizationProfileModal: React.FC = () => {
                                     if (e.key === " ") { // WORKS
                                         e.preventDefault();
                                         setChecked(!checked);
-                                        dispatch(customizationActions.addHistory.build(profileInHistoryFound.id, profileInHistoryFound.version, checked ? true : false));
+                                        dispatch(customizationActions.addHistory.build(profileInHistoryFound.id, checked ? "" : profileInHistoryFound.version));
                                     }
                                 }}
                                 className={stylesGlobal.checkbox_custom}
@@ -97,7 +100,7 @@ export const CustomizationProfileModal: React.FC = () => {
                                 {__("wizard.dontShow")}
                             </span>
                         </label>
-                    </div> : <></> */}
+                    </div> : <></> }
                 </AlertDialog.Content>
             </AlertDialog.Portal>
         </AlertDialog.Root>

@@ -16,6 +16,7 @@ import { I18NState } from "readium-desktop/common/redux/states/i18n";
 import { ILcpState } from "./lcp";
 import { INoteExportState } from "./renderer/note";
 import { ICustomizationProfileActivated, ICustomizationProfileHistory, ICustomizationProfileLock, ICustomizationProfileProvisioned, ICustomizationProfileWelcomeScreen } from "./customization";
+import { ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
 
 export interface ICommonRootState {
     i18n: I18NState;
@@ -36,5 +37,6 @@ export interface ICommonRootState {
         provision: ICustomizationProfileProvisioned[],
         lock: ICustomizationProfileLock,
         welcomeScreen: ICustomizationProfileWelcomeScreen,
+        manifest?: ICustomizationManifest;
     }
 }

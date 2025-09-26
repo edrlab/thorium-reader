@@ -38,6 +38,7 @@ import { customizationPackageActivatingLockReducer } from "readium-desktop/commo
 import { arrayReducer } from "readium-desktop/utils/redux-reducers/array.reducer";
 import { ICustomizationProfileHistory } from "readium-desktop/common/redux/states/customization";
 import { customizationPackageWelcomeScreenReducer } from "readium-desktop/common/redux/reducers/customization/welcomeScreen";
+import { ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
 
 export const rootReducer = combineReducers({ // RootState
     versionUpdate: versionUpdateReducer,
@@ -131,5 +132,6 @@ export const rootReducer = combineReducers({ // RootState
         provision: customizationPackageProvisioningReducer,
         lock: customizationPackageActivatingLockReducer,
         welcomeScreen: customizationPackageWelcomeScreenReducer,
+        manifest: () => null as ICustomizationManifest,
     }),
 });

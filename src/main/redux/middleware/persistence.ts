@@ -50,6 +50,7 @@ export const reduxPersistMiddleware: Middleware
                         activate: prevState.customization.activate,
                         lock: undefined,
                         welcomeScreen: undefined,
+                        manifest: undefined,
                     },
                 };
 
@@ -77,6 +78,7 @@ export const reduxPersistMiddleware: Middleware
                         activate: nextState.customization.activate,
                         lock: undefined,
                         welcomeScreen: undefined,
+                        manifest: undefined,
                     },
                 };
 

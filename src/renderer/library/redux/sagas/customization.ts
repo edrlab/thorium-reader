@@ -113,10 +113,12 @@ function* profileActivating(id: string): SagaGenerator<void> {
     debug("MANIFEST FROM ", id, ":");
     debug(manifestJson);
 
+    yield* putTyped(customizationActions.manifest.build(manifestJson));
+
     const profileActivationHistory = yield* selectTyped((state: ICommonRootState) => state.customization.history);
 
     const profileHistoryFound = profileActivationHistory.find((profileHistory) => profileHistory.id === id);
-    const welcomeScreenNeeded = !profileHistoryFound || profileHistoryFound.welcomeScreenShowAgain || profileHistoryFound.version !== manifestJson.version;
+    const welcomeScreenNeeded = !profileHistoryFound || profileHistoryFound.version !== manifestJson.version;
 
     yield* putTyped(customizationActions.welcomeScreen.build(welcomeScreenNeeded));
 
@@ -141,7 +143,7 @@ function* profileActivating(id: string): SagaGenerator<void> {
 
     // dispatch new opds-catalogs to the redux state attached to this profile
 
-    yield* putTyped(customizationActions.addHistory.build(id, manifestJson.version, profileHistoryFound?.welcomeScreenShowAgain || false));
+    yield* putTyped(customizationActions.addHistory.build(id, manifestJson.version));
 }
 
 

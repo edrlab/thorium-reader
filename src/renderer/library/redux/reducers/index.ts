@@ -44,6 +44,7 @@ import { customizationPackageActivatingLockReducer } from "readium-desktop/commo
 import { arrayReducer } from "readium-desktop/utils/redux-reducers/array.reducer";
 import { ICustomizationProfileHistory } from "readium-desktop/common/redux/states/customization";
 import { customizationPackageWelcomeScreenReducer } from "readium-desktop/common/redux/reducers/customization/welcomeScreen";
+import { customizationPackageManifestReducer } from "readium-desktop/common/redux/reducers/customization/manifest";
 
 export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reducer<Partial<ILibraryRootState>>
     return combineReducers({ // ILibraryRootState
@@ -120,6 +121,7 @@ export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reduc
             provision: customizationPackageProvisioningReducer,
             lock: customizationPackageActivatingLockReducer,
             welcomeScreen: customizationPackageWelcomeScreenReducer,
+            manifest: customizationPackageManifestReducer,
         }),
     });
 };

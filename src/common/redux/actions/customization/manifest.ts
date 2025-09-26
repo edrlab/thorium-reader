@@ -5,23 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export const ID = "CUSTOMIZATION_ADD_HISTORY";
+import { ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
+
+export const ID = "CUSTOMIZATION_MANIFEST";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface IPayload {
-    id: string;
-    version: string;
-    welcomeScreenShowAgain: boolean;
-}
+export interface IPayload extends ICustomizationManifest {};
 
-export function build(profileIdentifier: string, version: string) {
+export function build(manifest: ICustomizationManifest) {
 
     return {
         type: ID,
-        payload: {
-            id: profileIdentifier,
-            version,
-        },
+        payload: manifest,
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator

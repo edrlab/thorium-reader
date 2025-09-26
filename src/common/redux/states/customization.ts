@@ -22,7 +22,6 @@ export type ICustomizationProfileProvisionedWithError = ICustomizationProfilePro
 export interface ICustomizationProfileHistory {
     id: string,
     version: string,
-    welcomeScreenShowAgain?: boolean;
 }
 
 export interface ICustomizationProfileActivated {

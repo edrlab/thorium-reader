@@ -12,6 +12,7 @@ import * as acquire from "./acquire";
 import * as lock from "./lock";
 import * as history from "./addHistory";
 import * as welcomeScreen from "./welcomeScreen";
+import * as manifest from "./manifest";
 
 export {
     activate as activating,
@@ -20,4 +21,5 @@ export {
     lock,
     history as addHistory,
     welcomeScreen,
+    manifest,
 };

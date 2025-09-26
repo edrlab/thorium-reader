@@ -50,6 +50,7 @@ const persistStateToFs = async (nextState: RootState) => {
             history: nextState.customization.history,
             activate: nextState.customization.activate,
             welcomeScreen: undefined,
+            manifest: undefined,
         },
     };
 
