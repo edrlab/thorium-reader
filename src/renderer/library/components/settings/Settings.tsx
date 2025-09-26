@@ -454,8 +454,10 @@ const Profiles = () => {
                                 <label htmlFor={profile.id} className={stylesSettings.profile_selection_label}>
                                     <img src={profile.logoUrl} alt=""></img>
                                     <div className={stylesSettings.profile_selection_description}>
-                                        {/* <h5>{profile.fileName}</h5> */}
-                                        <h5>{profile.name}</h5>
+                                        <h5>{profile.fileName}</h5>
+                                        <p>{profile.title["en"]}</p>
+                                        <p>{profile.description["en"]}</p>
+                                        <img style={{width: "20px", height: "20px"}} src={profile.logoUrl}></img>
                                         {/* <p>{profile.description}</p> */}
                                     </div>
                                 </label>
