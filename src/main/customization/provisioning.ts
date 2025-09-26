@@ -18,6 +18,8 @@ import { readdirSync, existsSync, mkdirSync } from "fs";
 import { ICustomizationProfileProvisioned, ICustomizationProfileError, ICustomizationProfileProvisionedWithError } from "readium-desktop/common/redux/states/customization";
 import { app } from "electron";
 import { _CUSTOMIZATION_PROFILE_PUB_KEY } from "readium-desktop/preprocessor-directives";
+import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER } from "readium-desktop/common/streamerProtocol";
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 // Logger
 const debug = debug_("readium-desktop:main#utils/customization/provisioning");
@@ -144,7 +146,13 @@ export async function customizationPackageProvisioningAccumulator(packagesArray:
 
     const packageProvisionedWithTheSameIdentifier = packagesArray.find(({ id }) => id === manifest.identifier);
     if (!packageProvisionedWithTheSameIdentifier || semver.gt(manifest.version, packageProvisionedWithTheSameIdentifier.version)) {
-        return { id: manifest.identifier, fileName: packageFileName, version: manifest.version };
+
+        const logoObj = manifest.images?.find((ln) => ln?.rel === "logo");
+        debug("find manifest for this profile", manifest.identifier, " LOGO Obj:", logoObj);
+        const baseUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/custom-profile-zip/${encodeURIComponent_RFC3986(Buffer.from(manifest.identifier).toString("base64"))}/`;
+        const logoUrl = baseUrl + encodeURIComponent_RFC3986(Buffer.from(logoObj.href).toString("base64"));
+
+        return { id: manifest.identifier, fileName: packageFileName, version: manifest.version, logoUrl, name: manifest.name };
     }
 
     return { fileName: packageFileName, error: true, message: "profile version is under or equal to the currrent provisioned profile version" };
