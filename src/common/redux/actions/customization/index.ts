@@ -10,10 +10,16 @@ import * as activate from "./activate";
 import * as provision from "./provision";
 import * as acquire from "./acquire";
 import * as lock from "./lock";
+import * as history from "./addHistory";
+import * as welcomeScreen from "./welcomeScreen";
+import * as manifest from "./manifest";
 
 export {
     activate as activating,
     provision as provisioning,
     acquire,
     lock,
+    history as addHistory,
+    welcomeScreen,
+    manifest,
 };

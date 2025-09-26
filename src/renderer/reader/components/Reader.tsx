@@ -2540,7 +2540,8 @@ class Reader extends React.Component<IProps, IState> {
                     // }
                 } else {
                     // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
-                    preloadPath = "file://" + path.normalize(path.join(process.cwd(), "node_modules", preloadPath)).replace(/\\/g, "/");
+                    // preloadPath = "file://" + path.normalize(path.join(process.cwd(), "node_modules", preloadPath)).replace(/\\/g, "/");
+                    preloadPath = "file://" + path.normalize(path.join(process.cwd(), "dist", "preload.js")).replace(/\\/g, "/");
                 }
             }
 

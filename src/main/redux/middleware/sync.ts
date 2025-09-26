@@ -97,6 +97,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     customizationActions.provisioning.ID,
     customizationActions.acquire.ID,
     customizationActions.lock.ID,
+    customizationActions.addHistory.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware

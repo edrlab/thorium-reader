@@ -403,9 +403,9 @@ const Themes = () => {
 const Profiles = () => {
 
     const { provision: packageProfileProvisioned, activate: { id: profileActivatedId } } = useSelector((s: ICommonRootState) => s.customization);
-    const selectedProfile = packageProfileProvisioned.find(({identifier}) => identifier && identifier === profileActivatedId);
+    const selectedProfile = packageProfileProvisioned.find(({id}) => id && id === profileActivatedId);
     const dispatch = useDispatch();
-    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    // const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
     const [__] = useTranslator();
 
     return (
@@ -432,30 +432,42 @@ const Profiles = () => {
             >
                 {
                     packageProfileProvisioned.map((profile) => {
-                        const profileTitle = profile.title?.[locale] || profile.title?.["en"] || "";
-                        const profileDescription = profile.description?.[locale] || profile.description?.["en"] || "";
+                        // const profileTitle = profile.title?.[locale] || profile.title?.["en"] || "";
+                        // const profileDescription = profile.description?.[locale] || profile.description?.["en"] || "";
 
                         return (
                             <div
-                                key={profile.identifier}
+                                key={profile.id} // Ajout de la key manquante pour React
                                 className={stylesSettings.profile_selection_input}
                             >
                                 <input
                                     type="radio"
-                                    id={profile.identifier}
+                                    id={profile.id}
                                     value={profile.fileName}
                                     name="profile_selection"
-                                    checked={selectedProfile?.identifier === profile.identifier}
+                                    checked={selectedProfile?.id === profile.id}
                                     onChange={(e) => {
                                         console.log("PROFILE Input change", e);
-                                        dispatch(customizationActions.activating.build(profile.identifier));
+                                        dispatch(customizationActions.activating.build(profile.id));
                                     }}
                                 />
-                                <label htmlFor={profile.identifier} className={stylesSettings.profile_selection_label}>
-                                    <img src={profile.logo ? profile.logo : ""} alt=""/>
+                                <label htmlFor={profile.id} className={stylesSettings.profile_selection_label}>
+                                    {/* {logo && logo.type === "image/svg+xml" ? (
+                                        <div
+                                            className="logo"
+                                            dangerouslySetInnerHTML={{ __html: logo.href }}
+                                        />
+                                    ) : (
+                                        <img
+                                            src={logo?.href || "./resources/icons/512x512.png"}
+                                            alt={`Logo ${profile.name}`}
+                                        />
+                                    )} */}
                                     <div className={stylesSettings.profile_selection_description}>
-                                        <h5>{profileTitle}</h5>
-                                        <p>{profileDescription}</p>
+                                        <h5>{profile.fileName}</h5>
+                                        <h3>{profile.name}</h3>
+                                        <img style={{width: "50px", height: "50px"}} src={profile.logoUrl}></img>
+                                        {/* <p>{profile.description}</p> */}
                                     </div>
                                 </label>
                             </div>

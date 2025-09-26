@@ -88,19 +88,6 @@ class Header extends React.Component<IProps, undefined> {
             // },
         ];
 
-        const profileLinksNavigation: NavigationHeader[] = this.props.customizationTheme.links
-        ? this.props.customizationTheme.links
-            .filter(item => item.properties?.showOnHomeSection === true)
-            .map<NavigationHeader>(item => ({
-                route: /*item.href*/ "",
-                label: item.title?.[this.props.locale] || item.title?.["en"] || "",
-                matchRoutes: [item.href],
-                styles: [],
-                // svg: item.properties.logo.href,
-                svg: CatalogsIcon,
-            }))
-        : [];
-
         const customizationEnable = true && this.props.customizationTheme?.enable && this.props.customizationTheme?.logo;
         return (<>
             <SkipLink
@@ -123,15 +110,6 @@ class Header extends React.Component<IProps, undefined> {
                     {
                         headerNav.map(
                             (item, index) =>
-                                this.buildNavItem(item, index),
-                        )
-                    }
-                    {profileLinksNavigation.length > 0 ? 
-                    <span key={"separator"} style={{ borderBottom: "2px solid var(--color-light-grey)", width: "80%", margin: "0 10%", display: "block" }}></span>
-                : <></>}
-                    {
-                        profileLinksNavigation.map(
-                            (item, index) => 
                                 this.buildNavItem(item, index),
                         )
                     }

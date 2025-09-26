@@ -40,7 +40,7 @@ import NunitoBold from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-Se
 import { WizardModal } from "./Wizard";
 import { getReduxHistory, getStore } from "../createStore";
 import { getTranslator } from "readium-desktop/common/services/translator";
-import { CustomizationProfileModal } from "readium-desktop/renderer/common/components/customizationProfileModal";
+import { CustomizationProfileDialog } from "readium-desktop/renderer/common/components/customizationProfileDialog";
 // eslintxx-disable-next-line @typescript-eslint/no-unused-expressions
 // globalScssStyle.__LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__;
 
@@ -226,7 +226,7 @@ export default class App extends React.Component<{}, undefined> {
                                     <LoaderMainLoad />
                                     <ToastManager />
                                     <WizardModal />
-                                    <CustomizationProfileModal />
+                                    <CustomizationProfileDialog />
                                 </div>;
                             }}
                         </Dropzone>

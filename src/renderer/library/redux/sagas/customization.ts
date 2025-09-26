@@ -37,6 +37,8 @@ function* profileActivating(id: string): SagaGenerator<void> {
         // THorium vanilla rollback, clear the local redux state
         yield* putTyped(themeActions.setTheme.build(undefined, { enable: false }));
 
+        yield* putTyped(customizationActions.welcomeScreen.build(false));
+
         // TODO: switch to default color css variable
 
 // $color-white: #fff;
@@ -115,6 +117,14 @@ function* profileActivating(id: string): SagaGenerator<void> {
     debug("MANIFEST FROM ", id, ":");
     debug(manifestJson);
 
+    yield* putTyped(customizationActions.manifest.build(manifestJson));
+
+    const profileActivationHistory = yield* selectTyped((state: ICommonRootState) => state.customization.history);
+
+    const profileHistoryFound = profileActivationHistory.find((profileHistory) => profileHistory.id === id);
+    const welcomeScreenNeeded = !profileHistoryFound || profileHistoryFound.version !== manifestJson.version;
+
+    yield* putTyped(customizationActions.welcomeScreen.build(welcomeScreenNeeded));
 
     const logoObj = manifestJson.images?.find((ln) => ln?.rel === "logo");
     debug("Manifest LOGO Obj:", logoObj);
@@ -137,6 +147,7 @@ function* profileActivating(id: string): SagaGenerator<void> {
 
     // dispatch new opds-catalogs to the redux state attached to this profile
 
+    yield* putTyped(customizationActions.addHistory.build(id, manifestJson.version));
 }
 
 

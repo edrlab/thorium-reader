@@ -7,16 +7,18 @@
 
 import { ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
 
-export type TTheme = "system" | "dark" | "light";
+export const ID = "CUSTOMIZATION_MANIFEST";
 
-export interface ICustomizationTheme {
-    enable: boolean;
-    logo?: string;
-    color?: ICustomizationManifest["theme"]["color"];
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface IPayload extends ICustomizationManifest {};
 
-export interface ITheme {
-    name: TTheme,
-    customization: ICustomizationTheme
+export function build(manifest: ICustomizationManifest) {
+
+    return {
+        type: ID,
+        payload: manifest,
+    };
 }
-export const themesList: Array<TTheme> = ["system", "dark", "light"];
+build.toString = () => ID; // Redux StringableActionCreator
+export type TAction = ReturnType<typeof build>;
+

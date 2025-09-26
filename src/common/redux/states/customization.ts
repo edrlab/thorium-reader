@@ -5,17 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IStringMap } from "r2-shared-js/dist/es8-es2017/src/models/metadata-multilang";
-
 // export type TCustomizationProvisioningPackage = Array<[identifier: string, fileName: string, version: string]>;
 
 export interface ICustomizationProfileProvisioned {
-    identifier: string; // identifier URI from manifest
+    id: string; // identifier URI from manifest
     fileName: string; // relative file from well-known folder, not an absolute file path. Allow to move well-known folder without compromise internal redux state
     version: string; // semantic versionning from manifest
-    logo: string;
-    description: IStringMap;
-    title: IStringMap;
+    logoUrl: string;
+    name: string;
 }
 
 export interface ICustomizationProfileError {
@@ -24,8 +21,17 @@ fileName: string; error: boolean; message: string;
 
 export type ICustomizationProfileProvisionedWithError = ICustomizationProfileProvisioned | ICustomizationProfileError;
 
+export interface ICustomizationProfileHistory {
+    id: string,
+    version: string,
+}
+
 export interface ICustomizationProfileActivated {
     id: string, // identifier URI from manifest // pointer to ICustomizationProfileProvisioned.id
+}
+
+export interface ICustomizationProfileWelcomeScreen {
+    enable: boolean;
 }
 
 export interface ICustomizationLockInfo {

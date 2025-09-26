@@ -52,7 +52,7 @@ export function saga() {
 
                     if (removed) {
                         const packageFound = packagesArray.find(({ fileName }) => fileName === packageFileName);
-                        if (packageFound && packageFound.identifier === customizationState.activate.id && packageFound.fileName === packageFileName) {
+                        if (packageFound && packageFound.id === customizationState.activate.id && packageFound.fileName === packageFileName) {
                             debug("rollback to thorium vanilla profile");
                             yield* putTyped(customizationActions.activating.build("")); // no profile
                         }
@@ -64,7 +64,7 @@ export function saga() {
                             errorPackages.push((profileProvisioned as ICustomizationProfileError));
                         } else {
                             packagesArray = [
-                                ...packagesArray.filter(({ identifier }) => (profileProvisioned as ICustomizationProfileProvisioned).identifier !== identifier),
+                                ...packagesArray.filter(({ id }) => (profileProvisioned as ICustomizationProfileProvisioned).id !== id),
                                 profileProvisioned as ICustomizationProfileProvisioned,
                             ];
                         }
