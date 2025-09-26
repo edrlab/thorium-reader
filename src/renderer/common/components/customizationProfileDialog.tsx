@@ -41,6 +41,26 @@ export const CustomizationProfileDialog: React.FC = () => {
         setChecked(profileInHistoryFound && manifest?.version && profileInHistoryFound.version === manifest?.version);
     }, [setChecked, manifest?.version, profileInHistoryFound]);
 
+    let welcomeScreenHtmlSanitized = "";
+    if (manifest?.welcomeScreen) {
+
+        const regex = new RegExp(/href=\"(.*?)\"/, "gm");
+        const parsed = DOMPurify.sanitize(manifest.welcomeScreen, { FORBID_TAGS: [/*"style"*/], FORBID_ATTR: [/*"style"*/] /* TODO: handle external https links */ });
+        const hrefSanitized = parsed.replace(regex, (substring) => {
+    
+            let url = /href=\"(.*?)\"/.exec(substring)[1];
+            if (!url.startsWith("http")) {
+                url = "http://" + url;
+            }
+    
+            return `href="" alt="${url}" onclick="return ((e) => {
+                                    window.__shell_openExternal('${url}').catch(() => {});
+                                    return false;
+                                 })()"`;
+        });
+        welcomeScreenHtmlSanitized = hrefSanitized;
+    }
+
     return (
         <AlertDialog.Root open={open} onOpenChange={(_requestOpen) => {
         }}>
@@ -62,8 +82,8 @@ export const CustomizationProfileDialog: React.FC = () => {
                         <img style={{maxWidth: "250px", maxHeight: "500px", objectFit: "contain"}} src={manifest?.images?.find((ln) => ln.rel === "welcome-screen")?.href || ""}/>
                         <div style={{position: "relative"}}>
                             {
-                                manifest?.welcomeScreen ?
-                                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(manifest.welcomeScreen, { FORBID_TAGS: [/*"style"*/], FORBID_ATTR: [/*"style"*/] /* TODO: handle external https links */ }) }} />
+                                welcomeScreenHtmlSanitized ?
+                                    <div dangerouslySetInnerHTML={{ __html: welcomeScreenHtmlSanitized }} />
                                     : <></>
                             }
                             {
