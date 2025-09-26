@@ -54,12 +54,12 @@ export const CustomizationProfileDialog: React.FC = () => {
                         <span>LOCKINFO={JSON.stringify(customization.lock.lockInfo, null, 4)}</span>
                     </AlertDialog.Description>
                     <div className={stylesAlertModals.AlertDialogButtonContainer}>
-                        <AlertDialog.Cancel asChild onClick={() => { dispatch(customizationActions.lock.build("IDLE")); dispatch(customizationActions.activating.build("")); }}>
+                        {/* <AlertDialog.Cancel asChild onClick={() => { dispatch(customizationActions.lock.build("IDLE")); dispatch(customizationActions.activating.build("")); }}>
                             <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
-                        </AlertDialog.Cancel>
+                        </AlertDialog.Cancel> */}
                         <AlertDialog.Action asChild>
-                            <button className={stylesButtons.button_primary_blue} onClick={() => { dispatch(customizationActions.welcomeScreen.build(false)); }}>
-                                Enter
+                            <button disabled={!customization.welcomeScreen.enable} className={stylesButtons.button_primary_blue} onClick={() => { dispatch(customizationActions.welcomeScreen.build(false)); }}>
+                                {__("dialog.yes")}
                             </button>
                         </AlertDialog.Action>
                     </div>

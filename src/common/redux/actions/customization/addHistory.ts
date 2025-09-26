@@ -11,7 +11,6 @@ export const ID = "CUSTOMIZATION_ADD_HISTORY";
 export interface IPayload {
     id: string;
     version: string;
-    welcomeScreenShowAgain: boolean;
 }
 
 export function build(profileIdentifier: string, version: string) {
