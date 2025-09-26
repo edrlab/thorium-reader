@@ -64,11 +64,20 @@ export const CustomizationProfileDialog: React.FC = () => {
                                     <div dangerouslySetInnerHTML={{__html: `${manifest.welcomeScreen}`}} />
                                     : <></>
                             }
-                            <div style={{display: "none"}}>
+                            {
+                                customization.lock.state !== "IDLE" ?
+                                <div>
+                                    <span>STATE={customization.lock.state}</span>
+                                    <span>ID={customization.lock.lockInfo?.id === "" && customization.lock.state === "ACTIVATING" ? "THorium Default Profile" : customization.lock.lockInfo?.id || "undefined"}</span>
+                                    <span>LOCKINFO={JSON.stringify(customization.lock.lockInfo, null, 4)}</span>
+                                </div> 
+                                : <></>
+                            }
+                            {/* <div style={{display: "none"}}>
                                 <span>STATE={customization.lock.state}</span>
                                 <span>ID={customization.lock.lockInfo?.id === "" && customization.lock.state === "ACTIVATING" ? "THorium Default Profile" : customization.lock.lockInfo?.id || "undefined"}</span>
                                 <span>LOCKINFO={JSON.stringify(customization.lock.lockInfo, null, 4)}</span>
-                            </div>
+                            </div> */}
                         </div>
                     </AlertDialog.Description>
                     <div className={stylesAlertModals.AlertDialogButtonContainer} style={{justifyContent: "space-between", padding: "10px 20px"}}>
@@ -114,7 +123,7 @@ export const CustomizationProfileDialog: React.FC = () => {
                             </label>
                         </div> : <></> }
                         <AlertDialog.Action asChild>
-                            <button disabled={!customization.welcomeScreen.enable} className={stylesButtons.button_primary_blue} onClick={() => { dispatch(customizationActions.welcomeScreen.build(false)); }}>
+                            <button disabled={!customization.welcomeScreen.enable} style={{display: customization.welcomeScreen.enable ? "block" : "none" }} className={stylesButtons.button_primary_blue} onClick={() => { dispatch(customizationActions.welcomeScreen.build(false)); }}>
                                 {__("dialog.yes")}
                             </button>
                         </AlertDialog.Action>

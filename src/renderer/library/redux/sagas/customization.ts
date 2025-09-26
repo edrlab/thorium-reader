@@ -179,6 +179,10 @@ function* profileActivatingAction(action: customizationActions.activating.TActio
             };
             yield* putTyped(customizationActions.lock.build("ACTIVATING", lockInfo));
 
+            yield* putTyped(customizationActions.welcomeScreen.build(false));
+
+            yield* putTyped(customizationActions.manifest.build(null));
+
             yield* callTyped(profileActivating, id);
 
             yield* putTyped(customizationActions.lock.build("IDLE", {uuid: ""}));
