@@ -43,7 +43,7 @@ export function* sagaCustomizationProfileProvisioning() {
     if (customizationState.activate.id) {
 
         let error = false;
-        const packageFileName = packagesArray.find(({identifier}) => identifier === customizationState.activate.id)?.fileName;
+        const packageFileName = packagesArray.find(({id}) => id === customizationState.activate.id)?.fileName;
         if (!packageFileName) {
             debug(`CRITICAL ERROR: no pointer to identifier:"${customizationState.activate.id}" found in provisioned array`);
             error = true;
@@ -158,7 +158,7 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
 
                     // TODO: in the case of a drag-and-drop of an older profile than one already provisioned,
                     // it can be better to activate the newer profile vendor and do not provisioned the older profile
-                    const packageId = fileNameProvisionedFound.identifier;
+                    const packageId = fileNameProvisionedFound.id;
                     lockInfo.id = packageId;
                     yield* putTyped(customizationActions.lock.build("ACTIVATING", lockInfo));
                     yield* putTyped(customizationActions.activating.build(packageId));
