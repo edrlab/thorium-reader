@@ -452,21 +452,10 @@ const Profiles = () => {
                                     }}
                                 />
                                 <label htmlFor={profile.id} className={stylesSettings.profile_selection_label}>
-                                    {/* {logo && logo.type === "image/svg+xml" ? (
-                                        <div
-                                            className="logo"
-                                            dangerouslySetInnerHTML={{ __html: logo.href }}
-                                        />
-                                    ) : (
-                                        <img
-                                            src={logo?.href || "./resources/icons/512x512.png"}
-                                            alt={`Logo ${profile.name}`}
-                                        />
-                                    )} */}
+                                    <img src={profile.logoUrl} alt=""></img>
                                     <div className={stylesSettings.profile_selection_description}>
-                                        <h5>{profile.fileName}</h5>
-                                        <h3>{profile.name}</h3>
-                                        <img style={{width: "50px", height: "50px"}} src={profile.logoUrl}></img>
+                                        {/* <h5>{profile.fileName}</h5> */}
+                                        <h5>{profile.name}</h5>
                                         {/* <p>{profile.description}</p> */}
                                     </div>
                                 </label>
