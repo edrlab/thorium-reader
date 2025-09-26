@@ -9,7 +9,7 @@ import { createVerify } from "crypto";
 import * as debug_ from "debug";
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
-import { ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
+import { customizationManifestJsonSchema, ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { extractCrc32OnZip } from "../tools/crc";
 import * as path from "path";
@@ -20,6 +20,8 @@ import { app } from "electron";
 import { _CUSTOMIZATION_PROFILE_PUB_KEY } from "readium-desktop/preprocessor-directives";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER } from "readium-desktop/common/streamerProtocol";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
+import Ajv from "ajv";
+import addFormats from "ajv-formats";
 
 // Logger
 const debug = debug_("readium-desktop:main#utils/customization/provisioning");
@@ -34,6 +36,20 @@ try {
 } catch (e) {
     debug("ERROR!!: Customization well-known folder not created", e);
 }
+
+export let __CUSTOMIZATION_PROFILE_MANIFEST_AJV_ERRORS = "";
+export function isCustomizationProfileManifest(data: any): data is ICustomizationManifest {
+
+    const ajv = new Ajv();
+    addFormats(ajv);
+
+    const valid = ajv.validate(customizationManifestJsonSchema, data);
+
+    __CUSTOMIZATION_PROFILE_MANIFEST_AJV_ERRORS = ajv.errors?.length ? JSON.stringify(ajv.errors, null, 2) : "";
+
+    return valid;
+}
+
 
 async function getManifestFromPackageFileName(packageFileName: string): Promise<ICustomizationManifest> {
     const packageAbsolutePath = path.join(customizationWellKnownFolder, packageFileName);
@@ -58,6 +74,12 @@ async function getManifestFromPackageFileName(packageFileName: string): Promise<
     if (manifest.manifestVersion !== 1) {
         return Promise.reject("Not a valid manifestVersion");
     }
+
+    if (!isCustomizationProfileManifest(manifest)) { // version 1
+
+        debug("Error: ", __CUSTOMIZATION_PROFILE_MANIFEST_AJV_ERRORS);
+        return Promise.reject("Manifest parsing error: " + __CUSTOMIZATION_PROFILE_MANIFEST_AJV_ERRORS);
+    } 
 
     return manifest;
 }
@@ -152,7 +174,7 @@ export async function customizationPackageProvisioningAccumulator(packagesArray:
         const baseUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/custom-profile-zip/${encodeURIComponent_RFC3986(Buffer.from(manifest.identifier).toString("base64"))}/`;
         const logoUrl = baseUrl + encodeURIComponent_RFC3986(Buffer.from(logoObj.href).toString("base64"));
 
-        return { id: manifest.identifier, fileName: packageFileName, version: manifest.version, logoUrl, name: manifest.name };
+        return { id: manifest.identifier, fileName: packageFileName, version: manifest.version, logoUrl, name: manifest.title["en"] }; // TODO: change locale
     }
 
     return { fileName: packageFileName, error: true, message: "profile version is under or equal to the currrent provisioned profile version" };
