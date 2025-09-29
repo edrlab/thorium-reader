@@ -211,7 +211,9 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
                             return <li key={i}><a
                             onClick={async (ev) => {
                                 ev.preventDefault(); // necessary because href, see comment above
-                                await shell.openExternal(value);
+                                if (value && /^https?:\/\//.test(value)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
+                                    await shell.openExternal(value);
+                                }
                             }}
                             href={value} title={value} aria-label={__("publication.accessibility.certifierReport")}>{__("publication.accessibility.certifierReport")}</a></li>;
                         }

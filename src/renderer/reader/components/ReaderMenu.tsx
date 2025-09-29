@@ -103,7 +103,7 @@ import { exportAnnotationSet } from "readium-desktop/renderer/common/redux/sagas
 import { getSaga } from "../createStore";
 import { clone } from "ramda";
 import { marked } from "readium-desktop/renderer/common/marked/marked";
-(window as any).__shell_openExternal = (url: string) => url.startsWith("http") ? shell.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
+(window as any).__shell_openExternal = (url: string) => url && /^https?:\/\//.test(url) ? shell.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
 
 // console.log(window);
 

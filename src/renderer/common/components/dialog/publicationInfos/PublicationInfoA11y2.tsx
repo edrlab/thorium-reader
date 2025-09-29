@@ -40,7 +40,7 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
 
     /**
      * https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/techniques/epub-metadata/index.html#ways-of-reading
-     * 
+     *
      * Display Techniques for EPUB Accessibility Metadata 2.0 Draft Community Group Report 14 April 2025
      */
 
@@ -98,7 +98,7 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
     const page_navigation = findStrInArray(a11y_accessibilityFeature, "pageNavigation");
     const index_navigation = findStrInArray(a11y_accessibilityFeature, "index");
     const next_previous_structural_navigation = findStrInArray(a11y_accessibilityFeature, "structuralNavigation");
-    
+
 
     const enableNavigation = (table_of_contents_navigation || index_navigation || page_navigation || next_previous_structural_navigation);
 
@@ -192,9 +192,9 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
     const tactile_graphic = findStrInArray(a11y_accessibilityFeature, "tactileGraphic");
     const tactile_object = findStrInArray(a11y_accessibilityFeature, "tactileObject");
     const text_to_speech_hinting = findStrInArray(a11y_accessibilityFeature, "ttsMarkup");
-    // const print_page_numbers = findStrInArray(a11y_accessibilityFeature, "printPageNumbers"); 
+    // const print_page_numbers = findStrInArray(a11y_accessibilityFeature, "printPageNumbers");
     // Replaced by pageBreakMarkers
-    // TODO: already declared in previous a11y implementation but not in https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/techniques/epub-metadata/index.html // declared in readium webpub manifest https://github.com/readium/webpub-manifest/blob/4c73f7323f9241e61bb919ecae2656a491ba15f6/schema/a11y.schema.json#L84 
+    // TODO: already declared in previous a11y implementation but not in https://w3c.github.io/publ-a11y/a11y-meta-display-guide/2.0/draft/techniques/epub-metadata/index.html // declared in readium webpub manifest https://github.com/readium/webpub-manifest/blob/4c73f7323f9241e61bb919ecae2656a491ba15f6/schema/a11y.schema.json#L84
 
     const enableAdditionnals = (page_break_markers || aria || audio_descriptions || braille || full_ruby_annotations || high_contrast_between_foreground_and_background_audio || high_contrast_between_text_and_background || large_print || ruby_annotations || sign_language || tactile_graphic || tactile_object || text_to_speech_hinting);
 
@@ -423,14 +423,14 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                                     </li>)
                                     }
                                     {a11y_certifiedBy.length
-                                        ? a11y_certifiedBy.map((certifier, i) => <li key={"certifier_" + i}>{isURL(certifier) ? <a title={certifier} onClick={async (e) => { e.preventDefault(); await shell.openExternal(certifier); }} href={certifier}>
+                                        ? a11y_certifiedBy.map((certifier, i) => <li key={"certifier_" + i}>{isURL(certifier) ? <a title={certifier} onClick={async (e) => { e.preventDefault(); if (certifier && /^https?:\/\//.test(certifier)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */ await shell.openExternal(certifier); } }} href={certifier}>
                                             {__("publ-a11y-display-guide.conformance.conformance-details-certifier-report.compact")}
                                         </a> :
                                             __("publ-a11y-display-guide.conformance.conformance-certifier.compact") + " " + certifier
                                         }</li>)
                                         : <></>}
                                     {a11y_certifierCredential.length
-                                        ? a11y_certifierCredential.map((certifier_credentials, i) => <li key={"certifier_credentials_" + i}>{isURL(certifier_credentials) ? <a title={certifier_credentials} onClick={async (e) => { e.preventDefault(); await shell.openExternal(certifier_credentials); }} href={certifier_credentials}>
+                                        ? a11y_certifierCredential.map((certifier_credentials, i) => <li key={"certifier_credentials_" + i}>{isURL(certifier_credentials) ? <a title={certifier_credentials} onClick={async (e) => { e.preventDefault(); if (certifier_credentials && /^https?:\/\//.test(certifier_credentials)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */ await shell.openExternal(certifier_credentials); } }} href={certifier_credentials}>
                                             {__("publ-a11y-display-guide.conformance.conformance-details-certifier-report.compact")}
                                         </a> :
                                             __("publ-a11y-display-guide.conformance.conformance-certifier-credentials.compact") + " " + certifier_credentials
@@ -447,7 +447,7 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                                             (wcag_level === "AAA" ? __("publ-a11y-display-guide.conformance.conformance-details-level-aaa.compact") : wcag_level === "AA" ? __("publ-a11y-display-guide.conformance.conformance-details-level-aa.compact") : wcag_level === "A" ? __("publ-a11y-display-guide.conformance.conformance-details-level-a.compact") : wcag_level)}
                                     </li>)}
                                     {a11y_certifierReport.length
-                                        ? a11y_certifierReport.map((certifier_report, i) => <li key={"certifier_report_" + i} title={certifier_report}>{isURL(certifier_report) ? <a title={certifier_report} onClick={async (e) => { e.preventDefault(); await shell.openExternal(certifier_report); }} href={certifier_report}>
+                                        ? a11y_certifierReport.map((certifier_report, i) => <li key={"certifier_report_" + i} title={certifier_report}>{isURL(certifier_report) ? <a title={certifier_report} onClick={async (e) => { e.preventDefault(); if (certifier_report && /^https?:\/\//.test(certifier_report)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */ await shell.openExternal(certifier_report); } }} href={certifier_report}>
                                             {__("publ-a11y-display-guide.conformance.conformance-details-certifier-report.compact")}
                                         </a> : __("publ-a11y-display-guide.conformance.conformance-details-certifier-report.compact") + " " + certifier_report}</li>)
                                         : <></>}

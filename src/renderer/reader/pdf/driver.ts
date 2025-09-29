@@ -104,8 +104,8 @@ export function pdfMount(
         event.preventDefault(); // no effect
         event.stopPropagation();
 
-        console.log("WillNavigate event:", event.type, event.url);
-        if (event.url) {
+        console.log("will-navigate event:", event.type, event.url);
+        if (event.url && /^https?:\/\//.test(event.url)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
             await shell.openExternal(event.url);
         }
     };

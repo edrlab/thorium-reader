@@ -85,7 +85,9 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                             onClick={async (ev) => {
                                 ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                                 this.setState({ versionInfo : false });
-                                await shell.openExternal(this.props.newVersionURL);
+                                if (this.props.newVersionURL && /^https?:\/\//.test(this.props.newVersionURL)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
+                                    await shell.openExternal(this.props.newVersionURL);
+                                }
                             }}>{`${this.props.__("app.update.message")}`}</a> <span>(v{this.props.newVersion})</span></p>
                         </div>
                         {/* <button onClick={async () => {
@@ -107,7 +109,10 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                     <p>{`v${_APP_VERSION}`}</p>
                     <a href="" onClick={async (ev) => {
                                 ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
-                                await shell.openExternal(`https://thorium.edrlab.org/?lang=${locale}&v=${app_version}`);
+                                const href = `https://thorium.edrlab.org/?lang=${locale}&v=${app_version}`;
+                                if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
+                                    await shell.openExternal(href);
+                                }
                             }}
                         tabIndex={0}>{__("catalog.about.title", { appName: capitalizedAppName })}</a>
                     </div>
