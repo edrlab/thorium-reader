@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="t d">
+  <title id="t">Francis Library feed icon</title>
+  <desc id="d">Small icon: book silhouette with circular feed waves</desc>
+
+  <!-- circular background -->
+  <circle cx="32" cy="32" r="30" fill="#0F1724"/>
+
+  <!-- open book simplified -->
+  <path d="M14 20 L30 28 L30 44 L14 44 Z" fill="#F8FAFC"/>
+  <path d="M50 20 L34 28 L34 44 L50 44 Z" fill="#E6EEF6"/>
+
+  <!-- feed dot and arcs (right side) -->
+  <circle cx="46" cy="18" r="3" fill="#FFB020"/>
+  <path d="M46 24 a10 10 0 0 1 10 -10" fill="none" stroke="#FFB020" stroke-width="2" stroke-linecap="round"/>
+  <path d="M46 30 a16 16 0 0 1 16 -16" fill="none" stroke="#FFB020" stroke-width="1.5" stroke-linecap="round"/>
+</svg>

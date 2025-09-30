@@ -38,5 +38,24 @@
             "rel": "logo",
             "href": "./images/logo.svg"
         }
+    ],
+    "links": [
+        {
+            "rel": "catalog",
+            "href": "https://demoreader.cantookstation.com/v1/home.opds2",
+            "title": {
+                "en": "francis catalog"
+            },
+            "properties": {
+                "authenticate": {
+                    "type": "application/opds-authentication+json",
+                    "href": "https://demoreader.cantookstation.com/v1/sign_in.opds2"
+                },
+                "logo": {
+                    "rel": "logo",
+                    "href": "./images/catalog.svg"
+                }
+            }
+        }
     ]
 }
