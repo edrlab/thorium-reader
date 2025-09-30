@@ -932,7 +932,7 @@
                     "name": ""
                 },
                 "AudioStop": {
-                    "description": "",
+                    "description": "Stoppa pågående uppspelning (EPUB3 Media Overlays, Text-to-Speech-uppläsning eller förinspelad ljudbok)",
                     "name": ""
                 },
                 "CloseReader": {
