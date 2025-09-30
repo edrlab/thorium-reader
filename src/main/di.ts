@@ -335,6 +335,7 @@ interface IGet {
     (s: "apiapp-api"): typeof apiappApi;
     (s: "httpbrowser-api"): typeof httpBrowserApi;
     (s: "saga-middleware"): SagaMiddleware;
+    (s: "opds-service"): OpdsService;
     // minor overload type used in api.ts/LN32
     (s: keyof typeof diSymbolTable): any;
 }

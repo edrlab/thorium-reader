@@ -16,6 +16,8 @@ import { call as callTyped, select as selectTyped, put as putTyped, /*take as ta
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER } from "readium-desktop/common/streamerProtocol";
 import { ICustomizationManifest, ICustomizationManifestColor } from "readium-desktop/common/readium/customization/manifest";
+import { contentTypeisOpdsAuth, parseContentType } from "readium-desktop/utils/contentType";
+
 
 // Logger
 const filename_ = "readium-desktop:renderer:library:saga:customization";
@@ -39,33 +41,6 @@ function* profileActivating(id: string): SagaGenerator<void> {
         yield* putTyped(customizationActions.welcomeScreen.build(false));
 
         yield* putTyped(customizationActions.manifest.build(null));
-
-        // TODO: switch to default color css variable
-
-// $color-white: #fff;
-// $color-white-2: #d9d9d9;
-// $color-black: #2D2D2D;
-// $color-black-2: #1E1E1E;
-// $color-grey-1: #61646B;
-// $color-grey-2: #7c7d86;
-
-// // THORIUM SET OF COLORS
-
-// $thorium-theme-neutral-light: $color-white;
-// $thorium-theme-neutral-dark: #1D1D1E;
-// $thorium-theme-primary-light: #1053C8;
-// $thorium-theme-primary-dark: #99A9E3;
-// $thorium-theme-secondary-light: #ECF2FD;
-// $thorium-theme-secondary-dark: $color-black;
-// $thorium-theme-border-light: #afb1b6;
-// $thorium-theme-border-dark: #48484b;
-// $thorium-theme-background-light: #f5f5f5;
-// $thorium-theme-background-dark: #27272a;
-// $thorium-theme-appName-light: $thorium-theme-border-light;
-// $thorium-theme-appName-dark: #EAEAEA;
-// $thorium-theme-scrollbar-thumb: $color-grey-2;
-// $thorium-theme-button-hover-light: $color-white;
-// $thorium-theme-button-hover-dark: #48484b;
 
         const colorDark: ICustomizationManifestColor = {
             neutral: "#1D1D1E",
@@ -144,10 +119,29 @@ function* profileActivating(id: string): SagaGenerator<void> {
     applyColorSet(colorsDarkLight.light, "light");
     applyColorSet(colorsDarkLight.dark, "dark");
 
-    const catalogsLinks = manifestJson.links?.find((ln) => ln.rel === "catalog");
+    const catalogsLinks = manifestJson.links?.filter((ln) => ln.rel === "catalog");
     debug("Manifest CATALOGS links", catalogsLinks);
 
-    // dispatch new opds-catalogs to the redux state attached to this profile
+    if (catalogsLinks.length) {
+        const catalogLink = catalogsLinks[0];
+
+        let catalogLinkOpdsAuthenticateDocumentHref = "";
+        if (catalogLink.properties) {
+            debug("catalog properties => ", catalogLink.properties);
+            if (catalogLink.properties?.authenticate) {
+
+                const mimeType = catalogLink.properties.authenticate.type;
+                const contentTypeParsed = parseContentType(mimeType);
+                if (contentTypeisOpdsAuth(contentTypeParsed)) {
+                    if (typeof catalogLink.properties.authenticate.href === "string") {
+                        catalogLinkOpdsAuthenticateDocumentHref = catalogLink.properties.authenticate.href;
+                    }
+                }
+            }
+        }
+
+        yield* putTyped(customizationActions.triggerOpdsAuth.build(catalogLink.href, catalogLinkOpdsAuthenticateDocumentHref));
+    }
 
     yield* putTyped(customizationActions.addHistory.build(id, manifestJson.version));
 }
@@ -183,9 +177,20 @@ function* profileActivatingAction(action: customizationActions.activating.TActio
 
             yield* putTyped(customizationActions.manifest.build(null));
 
-            yield* callTyped(profileActivating, id);
+            try {
+                yield* callTyped(profileActivating, id);
 
-            yield* putTyped(customizationActions.lock.build("IDLE", {uuid: ""}));
+            } catch (e) {
+
+                yield* putTyped(toastActions.openRequest.build(ToastType.Error, `${e}`));
+                debug("Critical ERROR to activate the profile", id);
+                debug(e);
+
+            } finally {
+
+                yield* putTyped(customizationActions.lock.build("IDLE", {uuid: ""}));
+            }
+
         } else {
             debug(`profile "${id || "thorium default profile"}" cannot be activate because LOCK is enabled on ${lock.state} with ${lock.lockInfo.id || lock.lockInfo.uuid}`);
             yield* putTyped(toastActions.openRequest.build(ToastType.Success, `profile "${id || "thorium default profile"}" cannot be activate because LOCK is enabled on ${lock.state} with ${lock.lockInfo.id || lock.lockInfo.uuid}`));

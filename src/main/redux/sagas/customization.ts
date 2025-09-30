@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { customizationActions, toastActions } from "readium-desktop/common/redux/actions";
+import { authActions, customizationActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { customizationPackageProvisioning, customizationPackageProvisionningFromFolder, customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
@@ -21,6 +21,12 @@ import { existsSync, statSync } from "node:fs";
 import path from "node:path";
 import { ICustomizationLockInfo } from "readium-desktop/common/redux/states/customization";
 import { ToastType } from "readium-desktop/common/models/toast";
+
+import { getAuthenticationToken, httpGet, httpGetWithAuth } from "readium-desktop/main/network/http";
+import { getOpdsAuthenticationChannel } from "readium-desktop/main/event";
+import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
+import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
+import { diMainGet } from "readium-desktop/main/di";
 
 const filename_ = "readium-desktop:main:redux:sagas:customization";
 const debug = debug_(filename_);
@@ -196,9 +202,114 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
     }
 }
 
+function* triggerCatalogOpdsAuthentication(action: customizationActions.triggerOpdsAuth.TAction) {
+
+    const payload = action.payload;
+    const { opdsAuthenticationHref, catalogHref } = payload;
+
+    debug("START SAGA Routine to trigger if not authenticated the OPDS Authentication dialog modal");
+    debug("Receive:  opdsAuthenticationHref=", opdsAuthenticationHref, "catalogHref=", catalogHref);
+
+    /*
+        {
+            "rel": "catalog",
+            "href": "https://demoreader.test.com/v1/home.opds2",
+            "title": {
+                "en": "test catalog"
+            },
+            "properties": {
+                "authenticate": {
+                    "type": "application/opds-authentication+json"
+                    "href": "https://demoreader.test.com/v1/sign_in.opds2"
+                },
+                "logo": {
+                    "rel": "logo",
+                    "href": "./images/catalog.svg"
+                }
+            }
+        }
+    */
+
+
+    const triggerAndWaitAuthenticationDialogModal = function* (linkHref: string, opdsAuthJsonObj: any): SagaGenerator<boolean> {
+
+        const r2OpdsAuth = TaJsonDeserialize(
+            opdsAuthJsonObj,
+            OPDSAuthenticationDoc,
+        );
+
+        const opdsAuthChannel = getOpdsAuthenticationChannel();
+
+        debug("put the authentication model in the saga authChannel", JSON.stringify(r2OpdsAuth, null, 4));
+        opdsAuthChannel.put([r2OpdsAuth, linkHref]);
+
+        const { cancel } = yield* raceTyped({
+            cancel: takeTyped(authActions.cancel.build),
+            done: takeTyped(authActions.done.build),
+        });
+        debug("authentication modal closed");
+
+        return !!cancel;
+    };
+
+
+    // authenticate only the first catalog for the moment
+    let catalogLinkUrl: URL;
+    try {
+        catalogLinkUrl = (new URL(catalogHref));
+    } catch {
+        // nothing
+    }
+    if (!catalogLinkUrl) {
+        debug("No catalogLinkUrl found, return");
+        return;
+    }
+    const authToken = yield* callTyped(() => getAuthenticationToken(catalogLinkUrl));
+    // debug("AUTH_TOKEN found", authToken);
+    if (authToken?.accessToken) {
+        debug("authentication token found");
+        // authenticated
+        debug("let's try to verify the authentication access token validity");
+
+        const response = yield* callTyped(() => httpGet(catalogHref));
+        const opdsService = yield* callTyped(() => diMainGet("opds-service"));
+        const opdsView = yield* callTyped(() => opdsService.opdsRequestTransformer(response));
+        if (opdsView.title === "Unauthorized") {
+            debug("authentication dialog modal triggered");
+        } else {
+            debug("odpsFeed seems to be authentified");
+            debug(opdsView);
+        }
+    } else {
+        debug("Authentication token not found !!");
+
+        if (opdsAuthenticationHref) {
+            debug("There is an opds authentication document link");
+            const response = yield* callTyped(() => httpGetWithAuth(false)(opdsAuthenticationHref));
+            if (response.isSuccess) {
+                debug("authentication document receive");
+                const opdsAuthJsonObj = yield* callTyped(() => response.response.json());
+                debug(opdsAuthJsonObj);
+                const cancelled = yield* callTyped(triggerAndWaitAuthenticationDialogModal, catalogHref, opdsAuthJsonObj);
+                if (cancelled) {
+                    debug("authentication modal cancelled");
+                }
+            } else {
+                debug("Error to get opds authentication document", response.statusCode, response.statusMessage, response.isTimeout, response.isNetworkError);
+            }
+
+        }
+    }
+}
+
 export function saga() {
 
     return allTyped([
+        takeSpawnLeading(
+            customizationActions.triggerOpdsAuth.ID,
+            triggerCatalogOpdsAuthentication,
+            (e) => error(filename_, e),
+        ),
         takeSpawnLeading(
             customizationActions.acquire.ID,
             acquireProvisionsActivates,

@@ -13,6 +13,7 @@ import * as lock from "./lock";
 import * as history from "./addHistory";
 import * as welcomeScreen from "./welcomeScreen";
 import * as manifest from "./manifest";
+import * as triggerOpdsAuth from "./triggerOpdsAuthentication";
 
 export {
     activate as activating,
@@ -22,4 +23,5 @@ export {
     history as addHistory,
     welcomeScreen,
     manifest,
+    triggerOpdsAuth,
 };
