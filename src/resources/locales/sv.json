@@ -972,7 +972,7 @@
                     "name": ""
                 },
                 "FocusReaderNavigationBookmarks": {
-                    "description": "",
+                    "description": "Flytta tangentbordsfokus till avsnittet 'Bokmärken' i läsfönstrets navigeringspanel",
                     "name": ""
                 },
                 "FocusReaderNavigationSearch": {
