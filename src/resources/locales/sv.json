@@ -924,7 +924,7 @@
                     "name": ""
                 },
                 "AudioPrevious": {
-                    "description": "",
+                    "description": "Gå tillbaka till föregående ljudsegment i uppläsningen (EPUB3 Media Overlays, Text-to-Speech-uppläsning eller förinspelad ljudbok)",
                     "name": ""
                 },
                 "AudioPreviousAlt": {
