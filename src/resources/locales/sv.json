@@ -936,7 +936,7 @@
                     "name": ""
                 },
                 "CloseReader": {
-                    "description": "",
+                    "description": "Stäng läsfönstret och återgå till bokhyllan",
                     "name": ""
                 },
                 "FXLZoomIn": {
