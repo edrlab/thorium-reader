@@ -933,11 +933,11 @@
                 },
                 "AudioStop": {
                     "description": "Stoppa pågående uppspelning (EPUB3 Media Overlays, Text-to-Speech-uppläsning eller förinspelad ljudbok)",
-                    "name": ""
+                    "name": "Stoppa uppspelning av ljud"
                 },
                 "CloseReader": {
                     "description": "Stäng läsfönstret och återgå till bokhyllan",
-                    "name": ""
+                    "name": "Stäng läsfönster"
                 },
                 "FXLZoomIn": {
                     "description": "Zooma in på en enskild sida eller ett uppslag med fast layout",
@@ -997,7 +997,7 @@
                 },
                 "NavigateNextChapter": {
                     "description": "",
-                    "name": ""
+                    "name": "Gå till nästa kapitel"
                 },
                 "NavigateNextChapterAlt": {
                     "description": "",
@@ -1025,7 +1025,7 @@
                 },
                 "NavigateNextPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Gå till nästa sida"
                 },
                 "NavigateNextPageAlt": {
                     "description": "",
@@ -1033,7 +1033,7 @@
                 },
                 "NavigatePreviousChapter": {
                     "description": "",
-                    "name": ""
+                    "name": "Gå till föregående kapitel"
                 },
                 "NavigatePreviousChapterAlt": {
                     "description": "",
@@ -1061,7 +1061,7 @@
                 },
                 "NavigatePreviousPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Gå till föregående sida"
                 },
                 "NavigatePreviousPageAlt": {
                     "description": "",
@@ -1073,7 +1073,7 @@
                 },
                 "NavigateToEnd": {
                     "description": "Gå till sista sidan av boken",
-                    "name": ""
+                    "name": "Gå till slutet"
                 },
                 "OpenReaderInfo": {
                     "description": "",
