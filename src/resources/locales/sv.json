@@ -928,7 +928,7 @@
                     "name": "Föregående ljudklipp"
                 },
                 "AudioPreviousAlt": {
-                    "description": "",
+                    "description": "Gå tillbaka till föregående ljudsegment i uppläsningen (EPUB3 Media Overlays, Text-to-Speech-uppläsning eller förinspelad ljudbok). Hoppar över all struktur som kan hoppas över",
                     "name": ""
                 },
                 "AudioStop": {
