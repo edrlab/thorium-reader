@@ -1072,7 +1072,7 @@
                     "name": "Gå till början"
                 },
                 "NavigateToEnd": {
-                    "description": "",
+                    "description": "Gå till sista sidan av boken",
                     "name": ""
                 },
                 "OpenReaderInfo": {
