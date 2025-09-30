@@ -1076,8 +1076,8 @@
                     "name": "Gå till slutet"
                 },
                 "OpenReaderInfo": {
-                    "description": "",
-                    "name": ""
+                    "description": "Öppna \"Om boken\" från läsfönstret",
+                    "name": "Visa bokinformation"
                 },
                 "OpenReaderInfoWhereAmI": {
                     "description": "",
