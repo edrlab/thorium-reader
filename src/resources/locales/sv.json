@@ -953,10 +953,10 @@
                 },
                 "FocusMain": {
                     "description": "Flytta tangentbordsfokus till huvudlandmärket i det grafiska användargränssnittet. I läsfönstret flyttas fokus då till bokens innehåll.",
-                    "name": ""
+                    "name": "Gå till huvudinnehållet"
                 },
                 "FocusMainDeep": {
-                    "description": "",
+                    "description": "I läsfönstret flyttas tangentbordsfokus till bokens senaste lästa innehåll med en mer tillförlitlig teknik för skärmläsare",
                     "name": ""
                 },
                 "FocusReaderGotoPage": {
