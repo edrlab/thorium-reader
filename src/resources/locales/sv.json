@@ -774,10 +774,10 @@
             "pageHelpInfo2": "ange två sidnummer med bindestreck för att välja ett sammanhängande sidintervall (t.ex. \"6-13\")",
             "pageHelpInfo3": "använd semikolon för att separera flera sidor eller sidintervall (t.ex. \"5;14-20;37\")",
             "pageHelpInfo4": "utelämna första eller sista sidan i intervallet för att ange början eller slutet av boken (t.ex. \"-16\" = \"1-16\", \"34-\" = \"34-100\")",
-            "pages": "",
-            "preview": "",
-            "print": "",
-            "printablePages": "",
+            "pages": "Sidor",
+            "preview": "Förhandsvisning",
+            "print": "Skriv ut",
+            "printablePages": "Antal sidor som kan skrivas ut (totalt)",
             "title": "Val av utskrivbara sidor"
         },
         "settings": {
