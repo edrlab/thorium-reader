@@ -734,10 +734,10 @@
             "openTableOfContentsTitle": "Navigation",
             "page": "Sida",
             "pdfscalemode": "Anpassa till hel sida eller sidbredd",
-            "print": "",
-            "printDisabled": "",
-            "screenNext": "",
-            "screenPrevious": "",
+            "print": "Skriv ut",
+            "printDisabled": "Utskrift förbjuden",
+            "screenNext": "Nästa sida",
+            "screenPrevious": "Föregående sida",
             "settingsTitle": "Inställningar"
         },
         "notes": {
@@ -766,7 +766,7 @@
             "descriptionLcpCount": "Gräns för återstående sidor",
             "descriptionLcpPrintable": "Tidigare utskrivna sidor",
             "howTo": "",
-            "lcpInfo": "",
+            "lcpInfo": "Antalet sidor du kan skriva ut är begränsat till {{- count}}. Välj de sidor du vill skriva ut här.",
             "noPagesLcpLimitReached": "",
             "noPrintablePages": "",
             "pageHelpInfo": "",
