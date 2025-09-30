@@ -957,7 +957,7 @@
                 },
                 "FocusMainDeep": {
                     "description": "I läsfönstret flyttas tangentbordsfokus till bokens senaste lästa innehåll med en mer tillförlitlig teknik för skärmläsare",
-                    "name": ""
+                    "name": "Djup fokus på huvudinnehåll"
                 },
                 "FocusReaderGotoPage": {
                     "description": "",
