@@ -984,8 +984,8 @@
                     "name": ""
                 },
                 "FocusReaderSettings": {
-                    "description": "",
-                    "name": ""
+                    "description": "Flytta tangentbordsfokus till inställningsmenyn (visningsalternativ m.m.)",
+                    "name": "Gå till läsarinställningar"
                 },
                 "FocusSearch": {
                     "description": "",
@@ -1068,7 +1068,7 @@
                     "name": ""
                 },
                 "NavigateToBegin": {
-                    "description": "",
+                    "description": "Gå till första sidan av boken",
                     "name": ""
                 },
                 "NavigateToEnd": {
