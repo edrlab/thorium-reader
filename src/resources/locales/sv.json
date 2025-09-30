@@ -802,7 +802,7 @@
             "letterSpacing": "Teckenavstånd",
             "lineSpacing": "Radavstånd",
             "margin": "Marginaler",
-            "mathjax": "",
+            "mathjax": "Aktivera stöd för MathJax",
             "noFootnotes": "Inaktivera popup-fotnoter",
             "noRTLFlip": "Inaktivera vänster-till-höger-gränssnitt",
             "noRuby": "Dölj japanska ruby-tecken",
