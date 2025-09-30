@@ -901,11 +901,11 @@
                 },
                 "AnnotationsCreate": {
                     "description": "Öppna dialogrutan för att skapa anteckning för den markerade texten och redigera textanteckning, markeringsfärg, markeringstyp och tagg.",
-                    "name": ""
+                    "name": "Skapa anteckning"
                 },
                 "AnnotationsCreateQuick": {
                     "description": "Skapa en snabbanteckning för den markerade texten med senast använda markeringsfärg och -typ (anteckning och tagg lämnas tomma).",
-                    "name": ""
+                    "name": "Skapa snabbanteckning"
                 },
                 "AnnotationsToggleMargin": {
                     "description": "Växla mellan de visuella indikatorerna för anteckningar och bokmärken, antingen i dokumentmarginalen eller i texten.",
@@ -913,7 +913,7 @@
                 },
                 "AudioNext": {
                     "description": "Gå framåt till nästa ljudsegment i uppläsningen (EPUB3 Media Overlays, Text-to-Speech eller förinspelad ljudbok)",
-                    "name": ""
+                    "name": "Nästa ljudklipp"
                 },
                 "AudioNextAlt": {
                     "description": "Gå framåt till nästa ljudsegment i uppläsningen (EPUB3 Media Overlays, Text-to-Speech-uppläsning eller förinspelad ljudbok). Hoppar över all struktur som kan hoppas över.",
@@ -921,11 +921,11 @@
                 },
                 "AudioPlayPause": {
                     "description": "Växla mellan spela upp och pausa för aktuell uppläsning (EPUB3 Media Overlays, Text-to-Speech-uppläsning eller förinspelad ljudbok)",
-                    "name": ""
+                    "name": "Spela/pausa ljud"
                 },
                 "AudioPrevious": {
                     "description": "Gå tillbaka till föregående ljudsegment i uppläsningen (EPUB3 Media Overlays, Text-to-Speech-uppläsning eller förinspelad ljudbok)",
-                    "name": ""
+                    "name": "Föregående ljudklipp"
                 },
                 "AudioPreviousAlt": {
                     "description": "",
