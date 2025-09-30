@@ -904,12 +904,12 @@
                     "name": ""
                 },
                 "AnnotationsCreateQuick": {
-                    "description": "",
+                    "description": "Skapa en snabbanteckning för den markerade texten med senast använda markeringsfärg och -typ (anteckning och tagg lämnas tomma).",
                     "name": ""
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "",
-                    "name": ""
+                    "description": "Växla mellan de visuella indikatorerna för anteckningar och bokmärken, antingen i dokumentmarginalen eller i texten.",
+                    "name": "Slå på/av anteckningsmargina"
                 },
                 "AudioNext": {
                     "description": "",
