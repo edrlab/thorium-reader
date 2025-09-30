@@ -764,7 +764,7 @@
         },
         "print": {
             "descriptionLcpCount": "Gräns för återstående sidor",
-            "descriptionLcpPrintable": "",
+            "descriptionLcpPrintable": "Tidigare utskrivna sidor",
             "howTo": "",
             "lcpInfo": "",
             "noPagesLcpLimitReached": "",
