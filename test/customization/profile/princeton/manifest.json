@@ -1,0 +1,87 @@
+{
+    "manifestVersion": 1,
+    "identifier": "thorium-manifest://org.edrlab.thorium.princeton",
+    "version": "1.0.0",
+    "title": {
+      "en": "Princeton University Press"
+    },
+    "description": {
+      "en": "Princeton University Press publishes peer-reviewed books that connect authors and readers across spheres of knowledge to advance and enrich the global conversation."
+    },
+    "welcomeScreen": "<div style='background-color: white; border-radius: 10px; padding: 20px; height: 500px; font-family: PlantinMTPro, serif, sans-serif;'><h1 style='font-size: 32px; color: #2c3e50; margin-bottom: 20px;'><span style='color: #E77500; font-weight: bold;'>Princeton University Press</span> brings scholarly ideas to the world.</h1><p style='line-height: 1.6; margin-bottom: 20px; font-size: 18px;'>We publish peer-reviewed books that connect authors and readers across spheres of knowledge to advance and enrich the global conversation.</p><p style='font-size: 18px;'>We embrace the highest standards of scholarship, inclusivity, and diversity in our publishing.</p><p style='font-size: 18px;'>In keeping with Princeton University’s commitment to serve the nation and the world, we publish for scholars, students, and engaged readers everywhere.</p><p style='font-size: 16px; font-style: italic;'>For more informations, go to <a href='https://press.princeton.edu/'>our website</a>.</p></div>",
+    "theme": {
+        "color": {
+            "dark": {
+                "neutral": "#1C1C1C",
+                "primary": "#FF8C1A",
+                "secondary": "#483a3a",
+                "border": "#FF7A00",
+                "background": "#121212",
+                "appName": "#E0E0E0",
+                "scrollbarThumb": "",
+                "buttonsBorder": "#FF8C1A"
+            },
+            "light": {
+                "neutral": "#FFFFFF",
+                "primary": "#121212",
+                "secondary": "#fff8f2",
+                "border": "#E16100",
+                "background": "#e6e8e6",
+                "appName": "#C9C5C9",
+                "scrollbarThumb": "",
+                "buttonsBorder": "#E77500"
+            }
+        }
+    },
+    "links": [
+      {
+        "rel": "catalog", 
+        "href": "#/opds/91c44bd7-80f8-407e-909e-a73735ba6c90/browse/1/RmVlZGJvb2tz/aHR0cHM6Ly9jYXRhbG9nLmZlZWRib29rcy5jb20vY2F0YWxvZy9pbmRleC5qc29u",
+        "title": {
+          "en": "Princeton Library"
+        },
+        "properties": {
+          "showOnHomeSection": true,
+          "authenticate": {
+             "rel": "authentication",
+             "href": "https://auth.example.com/login"
+            },
+          "logo": {
+            "rel": "logo",
+            "href": "./images/catalog_logo.svg"
+          }
+        }
+      },
+      {
+        "rel": "catalog", 
+        "href": "#/opds/91c44bd7-80f8-407e-909e-a73735ba6c90/browse/3/RW4gY2UgbW9tZW50/aHR0cHM6Ly9jYXRhbG9nLmZlZWRib29rcy5jb20vZmVhdHVyZWQuanNvbj9sYW5ndWFnZXM9ZnI",
+        "title": {
+          "en": "Feedbooks catalog"
+        },
+        "properties": {
+          "showOnHomeSection": true,
+          "authenticate": {
+             "rel": "authentication",
+             "href": "https://auth.example.com/login"
+            },
+          "logo": {
+            "rel": "logo",
+            "href": "./images/catalog_logo.svg"
+          }
+        }
+      }
+    ],
+    "publications": [
+
+    ],
+    "images": [
+        {
+            "rel": "logo",
+            "href": "./images/logo.svg"
+        },
+        {
+          "rel": "welcome-screen",
+          "href": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Princeton_University_Press_logo.svg/320px-Princeton_University_Press_logo.svg.png"
+        }
+    ]
+}

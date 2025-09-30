@@ -25,6 +25,7 @@ import * as ShelfIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { Settings } from "../settings/Settings";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
+import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 // import { WizardModal } from "../Wizard";
 
 interface NavigationHeader {
@@ -114,6 +115,29 @@ class Header extends React.Component<IProps, undefined> {
                                 this.buildNavItem(item, index),
                         )
                     }
+                    {this.props.manifest?.links.map((item, index) => {
+                        const title = item.title[this.props.locale] || item.title["en"] || "";
+                        if (item.rel === "catalog" && item.properties.showOnHomeSection) {
+                            return (
+                                <li className={classNames("R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} key={index}>
+                                    <Link
+                                        to={{
+                                            ...this.props.location,
+                                            pathname: buildOpdsBrowserRoute(
+                                                title,
+                                                title,
+                                                item.href,
+                                            ),
+                                        }}>
+                                            <SVG ariaHidden svg={CatalogsIcon} />
+                                            <h3>{title}</h3>
+                                        </Link>
+                                                        
+                                </li>
+                            );
+                        }
+                        return <></>;
+                        })}
                     </div>
                     <li /* style={{position: "absolute", bottom: "10px" }} */>
                         <Settings />
@@ -209,6 +233,7 @@ const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
     history: state.history,
     customizationTheme: state.theme.customization,
+    manifest: state.customization.manifest,
 
     locale: state.i18n.locale, // refresh
 });
