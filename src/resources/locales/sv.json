@@ -1069,7 +1069,7 @@
                 },
                 "NavigateToBegin": {
                     "description": "Gå till första sidan av boken",
-                    "name": ""
+                    "name": "Gå till början"
                 },
                 "NavigateToEnd": {
                     "description": "",
