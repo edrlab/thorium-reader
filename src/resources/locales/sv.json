@@ -896,11 +896,11 @@
             "keyboardShortcuts": "Kortkommandon",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "",
-                    "name": ""
+                    "description": "Öppna dialogrutan för att skapa bokmärke och redigera namn (anteckning), färg och tagg",
+                    "name": "Skapa bokmärke med tagg"
                 },
                 "AnnotationsCreate": {
-                    "description": "",
+                    "description": "Öppna dialogrutan för att skapa anteckning för den markerade texten och redigera textanteckning, markeringsfärg, markeringstyp och tagg.",
                     "name": ""
                 },
                 "AnnotationsCreateQuick": {
