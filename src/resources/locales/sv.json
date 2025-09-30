@@ -770,7 +770,7 @@
             "noPagesLcpLimitReached": "Du har nått gränsen för LCP",
             "noPrintablePages": "Inga utskrivbara sidor",
             "pageHelpInfo": "Syntax för sidval:",
-            "pageHelpInfo1": "",
+            "pageHelpInfo1": "ange ett sidnumret för att välja en enskild sida (t.ex. \"6\")",
             "pageHelpInfo2": "",
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
