@@ -912,7 +912,7 @@
                     "name": "Slå på/av anteckningsmargina"
                 },
                 "AudioNext": {
-                    "description": "",
+                    "description": "Gå framåt till nästa ljudsegment i uppläsningen (EPUB3 Media Overlays, Text-to-Speech eller förinspelad ljudbok)",
                     "name": ""
                 },
                 "AudioNextAlt": {
