@@ -940,7 +940,7 @@
                     "name": ""
                 },
                 "FXLZoomIn": {
-                    "description": "",
+                    "description": "Zooma in på en enskild sida eller ett uppslag med fast layout",
                     "name": ""
                 },
                 "FXLZoomOut": {
