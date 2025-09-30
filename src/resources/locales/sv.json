@@ -1085,7 +1085,7 @@
                 },
                 "Print": {
                     "description": "Öppna utskriftsdialogen från läsfönstret",
-                    "name": ""
+                    "name": "Skriv ut"
                 },
                 "SearchNext": {
                     "description": "Gå till nästa sökresultat i läsfönstret. Det finns ett alternativt kortkommando för detta.",
@@ -1131,9 +1131,9 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "ANVÄND STANDARDMALLEN",
-                "enableCheckbox": "Aktivera/inaktivera ändringar i Mustache-mallen när anteckningar exporteras till HTML",
-                "overrideHTMLTemplate": "Använd egen Mustache-mall när anteckningar exporteras till HTML"
+                "applyDefaultTemplate": "Använd standardmallen",
+                "enableCheckbox": "Anpassa HTML-mallen",
+                "overrideHTMLTemplate": "Export av anteckningar och bokmärken"
             }
         },
         "profiles": {
