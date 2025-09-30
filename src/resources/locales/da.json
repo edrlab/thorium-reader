@@ -1133,6 +1133,13 @@
                 "overrideHTMLTemplate": "Eksport af noter (og bogmærker)"
             }
         },
+        "profiles": {
+            "info": "",
+            "thorium": {
+                "description": "",
+                "title": ""
+            }
+        },
         "session": {
             "title": "Gem session"
         },

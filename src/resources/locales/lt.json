@@ -1133,6 +1133,13 @@
                 "overrideHTMLTemplate": "Užrašų eksportavimas (pastabos ir skirtukai)"
             }
         },
+        "profiles": {
+            "info": "",
+            "thorium": {
+                "description": "",
+                "title": ""
+            }
+        },
         "session": {
             "title": "Įgalinti sesijos išsaugojimą"
         },

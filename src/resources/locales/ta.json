@@ -1133,6 +1133,13 @@
                 "overrideHTMLTemplate": "குறிப்புகள் ஏற்றுமதி (சிறுகுறிப்புகள் மற்றும் புக்மார்க்குகள்)"
             }
         },
+        "profiles": {
+            "info": "",
+            "thorium": {
+                "description": "",
+                "title": ""
+            }
+        },
         "session": {
             "title": "அமர்வு சேமிப்பை இயக்கவும்"
         },

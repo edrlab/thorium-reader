@@ -1133,6 +1133,13 @@
                 "overrideHTMLTemplate": "Använd egen Mustache-mall när anteckningar exporteras till HTML"
             }
         },
+        "profiles": {
+            "info": "",
+            "thorium": {
+                "description": "",
+                "title": ""
+            }
+        },
         "session": {
             "title": "Spara session"
         },

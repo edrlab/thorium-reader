@@ -2577,7 +2577,11 @@ declare namespace typed_i18n {
     readonly "title": string
   },
   readonly "profiles": {
-    readonly "thorium": { readonly "description": string }
+    readonly "info": string,
+    readonly "thorium": {
+      readonly "title": string,
+      readonly "description": string
+    }
   }
 };
   (_: "settings.annotationCreator", __?: {}): {
@@ -3275,8 +3279,16 @@ declare namespace typed_i18n {
   (_: "settings.theme.description", __?: {}): string;
   (_: "settings.theme.light", __?: {}): string;
   (_: "settings.theme.title", __?: {}): string;
-  (_: "settings.profiles", __?: {}): { readonly "thorium": { readonly "description": string } };
-  (_: "settings.profiles.thorium", __?: {}): { readonly "description": string };
+  (_: "settings.profiles", __?: {}): {
+  readonly "info": string,
+  readonly "thorium": {
+    readonly "title": string,
+    readonly "description": string
+  }
+};
+  (_: "settings.profiles.info", __?: {}): string;
+  (_: "settings.profiles.thorium", __?: {}): { readonly "title": string, readonly "description": string };
+  (_: "settings.profiles.thorium.title", __?: {}): string;
   (_: "settings.profiles.thorium.description", __?: {}): string;
   (_: "tts", __?: {}): {
   readonly "highlight": {

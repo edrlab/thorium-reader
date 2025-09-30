@@ -1133,6 +1133,13 @@
                 "overrideHTMLTemplate": "Εξαγωγή σημειώσεων (σχόλια και σελιδοδείκτες)"
             }
         },
+        "profiles": {
+            "info": "",
+            "thorium": {
+                "description": "",
+                "title": ""
+            }
+        },
         "session": {
             "title": "Αποθήκευση συνεδρίας"
         },

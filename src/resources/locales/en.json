@@ -1133,6 +1133,13 @@
                 "overrideHTMLTemplate": "Notes export (annotations and bookmarks)"
             }
         },
+        "profiles": {
+            "info": "Switch profiles to customize the app with a partner vendor’s branding and colors. Each profile offers a tailored experience.",
+            "thorium": {
+                "description": "The Thorium Vanilla profile is the orignal one, designed by EDRLab.",
+                "title": "Thorium vanilla"
+            }
+        },
         "session": {
             "title": "Enable session saving"
         },
@@ -1147,11 +1154,6 @@
             "description": "Application theme matches operating system.",
             "light": "Light",
             "title": "Application Theme"
-        },
-        "profiles": {
-            "thorium": {
-                "description": "The Thorium Vanilla profile is the orignal one, designed by EDRLab."
-            }
         }
     },
     "tts": {

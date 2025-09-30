@@ -1133,6 +1133,13 @@
                 "overrideHTMLTemplate": "メモをHTMLに出力するとき、Mustacheテンプレートを上書きする"
             }
         },
+        "profiles": {
+            "info": "",
+            "thorium": {
+                "description": "",
+                "title": ""
+            }
+        },
         "session": {
             "title": "セッションを保存"
         },

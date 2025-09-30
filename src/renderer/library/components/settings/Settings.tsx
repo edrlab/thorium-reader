@@ -34,6 +34,7 @@ import * as BinIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { TTheme } from "readium-desktop/common/redux/states/theme";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
+import * as ThoriumIcon from "readium-desktop/renderer/assets/icons/thorium.svg";
 import * as LanguageIcon from "readium-desktop/renderer/assets/icons/language.svg";
 import * as BrushIcon from "readium-desktop/renderer/assets/icons/paintbrush-icon.svg";
 import KeyboardSettings, { AdvancedTrigger } from "readium-desktop/renderer/library/components/settings/KeyboardSettings";
@@ -410,34 +411,21 @@ const Profiles = () => {
 
     return (
         <>
-            {/* <div>
-                <ComboBox label="Sélectionner un profil" items={allProfiles}  selectedKey={selectedKey?.id} onSelectionChange={setProfile}>
-                    {item =>         
-                    <ComboBoxItem key={item.id} textValue={item.name}>
-                        <span style={{ display: "flex", alignItems: "center", gap: "0.5em" }}>
-                            {item.name}
-                            {/* {item.properties.authenticate?.href ?
-                                <SVG className={stylesSettings.authIcon} ariaHidden svg={AuthIcon} />
-                            : <></>}
-                        </span>
-                    </ComboBoxItem>}
-                </ComboBox>
-            </div> */}
             <div className={stylesSettings.session_text}>
                 <SVG ariaHidden svg={InfoIcon} />
-                <p>Switch profiles to customize the app with a partner vendor’s branding and colors. Each profile offers a tailored experience.</p>
+                <p>{__("settings.profiles.info")}</p>
             </div>
             <div
                 className={stylesSettings.profile_selection_form}
             >
                 {
                     packageProfileProvisioned.map((profile) => {
-                        const profileTitle = profile.title?.[locale] || profile.title?.["en"] || "";
-                        const profileDescription = profile.description?.[locale] || profile.description?.["en"] || "";
+                        const profileTitle = profile?.title && typeof profile.title === "object" ? profile.title[locale] || profile.title["en"] || "" : "";
+                        const profileDescription = profile?.description && typeof profile.description === "object" ? profile.description[locale] || profile.description["en"] || "" : "";
 
                         return (
                             <div
-                                key={profile.id} // Ajout de la key manquante pour React
+                                key={profile.id}
                                 className={stylesSettings.profile_selection_input}
                             >
                                 <input
@@ -465,24 +453,24 @@ const Profiles = () => {
                 }
 
                 <div
-                    key={"vanilla"}
+                    key={"thorium_vanilla"}
                     className={stylesSettings.profile_selection_input}
                 >
                     <input
                         type="radio"
-                        id={"Thorium vanilla"}
-                        value={"Thorium vanilla"}
+                        id={__("settings.profiles.thorium.title")}
+                        value={__("settings.profiles.thorium.title")}
                         name="profile_selection"
                         checked={!selectedProfile}
                         onChange={(e) => {
                             console.log("PROFILE Input change", e);
-                            dispatch(customizationActions.activating.build(""));
+                            dispatch(customizationActions.activating.build("")); // no profile
                         }}
                     />
-                    <label htmlFor={"Thorium vanilla"} className={stylesSettings.profile_selection_label}>
-                        <img src="./resources/icons/512x512.png" alt=""/>
+                    <label htmlFor={__("settings.profiles.thorium.title")} className={stylesSettings.profile_selection_label}>
+                        <SVG ariaHidden svg={ThoriumIcon} />
                         <div className={stylesSettings.profile_selection_description}>
-                            <h5>{"Thorium vanilla"}</h5>
+                            <h5>{__("settings.profiles.thorium.title")}</h5>
                             <p>{__("settings.profiles.thorium.description")}</p>
                         </div>
                     </label>

@@ -49,7 +49,7 @@ export const CustomizationProfileDialog: React.FC = () => {
         const hrefSanitized = parsed.replace(regex, (substring) => {
     
             let url = /href=\"(.*?)\"/.exec(substring)[1];
-            if (!url.startsWith("http")) {
+            if (!/^https?:\/\//.test(url)) {
                 url = "http://" + url;
             }
     
