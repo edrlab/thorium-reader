@@ -242,6 +242,7 @@ function* opdsRequestMediaFlow({request, callback}: TregisterHttpProtocolHandler
     if (request && request.url.startsWith(schemePrefix)) {
         const b64 = decodeURIComponent(request.url.slice(schemePrefix.length));
         const url = Buffer.from(b64, "base64").toString("utf-8");
+        // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
         if (!isURL(url)) {
             debug("opdsRequestMedia failed not a valid url", url);
             return ;

@@ -459,7 +459,9 @@ export class LcpManager {
                 }
                 if (renewLink.Type !== ContentType.Lsd) {
                     if (renewLink.Type === ContentType.Html) {
-                        await shell.openExternal(renewLink.Href);
+                        if (renewLink.Href && /^https?:\/\//.test(renewLink.Href)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
+                            await shell.openExternal(renewLink.Href);
+                        }
                         return newPubDocument;
                     }
                     debug(`renewLink.Type: ${renewLink.Type}`);
@@ -571,7 +573,9 @@ export class LcpManager {
                 }
                 if (returnLink.Type !== ContentType.Lsd) {
                     if (returnLink.Type === ContentType.Html || returnLink.Type === ContentType.Xhtml) {
-                        await shell.openExternal(returnLink.Href);
+                        if (returnLink.Href && /^https?:\/\//.test(returnLink.Href)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
+                            await shell.openExternal(returnLink.Href);
+                        }
                         return newPubDocument;
                     }
                     debug(`returnLink.Type: ${returnLink.Type}`);

@@ -57,7 +57,7 @@ import { mimeTypes } from "readium-desktop/utils/mimeTypes";
 
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY, IEventPayload_R2_EVENT_LINK, R2_EVENT_LINK } from "@r2-navigator-js/electron/common/events";
 import {
-    convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
+    convertCustomSchemeToHttpUrl, convertHttpUrlToCustomScheme, READIUM2_ELECTRON_HTTP_PROTOCOL,
 } from "@r2-navigator-js/electron/common/sessions";
 import {
     audioForward, audioPause, audioRewind, audioTogglePlayPause,
@@ -107,9 +107,10 @@ import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 import { translateContentFieldHelper } from "readium-desktop/common/services/translator";
 import { getStore } from "../createStore";
-import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
+import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER } from "readium-desktop/common/streamerProtocol";
 import { DockTypeName } from "readium-desktop/common/models/dock";
 import { TDrawView } from "readium-desktop/common/redux/states/renderer/note";
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 const debug = debug_("readium-desktop:renderer:reader:components:Reader");
 debug("_");
@@ -3202,6 +3203,25 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     const isPdf = isPdfFn(state.reader.info.r2Publication);
     const isAudioBook = isAudiobookFn(state.reader.info.r2Publication);
 
+    // const manifestUrlR2Protocol = state.reader.info.manifestUrlR2Protocol; // httpsr2:// "CustomScheme"
+    const manifestUrlHttp = state.reader.info.manifestUrlHttp.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ? convertCustomSchemeToHttpUrl(state.reader.info.manifestUrlHttp) : state.reader.info.manifestUrlHttp; // thoriumhttps://
+    // export const THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL = "thoriumhttps";
+    // export const THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER = "0.0.0.0";
+    const pubPathBase64 = decodeURIComponent(manifestUrlHttp.replace(/\/manifest.json$/, "").replace("thoriumhttps://0.0.0.0/pub/", ""));
+    const pubPath = Buffer.from(pubPathBase64, "base64").toString();
+
+    const manifestUrlR2Protocol_pub_id_not_path = convertHttpUrlToCustomScheme(`${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/pub/${encodeURIComponent_RFC3986(Buffer.from(state.reader.info.publicationIdentifier || state.reader.info.publicationView.identifier, "utf8").toString("base64"))}/manifest.json`);
+
+    debug("manifestUrlR2Protocol_pub_id_not_path", manifestUrlR2Protocol_pub_id_not_path);
+    debug("state.reader.info.manifestUrlR2Protocol", state.reader.info.manifestUrlR2Protocol);
+    debug("state.reader.info.manifestUrlHttp", state.reader.info.manifestUrlHttp, manifestUrlHttp);
+
+    debug("state.reader.info.filesystemPath", state.reader.info.filesystemPath);
+    debug("pubPath", pubPath);
+
+    debug("state.reader.info.publicationIdentifier", state.reader.info.publicationIdentifier);
+    debug("state.reader.info.publicationView.identifier", state.reader.info.publicationView.identifier);
+
     return {
         isDivina,
         isPdf,
@@ -3215,7 +3235,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         pubId: state.reader.info.publicationIdentifier,
         locator: state.reader.locator,
         searchEnable: state.search.enable,
-        manifestUrlR2Protocol: state.reader.info.manifestUrlR2Protocol,
+        manifestUrlR2Protocol: manifestUrlR2Protocol_pub_id_not_path,
         winId: state.win.identifier,
         readerMode: state.mode,
         divinaReadingMode: state.reader.divina.readingMode,

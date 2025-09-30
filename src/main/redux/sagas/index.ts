@@ -263,7 +263,9 @@ function* checkAppVersionUpdate() {
                                 normalizeAccessKeys: false,
                             });
                             if (res.response === 0) {
-                                await shell.openExternal(json.url);
+                                if (json.url && /^https?:\/\//.test(json.url)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
+                                    await shell.openExternal(json.url);
+                                }
                             }
                         });
                     }

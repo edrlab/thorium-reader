@@ -182,6 +182,7 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
                 {
                     a11y_conformsTo.map((value, i) => {
                         if (!value) return <></>;
+                        // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
                         if (isURL(value)) {
                             const label = value === "http://www.idpf.org/epub/a11y/accessibility-20170105.html#wcag-a"
                                 ? "EPUB Accessibility 1.0 - WCAG 2.0 Level A"
@@ -205,13 +206,15 @@ export class PublicationInfoA11y extends React.Component<IProps, IState> {
                 {
                     a11y_certifierReport.map((value, i) => {
                         if (!value) return <></>;
+                        // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
                         if (isURL(value)) {
-                            // file:// and data: are automatically excluded by isURL(), as well as http://localhost but not http://127.0.0.1 (or http://IP:PORT more generally, which is ok)
                             // onClick (which includes ENTER key) is not strictly necessary but it allows us to prevent SHIFT for new window, OPT/ALT for download hyperlink target
                             return <li key={i}><a
                             onClick={async (ev) => {
                                 ev.preventDefault(); // necessary because href, see comment above
-                                await shell.openExternal(value);
+                                if (value && /^https?:\/\//.test(value)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
+                                    await shell.openExternal(value);
+                                }
                             }}
                             href={value} title={value} aria-label={__("publication.accessibility.certifierReport")}>{__("publication.accessibility.certifierReport")}</a></li>;
                         }

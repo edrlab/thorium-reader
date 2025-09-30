@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
-// import * as debug_ from "debug";
+import * as debug_ from "debug";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-import { BrowserWindow, Event, HandlerDetails, shell } from "electron";
+import { BrowserWindow, Event, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
 import * as path from "path";
 import { defaultRectangle, normalizeRectangle } from "readium-desktop/common/rectangle/window";
 import { diMainGet } from "readium-desktop/main/di";
@@ -26,7 +26,7 @@ import { contextMenuSetup } from "@r2-navigator-js/electron/main/browser-window-
 import { WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/constant";
 
 // Logger
-// const debug = debug_("readium-desktop:createLibraryWindow");
+const debug = debug_("readium-desktop:createLibraryWindow");
 
 const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
 
@@ -147,13 +147,19 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
     setMenu(libWindow, false);
 
     // Redirect link to an external browser
-    const handleRedirect = async (event: Event, url: string) => {
-        if (url === libWindow.webContents.getURL()) {
+    const handleRedirect = (event: Event<WebContentsWillNavigateEventParams>, _url: string) => {
+        if (event.url === libWindow.webContents.getURL()) {
+            debug("will-navigate PASS", event.url);
             return;
         }
 
+        debug("will-navigate EXTERNAL", event.url);
         event.preventDefault();
-        await shell.openExternal(url);
+        if (event.url &&/^https?:\/\//.test(event.url)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
+            setTimeout(async () => {
+                await shell.openExternal(event.url);
+            }, 0);
+        }
     };
     libWindow.webContents.on("will-navigate", handleRedirect);
 
@@ -162,12 +168,16 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
     // libWindow.webContents.on("new-window", handleRedirect);
     libWindow.webContents.setWindowOpenHandler((details: HandlerDetails) => {
         if (details.url === libWindow.webContents.getURL()) {
+            debug("setWindowOpenHandler PASS", details.url);
             return { action: "allow" };
         }
 
-        setTimeout(async () => {
-            await shell.openExternal(details.url);
-        }, 0);
+        debug("setWindowOpenHandler EXTERNAL", details.url);
+        if (details.url && /^https?:\/\//.test(details.url)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
+            setTimeout(async () => {
+                await shell.openExternal(details.url);
+            }, 0);
+        }
 
         return { action: "deny" };
     });

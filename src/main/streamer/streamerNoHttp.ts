@@ -136,7 +136,8 @@ if (true) { // !_USE_HTTP_STREAMER) {
         if (readiumcssJson) {
             if (!readiumcssJson.urlRoot) {
                 // `/${READIUM_CSS_URL_PATH}/`
-                readiumcssJson.urlRoot = THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}";
+                readiumcssJson.urlRoot = THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://" + THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER;
+                // readiumcssJson.urlRoot = convertHttpUrlToCustomScheme(readiumcssJson.urlRoot + "/xx/yy/zz").replace(/\/xx\/yy\/zz$/, "");
             }
             if (__TH__IS_DEV__) {
                 debug("_____ readiumCssJson.urlRoot (setupReadiumCSS() transformer): ", readiumcssJson.urlRoot);
@@ -392,23 +393,23 @@ const streamProtocolHandler = async (
     const publicationAssetsPrefix = "/pub/";
     const isPublicationAssets = uPathname.startsWith(publicationAssetsPrefix);
 
+    const mediaOverlaysSuffix = `/${mediaOverlayURLPath}`;
+    const isMediaOverlays = uPathname.endsWith(mediaOverlaysSuffix);
+
     const mathJaxPrefix = `/${MATHJAX_URL_PATH}/`;
     const isMathJax = uPathname.startsWith(mathJaxPrefix);
 
     const readiumCssPrefix = `/${READIUM_CSS_URL_PATH}/`;
     const isReadiumCSS = uPathname.startsWith(readiumCssPrefix);
 
-    const mediaOverlaysPrefix = `/${mediaOverlayURLPath}`;
-    const isMediaOverlays = uPathname.endsWith(mediaOverlaysPrefix);
-
     debug("streamProtocolHandler uPathname", uPathname);
     debug("streamProtocolHandler isCustomProfileZipAssets", isCustomProfileZipAssets);
     debug("streamProtocolHandler isNotesFromPublicationRequest", isNotesFromPublicationRequest);
     debug("streamProtocolHandler isPdfjsAssets", isPdfjsAssets);
     debug("streamProtocolHandler isPublicationAssets", isPublicationAssets);
+    debug("streamProtocolHandler isMediaOverlays", isMediaOverlays);
     debug("streamProtocolHandler isMathJax", isMathJax);
     debug("streamProtocolHandler isReadiumCSS", isReadiumCSS);
-    debug("streamProtocolHandler isMediaOverlays", isMediaOverlays);
 
     const isHead = req.method.toLowerCase() === "head";
     if (isHead) {
@@ -456,9 +457,8 @@ const streamProtocolHandler = async (
 
         const route = uPathname.substr(customProfileZipAssetsPrefix.length);
         const [idEncoded, pathInZipEncoded] = route.split(/\/(.*)/s);
-        const id = decodeURIComponent(Buffer.from(idEncoded, "base64").toString());
-        const pathInZip = path.resolve("/", decodeURIComponent(Buffer.from(pathInZipEncoded, "base64").toString())).substr(1); // remove first '/'
-
+        const id = Buffer.from(decodeURIComponent(idEncoded), "base64").toString();
+        const pathInZip = path.resolve("/", Buffer.from(decodeURIComponent(pathInZipEncoded), "base64").toString()).substr(1); // remove first '/'
 
         const state = diMainGet("store").getState();
         const profile = state.customization.provision.find((profile) => profile.id === id);
@@ -770,7 +770,23 @@ const streamProtocolHandler = async (
         if (!__TH__IS_PACKAGED__) {
             folderPath = path.join(process.cwd(), "dist", pdfjsFolder);
         }
-        const pdfjsFullPathname = path.normalize(`${folderPath}/${pdfjsUrlPathname}`);
+        folderPath = path.normalize(folderPath);
+        const pdfjsFullPathname = path.normalize(path.join(folderPath, pdfjsUrlPathname));
+
+        if (!pdfjsFullPathname.startsWith(folderPath) || !fs.existsSync(pdfjsFullPathname)) {
+            const err = "404 NOT FOUND: " + pdfjsFullPathname;
+            debug(err);
+            const buff = Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
+            headers["Content-Length"] = buff.length.toString();
+            const objz = {
+                // NodeJS.ReadableStream
+                data: bufferToStream(buff),
+                headers,
+                statusCode: 404,
+            };
+            callback(objz);
+            return;
+        }
         const fileExtension = path.extname(pdfjsFullPathname);
         debug("PDFJS full path name :", pdfjsFullPathname);
 
@@ -787,7 +803,7 @@ const streamProtocolHandler = async (
         };
         callback(obj);
         return;
-    } else if (isPublicationAssets || isMediaOverlays) {
+    } else if (isPublicationAssets) { //  || isMediaOverlays IMPLIED!
         let b64Path = uPathname.substr(publicationAssetsPrefix.length);
         const i = b64Path.indexOf("/");
         let pathInZip = "";
@@ -815,7 +831,16 @@ const streamProtocolHandler = async (
             return;
         }
 
-        const pathBase64Str = Buffer.from(b64Path, "base64").toString("utf8");
+        let pathBase64Str = Buffer.from(b64Path, "base64").toString("utf8");
+        debug("streamProtocolHandler pathBase64Str", pathBase64Str);
+        if (
+            (!pathBase64Str.includes("/") && !pathBase64Str.includes("\\")) // not a path on the filesystem
+            || /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(pathBase64Str) // UUID v4 syntax ... though this is never reached because of the first predicate in the conditional if
+            // || !fs.existsSync(pathBase64Str)
+        ) {
+            const pubStorage = diMainGet("publication-storage");
+            pathBase64Str = pubStorage.getPublicationEpubPath(pathBase64Str);
+        }
 
         // const fileName = path.basename(pathBase64Str);
         // const ext = path.extname(fileName).toLowerCase();
@@ -941,8 +966,10 @@ const streamProtocolHandler = async (
 
         if (pathInZip === "manifest.json") {
 
-            const rootUrl = "THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL://" + THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER + "/pub/" + encodeURIComponent_RFC3986(b64Path);
-            const manifestURL = rootUrl + "/" + "manifest.json";
+            const rootUrl = THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://" + THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER + "/pub/" + encodeURIComponent_RFC3986(b64Path);
+            // const rootUrl = convertHttpUrlToCustomScheme(rootUrl_ + "/zz").replace(/\/zz$/, "");
+            const manifestURL = convertHttpUrlToCustomScheme(rootUrl + "/" + "manifest.json");
+            debug("manifest.json ROOT URL", rootUrl);
 
             const contentType =
                 (publication.Metadata && publication.Metadata.RDFType &&
@@ -958,7 +985,7 @@ const streamProtocolHandler = async (
             }
 
             function absoluteURL(href: string): string {
-                return rootUrl + "/" + href;
+                return convertHttpUrlToCustomScheme(rootUrl + "/" + href);
             }
 
             let hasMO = false;
@@ -1412,11 +1439,11 @@ const streamProtocolHandler = async (
         }
     } else if (isMathJax || isReadiumCSS) {
 
-        const p = path.join(isReadiumCSS ? READIUMCSS_FILE_PATH : MATHJAX_FILE_PATH,
-            uPathname.substr((isReadiumCSS ? readiumCssPrefix : mathJaxPrefix).length));
+        const rootPathConstraint = path.normalize(isReadiumCSS ? READIUMCSS_FILE_PATH : MATHJAX_FILE_PATH);
+        const p = path.normalize(path.join(rootPathConstraint, uPathname.substr((isReadiumCSS ? readiumCssPrefix : mathJaxPrefix).length)));
         debug("streamProtocolHandler isMathJax || isReadiumCSS", p);
 
-        if (!fs.existsSync(p)) {
+        if (!p.startsWith(rootPathConstraint) || !fs.existsSync(p)) {
             const err = "404 NOT FOUND: " + p;
             debug(err);
             const buff = Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
