@@ -920,7 +920,7 @@
                     "name": ""
                 },
                 "AudioPlayPause": {
-                    "description": "",
+                    "description": "Växla mellan spela upp och pausa för aktuell uppläsning (EPUB3 Media Overlays, Text-to-Speech-uppläsning eller förinspelad ljudbok)",
                     "name": ""
                 },
                 "AudioPrevious": {
