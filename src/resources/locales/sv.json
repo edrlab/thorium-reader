@@ -945,14 +945,14 @@
                 },
                 "FXLZoomOut": {
                     "description": "Zooma ut från en sida eller ett uppslag med fast layout",
-                    "name": ""
+                    "name": "Zooma ut (fast layout)"
                 },
                 "FXLZoomReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Återställ zoom för en sida eller ett uppslag med fast layout.",
+                    "name": "Återställ zoom (fast layout)"
                 },
                 "FocusMain": {
-                    "description": "",
+                    "description": "Flytta tangentbordsfokus till huvudlandmärket i det grafiska användargränssnittet. I läsfönstret flyttas fokus då till bokens innehåll.",
                     "name": ""
                 },
                 "FocusMainDeep": {
