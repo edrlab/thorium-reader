@@ -177,9 +177,20 @@ function* profileActivatingAction(action: customizationActions.activating.TActio
 
             yield* putTyped(customizationActions.manifest.build(null));
 
-            yield* callTyped(profileActivating, id);
+            try {
+                yield* callTyped(profileActivating, id);
 
-            yield* putTyped(customizationActions.lock.build("IDLE", {uuid: ""}));
+            } catch (e) {
+
+                yield* putTyped(toastActions.openRequest.build(ToastType.Error, `${e}`));
+                debug("Critical ERROR to activate the profile", id);
+                debug(e);
+
+            } finally {
+
+                yield* putTyped(customizationActions.lock.build("IDLE", {uuid: ""}));
+            }
+
         } else {
             debug(`profile "${id || "thorium default profile"}" cannot be activate because LOCK is enabled on ${lock.state} with ${lock.lockInfo.id || lock.lockInfo.uuid}`);
             yield* putTyped(toastActions.openRequest.build(ToastType.Success, `profile "${id || "thorium default profile"}" cannot be activate because LOCK is enabled on ${lock.state} with ${lock.lockInfo.id || lock.lockInfo.uuid}`));
