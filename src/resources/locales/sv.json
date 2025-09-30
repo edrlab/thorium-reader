@@ -941,10 +941,10 @@
                 },
                 "FXLZoomIn": {
                     "description": "Zooma in på en enskild sida eller ett uppslag med fast layout",
-                    "name": ""
+                    "name": "Zooma in (fast layout)"
                 },
                 "FXLZoomOut": {
-                    "description": "",
+                    "description": "Zooma ut från en sida eller ett uppslag med fast layout",
                     "name": ""
                 },
                 "FXLZoomReset": {
