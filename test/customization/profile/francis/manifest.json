@@ -1,14 +1,14 @@
 {
     "manifestVersion": 1,
     "identifier": "thorium-manifest://org.edrlab.thorium.francis",
-    "version": "3.0.0",
+    "version": "3.0.3",
     "title": {
         "en": "francis test customization profile"
     },
     "description": {
         "en": "thorium test profile"
     },
-    "welcomeScreen": "<html>Hello World</html>",
+    "welcomeScreen": "<html>Hello World<br/><a href=\"https://edrlab.org\">EDRLAB</a></html>",
     "theme": {
         "color": {
             "dark": {

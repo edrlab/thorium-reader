@@ -1133,6 +1133,13 @@
                 "overrideHTMLTemplate": "Notları dışa aktar (açıklamalar ve yer imleri)"
             }
         },
+        "profiles": {
+            "info": "",
+            "thorium": {
+                "description": "",
+                "title": ""
+            }
+        },
         "session": {
             "title": "Oturum kaydetmeyi etkinleştir"
         },

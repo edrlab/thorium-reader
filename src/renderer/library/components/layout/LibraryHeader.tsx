@@ -89,7 +89,6 @@ class Header extends React.Component<IProps, undefined> {
         ];
 
         const customizationEnable = true && this.props.customizationTheme?.enable && this.props.customizationTheme?.logo;
-
         return (<>
             <SkipLink
                 className={stylesHeader.skip_link}
@@ -97,14 +96,14 @@ class Header extends React.Component<IProps, undefined> {
                 label={__("accessibility.skipLink")}
             />
 
+            <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>
             {
                 customizationEnable ?
-                    <div className="logo" style={{ position: "absolute", height: "60px", width: "", margin: " 20px auto", display: "flex", justifyContent: "center" }}>
+                    <div className="logo" style={{height: "60px", width: "calc(100% - 20px)", margin: " 20px auto", display: "flex", justifyContent: "center" }}>
                         <img src={this.props.customizationTheme.logo} alt="" style={{ objectFit: "contain", maxHeight: "100px", maxWidth: "100%", width: "fit-content" }} />
                     </div>
                     : <></>
             }
-            <nav className={stylesHeader.main_navigation_library} role="navigation" aria-label={__("header.home")}>
                 <h1 className={stylesHeader.appName} aria-label="Thorium"></h1>
                 <ul style={{paddingTop: "10px", height: customizationEnable ? "calc(100% - 180px)" : ""}}>
                     <div>

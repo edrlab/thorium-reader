@@ -1133,6 +1133,13 @@
                 "overrideHTMLTemplate": "导出笔记 (注释和书签)"
             }
         },
+        "profiles": {
+            "info": "",
+            "thorium": {
+                "description": "",
+                "title": ""
+            }
+        },
         "session": {
             "title": "保存登录状态"
         },

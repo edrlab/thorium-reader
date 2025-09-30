@@ -32,12 +32,13 @@ const applyColorSet = (colors: ICustomizationManifestColor, suffix: string) => {
 function* profileActivating(id: string): SagaGenerator<void> {
 
     debug(`TODO activate ${id} profile`);
-    yield* delay(1000);
     if (!id) {
         // THorium vanilla rollback, clear the local redux state
         yield* putTyped(themeActions.setTheme.build(undefined, { enable: false }));
 
         yield* putTyped(customizationActions.welcomeScreen.build(false));
+
+        yield* putTyped(customizationActions.manifest.build(null));
 
         // TODO: switch to default color css variable
 
@@ -73,8 +74,8 @@ function* profileActivating(id: string): SagaGenerator<void> {
             border: "#48484b",
             background: "#27272a",
             appName: "#EAEAEA",
-            scrollbarThumb: "#020202", // TODO
-            buttonsBorder: "#020202",
+            scrollbarThumb: "#7c7d86",
+            buttonsBorder: "#99A9E3",
         };
 
         const colorLight: ICustomizationManifestColor = {
@@ -84,8 +85,8 @@ function* profileActivating(id: string): SagaGenerator<void> {
             border: "#afb1b6",
             background: "#f5f5f5",
             appName: "#afb1b6",
-            scrollbarThumb: "#020202", // TODO
-            buttonsBorder: "#020202",
+            scrollbarThumb: "#7c7d86",
+            buttonsBorder: "#1053C8",
         };
 
         applyColorSet(colorLight, "light");
@@ -94,6 +95,7 @@ function* profileActivating(id: string): SagaGenerator<void> {
         return;
     }
 
+    yield* delay(1000);
 
     const baseUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/custom-profile-zip/${encodeURIComponent_RFC3986(Buffer.from(id).toString("base64"))}/`;
     const manifestURL = baseUrl + encodeURIComponent_RFC3986(Buffer.from("manifest.json").toString("base64"));
@@ -176,6 +178,10 @@ function* profileActivatingAction(action: customizationActions.activating.TActio
                 id,
             };
             yield* putTyped(customizationActions.lock.build("ACTIVATING", lockInfo));
+
+            yield* putTyped(customizationActions.welcomeScreen.build(false));
+
+            yield* putTyped(customizationActions.manifest.build(null));
 
             yield* callTyped(profileActivating, id);
 

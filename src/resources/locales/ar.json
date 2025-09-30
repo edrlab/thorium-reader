@@ -1133,6 +1133,13 @@
                 "overrideHTMLTemplate": "تصدير الملاحظات (التعليقات والإشارات مرجعية)"
             }
         },
+        "profiles": {
+            "info": "",
+            "thorium": {
+                "description": "",
+                "title": ""
+            }
+        },
         "session": {
             "title": "تفعيل حفظ الجلسة"
         },

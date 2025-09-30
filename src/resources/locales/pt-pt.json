@@ -1133,6 +1133,13 @@
                 "overrideHTMLTemplate": "Exportação de notas (anotações e marcadores)"
             }
         },
+        "profiles": {
+            "info": "",
+            "thorium": {
+                "description": "",
+                "title": ""
+            }
+        },
         "session": {
             "title": "Ativar guardar sessão"
         },

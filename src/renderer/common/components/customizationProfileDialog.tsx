@@ -13,6 +13,7 @@ import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
+import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 // import * as PlusIcon from "readium-desktop/renderer/assets/icons/Plus-bold.svg";
@@ -20,6 +21,9 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { customizationActions } from "readium-desktop/common/redux/actions";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
+import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
+
+import DOMPurify from "dompurify";
 
 export const CustomizationProfileDialog: React.FC = () => {
 
@@ -37,6 +41,25 @@ export const CustomizationProfileDialog: React.FC = () => {
         setChecked(profileInHistoryFound && manifest?.version && profileInHistoryFound.version === manifest?.version);
     }, [setChecked, manifest?.version, profileInHistoryFound]);
 
+    let welcomeScreenHtmlSanitized = "";
+    if (manifest?.welcomeScreen) {
+
+        const regex = new RegExp(/href=\"(.*?)\"/, "gm");
+        const parsed = DOMPurify.sanitize(manifest.welcomeScreen, { FORBID_TAGS: [/*"style"*/], FORBID_ATTR: [/*"style"*/] /* TODO: handle external https links */ });
+        const hrefSanitized = parsed.replace(regex, (substring) => {
+    
+            let url = /href=\"(.*?)\"/.exec(substring)[1];
+            if (!/^https?:\/\//.test(url)) {
+                url = "http://" + url;
+            }
+    
+            return `href="" alt="${url}" onclick="return ((e) => {
+                                    window.__shell_openExternal('${url}').catch(() => {});
+                                    return false;
+                                 })()"`;
+        });
+        welcomeScreenHtmlSanitized = hrefSanitized;
+    }
 
     return (
         <AlertDialog.Root open={open} onOpenChange={(_requestOpen) => {
@@ -45,62 +68,88 @@ export const CustomizationProfileDialog: React.FC = () => {
                 {props.children}
             </AlertDialog.Trigger> */}
             <AlertDialog.Portal>
-                <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay} />
-                <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
-                    <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.customization.splashscreen.title")}</AlertDialog.Title>
-                    <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription} style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
-                        <span>STATE={customization.lock.state}</span>
-                        <span>ID={customization.lock.lockInfo?.id === "" && customization.lock.state === "ACTIVATING" ? "THorium Default Profile" : customization.lock.lockInfo?.id || "undefined"}</span>
-                        <span>LOCKINFO={JSON.stringify(customization.lock.lockInfo, null, 4)}</span>
+                <AlertDialog.Overlay className={stylesModals.modal_dialog_overlay} />
+                <AlertDialog.Content className={stylesModals.modal_dialog}>
+                    <AlertDialog.Title className={stylesModals.modal_dialog_header}>
+                        {__("dialog.customization.splashscreen.title")}
+                        <AlertDialog.Action asChild>
+                            <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")} onClick={() => { dispatch(customizationActions.welcomeScreen.build(false)); }}>
+                                <SVG ariaHidden={true} svg={QuitIcon} />
+                            </button>
+                        </AlertDialog.Action>
+                        </AlertDialog.Title>
+                    <AlertDialog.Description className={stylesModals.modal_dialog_body} style={{ display: "flex", gap: "20px", flexDirection: "row", justifyContent: "normal"}}>
+                        <img style={{maxWidth: "250px", maxHeight: "500px", objectFit: "contain"}} src={manifest?.images?.find((ln) => ln.rel === "welcome-screen")?.href || ""}/>
+                        <div style={{position: "relative"}}>
+                            {
+                                welcomeScreenHtmlSanitized ?
+                                    <div dangerouslySetInnerHTML={{ __html: welcomeScreenHtmlSanitized }} />
+                                    : <></>
+                            }
+                            {
+                                customization.lock.state !== "IDLE" ?
+                                <div>
+                                    <span>STATE={customization.lock.state}</span>
+                                    <span>ID={customization.lock.lockInfo?.id === "" && customization.lock.state === "ACTIVATING" ? "THorium Default Profile" : customization.lock.lockInfo?.id || "undefined"}</span>
+                                    <span>LOCKINFO={JSON.stringify(customization.lock.lockInfo, null, 4)}</span>
+                                </div> 
+                                : <></>
+                            }
+                            {/* <div style={{display: "none"}}>
+                                <span>STATE={customization.lock.state}</span>
+                                <span>ID={customization.lock.lockInfo?.id === "" && customization.lock.state === "ACTIVATING" ? "THorium Default Profile" : customization.lock.lockInfo?.id || "undefined"}</span>
+                                <span>LOCKINFO={JSON.stringify(customization.lock.lockInfo, null, 4)}</span>
+                            </div> */}
+                        </div>
                     </AlertDialog.Description>
-                    <div className={stylesAlertModals.AlertDialogButtonContainer}>
+                    <div className={stylesAlertModals.AlertDialogButtonContainer} style={{justifyContent: "space-between", padding: "10px 20px"}}>
                         {/* <AlertDialog.Cancel asChild onClick={() => { dispatch(customizationActions.lock.build("IDLE")); dispatch(customizationActions.activating.build("")); }}>
                             <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
                         </AlertDialog.Cancel> */}
+                        {customization.welcomeScreen.enable && profileInHistoryFound ? <div style={{ display: "flex", alignItems: "center", gap: "10px"}}>
+                            <input type="checkbox" checked={checked} onChange={() => { setChecked(!checked); dispatch(customizationActions.addHistory.build(profileInHistoryFound.id, checked ? "" : profileInHistoryFound.version)); }} id="wizardCheckbox" name="wizardCheckbox" className={stylesGlobal.checkbox_custom_input} />
+                            <label htmlFor="wizardCheckbox" className={stylesGlobal.checkbox_custom_label}>
+                                <div
+                                    tabIndex={0}
+                                    role="checkbox"
+                                    aria-checked={checked}
+                                    aria-label={__("wizard.dontShow")}
+                                    onKeyDown={(e) => {
+                                        // if (e.code === "Space") {
+                                        if (e.key === " ") {
+                                            e.preventDefault(); // prevent scroll
+                                        }
+                                    }}
+                                    onKeyUp={(e) => {
+                                        // Includes screen reader tests:
+                                        // if (e.code === "Space") { WORKS
+                                        // if (e.key === "Space") { DOES NOT WORK
+                                        // if (e.key === "Enter") { WORKS
+                                        if (e.key === " ") { // WORKS
+                                            e.preventDefault();
+                                            setChecked(!checked);
+                                            dispatch(customizationActions.addHistory.build(profileInHistoryFound.id, checked ? "" : profileInHistoryFound.version));
+                                        }
+                                    }}
+                                    className={stylesGlobal.checkbox_custom}
+                                    style={{ border: checked ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: checked ? "var(--color-blue)" : "transparent" }}>
+                                    {checked ?
+                                        <SVG ariaHidden svg={CheckIcon} />
+                                        :
+                                        <></>
+                                    }
+                                </div>
+                                <span aria-hidden>
+                                    {__("wizard.dontShow")}
+                                </span>
+                            </label>
+                        </div> : <></> }
                         <AlertDialog.Action asChild>
-                            <button disabled={!customization.welcomeScreen.enable} className={stylesButtons.button_primary_blue} onClick={() => { dispatch(customizationActions.welcomeScreen.build(false)); }}>
+                            <button disabled={!customization.welcomeScreen.enable} style={{display: customization.welcomeScreen.enable ? "block" : "none" }} className={stylesButtons.button_primary_blue} onClick={() => { dispatch(customizationActions.welcomeScreen.build(false)); }}>
                                 {__("dialog.yes")}
                             </button>
                         </AlertDialog.Action>
                     </div>
-                    {customization.welcomeScreen.enable && profileInHistoryFound ? <div style={{ display: "flex", alignItems: "center", gap: "10px", position: "absolute", bottom: "30px", left: "30px" }}>
-                        <input type="checkbox" checked={checked} onChange={() => { setChecked(!checked); dispatch(customizationActions.addHistory.build(profileInHistoryFound.id, checked ? "" : profileInHistoryFound.version)); }} id="wizardCheckbox" name="wizardCheckbox" className={stylesGlobal.checkbox_custom_input} />
-                        <label htmlFor="wizardCheckbox" className={stylesGlobal.checkbox_custom_label}>
-                            <div
-                                tabIndex={0}
-                                role="checkbox"
-                                aria-checked={checked}
-                                aria-label={__("wizard.dontShow")}
-                                onKeyDown={(e) => {
-                                    // if (e.code === "Space") {
-                                    if (e.key === " ") {
-                                        e.preventDefault(); // prevent scroll
-                                    }
-                                }}
-                                onKeyUp={(e) => {
-                                    // Includes screen reader tests:
-                                    // if (e.code === "Space") { WORKS
-                                    // if (e.key === "Space") { DOES NOT WORK
-                                    // if (e.key === "Enter") { WORKS
-                                    if (e.key === " ") { // WORKS
-                                        e.preventDefault();
-                                        setChecked(!checked);
-                                        dispatch(customizationActions.addHistory.build(profileInHistoryFound.id, checked ? "" : profileInHistoryFound.version));
-                                    }
-                                }}
-                                className={stylesGlobal.checkbox_custom}
-                                style={{ border: checked ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: checked ? "var(--color-blue)" : "transparent" }}>
-                                {checked ?
-                                    <SVG ariaHidden svg={CheckIcon} />
-                                    :
-                                    <></>
-                                }
-                            </div>
-                            <span aria-hidden>
-                                {__("wizard.dontShow")}
-                            </span>
-                        </label>
-                    </div> : <></> }
                 </AlertDialog.Content>
             </AlertDialog.Portal>
         </AlertDialog.Root>

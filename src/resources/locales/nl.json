@@ -1133,6 +1133,13 @@
                 "overrideHTMLTemplate": "Notities exporteren (annotaties en bladwijzers)"
             }
         },
+        "profiles": {
+            "info": "",
+            "thorium": {
+                "description": "",
+                "title": ""
+            }
+        },
         "session": {
             "title": "Stel sessie bewaring in"
         },

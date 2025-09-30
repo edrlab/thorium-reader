@@ -1133,6 +1133,13 @@
                 "overrideHTMLTemplate": "Anular la plantilla mustache cuando se exporte la nota a HTML"
             }
         },
+        "profiles": {
+            "info": "",
+            "thorium": {
+                "description": "",
+                "title": ""
+            }
+        },
         "session": {
             "title": "Guardar sesión"
         },

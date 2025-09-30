@@ -1133,6 +1133,13 @@
                 "overrideHTMLTemplate": "Merkintöjen vienti (muistiinpanot ja kirjanmerkit)"
             }
         },
+        "profiles": {
+            "info": "",
+            "thorium": {
+                "description": "",
+                "title": ""
+            }
+        },
         "session": {
             "title": "Tallenna istunto"
         },

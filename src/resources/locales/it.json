@@ -1133,6 +1133,13 @@
                 "overrideHTMLTemplate": "Esportazione delle note (annotazioni e segnalibri)"
             }
         },
+        "profiles": {
+            "info": "",
+            "thorium": {
+                "description": "",
+                "title": ""
+            }
+        },
         "session": {
             "title": "Salva sessione"
         },
