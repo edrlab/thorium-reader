@@ -678,7 +678,7 @@
         },
         "goToContent": "Gå till innehållet",
         "imgViewer": {
-            "title": "",
+            "title": "Bildvisare (zoom)",
             "zoomIn": "Zooma in",
             "zoomOut": "Zooma ut",
             "zoomReset": ""
@@ -730,7 +730,7 @@
             "historyNext": "Hoppa framåt",
             "historyPrevious": "Hoppa tillbaka",
             "infoTitle": "Information",
-            "magnifyingGlassButton": "Sök i publikationen",
+            "magnifyingGlassButton": "Sök i boken",
             "openTableOfContentsTitle": "Navigation",
             "page": "Sida",
             "pdfscalemode": "Anpassa till hel sida eller sidbredd",
