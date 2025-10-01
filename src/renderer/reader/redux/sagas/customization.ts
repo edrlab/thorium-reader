@@ -95,23 +95,11 @@ function* profileActivating(id: string): SagaGenerator<void> {
 
 function* profileActivatingAction(action: customizationActions.activating.TAction) {
 
-
     const id = action.payload.id;
-
     if (!id) {
         debug("Request to activate the default thorium profile !!!");
     }
-    const lock = yield* selectTyped((state: ICommonRootState) => state.customization.lock);
-
-    if (lock.state === "ACTIVATING" && lock.lockInfo.id === id) {
-
-        yield* callTyped(profileActivating, id);
-
-    } else {
-        debug("NOT IN ACTIVATING PHASE");
-    }
-
-
+    yield* callTyped(profileActivating, id);
 }
 
 export function saga() {
@@ -130,9 +118,6 @@ export function saga() {
             if (customization.lock.state !== "IDLE" || !id) {
                 return;
             }
-            // const action = customizationActions.activating.build(id);
-            // yield* callTyped(profileActivatingAction, action);
-            yield* putTyped(customizationActions.activating.build(id));
 
             yield* callTyped(profileActivating, id);
         }),
