@@ -159,9 +159,19 @@ function* profileActivatingAction(action: customizationActions.activating.TActio
 
     if (lock.state === "ACTIVATING" && lock.lockInfo.id === id) {
 
-        yield* callTyped(profileActivating, id);
+        try {
+            yield* callTyped(profileActivating, id);
 
-        yield* putTyped(customizationActions.lock.build("IDLE"));
+        } catch (e) {
+
+            yield* putTyped(toastActions.openRequest.build(ToastType.Error, `${e}`));
+            debug("Critical ERROR to activate the profile", id);
+            debug(e);
+
+        } finally {
+
+            yield* putTyped(customizationActions.lock.build("IDLE", { uuid: "" }));
+        }
 
     } else {
 
