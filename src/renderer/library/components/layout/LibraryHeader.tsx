@@ -246,7 +246,7 @@ class Header extends React.Component<IProps, undefined> {
                         }
                     }}
                 >
-                    <SVG ariaHidden svg={item.svg} />
+                    {typeof item.svg === "string" ? <img width={"20px"} height={"20px"} src={item.svg}></img> : <SVG ariaHidden svg={item.svg} />}
                     <h3>{item.label}</h3>
                 </Link>
             </li>

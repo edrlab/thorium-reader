@@ -13,7 +13,7 @@ export interface ISVGProps {
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
-    svg: ISVGProps | string;
+    svg: ISVGProps;
     title?: string;
     className?: string;
     ariaHidden?: boolean;
@@ -33,20 +33,15 @@ export default class SVG extends React.Component<IProps, undefined> {
         super(props);
     }
 
-    public render(): React.ReactElement<{}> {
+    public render(): React.ReactElement<{}>  {
         const { svg, className, ariaHidden } = this.props;
-        return (<>
-            {
-                (typeof svg === "string") ?
-                    <img src={svg} aria-hidden={ariaHidden} className={className}></img>
-
-                    : <svg aria-hidden={ariaHidden} className={className} viewBox={svg.default.viewBox}>
-                        {this.props.title &&
-                            <title>{this.props.title}</title>
-                        }
-                        <use xlinkHref={"#" + svg.default.id} />
-                    </svg>
-            }
-        </>);
+        return (
+            <svg aria-hidden={ariaHidden} className={className} viewBox={svg.default.viewBox}>
+                { this.props.title &&
+                    <title>{this.props.title}</title>
+                }
+                <use xlinkHref={"#" + svg.default.id} />
+            </svg>
+        );
     }
 }
