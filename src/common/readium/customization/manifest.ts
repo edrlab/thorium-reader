@@ -64,6 +64,8 @@ export interface ICustomizationLink {
     href: string; // relative file path in zip directory or http(s) link => not fully an URI
     rel: string;
     type: string;
+    title: IStringMap;
+
 }
 
 export const customizationManifestJsonSchema = {
