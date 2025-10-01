@@ -73,7 +73,9 @@ class PageNavigation extends React.Component<IProps, undefined> {
         const element = this.fixedElementRef.current;
         const container = document.getElementById("opds_browserResults");
         const cardWrapper = document.getElementById("card_wrapper");
-        if (cardWrapper.scrollHeight >container.clientHeight) {
+        const sections = document.getElementsByTagName("section");
+        const sectionsHeightSum = Array.from(sections).reduce((sum, section) => sum + section.offsetHeight, 0);
+        if ((cardWrapper.scrollHeight + sectionsHeightSum) >container.clientHeight) {
           element.style.position = "unset";
         } else {
           element.style.position = "fixed";

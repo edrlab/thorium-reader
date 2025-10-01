@@ -44,7 +44,6 @@ class EntryPublicationList extends React.Component<IProps, undefined> {
 
     public render() {
         // const displayType = (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) || DisplayType.Grid;
-
         return (
             <>
                 {this.props.opdsPublicationView?.length > 0
