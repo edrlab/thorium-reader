@@ -1140,6 +1140,11 @@
                 "title": ""
             }
         },
+        "screenReaderActivate": {
+            "help": "",
+            "message": "",
+            "title": ""
+        },
         "session": {
             "title": "அமர்வு சேமிப்பை இயக்கவும்"
         },

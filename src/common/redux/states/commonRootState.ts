@@ -13,6 +13,7 @@ import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { ITheme } from "./theme";
 import { INoteCreator } from "./creator";
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
+import { IScreenReaderState } from "./screenReader";
 import { ILcpState } from "./lcp";
 import { INoteExportState } from "./renderer/note";
 import { ICustomizationProfileActivated, ICustomizationProfileHistory, ICustomizationProfileLock, ICustomizationProfileProvisioned, ICustomizationProfileWelcomeScreen } from "./customization";
@@ -21,6 +22,7 @@ import { ICustomizationManifest } from "readium-desktop/common/readium/customiza
 export interface ICommonRootState {
     i18n: I18NState;
     session: ISessionState;
+    screenReader: IScreenReaderState;
     versionUpdate: IVersionUpdateState;
     keyboard: IKeyboardState;
     reader: {

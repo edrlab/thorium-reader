@@ -1140,6 +1140,11 @@
                 "title": "Thorium vanilla"
             }
         },
+        "screenReaderActivate": {
+            "help": "When the application detects the presence of assistive technology, the user interface works better with screen readers",
+            "message": "Improved support for screen readers",
+            "title": "Enhance screen reader experience"
+        },
         "session": {
             "title": "Enable session saving"
         },

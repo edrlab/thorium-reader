@@ -1140,6 +1140,11 @@
                 "title": ""
             }
         },
+        "screenReaderActivate": {
+            "help": "",
+            "message": "",
+            "title": ""
+        },
         "session": {
             "title": "Sauvegarder la session"
         },

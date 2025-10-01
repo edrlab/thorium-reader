@@ -12,6 +12,7 @@ import {
     settingsActions,
     noteExport,
     customizationActions,
+    screenReaderActions,
 } from "readium-desktop/common/redux/actions";
 import { syncFactory } from "readium-desktop/renderer/common/redux/middleware/syncFactory";
 
@@ -59,6 +60,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     wizardActions.setWizard.ID,
 
     sessionActions.save.ID,
+    screenReaderActions.save.ID,
 
     annotationActions.importAnnotationSet.ID,
     annotationActions.importConfirmOrAbort.ID,

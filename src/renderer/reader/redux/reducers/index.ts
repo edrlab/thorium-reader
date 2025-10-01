@@ -31,6 +31,7 @@ import { winModeReducer } from "readium-desktop/common/redux/reducers/winModeRed
 import { readerDivinaReducer } from "./divina";
 import { readerRTLFlipReducer } from "readium-desktop/common/redux/reducers/reader/rtlFlip";
 import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
+import { screenReaderReducer } from "readium-desktop/common/redux/reducers/screenReader";
 import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducers/reader/defaultConfig";
 import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
 import { versionUpdateReducer } from "readium-desktop/common/redux/reducers/version-update";
@@ -64,6 +65,7 @@ export const rootReducer = () => {
         versionUpdate: versionUpdateReducer,
         theme: themeReducer,
         session: sessionReducer,
+        screenReader: screenReaderReducer,
         api: apiReducer,
         i18n: i18nReducer,
         reader: combineReducers({ // IReaderStateReader, dehydrated from main process registry (preloaded state)

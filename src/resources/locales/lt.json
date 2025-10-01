@@ -1140,6 +1140,11 @@
                 "title": ""
             }
         },
+        "screenReaderActivate": {
+            "help": "",
+            "message": "",
+            "title": ""
+        },
         "session": {
             "title": "Įgalinti sesijos išsaugojimą"
         },

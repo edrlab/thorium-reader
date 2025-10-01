@@ -106,9 +106,11 @@ export function* init() {
         }
         browserWindows.forEach((win) => {
             if (!win.isDestroyed() && !win.webContents.isDestroyed()) {
-                console.log("webContents.send - accessibility-support-changed: ", accessibilitySupportEnabled, win.id);
+                const store = diMainGet("store");
+                const screenReaderActivated = store.getState().screenReader.activate;
+                console.log("webContents.send - accessibility-support-changed: ", accessibilitySupportEnabled, screenReaderActivated, win.id);
                 try {
-                    win.webContents.send("accessibility-support-changed", accessibilitySupportEnabled);
+                    win.webContents.send("accessibility-support-changed", accessibilitySupportEnabled && screenReaderActivated);
                 } catch (e) {
                     debug("webContents.send - accessibility-support-changed ERROR?", e);
                 }
@@ -120,8 +122,10 @@ export function* init() {
     // so there is no duplicate event handler.
     ipcMain.on("accessibility-support-query", (e) => {
         const accessibilitySupportEnabled = app.accessibilitySupportEnabled; // .isAccessibilitySupportEnabled()
-        console.log("ipcMain.on - accessibility-support-query, sender.send - accessibility-support-changed: ", accessibilitySupportEnabled);
-        e.sender.send("accessibility-support-changed", accessibilitySupportEnabled);
+        const store = diMainGet("store");
+        const screenReaderActivated = store.getState().screenReader.activate;
+        console.log("ipcMain.on - accessibility-support-query, sender.send - accessibility-support-changed: ", accessibilitySupportEnabled, screenReaderActivated);
+        e.sender.send("accessibility-support-changed", accessibilitySupportEnabled && screenReaderActivated);
     });
 
     yield call(() => app.whenReady());

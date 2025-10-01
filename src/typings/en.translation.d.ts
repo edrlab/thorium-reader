@@ -2563,6 +2563,18 @@ declare namespace typed_i18n {
       readonly "overrideHTMLTemplate": string
     }
   },
+  readonly "profiles": {
+    readonly "info": string,
+    readonly "thorium": {
+      readonly "description": string,
+      readonly "title": string
+    }
+  },
+  readonly "screenReaderActivate": {
+    readonly "help": string,
+    readonly "message": string,
+    readonly "title": string
+  },
   readonly "session": { readonly "title": string },
   readonly "tabs": {
     readonly "appearance": string,
@@ -2575,13 +2587,6 @@ declare namespace typed_i18n {
     readonly "description": string,
     readonly "light": string,
     readonly "title": string
-  },
-  readonly "profiles": {
-    readonly "info": string,
-    readonly "thorium": {
-      readonly "title": string,
-      readonly "description": string
-    }
   }
 };
   (_: "settings.annotationCreator", __?: {}): {
@@ -3257,6 +3262,25 @@ declare namespace typed_i18n {
   (_: "settings.note.export.applyDefaultTemplate", __?: {}): string;
   (_: "settings.note.export.enableCheckbox", __?: {}): string;
   (_: "settings.note.export.overrideHTMLTemplate", __?: {}): string;
+  (_: "settings.profiles", __?: {}): {
+  readonly "info": string,
+  readonly "thorium": {
+    readonly "description": string,
+    readonly "title": string
+  }
+};
+  (_: "settings.profiles.info", __?: {}): string;
+  (_: "settings.profiles.thorium", __?: {}): { readonly "description": string, readonly "title": string };
+  (_: "settings.profiles.thorium.description", __?: {}): string;
+  (_: "settings.profiles.thorium.title", __?: {}): string;
+  (_: "settings.screenReaderActivate", __?: {}): {
+  readonly "help": string,
+  readonly "message": string,
+  readonly "title": string
+};
+  (_: "settings.screenReaderActivate.help", __?: {}): string;
+  (_: "settings.screenReaderActivate.message", __?: {}): string;
+  (_: "settings.screenReaderActivate.title", __?: {}): string;
   (_: "settings.session", __?: {}): { readonly "title": string };
   (_: "settings.session.title", __?: {}): string;
   (_: "settings.tabs", __?: {}): {
@@ -3279,17 +3303,6 @@ declare namespace typed_i18n {
   (_: "settings.theme.description", __?: {}): string;
   (_: "settings.theme.light", __?: {}): string;
   (_: "settings.theme.title", __?: {}): string;
-  (_: "settings.profiles", __?: {}): {
-  readonly "info": string,
-  readonly "thorium": {
-    readonly "title": string,
-    readonly "description": string
-  }
-};
-  (_: "settings.profiles.info", __?: {}): string;
-  (_: "settings.profiles.thorium", __?: {}): { readonly "title": string, readonly "description": string };
-  (_: "settings.profiles.thorium.title", __?: {}): string;
-  (_: "settings.profiles.thorium.description", __?: {}): string;
   (_: "tts", __?: {}): {
   readonly "highlight": {
     readonly "mainColor": string,

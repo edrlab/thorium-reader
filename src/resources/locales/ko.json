@@ -1140,6 +1140,11 @@
                 "title": ""
             }
         },
+        "screenReaderActivate": {
+            "help": "",
+            "message": "",
+            "title": ""
+        },
         "session": {
             "title": "세션 저장"
         },

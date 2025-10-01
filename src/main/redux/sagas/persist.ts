@@ -37,6 +37,7 @@ const persistStateToFs = async (nextState: RootState) => {
         publication: nextState.publication,
         reader: nextState.reader,
         session: nextState.session,
+        screenReader: nextState.screenReader,
         i18n: nextState.i18n,
         opds: nextState.opds,
         version: nextState.version,
