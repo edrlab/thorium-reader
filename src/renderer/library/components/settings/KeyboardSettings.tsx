@@ -534,7 +534,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                     {    cleanNames[id].description.length ?
                                         <TooltipTrigger>
                                             <Button style={{ width: "15px" }} aria-label={cdesc}><SVG ariaHidden svg={InfoIcon} /></Button>
-                                            <Tooltip style={{border: "1px solid var(--color-primary)", maxWidth: "300px", width: "fit-content", zIndex: "1000", backgroundColor: "var(--color-secondary)", borderRadius: "6px", padding: "5px", color: "var(--color-primary)"}}>
+                                            <Tooltip style={{border: "1px solid var(--color-text-primary)", maxWidth: "300px", width: "fit-content", zIndex: "1000", backgroundColor: "var(--color-neutral-base)", borderRadius: "6px", padding: "5px", color: "var(--color-text-primary)"}}>
                                                 <OverlayArrow>
                                                 <svg width={8} height={8} viewBox="0 0 8 8">
                                                     <path d="M0 0 L4 4 L8 0" />

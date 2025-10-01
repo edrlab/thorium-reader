@@ -23,9 +23,9 @@ input[type="search"] {
   border-top: none;
   border-right: none;
   border-left: none;
-  border-bottom: 1px solid var(--color-medium-grey);
+  border-bottom: 1px solid var(--color-gray-400);
   border-radius: 0;
-  color: var(--color-primary);
+  color: var(--color-text-primary);
   font-size: 0.9rem;
 
   // @media (prefers-color-scheme: dark) {
@@ -37,11 +37,11 @@ input[type="search"] {
   // }
 
   &::placeholder {
-    color: var(--color-medium-grey);
+    color: var(--color-gray-400);
   }
 
   &.outline {
-    border: 1px solid var(--color-medium-grey);
+    border: 1px solid var(--color-gray-400);
   }
 }
 
@@ -62,13 +62,13 @@ input[type="search"]:not(.R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE) {
 }
 
 form[role="search"] {
-  background-color: var(--color-annotations-bg);
-  color: var(--color-primary);
+  background-color: var(--color-annotation-bg);
+  color: var(--color-text-primary);
   width: 300px !important;
   height: 30px !important;
 
   &:has(input:focus) {    
-    outline: var(--color-blue) solid 2px !important;
+    outline: var(--color-brand-primary) solid 2px !important;
     outline-offset: -2px;
   }
 }
@@ -81,7 +81,7 @@ select {
   width: 150px;
   height: 25px;
   padding:2px;
-  border:1px solid var(--color-dark-grey-alt);
+  border:1px solid var(--color-gray-950);
   margin: 0;
   border-radius: 6px;
   position: relative;
@@ -94,7 +94,7 @@ select {
   // }
 
   &:has(input:focus), &:has(button:focus) {    
-    outline: var(--color-blue) solid 2px !important;
+    outline: var(--color-brand-primary) solid 2px !important;
     outline-offset: -2px;
   }
 
@@ -103,7 +103,7 @@ select {
       line-height: 90%;
       top: -7px;
       left: 10px;
-      background-color: var(--color-secondary);
+      background-color: var(--color-neutral-base);
       padding: 0 5px;
       z-index: 1;
       font-size: 12px;
@@ -127,7 +127,7 @@ select {
 
 .form_group_allPubSearch {
   height: 28px !important;
-  background-color: var(--color-secondary);
+  background-color: var(--color-neutral-base);
 
   label {
     top: -20px;
@@ -149,7 +149,7 @@ select {
   margin-top: 30px;
 
   &:has(input:focus) {    
-    outline: var(--color-blue) solid 2px !important;
+    outline: var(--color-brand-primary) solid 2px !important;
     outline-offset: -2px;
   }
 
@@ -189,8 +189,8 @@ select {
   gap: 10px;
   width: fit-content;
   font-size: 14px;
-  background-color: var(--color-extralight-grey);
-  color: var(--color-primary);
+  background-color: var(--color-gray-50);
+  color: var(--color-text-primary);
   padding: 5px 10px;
   border-radius: 5px;
   margin: 10px 0;
@@ -198,19 +198,19 @@ select {
   svg {
     width: 16px;
     height: 16px;
-    color: var(--color-blue);
+    color: var(--color-brand-primary);
   }
 }
 
 .passphrase_error {
-  color: var(--color-error-dark);
+  color: var(--color-error-text);
   display: flex;
   align-items: center;
   gap: 5px;
   margin: 0;
 
   svg {
-    fill: var(--color-error-dark);
+    fill: var(--color-error-text);
     height: 12px;
   }
 }

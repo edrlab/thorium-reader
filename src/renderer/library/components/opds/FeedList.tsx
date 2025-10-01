@@ -115,7 +115,7 @@ class FeedList extends React.Component<IProps, IState> {
                                         }
                                     }}
                                 >
-                                    <div style={{ width: "100%", height: "50px", backgroundColor: "var(--color-extralight-grey)", borderBottom: "1px solid var(--color-light-grey)", position: "absolute", top: "2px" }}></div>
+                                    <div style={{ width: "100%", height: "50px", backgroundColor: "var(--color-gray-50", borderBottom: "1px solid var(--color-gray-300)", position: "absolute", top: "2px" }}></div>
                                     <div className={stylesCatalogs.catalog_title}>
                                         <SVG ariaHidden svg={GlobeIcon} />
                                         <p title={`${item.title} --- ${item.url}`}>{item.title}</p>

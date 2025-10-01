@@ -4,8 +4,8 @@
     display: none;
 }
 
-$settings_bg: var(--color-light-blue);
-$setting_color: var(--color-blue);
+$settings_bg: var(--color-brand-secondary);
+$setting_color: var(--color-brand-primary);
 
 .settings_container {
     display: flex;
@@ -29,7 +29,7 @@ $setting_color: var(--color-blue);
 
     .section {
         padding-bottom: 15px ;
-        border-bottom: 2px solid var(--color-extralight-grey);
+        border-bottom: 2px solid var(--color-gray-50);
         margin: 10px 0 20px;
         width: calc(100% - 40px);
         display: flex;
@@ -58,7 +58,7 @@ $setting_color: var(--color-blue);
             width: fit-content;
             padding: 0 5px;
             height: 35px;
-            border: 1px solid var(--color-buttons-border);
+            border: 1px solid var(--color-button-border);
             border-radius: 5px;
             background-color: $settings_bg;
             display: flex;
@@ -68,15 +68,15 @@ $setting_color: var(--color-blue);
             color: $setting_color;
 
             &:focus-within, &:focus {
-                outline: var(--color-blue) solid 1px !important;
+                outline: var(--color-brand-primary) solid 1px !important;
                 outline-offset: 2px;
                 border-radius: 5px;
-                background-color: var(--color-blue);
-                color: var(--color-secondary)!important;
+                background-color: var(--color-brand-primary);
+                color: var(--color-neutral-base)!important;
             
                 svg {
-                  fill: var(--color-secondary)!important;
-                  color: var(--color-secondary)!important;
+                  fill: var(--color-neutral-base)!important;
+                  color: var(--color-neutral-base)!important;
                 }
               }
 
@@ -112,9 +112,9 @@ $setting_color: var(--color-blue);
     flex-direction: column;
     width: 100%;
     flex: 1;
-    border-right: 2px solid var(--color-extralight-grey-alt);
+    border-right: 2px solid var(--color-gray-100);
     padding-top: 20px;
-    background-color: var(--color-extralight-grey);
+    background-color: var(--color-gray-50);
     gap: 5px;
 
     button {
@@ -141,20 +141,20 @@ $setting_color: var(--color-blue);
         }
 
         &:hover {
-            background-color: var(--color-secondary);
-            border: 1px solid var(--color-buttons-border);
-            color: var(--color-blue);
+            background-color: var(--color-neutral-base);
+            border: 1px solid var(--color-button-border);
+            color: var(--color-brand-primary);
 
             svg {
-                color: var(--color-blue);
-                fill: var(--color-blue);
+                color: var(--color-brand-primary);
+                fill: var(--color-brand-primary);
             }
         }
 
         &[data-state="active"]{ 
             color: $setting_color;
             background-color: $settings_bg;
-            border: 1px solid var(--color-buttons-border);
+            border: 1px solid var(--color-button-border);
 
             svg {
                 fill: $setting_color;
@@ -183,7 +183,7 @@ $setting_color: var(--color-blue);
 
 .allowCustom {
     display: flex;
-    accent-color: var(--color-blue);
+    accent-color: var(--color-brand-primary);
     // margin: 10px;
     gap: 5px;
 
@@ -203,7 +203,7 @@ $setting_color: var(--color-blue);
     justify-content: center;
     align-items: center;
     flex: 1;
-    border-bottom: 1px solid var(--color-medium-grey);
+    border-bottom: 1px solid var(--color-gray-400);
     margin-bottom: 20px;
 
     button {
@@ -217,7 +217,7 @@ $setting_color: var(--color-blue);
     flex-direction: column;
 
         &:hover {
-            background-color: var(--color-medium-grey);
+            background-color: var(--color-gray-400);
         }
 
         &[data-state="active"]{ 
@@ -271,16 +271,16 @@ $setting_color: var(--color-blue);
 
 [data-theme="dark"] {
     .button_transparency_icon:not([data-css-override]) svg {
-        color: var(--color-primary);
-        fill: var(--color-primary);
+        color: var(--color-text-primary);
+        fill: var(--color-text-primary);
     }
 }
 
 [data-theme="system"] {
     @media (prefers-color-scheme: dark) {
         .button_transparency_icon:not([data-css-override]) svg {
-            color: var(--color-primary);
-            fill: var(--color-primary);
+            color: var(--color-text-primary);
+            fill: var(--color-text-primary);
         }
     }
 }
@@ -324,12 +324,12 @@ $setting_color: var(--color-blue);
     border: 1px solid transparent;
 
     &:active, &:hover {
-        border: 1px solid var(--color-blue);
-        background-color: var(--color-light-blue)!important;
+        border: 1px solid var(--color-brand-primary);
+        background-color: var(--color-brand-secondary)!important;
     }
 
     svg {
-        color: var(--color-blue);
+        color: var(--color-brand-primary);
     }
 }
 
@@ -428,8 +428,8 @@ $setting_color: var(--color-blue);
                 justify-content: flex-start;
                 gap: 10px;
                 font-size: 14px;
-                background-color: var(--color-light-grey);
-                color: var(--color-primary);
+                background-color: var(--color-gray-300);
+                color: var(--color-text-primary);
                 padding: 5px 10px;
                 border-radius: 5px;
                 margin: 10px 0;
@@ -462,8 +462,8 @@ $setting_color: var(--color-blue);
         }
 
         button[data-state="open"] .advanced_trigger {
-            background-color: var(--color-light-blue);
-            border-color: var(--color-blue);
+            background-color: var(--color-brand-secondary);
+            border-color: var(--color-brand-primary);
         }
     }
 
@@ -474,8 +474,8 @@ $setting_color: var(--color-blue);
         gap: 10px;
         width: fit-content;
         font-size: 14px;
-        background-color: var(--color-extralight-grey);
-        color: var(--color-primary);
+        background-color: var(--color-gray-50);
+        color: var(--color-text-primary);
         padding: 5px 10px;
         border-radius: 5px;
         margin: 10px 0;
@@ -500,7 +500,7 @@ $setting_color: var(--color-blue);
     justify-content: space-between;
     gap: 30px;
     padding: 0 25px 0 10px;
-    border: 1px solid var(--color-primary);
+    border: 1px solid var(--color-text-primary);
     border-radius: 4px;
     height: 35px;
     width: 300px;
@@ -525,8 +525,8 @@ $setting_color: var(--color-blue);
         height: 25;
         padding: 0 35px 0 25px;
         position: relative;
-        border-bottom: 1px solid var(--color-medium-grey);
-        color: var(--color-primary);
+        border-bottom: 1px solid var(--color-gray-400);
+        color: var(--color-text-primary);
         font-size: 14px;
 
         &:hover {
@@ -538,11 +538,11 @@ $setting_color: var(--color-blue);
 
     &_content {
         overflow: hidden;
-        background-color: var(--color-secondary)!important;
+        background-color: var(--color-neutral-base)!important;
         opacity: 1;
         border-radius: 4px;
         z-index:10001;
-        border: 1px solid var(--color-medium-grey);
+        border: 1px solid var(--color-gray-400);
         width: 300px;
         max-height: 300px;
         font-size: 14px;
@@ -555,7 +555,7 @@ div[data-radix-popper-content-wrapper] {
 
 .scale_button {
     scale: 1.3;
-    color: var(--color-blue);
+    color: var(--color-brand-primary);
     border-radius: 4px;
     width: 15px;
     height: 15px;
@@ -574,8 +574,8 @@ div[data-radix-popper-content-wrapper] {
     }
 
     &:active, &:hover {
-        border: 1px solid var(--color-blue);
-        background-color: var(--color-light-blue)!important;
+        border: 1px solid var(--color-brand-primary);
+        background-color: var(--color-brand-secondary)!important;
     }
 }
 
@@ -590,7 +590,7 @@ div[data-radix-popper-content-wrapper] {
         padding: 2px 4px;
         border-radius: 4px;
         text-align: center;
-        background-color: var(--color-light-grey);
+        background-color: var(--color-gray-300);
     }
 }
 
@@ -648,7 +648,7 @@ div[data-radix-popper-content-wrapper] {
         border-radius: 6px;
         transition: 200ms linear;
         min-height: 70px;
-        background-color: var(--color-extralight-grey);
+        background-color: var(--color-gray-50);
 
         &:hover:not([disabled])  {
             border: 1px solid $setting_color;
@@ -697,7 +697,7 @@ div[data-radix-popper-content-wrapper] {
 
     &_selection {
     padding: 0 0 0 35px;
-    border: 1px solid var(--color-primary);
+    border: 1px solid var(--color-text-primary);
     border-radius: 4px;
     width: 300px;
     height: 35px;
@@ -709,7 +709,7 @@ div[data-radix-popper-content-wrapper] {
         height: 30px;
         border: none;
         margin-right: 0;
-        background-color: var(--color-secondary)!important;
+        background-color: var(--color-neutral-base)!important;
 
         &:hover {
             box-shadow: none;
@@ -718,7 +718,7 @@ div[data-radix-popper-content-wrapper] {
 
         &__value-container {
             padding: 0;
-            color: var(--color-primary)!important;
+            color: var(--color-text-primary)!important;
             height: 25px;
         }
 
@@ -730,8 +730,8 @@ div[data-radix-popper-content-wrapper] {
 
         &__menu {
             left: 0;
-            background-color: var(--color-secondary)!important;
-            color: var(--color-primary)!important;
+            background-color: var(--color-neutral-base)!important;
+            color: var(--color-text-primary)!important;
             z-index: 2000000;
 
             > div {
@@ -762,7 +762,7 @@ div[data-radix-popper-content-wrapper] {
     width: 190px;
     display: flex;
     align-items: start;
-    border: 0 solid var(--color-blue);
+    border: 0 solid var(--color-brand-primary);
     border-radius: 5px;
 
     p {
@@ -844,7 +844,7 @@ div[data-radix-popper-content-wrapper] {
     border-radius: 6px;
     border-width: 1px;
     border-style: solid;
-    border-color: var(--color-light-grey);
+    border-color: var(--color-gray-300);
     width: 85px;
     height: 45px!important;
     min-height: 45px!important;
@@ -852,7 +852,7 @@ div[data-radix-popper-content-wrapper] {
     box-shadow: 0 2px 15px rgb(0 0 0 / 0%);
     transition: all 0.3s;
     padding: 0;
-    background-color: var(--color-secondary);
+    background-color: var(--color-neutral-base);
     margin: 0!important;
     display: flex!important;
     align-items: center;
@@ -868,8 +868,8 @@ div[data-radix-popper-content-wrapper] {
         top: -6px;
         right: -8px;
         border-radius: 6px;
-        border-right: 1px solid var(--color-light-grey);
-        border-top: 1px solid var(--color-light-grey);
+        border-right: 1px solid var(--color-gray-300);
+        border-top: 1px solid var(--color-gray-300);
     }
 
     svg {
@@ -909,7 +909,7 @@ div[data-radix-popper-content-wrapper] {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background-color: var(--color-blue);
+    background-color: var(--color-brand-primary);
     animation: blink 3s ease-in-out infinite;
 
     @keyframes blink {
@@ -953,9 +953,9 @@ div[data-radix-popper-content-wrapper] {
         }
 
         &:has(input:checked) {
-            color: var(--color-blue);
-            background-color: var(--color-light-blue);
-            border: 1px solid var(--color-buttons-border);
+            color: var(--color-brand-primary);
+            background-color: var(--color-brand-secondary);
+            border: 1px solid var(--color-button-border);
         }
     }
 

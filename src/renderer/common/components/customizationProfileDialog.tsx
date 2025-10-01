@@ -132,7 +132,7 @@ export const CustomizationProfileDialog: React.FC = () => {
                                         }
                                     }}
                                     className={stylesGlobal.checkbox_custom}
-                                    style={{ border: checked ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: checked ? "var(--color-blue)" : "transparent" }}>
+                                    style={{ border: checked ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: checked ? "var(--color-brand-primary)" : "transparent" }}>
                                     {checked ?
                                         <SVG ariaHidden svg={CheckIcon} />
                                         :

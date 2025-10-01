@@ -6,18 +6,18 @@
   &_description {
     width: 400px;
     height: fit-content;
-    box-shadow: 0 3px 10px 5px var(--color-extralight-grey);
+    box-shadow: 0 3px 10px 5px var(--color-gray-50);
     border-width: 1px;
-    border-color: var(--color-blue);
+    border-color: var(--color-brand-primary);
     border-style: solid;
     border-radius: 10px;
     position: relative;
-    background-color: var(--color-secondary);
+    background-color: var(--color-neutral-base);
     margin: 0;
     padding: 10px;
     text-align: justify;
     line-height: 1.5em;
-    color: var(--color-primary);
+    color: var(--color-text-primary);
   }
 
   &_trigger {
@@ -29,13 +29,13 @@
     transition: 200ms;
 
     &:hover{
-      border-color: var(--color-blue);
+      border-color: var(--color-brand-primary);
       background-color: var(--color-button-hover);
     }
 
     &:focus {
-      border-color: var(--color-blue);
-      background-color: var(--color-light-blue);
+      border-color: var(--color-brand-primary);
+      background-color: var(--color-brand-secondary);
     }
   }
 
@@ -45,13 +45,13 @@
     display: flex;
     flex-direction: column;
     font-size: 0.9rem;
-    // box-shadow: 0 0 10px 0 var(--color-medium-grey);
+    // box-shadow: 0 0 10px 0 var(--color-gray-400);
     border-width: 1px;
-    border-color: var(--color-blue);
+    border-color: var(--color-brand-primary);
     border-style: solid;
     border-radius: 6px;
     position: relative;
-    background-color: var(--color-light-blue);
+    background-color: var(--color-brand-secondary);
 
     &.dropdown_right::after {
       left: auto;
@@ -65,7 +65,7 @@
 
     & > * {
       text-decoration: none;
-      color:  var(--color-blue);;
+      color:  var(--color-brand-primary);
       // padding: 0.7rem;
       text-align: center;
       height: 2.5rem;
@@ -88,7 +88,7 @@
       }
 
       // &:not(:last-child) {
-      //   border-bottom: 1px solid var(--color-blue);
+      //   border-bottom: 1px solid var(--color-brand-primary);
       // }
     }
 
@@ -103,20 +103,20 @@
       justify-content: start;
       gap: 10px;
       padding: 4px;
-      color: var(--color-blue);
+      color: var(--color-brand-primary);
       border: 2px solid transparent;
 
       &:focus {
-        background-color: var(--color-blue);
-        border: 2px solid var(--color-light-blue);
-        color: var(--color-secondary);
-        // outline: var(--color-blue) solid 1px !important;
+        background-color: var(--color-brand-primary);
+        border: 2px solid var(--color-brand-secondary);
+        color: var(--color-neutral-base);
+        // outline: var(--color-brand-primary) solid 1px !important;
         border-radius: 6px;
       }
 
       &:hover {
         background-color: var(--color-button-hover);
-        color: var(--color-blue);
+        color: var(--color-brand-primary);
       }
 
       p {
@@ -132,20 +132,20 @@
 }
 
 .popover_open {
-  border-color: var(--color-blue);
-  background-color: var(--color-blue);
+  border-color: var(--color-brand-primary);
+  background-color: var(--color-brand-primary);
 
   svg {
-    color: var(--color-secondary)!important;
+    color: var(--color-neutral-base)!important;
   }
 
   &:hover svg {
-    color: var(--color-blue)!important;
+    color: var(--color-brand-primary)!important;
   }
 }
 
 .PopoverArrow {
-  fill: var(--color-blue);
+  fill: var(--color-brand-primary);
   width: 20px;
   height: 12px;
 }
@@ -168,7 +168,7 @@
   & a,
   & span label {
     text-decoration: none;
-    color: var(--color-primary);
+    color: var(--color-text-primary);
     padding: 0.7rem;
     text-align: center;
     cursor: pointer;
@@ -207,7 +207,7 @@
     }
 
     & input:focus + label {
-      outline: var(--color-blue) solid 2px !important;
+      outline: var(--color-brand-primary) solid 2px !important;
       outline-offset: -2px;
     }
   }

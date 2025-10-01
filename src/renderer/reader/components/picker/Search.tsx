@@ -117,7 +117,7 @@ class SearchPicker extends React.Component<IProps, IState> {
                     (this.loadSeq > 2 && found) &&
                     (
                         <div className={stylesReaderHeader.searchActions}>
-                            <span style={{ width: "1px", height: "30px", backgroundColor: "var(--color-verylight-grey)", margin: "auto 10px auto 20px" }}></span>
+                            <span style={{ width: "1px", height: "30px", backgroundColor: "var(--color-gray-200)", margin: "auto 10px auto 20px" }}></span>
                             <button
                                 disabled={notFound}
                                 onClick={() => {
@@ -134,10 +134,10 @@ class SearchPicker extends React.Component<IProps, IState> {
                                     fontSize: "1em",
                                 //     // color: notFound ? "grey" : "black",
                                 //     fill: notFound ? "grey" : "black",
-                                //     background: "var(--color-light-blue)",
-                                //     border: "1px solid var(--color-blue)",
+                                //     background: "var(--color-brand-secondary)",
+                                //     border: "1px solid var(--color-brand-primary)",
                                 //     borderRadius: "6px",
-                                //     color: "var(--color-blue)",
+                                //     color: "var(--color-brand-primary)",
                                     textWrap: "nowrap",
                                  }}
                                 className={stylesButtons.button_nav_primary}
@@ -155,8 +155,8 @@ class SearchPicker extends React.Component<IProps, IState> {
                                     width: "30px",
                                     padding: "4px",
                                     margin: 0,
-                                    color: notFound ? "grey" : "var(--color-blue)",
-                                    fill: notFound ? "grey" : "var(--color-blue)",
+                                    color: notFound ? "grey" : "var(--color-brand-primary)",
+                                    fill: notFound ? "grey" : "var(--color-brand-primary)",
                                 }}
                             >
                                 <SVG ariaHidden={true} svg={ArrowLeftIcon} />
@@ -170,8 +170,8 @@ class SearchPicker extends React.Component<IProps, IState> {
                                     width: "30px",
                                     padding: "4px",
                                     margin: 0,
-                                    color: notFound ? "grey" : "var(--color-blue)",
-                                    fill: notFound ? "grey" : "var(--color-blue)",
+                                    color: notFound ? "grey" : "var(--color-brand-primary)",
+                                    fill: notFound ? "grey" : "var(--color-brand-primary)",
                                 }}
                             >
                                 <SVG ariaHidden={true} svg={ArrowRightIcon} />
