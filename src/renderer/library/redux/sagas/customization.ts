@@ -213,8 +213,9 @@ export function saga() {
         if (customization.lock.state !== "IDLE" || !id) {
             return ;
         }
-        const action = customizationActions.activating.build(id);
-        yield* callTyped(profileActivatingAction, action);
+        // const action = customizationActions.activating.build(id);
+        // yield* callTyped(profileActivatingAction, action);
+        yield* putTyped(customizationActions.activating.build(id));
     }),
 ]);
 }
