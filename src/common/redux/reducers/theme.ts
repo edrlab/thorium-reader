@@ -8,14 +8,11 @@
 import { type Reducer } from "redux";
 
 import { themeActions } from "../actions";
-import { ICustomizationTheme, ITheme } from "../states/theme";
-
-const defaultCustomizationTheme: ICustomizationTheme = { enable: false, logo: "" };
+import { ITheme } from "../states/theme";
 
 function themeReducer_(
     state: ITheme = {
         name: "system",
-        customization: defaultCustomizationTheme,
     },
     action: themeActions.setTheme.TAction,
 ): ITheme {
@@ -23,7 +20,6 @@ function themeReducer_(
         case themeActions.setTheme.ID:
             return {
                 name: action.payload.name ? action.payload.name : state.name,
-                customization: action.payload.customization ? {...action.payload.customization} : (state.customization ? state.customization : defaultCustomizationTheme),
             };
         default:
             return state;

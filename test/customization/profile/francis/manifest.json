@@ -52,7 +52,7 @@
                     "href": "https://demoreader.cantookstation.com/v1/sign_in.opds2"
                 },
                 "logo": {
-                    "rel": "logo",
+                    "type": "image/svg+xml",
                     "href": "./images/catalog.svg"
                 }
             }
@@ -69,7 +69,7 @@
                     "href": ""
                 },
                 "logo": {
-                    "rel": "logo",
+                    "type": "image/svg+xml",
                     "href": "./images/catalog.svg"
                 }
             }
@@ -86,7 +86,7 @@
                     "href": ""
                 },
                 "logo": {
-                    "rel": "logo",
+                    "type": "image/svg+xml",
                     "href": "./images/catalog.svg"
                 }
             }
