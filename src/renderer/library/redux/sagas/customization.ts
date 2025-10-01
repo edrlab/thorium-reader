@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 import { nanoid } from "nanoid";
-import { customizationActions, themeActions, toastActions } from "readium-desktop/common/redux/actions";
+import { customizationActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { ICustomizationLockInfo } from "readium-desktop/common/redux/states/customization";
@@ -36,7 +36,6 @@ function* profileActivating(id: string): SagaGenerator<void> {
     debug(`TODO activate ${id} profile`);
     if (!id) {
         // THorium vanilla rollback, clear the local redux state
-        yield* putTyped(themeActions.setTheme.build(undefined, { enable: false }));
 
         yield* putTyped(customizationActions.welcomeScreen.build(false));
 
@@ -103,13 +102,13 @@ function* profileActivating(id: string): SagaGenerator<void> {
 
     yield* putTyped(customizationActions.welcomeScreen.build(welcomeScreenNeeded));
 
-    const logoObj = manifestJson.images?.find((ln) => ln?.rel === "logo");
-    debug("Manifest LOGO Obj:", logoObj);
-    const logoUrl = baseUrl + encodeURIComponent_RFC3986(Buffer.from(logoObj.href).toString("base64"));
+    // const logoObj = manifestJson.images?.find((ln) => ln?.rel === "logo");
+    // debug("Manifest LOGO Obj:", logoObj);
+    // const logoUrl = baseUrl + encodeURIComponent_RFC3986(Buffer.from(logoObj.href).toString("base64"));
 
     const colorsDarkLight = manifestJson.theme.color;
 
-    yield* putTyped(themeActions.setTheme.build(undefined, { enable: true, logo: logoUrl, color: colorsDarkLight }));
+    // yield* putTyped(themeActions.setTheme.build(undefined, { enable: true, logo: logoUrl, color: colorsDarkLight }));
 
 
     // TODO https://github.com/edrlab/thorium-reader/pull/3095/files#diff-c6b317c691e2e0831a6aeebdf7b5dba7ca96d4abff06bf95d8ccfbed69475618R159-R167
@@ -210,9 +209,8 @@ export function saga() {
     callTyped(function* () {
 
         const customization = yield* selectTyped((state: ICommonRootState) => state.customization);
-        const theme = yield* selectTyped((state: ICommonRootState) => state.theme);
         const id = customization.activate.id;
-        if (customization.lock.state !== "IDLE" || (!theme.customization?.enable && !id)) {
+        if (customization.lock.state !== "IDLE" || !id) {
             return ;
         }
         const action = customizationActions.activating.build(id);

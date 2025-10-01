@@ -6,22 +6,20 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { ICustomizationTheme, TTheme } from "../../states/theme";
+import { TTheme } from "../../states/theme";
 
 export const ID = "SET_APP_THEME";
 
 export interface Payload {
     name: TTheme;
-    customization: ICustomizationTheme;
 }
 
-export function build(theme?: TTheme, customization?: ICustomizationTheme): Action<typeof ID, Payload> {
+export function build(theme?: TTheme): Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
             name: theme,
-            customization,
         },
     };
 }
