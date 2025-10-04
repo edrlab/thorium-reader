@@ -63,6 +63,9 @@
             "descending": "இறங்கு",
             "unsorted": "வரிசைப்படுத்தப்படாதது"
         },
+        "customization": {
+            "publications": ""
+        },
         "delete": "நீக்கு",
         "deleteBook": "நீக்கு",
         "deleteTag": "குறிச்சொல்லை நீக்கு",

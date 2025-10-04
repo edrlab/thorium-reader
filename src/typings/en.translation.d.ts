@@ -175,7 +175,8 @@ declare namespace typed_i18n {
   readonly "sort": string,
   readonly "tag": string,
   readonly "tags": string,
-  readonly "update": string
+  readonly "update": string,
+  readonly "customization": { readonly "publications": string }
 };
   (_: "catalog.about", __?: {}): { readonly "title": string };
   (_: "catalog.about.title", __?: {}): string;
@@ -297,6 +298,8 @@ declare namespace typed_i18n {
   (_: "catalog.sort", __?: {}): string; (_: "catalog.tag", __?: {}): string;
   (_: "catalog.tags", __?: {}): string;
   (_: "catalog.update", __?: {}): string;
+  (_: "catalog.customization", __?: {}): { readonly "publications": string };
+  (_: "catalog.customization.publications", __?: {}): string;
   (_: "dialog", __?: {}): {
   readonly "annotations": {
     readonly "descAuthor": string,

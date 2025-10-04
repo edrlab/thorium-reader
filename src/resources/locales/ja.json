@@ -63,6 +63,9 @@
             "descending": "降順（Z-A）",
             "unsorted": "並べ替えない"
         },
+        "customization": {
+            "publications": ""
+        },
         "delete": "削除",
         "deleteBook": "削除",
         "deleteTag": "タグを削除",

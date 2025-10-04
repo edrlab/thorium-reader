@@ -63,6 +63,9 @@
             "descending": "descendent",
             "unsorted": "sense ordenar"
         },
+        "customization": {
+            "publications": ""
+        },
         "delete": "Eliminar",
         "deleteBook": "Eliminar",
         "deleteTag": "Eliminar etiqueta",

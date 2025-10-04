@@ -63,6 +63,9 @@
             "descending": "по убыванию",
             "unsorted": "без сортировки"
         },
+        "customization": {
+            "publications": ""
+        },
         "delete": "Удалить",
         "deleteBook": "Удалить",
         "deleteTag": "Удалить тег",

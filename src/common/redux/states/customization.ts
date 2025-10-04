@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
+import { IOpdsPublicationView } from "src/common/views/opds";
 
 // export type TCustomizationProvisioningPackage = Array<[identifier: string, fileName: string, version: string]>;
 
@@ -16,6 +17,7 @@ export interface ICustomizationProfileProvisioned {
     logoUrl: string;
     title: IStringMap;
     description: IStringMap;
+    opdsPublicationView: IOpdsPublicationView[];
 }
 
 export interface ICustomizationProfileError {
