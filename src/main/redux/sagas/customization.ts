@@ -274,7 +274,9 @@ function* triggerCatalogOpdsAuthentication(action: customizationActions.triggerO
         const response = yield* callTyped(() => httpGet(catalogHref));
         const opdsService = yield* callTyped(() => diMainGet("opds-service"));
         const opdsView = yield* callTyped(() => opdsService.opdsRequestTransformer(response));
-        if (opdsView.title === "Unauthorized") {
+        if (!opdsView) {
+            debug("no network!?");
+        } else if (opdsView?.title === "Unauthorized") {
             debug("authentication dialog modal triggered");
         } else {
             debug("odpsFeed seems to be authentified");
