@@ -166,7 +166,7 @@ export async function customizationPackageProvisioningAccumulator(packagesArray:
     }
 
     if (!manifest) {
-        return { fileName: packageFileName, error: true, message: error };
+        return { id: undefined, fileName: packageFileName, version: undefined, error: true, message: error };
     }
 
     const packageProvisionedWithTheSameIdentifier = packagesArray.find(({ id }) => id === manifest.identifier);
@@ -199,7 +199,7 @@ export async function customizationPackageProvisioningAccumulator(packagesArray:
         return { id: manifest.identifier, fileName: packageFileName, version: manifest.version, logoUrl, title: manifest.title, description: manifest.description, opdsPublicationView: publicationsView };
     }
 
-    return { fileName: packageFileName, error: true, message: "profile version is under or equal to the currrent provisioned profile version" };
+    return { id: manifest.identifier, fileName: packageFileName, version: manifest.version, error: true, message: "profile version is under or equal to the currrent provisioned profile version" };
 }
 
 export async function customizationPackageProvisioning(packageFileName: string): Promise<ICustomizationManifest> {

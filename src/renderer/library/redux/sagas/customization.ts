@@ -33,7 +33,6 @@ const applyColorSet = (colors: ICustomizationManifestColor, suffix: string) => {
 
 function* profileActivating(id: string): SagaGenerator<void> {
 
-    debug(`TODO activate ${id} profile`);
     if (!id) {
         // THorium vanilla rollback, clear the local redux state
 
@@ -122,7 +121,7 @@ function* profileActivating(id: string): SagaGenerator<void> {
     const catalogsLinks = manifestJson.links?.filter((ln) => ln.rel === "catalog");
     debug("Manifest CATALOGS links", catalogsLinks);
 
-    if (catalogsLinks.length) {
+    if (catalogsLinks?.length) {
         const catalogLink = catalogsLinks[0];
 
         let catalogLinkOpdsAuthenticateDocumentHref = "";
