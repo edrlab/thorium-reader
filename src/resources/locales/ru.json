@@ -36,7 +36,7 @@
                         "yes": "Да"
                     },
                     "help": "",
-                    "message": "Вы хотите сохранить сеанс ?",
+                    "message": "Сохранение и восстановление сеанса чтения",
                     "title": "Сохранить сеанс?"
                 }
             }
@@ -125,8 +125,8 @@
     },
     "dialog": {
         "annotations": {
-            "descAuthor": "",
-            "descCreator": "",
+            "descAuthor": "автор '{{- author}}'",
+            "descCreator": "создано",
             "descList": "",
             "descNewer": "",
             "descOlder": "",
@@ -142,7 +142,7 @@
                 "title": "Создание и активация профиля настройки"
             }
         },
-        "deleteAnnotations": "",
+        "deleteAnnotations": "Удалить аннотации?",
         "deleteAnnotationsText": "Вы уверены, что хотите удалить {{- annotationListLength}} заметку(и/ок)?",
         "deleteBookmarks": "Удалить закладки?",
         "deleteBookmarksText": "Вы уверены, что хотите удалить {{- bookmarkListLength}} закладку(и/ок)?",
@@ -270,8 +270,8 @@
                 "descriptive": ""
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Шрифт Брайля",
+                "descriptive": "Шрифт Брайля"
             },
             "additional-accessibility-information-full-ruby-annotations": {
                 "compact": "",
@@ -294,12 +294,12 @@
                 "descriptive": ""
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Какие-нибудь аннотации Ruby",
+                "descriptive": "Какие-нибудь аннотации Ruby"
             },
             "additional-accessibility-information-sign-language": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Язык жестов",
+                "descriptive": "Язык жестов"
             },
             "additional-accessibility-information-tactile-graphics": {
                 "compact": "",
@@ -861,9 +861,9 @@
         },
         "tts": {
             "activate": "Активировать преобразование текста в речь",
-            "language": "",
+            "language": "Язык TTS",
             "next": "Следующий TTS",
-            "options": "",
+            "options": "Параметры TTS",
             "pause": "Приостановить TTS",
             "play": "Воспроизвести TTS",
             "previous": "Предыдущий TTS",
@@ -879,19 +879,19 @@
             "creator": "",
             "help": "",
             "name": "",
-            "organization": "",
+            "organization": "Организация",
             "person": "",
-            "type": ""
+            "type": "Тип:"
         },
         "auth": {
             "help": "",
-            "title": "",
+            "title": "Доступ к каталогам публикаций",
             "wipeData": "Очистить данные для входа"
         },
         "keyboard": {
             "advancedMenu": "Меню",
             "cancel": "Отменить",
-            "disclaimer": "Настройки приложения по умолчанию были разработаны на основе физического расположения клавиш на раскладке QWERTY.",
+            "disclaimer": "Настройки приложения по умолчанию были разработаны на основе физического расположения клавиш на раскладке QWERTY",
             "editUserJson": "Редактировать файл пользователя...",
             "keyboardShortcuts": "Горячие клавиши",
             "list": {
@@ -913,11 +913,11 @@
                 },
                 "AudioNext": {
                     "description": "",
-                    "name": ""
+                    "name": "Следующий аудиосегмент"
                 },
                 "AudioNextAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Следующий аудиосегмент (escape)"
                 },
                 "AudioPlayPause": {
                     "description": "",
@@ -925,11 +925,11 @@
                 },
                 "AudioPrevious": {
                     "description": "",
-                    "name": ""
+                    "name": "Предыдущий аудиосегмент"
                 },
                 "AudioPreviousAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Предыдущий аудиосегмент (escape)"
                 },
                 "AudioStop": {
                     "description": "",
@@ -953,7 +953,7 @@
                 },
                 "FocusMain": {
                     "description": "",
-                    "name": ""
+                    "name": "Фокус на основное содержимое"
                 },
                 "FocusMainDeep": {
                     "description": "",
@@ -973,7 +973,7 @@
                 },
                 "FocusReaderNavigationBookmarks": {
                     "description": "",
-                    "name": ""
+                    "name": "Фокус на «Закладки»"
                 },
                 "FocusReaderNavigationSearch": {
                     "description": "",
@@ -997,11 +997,11 @@
                 },
                 "NavigateNextChapter": {
                     "description": "",
-                    "name": ""
+                    "name": "Перейти к следующей главе"
                 },
                 "NavigateNextChapterAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Перейти к следующей главе (альтернативный вариант)"
                 },
                 "NavigateNextHistory": {
                     "description": "",
@@ -1024,20 +1024,20 @@
                     "name": ""
                 },
                 "NavigateNextPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "В окне чтения перейти на следующую страницу публикации. Обратите внимание, что существует также альтернативная комбинация клавиш",
+                    "name": "Перейти на следующую страницу"
                 },
                 "NavigateNextPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "В окне чтения перейти на следующую страницу публикации. Это альтернативная комбинация клавиш вместо стандартной",
+                    "name": "Перейти на следующую страницу (альтернативный вариант)"
                 },
                 "NavigatePreviousChapter": {
                     "description": "",
-                    "name": ""
+                    "name": "Перейти к предыдущей главе"
                 },
                 "NavigatePreviousChapterAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Перейти к предыдущей главе (альтернативный вариант)"
                 },
                 "NavigatePreviousHistory": {
                     "description": "",
@@ -1061,31 +1061,31 @@
                 },
                 "NavigatePreviousPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Перейти на предыдущую страницу"
                 },
                 "NavigatePreviousPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Перейти на предыдущую страницу (альтернативный вариант)"
                 },
                 "NavigateToBegin": {
-                    "description": "",
-                    "name": ""
+                    "description": "В окне чтения перейти к началу публикации",
+                    "name": "Перейти к началу"
                 },
                 "NavigateToEnd": {
-                    "description": "",
-                    "name": ""
+                    "description": "В окне чтения перейти в конец публикации",
+                    "name": "Перейти в конец"
                 },
                 "OpenReaderInfo": {
-                    "description": "",
-                    "name": ""
+                    "description": "В окне чтения открыть диалоговое окно с информацией о публикации",
+                    "name": "Показать информацию о публикации"
                 },
                 "OpenReaderInfoWhereAmI": {
                     "description": "",
                     "name": ""
                 },
                 "Print": {
-                    "description": "",
-                    "name": ""
+                    "description": "В окне чтения открыть диалоговое окно печати",
+                    "name": "Печать"
                 },
                 "SearchNext": {
                     "description": "",
@@ -1109,11 +1109,11 @@
                 },
                 "ToggleBookmark": {
                     "description": "Добавить новую закладку или удалить существующую, если она в данный момент выбрана",
-                    "name": "Переключить закладку"
+                    "name": "Установить/Удалить закладку"
                 },
                 "ToggleReaderFullscreen": {
-                    "description": "",
-                    "name": ""
+                    "description": "В окне чтения войти или выйти из полноэкранного режима. Обратите внимание, что это отличается от «дзен-режима», который упрощает пользовательский интерфейс",
+                    "name": "Во весь экран"
                 }
             },
             "loadUserJson": "Загрузить из пользовательского файла",
