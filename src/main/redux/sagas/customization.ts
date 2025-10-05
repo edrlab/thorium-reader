@@ -353,6 +353,20 @@ export function saga() {
             (e) => error(filename_, e),
         ),
         takeSpawnLeading(
+            customizationActions.deleteProfile.ID,
+            function* (action: customizationActions.deleteProfile.TAction) {
+                const filename = path.join(customizationWellKnownFolder, action.payload.fileName);
+                try {
+                    if (existsSync(filename)) {
+                        unlinkSync(filename);
+                    }
+                } catch (e) {
+                    debug("error to delete", filename, e);
+                }
+            },
+            (e) => error(filename_, e),
+        ),
+        takeSpawnLeading(
             customizationActions.activating.ID,
             function* (action: customizationActions.activating.TAction) {
 
