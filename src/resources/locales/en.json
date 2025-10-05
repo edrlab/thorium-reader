@@ -139,6 +139,7 @@
         "cancel": "Cancel",
         "customization": {
             "splashscreen": {
+                "state": "State {{- state}}, Id={{- id}}",
                 "title": "Provisionning and activating customization profile"
             }
         },

@@ -139,6 +139,7 @@
         "cancel": "Prekliči",
         "customization": {
             "splashscreen": {
+                "state": "",
                 "title": ""
             }
         },

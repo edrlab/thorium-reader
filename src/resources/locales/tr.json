@@ -139,6 +139,7 @@
         "cancel": "İptal",
         "customization": {
             "splashscreen": {
+                "state": "",
                 "title": ""
             }
         },

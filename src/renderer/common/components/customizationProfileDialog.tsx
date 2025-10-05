@@ -89,9 +89,8 @@ export const CustomizationProfileDialog: React.FC = () => {
                             {
                                 customization.lock.state !== "IDLE" ?
                                 <div>
-                                    <span>STATE={customization.lock.state}</span>
-                                    <span>ID={customization.lock.lockInfo?.id === "" && customization.lock.state === "ACTIVATING" ? "THorium Default Profile" : customization.lock.lockInfo?.id || "undefined"}</span>
-                                    <span>LOCKINFO={JSON.stringify(customization.lock.lockInfo, null, 4)}</span>
+                                    <span>{__("dialog.customization.splashscreen.state", {state: customization.lock.state, id: customization.lock.lockInfo?.id === "" && customization.lock.state === "ACTIVATING" ? "THorium Default Profile" : customization.lock.lockInfo?.id || "undefined"})}</span>
+                                    {/* <span>LOCKINFO={JSON.stringify(customization.lock.lockInfo, null, 4)}</span> */}
                                 </div> 
                                 : <></>
                             }

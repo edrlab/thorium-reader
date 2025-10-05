@@ -120,6 +120,7 @@ declare namespace typed_i18n {
     readonly "descending": string,
     readonly "unsorted": string
   },
+  readonly "customization": { readonly "publications": string },
   readonly "delete": string,
   readonly "deleteBook": string,
   readonly "deleteTag": string,
@@ -175,8 +176,7 @@ declare namespace typed_i18n {
   readonly "sort": string,
   readonly "tag": string,
   readonly "tags": string,
-  readonly "update": string,
-  readonly "customization": { readonly "publications": string }
+  readonly "update": string
 };
   (_: "catalog.about", __?: {}): { readonly "title": string };
   (_: "catalog.about.title", __?: {}): string;
@@ -193,6 +193,8 @@ declare namespace typed_i18n {
   (_: "catalog.column.ascending", __?: {}): string;
   (_: "catalog.column.descending", __?: {}): string;
   (_: "catalog.column.unsorted", __?: {}): string;
+  (_: "catalog.customization", __?: {}): { readonly "publications": string };
+  (_: "catalog.customization.publications", __?: {}): string;
   (_: "catalog.delete", __?: {}): string;
   (_: "catalog.deleteBook", __?: {}): string;
   (_: "catalog.deleteTag", __?: {}): string;
@@ -298,8 +300,6 @@ declare namespace typed_i18n {
   (_: "catalog.sort", __?: {}): string; (_: "catalog.tag", __?: {}): string;
   (_: "catalog.tags", __?: {}): string;
   (_: "catalog.update", __?: {}): string;
-  (_: "catalog.customization", __?: {}): { readonly "publications": string };
-  (_: "catalog.customization.publications", __?: {}): string;
   (_: "dialog", __?: {}): {
   readonly "annotations": {
     readonly "descAuthor": string,
@@ -315,7 +315,10 @@ declare namespace typed_i18n {
   },
   readonly "cancel": string,
   readonly "customization": {
-    readonly "splashscreen": { readonly "title": string }
+    readonly "splashscreen": {
+      readonly "title": string,
+      readonly "state": string
+    }
   },
   readonly "deleteAnnotations": string,
   readonly "deleteAnnotationsText": string,
@@ -353,9 +356,15 @@ declare namespace typed_i18n {
   (_: "dialog.annotations.origin", __?: {}): string;
   (_: "dialog.annotations.title", __?: {}): string;
   (_: "dialog.cancel", __?: {}): string;
-  (_: "dialog.customization", __?: {}): { readonly "splashscreen": { readonly "title": string } };
-  (_: "dialog.customization.splashscreen", __?: {}): { readonly "title": string };
+  (_: "dialog.customization", __?: {}): {
+  readonly "splashscreen": {
+    readonly "title": string,
+    readonly "state": string
+  }
+};
+  (_: "dialog.customization.splashscreen", __?: {}): { readonly "title": string, readonly "state": string };
   (_: "dialog.customization.splashscreen.title", __?: {}): string;
+  (_: "dialog.customization.splashscreen.state", __?: {}): string;
   (_: "dialog.deleteAnnotations", __?: {}): string;
   (_: "dialog.deleteAnnotationsText", __?: {}): string;
   (_: "dialog.deleteBookmarks", __?: {}): string;

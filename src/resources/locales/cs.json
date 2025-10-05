@@ -139,6 +139,7 @@
         "cancel": "Zrušit",
         "customization": {
             "splashscreen": {
+                "state": "",
                 "title": ""
             }
         },

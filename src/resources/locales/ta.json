@@ -139,6 +139,7 @@
         "cancel": "ரத்துசெய்",
         "customization": {
             "splashscreen": {
+                "state": "",
                 "title": ""
             }
         },

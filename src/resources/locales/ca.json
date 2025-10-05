@@ -139,6 +139,7 @@
         "cancel": "Cancel·lar",
         "customization": {
             "splashscreen": {
+                "state": "",
                 "title": ""
             }
         },
