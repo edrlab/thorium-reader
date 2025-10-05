@@ -28,7 +28,6 @@ const applyColorSet = (colors: ICustomizationManifestColor, suffix: string) => {
 
 function* profileActivating(id: string): SagaGenerator<void> {
 
-    debug(`TODO activate ${id} profile`);
     if (!id) {
         // THorium vanilla rollback, clear the local redux state
 
