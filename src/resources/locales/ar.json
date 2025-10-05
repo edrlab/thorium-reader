@@ -63,6 +63,9 @@
             "descending": "تنازلي",
             "unsorted": "غير مرتب"
         },
+        "customization": {
+            "publications": ""
+        },
         "delete": "حذف",
         "deleteBook": "حذف",
         "deleteTag": "حذف الوسم",

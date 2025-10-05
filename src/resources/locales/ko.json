@@ -63,6 +63,9 @@
             "descending": "내림차순",
             "unsorted": "정렬없움"
         },
+        "customization": {
+            "publications": ""
+        },
         "delete": "삭제",
         "deleteBook": "도서 삭제",
         "deleteTag": "태그 삭제",

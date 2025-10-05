@@ -22,6 +22,9 @@ import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
+import { diMainGet } from "../di";
+import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
+import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 
 // Logger
 const debug = debug_("readium-desktop:main#utils/customization/provisioning");
@@ -174,7 +177,26 @@ export async function customizationPackageProvisioningAccumulator(packagesArray:
         const baseUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/custom-profile-zip/${encodeURIComponent_RFC3986(Buffer.from(manifest.identifier).toString("base64"))}/`;
         const logoUrl = baseUrl + encodeURIComponent_RFC3986(Buffer.from(logoObj.href).toString("base64"));
 
-        return { id: manifest.identifier, fileName: packageFileName, version: manifest.version, logoUrl, title: manifest.title, description: manifest.description };
+        const publicationsView = [];
+        const publications = manifest.publications;
+        if (publications?.length) {
+            const opdsFeedViewConverter = diMainGet("opds-feed-view-converter");
+
+            for (const opdsPubJson of publications) {
+
+                const opdsPublication = TaJsonDeserialize(
+                    opdsPubJson,
+                    OPDSPublication,
+                );
+                const opdsPubView = opdsFeedViewConverter.convertOpdsPublicationToView(opdsPublication, "/");
+                if (opdsPubView) {
+                    publicationsView.push(opdsPubView);
+                }
+            }    
+
+        }
+
+        return { id: manifest.identifier, fileName: packageFileName, version: manifest.version, logoUrl, title: manifest.title, description: manifest.description, opdsPublicationView: publicationsView };
     }
 
     return { fileName: packageFileName, error: true, message: "profile version is under or equal to the currrent provisioned profile version" };

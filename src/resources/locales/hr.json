@@ -63,6 +63,9 @@
             "descending": "silazno",
             "unsorted": "nerazvrstano"
         },
+        "customization": {
+            "publications": ""
+        },
         "delete": "Izbriši",
         "deleteBook": "Izbriši",
         "deleteTag": "Izbriši oznaku",
