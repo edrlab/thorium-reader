@@ -11,6 +11,8 @@ import * as stylesSettings from "readium-desktop/renderer/assets/styles/componen
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
+import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -20,6 +22,7 @@ import * as CogIcon from "readium-desktop/renderer/assets/icons/cog-icon.svg";
 import * as PaletteIcon from "readium-desktop/renderer/assets/icons/palette-icon.svg";
 import * as KeyReturnIcon from "readium-desktop/renderer/assets/icons/keyreturn-icon.svg";
 import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar-icon.svg";
+import * as DeleteIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 import classNames from "classnames";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
@@ -47,6 +50,7 @@ import { ApiappHowDoesItWorkInfoBox } from "../dialog/ApiappAddForm";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import { TextArea } from "react-aria-components";
 import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/annotation/htmlTemplate";
+import * as Popover from "@radix-ui/react-popover";
 
 // import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
@@ -479,6 +483,7 @@ const Profiles = () => {
                             <div
                                 key={profile.id}
                                 className={stylesSettings.profile_selection_input}
+                                role="radiogroup"
                             >
                                 <input
                                     type="radio"
@@ -490,15 +495,42 @@ const Profiles = () => {
                                         console.log("PROFILE Input change", e);
                                         dispatch(customizationActions.activating.build(profile.id));
                                     }}
+                                    aria-label={profile.id}
                                 />
-                                <label htmlFor={profile.id} className={stylesSettings.profile_selection_label}>
+                                <label aria-hidden={true} htmlFor={profile.id} className={stylesSettings.profile_selection_label}>
                                     <img src={profile.logoUrl} alt="" />
                                     <div className={stylesSettings.profile_selection_description}>
                                         <h5>{profileTitle}</h5>
                                         <p>{profileDescription}</p>
-                                        <p style={{fontSize: "8px"}}>{profile.fileName}</p>
+                                        <p style={{ fontSize: "8px" }}>{profile.fileName}</p>
                                     </div>
                                 </label>
+                                <div style={{ display: "flex", flexDirection: "row-reverse", width: "100%", margin: "-10px" }}>
+                                    <Popover.Root>
+                                        <Popover.Trigger asChild>
+                                            <button
+                                                style={{width: "16px", height: "16px"}}
+                                                title={__("catalog.delete")}
+                                            >
+                                                <SVG ariaHidden={true} svg={DeleteIcon} />
+                                            </button>
+                                        </Popover.Trigger>
+                                        <Popover.Portal>
+                                            <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesPopoverDialog.delete_item}>
+                                                <Popover.Close
+                                                    onClick={() => {
+                                                        dispatch(customizationActions.deleteProfile.build(profile.fileName));
+                                                    }}
+                                                    title={__("catalog.delete")}
+                                                >
+                                                    <SVG ariaHidden={true} svg={DeleteIcon} />
+                                                    {__("reader.marks.delete")}
+                                                </Popover.Close>
+                                                <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                                            </Popover.Content>
+                                        </Popover.Portal>
+                                    </Popover.Root>
+                                </div>
                             </div>
                         );
                     })
