@@ -20,7 +20,7 @@
             "copy": "Копировать",
             "cut": "Вырезать",
             "paste": "Вставить",
-            "print": "",
+            "print": "Печать",
             "redo": "Восстановить",
             "selectAll": "Выбрать все",
             "title": "Редактировать",
@@ -76,9 +76,9 @@
             "lastAdditions": "Недавно добавленные"
         },
         "export": "Экспорт",
-        "exportAnnotation": "",
+        "exportAnnotation": "Экспортировать заметки",
         "format": "Формат",
-        "importAnnotation": "",
+        "importAnnotation": "Импортировать заметки",
         "lang": "Язык",
         "lastRead": "Последнее чтение",
         "moreInfo": "Дополнительные сведения",
@@ -131,24 +131,24 @@
             "descNewer": "",
             "descOlder": "",
             "descTitle": "",
-            "importAll": "",
+            "importAll": "Импортировать все заметки",
             "importWithoutConflict": "",
             "origin": "",
-            "title": ""
+            "title": "Импортировать заметки?"
         },
         "cancel": "Отменить",
         "customization": {
             "splashscreen": {
-                "title": ""
+                "title": "Создание и активация профиля настройки"
             }
         },
         "deleteAnnotations": "",
-        "deleteAnnotationsText": "",
-        "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteAnnotationsText": "Вы уверены, что хотите удалить {{- annotationListLength}} заметку(и/ок)?",
+        "deleteBookmarks": "Удалить закладки?",
+        "deleteBookmarksText": "Вы уверены, что хотите удалить {{- bookmarkListLength}} закладку(и/ок)?",
         "deleteFeed": "Вы действительно хотите удалить этот каталог ?",
         "deletePublication": "Вы действительно хотите удалить эту книгу ?",
-        "deletePublicationWithNotes": "",
+        "deletePublicationWithNotes": "Внимание: эта книга содержит аннотации и/или закладки, они также будут удалены! (Если вы хотите их сохранить, обязательно экспортируйте заметки перед удалением книги)",
         "import": "Подтвердите импорт:",
         "importError": "произошла ошибка, проверьте расширение вашего файла ({{acceptedExtension}})",
         "renew": "Возобновить/продлить кредит?",
@@ -182,7 +182,7 @@
     "library": {
         "lcp": {
             "hint": "Подсказка :",
-            "open": "",
+            "open": "Открыть",
             "password": "Пароль",
             "sentence": "Для открытия этой книги требуется пароль LCP: ",
             "urlHint": "Забыли парольную фразу? Поддержка доступна:",
@@ -193,18 +193,18 @@
     },
     "message": {
         "annotations": {
-            "alreadyImported": "",
-            "emptyFile": "",
-            "errorParsing": "",
-            "noBelongTo": "",
-            "nothing": "",
-            "success": ""
+            "alreadyImported": "Все заметки уже импортированы.",
+            "emptyFile": "В этом файле нет заметок.",
+            "errorParsing": "Ошибка при анализе файла: ",
+            "noBelongTo": "Невозможно импортировать заметки, по крайней мере одна заметка не принадлежит книге.",
+            "nothing": "Нет ни одной готовой к импорту заметки, импорт прерван",
+            "success": "Импорт успешно завершён."
         },
         "download": {
             "error": "Загрузка {{- title}} не удалась: [{{- err}}]"
         },
         "import": {
-            "alreadyImport": "{{- title}} уже был импортирован",
+            "alreadyImport": "[{{- title}}] уже импортировано.",
             "fail": "Импорт {{- path}} не удался. {{- err}}",
             "success": "Импорт {{- title}} закончен."
         },
@@ -286,8 +286,8 @@
                 "descriptive": ""
             },
             "additional-accessibility-information-large-print": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Крупный шрифт",
+                "descriptive": "Крупный шрифт"
             },
             "additional-accessibility-information-page-breaks": {
                 "compact": "",
@@ -338,43 +338,43 @@
                 "compact": ""
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Эта книга претендует на то, чтобы соответствовать",
+                "descriptive": "Эта книга претендует на то, чтобы соответствовать"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Accessibility 1.0",
+                "descriptive": "EPUB Accessibility 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Accessibility 1.1",
+                "descriptive": "EPUB Accessibility 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Уровень A",
+                "descriptive": "Уровень A"
             },
             "conformance-details-level-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Уровень AA",
+                "descriptive": "Уровень AA"
             },
             "conformance-details-level-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Уровень AAA",
+                "descriptive": "Уровень AAA"
             },
             "conformance-details-wcag-2-0": {
-                "compact": ""
+                "compact": "WCAG 2.0"
             },
             "conformance-details-wcag-2-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.1",
+                "descriptive": "Руководство по обеспечению доступности веб-контента (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.2",
+                "descriptive": "Руководство по обеспечению доступности веб-контента (WCAG) 2.2"
             },
             "conformance-no": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Информация отсутствует",
+                "descriptive": "Информация отсутствует"
             },
             "conformance-title": "",
             "conformance-unknown-standard": {
@@ -568,7 +568,7 @@
                 "noFlashing": "Без мигания",
                 "noMotionSimulation": "Без имитации движения",
                 "noSound": "Нет звука",
-                "none": " Отсутствует",
+                "none": "Отсутствует",
                 "sound": "Звук",
                 "unknown": "Неизвестный"
             },
@@ -584,7 +584,7 @@
         },
         "author": "Автор",
         "cancelledLcp": "Эту книгу нельзя прочитать, потому что лицензия LCP аннулирована.",
-        "certificateRevoked": "Сертификат LCP отозван",
+        "certificateRevoked": "Сертификат LCP отозван.",
         "certificateSignatureInvalid": "Неверная подпись сертификата лицензии LCP.",
         "cover": {
             "img": "обложка"
@@ -603,9 +603,9 @@
         "lcpRightsPrint": "Количество страниц, разрешенных для печати",
         "lcpStart": "Начать",
         "licenceLCP": "Лицензия (LCP)",
-        "licenseCertificateDateInvalid": "Дата подписания лицензии недействительна ({{- dateTime}})",
-        "licenseOutOfDate": "Лицензия LCP устарела",
-        "licenseSignatureInvalid": "Лицензионная подпись недействительна",
+        "licenseCertificateDateInvalid": "Срок действия сертификата поставщика LCP истёк до даты выдачи лицензии ({{- dateTime}}).",
+        "licenseOutOfDate": "Лицензия LCP устарела.",
+        "licenseSignatureInvalid": "Лицензионная подпись LCP недействительна.",
         "licensed": "Лицензированная",
         "markAsRead": "Отметить как прочитанное",
         "notStarted": "Не начато",
@@ -623,7 +623,7 @@
         "seeMore": "Подробнее",
         "timeLeft": "Осталось",
         "title": "Заголовок",
-        "userKeyCheckInvalid": "Пароль неверен"
+        "userKeyCheckInvalid": "Пароль неверен."
     },
     "reader": {
         "annotations": {
@@ -716,12 +716,12 @@
         "navigation": {
             "ZenModeExit": "",
             "ZenModeTitle": "",
-            "annotationTitle": "аннотация",
+            "annotationTitle": "Аннотация",
             "backHomeTitle": "назад к книжной полке",
-            "bookmarkTitle": "закладка",
+            "bookmarkTitle": "Закладка",
             "currentPage": "Текущая страница: {{- current}}",
             "currentPageTotal": "Текущая страница: {{- current}}/{{- total}}",
-            "detachWindowTitle": "показать окно библиотеки / книжной полки",
+            "detachWindowTitle": "Показать окно библиотеки / книжной полки",
             "goTo": "Перейти на",
             "goToError": "Этот разрыв страницы не существует",
             "goToPlaceHolder": "Введите номер страницы",
@@ -832,7 +832,7 @@
                 "saveDetails": "",
                 "title": ""
             },
-            "preview": "Предпросмотр ",
+            "preview": "Предпросмотр",
             "reduceMotion": "Уменьшить движение",
             "scrolled": "Прокручивающаяся",
             "spacing": "Интервал",
@@ -891,7 +891,7 @@
         "keyboard": {
             "advancedMenu": "Меню",
             "cancel": "Отменить",
-            "disclaimer": "Сочетания клавиш были определены из раскладки клавиатуры QWERTY.",
+            "disclaimer": "Настройки приложения по умолчанию были разработаны на основе физического расположения клавиш на раскладке QWERTY.",
             "editUserJson": "Редактировать файл пользователя...",
             "keyboardShortcuts": "Горячие клавиши",
             "list": {
@@ -1166,7 +1166,7 @@
     },
     "tts": {
         "highlight": {
-            "mainColor": "",
+            "mainColor": "Основной цвет",
             "maskBlockWordOutline": "",
             "maskBlockWordSolidBackground": "",
             "maskBlockWordUnderline": "",
