@@ -1108,8 +1108,8 @@
                     "name": ""
                 },
                 "ToggleBookmark": {
-                    "description": "",
-                    "name": ""
+                    "description": "Добавить новую закладку или удалить существующую, если она в данный момент выбрана",
+                    "name": "Переключить закладку"
                 },
                 "ToggleReaderFullscreen": {
                     "description": "",
@@ -1120,7 +1120,7 @@
             "noShortcutFound": "",
             "resetDefaults": "Сбросить (загрузка по умолчанию)",
             "save": "Сохранить",
-            "searchPlaceholder": ""
+            "searchPlaceholder": "Введите текст для поиска горячей клавиши"
         },
         "language": {
             "languageChoice": "Выбор языка"
