@@ -20,7 +20,7 @@ import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { DisplayType, IRouterLocationState } from "../../routing";
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/home-icon.svg";
-import * as ThoriumIcon from "readium-desktop/renderer/assets/icons/thorium.svg";
+import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon-bold.svg";
 import * as CatalogsIcon from "readium-desktop/renderer/assets/icons/catalogs-icon.svg";
 import * as ShelfIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
@@ -118,7 +118,7 @@ class Header extends React.Component<IProps, undefined> {
                         matchRoutes: ["/opds/" + hostEncoded],
                         searchEnable: false,
                         styles: [],
-                        svg: catalog.properties?.logo?.type === "image/svg+xml" ? customizationBaseUrl + encodeURIComponent_RFC3986(Buffer.from(catalog.properties.logo.href).toString("base64")) : ThoriumIcon,
+                        svg: GlobeIcon,
                     });
                 }
             }
@@ -216,7 +216,7 @@ class Header extends React.Component<IProps, undefined> {
         );
 
         return (
-            <li className={classNames(...styleClasses, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} key={index}>
+            <li className={classNames(...styleClasses, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} key={index} style={{height: "inherit"}}>
                 <Link
                     to={nextLocation}
                     state={{ displayType: (nextLocation.state && (nextLocation.state as IRouterLocationState).displayType) ? (nextLocation.state as IRouterLocationState).displayType : DisplayType.Grid }}
@@ -224,6 +224,7 @@ class Header extends React.Component<IProps, undefined> {
                     aria-pressed={active}
                     role={"button"}
                     className={classNames(active ? stylesButtons.button_nav_primary : "", !active ? "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" : "")}
+                    style={{height: "inherit"}}
                     title={item.label}
                     onClick={(e) => {
                         if (e.altKey || e.shiftKey || e.ctrlKey) {
