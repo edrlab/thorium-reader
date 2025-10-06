@@ -303,7 +303,7 @@ const streamProtocolHandlerTunnel = async (
 
     debug("............... streamProtocolHandlerTunnel req.url", req.url);
     req.url = convertCustomSchemeToHttpUrl(req.url);
-    await streamProtocolHandler(req, callback);
+    return streamProtocolHandler(req, callback);
 };
 
 // super hacky!! :(
