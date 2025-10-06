@@ -101,24 +101,26 @@ class Header extends React.Component<IProps, undefined> {
         if (customizationCatalogs?.length) {
             for (const catalog of customizationCatalogs) {
                 let catalogOrigin = "";
-                try {
-                    const { host } = new URL(catalog.href);
-                    if (host) {
-                        catalogOrigin = host;
+                if (catalog.properties.showOnHomeSection) {
+                    try {
+                        const { host } = new URL(catalog.href);
+                        if (host) {
+                            catalogOrigin = host;
+                        }
+                    } catch {
+                        // ignore
                     }
-                } catch {
-                    // ignore
+                    const hostEncoded = Buffer.from(encodeURIComponent(catalogOrigin), "utf-8").toString("base64");
+                    const label = (catalog?.title && typeof catalog.title === "object") ? catalog.title[this.props.locale] || catalog.title["en"] || __("header.myCatalogs") : typeof catalog.title === "string" ? catalog.title : __("header.myCatalogs");
+                    headerNav.push({
+                        route: buildOpdsBrowserRoute(hostEncoded, label, catalog.href),
+                        label,
+                        matchRoutes: ["/opds/" + hostEncoded],
+                        searchEnable: false,
+                        styles: [],
+                        svg: catalog.properties?.logo?.type === "image/svg+xml" ? customizationBaseUrl + encodeURIComponent_RFC3986(Buffer.from(catalog.properties.logo.href).toString("base64")) : ThoriumIcon,
+                    });
                 }
-                const hostEncoded = Buffer.from(encodeURIComponent(catalogOrigin), "utf-8").toString("base64");
-                const label = (catalog?.title && typeof catalog.title === "object") ? catalog.title[this.props.locale] || catalog.title["en"] || __("header.myCatalogs") : typeof catalog.title === "string" ? catalog.title : __("header.myCatalogs");
-                headerNav.push({
-                    route: buildOpdsBrowserRoute(hostEncoded, label, catalog.href),
-                    label,
-                    matchRoutes: ["/opds/" + hostEncoded],
-                    searchEnable: false,
-                    styles: [],
-                    svg: catalog.properties?.logo?.type === "image/svg+xml" ? customizationBaseUrl + encodeURIComponent_RFC3986(Buffer.from(catalog.properties.logo.href).toString("base64")) : ThoriumIcon,
-                });
             }
         }
 

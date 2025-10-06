@@ -63,9 +63,6 @@
             "descending": "descending",
             "unsorted": "unsorted"
         },
-        "customization": {
-            "publications": "Profile publications"
-        },
         "delete": "Delete",
         "deleteBook": "Delete",
         "deleteTag": "Delete tag",
