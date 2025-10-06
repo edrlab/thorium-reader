@@ -28,7 +28,7 @@ import { CookieJar } from "tough-cookie";
 import { cookiejarFilePath } from "../di";
 
 // Logger
-const filename_ = "readium-desktop:main/http";
+const filename_ = "readium-desktop:main/network/fetch";
 const debug = debug_(filename_);
 
 let fetchLocal: typeof nodeFetch;
