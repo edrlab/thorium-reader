@@ -316,8 +316,8 @@ declare namespace typed_i18n {
   readonly "cancel": string,
   readonly "customization": {
     readonly "splashscreen": {
-      readonly "title": string,
-      readonly "state": string
+      readonly "state": string,
+      readonly "title": string
     }
   },
   readonly "deleteAnnotations": string,
@@ -358,13 +358,13 @@ declare namespace typed_i18n {
   (_: "dialog.cancel", __?: {}): string;
   (_: "dialog.customization", __?: {}): {
   readonly "splashscreen": {
-    readonly "title": string,
-    readonly "state": string
+    readonly "state": string,
+    readonly "title": string
   }
 };
-  (_: "dialog.customization.splashscreen", __?: {}): { readonly "title": string, readonly "state": string };
-  (_: "dialog.customization.splashscreen.title", __?: {}): string;
+  (_: "dialog.customization.splashscreen", __?: {}): { readonly "state": string, readonly "title": string };
   (_: "dialog.customization.splashscreen.state", __?: {}): string;
+  (_: "dialog.customization.splashscreen.title", __?: {}): string;
   (_: "dialog.deleteAnnotations", __?: {}): string;
   (_: "dialog.deleteAnnotationsText", __?: {}): string;
   (_: "dialog.deleteBookmarks", __?: {}): string;
