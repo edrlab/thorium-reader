@@ -63,6 +63,9 @@
             "descending": "discendente",
             "unsorted": "non ordinata"
         },
+        "customization": {
+            "publications": ""
+        },
         "delete": "Elimina",
         "deleteBook": "Elimina",
         "deleteTag": "Elimina la tag",
@@ -136,6 +139,7 @@
         "cancel": "Annulla",
         "customization": {
             "splashscreen": {
+                "state": "",
                 "title": ""
             }
         },

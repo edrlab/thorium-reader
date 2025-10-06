@@ -14,6 +14,7 @@ import * as history from "./addHistory";
 import * as welcomeScreen from "./welcomeScreen";
 import * as manifest from "./manifest";
 import * as triggerOpdsAuth from "./triggerOpdsAuthentication";
+import * as deleteProfile from "./delete";
 
 export {
     activate as activating,
@@ -24,4 +25,5 @@ export {
     welcomeScreen,
     manifest,
     triggerOpdsAuth,
+    deleteProfile,
 };

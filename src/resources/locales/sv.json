@@ -63,6 +63,9 @@
             "descending": "fallande",
             "unsorted": "osorterat"
         },
+        "customization": {
+            "publications": ""
+        },
         "delete": "Ta bort",
         "deleteBook": "Ta bort",
         "deleteTag": "Ta bort taggen",
@@ -136,6 +139,7 @@
         "cancel": "Avbryt",
         "customization": {
             "splashscreen": {
+                "state": "",
                 "title": ""
             }
         },

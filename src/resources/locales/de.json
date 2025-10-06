@@ -63,6 +63,9 @@
             "descending": "absteigend",
             "unsorted": "unsortiert"
         },
+        "customization": {
+            "publications": ""
+        },
         "delete": "Löschen",
         "deleteBook": "Löschen",
         "deleteTag": "Tag löschen",
@@ -136,6 +139,7 @@
         "cancel": "Abbrechen",
         "customization": {
             "splashscreen": {
+                "state": "",
                 "title": ""
             }
         },

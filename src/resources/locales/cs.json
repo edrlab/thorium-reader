@@ -63,6 +63,9 @@
             "descending": "sestupně",
             "unsorted": "netříděno"
         },
+        "customization": {
+            "publications": ""
+        },
         "delete": "Odstranit",
         "deleteBook": "Odstranit",
         "deleteTag": "Odstranit štítek",
@@ -136,6 +139,7 @@
         "cancel": "Zrušit",
         "customization": {
             "splashscreen": {
+                "state": "",
                 "title": ""
             }
         },

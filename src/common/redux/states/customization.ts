@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
+import { IOpdsPublicationView } from "src/common/views/opds";
 
 // export type TCustomizationProvisioningPackage = Array<[identifier: string, fileName: string, version: string]>;
 
@@ -16,10 +17,15 @@ export interface ICustomizationProfileProvisioned {
     logoUrl: string;
     title: IStringMap;
     description: IStringMap;
+    opdsPublicationView: IOpdsPublicationView[];
 }
 
 export interface ICustomizationProfileError {
-fileName: string; error: boolean; message: string;
+    id: string; // identifier URI from manifest
+    fileName: string; // relative file from well-known folder, not an absolute file path. Allow to move well-known folder without compromise internal redux state
+    version: string; // semantic versionning from manifest
+    error: boolean;
+    message: string;
 }
 
 export type ICustomizationProfileProvisionedWithError = ICustomizationProfileProvisioned | ICustomizationProfileError;

@@ -63,6 +63,9 @@
             "descending": "faldende",
             "unsorted": "usorteret"
         },
+        "customization": {
+            "publications": ""
+        },
         "delete": "Slet",
         "deleteBook": "Slet",
         "deleteTag": "Slet tag",
@@ -136,6 +139,7 @@
         "cancel": "Annullér",
         "customization": {
             "splashscreen": {
+                "state": "",
                 "title": ""
             }
         },

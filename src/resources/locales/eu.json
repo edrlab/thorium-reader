@@ -63,6 +63,9 @@
             "descending": "beheranzkoa",
             "unsorted": "ordenatu gabe"
         },
+        "customization": {
+            "publications": ""
+        },
         "delete": "Ezabatu",
         "deleteBook": "Ezabatu",
         "deleteTag": "Ezabatu etiketa",
@@ -136,6 +139,7 @@
         "cancel": "Ezeztatu",
         "customization": {
             "splashscreen": {
+                "state": "",
                 "title": ""
             }
         },

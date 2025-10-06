@@ -12,7 +12,7 @@ import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLe
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { ICustomizationLockInfo } from "readium-desktop/common/redux/states/customization";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { call as callTyped, select as selectTyped, put as putTyped, /*take as takeTyped, race as raceTyped,*/ delay, SagaGenerator, all as allTyped } from "typed-redux-saga/macro";
+import { call as callTyped, select as selectTyped, put as putTyped, /*take as takeTyped, race as raceTyped, delay,*/ SagaGenerator, all as allTyped } from "typed-redux-saga/macro";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER } from "readium-desktop/common/streamerProtocol";
 import { ICustomizationManifest, ICustomizationManifestColor } from "readium-desktop/common/readium/customization/manifest";
@@ -33,7 +33,6 @@ const applyColorSet = (colors: ICustomizationManifestColor, suffix: string) => {
 
 function* profileActivating(id: string): SagaGenerator<void> {
 
-    debug(`TODO activate ${id} profile`);
     if (!id) {
         // THorium vanilla rollback, clear the local redux state
 
@@ -69,7 +68,8 @@ function* profileActivating(id: string): SagaGenerator<void> {
         return;
     }
 
-    yield* delay(1000);
+    // yield* delay(1000);
+
 
     const baseUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/custom-profile-zip/${encodeURIComponent_RFC3986(Buffer.from(id).toString("base64"))}/`;
     const manifestURL = baseUrl + encodeURIComponent_RFC3986(Buffer.from("manifest.json").toString("base64"));
@@ -121,7 +121,7 @@ function* profileActivating(id: string): SagaGenerator<void> {
     const catalogsLinks = manifestJson.links?.filter((ln) => ln.rel === "catalog");
     debug("Manifest CATALOGS links", catalogsLinks);
 
-    if (catalogsLinks.length) {
+    if (catalogsLinks?.length) {
         const catalogLink = catalogsLinks[0];
 
         let catalogLinkOpdsAuthenticateDocumentHref = "";
@@ -158,9 +158,19 @@ function* profileActivatingAction(action: customizationActions.activating.TActio
 
     if (lock.state === "ACTIVATING" && lock.lockInfo.id === id) {
 
-        yield* callTyped(profileActivating, id);
+        try {
+            yield* callTyped(profileActivating, id);
 
-        yield* putTyped(customizationActions.lock.build("IDLE"));
+        } catch (e) {
+
+            yield* putTyped(toastActions.openRequest.build(ToastType.Error, `${e}`));
+            debug("Critical ERROR to activate the profile", id);
+            debug(e);
+
+        } finally {
+
+            yield* putTyped(customizationActions.lock.build("IDLE", { uuid: "" }));
+        }
 
     } else {
 
@@ -213,8 +223,9 @@ export function saga() {
         if (customization.lock.state !== "IDLE" || !id) {
             return ;
         }
-        const action = customizationActions.activating.build(id);
-        yield* callTyped(profileActivatingAction, action);
+        // const action = customizationActions.activating.build(id);
+        // yield* callTyped(profileActivatingAction, action);
+        yield* putTyped(customizationActions.activating.build(id));
     }),
 ]);
 }

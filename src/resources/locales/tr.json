@@ -63,6 +63,9 @@
             "descending": "azalan",
             "unsorted": "sıralanmamış"
         },
+        "customization": {
+            "publications": ""
+        },
         "delete": "Sil",
         "deleteBook": "Sil",
         "deleteTag": "Etiketi sil",
@@ -136,6 +139,7 @@
         "cancel": "İptal",
         "customization": {
             "splashscreen": {
+                "state": "",
                 "title": ""
             }
         },

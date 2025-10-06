@@ -63,6 +63,9 @@
             "descending": "низходящ",
             "unsorted": "несортиран"
         },
+        "customization": {
+            "publications": ""
+        },
         "delete": "Изтрий",
         "deleteBook": "Изтрий",
         "deleteTag": "Изтрий маркер",
@@ -136,6 +139,7 @@
         "cancel": "Отказ",
         "customization": {
             "splashscreen": {
+                "state": "",
                 "title": ""
             }
         },

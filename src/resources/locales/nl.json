@@ -63,6 +63,9 @@
             "descending": "aflopend",
             "unsorted": "niet gesorteerd"
         },
+        "customization": {
+            "publications": ""
+        },
         "delete": "Verwijder",
         "deleteBook": "Verwijder",
         "deleteTag": "Verwijder label",
@@ -136,6 +139,7 @@
         "cancel": "Annuleer",
         "customization": {
             "splashscreen": {
+                "state": "",
                 "title": ""
             }
         },

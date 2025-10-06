@@ -63,6 +63,9 @@
             "descending": "",
             "unsorted": ""
         },
+        "customization": {
+            "publications": ""
+        },
         "delete": "წაშლა",
         "deleteBook": "წაშლა",
         "deleteTag": "იარლიყის წაშლა",
@@ -136,6 +139,7 @@
         "cancel": "გადაფიქრება",
         "customization": {
             "splashscreen": {
+                "state": "",
                 "title": ""
             }
         },

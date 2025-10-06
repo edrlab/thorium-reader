@@ -7,7 +7,7 @@
 
 import {
     annotationActions,
-    apiActions, creatorActions, i18nActions, keyboardActions, lcpActions, noteExport, publicationActions, readerActions, themeActions,
+    apiActions, creatorActions, customizationActions, i18nActions, keyboardActions, lcpActions, noteExport, publicationActions, readerActions, themeActions,
 } from "readium-desktop/common/redux/actions";
 import { syncFactory } from "readium-desktop/renderer/common/redux/middleware/syncFactory";
 
@@ -64,6 +64,12 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     noteExport.overrideHTMLTemplate.ID,
 
     readerActions.print.ID,
+
+    customizationActions.activating.ID,
+    customizationActions.provisioning.ID,
+    customizationActions.acquire.ID,
+    customizationActions.lock.ID,
+    customizationActions.addHistory.ID,
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);

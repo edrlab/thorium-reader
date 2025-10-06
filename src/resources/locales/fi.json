@@ -63,6 +63,9 @@
             "descending": "laskeva",
             "unsorted": "lajittelematon"
         },
+        "customization": {
+            "publications": ""
+        },
         "delete": "Poista",
         "deleteBook": "Poista",
         "deleteTag": "Poista tunniste",
@@ -136,6 +139,7 @@
         "cancel": "Peru",
         "customization": {
             "splashscreen": {
+                "state": "",
                 "title": ""
             }
         },

@@ -63,6 +63,9 @@
             "descending": "Φθίνουσα",
             "unsorted": "Χωρίς ταξινόμηση"
         },
+        "customization": {
+            "publications": ""
+        },
         "delete": "Διαγραφή",
         "deleteBook": "Διαγραφή",
         "deleteTag": "Διαγραφή ετικέτας",
@@ -136,6 +139,7 @@
         "cancel": "Ακύρωση",
         "customization": {
             "splashscreen": {
+                "state": "",
                 "title": ""
             }
         },

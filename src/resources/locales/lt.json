@@ -63,6 +63,9 @@
             "descending": "mažėjančia tvarka",
             "unsorted": "nerikiuoti"
         },
+        "customization": {
+            "publications": ""
+        },
         "delete": "Šalinti",
         "deleteBook": "Šalinti",
         "deleteTag": "Šalinti žymę",
@@ -136,6 +139,7 @@
         "cancel": "Nutraukti",
         "customization": {
             "splashscreen": {
+                "state": "",
                 "title": ""
             }
         },

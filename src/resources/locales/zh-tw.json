@@ -63,6 +63,9 @@
             "descending": "降冪",
             "unsorted": "亂序"
         },
+        "customization": {
+            "publications": ""
+        },
         "delete": "刪除",
         "deleteBook": "刪除書籍",
         "deleteTag": "刪除標籤",
@@ -136,6 +139,7 @@
         "cancel": "取消",
         "customization": {
             "splashscreen": {
+                "state": "",
                 "title": ""
             }
         },
