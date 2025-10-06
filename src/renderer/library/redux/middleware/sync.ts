@@ -77,6 +77,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     customizationActions.addHistory.ID,
     customizationActions.triggerOpdsAuth.ID,
     customizationActions.deleteProfile.ID,
+
+    authActions.logout.ID,
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);

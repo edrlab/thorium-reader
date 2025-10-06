@@ -23,14 +23,16 @@ import { Headers } from "node-fetch";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { authActions, historyActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { takeSpawnLeadingChannel } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
+import { takeSpawnLeading, takeSpawnLeadingChannel } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
 import {
     getOpdsAuthenticationChannel, TOpdsAuthenticationChannel,
 } from "readium-desktop/main/event";
-import { cleanCookieJar } from "readium-desktop/main/network/fetch";
+import { cleanCookieJar, removeCookiesFromHost } from "readium-desktop/main/network/fetch";
 import {
+    deleteAuthenticationToken,
+    getAuthenticationToken,
     httpGet,
     httpPost,
     httpSetAuthenticationToken,
@@ -287,6 +289,32 @@ export function saga() {
             authActions.wipeData.ID,
             opdsAuthWipeData,
             (e) => debug("opds authentication data wipping error", e),
+        ),
+        takeSpawnLeading(
+            authActions.logout.ID,
+            function* (action: authActions.logout.TAction) {
+                const feedUrl = action.payload.feedUrl;
+                let catalogLinkUrl: URL;
+                try {
+                    catalogLinkUrl = (new URL(feedUrl));
+                } catch {
+                    // nothing
+                }
+                if (!catalogLinkUrl) {
+                    debug("No catalogLinkUrl found, return");
+                }
+                // debug(JSON.stringify(catalogLinkUrl, null, 4));
+
+                yield* callTyped(() => removeCookiesFromHost(catalogLinkUrl.host));
+                yield* callTyped(() => deleteAuthenticationToken(catalogLinkUrl.host));
+                const authToken = yield* callTyped(() => getAuthenticationToken(catalogLinkUrl));
+                if (authToken?.accessToken) {
+                    debug("ERROR to Logout of the feed:", feedUrl);
+                } else {
+                    debug("LOGOUT from:", feedUrl);
+                }
+            },
+            (e) => debug("opds LOGOUT", e),
         ),
         takeSpawnEveryChannel(
             opdsRequestMediaChannel,

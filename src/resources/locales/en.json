@@ -121,7 +121,8 @@
         "sort": "Sort by",
         "tag": "Tag",
         "tags": "Tags",
-        "update": "Edit"
+        "update": "Edit",
+        "logout": "Logout"
     },
     "dialog": {
         "annotations": {

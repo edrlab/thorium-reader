@@ -7,6 +7,7 @@
 
 import fetchCookie from "fetch-cookie";
 import { promises as fsp } from "fs";
+import * as debug_ from "debug";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
@@ -26,11 +27,58 @@ import { CookieJar } from "tough-cookie";
 
 import { cookiejarFilePath } from "../di";
 
+// Logger
+const filename_ = "readium-desktop:main/http";
+const debug = debug_(filename_);
+
 let fetchLocal: typeof nodeFetch;
 let cookieJar: CookieJar;
 
 const CONFIGREPOSITORY_COOKIEJAR = "CONFIGREPOSITORY_COOKIEJAR";
 
+
+export const removeCookiesFromHost = async (host: string) => {
+    if (cookieJar) {
+        const cookiesFromDomain = await cookieJar.store.findCookies(host, null);
+        if (cookiesFromDomain?.length) {
+            debug("FOUND COOKIES FROM", host);
+            debug(JSON.stringify(cookiesFromDomain));
+            await cookieJar.store.removeCookies(host, null);
+
+            const p = cookiesFromDomain.map(async (cookie) => {
+                const domain = cookie["domain"];
+                if (domain) {
+
+                    await cookieJar.store.removeCookies(domain, null);
+                    const cookiesFromDomainRemoved = await cookieJar.store.findCookies(domain, null);
+                    if (cookiesFromDomainRemoved?.length) {
+                        debug("COOKIE NOT REMOVED for this domain:", domain);
+                        debug(JSON.stringify(cookiesFromDomainRemoved));
+                    } else {
+                        debug("COOKIE REMOVED for this domain:", domain);
+                    }
+                }
+
+            });
+            try {
+                await Promise.all(p);
+            } catch {
+                // ignore
+            }
+
+            const cookiesFromDomainRemoved = await cookieJar.store.findCookies(host, null);
+            if (cookiesFromDomainRemoved?.length) {
+                debug("COOKIE NOT REMOVED");
+                debug(JSON.stringify(cookiesFromDomainRemoved));
+            } else {
+                debug("COOKIE REMOVED");
+            }
+
+        } else {
+            debug("NO COOKIES FOUND FROM ", host);
+        }
+    }
+};
 
 
 export const cleanCookieJar = async () => {
