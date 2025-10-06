@@ -87,15 +87,16 @@ export class OpdsFeedViewConverter {
         } catch {
             // nothing
         }
-        if (!catalogLinkUrl) {
-            debug("No catalogLinkUrl found, return");
-        }
-        const authToken = await getAuthenticationToken(catalogLinkUrl);
-        if (authToken?.accessToken) {
-            debug("catalog authentified: ", catalogLinkUrl.host);
-            authentified = true;
+        if (catalogLinkUrl) {
+            const authToken = await getAuthenticationToken(catalogLinkUrl);
+            if (authToken?.accessToken) {
+                debug("catalog authentified: ", catalogLinkUrl.host);
+                authentified = true;
+            } else {
+                debug("catalog NOT authentified: ", catalogLinkUrl.host);
+            }
         } else {
-            debug("catalog NOT authentified: ", catalogLinkUrl.host);
+            debug("No catalogLinkUrl found, return");
         }
 
         // let's trigger the same event as customization profile catalog
