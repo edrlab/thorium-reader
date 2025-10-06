@@ -139,6 +139,7 @@
         "cancel": "取消",
         "customization": {
             "splashscreen": {
+                "state": "",
                 "title": "提供并激活自定义配置文件"
             }
         },

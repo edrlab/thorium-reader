@@ -139,6 +139,7 @@
         "cancel": "Annulla",
         "customization": {
             "splashscreen": {
+                "state": "",
                 "title": ""
             }
         },

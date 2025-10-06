@@ -14,14 +14,12 @@ import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLe
 import { error } from "readium-desktop/main/tools/error";
 import { copyFile } from "node:fs/promises";
 import { nanoid } from "nanoid";
-
-
+import * as semver from "semver";
 import { fork as forkTyped, call as callTyped, select as selectTyped, put as putTyped, take as takeTyped, race as raceTyped, delay, SagaGenerator, all as allTyped } from "typed-redux-saga/macro";
-import { existsSync, statSync } from "node:fs";
+import { existsSync, statSync, unlinkSync } from "node:fs";
 import path from "node:path";
 import { ICustomizationLockInfo } from "readium-desktop/common/redux/states/customization";
 import { ToastType } from "readium-desktop/common/models/toast";
-
 import { getAuthenticationToken, httpGet, httpGetWithAuth } from "readium-desktop/main/network/http";
 import { getOpdsAuthenticationChannel } from "readium-desktop/main/event";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
@@ -157,26 +155,63 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
 
                 debug("Waiting for provisionning action");
                 const provisioningAction = yield* takeTyped(customizationActions.provisioning.build);
-                debug("Provisionning action found", provisioningAction);
+                debug("Provisionning action found", JSON.stringify(provisioningAction, null, 4));
+
+                const removeOldPackage = () => {
+                    const oldProvisionedPackage = provisioningAction.payload.oldPackagesProvisioned.filter(({ fileName: fileNameOldPackage }) => !provisioningAction.payload.newPackagesProvisioned.find(({fileName: fileNameNewPackage}) => fileNameNewPackage === fileNameOldPackage));
+                    debug("OldProvisionedPackage need to be removed:", JSON.stringify(oldProvisionedPackage, null, 4));
+                    for (const { fileName } of oldProvisionedPackage) {
+                        debug("REMOVE (unlinkSync):", fileName);
+                        try {
+                            unlinkSync(path.join(customizationWellKnownFolder, fileName));
+                        } catch (e) {
+                            debug("not removed !?", e);
+                        }
+                    }
+                };
 
                 const fileNameProvisionedFound = provisioningAction.payload.newPackagesProvisioned.find(({ fileName: fileNameProvisioned }) => fileNameProvisioned === fileName);
                 if (fileNameProvisionedFound) {
 
-                    // TODO: in the case of a drag-and-drop of an older profile than one already provisioned,
-                    // it can be better to activate the newer profile vendor and do not provisioned the older profile
                     const packageId = fileNameProvisionedFound.id;
                     lockInfo.id = packageId;
                     yield* putTyped(customizationActions.lock.build("ACTIVATING", lockInfo));
                     yield* putTyped(customizationActions.activating.build(packageId));
+                    yield* callTyped(() => removeOldPackage());
                     return true;
                 } else {
+
                     const fileNameErrorFound = provisioningAction.payload.errorPackages.find(({ fileName: fileNameProvisioned }) => fileNameProvisioned === fileName);
-                    if (fileNameErrorFound) {
-                        debug(`ERROR: profile (${fileName}) [${fileNameErrorFound.message}]`);
-                        yield* putTyped(toastActions.openRequest.build(ToastType.Error, `ERROR: profile (${fileName}) [${fileNameErrorFound.message}]`));
-                        yield* putTyped(customizationActions.lock.build("IDLE"));
+                    if (!fileNameErrorFound) {
+                        debug("Error not found!?");
+                        return false;
+                    }
+
+                    const newPackagesProvisioned = provisioningAction.payload.newPackagesProvisioned;
+                    const packageProvisionedWithTheSameIdSortedBySemver = newPackagesProvisioned.filter(({ id }) => id && id === fileNameErrorFound.id).sort(({version: va}, {version: vb}) => semver.gt(va, vb) ? 1 : -1);
+                    if (packageProvisionedWithTheSameIdSortedBySemver.length) {
+                        const packageId = packageProvisionedWithTheSameIdSortedBySemver[0].id;
+                        lockInfo.id = packageId;
+                        yield* putTyped(customizationActions.lock.build("ACTIVATING", lockInfo));
+                        yield* putTyped(customizationActions.activating.build(packageId));
+                        yield* callTyped(() => removeOldPackage());
+                        try {
+                            unlinkSync(path.join(customizationWellKnownFolder, fileNameErrorFound.fileName));
+                        } catch (e) {
+                            debug("not removed !?", e);
+                        }
                         return true;
                     }
+
+                    debug(`ERROR: profile (${fileName}) [${fileNameErrorFound.message}]`);
+                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, `ERROR: profile (${fileName}) [${fileNameErrorFound.message}]`));
+                    yield* putTyped(customizationActions.lock.build("IDLE"));
+                    try {
+                        unlinkSync(path.join(customizationWellKnownFolder, fileNameErrorFound.fileName));
+                    } catch (e) {
+                        debug("not removed !?", e);
+                    }
+                    return true;
                 }
             }
 
@@ -315,6 +350,20 @@ export function saga() {
         takeSpawnLeading(
             customizationActions.acquire.ID,
             acquireProvisionsActivates,
+            (e) => error(filename_, e),
+        ),
+        takeSpawnLeading(
+            customizationActions.deleteProfile.ID,
+            function* (action: customizationActions.deleteProfile.TAction) {
+                const filename = path.join(customizationWellKnownFolder, action.payload.fileName);
+                try {
+                    if (existsSync(filename)) {
+                        unlinkSync(filename);
+                    }
+                } catch (e) {
+                    debug("error to delete", filename, e);
+                }
+            },
             (e) => error(filename_, e),
         ),
         takeSpawnLeading(

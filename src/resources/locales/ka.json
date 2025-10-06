@@ -139,6 +139,7 @@
         "cancel": "გადაფიქრება",
         "customization": {
             "splashscreen": {
+                "state": "",
                 "title": ""
             }
         },

@@ -139,6 +139,7 @@
         "cancel": "취소",
         "customization": {
             "splashscreen": {
+                "state": "",
                 "title": ""
             }
         },

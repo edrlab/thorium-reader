@@ -89,9 +89,8 @@ export const CustomizationProfileDialog: React.FC = () => {
                             {
                                 customization.lock.state !== "IDLE" ?
                                 <div>
-                                    <span>STATE={customization.lock.state}</span>
-                                    <span>ID={customization.lock.lockInfo?.id === "" && customization.lock.state === "ACTIVATING" ? "THorium Default Profile" : customization.lock.lockInfo?.id || "undefined"}</span>
-                                    <span>LOCKINFO={JSON.stringify(customization.lock.lockInfo, null, 4)}</span>
+                                    <span>{__("dialog.customization.splashscreen.state", {state: customization.lock.state, id: customization.lock.lockInfo?.id === "" && customization.lock.state === "ACTIVATING" ? "THorium Default Profile" : customization.lock.lockInfo?.id || "undefined"})}</span>
+                                    {/* <span>LOCKINFO={JSON.stringify(customization.lock.lockInfo, null, 4)}</span> */}
                                 </div> 
                                 : <></>
                             }
@@ -103,9 +102,9 @@ export const CustomizationProfileDialog: React.FC = () => {
                         </div>
                     </AlertDialog.Description>
                     <div className={stylesAlertModals.AlertDialogButtonContainer} style={{justifyContent: "space-between", padding: "10px 20px"}}>
-                        {/* <AlertDialog.Cancel asChild onClick={() => { dispatch(customizationActions.lock.build("IDLE")); dispatch(customizationActions.activating.build("")); }}>
+                        <AlertDialog.Cancel asChild disabled={customization.lock.state !== "IDLE"} onClick={() => { dispatch(customizationActions.activating.build("")); }}>
                             <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
-                        </AlertDialog.Cancel> */}
+                        </AlertDialog.Cancel>
                         {customization.welcomeScreen.enable && profileInHistoryFound ? <div style={{ display: "flex", alignItems: "center", gap: "10px"}}>
                             <input type="checkbox" checked={checked} onChange={() => { setChecked(!checked); dispatch(customizationActions.addHistory.build(profileInHistoryFound.id, checked ? "" : profileInHistoryFound.version)); }} id="wizardCheckbox" name="wizardCheckbox" className={stylesGlobal.checkbox_custom_input} />
                             <label htmlFor="wizardCheckbox" className={stylesGlobal.checkbox_custom_label}>

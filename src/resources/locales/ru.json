@@ -139,6 +139,7 @@
         "cancel": "Отменить",
         "customization": {
             "splashscreen": {
+                "state": "",
                 "title": "Создание и активация профиля настройки"
             }
         },
