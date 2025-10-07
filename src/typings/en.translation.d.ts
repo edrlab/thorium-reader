@@ -120,6 +120,13 @@ declare namespace typed_i18n {
     readonly "descending": string,
     readonly "unsorted": string
   },
+  readonly "customization": {
+    readonly "fallback": {
+      readonly "publications": string,
+      readonly "description": string,
+      readonly "title": string
+    }
+  },
   readonly "delete": string,
   readonly "deleteBook": string,
   readonly "deleteTag": string,
@@ -135,6 +142,7 @@ declare namespace typed_i18n {
   readonly "importAnnotation": string,
   readonly "lang": string,
   readonly "lastRead": string,
+  readonly "logout": string,
   readonly "moreInfo": string,
   readonly "myBooks": string,
   readonly "noPublicationHelpL1": string,
@@ -192,6 +200,21 @@ declare namespace typed_i18n {
   (_: "catalog.column.ascending", __?: {}): string;
   (_: "catalog.column.descending", __?: {}): string;
   (_: "catalog.column.unsorted", __?: {}): string;
+  (_: "catalog.customization", __?: {}): {
+  readonly "fallback": {
+    readonly "publications": string,
+    readonly "description": string,
+    readonly "title": string
+  }
+};
+  (_: "catalog.customization.fallback", __?: {}): {
+  readonly "publications": string,
+  readonly "description": string,
+  readonly "title": string
+};
+  (_: "catalog.customization.fallback.publications", __?: {}): string;
+  (_: "catalog.customization.fallback.description", __?: {}): string;
+  (_: "catalog.customization.fallback.title", __?: {}): string;
   (_: "catalog.delete", __?: {}): string;
   (_: "catalog.deleteBook", __?: {}): string;
   (_: "catalog.deleteTag", __?: {}): string;
@@ -206,6 +229,7 @@ declare namespace typed_i18n {
   (_: "catalog.importAnnotation", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.lastRead", __?: {}): string;
+  (_: "catalog.logout", __?: {}): string;
   (_: "catalog.moreInfo", __?: {}): string;
   (_: "catalog.myBooks", __?: {}): string;
   (_: "catalog.noPublicationHelpL1", __?: {}): string;

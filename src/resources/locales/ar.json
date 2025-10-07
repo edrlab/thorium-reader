@@ -64,7 +64,10 @@
             "unsorted": "غير مرتب"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "title": ""
+            }
         },
         "delete": "حذف",
         "deleteBook": "حذف",

@@ -476,8 +476,8 @@ const Profiles = () => {
             >
                 {
                     packageProfileProvisioned.map((profile) => {
-                        const profileTitle = profile?.title && typeof profile.title === "object" ? profile.title[locale] || profile.title["en"] || "" : "";
-                        const profileDescription = profile?.description && typeof profile.description === "object" ? profile.description[locale] || profile.description["en"] || "" : "";
+                        const profileTitle = (profile?.title && typeof profile.title === "object") ? profile.title[locale] || profile.title["en"] || __("catalog.customization.fallback.title") : typeof profile.title === "string" ? profile.title : __("catalog.customization.fallback.title");
+                        const profileDescription = (profile?.description && typeof profile.description === "object") ? profile.description[locale] || profile.description["en"] || __("catalog.customization.fallback.description") : typeof profile.description === "string" ? profile.description : __("catalog.customization.fallback.description");
 
                         return (
                             <div

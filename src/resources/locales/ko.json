@@ -64,7 +64,10 @@
             "unsorted": "정렬없움"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "title": ""
+            }
         },
         "delete": "삭제",
         "deleteBook": "도서 삭제",

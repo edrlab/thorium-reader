@@ -64,7 +64,10 @@
             "unsorted": "亂序"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "title": ""
+            }
         },
         "delete": "刪除",
         "deleteBook": "刪除書籍",

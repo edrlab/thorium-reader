@@ -64,7 +64,10 @@
             "unsorted": "lajittelematon"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "title": ""
+            }
         },
         "delete": "Poista",
         "deleteBook": "Poista",

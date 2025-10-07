@@ -64,7 +64,10 @@
             "unsorted": "sıralanmamış"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "title": ""
+            }
         },
         "delete": "Sil",
         "deleteBook": "Sil",

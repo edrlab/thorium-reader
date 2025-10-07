@@ -64,7 +64,10 @@
             "unsorted": "ordenatu gabe"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "title": ""
+            }
         },
         "delete": "Ezabatu",
         "deleteBook": "Ezabatu",

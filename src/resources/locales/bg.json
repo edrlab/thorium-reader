@@ -64,7 +64,10 @@
             "unsorted": "несортиран"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "title": ""
+            }
         },
         "delete": "Изтрий",
         "deleteBook": "Изтрий",

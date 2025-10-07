@@ -64,7 +64,10 @@
             "unsorted": ""
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "title": ""
+            }
         },
         "delete": "წაშლა",
         "deleteBook": "წაშლა",

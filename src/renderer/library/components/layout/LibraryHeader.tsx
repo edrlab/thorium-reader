@@ -20,7 +20,7 @@ import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { DisplayType, IRouterLocationState } from "../../routing";
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/home-icon.svg";
-import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon-bold.svg";
+import * as ThoriumIcon from "readium-desktop/renderer/assets/icons/thorium.svg";
 import * as CatalogsIcon from "readium-desktop/renderer/assets/icons/catalogs-icon.svg";
 import * as ShelfIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
@@ -101,26 +101,24 @@ class Header extends React.Component<IProps, undefined> {
         if (customizationCatalogs?.length) {
             for (const catalog of customizationCatalogs) {
                 let catalogOrigin = "";
-                if (catalog.properties.showOnHomeSection) {
-                    try {
-                        const { host } = new URL(catalog.href);
-                        if (host) {
-                            catalogOrigin = host;
-                        }
-                    } catch {
-                        // ignore
+                try {
+                    const { host } = new URL(catalog.href);
+                    if (host) {
+                        catalogOrigin = host;
                     }
-                    const hostEncoded = Buffer.from(encodeURIComponent(catalogOrigin), "utf-8").toString("base64");
-                    const label = (catalog?.title && typeof catalog.title === "object") ? catalog.title[this.props.locale] || catalog.title["en"] || __("header.myCatalogs") : typeof catalog.title === "string" ? catalog.title : __("header.myCatalogs");
-                    headerNav.push({
-                        route: buildOpdsBrowserRoute(hostEncoded, label, catalog.href),
-                        label,
-                        matchRoutes: ["/opds/" + hostEncoded],
-                        searchEnable: false,
-                        styles: [],
-                        svg: GlobeIcon,
-                    });
+                } catch {
+                    // ignore
                 }
+                const hostEncoded = Buffer.from(encodeURIComponent(catalogOrigin), "utf-8").toString("base64");
+                const label = (catalog?.title && typeof catalog.title === "object") ? catalog.title[this.props.locale] || catalog.title["en"] || __("header.myCatalogs") : typeof catalog.title === "string" ? catalog.title : __("header.myCatalogs");
+                headerNav.push({
+                    route: buildOpdsBrowserRoute(hostEncoded, label, catalog.href),
+                    label,
+                    matchRoutes: ["/opds/" + hostEncoded],
+                    searchEnable: false,
+                    styles: [],
+                    svg: catalog.properties?.logo?.type === "image/svg+xml" ? customizationBaseUrl + encodeURIComponent_RFC3986(Buffer.from(catalog.properties.logo.href).toString("base64")) : ThoriumIcon,
+                });
             }
         }
 
@@ -216,7 +214,7 @@ class Header extends React.Component<IProps, undefined> {
         );
 
         return (
-            <li className={classNames(...styleClasses, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} key={index} style={{height: "inherit"}}>
+            <li className={classNames(...styleClasses, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} key={index} style={{ height: "inherit" }}>
                 <Link
                     to={nextLocation}
                     state={{ displayType: (nextLocation.state && (nextLocation.state as IRouterLocationState).displayType) ? (nextLocation.state as IRouterLocationState).displayType : DisplayType.Grid }}
@@ -224,7 +222,6 @@ class Header extends React.Component<IProps, undefined> {
                     aria-pressed={active}
                     role={"button"}
                     className={classNames(active ? stylesButtons.button_nav_primary : "", !active ? "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" : "")}
-                    style={{height: "inherit"}}
                     title={item.label}
                     onClick={(e) => {
                         if (e.altKey || e.shiftKey || e.ctrlKey) {
@@ -248,6 +245,7 @@ class Header extends React.Component<IProps, undefined> {
                             e.currentTarget.click();
                         }
                     }}
+                    style={{ height: "inherit" }}
                 >
                     {typeof item.svg === "string" ? <img width={"20px"} height={"20px"} src={item.svg}></img> : <SVG ariaHidden svg={item.svg} />}
                     <h3>{item.label}</h3>

@@ -64,7 +64,10 @@
             "unsorted": "sin ordenar"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "title": ""
+            }
         },
         "delete": "Eliminar",
         "deleteBook": "Eliminar",
