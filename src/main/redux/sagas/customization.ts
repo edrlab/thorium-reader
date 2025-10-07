@@ -27,7 +27,6 @@ import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { diMainGet } from "readium-desktop/main/di";
 import { net } from "electron";
 import * as fs from "fs";
-import { redirect } from "node_modules/react-router/dist";
 
 const filename_ = "readium-desktop:main:redux:sagas:customization";
 const debug = debug_(filename_);
