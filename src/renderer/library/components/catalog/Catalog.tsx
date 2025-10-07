@@ -69,7 +69,7 @@ class Catalog extends React.Component<IProps, undefined> {
         const secondaryHeader = <span style={{ display: "flex", justifyContent: "end", alignItems: "end", height: "53px", borderBottom: "1px solid var(--color-verylight-grey-alt)", paddingBottom: "30px" }}><PublicationAddButton /></span>;
 
         const customizationProfileProvision = this.props.customizationProvision.find(({id}) => this.props.customizationProfileId === id);
-        const profileTitle = (customizationProfileProvision?.title && typeof customizationProfileProvision.title === "object") ? customizationProfileProvision.title[this.props.locale] || customizationProfileProvision.title["en"] || this.props.__("catalog.customization.fallback.description") : typeof customizationProfileProvision.title === "string" ? customizationProfileProvision.title : this.props.__("catalog.customization.fallback.description");
+        const profileTitle = (customizationProfileProvision?.title && typeof customizationProfileProvision.title === "object") ? customizationProfileProvision.title[this.props.locale] || customizationProfileProvision.title["en"] || this.props.__("catalog.customization.fallback.publications") : typeof customizationProfileProvision.title === "string" ? customizationProfileProvision.title : this.props.__("catalog.customization.fallback.publications");
         return (
             <LibraryLayout
                 title={__("header.homeTitle")}

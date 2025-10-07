@@ -66,6 +66,7 @@
         "customization": {
             "fallback": {
                 "description": "",
+                "publications": "",
                 "title": ""
             }
         },
