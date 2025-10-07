@@ -16,7 +16,7 @@ import {
 } from "readium-desktop/main/event";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, put, spawn } from "redux-saga/effects";
-import { call as callTyped, take as takeTyped, select as selectTyped, put as putTyped, race as raceTyped, delay as delayTyped } from "typed-redux-saga/macro";
+import { call as callTyped, take as takeTyped, select as selectTyped, put as putTyped /*race as raceTyped, delay as delayTyped*/ } from "typed-redux-saga/macro";
 import { opdsApi } from "./api";
 import { browse } from "./api/browser/browse";
 import { addFeed } from "./api/opds/feed";
@@ -28,8 +28,6 @@ import { getAndStartCustomizationWellKnownFileWatchingEventChannel } from "./get
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { customizationPackageProvisioningAccumulator, customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
 import * as path from "path";
-import { net } from "electron";
-import { mimeTypes } from "readium-desktop/utils/mimeTypes";
 import { ICustomizationProfileError, ICustomizationProfileProvisioned } from "readium-desktop/common/redux/states/customization";
 
 // Logger
@@ -155,33 +153,43 @@ export function saga() {
                 try {
                     const url = yield* takeTyped(chan);
 
-                    const prom = new Promise<boolean>(
-                        (res, _rej) => {
+                    // const prom = new Promise<boolean>(
+                    //     (res, _rej) => {
 
-                            const request = net.request({ method: "HEAD", url });
-                            request.on("response", (response) => {
-                                debug(`URL: ${url}`);
-                                debug(`STATUS: ${response.statusCode}`);
-                                debug(`HEADERS: ${JSON.stringify(response.headers)}`);
+                    //         const request = net.request({ method: "HEAD", url });
+                    //         request.on("response", (response) => {
+                    //             debug(`URL: ${url}`);
+                    //             debug(`STATUS: ${response.statusCode}`);
+                    //             debug(`HEADERS: ${JSON.stringify(response.headers)}`);
 
-                                if (response.headers["content-type"] === mimeTypes["thorium"]) {
-                                    debug("This is a thorium custom profile extension");
+                    //             if (response.headers["content-type"] === mimeTypes["thorium"]) {
+                    //                 debug("This is a thorium custom profile extension");
 
-                                    res(true);
-                                }
-                            });
-                        });
+                    //                 res(true);
+                    //             }
+                    //         });
+                    //     });
 
-                    debug("THORIUM event custom url scheme received :");
-                    debug("HEAD request to ", url);
-                    const {a: __isATimeout, b: isAProfileExtension} = yield* raceTyped({ a: delayTyped(10000), b: callTyped(() => prom) });
-                    if (isAProfileExtension) {
-                        yield* putTyped(customizationActions.acquire.build(url));
-                        return ;
+                    // debug("THORIUM event custom url scheme received :");
+                    // debug("HEAD request to ", url);
+                    // const {a: __isATimeout, b: isAProfileExtension} = yield* raceTyped({ a: delayTyped(10000), b: callTyped(() => prom) });
+                    // if (isAProfileExtension) {
+                    //     yield* putTyped(customizationActions.acquire.build(url));
+                    //     return ;
+                    // }
+
+                    // handle thorium://<token>/...
+                    if (url.startsWith("thorium://customization-profile/")) {
+                        const profileUrl = url.replace(/^thorium:\/\/customization-profile\//, "http://");
+                        debug("THORIUM customization-profile url", profileUrl);
+                        yield* putTyped(customizationActions.acquire.build(profileUrl));
+                        continue ;
                     }
 
+                    const openUrl = url.replace("thorium://", "http://"); // HTTP to HTTPS redirect should be handled by the server
+
                     const link: IOpdsLinkView = {
-                        url,
+                        url: openUrl,
                     };
 
                     const pubViewArray = (yield* callTyped(importFromLink, link)) as PublicationView | PublicationView[];
