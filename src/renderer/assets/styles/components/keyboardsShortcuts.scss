@@ -56,12 +56,12 @@
             &_edit {
                 border-left: 2px solid var(--color-brand-primary);
                 width: 100%;
-                color: var(--color--primary);
+                color: var(--color-text-primary);
                 background-color: var(--color-brand-secondary);
                 padding: 5px;
 
                 .keyshortElement_shortcut {
-                    color: var(--color--primary);
+                    color: var(--color-text-primary);
                     background-color: transparent;
 
                     span {
@@ -109,7 +109,7 @@
                 label {
                     border: 1px solid transparent;
                     border-radius: 6px;
-                    color: var(--color--primary);
+                    color: var(--color-text-primary);
                     padding: 3px;
                     background-color: var(--color-gray-200);
                     display: flex;
@@ -125,7 +125,7 @@
                     }
 
                     &:focus {
-                        outline-color: var(--color--blue)!important;
+                        outline-color: var(--color-brand-primary)!important;
                     }
                 }
 
