@@ -214,7 +214,7 @@ class Header extends React.Component<IProps, undefined> {
         );
 
         return (
-            <li className={classNames(...styleClasses, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} key={index}>
+            <li className={classNames(...styleClasses, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} key={index} style={{ height: "inherit" }}>
                 <Link
                     to={nextLocation}
                     state={{ displayType: (nextLocation.state && (nextLocation.state as IRouterLocationState).displayType) ? (nextLocation.state as IRouterLocationState).displayType : DisplayType.Grid }}
@@ -245,6 +245,7 @@ class Header extends React.Component<IProps, undefined> {
                             e.currentTarget.click();
                         }
                     }}
+                    style={{ height: "inherit" }}
                 >
                     {typeof item.svg === "string" ? <img width={"20px"} height={"20px"} src={item.svg}></img> : <SVG ariaHidden svg={item.svg} />}
                     <h3>{item.label}</h3>

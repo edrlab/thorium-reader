@@ -64,7 +64,11 @@
             "unsorted": "netříděno"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "title": ""
+            }
         },
         "delete": "Odstranit",
         "deleteBook": "Odstranit",

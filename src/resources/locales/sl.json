@@ -64,7 +64,11 @@
             "unsorted": "nerazvrščeno"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "title": ""
+            }
         },
         "delete": "Izbriši",
         "deleteBook": "Izbriši",

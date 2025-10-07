@@ -940,6 +940,7 @@ div[data-radix-popper-content-wrapper] {
         height: 100px; 
         padding: 10px;
         border-radius: 6px;
+        width: 100%;
 
         input {
             display: none;
@@ -965,11 +966,11 @@ div[data-radix-popper-content-wrapper] {
         align-items: start;
         justify-content: flex-start;
         gap: 10px;
+        width: inherit;
 
         > div {
             height: fit-content;
-            max-height: 75px;
-            margin: 0 auto; 
+            max-height: 75px; 
             display: flex;
             justify-content: center;
         }

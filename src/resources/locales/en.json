@@ -64,7 +64,11 @@
             "unsorted": "unsorted"
         },
         "customization": {
-            "publications": "Profile publications"
+            "fallback": {
+                "description": "No profile description",
+                "publications": "Profile publications",
+                "title": "Profile title"
+            }
         },
         "delete": "Delete",
         "deleteBook": "Delete",

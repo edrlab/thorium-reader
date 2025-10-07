@@ -64,7 +64,11 @@
             "unsorted": "usorteret"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "title": ""
+            }
         },
         "delete": "Slet",
         "deleteBook": "Slet",

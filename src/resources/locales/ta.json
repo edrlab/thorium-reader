@@ -64,7 +64,11 @@
             "unsorted": "வரிசைப்படுத்தப்படாதது"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "title": ""
+            }
         },
         "delete": "நீக்கு",
         "deleteBook": "நீக்கு",

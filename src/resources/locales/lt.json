@@ -64,7 +64,11 @@
             "unsorted": "nerikiuoti"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "title": ""
+            }
         },
         "delete": "Šalinti",
         "deleteBook": "Šalinti",

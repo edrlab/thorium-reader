@@ -64,7 +64,11 @@
             "unsorted": "乱序"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "title": ""
+            }
         },
         "delete": "删除",
         "deleteBook": "删除图书",

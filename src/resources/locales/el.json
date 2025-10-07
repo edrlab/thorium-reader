@@ -64,7 +64,11 @@
             "unsorted": "Χωρίς ταξινόμηση"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "title": ""
+            }
         },
         "delete": "Διαγραφή",
         "deleteBook": "Διαγραφή",
