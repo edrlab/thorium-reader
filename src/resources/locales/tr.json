@@ -85,6 +85,7 @@
         "importAnnotation": "Notları içe aktar",
         "lang": "Dil",
         "lastRead": "Son Okunan",
+        "logout": "",
         "moreInfo": "Eser Ayrıntıları",
         "myBooks": "Eserlerim",
         "noPublicationHelpL1": "Dosyaları buraya bırakın",
@@ -144,7 +145,7 @@
         "customization": {
             "splashscreen": {
                 "state": "",
-                "title": ""
+                "title": "Özelleştirme profilinin hazırlanması ve etkinleştirilmesi"
             }
         },
         "deleteAnnotations": "Açıklayıcı notları silmek istiyor musunuz?",

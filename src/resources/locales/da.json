@@ -85,6 +85,7 @@
         "importAnnotation": "Importér noter",
         "lang": "Sprog",
         "lastRead": "Senest læst",
+        "logout": "",
         "moreInfo": "Bogdetaljer",
         "myBooks": "Mine bøger",
         "noPublicationHelpL1": "Træk en bog hertil",
@@ -144,7 +145,7 @@
         "customization": {
             "splashscreen": {
                 "state": "",
-                "title": ""
+                "title": "Tilpasningsprofil for klargøring og aktivering"
             }
         },
         "deleteAnnotations": "Slet alle noter?",
@@ -608,7 +609,7 @@
         "lcpRightsPrint": "Printede sider",
         "lcpStart": "Start",
         "licenceLCP": "Licens (LCP)",
-        "licenseCertificateDateInvalid": "Licensens signatur-dato er ugyldig. ({{- dateTime}})",
+        "licenseCertificateDateInvalid": "Licensens signatur-dato er ugyldig. ({{- dateTime}}).",
         "licenseOutOfDate": "Licensen er udløbet.",
         "licenseSignatureInvalid": "Licensens signatur er ugyldig.",
         "licensed": "Licenseret",
@@ -731,7 +732,7 @@
             "goToError": "Siden kunne ikke findes",
             "goToPlaceHolder": "Indtast et sidetal",
             "goToTitle": "Gå til side",
-            "history": "",
+            "history": "Navigationshistorik",
             "historyNext": "Hop frem",
             "historyPrevious": "Hop tilbage",
             "infoTitle": "Information",
@@ -1142,10 +1143,10 @@
             }
         },
         "profiles": {
-            "info": "",
+            "info": "Skift profiler for at tilpasse appen med en partnerleverandørs branding og farver. Hver profil tilbyder en skræddersyet oplevelse.",
             "thorium": {
-                "description": "",
-                "title": ""
+                "description": "Thorium Vanilla profilen er den originale profil, designet af EDRLab.",
+                "title": "Thorium vanilla"
             }
         },
         "screenReaderActivate": {

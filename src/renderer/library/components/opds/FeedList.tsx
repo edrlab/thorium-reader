@@ -6,6 +6,8 @@
 // ==LICENSE-END==
 
 import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
+import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 
 import * as React from "react";
 import { connect } from "react-redux";
@@ -16,6 +18,7 @@ import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon.svg";
+import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar-icon.svg";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -29,6 +32,8 @@ import { Unsubscribe } from "redux";
 import { DisplayType, IRouterLocationState } from "../../routing";
 import DeleteOpdsFeedConfirm from "../dialog/DeleteOpdsFeedConfirm";
 import OpdsFeedUpdateForm from "../dialog/OpdsFeedUpdateForm";
+import * as Popover from "@radix-ui/react-popover";
+import { authActions } from "readium-desktop/common/redux/actions";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -121,6 +126,32 @@ class FeedList extends React.Component<IProps, IState> {
                                         <p title={`${item.title} --- ${item.url}`}>{item.title}</p>
                                     </div>
                                 </Link>
+                                {item.authentified ? <Popover.Root>
+                                    <Popover.Trigger asChild>
+                                        <button
+                                            className={stylesCatalogs.button_login}
+                                            title={__("catalog.logout")}
+                                        >
+                                            <SVG ariaHidden={true} svg={AvatarIcon} />
+                                        </button>
+                                    </Popover.Trigger>
+                                    <Popover.Portal>
+                                        <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesPopoverDialog.delete_item}>
+                                            <Popover.Close
+                                                onClick={() => {
+                                                    this.props.logout(item.url);
+                                                    setTimeout(() => this.loadFeeds(), 100);
+                                                }}
+                                                title={__("catalog.logout")}
+                                            >
+                                                <SVG ariaHidden={true} svg={AvatarIcon} />
+                                                {__("catalog.logout")}
+                                            </Popover.Close>
+                                            <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                                        </Popover.Content>
+                                    </Popover.Portal>
+                                </Popover.Root>
+                                : <></>}
                                 <OpdsFeedUpdateForm trigger={(
                                     <button
                                         className={stylesCatalogs.button_edit}
@@ -181,6 +212,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
                     feed,
                 },
             ));
+        },
+        logout: (feedUrl: string) => {
+            dispatch(authActions.logout.build(feedUrl));
         },
     };
 };

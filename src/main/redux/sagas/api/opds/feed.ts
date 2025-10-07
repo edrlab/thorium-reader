@@ -50,7 +50,7 @@ export function* getFeed(identifier: string) {
     const opdsFeedRepository = diMainGet("opds-feed-repository");
 
     const doc = yield* callTyped(() => opdsFeedRepository.get(identifier));
-    return opdsFeedViewConverter.convertDocumentToView(doc);
+    return yield* callTyped(() => opdsFeedViewConverter.convertDocumentToView(doc));
 }
 
 export function* deleteFeed(identifier: string) {
@@ -68,11 +68,11 @@ export function* addFeed(data: OpdsFeed): SagaGenerator<IOpdsFeedView> {
     const opdsFeeds = yield* callTyped(() => opdsFeedRepository.findAll());
     const found = opdsFeeds.find((o) => o.url === data.url);
     if (found) {
-        return opdsFeedViewConverter.convertDocumentToView(found);
+        return yield* callTyped(() => opdsFeedViewConverter.convertDocumentToView(found));
     }
 
     const doc = yield* callTyped(() => opdsFeedRepository.save(data));
-    return opdsFeedViewConverter.convertDocumentToView(doc);
+    return yield* callTyped(() => opdsFeedViewConverter.convertDocumentToView(doc));
 }
 
 export function* findAllFeeds(): SagaGenerator<IOpdsFeedView[]> {
@@ -81,6 +81,9 @@ export function* findAllFeeds(): SagaGenerator<IOpdsFeedView[]> {
     const opdsFeedViewConverter = diMainGet("opds-feed-view-converter");
 
     const docs = yield* callTyped(() => opdsFeedRepository.findAll());
-    return docs.map((doc) =>
-        opdsFeedViewConverter.convertDocumentToView(doc));
+    const res = [];
+    for (const doc of docs) {
+        res.push(yield* callTyped(() => opdsFeedViewConverter.convertDocumentToView(doc)));
+    }
+    return res;
 }
