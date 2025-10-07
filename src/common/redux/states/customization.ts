@@ -46,8 +46,8 @@ export interface ICustomizationProfileWelcomeScreen {
 export interface ICustomizationLockInfo {
     uuid: string;
     id?: string;
+    originHttpUrlOrFilePath?: string;
     fileName?: string;
-    filePath?: string;
     packagePath?: string;
     fileSize?: number;
 }
