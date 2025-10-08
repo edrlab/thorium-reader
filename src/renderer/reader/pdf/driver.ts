@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END
 
-import { ipcRenderer, shell, WillNavigateEvent } from "electron";
+import { ipcRenderer } from "electron";
 import * as path from "path";
 import {
     _DIST_RELATIVE_URL, _RENDERER_PDF_WEBVIEW_BASE_URL,

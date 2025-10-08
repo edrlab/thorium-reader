@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app, protocol, ipcMain, net, session } from "electron";
+import { app, ipcMain, net, session } from "electron";
 import * as path from "path";
 import { pathToFileURL } from "url";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
