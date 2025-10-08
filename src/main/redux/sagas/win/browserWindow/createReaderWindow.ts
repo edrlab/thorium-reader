@@ -148,39 +148,39 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
 
     setMenu(readerWindow, true);
 
-    // Redirect link to an external browser
-    const handleRedirect = (event: Event<WebContentsWillNavigateEventParams>, _url: string) => {
-        if (event.url === readerWindow.webContents.getURL()) {
-            debug("will-navigate PASS", event.url);
-            return;
-        }
+    // // Redirect link to an external browser
+    // const handleRedirect = (event: Event<WebContentsWillNavigateEventParams>, _url: string) => {
+    //     if (event.url === readerWindow.webContents.getURL()) {
+    //         debug("will-navigate PASS", event.url);
+    //         return;
+    //     }
 
-        debug("will-navigate EXTERNAL", event.url);
-        event.preventDefault();
-        if (event.url && /^https?:\/\//.test(event.url)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
-            setTimeout(async () => {
-                await shell.openExternal(event.url);
-            }, 0);
-        }
-    };
-    readerWindow.webContents.on("will-navigate", handleRedirect);
+    //     debug("will-navigate EXTERNAL", event.url);
+    //     event.preventDefault();
+    //     if (event.url && /^https?:\/\//.test(event.url)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
+    //         setTimeout(async () => {
+    //             await shell.openExternal(event.url);
+    //         }, 0);
+    //     }
+    // };
+    // readerWindow.webContents.on("will-navigate", handleRedirect);
 
-    // https://www.electronjs.org/releases/stable?version=12&page=4#breaking-changes-1200
-    // https://github.com/electron/electron/blob/main/docs/breaking-changes.md#deprecated-webcontents-new-window-event
-    // readerWindow.webContents.on("new-window", handleRedirect);
-    readerWindow.webContents.setWindowOpenHandler((details: HandlerDetails) => {
-        if (details.url === readerWindow.webContents.getURL()) {
-            debug("setWindowOpenHandler PASS", details.url);
-            return { action: "allow" };
-        }
+    // // https://www.electronjs.org/releases/stable?version=12&page=4#breaking-changes-1200
+    // // https://github.com/electron/electron/blob/main/docs/breaking-changes.md#deprecated-webcontents-new-window-event
+    // // readerWindow.webContents.on("new-window", handleRedirect);
+    // readerWindow.webContents.setWindowOpenHandler((details: HandlerDetails) => {
+    //     if (details.url === readerWindow.webContents.getURL()) {
+    //         debug("setWindowOpenHandler PASS", details.url);
+    //         return { action: "allow" };
+    //     }
 
-        debug("setWindowOpenHandler EXTERNAL", details.url);
-        if (details.url && /^https?:\/\//.test(details.url)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
-            setTimeout(async () => {
-                await shell.openExternal(details.url);
-            }, 0);
-        }
+    //     debug("setWindowOpenHandler EXTERNAL", details.url);
+    //     if (details.url && /^https?:\/\//.test(details.url)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
+    //         setTimeout(async () => {
+    //             await shell.openExternal(details.url);
+    //         }, 0);
+    //     }
 
-        return { action: "deny" };
-    });
+    //     return { action: "deny" };
+    // });
 }

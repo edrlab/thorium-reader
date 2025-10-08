@@ -99,17 +99,17 @@ export function pdfMount(
 
     const webview = document.createElement("webview");
 
-    // Redirect link to an external browser
-    const handleRedirect = async (event: WillNavigateEvent) => {
-        event.preventDefault(); // no effect
-        event.stopPropagation();
+    // // Redirect link to an external browser ALREADY HANDLED in navigator by child created webviews! See "@r2-navigator-js/electron/main/browser-window-tracker"
+    // const handleRedirect = async (event: WillNavigateEvent) => {
+    //     event.preventDefault(); // no effect
+    //     event.stopPropagation();
 
-        console.log("will-navigate event:", event.type, event.url);
-        if (event.url && /^https?:\/\//.test(event.url)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-            await shell.openExternal(event.url);
-        }
-    };
-    webview.addEventListener("will-navigate", handleRedirect);
+    //     console.log("will-navigate event:", event.type, event.url);
+    //     if (event.url && /^https?:\/\//.test(event.url)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
+    //         await shell.openExternal(event.url);
+    //     }
+    // };
+    // webview.addEventListener("will-navigate", handleRedirect);
 
     webview.addEventListener("console-message", (e) => {
         console.log("pdf-webview", e.message);
@@ -152,10 +152,11 @@ export function pdfMount(
 
     webview.setAttribute("style",
         "display: flex; margin: 0; padding: 0; box-sizing: border-box; position: absolute; left: 0; right: 0; bottom: 0; top: 0;");
-    // webview.setAttribute("partition", "persist:pdfjsreader");
+
     webview.setAttribute("webpreferences",
-        `enableRemoteModule=0, allowRunningInsecureContent=0, backgroundThrottling=0, devTools=${__TH__IS_DEV__ ? "1" : "0"}, nodeIntegration=0, sandbox=1, contextIsolation=0, nodeIntegrationInWorker=0, webSecurity=1, webviewTag=0`);
+        `enableRemoteModule=0, allowRunningInsecureContent=0, backgroundThrottling=0, devTools=${__TH__IS_DEV__ ? "1" : "0"}, nodeIntegration=0, sandbox=1, contextIsolation=0, nodeIntegrationInWorker=0, webSecurity=1, webviewTag=0, partition=persist:partitionpdfjs`);
     // webview.setAttribute("disablewebsecurity", "");
+    webview.setAttribute("partition", "persist:partitionpdfjs");
 
     webview.setAttribute("preload", preloadPath);
     webview.setAttribute("src",

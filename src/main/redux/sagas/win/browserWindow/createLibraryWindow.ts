@@ -146,41 +146,44 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
 
     setMenu(libWindow, false);
 
-    // Redirect link to an external browser
-    const handleRedirect = (event: Event<WebContentsWillNavigateEventParams>, _url: string) => {
-        if (event.url === libWindow.webContents.getURL()) {
-            debug("will-navigate PASS", event.url);
-            return;
-        }
+    // // Redirect link to an external browser
+    // const handleRedirect = (event: Event<WebContentsWillNavigateEventParams>, _url: string) => {
+    //     if (event.url === libWindow.webContents.getURL()) {
+    //         debug("will-navigate PASS", event.url);
+    //         return;
+    //     }
 
-        debug("will-navigate EXTERNAL", event.url);
-        event.preventDefault();
-        if (event.url &&/^https?:\/\//.test(event.url)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
-            setTimeout(async () => {
-                await shell.openExternal(event.url);
-            }, 0);
-        }
-    };
-    libWindow.webContents.on("will-navigate", handleRedirect);
+    //     debug("will-navigate EXTERNAL", event.url);
+    //     event.preventDefault();
+    //     if (event.url &&/^https?:\/\//.test(event.url)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
+    //         setTimeout(async () => {
+    //             await shell.openExternal(event.url);
+    //         }, 0);
+    //     }
+    // };
+    // libWindow.webContents.on("will-navigate", handleRedirect);
 
-    // https://www.electronjs.org/releases/stable?version=12&page=4#breaking-changes-1200
-    // https://github.com/electron/electron/blob/main/docs/breaking-changes.md#deprecated-webcontents-new-window-event
-    // libWindow.webContents.on("new-window", handleRedirect);
-    libWindow.webContents.setWindowOpenHandler((details: HandlerDetails) => {
-        if (details.url === libWindow.webContents.getURL()) {
-            debug("setWindowOpenHandler PASS", details.url);
-            return { action: "allow" };
-        }
+    // // https://www.electronjs.org/releases/stable?version=12&page=4#breaking-changes-1200
+    // // https://github.com/electron/electron/blob/main/docs/breaking-changes.md#deprecated-webcontents-new-window-event
+    // // libWindow.webContents.on("new-window", handleRedirect);
+    // libWindow.webContents.setWindowOpenHandler((details: HandlerDetails) => {
+    //     debug("setWindowOpenHandler ...", details.url, libWindow.webContents.getURL());
 
-        debug("setWindowOpenHandler EXTERNAL", details.url);
-        if (details.url && /^https?:\/\//.test(details.url)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
-            setTimeout(async () => {
-                await shell.openExternal(details.url);
-            }, 0);
-        }
+    //     // if (details.url === libWindow.webContents.getURL()) {
+    //     //     debug("... setWindowOpenHandler ALLOW");
+    //     //     return { action: "allow" };
+    //     // }
 
-        return { action: "deny" };
-    });
+    //     // if (details.url && /^https?:\/\//.test(details.url)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
+    //     //     debug("... setWindowOpenHandler EXTERNAL");
+    //     //     setTimeout(async () => {
+    //     //         await shell.openExternal(details.url);
+    //     //     }, 0);
+    //     // }
+
+    //     debug("... setWindowOpenHandler DENY");
+    //     return { action: "deny" };
+    // });
 
     // Clear all cache to prevent weird behaviours
     // Fully handled in r2-navigator-js initSessions();

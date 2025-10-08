@@ -136,6 +136,7 @@ class Cover extends React.Component<IProps, IState> {
                     ref={this.props.forwardedRef}
                     src={this.state.imgUrl}
                     onError={this.imageOnError}
+                    onLoad={() => { } /* TO TEST OPDS_MEDIA_SCHEME without auth error on cover image: */ /* this.imageOnError */ }
                     {...this.props.imgRadixProp}
                 />
                 {/* {tagString === "/finished/"  ?

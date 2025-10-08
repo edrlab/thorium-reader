@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 import { OPDS_MEDIA_SCHEME, OPDS_MEDIA_SCHEME__IP_ORIGIN_OPDS_MEDIA } from "readium-desktop/common/streamerProtocol";
-import { BrowserWindow, globalShortcut } from "electron";
+import { BrowserWindow, globalShortcut, HandlerDetails, Event as ElectronEvent, WebContentsWillNavigateEventParams, shell } from "electron";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
@@ -771,6 +771,8 @@ function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefine
                 nodeIntegrationInWorker: false,
                 webSecurity: true,
                 webviewTag: false,
+                partition: "persist:partitionauth", // => for example, failure in web inspector console debugger:
+                // fetch("thoriumhttps://host/pdfjs/web/viewer.html").then((r)=>r.text()).then((t)=>console.log(t));
             },
         });
 
@@ -785,6 +787,47 @@ function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefine
     });
 
     win.loadURL(url);
+
+    const willNavigate = (navUrl: string | undefined | null) => {
+
+        if (!navUrl) {
+            debug("willNavigate ==> nil: ", navUrl);
+            return;
+        }
+
+        if (/^https?:\/\//.test(navUrl)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
+
+            debug("willNavigate ==> EXTERNAL: ", win.webContents.getURL(), " *** ", navUrl);
+            setTimeout(async () => {
+                await shell.openExternal(navUrl);
+            }, 0);
+
+            return;
+        }
+
+        debug("willNavigate ==> noop: ", navUrl);
+    };
+
+    win.webContents.setWindowOpenHandler((details: HandlerDetails) => {
+        debug("BrowserWindow.webContents.setWindowOpenHandler (always DENY): ", win.webContents.id, " --- ", details.url, " === ", win.webContents.getURL());
+
+        // willNavigate(details.url);
+
+        return { action: "deny" };
+    });
+
+    win.webContents.on("will-navigate", (details: ElectronEvent<WebContentsWillNavigateEventParams>, url: string) => {
+        debug("BrowserWindow.webContents.on('will-navigate') (always PREVENT): ", win.webContents.id, " --- ", details.url, " *** ", url, " === ", win.webContents.getURL());
+
+        if (details.url?.startsWith("opds://authorize")) {
+            debug("opds://authorize ==> PASS: ", details.url);
+            return;
+        }
+
+        details.preventDefault();
+
+        willNavigate(details.url);
+    });
 
     return win;
 }
@@ -1318,7 +1361,7 @@ const htmlLoginTemplate = (
                         `<div class="content_informations">
                             ${logoUrl ? `<img class="logo" src="${logoUrl}" alt="login logo">` : ""}
                             <div class="help_links">
-                                ${help ? `${help.map((v) => `<a href=${v}>${v}</a>`).join("")}` : ""}
+                                ${help ? `${help.map((v) => `<a xxxxx TODO xxxx onClick href=${v}>${v}</a>`).join("")}` : ""}
                             </div>
                         </div>`
                         : ""}
