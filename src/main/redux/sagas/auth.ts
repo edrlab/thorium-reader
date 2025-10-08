@@ -69,7 +69,7 @@ import { getTranslator } from "readium-desktop/common/services/translator";
 // https://github.com/cure53/DOMPurify?tab=readme-ov-file#running-dompurify-on-the-server
 import { JSDOM } from "jsdom";
 import DOMPurify_ from "dompurify";
-const DOMPurify = DOMPurify_(new JSDOM('').window);
+const DOMPurify = DOMPurify_(new JSDOM("").window);
 
 // Logger
 const filename_ = "readium-desktop:main:saga:auth";

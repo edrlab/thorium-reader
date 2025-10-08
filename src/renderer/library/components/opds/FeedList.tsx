@@ -98,7 +98,7 @@ class FeedList extends React.Component<IProps, IState> {
                                     state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
                                     className={stylesCatalogs.catalog_content}
                                     onClick={(e) => {
-                                        if (e.altKey || e.shiftKey || e.ctrlKey) {
+                                        if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                                             e.preventDefault();
                                             e.currentTarget.click();
                                         }

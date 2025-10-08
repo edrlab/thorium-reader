@@ -231,7 +231,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                     state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
                     className={stylesButtons.button_nav_tertiary}
                     onClick={(e) => {
-                        if (e.altKey || e.shiftKey || e.ctrlKey) {
+                        if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                             e.preventDefault();
                             e.currentTarget.click();
                         }
@@ -293,7 +293,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                     state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
                     className={stylesButtons.button_nav_tertiary}
                     onClick={(e) => {
-                        if (e.altKey || e.shiftKey || e.ctrlKey) {
+                        if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                             e.preventDefault();
                             e.currentTarget.click();
                         }
@@ -358,7 +358,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
                         className={classNames(stylesButtons.button_refresh, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
                         onClick={(e) => {
-                            if (e.altKey || e.shiftKey || e.ctrlKey) {
+                            if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                                 e.preventDefault();
                                 e.currentTarget.click();
                             }
@@ -394,7 +394,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
                         className={classNames(stylesButtons.button_refresh, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
                         onClick={(e) => {
-                            if (e.altKey || e.shiftKey || e.ctrlKey) {
+                            if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                                 e.preventDefault();
                                 e.currentTarget.click();
                             }

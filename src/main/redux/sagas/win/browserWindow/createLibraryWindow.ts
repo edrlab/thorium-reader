@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-import { BrowserWindow, Event, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
+import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
 import * as path from "path";
 import { defaultRectangle, normalizeRectangle } from "readium-desktop/common/rectangle/window";
 import { diMainGet } from "readium-desktop/main/di";
@@ -146,43 +146,45 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
 
     setMenu(libWindow, false);
 
-    // Redirect link to an external browser
-    const handleRedirect = (event: Event<WebContentsWillNavigateEventParams>, _url: string) => {
-        if (event.url === libWindow.webContents.getURL()) {
-            debug("will-navigate PASS", event.url);
+    const willNavigate = (navUrl: string | undefined | null) => {
+
+        if (!navUrl) {
+            debug("willNavigate ==> nil: ", navUrl);
             return;
         }
 
-        debug("will-navigate EXTERNAL", event.url);
-        event.preventDefault();
-        if (event.url &&/^https?:\/\//.test(event.url)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
-            setTimeout(async () => {
-                await shell.openExternal(event.url);
-            }, 0);
-        }
-    };
-    libWindow.webContents.on("will-navigate", handleRedirect);
+        if (/^https?:\/\//.test(navUrl)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
 
-    // https://www.electronjs.org/releases/stable?version=12&page=4#breaking-changes-1200
-    // https://github.com/electron/electron/blob/main/docs/breaking-changes.md#deprecated-webcontents-new-window-event
-    // libWindow.webContents.on("new-window", handleRedirect);
+            debug("willNavigate ==> EXTERNAL: ", libWindow.webContents.getURL(), " *** ", navUrl);
+            setTimeout(async () => {
+                await shell.openExternal(navUrl);
+            }, 0);
+
+            return;
+        }
+
+        debug("willNavigate ==> noop: ", navUrl);
+    };
+
     libWindow.webContents.setWindowOpenHandler((details: HandlerDetails) => {
-        debug("setWindowOpenHandler ...", details.url, libWindow.webContents.getURL());
+        debug("BrowserWindow.webContents.setWindowOpenHandler (always DENY): ", libWindow.webContents.id, " --- ", details.url, " === ", libWindow.webContents.getURL());
+
+        // willNavigate(details.url);
+
+        return { action: "deny" };
+    });
+
+    libWindow.webContents.on("will-navigate", (details: ElectronEvent<WebContentsWillNavigateEventParams>, url: string) => {
+        debug("BrowserWindow.webContents.on('will-navigate') (always PREVENT): ", libWindow.webContents.id, " --- ", details.url, " *** ", url, " === ", libWindow.webContents.getURL());
 
         // if (details.url === libWindow.webContents.getURL()) {
-        //     debug("... setWindowOpenHandler ALLOW");
-        //     return { action: "allow" };
+        //     debug("will-navigate PASS", details.url);
+        //     return;
         // }
 
-        // if (details.url && /^https?:\/\//.test(details.url)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
-        //     debug("... setWindowOpenHandler EXTERNAL");
-        //     setTimeout(async () => {
-        //         await shell.openExternal(details.url);
-        //     }, 0);
-        // }
+        details.preventDefault();
 
-        debug("... setWindowOpenHandler DENY");
-        return { action: "deny" };
+        willNavigate(details.url);
     });
 
     // Clear all cache to prevent weird behaviours

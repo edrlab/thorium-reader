@@ -62,7 +62,7 @@ class Entry extends React.Component<IProps, undefined> {
                 }}
                 state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
                 onClick={(e) => {
-                    if (e.altKey || e.shiftKey || e.ctrlKey) {
+                    if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                         e.preventDefault();
                         e.currentTarget.click();
                     }
