@@ -153,7 +153,8 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
             return;
         }
 
-        if (/^https?:\/\//.test(navUrl)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
+        if (/^https?:\/\//.test(navUrl)
+            && !navUrl.startsWith("http://localhost") && !navUrl.startsWith("http://127.0.0.1")) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
 
             debug("willNavigate ==> EXTERNAL: ", libWindow.webContents.getURL(), " *** ", navUrl);
             setTimeout(async () => {

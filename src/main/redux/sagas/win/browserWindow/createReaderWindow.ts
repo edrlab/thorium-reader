@@ -155,7 +155,8 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
             return;
         }
 
-        if (/^https?:\/\//.test(navUrl)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
+        if (/^https?:\/\//.test(navUrl)
+            && !navUrl.startsWith("http://localhost") && !navUrl.startsWith("http://127.0.0.1")) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
 
             debug("willNavigate ==> EXTERNAL: ", readerWindow.webContents.getURL(), " *** ", navUrl);
             setTimeout(async () => {
