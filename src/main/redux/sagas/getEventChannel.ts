@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { app, powerMonitor, protocol } from "electron";
+import { app, powerMonitor, session } from "electron";
 import { OPDS_MEDIA_SCHEME } from "readium-desktop/common/streamerProtocol";
 import { channel as channelSaga, eventChannel } from "redux-saga";
 import { customizationStartFileWatcherFromWellKnownFolder } from "readium-desktop/main/customization/watcher";
@@ -130,14 +130,18 @@ export function getOpdsRequestCustomProtocolEventChannel() {
 
     const channel = eventChannel<TregisterHttpProtocolHandler>(
         (emit) => {
+
+            // Electron.protocol === Electron.session.defaultSession.protocol
+            const authSession = session.fromPartition("persist:partitionauth", { cache: false });
+
             const handler = (
                 request: Electron.ProtocolRequest,
                 callback: (response: Electron.ProtocolResponse) => void,
             ) => emit({ request, callback });
-            protocol.registerHttpProtocol(OPDS_AUTH_SCHEME, handler);
+            authSession.protocol.registerHttpProtocol(OPDS_AUTH_SCHEME, handler);
 
             return () => {
-                protocol.unregisterProtocol(OPDS_AUTH_SCHEME);
+                authSession.protocol.unregisterProtocol(OPDS_AUTH_SCHEME);
             };
         },
     );
@@ -155,16 +159,20 @@ export function getOpdsRequestMediaCustomProtocolEventChannel() {
 
     const channel = eventChannel<TregisterHttpProtocolHandler>(
         (emit) => {
+
+            // Electron.protocol === Electron.session.defaultSession.protocol
+            // const xxxSession = session.fromPartition("persist:partitionxxx", { cache: false });
+
             const handler = (
                 request: Electron.ProtocolRequest,
                 callback: (response: Electron.ProtocolResponse) => void,
             ) => {
                 emit({ request, callback });
             };
-            protocol.registerStreamProtocol(OPDS_MEDIA_SCHEME, handler);
+            session.defaultSession.protocol.registerStreamProtocol(OPDS_MEDIA_SCHEME, handler);
 
             return () => {
-                protocol.unregisterProtocol(OPDS_MEDIA_SCHEME);
+                session.defaultSession.protocol.unregisterProtocol(OPDS_MEDIA_SCHEME);
             };
         },
     );

@@ -224,7 +224,7 @@ class Header extends React.Component<IProps, undefined> {
                     className={classNames(active ? stylesButtons.button_nav_primary : "", !active ? "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" : "")}
                     title={item.label}
                     onClick={(e) => {
-                        if (e.altKey || e.shiftKey || e.ctrlKey) {
+                        if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                             e.preventDefault();
                             e.currentTarget.click();
                         }

@@ -7,7 +7,7 @@
 
 import * as debug_ from "debug";
 import { OPDS_MEDIA_SCHEME, OPDS_MEDIA_SCHEME__IP_ORIGIN_OPDS_MEDIA } from "readium-desktop/common/streamerProtocol";
-import { BrowserWindow, globalShortcut } from "electron";
+import { BrowserWindow, globalShortcut, HandlerDetails, Event as ElectronEvent, WebContentsWillNavigateEventParams, shell } from "electron";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
@@ -65,6 +65,11 @@ import isURL from "validator/lib/isURL";
 import { nanoid } from "nanoid";
 
 import { getTranslator } from "readium-desktop/common/services/translator";
+
+// https://github.com/cure53/DOMPurify?tab=readme-ov-file#running-dompurify-on-the-server
+import { JSDOM } from "jsdom";
+import DOMPurify_ from "dompurify";
+const DOMPurify = DOMPurify_(new JSDOM("").window);
 
 // Logger
 const filename_ = "readium-desktop:main:saga:auth";
@@ -771,6 +776,8 @@ function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefine
                 nodeIntegrationInWorker: false,
                 webSecurity: true,
                 webviewTag: false,
+                partition: "persist:partitionauth", // => for example, failure in web inspector console debugger:
+                // fetch("thoriumhttps://host/pdfjs/web/viewer.html").then((r)=>r.text()).then((t)=>console.log(t));
             },
         });
 
@@ -785,6 +792,47 @@ function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefine
     });
 
     win.loadURL(url);
+
+    const willNavigate = (navUrl: string | undefined | null) => {
+
+        if (!navUrl) {
+            debug("willNavigate ==> nil: ", navUrl);
+            return;
+        }
+
+        if (/^https?:\/\//.test(navUrl)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
+
+            debug("willNavigate ==> EXTERNAL: ", win.webContents.getURL(), " *** ", navUrl);
+            setTimeout(async () => {
+                await shell.openExternal(navUrl);
+            }, 0);
+
+            return;
+        }
+
+        debug("willNavigate ==> noop: ", navUrl);
+    };
+
+    win.webContents.setWindowOpenHandler((details: HandlerDetails) => {
+        debug("BrowserWindow.webContents.setWindowOpenHandler (always DENY): ", win.webContents.id, " --- ", details.url, " === ", win.webContents.getURL());
+
+        // willNavigate(details.url);
+
+        return { action: "deny" };
+    });
+
+    win.webContents.on("will-navigate", (details: ElectronEvent<WebContentsWillNavigateEventParams>, url: string) => {
+        debug("BrowserWindow.webContents.on('will-navigate') (always PREVENT): ", win.webContents.id, " --- ", details.url, " *** ", url, " === ", win.webContents.getURL());
+
+        if (details.url?.startsWith("opds://authorize")) {
+            debug("opds://authorize ==> PASS: ", details.url);
+            return;
+        }
+
+        details.preventDefault();
+
+        willNavigate(details.url);
+    });
 
     return win;
 }
@@ -966,7 +1014,7 @@ const htmlLoginTemplate = (
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>${title}</title>
+        <title>${DOMPurify.sanitize(title)}</title>
 
         <!-- Custom styles for this template -->
         <style>
@@ -1311,40 +1359,40 @@ const htmlLoginTemplate = (
             <div class="login">
                 <div class="container">
                     <div class="presentation">
-                        <h1>${title}</h1>
+                        <h1>${DOMPurify.sanitize(title)}</h1>
                     </div>
                     <div class="content_wrapper">
                     ${(logoUrl || help.length > 0) ?
                         `<div class="content_informations">
-                            ${logoUrl ? `<img class="logo" src="${logoUrl}" alt="login logo">` : ""}
+                            ${logoUrl ? `<img class="logo" src="${DOMPurify.sanitize(logoUrl)}" alt="login logo">` : ""}
                             <div class="help_links">
-                                ${help ? `${help.map((v) => `<a href=${v}>${v}</a>`).join("")}` : ""}
+                                ${help ? `${help.map((v) => { const vv = DOMPurify.sanitize(v); return `<a href=${vv}>${vv}</a>`; }).join("")}` : ""}
                             </div>
                         </div>`
                         : ""}
-                        <form method="post" action="${urlToSubmit}" style="align-items: ${!(logoUrl || help.length > 0) ? "center" : "end"}">
+                        <form method="post" action="${DOMPurify.sanitize(urlToSubmit)}" style="align-items: ${!(logoUrl || help.length > 0) ? "center" : "end"}">
                             <p>
                                 <input type="text" name="login" value="" required>
                                     ${AvatarIcon}
                                 </input>
-                                <label for="login">${loginLabel}</label>
+                                <label for="login">${DOMPurify.sanitize(loginLabel)}</label>
                             </p>
                             <p>
                                 <input type="password" name="password" value="" required>
                                     ${PasswordIcon}
                                 </input>
-                                <label for="password">${passLabel}</label>
+                                <label for="password">${DOMPurify.sanitize(passLabel)}</label>
                             </p>
-                            ${registerUrl ? `<a href="${registerUrl}" target="_blank" class="register_button">
+                            ${registerUrl ? `<a href="${DOMPurify.sanitize(registerUrl)}" target="_blank" class="register_button">
                                 ${AddIcon}
                                 ${getTranslator().translate("catalog.opds.auth.register")}
                             </a>` : ""}
-                            <p><input hidden type="text" name="nonce" value="${nonce}"></p>
-                            <p><input hidden type="text" name="qop" value="${qop}"></p>
-                            <p><input hidden type="text" name="algorithm" value="${algorithm}"></p>
-                            <p><input hidden type="text" name="realm" value="${realm}"></p>
+                            <p><input hidden type="text" name="nonce" value="${DOMPurify.sanitize(nonce)}"></p>
+                            <p><input hidden type="text" name="qop" value="${DOMPurify.sanitize(qop)}"></p>
+                            <p><input hidden type="text" name="algorithm" value="${DOMPurify.sanitize(algorithm)}"></p>
+                            <p><input hidden type="text" name="realm" value="${DOMPurify.sanitize(realm)}"></p>
                             <div class="submit">
-                                <input type="button" name="cancel" value="${getTranslator().translate("catalog.opds.auth.cancel")}" onClick="window.location.href='${urlToSubmit}';">
+                                <input type="button" name="cancel" value="${getTranslator().translate("catalog.opds.auth.cancel")}" onClick="window.location.href='${DOMPurify.sanitize(urlToSubmit)}';">
                                 <div class="submit_button">
                                     <input type="submit" name="commit" value="${getTranslator().translate("catalog.opds.auth.login")}">
                                     <label for="commit">${LoginIcon}</label>

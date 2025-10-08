@@ -1862,7 +1862,15 @@ export function initSessions() {
                     READIUM2_ELECTRON_HTTP_PROTOCOL,
                     streamProtocolHandlerTunnel);
             }
+
+            session.defaultSession.setPermissionRequestHandler((wc, permission, callback) => {
+                debug("setPermissionRequestHandler session.defaultSession");
+                debug(wc.getURL());
+                debug(permission);
+                callback(true);
+            });
         }
+
         const webViewSession = getWebViewSession();
         if (webViewSession) {
             // webViewSession.webRequest.onHeadersReceived(filter, onHeadersReceivedCB);
@@ -1882,7 +1890,61 @@ export function initSessions() {
             }
 
             webViewSession.setPermissionRequestHandler((wc, permission, callback) => {
-                debug("setPermissionRequestHandler");
+                debug("setPermissionRequestHandler webViewSession");
+                debug(wc.getURL());
+                debug(permission);
+                callback(true);
+            });
+        }
+
+        // Electron.protocol === Electron.session.defaultSession.protocol
+        const pdfSession = session.fromPartition("persist:partitionpdfjs", { cache: false });
+        if (pdfSession) {
+            // pdfSession.webRequest.onHeadersReceived(filter, onHeadersReceivedCB);
+            // pdfSession.webRequest.onBeforeSendHeaders(filter, onBeforeSendHeadersCB);
+            // pdfSession.setCertificateVerifyProc(setCertificateVerifyProcCB);
+
+            if (USE_NEW_PROTOCOL_HANDLER) {
+                pdfSession.protocol.handle(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandler_NEW);
+                // pdfSession.protocol.handle(READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandlerTunnel_NEW);
+            } else {
+                pdfSession.protocol.registerStreamProtocol(
+                    THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
+                    streamProtocolHandler);
+                // pdfSession.protocol.registerStreamProtocol(
+                //     READIUM2_ELECTRON_HTTP_PROTOCOL,
+                //     streamProtocolHandlerTunnel);
+            }
+
+            pdfSession.setPermissionRequestHandler((wc, permission, callback) => {
+                debug("setPermissionRequestHandler pdfSession");
+                debug(wc.getURL());
+                debug(permission);
+                callback(true);
+            });
+        }
+
+        // Electron.protocol === Electron.session.defaultSession.protocol
+        const pdfExtractSession = session.fromPartition("persist:partitionpdfjsextract", { cache: false });
+        if (pdfExtractSession) {
+            // pdfExtractSession.webRequest.onHeadersReceived(filter, onHeadersReceivedCB);
+            // pdfExtractSession.webRequest.onBeforeSendHeaders(filter, onBeforeSendHeadersCB);
+            // pdfExtractSession.setCertificateVerifyProc(setCertificateVerifyProcCB);
+
+            if (USE_NEW_PROTOCOL_HANDLER) {
+                pdfExtractSession.protocol.handle(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandler_NEW);
+                // pdfExtractSession.protocol.handle(READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandlerTunnel_NEW);
+            } else {
+                pdfExtractSession.protocol.registerStreamProtocol(
+                    THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
+                    streamProtocolHandler);
+                // pdfExtractSession.protocol.registerStreamProtocol(
+                //     READIUM2_ELECTRON_HTTP_PROTOCOL,
+                //     streamProtocolHandlerTunnel);
+            }
+
+            pdfExtractSession.setPermissionRequestHandler((wc, permission, callback) => {
+                debug("setPermissionRequestHandler pdfExtractSession");
                 debug(wc.getURL());
                 debug(permission);
                 callback(true);
