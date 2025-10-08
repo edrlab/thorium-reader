@@ -482,19 +482,29 @@ const Profiles = () => {
                         return (
                             <div
                                 key={profile.id}
-                                className={stylesSettings.profile_selection_input}
-                                role="radiogroup"
+                                className={classNames(stylesSettings.profile_selection_input, selectedProfile?.id === profile.id ? stylesSettings.profile_selection_input_checked : "")}
                             >
                                 <input
-                                    type="radio"
                                     id={profile.id}
                                     value={profile.fileName}
                                     name="profile_selection"
                                     checked={selectedProfile?.id === profile.id}
-                                    tabIndex={!selectedProfile && profile === packageProfileProvisioned[0] ? 0 : selectedProfile?.id === profile.id ? 0 : -1}
-                                    onChange={(e) => {
+                                    onClick={(e) => {
                                         console.log("PROFILE Input change", e);
                                         dispatch(customizationActions.activating.build(profile.id));
+                                    }}
+                                    onKeyDown={(e) => {
+                                        if (e.key === "Enter") {
+                                            console.log("PROFILE Input change", e);
+                                            dispatch(customizationActions.activating.build(profile.id));
+                                        }
+                                    }}
+                                    onKeyUp={(e) => {
+                                        if (e.key === "Enter") {
+                                            e.preventDefault();
+                                            console.log("PROFILE Input change", e);
+                                            dispatch(customizationActions.activating.build(profile.id));
+                                        }
                                     }}
                                     aria-label={profile.id}
                                 />
@@ -543,18 +553,29 @@ const Profiles = () => {
 
                 <div
                     key={"thorium_vanilla"}
-                    className={stylesSettings.profile_selection_input}
+                    className={classNames(stylesSettings.profile_selection_input,  selectedProfile?.id ? "" : stylesSettings.profile_selection_input_checked)}
                 >
                     <input
-                        type="radio"
                         id={__("settings.profiles.thorium.title")}
                         value={__("settings.profiles.thorium.title")}
                         name="profile_selection"
                         checked={!selectedProfile}
-                        tabIndex={!selectedProfile ? 0 : -1}
-                        onChange={(e) => {
+                        onClick={(e) => {
                             console.log("PROFILE Input change", e);
                             dispatch(customizationActions.activating.build("")); // no profile
+                        }}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                console.log("PROFILE Input change", e);
+                                dispatch(customizationActions.activating.build(""));
+                            }
+                        }}
+                        onKeyUp={(e) => {
+                            if (e.key === "Enter") { // WORKS
+                                e.preventDefault();
+                                console.log("PROFILE Input change", e);
+                                dispatch(customizationActions.activating.build(""));
+                            }
                         }}
                     />
                     <label htmlFor={__("settings.profiles.thorium.title")} className={stylesSettings.profile_selection_label}>

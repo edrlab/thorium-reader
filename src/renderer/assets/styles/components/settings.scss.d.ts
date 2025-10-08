@@ -27,6 +27,7 @@ export declare const preset_settings_container: string;
 export declare const profile_selection_description: string;
 export declare const profile_selection_form: string;
 export declare const profile_selection_input: string;
+export declare const profile_selection_input_checked: string;
 export declare const profile_selection_label: string;
 export declare const range_inactive: string;
 export declare const reset_button: string;

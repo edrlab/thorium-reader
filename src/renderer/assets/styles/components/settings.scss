@@ -955,19 +955,19 @@ div[data-radix-popper-content-wrapper] {
             pointer-events: none;
         }
 
-        &:hover:not(:has(input:checked)) {
+        &_checked {
+            color: var(--color-blue);
+            background-color: var(--color-light-blue);
+            border: 1px solid var(--color-buttons-border);
+        }
+
+        &:hover:not(:has(.profile_selection_input_checked)) {
             background-color: var(--color-verylight-grey);
             cursor: pointer;
 
             .profile_selection_label {
                 cursor: pointer;
             }
-        }
-
-        &:has(input:checked) {
-            color: var(--color-blue);
-            background-color: var(--color-light-blue);
-            border: 1px solid var(--color-buttons-border);
         }
 
         &:focus-within:has(input:focus) {
