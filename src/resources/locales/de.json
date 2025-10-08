@@ -253,6 +253,7 @@
         },
         "next": "Nächster",
         "previous": "Vorheriger",
+        "resumeBrowsing": "",
         "shelf": "Bücherregal",
         "updateForm": {
             "name": "Name:",

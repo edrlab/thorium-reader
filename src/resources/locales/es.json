@@ -253,6 +253,7 @@
         },
         "next": "Siguiente",
         "previous": "Anterior",
+        "resumeBrowsing": "",
         "shelf": "Estante",
         "updateForm": {
             "name": "Nombre:",

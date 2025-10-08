@@ -518,6 +518,7 @@ declare namespace typed_i18n {
   (_: "message.open", __?: {}): { readonly "error": string };
   (_: "message.open.error", __?: {}): string;
   (_: "opds", __?: {}): {
+  readonly "resumeBrowsing": string,
   readonly "addForm": {
     readonly "addButton": string,
     readonly "name": string,
@@ -559,6 +560,7 @@ declare namespace typed_i18n {
   },
   readonly "whatIsOpds": string
 };
+  (_: "opds.resumeBrowsing", __?: {}): string;
   (_: "opds.addForm", __?: {}): {
   readonly "addButton": string,
   readonly "name": string,

@@ -253,6 +253,7 @@
         },
         "next": "Next",
         "previous": "Previous",
+        "resumeBrowsing": "Resume browsing",
         "shelf": "Shelf",
         "updateForm": {
             "name": "Name:",

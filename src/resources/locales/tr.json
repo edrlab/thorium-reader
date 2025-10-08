@@ -253,6 +253,7 @@
         },
         "next": "Sonraki",
         "previous": "Önceki",
+        "resumeBrowsing": "",
         "shelf": "Raf",
         "updateForm": {
             "name": "İsim:",

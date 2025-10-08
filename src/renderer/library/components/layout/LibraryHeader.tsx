@@ -20,7 +20,7 @@ import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { DisplayType, IRouterLocationState } from "../../routing";
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/home-icon.svg";
-import * as ThoriumIcon from "readium-desktop/renderer/assets/icons/thorium.svg";
+import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon-bold.svg";
 import * as CatalogsIcon from "readium-desktop/renderer/assets/icons/catalogs-icon.svg";
 import * as ShelfIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
@@ -31,7 +31,7 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER } from "readium-desktop/common/streamerProtocol";
 // import { WizardModal } from "../Wizard";
 
-interface NavigationHeader {
+export interface NavigationHeader {
     route: string;
     label: string;
     matchRoutes: string[];
@@ -117,7 +117,7 @@ class Header extends React.Component<IProps, undefined> {
                     matchRoutes: ["/opds/" + hostEncoded],
                     searchEnable: false,
                     styles: [],
-                    svg: catalog.properties?.logo?.type === "image/svg+xml" ? customizationBaseUrl + encodeURIComponent_RFC3986(Buffer.from(catalog.properties.logo.href).toString("base64")) : ThoriumIcon,
+                    svg: GlobeIcon,
                 });
             }
         }
@@ -204,7 +204,7 @@ class Header extends React.Component<IProps, undefined> {
                     ? {
                         ...this.props.location,
                         search: item.searchEnable ? this.props.location?.search : "",
-                        pathname: cv.pathname,
+                        pathname: item.route,
                     }
                     : pv,
             {

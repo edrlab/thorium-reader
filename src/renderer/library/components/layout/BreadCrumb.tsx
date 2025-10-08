@@ -113,7 +113,7 @@ const BreadCrumb = () => {
     const containerSize = useSize(container);
     const containerWidth = Math.floor(containerSize?.width || -1);
 
-    const breadCrumbData = useSelector((state: ILibraryRootState) => state.opds.browser.breadcrumb);
+    const breadCrumbData = useSelector((state: ILibraryRootState) => state.opds.browser.breadcrumb.slice(1));
 
     const firstOne = {...(breadCrumbData.at(0) || {name: "", path: ""})};
     // const lastOneFromBreadcrumbData = () => ({...(breadCrumbData.at(-1) || {name: "", path: ""})});
@@ -199,10 +199,12 @@ const BreadCrumb = () => {
         }} ref={container} className={stylesBreadcrumb.breadcrumb_container}>
             <ul className={stylesBreadcrumb.breadcrumb}>
                 {
+                    breadCrumbData.length > 1 ?
                     <li key={0} className={"breadcrumb-li-item"}>
                         <LinkItemBreadcrumb item={firstOne} isTheFirstOne />
                         <ChevronRightBreadCrumb />
                     </li>
+                    : <></>
                 }
                 {
                     between.map((item, index) => {

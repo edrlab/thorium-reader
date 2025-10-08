@@ -253,6 +253,7 @@
         },
         "next": "Další",
         "previous": "Předchozí",
+        "resumeBrowsing": "",
         "shelf": "Polička",
         "updateForm": {
             "name": "Název:",

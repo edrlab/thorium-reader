@@ -253,6 +253,7 @@
         },
         "next": "التالي",
         "previous": "السابق",
+        "resumeBrowsing": "",
         "shelf": "الرف",
         "updateForm": {
             "name": "الاسم:",

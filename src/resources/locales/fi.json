@@ -253,6 +253,7 @@
         },
         "next": "Seuraava",
         "previous": "Edellinen",
+        "resumeBrowsing": "",
         "shelf": "Hylly",
         "updateForm": {
             "name": "Nimi:",

@@ -253,6 +253,7 @@
         },
         "next": "次へ",
         "previous": "前へ",
+        "resumeBrowsing": "",
         "shelf": "本棚",
         "updateForm": {
             "name": "名前：",

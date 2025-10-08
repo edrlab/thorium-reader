@@ -253,6 +253,7 @@
         },
         "next": "Hurrengoa",
         "previous": "Aurrekoa",
+        "resumeBrowsing": "",
         "shelf": "Apala",
         "updateForm": {
             "name": "Izena:",

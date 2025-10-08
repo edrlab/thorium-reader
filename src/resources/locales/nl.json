@@ -253,6 +253,7 @@
         },
         "next": "Volgende",
         "previous": "Vorige",
+        "resumeBrowsing": "",
         "shelf": "Plank",
         "updateForm": {
             "name": "Naam:",

@@ -253,6 +253,7 @@
         },
         "next": "下一个",
         "previous": "上一个",
+        "resumeBrowsing": "",
         "shelf": "书架",
         "updateForm": {
             "name": "名称：",

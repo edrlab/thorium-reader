@@ -253,6 +253,7 @@
         },
         "next": "Tolesnis",
         "previous": "Ankstesnis",
+        "resumeBrowsing": "",
         "shelf": "Lentyna",
         "updateForm": {
             "name": "Pavadinimas:",

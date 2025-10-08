@@ -253,6 +253,7 @@
         },
         "next": "Следващ",
         "previous": "Предишен",
+        "resumeBrowsing": "",
         "shelf": "Лавица",
         "updateForm": {
             "name": "Име:",

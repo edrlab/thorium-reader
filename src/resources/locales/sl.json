@@ -253,6 +253,7 @@
         },
         "next": "Naslednja",
         "previous": "Prejšnja",
+        "resumeBrowsing": "",
         "shelf": "Polica",
         "updateForm": {
             "name": "Ime:",
