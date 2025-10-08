@@ -491,21 +491,26 @@ const Profiles = () => {
                                     value={profile.fileName}
                                     name="profile_selection"
                                     checked={selectedProfile?.id === profile.id}
+                                    tabIndex={!selectedProfile && profile === packageProfileProvisioned[0] ? 0 : selectedProfile?.id === profile.id ? 0 : -1}
                                     onChange={(e) => {
                                         console.log("PROFILE Input change", e);
                                         dispatch(customizationActions.activating.build(profile.id));
                                     }}
                                     aria-label={profile.id}
                                 />
-                                <label aria-hidden={true} htmlFor={profile.id} className={stylesSettings.profile_selection_label}>
+                                <label htmlFor={profile.id} className={stylesSettings.profile_selection_label}>
                                     <img src={profile.logoUrl} alt="" />
                                     <div className={stylesSettings.profile_selection_description}>
                                         <h5>{profileTitle}</h5>
                                         <p>{profileDescription}</p>
-                                        <p style={{ fontSize: "8px" }}>{profile.fileName}</p>
+                                        <div style={{fontSize: "8px"}}>
+                                            {/* <span>Filename: {profile.fileName}</span><br/>
+                                            <span>Identifier: {profile.id}</span><br/> */}
+                                            <span>Version: {profile.version}</span>
+                                        </div>
                                     </div>
                                 </label>
-                                <div style={{ display: "flex", flexDirection: "row-reverse", width: "100%", margin: "-10px" }}>
+                                <div className={stylesSettings.delete_profile_button} style={{ display: "flex", flexDirection: "row-reverse", width: "100%", margin: "-5px", zIndex: "10" }}>
                                     <Popover.Root>
                                         <Popover.Trigger asChild>
                                             <button
@@ -546,6 +551,7 @@ const Profiles = () => {
                         value={__("settings.profiles.thorium.title")}
                         name="profile_selection"
                         checked={!selectedProfile}
+                        tabIndex={!selectedProfile ? 0 : -1}
                         onChange={(e) => {
                             console.log("PROFILE Input change", e);
                             dispatch(customizationActions.activating.build("")); // no profile

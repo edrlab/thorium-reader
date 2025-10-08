@@ -7,6 +7,7 @@ export declare const close_button_div: string;
 export declare const container: string;
 export declare const CSS_END_components_settings: string;
 export declare const CSS_START_components_settings: string;
+export declare const delete_profile_button: string;
 export declare const display_options: string;
 export declare const display_options_item: string;
 export declare const focus: string;
