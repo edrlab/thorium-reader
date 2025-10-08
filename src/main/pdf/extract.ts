@@ -15,6 +15,8 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { IInfo } from "./extract.type";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_EXTRACT_PDF } from "readium-desktop/common/streamerProtocol";
 
+const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
+
 const debug = debug_("readium-desktop:main/pdf/extract/index.ts");
 debug("_");
 
@@ -54,7 +56,7 @@ export const extractPDFData =
                     // enableRemoteModule: false,
                     allowRunningInsecureContent: false,
                     backgroundThrottling: true,
-                    devTools: __TH__IS_DEV__, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
+                    devTools: ENABLE_DEV_TOOLS, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
                     nodeIntegration: false,
                     sandbox: true,
                     contextIsolation: true,

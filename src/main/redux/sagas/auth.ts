@@ -71,6 +71,8 @@ import { JSDOM } from "jsdom";
 import DOMPurify_ from "dompurify";
 const DOMPurify = DOMPurify_(new JSDOM("").window);
 
+const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
+
 // Logger
 const filename_ = "readium-desktop:main:saga:auth";
 const debug = debug_(filename_);
@@ -769,7 +771,7 @@ function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefine
                 // enableRemoteModule: false,
                 allowRunningInsecureContent: false,
                 backgroundThrottling: true,
-                devTools: __TH__IS_DEV__, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
+                devTools: ENABLE_DEV_TOOLS, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
                 nodeIntegration: false,
                 sandbox: true,
                 contextIsolation: true,
