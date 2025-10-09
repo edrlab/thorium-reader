@@ -1145,6 +1145,8 @@
             }
         },
         "profiles": {
+            "title": "profile_selection",
+            "version": "Version: {{- version}}",
             "info": "Switch profiles to customize the app with a partner vendor’s branding and colors. Each profile offers a tailored experience.",
             "thorium": {
                 "description": "The Thorium Vanilla profile is the orignal one, designed by EDRLab.",
