@@ -64,7 +64,12 @@
             "unsorted": "несортиран"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
         },
         "delete": "Изтрий",
         "deleteBook": "Изтрий",
@@ -81,6 +86,7 @@
         "importAnnotation": "",
         "lang": "Език",
         "lastRead": "Последно четено",
+        "logout": "",
         "moreInfo": "Подробности за книгата",
         "myBooks": "Моите книги",
         "noPublicationHelpL1": "Пусни книгата тук",
@@ -139,6 +145,8 @@
         "cancel": "Отказ",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
                 "title": ""
             }
         },

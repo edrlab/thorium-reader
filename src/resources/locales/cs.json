@@ -64,7 +64,12 @@
             "unsorted": "netříděno"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
         },
         "delete": "Odstranit",
         "deleteBook": "Odstranit",
@@ -81,6 +86,7 @@
         "importAnnotation": "Importovat poznámky",
         "lang": "Jazyk",
         "lastRead": "Naposledy čteno",
+        "logout": "",
         "moreInfo": "Podropnosti o publikaci",
         "myBooks": "Mé publikace",
         "noPublicationHelpL1": "Sem přetáhněte soubory",
@@ -139,6 +145,8 @@
         "cancel": "Zrušit",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
                 "title": ""
             }
         },

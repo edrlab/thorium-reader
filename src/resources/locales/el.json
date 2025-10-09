@@ -64,7 +64,12 @@
             "unsorted": "Χωρίς ταξινόμηση"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
         },
         "delete": "Διαγραφή",
         "deleteBook": "Διαγραφή",
@@ -81,6 +86,7 @@
         "importAnnotation": "Εισαγωγή σημειώσεων",
         "lang": "Γλώσσα",
         "lastRead": "Τελευταία ανάγνωση",
+        "logout": "",
         "moreInfo": "Λεπτομέρειες βιβλίου",
         "myBooks": "Τα βιβλία μου",
         "noPublicationHelpL1": "Εναπόθεση αρχείων εδώ",
@@ -139,6 +145,8 @@
         "cancel": "Ακύρωση",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
                 "title": "Προετοιμασία και ενεργοποίηση προφίλ προσαρμογής"
             }
         },

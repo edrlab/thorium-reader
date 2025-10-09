@@ -64,7 +64,12 @@
             "unsorted": "乱序"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
         },
         "delete": "删除",
         "deleteBook": "删除图书",
@@ -81,6 +86,7 @@
         "importAnnotation": "导入笔记",
         "lang": "语言",
         "lastRead": "上次阅读",
+        "logout": "",
         "moreInfo": "更多信息",
         "myBooks": "我的图书",
         "noPublicationHelpL1": "将文件拖放到此处",
@@ -139,6 +145,8 @@
         "cancel": "取消",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
                 "title": "提供并激活自定义配置文件"
             }
         },

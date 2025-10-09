@@ -64,7 +64,12 @@
             "unsorted": "nerazvrstano"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
         },
         "delete": "Izbriši",
         "deleteBook": "Izbriši",
@@ -81,6 +86,7 @@
         "importAnnotation": "",
         "lang": "Jezik",
         "lastRead": "Zadnje čitano",
+        "logout": "",
         "moreInfo": "Detalji građe",
         "myBooks": "Moje knjige",
         "noPublicationHelpL1": "Ispusti građu ovdje",
@@ -139,6 +145,8 @@
         "cancel": "Poništi",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
                 "title": ""
             }
         },

@@ -14,19 +14,19 @@ import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLe
 import { error } from "readium-desktop/main/tools/error";
 import { copyFile } from "node:fs/promises";
 import { nanoid } from "nanoid";
-
-
+import * as semver from "semver";
 import { fork as forkTyped, call as callTyped, select as selectTyped, put as putTyped, take as takeTyped, race as raceTyped, delay, SagaGenerator, all as allTyped } from "typed-redux-saga/macro";
-import { existsSync, statSync } from "node:fs";
+import { existsSync, statSync, unlinkSync } from "node:fs";
 import path from "node:path";
 import { ICustomizationLockInfo } from "readium-desktop/common/redux/states/customization";
 import { ToastType } from "readium-desktop/common/models/toast";
-
 import { getAuthenticationToken, httpGet, httpGetWithAuth } from "readium-desktop/main/network/http";
 import { getOpdsAuthenticationChannel } from "readium-desktop/main/event";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { diMainGet } from "readium-desktop/main/di";
+import { net } from "electron";
+import * as fs from "fs";
 
 const filename_ = "readium-desktop:main:redux:sagas:customization";
 const debug = debug_(filename_);
@@ -74,82 +74,222 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
 
     const { httpUrlOrFilePath } = action.payload;
 
+    let copyDownloadAndQuit = false;
+    let lockInfo: ICustomizationLockInfo;
+    let fileName: string;
+    let packagePath: string;
+
     if (!httpUrlOrFilePath) {
         debug("ERROR: No FilePath or URL !!!!");
         return ;
     }
     if (httpUrlOrFilePath.startsWith("http")) {
-        // TODO
 
-        debug("need to download target", httpUrlOrFilePath);
-        return;
-    }
-    if (!existsSync(httpUrlOrFilePath)) {
-        debug("ERROR: file doesn't exists", httpUrlOrFilePath);
-        return;
-    }
-    const filePath = httpUrlOrFilePath;
-    const filePathStat = statSync(filePath);
-    if (!filePathStat.isFile()) {
-        debug("ERROR: file is not a file probably a directory", httpUrlOrFilePath);
-        return;
-    }
-    const fileName = `${nanoid(10)}_${path.basename(filePath)}`;
-    if (path.extname(fileName) !== ".thorium") {
-        debug("ERROR: file is not a .thorium extension", fileName);
-        return;
-    }
+        fileName = `${nanoid(10)}_downloaded_profile.thorium`;
+        packagePath = path.join(customizationWellKnownFolder, fileName);
 
-    const packageAbsolutePath = path.join(customizationWellKnownFolder, fileName);
-    const lockInfo: ICustomizationLockInfo = {
-        uuid: nanoid(),
-        fileName,
-        filePath,
-        packagePath: packageAbsolutePath,
-        fileSize: filePathStat.size,
-    };
-
-    const lock = yield* selectTyped((state: ICommonRootState) => state.customization.lock);
-    let copyAndQuit = false;
-    if (lock.state !== "IDLE") {
-        debug("ERROR: already in profile activating phase, need a manual action to activate this profile !!!");
-
-        copyAndQuit = true;
-    } else {
-        yield* putTyped(customizationActions.lock.build("COPY", lockInfo));
-    }
-
-    yield* forkTyped(function* () {
-
-        yield* delay(100);
-        let error = false;
-        debug(`COPY "${filePath}" to "${packageAbsolutePath}"`);
-        try {
-            yield* callTyped(() => copyFile(filePath, packageAbsolutePath));
-            debug("COPY SUCCESS");
-        } catch (e) {
-            debug("ERROR: copy", filePath, e);
-            error = true;
-        }
-
-        if (copyAndQuit) {
-            if (error) {
-                // nothing
-            }
-            return;
+        lockInfo = {
+            uuid: nanoid(),
+            fileName,
+            packagePath,
+            originHttpUrlOrFilePath: httpUrlOrFilePath,
+        };
+    
+        const lock = yield* selectTyped((state: ICommonRootState) => state.customization.lock);
+        copyDownloadAndQuit = false;
+        if (lock.state !== "IDLE") {
+            debug("ERROR: already in profile activating phase, need a manual action to activate this profile !!!");
+    
+            copyDownloadAndQuit = true;
         } else {
-            if (error) {
-                yield* putTyped(customizationActions.lock.build("IDLE"));
-                return;
-            }
-            yield* putTyped(customizationActions.lock.build("PROVISIONING", lockInfo));
+            yield* putTyped(customizationActions.lock.build("DOWNLOAD", lockInfo));
         }
-    });
+
+        yield* forkTyped(function* () {
+
+            let error = false;
+            try {
+
+                yield* callTyped(() => {
+
+                    return new Promise<void>((resolve, reject) => {
+                        debug("[Download] Starting request...");
+
+                        const request = net.request({ method: "GET", url: httpUrlOrFilePath, redirect: "follow" });
+                        const fileStream = fs.createWriteStream(packagePath);
+
+                        debug(`[Download] Created write stream for: ${packagePath}`);
+
+                        fileStream.on("open", () => {
+                            debug(`[FileStream] File opened for writing: ${packagePath}`);
+                        });
+
+                        fileStream.on("finish", () => {
+                            debug("[FileStream] Writing finished successfully.");
+                        });
+
+                        fileStream.on("close", () => {
+                            debug("[FileStream] Stream closed.");
+                        });
+
+                        fileStream.on("error", (err) => {
+                            console.error("[FileStream] Error while writing file:", err);
+                            reject(err);
+                        });
+
+                        request.on("response", (response) => {
+                            debug(`[Download] Received response with status code: ${response.statusCode}`);
+
+                            if (response.statusCode !== 200) {
+                                console.error(`[Download] HTTP error: ${response.statusCode}`);
+                                reject(new Error(`HTTP status ${response.statusCode}`));
+                                return;
+                            }
+
+                            response.on("data", (chunk) => {
+                                debug(`[Download] Writing chunk of size: ${chunk.length}`);
+                                fileStream.write(chunk);
+                            });
+
+                            response.on("end", () => {
+                                debug("[Download] Response ended. Ending file stream...");
+                                fileStream.end();
+                                debug("[Download] File successfully written.");
+                                resolve();
+                            });
+
+                            response.on("error", (err) => {
+                                console.error("[Download] Error during response:", err);
+                                fileStream.close();
+                                reject(err);
+                            });
+                        });
+
+                        request.on("error", (err) => {
+                            console.error("[Download] Request error:", err);
+                            reject(err);
+                        });
+
+                        request.end();
+                        debug("[Download] Request sent.");
+                    });
+
+                });
+            } catch (e) {
+                error = true;
+                debug("Error to download the profile", e);
+            }
+
+            if (!error && !existsSync(packagePath)) {
+                debug("ERROR: file doesn't exists", packagePath);
+                error = true;
+            }
+            if (!error) {
+                const filePathStat = statSync(packagePath);
+                if (!filePathStat.isFile()) {
+                    debug("ERROR: file is not a file probably a directory", httpUrlOrFilePath);
+                    error = true;
+                } else {
+                    lockInfo.fileSize = filePathStat.size;
+                }
+            }
+    
+            if (copyDownloadAndQuit) {
+                if (error) {
+                    // nothing
+                }
+                return;
+            } else {
+                if (error) {
+                    yield* putTyped(customizationActions.lock.build("IDLE"));
+                    return;
+                }
+                yield* putTyped(customizationActions.lock.build("PROVISIONING", lockInfo));
+            }
+        });
+
+
+    } else {
+
+        if (!existsSync(httpUrlOrFilePath)) {
+            debug("ERROR: file doesn't exists", httpUrlOrFilePath);
+            return;
+        }
+        const filePath = httpUrlOrFilePath;
+        const filePathStat = statSync(filePath);
+        if (!filePathStat.isFile()) {
+            debug("ERROR: file is not a file probably a directory", httpUrlOrFilePath);
+            return;
+        }
+        fileName = `${nanoid(10)}_${path.basename(filePath)}`;
+        if (path.extname(fileName) !== ".thorium") {
+            debug("ERROR: file is not a .thorium extension", fileName);
+            return;
+        }
+    
+        packagePath = path.join(customizationWellKnownFolder, fileName);
+        lockInfo = {
+            uuid: nanoid(),
+            fileName,
+            packagePath,
+            fileSize: filePathStat.size,
+            originHttpUrlOrFilePath: filePath,
+        };
+    
+        const lock = yield* selectTyped((state: ICommonRootState) => state.customization.lock);
+        copyDownloadAndQuit = false;
+        if (lock.state !== "IDLE") {
+            debug("ERROR: already in profile activating phase, need a manual action to activate this profile !!!");
+    
+            copyDownloadAndQuit = true;
+        } else {
+            yield* putTyped(customizationActions.lock.build("COPY", lockInfo));
+        }
+    
+        yield* forkTyped(function* () {
+    
+            yield* delay(100);
+            let error = false;
+            debug(`COPY "${filePath}" to "${packagePath}"`);
+            try {
+                yield* callTyped(() => copyFile(filePath, packagePath));
+                debug("COPY SUCCESS");
+            } catch (e) {
+                debug("ERROR: copy", filePath, e);
+                error = true;
+            }
+
+            if (!error && !existsSync(packagePath)) {
+                debug("ERROR: file doesn't exists", packagePath);
+                error = true;
+            }
+            if (!error) {
+                const filePathStat = statSync(packagePath);
+                if (!filePathStat.isFile()) {
+                    debug("ERROR: file is not a file probably a directory", httpUrlOrFilePath);
+                    error = true;
+                }
+            }
+    
+            if (copyDownloadAndQuit) {
+                if (error) {
+                    // nothing
+                }
+                return;
+            } else {
+                if (error) {
+                    yield* putTyped(customizationActions.lock.build("IDLE"));
+                    return;
+                }
+                yield* putTyped(customizationActions.lock.build("PROVISIONING", lockInfo));
+            }
+        });
+    }
 
     const { a: timeoutResult, b: fileNameProvisioned } = yield* raceTyped({
         a: delay(20000),
         b: callTyped(function* (): SagaGenerator<boolean> {
-            if (copyAndQuit) {
+            if (copyDownloadAndQuit) {
                 return undefined;
             }
 
@@ -157,26 +297,63 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
 
                 debug("Waiting for provisionning action");
                 const provisioningAction = yield* takeTyped(customizationActions.provisioning.build);
-                debug("Provisionning action found", provisioningAction);
+                debug("Provisionning action found", JSON.stringify(provisioningAction, null, 4));
+
+                const removeOldPackage = () => {
+                    const oldProvisionedPackage = provisioningAction.payload.oldPackagesProvisioned.filter(({ fileName: fileNameOldPackage }) => !provisioningAction.payload.newPackagesProvisioned.find(({fileName: fileNameNewPackage}) => fileNameNewPackage === fileNameOldPackage));
+                    debug("OldProvisionedPackage need to be removed:", JSON.stringify(oldProvisionedPackage, null, 4));
+                    for (const { fileName } of oldProvisionedPackage) {
+                        debug("REMOVE (unlinkSync):", fileName);
+                        try {
+                            unlinkSync(path.join(customizationWellKnownFolder, fileName));
+                        } catch (e) {
+                            debug("not removed !?", e);
+                        }
+                    }
+                };
 
                 const fileNameProvisionedFound = provisioningAction.payload.newPackagesProvisioned.find(({ fileName: fileNameProvisioned }) => fileNameProvisioned === fileName);
                 if (fileNameProvisionedFound) {
 
-                    // TODO: in the case of a drag-and-drop of an older profile than one already provisioned,
-                    // it can be better to activate the newer profile vendor and do not provisioned the older profile
                     const packageId = fileNameProvisionedFound.id;
                     lockInfo.id = packageId;
                     yield* putTyped(customizationActions.lock.build("ACTIVATING", lockInfo));
                     yield* putTyped(customizationActions.activating.build(packageId));
+                    yield* callTyped(() => removeOldPackage());
                     return true;
                 } else {
+
                     const fileNameErrorFound = provisioningAction.payload.errorPackages.find(({ fileName: fileNameProvisioned }) => fileNameProvisioned === fileName);
-                    if (fileNameErrorFound) {
-                        debug(`ERROR: profile (${fileName}) [${fileNameErrorFound.message}]`);
-                        yield* putTyped(toastActions.openRequest.build(ToastType.Error, `ERROR: profile (${fileName}) [${fileNameErrorFound.message}]`));
-                        yield* putTyped(customizationActions.lock.build("IDLE"));
+                    if (!fileNameErrorFound) {
+                        debug("Error not found!?");
+                        return false;
+                    }
+
+                    const newPackagesProvisioned = provisioningAction.payload.newPackagesProvisioned;
+                    const packageProvisionedWithTheSameIdSortedBySemver = newPackagesProvisioned.filter(({ id }) => id && id === fileNameErrorFound.id).sort(({version: va}, {version: vb}) => semver.gt(va, vb) ? 1 : -1);
+                    if (packageProvisionedWithTheSameIdSortedBySemver.length) {
+                        const packageId = packageProvisionedWithTheSameIdSortedBySemver[0].id;
+                        lockInfo.id = packageId;
+                        yield* putTyped(customizationActions.lock.build("ACTIVATING", lockInfo));
+                        yield* putTyped(customizationActions.activating.build(packageId));
+                        yield* callTyped(() => removeOldPackage());
+                        try {
+                            unlinkSync(path.join(customizationWellKnownFolder, fileNameErrorFound.fileName));
+                        } catch (e) {
+                            debug("not removed !?", e);
+                        }
                         return true;
                     }
+
+                    debug(`ERROR: profile (${fileName}) [${fileNameErrorFound.message}]`);
+                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, `ERROR: profile (${fileName}) [${fileNameErrorFound.message}]`));
+                    yield* putTyped(customizationActions.lock.build("IDLE"));
+                    try {
+                        unlinkSync(path.join(customizationWellKnownFolder, fileNameErrorFound.fileName));
+                    } catch (e) {
+                        debug("not removed !?", e);
+                    }
+                    return true;
                 }
             }
 
@@ -184,7 +361,7 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
         }),
     });
 
-    if (copyAndQuit) {
+    if (copyDownloadAndQuit) {
         return ;
     }
 
@@ -315,6 +492,20 @@ export function saga() {
         takeSpawnLeading(
             customizationActions.acquire.ID,
             acquireProvisionsActivates,
+            (e) => error(filename_, e),
+        ),
+        takeSpawnLeading(
+            customizationActions.deleteProfile.ID,
+            function* (action: customizationActions.deleteProfile.TAction) {
+                const filename = path.join(customizationWellKnownFolder, action.payload.fileName);
+                try {
+                    if (existsSync(filename)) {
+                        unlinkSync(filename);
+                    }
+                } catch (e) {
+                    debug("error to delete", filename, e);
+                }
+            },
             (e) => error(filename_, e),
         ),
         takeSpawnLeading(

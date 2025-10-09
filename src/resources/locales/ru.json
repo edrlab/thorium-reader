@@ -64,7 +64,12 @@
             "unsorted": "без сортировки"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
         },
         "delete": "Удалить",
         "deleteBook": "Удалить",
@@ -81,6 +86,7 @@
         "importAnnotation": "Импортировать заметки",
         "lang": "Язык",
         "lastRead": "Последнее чтение",
+        "logout": "",
         "moreInfo": "Дополнительные сведения",
         "myBooks": "Мои книги",
         "noPublicationHelpL1": "Перетащите сюда файлы",
@@ -139,6 +145,8 @@
         "cancel": "Отменить",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
                 "title": "Создание и активация профиля настройки"
             }
         },

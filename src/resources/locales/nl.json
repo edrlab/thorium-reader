@@ -64,7 +64,12 @@
             "unsorted": "niet gesorteerd"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
         },
         "delete": "Verwijder",
         "deleteBook": "Verwijder",
@@ -81,6 +86,7 @@
         "importAnnotation": "Importeer aantekeningen",
         "lang": "Taal",
         "lastRead": "Laatst gelezen",
+        "logout": "",
         "moreInfo": "Meer Informatie",
         "myBooks": "Mijn boeken",
         "noPublicationHelpL1": "Sleep een publicatie hier naar toe",
@@ -139,6 +145,8 @@
         "cancel": "Annuleer",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
                 "title": ""
             }
         },

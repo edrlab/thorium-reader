@@ -11,6 +11,8 @@ import * as stylesSettings from "readium-desktop/renderer/assets/styles/componen
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
+import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -20,6 +22,7 @@ import * as CogIcon from "readium-desktop/renderer/assets/icons/cog-icon.svg";
 import * as PaletteIcon from "readium-desktop/renderer/assets/icons/palette-icon.svg";
 import * as KeyReturnIcon from "readium-desktop/renderer/assets/icons/keyreturn-icon.svg";
 import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar-icon.svg";
+import * as DeleteIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 import classNames from "classnames";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
@@ -47,6 +50,7 @@ import { ApiappHowDoesItWorkInfoBox } from "../dialog/ApiappAddForm";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import { TextArea } from "react-aria-components";
 import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/annotation/htmlTemplate";
+import * as Popover from "@radix-ui/react-popover";
 
 // import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
@@ -469,61 +473,130 @@ const Profiles = () => {
             </div>
             <div
                 className={stylesSettings.profile_selection_form}
+                role="radiogroup"
             >
                 {
-                    packageProfileProvisioned.map((profile) => {
-                        const profileTitle = profile?.title && typeof profile.title === "object" ? profile.title[locale] || profile.title["en"] || "" : "";
-                        const profileDescription = profile?.description && typeof profile.description === "object" ? profile.description[locale] || profile.description["en"] || "" : "";
+                    packageProfileProvisioned.map((profile, index) => {
+                        const profileTitle = (profile?.title && typeof profile.title === "object") ? profile.title[locale] || profile.title["en"] || __("catalog.customization.fallback.title") : typeof profile.title === "string" ? profile.title : __("catalog.customization.fallback.title");
+                        const profileDescription = (profile?.description && typeof profile.description === "object") ? profile.description[locale] || profile.description["en"] || __("catalog.customization.fallback.description") : typeof profile.description === "string" ? profile.description : __("catalog.customization.fallback.description");
 
                         return (
                             <div
-                                key={profile.id}
-                                className={stylesSettings.profile_selection_input}
+                                key={`customization-thorium-${index}`}
+                                className={classNames(stylesSettings.profile_selection_input, selectedProfile?.id === profile.id ? stylesSettings.profile_selection_input_checked : "")}
                             >
                                 <input
                                     type="radio"
                                     id={profile.id}
                                     value={profile.fileName}
-                                    name="profile_selection"
+                                    name={profileTitle}
                                     checked={selectedProfile?.id === profile.id}
                                     onChange={(e) => {
                                         console.log("PROFILE Input change", e);
                                         dispatch(customizationActions.activating.build(profile.id));
                                     }}
+                                    aria-label={profile.id}
                                 />
                                 <label htmlFor={profile.id} className={stylesSettings.profile_selection_label}>
                                     <img src={profile.logoUrl} alt="" />
-                                    <div className={stylesSettings.profile_selection_description}>
-                                        <h5>{profileTitle}</h5>
-                                        <p>{profileDescription}</p>
-                                        <p style={{fontSize: "8px"}}>{profile.fileName}</p>
+                                    <div
+                                        className={stylesSettings.profile_selection_description}
+                                        role="radio"
+                                        onKeyDown={(e) => {
+                                            if (e.key === " ") {
+                                                console.log("PROFILE Input change", e);
+                                                dispatch(customizationActions.activating.build(profile.id));
+                                            }
+                                        }}
+                                        onKeyUp={(e) => {
+                                            if (e.key === " ") {
+                                                e.preventDefault();
+                                                console.log("PROFILE Input change", e);
+                                                dispatch(customizationActions.activating.build(profile.id));
+                                            }
+                                        }}
+                                    >
+                                        <div>
+                                            <h5>{profileTitle}</h5>
+                                            <p>{profileDescription}</p>
+                                            <div style={{ fontSize: "12px" }}>
+                                                {/* <span>Filename: {profile.fileName}</span><br/>
+                                            <span>Identifier: {profile.id}</span><br/> */}
+                                                <span>{__("settings.profiles.version", { version: profile.version })}</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </label>
+                                <div className={stylesSettings.delete_profile_button} style={{ display: "flex", flexDirection: "row-reverse", width: "100%", margin: "-5px", zIndex: "10" }}>
+                                    <Popover.Root>
+                                        <Popover.Trigger asChild>
+                                            <button
+                                                style={{ width: "16px", height: "16px" }}
+                                                title={__("catalog.delete")}
+                                            >
+                                                <SVG ariaHidden={true} svg={DeleteIcon} />
+                                            </button>
+                                        </Popover.Trigger>
+                                        <Popover.Portal>
+                                            <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesPopoverDialog.delete_item}>
+                                                <Popover.Close
+                                                    onClick={() => {
+                                                        dispatch(customizationActions.deleteProfile.build(profile.fileName));
+                                                    }}
+                                                    title={__("catalog.delete")}
+                                                >
+                                                    <SVG ariaHidden={true} svg={DeleteIcon} />
+                                                    {__("reader.marks.delete")}
+                                                </Popover.Close>
+                                                <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                                            </Popover.Content>
+                                        </Popover.Portal>
+                                    </Popover.Root>
+                                </div>
                             </div>
                         );
                     })
                 }
 
                 <div
-                    key={"thorium_vanilla"}
-                    className={stylesSettings.profile_selection_input}
+                    key={"customization-thorium_vanilla"}
+                    className={classNames(stylesSettings.profile_selection_input,  selectedProfile?.id ? "" : stylesSettings.profile_selection_input_checked)}
                 >
                     <input
                         type="radio"
-                        id={__("settings.profiles.thorium.title")}
+                        id="customization-thorium-vanilla"
                         value={__("settings.profiles.thorium.title")}
-                        name="profile_selection"
+                        name={__("settings.profiles.thorium.title")}
                         checked={!selectedProfile}
                         onChange={(e) => {
                             console.log("PROFILE Input change", e);
-                            dispatch(customizationActions.activating.build("")); // no profile
+                            dispatch(customizationActions.activating.build(""));
                         }}
+                        aria-label={__("settings.profiles.thorium.title")}
                     />
-                    <label htmlFor={__("settings.profiles.thorium.title")} className={stylesSettings.profile_selection_label}>
+                    <label htmlFor="customization-thorium-vanilla" className={stylesSettings.profile_selection_label}>
                         <SVG ariaHidden svg={ThoriumIcon} />
-                        <div className={stylesSettings.profile_selection_description}>
-                            <h5>{__("settings.profiles.thorium.title")}</h5>
-                            <p>{__("settings.profiles.thorium.description")}</p>
+                        <div
+                            className={stylesSettings.profile_selection_description}
+                            role="radio"
+                            onKeyDown={(e) => {
+                                if (e.key === " ") {
+                                    console.log("PROFILE Input change", e);
+                                    dispatch(customizationActions.activating.build(""));
+                                }
+                            }}
+                            onKeyUp={(e) => {
+                                if (e.key === " ") {
+                                    e.preventDefault();
+                                    console.log("PROFILE Input change", e);
+                                    dispatch(customizationActions.activating.build(""));
+                                }
+                            }}
+                        >
+                            <div>
+                                <h5>{__("settings.profiles.thorium.title")}</h5>
+                                <p>{__("settings.profiles.thorium.description")}</p>
+                            </div>
                         </div>
                     </label>
                 </div>

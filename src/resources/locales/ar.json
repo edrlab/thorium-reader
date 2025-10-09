@@ -64,7 +64,12 @@
             "unsorted": "غير مرتب"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
         },
         "delete": "حذف",
         "deleteBook": "حذف",
@@ -81,6 +86,7 @@
         "importAnnotation": "استيراد الملاحظات",
         "lang": "اللغة",
         "lastRead": "آخر قراءة",
+        "logout": "",
         "moreInfo": "تفاصيل المنشور",
         "myBooks": "منشوراتي",
         "noPublicationHelpL1": "أفلت الملفات هنا",
@@ -139,6 +145,8 @@
         "cancel": "إلغاء",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
                 "title": ""
             }
         },

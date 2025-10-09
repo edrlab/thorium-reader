@@ -96,7 +96,7 @@
         }
     }
 
-    .button_edit, .button_delete {
+    .button_edit, .button_delete, .button_login {
         position: absolute;
         bottom: 10px;
         color: var(--color-blue);
@@ -112,6 +112,10 @@
             border: 1px solid var(--color-blue);
             background-color: var(--color-light-blue);
         }
+    }
+
+    .button_login {
+        right: 77px;
     }
 
     .button_edit {

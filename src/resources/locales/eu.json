@@ -64,7 +64,12 @@
             "unsorted": "ordenatu gabe"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
         },
         "delete": "Ezabatu",
         "deleteBook": "Ezabatu",
@@ -81,6 +86,7 @@
         "importAnnotation": "",
         "lang": "Hizkuntza",
         "lastRead": "Azken Irakurketa",
+        "logout": "",
         "moreInfo": "Informazio gehiago",
         "myBooks": "Nire liburuak",
         "noPublicationHelpL1": "Lerratu argitalpen bat hemen",
@@ -139,6 +145,8 @@
         "cancel": "Ezeztatu",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
                 "title": ""
             }
         },

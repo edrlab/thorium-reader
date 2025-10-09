@@ -64,7 +64,12 @@
             "unsorted": "並べ替えない"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
         },
         "delete": "削除",
         "deleteBook": "削除",
@@ -81,6 +86,7 @@
         "importAnnotation": "メモを取りこむ",
         "lang": "言語",
         "lastRead": "最終閲覧",
+        "logout": "",
         "moreInfo": "詳細情報",
         "myBooks": "わたしの本",
         "noPublicationHelpL1": "ファイルをここにおいてください",
@@ -139,6 +145,8 @@
         "cancel": "キャンセル",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
                 "title": ""
             }
         },

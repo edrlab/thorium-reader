@@ -64,7 +64,12 @@
             "unsorted": "usorteret"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
         },
         "delete": "Slet",
         "deleteBook": "Slet",
@@ -81,6 +86,7 @@
         "importAnnotation": "Importér noter",
         "lang": "Sprog",
         "lastRead": "Senest læst",
+        "logout": "",
         "moreInfo": "Bogdetaljer",
         "myBooks": "Mine bøger",
         "noPublicationHelpL1": "Træk en bog hertil",
@@ -139,6 +145,8 @@
         "cancel": "Annullér",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
                 "title": "Tilpasningsprofil for klargøring og aktivering"
             }
         },

@@ -64,7 +64,12 @@
             "unsorted": "sense ordenar"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
         },
         "delete": "Eliminar",
         "deleteBook": "Eliminar",
@@ -81,6 +86,7 @@
         "importAnnotation": "",
         "lang": "Idioma",
         "lastRead": "Última lectura",
+        "logout": "",
         "moreInfo": "Més información",
         "myBooks": "Els meus llibres",
         "noPublicationHelpL1": "Deposita els arxius aquí",
@@ -139,6 +145,8 @@
         "cancel": "Cancel·lar",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
                 "title": ""
             }
         },

@@ -64,7 +64,12 @@
             "unsorted": "lajittelematon"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
         },
         "delete": "Poista",
         "deleteBook": "Poista",
@@ -81,6 +86,7 @@
         "importAnnotation": "Tuo muistiinpanot",
         "lang": "Kieli",
         "lastRead": "Luettu viimeksi",
+        "logout": "",
         "moreInfo": "Tietoa julkaisusta",
         "myBooks": "Omat kirjat",
         "noPublicationHelpL1": "Pudota julkaisu tähän",
@@ -139,6 +145,8 @@
         "cancel": "Peru",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
                 "title": ""
             }
         },

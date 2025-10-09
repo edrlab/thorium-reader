@@ -30,8 +30,8 @@ import { EDrawType, INoteState, NOTE_DEFAULT_COLOR, noteColorCodeToColorSet, not
 import { winActions } from "../actions";
 import { WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/constant";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
-import { sqliteTableNoteDelete, sqliteTableNoteInsert, sqliteTableNoteUpdate, sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
-
+import { sqliteTableNoteDelete, sqliteTableNoteDeleteWherePubId, sqliteTableNoteInsert, sqliteTableNoteUpdate, sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
+import { publicationActions as publicationActionsFromMainAction } from "../actions";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:annotationsImporter";
@@ -345,12 +345,27 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     return;
 }
 
-
 export function saga() {
     return allTyped([
         takeSpawnLatest(
             annotationActions.importAnnotationSet.ID,
             importAnnotationSet,
+            (e) => error(filename_, e),
+        ),
+        takeSpawnLeading(
+            publicationActionsFromMainAction.deletePublication.ID,
+            function* (action: publicationActionsFromMainAction.deletePublication.TAction): SagaGenerator<void> {
+                debug("RECEIVE PUBLICATION DELETE ACTION");
+                debug(action);
+                const ok = yield* callTyped(() => sqliteTableNoteDeleteWherePubId(action.payload.publicationIdentifier));
+                debug(ok);
+                // const notes: INoteState[] = yield* callTyped(() => sqliteTableSelectAllNotesWherePubId(action.payload.publicationIdentifier));
+                // if (notes?.length) {
+                //     for (const note of notes) {
+                //         yield* callTyped(() => sqliteTableNoteDelete(note.uuid));
+                //     }
+                // }
+            },
             (e) => error(filename_, e),
         ),
         takeSpawnLeading(
@@ -378,10 +393,10 @@ export function saga() {
             function* (action: readerActions.note.remove.TAction): SagaGenerator<void> {
                 debug("RECEIVE REMOVE ACTION");
                 debug(action);
-                
+
                 const payload = action.payload;
                 const { note } = payload;
-                
+
                 yield* callTyped(() => sqliteTableNoteDelete(note.uuid));
             },
             (e) => error(filename_, e),

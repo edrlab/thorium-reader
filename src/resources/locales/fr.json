@@ -64,7 +64,12 @@
             "unsorted": "Non trié"
         },
         "customization": {
-            "publications": ""
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
         },
         "delete": "Supprimer",
         "deleteBook": "Supprimer",
@@ -81,6 +86,7 @@
         "importAnnotation": "Importer les notes",
         "lang": "Langue",
         "lastRead": "Dernière lecture",
+        "logout": "",
         "moreInfo": "Plus d'informations",
         "myBooks": "Mes livres",
         "noPublicationHelpL1": "Déposez les fichiers ici",
@@ -139,6 +145,8 @@
         "cancel": "Annuler",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
                 "title": ""
             }
         },

@@ -107,7 +107,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                     pathname: buildRoute(pageLinks.first[0]),
                                 }}
                                 onClick={(e) => {
-                                    if (e.altKey || e.shiftKey || e.ctrlKey) {
+                                    if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                                         e.preventDefault();
                                         e.currentTarget.click();
                                     }
@@ -151,7 +151,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                         pathname: buildRoute(pageLinks.previous[0]),
                                     }}
                                     onClick={(e) => {
-                                        if (e.altKey || e.shiftKey || e.ctrlKey) {
+                                        if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                                             e.preventDefault();
                                             e.currentTarget.click();
                                         }
@@ -221,7 +221,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                     pathname: buildRoute(pageLinks.next[0]),
                                 }}
                                 onClick={(e) => {
-                                    if (e.altKey || e.shiftKey || e.ctrlKey) {
+                                    if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                                         e.preventDefault();
                                         e.currentTarget.click();
                                     }
@@ -262,7 +262,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                         pathname: buildRoute(pageLinks.last[0]),
                                     }}
                                     onClick={(e) => {
-                                        if (e.altKey || e.shiftKey || e.ctrlKey) {
+                                        if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                                             e.preventDefault();
                                             e.currentTarget.click();
                                         }
