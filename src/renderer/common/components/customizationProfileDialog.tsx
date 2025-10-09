@@ -117,7 +117,7 @@ export const CustomizationProfileDialog: React.FC = () => {
                         </AlertDialog.Action>
                         </AlertDialog.Title>
                     <AlertDialog.Description className={stylesModals.modal_dialog_body} style={{ display: "flex", gap: "20px", flexDirection: "row", justifyContent: "normal"}}>
-                        {welcomeScreenImgHref ? <img style={{ maxWidth: "250px", maxHeight: "500px", objectFit: "contain" }} src={welcomeScreenImgHref} /> : <></>}
+                        {customization.welcomeScreen.enable && welcomeScreenHtmlSanitized ? <img style={{ maxWidth: "250px", maxHeight: "500px", objectFit: "contain" }} src={welcomeScreenImgHref} /> : <></>}
                         <div style={{position: "relative", width: "100%", height: "100%"}}>
                             {
                                 customization.welcomeScreen.enable && welcomeScreenHtmlSanitized ?
