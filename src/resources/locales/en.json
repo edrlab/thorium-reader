@@ -67,8 +67,8 @@
             "fallback": {
                 "description": "No profile description",
                 "publications": "Profile publications",
-                "title": "Profile title",
-                "screen": "No title"
+                "screen": "No title",
+                "title": "Profile title"
             }
         },
         "delete": "Delete",
@@ -145,9 +145,9 @@
         "cancel": "Cancel",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "No welcome-screen provided",
                 "state": "State: {{- state}}",
-                "title": "Provisionning and activating customization profile",
-                "fallbackWelcomeScreen": "No welcome-screen provided"
+                "title": "Provisionning and activating customization profile"
             }
         },
         "deleteAnnotations": "Delete annotations?",
