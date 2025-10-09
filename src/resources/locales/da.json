@@ -1149,7 +1149,8 @@
             "thorium": {
                 "description": "Thorium Vanilla profilen er den originale profil, designet af EDRLab.",
                 "title": "Thorium vanilla"
-            }
+            },
+            "version": ""
         },
         "screenReaderActivate": {
             "help": "",

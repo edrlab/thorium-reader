@@ -1149,7 +1149,8 @@
             "thorium": {
                 "description": "",
                 "title": ""
-            }
+            },
+            "version": ""
         },
         "screenReaderActivate": {
             "help": "",
