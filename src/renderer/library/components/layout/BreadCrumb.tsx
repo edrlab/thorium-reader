@@ -47,7 +47,7 @@ function useSize<T extends Element>(target: React.RefObject<T>) {
     return size;
 }
 
-const LinkItemBreadcrumb = ({item: {name, path}, /*isTheFirstOne*/}: {item: IBreadCrumbItem, isTheFirstOne?: boolean}) => {
+const LinkItemBreadcrumb = ({item: {name, path}/*, isTheFirstOne*/}: {item: IBreadCrumbItem, isTheFirstOne?: boolean}) => {
 
     const location = useSelector((state: ILibraryRootState) => state.router.location);
 
