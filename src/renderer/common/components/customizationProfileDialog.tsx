@@ -24,6 +24,8 @@ import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-ic
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 
 import DOMPurify from "dompurify";
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
+import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER } from "readium-desktop/common/streamerProtocol";
 
 export const CustomizationProfileDialog: React.FC = () => {
 
@@ -34,6 +36,8 @@ export const CustomizationProfileDialog: React.FC = () => {
     const dispatch = useDispatch();
     const [__] = useTranslator();
 
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+
     const profileInHistoryFound = customization.history.find(({id}) => id && id === customization.activate.id);
     const [checked, setChecked] = React.useState<boolean>(profileInHistoryFound && manifest?.version && profileInHistoryFound.version === manifest?.version);
 
@@ -41,25 +45,58 @@ export const CustomizationProfileDialog: React.FC = () => {
         setChecked(profileInHistoryFound && manifest?.version && profileInHistoryFound.version === manifest?.version);
     }, [setChecked, manifest?.version, profileInHistoryFound]);
 
-    let welcomeScreenHtmlSanitized = "";
-    if (manifest?.welcomeScreen) {
+    const customizationId = customization.manifest?.identifier;
+    const customizationBaseUrl = customizationId ? `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/custom-profile-zip/${encodeURIComponent_RFC3986(Buffer.from(customizationId).toString("base64"))}/` : "";
+    const welcomeScreenImgZipPath = manifest?.images?.find((ln) => ln.rel === "welcome-screen")?.href;
+    const welcomeScreenImgHref = customizationBaseUrl && welcomeScreenImgZipPath ? customizationBaseUrl + encodeURIComponent_RFC3986(Buffer.from(welcomeScreenImgZipPath).toString("base64")) : "";
+    const welcomeScreenHtmlZipPath = customization.manifest?.links?.find((ln) => ln.rel === "welcome-screen" && (!ln.type || ln.type === "text/html") && ln.language === locale)?.href || customization.manifest?.links?.find((ln) => ln.rel === "welcome-screen" && (!ln.type || ln.type === "text/html") && (ln.language === "en" || !ln.language))?.href;
+    const welcomeScreenHtmlHref = customizationBaseUrl && welcomeScreenHtmlZipPath ? customizationBaseUrl + encodeURIComponent_RFC3986(Buffer.from(welcomeScreenHtmlZipPath).toString("base64")) : "";
 
-        const regex = new RegExp(/href=\"(.*?)\"/, "gm");
-        const parsed = DOMPurify.sanitize(manifest.welcomeScreen, { FORBID_TAGS: [/*"style"*/], FORBID_ATTR: [/*"style"*/] /* TODO: handle external https links */ });
-        const hrefSanitized = parsed.replace(regex, (substring) => {
-    
-            let url = /href=\"(.*?)\"/.exec(substring)[1];
-            if (!/^https?:\/\//.test(url)) {
-                url = "http://" + url;
-            }
-    
-            return `href="" alt="${url}" onclick="return ((e) => {
+    const [welcomeScreenHtmlSanitized, setWelcomeScreenHtmlSanitized] = React.useState("");
+
+    // console.log("welcomeScreen HTML zipPath: ", welcomeScreenHtmlZipPath);
+    // console.log("welcomeScreen HTML URL: ", welcomeScreenHtmlHref);
+    React.useEffect(() => {
+        if (customizationId && welcomeScreenHtmlHref && open) {
+            fetch(welcomeScreenHtmlHref)
+                .then((response) => {
+                    if (response.ok) {
+                        return response.text();
+                    }
+                    return Promise.reject(response.statusText);
+                })
+                .then((rawHtmlContent) => {
+                    // console.log("RAW HTML", rawHtmlContent);
+
+                    if (!rawHtmlContent) {
+                        return;
+                    }
+
+                    const regex = new RegExp(/href=\"(.*?)\"/, "gm");
+                    const parsed = DOMPurify.sanitize(rawHtmlContent, { FORBID_TAGS: [/*"style"*/], FORBID_ATTR: [/*"style"*/] /* TODO: handle external https links */ });
+                    const hrefSanitized = parsed.replace(regex, (substring) => {
+
+                        let url = /href=\"(.*?)\"/.exec(substring)[1];
+                        if (!/^https?:\/\//.test(url)) {
+                            url = "http://" + url;
+                        }
+
+                        return `href="" alt="${url}" onclick="return ((e) => {
                                     window.__shell_openExternal('${url}').catch(() => {});
                                     return false;
                                  })()"`;
-        });
-        welcomeScreenHtmlSanitized = hrefSanitized;
-    }
+                    });
+
+                    setWelcomeScreenHtmlSanitized(hrefSanitized);
+                })
+                .catch((e) => {
+                    console.error("Error fetching data:", e);
+                });
+        } else {
+            setWelcomeScreenHtmlSanitized("");
+        }
+    }, [welcomeScreenHtmlHref, customizationId, open, setWelcomeScreenHtmlSanitized]);
+
 
     return (
         <AlertDialog.Root open={open} onOpenChange={(_requestOpen) => {
@@ -79,7 +116,7 @@ export const CustomizationProfileDialog: React.FC = () => {
                         </AlertDialog.Action>
                         </AlertDialog.Title>
                     <AlertDialog.Description className={stylesModals.modal_dialog_body} style={{ display: "flex", gap: "20px", flexDirection: "row", justifyContent: "normal"}}>
-                        <img style={{maxWidth: "250px", maxHeight: "500px", objectFit: "contain"}} src={manifest?.images?.find((ln) => ln.rel === "welcome-screen")?.href || ""}/>
+                        {welcomeScreenImgHref ? <img style={{ maxWidth: "250px", maxHeight: "500px", objectFit: "contain" }} src={welcomeScreenImgHref} /> : <></>}
                         <div style={{position: "relative"}}>
                             {
                                 welcomeScreenHtmlSanitized ?
