@@ -929,7 +929,10 @@ div[data-radix-popper-content-wrapper] {
 
 .profile_selection {
     &_form {
-        margin: 20px;
+        margin: 0 20px 20px 0;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
     }
 
     &_input {
@@ -937,31 +940,59 @@ div[data-radix-popper-content-wrapper] {
         align-items: center;
         justify-content: center;
         flex-direction: column;
-        height: 100px; 
+        height: fit-content; 
         padding: 10px;
         border-radius: 6px;
         width: 100%;
+        transition: 200ms ease-in-out;
 
         input {
-            display: none;
+            position: absolute;
+            opacity: 0;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            pointer-events: none;
         }
 
-        &:hover:not(:has(input:checked)) {
-            .profile_selection_label {
-                scale: 1.05;
-                cursor: pointer;
-            }
-        }
-
-        &:has(input:checked) {
+        &_checked {
             color: var(--color-blue);
             background-color: var(--color-light-blue);
             border: 1px solid var(--color-buttons-border);
         }
+
+        &:hover:not(:has(.profile_selection_input_checked)) {
+            background-color: var(--color-verylight-grey);
+            cursor: pointer;
+
+            .profile_selection_label {
+                cursor: pointer;
+            }
+        }
+
+        &:focus-within:has(input:focus) {
+            outline: 2px solid var(--color-buttons-border);
+
+            // & > input:focus {
+            //     outline: none!important;
+            // }
+        }
+
+        .delete_profile_button button {
+            border-radius: 2px;
+            outline-offset: 2px;
+
+            &:hover {
+                outline: 2px solid var(--color-blue);
+            }
+            
+            &:focus {
+                outline: 2px solid var(--color-buttons-border)!important;
+            }
+        }
     }
 
     &_label {
-        transition: 200ms ease-in-out;
         display: flex;
         align-items: start;
         justify-content: flex-start;
@@ -970,7 +1001,7 @@ div[data-radix-popper-content-wrapper] {
 
         > div {
             height: fit-content;
-            max-height: 75px; 
+            // max-height: 75px; 
             display: flex;
             justify-content: center;
         }
