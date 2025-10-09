@@ -65,10 +65,10 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
-                "publications": "",
-                "screen": "",
-                "title": ""
+                "description": "Nėra profilio aprašymo",
+                "publications": "Profilio leidiniai",
+                "screen": "Be pavadinimo",
+                "title": "Profilio pavadinimas"
             }
         },
         "delete": "Šalinti",
@@ -86,7 +86,7 @@
         "importAnnotation": "Importuoti pastabas",
         "lang": "Kalba",
         "lastRead": "Pask. kartą skaityta",
-        "logout": "",
+        "logout": "Atsijungti",
         "moreInfo": "Daugiau informacijos",
         "myBooks": "Mano leidiniai",
         "noPublicationHelpL1": "Nutempkite leidinį čia",
