@@ -26,6 +26,7 @@ import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg"
 import DOMPurify from "dompurify";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER } from "readium-desktop/common/streamerProtocol";
+import Loader from "./Loader";
 
 export const CustomizationProfileDialog: React.FC = () => {
 
@@ -117,15 +118,17 @@ export const CustomizationProfileDialog: React.FC = () => {
                         </AlertDialog.Title>
                     <AlertDialog.Description className={stylesModals.modal_dialog_body} style={{ display: "flex", gap: "20px", flexDirection: "row", justifyContent: "normal"}}>
                         {welcomeScreenImgHref ? <img style={{ maxWidth: "250px", maxHeight: "500px", objectFit: "contain" }} src={welcomeScreenImgHref} /> : <></>}
-                        <div style={{position: "relative"}}>
+                        <div style={{position: "relative", width: "100%", height: "100%"}}>
                             {
-                                welcomeScreenHtmlSanitized ?
+                                customization.welcomeScreen.enable && welcomeScreenHtmlSanitized ?
                                     <div dangerouslySetInnerHTML={{ __html: welcomeScreenHtmlSanitized }} />
-                                    : <></>
+                                    : customization.welcomeScreen.enable ?
+                                        <p>{__("dialog.customization.splashscreen.fallbackWelcomeScreen")}</p> : <></>
                             }
                             {
-                                customization.lock.state !== "IDLE" ?
-                                <div>
+                                !(customization.lock.state === "IDLE" || welcomeScreenHtmlSanitized) ?
+                                <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", flexDirection: "column", justifyContent: "space-between"}}>
+                                    <Loader></Loader>
                                     <span>{__("dialog.customization.splashscreen.state", {state: customization.lock.state, id: customization.lock.lockInfo?.id === "" && customization.lock.state === "ACTIVATING" ? "THorium Default Profile" : customization.lock.lockInfo?.id || "undefined"})}</span>
                                     {/* <span>LOCKINFO={JSON.stringify(customization.lock.lockInfo, null, 4)}</span> */}
                                 </div> 
