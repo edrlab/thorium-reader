@@ -529,7 +529,6 @@ declare namespace typed_i18n {
   (_: "message.open", __?: {}): { readonly "error": string };
   (_: "message.open.error", __?: {}): string;
   (_: "opds", __?: {}): {
-  readonly "resumeBrowsing": string,
   readonly "addForm": {
     readonly "addButton": string,
     readonly "name": string,
@@ -562,6 +561,7 @@ declare namespace typed_i18n {
   },
   readonly "next": string,
   readonly "previous": string,
+  readonly "resumeBrowsing": string,
   readonly "shelf": string,
   readonly "updateForm": {
     readonly "name": string,
@@ -571,7 +571,6 @@ declare namespace typed_i18n {
   },
   readonly "whatIsOpds": string
 };
-  (_: "opds.resumeBrowsing", __?: {}): string;
   (_: "opds.addForm", __?: {}): {
   readonly "addButton": string,
   readonly "name": string,
@@ -619,6 +618,7 @@ declare namespace typed_i18n {
   (_: "opds.network.reject", __?: {}): string;
   (_: "opds.network.timeout", __?: {}): string;
   (_: "opds.next", __?: {}): string; (_: "opds.previous", __?: {}): string;
+  (_: "opds.resumeBrowsing", __?: {}): string;
   (_: "opds.shelf", __?: {}): string;
   (_: "opds.updateForm", __?: {}): {
   readonly "name": string,
