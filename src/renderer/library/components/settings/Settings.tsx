@@ -457,45 +457,6 @@ const Themes = () => {
     );
 };
 
-/*
-
-<div className={stylesAnnotations.annotations_checkbox}>
-                <input type="checkbox" id="enableAPIAPP" className={stylesGlobal.checkbox_custom_input} name="enableAPIAPP" checked={enableAPIAPP} onChange={toggleEnableAPIAPP} />
-                <label htmlFor="enableAPIAPP" className={stylesGlobal.checkbox_custom_label}>
-                    <div
-                        tabIndex={0}
-                        role="checkbox"
-                        aria-checked={enableAPIAPP}
-                        aria-label={__("settings.library.enableAPIAPP")}
-                        onKeyDown={(e) => {
-                            // if (e.code === "Space") {
-                            if (e.key === " ") {
-                                e.preventDefault(); // prevent scroll
-                            }
-                        }}
-                        onKeyUp={(e) => {
-                            // if (e.code === "Space") {
-                            if (e.key === " ") {
-                                e.preventDefault();
-                                toggleEnableAPIAPP();
-                            }
-                        }}
-                        className={stylesGlobal.checkbox_custom}
-                        style={{ border: enableAPIAPP ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: enableAPIAPP ? "var(--color-blue)" : "transparent" }}>
-                        {enableAPIAPP ?
-                            <SVG ariaHidden svg={CheckIcon} />
-                            :
-                            <></>
-                        }
-                    </div>
-                    <div aria-hidden>
-                        <h4>{__("settings.library.enableAPIAPP")}</h4>
-                    </div>
-                </label>
-            </div>
-
-*/
-
 const Profiles = () => {
 
     const { provision: packageProfileProvisioned, activate: { id: profileActivatedId } } = useSelector((s: ICommonRootState) => s.customization);
@@ -523,7 +484,6 @@ const Profiles = () => {
                             <div
                                 key={`customization-thorium-${index}`}
                                 className={classNames(stylesSettings.profile_selection_input, selectedProfile?.id === profile.id ? stylesSettings.profile_selection_input_checked : "")}
-                                // tabIndex={0}
                             >
                                 <input
                                     type="radio"
@@ -540,7 +500,6 @@ const Profiles = () => {
                                 <label htmlFor={profile.id} className={stylesSettings.profile_selection_label}>
                                     <img src={profile.logoUrl} alt="" />
                                     <div
-                                        // tabIndex={0}
                                         className={stylesSettings.profile_selection_description}
                                         role="radio"
                                         onKeyDown={(e) => {
@@ -618,7 +577,6 @@ const Profiles = () => {
                     <label htmlFor="customization-thorium-vanilla" className={stylesSettings.profile_selection_label}>
                         <SVG ariaHidden svg={ThoriumIcon} />
                         <div
-                            // tabIndex={0}
                             className={stylesSettings.profile_selection_description}
                             role="radio"
                             onKeyDown={(e) => {
