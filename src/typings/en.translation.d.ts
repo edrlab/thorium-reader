@@ -338,7 +338,8 @@ declare namespace typed_i18n {
   readonly "customization": {
     readonly "splashscreen": {
       readonly "state": string,
-      readonly "title": string
+      readonly "title": string,
+      readonly "fallbackWelcomeScreen": string
     }
   },
   readonly "deleteAnnotations": string,
@@ -380,12 +381,18 @@ declare namespace typed_i18n {
   (_: "dialog.customization", __?: {}): {
   readonly "splashscreen": {
     readonly "state": string,
-    readonly "title": string
+    readonly "title": string,
+    readonly "fallbackWelcomeScreen": string
   }
 };
-  (_: "dialog.customization.splashscreen", __?: {}): { readonly "state": string, readonly "title": string };
+  (_: "dialog.customization.splashscreen", __?: {}): {
+  readonly "state": string,
+  readonly "title": string,
+  readonly "fallbackWelcomeScreen": string
+};
   (_: "dialog.customization.splashscreen.state", __?: {}): string;
   (_: "dialog.customization.splashscreen.title", __?: {}): string;
+  (_: "dialog.customization.splashscreen.fallbackWelcomeScreen", __?: {}): string;
   (_: "dialog.deleteAnnotations", __?: {}): string;
   (_: "dialog.deleteAnnotationsText", __?: {}): string;
   (_: "dialog.deleteBookmarks", __?: {}): string;

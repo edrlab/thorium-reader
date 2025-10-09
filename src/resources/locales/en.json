@@ -144,8 +144,9 @@
         "cancel": "Cancel",
         "customization": {
             "splashscreen": {
-                "state": "State {{- state}}, Id={{- id}}",
-                "title": "Provisionning and activating customization profile"
+                "state": "State: {{- state}}",
+                "title": "Provisionning and activating customization profile",
+                "fallbackWelcomeScreen": "No welcome-screen provided"
             }
         },
         "deleteAnnotations": "Delete annotations?",
