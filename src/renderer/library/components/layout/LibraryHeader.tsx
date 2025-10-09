@@ -18,7 +18,7 @@ import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { DisplayType, IRouterLocationState } from "../../routing";
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/home-icon.svg";
-import * as ThoriumIcon from "readium-desktop/renderer/assets/icons/thorium.svg";
+import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon.svg";
 import * as CatalogsIcon from "readium-desktop/renderer/assets/icons/catalogs-icon.svg";
 import * as ShelfIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
@@ -244,7 +244,8 @@ const Header = () => {
                 matchRoutes: ["/opds/" + hostEncoded],
                 searchEnable: false,
                 styles: [],
-                svg: catalog.properties?.logo?.type === "image/svg+xml" ? customizationBaseUrl + encodeURIComponent_RFC3986(Buffer.from(catalog.properties.logo.href).toString("base64")) : ThoriumIcon,
+                // svg: catalog.properties?.logo?.type === "image/svg+xml" ? customizationBaseUrl + encodeURIComponent_RFC3986(Buffer.from(catalog.properties.logo.href).toString("base64")) : ThoriumIcon,
+                svg: GlobeIcon,
             });
         }
     }

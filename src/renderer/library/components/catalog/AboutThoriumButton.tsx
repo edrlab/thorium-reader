@@ -71,7 +71,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
         const locale = encodeURIComponent_RFC3986(this.props.locale);
         const app_version = encodeURIComponent_RFC3986(_APP_VERSION);
 
-        const customizationProfileProvisionedAndActivated = this.props.customizationProvision.find(({id}) => this.props.customizationProfileId === id);
+        // const customizationProfileProvisionedAndActivated = this.props.customizationProvision.find(({id}) => this.props.customizationProfileId === id);
 
         return (
             <section className={stylesFooter.footer_wrapper} style={{justifyContent: displayVersionToast ? "space-between" : "end"}}>
@@ -106,7 +106,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                     </div>
                     : <></>
                 }
-                {
+                {/* {
 
                     this.props.customizationProfileId ? 
                     <div style={{fontSize: "6px"}}>
@@ -116,7 +116,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                     </div>
                     : <></>
 
-                }
+                } */}
                 <div className={stylesFooter.footer_about}>
                     <div>
                     <p>{`v${_APP_VERSION}`}</p>
