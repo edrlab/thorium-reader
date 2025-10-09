@@ -124,7 +124,8 @@ declare namespace typed_i18n {
     readonly "fallback": {
       readonly "description": string,
       readonly "publications": string,
-      readonly "title": string
+      readonly "title": string,
+      readonly "screen": string
     }
   },
   readonly "delete": string,
@@ -204,17 +205,20 @@ declare namespace typed_i18n {
   readonly "fallback": {
     readonly "description": string,
     readonly "publications": string,
-    readonly "title": string
+    readonly "title": string,
+    readonly "screen": string
   }
 };
   (_: "catalog.customization.fallback", __?: {}): {
   readonly "description": string,
   readonly "publications": string,
-  readonly "title": string
+  readonly "title": string,
+  readonly "screen": string
 };
   (_: "catalog.customization.fallback.description", __?: {}): string;
   (_: "catalog.customization.fallback.publications", __?: {}): string;
   (_: "catalog.customization.fallback.title", __?: {}): string;
+  (_: "catalog.customization.fallback.screen", __?: {}): string;
   (_: "catalog.delete", __?: {}): string;
   (_: "catalog.deleteBook", __?: {}): string;
   (_: "catalog.deleteTag", __?: {}): string;

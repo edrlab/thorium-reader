@@ -67,7 +67,8 @@
             "fallback": {
                 "description": "No profile description",
                 "publications": "Profile publications",
-                "title": "Profile title"
+                "title": "Profile title",
+                "screen": "No title"
             }
         },
         "delete": "Delete",
