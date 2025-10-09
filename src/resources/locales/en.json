@@ -67,6 +67,7 @@
             "fallback": {
                 "description": "No profile description",
                 "publications": "Profile publications",
+                "screen": "No title",
                 "title": "Profile title"
             }
         },
@@ -144,7 +145,8 @@
         "cancel": "Cancel",
         "customization": {
             "splashscreen": {
-                "state": "State {{- state}}, Id={{- id}}",
+                "fallbackWelcomeScreen": "No welcome-screen provided",
+                "state": "State: {{- state}}",
                 "title": "Provisionning and activating customization profile"
             }
         },
@@ -1144,6 +1146,8 @@
             }
         },
         "profiles": {
+            "title": "profile_selection",
+            "version": "Version: {{- version}}",
             "info": "Switch profiles to customize the app with a partner vendor’s branding and colors. Each profile offers a tailored experience.",
             "thorium": {
                 "description": "The Thorium Vanilla profile is the orignal one, designed by EDRLab.",

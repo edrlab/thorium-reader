@@ -232,7 +232,7 @@ const PublicationInfoWithRadixContent = (props: {publicationViewMaybeOpds: TPubl
             ControlComponent={controlsComponent}
             TagManagerComponent={TagManager}
             // coverZoom={coverZoom}
-            onClikLinkCb={
+            onClickLinkCb={
                 (_link) => () => link(_link.link[0], location, convertMultiLangStringToString(_link.nameLangString, locale))
             }
             focusWhereAmI={false}

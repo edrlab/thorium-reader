@@ -124,6 +124,7 @@ declare namespace typed_i18n {
     readonly "fallback": {
       readonly "description": string,
       readonly "publications": string,
+      readonly "screen": string,
       readonly "title": string
     }
   },
@@ -204,16 +205,19 @@ declare namespace typed_i18n {
   readonly "fallback": {
     readonly "description": string,
     readonly "publications": string,
+    readonly "screen": string,
     readonly "title": string
   }
 };
   (_: "catalog.customization.fallback", __?: {}): {
   readonly "description": string,
   readonly "publications": string,
+  readonly "screen": string,
   readonly "title": string
 };
   (_: "catalog.customization.fallback.description", __?: {}): string;
   (_: "catalog.customization.fallback.publications", __?: {}): string;
+  (_: "catalog.customization.fallback.screen", __?: {}): string;
   (_: "catalog.customization.fallback.title", __?: {}): string;
   (_: "catalog.delete", __?: {}): string;
   (_: "catalog.deleteBook", __?: {}): string;
@@ -337,6 +341,7 @@ declare namespace typed_i18n {
   readonly "cancel": string,
   readonly "customization": {
     readonly "splashscreen": {
+      readonly "fallbackWelcomeScreen": string,
       readonly "state": string,
       readonly "title": string
     }
@@ -379,11 +384,17 @@ declare namespace typed_i18n {
   (_: "dialog.cancel", __?: {}): string;
   (_: "dialog.customization", __?: {}): {
   readonly "splashscreen": {
+    readonly "fallbackWelcomeScreen": string,
     readonly "state": string,
     readonly "title": string
   }
 };
-  (_: "dialog.customization.splashscreen", __?: {}): { readonly "state": string, readonly "title": string };
+  (_: "dialog.customization.splashscreen", __?: {}): {
+  readonly "fallbackWelcomeScreen": string,
+  readonly "state": string,
+  readonly "title": string
+};
+  (_: "dialog.customization.splashscreen.fallbackWelcomeScreen", __?: {}): string;
   (_: "dialog.customization.splashscreen.state", __?: {}): string;
   (_: "dialog.customization.splashscreen.title", __?: {}): string;
   (_: "dialog.deleteAnnotations", __?: {}): string;
@@ -2599,6 +2610,8 @@ declare namespace typed_i18n {
     }
   },
   readonly "profiles": {
+    readonly "title": string,
+    readonly "version": string,
     readonly "info": string,
     readonly "thorium": {
       readonly "description": string,
@@ -3298,12 +3311,16 @@ declare namespace typed_i18n {
   (_: "settings.note.export.enableCheckbox", __?: {}): string;
   (_: "settings.note.export.overrideHTMLTemplate", __?: {}): string;
   (_: "settings.profiles", __?: {}): {
+  readonly "title": string,
+  readonly "version": string,
   readonly "info": string,
   readonly "thorium": {
     readonly "description": string,
     readonly "title": string
   }
 };
+  (_: "settings.profiles.title", __?: {}): string;
+  (_: "settings.profiles.version", __?: {}): string;
   (_: "settings.profiles.info", __?: {}): string;
   (_: "settings.profiles.thorium", __?: {}): { readonly "description": string, readonly "title": string };
   (_: "settings.profiles.thorium.description", __?: {}): string;

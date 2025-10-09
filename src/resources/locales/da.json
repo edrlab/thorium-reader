@@ -67,6 +67,7 @@
             "fallback": {
                 "description": "",
                 "publications": "",
+                "screen": "",
                 "title": ""
             }
         },
@@ -144,6 +145,7 @@
         "cancel": "Annullér",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "",
                 "state": "",
                 "title": "Tilpasningsprofil for klargøring og aktivering"
             }

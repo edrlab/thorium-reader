@@ -60,7 +60,7 @@ const LinkItemBreadcrumb = ({item: {name, path}, isTheFirstOne}: {item: IBreadCr
         title={name}
         className={stylesButtons.button_transparency}
         onClick={(e) => {
-            if (e.altKey || e.shiftKey || e.ctrlKey) {
+            if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                 e.preventDefault();
                 e.currentTarget.click();
             }

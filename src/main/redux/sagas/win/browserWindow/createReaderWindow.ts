@@ -7,7 +7,7 @@
 
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import * as debug_ from "debug";
-import { BrowserWindow, Event, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
+import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
 import * as path from "path";
 import { call as callTyped, put as putTyped } from "typed-redux-saga/macro";
 import { diMainGet, saveReaderWindowInDi } from "readium-desktop/main/di";
@@ -148,39 +148,45 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
 
     setMenu(readerWindow, true);
 
-    // Redirect link to an external browser
-    const handleRedirect = (event: Event<WebContentsWillNavigateEventParams>, _url: string) => {
-        if (event.url === readerWindow.webContents.getURL()) {
-            debug("will-navigate PASS", event.url);
+    const willNavigate = (navUrl: string | undefined | null) => {
+
+        if (!navUrl) {
+            debug("willNavigate ==> nil: ", navUrl);
             return;
         }
 
-        debug("will-navigate EXTERNAL", event.url);
-        event.preventDefault();
-        if (event.url && /^https?:\/\//.test(event.url)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
+        if (/^https?:\/\//.test(navUrl)
+            && !navUrl.startsWith("http://localhost") && !navUrl.startsWith("http://127.0.0.1")) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
+
+            debug("willNavigate ==> EXTERNAL: ", readerWindow.webContents.getURL(), " *** ", navUrl);
             setTimeout(async () => {
-                await shell.openExternal(event.url);
+                await shell.openExternal(navUrl);
             }, 0);
+
+            return;
         }
+
+        debug("willNavigate ==> noop: ", navUrl);
     };
-    readerWindow.webContents.on("will-navigate", handleRedirect);
 
-    // https://www.electronjs.org/releases/stable?version=12&page=4#breaking-changes-1200
-    // https://github.com/electron/electron/blob/main/docs/breaking-changes.md#deprecated-webcontents-new-window-event
-    // readerWindow.webContents.on("new-window", handleRedirect);
     readerWindow.webContents.setWindowOpenHandler((details: HandlerDetails) => {
-        if (details.url === readerWindow.webContents.getURL()) {
-            debug("setWindowOpenHandler PASS", details.url);
-            return { action: "allow" };
-        }
+        debug("BrowserWindow.webContents.setWindowOpenHandler (always DENY): ", readerWindow.webContents.id, " --- ", details.url, " === ", readerWindow.webContents.getURL());
 
-        debug("setWindowOpenHandler EXTERNAL", details.url);
-        if (details.url && /^https?:\/\//.test(details.url)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
-            setTimeout(async () => {
-                await shell.openExternal(details.url);
-            }, 0);
-        }
+        // willNavigate(details.url);
 
         return { action: "deny" };
+    });
+
+    readerWindow.webContents.on("will-navigate", (details: ElectronEvent<WebContentsWillNavigateEventParams>, url: string) => {
+        debug("BrowserWindow.webContents.on('will-navigate') (always PREVENT): ", readerWindow.webContents.id, " --- ", details.url, " *** ", url, " === ", readerWindow.webContents.getURL());
+
+        // if (details.url === readerWindow.webContents.getURL()) {
+        //     debug("will-navigate PASS", details.url);
+        //     return;
+        // }
+
+        details.preventDefault();
+
+        willNavigate(details.url);
     });
 }
