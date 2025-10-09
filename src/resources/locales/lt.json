@@ -65,10 +65,10 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
-                "publications": "",
-                "screen": "",
-                "title": ""
+                "description": "Nėra profilio aprašymo",
+                "publications": "Profilio leidiniai",
+                "screen": "Be pavadinimo",
+                "title": "Profilio pavadinimas"
             }
         },
         "delete": "Šalinti",
