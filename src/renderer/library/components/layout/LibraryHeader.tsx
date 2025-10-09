@@ -70,7 +70,7 @@ const Header = () => {
                     ? {
                         ...location,
                         search: item.searchEnable ? location?.search : "",
-                        pathname: cv.pathname,
+                        pathname: item.route,
                     }
                     : pv,
             {

@@ -14,7 +14,8 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { DisplayType, IRouterLocationState } from "../../routing";
 import { Link } from "react-router-dom";
-import * as CatalogsIcon from "readium-desktop/renderer/assets/icons/catalogs-icon.svg";
+// import * as CatalogsIcon from "readium-desktop/renderer/assets/icons/catalogs-icon.svg";
+import * as EyeGlassesIcon from "readium-desktop/renderer/assets/icons/eyeglasses-icon.svg";
 import { NavigationHeader } from "../layout/LibraryHeader";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
@@ -32,7 +33,7 @@ const OpdsAddForm: React.FC = () => {
         label: __("opds.resumeBrowsing"),
         matchRoutes: ["/opds"],
         styles: [],
-        svg: CatalogsIcon,
+        svg: EyeGlassesIcon,
     };
 
     let showResumeBrowsingButton: boolean = false;

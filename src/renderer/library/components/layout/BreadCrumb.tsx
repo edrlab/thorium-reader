@@ -10,7 +10,7 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 
 import * as React from "react";
 import { Link } from "react-router-dom";
-import * as BreacrmbsNavIcon from "readium-desktop/renderer/assets/icons/breadcrumbsNav-icon.svg";
+// import * as BreacrmbsNavIcon from "readium-desktop/renderer/assets/icons/breadcrumbsNav-icon.svg";
 import * as ChevronRight from "readium-desktop/renderer/assets/icons/chevron-right.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/breadcrumbItem";
@@ -47,7 +47,7 @@ function useSize<T extends Element>(target: React.RefObject<T>) {
     return size;
 }
 
-const LinkItemBreadcrumb = ({item: {name, path}, isTheFirstOne}: {item: IBreadCrumbItem, isTheFirstOne?: boolean}) => {
+const LinkItemBreadcrumb = ({item: {name, path}, /*isTheFirstOne*/}: {item: IBreadCrumbItem, isTheFirstOne?: boolean}) => {
 
     const location = useSelector((state: ILibraryRootState) => state.router.location);
 
@@ -82,7 +82,6 @@ const LinkItemBreadcrumb = ({item: {name, path}, isTheFirstOne}: {item: IBreadCr
             }
         }}
     >
-        {isTheFirstOne ? <SVG ariaHidden={true} svg={BreacrmbsNavIcon} /> : <></>}
         <p >{name}</p>
     </Link>);
 };
