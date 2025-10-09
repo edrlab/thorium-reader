@@ -166,8 +166,6 @@ const Header = () => {
     }, [customizationManifest, locale]);
     const screenZipObj = React.useMemo(() => screenZipLinks?.map(({ href, title }) => href && customizationBaseUrl ? {url: customizationBaseUrl + encodeURIComponent_RFC3986(Buffer.from(href).toString("base64")), title } : undefined), [screenZipLinks, customizationBaseUrl]);
 
-    console.log("screenZipObj", screenZipObj);
-
     const [screenHtmlArray, setScreenHtmlArray] = React.useState([]);
     const [cancel, setCancel] = React.useState(false);
 
