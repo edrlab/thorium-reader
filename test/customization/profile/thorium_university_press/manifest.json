@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "identifier": "thorium-manifest://org.edrlab.thorium.university",
-    "version": "1.2.0",
+    "version": "1.0.0",
     "title": {
       "en": "Thorium University Press"
     },
@@ -33,6 +33,34 @@
         }
     },
     "links": [
+      {
+        "rel": "screen",
+        "href": "./screen/faq-en.html",
+        "type": "text/html",
+        "language": "en",
+        "title": "FAQ"
+      },
+      {
+        "rel": "screen",
+        "href": "./screen/help-en.html",
+        "type": "text/html",
+        "language": "en",
+        "title": "Help"
+      },
+      {
+        "rel": "screen",
+        "href": "./screen/faq-fr.html",
+        "type": "text/html",
+        "language": "fr",
+        "title": "FAQ"
+      },
+      {
+        "rel": "screen",
+        "href": "./screen/help-fr.html",
+        "type": "text/html",
+        "language": "fr",
+        "title": "Help"
+      },
       {
         "rel": "welcome-screen",
         "href": "./welcome-screen/welcome-screen.html",

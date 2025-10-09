@@ -31,7 +31,7 @@ import Loader from "./Loader";
 export const CustomizationProfileDialog: React.FC = () => {
 
     const customization = useSelector((state: ICommonRootState) => state.customization);
-    const open = customization.lock.state !== "IDLE" || customization.welcomeScreen.enable;
+    const open = !!(customization.lock.state !== "IDLE" || customization.welcomeScreen.enable);
     const manifest = customization.manifest;
 
     const dispatch = useDispatch();
