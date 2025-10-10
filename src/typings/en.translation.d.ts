@@ -2610,13 +2610,12 @@ declare namespace typed_i18n {
     }
   },
   readonly "profiles": {
-    readonly "title": string,
-    readonly "version": string,
     readonly "info": string,
     readonly "thorium": {
       readonly "description": string,
       readonly "title": string
-    }
+    },
+    readonly "version": string
   },
   readonly "screenReaderActivate": {
     readonly "help": string,
@@ -3311,20 +3310,18 @@ declare namespace typed_i18n {
   (_: "settings.note.export.enableCheckbox", __?: {}): string;
   (_: "settings.note.export.overrideHTMLTemplate", __?: {}): string;
   (_: "settings.profiles", __?: {}): {
-  readonly "title": string,
-  readonly "version": string,
   readonly "info": string,
   readonly "thorium": {
     readonly "description": string,
     readonly "title": string
-  }
+  },
+  readonly "version": string
 };
-  (_: "settings.profiles.title", __?: {}): string;
-  (_: "settings.profiles.version", __?: {}): string;
   (_: "settings.profiles.info", __?: {}): string;
   (_: "settings.profiles.thorium", __?: {}): { readonly "description": string, readonly "title": string };
   (_: "settings.profiles.thorium.description", __?: {}): string;
   (_: "settings.profiles.thorium.title", __?: {}): string;
+  (_: "settings.profiles.version", __?: {}): string;
   (_: "settings.screenReaderActivate", __?: {}): {
   readonly "help": string,
   readonly "message": string,
