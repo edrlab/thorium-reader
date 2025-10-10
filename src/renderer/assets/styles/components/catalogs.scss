@@ -90,13 +90,13 @@
                 overflow: hidden;
                 display: -webkit-box;
                 -webkit-line-clamp: 4;
-                        line-clamp: 4; 
+                        line-clamp: 4;
                 -webkit-box-orient: vertical;
             }
         }
     }
 
-    .button_edit, .button_delete {
+    .button_edit, .button_delete, .button_login {
         position: absolute;
         bottom: 10px;
         color: var(--color-brand-primary);
@@ -112,6 +112,10 @@
             border: 1px solid var(--color-brand-primary);
             background-color: var(--color-brand-secondary);
         }
+    }
+
+    .button_login {
+        right: 77px;
     }
 
     .button_edit {
@@ -183,7 +187,7 @@
                 overflow: hidden;
                 display: -webkit-box;
                 -webkit-line-clamp: 3; /* number of lines to show */
-                        line-clamp: 3; 
+                        line-clamp: 3;
                 -webkit-box-orient: vertical;
             }
         }
@@ -208,7 +212,7 @@
         &::after {
             border: none;
         }
-        
+
         &:hover {
             background-color: var(--color-brand-secondary)!important;
         }
@@ -275,7 +279,7 @@
 }
 
 .noPublication {
-    
+
     // width: 100%;
     border: 1px solid var(--color-brand-primary);
     background-color: var(--color-brand-secondary);
@@ -294,7 +298,7 @@
 
 .opds_browserResults {
     overflow: auto;
-    inset: 260px 20px 30px 30px;
+    inset: 160px 20px 30px 30px;
     padding: 0;
     position: absolute;
     padding-right: 25px;

@@ -60,7 +60,7 @@ export interface IProps {
     divinaNumberOfPages: number | undefined; // super hacky :(
     divinaContinousEqualTrue: boolean;
     readerReadingLocation: MiniLocatorExtended;
-    onClikLinkCb?: (tag: IOpdsContributorView) => () => void | undefined;
+    onClickLinkCb?: (tag: IOpdsContributorView) => () => void | undefined;
     closeDialogCb: () => void;
 }
 
@@ -366,7 +366,7 @@ const ProgressionDetails: React.FC<{summary: React.ReactElement[], details: Reac
 
 export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> = (props) => {
 
-    const { closeDialogCb, readerReadingLocation, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, r2Publication: r2Publication_, manifestUrlR2Protocol, handleLinkUrl, publicationViewMaybeOpds, ControlComponent, TagManagerComponent, onClikLinkCb, focusWhereAmI } = props;
+    const { closeDialogCb, readerReadingLocation, pdfPlayerNumberOfPages, divinaNumberOfPages, divinaContinousEqualTrue, r2Publication: r2Publication_, manifestUrlR2Protocol, handleLinkUrl, publicationViewMaybeOpds, ControlComponent, TagManagerComponent, onClickLinkCb, focusWhereAmI } = props;
 
     const r2Publication = React.useMemo(() => {
         if (!r2Publication_ && publicationViewMaybeOpds.r2PublicationJson) {
@@ -445,7 +445,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                         </h2>
                         <FormatContributorWithLink
                             contributors={publicationViewMaybeOpds.authorsLangString}
-                            onClickLinkCb={onClikLinkCb}
+                            onClickLinkCb={onClickLinkCb}
                             className={"authors"}
                         />
                     </section>
@@ -466,7 +466,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                                         <span className={stylesBookDetailsDialog.allowUserSelect}>
                                             <FormatContributorWithLink
                                                 contributors={publicationViewMaybeOpds.publishersLangString}
-                                                onClickLinkCb={onClikLinkCb}
+                                                onClickLinkCb={onClickLinkCb}
                                             />
                                         </span>
                                         <br />

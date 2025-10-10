@@ -33,6 +33,7 @@ export const reduxPersistMiddleware: Middleware
                     reader: prevState.reader,
                     i18n: prevState.i18n,
                     session: prevState.session,
+                    screenReader: prevState.screenReader,
                     publication: {
                         db: prevState.publication.db,
                         lastReadingQueue: prevState.publication.lastReadingQueue,
@@ -61,6 +62,7 @@ export const reduxPersistMiddleware: Middleware
                     reader: nextState.reader,
                     i18n: nextState.i18n,
                     session: nextState.session,
+                    screenReader: nextState.screenReader,
                     publication: {
                         db: nextState.publication.db,
                         lastReadingQueue: nextState.publication.lastReadingQueue,

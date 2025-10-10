@@ -24,15 +24,20 @@ import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-ic
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 
 import DOMPurify from "dompurify";
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
+import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER } from "readium-desktop/common/streamerProtocol";
+import Loader from "./Loader";
 
 export const CustomizationProfileDialog: React.FC = () => {
 
     const customization = useSelector((state: ICommonRootState) => state.customization);
-    const open = customization.lock.state !== "IDLE" || customization.welcomeScreen.enable;
+    const open = !!(customization.lock.state !== "IDLE" || customization.welcomeScreen.enable);
     const manifest = customization.manifest;
 
     const dispatch = useDispatch();
     const [__] = useTranslator();
+
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
 
     const profileInHistoryFound = customization.history.find(({id}) => id && id === customization.activate.id);
     const [checked, setChecked] = React.useState<boolean>(profileInHistoryFound && manifest?.version && profileInHistoryFound.version === manifest?.version);
@@ -41,25 +46,59 @@ export const CustomizationProfileDialog: React.FC = () => {
         setChecked(profileInHistoryFound && manifest?.version && profileInHistoryFound.version === manifest?.version);
     }, [setChecked, manifest?.version, profileInHistoryFound]);
 
-    let welcomeScreenHtmlSanitized = "";
-    if (manifest?.welcomeScreen) {
+    const customizationId = customization.manifest?.identifier;
+    const customizationBaseUrl = customizationId ? `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/custom-profile-zip/${encodeURIComponent_RFC3986(Buffer.from(customizationId).toString("base64"))}/` : "";
+    const welcomeScreenImgZipPath = manifest?.images?.find((ln) => ln.rel === "welcome-screen")?.href;
+    const welcomeScreenImgHref = customizationBaseUrl && welcomeScreenImgZipPath ? customizationBaseUrl + encodeURIComponent_RFC3986(Buffer.from(welcomeScreenImgZipPath).toString("base64")) : "";
+    const welcomeScreenHtmlZipPath = customization.manifest?.links?.find((ln) => ln.rel === "welcome-screen" && (!ln.type || ln.type === "text/html") && ln.language === locale)?.href || customization.manifest?.links?.find((ln) => ln.rel === "welcome-screen" && (!ln.type || ln.type === "text/html") && (ln.language === "en" || !ln.language))?.href;
+    const welcomeScreenHtmlHref = customizationBaseUrl && welcomeScreenHtmlZipPath ? customizationBaseUrl + encodeURIComponent_RFC3986(Buffer.from(welcomeScreenHtmlZipPath).toString("base64")) : "";
 
-        const regex = new RegExp(/href=\"(.*?)\"/, "gm");
-        const parsed = DOMPurify.sanitize(manifest.welcomeScreen, { FORBID_TAGS: [/*"style"*/], FORBID_ATTR: [/*"style"*/] /* TODO: handle external https links */ });
-        const hrefSanitized = parsed.replace(regex, (substring) => {
-    
-            let url = /href=\"(.*?)\"/.exec(substring)[1];
-            if (!/^https?:\/\//.test(url)) {
-                url = "http://" + url;
-            }
-    
-            return `href="" alt="${url}" onclick="return ((e) => {
+    const [welcomeScreenHtmlSanitized, setWelcomeScreenHtmlSanitized] = React.useState("");
+
+    // console.log("welcomeScreen HTML zipPath: ", welcomeScreenHtmlZipPath);
+    // console.log("welcomeScreen HTML URL: ", welcomeScreenHtmlHref);
+    React.useEffect(() => {
+        if (customizationId && welcomeScreenHtmlHref && open) {
+            // URL is thoriumhttps:// "custom-profile-zip" protocol handler, so no use of isURL(url) and /^https?:\/\//.test(url) checks here
+            fetch(welcomeScreenHtmlHref)
+                .then((response) => {
+                    if (response.ok) {
+                        return response.text();
+                    }
+                    return Promise.reject(response.statusText);
+                })
+                .then((rawHtmlContent) => {
+                    // console.log("RAW HTML", rawHtmlContent);
+
+                    if (!rawHtmlContent) {
+                        return;
+                    }
+
+                    const regex = new RegExp(/href=\"(.*?)\"/, "gm");
+                    const parsed = DOMPurify.sanitize(rawHtmlContent, { FORBID_TAGS: [/*"style"*/], FORBID_ATTR: [/*"style"*/] /* TODO: handle external https links */ });
+                    const hrefSanitized = parsed.replace(regex, (substring) => {
+
+                        let url = /href=\"(.*?)\"/.exec(substring)[1];
+                        if (!/^https?:\/\//.test(url)) {
+                            url = "http://" + url;
+                        }
+
+                        return `href="" alt="${url}" onclick="return ((e) => {
                                     window.__shell_openExternal('${url}').catch(() => {});
                                     return false;
                                  })()"`;
-        });
-        welcomeScreenHtmlSanitized = hrefSanitized;
-    }
+                    });
+
+                    setWelcomeScreenHtmlSanitized(hrefSanitized);
+                })
+                .catch((e) => {
+                    console.error("Error fetching data:", e);
+                });
+        } else {
+            setWelcomeScreenHtmlSanitized("");
+        }
+    }, [welcomeScreenHtmlHref, customizationId, open, setWelcomeScreenHtmlSanitized]);
+
 
     return (
         <AlertDialog.Root open={open} onOpenChange={(_requestOpen) => {
@@ -79,20 +118,21 @@ export const CustomizationProfileDialog: React.FC = () => {
                         </AlertDialog.Action>
                         </AlertDialog.Title>
                     <AlertDialog.Description className={stylesModals.modal_dialog_body} style={{ display: "flex", gap: "20px", flexDirection: "row", justifyContent: "normal"}}>
-                        <img style={{maxWidth: "250px", maxHeight: "500px", objectFit: "contain"}} src={manifest?.images?.find((ln) => ln.rel === "welcome-screen")?.href || ""}/>
-                        <div style={{position: "relative"}}>
+                        {customization.welcomeScreen.enable && welcomeScreenHtmlSanitized ? <img style={{ maxWidth: "250px", maxHeight: "500px", objectFit: "contain" }} src={welcomeScreenImgHref} /> : <></>}
+                        <div style={{position: "relative", width: "100%", height: "100%"}}>
                             {
-                                welcomeScreenHtmlSanitized ?
+                                customization.welcomeScreen.enable && welcomeScreenHtmlSanitized ?
                                     <div dangerouslySetInnerHTML={{ __html: welcomeScreenHtmlSanitized }} />
-                                    : <></>
+                                    : customization.welcomeScreen.enable ?
+                                        <p>{__("dialog.customization.splashscreen.fallbackWelcomeScreen")}</p> : <></>
                             }
                             {
-                                customization.lock.state !== "IDLE" ?
-                                <div>
-                                    <span>STATE={customization.lock.state}</span>
-                                    <span>ID={customization.lock.lockInfo?.id === "" && customization.lock.state === "ACTIVATING" ? "THorium Default Profile" : customization.lock.lockInfo?.id || "undefined"}</span>
-                                    <span>LOCKINFO={JSON.stringify(customization.lock.lockInfo, null, 4)}</span>
-                                </div> 
+                                !(customization.lock.state === "IDLE" || welcomeScreenHtmlSanitized) ?
+                                <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", flexDirection: "column", justifyContent: "space-between"}}>
+                                    <Loader></Loader>
+                                    <span>{__("dialog.customization.splashscreen.state", {state: customization.lock.state, id: customization.lock.lockInfo?.id === "" && customization.lock.state === "ACTIVATING" ? "THorium Default Profile" : customization.lock.lockInfo?.id || "undefined"})}</span>
+                                    {/* <span>LOCKINFO={JSON.stringify(customization.lock.lockInfo, null, 4)}</span> */}
+                                </div>
                                 : <></>
                             }
                             {/* <div style={{display: "none"}}>
@@ -103,9 +143,9 @@ export const CustomizationProfileDialog: React.FC = () => {
                         </div>
                     </AlertDialog.Description>
                     <div className={stylesAlertModals.AlertDialogButtonContainer} style={{justifyContent: "space-between", padding: "10px 20px"}}>
-                        {/* <AlertDialog.Cancel asChild onClick={() => { dispatch(customizationActions.lock.build("IDLE")); dispatch(customizationActions.activating.build("")); }}>
+                        <AlertDialog.Cancel asChild disabled={customization.lock.state !== "IDLE"} onClick={() => { dispatch(customizationActions.activating.build("")); }}>
                             <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
-                        </AlertDialog.Cancel> */}
+                        </AlertDialog.Cancel>
                         {customization.welcomeScreen.enable && profileInHistoryFound ? <div style={{ display: "flex", alignItems: "center", gap: "10px"}}>
                             <input type="checkbox" checked={checked} onChange={() => { setChecked(!checked); dispatch(customizationActions.addHistory.build(profileInHistoryFound.id, checked ? "" : profileInHistoryFound.version)); }} id="wizardCheckbox" name="wizardCheckbox" className={stylesGlobal.checkbox_custom_input} />
                             <label htmlFor="wizardCheckbox" className={stylesGlobal.checkbox_custom_label}>

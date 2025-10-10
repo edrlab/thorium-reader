@@ -63,6 +63,14 @@
             "descending": "இறங்கு",
             "unsorted": "வரிசைப்படுத்தப்படாதது"
         },
+        "customization": {
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
+        },
         "delete": "நீக்கு",
         "deleteBook": "நீக்கு",
         "deleteTag": "குறிச்சொல்லை நீக்கு",
@@ -78,6 +86,7 @@
         "importAnnotation": "குறிப்புகளை இறக்குமதி செய்யுங்கள்",
         "lang": "மொழி",
         "lastRead": "கடைசியாக படியுங்கள்",
+        "logout": "",
         "moreInfo": "வெளியீட்டு விவரங்கள்",
         "myBooks": "எனது வெளியீடுகள்",
         "noPublicationHelpL1": "கோப்புகளை இங்கே விடுங்கள்",
@@ -136,6 +145,8 @@
         "cancel": "ரத்துசெய்",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
                 "title": ""
             }
         },
@@ -244,6 +255,7 @@
         },
         "next": "அடுத்தது",
         "previous": "முந்தைய",
+        "resumeBrowsing": "",
         "shelf": "அலமாரி",
         "updateForm": {
             "name": "பெயர்:",
@@ -1138,7 +1150,13 @@
             "thorium": {
                 "description": "",
                 "title": ""
-            }
+            },
+            "version": ""
+        },
+        "screenReaderActivate": {
+            "help": "",
+            "message": "",
+            "title": ""
         },
         "session": {
             "title": "அமர்வு சேமிப்பை இயக்கவும்"

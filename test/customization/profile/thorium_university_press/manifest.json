@@ -1,0 +1,178 @@
+{
+    "manifestVersion": 1,
+    "identifier": "thorium-manifest://org.edrlab.thorium.university",
+    "version": "1.0.0",
+    "title": {
+      "en": "Thorium University Press"
+    },
+    "description": {
+      "en": "Thorium University Press publishes peer-reviewed books that connect authors and readers across spheres of knowledge to advance and enrich the global conversation."
+    },
+    "theme": {
+        "color": {
+            "dark": {
+                "neutral": "#1C1C1C",
+                "primary": "#FF8C1A",
+                "secondary": "#483a3a",
+                "border": "#FF7A00",
+                "background": "#121212",
+                "appName": "#E0E0E0",
+                "scrollbarThumb": "",
+                "buttonsBorder": "#FF8C1A"
+            },
+            "light": {
+                "neutral": "#FFFFFF",
+                "primary": "#121212",
+                "secondary": "#fff8f2",
+                "border": "#E16100",
+                "background": "#e6e8e6",
+                "appName": "#C9C5C9",
+                "scrollbarThumb": "",
+                "buttonsBorder": "#E77500"
+            }
+        }
+    },
+    "links": [
+      {
+        "rel": "screen",
+        "href": "./screen/faq-en.html",
+        "type": "text/html",
+        "language": "en",
+        "title": "FAQ"
+      },
+      {
+        "rel": "screen",
+        "href": "./screen/help-en.html",
+        "type": "text/html",
+        "language": "en",
+        "title": "Help"
+      },
+      {
+        "rel": "screen",
+        "href": "./screen/faq-fr.html",
+        "type": "text/html",
+        "language": "fr",
+        "title": "FAQ"
+      },
+      {
+        "rel": "screen",
+        "href": "./screen/help-fr.html",
+        "type": "text/html",
+        "language": "fr",
+        "title": "Help"
+      },
+      {
+        "rel": "welcome-screen",
+        "href": "./welcome-screen/welcome-screen.html",
+        "type": "text/html",
+        "language": "en"
+      },
+      {
+        "rel": "welcome-screen",
+        "href": "./welcome-screen/welcome-screen-fr.html",
+        "type": "text/html",
+        "language": "fr"
+      },
+      {
+        "rel": "catalog", 
+        "href": "https://demoreader.cantookstation.com/v1/home.opds2",
+        "title": {
+          "en": "DemoReader catalog"
+        },
+        "properties": {
+          "showOnHomeSection": true,
+          "authenticate": {
+             "rel": "application/opds-authentication+json",
+             "href": "https://demoreader.cantookstation.com/v1/sign_in.opds2"
+            }
+        }
+      }
+    ],
+    "publications": [
+      {
+        "metadata": {
+          "@type": "http://schema.org/Book",
+          "title": "Moby-Dick",
+          "author": {
+            "name": "Herman Melville",
+            "sortAs": "Melville, Herman"
+          },
+          "identifier": "http://www.feedbooks.com/book/54/moby-dick",
+          "language": "en",
+          "modified": "2018-04-23T23:18:00Z",
+          "published": "1851-01-01",
+          "publisher": "Feedbooks",
+          "description": "Moby-Dick is an 1851 novel by Herman Melville. The story tells the adventures of the wandering sailor Ishmael and his voyage on the whaling ship Pequod, commanded by Captain Ahab. Ishmael soon learns that Ahab seeks one specific whale, Moby-Dick, a white whale of tremendous size and ferocity. Comparatively few whaling ships know of Moby-Dick, and fewer yet have encountered him. In a previous encounter, the whale destroyed Ahab's boat and bit off his leg. Ahab intends to exact revenge."
+        },
+        "links": [
+          {
+            "rel": "http://opds-spec.org/acquisition/open-access",
+            "href": "https://test.opds.io/assets/moby/file.epub",
+            "type": "application/epub+zip"
+          }
+        ],
+        "images": [
+          {
+            "href": "https://test.opds.io/assets/moby/small.jpg",
+            "type": "image/jpeg",
+            "height": 169,
+            "width": 110
+          },
+          {
+            "href": "https://test.opds.io/assets/moby/normal.jpg",
+            "type": "image/jpeg",
+            "height": 400,
+            "width": 260
+          }
+        ]
+      },
+      {
+        "metadata": {
+          "@type": "http://schema.org/Book",
+          "title": "Le Mystère de la chambre jaune",
+          "sortAs": "Mystère de la chambre jaune, Le",
+          "author": {
+            "name": "Gaston Leroux",
+            "sortAs": "Leroux, Gaston"
+          },
+          "identifier": "http://fr.feedbooks.com/book/588/le-myst%C3%A8re-de-la-chambre-jaune",
+          "language": "fr",
+          "modified": "2018-04-23T22:32:00Z",
+          "published": "1907-01-01",
+          "publisher": "Feedbooks",
+          "description": "Imaginez-vous devant un coffre fort fermé, où vous entendriez quelqu'un crier à l'aide , vous ouvrez et, vous ne trouvez que la victime. Par où l'assassin est-il parti ? C'est le Mystère de la chambre jaune... La plus célèbre des aventures de Rouletabille..."
+        },
+        "links": [
+          {
+            "rel": "http://opds-spec.org/acquisition/open-access",
+            "href": "https://test.opds.io/assets/chambrejaune/file.epub",
+            "type": "application/epub+zip"
+          }
+        ],
+        "images": [
+          {
+            "href": "https://test.opds.io/assets/chambrejaune/small.jpg",
+            "type": "image/jpeg",
+            "height": 169,
+            "width": 110
+          },
+          {
+            "href": "https://test.opds.io/assets/chambrejaune/normal.jpg",
+            "type": "image/jpeg",
+            "height": 400,
+            "width": 260
+          }
+        ]
+      }
+    ],
+    "images": [
+        {
+            "rel": "logo",
+            "href": "./images/logo.svg"
+        },
+        {
+          "rel": "welcome-screen",
+          "href": "./welcome-screen/welcome-screen.svg"
+        }
+    ]
+}

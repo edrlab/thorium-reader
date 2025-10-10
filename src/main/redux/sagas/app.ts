@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app, protocol, ipcMain, net } from "electron";
+import { app, ipcMain, net, session } from "electron";
 import * as path from "path";
 import { pathToFileURL } from "url";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
@@ -106,9 +106,11 @@ export function* init() {
         }
         browserWindows.forEach((win) => {
             if (!win.isDestroyed() && !win.webContents.isDestroyed()) {
-                console.log("webContents.send - accessibility-support-changed: ", accessibilitySupportEnabled, win.id);
+                const store = diMainGet("store");
+                const screenReaderActivated = store.getState().screenReader.activate;
+                console.log("webContents.send - accessibility-support-changed: ", accessibilitySupportEnabled, screenReaderActivated, win.id);
                 try {
-                    win.webContents.send("accessibility-support-changed", accessibilitySupportEnabled);
+                    win.webContents.send("accessibility-support-changed", accessibilitySupportEnabled && screenReaderActivated);
                 } catch (e) {
                     debug("webContents.send - accessibility-support-changed ERROR?", e);
                 }
@@ -120,8 +122,10 @@ export function* init() {
     // so there is no duplicate event handler.
     ipcMain.on("accessibility-support-query", (e) => {
         const accessibilitySupportEnabled = app.accessibilitySupportEnabled; // .isAccessibilitySupportEnabled()
-        console.log("ipcMain.on - accessibility-support-query, sender.send - accessibility-support-changed: ", accessibilitySupportEnabled);
-        e.sender.send("accessibility-support-changed", accessibilitySupportEnabled);
+        const store = diMainGet("store");
+        const screenReaderActivated = store.getState().screenReader.activate;
+        console.log("ipcMain.on - accessibility-support-query, sender.send - accessibility-support-changed: ", accessibilitySupportEnabled, screenReaderActivated);
+        e.sender.send("accessibility-support-changed", accessibilitySupportEnabled && screenReaderActivated);
     });
 
     yield call(() => app.whenReady());
@@ -141,9 +145,9 @@ export function* init() {
         debug(urlPathDecoded);
         const filePathUrl = pathToFileURL(urlPathDecoded).toString();
         debug(filePathUrl);
-        return net.fetch(filePathUrl); // potential security hole: local filesystem access (mitigated by URL scheme not .registerSchemesAsPrivileged() and not .handle() or .registerXXXProtocol() on r2-navigator-js.getWebViewSession().protocol or Electron.session.defaultSession.protocol)
+        return net.fetch(filePathUrl); // potential security hole: local filesystem access (mitigated by URL scheme not .registerSchemesAsPrivileged() and not .handle() or .registerXXXProtocol() directly on r2-navigator-js.getWebViewSession().protocol or any other partitioned session, unlike Electron.protocol and Electron.session.defaultSession.protocol)
     };
-    protocol.handle("filex", protocolHandler_FILEX);
+    session.defaultSession.protocol.handle("filex", protocolHandler_FILEX);
     // protocol.unhandle("filex");
 
     if (__TH__IS_DEV__) {
@@ -188,9 +192,9 @@ export function* init() {
         debug(filePath);
         const filePathUrl = pathToFileURL(filePath).toString();
         debug(filePathUrl);
-        return net.fetch(filePathUrl); // potential security hole: local filesystem access (mitigated by URL scheme not .registerSchemesAsPrivileged() and not .handle() or .registerXXXProtocol() on r2-navigator-js.getWebViewSession().protocol or Electron.session.defaultSession.protocol)
+        return net.fetch(filePathUrl); // potential security hole: local filesystem access (mitigated by URL scheme not .registerSchemesAsPrivileged() and not .handle() or .registerXXXProtocol() directly on r2-navigator-js.getWebViewSession().protocol or any other partitioned session, unlike Electron.protocol and Electron.session.defaultSession.protocol)
     };
-    protocol.handle("store", protocolHandler_Store);
+    session.defaultSession.protocol.handle("store", protocolHandler_Store);
     // protocol.unhandle("store");
 
     app.on("will-quit", () => {
@@ -199,6 +203,9 @@ export function* init() {
         debug("will-quit");
         debug("#####");
     });
+
+    // Electron.protocol === Electron.session.defaultSession.protocol
+    const pdfSession = session.fromPartition("persist:partitionpdfjsextract", { cache: false });
 
     const protocolHandler_PDF = (
         request: Request,
@@ -211,11 +218,29 @@ export function* init() {
         debug(urlPathDecoded);
         const filePathUrl = pathToFileURL(urlPathDecoded).toString();
         debug(filePathUrl);
-        return net.fetch(filePathUrl); // potential security hole: local filesystem access (mitigated by URL scheme not .registerSchemesAsPrivileged() and not .handle() or .registerXXXProtocol() on r2-navigator-js.getWebViewSession().protocol or Electron.session.defaultSession.protocol)
+        return net.fetch(filePathUrl); // potential security hole: local filesystem access (mitigated by URL scheme not .registerSchemesAsPrivileged() and not .handle() or .registerXXXProtocol() directly on r2-navigator-js.getWebViewSession().protocol or any other partitioned session, unlike Electron.protocol and Electron.session.defaultSession.protocol)
     };
-    protocol.handle("pdfjs-extract", protocolHandler_PDF);
+    pdfSession.protocol.handle("pdfjs-extract", protocolHandler_PDF);
     // protocol.unhandle("pdfjs-extract");
 
+    // FAIL because of unsupported scheme protocol, even if exposed globally in the default session:
+    // fetch("pdfjs-extract://host/%2Fpath%2Fto%2Ffile").then((r)=>r.statusCode).then((t)=>console.log(t)).catch((e)=>{console.log(e)});
+
+    // WORKS with non-partitioned BrowserWindow or WebView (CORS):
+    // const x = new XMLHttpRequest();
+    // x.open("GET", "pdfjs-extract://host/%2Fpath%2Fto%2Ffile");
+    // //x.responseType = "arraybuffer";
+    // x.responseType = "text";
+    // x.onerror = () => {
+    //     console.log("X ERROR", x.readyState, x.status, typeof x.response);
+    // };
+    // x.onreadystatechange = () => {
+    //     console.log("X STATECHANGE", x.readyState, x.status, typeof x.response, x.readyState === 4 ? x.response : undefined);
+    // };
+    // x.onprogress = () => {
+    //     console.log("X PROGRESS", x.readyState, x.status, typeof x.response);
+    // };
+    // x.send(null);
 
     yield call(() => {
         const deviceIdManager = diMainGet("device-id-manager");

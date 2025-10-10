@@ -63,6 +63,14 @@
             "descending": "تنازلي",
             "unsorted": "غير مرتب"
         },
+        "customization": {
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
+        },
         "delete": "حذف",
         "deleteBook": "حذف",
         "deleteTag": "حذف الوسم",
@@ -78,6 +86,7 @@
         "importAnnotation": "استيراد الملاحظات",
         "lang": "اللغة",
         "lastRead": "آخر قراءة",
+        "logout": "",
         "moreInfo": "تفاصيل المنشور",
         "myBooks": "منشوراتي",
         "noPublicationHelpL1": "أفلت الملفات هنا",
@@ -136,6 +145,8 @@
         "cancel": "إلغاء",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
                 "title": ""
             }
         },
@@ -244,6 +255,7 @@
         },
         "next": "التالي",
         "previous": "السابق",
+        "resumeBrowsing": "",
         "shelf": "الرف",
         "updateForm": {
             "name": "الاسم:",
@@ -1138,7 +1150,13 @@
             "thorium": {
                 "description": "",
                 "title": ""
-            }
+            },
+            "version": ""
+        },
+        "screenReaderActivate": {
+            "help": "",
+            "message": "",
+            "title": ""
         },
         "session": {
             "title": "تفعيل حفظ الجلسة"

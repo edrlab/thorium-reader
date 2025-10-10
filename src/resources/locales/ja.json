@@ -63,6 +63,14 @@
             "descending": "降順（Z-A）",
             "unsorted": "並べ替えない"
         },
+        "customization": {
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
+        },
         "delete": "削除",
         "deleteBook": "削除",
         "deleteTag": "タグを削除",
@@ -78,6 +86,7 @@
         "importAnnotation": "メモを取りこむ",
         "lang": "言語",
         "lastRead": "最終閲覧",
+        "logout": "",
         "moreInfo": "詳細情報",
         "myBooks": "わたしの本",
         "noPublicationHelpL1": "ファイルをここにおいてください",
@@ -136,6 +145,8 @@
         "cancel": "キャンセル",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
                 "title": ""
             }
         },
@@ -244,6 +255,7 @@
         },
         "next": "次へ",
         "previous": "前へ",
+        "resumeBrowsing": "",
         "shelf": "本棚",
         "updateForm": {
             "name": "名前：",
@@ -1138,7 +1150,13 @@
             "thorium": {
                 "description": "",
                 "title": ""
-            }
+            },
+            "version": ""
+        },
+        "screenReaderActivate": {
+            "help": "",
+            "message": "",
+            "title": ""
         },
         "session": {
             "title": "セッションを保存"

@@ -7,12 +7,12 @@
 
 import * as debug_ from "debug";
 import { nanoid } from "nanoid";
-import { customizationActions, themeActions, toastActions } from "readium-desktop/common/redux/actions";
+import { customizationActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { ICustomizationLockInfo } from "readium-desktop/common/redux/states/customization";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { call as callTyped, select as selectTyped, put as putTyped, /*take as takeTyped, race as raceTyped,*/ delay, SagaGenerator, all as allTyped } from "typed-redux-saga/macro";
+import { call as callTyped, select as selectTyped, put as putTyped, /*take as takeTyped, race as raceTyped, delay,*/ SagaGenerator, all as allTyped } from "typed-redux-saga/macro";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER } from "readium-desktop/common/streamerProtocol";
 import { ICustomizationManifest, ICustomizationManifestColor } from "readium-desktop/common/readium/customization/manifest";
@@ -33,10 +33,8 @@ const applyColorSet = (colors: ICustomizationManifestColor, suffix: string) => {
 
 function* profileActivating(id: string): SagaGenerator<void> {
 
-    debug(`TODO activate ${id} profile`);
     if (!id) {
         // THorium vanilla rollback, clear the local redux state
-        yield* putTyped(themeActions.setTheme.build(undefined, { enable: false }));
 
         yield* putTyped(customizationActions.welcomeScreen.build(false));
 
@@ -70,7 +68,8 @@ function* profileActivating(id: string): SagaGenerator<void> {
         return;
     }
 
-    yield* delay(1000);
+    // yield* delay(1000);
+
 
     const baseUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/custom-profile-zip/${encodeURIComponent_RFC3986(Buffer.from(id).toString("base64"))}/`;
     const manifestURL = baseUrl + encodeURIComponent_RFC3986(Buffer.from("manifest.json").toString("base64"));
@@ -103,13 +102,13 @@ function* profileActivating(id: string): SagaGenerator<void> {
 
     yield* putTyped(customizationActions.welcomeScreen.build(welcomeScreenNeeded));
 
-    const logoObj = manifestJson.images?.find((ln) => ln?.rel === "logo");
-    debug("Manifest LOGO Obj:", logoObj);
-    const logoUrl = baseUrl + encodeURIComponent_RFC3986(Buffer.from(logoObj.href).toString("base64"));
+    // const logoObj = manifestJson.images?.find((ln) => ln?.rel === "logo");
+    // debug("Manifest LOGO Obj:", logoObj);
+    // const logoUrl = baseUrl + encodeURIComponent_RFC3986(Buffer.from(logoObj.href).toString("base64"));
 
     const colorsDarkLight = manifestJson.theme.color;
 
-    yield* putTyped(themeActions.setTheme.build(undefined, { enable: true, logo: logoUrl, color: colorsDarkLight }));
+    // yield* putTyped(themeActions.setTheme.build(undefined, { enable: true, logo: logoUrl, color: colorsDarkLight }));
 
 
     // TODO https://github.com/edrlab/thorium-reader/pull/3095/files#diff-c6b317c691e2e0831a6aeebdf7b5dba7ca96d4abff06bf95d8ccfbed69475618R159-R167
@@ -122,7 +121,7 @@ function* profileActivating(id: string): SagaGenerator<void> {
     const catalogsLinks = manifestJson.links?.filter((ln) => ln.rel === "catalog");
     debug("Manifest CATALOGS links", catalogsLinks);
 
-    if (catalogsLinks.length) {
+    if (catalogsLinks?.length) {
         const catalogLink = catalogsLinks[0];
 
         let catalogLinkOpdsAuthenticateDocumentHref = "";
@@ -159,9 +158,19 @@ function* profileActivatingAction(action: customizationActions.activating.TActio
 
     if (lock.state === "ACTIVATING" && lock.lockInfo.id === id) {
 
-        yield* callTyped(profileActivating, id);
+        try {
+            yield* callTyped(profileActivating, id);
 
-        yield* putTyped(customizationActions.lock.build("IDLE"));
+        } catch (e) {
+
+            yield* putTyped(toastActions.openRequest.build(ToastType.Error, `${e}`));
+            debug("Critical ERROR to activate the profile", id);
+            debug(e);
+
+        } finally {
+
+            yield* putTyped(customizationActions.lock.build("IDLE", { uuid: "" }));
+        }
 
     } else {
 
@@ -210,13 +219,13 @@ export function saga() {
     callTyped(function* () {
 
         const customization = yield* selectTyped((state: ICommonRootState) => state.customization);
-        const theme = yield* selectTyped((state: ICommonRootState) => state.theme);
         const id = customization.activate.id;
-        if (customization.lock.state !== "IDLE" || (!theme.customization?.enable && !id)) {
+        if (customization.lock.state !== "IDLE" || !id) {
             return ;
         }
-        const action = customizationActions.activating.build(id);
-        yield* callTyped(profileActivatingAction, action);
+        // const action = customizationActions.activating.build(id);
+        // yield* callTyped(profileActivatingAction, action);
+        yield* putTyped(customizationActions.activating.build(id));
     }),
 ]);
 }

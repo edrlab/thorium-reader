@@ -63,6 +63,14 @@
             "descending": "padajoče",
             "unsorted": "nerazvrščeno"
         },
+        "customization": {
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
+        },
         "delete": "Izbriši",
         "deleteBook": "Izbriši",
         "deleteTag": "Odstrani oznako",
@@ -78,6 +86,7 @@
         "importAnnotation": "Uvoz opomb",
         "lang": "Jezik",
         "lastRead": "Nazadnje brano",
+        "logout": "",
         "moreInfo": "Osnovni podatki",
         "myBooks": "Moje knjige",
         "noPublicationHelpL1": "Tukaj spusti datoteke",
@@ -136,6 +145,8 @@
         "cancel": "Prekliči",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
                 "title": ""
             }
         },
@@ -244,6 +255,7 @@
         },
         "next": "Naslednja",
         "previous": "Prejšnja",
+        "resumeBrowsing": "",
         "shelf": "Polica",
         "updateForm": {
             "name": "Ime:",
@@ -1138,7 +1150,13 @@
             "thorium": {
                 "description": "",
                 "title": ""
-            }
+            },
+            "version": ""
+        },
+        "screenReaderActivate": {
+            "help": "",
+            "message": "",
+            "title": ""
         },
         "session": {
             "title": "Shrani sejo"

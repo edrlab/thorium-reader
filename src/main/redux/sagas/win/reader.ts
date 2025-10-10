@@ -39,6 +39,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
 
     const readerWin = action.payload.win;
     const webContents = readerWin.webContents;
+    const screenReaderActivate = yield* selectTyped((_state: RootState) => _state.screenReader.activate);
     const locale = yield* selectTyped((_state: RootState) => _state.i18n.locale);
     const reader = yield* selectTyped((_state: RootState) => _state.win.session.reader[identifier]);
     const readerDefaultConfig = yield* selectTyped((_state: RootState) => _state.reader.defaultConfig);
@@ -77,6 +78,9 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     webContents.send(readerIpc.CHANNEL, {
         type: readerIpc.EventType.request,
         payload: {
+            screenReader: {
+                activate: screenReaderActivate,
+            },
             i18n: {
                 locale,
             },

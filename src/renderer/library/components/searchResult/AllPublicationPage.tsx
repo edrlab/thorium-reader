@@ -254,7 +254,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
     }
 
     private accessibilitySupportChanged = (_e: Electron.IpcRendererEvent, accessibilitySupportEnabled: boolean) => {
-        console.log("ipcRenderer.on - accessibility-support-changed: ", accessibilitySupportEnabled);
+        console.log("ALLPUBPAGES.tsx ipcRenderer.on - accessibility-support-changed: ", accessibilitySupportEnabled);
 
         // prevents infinite loop via componentDidUpdate()
         if (accessibilitySupportEnabled !== this.state.accessibilitySupportEnabled) {

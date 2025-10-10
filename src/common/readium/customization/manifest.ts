@@ -18,7 +18,7 @@ export interface ICustomizationManifest {
     contentHash: string;
     title: IStringMap;
     description: IStringMap;
-    welcomeScreen: string;
+    // welcomeScreen: string; // replace with a link rel = "welcome-screen"
     // default_locale: string; // BCP47 // not used anymore but still in notion example manifest
     theme: ICustomizationManifestTheme;
     images: ICustomizationLink[];
@@ -62,8 +62,10 @@ export interface ICustomizationManifestLinkPropertiesExtension {
 
 export interface ICustomizationLink {
     href: string; // relative file path in zip directory or http(s) link => not fully an URI
-    rel: string;
-    type: string;
+    rel?: string;
+    type?: string;
+    title?: IStringMap;
+    language?: string; // bcp47
 }
 
 export const customizationManifestJsonSchema = {
@@ -79,7 +81,6 @@ export const customizationManifestJsonSchema = {
     "description",
     "theme",
     "images",
-    "welcomeScreen",
   ],
   "properties": {
     "manifestVersion": {
@@ -110,9 +111,6 @@ export const customizationManifestJsonSchema = {
       },
       "minProperties": 1,
     },
-    "welcomeScreen": {
-	    "type": "string",
-	  },
     "theme": {
       "type": "object",
       "properties": {

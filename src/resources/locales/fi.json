@@ -63,6 +63,14 @@
             "descending": "laskeva",
             "unsorted": "lajittelematon"
         },
+        "customization": {
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
+        },
         "delete": "Poista",
         "deleteBook": "Poista",
         "deleteTag": "Poista tunniste",
@@ -78,6 +86,7 @@
         "importAnnotation": "Tuo muistiinpanot",
         "lang": "Kieli",
         "lastRead": "Luettu viimeksi",
+        "logout": "",
         "moreInfo": "Tietoa julkaisusta",
         "myBooks": "Omat kirjat",
         "noPublicationHelpL1": "Pudota julkaisu tähän",
@@ -136,6 +145,8 @@
         "cancel": "Peru",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
                 "title": ""
             }
         },
@@ -244,6 +255,7 @@
         },
         "next": "Seuraava",
         "previous": "Edellinen",
+        "resumeBrowsing": "",
         "shelf": "Hylly",
         "updateForm": {
             "name": "Nimi:",
@@ -1138,7 +1150,13 @@
             "thorium": {
                 "description": "",
                 "title": ""
-            }
+            },
+            "version": ""
+        },
+        "screenReaderActivate": {
+            "help": "",
+            "message": "",
+            "title": ""
         },
         "session": {
             "title": "Tallenna istunto"

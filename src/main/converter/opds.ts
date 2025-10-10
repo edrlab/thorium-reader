@@ -40,6 +40,7 @@ import { diSymbolTable } from "../diSymbolTable";
 import { type Store } from "redux";
 import { RootState } from "../redux/states";
 import { PublicationRepository } from "../db/repository/publication";
+import { getAuthenticationToken } from "../network/http";
 
 // Logger
 const debug = debug_("readium-desktop:main/converter/opds");
@@ -73,11 +74,62 @@ export class OpdsFeedViewConverter {
     @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
 
-    public convertDocumentToView(document: OpdsFeedDocument): IOpdsFeedView {
+    // @inject(diSymbolTable["opds-service"])
+    // private readonly opdsService!: OpdsService;
+
+    public async convertDocumentToView(document: OpdsFeedDocument): Promise<IOpdsFeedView> {
+
+        let authentified: boolean = undefined;
+
+        let catalogLinkUrl: URL;
+        try {
+            catalogLinkUrl = (new URL(document.url));
+        } catch {
+            // nothing
+        }
+        if (catalogLinkUrl) {
+            const authToken = await getAuthenticationToken(catalogLinkUrl);
+            if (authToken?.accessToken) {
+                debug("catalog authentified: ", catalogLinkUrl.host);
+                authentified = true;
+            } else {
+                debug("catalog NOT authentified: ", catalogLinkUrl.host);
+            }
+        } else {
+            debug("No catalogLinkUrl found, return");
+        }
+
+        // let's trigger the same event as customization profile catalog
+        // const feedHasAuthenticationFunction = async () => {
+        //     try {
+        //         const response = await httpGetWithAuth(false)(document.url);
+        //         const opdsService = diMainGet("opds-service"); // circular-reference issue
+        //         const opdsView = await opdsService.opdsRequestTransformer(response);
+        //         if (!opdsView) {
+        //             const bookshelf = opdsView.links?.bookshelf;
+        //             if (bookshelf?.length) {
+        //                 if (bookshelf[0].url) {
+        //                     const bookshelfUrl = bookshelf[0].url;
+        //                     const response = await httpGetWithAuth(false)(bookshelfUrl);
+        //                     const mimeType = parseContentType(response.contentType);
+        //                     if (contentTypeisOpdsAuth(mimeType)) {
+        //                         return true;
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     } catch {
+        //         // ignore
+        //     }
+        //     return false;
+        // }
+
         return {
             identifier: document.identifier, // preserve Identifiable identifier
             title: document.title,
             url: document.url,
+            authentified: authentified,
+            // feedHasAuthentication: authentified || await feedHasAuthenticationFunction(),
         };
     }
 

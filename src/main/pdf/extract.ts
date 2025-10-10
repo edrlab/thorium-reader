@@ -8,12 +8,14 @@
 import * as debug_ from "debug";
 import * as path from "path";
 // import * as fs from "fs";
-import { BrowserWindow } from "electron";
+import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
 
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 import { IInfo } from "./extract.type";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_EXTRACT_PDF } from "readium-desktop/common/streamerProtocol";
+
+const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
 
 const debug = debug_("readium-desktop:main/pdf/extract/index.ts");
 debug("_");
@@ -54,7 +56,7 @@ export const extractPDFData =
                     // enableRemoteModule: false,
                     allowRunningInsecureContent: false,
                     backgroundThrottling: true,
-                    devTools: __TH__IS_DEV__, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
+                    devTools: ENABLE_DEV_TOOLS, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
                     nodeIntegration: false,
                     sandbox: true,
                     contextIsolation: true,
@@ -62,16 +64,51 @@ export const extractPDFData =
                     webSecurity: true,
                     webviewTag: false,
                     preload: preloadPath, // "file://" + ... when setting the "preload" attribute on webview, but not with webPreferences
+                    partition: "persist:partitionpdfjsextract",
                 },
             });
 
             // win.hide(); // doesn't works on linux
             await win.loadURL(`${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_EXTRACT_PDF}/pdfjs/web/viewer.html?file=${pdfPath}`);
 
-            const content = win.webContents;
+            const willNavigate = (navUrl: string | undefined | null) => {
+
+                if (!navUrl) {
+                    debug("willNavigate ==> nil: ", navUrl);
+                    return;
+                }
+
+                if (/^https?:\/\//.test(navUrl)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
+
+                    debug("willNavigate ==> EXTERNAL: ", win.webContents.getURL(), " *** ", navUrl);
+                    setTimeout(async () => {
+                        await shell.openExternal(navUrl);
+                    }, 0);
+
+                    return;
+                }
+
+                debug("willNavigate ==> noop: ", navUrl);
+            };
+
+            win.webContents.setWindowOpenHandler((details: HandlerDetails) => {
+                debug("BrowserWindow.webContents.setWindowOpenHandler (always DENY): ", win.webContents.id, " --- ", details.url, " === ", win.webContents.getURL());
+
+                willNavigate(details.url);
+
+                return { action: "deny" };
+            });
+
+            win.webContents.on("will-navigate", (details: ElectronEvent<WebContentsWillNavigateEventParams>, url: string) => {
+                debug("BrowserWindow.webContents.on('will-navigate') (always PREVENT): ", win.webContents.id, " --- ", details.url, " *** ", url, " === ", win.webContents.getURL());
+
+                details.preventDefault();
+
+                willNavigate(details.url);
+            });
 
             const pdata = new Promise<TExtractPdfData>((resolve) =>
-                content.on("ipc-message", (e, c, ...arg) => {
+                win.webContents.on("ipc-message", (e, c, ...arg) => {
                     debug("IPC");
                     debug(e, c, arg);
 

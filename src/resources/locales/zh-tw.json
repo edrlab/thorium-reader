@@ -63,6 +63,14 @@
             "descending": "降冪",
             "unsorted": "亂序"
         },
+        "customization": {
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
+        },
         "delete": "刪除",
         "deleteBook": "刪除書籍",
         "deleteTag": "刪除標籤",
@@ -78,6 +86,7 @@
         "importAnnotation": "匯入註解",
         "lang": "語言",
         "lastRead": "最後閱讀",
+        "logout": "",
         "moreInfo": "更多訊息",
         "myBooks": "我的書籍",
         "noPublicationHelpL1": "將文件拖放到此處",
@@ -136,6 +145,8 @@
         "cancel": "取消",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
                 "title": ""
             }
         },
@@ -244,6 +255,7 @@
         },
         "next": "下一個",
         "previous": "上一個",
+        "resumeBrowsing": "",
         "shelf": "書架",
         "updateForm": {
             "name": "名稱：",
@@ -1138,7 +1150,13 @@
             "thorium": {
                 "description": "",
                 "title": ""
-            }
+            },
+            "version": ""
+        },
+        "screenReaderActivate": {
+            "help": "",
+            "message": "",
+            "title": ""
         },
         "session": {
             "title": "保存登入狀態"

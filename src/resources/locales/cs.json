@@ -63,6 +63,14 @@
             "descending": "sestupně",
             "unsorted": "netříděno"
         },
+        "customization": {
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
+        },
         "delete": "Odstranit",
         "deleteBook": "Odstranit",
         "deleteTag": "Odstranit štítek",
@@ -78,6 +86,7 @@
         "importAnnotation": "Importovat poznámky",
         "lang": "Jazyk",
         "lastRead": "Naposledy čteno",
+        "logout": "",
         "moreInfo": "Podropnosti o publikaci",
         "myBooks": "Mé publikace",
         "noPublicationHelpL1": "Sem přetáhněte soubory",
@@ -136,6 +145,8 @@
         "cancel": "Zrušit",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
                 "title": ""
             }
         },
@@ -244,6 +255,7 @@
         },
         "next": "Další",
         "previous": "Předchozí",
+        "resumeBrowsing": "",
         "shelf": "Polička",
         "updateForm": {
             "name": "Název:",
@@ -1138,7 +1150,13 @@
             "thorium": {
                 "description": "",
                 "title": ""
-            }
+            },
+            "version": ""
+        },
+        "screenReaderActivate": {
+            "help": "",
+            "message": "",
+            "title": ""
         },
         "session": {
             "title": "Povolit ukládání relací"

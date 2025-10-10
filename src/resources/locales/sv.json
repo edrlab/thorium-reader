@@ -63,6 +63,14 @@
             "descending": "fallande",
             "unsorted": "osorterat"
         },
+        "customization": {
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
+        },
         "delete": "Ta bort",
         "deleteBook": "Ta bort",
         "deleteTag": "Ta bort taggen",
@@ -78,6 +86,7 @@
         "importAnnotation": "Importera anteckningar",
         "lang": "Språk",
         "lastRead": "Senast läst",
+        "logout": "",
         "moreInfo": "Information om publikationen",
         "myBooks": "Mina böcker",
         "noPublicationHelpL1": "Släpp en publikation här",
@@ -136,6 +145,8 @@
         "cancel": "Avbryt",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
                 "title": ""
             }
         },
@@ -145,7 +156,7 @@
         "deleteBookmarksText": "Vill du radera {{- bookmarkListLength}} bokmärke(n)?",
         "deleteFeed": "Vill du ta bort den här katalogen?",
         "deletePublication": "Vill du ta bort den här publikationen?",
-        "deletePublicationWithNotes": "Varning: Det finns anteckningar och/eller bokmärken som också kommer raderas! (Om du vill behålla dem så måste du exportera anteckningar och bokmärken innan du tar bort boken)",
+        "deletePublicationWithNotes": "Varning: Det finns anteckningar och/eller bokmärken som också kommer att raderas! (Om du vill behålla dem så måste du exportera anteckningar och bokmärken innan du tar bort boken)",
         "import": "Vill du importera följande filer:",
         "importError": "Det uppstod ett fel, kontrollera filtypen ({{acceptedExtension}})",
         "renew": "Vill du förnya lånet?",
@@ -244,6 +255,7 @@
         },
         "next": "Nästa",
         "previous": "Föregående",
+        "resumeBrowsing": "",
         "shelf": "Hylla",
         "updateForm": {
             "name": "Namn:",
@@ -675,10 +687,10 @@
         },
         "goToContent": "Gå till innehållet",
         "imgViewer": {
-            "title": "",
+            "title": "Bildvisare (zoom)",
             "zoomIn": "Zooma in",
             "zoomOut": "Zooma ut",
-            "zoomReset": ""
+            "zoomReset": "Återställ zoom"
         },
         "marks": {
             "annotations": "Anteckningar",
@@ -723,18 +735,18 @@
             "goToError": "Sidnumret finns inte",
             "goToPlaceHolder": "Ange ett sidnummer",
             "goToTitle": "Gå till sida",
-            "history": "",
-            "historyNext": "Hoppa framåt",
-            "historyPrevious": "Hoppa tillbaka",
+            "history": "Navigeringshistorik",
+            "historyNext": "Hoppa framåt i navigeringshistoriken",
+            "historyPrevious": "Hoppa bakåt i navigeringshistoriken",
             "infoTitle": "Information",
-            "magnifyingGlassButton": "Sök i publikationen",
-            "openTableOfContentsTitle": "Navigation",
+            "magnifyingGlassButton": "Sök i boken",
+            "openTableOfContentsTitle": "Navigering",
             "page": "Sida",
             "pdfscalemode": "Anpassa till hel sida eller sidbredd",
-            "print": "",
-            "printDisabled": "",
-            "screenNext": "",
-            "screenPrevious": "",
+            "print": "Skriv ut",
+            "printDisabled": "Utskrift förbjuden",
+            "screenNext": "Nästa sida",
+            "screenPrevious": "Föregående sida",
             "settingsTitle": "Inställningar"
         },
         "notes": {
@@ -760,22 +772,22 @@
             "searchTitle": "Sök:"
         },
         "print": {
-            "descriptionLcpCount": "",
-            "descriptionLcpPrintable": "",
-            "howTo": "",
-            "lcpInfo": "",
-            "noPagesLcpLimitReached": "",
-            "noPrintablePages": "",
-            "pageHelpInfo": "",
-            "pageHelpInfo1": "",
-            "pageHelpInfo2": "",
-            "pageHelpInfo3": "",
-            "pageHelpInfo4": "",
-            "pages": "",
-            "preview": "",
-            "print": "",
-            "printablePages": "",
-            "title": ""
+            "descriptionLcpCount": "Gräns för återstående sidor: {{- count}}",
+            "descriptionLcpPrintable": "Tidigare utskrivna sidor: {{- printable}} ({{- count}})",
+            "howTo": "Så här väljer du ett sidintervall att skriva ut",
+            "lcpInfo": "Du kan skriva ut maximalt {{- count}} sidor. Välj sidorna du vill skriva ut här.",
+            "noPagesLcpLimitReached": "Du har nått gränsen för LCP",
+            "noPrintablePages": "Inga utskrivbara sidor",
+            "pageHelpInfo": "Format för sidval:",
+            "pageHelpInfo1": "ange ett sidnummer för att välja en enskild sida (t.ex. \"6\")",
+            "pageHelpInfo2": "ange två sidnummer med bindestreck för att välja ett sammanhängande sidintervall (t.ex. \"6-13\")",
+            "pageHelpInfo3": "använd semikolon för att separera flera sidor eller sidintervall (t.ex. \"5;14-20;37\")",
+            "pageHelpInfo4": "utelämna första eller sista sidan i intervallet för att ange början eller slutet av boken (t.ex. \"-16\" = \"1-16\", \"34-\" = \"34-100\" om boken har 100 sidor)",
+            "pages": "Sidor",
+            "preview": "Förhandsvisning",
+            "print": "Skriv ut",
+            "printablePages": "Antal sidor som kan skrivas ut (totalt)",
+            "title": "Välj sidor att skriva ut"
         },
         "settings": {
             "column": {
@@ -799,7 +811,7 @@
             "letterSpacing": "Teckenavstånd",
             "lineSpacing": "Radavstånd",
             "margin": "Marginaler",
-            "mathjax": "",
+            "mathjax": "Aktivera MathJax",
             "noFootnotes": "Inaktivera popup-fotnoter",
             "noRTLFlip": "Inaktivera vänster-till-höger-gränssnitt",
             "noRuby": "Dölj japanska ruby-tecken",
@@ -888,236 +900,236 @@
         "keyboard": {
             "advancedMenu": "Meny",
             "cancel": "Avbryt",
-            "disclaimer": "Kortkommandona baserar sig på QWERTY-tangentbordslayouten.",
+            "disclaimer": "Kortkommandona baserar sig på QWERTY-tangentbordslayouten",
             "editUserJson": "Redigera användarfil ...",
             "keyboardShortcuts": "Kortkommandon",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "",
-                    "name": ""
+                    "description": "Öppna dialogrutan för att skapa bokmärke och redigera namn (anteckning), färg och tagg",
+                    "name": "Skapa bokmärke med tagg"
                 },
                 "AnnotationsCreate": {
-                    "description": "",
-                    "name": ""
+                    "description": "Öppna dialogrutan för att skapa anteckning för den markerade texten och redigera textanteckning, markeringsfärg, markeringstyp och tagg",
+                    "name": "Skapa anteckning"
                 },
                 "AnnotationsCreateQuick": {
-                    "description": "",
-                    "name": ""
+                    "description": "Skapa en snabbanteckning för den markerade texten med senast använda markeringsfärg och -typ (anteckning och tagg lämnas tomma)",
+                    "name": "Skapa snabbanteckning"
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "",
-                    "name": ""
+                    "description": "Växla mellan de visuella indikatorerna för anteckningar och bokmärken, antingen i dokumentmarginalen eller i texten",
+                    "name": "Slå på/av anteckningsmarginal"
                 },
                 "AudioNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå framåt till nästa ljudavsnitt (e-bok med text och uppläsning, text-till-tal eller ljudbok)",
+                    "name": "Nästa ljudavsnitt"
                 },
                 "AudioNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå framåt till nästa ljudavsnitt (e-bok med text och uppläsning, text-till-tal eller ljudbok). Hoppar över alla strukturer som kan hoppas över.",
+                    "name": "Nästa ljudavsnitt (hoppa över)"
                 },
                 "AudioPlayPause": {
-                    "description": "",
-                    "name": ""
+                    "description": "Starta eller pausa uppläsning (e-bok med text och uppläsning, text-till-tal eller ljudbok)",
+                    "name": "Spela/pausa ljud"
                 },
                 "AudioPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå tillbaka till föregående ljudavsnitt (e-bok med text och uppläsning, text-till-tal eller ljudbok)",
+                    "name": "Föregående ljudavsnitt"
                 },
                 "AudioPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå tillbaka till föregående ljudavsnitt (e-bok med text och uppläsning, text-till-tal eller ljudbok). Hoppar över alla strukturer som kan hoppas över.",
+                    "name": "Föregående ljudavsnitt (hoppa över)"
                 },
                 "AudioStop": {
-                    "description": "",
-                    "name": ""
+                    "description": "Stoppa uppspelningen (e-bok med text och uppläsning, text-till-tal eller ljudbok)",
+                    "name": "Stoppa uppspelning av ljud"
                 },
                 "CloseReader": {
-                    "description": "",
-                    "name": ""
+                    "description": "Stäng läsfönstret och återgå till biblioteket",
+                    "name": "Stäng läsfönster"
                 },
                 "FXLZoomIn": {
-                    "description": "",
-                    "name": ""
+                    "description": "Zooma in på en enskild sida eller ett uppslag med fast layout.",
+                    "name": "Zooma in (fast layout)"
                 },
                 "FXLZoomOut": {
-                    "description": "",
-                    "name": ""
+                    "description": "Zooma ut från en sida eller ett uppslag med fast layout.",
+                    "name": "Zooma ut (fast layout)"
                 },
                 "FXLZoomReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Återställ zoom för en sida eller ett uppslag med fast layout.",
+                    "name": "Återställ zoom (fast layout)"
                 },
                 "FocusMain": {
-                    "description": "",
-                    "name": ""
+                    "description": "Flytta tangentbordsfokus till huvudlandmärket i det grafiska gränssnittet. I läsfönstret flyttas fokus då till bokens innehåll.",
+                    "name": "Gå till huvudinnehållet"
                 },
                 "FocusMainDeep": {
-                    "description": "",
-                    "name": ""
+                    "description": "I läsfönstret flyttas tangentbordsfokus till bokens senaste lästa innehåll med en mer tillförlitlig teknik för skärmläsare",
+                    "name": "Djupt fokus på huvudinnehåll"
                 },
                 "FocusReaderGotoPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Flytta tangentbordsfokus till avsnittet \"Gå till sida\" i läsfönstrets navigeringspanel",
+                    "name": "Gå till \"Gå till sida\""
                 },
                 "FocusReaderNavigation": {
-                    "description": "",
-                    "name": ""
+                    "description": "Flytta tangentbordsfokus till läsfönstrets navigeringspanel",
+                    "name": "Gå till navigeringspanelen"
                 },
                 "FocusReaderNavigationAnnotations": {
-                    "description": "",
-                    "name": ""
+                    "description": "Flytta tangentbordsfokus till avsnittet \"Anteckningar\" i läsfönstrets navigeringspanel",
+                    "name": "Gå till \"Anteckningar\""
                 },
                 "FocusReaderNavigationBookmarks": {
-                    "description": "",
-                    "name": ""
+                    "description": "Flytta tangentbordsfokus till avsnittet \"Bokmärken\" i läsfönstrets navigeringspanel",
+                    "name": "Gå till \"Bokmärken\""
                 },
                 "FocusReaderNavigationSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Flytta tangentbordsfokus till avsnittet \"Sök\" i läsfönstrets navigeringspanel",
+                    "name": "Gå till \"Sök\""
                 },
                 "FocusReaderNavigationTOC": {
-                    "description": "",
-                    "name": ""
+                    "description": "Flytta tangentbordsfokus till avsnittet \"Innehållsförteckning\" i läsfönstrets navigeringspanel",
+                    "name": "Gå till \"Innehållsförteckning\""
                 },
                 "FocusReaderSettings": {
-                    "description": "",
-                    "name": ""
+                    "description": "Flytta tangentbordsfokus till inställningsmenyn (visningsalternativ m.m.)",
+                    "name": "Gå till läsarinställningar"
                 },
                 "FocusSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Flytta tangentbordsfokus till sökrutan i läsfönstret. I biblioteksfönstret påbörjas en sökning i bokhyllan eller i den aktiva katalogen.",
+                    "name": "Sök"
                 },
                 "FocusToolbar": {
-                    "description": "",
-                    "name": ""
+                    "description": "Flytta tangentbordsfokus till landmärket precis innan hoppa-över-länken (som flyttar fokus till huvudinnehållet i biblioteks- eller läsvyn)",
+                    "name": "Gå till verktygsfältet"
                 },
                 "NavigateNextChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå till nästa dokument i bokens läsordning (t.ex. kapitel) i läsfönstret. Det finns ett alternativt kortkommando för detta.",
+                    "name": "Gå till nästa kapitel"
                 },
                 "NavigateNextChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå till nästa dokument i bokens läsordning (t.ex. kapitel) i läsfönstret. Detta är ett alternativt kortkommando.",
+                    "name": "Gå till nästa kapitel (alternativt kortkommando)"
                 },
                 "NavigateNextHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "Hoppa ett steg framåt i navigeringshistoriken i läsfönstret",
+                    "name": "Gå framåt i navigeringshistoriken"
                 },
                 "NavigateNextLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå till nästa sida i listan över böcker i biblioteksvyn. Det finns ett alternativt kortkommando för detta.",
+                    "name": "Gå till nästa sida i biblioteket"
                 },
                 "NavigateNextLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå till nästa sida i listan över böcker i biblioteksvyn. Detta är ett alternativt kortkommando.",
+                    "name": "Gå till nästa sida i biblioteket (alternativt kortkommando)"
                 },
                 "NavigateNextOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå till nästa sida i kataloger/OPDS-flödesvyn. Det finns ett alternativt kortkommando för detta.",
+                    "name": "Gå till nästa OPDS-sida"
                 },
                 "NavigateNextOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå till nästa sida i kataloger/OPDS-flödesvyn. Detta är ett alternativt kortkommando.",
+                    "name": "Gå till nästa OPDS-sida (alternativt kortkommando)"
                 },
                 "NavigateNextPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Bläddra till nästa sida i boken i läsfönstret. Det finns ett alternativt kortkommando för detta.",
+                    "name": "Gå till nästa sida"
                 },
                 "NavigateNextPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Bläddra till nästa sida i boken i läsfönstret. Detta är ett alternativt kortkommando.",
+                    "name": "Gå till nästa sida (alternativt kortkommando)"
                 },
                 "NavigatePreviousChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå till föregående dokument i bokens läsordning (t.ex. kapitel) i läsfönstret. Det finns ett alternativt kortkommando för detta.",
+                    "name": "Gå till föregående kapitel"
                 },
                 "NavigatePreviousChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå till föregående dokument i bokens läsordning (t.ex. kapitel) i läsfönstret. Detta är ett alternativt kortkommando.",
+                    "name": "Gå till föregående kapitel (alternativt kortkommando)"
                 },
                 "NavigatePreviousHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "Hoppa ett steg bakåt i navigeringshistoriken i läsfönstret",
+                    "name": "Gå bakåt i navigeringshistoriken"
                 },
                 "NavigatePreviousLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå till föregående sida i listan över böcker i biblioteksvyn. Det finns ett alternativt kortkommando för detta.",
+                    "name": "Gå till föregående sida i biblioteket"
                 },
                 "NavigatePreviousLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå till föregående sida i listan över böcker i biblioteksvyn. Detta är ett alternativt kortkommando.",
+                    "name": "Gå till föregående sida i biblioteket (alternativt kortkommando)"
                 },
                 "NavigatePreviousOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå till föregående sida i kataloger/OPDS-flödesvyn. Det finns ett alternativt kortkommando för detta.",
+                    "name": "Gå till föregående OPDS-sida"
                 },
                 "NavigatePreviousOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå till föregående sida i kataloger/OPDS-flödesvyn. Detta är ett alternativt kortkommando.",
+                    "name": "Gå till föregående OPDS-sida (alternativt kortkommando)"
                 },
                 "NavigatePreviousPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Bläddra till föregående sida i boken i läsfönstret. Det finns ett alternativt kortkommando för detta.",
+                    "name": "Gå till föregående sida"
                 },
                 "NavigatePreviousPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Bläddra till föregående sida i boken i läsfönstret. Detta är ett alternativt kortkommando.",
+                    "name": "Gå till föregående sida (alternativt kortkommando)"
                 },
                 "NavigateToBegin": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå till början av boken i läsfönstret",
+                    "name": "Gå till början av boken"
                 },
                 "NavigateToEnd": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå till slutet av boken i läsfönstret",
+                    "name": "Gå till slutet av boken"
                 },
                 "OpenReaderInfo": {
-                    "description": "",
-                    "name": ""
+                    "description": "Öppna \"Om boken\" från läsfönstret",
+                    "name": "Visa information om boken"
                 },
                 "OpenReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "Öppna dialogrutan som visar information om boken och fokusera på avsnittet om aktuell läsposition",
+                    "name": "Visa information om boken, visa läsposition"
                 },
                 "Print": {
-                    "description": "",
-                    "name": ""
+                    "description": "Öppna utskriftsdialogen från läsfönstret",
+                    "name": "Skriv ut"
                 },
                 "SearchNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå till nästa sökresultat i läsfönstret. Det finns ett alternativt kortkommando för detta.",
+                    "name": "Nästa sökresultat"
                 },
                 "SearchNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå till nästa sökresultat i läsfönstret. Detta är ett alternativt kortkommando.",
+                    "name": "Nästa sökresultat (alternativt kortkommando)"
                 },
                 "SearchPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå till föregående sökresultat i läsfönstret. Det finns ett alternativt kortkommando för detta.",
+                    "name": "Föregående sökresultat"
                 },
                 "SearchPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Gå till föregående sökresultat i läsfönstret. Detta är ett alternativt kortkommando.",
+                    "name": "Föregående sökresultat (alternativt kortkommando)"
                 },
                 "SpeakReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "Beskriv aktuell läsposition i läsfönstret med text anpassad för skärmläsare",
+                    "name": "Beskriv läsposition (med tal)"
                 },
                 "ToggleBookmark": {
-                    "description": "",
-                    "name": ""
+                    "description": "Lägg till ett bokmärke eller ta bort det nuvarande om det är markerat",
+                    "name": "Lägg till eller ta bort bokmärke"
                 },
                 "ToggleReaderFullscreen": {
-                    "description": "",
-                    "name": ""
+                    "description": "Starta eller avsluta helskärmsläge i läsfönstret. Detta är inte samma sak som \"zenläge\" som förenklar gränssnittet.",
+                    "name": "Starta eller avsluta helskärmsläge"
                 }
             },
             "loadUserJson": "Läs in från användarfil",
-            "noShortcutFound": "",
+            "noShortcutFound": "Inget kortkommando hittades",
             "resetDefaults": "Återställ (läs in standard)",
             "save": "Spara",
-            "searchPlaceholder": ""
+            "searchPlaceholder": "Sök efter kortkommando"
         },
         "language": {
             "languageChoice": "Språk"
@@ -1128,9 +1140,9 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "ANVÄND STANDARDMALLEN",
-                "enableCheckbox": "Aktivera/inaktivera ändringar i Mustache-mallen när anteckningar exporteras till HTML",
-                "overrideHTMLTemplate": "Använd egen Mustache-mall när anteckningar exporteras till HTML"
+                "applyDefaultTemplate": "Använd standardmallen",
+                "enableCheckbox": "Anpassa HTML-mallen",
+                "overrideHTMLTemplate": "Export av anteckningar och bokmärken"
             }
         },
         "profiles": {
@@ -1138,7 +1150,13 @@
             "thorium": {
                 "description": "",
                 "title": ""
-            }
+            },
+            "version": ""
+        },
+        "screenReaderActivate": {
+            "help": "",
+            "message": "",
+            "title": ""
         },
         "session": {
             "title": "Spara session"

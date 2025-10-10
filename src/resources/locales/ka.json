@@ -63,6 +63,14 @@
             "descending": "",
             "unsorted": ""
         },
+        "customization": {
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
+        },
         "delete": "წაშლა",
         "deleteBook": "წაშლა",
         "deleteTag": "იარლიყის წაშლა",
@@ -78,6 +86,7 @@
         "importAnnotation": "",
         "lang": "ენა",
         "lastRead": "",
+        "logout": "",
         "moreInfo": "მეტი ინფორმაცია",
         "myBooks": "ჩემი წიგნები",
         "noPublicationHelpL1": "ჩააგდე პუბლიკაცია აქ",
@@ -136,6 +145,8 @@
         "cancel": "გადაფიქრება",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
                 "title": ""
             }
         },
@@ -244,6 +255,7 @@
         },
         "next": "მომდევნო",
         "previous": "წინა",
+        "resumeBrowsing": "",
         "shelf": "თარო",
         "updateForm": {
             "name": "",
@@ -1138,7 +1150,13 @@
             "thorium": {
                 "description": "",
                 "title": ""
-            }
+            },
+            "version": ""
+        },
+        "screenReaderActivate": {
+            "help": "",
+            "message": "",
+            "title": ""
         },
         "session": {
             "title": "სესიის შენახვა"

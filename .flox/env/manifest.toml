@@ -126,11 +126,34 @@ unset FLOX_CACHE_DIR
 export NODE_PATH="$NPM_CONFIG_PREFIX/lib/node_modules${NODE_PATH:+:$NODE_PATH}";
 [[ ! -z "${FLX_VERBOSE}" ]] && echo "-----> NODE_PATH: ${NODE_PATH}";
 
-# export PATH="$NPM_CONFIG_PREFIX/bin:$PATH";
+if [[ ! -v FLX_VERBOSE ]]; then
+# unset
+npm install -g sfw --foreground-scripts
+elif [[ -z "${FLX_VERBOSE}" ]]; then
+# empty
+npm install -g sfw --foreground-scripts
+else
+npm install -g sfw --foreground-scripts 1>/dev/null
+fi
 
-npm install -g npm --foreground-scripts 1>/dev/null
-npm install -g npm-check-updates --foreground-scripts 1>/dev/null
-# npm install -g @electron/asar --foreground-scripts 1>/dev/null
+export PATH="$NPM_CONFIG_PREFIX/bin:$PATH";
+[[ ! -z "${FLX_VERBOSE}" ]] && ls -alshFR --color=auto "$NPM_CONFIG_PREFIX/lib/node_modules/sfw/.sfw-cache"
+
+if [[ ! -v FLX_VERBOSE ]]; then
+# unset
+sfw npm install -g npm --foreground-scripts
+sfw npm install -g npm-check-updates --foreground-scripts
+# sfw npm install -g @electron/asar --foreground-scripts
+elif [[ -z "${FLX_VERBOSE}" ]]; then
+# empty
+sfw npm install -g npm --foreground-scripts
+sfw npm install -g npm-check-updates --foreground-scripts
+# sfw npm install -g @electron/asar --foreground-scripts
+else
+sfw npm install -g npm --foreground-scripts 1>/dev/null
+sfw npm install -g npm-check-updates --foreground-scripts 1>/dev/null
+# sfw npm install -g @electron/asar --foreground-scripts 1>/dev/null
+fi
 '''
 
 [profile]
@@ -152,6 +175,8 @@ alias flxx='FLOX_VERBOSE=1 flox activate'
 # PWD=$(pwd);
 # [[ ! -z "${FLX_VERBOSE}" ]] && echo "-----> PWD: ${PWD}";
 # unset PWD
+
+[[ ! -z "${FLX_VERBOSE}" ]] && ls -alshFR --color=auto "$NPM_CONFIG_PREFIX/lib/node_modules/sfw/.sfw-cache"
 
 if [[ ! -z "${FLX_VERBOSE}" ]]; then
 

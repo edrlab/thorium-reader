@@ -63,6 +63,14 @@
             "descending": "malejąco",
             "unsorted": ""
         },
+        "customization": {
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
+        },
         "delete": "Usuń",
         "deleteBook": "Usuń",
         "deleteTag": "",
@@ -78,6 +86,7 @@
         "importAnnotation": "",
         "lang": "Język",
         "lastRead": "",
+        "logout": "",
         "moreInfo": "",
         "myBooks": "",
         "noPublicationHelpL1": "",
@@ -136,6 +145,8 @@
         "cancel": "",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
                 "title": ""
             }
         },
@@ -244,6 +255,7 @@
         },
         "next": "",
         "previous": "",
+        "resumeBrowsing": "",
         "shelf": "",
         "updateForm": {
             "name": "",
@@ -1138,7 +1150,13 @@
             "thorium": {
                 "description": "",
                 "title": ""
-            }
+            },
+            "version": ""
+        },
+        "screenReaderActivate": {
+            "help": "",
+            "message": "",
+            "title": ""
         },
         "session": {
             "title": ""

@@ -63,6 +63,14 @@
             "descending": "descendent",
             "unsorted": "sense ordenar"
         },
+        "customization": {
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
+        },
         "delete": "Eliminar",
         "deleteBook": "Eliminar",
         "deleteTag": "Eliminar etiqueta",
@@ -78,6 +86,7 @@
         "importAnnotation": "",
         "lang": "Idioma",
         "lastRead": "Última lectura",
+        "logout": "",
         "moreInfo": "Més información",
         "myBooks": "Els meus llibres",
         "noPublicationHelpL1": "Deposita els arxius aquí",
@@ -136,6 +145,8 @@
         "cancel": "Cancel·lar",
         "customization": {
             "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
                 "title": ""
             }
         },
@@ -244,6 +255,7 @@
         },
         "next": "Següent",
         "previous": "Anterior",
+        "resumeBrowsing": "",
         "shelf": "Prestatge",
         "updateForm": {
             "name": "Nom:",
@@ -1138,7 +1150,13 @@
             "thorium": {
                 "description": "",
                 "title": ""
-            }
+            },
+            "version": ""
+        },
+        "screenReaderActivate": {
+            "help": "",
+            "message": "",
+            "title": ""
         },
         "session": {
             "title": "Guardar sessió"

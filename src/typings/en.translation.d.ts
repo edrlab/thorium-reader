@@ -120,6 +120,14 @@ declare namespace typed_i18n {
     readonly "descending": string,
     readonly "unsorted": string
   },
+  readonly "customization": {
+    readonly "fallback": {
+      readonly "description": string,
+      readonly "publications": string,
+      readonly "screen": string,
+      readonly "title": string
+    }
+  },
   readonly "delete": string,
   readonly "deleteBook": string,
   readonly "deleteTag": string,
@@ -135,6 +143,7 @@ declare namespace typed_i18n {
   readonly "importAnnotation": string,
   readonly "lang": string,
   readonly "lastRead": string,
+  readonly "logout": string,
   readonly "moreInfo": string,
   readonly "myBooks": string,
   readonly "noPublicationHelpL1": string,
@@ -192,6 +201,24 @@ declare namespace typed_i18n {
   (_: "catalog.column.ascending", __?: {}): string;
   (_: "catalog.column.descending", __?: {}): string;
   (_: "catalog.column.unsorted", __?: {}): string;
+  (_: "catalog.customization", __?: {}): {
+  readonly "fallback": {
+    readonly "description": string,
+    readonly "publications": string,
+    readonly "screen": string,
+    readonly "title": string
+  }
+};
+  (_: "catalog.customization.fallback", __?: {}): {
+  readonly "description": string,
+  readonly "publications": string,
+  readonly "screen": string,
+  readonly "title": string
+};
+  (_: "catalog.customization.fallback.description", __?: {}): string;
+  (_: "catalog.customization.fallback.publications", __?: {}): string;
+  (_: "catalog.customization.fallback.screen", __?: {}): string;
+  (_: "catalog.customization.fallback.title", __?: {}): string;
   (_: "catalog.delete", __?: {}): string;
   (_: "catalog.deleteBook", __?: {}): string;
   (_: "catalog.deleteTag", __?: {}): string;
@@ -206,6 +233,7 @@ declare namespace typed_i18n {
   (_: "catalog.importAnnotation", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.lastRead", __?: {}): string;
+  (_: "catalog.logout", __?: {}): string;
   (_: "catalog.moreInfo", __?: {}): string;
   (_: "catalog.myBooks", __?: {}): string;
   (_: "catalog.noPublicationHelpL1", __?: {}): string;
@@ -312,7 +340,11 @@ declare namespace typed_i18n {
   },
   readonly "cancel": string,
   readonly "customization": {
-    readonly "splashscreen": { readonly "title": string }
+    readonly "splashscreen": {
+      readonly "fallbackWelcomeScreen": string,
+      readonly "state": string,
+      readonly "title": string
+    }
   },
   readonly "deleteAnnotations": string,
   readonly "deleteAnnotationsText": string,
@@ -350,8 +382,20 @@ declare namespace typed_i18n {
   (_: "dialog.annotations.origin", __?: {}): string;
   (_: "dialog.annotations.title", __?: {}): string;
   (_: "dialog.cancel", __?: {}): string;
-  (_: "dialog.customization", __?: {}): { readonly "splashscreen": { readonly "title": string } };
-  (_: "dialog.customization.splashscreen", __?: {}): { readonly "title": string };
+  (_: "dialog.customization", __?: {}): {
+  readonly "splashscreen": {
+    readonly "fallbackWelcomeScreen": string,
+    readonly "state": string,
+    readonly "title": string
+  }
+};
+  (_: "dialog.customization.splashscreen", __?: {}): {
+  readonly "fallbackWelcomeScreen": string,
+  readonly "state": string,
+  readonly "title": string
+};
+  (_: "dialog.customization.splashscreen.fallbackWelcomeScreen", __?: {}): string;
+  (_: "dialog.customization.splashscreen.state", __?: {}): string;
   (_: "dialog.customization.splashscreen.title", __?: {}): string;
   (_: "dialog.deleteAnnotations", __?: {}): string;
   (_: "dialog.deleteAnnotationsText", __?: {}): string;
@@ -517,6 +561,7 @@ declare namespace typed_i18n {
   },
   readonly "next": string,
   readonly "previous": string,
+  readonly "resumeBrowsing": string,
   readonly "shelf": string,
   readonly "updateForm": {
     readonly "name": string,
@@ -573,6 +618,7 @@ declare namespace typed_i18n {
   (_: "opds.network.reject", __?: {}): string;
   (_: "opds.network.timeout", __?: {}): string;
   (_: "opds.next", __?: {}): string; (_: "opds.previous", __?: {}): string;
+  (_: "opds.resumeBrowsing", __?: {}): string;
   (_: "opds.shelf", __?: {}): string;
   (_: "opds.updateForm", __?: {}): {
   readonly "name": string,
@@ -2563,6 +2609,19 @@ declare namespace typed_i18n {
       readonly "overrideHTMLTemplate": string
     }
   },
+  readonly "profiles": {
+    readonly "info": string,
+    readonly "thorium": {
+      readonly "description": string,
+      readonly "title": string
+    },
+    readonly "version": string
+  },
+  readonly "screenReaderActivate": {
+    readonly "help": string,
+    readonly "message": string,
+    readonly "title": string
+  },
   readonly "session": { readonly "title": string },
   readonly "tabs": {
     readonly "appearance": string,
@@ -2575,13 +2634,6 @@ declare namespace typed_i18n {
     readonly "description": string,
     readonly "light": string,
     readonly "title": string
-  },
-  readonly "profiles": {
-    readonly "info": string,
-    readonly "thorium": {
-      readonly "title": string,
-      readonly "description": string
-    }
   }
 };
   (_: "settings.annotationCreator", __?: {}): {
@@ -3257,6 +3309,27 @@ declare namespace typed_i18n {
   (_: "settings.note.export.applyDefaultTemplate", __?: {}): string;
   (_: "settings.note.export.enableCheckbox", __?: {}): string;
   (_: "settings.note.export.overrideHTMLTemplate", __?: {}): string;
+  (_: "settings.profiles", __?: {}): {
+  readonly "info": string,
+  readonly "thorium": {
+    readonly "description": string,
+    readonly "title": string
+  },
+  readonly "version": string
+};
+  (_: "settings.profiles.info", __?: {}): string;
+  (_: "settings.profiles.thorium", __?: {}): { readonly "description": string, readonly "title": string };
+  (_: "settings.profiles.thorium.description", __?: {}): string;
+  (_: "settings.profiles.thorium.title", __?: {}): string;
+  (_: "settings.profiles.version", __?: {}): string;
+  (_: "settings.screenReaderActivate", __?: {}): {
+  readonly "help": string,
+  readonly "message": string,
+  readonly "title": string
+};
+  (_: "settings.screenReaderActivate.help", __?: {}): string;
+  (_: "settings.screenReaderActivate.message", __?: {}): string;
+  (_: "settings.screenReaderActivate.title", __?: {}): string;
   (_: "settings.session", __?: {}): { readonly "title": string };
   (_: "settings.session.title", __?: {}): string;
   (_: "settings.tabs", __?: {}): {
@@ -3279,17 +3352,6 @@ declare namespace typed_i18n {
   (_: "settings.theme.description", __?: {}): string;
   (_: "settings.theme.light", __?: {}): string;
   (_: "settings.theme.title", __?: {}): string;
-  (_: "settings.profiles", __?: {}): {
-  readonly "info": string,
-  readonly "thorium": {
-    readonly "title": string,
-    readonly "description": string
-  }
-};
-  (_: "settings.profiles.info", __?: {}): string;
-  (_: "settings.profiles.thorium", __?: {}): { readonly "title": string, readonly "description": string };
-  (_: "settings.profiles.thorium.title", __?: {}): string;
-  (_: "settings.profiles.thorium.description", __?: {}): string;
   (_: "tts", __?: {}): {
   readonly "highlight": {
     readonly "mainColor": string,

@@ -145,45 +145,47 @@ const handleLinkUrl_UpdateHistoryState = (url: string, isFromOnPopState = false)
         windowHistory._length = 0;
     }
 
-    if (!isFromOnPopState) {
-        let url_ = url;
-        try {
-            const u = new URL(url);
-            u.searchParams.delete(URL_PARAM_SESSION_INFO);
-            u.searchParams.delete(URL_PARAM_IS_IFRAME);
-            u.searchParams.delete(URL_PARAM_PREVIOUS);
-            u.searchParams.delete(URL_PARAM_GOTO);
-            u.searchParams.delete(URL_PARAM_GOTO_DOM_RANGE);
-            u.searchParams.delete(URL_PARAM_CSS);
-            u.searchParams.delete(URL_PARAM_EPUBREADINGSYSTEM);
-            u.searchParams.delete(URL_PARAM_DEBUG_VISUALS);
-            u.searchParams.delete(URL_PARAM_CLIPBOARD_INTERCEPT);
-            u.searchParams.delete(URL_PARAM_REFRESH);
-            u.searchParams.delete(URL_PARAM_WEBVIEW_SLOT);
-            u.searchParams.delete(URL_PARAM_SECOND_WEBVIEW);
-            url_ = u.toString();
-        } catch (ex) {
-            console.log(ex);
-        }
-        // console.log("#+$%".repeat(5)  + " handleLinkClick history pushState()", JSON.stringify(url), JSON.stringify(url_), JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length, windowHistory._length);
+    if (isFromOnPopState) {
+        return;
+    }
 
-        // if (/https?:\/\//.test(url_)) {
-        if (!url_.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") &&
-            !url_.startsWith(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://")) {
-            console.log(">> HISTORY POP STATE SKIP URL (1)", url_);
-            return;
-        }
-        // console.log(">> HISTORY POP STATE DO URL (1)", url_);
+    let url_ = url;
+    try {
+        const u = new URL(url);
+        u.searchParams.delete(URL_PARAM_SESSION_INFO);
+        u.searchParams.delete(URL_PARAM_IS_IFRAME);
+        u.searchParams.delete(URL_PARAM_PREVIOUS);
+        u.searchParams.delete(URL_PARAM_GOTO);
+        u.searchParams.delete(URL_PARAM_GOTO_DOM_RANGE);
+        u.searchParams.delete(URL_PARAM_CSS);
+        u.searchParams.delete(URL_PARAM_EPUBREADINGSYSTEM);
+        u.searchParams.delete(URL_PARAM_DEBUG_VISUALS);
+        u.searchParams.delete(URL_PARAM_CLIPBOARD_INTERCEPT);
+        u.searchParams.delete(URL_PARAM_REFRESH);
+        u.searchParams.delete(URL_PARAM_WEBVIEW_SLOT);
+        u.searchParams.delete(URL_PARAM_SECOND_WEBVIEW);
+        url_ = u.toString();
+    } catch (ex) {
+        console.log(ex);
+    }
+    // console.log("#+$%".repeat(5)  + " handleLinkClick history pushState()", JSON.stringify(url), JSON.stringify(url_), JSON.stringify(document.location), JSON.stringify(window.location), JSON.stringify(window.history.state), window.history.length, windowHistory._length);
 
-        if (window.history.state?.data === url_) {
-            window.history.replaceState({ data: url_, index: windowHistory._length - 1 }, "");
-        } else {
-            windowHistory._length++;
-            window.history.pushState({ data: url_, index: windowHistory._length - 1 }, "");
-        }
-        if (windowHistory._readerInstance) {
-            windowHistory._readerInstance.setState({ historyCanGoForward: false, historyCanGoBack: windowHistory._length > 1 });
-        }
+    // if (/https?:\/\//.test(url_)) {
+    if (!url_.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") &&
+        !url_.startsWith(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://")) {
+        console.log(">> HISTORY POP STATE SKIP URL (1)", url_);
+        return;
+    }
+    // console.log(">> HISTORY POP STATE DO URL (1)", url_);
+
+    if (window.history.state?.data === url_) {
+        window.history.replaceState({ data: url_, index: windowHistory._length - 1 }, "");
+    } else {
+        windowHistory._length++;
+        window.history.pushState({ data: url_, index: windowHistory._length - 1 }, "");
+    }
+    if (windowHistory._readerInstance) {
+        windowHistory._readerInstance.setState({ historyCanGoForward: false, historyCanGoBack: windowHistory._length > 1 });
     }
 };
 
@@ -1445,7 +1447,7 @@ class Reader extends React.Component<IProps, IState> {
     };
 
     private accessibilitySupportChanged = (_e: Electron.IpcRendererEvent, accessibilitySupportEnabled: boolean) => {
-        console.log("ipcRenderer.on - accessibility-support-changed: ", accessibilitySupportEnabled);
+        console.log("READER.tsx ipcRenderer.on - accessibility-support-changed: ", accessibilitySupportEnabled);
 
         // prevents infinite loop via componentDidUpdate()
         if (accessibilitySupportEnabled !== this.state.accessibilitySupportEnabled) {

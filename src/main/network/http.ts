@@ -70,10 +70,10 @@ let authenticationToken: Record<string, IOpdsAuthenticationToken> = {};
 // https://github.com/valeriangalliat/fetch-cookie#max-redirects
 const MAX_FOLLOW_REDIRECT = 20;
 
-export const httpSetHeaderAuthorization =
+const httpSetHeaderAuthorization =
     (type: string, credentials: string) => `${type} ${credentials}`;
 
-export const CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN = "CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN";
+const CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN = "CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN";
 const CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn =
     (host: string) => `${CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN}.${Buffer.from(host).toString("base64")}`;
 
@@ -194,7 +194,7 @@ export const wipeAuthenticationTokenStorage = async () => {
     return fsp.writeFile(opdsAuthFilePath, encrypted);
 };
 
-export async function httpFetchRawResponse(
+async function httpFetchRawResponse(
     url: string | URL,
     options: THttpOptions = {},
     // redirectCounter = 0,
@@ -253,7 +253,7 @@ export async function httpFetchRawResponse(
 
     options.agent = proxyAgent;
 
-    // if (!options.agent && url.toString().startsWith("https:")) {
+    // if (!options.agent && /^https:\/\//.test(url.toString())) {
     //     const httpsAgent = new https.Agent({
     //         timeout: options.timeout || DEFAULT_HTTP_TIMEOUT,
     //         rejectUnauthorized: __TH__IS_DEV__ ? false : true,
@@ -414,7 +414,7 @@ const handleCallback =
         return res;
     };
 
-export async function httpFetchFormattedResponse<TData = undefined>(
+async function httpFetchFormattedResponse<TData = undefined>(
     url: string | URL,
     options?: THttpOptions,
     callback?: THttpGetCallback<TData>,
