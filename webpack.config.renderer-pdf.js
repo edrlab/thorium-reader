@@ -110,7 +110,7 @@ let config = Object.assign(
         },
         target: "electron-renderer",
 
-        mode: "production", // nodeEnv,
+        mode: nodeEnv,
 
         externalsPresets: { node: true },
         // externals: externals,
