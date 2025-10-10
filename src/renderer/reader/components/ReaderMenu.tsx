@@ -103,6 +103,10 @@ import { exportAnnotationSet } from "readium-desktop/renderer/common/redux/sagas
 import { getSaga } from "../createStore";
 import { clone } from "ramda";
 import { marked } from "readium-desktop/renderer/common/marked/marked";
+import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
+
+import slugify from "slugify";
+
 (window as any).__shell_openExternal = (url: string) => url && /^https?:\/\//.test(url) ? shell.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
 
 // console.log(window);
@@ -1122,11 +1126,15 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
     const publicationView = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
     const winId = useSelector((state: IReaderRootState) => state.win.identifier);
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
-
+    const locale = useSelector((state: IReaderRootState) => state.i18n.locale);
     const [tagArrayFilter, setTagArrayFilter] = React.useState<Selection>(new Set([]));
     const [colorArrayFilter, setColorArrayFilter] = React.useState<Selection>(new Set([]));
     const [drawTypeArrayFilter, setDrawTypeArrayFilter] = React.useState<Selection>(new Set([]));
     const [creatorArrayFilter, setCreatorArrayFilter] = React.useState<Selection>(new Set([]));
+
+    // r2Publication.Metadata.Title
+    const annoSetTitle = convertMultiLangStringToString(publicationView.publicationTitle,  locale) || "thorium-notes";
+    // const annoSetTitleSlugified = slugify(annoSetTitle).replace(/:/g, "-").substring(0, 200); // TODO: factor out, same as sagas/readiumAnnotation/export.ts
 
     const [pageNumber, setPageNumber] = React.useState(START_PAGE);
     const changePageNumber = React.useCallback((cb: (n: number) => number) => {
@@ -1510,6 +1518,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                         <label htmlFor="annotationsTitle">{__("reader.annotations.annotationsExport.title")}</label>
                                         <input
                                             type="text"
+                                            defaultValue={annoSetTitle}
                                             name="annotationsTitle"
                                             id="annotationsTitle"
                                             ref={annotationTitleRef}
@@ -1523,16 +1532,17 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
 
                                     <Popover.Close aria-label={__("reader.annotations.export")} asChild>
                                         <button onClick={async () => {
-                                            const title = annotationTitleRef.current?.value || "thorium-reader";
-                                            let label = title.slice(0, 200);
-                                            label = label.trim();
-                                            label = label.replace(/[^a-z0-9_-]/gi, "_");
-                                            label = label.replace(/^_+|_+$/g, ""); // leading and trailing underscore
-                                            label = label.replace(/^\./, ""); // remove dot start
-                                            label = label.toLowerCase();
+                                            // const title = annotationTitleRef.current?.value || "thorium-reader";
+                                            // let label = title.slice(0, 200);
+                                            // label = label.trim();
+                                            // label = label.replace(/[^a-z0-9_-]/gi, "_");
+                                            // label = label.replace(/^_+|_+$/g, ""); // leading and trailing underscore
+                                            // label = label.replace(/^\./, ""); // remove dot start
+                                            // label = label.toLowerCase();
+
                                             const fileType = selectFileTypeRef.current?.value || "annotation";
 
-                                            await getSaga().run(exportAnnotationSet, annotationListFiltered, publicationView, label, fileType).toPromise();
+                                            await getSaga().run(exportAnnotationSet, annotationListFiltered, publicationView, annotationTitleRef.current?.value || annoSetTitle, fileType).toPromise();
                                         }} className={stylesButtons.button_primary_blue}>
                                             <SVG svg={SaveIcon} />
                                             {__("reader.annotations.export")}

@@ -68,28 +68,29 @@ export function* getNotesFromMainWinState(publicationIdentifier: string): SagaGe
 
 function* pushNotesFromMainWindow(publicationIdentifier: string, notes: INoteState[]): SagaGenerator<void> {
 
-    const sessionReader = yield* selectTyped((state: RootState) => state.win.session.reader);
-    const winSessionReaderStateArray = Object.values(sessionReader).filter((v) => v.publicationIdentifier === publicationIdentifier);
-
-    if (winSessionReaderStateArray.length) {
-        // dispatch action
-        for (const note of notes) {
-            yield* delayTyped(1);
-            yield* putTyped(readerActions.note.addUpdate.build(publicationIdentifier, note));
-        }
-
-    } else {
-        const sessionRegistry = yield* selectTyped((state: RootState) => state.win.registry.reader);
-        const reduxState = sessionRegistry[publicationIdentifier]?.reduxState || {};
-        // reduxState.note = [...(reduxState.note || []), ...notes];
-        const winBound = sessionRegistry[publicationIdentifier]?.windowBound || { height: WINDOW_MIN_HEIGHT, width: WINDOW_MIN_WIDTH, x: 0, y: 0 };
-
-        yield* putTyped(winActions.registry.registerReaderPublication.build(
-            publicationIdentifier,
-            winBound,
-            reduxState),
-        );
+    for (const note of notes) {
+        yield* delayTyped(1);
+        yield* putTyped(readerActions.note.addUpdate.build(publicationIdentifier, note));
     }
+
+    // const sessionReader = yield* selectTyped((state: RootState) => state.win.session.reader);
+    // const winSessionReaderStateArray = Object.values(sessionReader).filter((v) => v.publicationIdentifier === publicationIdentifier);
+
+    // if (winSessionReaderStateArray.length) {
+    //     // dispatch action
+
+    // } else {
+    //     const sessionRegistry = yield* selectTyped((state: RootState) => state.win.registry.reader);
+    //     const reduxState = sessionRegistry[publicationIdentifier]?.reduxState || {};
+    //     // reduxState.note = [...(reduxState.note || []), ...notes];
+    //     const winBound = sessionRegistry[publicationIdentifier]?.windowBound || { height: WINDOW_MIN_HEIGHT, width: WINDOW_MIN_WIDTH, x: 0, y: 0 };
+
+    //     yield* putTyped(winActions.registry.registerReaderPublication.build(
+    //         publicationIdentifier,
+    //         winBound,
+    //         reduxState),
+    //     );
+    // }
 }
 
 function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAction): SagaGenerator<void> {
