@@ -145,8 +145,8 @@
         "cancel": "Nutraukti",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
-                "state": "",
+                "fallbackWelcomeScreen": "Nėra pasveikinimo ekrano",
+                "state": "Būsena: {{- state}}",
                 "title": "Aktyvuojamas tinkinimo profilis"
             }
         },
@@ -1151,7 +1151,7 @@
                 "description": "",
                 "title": ""
             },
-            "version": ""
+            "version": "Versija: {{- version}}"
         },
         "screenReaderActivate": {
             "help": "",
