@@ -177,7 +177,7 @@ const Header = () => {
 
             for (const screenHref of screenZipObj) {
 
-                //TODO isURL(url) and /^https?:\/\//.test(url) checks ?
+                // URL is thoriumhttps:// "custom-profile-zip" protocol handler, so no use of isURL(url) and /^https?:\/\//.test(url) checks here
                 fetch(screenHref.url)
                     .then((response) => {
                         if (response.ok) {

@@ -59,7 +59,7 @@ export const CustomizationProfileDialog: React.FC = () => {
     // console.log("welcomeScreen HTML URL: ", welcomeScreenHtmlHref);
     React.useEffect(() => {
         if (customizationId && welcomeScreenHtmlHref && open) {
-            //TODO isURL(url) and /^https?:\/\//.test(url) checks ?
+            // URL is thoriumhttps:// "custom-profile-zip" protocol handler, so no use of isURL(url) and /^https?:\/\//.test(url) checks here
             fetch(welcomeScreenHtmlHref)
                 .then((response) => {
                     if (response.ok) {
