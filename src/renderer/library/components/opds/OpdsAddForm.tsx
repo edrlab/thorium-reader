@@ -26,8 +26,6 @@ const OpdsAddForm: React.FC = () => {
     const location = useSelector((state: ILibraryRootState) => state.router.location);
     const [__] = useTranslator();
 
-    console.log(historyState);
-
     const item: NavigationHeader =   {
         route: "/opds",
         label: __("opds.resumeBrowsing"),
@@ -43,7 +41,7 @@ const OpdsAddForm: React.FC = () => {
             if (pv !== null) {
                 return pv;
             }
-            
+
             if (cv?.pathname.startsWith(item.route) && cv.pathname !== location.pathname) {
                 showResumeBrowsingButton = true;
                 return {
@@ -51,7 +49,7 @@ const OpdsAddForm: React.FC = () => {
                     search: item.searchEnable ? cv.search : "",
                 };
             }
-            
+
             return pv;
         },
         null,
