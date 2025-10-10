@@ -21,6 +21,7 @@ import { type Store } from "redux";
 import { RootState } from "readium-desktop/main/redux/states";
 import { ok } from "readium-desktop/common/utils/assert";
 import { parseProblemDetails } from "readium-desktop/common/utils/http";
+import isURL from "validator/lib/isURL";
 
 const debug = debug_("readium-desktop:main#services/lsd");
 
@@ -50,6 +51,12 @@ export class LSDManager {
         debug("Link Status FOUND: ", linkStatus);
 
         const locale = this.store.getState().i18n.locale;
+
+        // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+        if (!linkStatus.Href || !isURL(linkStatus.Href)) {
+            debug("isURL() NOK", linkStatus.Href);
+            return undefined;
+        }
         const httpDataReceived = await httpGet(linkStatus.Href, {timeout: 6000}, undefined, locale);
 
         const {
@@ -165,6 +172,12 @@ export class LSDManager {
             debug("OLD LCP LICENSE, FETCHING LSD UPDATE ... " + licenseLink.Href);
 
             const locale = this.store.getState().i18n.locale;
+
+            // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+            if (!licenseLink.Href || !isURL(licenseLink.Href)) {
+                debug("isURL() NOK", licenseLink.Href);
+                return undefined;
+            }
             const httpDataReceived = await httpGet(licenseLink.Href, undefined, undefined, locale);
 
             const {
@@ -259,6 +272,12 @@ export class LSDManager {
         debug("REGISTER: " + registerURL);
 
         const locale = this.store.getState().i18n.locale;
+
+        // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+        if (!registerURL || !isURL(registerURL)) {
+            debug("isURL() NOK", registerURL);
+            throw new Error("invalid register URL: " + registerURL);
+        }
         const httpDataReceived = await httpPost(registerURL, undefined, undefined, locale);
 
         const {
@@ -336,6 +355,12 @@ export class LSDManager {
         debug("RENEW: " + renewURL);
 
         const locale = this.store.getState().i18n.locale;
+
+        // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+        if (!renewURL || !isURL(renewURL)) {
+            debug("isURL() NOK", renewURL);
+            throw new Error("invalid renew URL: " + renewURL);
+        }
         const httpDataReceived = await httpPut(renewURL, undefined, undefined, locale);
 
         const {
@@ -347,7 +372,7 @@ export class LSDManager {
         const contentType = parseContentType(_contentType);
         if (contentTypeisApiProblem(contentType)) {
             const {title, type, detail} = await parseProblemDetails(httpDataReceived.response);
-            throw `${title} (${detail ? detail : ""}) [${type ? type : ""}|${statusCode}]`;
+            throw new Error(`${title} (${detail ? detail : ""}) [${type ? type : ""}|${statusCode}]`);
         }
 
         const baseUrl = `${_baseUrl}`;
@@ -393,6 +418,12 @@ export class LSDManager {
         debug("RETURN: " + returnURL);
 
         const locale = this.store.getState().i18n.locale;
+
+        // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+        if (!returnURL || !isURL(returnURL)) {
+            debug("isURL() NOK", returnURL);
+            throw new Error("invalid return URL: " + returnURL);
+        }
         const httpDataReceived = await httpPut(returnURL, undefined, undefined, locale);
 
         const {
@@ -404,7 +435,7 @@ export class LSDManager {
         const contentType = parseContentType(_contentType);
         if (contentTypeisApiProblem(contentType)) {
             const {title, type, detail} = await parseProblemDetails(httpDataReceived.response);
-            throw `${title} (${detail ? detail : ""}) [${type ? type : ""}|${statusCode}]`;
+            throw new Error(`${title} (${detail ? detail : ""}) [${type ? type : ""}|${statusCode}]`);
         }
 
         const baseUrl = `${_baseUrl}`;

@@ -18,6 +18,7 @@ import { ContentType, contentTypeisApiProblem, parseContentType } from "readium-
 import { SagaGenerator } from "typed-redux-saga";
 import { call as callTyped } from "typed-redux-saga/macro";
 import { authenticationRequestFromLibraryWebServiceURL, convertLoansPublicationToOpdsPublicationsRawJson, getEndpointFromAuthenticationRequest, getLoansPublicationFromLibrary } from "../../apiapp";
+import isURL from "validator/lib/isURL";
 
 const debug = debug_("readium-desktop:main#redux/saga/api/browser");
 
@@ -142,7 +143,15 @@ export function* browse(urlRaw: string): SagaGenerator<THttpGetBrowserResultView
     }
 
     const url = checkUrl(urlRaw);
-
+    // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+    if (!url || !isURL(url)) {
+        debug("isURL() NOK", url);
+        return {
+            url: "",
+            isFailure: true,
+            isSuccess: false,
+        };
+    }
     const result = yield* callTyped(() => httpGet<IBrowserResultView>(
         url,
         undefined,

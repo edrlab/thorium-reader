@@ -59,6 +59,7 @@ export const CustomizationProfileDialog: React.FC = () => {
     // console.log("welcomeScreen HTML URL: ", welcomeScreenHtmlHref);
     React.useEffect(() => {
         if (customizationId && welcomeScreenHtmlHref && open) {
+            //TODO isURL(url) and /^https?:\/\//.test(url) checks ?
             fetch(welcomeScreenHtmlHref)
                 .then((response) => {
                     if (response.ok) {
@@ -131,7 +132,7 @@ export const CustomizationProfileDialog: React.FC = () => {
                                     <Loader></Loader>
                                     <span>{__("dialog.customization.splashscreen.state", {state: customization.lock.state, id: customization.lock.lockInfo?.id === "" && customization.lock.state === "ACTIVATING" ? "THorium Default Profile" : customization.lock.lockInfo?.id || "undefined"})}</span>
                                     {/* <span>LOCKINFO={JSON.stringify(customization.lock.lockInfo, null, 4)}</span> */}
-                                </div> 
+                                </div>
                                 : <></>
                             }
                             {/* <div style={{display: "none"}}>

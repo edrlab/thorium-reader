@@ -473,7 +473,7 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
                 const regex = new RegExp(/href=\"(.*?)\"/, "gm");
                 const hrefSanitized = parsed.replace(regex, (_substring, url) => {
 
-                    if (!url?.startsWith("http")) {
+                    if (url && !/^https?:\/\//.test(url)) {
                         url = "http://" + url;
                     }
 
@@ -786,7 +786,7 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
                 const hrefSanitized = parsed.replace(regex, (substring) => {
 
                     let url = /href=\"(.*?)\"/.exec(substring)[1];
-                    if (!url.startsWith("http")) {
+                    if (url && !/^https?:\/\//.test(url)) {
                         url = "http://" + url;
                     }
 

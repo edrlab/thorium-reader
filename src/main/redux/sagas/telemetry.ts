@@ -29,6 +29,8 @@ import { Headers } from "node-fetch";
 
 import { createHmac } from "crypto";
 
+import isURL from "validator/lib/isURL";
+
 interface ITelemetryInfo {
     os_version: string;
     locale: string;
@@ -144,10 +146,16 @@ const sendTelemetry = async (queue: ITelemetryInfo[]) => {
     headers.append("Authorization", `EDRLAB ${telemetryHmac(body)}`);
     headers.append("Content-Type", "application/json");
 
-    debug("TELEMETRY: ", _TELEMETRY_URL + _APP_VERSION, JSON.stringify({timestamp, data}, null, 4));
+    const href = _TELEMETRY_URL + _APP_VERSION;
 
-    // http post request with HMAC
-    const res = await httpPost(_TELEMETRY_URL + _APP_VERSION, {
+    debug("TELEMETRY: ", href, JSON.stringify({timestamp, data}, null, 4));
+
+    // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+    if (!href || !isURL(href)) {
+        debug("isURL() NOK", href);
+        return false;
+    }
+    const res = await httpPost(href, {
         headers,
         body,
     });

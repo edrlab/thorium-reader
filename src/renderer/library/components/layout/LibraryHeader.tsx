@@ -177,6 +177,7 @@ const Header = () => {
 
             for (const screenHref of screenZipObj) {
 
+                //TODO isURL(url) and /^https?:\/\//.test(url) checks ?
                 fetch(screenHref.url)
                     .then((response) => {
                         if (response.ok) {
