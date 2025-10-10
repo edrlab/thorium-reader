@@ -75,6 +75,11 @@ const httpDilicomGet = async <T>(url: string, callback?: THttpGetCallback<T>) =>
         headers,
     };
 
+    // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+    if (!url || !isURL(url)) {
+        debug("isURL() NOK", url);
+        throw new Error("invalid URL [" + url + "]");
+    }
     const result = await httpGet<T>(url, options, callback);
 
     return result;
@@ -103,7 +108,7 @@ export const librarySearch = async (query: string): Promise<IApiappSearchResultV
                     .filter((v) => typeof v === "object")
                     .filter(({libraryGLN, libraryName, libraryWebServiceOperator, libraryWebServiceURL}) => typeof libraryGLN === "string" && typeof libraryName === "string" && libraryWebServiceOperator === "PROVIDER" &&
                         // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
-                        isURL(libraryWebServiceURL))
+                        libraryWebServiceURL && isURL(libraryWebServiceURL))
                     .map(({libraryGLN, libraryName, libraryAddress, libraryTown, libraryPostalCode, libraryWebServiceURL}) => {
                         return {
                             id: libraryGLN,
@@ -125,10 +130,10 @@ export const librarySearch = async (query: string): Promise<IApiappSearchResultV
 export const authenticationRequestFromLibraryWebServiceURL = async (url: string): Promise<IAuthentication | undefined> => {
 
     // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
-    if(!isURL(url)) {
+    if(!url || !isURL(url)) {
+        debug("isURL() NOK", url);
         throw new Error("not a valid url " + url);
     }
-
     const result = await httpGet(url);
 
     if (result.isSuccess && parseContentType(result.contentType) === ContentType.Json) {
@@ -154,10 +159,14 @@ export const getEndpointFromAuthenticationRequest = (auth: IAuthentication | und
     if (!auth) return undefined;
 
     const endpoint = Array.isArray(auth.resources) ? auth.resources[0].endpoint : undefined;
-    // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
-    if (endpoint && isURL(endpoint)) {
-        return endpoint;
+    if (endpoint) {
+        // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+        if (isURL(endpoint)) {
+            return endpoint;
+        }
+        debug("isURL() NOK", endpoint);
     }
+
     return undefined;
 };
 
@@ -184,11 +193,12 @@ export const initClientSecretToken = async (idGnl: string) => {
 interface IApiAppLoansPublication { loanhLink: string, beginDate: string; endDate: string; standardTitle: string; description: string; frontCoverMedium: string; publicationDate: string; language: string; imprintName: string; collection: string; categoryClil: string; }
 
 export const getLoansPublicationFromLibrary = async (url: string): Promise<Array<IApiAppLoansPublication> | undefined> => {
+
     // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
     if (!url || !isURL(url)) {
+        debug("isURL() NOK", url);
         throw new Error("not a loans URL " + url);
     }
-
     const result = await httpGet(url);
 
     if (result.isSuccess && parseContentType(result.contentType) === ContentType.Json) {
@@ -204,7 +214,7 @@ export const getLoansPublicationFromLibrary = async (url: string): Promise<Array
                 typeof v === "object" &&
                 typeof v.loanhLink === "string" &&
                 // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
-                isURL(v.loanhLink) &&
+                v.loanhLink && isURL(v.loanhLink) &&
                 // typeof v.beginDate === "string" &&
                 // typeof v.endDate === "string" &&
                 typeof v.standardTitle === "string",

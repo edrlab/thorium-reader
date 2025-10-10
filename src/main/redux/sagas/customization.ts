@@ -27,6 +27,7 @@ import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { diMainGet } from "readium-desktop/main/di";
 import { net } from "electron";
 import * as fs from "fs";
+import isURL from "validator/lib/isURL";
 
 const filename_ = "readium-desktop:main:redux:sagas:customization";
 const debug = debug_(filename_);
@@ -83,7 +84,9 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
         debug("ERROR: No FilePath or URL !!!!");
         return ;
     }
-    if (httpUrlOrFilePath.startsWith("http")) {
+
+    // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+    if (isURL(httpUrlOrFilePath) && /^https?:\/\//.test(httpUrlOrFilePath)) {
 
         fileName = `${nanoid(10)}_downloaded_profile.thorium`;
         packagePath = path.join(customizationWellKnownFolder, fileName);
@@ -94,12 +97,12 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
             packagePath,
             originHttpUrlOrFilePath: httpUrlOrFilePath,
         };
-    
+
         const lock = yield* selectTyped((state: ICommonRootState) => state.customization.lock);
         copyDownloadAndQuit = false;
         if (lock.state !== "IDLE") {
             debug("ERROR: already in profile activating phase, need a manual action to activate this profile !!!");
-    
+
             copyDownloadAndQuit = true;
         } else {
             yield* putTyped(customizationActions.lock.build("DOWNLOAD", lockInfo));
@@ -193,7 +196,7 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
                     lockInfo.fileSize = filePathStat.size;
                 }
             }
-    
+
             if (copyDownloadAndQuit) {
                 if (error) {
                     // nothing
@@ -226,7 +229,7 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
             debug("ERROR: file is not a .thorium extension", fileName);
             return;
         }
-    
+
         packagePath = path.join(customizationWellKnownFolder, fileName);
         lockInfo = {
             uuid: nanoid(),
@@ -235,19 +238,19 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
             fileSize: filePathStat.size,
             originHttpUrlOrFilePath: filePath,
         };
-    
+
         const lock = yield* selectTyped((state: ICommonRootState) => state.customization.lock);
         copyDownloadAndQuit = false;
         if (lock.state !== "IDLE") {
             debug("ERROR: already in profile activating phase, need a manual action to activate this profile !!!");
-    
+
             copyDownloadAndQuit = true;
         } else {
             yield* putTyped(customizationActions.lock.build("COPY", lockInfo));
         }
-    
+
         yield* forkTyped(function* () {
-    
+
             yield* delay(100);
             let error = false;
             debug(`COPY "${filePath}" to "${packagePath}"`);
@@ -270,7 +273,7 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
                     error = true;
                 }
             }
-    
+
             if (copyDownloadAndQuit) {
                 if (error) {
                     // nothing
@@ -448,6 +451,11 @@ function* triggerCatalogOpdsAuthentication(action: customizationActions.triggerO
         // authenticated
         debug("let's try to verify the authentication access token validity");
 
+        // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+        if (!catalogHref || !isURL(catalogHref)) {
+            debug("isURL() NOK", catalogHref);
+            return;
+        }
         const response = yield* callTyped(() => httpGet(catalogHref));
         const opdsService = yield* callTyped(() => diMainGet("opds-service"));
         const opdsView = yield* callTyped(() => opdsService.opdsRequestTransformer(response));
@@ -464,6 +472,12 @@ function* triggerCatalogOpdsAuthentication(action: customizationActions.triggerO
 
         if (opdsAuthenticationHref) {
             debug("There is an opds authentication document link");
+
+            // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+            if (!opdsAuthenticationHref || !isURL(opdsAuthenticationHref)) {
+                debug("isURL() NOK", opdsAuthenticationHref);
+                return;
+            }
             const response = yield* callTyped(() => httpGetWithAuth(false)(opdsAuthenticationHref));
             if (response.isSuccess) {
                 debug("authentication document receive");

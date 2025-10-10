@@ -56,8 +56,8 @@ export const setOpenUrl = (url: string): void => {
         buf.put(url);
     }
 
-    // only from the CLI we accept http/https protocols 
-    else if (url.startsWith("http://") || url.startsWith("https://")) {
+    // only from the CLI we accept http/https protocols
+    else if (/^https?:\/\//.test(url)) {
         debug("OPEN URL WITH http(s) scheme");
 
         const buf = getOpenUrlWithThoriumSchemeEventChannel();
