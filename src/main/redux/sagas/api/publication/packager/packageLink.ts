@@ -29,6 +29,8 @@ import { Link } from "@r2-shared-js/models/publication-link";
 import { downloader } from "../../../downloader";
 import { manifestContext } from "./context";
 
+import isURL from "validator/lib/isURL";
+
 // Logger
 const filename_ = "readium-desktop:main#saga/api/publication/packager/packageLink";
 const debug = debug_(filename_);
@@ -40,6 +42,11 @@ const fetcher = (baseUrl: string) => async (href: string) => {
     // url.resolve(baseUrl, href)
     href = new URL(href, baseUrl).toString();
 
+    // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+    if (!href || !isURL(href)) {
+        debug("isURL() NOK", href);
+        return undefined;
+    }
     const res = await httpGet(href);
 
     try {
@@ -312,6 +319,11 @@ export function* packageGetManifestBuffer(
 
     const fetch = fetcher(href);
 
+    // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+    if (!href || !isURL(href)) {
+        debug("isURL() NOK", href);
+        throw new Error("fetch URL error [" + href + "]");
+    }
     const data = yield* callTyped(httpGet, href);
     const { response, isFailure } = data;
 

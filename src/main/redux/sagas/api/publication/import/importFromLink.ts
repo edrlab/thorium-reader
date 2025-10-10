@@ -28,6 +28,7 @@ import { delay as delayTyped, call as callTyped, race as raceTyped } from "typed
 import { downloader } from "../../../downloader";
 import { packageFromLink } from "../packager/packageLink";
 import { importFromFsService } from "./importFromFs";
+import isURL from "validator/lib/isURL";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/importFromLinkService");
@@ -52,7 +53,7 @@ function* importLinkFromPath(
         // need to double check if the publication still exists
         // What to do if a publication is attached !?
         // - We can invalidate the publicationId associated with this downloadLink/opdsPublication
-        // - Just ignore it 
+        // - Just ignore it
 
         const publicationRepository  = diMainGet("publication-repository");
         const publicationAttachedToLocalBookshelfPubId = yield* callTyped(() => publicationRepository.findByPublicationIdentifier(link.localBookshelfPublicationId));
@@ -145,16 +146,24 @@ export function* importFromLinkService(
     }
 
     if (!link.type) {
+        const hrefUrl = url.toString();
         try {
-            const response = yield* callTyped(() => nodeFetch(url.toString()));
-            const contentType = response?.headers?.get("Content-Type");
-            if (contentType) {
-                link.type = contentType;
-            } else {
+            // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+            if (!hrefUrl || !isURL(hrefUrl)) {
+                debug("isURL() NOK", hrefUrl);
                 link.type = "";
+            } else {
+                // TODO: only HEAD request?? otherwise full body download (time consuming, wasted resources as real download is queued further down here!)
+                const response = yield* callTyped(() => nodeFetch(hrefUrl)); // {method:"HEAD"}
+                const contentType = response?.headers?.get("Content-Type");
+                if (contentType) {
+                    link.type = contentType;
+                } else {
+                    link.type = "";
+                }
             }
         } catch (_e) {
-            debug("can't fetch url to determine the type", url.toString());
+            debug("can't fetch url to determine the type", hrefUrl);
             link.type = "";
         }
     }

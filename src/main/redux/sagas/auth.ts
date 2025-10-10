@@ -251,12 +251,12 @@ function* opdsRequestMediaFlow({request, callback}: TregisterHttpProtocolHandler
     if (request && request.url.startsWith(schemePrefix)) {
         const b64 = decodeURIComponent(request.url.slice(schemePrefix.length));
         const url = Buffer.from(b64, "base64").toString("utf-8");
-        // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
-        if (!isURL(url)) {
-            debug("opdsRequestMedia failed not a valid url", url);
-            return ;
-        }
 
+        // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+        if (!url || !isURL(url)) {
+            debug("isURL() NOK opdsRequestMedia failed not a valid url", url);
+            return;
+        }
         httpGet(url, {
             ...request,
         }, (response) => {
@@ -424,6 +424,12 @@ async function opdsSetAuthCredentials(
 
                         const body = Object.entries(payload).reduce((pv, [k,v]) => `${pv}${pv ? "&" : pv}${k}=${v}`, "");
 
+                        // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+                        if (!authenticateUrl || !isURL(authenticateUrl)) {
+                            debug("isURL() NOK", authenticateUrl);
+                            // throw new Error("invalid authenticateUrl: " + authenticateUrl);
+                            return [, new Error("invalid authenticateUrl: " + authenticateUrl)];
+                        }
                         const { data: postData } = await httpPost<IOpdsAuthenticationToken>(
                             authenticateUrl,
                             {

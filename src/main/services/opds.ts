@@ -36,6 +36,7 @@ import { diSymbolTable } from "../diSymbolTable";
 import { getOpdsAuthenticationChannel } from "../event";
 import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
 import { IDigestDataParsed, parseDigestString } from "readium-desktop/utils/digest";
+import isURL from "validator/lib/isURL";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/opds");
@@ -49,6 +50,12 @@ const findLink = (ln: IOpdsLinkView[], type: string) => ln && ln.find((link) =>
 export class OpdsService {
 
     private static async getOpenSearchUrl(opensearchLink: IOpdsLinkView): Promise<string | undefined> {
+
+        // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+        if (!opensearchLink.url || !isURL(opensearchLink.url)) {
+            debug("isURL() NOK", opensearchLink.url);
+            return undefined;
+        }
         const searchResult = await httpGet<string>(
             opensearchLink.url,
             {
