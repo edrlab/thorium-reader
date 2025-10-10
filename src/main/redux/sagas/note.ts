@@ -16,8 +16,7 @@ import { SagaGenerator } from "typed-redux-saga";
 import { call as callTyped, put as putTyped, select as selectTyped, take as takeTyped, delay as delayTyped, all as allTyped } from "typed-redux-saga/macro";
 import { hexToRgb } from "readium-desktop/common/rgb";
 import { isNil } from "readium-desktop/utils/nil";
-import { RootState } from "../states";
-import { __READIUM_ANNOTATION_AJV_ERRORS, isCFIFragmentSelector, isCfiSelector, isFragmentSelector, isIReadiumAnnotationSet, isTextPositionSelector, isTextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import { __READIUM_ANNOTATION_AJV_ERRORS, isCFIFragmentSelector, isCfiSelector, isCssSelector, isFragmentSelector, isIReadiumAnnotationSet, isTextPositionSelector, isTextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import path from "path";
 import { getPublication } from "./api/publication/getPublication";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
@@ -191,26 +190,38 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
 
         // loop on each annotation to check conflicts and import it
         for (const incommingAnnotation of annotationsIncommingArray) {
-
-            const textQuoteSelector = incommingAnnotation.target.selector.find(isTextQuoteSelector);
-            const textPositionSelector = incommingAnnotation.target.selector.find(isTextPositionSelector);
-            const cfiSelector = incommingAnnotation.target.selector.find(isCfiSelector);
-            const fragmentSelectorArray = incommingAnnotation.target.selector.filter(isFragmentSelector);
-            const cfiFragmentSelector = fragmentSelectorArray.find(isCFIFragmentSelector);
             const creator = incommingAnnotation.creator;
+
             const uuid = incommingAnnotation.id.split("urn:uuid:")[1] || uuidv4(); // TODO : may not be an uuid format and maybe we should hash the uuid to get a unique identifier based on the original uuid
 
-            if (cfiFragmentSelector) {
-                debug(`for ${uuid} a CFI Fragment selector is available (${JSON.stringify(cfiFragmentSelector, null, 4)})`);
+            const cssSelector = incommingAnnotation.target.selector.find(isCssSelector);
+            if (cssSelector) {
+                debug(`for ${uuid} a CFI selector is available (${JSON.stringify(cssSelector, null, 4)})`);
             }
 
+            const textQuoteSelector = incommingAnnotation.target.selector.find(isTextQuoteSelector);
+            if (textQuoteSelector) {
+                debug(`for ${uuid} a CFI selector is available (${JSON.stringify(textQuoteSelector, null, 4)})`);
+            }
+
+            const textPositionSelector = incommingAnnotation.target.selector.find(isTextPositionSelector);
+            if (textPositionSelector) {
+                debug(`for ${uuid} a CFI selector is available (${JSON.stringify(textPositionSelector, null, 4)})`);
+            }
+
+            const cfiSelector = incommingAnnotation.target.selector.find(isCfiSelector);
             if (cfiSelector) {
                 debug(`for ${uuid} a CFI selector is available (${JSON.stringify(cfiSelector, null, 4)})`);
             }
 
-            // check if thorium selector available
-            if (!(textQuoteSelector || textPositionSelector || cfiFragmentSelector || cfiSelector)) {
-                debug(`for ${uuid} no selector available (TextQuote/TextPosition)`);
+            const fragmentSelectorArray = incommingAnnotation.target.selector.filter(isFragmentSelector);
+            const cfiFragmentSelector = fragmentSelectorArray.find(isCFIFragmentSelector);
+            if (cfiFragmentSelector) {
+                debug(`for ${uuid} a CFI Fragment selector is available (${JSON.stringify(cfiFragmentSelector, null, 4)})`);
+            }
+
+            if (!(cssSelector || textQuoteSelector || textPositionSelector || cfiFragmentSelector || cfiSelector)) {
+                debug(`for ${uuid} no selector available (cssSelector || textQuoteSelector || textPositionSelector || cfiFragmentSelector || cfiSelector)`);
                 continue;
             }
 

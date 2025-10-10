@@ -104,13 +104,16 @@ export function* readiumAnnotationSelectorFromNote(note: INoteState, isLcp: bool
         selector.push(selectorTextQuote);
     }
 
-    const progressionSelector: IProgressionSelector = {
-        type: "ProgressionSelector",
-        value: progression || -1,
-    };
-    debug("ProgressionSelector : ", progressionSelector);
-    selector.push(progressionSelector);
-
+    if (typeof progression === "number" && progression >= 0) {
+        const progressionSelector: IProgressionSelector = {
+            type: "ProgressionSelector",
+            value: progression,
+        };
+        debug("ProgressionSelector : ", progressionSelector);
+        selector.push(progressionSelector);
+    } else {
+        debug("ProgressionSelector SKIP : ", progression);
+    }
 
     const { r2Publication } = yield* selectTyped((state: IReaderRootState) => state.reader.info);
     const opfSpineItemIndex = r2Publication.Spine.findIndex((link) => link.Href === sourceHref);
