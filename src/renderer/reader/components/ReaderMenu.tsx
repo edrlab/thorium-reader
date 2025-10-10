@@ -105,8 +105,6 @@ import { clone } from "ramda";
 import { marked } from "readium-desktop/renderer/common/marked/marked";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 
-import slugify from "slugify";
-
 (window as any).__shell_openExternal = (url: string) => url && /^https?:\/\//.test(url) ? shell.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
 
 // console.log(window);
