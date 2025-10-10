@@ -22,6 +22,6 @@ git --no-pager diff package.json ;\
 sfw npm install --foreground-scripts ;\
 cp package-lock-sfw-backup.json package-lock.json ;\
 cp package-sfw-backup.json package.json ;\
-# rm -rf node_modules/ ;\
+rm -rf node_modules/ ;\
 mv node_modules__/ node_modules/ ;\
 git status
