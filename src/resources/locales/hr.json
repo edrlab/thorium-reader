@@ -255,6 +255,7 @@
         },
         "next": "Naprijed",
         "previous": "Natrag",
+        "resumeBrowsing": "",
         "shelf": "Polica",
         "updateForm": {
             "name": "Ime:",

@@ -634,7 +634,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
         </Dialog.Trigger>
         <Dialog.Portal>
             <div className={stylesModals.modal_dialog_overlay}></div>
-            <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined}>
+            <Dialog.Content style={{ overflowY: "hidden" }} className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined}>
                 {
                     // FALSE this to test sourcemaps:
                     true &&

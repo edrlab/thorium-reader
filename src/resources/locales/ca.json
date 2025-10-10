@@ -255,6 +255,7 @@
         },
         "next": "Següent",
         "previous": "Anterior",
+        "resumeBrowsing": "",
         "shelf": "Prestatge",
         "updateForm": {
             "name": "Nom:",

@@ -255,6 +255,7 @@
         },
         "next": "Næste",
         "previous": "Forrige",
+        "resumeBrowsing": "",
         "shelf": "Boghylde",
         "updateForm": {
             "name": "Navn:",

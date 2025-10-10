@@ -255,6 +255,7 @@
         },
         "next": "அடுத்தது",
         "previous": "முந்தைய",
+        "resumeBrowsing": "",
         "shelf": "அலமாரி",
         "updateForm": {
             "name": "பெயர்:",

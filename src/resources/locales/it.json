@@ -255,6 +255,7 @@
         },
         "next": "Prossimo",
         "previous": "Precedente",
+        "resumeBrowsing": "",
         "shelf": "Mensola",
         "updateForm": {
             "name": "Nome:",
