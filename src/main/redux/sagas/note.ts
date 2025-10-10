@@ -13,7 +13,7 @@ import { annotationActions, readerActions, toastActions } from "readium-desktop/
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
 import { SagaGenerator } from "typed-redux-saga";
-import { call as callTyped, put as putTyped, select as selectTyped, take as takeTyped, delay as delayTyped, all as allTyped } from "typed-redux-saga/macro";
+import { call as callTyped, put as putTyped, take as takeTyped, delay as delayTyped, all as allTyped } from "typed-redux-saga/macro";
 import { hexToRgb } from "readium-desktop/common/rgb";
 import { isNil } from "readium-desktop/utils/nil";
 import { __READIUM_ANNOTATION_AJV_ERRORS, isCFIFragmentSelector, isCfiSelector, isCssSelector, isFragmentSelector, isIReadiumAnnotationSet, isTextPositionSelector, isTextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
@@ -26,8 +26,6 @@ import { v4 as uuidv4 } from "uuid";
 import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLatest";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { EDrawType, INoteState, NOTE_DEFAULT_COLOR, noteColorCodeToColorSet, noteColorSetToColorCode } from "readium-desktop/common/redux/states/renderer/note";
-import { winActions } from "../actions";
-import { WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/constant";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { sqliteTableNoteDelete, sqliteTableNoteDeleteWherePubId, sqliteTableNoteInsert, sqliteTableNoteUpdate, sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
 import { publicationActions as publicationActionsFromMainAction } from "../actions";
