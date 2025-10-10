@@ -486,26 +486,14 @@ const Profiles = () => {
                                 className={classNames(stylesSettings.profile_selection_input, selectedProfile?.id === profile.id ? stylesSettings.profile_selection_input_checked : "")}
                             >
                                 <input
+                                    type="radio"
                                     id={profile.id}
                                     value={profile.fileName}
                                     name={profileTitle}
                                     checked={selectedProfile?.id === profile.id}
-                                    onClick={(e) => {
+                                    onChange={(e) => {
                                         console.log("PROFILE Input change", e);
                                         dispatch(customizationActions.activating.build(profile.id));
-                                    }}
-                                    onKeyDown={(e) => {
-                                        if (e.key === "Enter") {
-                                            console.log("PROFILE Input change", e);
-                                            dispatch(customizationActions.activating.build(profile.id));
-                                        }
-                                    }}
-                                    onKeyUp={(e) => {
-                                        if (e.key === "Enter") {
-                                            e.preventDefault();
-                                            console.log("PROFILE Input change", e);
-                                            dispatch(customizationActions.activating.build(profile.id));
-                                        }
                                     }}
                                     aria-label={profile.id}
                                 />
@@ -580,7 +568,7 @@ const Profiles = () => {
                         value={__("settings.profiles.thorium.title")}
                         name={__("settings.profiles.thorium.title")}
                         checked={!selectedProfile}
-                        onClick={(e) => {
+                        onChange={(e) => {
                             console.log("PROFILE Input change", e);
                             dispatch(customizationActions.activating.build(""));
                         }}
