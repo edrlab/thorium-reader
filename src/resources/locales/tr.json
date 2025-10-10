@@ -65,10 +65,10 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
-                "publications": "",
-                "screen": "",
-                "title": ""
+                "description": "Profil açıklaması yok",
+                "publications": "Profil eserleri",
+                "screen": "Başlık yok",
+                "title": "Profil başlığı"
             }
         },
         "delete": "Sil",
@@ -86,7 +86,7 @@
         "importAnnotation": "Notları içe aktar",
         "lang": "Dil",
         "lastRead": "Son Okunan",
-        "logout": "",
+        "logout": "Oturumu Kapat",
         "moreInfo": "Eser Ayrıntıları",
         "myBooks": "Eserlerim",
         "noPublicationHelpL1": "Dosyaları buraya bırakın",
@@ -145,8 +145,8 @@
         "cancel": "İptal",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
-                "state": "",
+                "fallbackWelcomeScreen": "Hoşgeldiniz ekranı sağlanmadı",
+                "state": "Durum: {{- state}}",
                 "title": "Özelleştirme profilinin hazırlanması ve etkinleştirilmesi"
             }
         },
@@ -1146,17 +1146,17 @@
             }
         },
         "profiles": {
-            "info": "",
+            "info": "Uygulamayı bir iş ortağı tedarikçinin marka ve  renkleriyle özelleştirmek için profiller arasında geçiş yapın. Her profil, size özel bir deneyim sunar.",
             "thorium": {
-                "description": "",
-                "title": ""
+                "description": "Thorium Vanilla profili, EDRLab tarafından tasarlanan özgün profildir.",
+                "title": "Thorium vanilla"
             },
-            "version": ""
+            "version": "Sürüm: {{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "message": "",
-            "title": ""
+            "help": "Uygulama yardımcı teknolojinin mevcudiyetini saptadığında, kullanıcı arayüzü ekran okuyucularla daha iyi çalışır",
+            "message": "Ekran okuyucular için geliştirilmiş destek",
+            "title": "Ekran okuyucu deneyimini iyileştir"
         },
         "session": {
             "title": "Oturum kaydetmeyi etkinleştir"
