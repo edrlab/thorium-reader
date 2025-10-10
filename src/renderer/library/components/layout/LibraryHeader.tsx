@@ -330,7 +330,7 @@ const Header = () => {
 
                                             {
                                                 htmlSanitized ?
-                                                    <div style={{marginLeft: "20px"}} dangerouslySetInnerHTML={{ __html: htmlSanitized }} /> : <></>
+                                                    <div className={stylesModals.modal_dialog_body} dangerouslySetInnerHTML={{ __html: htmlSanitized }} /> : <></>
                                             }
 
                                         </Dialog.Content>
