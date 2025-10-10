@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as stylesHeader from "readium-desktop/renderer/assets/styles/header.scss";
-
+import { Location as HistoryLocation } from "history";
 import * as React from "react";
 import { OpdsFeedAddFormDialog } from "../dialog/OpdsFeedAddForm";
 import { ApiappAddFormDialog } from "../dialog/ApiappAddForm";
@@ -34,35 +34,47 @@ const OpdsAddForm: React.FC = () => {
         svg: EyeGlassesIcon,
     };
 
-    let showResumeBrowsingButton: boolean = false;
+    let nextLocation: HistoryLocation | undefined;
+    for (let i = historyState.length - 1; i >= 0;  i--) {
+        const cv = historyState[i];
+        if (cv?.pathname.startsWith(item.route) && cv.pathname !== location.pathname) {
+            nextLocation = {
+                ...cv,
+                search: item.searchEnable ? cv.search : "",
+            };
+            break;
+        }
+    }
 
-    const nextLocation = historyState.reduceRight(
-        (pv, cv) => {
-            if (pv !== null) {
-                return pv;
-            }
+    // let showResumeBrowsingButton: boolean = false;
 
-            if (cv?.pathname.startsWith(item.route) && cv.pathname !== location.pathname) {
-                showResumeBrowsingButton = true;
-                return {
-                    ...cv,
-                    search: item.searchEnable ? cv.search : "",
-                };
-            }
+    // const nextLocation = historyState.reduceRight(
+    //     (pv, cv) => {
+    //         if (pv !== null) {
+    //             return pv;
+    //         }
 
-            return pv;
-        },
-        null,
-    ) || {
-        ...location,
-        pathname: item.route,
-    };
+    //         if (cv?.pathname.startsWith(item.route) && cv.pathname !== location.pathname) {
+    //             showResumeBrowsingButton = true;
+    //             return {
+    //                 ...cv,
+    //                 search: item.searchEnable ? cv.search : "",
+    //             };
+    //         }
+
+    //         return pv;
+    //     },
+    //     null,
+    // ) || {
+    //     ...location,
+    //     pathname: item.route,
+    // };
 
     return (
-        <section style={{display: "flex", gap: "10px", alignItems: "end", width: "100%", height: "53px", justifyContent: showResumeBrowsingButton ? "space-between" : "end", margin: "0"}}
+        <section style={{display: "flex", gap: "10px", alignItems: "end", width: "100%", height: "53px", justifyContent: nextLocation ? "space-between" : "end", margin: "0"}}
         className={stylesHeader.nav_secondary}>
             {
-                showResumeBrowsingButton ?
+            nextLocation ?
             <Link
                 to={nextLocation}
                 state={{ displayType: (nextLocation.state && (nextLocation.state as IRouterLocationState).displayType) ? (nextLocation.state as IRouterLocationState).displayType : DisplayType.Grid }}
