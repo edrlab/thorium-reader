@@ -29,7 +29,7 @@ import { createSign, createVerify } from "crypto";
 
 import { _CUSTOMIZATION_PROFILE_PRIVATE_KEY, _CUSTOMIZATION_PROFILE_PUB_KEY } from "readium-desktop/preprocessor-directives";
 import { ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
-import slugify from "slugify";
+import { sanitizeForFilename } from "readium-desktop/common/safe-filename";
 import { injectBufferInZip } from "../tools/zipInjector";
 
 // Logger
@@ -163,7 +163,9 @@ export async function createProfilePackageZip(
     signed = false,
     testSignature = false,
 ) {
-    const packagePath = path.resolve(outputProfilePath, `${slugify(manifest.title["en"] + "_" + manifest.version)}.thorium`);
+    const packagePath = path.resolve(outputProfilePath,
+        sanitizeForFilename((manifest.title["en"] || "") + "_" + (manifest.version || "") + ".thorium"),
+    );
     // const packagePathTMP = packagePath + ".tmp";
 
     debug("Ouput path =", packagePath);
@@ -242,21 +244,21 @@ if (__TH__IS_DEV__) {
 
     // npx webpack --config webpack.config.customization.js && DEBUG=r2:*,readium-desktop:* node ./dist/make-package.js --signed=true /tmp/test-profile /tmp
     if (process.argv[1] === path.resolve(process.cwd(), "./dist/make-package.js")) {
-    
-    
+
+
         if (process.argv.length !== 5) {
             console.error(`usage: ${process.argv[0]} ${process.argv[1]} --signed=[false|true] inputDirectory outputDirectory`);
             process.exit(1);
         }
-        const signed = process.argv[2] === "--signed=true"; 
+        const signed = process.argv[2] === "--signed=true";
         const inputDir = path.resolve(process.cwd(), process.argv[3]);
         const outputDir = path.resolve(process.cwd(), process.argv[4]);
-    
+
         const resourcesMap: Array<[string, string]> = [];
-    
+
         const toBeVisit = ["./"];
         while (toBeVisit.length) {
-    
+
             const dirPath = toBeVisit.shift();
             const dirAbsolutePath = path.join(inputDir, dirPath);
             const fileNameArray = readdirSync(dirAbsolutePath);
@@ -272,8 +274,8 @@ if (__TH__IS_DEV__) {
                 }
             }
         } // BFS
-    
-    
+
+
         let manifest: ICustomizationManifest;
         try {
             manifest = JSON.parse(readFileSync(path.join(inputDir, "manifest.json"), "utf-8"));
@@ -281,11 +283,11 @@ if (__TH__IS_DEV__) {
             console.error("manifest not found!!!");
             process.exit(1);
         }
-    
-    
+
+
         createProfilePackageZip(manifest, resourcesMap, outputDir, signed, true).then((outPath) => {
             console.log("OUTPUT=", outPath);
         }).catch((e) => console.error("ERROR!? ", e));
-    
+
     }
 }
