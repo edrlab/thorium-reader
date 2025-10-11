@@ -255,7 +255,7 @@
         },
         "next": "Следующая",
         "previous": "Прошлая",
-        "resumeBrowsing": "",
+        "resumeBrowsing": "Продолжить просмотр",
         "shelf": "Полка",
         "updateForm": {
             "name": "Имя:",
@@ -421,7 +421,7 @@
                 "descriptive": "Информация отсутствует"
             },
             "hazards-none": {
-                "compact": "",
+                "compact": "Нет опасных элементов",
                 "descriptive": "Публикация не содержит опасных элементов"
             },
             "hazards-sound": {
@@ -436,16 +436,16 @@
                 "compact": "Наличие звуков неизвестно",
                 "descriptive": "Наличие звуков неизвестно"
             },
-            "hazards-title": "",
+            "hazards-title": "Опасные элементы",
             "hazards-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Наличие опасных элементов неизвестно",
+                "descriptive": "Наличие опасных элементов неизвестно"
             }
         },
         "navigation": {
             "navigation-index": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Индекс",
+                "descriptive": "Индекс со ссылками на вложенные записи"
             },
             "navigation-no-metadata": {
                 "compact": "Информация отсутствует",
@@ -483,20 +483,20 @@
                 "descriptive": "Математические формулы в доступном формате (MathML)"
             },
             "rich-content-accessible-math-described": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Текстовые описания математических формул предоставляются",
+                "descriptive": "Текстовые описания математических формул предоставляются"
             },
             "rich-content-closed-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Видеоматериалы содержат скрытые субтитры",
+                "descriptive": "Видеоматериалы, включённые в публикации, имеют скрытые субтитры"
             },
             "rich-content-extended": {
                 "compact": "",
                 "descriptive": ""
             },
             "rich-content-open-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Видеоматериалы содержат открытые субтитры",
+                "descriptive": "Видеоматериалы, включённые в публикации, имеют открытые субтитры"
             },
             "rich-content-title": "",
             "rich-content-transcript": {
@@ -565,7 +565,7 @@
                 "alternativeText": "Содержит альтернативный текст",
                 "displayTransformability": "Адаптируемый текст и разметка",
                 "longDescription": "Полностью описанные графические ресурсы",
-                "printPageNumbers": "Разбивка печатной книги на страницы",
+                "printPageNumbers": "Разбивка на страницы в соответствии со страницами печатной версии книги",
                 "readingOrder": "Содержит порядок чтения",
                 "synchronizedAudioText": "Синхронизация текста и аудио",
                 "tableOfContents": "Содержит оглавление"
@@ -581,7 +581,7 @@
                 "sound": "Звук",
                 "unknown": "Неизвестный"
             },
-            "certifierReport": "Отчёт сертификатора",
+            "certifierReport": "Отчёт сертификатора:",
             "conformsTo": "Соответствует:",
             "moreInformation": "Больше информации",
             "name": "Доступность",
@@ -603,10 +603,10 @@
         "duration": {
             "title": "Продолжительность"
         },
-        "encryptedNoLicense": "",
-        "expired": "Срок кредита истек",
+        "encryptedNoLicense": "Публикация зашифрована, но не имеет лицензии LCP!",
+        "expired": "Срок абонемента истёк",
         "expiredLcp": "Эту книгу нельзя прочитать, потому что срок действия лицензии LCP истек.",
-        "incorrectPassphrase": "",
+        "incorrectPassphrase": "Ни один из сохранённых паролей не подходит к публикации, или введённый пароль неверен.",
         "lcpEnd": "Конец",
         "lcpRightsCopy": "Количество символов для копирования",
         "lcpRightsPrint": "Количество страниц, разрешенных для печати",
@@ -623,7 +623,7 @@
             "title": "Прогресс"
         },
         "read": "Закончено",
-        "remainingTime": "Кредиты (оставшиеся дни)",
+        "remainingTime": "Абонемент (оставшиеся дни)",
         "renewButton": "Продлить",
         "returnButton": "Вернуть",
         "returnedLcp": "Эту книгу невозможно прочитать, поскольку была возвращена лицензия LCP.",
@@ -640,43 +640,43 @@
             "addNote": "Комментировать",
             "advancedMode": "Мгновенный режим (автоматическое создание после выбора)",
             "annotationsExport": {
-                "description": "",
-                "title": ""
+                "description": "Название экспортируемых заметок:",
+                "title": "Название"
             },
-            "annotationsOptions": "Параметры",
-            "date": "",
-            "export": "",
+            "annotationsOptions": "Параметры аннотации",
+            "date": "Дата изменения",
+            "export": "Сохранить заметки как...",
             "filter": {
-                "all": "",
-                "filterByColor": "",
-                "filterByCreator": "",
-                "filterByDrawtype": "",
-                "filterByTag": "",
-                "filterOptions": "",
+                "all": "Все",
+                "filterByColor": "Фильтровать по цвету",
+                "filterByCreator": "Фильтровать по создателю",
+                "filterByDrawtype": "Фильтровать по типу",
+                "filterByTag": "Фильтровать по тегу",
+                "filterOptions": "Параметры фильтрации",
                 "none": ""
             },
-            "hide": "",
+            "hide": "Не отображать",
             "highlight": "Выделить",
             "noSelectionToast": "Нет выбора",
             "note": "",
             "quickAnnotations": "Быстрое создание (пропуск редактора)",
             "saveNote": "Сохранить",
             "sorting": {
-                "lastcreated": "",
-                "lastmodified": "",
+                "lastcreated": "Последние созданные",
+                "lastmodified": "Последние изменённые",
                 "progression": "",
-                "sortingOptions": ""
+                "sortingOptions": "Параметры сортировки"
             },
             "toggleMarginMarks": "Отображение на полях",
             "type": {
-                "outline": "",
-                "solid": "",
-                "strikethrough": "",
-                "underline": ""
+                "outline": "Рамка",
+                "solid": "Сплошной фон",
+                "strikethrough": "Зачеркивание",
+                "underline": "Подчёркивание"
             }
         },
         "bookmarks": {
-            "index": ""
+            "index": "Закладка {{- index}}"
         },
         "divina": {
             "mute": "отключить звук",
@@ -688,9 +688,9 @@
         "goToContent": "",
         "imgViewer": {
             "title": "",
-            "zoomIn": "",
-            "zoomOut": "",
-            "zoomReset": ""
+            "zoomIn": "Увеличить",
+            "zoomOut": "Уменьшить",
+            "zoomReset": "Сбросить масштаб"
         },
         "marks": {
             "annotations": "Аннотации",
@@ -708,10 +708,10 @@
             "activate": "Активировать чтение вслух",
             "captions": "Подписи / чистый вид",
             "captionsDescription": "Упрощенный вид текста с минимальным оформлением подписей.",
-            "disableContinuousPlay": "",
-            "disableContinuousPlayDescription": "",
+            "disableContinuousPlay": "Отключить непрерывное воспроизведение",
+            "disableContinuousPlayDescription": "Не воспроизводить автоматически следующий элемент, ставьте воспроизведение на паузу сразу после завершения воспроизведения текущего элемента.",
             "ignoreAndUseTTS": "",
-            "ignoreAndUseTTSDescription": "",
+            "ignoreAndUseTTSDescription": "Игнорировать EPUB Media Overlays, вместо этого читать с помощью преобразования текста в речь",
             "next": "Далее Чтение вслух",
             "pause": "Пауза Чтение вслух",
             "play": "Играть Чтение вслух",
@@ -723,8 +723,8 @@
             "title": "Чтение вслух"
         },
         "navigation": {
-            "ZenModeExit": "",
-            "ZenModeTitle": "",
+            "ZenModeExit": "Выйти из Zen режима",
+            "ZenModeTitle": "Zen режим",
             "annotationTitle": "Аннотация",
             "backHomeTitle": "назад к книжной полке",
             "bookmarkTitle": "Закладка",
@@ -735,7 +735,7 @@
             "goToError": "Этот разрыв страницы не существует",
             "goToPlaceHolder": "Введите номер страницы",
             "goToTitle": "Перейти на страницу",
-            "history": "",
+            "history": "История навигации",
             "historyNext": "Перейти вперед",
             "historyPrevious": "Перейти назад",
             "infoTitle": "Информация",
@@ -829,21 +829,21 @@
                     "fit": "подгонка страницы",
                     "width": "ширина страницы"
                 },
-                "title": "Увеличить"
+                "title": "Масштаб"
             },
             "preset": {
-                "apply": "",
-                "applyDetails": "",
-                "detail": "",
-                "reset": "",
-                "resetDetails": "",
-                "save": "",
-                "saveDetails": "",
-                "title": ""
+                "apply": "Применить",
+                "applyDetails": "Применить любимую конфигурацию к текущей публикации.",
+                "detail": "Сохранить / Применить / Сбросить текущую конфигурацию.",
+                "reset": "Сбросить",
+                "resetDetails": "Сбросить текущую конфигурацию до настроек по умолчанию.",
+                "save": "Сохранить",
+                "saveDetails": "Это действие сохранит текущую конфигурацию, то есть предпочтительные параметры отображения и форматирования текста. Затем настройки можно будет применить к другим публикациям, нажав кнопку «Применить» в других окнах программы.",
+                "title": "Параметры"
             },
             "preview": "Предпросмотр",
             "reduceMotion": "Уменьшить движение",
-            "scrolled": "Прокручивающаяся",
+            "scrolled": "Потоковая",
             "spacing": "Интервал",
             "text": "Текст",
             "theme": {
@@ -885,15 +885,15 @@
     },
     "settings": {
         "annotationCreator": {
-            "creator": "",
-            "help": "",
-            "name": "",
+            "creator": "Автор аннотаций (необязательно)",
+            "help": "Если указано имя, то оно будет включено в метаданные экспортируемых заметок.",
+            "name": "Имя",
             "organization": "Организация",
-            "person": "",
+            "person": "Человек",
             "type": "Тип:"
         },
         "auth": {
-            "help": "",
+            "help": "Это действие удаляет все учётные данные OPDS.",
             "title": "Доступ к каталогам публикаций",
             "wipeData": "Очистить данные для входа"
         },
@@ -1126,7 +1126,7 @@
                 }
             },
             "loadUserJson": "Загрузить из пользовательского файла",
-            "noShortcutFound": "",
+            "noShortcutFound": "Горячая клавиша с этой меткой не найдена",
             "resetDefaults": "Сбросить (загрузка по умолчанию)",
             "save": "Сохранить",
             "searchPlaceholder": "Введите текст для поиска горячей клавиши"
