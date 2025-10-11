@@ -146,7 +146,7 @@
         "customization": {
             "splashscreen": {
                 "fallbackWelcomeScreen": "Приветственный экран не предусмотрен",
-                "state": "",
+                "state": "Статус: {{- state}}",
                 "title": "Создание и активация профиля настройки"
             }
         },
@@ -338,13 +338,13 @@
                 "descriptive": "Книга содержит заявление о соответствии стандарту доступности EPUB и стандарту WCAG 2 уровня AAA"
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "Публикация сертифицирована "
             },
             "conformance-certifier-credentials": {
                 "compact": ""
             },
             "conformance-details-certifier-report": {
-                "compact": ""
+                "compact": "Более подробную информацию смотрите в отчёте о сертификации"
             },
             "conformance-details-claim": {
                 "compact": "Эта книга претендует на то, чтобы соответствовать",
@@ -385,56 +385,56 @@
                 "compact": "Информация отсутствует",
                 "descriptive": "Информация отсутствует"
             },
-            "conformance-title": "",
+            "conformance-title": "Соответствие",
             "conformance-unknown-standard": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Соответствие данной публикации принятым стандартам доступности не может быть определено",
+                "descriptive": "Соответствие данной публикации принятым стандартам доступности не может быть определено"
             }
         },
         "hazards": {
             "hazards-flashing": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Мигающее содержимое",
+                "descriptive": "Публикация содержит мигающий контент, который может вызвать фоточувствительные припадки"
             },
             "hazards-flashing-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Мигающее содержимое отсутствует",
+                "descriptive": "Публикация не содержит мигающего контента"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Наличие мигающего контента неизвестно",
+                "descriptive": "Наличие мигающего контента неизвестно"
             },
             "hazards-motion": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Имитация движений",
+                "descriptive": "В публикации содержится имитация движений, которая может вызвать тошноту"
             },
             "hazards-motion-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Имитация движений отсутствует",
+                "descriptive": "Публикация не содержит имитации движений"
             },
             "hazards-motion-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Наличие имитации движения неизвестно",
+                "descriptive": "Наличие имитации движения неизвестно"
             },
             "hazards-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Информация отсутствует",
+                "descriptive": "Информация отсутствует"
             },
             "hazards-none": {
                 "compact": "",
-                "descriptive": ""
+                "descriptive": "Публикация не содержит опасных элементов"
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Звуки",
+                "descriptive": "Публикация содержит звуки, которые могут быть неприятны"
             },
             "hazards-sound-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Не содержит звуков",
+                "descriptive": "Публикация не содержит звуков"
             },
             "hazards-sound-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Наличие звуков неизвестно",
+                "descriptive": "Наличие звуков неизвестно"
             },
             "hazards-title": "",
             "hazards-unknown": {
@@ -448,39 +448,39 @@
                 "descriptive": ""
             },
             "navigation-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Информация отсутствует",
+                "descriptive": "Информация отсутствует"
             },
             "navigation-page-navigation": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Перейти на страницу",
+                "descriptive": "Список страниц для перехода к страницам из печатной версии исходного текста"
             },
             "navigation-structural": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Заголовки",
+                "descriptive": "Такие элементы, как заголовки, таблицы и т. д. для структурированной навигации"
             },
-            "navigation-title": "",
+            "navigation-title": "Навигация",
             "navigation-toc": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Оглавление",
+                "descriptive": "Оглавление в виде ссылок ко всем главам текста"
             }
         },
         "rich-content": {
             "rich-content-accessible-chemistry-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Химические формулы в формате LaTeX",
+                "descriptive": "Химические формулы в доступном формате (LaTeX)"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Химические формулы в формате MathML",
+                "descriptive": "Химические формулы в доступном формате (MathML)"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Математические формулы в формате LaTeX",
+                "descriptive": "Математические формулы в доступном формате (LaTeX)"
             },
             "rich-content-accessible-math-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Математические формулы в формате MathML",
+                "descriptive": "Математические формулы в доступном формате (MathML)"
             },
             "rich-content-accessible-math-described": {
                 "compact": "",
@@ -504,8 +504,8 @@
                 "descriptive": ""
             },
             "rich-content-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Информация отсутствует",
+                "descriptive": "Информация отсутствует"
             }
         },
         "ways-of-reading": {
@@ -906,11 +906,11 @@
             "list": {
                 "AddBookmarkWithLabel": {
                     "description": "",
-                    "name": ""
+                    "name": "Создать закладку с меткой"
                 },
                 "AnnotationsCreate": {
                     "description": "",
-                    "name": ""
+                    "name": "Создать аннотацию"
                 },
                 "AnnotationsCreateQuick": {
                     "description": "",
@@ -945,8 +945,8 @@
                     "name": ""
                 },
                 "CloseReader": {
-                    "description": "",
-                    "name": ""
+                    "description": "Закрыть книгу и вернуться в библиотеку",
+                    "name": "Закрыть книгу"
                 },
                 "FXLZoomIn": {
                     "description": "",
@@ -974,11 +974,11 @@
                 },
                 "FocusReaderNavigation": {
                     "description": "",
-                    "name": ""
+                    "name": "Фокус на панели навигации"
                 },
                 "FocusReaderNavigationAnnotations": {
                     "description": "",
-                    "name": ""
+                    "name": "Фокус на «Аннотации»"
                 },
                 "FocusReaderNavigationBookmarks": {
                     "description": "",
@@ -986,11 +986,11 @@
                 },
                 "FocusReaderNavigationSearch": {
                     "description": "",
-                    "name": ""
+                    "name": "Фокус на «Поиск»"
                 },
                 "FocusReaderNavigationTOC": {
                     "description": "",
-                    "name": ""
+                    "name": "Фокус на «Содержание»"
                 },
                 "FocusReaderSettings": {
                     "description": "",
@@ -1013,8 +1013,8 @@
                     "name": "Перейти к следующей главе (альтернативный вариант)"
                 },
                 "NavigateNextHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "В окне чтения перейти на один шаг вперёд в истории навигации",
+                    "name": "Перейти к следующему шагу в истории навигации"
                 },
                 "NavigateNextLibraryPage": {
                     "description": "",
@@ -1049,8 +1049,8 @@
                     "name": "Перейти к предыдущей главе (альтернативный вариант)"
                 },
                 "NavigatePreviousHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "В окне чтения перейти на шаг назад в истории навигации",
+                    "name": "Перейти к предыдущему шагу в истории навигации"
                 },
                 "NavigatePreviousLibraryPage": {
                     "description": "",
@@ -1069,11 +1069,11 @@
                     "name": ""
                 },
                 "NavigatePreviousPage": {
-                    "description": "",
+                    "description": "В окне чтения перейти на предыдущую страницу публикации. Обратите внимание, что существует также альтернативное сочетание клавиш для этого действия",
                     "name": "Перейти на предыдущую страницу"
                 },
                 "NavigatePreviousPageAlt": {
-                    "description": "",
+                    "description": "В окне чтения перейти на предыдущую страницу публикации. Это альтернативное сочетание клавиш вместо стандартного",
                     "name": "Перейти на предыдущую страницу (альтернативный вариант)"
                 },
                 "NavigateToBegin": {
@@ -1097,19 +1097,19 @@
                     "name": "Печать"
                 },
                 "SearchNext": {
-                    "description": "",
+                    "description": "В окне чтения перейдите к следующему результату поиска. Обратите внимание, что существует также альтернативное сочетание клавиш для этого действия",
                     "name": "Следующий результат поиска"
                 },
                 "SearchNextAlt": {
-                    "description": "",
+                    "description": "В окне чтения перейдите к следующему результату поиска. Это альтернативное сочетание клавиш вместо стандартного",
                     "name": "Следующий результат поиска (альтернативный вариант)"
                 },
                 "SearchPrevious": {
-                    "description": "",
+                    "description": "В окне чтения перейдите к предыдущему результату поиска. Обратите внимание, что существует также альтернативное сочетание клавиш для этого действия",
                     "name": "Предыдущий результат поиска"
                 },
                 "SearchPreviousAlt": {
-                    "description": "",
+                    "description": "В окне чтения перейдите к предыдущему результату поиска. Это альтернативное сочетание клавиш вместо стандартного",
                     "name": "Предыдущий результат поиска (альтернативный вариант)"
                 },
                 "SpeakReaderInfoWhereAmI": {
@@ -1135,18 +1135,18 @@
             "languageChoice": "Выбор языка"
         },
         "library": {
-            "enableAPIAPP": "",
-            "title": ""
+            "enableAPIAPP": "Активировать библиотечную систему «PNB»",
+            "title": "Доступ к учётным записям французских библиотек"
         },
         "note": {
             "export": {
                 "applyDefaultTemplate": "Загрузить шаблон по умолчанию",
-                "enableCheckbox": "",
-                "overrideHTMLTemplate": ""
+                "enableCheckbox": "Настроить шаблон HTML",
+                "overrideHTMLTemplate": "Экспорт заметок (аннотации и закладки)"
             }
         },
         "profiles": {
-            "info": "",
+            "info": "Переключайтесь между профилями, чтобы персонализировать приложение с использованием фирменного стиля и цветов. Каждый профиль обеспечивает персонализированный интерфейс.",
             "thorium": {
                 "description": "Thorium Vanilla — это оригинальный профиль, разработанный EDRLab.",
                 "title": "Thorium vanilla"
@@ -1154,9 +1154,9 @@
             "version": "Версия: {{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "message": "",
-            "title": ""
+            "help": "Пользовательский интерфейс лучше работает с программами чтения с экрана, когда приложение обнаруживает наличие вспомогательных технологий",
+            "message": "Улучшена поддержка программ чтения с экрана",
+            "title": "Улучшена работа программы чтения с экрана"
         },
         "session": {
             "title": "Сохранение сеанса"
@@ -1169,7 +1169,7 @@
         "theme": {
             "auto": "Автоматическая",
             "dark": "Тёмная",
-            "description": "Тема приложения соответствует операционной системе.",
+            "description": "Тема приложения соответствует системной теме.",
             "light": "Светлая",
             "title": "Тема приложения"
         }
@@ -1177,24 +1177,24 @@
     "tts": {
         "highlight": {
             "mainColor": "Основной цвет",
-            "maskBlockWordOutline": "",
-            "maskBlockWordSolidBackground": "",
-            "maskBlockWordUnderline": "",
-            "maskWordOutline": "",
-            "maskWordSolidBackground": "",
-            "maskWordUnderline": "",
-            "outlineWordOutline": "",
-            "outlineWordSolidBackground": "",
-            "outlineWordUnderline": "",
-            "preview": "",
-            "solidBackgroundWordOutline": "",
-            "solidBackgroundWordSolidBackground": "",
-            "solidBackgroundWordUnderline": "",
-            "style": "",
-            "underlineWordOutline": "",
-            "underlineWordSolidBackground": "",
-            "underlineWordUnderline": "",
-            "wordColor": ""
+            "maskBlockWordOutline": "Маскировка блоком, Слово в рамке",
+            "maskBlockWordSolidBackground": "Маскировка блоком, Слово подсвечено",
+            "maskBlockWordUnderline": "Маскировка блоком, Слово подчёркнуто",
+            "maskWordOutline": "Маскировка, Слово в рамке",
+            "maskWordSolidBackground": "Маскировка, Слово подсвечено",
+            "maskWordUnderline": "Маскировка, Слово подчёркнуто",
+            "outlineWordOutline": "Рамка, Слово в рамке",
+            "outlineWordSolidBackground": "Рамка, Слово подсвечено",
+            "outlineWordUnderline": "Рамка, Слово подчёркнуто",
+            "preview": "Предварительный просмотр стиля подсветки TTS",
+            "solidBackgroundWordOutline": "Заливка фона, Слово в рамке",
+            "solidBackgroundWordSolidBackground": "Заливка фона, Слово подсвечено",
+            "solidBackgroundWordUnderline": "Заливка фона, Слово подчёркнуто",
+            "style": "Стиль выделения TTS",
+            "underlineWordOutline": "Подчёркивание, Слово в рамке",
+            "underlineWordSolidBackground": "Подчёркивание, Слово подсвечено",
+            "underlineWordUnderline": "Подчёркивание, Слово подчёркнуто",
+            "wordColor": "Цвет слова"
         }
     },
     "wizard": {
