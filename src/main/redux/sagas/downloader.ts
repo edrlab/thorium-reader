@@ -462,7 +462,7 @@ function downloadCreateFilename(contentType: string | undefined, contentDisposit
         }
     }
 
-    const rawFilenameWithExtension = // TEST: " \t\n oїÃ¡Ã¨kа Python и DevOps Ключ к автоматизации Linux -       \t     ︈Ной Гиф︈ ... \t . \n epub\t " ||
+    const rawFilenameWithExtension = // TEST: " \t\n oїÃ¡Ã¨kа Python и DevOps Ключ к автоматизации Linux -       \t     ︈Ной Гиф︈  \t . \n epub\t  " ||
         contentDispositionFilename || contentTypeFilename || filename;
     debug(`download filename raw: ${rawFilenameWithExtension}`);
 

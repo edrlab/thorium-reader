@@ -43,8 +43,12 @@ export function sanitizeForFilename(str: string) {
             .replace(windowsReservedRe, replacement)
             .replace(windowsTrailingRe, replacement);
         const extension = path.extname(normalized) || "";
-        const filenameWithoutExt = path.basename(normalized, extension) || "";
-        const joined = (filenameWithoutExt.replace(/[\.\s]+$/, "") || replacement) + "." + (extension.replace(/^[\.\s]+/, "") || "ext");
+        const filenameWithoutExt = extension ? (path.basename(normalized, extension) || "") : normalized;
+        const joined = (filenameWithoutExt.replace(/[\.\s]+$/, "") || replacement) +
+            (extension ?
+                ("." + (extension.replace(/^[\.\s]+/, "") || "ext")) :
+                ""
+            );
         return truncateUnicode(joined, 255);
     } catch (_e) {
         return slugify(trimmedAndWhitespaceCollapsed.replace(/\/|\\/g, "_")).replace(/:/g, "-").substring(0, 100) || "FILE";
