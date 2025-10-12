@@ -255,7 +255,7 @@
         },
         "next": "Sonraki",
         "previous": "Önceki",
-        "resumeBrowsing": "",
+        "resumeBrowsing": "Göz atmaya kaldığınız yerden devam edin",
         "shelf": "Raf",
         "updateForm": {
             "name": "İsim:",
