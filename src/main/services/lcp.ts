@@ -103,6 +103,7 @@ export class LcpManager {
                 return {};
             }
             const json = JSON.parse(str);
+            // debug("LCP getAllSecrets: ", json);
             return json;
         }
 
@@ -119,7 +120,7 @@ export class LcpManager {
         const ids = Object.keys(allSecrets);
         for (const id of ids) {
             const val = allSecrets[id];
-            if (val.passphrase) {
+            if (val.passphrase && !secrets.includes(val.passphrase)) {
                 const provider = doc.lcp?.provider;
 
                 if (doc.identifier === id ||
