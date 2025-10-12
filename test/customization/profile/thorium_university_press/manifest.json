@@ -97,7 +97,7 @@
             "name": "Herman Melville",
             "sortAs": "Melville, Herman"
           },
-          "identifier": "http://www.feedbooks.com/book/54/moby-dick",
+          "identifier": "thorium-manifest://org.edrlab.thorium.university/publication/moby",
           "language": "en",
           "modified": "2018-04-23T23:18:00Z",
           "published": "1851-01-01",
@@ -107,20 +107,14 @@
         "links": [
           {
             "rel": "http://opds-spec.org/acquisition/open-access",
-            "href": "https://test.opds.io/assets/moby/file.epub",
+            "href": "./publications/moby.epub",
             "type": "application/epub+zip"
           }
         ],
         "images": [
           {
-            "href": "https://test.opds.io/assets/moby/small.jpg",
-            "type": "image/jpeg",
-            "height": 169,
-            "width": 110
-          },
-          {
-            "href": "https://test.opds.io/assets/moby/normal.jpg",
-            "type": "image/jpeg",
+            "href": "./publications/moby.png",
+            "type": "image/png",
             "height": 400,
             "width": 260
           }
@@ -135,7 +129,7 @@
             "name": "Gaston Leroux",
             "sortAs": "Leroux, Gaston"
           },
-          "identifier": "http://fr.feedbooks.com/book/588/le-myst%C3%A8re-de-la-chambre-jaune",
+          "identifier": "thorium-manifest://org.edrlab.thorium.university/publication/jaune",
           "language": "fr",
           "modified": "2018-04-23T22:32:00Z",
           "published": "1907-01-01",
@@ -145,20 +139,14 @@
         "links": [
           {
             "rel": "http://opds-spec.org/acquisition/open-access",
-            "href": "https://test.opds.io/assets/chambrejaune/file.epub",
+            "href": "./publications/jaune.epub",
             "type": "application/epub+zip"
           }
         ],
         "images": [
           {
-            "href": "https://test.opds.io/assets/chambrejaune/small.jpg",
-            "type": "image/jpeg",
-            "height": 169,
-            "width": 110
-          },
-          {
-            "href": "https://test.opds.io/assets/chambrejaune/normal.jpg",
-            "type": "image/jpeg",
+            "href": "./publications/jaune.png",
+            "type": "image/png",
             "height": 400,
             "width": 260
           }
