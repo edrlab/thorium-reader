@@ -491,14 +491,14 @@
                 "descriptive": "Видеоматериалы, включённые в публикации, имеют скрытые субтитры"
             },
             "rich-content-extended": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Информативно насыщенные визуальные материалы иллюстрируются подробными пояснениями",
+                "descriptive": "Информативно насыщенные визуальные материалы иллюстрируются подробными пояснениями"
             },
             "rich-content-open-captions": {
                 "compact": "Видеоматериалы содержат открытые субтитры",
                 "descriptive": "Видеоматериалы, включённые в публикации, имеют открытые субтитры"
             },
-            "rich-content-title": "",
+            "rich-content-title": "Расширенное содержание",
             "rich-content-transcript": {
                 "compact": "",
                 "descriptive": ""
@@ -510,24 +510,24 @@
         },
         "ways-of-reading": {
             "ways-of-reading-nonvisual-reading-alt-text": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Имеет альтернативный текст",
+                "descriptive": "Включает альтернативные текстовые описания для изображений"
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Информация о поддержке невизуального чтения отсутствует",
+                "descriptive": "Информация о поддержке невизуального чтения отсутствует"
             },
             "ways-of-reading-nonvisual-reading-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Не читается с помощью программы чтения с экрана или с использованием дисплея Брайля",
+                "descriptive": "Содержимое не читается с помощью программы чтения с экрана или с использованием дисплея Брайля"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Невозможно полностью прочитать с помощью программы чтения с экрана или с использованием дисплея Брайля",
+                "descriptive": "Не всё содержимое будет читаемо с помощью программы чтения с экрана или с использованием дисплея Брайля"
             },
             "ways-of-reading-nonvisual-reading-readable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Читается с помощью программы чтения с экрана или с использованием дисплея Брайля",
+                "descriptive": "Всё содержимое может быть прочитано с помощью программы чтения с экрана или с использованием дисплея Брайля"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
                 "compact": "",
@@ -736,8 +736,8 @@
             "goToPlaceHolder": "Введите номер страницы",
             "goToTitle": "Перейти на страницу",
             "history": "История навигации",
-            "historyNext": "Перейти вперед",
-            "historyPrevious": "Перейти назад",
+            "historyNext": "Перейти вперед в истории навигации",
+            "historyPrevious": "Перейти назад в истории навигации",
             "infoTitle": "Информация",
             "magnifyingGlassButton": "Искать в книге",
             "openTableOfContentsTitle": "Навигация",
