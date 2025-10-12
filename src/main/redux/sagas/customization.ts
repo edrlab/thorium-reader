@@ -86,7 +86,7 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
     }
 
     // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
-    if (isURL(httpUrlOrFilePath) && /^https?:\/\//.test(httpUrlOrFilePath)) {
+    if (/*isURL(httpUrlOrFilePath) && */ /^https?:\/\//.test(httpUrlOrFilePath)) {
 
         fileName = `${nanoid(10)}_downloaded_profile.thorium`;
         packagePath = path.join(customizationWellKnownFolder, fileName);
