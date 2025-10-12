@@ -31,6 +31,7 @@ import { getOpdsAuthenticationChannel } from "readium-desktop/main/event";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import isURL from "validator/lib/isURL";
+import { sanitizeForFilename } from "readium-desktop/common/safe-filename";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/downloader");
@@ -333,6 +334,91 @@ function* downloadCreatePathFilename(pathDir: string, filename: string, rc = 0):
     return pathFile;
 }
 
+// https://github.com/yurks/content-disposition-parser/blob/3525df9fafb5849e3fb3e1eb3e3ed905354cf088/index.js#L1
+const reParamSplit = /\s*;\s*/;
+const reHeaderSplit = /\s*:\s*/;
+const rePropertySplit = /\s*=\s*(.+)/;
+const reEncodingSplit = /\s*'([^']*)'\s*(.*)/;
+const reQuotesTrim = /(?:^["'\s]*)|(?:["'\s]*$)/g;
+
+const getFilenameFromContentDisposition = (cd: string): string => {
+    if (!cd) {
+        return "";
+    }
+    const headerSplit = cd.split(reParamSplit)
+        .map((item) => item.trim())
+        .filter((item) => !!item);
+
+    let type: string | string[] = headerSplit.shift();
+    if (!type) {
+        return "";
+    }
+    type = type.toLowerCase().split(reHeaderSplit);
+    type = type[1] || type[0];
+
+    const res = headerSplit
+        .map((prop) => prop.split(rePropertySplit))
+        .reduce((o, [key, value]) => {
+            if (!value) {
+                o[key] = true;
+            } else if (key.slice(-1) === "*") {
+                let encoding: string | undefined;
+                let lang: string | undefined;
+                [encoding, lang, value] = value.split(reEncodingSplit);
+                if (value) {
+                    try {
+                        value = decodeURIComponent(value);
+                    } catch (_e) { }
+                    o[key.slice(0, -1).toLowerCase()] = value;
+                }
+                if (encoding) {
+                    o.encoding = encoding.toLowerCase();
+                }
+                if (lang) {
+                    o.lang = lang.toLowerCase();
+                }
+            } else if (!(key in o)) {
+                o[key.toLowerCase()] = value.replace(reQuotesTrim, "");
+            }
+            return o;
+        }, { type } as any);
+
+    debug(cd, " =====> ", res);
+    return res?.filename || "";
+};
+
+// if (__TH__IS_DEV__) {
+//     // https://github.com/yurks/content-disposition-parser/blob/3525df9fafb5849e3fb3e1eb3e3ed905354cf088/test/snapshots/parser.js.md
+//     [
+//         [`Content-Disposition: attachment; filename="Python%20%D0%B8%20DevOps%20%D0%9A%D0%BB%D1%8E%D1%87%20%D0%BA%20%D0%B0%D0%B2%D1%82%D0%BE%D0%BC%D0%B0%D1%82%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20Linux%20-%20%EF%B8%88%D0%9D%D0%BE%D0%B9%20%D0%93%D0%B8%D1%84%EF%B8%88.epub"; filename*=UTF-8''Python%20%D0%B8%20DevOps%20%D0%9A%D0%BB%D1%8E%D1%87%20%D0%BA%20%D0%B0%D0%B2%D1%82%D0%BE%D0%BC%D0%B0%D1%82%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20Linux%20-%20%EF%B8%88%D0%9D%D0%BE%D0%B9%20%D0%93%D0%B8%D1%84%EF%B8%88.epub`, "Python и DevOps Ключ к автоматизации Linux - ︈Ной Гиф︈.epub"],
+//         [`attachment; filename="Python%20%D0%B8%20DevOps%20%D0%9A%D0%BB%D1%8E%D1%87%20%D0%BA%20%D0%B0%D0%B2%D1%82%D0%BE%D0%BC%D0%B0%D1%82%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20Linux%20-%20%EF%B8%88%D0%9D%D0%BE%D0%B9%20%D0%93%D0%B8%D1%84%EF%B8%88.pdf"; filename*=UTF-8''Python%20%D0%B8%20DevOps%20%D0%9A%D0%BB%D1%8E%D1%87%20%D0%BA%20%D0%B0%D0%B2%D1%82%D0%BE%D0%BC%D0%B0%D1%82%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20Linux%20-%20%EF%B8%88%D0%9D%D0%BE%D0%B9%20%D0%93%D0%B8%D1%84%EF%B8%88.pdf`, "Python и DevOps Ключ к автоматизации Linux - ︈Ной Гиф︈.pdf"],
+//         ["content-disposition: inline; filename=example.pdf", "example.pdf"],
+//         ["content-disposition: form-data; name=\"field2\"; filename=\"example.txt\"", "example.txt"],
+//         ["Content-Disposition: attachment; FileName=\"A LiTTle 'sTrAnge'.fileName\"", "A LiTTle \'sTrAnge\'.fileName"],
+//         ["Content-Disposition: Attachment; Filename*=UTF-8'en'an%20example", "an example"],
+//         ["Content-Disposition: Attachment; Filename*=UTF-8'en-US'an%20example", "an example"],
+//         ["Content-Disposition: Attachment; Filename*=UTF-8'en_US'an%2520example", "an%20example"],
+//         ["Content-Disposition: attachment; filename*= UTF-8''%E2%82%B4%20rates", "₴ rates"],
+//         ["Content-Disposition: attachment; filename=\"EURO rates\"; filename*=utf-8''%e2%82%ac%20rates", "€ rates"],
+//         ["Content-Disposition: attachment; filename*=utf-8''%24%20rates; filename=\"USD rates\"", "$ rates"],
+//         ["inline; filename=example.txt", "example.txt"],
+//         ["attachment; filename=\"oїÃ¡Ã¨kа.jpg\"", "oїÃ¡Ã¨kа.jpg"],
+//         ["attachment; filename=oїÃ¡Ã¨kа.jpg", "oїÃ¡Ã¨kа.jpg"],
+//         ["inline; filename*=iso-8859-1", ""],
+//         ["inline; filename*=iso-8859-1'en'%C3%A9xampl%C3%A9.txt", "éxamplé.txt"],
+//         ["inline; filename*=iso-8859-1''26738271 svoboda", "26738271 svoboda"],
+//         ["googleit=8{; filename=\"26738271 svoboda\"; filename*=utf-8''%D1%83%D0%B1%D0%B8%D0%B9%20%D1%83%20%D1%81%D0%BE%D0%B1%D1%96%20%D1%81%D0%B2%D0%BE%D0%B1%D0%BE%D0%B4%D0%B0", "убий у собі свобода"],
+//     ].forEach((pair) => {
+//         const cd = getFilenameFromContentDisposition(pair[0]);
+//         debug(pair[0], cd, pair[1]);
+//         if (cd !== pair[1]) {
+//             throw new Error("content disposition parsing error?! " + pair[0] + " ___ " + cd + " !== " + pair[1]);
+//         } else {
+//             // throw new Error("content disposition parsing OK :) " + pair[0] + " ___ " + cd + " !== " + pair[1]);
+//         }
+//     });
+// }
+
 function downloadCreateFilename(contentType: string | undefined, contentDisposition: string | undefined, type?: string): string {
 
     const defExt = "unknown-ext";
@@ -349,51 +435,41 @@ function downloadCreateFilename(contentType: string | undefined, contentDisposit
         const [ext] = typeValues.map((v) => findExtWithMimeType(v)).filter((v) => v);
         if (ext) {
             contentTypeFilename = "file." + ext;
+            debug(`contentTypeFilename: ${contentTypeFilename}`);
         }
     }
 
-    // example
-    // "attachment; filename=xxx.epub; filename*=UTF-8''xxx.epub"
     let contentDispositionFilename = "";
     if (contentDisposition) {
-        const res = /filename=(\"([^;]+)\"|([^;]+))/.exec(contentDisposition);
-        const filenameInCD = res ? res[2] || res[3] || "" : "";
-        if (acceptedExtension(path.extname(filenameInCD))) {
-            contentDispositionFilename = filenameInCD;
-            debug(`contentDispositionFilename: ${contentDispositionFilename}`);
+        contentDispositionFilename = getFilenameFromContentDisposition(contentDisposition);
+        debug(`contentDispositionFilename: ${contentDispositionFilename}`);
+        if (contentDispositionFilename && !acceptedExtension(path.extname(contentDispositionFilename))) {
+            debug("contentDispositionFilename invalid extension");
+            contentDispositionFilename = "";
         }
-    }
-    if (contentDisposition && !contentDispositionFilename) {
-        const res = /filename\*=UTF-8''(\"([^;]+)\"|([^;]+))/.exec(contentDisposition);
-        const filenameInCD = decodeURIComponent(res ? res[2] || res[3] || "" : "");
-        if (acceptedExtension(path.extname(filenameInCD))) {
-            contentDispositionFilename = filenameInCD;
-            debug(`contentDispositionFilename UTF8: ${contentDispositionFilename}`);
-        }
-    }
+        if (contentDispositionFilename &&
+            path.extname(contentDispositionFilename).toLowerCase() === path.extname(contentTypeFilename).toLowerCase()
+        ) {
+            debug("contentType and contentDisposition have the same extension ! Good catch !", contentTypeFilename, contentDispositionFilename);
+        } else {
+            debug("contentType and contentDisposition does not have the same extension ! Server stream !?!", contentTypeFilename, contentDispositionFilename);
 
-    if (contentDispositionFilename &&
-        path.extname(contentDispositionFilename).toLowerCase() === path.extname(contentTypeFilename).toLowerCase()
-    ) {
-        debug("contentType and contentDisposition have the same extension ! Good catch !", contentTypeFilename, contentDispositionFilename);
-    } else {
-        debug("contentType and contentDisposition does not have the same extension ! Server stream !?!", contentTypeFilename, contentDispositionFilename);
-
-
-        if (contentTypeFilename.toLowerCase().endsWith(acceptedExtensionObject.pdfLcp)
-            && contentDispositionFilename.toLowerCase().endsWith(acceptedExtensionObject.pdf)) {
-            // workaround for buggy servers
-            contentDispositionFilename = contentDispositionFilename.replace(/\.pdf$/i, ".lcpdf");
+            if (contentTypeFilename.toLowerCase().endsWith(acceptedExtensionObject.pdfLcp)
+                && contentDispositionFilename.toLowerCase().endsWith(acceptedExtensionObject.pdf)) {
+                // workaround for buggy servers
+                contentDispositionFilename = contentDispositionFilename.replace(/\.pdf$/i, ".lcpdf");
+            }
         }
     }
 
-    let contentDispositionFilenameSanitize = "";
-    if (contentDispositionFilename) {
-        contentDispositionFilenameSanitize = contentDispositionFilename.replace(/\/|\\/g, "_").replace(/:/g, "-"); // also see usage of slugify() on publication.title to create a valid filename on Linux, Mac, Windows
-        debug(`contentDispositionFilenameSanitize: ${contentDispositionFilenameSanitize}`);
-    }
+    const rawFilenameWithExtension = // TEST: " \t\n oїÃ¡Ã¨kа Python и DevOps Ключ к автоматизации Linux -       \t     ︈Ной Гиф︈  \t . \n epub\t  " ||
+        contentDispositionFilename || contentTypeFilename || filename;
+    debug(`download filename raw: ${rawFilenameWithExtension}`);
 
-    return contentDispositionFilenameSanitize || contentTypeFilename || filename;
+    const sanitized = sanitizeForFilename(rawFilenameWithExtension);
+    debug(`download filename sanitized: ${sanitized}`);
+
+    return sanitized;
 }
 
 interface IDownloadProgression {

@@ -255,6 +255,7 @@
         },
         "next": "Suivant",
         "previous": "Précédent",
+        "resumeBrowsing": "Reprendre le parcours",
         "shelf": "Étagère",
         "updateForm": {
             "name": "Nom :",

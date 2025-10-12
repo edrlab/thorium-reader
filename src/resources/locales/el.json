@@ -255,6 +255,7 @@
         },
         "next": "Επόμενο",
         "previous": "Προηγούμενο",
+        "resumeBrowsing": "",
         "shelf": "Ράφι",
         "updateForm": {
             "name": "Όνομα:",

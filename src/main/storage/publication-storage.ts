@@ -14,12 +14,12 @@ import { File } from "readium-desktop/common/models/file";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { ContentType } from "readium-desktop/utils/contentType";
 import { getFileSize, rmDirSync } from "readium-desktop/utils/fs";
-import slugify from "slugify";
 
 import { PublicationParsePromise } from "@r2-shared-js/parser/publication-parser";
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { IZip } from "@r2-utils-js/_utils/zip/zip.d";
 import * as debug_ from "debug";
+import { sanitizeForFilename } from "readium-desktop/common/safe-filename";
 
 const debug = debug_("readium-desktop:main/storage/pub-storage");
 
@@ -199,7 +199,7 @@ export class PublicationStorage {
     public getPublicationFilename(publicationView: PublicationView) {
         const publicationPath = this.getPublicationEpubPath(publicationView.identifier);
         const extension = path.extname(publicationPath);
-        const filename = `${slugify(publicationView.documentTitle).replace(/:/g, "-")}${extension}`;
+        const filename = sanitizeForFilename(publicationView.documentTitle + extension);
         return filename;
     }
 

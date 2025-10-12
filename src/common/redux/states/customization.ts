@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
-import { IOpdsPublicationView } from "src/common/views/opds";
+import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 
 // export type TCustomizationProvisioningPackage = Array<[identifier: string, fileName: string, version: string]>;
 

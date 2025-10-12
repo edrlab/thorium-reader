@@ -11,12 +11,11 @@ import * as fs from "fs";
 import * as path from "path";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 
-import { sortObject } from "@r2-utils-js/_utils/JsonUtils";
-
 import {
     defaultKeyboardShortcuts, TKeyboardShortcut, TKeyboardShortcutFull, TKeyboardShortcutId,
     TKeyboardShortcutsMap,
 } from "../common/keyboard";
+import { JsonStringifySortedKeys } from "readium-desktop/common/utils/json";
 
 // uncomment this to test webpack-loader-scope-checker.js (violation: MAIN calls RENDERER code => WebPack bundles source tree from different realm)
 // import { unregisterKeyboardListener } from "readium-desktop/renderer/common/keyboard";
@@ -174,7 +173,7 @@ function saveUser(obj: TKeyboardShortcutsMap) {
             };
         }
     }
-    const txt = JSON.stringify(sortObject(objUser), null, 4);
+    const txt = JsonStringifySortedKeys(objUser, 4);
     fs.writeFileSync(userFilePath, txt, { encoding: "utf8" });
 }
 
@@ -189,7 +188,7 @@ function init() {
 
     // always recreate at launch (ensures no mistaken tampering by users)
     if (true || !fs.existsSync(defaultsFilePath)) {
-        const txt = JSON.stringify(sortObject(defaultKeyboardShortcuts), null, 4);
+        const txt = JsonStringifySortedKeys(defaultKeyboardShortcuts, 4);
         fs.writeFileSync(defaultsFilePath, txt, { encoding: "utf8" });
     }
 
@@ -204,7 +203,7 @@ function init() {
 
     // preserve existing user-defined data
     if (!fs.existsSync(userFilePath)) {
-        // const txt = JSON.stringify(sortObject(defaults), null, 4);
+        // const txt = JsonStringifySortedKeys(defaults, 4);
         const txt = JSON.stringify({}, null, 4);
         fs.writeFileSync(userFilePath, txt, { encoding: "utf8" });
     } else {

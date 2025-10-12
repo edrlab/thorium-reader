@@ -255,6 +255,7 @@
         },
         "next": "Próximo",
         "previous": "Anterior",
+        "resumeBrowsing": "",
         "shelf": "Estante",
         "updateForm": {
             "name": "Nome:",

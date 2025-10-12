@@ -34,7 +34,7 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 // import { WizardModal } from "../Wizard";
 
-interface NavigationHeader {
+export interface NavigationHeader {
     route: string;
     label: string;
     matchRoutes: string[];
@@ -70,7 +70,7 @@ const Header = () => {
                     ? {
                         ...location,
                         search: item.searchEnable ? location?.search : "",
-                        pathname: cv.pathname,
+                        pathname: item.route,
                     }
                     : pv,
             {
@@ -330,7 +330,7 @@ const Header = () => {
 
                                             {
                                                 htmlSanitized ?
-                                                    <div style={{marginLeft: "20px"}} dangerouslySetInnerHTML={{ __html: htmlSanitized }} /> : <></>
+                                                    <div className={stylesModals.modal_dialog_body} dangerouslySetInnerHTML={{ __html: htmlSanitized }} /> : <></>
                                             }
 
                                         </Dialog.Content>

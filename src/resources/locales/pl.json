@@ -255,6 +255,7 @@
         },
         "next": "",
         "previous": "",
+        "resumeBrowsing": "",
         "shelf": "",
         "updateForm": {
             "name": "",

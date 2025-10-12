@@ -255,6 +255,7 @@
         },
         "next": "下一個",
         "previous": "上一個",
+        "resumeBrowsing": "",
         "shelf": "書架",
         "updateForm": {
             "name": "名稱：",
