@@ -31,6 +31,7 @@
     height: 75px;
     width: calc(100% - 247px);
     background-color: var(--color-secondary);
+    z-index: 1;
 
     .footer_about {
         display: flex;

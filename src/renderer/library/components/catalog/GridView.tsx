@@ -27,6 +27,7 @@ import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives
 interface IBaseProps {
     catalogEntries: CatalogEntryView[];
     tags?: string[];
+    hasCustomPublications: boolean;
 }
 
 // IProps may typically extend:
@@ -117,6 +118,7 @@ class CatalogGridView extends React.Component<IProps, IState> {
         const catalogEntriesIsEmpty = this.props.catalogEntries.filter(
             (entry) => entry.totalCount > 0,
         ).length === 0;
+        
 
         return (
             <>
@@ -135,7 +137,7 @@ class CatalogGridView extends React.Component<IProps, IState> {
                     )
                 }
                 {
-                    this.state.tabTags.length === 0 && catalogEntriesIsEmpty
+                    this.state.tabTags.length === 0 && catalogEntriesIsEmpty && !this.props.hasCustomPublications
                         ? <NoPublicationInfo />
                         : <></>
                 }
