@@ -80,9 +80,8 @@
           "en": "DemoReader catalog"
         },
         "properties": {
-          "showOnHomeSection": true,
           "authenticate": {
-             "rel": "application/opds-authentication+json",
+             "type": "application/opds-authentication+json",
              "href": "https://demoreader.cantookstation.com/v1/sign_in.opds2"
             }
         }
