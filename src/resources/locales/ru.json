@@ -653,18 +653,18 @@
                 "filterByDrawtype": "Фильтровать по типу",
                 "filterByTag": "Фильтровать по тегу",
                 "filterOptions": "Параметры фильтрации",
-                "none": ""
+                "none": "Ничего"
             },
             "hide": "Не отображать",
             "highlight": "Выделить",
-            "noSelectionToast": "Нет выбора",
-            "note": "",
+            "noSelectionToast": "Ничего не выделено",
+            "note": "{{- color}} заметка",
             "quickAnnotations": "Быстрое создание (пропуск редактора)",
             "saveNote": "Сохранить",
             "sorting": {
                 "lastcreated": "Последние созданные",
                 "lastmodified": "Последние изменённые",
-                "progression": "",
+                "progression": "Прогресс",
                 "sortingOptions": "Параметры сортировки"
             },
             "toggleMarginMarks": "Отображение на полях",
@@ -685,9 +685,9 @@
         "fxl": {
             "fit": "Размер"
         },
-        "goToContent": "",
+        "goToContent": "Вернуться к тексту",
         "imgViewer": {
-            "title": "",
+            "title": "Просмотрщик изображений (масштабирование)",
             "zoomIn": "Увеличить",
             "zoomOut": "Уменьшить",
             "zoomReset": "Сбросить масштаб"
