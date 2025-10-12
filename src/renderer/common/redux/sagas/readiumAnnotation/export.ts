@@ -22,7 +22,7 @@ import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { marked } from "readium-desktop/renderer/common/marked/marked";
-import { sortObject } from "@r2-utils-js/_utils/JsonUtils";
+import { JsonStringifySortedKeys } from "readium-desktop/common/utils/json";
 
 import { sanitizeForFilename } from "readium-desktop/common/safe-filename";
 
@@ -84,7 +84,7 @@ export function* exportAnnotationSet(notes: INoteState[], publicationView: Publi
 
     const extension = fileType === "annotation" ? ".annotation" : ".html";
     const stringData = extension === ".annotation" ?
-        JSON.stringify(sortObject(readiumAnnotationSet), null, 2) :
+        JsonStringifySortedKeys(readiumAnnotationSet, 2) :
         yield* callTyped(() => convertReadiumAnnotationSetToHtml(readiumAnnotationSet, __htmlMustacheViewConverterFn, htmlMustacheTemplateContent));
 
     const filenameWithExtension = sanitizeForFilename(annoSetTitle + extension);

@@ -2,11 +2,9 @@
 import * as debug_ from "debug";
 import { getSqliteDatabaseSync } from ".";
 import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
-import { sortObject } from "@r2-utils-js/_utils/JsonUtils";
+import { JsonStringifySortedKeys } from "readium-desktop/common/utils/json";
 
 const debug = debug_("readium-desktop:main:db:sqlite:note");
-
-const JsonStringify = (obj: any) => JSON.stringify(sortObject(JSON.parse(JSON.stringify(obj))));
 
 export const sqliteInitTableNote = () => {
 
@@ -44,7 +42,7 @@ export const sqliteTableNoteInsert = (pubId: string, notes: INoteState[]): boole
         const stm = database.prepare("INSERT OR IGNORE INTO notes (pub_id, note_id, note_json) VALUES (?, ?, ?)");
         debug("SQLITE INSERT STATEMENT:", stm.sourceSQL);
         for (const note of notes) {
-            const result = stm.run(pubId, note.uuid, JsonStringify(note));
+            const result = stm.run(pubId, note.uuid, JsonStringifySortedKeys(note));
             debug(`TRYING TO INSERT ${note.uuid} from ${pubId} in sqlite notes table, result=`, result);
         }
 
@@ -63,7 +61,7 @@ export const sqliteTableNoteUpdate = (note: INoteState): boolean => {
     try {
         const stm = database.prepare("UPDATE notes SET updated_at=(strftime('%s','now')),note_json=? WHERE note_id=?");
         debug("SQLITE UPDATE STATEMENT:", stm.sourceSQL);
-        const result = stm.run(JsonStringify(note), note.uuid);
+        const result = stm.run(JsonStringifySortedKeys(note), note.uuid);
         debug(`TRYING TO UPDATE ${note.uuid} in sqlite notes table, result=`, result);
 
     } catch (e) {
