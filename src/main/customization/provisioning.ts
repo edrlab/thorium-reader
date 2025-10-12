@@ -25,6 +25,7 @@ import addFormats from "ajv-formats";
 import { diMainGet } from "../di";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
+import isURL from "validator/lib/isURL";
 
 // Logger
 const debug = debug_("readium-desktop:main#utils/customization/provisioning");
@@ -184,13 +185,51 @@ export async function customizationPackageProvisioningAccumulator(packagesArray:
 
             for (const opdsPubJson of publications) {
 
-                const opdsPublication = TaJsonDeserialize(
-                    opdsPubJson,
-                    OPDSPublication,
-                );
-                const opdsPubView = opdsFeedViewConverter.convertOpdsPublicationToView(opdsPublication, "/");
-                if (opdsPubView) {
-                    publicationsView.push(opdsPubView);
+                const opdsPubJsonLinks = (opdsPubJson as any).links;
+                if (typeof opdsPubJsonLinks === "object" && Array.isArray(opdsPubJsonLinks)) {
+                    for (const _link of opdsPubJsonLinks) {
+                        debug("_link.href === \"", _link.href, "\"");
+                        if (typeof _link.href === "string") {
+                            if (isURL(_link.href)) {
+                                // let's go !
+                            } else {
+                                _link.href = baseUrl + encodeURIComponent_RFC3986(Buffer.from(_link.href).toString("base64"));
+                            }
+                            debug("_link.href === \"", _link.href, "\"");
+                        }
+                    }
+                }
+                
+                const opdsPubJsonImages = (opdsPubJson as any).images;
+                if (typeof opdsPubJsonImages === "object" && Array.isArray(opdsPubJsonImages)) {
+                    for (const _image of opdsPubJsonImages) {
+                        debug("_image.href === \"", _image.href, "\"");
+                        if (typeof _image.href === "string") {
+                            if (isURL(_image.href)) {
+                                // let's go !
+                            } else {
+                                _image.href = baseUrl + encodeURIComponent_RFC3986(Buffer.from(_image.href).toString("base64"));
+                            }
+                            debug("_image.href === \"", _image.href, "\"");
+                        }
+                    }
+                }
+
+                debug("opdsPubJson:");
+                debug(opdsPubJson);
+
+                try {
+                    const opdsPublication = TaJsonDeserialize(
+                        opdsPubJson,
+                        OPDSPublication,
+                    );
+                    const opdsPubView = opdsFeedViewConverter.convertOpdsPublicationToView(opdsPublication, "/");
+                    if (opdsPubView) {
+                        publicationsView.push(opdsPubView);
+                    }
+                } catch (e) {
+                    debug("ERROR to load a publication from the profile", (opdsPubJson as any)?.metadata?.identifier);
+                    debug(e);
                 }
             }    
 
