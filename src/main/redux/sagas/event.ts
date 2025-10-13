@@ -87,16 +87,24 @@ export function saga() {
         spawn(function*() {
 
             const chan = getOpenFileFromCliChannel();
+            
+            debug(`openFileFromCliChannel loaded and ready, ${chan}, ${typeof chan}`);
 
             while (true) {
 
                 try {
                     const filePath = yield* takeTyped(chan);
 
+                    debug(`Receive ${filePath} from openFileFromCliChannel`);
+
                     const fileName = path.basename(filePath);
                     const extension = path.extname(fileName);
                     if (extension === ".thorium") {
+
+                        debug("It's a custom profile extension");
+                        debug("AppActivate Thorium and acquire (provision/activate) the profile");
                     
+                        yield* callTyped(appActivate);
                         yield put(customizationActions.acquire.build(filePath));
                         return ;
                     }

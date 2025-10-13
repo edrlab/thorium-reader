@@ -233,12 +233,9 @@ const yargsInit = () =>
 
                 debug("lauch command", argv);
 
+                if (Array.isArray(pathArgv) ? pathArgv.length > 0 : !!pathArgv) {
 
-                // TODO: profile option, ...
-
-
-                const openPublicationRequestedBool = Array.isArray(pathArgv) ? pathArgv.length > 0 : !!pathArgv;
-                if (openPublicationRequestedBool) {
+                    debug("open arg requested", pathArgv);
 
                     // flush session because user ask to read a publication
                     flushSession();
@@ -248,8 +245,10 @@ const yargsInit = () =>
                     //
                     // handle opds:// thorium:// https:// http://
                     // to add the feed and open it
-                    const url = pathArgv[0];
-                    if (isOpenUrl(url)) {
+                    const urlOrFilePath = pathArgv[0];
+                    if (isOpenUrl(urlOrFilePath)) {
+                        const url = urlOrFilePath;
+
                         debug("Need to import/open an URL : ", url);
                         setOpenUrl(url);
                         return;
@@ -261,6 +260,7 @@ const yargsInit = () =>
                     for (const pathArgvName of pathArgvArray) {
 
                         const pathArgvNameResolve = path.resolve(pathArgvName);
+                        debug(`Push (${pathArgvNameResolve}) to openFileFromCliChannel`);
                         openFileFromCliChannel.put(pathArgvNameResolve);
                     }
                 }
@@ -324,7 +324,7 @@ export function commandLineMainEntry(
 
     const argFormated = processArgv
         .filter((arg) => knownOption(arg) || !arg.startsWith("-"))
-        .slice(!__TH__IS_PACKAGED__ ? 2 : 1);
+        .slice(!__TH__IS_PACKAGED__ && processArgv[0].endsWith("Electron") ? 2 : 1);
 
     debug("processArgv", processArgv, "arg", argFormated);
 
