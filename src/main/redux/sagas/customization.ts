@@ -28,6 +28,7 @@ import { diMainGet } from "readium-desktop/main/di";
 import { net } from "electron";
 import * as fs from "fs";
 import isURL from "validator/lib/isURL";
+import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 
 const filename_ = "readium-desktop:main:redux:sagas:customization";
 const debug = debug_(filename_);
@@ -284,7 +285,11 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
                     yield* putTyped(customizationActions.lock.build("IDLE"));
                     return;
                 }
-                yield* putTyped(customizationActions.lock.build("PROVISIONING", lockInfo));
+
+                const lock = yield* selectTyped((state: ICommonRootState) => state.customization.lock);
+                if (lock.state === "ACTIVATING") {
+                    yield* putTyped(customizationActions.lock.build("PROVISIONING", lockInfo));
+                }
             }
         });
     }
@@ -329,7 +334,8 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
                     const fileNameErrorFound = provisioningAction.payload.errorPackages.find(({ fileName: fileNameProvisioned }) => fileNameProvisioned === fileName);
                     if (!fileNameErrorFound) {
                         debug("Error not found!?");
-                        return false;
+                        // return false;
+                        continue ;
                     }
 
                     const newPackagesProvisioned = provisioningAction.payload.newPackagesProvisioned;
@@ -503,7 +509,7 @@ export function saga() {
             triggerCatalogOpdsAuthentication,
             (e) => error(filename_, e),
         ),
-        takeSpawnLeading(
+        takeSpawnEvery(
             customizationActions.acquire.ID,
             acquireProvisionsActivates,
             (e) => error(filename_, e),
