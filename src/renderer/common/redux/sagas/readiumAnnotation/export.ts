@@ -25,6 +25,8 @@ import { marked } from "readium-desktop/renderer/common/marked/marked";
 import { JsonStringifySortedKeys } from "readium-desktop/common/utils/json";
 
 import { sanitizeForFilename } from "readium-desktop/common/safe-filename";
+import { EXT_ANNOTATIONS } from "readium-desktop/common/extension";
+import { mimeTypes } from "readium-desktop/utils/mimeTypes";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:common:redux:sagas:readiumAnnotation:export");
@@ -56,9 +58,9 @@ const convertReadiumAnnotationSetToHtml = async (
     const output = Mustache.render(htmlMustacheTemplate, await viewConverterFn(readiumAnnotation));
     return output;
 };
-const downloadAnnotationFile = (data: string, filenameWithExtension: string, extension: ".annotation" | ".html") => {
+const downloadAnnotationFile = (data: string, filenameWithExtension: string, extension: typeof EXT_ANNOTATIONS | ".html") => {
 
-    const blob = new Blob([data], { type: extension === ".annotation" ? "application/rd-annotations+json" : "text/html" });
+    const blob = new Blob([data], { type: extension === EXT_ANNOTATIONS ? mimeTypes.annotation : "text/html" });
     const jsonObjectUrl = URL.createObjectURL(blob);
     const anchorEl = document.createElement("a");
     anchorEl.href = jsonObjectUrl;
@@ -82,8 +84,8 @@ export function* exportAnnotationSet(notes: INoteState[], publicationView: Publi
     const {htmlContent, overrideHTMLTemplate} = (yield* selectTyped((state: ICommonRootState) => state.noteExport));
     const htmlMustacheTemplateContent = overrideHTMLTemplate ? htmlContent : noteExportHtmlMustacheTemplate || noteExportHtmlMustacheTemplate;
 
-    const extension = fileType === "annotation" ? ".annotation" : ".html";
-    const stringData = extension === ".annotation" ?
+    const extension = fileType === "annotation" ? EXT_ANNOTATIONS : ".html";
+    const stringData = extension === EXT_ANNOTATIONS ?
         JsonStringifySortedKeys(readiumAnnotationSet, 2) :
         yield* callTyped(() => convertReadiumAnnotationSetToHtml(readiumAnnotationSet, __htmlMustacheViewConverterFn, htmlMustacheTemplateContent));
 

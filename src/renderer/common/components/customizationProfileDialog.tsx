@@ -25,7 +25,7 @@ import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg"
 
 import DOMPurify from "dompurify";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP } from "readium-desktop/common/streamerProtocol";
 import Loader from "./Loader";
 
 export const CustomizationProfileDialog: React.FC = () => {
@@ -47,7 +47,7 @@ export const CustomizationProfileDialog: React.FC = () => {
     }, [setChecked, manifest?.version, profileInHistoryFound]);
 
     const customizationId = customization.manifest?.identifier;
-    const customizationBaseUrl = customizationId ? `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/custom-profile-zip/${encodeURIComponent_RFC3986(Buffer.from(customizationId).toString("base64"))}/` : "";
+    const customizationBaseUrl = customizationId ? `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_CUSTOMPROFILEZIP}/${encodeURIComponent_RFC3986(Buffer.from(customizationId).toString("base64"))}/` : "";
     const welcomeScreenImgZipPath = manifest?.images?.find((ln) => ln.rel === "welcome-screen")?.href;
     const welcomeScreenImgHref = customizationBaseUrl && welcomeScreenImgZipPath ? customizationBaseUrl + encodeURIComponent_RFC3986(Buffer.from(welcomeScreenImgZipPath).toString("base64")) : "";
     const welcomeScreenHtmlZipPath = customization.manifest?.links?.find((ln) => ln.rel === "welcome-screen" && (!ln.type || ln.type === "text/html") && ln.language === locale)?.href || customization.manifest?.links?.find((ln) => ln.rel === "welcome-screen" && (!ln.type || ln.type === "text/html") && (ln.language === "en" || !ln.language))?.href;

@@ -15,11 +15,11 @@ console.log(`PREPROCESSOR nodeEnv: ${nodeEnv} ${isDev}`);
 
 const isContinuousIntegrationDeploy = process.env.GITHUB_TOKEN_RELEASE_PUBLISH ? true : false;
 
-const rendererLibraryBaseUrl = isDev ? "http://localhost:" + portApp + "/" : "filex://host/";
+const rendererLibraryBaseUrl = isDev ? "http://localhost:" + portApp + "/" : "filex://0.0.0.0/";
 
-const rendererReaderBaseUrl = isDev ? "http://localhost:" + portReader + "/" : "filex://host/";
+const rendererReaderBaseUrl = isDev ? "http://localhost:" + portReader + "/" : "filex://0.0.0.0/";
 
-const rendererPdfWebviewBaseUrl = isDev ? "http://localhost:" + portPdfWebview + "/" : "filex://host/";
+const rendererPdfWebviewBaseUrl = isDev ? "http://localhost:" + portPdfWebview + "/" : "filex://0.0.0.0/";
 
 const envPackaging = process.env.PACKAGING || "0";
 const isPackaged = envPackaging === "1";
@@ -28,7 +28,7 @@ const nodeModuleRelativeUrl = isPackaged ? "node_modules" : "../node_modules";
 
 const distRelativeUrl = isPackaged ? "dist" : "../dist";
 
-// node scripts/profile-generate-key-pair.js 
+// node scripts/profile-generate-key-pair.js
 const pubkey = `-----BEGIN PUBLIC KEY-----
 MIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQBfuZMzJiHFuYrPHXkrzFvE4TLJCtt
 KH2trb1daSymrTwrULHNVa68ci1du2qO1QCJfRyzXhM3Xb1EClcjLc7wQFgAaw+2
@@ -48,17 +48,10 @@ Tg==
 
 // "http://localhost:8080/";
 // MUST END WITH FORWARD SLASH!
-const telemetryUrl =
-    isPackaged
-        ?
-        (
-        process.env.THORIUM_TELEMETRY_URL ||
-        (isContinuousIntegrationDeploy ?
-            "https://telemetry-staging.edrlab.org/" :
-            "https://telemetry.edrlab.org/")
-        )
-        :
-        "";
+const telemetryUrl = isPackaged
+    ? process.env.THORIUM_TELEMETRY_URL ||
+      (isContinuousIntegrationDeploy ? "https://telemetry-staging.edrlab.org/" : "https://telemetry.edrlab.org/")
+    : "";
 const telemetrySecret = process.env.THORIUM_TELEMETRY_SECRET || "";
 
 // const USE_HTTP_STREAMER = false;
