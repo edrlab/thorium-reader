@@ -32,6 +32,7 @@ import {
 import { availableLanguages } from "readium-desktop/common/services/translator";
 import { i18nActions } from "readium-desktop/common/redux/actions";
 import { initProtocols } from "readium-desktop/main/sessions";
+import { URL_PROTOCOL_APP_HANDLER_OPDS, URL_PROTOCOL_APP_HANDLER_THORIUM } from "readium-desktop/common/streamerProtocol";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -49,20 +50,20 @@ export function* init() {
         const electronPath = process.execPath;
         const appPath = app.getAppPath();
 
-        if (!app.isDefaultProtocolClient("opds", electronPath, [appPath])) {
-            app.setAsDefaultProtocolClient("opds", electronPath, [appPath]);
+        if (!app.isDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_OPDS, electronPath, [appPath])) {
+            app.setAsDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_OPDS, electronPath, [appPath]);
         }
 
-        if (!app.isDefaultProtocolClient("thorium", electronPath, [appPath])) {
-            app.setAsDefaultProtocolClient("thorium", electronPath, [appPath]);
+        if (!app.isDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM, electronPath, [appPath])) {
+            app.setAsDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM, electronPath, [appPath]);
         }
     } else {
-        if (!app.isDefaultProtocolClient("opds")) {
-            app.setAsDefaultProtocolClient("opds");
+        if (!app.isDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_OPDS)) {
+            app.setAsDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_OPDS);
         }
 
-        if (!app.isDefaultProtocolClient("thorium")) {
-            app.setAsDefaultProtocolClient("thorium");
+        if (!app.isDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM)) {
+            app.setAsDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM);
         }
     }
 

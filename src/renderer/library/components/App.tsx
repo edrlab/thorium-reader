@@ -19,7 +19,7 @@ import * as path from "path";
 import * as React from "react";
 import Dropzone, { DropEvent, DropzoneRootProps } from "react-dropzone";
 import { Provider } from "react-redux";
-import { acceptedExtension, acceptedExtensionObject } from "readium-desktop/common/extension";
+import { acceptedExtension, acceptedExtensionObject, EXT_THORIUM } from "readium-desktop/common/extension";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import ToastManager from "readium-desktop/renderer/common/components/toast/ToastManager";
@@ -105,7 +105,7 @@ export default class App extends React.Component<{}, undefined> {
             // console.log("absolutePath 3: " + absolutePath);
 
 
-            if (path.extname(absolutePath) === ".thorium") {
+            if (path.extname(absolutePath) === EXT_THORIUM) {
 
                 console.log("dispatch thorium customization filePath: copy, provisions and activates profile =>", absolutePath);
                 store.dispatch(customizationActions.acquire.build(absolutePath));

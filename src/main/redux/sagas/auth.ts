@@ -6,7 +6,7 @@
 // ==LICENSE-END=
 
 import * as debug_ from "debug";
-import { URL_PROTOCOL_OPDS_MEDIA, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_OPDS_MEDIA, URL_HOST_COMMON, URL_PROTOCOL_OPDS, URL_HOST_OPDS_AUTH } from "readium-desktop/common/streamerProtocol";
 import { BrowserWindow, globalShortcut, HandlerDetails, Event as ElectronEvent, WebContentsWillNavigateEventParams, shell } from "electron";
 
 // TypeScript GO:
@@ -48,7 +48,7 @@ import { URL } from "url";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
-import { getOpdsRequestCustomProtocolEventChannel, getOpdsRequestMediaCustomProtocolEventChannel, OPDS_AUTH_SCHEME, TregisterHttpProtocolHandler} from "./getEventChannel";
+import { getOpdsRequestCustomProtocolEventChannel, getOpdsRequestMediaCustomProtocolEventChannel, TregisterHttpProtocolHandler} from "./getEventChannel";
 import { initClientSecretToken } from "./apiapp";
 import { digestAuthentication } from "readium-desktop/utils/digest";
 import isURL from "validator/lib/isURL";
@@ -346,7 +346,7 @@ async function opdsSetAuthCredentials(
     }
 
     const { url: { host, searchParams }, method, data } = opdsCustomProtocolRequestParsed;
-    if (host === "authorize") {
+    if (host === URL_HOST_OPDS_AUTH) {
 
         // handle GET or POST request
 
@@ -556,7 +556,7 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
 
                 // redirect_uri: Optional, but good to include since it's mandatory if a client has more than one redirect URI configurated
                 // Note: Trailing slash is necessary as it is specified in the OPDS Authentication 1.0 specification
-                browserUrlParsed.searchParams.set("redirect_uri", "opds://authorize/");
+                browserUrlParsed.searchParams.set("redirect_uri", `${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`);
 
                 browserUrl = browserUrlParsed.toString();
 
@@ -571,7 +571,7 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
         case "http://librarysimplified.org/authtype/SAML-2.0": {
             browserUrl = `${
                 auth.links?.authenticate?.url
-            }&redirect_uri=${encodeURIComponent_RFC3986("opds://authorize")}`;
+            }&redirect_uri=${encodeURIComponent_RFC3986(`${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`)}`;
             break;
         }
 
@@ -583,7 +583,7 @@ function getHtmlAuthenticationUrl(auth: IOPDSAuthDocParsed) {
 
             const html = encodeURIComponent_RFC3986(
                 htmlLoginTemplate(
-                    "opds://authorize",
+                    `${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`,
                     auth.labels?.login,
                     auth.labels?.password,
                     auth.title,
@@ -834,7 +834,7 @@ function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefine
     win.webContents.on("will-navigate", (details: ElectronEvent<WebContentsWillNavigateEventParams>, url: string) => {
         debug("BrowserWindow.webContents.on('will-navigate') (always PREVENT): ", win.webContents.id, " --- ", details.url, " *** ", url, " === ", win.webContents.getURL());
 
-        if (details.url?.startsWith("opds://authorize")) {
+        if (details.url?.startsWith(`${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`)) {
             debug("opds://authorize ==> PASS: ", details.url);
             return;
         }
@@ -871,13 +871,13 @@ function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
         }
         const { protocol: urlProtocol, host } = urlParsed;
 
-        if (urlProtocol !== `${OPDS_AUTH_SCHEME}:`) {
+        if (urlProtocol !== `${URL_PROTOCOL_OPDS}:`) {
             debug("bad opds protocol !!", urlProtocol);
             return undefined;
         }
 
         if (method === "POST") {
-            if (host === "authorize") {
+            if (host === URL_HOST_OPDS_AUTH) {
 
                 debug("POST request", uploadData);
 
@@ -925,7 +925,7 @@ function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
         }
 
         if (method === "GET") {
-            if (host === "authorize") {
+            if (host === URL_HOST_OPDS_AUTH) {
                 // OPDS Authentication Document Specification is at odds with the OAuth 2.0 Implicit Grant Flow Specification:
                 //     OPDS Auth wants the response parameters in the query component of the Redirection URI
                 //     OAuth 2.0 Implicit Grant Flow wants the response parameters in the fragment component of the Redirection URI

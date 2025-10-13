@@ -26,6 +26,7 @@ import { diMainGet } from "../di";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 import isURL from "validator/lib/isURL";
+import { EXT_THORIUM } from "readium-desktop/common/extension";
 
 // Logger
 const debug = debug_("readium-desktop:main#utils/customization/provisioning");
@@ -132,7 +133,7 @@ export async function customizationPackageProvisionningFromFolder(wellKnownFolde
     const results = readdirSync(wellKnownFolder, {withFileTypes: true});
 
     for (const dirent of results) {
-        if (dirent.isFile() && path.extname(dirent.name) === ".thorium") {
+        if (dirent.isFile() && path.extname(dirent.name) === EXT_THORIUM) {
             const packageFileName = dirent.name;
             debug("Found => ", packageFileName);
             const profileProvisioned = await customizationPackageProvisioningAccumulator(packagesArray, packageFileName);

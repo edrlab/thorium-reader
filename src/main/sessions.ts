@@ -226,8 +226,8 @@ export const initProtocols = () => {
     debug(filePathUrl);
     return net.fetch(filePathUrl); // potential security hole: local filesystem access (mitigated by URL scheme not .registerSchemesAsPrivileged() and not .handle() or .registerXXXProtocol() directly on r2-navigator-js.getWebViewSession().protocol or any other partitioned session, unlike Electron.protocol and Electron.session.defaultSession.protocol)
   };
-  session.defaultSession.protocol.handle("store", protocolHandler_Store);
-  // protocol.unhandle("store");
+  session.defaultSession.protocol.handle(URL_PROTOCOL_STORE, protocolHandler_Store);
+  // protocol.unhandle(URL_PROTOCOL_STORE);
 
   const pdfExtractSession = session.fromPartition(SESSION_PARTITION_PDFJSEXTRACT, { cache: false });
   const protocolHandler_PDF = (

@@ -5,11 +5,22 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export const URL_HOST_COMMON = "0.0.0.0"; // this IP-address like syntactical convention is IMPORTANT, do not change to anything like the old "host" convention
+import { READIUM2_ELECTRON_HTTP_PROTOCOL } from "@r2-navigator-js/electron/common/sessions";
 
-export const URL_PROTOCOL_THORIUMHTTPS = "thoriumhttps";
-export const URL_PROTOCOL_HTTPSR2 = "httpsr2";
-export const URL_PROTOCOL_OPDS_MEDIA = "opds-media";
+export const URL_HOST_COMMON = "0.0.0.0"; // this IP-address like syntactical convention is IMPORTANT for legacy reasons (RegExp parsing in convertHttpUrlToCustomScheme() and convertCustomSchemeToHttpUrl()), so DO NOT change to the old "host" naming convention
+
+export const URL_PROTOCOL_THORIUMHTTPS = "thoriumhttps"; // ==> convertHttpUrlToCustomScheme
+export const URL_PROTOCOL_HTTPSR2 = READIUM2_ELECTRON_HTTP_PROTOCOL; // "httpsr2" ==> convertCustomSchemeToHttpUrl
+
 export const URL_PROTOCOL_PDFJSEXTRACT = "pdfjs-extract";
+export const URL_PROTOCOL_OPDS_MEDIA = "opds-media";
 export const URL_PROTOCOL_FILEX = "filex";
 export const URL_PROTOCOL_STORE = "store";
+
+export const URL_PROTOCOL_OPDS = "opds";
+export const URL_HOST_OPDS_AUTH = "authorize";
+
+export const URL_PROTOCOL_APP_HANDLER_OPDS = "opds";
+export const URL_PROTOCOL_APP_HANDLER_THORIUM = "thorium";
+
+export const URL_HOST_CUSTOMPROFILE = "customization-profile";

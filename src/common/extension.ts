@@ -7,6 +7,8 @@
 
 import { ObjectKeys, ObjectValues } from "readium-desktop/utils/object-keys-values";
 
+export const EXT_THORIUM = ".thorium";
+
 // cf src/utils/mimeTypes.ts
 export const acceptedExtensionObject = {
     lcpLicence: ".lcpl",
@@ -25,7 +27,7 @@ export const acceptedExtensionObject = {
     zip: ".zip",
     opf: ".opf",
     nccHtml: "ncc.html",
-    // customizationProfilePackage: ".thorium",
+    // customizationProfilePackage: EXT_THORIUM,
 
     // cbz: ".cbz",
 };

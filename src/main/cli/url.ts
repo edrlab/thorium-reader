@@ -13,18 +13,19 @@ const debug = debug_(filename);
 
 // import validator from "validator";
 import { getOpenUrlWithOpdsSchemeEventChannel, getOpenUrlWithThoriumSchemeEventChannel } from "../event";
+import { URL_PROTOCOL_APP_HANDLER_OPDS, URL_PROTOCOL_APP_HANDLER_THORIUM } from "readium-desktop/common/streamerProtocol";
 
 export const isOpenUrl = (url: string): boolean => {
 
     // const urlIsValid = validator.isURL(url, {
-    //     protocols: ["http", "https", "opds", "thorium"],
+    //     protocols: ["http", "https", URL_PROTOCOL_APP_HANDLER_OPDS, URL_PROTOCOL_APP_HANDLER_THORIUM],
     // });
 
     let urlIsValid = false;
 
     try {
         const _url = new URL(url);
-        if (["http:", "https:", "opds:", "thorium:"].some((v) => v === _url.protocol)) {
+        if (["http:", "https:", `${URL_PROTOCOL_APP_HANDLER_OPDS}:`, `${URL_PROTOCOL_APP_HANDLER_THORIUM}:`].some((v) => v === _url.protocol)) {
             urlIsValid = true;
         }
     } catch {
@@ -35,10 +36,10 @@ export const isOpenUrl = (url: string): boolean => {
 
 export const setOpenUrl = (url: string): void => {
 
-    // OR: if (new URL(url).protocol === "opds:")
-    if (url.startsWith("opds://")) {
+    // OR: if (new URL(url).protocol === `${URL_PROTOCOL_APP_HANDLER_OPDS}:`)
+    if (url.startsWith(`${URL_PROTOCOL_APP_HANDLER_OPDS}://`)) {
         debug("OPEN URL WITH OPDS scheme");
-        const openUrl = url.replace("opds://", "http://"); // HTTP to HTTPS redirect should be handled by the server
+        const openUrl = url.replace(`${URL_PROTOCOL_APP_HANDLER_OPDS}://`, "http://"); // HTTP to HTTPS redirect should be handled by the server
 
         debug("OPEN URL =", openUrl);
 
@@ -46,8 +47,8 @@ export const setOpenUrl = (url: string): void => {
         buf.put(openUrl);
     }
 
-    // OR: if (new URL(url).protocol === "thorium:")
-    else if (url.startsWith("thorium://")) {
+    // OR: if (new URL(url).protocol === `${URL_PROTOCOL_APP_HANDLER_THORIUM}:`)
+    else if (url.startsWith(`${URL_PROTOCOL_APP_HANDLER_THORIUM}://`)) {
 
         debug("OPEN URL WITH thorium scheme");
         const buf = getOpenUrlWithThoriumSchemeEventChannel();

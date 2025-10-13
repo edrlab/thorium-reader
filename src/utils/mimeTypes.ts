@@ -1177,7 +1177,7 @@ export const mimeTypes = {
     "lcpdivina": "application/divina+lcp",
     "lcpdf": "application/pdf+lcp",
     [ADOBE_ADEPT_XML]: "application/vnd.adobe.adept+xml",
-    "thorium": "application/vnd.edrlab.thorium+zip",
+    "thorium": "application/vnd.edrlab.thorium+zip", // also see acceptedExtensionObject.customizationProfilePackage EXT_THORIUM
 };
 
 export const findMimeTypeWithExtension = (ext: string): string | undefined => {

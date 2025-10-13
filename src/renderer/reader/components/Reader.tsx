@@ -3207,10 +3207,8 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     const isAudioBook = isAudiobookFn(state.reader.info.r2Publication);
 
     // const manifestUrlR2Protocol = state.reader.info.manifestUrlR2Protocol; // httpsr2:// "CustomScheme"
-    const manifestUrlHttp = state.reader.info.manifestUrlHttp.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ? convertCustomSchemeToHttpUrl(state.reader.info.manifestUrlHttp) : state.reader.info.manifestUrlHttp; // thoriumhttps://
-    // export const URL_PROTOCOL_THORIUMHTTPS = "thoriumhttps";
-    // export const URL_HOST_COMMON = "0.0.0.0";
-    const pubPathBase64 = decodeURIComponent(manifestUrlHttp.replace(/\/manifest.json$/, "").replace("thoriumhttps://0.0.0.0/pub/", ""));
+    const manifestUrlHttp = state.reader.info.manifestUrlHttp.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ? convertCustomSchemeToHttpUrl(state.reader.info.manifestUrlHttp) : state.reader.info.manifestUrlHttp;
+    const pubPathBase64 = decodeURIComponent(manifestUrlHttp.replace(/\/manifest.json$/, "").replace(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/pub/`, ""));
     const pubPath = Buffer.from(pubPathBase64, "base64").toString();
 
     const manifestUrlR2Protocol_pub_id_not_path = convertHttpUrlToCustomScheme(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/pub/${encodeURIComponent_RFC3986(Buffer.from(state.reader.info.publicationIdentifier || state.reader.info.publicationView.identifier, "utf8").toString("base64"))}/manifest.json`);

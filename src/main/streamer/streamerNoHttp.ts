@@ -1725,7 +1725,7 @@ export function initSessions() {
     //         standard: false, // Default false
     //         codeCache: false, // Default false (only works with standard=true)
     //     },
-    //     scheme: URL_PROTOCOL_OPDS_MEDIA, // TODO: what about OPDS_AUTH_SCHEME?
+    //     scheme: URL_PROTOCOL_OPDS_MEDIA, // TODO: what about URL_PROTOCOL_OPDS?
     // },
     {
         privileges: {

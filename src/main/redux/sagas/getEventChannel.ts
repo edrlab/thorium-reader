@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { app, powerMonitor, session } from "electron";
-import { URL_PROTOCOL_OPDS_MEDIA } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_OPDS, URL_PROTOCOL_OPDS_MEDIA } from "readium-desktop/common/streamerProtocol";
 import { channel as channelSaga, eventChannel } from "redux-saga";
 import { customizationStartFileWatcherFromWellKnownFolder } from "readium-desktop/main/customization/watcher";
 
@@ -125,8 +125,6 @@ export function getShutdownEventChannel() {
 
 }
 
-export const OPDS_AUTH_SCHEME = "opds";
-
 export interface TregisterHttpProtocolHandler {
     request: Electron.ProtocolRequest;
     callback: (response: Electron.ProtocolResponse) => void;
@@ -143,11 +141,11 @@ export function getOpdsRequestCustomProtocolEventChannel() {
                     request: Electron.ProtocolRequest,
                     callback: (response: Electron.ProtocolResponse) => void,
                 ) => emit({ request, callback });
-                authSession.protocol.registerHttpProtocol(OPDS_AUTH_SCHEME, handler);
+                authSession.protocol.registerHttpProtocol(URL_PROTOCOL_OPDS, handler);
             }
 
             return () => {
-                authSession?.protocol.unregisterProtocol(OPDS_AUTH_SCHEME);
+                authSession?.protocol.unregisterProtocol(URL_PROTOCOL_OPDS);
             };
         },
     );
