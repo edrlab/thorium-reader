@@ -19,7 +19,6 @@ import { initSessions as initSessionsNoHTTP } from "./main/streamer/streamerNoHt
 import { createStoreFromDi } from "./main/di";
 import { appActions } from "./main/redux/actions";
 import { app } from "electron";
-import { initPermissions } from "./main/sessions";
 
 // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
 // import isURL from "validator/lib/isURL";
@@ -89,7 +88,6 @@ app.commandLine.appendSwitch("enable-speech-dispatcher");
 //     initSessionsNoHTTP();
 // }
 initSessionsNoHTTP();
-initPermissions();
 
 if (__TH__IS_VSCODE_LAUNCH__) {
     createStoreFromDi().then((store) => store.dispatch(appActions.initRequest.build()));

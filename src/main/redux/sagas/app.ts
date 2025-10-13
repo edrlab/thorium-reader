@@ -31,7 +31,6 @@ import {
 } from "./getEventChannel";
 import { availableLanguages } from "readium-desktop/common/services/translator";
 import { i18nActions } from "readium-desktop/common/redux/actions";
-import { initProtocols } from "readium-desktop/main/sessions";
 import { URL_PROTOCOL_APP_HANDLER_OPDS, URL_PROTOCOL_APP_HANDLER_THORIUM } from "readium-desktop/common/streamerProtocol";
 
 // Logger
@@ -131,8 +130,6 @@ export function* init() {
     yield call(() => app.whenReady());
 
     debug("Main app ready");
-
-    initProtocols();
 
     if (__TH__IS_DEV__) {
         // https://github.com/MarshallOfSound/electron-devtools-installer

@@ -58,7 +58,7 @@ import { customizationWellKnownFolder } from "../customization/provisioning";
 import { SESSION_PARTITION_PDFJS, SESSION_PARTITION_PDFJSEXTRACT } from "readium-desktop/common/sessions";
 
 // import { clearSessions } from "@r2-navigator-js/electron/main/sessions";
-import { clearSessions } from "readium-desktop/main/sessions";
+import { clearSessions, initPermissions, initProtocols } from "readium-desktop/main/sessions";
 
 // import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
@@ -1832,6 +1832,10 @@ export function initSessions() {
 
     app.on("ready", async () => {
         debug("app ready");
+
+        initProtocols();
+
+        initPermissions();
 
         try {
             await clearSessions();
