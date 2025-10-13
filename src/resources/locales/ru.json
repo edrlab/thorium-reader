@@ -146,7 +146,7 @@
         "customization": {
             "splashscreen": {
                 "fallbackWelcomeScreen": "Приветственный экран не предусмотрен",
-                "state": "",
+                "state": "Статус: {{- state}}",
                 "title": "Создание и активация профиля настройки"
             }
         },
@@ -255,7 +255,7 @@
         },
         "next": "Следующая",
         "previous": "Прошлая",
-        "resumeBrowsing": "",
+        "resumeBrowsing": "Продолжить просмотр",
         "shelf": "Полка",
         "updateForm": {
             "name": "Имя:",
@@ -338,13 +338,13 @@
                 "descriptive": "Книга содержит заявление о соответствии стандарту доступности EPUB и стандарту WCAG 2 уровня AAA"
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "Публикация сертифицирована "
             },
             "conformance-certifier-credentials": {
                 "compact": ""
             },
             "conformance-details-certifier-report": {
-                "compact": ""
+                "compact": "Более подробную информацию смотрите в отчёте о сертификации"
             },
             "conformance-details-claim": {
                 "compact": "Эта книга претендует на то, чтобы соответствовать",
@@ -385,149 +385,149 @@
                 "compact": "Информация отсутствует",
                 "descriptive": "Информация отсутствует"
             },
-            "conformance-title": "",
+            "conformance-title": "Соответствие",
             "conformance-unknown-standard": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Соответствие данной публикации принятым стандартам доступности не может быть определено",
+                "descriptive": "Соответствие данной публикации принятым стандартам доступности не может быть определено"
             }
         },
         "hazards": {
             "hazards-flashing": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Мигающее содержимое",
+                "descriptive": "Публикация содержит мигающий контент, который может вызвать фоточувствительные припадки"
             },
             "hazards-flashing-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Мигающее содержимое отсутствует",
+                "descriptive": "Публикация не содержит мигающего контента"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Наличие мигающего контента неизвестно",
+                "descriptive": "Наличие мигающего контента неизвестно"
             },
             "hazards-motion": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Имитация движений",
+                "descriptive": "В публикации содержится имитация движений, которая может вызвать тошноту"
             },
             "hazards-motion-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Имитация движений отсутствует",
+                "descriptive": "Публикация не содержит имитации движений"
             },
             "hazards-motion-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Наличие имитации движения неизвестно",
+                "descriptive": "Наличие имитации движения неизвестно"
             },
             "hazards-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Информация отсутствует",
+                "descriptive": "Информация отсутствует"
             },
             "hazards-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Нет опасных элементов",
+                "descriptive": "Публикация не содержит опасных элементов"
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Звуки",
+                "descriptive": "Публикация содержит звуки, которые могут быть неприятны"
             },
             "hazards-sound-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Не содержит звуков",
+                "descriptive": "Публикация не содержит звуков"
             },
             "hazards-sound-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Наличие звуков неизвестно",
+                "descriptive": "Наличие звуков неизвестно"
             },
-            "hazards-title": "",
+            "hazards-title": "Опасные элементы",
             "hazards-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Наличие опасных элементов неизвестно",
+                "descriptive": "Наличие опасных элементов неизвестно"
             }
         },
         "navigation": {
             "navigation-index": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Индекс",
+                "descriptive": "Индекс со ссылками на вложенные записи"
             },
             "navigation-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Информация отсутствует",
+                "descriptive": "Информация отсутствует"
             },
             "navigation-page-navigation": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Перейти на страницу",
+                "descriptive": "Список страниц для перехода к страницам из печатной версии исходного текста"
             },
             "navigation-structural": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Заголовки",
+                "descriptive": "Такие элементы, как заголовки, таблицы и т. д. для структурированной навигации"
             },
-            "navigation-title": "",
+            "navigation-title": "Навигация",
             "navigation-toc": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Оглавление",
+                "descriptive": "Оглавление в виде ссылок ко всем главам текста"
             }
         },
         "rich-content": {
             "rich-content-accessible-chemistry-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Химические формулы в формате LaTeX",
+                "descriptive": "Химические формулы в доступном формате (LaTeX)"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Химические формулы в формате MathML",
+                "descriptive": "Химические формулы в доступном формате (MathML)"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Математические формулы в формате LaTeX",
+                "descriptive": "Математические формулы в доступном формате (LaTeX)"
             },
             "rich-content-accessible-math-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Математические формулы в формате MathML",
+                "descriptive": "Математические формулы в доступном формате (MathML)"
             },
             "rich-content-accessible-math-described": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Текстовые описания математических формул предоставляются",
+                "descriptive": "Текстовые описания математических формул предоставляются"
             },
             "rich-content-closed-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Видеоматериалы содержат скрытые субтитры",
+                "descriptive": "Видеоматериалы, включённые в публикации, имеют скрытые субтитры"
             },
             "rich-content-extended": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Информативно насыщенные визуальные материалы иллюстрируются подробными пояснениями",
+                "descriptive": "Информативно насыщенные визуальные материалы иллюстрируются подробными пояснениями"
             },
             "rich-content-open-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Видеоматериалы содержат открытые субтитры",
+                "descriptive": "Видеоматериалы, включённые в публикации, имеют открытые субтитры"
             },
-            "rich-content-title": "",
+            "rich-content-title": "Расширенное содержание",
             "rich-content-transcript": {
                 "compact": "",
                 "descriptive": ""
             },
             "rich-content-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Информация отсутствует",
+                "descriptive": "Информация отсутствует"
             }
         },
         "ways-of-reading": {
             "ways-of-reading-nonvisual-reading-alt-text": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Имеет альтернативный текст",
+                "descriptive": "Включает альтернативные текстовые описания для изображений"
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Информация о поддержке невизуального чтения отсутствует",
+                "descriptive": "Информация о поддержке невизуального чтения отсутствует"
             },
             "ways-of-reading-nonvisual-reading-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Не читается с помощью программы чтения с экрана или с использованием дисплея Брайля",
+                "descriptive": "Содержимое не читается с помощью программы чтения с экрана или с использованием дисплея Брайля"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Невозможно полностью прочитать с помощью программы чтения с экрана или с использованием дисплея Брайля",
+                "descriptive": "Не всё содержимое будет читаемо с помощью программы чтения с экрана или с использованием дисплея Брайля"
             },
             "ways-of-reading-nonvisual-reading-readable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Читается с помощью программы чтения с экрана или с использованием дисплея Брайля",
+                "descriptive": "Всё содержимое может быть прочитано с помощью программы чтения с экрана или с использованием дисплея Брайля"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
                 "compact": "",
@@ -565,7 +565,7 @@
                 "alternativeText": "Содержит альтернативный текст",
                 "displayTransformability": "Адаптируемый текст и разметка",
                 "longDescription": "Полностью описанные графические ресурсы",
-                "printPageNumbers": "Разбивка печатной книги на страницы",
+                "printPageNumbers": "Разбивка на страницы в соответствии со страницами печатной версии книги",
                 "readingOrder": "Содержит порядок чтения",
                 "synchronizedAudioText": "Синхронизация текста и аудио",
                 "tableOfContents": "Содержит оглавление"
@@ -581,7 +581,7 @@
                 "sound": "Звук",
                 "unknown": "Неизвестный"
             },
-            "certifierReport": "Отчёт сертификатора",
+            "certifierReport": "Отчёт сертификатора:",
             "conformsTo": "Соответствует:",
             "moreInformation": "Больше информации",
             "name": "Доступность",
@@ -603,10 +603,10 @@
         "duration": {
             "title": "Продолжительность"
         },
-        "encryptedNoLicense": "",
-        "expired": "Срок кредита истек",
+        "encryptedNoLicense": "Публикация зашифрована, но не имеет лицензии LCP!",
+        "expired": "Срок абонемента истёк",
         "expiredLcp": "Эту книгу нельзя прочитать, потому что срок действия лицензии LCP истек.",
-        "incorrectPassphrase": "",
+        "incorrectPassphrase": "Ни один из сохранённых паролей не подходит к публикации, или введённый пароль неверен.",
         "lcpEnd": "Конец",
         "lcpRightsCopy": "Количество символов для копирования",
         "lcpRightsPrint": "Количество страниц, разрешенных для печати",
@@ -623,7 +623,7 @@
             "title": "Прогресс"
         },
         "read": "Закончено",
-        "remainingTime": "Кредиты (оставшиеся дни)",
+        "remainingTime": "Абонемент (оставшиеся дни)",
         "renewButton": "Продлить",
         "returnButton": "Вернуть",
         "returnedLcp": "Эту книгу невозможно прочитать, поскольку была возвращена лицензия LCP.",
@@ -640,43 +640,43 @@
             "addNote": "Комментировать",
             "advancedMode": "Мгновенный режим (автоматическое создание после выбора)",
             "annotationsExport": {
-                "description": "",
-                "title": ""
+                "description": "Название экспортируемых заметок:",
+                "title": "Название"
             },
-            "annotationsOptions": "Параметры",
-            "date": "",
-            "export": "",
+            "annotationsOptions": "Параметры аннотации",
+            "date": "Дата изменения",
+            "export": "Сохранить заметки как...",
             "filter": {
-                "all": "",
-                "filterByColor": "",
-                "filterByCreator": "",
-                "filterByDrawtype": "",
-                "filterByTag": "",
-                "filterOptions": "",
-                "none": ""
+                "all": "Все",
+                "filterByColor": "Фильтровать по цвету",
+                "filterByCreator": "Фильтровать по создателю",
+                "filterByDrawtype": "Фильтровать по типу",
+                "filterByTag": "Фильтровать по тегу",
+                "filterOptions": "Параметры фильтрации",
+                "none": "Ничего"
             },
-            "hide": "",
+            "hide": "Не отображать",
             "highlight": "Выделить",
-            "noSelectionToast": "Нет выбора",
-            "note": "",
+            "noSelectionToast": "Ничего не выделено",
+            "note": "{{- color}} заметка",
             "quickAnnotations": "Быстрое создание (пропуск редактора)",
             "saveNote": "Сохранить",
             "sorting": {
-                "lastcreated": "",
-                "lastmodified": "",
-                "progression": "",
-                "sortingOptions": ""
+                "lastcreated": "Последние созданные",
+                "lastmodified": "Последние изменённые",
+                "progression": "Прогресс",
+                "sortingOptions": "Параметры сортировки"
             },
             "toggleMarginMarks": "Отображение на полях",
             "type": {
-                "outline": "",
-                "solid": "",
-                "strikethrough": "",
-                "underline": ""
+                "outline": "Рамка",
+                "solid": "Сплошной фон",
+                "strikethrough": "Зачеркивание",
+                "underline": "Подчёркивание"
             }
         },
         "bookmarks": {
-            "index": ""
+            "index": "Закладка {{- index}}"
         },
         "divina": {
             "mute": "отключить звук",
@@ -685,12 +685,12 @@
         "fxl": {
             "fit": "Размер"
         },
-        "goToContent": "",
+        "goToContent": "Вернуться к тексту",
         "imgViewer": {
-            "title": "",
-            "zoomIn": "",
-            "zoomOut": "",
-            "zoomReset": ""
+            "title": "Просмотрщик изображений (масштабирование)",
+            "zoomIn": "Увеличить",
+            "zoomOut": "Уменьшить",
+            "zoomReset": "Сбросить масштаб"
         },
         "marks": {
             "annotations": "Аннотации",
@@ -708,10 +708,10 @@
             "activate": "Активировать чтение вслух",
             "captions": "Подписи / чистый вид",
             "captionsDescription": "Упрощенный вид текста с минимальным оформлением подписей.",
-            "disableContinuousPlay": "",
-            "disableContinuousPlayDescription": "",
+            "disableContinuousPlay": "Отключить непрерывное воспроизведение",
+            "disableContinuousPlayDescription": "Не воспроизводить автоматически следующий элемент, ставьте воспроизведение на паузу сразу после завершения воспроизведения текущего элемента.",
             "ignoreAndUseTTS": "",
-            "ignoreAndUseTTSDescription": "",
+            "ignoreAndUseTTSDescription": "Игнорировать EPUB Media Overlays, вместо этого читать с помощью преобразования текста в речь",
             "next": "Далее Чтение вслух",
             "pause": "Пауза Чтение вслух",
             "play": "Играть Чтение вслух",
@@ -723,8 +723,8 @@
             "title": "Чтение вслух"
         },
         "navigation": {
-            "ZenModeExit": "",
-            "ZenModeTitle": "",
+            "ZenModeExit": "Выйти из Zen режима",
+            "ZenModeTitle": "Zen режим",
             "annotationTitle": "Аннотация",
             "backHomeTitle": "назад к книжной полке",
             "bookmarkTitle": "Закладка",
@@ -735,9 +735,9 @@
             "goToError": "Этот разрыв страницы не существует",
             "goToPlaceHolder": "Введите номер страницы",
             "goToTitle": "Перейти на страницу",
-            "history": "",
-            "historyNext": "Перейти вперед",
-            "historyPrevious": "Перейти назад",
+            "history": "История навигации",
+            "historyNext": "Перейти вперед в истории навигации",
+            "historyPrevious": "Перейти назад в истории навигации",
             "infoTitle": "Информация",
             "magnifyingGlassButton": "Искать в книге",
             "openTableOfContentsTitle": "Навигация",
@@ -829,21 +829,21 @@
                     "fit": "подгонка страницы",
                     "width": "ширина страницы"
                 },
-                "title": "Увеличить"
+                "title": "Масштаб"
             },
             "preset": {
-                "apply": "",
-                "applyDetails": "",
-                "detail": "",
-                "reset": "",
-                "resetDetails": "",
-                "save": "",
-                "saveDetails": "",
-                "title": ""
+                "apply": "Применить",
+                "applyDetails": "Применить любимую конфигурацию к текущей публикации.",
+                "detail": "Сохранить / Применить / Сбросить текущую конфигурацию.",
+                "reset": "Сбросить",
+                "resetDetails": "Сбросить текущую конфигурацию до настроек по умолчанию.",
+                "save": "Сохранить",
+                "saveDetails": "Это действие сохранит текущую конфигурацию, то есть предпочтительные параметры отображения и форматирования текста. Затем настройки можно будет применить к другим публикациям, нажав кнопку «Применить» в других окнах программы.",
+                "title": "Параметры"
             },
             "preview": "Предпросмотр",
             "reduceMotion": "Уменьшить движение",
-            "scrolled": "Прокручивающаяся",
+            "scrolled": "Потоковая",
             "spacing": "Интервал",
             "text": "Текст",
             "theme": {
@@ -885,15 +885,15 @@
     },
     "settings": {
         "annotationCreator": {
-            "creator": "",
-            "help": "",
-            "name": "",
+            "creator": "Автор аннотаций (необязательно)",
+            "help": "Если указано имя, то оно будет включено в метаданные экспортируемых заметок.",
+            "name": "Имя",
             "organization": "Организация",
-            "person": "",
+            "person": "Человек",
             "type": "Тип:"
         },
         "auth": {
-            "help": "",
+            "help": "Это действие удаляет все учётные данные OPDS.",
             "title": "Доступ к каталогам публикаций",
             "wipeData": "Очистить данные для входа"
         },
@@ -906,11 +906,11 @@
             "list": {
                 "AddBookmarkWithLabel": {
                     "description": "",
-                    "name": ""
+                    "name": "Создать закладку с меткой"
                 },
                 "AnnotationsCreate": {
                     "description": "",
-                    "name": ""
+                    "name": "Создать аннотацию"
                 },
                 "AnnotationsCreateQuick": {
                     "description": "",
@@ -945,8 +945,8 @@
                     "name": ""
                 },
                 "CloseReader": {
-                    "description": "",
-                    "name": ""
+                    "description": "Закрыть книгу и вернуться в библиотеку",
+                    "name": "Закрыть книгу"
                 },
                 "FXLZoomIn": {
                     "description": "",
@@ -974,11 +974,11 @@
                 },
                 "FocusReaderNavigation": {
                     "description": "",
-                    "name": ""
+                    "name": "Фокус на панели навигации"
                 },
                 "FocusReaderNavigationAnnotations": {
                     "description": "",
-                    "name": ""
+                    "name": "Фокус на «Аннотации»"
                 },
                 "FocusReaderNavigationBookmarks": {
                     "description": "",
@@ -986,11 +986,11 @@
                 },
                 "FocusReaderNavigationSearch": {
                     "description": "",
-                    "name": ""
+                    "name": "Фокус на «Поиск»"
                 },
                 "FocusReaderNavigationTOC": {
                     "description": "",
-                    "name": ""
+                    "name": "Фокус на «Содержание»"
                 },
                 "FocusReaderSettings": {
                     "description": "",
@@ -1013,8 +1013,8 @@
                     "name": "Перейти к следующей главе (альтернативный вариант)"
                 },
                 "NavigateNextHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "В окне чтения перейти на один шаг вперёд в истории навигации",
+                    "name": "Перейти к следующему шагу в истории навигации"
                 },
                 "NavigateNextLibraryPage": {
                     "description": "",
@@ -1049,8 +1049,8 @@
                     "name": "Перейти к предыдущей главе (альтернативный вариант)"
                 },
                 "NavigatePreviousHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "В окне чтения перейти на шаг назад в истории навигации",
+                    "name": "Перейти к предыдущему шагу в истории навигации"
                 },
                 "NavigatePreviousLibraryPage": {
                     "description": "",
@@ -1069,11 +1069,11 @@
                     "name": ""
                 },
                 "NavigatePreviousPage": {
-                    "description": "",
+                    "description": "В окне чтения перейти на предыдущую страницу публикации. Обратите внимание, что существует также альтернативное сочетание клавиш для этого действия",
                     "name": "Перейти на предыдущую страницу"
                 },
                 "NavigatePreviousPageAlt": {
-                    "description": "",
+                    "description": "В окне чтения перейти на предыдущую страницу публикации. Это альтернативное сочетание клавиш вместо стандартного",
                     "name": "Перейти на предыдущую страницу (альтернативный вариант)"
                 },
                 "NavigateToBegin": {
@@ -1097,19 +1097,19 @@
                     "name": "Печать"
                 },
                 "SearchNext": {
-                    "description": "",
+                    "description": "В окне чтения перейдите к следующему результату поиска. Обратите внимание, что существует также альтернативное сочетание клавиш для этого действия",
                     "name": "Следующий результат поиска"
                 },
                 "SearchNextAlt": {
-                    "description": "",
+                    "description": "В окне чтения перейдите к следующему результату поиска. Это альтернативное сочетание клавиш вместо стандартного",
                     "name": "Следующий результат поиска (альтернативный вариант)"
                 },
                 "SearchPrevious": {
-                    "description": "",
+                    "description": "В окне чтения перейдите к предыдущему результату поиска. Обратите внимание, что существует также альтернативное сочетание клавиш для этого действия",
                     "name": "Предыдущий результат поиска"
                 },
                 "SearchPreviousAlt": {
-                    "description": "",
+                    "description": "В окне чтения перейдите к предыдущему результату поиска. Это альтернативное сочетание клавиш вместо стандартного",
                     "name": "Предыдущий результат поиска (альтернативный вариант)"
                 },
                 "SpeakReaderInfoWhereAmI": {
@@ -1126,7 +1126,7 @@
                 }
             },
             "loadUserJson": "Загрузить из пользовательского файла",
-            "noShortcutFound": "",
+            "noShortcutFound": "Горячая клавиша с этой меткой не найдена",
             "resetDefaults": "Сбросить (загрузка по умолчанию)",
             "save": "Сохранить",
             "searchPlaceholder": "Введите текст для поиска горячей клавиши"
@@ -1135,18 +1135,18 @@
             "languageChoice": "Выбор языка"
         },
         "library": {
-            "enableAPIAPP": "",
-            "title": ""
+            "enableAPIAPP": "Активировать библиотечную систему «PNB»",
+            "title": "Доступ к учётным записям французских библиотек"
         },
         "note": {
             "export": {
                 "applyDefaultTemplate": "Загрузить шаблон по умолчанию",
-                "enableCheckbox": "",
-                "overrideHTMLTemplate": ""
+                "enableCheckbox": "Настроить шаблон HTML",
+                "overrideHTMLTemplate": "Экспорт заметок (аннотации и закладки)"
             }
         },
         "profiles": {
-            "info": "",
+            "info": "Переключайтесь между профилями, чтобы персонализировать приложение с использованием фирменного стиля и цветов. Каждый профиль обеспечивает персонализированный интерфейс.",
             "thorium": {
                 "description": "Thorium Vanilla — это оригинальный профиль, разработанный EDRLab.",
                 "title": "Thorium vanilla"
@@ -1154,9 +1154,9 @@
             "version": "Версия: {{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "message": "",
-            "title": ""
+            "help": "Пользовательский интерфейс лучше работает с программами чтения с экрана, когда приложение обнаруживает наличие вспомогательных технологий",
+            "message": "Улучшена поддержка программ чтения с экрана",
+            "title": "Улучшена работа программы чтения с экрана"
         },
         "session": {
             "title": "Сохранение сеанса"
@@ -1169,7 +1169,7 @@
         "theme": {
             "auto": "Автоматическая",
             "dark": "Тёмная",
-            "description": "Тема приложения соответствует операционной системе.",
+            "description": "Тема приложения соответствует системной теме.",
             "light": "Светлая",
             "title": "Тема приложения"
         }
@@ -1177,24 +1177,24 @@
     "tts": {
         "highlight": {
             "mainColor": "Основной цвет",
-            "maskBlockWordOutline": "",
-            "maskBlockWordSolidBackground": "",
-            "maskBlockWordUnderline": "",
-            "maskWordOutline": "",
-            "maskWordSolidBackground": "",
-            "maskWordUnderline": "",
-            "outlineWordOutline": "",
-            "outlineWordSolidBackground": "",
-            "outlineWordUnderline": "",
-            "preview": "",
-            "solidBackgroundWordOutline": "",
-            "solidBackgroundWordSolidBackground": "",
-            "solidBackgroundWordUnderline": "",
-            "style": "",
-            "underlineWordOutline": "",
-            "underlineWordSolidBackground": "",
-            "underlineWordUnderline": "",
-            "wordColor": ""
+            "maskBlockWordOutline": "Маскировка блоком, Слово в рамке",
+            "maskBlockWordSolidBackground": "Маскировка блоком, Слово подсвечено",
+            "maskBlockWordUnderline": "Маскировка блоком, Слово подчёркнуто",
+            "maskWordOutline": "Маскировка, Слово в рамке",
+            "maskWordSolidBackground": "Маскировка, Слово подсвечено",
+            "maskWordUnderline": "Маскировка, Слово подчёркнуто",
+            "outlineWordOutline": "Рамка, Слово в рамке",
+            "outlineWordSolidBackground": "Рамка, Слово подсвечено",
+            "outlineWordUnderline": "Рамка, Слово подчёркнуто",
+            "preview": "Предварительный просмотр стиля подсветки TTS",
+            "solidBackgroundWordOutline": "Заливка фона, Слово в рамке",
+            "solidBackgroundWordSolidBackground": "Заливка фона, Слово подсвечено",
+            "solidBackgroundWordUnderline": "Заливка фона, Слово подчёркнуто",
+            "style": "Стиль выделения TTS",
+            "underlineWordOutline": "Подчёркивание, Слово в рамке",
+            "underlineWordSolidBackground": "Подчёркивание, Слово подсвечено",
+            "underlineWordUnderline": "Подчёркивание, Слово подчёркнуто",
+            "wordColor": "Цвет слова"
         }
     },
     "wizard": {
