@@ -211,7 +211,7 @@ const ScreenReaderSettings: React.FC<{}> = () => {
                             }
                         }}
                         className={stylesGlobal.checkbox_custom}
-                        style={{ border: screenReaderActivate ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: screenReaderActivate ? "var(--color-blue)" : "transparent" }}>
+                        style={{ border: screenReaderActivate ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: screenReaderActivate ? "var(--color-brand-primary)" : "transparent" }}>
                         {screenReaderActivate ?
                             <SVG ariaHidden svg={CheckIcon} />
                             :
