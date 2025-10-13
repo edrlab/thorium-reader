@@ -19,7 +19,7 @@ import { SagaIterator } from "redux-saga";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, put } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
-import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
 
 // import * as portfinder from_"portfinder";
 // import { Server } from "@r2-streamer-js/http/server";
@@ -47,8 +47,8 @@ function* startRequest(): SagaIterator {
     try {
         // const streamerUrl = _USE_HTTP_STREAMER ?
         //     yield* callTyped(() => startStreamer(streamer)) :
-        //     `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}`;
-        const streamerUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}`;
+        //     `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}`;
+        const streamerUrl = `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}`;
 
         yield put(streamerActions.startSuccess.build(streamerUrl));
     } catch (error) {

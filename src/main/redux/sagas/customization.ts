@@ -29,6 +29,7 @@ import { net } from "electron";
 import * as fs from "fs";
 import isURL from "validator/lib/isURL";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { EXT_THORIUM } from "readium-desktop/common/extension";
 
 const filename_ = "readium-desktop:main:redux:sagas:customization";
 const debug = debug_(filename_);
@@ -226,7 +227,7 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
             return;
         }
         fileName = `${nanoid(10)}_${path.basename(filePath)}`;
-        if (path.extname(fileName) !== ".thorium") {
+        if (path.extname(fileName) !== EXT_THORIUM) {
             debug("ERROR: file is not a .thorium extension", fileName);
             return;
         }

@@ -18,7 +18,7 @@ import { readdirSync, existsSync, mkdirSync } from "fs";
 import { ICustomizationProfileProvisioned, ICustomizationProfileError, ICustomizationProfileProvisionedWithError } from "readium-desktop/common/redux/states/customization";
 import { app } from "electron";
 import { _CUSTOMIZATION_PROFILE_PUB_KEY } from "readium-desktop/preprocessor-directives";
-import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP } from "readium-desktop/common/streamerProtocol";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
@@ -26,6 +26,7 @@ import { diMainGet } from "../di";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 import isURL from "validator/lib/isURL";
+import { EXT_THORIUM } from "readium-desktop/common/extension";
 
 // Logger
 const debug = debug_("readium-desktop:main#utils/customization/provisioning");
@@ -83,7 +84,7 @@ async function getManifestFromPackageFileName(packageFileName: string): Promise<
 
         debug("Error: ", __CUSTOMIZATION_PROFILE_MANIFEST_AJV_ERRORS);
         return Promise.reject("Manifest parsing error: " + __CUSTOMIZATION_PROFILE_MANIFEST_AJV_ERRORS);
-    } 
+    }
 
     return manifest;
 }
@@ -132,7 +133,7 @@ export async function customizationPackageProvisionningFromFolder(wellKnownFolde
     const results = readdirSync(wellKnownFolder, {withFileTypes: true});
 
     for (const dirent of results) {
-        if (dirent.isFile() && path.extname(dirent.name) === ".thorium") { 
+        if (dirent.isFile() && path.extname(dirent.name) === EXT_THORIUM) {
             const packageFileName = dirent.name;
             debug("Found => ", packageFileName);
             const profileProvisioned = await customizationPackageProvisioningAccumulator(packagesArray, packageFileName);
@@ -175,7 +176,7 @@ export async function customizationPackageProvisioningAccumulator(packagesArray:
 
         const logoObj = manifest.images?.find((ln) => ln?.rel === "logo");
         debug("find manifest for this profile", manifest.identifier, " LOGO Obj:", logoObj);
-        const baseUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/custom-profile-zip/${encodeURIComponent_RFC3986(Buffer.from(manifest.identifier).toString("base64"))}/`;
+        const baseUrl = `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_CUSTOMPROFILEZIP}/${encodeURIComponent_RFC3986(Buffer.from(manifest.identifier).toString("base64"))}/`;
         const logoUrl = baseUrl + encodeURIComponent_RFC3986(Buffer.from(logoObj.href).toString("base64"));
 
         const publicationsView = [];
@@ -199,7 +200,7 @@ export async function customizationPackageProvisioningAccumulator(packagesArray:
                         }
                     }
                 }
-                
+
                 const opdsPubJsonImages = (opdsPubJson as any).images;
                 if (typeof opdsPubJsonImages === "object" && Array.isArray(opdsPubJsonImages)) {
                     for (const _image of opdsPubJsonImages) {
@@ -231,7 +232,7 @@ export async function customizationPackageProvisioningAccumulator(packagesArray:
                     debug("ERROR to load a publication from the profile", (opdsPubJson as any)?.metadata?.identifier);
                     debug(e);
                 }
-            }    
+            }
 
         }
 

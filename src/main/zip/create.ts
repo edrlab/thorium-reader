@@ -31,6 +31,7 @@ import { _CUSTOMIZATION_PROFILE_PRIVATE_KEY, _CUSTOMIZATION_PROFILE_PUB_KEY } fr
 import { ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
 import { sanitizeForFilename } from "readium-desktop/common/safe-filename";
 import { injectBufferInZip } from "../tools/zipInjector";
+import { EXT_THORIUM } from "readium-desktop/common/extension";
 
 // Logger
 const debug = debug_("readium-desktop:main#utils/zip/create");
@@ -164,7 +165,7 @@ export async function createProfilePackageZip(
     testSignature = false,
 ) {
     const packagePath = path.resolve(outputProfilePath,
-        sanitizeForFilename((manifest.title["en"] || "") + "_" + (manifest.version || "") + ".thorium"),
+        sanitizeForFilename((manifest.title["en"] || "") + "_" + (manifest.version || "") + EXT_THORIUM),
     );
     // const packagePathTMP = packagePath + ".tmp";
 

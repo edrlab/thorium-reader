@@ -27,7 +27,7 @@ import { Settings } from "../settings/Settings";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import { buildOpdsBrowserRoute } from "../../opds/route";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP } from "readium-desktop/common/streamerProtocol";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import DOMPurify from "dompurify";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
@@ -155,7 +155,7 @@ const Header = () => {
     const customizationEnable = !!customizationManifest;
     const customizationId = customizationManifest?.identifier;
     const logoObj = customizationManifest?.images?.find((ln) => ln?.rel === "logo");
-    const customizationBaseUrl = customizationEnable ? `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/custom-profile-zip/${encodeURIComponent_RFC3986(Buffer.from(customizationId).toString("base64"))}/` : "";
+    const customizationBaseUrl = customizationEnable ? `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_CUSTOMPROFILEZIP}/${encodeURIComponent_RFC3986(Buffer.from(customizationId).toString("base64"))}/` : "";
 
     const screenZipLinks = React.useMemo(() => {
         let a = customizationManifest?.links?.filter((ln) => ln.rel === "screen" && (!ln.type || ln.type === "text/html") && ln.language === locale);
