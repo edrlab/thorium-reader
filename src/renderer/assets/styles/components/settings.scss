@@ -933,6 +933,7 @@ div[data-radix-popper-content-wrapper] {
         display: flex;
         flex-direction: column;
         gap: 20px;
+        position: relative;
     }
 
     &_input {
@@ -962,7 +963,7 @@ div[data-radix-popper-content-wrapper] {
         }
 
         &:hover:not(:has(.profile_selection_input_checked)) {
-            background-color: var(--color-verylight-grey);
+            background-color: var(--color-verylight-grey-alt2);
             cursor: pointer;
 
             .profile_selection_label {
