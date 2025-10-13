@@ -20,6 +20,7 @@ import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { IZip } from "@r2-utils-js/_utils/zip/zip.d";
 import * as debug_ from "debug";
 import { sanitizeForFilename } from "readium-desktop/common/safe-filename";
+import { URL_PROTOCOL_STORE } from "readium-desktop/common/streamerProtocol";
 
 const debug = debug_("readium-desktop:main/storage/pub-storage");
 
@@ -276,7 +277,7 @@ export class PublicationStorage {
             const writeStream = fs.createWriteStream(dstPath);
             const fileResolve = () => {
                 resolve({
-                    url: `store://${identifier}/${filename}`,
+                    url: `${URL_PROTOCOL_STORE}://${identifier}/${filename}`,
                     ext,
                     contentType:
                         isAudioBook
@@ -351,7 +352,7 @@ export class PublicationStorage {
 
         // Return cover file information
         return {
-            url: `store://${identifier}/${coverFilename}`,
+            url: `${URL_PROTOCOL_STORE}://${identifier}/${coverFilename}`,
             ext: coverExt,
             contentType: coverType,
             size: getFileSize(coverDstPath),

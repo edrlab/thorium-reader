@@ -6,7 +6,7 @@
 // ==LICENSE-END=
 
 import * as debug_ from "debug";
-import { OPDS_MEDIA_SCHEME, OPDS_MEDIA_SCHEME__IP_ORIGIN_OPDS_MEDIA } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_OPDS_MEDIA, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
 import { BrowserWindow, globalShortcut, HandlerDetails, Event as ElectronEvent, WebContentsWillNavigateEventParams, shell } from "electron";
 
 // TypeScript GO:
@@ -249,7 +249,7 @@ function* opdsAuthWipeData() {
 
 function* opdsRequestMediaFlow({request, callback}: TregisterHttpProtocolHandler) {
 
-    const schemePrefix = OPDS_MEDIA_SCHEME + "://" + OPDS_MEDIA_SCHEME__IP_ORIGIN_OPDS_MEDIA + "/";
+    const schemePrefix = URL_PROTOCOL_OPDS_MEDIA + "://" + URL_HOST_COMMON + "/";
     if (request && request.url.startsWith(schemePrefix)) {
         const b64 = decodeURIComponent(request.url.slice(schemePrefix.length));
         const url = Buffer.from(b64, "base64").toString("utf-8");
@@ -787,7 +787,7 @@ function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefine
                 webSecurity: true,
                 webviewTag: false,
                 partition: SESSION_PARTITION_AUTH, // => for example, failure in web inspector console debugger:
-                // fetch("thoriumhttps://host/pdfjs/web/viewer.html").then((r)=>r.text()).then((t)=>console.log(t));
+                // fetch("URL_PROTOCOL_THORIUMHTTPS"+"://"+URL_HOST_COMMON+"/pdfjs/web/viewer.html").then((r)=>r.text()).then((t)=>console.log(t));
             },
         });
 

@@ -191,8 +191,8 @@ export function* importFromLinkService(
         || contentTypeArray.includes(ContentType.JsonLd)
         || contentTypeArray.includes(ContentType.Divina)
         || contentTypeArray.includes(ContentType.webpub);
-    
-    const isCustomizationProfilePublication = /^thoriumhttps:\/\//.test(link.url); // THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL
+
+    const isCustomizationProfilePublication = /^thoriumhttps:\/\//.test(link.url); // URL_PROTOCOL_THORIUMHTTPS
 
     debug(contentTypeArray, isHtml, isJson);
 
@@ -211,7 +211,7 @@ export function* importFromLinkService(
 
             return yield* callTyped(packageFromLink, url.toString(), isHtml);
 
-        } else if (isCustomizationProfilePublication) {   
+        } else if (isCustomizationProfilePublication) {
             const _contentType = parseContentType(link.type);
             const downloadPath = path.join(app.getPath("temp"), `${nanoid(5)}.${findExtWithMimeType(_contentType)}`);
 
@@ -249,7 +249,7 @@ export function* importFromLinkService(
             const state = diMainGet("store").getState();
             const profile = state.customization.provision.find((profile) => profile.id === id);
             const packageProfileFilename = profile.fileName;
-            
+
             const packageAbsolutePath = path.join(customizationWellKnownFolder, packageProfileFilename);
 
 
@@ -272,7 +272,7 @@ export function* importFromLinkService(
             yield* callTyped(() => new Promise<void>((resolve, reject) => {
 
                 const writeStream = fs.createWriteStream(downloadPath);
-    
+
                 writeStream.on("end", () => {
                     debug("createWebpubZip writeStream END", downloadPath);
                 });
@@ -281,15 +281,15 @@ export function* importFromLinkService(
                 });
                 writeStream.on("close", () => {
                     debug("createWebpubZip writeStream CLOSE", downloadPath);
-    
+
                     resolve();
                 });
                 writeStream.on("error", (err) => {
                     debug("createWebpubZip writeStream ERROR", downloadPath, err);
-    
+
                     reject(err);
                 });
-    
+
                 manifestStream.stream.on("end", () => {
                     debug("createWebpubZip manifestStream.stream END", downloadPath);
                 });
@@ -302,7 +302,7 @@ export function* importFromLinkService(
                 manifestStream.stream.on("error", (err) => {
                     debug("createWebpubZip manifestStream.stream ERROR", downloadPath, err);
                 });
-    
+
                 manifestStream.stream.pipe(writeStream);
             }));
 

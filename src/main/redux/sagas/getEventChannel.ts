@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { app, powerMonitor, session } from "electron";
-import { OPDS_MEDIA_SCHEME } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_OPDS_MEDIA } from "readium-desktop/common/streamerProtocol";
 import { channel as channelSaga, eventChannel } from "redux-saga";
 import { customizationStartFileWatcherFromWellKnownFolder } from "readium-desktop/main/customization/watcher";
 
@@ -158,7 +158,7 @@ export function getOpdsRequestCustomProtocolEventChannel() {
 // HACK!! TODO: FIXME (Electron lifecycle requires this before app.ready, and called only once!)
 // see src/main/streamer/streamerNoHttp.ts
 // protocol.registerSchemesAsPrivileged([
-//     { scheme: OPDS_MEDIA_SCHEME, privileges: { bypassCSP: true, corsEnabled: false, stream: true } },
+//     { scheme: URL_PROTOCOL_OPDS_MEDIA, privileges: { bypassCSP: true, corsEnabled: false, stream: true } },
 // ]);
 
 export function getOpdsRequestMediaCustomProtocolEventChannel() {
@@ -175,10 +175,10 @@ export function getOpdsRequestMediaCustomProtocolEventChannel() {
             ) => {
                 emit({ request, callback });
             };
-            session.defaultSession.protocol.registerStreamProtocol(OPDS_MEDIA_SCHEME, handler);
+            session.defaultSession.protocol.registerStreamProtocol(URL_PROTOCOL_OPDS_MEDIA, handler);
 
             return () => {
-                session.defaultSession.protocol.unregisterProtocol(OPDS_MEDIA_SCHEME);
+                session.defaultSession.protocol.unregisterProtocol(URL_PROTOCOL_OPDS_MEDIA);
             };
         },
     );

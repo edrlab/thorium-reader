@@ -7,6 +7,7 @@
 
 import { clearDefaultSession, clearSession, clearWebviewSession, getWebViewSession } from "@r2-navigator-js/electron/main/sessions";
 import { SESSION_PARTITION_AUTH, SESSION_PARTITION_PDFJS, SESSION_PARTITION_PDFJSEXTRACT } from "readium-desktop/common/sessions";
+import { URL_PROTOCOL_PDFJSEXTRACT, URL_PROTOCOL_FILEX, URL_PROTOCOL_STORE, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
 import * as debug_ from "debug";
 import { net, session } from "electron";
 import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
@@ -194,7 +195,7 @@ export const initProtocols = () => {
   ): Response | Promise<Response> => {
     debug("---protocolHandler_FILEX");
     debug(request);
-    const urlPath = request.url.substring("filex://host/".length);
+    const urlPath = request.url.substring(`${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/`.length);
     debug(urlPath);
     const urlPathDecoded = urlPath.split("/").map((segment) => {
       return segment?.length ? tryDecodeURIComponent(segment) : "";
@@ -204,15 +205,15 @@ export const initProtocols = () => {
     debug(filePathUrl);
     return net.fetch(filePathUrl); // potential security hole: local filesystem access (mitigated by URL scheme not .registerSchemesAsPrivileged() and not .handle() or .registerXXXProtocol() directly on r2-navigator-js.getWebViewSession().protocol or any other partitioned session, unlike Electron.protocol and Electron.session.defaultSession.protocol)
   };
-  session.defaultSession.protocol.handle("filex", protocolHandler_FILEX);
-  // protocol.unhandle("filex");
+  session.defaultSession.protocol.handle(URL_PROTOCOL_FILEX, protocolHandler_FILEX);
+  // protocol.unhandle(URL_PROTOCOL_FILEX);
 
   const protocolHandler_Store = (
     request: Request,
   ): Response | Promise<Response> => {
     debug("---protocolHandler_Store");
     debug(request);
-    const urlPath = request.url.substring("store://".length);
+    const urlPath = request.url.substring(`${URL_PROTOCOL_STORE}://`.length);
     debug(urlPath);
     // const urlPathDecoded = tryDecodeURIComponent(urlPath);
     // debug(urlPathDecoded);
@@ -228,13 +229,13 @@ export const initProtocols = () => {
   session.defaultSession.protocol.handle("store", protocolHandler_Store);
   // protocol.unhandle("store");
 
-  const pdfSession = session.fromPartition(SESSION_PARTITION_PDFJSEXTRACT, { cache: false });
+  const pdfExtractSession = session.fromPartition(SESSION_PARTITION_PDFJSEXTRACT, { cache: false });
   const protocolHandler_PDF = (
     request: Request,
   ): Response | Promise<Response> => {
     debug("---protocolHandler_PDF");
     debug(request);
-    const urlPath = request.url.substring("pdfjs-extract://host/".length);
+    const urlPath = request.url.substring(`${URL_PROTOCOL_PDFJSEXTRACT}://${URL_HOST_COMMON}/`.length);
     debug(urlPath);
     const urlPathDecoded = tryDecodeURIComponent(urlPath);
     debug(urlPathDecoded);
@@ -242,15 +243,15 @@ export const initProtocols = () => {
     debug(filePathUrl);
     return net.fetch(filePathUrl); // potential security hole: local filesystem access (mitigated by URL scheme not .registerSchemesAsPrivileged() and not .handle() or .registerXXXProtocol() directly on r2-navigator-js.getWebViewSession().protocol or any other partitioned session, unlike Electron.protocol and Electron.session.defaultSession.protocol)
   };
-  pdfSession.protocol.handle("pdfjs-extract", protocolHandler_PDF);
-  // protocol.unhandle("pdfjs-extract");
+  pdfExtractSession.protocol.handle(URL_PROTOCOL_PDFJSEXTRACT, protocolHandler_PDF);
+  // protocol.unhandle(URL_PROTOCOL_PDFJSEXTRACT);
 
   // FAIL because of unsupported scheme protocol, even if exposed globally in the default session:
-  // fetch("pdfjs-extract://host/%2Fpath%2Fto%2Ffile").then((r)=>r.statusCode).then((t)=>console.log(t)).catch((e)=>{console.log(e)});
+  // fetch(URL_PROTOCOL_PDFJSEXTRACT + "://"+URL_HOST_COMMON+"/%2Fpath%2Fto%2Ffile").then((r)=>r.statusCode).then((t)=>console.log(t)).catch((e)=>{console.log(e)});
 
   // WORKS with non-partitioned BrowserWindow or WebView (CORS):
   // const x = new XMLHttpRequest();
-  // x.open("GET", "pdfjs-extract://host/%2Fpath%2Fto%2Ffile");
+  // x.open("GET", URL_PROTOCOL_PDFJSEXTRACT + "://"+URL_HOST_COMMON+"/%2Fpath%2Fto%2Ffile");
   // //x.responseType = "arraybuffer";
   // x.responseType = "text";
   // x.onerror = () => {
