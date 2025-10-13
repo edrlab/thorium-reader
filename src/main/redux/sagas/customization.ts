@@ -29,6 +29,7 @@ import { net } from "electron";
 import * as fs from "fs";
 import isURL from "validator/lib/isURL";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { contentTypeisOpdsAuth, parseContentType } from "readium-desktop/utils/contentType";
 
 const filename_ = "readium-desktop:main:redux:sagas:customization";
 const debug = debug_(filename_);
@@ -484,10 +485,12 @@ function* triggerCatalogOpdsAuthentication(action: customizationActions.triggerO
                 debug("isURL() NOK", opdsAuthenticationHref);
                 return;
             }
-            const response = yield* callTyped(() => httpGetWithAuth(false)(opdsAuthenticationHref));
-            if (response.isSuccess) {
+            const response = yield* callTyped(() => httpGetWithAuth(true)(opdsAuthenticationHref));
+            const mimeType = parseContentType(response.contentType);
+            if (response.isSuccess || contentTypeisOpdsAuth(mimeType)) {
                 debug("authentication document receive");
                 const opdsAuthJsonObj = yield* callTyped(() => response.response.json());
+                debug("opdsAuthJsonObj:");
                 debug(opdsAuthJsonObj);
                 const cancelled = yield* callTyped(triggerAndWaitAuthenticationDialogModal, catalogHref, opdsAuthJsonObj);
                 if (cancelled) {

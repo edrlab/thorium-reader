@@ -33,7 +33,7 @@ import { DisplayType, IRouterLocationState } from "../../routing";
 import DeleteOpdsFeedConfirm from "../dialog/DeleteOpdsFeedConfirm";
 import OpdsFeedUpdateForm from "../dialog/OpdsFeedUpdateForm";
 import * as Popover from "@radix-ui/react-popover";
-import { authActions } from "readium-desktop/common/redux/actions";
+import { authActions, customizationActions } from "readium-desktop/common/redux/actions";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -151,7 +151,31 @@ class FeedList extends React.Component<IProps, IState> {
                                         </Popover.Content>
                                     </Popover.Portal>
                                 </Popover.Root>
-                                : <></>}
+                                : item.authenticationUrl ? <Popover.Root>
+                                    <Popover.Trigger asChild>
+                                        <button
+                                            className={stylesCatalogs.button_login}
+                                            title={__("catalog.login")}
+                                        >
+                                            <SVG ariaHidden={true} svg={AvatarIcon} />
+                                        </button>
+                                    </Popover.Trigger>
+                                    <Popover.Portal>
+                                        <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesPopoverDialog.delete_item}>
+                                            <Popover.Close
+                                                onClick={() => {
+                                                    this.props.triggerAuth(item.url, item.authenticationUrl);
+                                                    // setTimeout(() => this.loadFeeds(), 100);
+                                                }}
+                                                title={__("catalog.login")}
+                                            >
+                                                <SVG ariaHidden={true} svg={AvatarIcon} />
+                                                {__("catalog.login")}
+                                            </Popover.Close>
+                                            <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                                        </Popover.Content>
+                                    </Popover.Portal>
+                                </Popover.Root> : <></>}
                                 <OpdsFeedUpdateForm trigger={(
                                     <button
                                         className={stylesCatalogs.button_edit}
@@ -215,6 +239,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
         logout: (feedUrl: string) => {
             dispatch(authActions.logout.build(feedUrl));
+        },
+        triggerAuth: (feedUrl: string, authenticationUrl: string) => {
+            dispatch(customizationActions.triggerOpdsAuth.build(feedUrl, authenticationUrl));
         },
     };
 };
