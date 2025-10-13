@@ -22,9 +22,9 @@ import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { marked } from "readium-desktop/renderer/common/marked/marked";
-import { sortObject } from "@r2-utils-js/_utils/JsonUtils";
+import { JsonStringifySortedKeys } from "readium-desktop/common/utils/json";
 
-import slugify from "slugify";
+import { sanitizeForFilename } from "readium-desktop/common/safe-filename";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:common:redux:sagas:readiumAnnotation:export");
@@ -56,18 +56,17 @@ const convertReadiumAnnotationSetToHtml = async (
     const output = Mustache.render(htmlMustacheTemplate, await viewConverterFn(readiumAnnotation));
     return output;
 };
-const downloadAnnotationFile = (data: string, filename: string, extension: ".annotation" | ".html") => {
+const downloadAnnotationFile = (data: string, filenameWithExtension: string, extension: ".annotation" | ".html") => {
 
     const blob = new Blob([data], { type: extension === ".annotation" ? "application/rd-annotations+json" : "text/html" });
     const jsonObjectUrl = URL.createObjectURL(blob);
     const anchorEl = document.createElement("a");
     anchorEl.href = jsonObjectUrl;
-    anchorEl.download = filename + extension;
+    anchorEl.download = filenameWithExtension;
     anchorEl.click();
     URL.revokeObjectURL(jsonObjectUrl);
 };
 export function* exportAnnotationSet(notes: INoteState[], publicationView: PublicationView, annoSetTitle?: string, fileType: "html" | "annotation" = "annotation"): SagaGenerator<void> {
-
 
     debug("exportAnnotationSet just started !");
     debug("AnnotationArray: ", notes);
@@ -85,10 +84,10 @@ export function* exportAnnotationSet(notes: INoteState[], publicationView: Publi
 
     const extension = fileType === "annotation" ? ".annotation" : ".html";
     const stringData = extension === ".annotation" ?
-        JSON.stringify(sortObject(readiumAnnotationSet), null, 2) :
+        JsonStringifySortedKeys(readiumAnnotationSet, 2) :
         yield* callTyped(() => convertReadiumAnnotationSetToHtml(readiumAnnotationSet, __htmlMustacheViewConverterFn, htmlMustacheTemplateContent));
 
-    const filename = slugify(annoSetTitle).replace(/:/g, "-").substring(0, 200); // TODO: factor out, same as ReaderMenu.tsx
+    const filenameWithExtension = sanitizeForFilename(annoSetTitle + extension);
 
-    downloadAnnotationFile(stringData, filename, extension);
+    downloadAnnotationFile(stringData, filenameWithExtension, extension);
 }

@@ -468,7 +468,8 @@ async function httpFetchFormattedResponse<TData = undefined>(
         const errStr = err.toString();
 
         debug("### HTTP FETCH ERROR ###");
-        debug(errStr);
+        // debug(errStr);
+        debug(err);
         debug("url: ", url);
         debug("options: ", options);
 

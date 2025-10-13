@@ -84,6 +84,7 @@ class Catalog extends React.Component<IProps, undefined> {
                     && <CatalogGridView
                         catalogEntries={catalog.entries}
                         tags={tags}
+                        hasCustomPublications={customizationProfileProvision?.opdsPublicationView?.length > 0}
                     />
                 }
                 {

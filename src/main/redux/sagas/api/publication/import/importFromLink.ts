@@ -21,7 +21,7 @@ import nodeFetch from "node-fetch";
 import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
-import { ContentType } from "readium-desktop/utils/contentType";
+import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 import { SagaGenerator } from "typed-redux-saga";
 import { delay as delayTyped, call as callTyped, race as raceTyped } from "typed-redux-saga/macro";
 
@@ -29,6 +29,14 @@ import { downloader } from "../../../downloader";
 import { packageFromLink } from "../packager/packageLink";
 import { importFromFsService } from "./importFromFs";
 import isURL from "validator/lib/isURL";
+import path from "path";
+import { app } from "electron";
+import { findExtWithMimeType } from "readium-desktop/utils/mimeTypes";
+import { nanoid } from "nanoid";
+import { tryCatch } from "readium-desktop/utils/tryCatch";
+import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
+import { customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
+import * as fs from "fs";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/importFromLinkService");
@@ -183,6 +191,8 @@ export function* importFromLinkService(
         || contentTypeArray.includes(ContentType.JsonLd)
         || contentTypeArray.includes(ContentType.Divina)
         || contentTypeArray.includes(ContentType.webpub);
+    
+    const isCustomizationProfilePublication = /^thoriumhttps:\/\//.test(link.url); // THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL
 
     debug(contentTypeArray, isHtml, isJson);
 
@@ -194,14 +204,111 @@ export function* importFromLinkService(
         link = { url: url.toString() };
     }
 
-    const downloadMayBePackageLink = function*() {
+    const downloadMayBePackageLink = function*(): SagaGenerator<string> {
 
         if (isHtml || isJson) {
             debug("the link need to be packaged");
 
             return yield* callTyped(packageFromLink, url.toString(), isHtml);
 
-        } else {
+        } else if (isCustomizationProfilePublication) {   
+            const _contentType = parseContentType(link.type);
+            const downloadPath = path.join(app.getPath("temp"), `${nanoid(5)}.${findExtWithMimeType(_contentType)}`);
+
+            const _url = link.url; // thoriumhttps://profileId/pathInZip
+
+            const u = new URL(_url);
+
+            // https://github.com/readium/r2-streamer-js/commit/e214b7e1f8133a8400baec3c6f2d7c8204da01ad
+            // At this point, route relative path is already normalised with respect to /../ and /./ dot segments,
+            // but not double slashes (which seems to be an easy mistake to make at authoring time in EPUBs),
+            // so we collapse multiple slashes into a single one.
+            let uPathname = u.pathname;
+            if (uPathname) {
+                uPathname = uPathname.replace(/\/\/+/g, "/");
+                try {
+                    uPathname = decodeURIComponent(uPathname);
+                } catch (e) {
+                    debug("u.pathname decodeURIComponent!?");
+                    debug(e);
+                }
+            }
+
+            const customProfileZipAssetsPrefix = "/custom-profile-zip/";
+            const isCustomProfileZipAssets = uPathname.startsWith(customProfileZipAssetsPrefix);
+            if (!isCustomProfileZipAssets) {
+                throw new Error("ERROR: COPY PUBLICATION IN PROFILE: not a custom-profile-zip url : " + uPathname);
+                // return ;
+            }
+
+            const route = uPathname.substr(customProfileZipAssetsPrefix.length);
+            const [idEncoded, pathInZipEncoded] = route.split(/\/(.*)/s);
+            const id = Buffer.from(decodeURIComponent(idEncoded), "base64").toString();
+            const pathInZip = path.resolve("/", Buffer.from(decodeURIComponent(pathInZipEncoded), "base64").toString()).substr(1); // remove first '/'
+
+            const state = diMainGet("store").getState();
+            const profile = state.customization.provision.find((profile) => profile.id === id);
+            const packageProfileFilename = profile.fileName;
+            
+            const packageAbsolutePath = path.join(customizationWellKnownFolder, packageProfileFilename);
+
+
+            const zip = yield* callTyped(() => tryCatch(() => zipLoadPromise(packageAbsolutePath), ""));
+            if (!zip) {
+                throw new Error("ERROR: COPY PUBLICATION IN PROFILE: Not a ZIP package");
+            }
+
+            if (!zip.hasEntries()) {
+                // throw new Error("LPF zip empty");
+                throw new Error("ERROR: COPY PUBLICATION IN PROFILE: Zip has no entries");
+            }
+
+            if (!zip.hasEntry(pathInZip)) {
+                throw new Error(`ERROR: COPY PUBLICATION IN PROFILE: ${pathInZip} not found`);
+            }
+
+            const manifestStream = yield* callTyped(() => zip.entryStreamPromise(pathInZip));
+
+            yield* callTyped(() => new Promise<void>((resolve, reject) => {
+
+                const writeStream = fs.createWriteStream(downloadPath);
+    
+                writeStream.on("end", () => {
+                    debug("createWebpubZip writeStream END", downloadPath);
+                });
+                writeStream.on("finish", () => {
+                    debug("createWebpubZip writeStream FINISH", downloadPath);
+                });
+                writeStream.on("close", () => {
+                    debug("createWebpubZip writeStream CLOSE", downloadPath);
+    
+                    resolve();
+                });
+                writeStream.on("error", (err) => {
+                    debug("createWebpubZip writeStream ERROR", downloadPath, err);
+    
+                    reject(err);
+                });
+    
+                manifestStream.stream.on("end", () => {
+                    debug("createWebpubZip manifestStream.stream END", downloadPath);
+                });
+                manifestStream.stream.on("finish", () => {
+                    debug("createWebpubZip manifestStream.stream FINISH", downloadPath);
+                });
+                manifestStream.stream.on("close", () => {
+                    debug("createWebpubZip manifestStream.stream CLOSE", downloadPath);
+                });
+                manifestStream.stream.on("error", (err) => {
+                    debug("createWebpubZip manifestStream.stream ERROR", downloadPath, err);
+                });
+    
+                manifestStream.stream.pipe(writeStream);
+            }));
+
+
+            return downloadPath;
+        }else {
             debug("Start the download", link);
 
             const [downloadPath] = yield* callTyped(downloader, [{ href: link.url, type: link.type }], title);
