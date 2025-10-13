@@ -37,6 +37,7 @@ import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
 import { customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
 import * as fs from "fs";
+import { URL_PATH_PREFIX_CUSTOMPROFILEZIP } from "readium-desktop/common/streamerProtocol";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/importFromLinkService");
@@ -234,7 +235,7 @@ export function* importFromLinkService(
                 }
             }
 
-            const customProfileZipAssetsPrefix = "/custom-profile-zip/";
+            const customProfileZipAssetsPrefix = `/${URL_PATH_PREFIX_CUSTOMPROFILEZIP}/`;
             const isCustomProfileZipAssets = uPathname.startsWith(customProfileZipAssetsPrefix);
             if (!isCustomProfileZipAssets) {
                 throw new Error("ERROR: COPY PUBLICATION IN PROFILE: not a custom-profile-zip url : " + uPathname);

@@ -67,7 +67,6 @@ mathJaxPath = mathJaxPath.replace(/\\/g, "/");
 debug("MathJax path:", mathJaxPath);
 
 export const MATHJAX_FILE_PATH = mathJaxPath;
-export const MATHJAX_URL_PATH = "math-jax";
 
 let rcssPath = "ReadiumCSS";
 if (__TH__IS_PACKAGED__) {

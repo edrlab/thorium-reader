@@ -107,7 +107,7 @@ import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 import { translateContentFieldHelper } from "readium-desktop/common/services/translator";
 import { getStore } from "../createStore";
-import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_PUB } from "readium-desktop/common/streamerProtocol";
 import { DockTypeName } from "readium-desktop/common/models/dock";
 import { TDrawView } from "readium-desktop/common/redux/states/renderer/note";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
@@ -3208,10 +3208,10 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 
     // const manifestUrlR2Protocol = state.reader.info.manifestUrlR2Protocol; // httpsr2:// "CustomScheme"
     const manifestUrlHttp = state.reader.info.manifestUrlHttp.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ? convertCustomSchemeToHttpUrl(state.reader.info.manifestUrlHttp) : state.reader.info.manifestUrlHttp;
-    const pubPathBase64 = decodeURIComponent(manifestUrlHttp.replace(/\/manifest.json$/, "").replace(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/pub/`, ""));
+    const pubPathBase64 = decodeURIComponent(manifestUrlHttp.replace(/\/manifest.json$/, "").replace(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PUB}/`, ""));
     const pubPath = Buffer.from(pubPathBase64, "base64").toString();
 
-    const manifestUrlR2Protocol_pub_id_not_path = convertHttpUrlToCustomScheme(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/pub/${encodeURIComponent_RFC3986(Buffer.from(state.reader.info.publicationIdentifier || state.reader.info.publicationView.identifier, "utf8").toString("base64"))}/manifest.json`);
+    const manifestUrlR2Protocol_pub_id_not_path = convertHttpUrlToCustomScheme(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PUB}/${encodeURIComponent_RFC3986(Buffer.from(state.reader.info.publicationIdentifier || state.reader.info.publicationView.identifier, "utf8").toString("base64"))}/manifest.json`);
 
     debug("manifestUrlR2Protocol_pub_id_not_path", manifestUrlR2Protocol_pub_id_not_path);
     debug("state.reader.info.manifestUrlR2Protocol", state.reader.info.manifestUrlR2Protocol);

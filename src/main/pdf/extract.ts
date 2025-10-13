@@ -13,7 +13,7 @@ import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebConten
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 import { IInfo } from "./extract.type";
-import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_PDFJS } from "readium-desktop/common/streamerProtocol";
 import { SESSION_PARTITION_PDFJSEXTRACT } from "readium-desktop/common/sessions";
 import { URL_PROTOCOL_PDFJSEXTRACT } from "readium-desktop/common/streamerProtocol";
 
@@ -46,7 +46,7 @@ export const extractPDFData =
         let win: BrowserWindow;
         try {
 
-            //`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/pdfjs/../../../index_pdf.js`
+            //`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PDFJS}/../../../index_pdf.js`
             const preloadPath = path.normalize(path.join(__dirname, "index_pdf_extract.js")).replace(/\\/g, "/");
             debug("extractPDFData preload", preloadPath); // fs.existsSync(preloadPath)
 
@@ -71,7 +71,7 @@ export const extractPDFData =
             });
 
             // win.hide(); // doesn't works on linux
-            await win.loadURL(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/pdfjs/web/viewer.html?file=${pdfPath}`);
+            await win.loadURL(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PDFJS}/web/viewer.html?file=${pdfPath}`);
 
             const willNavigate = (navUrl: string | undefined | null) => {
 

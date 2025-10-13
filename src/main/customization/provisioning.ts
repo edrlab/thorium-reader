@@ -18,7 +18,7 @@ import { readdirSync, existsSync, mkdirSync } from "fs";
 import { ICustomizationProfileProvisioned, ICustomizationProfileError, ICustomizationProfileProvisionedWithError } from "readium-desktop/common/redux/states/customization";
 import { app } from "electron";
 import { _CUSTOMIZATION_PROFILE_PUB_KEY } from "readium-desktop/preprocessor-directives";
-import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP } from "readium-desktop/common/streamerProtocol";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
@@ -176,7 +176,7 @@ export async function customizationPackageProvisioningAccumulator(packagesArray:
 
         const logoObj = manifest.images?.find((ln) => ln?.rel === "logo");
         debug("find manifest for this profile", manifest.identifier, " LOGO Obj:", logoObj);
-        const baseUrl = `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/custom-profile-zip/${encodeURIComponent_RFC3986(Buffer.from(manifest.identifier).toString("base64"))}/`;
+        const baseUrl = `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_CUSTOMPROFILEZIP}/${encodeURIComponent_RFC3986(Buffer.from(manifest.identifier).toString("base64"))}/`;
         const logoUrl = baseUrl + encodeURIComponent_RFC3986(Buffer.from(logoObj.href).toString("base64"));
 
         const publicationsView = [];

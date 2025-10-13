@@ -44,11 +44,11 @@ import { bufferToStream } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { IStreamAndLength, IZip } from "@r2-utils-js/_utils/zip/zip";
 
 import {
-    computeReadiumCssJsonMessageInStreamer, MATHJAX_FILE_PATH, MATHJAX_URL_PATH,
+    computeReadiumCssJsonMessageInStreamer, MATHJAX_FILE_PATH,
     READIUMCSS_FILE_PATH, setupMathJaxTransformer,
 } from "./streamerCommon";
 // import { URL_PROTOCOL_OPDS_MEDIA } from "readium-desktop/main/redux/sagas/getEventChannel";
-import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP, URL_PATH_PREFIX_PUBNOTES, URL_PATH_PREFIX_MATHJAX, URL_PATH_PREFIX_READIUMCSS, URL_PATH_PREFIX_PUB, URL_PATH_PREFIX_PDFJS } from "readium-desktop/common/streamerProtocol";
 import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
 import { diMainGet } from "../di";
 import { getNotesFromMainWinState } from "../redux/sagas/note";
@@ -76,9 +76,6 @@ const URL_PARAM_SESSION_INFO = "r2_SESSION_INFO";
 // this ceiling value seems very arbitrary ... what would be a reasonable default value?
 // ... based on what metric, any particular HTTP server or client implementation?
 export const MAX_PREFETCH_LINKS = 10;
-
-
-const READIUM_CSS_URL_PATH = "readium-css";
 
 if (true) { // !_USE_HTTP_STREAMER) {
     function isFixedLayout(publication: R2Publication, link: Link | undefined): boolean {
@@ -139,7 +136,7 @@ if (true) { // !_USE_HTTP_STREAMER) {
 
         if (readiumcssJson) {
             if (!readiumcssJson.urlRoot) {
-                // `/${READIUM_CSS_URL_PATH}/`
+                // `/${URL_PATH_PREFIX_READIUMCSS}/`
                 readiumcssJson.urlRoot = URL_PROTOCOL_THORIUMHTTPS + "://" + URL_HOST_COMMON;
                 // readiumcssJson.urlRoot = convertHttpUrlToCustomScheme(readiumcssJson.urlRoot + "/xx/yy/zz").replace(/\/xx\/yy\/zz$/, "");
             }
@@ -161,7 +158,7 @@ if (true) { // !_USE_HTTP_STREAMER) {
     Transformers.instance().add(new TransformerHTML(transformerReadiumCss));
 
     setupMathJaxTransformer(
-        () => `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${MATHJAX_URL_PATH}/es5/tex-mml-chtml.js`,
+        () => `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_MATHJAX}/es5/tex-mml-chtml.js`,
     );
 }
 
@@ -385,25 +382,25 @@ const streamProtocolHandler = async (
         }
     }
 
-    const customProfileZipAssetsPrefix = "/custom-profile-zip/";
+    const customProfileZipAssetsPrefix = `/${URL_PATH_PREFIX_CUSTOMPROFILEZIP}/`;
     const isCustomProfileZipAssets = uPathname.startsWith(customProfileZipAssetsPrefix);
 
-    const notesFromPublicationPrefix = "/publication-notes/";
+    const notesFromPublicationPrefix = `/${URL_PATH_PREFIX_PUBNOTES}/`;
     const isNotesFromPublicationRequest = uPathname.startsWith(notesFromPublicationPrefix);
 
-    const pdfjsAssetsPrefix = "/pdfjs/";
+    const pdfjsAssetsPrefix = `/${URL_PATH_PREFIX_PDFJS}/`;
     const isPdfjsAssets = uPathname.startsWith(pdfjsAssetsPrefix);
 
-    const publicationAssetsPrefix = "/pub/";
+    const publicationAssetsPrefix = `/${URL_PATH_PREFIX_PUB}/`;
     const isPublicationAssets = uPathname.startsWith(publicationAssetsPrefix);
 
     const mediaOverlaysSuffix = `/${mediaOverlayURLPath}`;
     const isMediaOverlays = uPathname.endsWith(mediaOverlaysSuffix);
 
-    const mathJaxPrefix = `/${MATHJAX_URL_PATH}/`;
+    const mathJaxPrefix = `/${URL_PATH_PREFIX_MATHJAX}/`;
     const isMathJax = uPathname.startsWith(mathJaxPrefix);
 
-    const readiumCssPrefix = `/${READIUM_CSS_URL_PATH}/`;
+    const readiumCssPrefix = `/${URL_PATH_PREFIX_READIUMCSS}/`;
     const isReadiumCSS = uPathname.startsWith(readiumCssPrefix);
 
     debug("streamProtocolHandler uPathname", uPathname);
@@ -970,7 +967,7 @@ const streamProtocolHandler = async (
 
         if (pathInZip === "manifest.json") {
 
-            const rootUrl = URL_PROTOCOL_THORIUMHTTPS + "://" + URL_HOST_COMMON + "/pub/" + encodeURIComponent_RFC3986(b64Path);
+            const rootUrl = URL_PROTOCOL_THORIUMHTTPS + "://" + URL_HOST_COMMON + "/" + URL_PATH_PREFIX_PUB + "/" + encodeURIComponent_RFC3986(b64Path);
             // const rootUrl = convertHttpUrlToCustomScheme(rootUrl_ + "/zz").replace(/\/zz$/, "");
             const manifestURL = convertHttpUrlToCustomScheme(rootUrl + "/" + "manifest.json");
             debug("manifest.json ROOT URL", rootUrl);
@@ -1932,7 +1929,7 @@ export function streamerAddPublications(pubs: string[]): string[] {
 
     return pubs.map((pub) => {
         const pubid = encodeURIComponent_RFC3986(Buffer.from(pub).toString("base64"));
-        return `/pub/${pubid}/manifest.json`;
+        return `/${URL_PATH_PREFIX_PUB}/${pubid}/manifest.json`;
     });
 }
 
@@ -1947,7 +1944,7 @@ export function streamerRemovePublications(pubs: string[]): string[] {
 
     return pubs.map((pub) => {
         const pubid = encodeURIComponent_RFC3986(Buffer.from(pub).toString("base64"));
-        return `/pub/${pubid}/manifest.json`;
+        return `/${URL_PATH_PREFIX_PUB}/${pubid}/manifest.json`;
     });
 }
 

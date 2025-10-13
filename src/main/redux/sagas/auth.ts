@@ -787,7 +787,7 @@ function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefine
                 webSecurity: true,
                 webviewTag: false,
                 partition: SESSION_PARTITION_AUTH, // => for example, failure in web inspector console debugger:
-                // fetch("URL_PROTOCOL_THORIUMHTTPS"+"://"+URL_HOST_COMMON+"/pdfjs/web/viewer.html").then((r)=>r.text()).then((t)=>console.log(t));
+                // fetch("URL_PROTOCOL_THORIUMHTTPS"+"://"+URL_HOST_COMMON+"/" + URL_PATH_PREFIX_PDFJS + "/web/viewer.html").then((r)=>r.text()).then((t)=>console.log(t));
             },
         });
 

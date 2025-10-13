@@ -11,6 +11,7 @@ export const URL_HOST_COMMON = "0.0.0.0"; // this IP-address like syntactical co
 
 export const URL_PROTOCOL_THORIUMHTTPS = "thoriumhttps"; // ==> convertHttpUrlToCustomScheme
 export const URL_PROTOCOL_HTTPSR2 = READIUM2_ELECTRON_HTTP_PROTOCOL; // "httpsr2" ==> convertCustomSchemeToHttpUrl
+export const URL_PATH_PREFIX_PUB = "pub"; // hard-coded in r2-navigator convertHttpUrlToCustomScheme() and convertCustomSchemeToHttpUrl() regular expression parsing
 
 export const URL_PROTOCOL_PDFJSEXTRACT = "pdfjs-extract";
 export const URL_PROTOCOL_OPDS_MEDIA = "opds-media";
@@ -24,3 +25,9 @@ export const URL_PROTOCOL_APP_HANDLER_OPDS = "opds";
 export const URL_PROTOCOL_APP_HANDLER_THORIUM = "thorium";
 
 export const URL_HOST_CUSTOMPROFILE = "customization-profile";
+
+export const URL_PATH_PREFIX_CUSTOMPROFILEZIP = "custom-profile-zip";
+export const URL_PATH_PREFIX_PUBNOTES = "publication-notes";
+export const URL_PATH_PREFIX_MATHJAX = "math-jax";
+export const URL_PATH_PREFIX_READIUMCSS = "readium-css";
+export const URL_PATH_PREFIX_PDFJS = "pdfjs";
