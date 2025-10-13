@@ -248,6 +248,10 @@ export function* importFromLinkService(
 
             const state = diMainGet("store").getState();
             const profile = state.customization.provision.find((profile) => profile.id === id);
+            if (!profile) {
+                throw new Error("ERROR: CUSTOM PROFILE not found: " + id);
+            }
+
             const packageProfileFilename = profile.fileName;
             
             const packageAbsolutePath = path.join(customizationWellKnownFolder, packageProfileFilename);
