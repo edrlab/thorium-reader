@@ -1863,11 +1863,20 @@ export function initSessions() {
                     streamProtocolHandlerTunnel);
             }
 
+            // https://www.electronjs.org/docs/latest/api/session#sessetpermissionrequesthandlerhandler
+            // 'clipboard-read' | 'clipboard-sanitized-write' | 'display-capture' | 'fullscreen' | 'geolocation' | 'idle-detection' | 'media' | 'mediaKeySystem' | 'midi' | 'midiSysex' | 'notifications' | 'pointerLock' | 'keyboardLock' | 'openExternal' | 'speaker-selection' | 'storage-access' | 'top-level-storage-access' | 'window-management' | 'unknown' | 'fileSystem' | 'hid' ' | 'serial' | 'usb' | 'deprecated-sync-clipboard-read'
             session.defaultSession.setPermissionRequestHandler((wc, permission, callback) => {
                 debug("setPermissionRequestHandler session.defaultSession");
                 debug(wc.getURL());
                 debug(permission);
-                callback(true);
+                callback(false);
+            });
+            session.defaultSession.setPermissionCheckHandler((wc, permission, origin) => {
+                debug("setPermissionCheckHandler session.defaultSession");
+                debug(wc?.getURL());
+                debug(permission);
+                debug(origin);
+                return false;
             });
         }
 
@@ -1889,11 +1898,20 @@ export function initSessions() {
                     streamProtocolHandlerTunnel);
             }
 
+            // https://www.electronjs.org/docs/latest/api/session#sessetpermissionrequesthandlerhandler
+            // 'clipboard-read' | 'clipboard-sanitized-write' | 'display-capture' | 'fullscreen' | 'geolocation' | 'idle-detection' | 'media' | 'mediaKeySystem' | 'midi' | 'midiSysex' | 'notifications' | 'pointerLock' | 'keyboardLock' | 'openExternal' | 'speaker-selection' | 'storage-access' | 'top-level-storage-access' | 'window-management' | 'unknown' | 'fileSystem' | 'hid' ' | 'serial' | 'usb' | 'deprecated-sync-clipboard-read'
             webViewSession.setPermissionRequestHandler((wc, permission, callback) => {
                 debug("setPermissionRequestHandler webViewSession");
                 debug(wc.getURL());
                 debug(permission);
-                callback(true);
+                callback(false);
+            });
+            webViewSession.setPermissionCheckHandler((wc, permission, origin) => {
+                debug("setPermissionCheckHandler webViewSession");
+                debug(wc?.getURL());
+                debug(permission);
+                debug(origin);
+                return false;
             });
         }
 
@@ -1916,11 +1934,20 @@ export function initSessions() {
                 //     streamProtocolHandlerTunnel);
             }
 
+            // https://www.electronjs.org/docs/latest/api/session#sessetpermissionrequesthandlerhandler
+            // 'clipboard-read' | 'clipboard-sanitized-write' | 'display-capture' | 'fullscreen' | 'geolocation' | 'idle-detection' | 'media' | 'mediaKeySystem' | 'midi' | 'midiSysex' | 'notifications' | 'pointerLock' | 'keyboardLock' | 'openExternal' | 'speaker-selection' | 'storage-access' | 'top-level-storage-access' | 'window-management' | 'unknown' | 'fileSystem' | 'hid' ' | 'serial' | 'usb' | 'deprecated-sync-clipboard-read'
             pdfSession.setPermissionRequestHandler((wc, permission, callback) => {
                 debug("setPermissionRequestHandler pdfSession");
                 debug(wc.getURL());
                 debug(permission);
-                callback(true);
+                callback(false);
+            });
+            pdfSession.setPermissionCheckHandler((wc, permission, origin) => {
+                debug("setPermissionCheckHandler pdfSession");
+                debug(wc?.getURL());
+                debug(permission);
+                debug(origin);
+                return false;
             });
         }
 
@@ -1943,11 +1970,20 @@ export function initSessions() {
                 //     streamProtocolHandlerTunnel);
             }
 
+            // https://www.electronjs.org/docs/latest/api/session#sessetpermissionrequesthandlerhandler
+            // 'clipboard-read' | 'clipboard-sanitized-write' | 'display-capture' | 'fullscreen' | 'geolocation' | 'idle-detection' | 'media' | 'mediaKeySystem' | 'midi' | 'midiSysex' | 'notifications' | 'pointerLock' | 'keyboardLock' | 'openExternal' | 'speaker-selection' | 'storage-access' | 'top-level-storage-access' | 'window-management' | 'unknown' | 'fileSystem' | 'hid' ' | 'serial' | 'usb' | 'deprecated-sync-clipboard-read'
             pdfExtractSession.setPermissionRequestHandler((wc, permission, callback) => {
                 debug("setPermissionRequestHandler pdfExtractSession");
                 debug(wc.getURL());
                 debug(permission);
-                callback(true);
+                callback(false);
+            });
+            pdfExtractSession.setPermissionCheckHandler((wc, permission, origin) => {
+                debug("setPermissionCheckHandler pdfExtractSession");
+                debug(wc?.getURL());
+                debug(permission);
+                debug(origin);
+                return false;
             });
         }
     });
