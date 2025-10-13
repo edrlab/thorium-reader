@@ -18,6 +18,8 @@ import {
 import { initSessions as initSessionsNoHTTP } from "./main/streamer/streamerNoHttp";
 import { createStoreFromDi } from "./main/di";
 import { appActions } from "./main/redux/actions";
+import { app } from "electron";
+import { initPermissions } from "./main/sessions";
 
 // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
 // import isURL from "validator/lib/isURL";
@@ -64,6 +66,14 @@ initGlobalConverters_GENERIC();
 const lcpNativePluginPath = path.normalize(path.join(__dirname, "external-assets", "lcp.node"));
 setLcpNativePluginPath(lcpNativePluginPath);
 
+app.commandLine.appendSwitch("autoplay-policy", "no-user-gesture-required");
+app.commandLine.appendSwitch("enable-speech-dispatcher");
+
+// https://github.com/electron/electron/issues/46538
+// --gtk-version=3
+// Gtk-ERROR **: 12:09:19.718: GTK 2/3 symbols detected. Using GTK 2/3 and GTK 4 in the same process is not supported
+app.commandLine.appendSwitch("gtk-version", "3");
+
 // so that "tmp" can cleanup on process exit?
 // SIGTERM?
 // in Electron: before-quit App event
@@ -79,6 +89,7 @@ setLcpNativePluginPath(lcpNativePluginPath);
 //     initSessionsNoHTTP();
 // }
 initSessionsNoHTTP();
+initPermissions();
 
 if (__TH__IS_VSCODE_LAUNCH__) {
     createStoreFromDi().then((store) => store.dispatch(appActions.initRequest.build()));

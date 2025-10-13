@@ -20,6 +20,7 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { eventBus } from "./common/eventBus";
 import { IEventBusPdfPlayer } from "./common/pdfReader.type";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_EXTRACT_PDF } from "readium-desktop/common/streamerProtocol";
+import { SESSION_PARTITION_PDFJS } from "readium-desktop/common/sessions";
 
 const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
 
@@ -156,9 +157,9 @@ export function pdfMount(
         "display: flex; margin: 0; padding: 0; box-sizing: border-box; position: absolute; left: 0; right: 0; bottom: 0; top: 0;");
 
     webview.setAttribute("webpreferences",
-        `enableRemoteModule=0, allowRunningInsecureContent=0, backgroundThrottling=0, devTools=${ENABLE_DEV_TOOLS ? "1" : "0"}, nodeIntegration=0, sandbox=1, contextIsolation=0, nodeIntegrationInWorker=0, webSecurity=1, webviewTag=0, partition=persist:partitionpdfjs`);
+        `enableRemoteModule=0, allowRunningInsecureContent=0, backgroundThrottling=0, devTools=${ENABLE_DEV_TOOLS ? "1" : "0"}, nodeIntegration=0, sandbox=1, contextIsolation=0, nodeIntegrationInWorker=0, webSecurity=1, webviewTag=0, partition=${SESSION_PARTITION_PDFJS}`);
     // webview.setAttribute("disablewebsecurity", "");
-    webview.setAttribute("partition", "persist:partitionpdfjs");
+    webview.setAttribute("partition", SESSION_PARTITION_PDFJS);
 
     webview.setAttribute("preload", preloadPath);
     webview.setAttribute("src",

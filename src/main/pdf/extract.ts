@@ -14,6 +14,7 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 import { IInfo } from "./extract.type";
 import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_EXTRACT_PDF } from "readium-desktop/common/streamerProtocol";
+import { SESSION_PARTITION_PDFJSEXTRACT } from "readium-desktop/common/sessions";
 
 const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
 
@@ -64,7 +65,7 @@ export const extractPDFData =
                     webSecurity: true,
                     webviewTag: false,
                     preload: preloadPath, // "file://" + ... when setting the "preload" attribute on webview, but not with webPreferences
-                    partition: "persist:partitionpdfjsextract",
+                    partition: SESSION_PARTITION_PDFJSEXTRACT,
                 },
             });
 

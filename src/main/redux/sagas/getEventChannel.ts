@@ -9,9 +9,11 @@ import { app, powerMonitor, session } from "electron";
 import { OPDS_MEDIA_SCHEME } from "readium-desktop/common/streamerProtocol";
 import { channel as channelSaga, eventChannel } from "redux-saga";
 import { customizationStartFileWatcherFromWellKnownFolder } from "readium-desktop/main/customization/watcher";
-import * as debug_ from "debug";
 
-const debug = debug_("readium-desktop:main#redux/sagas/getEventCannel");
+import { SESSION_PARTITION_AUTH } from "readium-desktop/common/sessions";
+
+import * as debug_ from "debug";
+const debug = debug_("readium-desktop:main#redux/sagas/getEventChannel");
 debug("_");
 
 export function getAndStartCustomizationWellKnownFileWatchingEventChannel(wellKnownFolder: string) {
@@ -134,34 +136,18 @@ export function getOpdsRequestCustomProtocolEventChannel() {
 
     const channel = eventChannel<TregisterHttpProtocolHandler>(
         (emit) => {
+            const authSession = session.fromPartition(SESSION_PARTITION_AUTH, { cache: false });
 
-            // Electron.protocol === Electron.session.defaultSession.protocol
-            const authSession = session.fromPartition("persist:partitionauth", { cache: false });
-
-            // https://www.electronjs.org/docs/latest/api/session#sessetpermissionrequesthandlerhandler
-            // 'clipboard-read' | 'clipboard-sanitized-write' | 'display-capture' | 'fullscreen' | 'geolocation' | 'idle-detection' | 'media' | 'mediaKeySystem' | 'midi' | 'midiSysex' | 'notifications' | 'pointerLock' | 'keyboardLock' | 'openExternal' | 'speaker-selection' | 'storage-access' | 'top-level-storage-access' | 'window-management' | 'unknown' | 'fileSystem' | 'hid' ' | 'serial' | 'usb' | 'deprecated-sync-clipboard-read'
-            authSession.setPermissionRequestHandler((wc, permission, callback) => {
-                debug("setPermissionRequestHandler authSession");
-                debug(wc.getURL());
-                debug(permission);
-                callback(false);
-            });
-            authSession.setPermissionCheckHandler((wc, permission, origin) => {
-                debug("setPermissionCheckHandler authSession");
-                debug(wc?.getURL());
-                debug(permission);
-                debug(origin);
-                return false;
-            });
-
-            const handler = (
-                request: Electron.ProtocolRequest,
-                callback: (response: Electron.ProtocolResponse) => void,
-            ) => emit({ request, callback });
-            authSession.protocol.registerHttpProtocol(OPDS_AUTH_SCHEME, handler);
+            if (authSession) {
+                const handler = (
+                    request: Electron.ProtocolRequest,
+                    callback: (response: Electron.ProtocolResponse) => void,
+                ) => emit({ request, callback });
+                authSession.protocol.registerHttpProtocol(OPDS_AUTH_SCHEME, handler);
+            }
 
             return () => {
-                authSession.protocol.unregisterProtocol(OPDS_AUTH_SCHEME);
+                authSession?.protocol.unregisterProtocol(OPDS_AUTH_SCHEME);
             };
         },
     );

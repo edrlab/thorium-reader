@@ -66,6 +66,8 @@ import { nanoid } from "nanoid";
 
 import { getTranslator } from "readium-desktop/common/services/translator";
 
+import { SESSION_PARTITION_AUTH } from "readium-desktop/common/sessions";
+
 // https://github.com/cure53/DOMPurify?tab=readme-ov-file#running-dompurify-on-the-server
 import { JSDOM } from "jsdom";
 import DOMPurify_ from "dompurify";
@@ -784,7 +786,7 @@ function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefine
                 nodeIntegrationInWorker: false,
                 webSecurity: true,
                 webviewTag: false,
-                partition: "persist:partitionauth", // => for example, failure in web inspector console debugger:
+                partition: SESSION_PARTITION_AUTH, // => for example, failure in web inspector console debugger:
                 // fetch("thoriumhttps://host/pdfjs/web/viewer.html").then((r)=>r.text()).then((t)=>console.log(t));
             },
         });

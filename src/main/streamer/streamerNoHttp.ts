@@ -23,7 +23,7 @@ import { readiumCssTransformHtml } from "@r2-navigator-js/electron/common/readiu
 import {
     convertCustomSchemeToHttpUrl, convertHttpUrlToCustomScheme, READIUM2_ELECTRON_HTTP_PROTOCOL,
 } from "@r2-navigator-js/electron/common/sessions";
-import { clearSessions, getWebViewSession } from "@r2-navigator-js/electron/main/sessions";
+import { getWebViewSession } from "@r2-navigator-js/electron/main/sessions";
 import {
     URL_PARAM_CLIPBOARD_INTERCEPT, URL_PARAM_CSS, URL_PARAM_DEBUG_VISUALS,
     URL_PARAM_EPUBREADINGSYSTEM, URL_PARAM_IS_IFRAME, URL_PARAM_SECOND_WEBVIEW,
@@ -55,6 +55,10 @@ import { getNotesFromMainWinState } from "../redux/sagas/note";
 import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
 import { customizationWellKnownFolder } from "../customization/provisioning";
+import { SESSION_PARTITION_PDFJS, SESSION_PARTITION_PDFJSEXTRACT } from "readium-desktop/common/sessions";
+
+// import { clearSessions } from "@r2-navigator-js/electron/main/sessions";
+import { clearSessions } from "readium-desktop/main/sessions";
 
 // import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
@@ -1666,14 +1670,6 @@ const transformerIFrames: TTransformFunction = (
 };
 
 export function initSessions() {
-    app.commandLine.appendSwitch("autoplay-policy", "no-user-gesture-required");
-    app.commandLine.appendSwitch("enable-speech-dispatcher");
-
-    // https://github.com/electron/electron/issues/46538
-    // --gtk-version=3
-    // Gtk-ERROR **: 12:09:19.718: GTK 2/3 symbols detected. Using GTK 2/3 and GTK 4 in the same process is not supported
-    app.commandLine.appendSwitch("gtk-version", "3");
-
     Transformers.instance().add(new TransformerHTML(transformerIFrames));
 
     protocol.registerSchemesAsPrivileged([
@@ -1862,22 +1858,6 @@ export function initSessions() {
                     READIUM2_ELECTRON_HTTP_PROTOCOL,
                     streamProtocolHandlerTunnel);
             }
-
-            // https://www.electronjs.org/docs/latest/api/session#sessetpermissionrequesthandlerhandler
-            // 'clipboard-read' | 'clipboard-sanitized-write' | 'display-capture' | 'fullscreen' | 'geolocation' | 'idle-detection' | 'media' | 'mediaKeySystem' | 'midi' | 'midiSysex' | 'notifications' | 'pointerLock' | 'keyboardLock' | 'openExternal' | 'speaker-selection' | 'storage-access' | 'top-level-storage-access' | 'window-management' | 'unknown' | 'fileSystem' | 'hid' ' | 'serial' | 'usb' | 'deprecated-sync-clipboard-read'
-            session.defaultSession.setPermissionRequestHandler((wc, permission, callback) => {
-                debug("setPermissionRequestHandler session.defaultSession");
-                debug(wc.getURL());
-                debug(permission);
-                callback(false);
-            });
-            session.defaultSession.setPermissionCheckHandler((wc, permission, origin) => {
-                debug("setPermissionCheckHandler session.defaultSession");
-                debug(wc?.getURL());
-                debug(permission);
-                debug(origin);
-                return false;
-            });
         }
 
         const webViewSession = getWebViewSession();
@@ -1897,26 +1877,9 @@ export function initSessions() {
                     READIUM2_ELECTRON_HTTP_PROTOCOL,
                     streamProtocolHandlerTunnel);
             }
-
-            // https://www.electronjs.org/docs/latest/api/session#sessetpermissionrequesthandlerhandler
-            // 'clipboard-read' | 'clipboard-sanitized-write' | 'display-capture' | 'fullscreen' | 'geolocation' | 'idle-detection' | 'media' | 'mediaKeySystem' | 'midi' | 'midiSysex' | 'notifications' | 'pointerLock' | 'keyboardLock' | 'openExternal' | 'speaker-selection' | 'storage-access' | 'top-level-storage-access' | 'window-management' | 'unknown' | 'fileSystem' | 'hid' ' | 'serial' | 'usb' | 'deprecated-sync-clipboard-read'
-            webViewSession.setPermissionRequestHandler((wc, permission, callback) => {
-                debug("setPermissionRequestHandler webViewSession");
-                debug(wc.getURL());
-                debug(permission);
-                callback(false);
-            });
-            webViewSession.setPermissionCheckHandler((wc, permission, origin) => {
-                debug("setPermissionCheckHandler webViewSession");
-                debug(wc?.getURL());
-                debug(permission);
-                debug(origin);
-                return false;
-            });
         }
 
-        // Electron.protocol === Electron.session.defaultSession.protocol
-        const pdfSession = session.fromPartition("persist:partitionpdfjs", { cache: false });
+        const pdfSession = session.fromPartition(SESSION_PARTITION_PDFJS, { cache: false });
         if (pdfSession) {
             // pdfSession.webRequest.onHeadersReceived(filter, onHeadersReceivedCB);
             // pdfSession.webRequest.onBeforeSendHeaders(filter, onBeforeSendHeadersCB);
@@ -1933,26 +1896,9 @@ export function initSessions() {
                 //     READIUM2_ELECTRON_HTTP_PROTOCOL,
                 //     streamProtocolHandlerTunnel);
             }
-
-            // https://www.electronjs.org/docs/latest/api/session#sessetpermissionrequesthandlerhandler
-            // 'clipboard-read' | 'clipboard-sanitized-write' | 'display-capture' | 'fullscreen' | 'geolocation' | 'idle-detection' | 'media' | 'mediaKeySystem' | 'midi' | 'midiSysex' | 'notifications' | 'pointerLock' | 'keyboardLock' | 'openExternal' | 'speaker-selection' | 'storage-access' | 'top-level-storage-access' | 'window-management' | 'unknown' | 'fileSystem' | 'hid' ' | 'serial' | 'usb' | 'deprecated-sync-clipboard-read'
-            pdfSession.setPermissionRequestHandler((wc, permission, callback) => {
-                debug("setPermissionRequestHandler pdfSession");
-                debug(wc.getURL());
-                debug(permission);
-                callback(false);
-            });
-            pdfSession.setPermissionCheckHandler((wc, permission, origin) => {
-                debug("setPermissionCheckHandler pdfSession");
-                debug(wc?.getURL());
-                debug(permission);
-                debug(origin);
-                return false;
-            });
         }
 
-        // Electron.protocol === Electron.session.defaultSession.protocol
-        const pdfExtractSession = session.fromPartition("persist:partitionpdfjsextract", { cache: false });
+        const pdfExtractSession = session.fromPartition(SESSION_PARTITION_PDFJSEXTRACT, { cache: false });
         if (pdfExtractSession) {
             // pdfExtractSession.webRequest.onHeadersReceived(filter, onHeadersReceivedCB);
             // pdfExtractSession.webRequest.onBeforeSendHeaders(filter, onBeforeSendHeadersCB);
@@ -1969,22 +1915,6 @@ export function initSessions() {
                 //     READIUM2_ELECTRON_HTTP_PROTOCOL,
                 //     streamProtocolHandlerTunnel);
             }
-
-            // https://www.electronjs.org/docs/latest/api/session#sessetpermissionrequesthandlerhandler
-            // 'clipboard-read' | 'clipboard-sanitized-write' | 'display-capture' | 'fullscreen' | 'geolocation' | 'idle-detection' | 'media' | 'mediaKeySystem' | 'midi' | 'midiSysex' | 'notifications' | 'pointerLock' | 'keyboardLock' | 'openExternal' | 'speaker-selection' | 'storage-access' | 'top-level-storage-access' | 'window-management' | 'unknown' | 'fileSystem' | 'hid' ' | 'serial' | 'usb' | 'deprecated-sync-clipboard-read'
-            pdfExtractSession.setPermissionRequestHandler((wc, permission, callback) => {
-                debug("setPermissionRequestHandler pdfExtractSession");
-                debug(wc.getURL());
-                debug(permission);
-                callback(false);
-            });
-            pdfExtractSession.setPermissionCheckHandler((wc, permission, origin) => {
-                debug("setPermissionCheckHandler pdfExtractSession");
-                debug(wc?.getURL());
-                debug(permission);
-                debug(origin);
-                return false;
-            });
         }
     });
 }

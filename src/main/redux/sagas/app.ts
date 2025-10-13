@@ -6,11 +6,8 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app, ipcMain, net, session } from "electron";
-import * as path from "path";
-import { pathToFileURL } from "url";
+import { app, ipcMain } from "electron";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
 import { closeProcessLock, diMainGet, getLibraryWindowFromDi, getAllReaderWindowFromDi } from "readium-desktop/main/di";
 import { getOpdsNewCatalogsStringUrlChannel } from "readium-desktop/main/event";
 import {
@@ -24,7 +21,8 @@ import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import { all, call, race, spawn, take } from "redux-saga/effects";
 import { delay as delayTyped, put as putTyped, race as raceTyped } from "typed-redux-saga/macro";
 
-import { clearSessions } from "@r2-navigator-js/electron/main/sessions";
+// import { clearSessions } from "@r2-navigator-js/electron/main/sessions";
+import { clearSessions } from "readium-desktop/main/sessions";
 
 import { streamerActions } from "../actions";
 import {
@@ -33,6 +31,7 @@ import {
 } from "./getEventChannel";
 import { availableLanguages } from "readium-desktop/common/services/translator";
 import { i18nActions } from "readium-desktop/common/redux/actions";
+import { initProtocols } from "readium-desktop/main/sessions";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -132,23 +131,7 @@ export function* init() {
 
     debug("Main app ready");
 
-    const protocolHandler_FILEX = (
-        request: Request,
-    ): Response | Promise<Response> => {
-        debug("---protocolHandler_FILEX");
-        debug(request);
-        const urlPath = request.url.substring("filex://host/".length);
-        debug(urlPath);
-        const urlPathDecoded = urlPath.split("/").map((segment) => {
-            return segment?.length ? tryDecodeURIComponent(segment) : "";
-        }).join("/");
-        debug(urlPathDecoded);
-        const filePathUrl = pathToFileURL(urlPathDecoded).toString();
-        debug(filePathUrl);
-        return net.fetch(filePathUrl); // potential security hole: local filesystem access (mitigated by URL scheme not .registerSchemesAsPrivileged() and not .handle() or .registerXXXProtocol() directly on r2-navigator-js.getWebViewSession().protocol or any other partitioned session, unlike Electron.protocol and Electron.session.defaultSession.protocol)
-    };
-    session.defaultSession.protocol.handle("filex", protocolHandler_FILEX);
-    // protocol.unhandle("filex");
+    initProtocols();
 
     if (__TH__IS_DEV__) {
         // https://github.com/MarshallOfSound/electron-devtools-installer
@@ -176,71 +159,12 @@ export function* init() {
         });
     }
 
-    const protocolHandler_Store = (
-        request: Request,
-    ): Response | Promise<Response> => {
-        debug("---protocolHandler_Store");
-        debug(request);
-        const urlPath = request.url.substring("store://".length);
-        debug(urlPath);
-        // const urlPathDecoded = tryDecodeURIComponent(urlPath);
-        // debug(urlPathDecoded);
-        const pubStorage = diMainGet("publication-storage");
-        const rootPath = pubStorage.getRootPath();
-        debug(rootPath);
-        const filePath = path.join(rootPath, urlPath);
-        debug(filePath);
-        const filePathUrl = pathToFileURL(filePath).toString();
-        debug(filePathUrl);
-        return net.fetch(filePathUrl); // potential security hole: local filesystem access (mitigated by URL scheme not .registerSchemesAsPrivileged() and not .handle() or .registerXXXProtocol() directly on r2-navigator-js.getWebViewSession().protocol or any other partitioned session, unlike Electron.protocol and Electron.session.defaultSession.protocol)
-    };
-    session.defaultSession.protocol.handle("store", protocolHandler_Store);
-    // protocol.unhandle("store");
-
     app.on("will-quit", () => {
 
         debug("#####");
         debug("will-quit");
         debug("#####");
     });
-
-    // Electron.protocol === Electron.session.defaultSession.protocol
-    const pdfSession = session.fromPartition("persist:partitionpdfjsextract", { cache: false });
-
-    const protocolHandler_PDF = (
-        request: Request,
-    ): Response | Promise<Response> => {
-        debug("---protocolHandler_PDF");
-        debug(request);
-        const urlPath = request.url.substring("pdfjs-extract://host/".length);
-        debug(urlPath);
-        const urlPathDecoded = tryDecodeURIComponent(urlPath);
-        debug(urlPathDecoded);
-        const filePathUrl = pathToFileURL(urlPathDecoded).toString();
-        debug(filePathUrl);
-        return net.fetch(filePathUrl); // potential security hole: local filesystem access (mitigated by URL scheme not .registerSchemesAsPrivileged() and not .handle() or .registerXXXProtocol() directly on r2-navigator-js.getWebViewSession().protocol or any other partitioned session, unlike Electron.protocol and Electron.session.defaultSession.protocol)
-    };
-    pdfSession.protocol.handle("pdfjs-extract", protocolHandler_PDF);
-    // protocol.unhandle("pdfjs-extract");
-
-    // FAIL because of unsupported scheme protocol, even if exposed globally in the default session:
-    // fetch("pdfjs-extract://host/%2Fpath%2Fto%2Ffile").then((r)=>r.statusCode).then((t)=>console.log(t)).catch((e)=>{console.log(e)});
-
-    // WORKS with non-partitioned BrowserWindow or WebView (CORS):
-    // const x = new XMLHttpRequest();
-    // x.open("GET", "pdfjs-extract://host/%2Fpath%2Fto%2Ffile");
-    // //x.responseType = "arraybuffer";
-    // x.responseType = "text";
-    // x.onerror = () => {
-    //     console.log("X ERROR", x.readyState, x.status, typeof x.response);
-    // };
-    // x.onreadystatechange = () => {
-    //     console.log("X STATECHANGE", x.readyState, x.status, typeof x.response, x.readyState === 4 ? x.response : undefined);
-    // };
-    // x.onprogress = () => {
-    //     console.log("X PROGRESS", x.readyState, x.status, typeof x.response);
-    // };
-    // x.send(null);
 
     yield call(() => {
         const deviceIdManager = diMainGet("device-id-manager");
@@ -312,9 +236,8 @@ function* closeProcess() {
                 call(function*() {
 
                     try {
-                        // clear session in r2-navigator
                         yield call(clearSessions);
-                        debug("Success to clearSession in r2-navigator");
+                        debug("Success to clearSessions");
                     } catch (e) {
                         debug("ERROR to clearSessions", e);
                     }
