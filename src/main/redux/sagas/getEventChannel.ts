@@ -6,9 +6,15 @@
 // ==LICENSE-END==
 
 import { app, powerMonitor, session } from "electron";
-import { OPDS_MEDIA_SCHEME } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_OPDS, URL_PROTOCOL_OPDS_MEDIA } from "readium-desktop/common/streamerProtocol";
 import { channel as channelSaga, eventChannel } from "redux-saga";
 import { customizationStartFileWatcherFromWellKnownFolder } from "readium-desktop/main/customization/watcher";
+
+import { SESSION_PARTITION_AUTH } from "readium-desktop/common/sessions";
+
+import * as debug_ from "debug";
+const debug = debug_("readium-desktop:main#redux/sagas/getEventChannel");
+debug("_");
 
 export function getAndStartCustomizationWellKnownFileWatchingEventChannel(wellKnownFolder: string) {
 
@@ -119,8 +125,6 @@ export function getShutdownEventChannel() {
 
 }
 
-export const OPDS_AUTH_SCHEME = "opds";
-
 export interface TregisterHttpProtocolHandler {
     request: Electron.ProtocolRequest;
     callback: (response: Electron.ProtocolResponse) => void;
@@ -130,18 +134,18 @@ export function getOpdsRequestCustomProtocolEventChannel() {
 
     const channel = eventChannel<TregisterHttpProtocolHandler>(
         (emit) => {
+            const authSession = session.fromPartition(SESSION_PARTITION_AUTH, { cache: false });
 
-            // Electron.protocol === Electron.session.defaultSession.protocol
-            const authSession = session.fromPartition("persist:partitionauth", { cache: false });
-
-            const handler = (
-                request: Electron.ProtocolRequest,
-                callback: (response: Electron.ProtocolResponse) => void,
-            ) => emit({ request, callback });
-            authSession.protocol.registerHttpProtocol(OPDS_AUTH_SCHEME, handler);
+            if (authSession) {
+                const handler = (
+                    request: Electron.ProtocolRequest,
+                    callback: (response: Electron.ProtocolResponse) => void,
+                ) => emit({ request, callback });
+                authSession.protocol.registerHttpProtocol(URL_PROTOCOL_OPDS, handler);
+            }
 
             return () => {
-                authSession.protocol.unregisterProtocol(OPDS_AUTH_SCHEME);
+                authSession?.protocol.unregisterProtocol(URL_PROTOCOL_OPDS);
             };
         },
     );
@@ -152,7 +156,7 @@ export function getOpdsRequestCustomProtocolEventChannel() {
 // HACK!! TODO: FIXME (Electron lifecycle requires this before app.ready, and called only once!)
 // see src/main/streamer/streamerNoHttp.ts
 // protocol.registerSchemesAsPrivileged([
-//     { scheme: OPDS_MEDIA_SCHEME, privileges: { bypassCSP: true, corsEnabled: false, stream: true } },
+//     { scheme: URL_PROTOCOL_OPDS_MEDIA, privileges: { bypassCSP: true, corsEnabled: false, stream: true } },
 // ]);
 
 export function getOpdsRequestMediaCustomProtocolEventChannel() {
@@ -169,10 +173,10 @@ export function getOpdsRequestMediaCustomProtocolEventChannel() {
             ) => {
                 emit({ request, callback });
             };
-            session.defaultSession.protocol.registerStreamProtocol(OPDS_MEDIA_SCHEME, handler);
+            session.defaultSession.protocol.registerStreamProtocol(URL_PROTOCOL_OPDS_MEDIA, handler);
 
             return () => {
-                session.defaultSession.protocol.unregisterProtocol(OPDS_MEDIA_SCHEME);
+                session.defaultSession.protocol.unregisterProtocol(URL_PROTOCOL_OPDS_MEDIA);
             };
         },
     );

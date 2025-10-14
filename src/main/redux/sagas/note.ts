@@ -29,6 +29,7 @@ import { EDrawType, INoteState, NOTE_DEFAULT_COLOR, noteColorCodeToColorSet, not
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { sqliteTableNoteDelete, sqliteTableNoteDeleteWherePubId, sqliteTableNoteInsert, sqliteTableNoteUpdate, sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
 import { publicationActions as publicationActionsFromMainAction } from "../actions";
+import { EXT_ANNOTATIONS } from "readium-desktop/common/extension";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:annotationsImporter";
@@ -110,7 +111,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     try {
 
         debug("Open ShowOpenDialog and ask to user the filePath");
-        const res = yield* callTyped(() => dialog.showOpenDialog(win, { filters: [{ extensions: ["annotation"], name: "Readium Annotation Set (.annotation)" }], properties: ["openFile"] }));
+        const res = yield* callTyped(() => dialog.showOpenDialog(win, { filters: [{ extensions: [EXT_ANNOTATIONS.substring(1)], name: "Readium Annotation Set (" + EXT_ANNOTATIONS + ")" }], properties: ["openFile"] }));
 
         if (!res.canceled) {
             filePath = res.filePaths[0] || "";
@@ -123,7 +124,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     }
 
     debug("FilePath=", filePath);
-    const fileName = path.basename(filePath).slice(0, -1 * ".annotation".length);
+    const fileName = path.basename(filePath).slice(0, -1 * EXT_ANNOTATIONS.length);
 
     try {
 

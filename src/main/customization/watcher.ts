@@ -13,6 +13,7 @@ const debug = debug_("readium-desktop:main#utils/customization/watcher");
 
 import chokidar, { FSWatcher } from "chokidar";
 import { existsSync } from "fs";
+import { EXT_THORIUM } from "readium-desktop/common/extension";
 
 export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder: string, callback: (fileName: string, removed: boolean) => void): FSWatcher {
 
@@ -36,7 +37,7 @@ export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder
 
             const ignor = !(
                 file === wellKnownFolder ||
-                (/*stats?.isFile() &&*/ file.endsWith(".thorium"))
+                (/*stats?.isFile() &&*/ file.endsWith(EXT_THORIUM))
             );
             debug(`IGNORED TEST? \"${file}\", Directory=${stats?.isDirectory()}, file=${stats?.isFile()} =====> ${ignor ? "IGNORED" : "KEEPED"}`);
             return ignor;
@@ -70,7 +71,7 @@ export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder
             debug(`FSWatch: File ${absoluteFilePath} has been added`);
             debug("START callback");
 
-            if (path.extname(absoluteFilePath) !== ".thorium") {
+            if (path.extname(absoluteFilePath) !== EXT_THORIUM) {
                 debug("FSWatch: WATCHER ERROR!: Not in .thorium !!?", absoluteFilePath);
                 return;
             }
@@ -81,7 +82,7 @@ export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder
             debug(`FSWatch: File ${absoluteFilePath} has been changed`);
             debug("START callback");
 
-            if (path.extname(absoluteFilePath) !== ".thorium") {
+            if (path.extname(absoluteFilePath) !== EXT_THORIUM) {
                 debug("FSWatch: WATCHER ERROR!: Not in .thorium !!?", absoluteFilePath);
                 return;
             }
@@ -91,7 +92,7 @@ export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder
         .on("unlink", (absoluteFilePath) => {
             debug(`FSWatch: File ${absoluteFilePath} has been removed`);
 
-            if (path.extname(absoluteFilePath) !== ".thorium") {
+            if (path.extname(absoluteFilePath) !== EXT_THORIUM) {
                 debug("FSWatch: WATCHER ERROR!: Not in .thorium !!?", absoluteFilePath);
                 return;
             }

@@ -23,7 +23,7 @@ import { readiumCssTransformHtml } from "@r2-navigator-js/electron/common/readiu
 import {
     convertCustomSchemeToHttpUrl, convertHttpUrlToCustomScheme, READIUM2_ELECTRON_HTTP_PROTOCOL,
 } from "@r2-navigator-js/electron/common/sessions";
-import { clearSessions, getWebViewSession } from "@r2-navigator-js/electron/main/sessions";
+import { getWebViewSession } from "@r2-navigator-js/electron/main/sessions";
 import {
     URL_PARAM_CLIPBOARD_INTERCEPT, URL_PARAM_CSS, URL_PARAM_DEBUG_VISUALS,
     URL_PARAM_EPUBREADINGSYSTEM, URL_PARAM_IS_IFRAME, URL_PARAM_SECOND_WEBVIEW,
@@ -44,17 +44,21 @@ import { bufferToStream } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { IStreamAndLength, IZip } from "@r2-utils-js/_utils/zip/zip";
 
 import {
-    computeReadiumCssJsonMessageInStreamer, MATHJAX_FILE_PATH, MATHJAX_URL_PATH,
+    computeReadiumCssJsonMessageInStreamer, MATHJAX_FILE_PATH,
     READIUMCSS_FILE_PATH, setupMathJaxTransformer,
 } from "./streamerCommon";
-// import { OPDS_MEDIA_SCHEME } from "readium-desktop/main/redux/sagas/getEventChannel";
-import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER } from "readium-desktop/common/streamerProtocol";
+// import { URL_PROTOCOL_OPDS_MEDIA } from "readium-desktop/main/redux/sagas/getEventChannel";
+import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP, URL_PATH_PREFIX_PUBNOTES, URL_PATH_PREFIX_MATHJAX, URL_PATH_PREFIX_READIUMCSS, URL_PATH_PREFIX_PUB, URL_PATH_PREFIX_PDFJS } from "readium-desktop/common/streamerProtocol";
 import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
 import { diMainGet } from "../di";
 import { getNotesFromMainWinState } from "../redux/sagas/note";
 import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
 import { customizationWellKnownFolder } from "../customization/provisioning";
+import { SESSION_PARTITION_PDFJS, SESSION_PARTITION_PDFJSEXTRACT } from "readium-desktop/common/sessions";
+
+// import { clearSessions } from "@r2-navigator-js/electron/main/sessions";
+import { clearSessions, initPermissions, initProtocols } from "readium-desktop/main/sessions";
 
 // import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
@@ -72,9 +76,6 @@ const URL_PARAM_SESSION_INFO = "r2_SESSION_INFO";
 // this ceiling value seems very arbitrary ... what would be a reasonable default value?
 // ... based on what metric, any particular HTTP server or client implementation?
 export const MAX_PREFETCH_LINKS = 10;
-
-
-const READIUM_CSS_URL_PATH = "readium-css";
 
 if (true) { // !_USE_HTTP_STREAMER) {
     function isFixedLayout(publication: R2Publication, link: Link | undefined): boolean {
@@ -135,8 +136,8 @@ if (true) { // !_USE_HTTP_STREAMER) {
 
         if (readiumcssJson) {
             if (!readiumcssJson.urlRoot) {
-                // `/${READIUM_CSS_URL_PATH}/`
-                readiumcssJson.urlRoot = THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://" + THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER;
+                // `/${URL_PATH_PREFIX_READIUMCSS}/`
+                readiumcssJson.urlRoot = URL_PROTOCOL_THORIUMHTTPS + "://" + URL_HOST_COMMON;
                 // readiumcssJson.urlRoot = convertHttpUrlToCustomScheme(readiumcssJson.urlRoot + "/xx/yy/zz").replace(/\/xx\/yy\/zz$/, "");
             }
             if (__TH__IS_DEV__) {
@@ -157,7 +158,7 @@ if (true) { // !_USE_HTTP_STREAMER) {
     Transformers.instance().add(new TransformerHTML(transformerReadiumCss));
 
     setupMathJaxTransformer(
-        () => `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/${MATHJAX_URL_PATH}/es5/tex-mml-chtml.js`,
+        () => `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_MATHJAX}/es5/tex-mml-chtml.js`,
     );
 }
 
@@ -381,25 +382,25 @@ const streamProtocolHandler = async (
         }
     }
 
-    const customProfileZipAssetsPrefix = "/custom-profile-zip/";
+    const customProfileZipAssetsPrefix = `/${URL_PATH_PREFIX_CUSTOMPROFILEZIP}/`;
     const isCustomProfileZipAssets = uPathname.startsWith(customProfileZipAssetsPrefix);
 
-    const notesFromPublicationPrefix = "/publication-notes/";
+    const notesFromPublicationPrefix = `/${URL_PATH_PREFIX_PUBNOTES}/`;
     const isNotesFromPublicationRequest = uPathname.startsWith(notesFromPublicationPrefix);
 
-    const pdfjsAssetsPrefix = "/pdfjs/";
+    const pdfjsAssetsPrefix = `/${URL_PATH_PREFIX_PDFJS}/`;
     const isPdfjsAssets = uPathname.startsWith(pdfjsAssetsPrefix);
 
-    const publicationAssetsPrefix = "/pub/";
+    const publicationAssetsPrefix = `/${URL_PATH_PREFIX_PUB}/`;
     const isPublicationAssets = uPathname.startsWith(publicationAssetsPrefix);
 
     const mediaOverlaysSuffix = `/${mediaOverlayURLPath}`;
     const isMediaOverlays = uPathname.endsWith(mediaOverlaysSuffix);
 
-    const mathJaxPrefix = `/${MATHJAX_URL_PATH}/`;
+    const mathJaxPrefix = `/${URL_PATH_PREFIX_MATHJAX}/`;
     const isMathJax = uPathname.startsWith(mathJaxPrefix);
 
-    const readiumCssPrefix = `/${READIUM_CSS_URL_PATH}/`;
+    const readiumCssPrefix = `/${URL_PATH_PREFIX_READIUMCSS}/`;
     const isReadiumCSS = uPathname.startsWith(readiumCssPrefix);
 
     debug("streamProtocolHandler uPathname", uPathname);
@@ -440,10 +441,10 @@ const streamProtocolHandler = async (
     if (ref && ref !== "null" && !/^https?:\/\/localhost.+/.test(ref) && !/^https?:\/\/127\.0\.0\.1.+/.test(ref)) {
         headers.referer = ref;
     } else {
-        headers.referer = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/`;
+        headers.referer = `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/`;
     }
 
-    // headers["Content-Security-Policy"] = `default-src 'self' 'unsafe-inline' 'unsafe-eval' data: http: https: ${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}: ${READIUM2_ELECTRON_HTTP_PROTOCOL}:`;
+    // headers["Content-Security-Policy"] = `default-src 'self' 'unsafe-inline' 'unsafe-eval' data: http: https: ${URL_PROTOCOL_THORIUMHTTPS}: ${READIUM2_ELECTRON_HTTP_PROTOCOL}:`;
 
     // CORS everything!
     headers["Access-Control-Allow-Origin"] = "*";
@@ -634,7 +635,7 @@ const streamProtocolHandler = async (
 
         // if (doTransform && link) {
 
-        //     const fullUrl = req.url; // `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}${uPathname}`;
+        //     const fullUrl = req.url; // `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}${uPathname}`;
 
         //     let transformedStream: IStreamAndLength;
         //     try {
@@ -966,7 +967,7 @@ const streamProtocolHandler = async (
 
         if (pathInZip === "manifest.json") {
 
-            const rootUrl = THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://" + THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER + "/pub/" + encodeURIComponent_RFC3986(b64Path);
+            const rootUrl = URL_PROTOCOL_THORIUMHTTPS + "://" + URL_HOST_COMMON + "/" + URL_PATH_PREFIX_PUB + "/" + encodeURIComponent_RFC3986(b64Path);
             // const rootUrl = convertHttpUrlToCustomScheme(rootUrl_ + "/zz").replace(/\/zz$/, "");
             const manifestURL = convertHttpUrlToCustomScheme(rootUrl + "/" + "manifest.json");
             debug("manifest.json ROOT URL", rootUrl);
@@ -1333,7 +1334,7 @@ const streamProtocolHandler = async (
 
         if (doTransform && link) {
 
-            const fullUrl = req.url; // `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}${uPathname}`;
+            const fullUrl = req.url; // `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}${uPathname}`;
 
             let transformedStream: IStreamAndLength;
             try {
@@ -1666,14 +1667,6 @@ const transformerIFrames: TTransformFunction = (
 };
 
 export function initSessions() {
-    app.commandLine.appendSwitch("autoplay-policy", "no-user-gesture-required");
-    app.commandLine.appendSwitch("enable-speech-dispatcher");
-
-    // https://github.com/electron/electron/issues/46538
-    // --gtk-version=3
-    // Gtk-ERROR **: 12:09:19.718: GTK 2/3 symbols detected. Using GTK 2/3 and GTK 4 in the same process is not supported
-    app.commandLine.appendSwitch("gtk-version", "3");
-
     Transformers.instance().add(new TransformerHTML(transformerIFrames));
 
     protocol.registerSchemesAsPrivileged([
@@ -1690,7 +1683,7 @@ export function initSessions() {
     //         standard: false, // Default false
     //         codeCache: false, // Default false (only works with standard=true)
     //     },
-    //     scheme: "store",
+    //     scheme: URL_PROTOCOL_STORE,
     // },
     // {
     //     privileges: {
@@ -1703,7 +1696,7 @@ export function initSessions() {
     //         standard: false, // Default false
     //         codeCache: false, // Default false (only works with standard=true)
     //     },
-    //     scheme: "filex",
+    //     scheme: URL_PROTOCOL_FILEX,
     // },
     // {
     //     privileges: {
@@ -1716,7 +1709,7 @@ export function initSessions() {
     //         standard: false, // Default false
     //         codeCache: false, // Default false (only works with standard=true)
     //     },
-    //     scheme: "pdfjs-extract",
+    //     scheme: URL_PROTOCOL_PDFJSEXTRACT,
     // },
     // {
     //     privileges: {
@@ -1729,7 +1722,7 @@ export function initSessions() {
     //         standard: false, // Default false
     //         codeCache: false, // Default false (only works with standard=true)
     //     },
-    //     scheme: OPDS_MEDIA_SCHEME, // TODO: what about OPDS_AUTH_SCHEME?
+    //     scheme: URL_PROTOCOL_OPDS_MEDIA, // TODO: what about URL_PROTOCOL_OPDS?
     // },
     {
         privileges: {
@@ -1742,7 +1735,7 @@ export function initSessions() {
             standard: true, // Default false
             codeCache: false, // Default false (only works with standard=true)
         },
-        scheme: THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
+        scheme: URL_PROTOCOL_THORIUMHTTPS,
     }, {
         privileges: {
             allowServiceWorkers: false,
@@ -1757,7 +1750,7 @@ export function initSessions() {
         scheme: READIUM2_ELECTRON_HTTP_PROTOCOL,
     }]);
 
-    // const filter = { urls: ["*://*/*", THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://*/*", READIUM2_ELECTRON_HTTP_PROTOCOL + "://*/*"] };
+    // const filter = { urls: ["*://*/*", URL_PROTOCOL_THORIUMHTTPS + "://*/*", READIUM2_ELECTRON_HTTP_PROTOCOL + "://*/*"] };
 
     // const onBeforeSendHeadersCB = (
     //     details: OnBeforeSendHeadersListenerDetails,
@@ -1773,7 +1766,7 @@ export function initSessions() {
     //         return;
     //     }
 
-    //     if (details.url.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") || details.url.startsWith(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://")) {
+    //     if (details.url.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") || details.url.startsWith(URL_PROTOCOL_THORIUMHTTPS + "://")) {
     //         debug("onBeforeSendHeaders YES");
     //         details.requestHeaders["X-Thorium-Test"] = "Header";
     //         callback({
@@ -1807,7 +1800,7 @@ export function initSessions() {
     //         return;
     //     }
 
-    //     if (details.url.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") || details.url.startsWith(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://")) {
+    //     if (details.url.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") || details.url.startsWith(URL_PROTOCOL_THORIUMHTTPS + "://")) {
     //         debug("onHeadersReceived YES CSP");
     //         callback({
     //             cancel: false,
@@ -1819,7 +1812,7 @@ export function initSessions() {
     //                 // https://www.electronjs.org/docs/latest/tutorial/security
     //                 "Content-Security-Policy":
     //                     // "default-src 'none'; style-src 'unsafe-inline'; sandbox"
-    //                     `default-src 'self' 'unsafe-inline' 'unsafe-eval' data: http: https: ${READIUM2_ELECTRON_HTTP_PROTOCOL}: ${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}:`,
+    //                     `default-src 'self' 'unsafe-inline' 'unsafe-eval' data: http: https: ${READIUM2_ELECTRON_HTTP_PROTOCOL}: ${URL_PROTOCOL_THORIUMHTTPS}:`,
     //             },
     //             // statusLine
     //         });
@@ -1840,6 +1833,10 @@ export function initSessions() {
     app.on("ready", async () => {
         debug("app ready");
 
+        initProtocols();
+
+        initPermissions();
+
         try {
             await clearSessions();
         } catch (err) {
@@ -1852,23 +1849,16 @@ export function initSessions() {
             // session.defaultSession.setCertificateVerifyProc(setCertificateVerifyProcCB);
 
             if (USE_NEW_PROTOCOL_HANDLER) {
-                session.defaultSession.protocol.handle(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandler_NEW);
+                session.defaultSession.protocol.handle(URL_PROTOCOL_THORIUMHTTPS, streamProtocolHandler_NEW);
                 session.defaultSession.protocol.handle(READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandlerTunnel_NEW);
             } else {
                 session.defaultSession.protocol.registerStreamProtocol(
-                    THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
+                    URL_PROTOCOL_THORIUMHTTPS,
                     streamProtocolHandler);
                 session.defaultSession.protocol.registerStreamProtocol(
                     READIUM2_ELECTRON_HTTP_PROTOCOL,
                     streamProtocolHandlerTunnel);
             }
-
-            session.defaultSession.setPermissionRequestHandler((wc, permission, callback) => {
-                debug("setPermissionRequestHandler session.defaultSession");
-                debug(wc.getURL());
-                debug(permission);
-                callback(true);
-            });
         }
 
         const webViewSession = getWebViewSession();
@@ -1878,77 +1868,54 @@ export function initSessions() {
             // webViewSession.setCertificateVerifyProc(setCertificateVerifyProcCB);
 
             if (USE_NEW_PROTOCOL_HANDLER) {
-                webViewSession.protocol.handle(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandler_NEW);
+                webViewSession.protocol.handle(URL_PROTOCOL_THORIUMHTTPS, streamProtocolHandler_NEW);
                 webViewSession.protocol.handle(READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandlerTunnel_NEW);
             } else {
                 webViewSession.protocol.registerStreamProtocol(
-                    THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
+                    URL_PROTOCOL_THORIUMHTTPS,
                     streamProtocolHandler);
                 webViewSession.protocol.registerStreamProtocol(
                     READIUM2_ELECTRON_HTTP_PROTOCOL,
                     streamProtocolHandlerTunnel);
             }
-
-            webViewSession.setPermissionRequestHandler((wc, permission, callback) => {
-                debug("setPermissionRequestHandler webViewSession");
-                debug(wc.getURL());
-                debug(permission);
-                callback(true);
-            });
         }
 
-        // Electron.protocol === Electron.session.defaultSession.protocol
-        const pdfSession = session.fromPartition("persist:partitionpdfjs", { cache: false });
+        const pdfSession = session.fromPartition(SESSION_PARTITION_PDFJS, { cache: false });
         if (pdfSession) {
             // pdfSession.webRequest.onHeadersReceived(filter, onHeadersReceivedCB);
             // pdfSession.webRequest.onBeforeSendHeaders(filter, onBeforeSendHeadersCB);
             // pdfSession.setCertificateVerifyProc(setCertificateVerifyProcCB);
 
             if (USE_NEW_PROTOCOL_HANDLER) {
-                pdfSession.protocol.handle(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandler_NEW);
+                pdfSession.protocol.handle(URL_PROTOCOL_THORIUMHTTPS, streamProtocolHandler_NEW);
                 // pdfSession.protocol.handle(READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandlerTunnel_NEW);
             } else {
                 pdfSession.protocol.registerStreamProtocol(
-                    THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
+                    URL_PROTOCOL_THORIUMHTTPS,
                     streamProtocolHandler);
                 // pdfSession.protocol.registerStreamProtocol(
                 //     READIUM2_ELECTRON_HTTP_PROTOCOL,
                 //     streamProtocolHandlerTunnel);
             }
-
-            pdfSession.setPermissionRequestHandler((wc, permission, callback) => {
-                debug("setPermissionRequestHandler pdfSession");
-                debug(wc.getURL());
-                debug(permission);
-                callback(true);
-            });
         }
 
-        // Electron.protocol === Electron.session.defaultSession.protocol
-        const pdfExtractSession = session.fromPartition("persist:partitionpdfjsextract", { cache: false });
+        const pdfExtractSession = session.fromPartition(SESSION_PARTITION_PDFJSEXTRACT, { cache: false });
         if (pdfExtractSession) {
             // pdfExtractSession.webRequest.onHeadersReceived(filter, onHeadersReceivedCB);
             // pdfExtractSession.webRequest.onBeforeSendHeaders(filter, onBeforeSendHeadersCB);
             // pdfExtractSession.setCertificateVerifyProc(setCertificateVerifyProcCB);
 
             if (USE_NEW_PROTOCOL_HANDLER) {
-                pdfExtractSession.protocol.handle(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandler_NEW);
+                pdfExtractSession.protocol.handle(URL_PROTOCOL_THORIUMHTTPS, streamProtocolHandler_NEW);
                 // pdfExtractSession.protocol.handle(READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandlerTunnel_NEW);
             } else {
                 pdfExtractSession.protocol.registerStreamProtocol(
-                    THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
+                    URL_PROTOCOL_THORIUMHTTPS,
                     streamProtocolHandler);
                 // pdfExtractSession.protocol.registerStreamProtocol(
                 //     READIUM2_ELECTRON_HTTP_PROTOCOL,
                 //     streamProtocolHandlerTunnel);
             }
-
-            pdfExtractSession.setPermissionRequestHandler((wc, permission, callback) => {
-                debug("setPermissionRequestHandler pdfExtractSession");
-                debug(wc.getURL());
-                debug(permission);
-                callback(true);
-            });
         }
     });
 }
@@ -1966,7 +1933,7 @@ export function streamerAddPublications(pubs: string[]): string[] {
 
     return pubs.map((pub) => {
         const pubid = encodeURIComponent_RFC3986(Buffer.from(pub).toString("base64"));
-        return `/pub/${pubid}/manifest.json`;
+        return `/${URL_PATH_PREFIX_PUB}/${pubid}/manifest.json`;
     });
 }
 
@@ -1981,7 +1948,7 @@ export function streamerRemovePublications(pubs: string[]): string[] {
 
     return pubs.map((pub) => {
         const pubid = encodeURIComponent_RFC3986(Buffer.from(pub).toString("base64"));
-        return `/pub/${pubid}/manifest.json`;
+        return `/${URL_PATH_PREFIX_PUB}/${pubid}/manifest.json`;
     });
 }
 

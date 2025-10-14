@@ -29,6 +29,8 @@ import { ICommonRootState } from "readium-desktop/common/redux/states/commonRoot
 import { customizationPackageProvisioningAccumulator, customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
 import * as path from "path";
 import { ICustomizationProfileError, ICustomizationProfileProvisioned } from "readium-desktop/common/redux/states/customization";
+import { URL_HOST_CUSTOMPROFILE, URL_PROTOCOL_APP_HANDLER_THORIUM } from "readium-desktop/common/streamerProtocol";
+import { EXT_THORIUM } from "readium-desktop/common/extension";
 
 // Logger
 const debug = debug_("readium-desktop:main:saga:event");
@@ -72,8 +74,8 @@ export function saga() {
                     yield* putTyped(customizationActions.provisioning.build(customizationState.provision, packagesArray, errorPackages));
 
                     // TODO: how to warn user of potentially a new version of the packages id, we have to put a diff between version for a same id !
-                    // And mostly a technical issue, how to update the view with the update. package streamer follow a package id 
-                    
+                    // And mostly a technical issue, how to update the view with the update. package streamer follow a package id
+
 
                 } catch (e) {
 
@@ -88,15 +90,23 @@ export function saga() {
 
             const chan = getOpenFileFromCliChannel();
 
+            debug(`openFileFromCliChannel loaded and ready, ${chan}, ${typeof chan}`);
+
             while (true) {
 
                 try {
                     const filePath = yield* takeTyped(chan);
 
+                    debug(`Receive ${filePath} from openFileFromCliChannel`);
+
                     const fileName = path.basename(filePath);
                     const extension = path.extname(fileName);
-                    if (extension === ".thorium") {
-                    
+                    if (extension === EXT_THORIUM) {
+
+                        debug("It's a custom profile extension");
+                        debug("AppActivate Thorium and acquire (provision/activate) the profile");
+
+                        yield* callTyped(appActivate);
                         yield put(customizationActions.acquire.build(filePath));
                         return ;
                     }
@@ -179,14 +189,14 @@ export function saga() {
                     // }
 
                     // handle thorium://<token>/...
-                    if (url.startsWith("thorium://customization-profile/")) {
-                        const profileUrl = url.replace(/^thorium:\/\/customization-profile\//, "http://");
+                    if (url.startsWith(`${URL_PROTOCOL_APP_HANDLER_THORIUM}://${URL_HOST_CUSTOMPROFILE}/`)) {
+                        const profileUrl = url.replace(`${URL_PROTOCOL_APP_HANDLER_THORIUM}://${URL_HOST_CUSTOMPROFILE}/`, "http://");
                         debug("THORIUM customization-profile url", profileUrl);
                         yield* putTyped(customizationActions.acquire.build(profileUrl));
                         continue ;
                     }
 
-                    const openUrl = url.replace("thorium://", "http://"); // HTTP to HTTPS redirect should be handled by the server
+                    const openUrl = url.replace(`${URL_PROTOCOL_APP_HANDLER_THORIUM}://`, "http://"); // HTTP to HTTPS redirect should be handled by the server
 
                     const link: IOpdsLinkView = {
                         url: openUrl,

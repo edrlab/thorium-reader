@@ -145,8 +145,8 @@
         "cancel": "Nutraukti",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
-                "state": "",
+                "fallbackWelcomeScreen": "Nėra pasveikinimo ekrano",
+                "state": "Būsena: {{- state}}",
                 "title": "Aktyvuojamas tinkinimo profilis"
             }
         },
@@ -255,7 +255,7 @@
         },
         "next": "Tolesnis",
         "previous": "Ankstesnis",
-        "resumeBrowsing": "",
+        "resumeBrowsing": "Tęsti naršymą",
         "shelf": "Lentyna",
         "updateForm": {
             "name": "Pavadinimas:",
@@ -1146,17 +1146,17 @@
             }
         },
         "profiles": {
-            "info": "",
+            "info": "Perjunkite profilius, kad pritaikytumėte programą pagal tiekėjo partnerio prekės ženklą ir spalvas. Kiekvienas profilis siūlo individualiai pritaikytą patirtį.",
             "thorium": {
-                "description": "",
-                "title": ""
+                "description": "„Thorium Vanilla“ profilis yra originalus, sukurtas „EDRLab“.",
+                "title": "Thorium Vanilla"
             },
-            "version": ""
+            "version": "Versija: {{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "message": "",
-            "title": ""
+            "help": "Kai programa aptinka naudojamas pagalbines technologijas, vartotojo sąsaja geriau veikia su ekrano skaitytuvais",
+            "message": "Patobulintas ekrano skaitytuvų palaikymas",
+            "title": "Pagerinkite ekrano skaitytuvo patirtį"
         },
         "session": {
             "title": "Įgalinti sesijos išsaugojimą"

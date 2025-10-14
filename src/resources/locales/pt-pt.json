@@ -65,10 +65,10 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
+                "description": "Sem descrição de perfil",
                 "publications": "",
-                "screen": "",
-                "title": ""
+                "screen": "Sem título",
+                "title": "Titulo do perfil"
             }
         },
         "delete": "Apagar",
@@ -86,7 +86,7 @@
         "importAnnotation": "Importar anotações",
         "lang": "Idioma",
         "lastRead": "Última leitura",
-        "logout": "",
+        "logout": "Terminar sessão",
         "moreInfo": "Detalhes do documento",
         "myBooks": "Meus documentos",
         "noPublicationHelpL1": "Soltar ficheiros aqui",
@@ -146,7 +146,7 @@
         "customization": {
             "splashscreen": {
                 "fallbackWelcomeScreen": "",
-                "state": "",
+                "state": "Estado: {{- state}}",
                 "title": ""
             }
         },
@@ -255,7 +255,7 @@
         },
         "next": "Seguinte",
         "previous": "Anterior",
-        "resumeBrowsing": "",
+        "resumeBrowsing": "Retomar navegação",
         "shelf": "Estante",
         "updateForm": {
             "name": "Nome:",
@@ -736,8 +736,8 @@
             "goToPlaceHolder": "Digitar n.º de página",
             "goToTitle": "Ir para a página",
             "history": "",
-            "historyNext": "Saltar para a frente",
-            "historyPrevious": "Saltar para trás",
+            "historyNext": "Avançar no histórico de navegação",
+            "historyPrevious": "Recuar no histórico de navegação",
             "infoTitle": "Informações",
             "magnifyingGlassButton": "Pesquisar no documento",
             "openTableOfContentsTitle": "Navegação",
@@ -1140,7 +1140,7 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "Carregar o modelo padrão",
+                "applyDefaultTemplate": "Carregar o modelo predefinido",
                 "enableCheckbox": "Personalizar o modelo HTML",
                 "overrideHTMLTemplate": "Exportação de notas (anotações e marcadores)"
             }

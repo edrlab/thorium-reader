@@ -7,14 +7,14 @@
 
 
 // see this
-// import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
+// import { URL_PROTOCOL_THORIUMHTTPS } from "readium-desktop/common/streamerProtocol";
 
 export const urlPathResolve = (base: string, href: string): string =>
     (
         href
         && !/^https?:\/\//.test(href)
         && !/^data:\/\//.test(href)
-        && !/^thoriumhttps:\/\//.test(href) // THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL
+        && !/^thoriumhttps:\/\//.test(href) // URL_PROTOCOL_THORIUMHTTPS
     )
         ? (new URL(href, base)).toString()
         : href;
