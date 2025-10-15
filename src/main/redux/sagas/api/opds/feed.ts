@@ -14,7 +14,8 @@ import { diMainGet } from "readium-desktop/main/di";
 import { httpGetWithAuth } from "readium-desktop/main/network/http";
 import { contentTypeisOpdsAuth, parseContentType } from "readium-desktop/utils/contentType";
 import { SagaGenerator } from "typed-redux-saga";
-import { call as callTyped, spawn as spawnTyped } from "typed-redux-saga/macro";
+import { call as callTyped, spawn as spawnTyped, put as putTyped } from "typed-redux-saga/macro";
+import { opdsActions } from "readium-desktop/common/redux/actions";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/opds/feed");
@@ -104,6 +105,8 @@ export function* addFeed(data: OpdsFeed): SagaGenerator<IOpdsFeedView> {
                             if (found) {
                                 yield* callTyped(deleteFeed, found.identifier);
                                 yield* callTyped(addFeed, {...found, authenticationUrl: bookshelf.url});
+
+                                yield* putTyped(opdsActions.refresh.build());
                             }
                         }
                     }

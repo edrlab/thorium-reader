@@ -33,7 +33,8 @@ import { DisplayType, IRouterLocationState } from "../../routing";
 import DeleteOpdsFeedConfirm from "../dialog/DeleteOpdsFeedConfirm";
 import OpdsFeedUpdateForm from "../dialog/OpdsFeedUpdateForm";
 import * as Popover from "@radix-ui/react-popover";
-import { authActions, customizationActions } from "readium-desktop/common/redux/actions";
+import { authActions, customizationActions, opdsActions } from "readium-desktop/common/redux/actions";
+import { subscribeToAction } from "readium-desktop/renderer/common/redux/middleware/actionSubscriber";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -52,6 +53,7 @@ interface IState {
 
 class FeedList extends React.Component<IProps, IState> {
     private unsubscribe: Unsubscribe;
+    private unsubscribeAction: Unsubscribe;
 
     constructor(props: IProps) {
         super(props);
@@ -68,16 +70,27 @@ class FeedList extends React.Component<IProps, IState> {
             "opds/deleteFeed",
             // "opds/updateFeed",
         ], this.loadFeeds);
+
+        this.unsubscribeAction = subscribeToAction(opdsActions.refresh.ID, (_action) => {
+            // console.log("Refresh opds feed list requested by the action ID=", opdsActions.refresh.ID);
+            this.loadFeeds();
+        });
     }
 
     public componentWillUnmount() {
-        this.unsubscribe();
+        if (this.unsubscribe) {
+            this.unsubscribe();
+        }
+        if (this.unsubscribeAction) {
+            this.unsubscribeAction();
+        }
     }
 
     public render(): React.ReactElement<{}> {
         if (!this.state.feedsResult) {
             return <></>;
         }
+
         const { __ } = this.props;
         return (
             <section>

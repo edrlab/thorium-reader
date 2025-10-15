@@ -16,6 +16,7 @@ import { composeWithDevTools } from "@redux-devtools/extension";
 import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
 
 import { createHashHistory } from "history";
+import { actionSubscriberMiddleware } from "readium-desktop/renderer/common/redux/middleware/actionSubscriber";
 
 export function initStore(preloadedState: Partial<ILibraryRootState>):
 [Store<ILibraryRootState>, History & {
@@ -37,6 +38,7 @@ export function initStore(preloadedState: Partial<ILibraryRootState>):
                 routerMiddleware,
                 reduxSyncMiddleware,
                 sagaMiddleware,
+                actionSubscriberMiddleware,
             ),
         ),
     );
