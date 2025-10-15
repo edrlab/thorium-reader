@@ -271,6 +271,18 @@ function* winClose(_action: winActions.library.closed.TAction) {
         }
     }
 
+    if (libraryWin && libraryWin.getChildWindows()?.length) {
+        debug("WIN CHILDREN ", libraryWin.getChildWindows()?.length, libraryWin.isDestroyed(), libraryWin.webContents.isDestroyed());
+        for (const child of libraryWin.getChildWindows()) {
+            try {
+                child.destroy();
+            } catch (_e) {
+                // ignore
+            }
+        }
+        yield delay(50);
+    }
+
     if (sessionSaving) {
         if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
             libraryWin.destroy();
