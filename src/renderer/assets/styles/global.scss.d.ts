@@ -6,6 +6,7 @@ export declare const breadcrumb: string;
 export declare const checkbox_custom: string;
 export declare const checkbox_custom_input: string;
 export declare const checkbox_custom_label: string;
+export declare const checkbox_customsvg: string;
 export declare const color_red: string;
 export declare const CSS_END_global: string;
 export declare const CSS_END_partials_focus: string;

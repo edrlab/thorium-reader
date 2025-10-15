@@ -819,6 +819,7 @@
             "noTemporaryNavTargetOutline": "Disable visual navigation indicators",
             "paginated": "Paginated",
             "paraSpacing": "Paragraph spacing",
+            "spreadModeEven": "Page spreads 'even' (default is 'odd')",
             "pdfZoom": {
                 "name": {
                     "100pct": "100%",
