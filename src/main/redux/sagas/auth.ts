@@ -303,6 +303,19 @@ export function saga() {
             authActions.logout.ID,
             function* (action: authActions.logout.TAction) {
                 const feedUrl = action.payload.feedUrl;
+                // TODO: fix login/logout for DILICOM APIAPP
+                // let feedUrl = action.payload.feedUrl;
+                // if (feedUrl.startsWith("apiapp://")) {
+                //     const urlApiapp = feedUrl.slice("apiapp://".length);
+                //     const [idGln, urlLib] = urlApiapp.split(":apiapp:");
+
+                //     debug("APIAPP");
+                //     debug("ID_GNL=", idGln);
+                //     debug("URL_LIB=", urlLib);
+                //     if (urlLib) {
+                //         feedUrl = urlLib;
+                //     }
+                // }
                 let catalogLinkUrl: URL;
                 try {
                     catalogLinkUrl = (new URL(feedUrl));
@@ -832,15 +845,18 @@ function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefine
     });
 
     win.webContents.on("will-navigate", (details: ElectronEvent<WebContentsWillNavigateEventParams>, url: string) => {
-        debug("BrowserWindow.webContents.on('will-navigate') (always PREVENT): ", win.webContents.id, " --- ", details.url, " *** ", url, " === ", win.webContents.getURL());
+        debug("BrowserWindow.webContents.on('will-navigate') (always PREVENT?): ", win.webContents.id, " --- ", details.url?.substring(0, 500), " *** ", url?.substring(0, 500), " === ", win.webContents.getURL()?.substring(0, 500));
 
         if (details.url?.startsWith(`${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`)) {
-            debug("opds://authorize ==> PASS: ", details.url);
+            debug(`${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/ ==> PASS: `, details.url?.substring(0, 500));
+            return;
+        }
+        if (details.url === win.webContents.getURL()) {
+            debug("same URL ==> PASS: ", details.url?.substring(0, 500));
             return;
         }
 
         details.preventDefault();
-
         willNavigate(details.url);
     });
 
@@ -953,12 +969,13 @@ function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
                 // Only validate the Id if it is present in the response
                 // This should ensure backwards compatibility with existing OPDS Authentication Providers
                 // who may be omitting it
-                if (data.id && data.id !== implicitAuthData.authenticationDocumentId) {
-                    debug("OAuth 2.0 implicit grant flow contained an id but it did not match the id in the OPDS Authentication Document", "expected:", implicitAuthData.authenticationDocumentId, "actual:", data.id);
+                if (data.id && implicitAuthData.authenticationDocumentId && data.id !== implicitAuthData.authenticationDocumentId) {
+                    debug("WARNING: OAuth 2.0 implicit grant flow contained an id but it did not match the id in the OPDS Authentication Document", "expected:", implicitAuthData.authenticationDocumentId, "actual:", data.id);
                     return undefined;
+                    // see https://github.com/edrlab/thorium-reader/pull/2510
                 }
                 else {
-                    debug("OAuth 2.0 implicit grant flow does not contain an id, validation IGNORED and bypassed to ensure legacy compatibility with OPDS OAuth 2.0 servers");
+                    debug("OAuth 2.0 implicit grant flow does not contain an id (search param OR auth doc), validation IGNORED and bypassed to ensure legacy compatibility with OPDS OAuth 2.0 servers", implicitAuthData.authenticationDocumentId, "actual:", data.id);
                 }
 
                  if (data.state !== implicitAuthData.nonce) {

@@ -18,8 +18,8 @@ export const URL_PROTOCOL_OPDS_MEDIA = "opds-media";
 export const URL_PROTOCOL_FILEX = "filex";
 export const URL_PROTOCOL_STORE = "store";
 
-export const URL_PROTOCOL_OPDS = "opds";
-export const URL_HOST_OPDS_AUTH = "authorize";
+export const URL_PROTOCOL_OPDS = "opds"; // MUST be verbatim "opds"
+export const URL_HOST_OPDS_AUTH = "authorize"; // MUST be verbatim "authorize"
 
 export const URL_PROTOCOL_APP_HANDLER_OPDS = "opds";
 export const URL_PROTOCOL_APP_HANDLER_THORIUM = "thorium";

@@ -122,13 +122,13 @@ export const initPermissions = () => {
     if (webViewSession) {
         webViewSession.setPermissionRequestHandler((wc, permission, callback) => {
             debug("setPermissionRequestHandler webViewSession");
-            debug(wc.getURL());
+            debug(wc.getURL()?.substring(0, 500));
             debug(permission);
             callback(false);
         });
         webViewSession.setPermissionCheckHandler((wc, permission, origin) => {
             debug("setPermissionCheckHandler webViewSession");
-            debug(wc?.getURL());
+            debug(wc?.getURL()?.substring(0, 500));
             debug(permission);
             debug(origin);
             return false;
@@ -174,15 +174,18 @@ export const initPermissions = () => {
     if (authSession) {
         authSession.setPermissionRequestHandler((wc, permission, callback) => {
             debug("setPermissionRequestHandler authSession");
-            debug(wc.getURL());
+            debug(wc.getURL()?.substring(0, 500));
             debug(permission);
             callback(false);
         });
         authSession.setPermissionCheckHandler((wc, permission, origin) => {
             debug("setPermissionCheckHandler authSession");
-            debug(wc?.getURL());
+            debug(wc?.getURL()?.substring(0, 500));
             debug(permission);
             debug(origin);
+            // if (permission === "openExternal") {
+            //     return true;
+            // }
             return false;
         });
     }
