@@ -43,6 +43,7 @@ import { fetchWithCookie } from "./fetch";
 import { digestAuthentication, parseDigestString} from "readium-desktop/utils/digest";
 import { ProxyAgent } from "proxy-agent";
 import { availableLanguages } from "readium-desktop/common/services/translator";
+import { opdsActions } from "readium-desktop/common/redux/actions";
 
 // Logger
 const filename_ = "readium-desktop:main/http";
@@ -141,6 +142,16 @@ export const httpSetAuthenticationToken =
         const res = authenticationToken[id] = data;
 
         await persistJson();
+
+
+        // trigger refresh opds feed local state in FeedList.tsx component
+        // see addFeed function in api/opds/feed.ts
+        try {
+            const store = diMainGet("store");
+            store.dispatch(opdsActions.refresh.build());
+        } catch {
+            // ignore
+        }
 
         return res;
     };

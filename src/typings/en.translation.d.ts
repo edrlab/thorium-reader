@@ -143,6 +143,7 @@ declare namespace typed_i18n {
   readonly "importAnnotation": string,
   readonly "lang": string,
   readonly "lastRead": string,
+  readonly "login": string,
   readonly "logout": string,
   readonly "moreInfo": string,
   readonly "myBooks": string,
@@ -233,6 +234,7 @@ declare namespace typed_i18n {
   (_: "catalog.importAnnotation", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.lastRead", __?: {}): string;
+  (_: "catalog.login", __?: {}): string;
   (_: "catalog.logout", __?: {}): string;
   (_: "catalog.moreInfo", __?: {}): string;
   (_: "catalog.myBooks", __?: {}): string;

@@ -17,6 +17,7 @@ import {
     noteExport,
     customizationActions,
     screenReaderActions,
+    opdsActions,
 } from "readium-desktop/common/redux/actions";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
@@ -100,6 +101,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     customizationActions.acquire.ID,
     customizationActions.lock.ID,
     customizationActions.addHistory.ID,
+
+    opdsActions.refresh.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware
