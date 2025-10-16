@@ -1810,7 +1810,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                 //         console.error("Combobox No value !!!");
                 //     }
                 // }}
-                style={{ margin: "0", padding: (dockedMode && isEpub) ? "10px 0" : "0", flexDirection: "row", backgroundColor: "var(--color-docked-header)", borderBottom: "1px solid var(--color-extralight-grey-alt)" }}
+                style={{ margin: "0", padding: (dockedMode && isEpub) ? "10px 0" : "0", flexDirection: "row", backgroundColor: "var(--color-docked-header)" }}
                 ref={dockedModeRef}
             >
                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
