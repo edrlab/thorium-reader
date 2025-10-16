@@ -22,6 +22,7 @@ import * as setReduxState from "./setReduxState";
 import * as disableRTLFlip from "./rtlFlip";
 import * as setTheLock from "./setTheLock";
 import * as note from "./note";
+import * as pdfConfig from "./pdfConfig";
 
 export {
     openRequest,
@@ -41,4 +42,5 @@ export {
     note,
     setTheLock,
     print,
+    pdfConfig,
 };

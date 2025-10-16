@@ -22,6 +22,7 @@ import { IEventBusPdfPlayer } from "./common/pdfReader.type";
 import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_PDFJS } from "readium-desktop/common/streamerProtocol";
 import { SESSION_PARTITION_PDFJS } from "readium-desktop/common/sessions";
 import { URL_PROTOCOL_FILEX } from "readium-desktop/common/streamerProtocol";
+import { getStore } from "../createStore";
 
 const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
 
@@ -124,7 +125,9 @@ export function pdfMount(
     webview.addEventListener("did-finish-load", () => {
 
         console.log("did-finish-load createOrGetPdfEventBus().dispatch start pdfPath", pdfPath);
-        createOrGetPdfEventBus().dispatch("start", pdfPath);
+        const store = getStore();
+        const pdfConfig = store.getState().reader.pdfConfig;
+        createOrGetPdfEventBus().dispatch("start", pdfPath, pdfConfig?.scale || "page-fit", pdfConfig.spreadmode || 0);
     });
 
     // (global as any).__dirname
