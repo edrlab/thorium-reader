@@ -586,7 +586,7 @@ const ReadingDisplayLayout = ({ isFXL }: { isFXL: boolean }) => {
     );
 };
 
-const ReadingDisplayCol = ({ isPdf, pdfState }: Pick<IBaseProps, "isPdf"> & { pdfState: IState }) => {
+const ReadingDisplayCol = ({ isPdf, spreadModeEven, pdfCol }: Pick<IBaseProps, "isPdf"> & Pick<IState, "spreadModeEven"> & Pick<IState, "pdfCol">) => {
     const [__] = useTranslator();
 
     const paged = useReaderConfig("paged");
@@ -603,14 +603,15 @@ const ReadingDisplayCol = ({ isPdf, pdfState }: Pick<IBaseProps, "isPdf"> & { pd
         }
     }, [scrollable, colCount]);
 
-    console.log("ReadingDisplayCol", JSON.stringify(pdfState, null, 4));
+    // console.log("ReadingDisplayCol spreadModeEven", spreadModeEven);
+    // console.log("ReadingDisplayCol pdfCol", pdfCol);
     return (
         <section className={stylesSettings.section}>
             <div>
                 <h4>{__("reader.settings.column.title")}</h4>
             </div>
             <div className={stylesSettings.display_options}>
-                <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={isPdf ? (pdfState.pdfCol ? pdfState.pdfCol : "1") : state}
+                <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={isPdf ? (pdfCol ? pdfCol : "1") : state}
                     onValueChange={(v) => {
                         if (isPdf) {
                             createOrGetPdfEventBus().dispatch("column", v === "auto" ? "1" : v === "1" ? "1" : "2");
@@ -624,19 +625,19 @@ const ReadingDisplayCol = ({ isPdf, pdfState }: Pick<IBaseProps, "isPdf"> & { pd
                     <RadioGroupItem value="2" description={`${__("reader.settings.column.two")}`} svg={TwoColsIcon} disabled={isPdf ? false : scrollable} />
                 </RadioGroup.Root>
             </div>
-            {!isPdf || pdfState.pdfCol === "auto" || pdfState.pdfCol === "1" /* disabled={pdfState.pdfCol === "auto" || pdfState.pdfCol === "1"} */
+            {!isPdf || pdfCol === "auto" || pdfCol === "1" /* disabled={pdfCol === "auto" || pdfCol === "1"} */
                 ? <></> :
                 <div className={stylesSettings.display_options}>
                     <input type="checkbox"
-                        checked={!!pdfState.spreadModeEven}
-                        onChange={() => { createOrGetPdfEventBus().dispatch("spreadModeEven", !(!!pdfState.spreadModeEven)); }}
+                        checked={!!spreadModeEven}
+                        onChange={() => { createOrGetPdfEventBus().dispatch("spreadModeEven", !(!!spreadModeEven)); }}
                         id="spreadModeEvenCheckbox" name="spreadModeEvenCheckbox" className={stylesGlobal.checkbox_custom_input} />
                     {/* label htmlFor clicked with mouse cursor causes onChange() of input (which is display:none), but keyboard interaction (tab stop and space bar toggle) occurs with the div role="checkbox" below! (onChange is not called, only onKeyUp) */}
                     <label htmlFor="spreadModeEvenCheckbox" className={stylesGlobal.checkbox_custom_label}>
                         <div
                             tabIndex={0}
                             role="checkbox"
-                            aria-checked={!!pdfState.spreadModeEven}
+                            aria-checked={!!spreadModeEven}
                             aria-label={__("reader.settings.spreadModeEven")}
                             onKeyDown={(e) => {
                                 // if (e.code === "Space") {
@@ -651,12 +652,12 @@ const ReadingDisplayCol = ({ isPdf, pdfState }: Pick<IBaseProps, "isPdf"> & { pd
                                 // if (e.key === "Enter") { WORKS
                                 if (e.key === " ") { // WORKS
                                     e.preventDefault();
-                                    createOrGetPdfEventBus().dispatch("spreadModeEven", !(!!pdfState.spreadModeEven));
+                                    createOrGetPdfEventBus().dispatch("spreadModeEven", !(!!spreadModeEven));
                                 }
                             }}
                             className={stylesGlobal.checkbox_custom}
-                            style={{ border: !!pdfState.spreadModeEven ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: !!pdfState.spreadModeEven ? "var(--color-blue)" : "transparent" }}>
-                            {!!pdfState.spreadModeEven ?
+                            style={{ border: !!spreadModeEven ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: !!spreadModeEven ? "var(--color-blue)" : "transparent" }}>
+                            {!!spreadModeEven ?
                                 <SVG ariaHidden svg={CheckIcon} className={stylesGlobal.checkbox_customsvg} />
                                 :
                                 <></>
@@ -1570,75 +1571,27 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     // ] = React.useState<ReaderConfig>(readerConfig);
 
     // TODO none of these PDF states persist!! (very noticeable with the checkbox which is always reset to false / unticked)
-    const [pdfState, setPdfState] = React.useState<IState>({
-        pdfScale: "page-fit",
-        pdfCol: "1",
-        spreadModeEven: false,
-        pdfView: "scrolled",
-    });
-    console.log("pdfState::", JSON.stringify(pdfState, null, 4));
 
-    const setScale = React.useCallback((scale: IPdfPlayerScale) => {
-
-        console.log("scale", scale, JSON.stringify(pdfState, null, 4));
-
-        setPdfState({
-            pdfScale: scale,
-            pdfCol: pdfState.pdfCol,
-            spreadModeEven: pdfState.spreadModeEven,
-            pdfView: pdfState.pdfView,
-        });
-    }, [pdfState, setPdfState]);
-
-    const setView = React.useCallback((view: IPdfPlayerView) => {
-
-        console.log("view", view, JSON.stringify(pdfState, null, 4));
-
-        setPdfState({
-            pdfScale: pdfState.pdfScale,
-            pdfCol: pdfState.pdfCol,
-            spreadModeEven: pdfState.spreadModeEven,
-            pdfView: view,
-        });
-    }, [pdfState, setPdfState]);
-
-    const setCol = React.useCallback((col: IPdfPlayerColumn) => {
-
-        console.log("col", col, JSON.stringify(pdfState, null, 4));
-
-        setPdfState({
-            pdfScale: pdfState.pdfScale,
-            pdfCol: col,
-            spreadModeEven: pdfState.spreadModeEven,
-            pdfView: pdfState.pdfView,
-        });
-    }, [pdfState, setPdfState]);
-
-    const setSpreadModeEven = React.useCallback((v: boolean) => {
-
-        console.log("spreadModeEven", v, JSON.stringify(pdfState, null, 4));
-
-        setPdfState({
-            pdfScale: pdfState.pdfScale,
-            pdfCol: pdfState.pdfCol,
-            spreadModeEven: v,
-            pdfView: pdfState.pdfView,
-        });
-    }, [pdfState, setPdfState]);
+    const [pdfScale, setPdfScale] = React.useState<IState["pdfScale"]>("page-fit");
+    const [pdfCol, setPdfCol] = React.useState<IState["pdfCol"]>("1");
+    const [pdfView, setPdfView] = React.useState<IState["pdfView"]>("scrolled");
+    const [pdfSpreadModeEven, setPdfSpreadModeEven] = React.useState<IState["spreadModeEven"]>(false);
 
     React.useEffect(() => {
-        createOrGetPdfEventBus().subscribe("scale", setScale);
-        createOrGetPdfEventBus().subscribe("view", setView);
-        createOrGetPdfEventBus().subscribe("column", setCol);
-        createOrGetPdfEventBus().subscribe("spreadModeEven", setSpreadModeEven);
+        // console.log("React.useEffect setPdfState");
+
+        createOrGetPdfEventBus().subscribe("scale", setPdfScale);
+        createOrGetPdfEventBus().subscribe("view", setPdfView);
+        createOrGetPdfEventBus().subscribe("column", setPdfCol);
+        createOrGetPdfEventBus().subscribe("spreadModeEven", setPdfSpreadModeEven);
 
         return () => {
-            createOrGetPdfEventBus().remove(setScale, "scale");
-            createOrGetPdfEventBus().remove(setView, "view");
-            createOrGetPdfEventBus().remove(setCol, "column");
-            createOrGetPdfEventBus().remove(setSpreadModeEven , "spreadModeEven");
+            createOrGetPdfEventBus().remove(setPdfScale, "scale");
+            createOrGetPdfEventBus().remove(setPdfView, "view");
+            createOrGetPdfEventBus().remove(setPdfCol, "column");
+            createOrGetPdfEventBus().remove(setPdfSpreadModeEven , "spreadModeEven");
         };
-    }, [setCol, setScale, setSpreadModeEven, setView]);
+    }, [setPdfScale, setPdfView, setPdfCol, setPdfSpreadModeEven]);
 
     // TODO: transform it to a saga logic, triggered by allowCustomCheckbox
     // const setPartialSettingsDebounced = React.useMemo(() => {
@@ -1941,7 +1894,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                     <Tabs.Content value="tab-pdfzoom" tabIndex={-1} id="readerSettings_tabs-tab-pdfzoom" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <TabHeader />
                         <div className={stylesSettings.settings_tab}>
-                            <PdfZoom pdfScale={pdfState.pdfScale} pdfView={pdfState.pdfView} />
+                            <PdfZoom pdfScale={pdfScale} pdfView={pdfView} />
                         </div>
                     </Tabs.Content>
                     <Tabs.Content value="tab-text" tabIndex={-1} id="readerSettings_tabs-tab-text" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
@@ -1963,7 +1916,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                             {isPdf ? <></> : <Theme dockedMode={dockedMode} />}
                             {isPdf ? <></> : <ReadingDisplayLayout isFXL={props.isFXL} />}
                             {isPdf ? <></> : <ReadingDisplayAlign />}
-                            <ReadingDisplayCol isPdf={props.isPdf} pdfState={pdfState} />
+                            <ReadingDisplayCol isPdf={props.isPdf} pdfCol={pdfCol} spreadModeEven={pdfSpreadModeEven} />
                             {isPdf ? <></> : <ReadingDisplayCheckboxSettings disableRTLFlip={props.disableRTLFlip} setDisableRTLFlip={props.setDisableRTLFlip} />}
                         </section>
                     </Tabs.Content>
