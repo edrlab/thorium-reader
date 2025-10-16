@@ -127,7 +127,7 @@ export function pdfMount(
         console.log("did-finish-load createOrGetPdfEventBus().dispatch start pdfPath", pdfPath);
         const store = getStore();
         const pdfConfig = store.getState().reader.pdfConfig;
-        createOrGetPdfEventBus().dispatch("start", pdfPath, pdfConfig?.scale || "page-fit", pdfConfig.spreadmode);
+        createOrGetPdfEventBus().dispatch("start", pdfPath, pdfConfig?.scale || "page-fit", pdfConfig.spreadmode || 0);
     });
 
     // (global as any).__dirname
