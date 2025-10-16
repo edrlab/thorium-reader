@@ -86,7 +86,7 @@
         "importAnnotation": "Importuoti pastabas",
         "lang": "Kalba",
         "lastRead": "Pask. kartą skaityta",
-        "login": "",
+        "login": "Prisijungti",
         "logout": "Atsijungti",
         "moreInfo": "Daugiau informacijos",
         "myBooks": "Mano leidiniai",
@@ -860,7 +860,8 @@
                 },
                 "title": "Tema"
             },
-            "wordSpacing": "Tarpas tarp žodžių"
+            "wordSpacing": "Tarpas tarp žodžių",
+            "spreadModeEven": "Lyginis puslapių išdėstymas (numatytasis išdėstymas – nelyginis)"
         },
         "svg": {
             "left": "Kairė",
