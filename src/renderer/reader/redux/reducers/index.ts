@@ -58,6 +58,7 @@ import { customizationPackageActivatingLockReducer } from "readium-desktop/commo
 import { ICustomizationProfileHistory } from "readium-desktop/common/redux/states/customization";
 import { customizationPackageWelcomeScreenReducer } from "readium-desktop/common/redux/reducers/customization/welcomeScreen";
 import { ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
+import { readerPdfConfigReducer } from "readium-desktop/common/redux/reducers/reader/pdfConfig";
 
 export const rootReducer = () => {
 
@@ -156,6 +157,7 @@ export const rootReducer = () => {
             mediaOverlay: readerMediaOverlayReducer,
             tts: readerTTSReducer,
             lock: readerLockReducer,
+            pdfConfig: readerPdfConfigReducer,
         }),
         search: searchReducer,
         annotation: annotationModeEnableReducer,

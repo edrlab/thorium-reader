@@ -30,7 +30,7 @@ export interface IPdfPlayerEvent {
     "page-next": () => any;
     "page-previous": () => any;
     "ready": () => any;
-    "start": (pdfPath: string) => any;
+    "start": (pdfPath: string, scale: IPdfPlayerScale, spreadMode: 0 | 1 | 2) => any;
     "copy": (text: string) => any;
     "keydown": (event: IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN) => any;
     "keyup": (event: IEventPayload_R2_EVENT_WEBVIEW_KEYUP) => any;

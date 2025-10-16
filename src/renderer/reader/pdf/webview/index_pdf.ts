@@ -157,13 +157,13 @@ function main() {
         },
     );
 
-    const defaultView: IPdfPlayerView = "scrolled";
-    const defaultScale: IPdfPlayerScale = "page-fit";
+    // const defaultView: IPdfPlayerView = "scrolled";
+    // const defaultScale: IPdfPlayerScale = "page-fit";
     const defaultCol: IPdfPlayerColumn = "1";
     const defaultSpreadModeEven = false;
 
     // start dispatched from webview dom ready
-    bus.subscribe("start", async (pdfPath: string) => {
+    bus.subscribe("start", async (pdfPath: string, scale: IPdfPlayerScale, spreadMode: 0 | 1 | 2) => {
 
         pdfDocument.then(async (pdf) => {
 
@@ -177,14 +177,26 @@ function main() {
             bus.dispatch("toc", toc);
             bus.dispatch("numberofpages", pdf.numPages);
 
+            pdfjsEventBus.dispatch("scalechanged", { value: typeof scale === "number" ? `${scale / 100}` : scale });
+            pdfjsEventBus.dispatch("switchspreadmode", { mode: spreadMode });
+
+            setTimeout(() => {
+                const debounceSave = debounce(async (data: any) => {
+                    bus.dispatch("savePreferences", data);
+                }, 200);
+                pdfjsEventBus.on("__savePreferences", async (data: any) => {
+                    await debounceSave(data)
+                })
+            }, 100);
+
         }).catch((e) => console.error(e));
 
         console.log("bus.subscribe start pdfPath", pdfPath);
 
-        bus.dispatch("scale", defaultScale);
-        bus.dispatch("view", defaultView);
-        bus.dispatch("column", defaultCol);
-        bus.dispatch("spreadModeEven", defaultSpreadModeEven);
+        // bus.dispatch("scale", defaultScale);
+        // bus.dispatch("view", defaultView);
+        // bus.dispatch("column", defaultCol);
+        // bus.dispatch("spreadModeEven", defaultSpreadModeEven);
 
     });
 
@@ -209,22 +221,18 @@ function main() {
         })
     }
 
-    {
-        const debounceSave = debounce(async (data: any) => {
-            bus.dispatch("savePreferences", data);
-        }, 200);
-        pdfjsEventBus.on("__savePreferences", async (data: any) => {
-            await debounceSave(data)
-        })
-    }
 
-    {
-        pdfjsEventBus.on("__ready", () => {
 
-            // send to reader.tsx ready to render pdf
-            bus.dispatch("ready");
-        });
-    }
+    // never send anymore
+    // {
+    //     pdfjsEventBus.on("__ready", () => {
+
+    //         // send to reader.tsx ready to render pdf
+    //         bus.dispatch("ready");
+
+
+    //     });
+    // }
 
     // search
     {

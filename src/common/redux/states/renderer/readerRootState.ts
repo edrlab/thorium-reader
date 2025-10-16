@@ -27,6 +27,11 @@ import { DockState } from "../dock";
 import { IBookmarkTotalCountState } from "readium-desktop/renderer/reader/redux/state/bookmarkTotalCount";
 import { INoteState } from "./note";
 
+export interface IReaderPdfConfig{
+        scale: "page-fit" | "page-width" | number;
+        spreadmode: 0 | 1 | 2;
+    }
+
 export interface IReaderRootState extends IRendererCommonRootState {
     reader: IReaderStateReader;
     search: ISearchState;
@@ -59,6 +64,8 @@ export interface IReaderStateReader {
     transientConfig: ReaderConfigPublisher;
     noteTotalCount: IBookmarkTotalCountState;
 
+    pdfConfig: IReaderPdfConfig;
+
 
     // got the lock
     // acquired on first reader opened with the same publication UUID instance
@@ -67,6 +74,6 @@ export interface IReaderStateReader {
     lock: boolean;
 }
 
-export type IReaderStateReaderPersistence = Pick<IReaderStateReader, "config" | "locator" | "divina" | "disableRTLFlip" | "allowCustomConfig" | "noteTotalCount">;
+export type IReaderStateReaderPersistence = Pick<IReaderStateReader, "config" | "locator" | "divina" | "disableRTLFlip" | "allowCustomConfig" | "noteTotalCount" | "pdfConfig">;
 export type IReaderStateReaderSession = Partial<IReaderStateReaderPersistence> & Pick<IReaderStateReader, "lock" | "info" | "note">;
 export type IReaderStateReaderHydration = IRendererCommonRootStateHydration & { reader: IReaderStateReaderSession };
