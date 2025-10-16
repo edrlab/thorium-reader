@@ -30,6 +30,7 @@ import * as ChevronRight from "readium-desktop/renderer/assets/icons/chevron-rig
 interface IBaseProps extends TranslatorProps {
     pageLinks?: IOpdsResultView["links"];
     pageInfo?: IOpdsResultView["metadata"];
+    opdsGroupsFound?: boolean;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -73,9 +74,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
         const element = this.fixedElementRef.current;
         const container = document.getElementById("opds_browserResults");
         const cardWrapper = document.getElementById("card_wrapper");
-        const sections = document.getElementsByTagName("section");
-        const sectionsHeightSum = Array.from(sections).reduce((sum, section) => sum + section.offsetHeight, 0);
-        if ((cardWrapper.scrollHeight + sectionsHeightSum) >container.clientHeight) {
+        if (cardWrapper.scrollHeight >container.clientHeight || this.props.opdsGroupsFound) {
           element.style.position = "unset";
         } else {
           element.style.position = "fixed";
