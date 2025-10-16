@@ -333,29 +333,29 @@ function main() {
 
     }
     // view
-    let lockViewMode = false;
+    // let lockViewMode = false;
     {
-        bus.subscribe("view", (view) => {
-            if (view === "paginated") {
-                pdfjsEventBus.dispatch("scalechanged", { value: "page-fit" });
-                bus.dispatch("scale", "page-fit");
-                document.body.className = "hidescrollbar";
-                lockViewMode = true;
-            } else if (view === "scrolled") {
-                document.body.className = "";
-                lockViewMode = false;
-            }
-            bus.dispatch("view", view);
-        });
+        // bus.subscribe("view", (view) => {
+        //     if (view === "paginated") {
+        //         pdfjsEventBus.dispatch("scalechanged", { value: "page-fit" });
+        //         bus.dispatch("scale", "page-fit");
+        //         document.body.className = "hidescrollbar";
+        //         lockViewMode = true;
+        //     } else if (view === "scrolled") {
+        //         document.body.className = "";
+        //         lockViewMode = false;
+        //     }
+        //     bus.dispatch("view", view);
+        // });
     }
     // scale
     {
         bus.subscribe("scale", (scale) => {
-            if (!lockViewMode) {
+            // if (!lockViewMode) {
 
-                pdfjsEventBus.dispatch("scalechanged", { value: typeof scale === "number" ? `${scale / 100}` : scale });
-                bus.dispatch("scale", scale);
-            }
+            pdfjsEventBus.dispatch("scalechanged", { value: typeof scale === "number" ? `${scale / 100}` : scale });
+            bus.dispatch("scale", scale);
+            // }
         });
         pdfjsEventBus.on("scalechanging", ({/*_scale, */ presetValue }: any) => bus.dispatch("scale", presetValue));
     }

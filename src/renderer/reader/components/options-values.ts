@@ -12,7 +12,7 @@ import {
 } from "readium-desktop/typings/react";
 
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
-import { TToc } from "../pdf/common/pdfReader.type";
+import { IPdfPlayerScale, TToc } from "../pdf/common/pdfReader.type";
 import { TdivinaReadingMode } from "readium-desktop/common/redux/states/renderer/divina";
 
 export const fontSize: string[] = [
@@ -156,4 +156,10 @@ export interface IReaderSettingsProps {
     zenMode: boolean;
     setZenModeAndFXLZoom: (zen : boolean, fxlZoom: number) => void;
     // searchEnable: boolean;
+
+    pdfPlayerZoom: IPdfPlayerScale;
+    pdfPlayerSpreadMode: number;
+
+    // setPdfPlayerZoom: (value: IPdfPlayerScale) => void;
+    // setPdfPlayerSpreadMode: (value: number) => void;
 }

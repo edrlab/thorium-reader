@@ -1377,10 +1377,10 @@ const DivinaSetReadingMode = ({ handleDivinaReadingMode, divinaReadingMode, divi
     );
 };
 
-const PdfZoom = ({ pdfScale, pdfView }: Pick<IState, "pdfScale" | "pdfView">) => {
+const PdfZoom = ({ pdfScale /*, pdfView*/ }: Pick<IState, "pdfScale" | "pdfView">) => {
     const [__] = useTranslator();
 
-    const inputComponent = (scale: IPdfPlayerScale, disabled = false) => {
+    const inputComponent = (scale: IPdfPlayerScale/*, disabled = false*/) => {
         return <div>
             <input
                 id={"radio-" + `${scale}`}
@@ -1388,10 +1388,10 @@ const PdfZoom = ({ pdfScale, pdfView }: Pick<IState, "pdfScale" | "pdfView">) =>
                 name="pdfZoomRadios"
                 onChange={() => createOrGetPdfEventBus().dispatch("scale", scale)}
                 checked={pdfScale === scale}
-                disabled={disabled}
+                // disabled={disabled}
             />
             <label
-                aria-disabled={disabled}
+                // aria-disabled={disabled}
                 htmlFor={"radio-" + `${scale}`}
             >
                 {pdfScale === scale && <SVG svg={DoneIcon} ariaHidden />}
@@ -1413,13 +1413,13 @@ const PdfZoom = ({ pdfScale, pdfView }: Pick<IState, "pdfScale" | "pdfView">) =>
     return (
         <div id={stylesReader.themes_list} role="radiogroup" aria-label={__("reader.settings.pdfZoom.title")}>
             {inputComponent("page-fit")}
-            {inputComponent("page-width", pdfView === "paginated")}
-            {inputComponent(50, pdfView === "paginated")}
-            {inputComponent(100, pdfView === "paginated")}
-            {inputComponent(150, pdfView === "paginated")}
-            {inputComponent(200, pdfView === "paginated")}
-            {inputComponent(300, pdfView === "paginated")}
-            {inputComponent(500, pdfView === "paginated")}
+            {inputComponent("page-width" /* pdfView === "paginated"*/)}
+            {inputComponent(50 /* pdfView === "paginated"*/)}
+            {inputComponent(100 /* pdfView === "paginated"*/)}
+            {inputComponent(150 /* pdfView === "paginated"*/)}
+            {inputComponent(200 /* pdfView === "paginated"*/)}
+            {inputComponent(300 /* pdfView === "paginated"*/)}
+            {inputComponent(500 /* pdfView === "paginated"*/)}
         </div>
     );
 };
@@ -1572,26 +1572,26 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
 
     // TODO none of these PDF states persist!! (very noticeable with the checkbox which is always reset to false / unticked)
 
-    const [pdfScale, setPdfScale] = React.useState<IState["pdfScale"]>("page-fit");
-    const [pdfCol, setPdfCol] = React.useState<IState["pdfCol"]>("1");
-    const [pdfView, setPdfView] = React.useState<IState["pdfView"]>("scrolled");
-    const [pdfSpreadModeEven, setPdfSpreadModeEven] = React.useState<IState["spreadModeEven"]>(false);
+    // const [pdfScale, setPdfScale] = React.useState<IState["pdfScale"]>(props.pdfPlayerZoom as IPdfPlayerScale);
+    // const [pdfCol, setPdfCol] = React.useState<IState["pdfCol"]>(props.pdfPlayerSpreadMode === 0 ? "1" : props.pdfPlayerSpreadMode > 0 ? "2" : "1" /* OR "auto" */);
+    // const [pdfView, setPdfView] = React.useState<IState["pdfView"]>("scrolled"); // never changed always scrolled // so let's comment it for the moment
+    // const [pdfSpreadModeEven, setPdfSpreadModeEven] = React.useState<IState["spreadModeEven"]>(props.pdfPlayerSpreadMode === 2);
 
-    React.useEffect(() => {
-        // console.log("React.useEffect setPdfState");
+    // React.useEffect(() => {
+    //     // console.log("React.useEffect setPdfState");
 
-        createOrGetPdfEventBus().subscribe("scale", setPdfScale);
-        createOrGetPdfEventBus().subscribe("view", setPdfView);
-        createOrGetPdfEventBus().subscribe("column", setPdfCol);
-        createOrGetPdfEventBus().subscribe("spreadModeEven", setPdfSpreadModeEven);
+    //     createOrGetPdfEventBus().subscribe("view", setPdfView);
+    //     createOrGetPdfEventBus().subscribe("scale", setPdfScale);
+    //     createOrGetPdfEventBus().subscribe("column", setPdfCol);
+    //     createOrGetPdfEventBus().subscribe("spreadModeEven", setPdfSpreadModeEven);
 
-        return () => {
-            createOrGetPdfEventBus().remove(setPdfScale, "scale");
-            createOrGetPdfEventBus().remove(setPdfView, "view");
-            createOrGetPdfEventBus().remove(setPdfCol, "column");
-            createOrGetPdfEventBus().remove(setPdfSpreadModeEven , "spreadModeEven");
-        };
-    }, [setPdfScale, setPdfView, setPdfCol, setPdfSpreadModeEven]);
+    //     return () => {
+    //         createOrGetPdfEventBus().remove(setPdfScale, "scale");
+    //         // createOrGetPdfEventBus().remove(setPdfView, "view");
+    //         createOrGetPdfEventBus().remove(setPdfCol, "column");
+    //         createOrGetPdfEventBus().remove(setPdfSpreadModeEven , "spreadModeEven");
+    //     };
+    // }, [setPdfScale, /*setPdfView,*/ setPdfCol, setPdfSpreadModeEven]);
 
     // TODO: transform it to a saga logic, triggered by allowCustomCheckbox
     // const setPartialSettingsDebounced = React.useMemo(() => {
@@ -1751,7 +1751,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
         sections.push(SpacingTrigger);
         options.push(optionSpacingItem);
     }
-    if (isPdf || isEpub) {
+    if (isEpub) {
         sections.push(PresetTrigger);
         options.push(optionPresetItem);
     }
@@ -1894,7 +1894,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                     <Tabs.Content value="tab-pdfzoom" tabIndex={-1} id="readerSettings_tabs-tab-pdfzoom" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <TabHeader />
                         <div className={stylesSettings.settings_tab}>
-                            <PdfZoom pdfScale={pdfScale} pdfView={pdfView} />
+                            <PdfZoom pdfScale={props.pdfPlayerZoom} /*pdfView={pdfView}*/ />
                         </div>
                     </Tabs.Content>
                     <Tabs.Content value="tab-text" tabIndex={-1} id="readerSettings_tabs-tab-text" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
@@ -1916,7 +1916,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                             {isPdf ? <></> : <Theme dockedMode={dockedMode} />}
                             {isPdf ? <></> : <ReadingDisplayLayout isFXL={props.isFXL} />}
                             {isPdf ? <></> : <ReadingDisplayAlign />}
-                            <ReadingDisplayCol isPdf={props.isPdf} pdfCol={pdfCol} spreadModeEven={pdfSpreadModeEven} />
+                            <ReadingDisplayCol isPdf={props.isPdf} pdfCol={props.pdfPlayerSpreadMode === 0 ? "1" : props.pdfPlayerSpreadMode > 0 ? "2" : "1" /* OR "auto" */} spreadModeEven={props.pdfPlayerSpreadMode === 2} />
                             {isPdf ? <></> : <ReadingDisplayCheckboxSettings disableRTLFlip={props.disableRTLFlip} setDisableRTLFlip={props.setDisableRTLFlip} />}
                         </section>
                     </Tabs.Content>
