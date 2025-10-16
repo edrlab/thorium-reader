@@ -82,24 +82,29 @@ export class OpdsFeedViewConverter {
         let authentified: boolean = undefined;
 
         const feedUrl = document.url;
-        // TODO: fix login/logout for DILICOM APIAPP
-        // let feedUrl = document.url;
-        // if (feedUrl.startsWith("apiapp://")) {
-        //     const urlApiapp = feedUrl.slice("apiapp://".length);
-        //     const [idGln, urlLib] = urlApiapp.split(":apiapp:");
-
-        //     debug("APIAPP");
-        //     debug("ID_GNL=", idGln);
-        //     debug("URL_LIB=", urlLib);
-        //     if (urlLib) {
-        //         feedUrl = urlLib;
-        //     }
-        // }
         let catalogLinkUrl: URL;
         try {
-            catalogLinkUrl = (new URL(feedUrl));
-        } catch {
-            // nothing
+
+            if (feedUrl.startsWith("apiapp://")) {
+                if (feedUrl.startsWith("apiapp://")) {
+                    const urlApiapp = feedUrl.slice("apiapp://".length);
+                    const [idGln, urlLib] = urlApiapp.split(":apiapp:");
+
+                    debug("APIAPP");
+                    debug("ID_GNL=", idGln);
+                    debug("URL_LIB=", urlLib);
+                    if (urlLib) {
+                        catalogLinkUrl = (new URL(urlLib));
+                        catalogLinkUrl.host = `apiapploans.org.edrlab.thoriumreader.break.${idGln}.break.${catalogLinkUrl.host}`;
+                    }
+                }
+            } else {
+
+                catalogLinkUrl = (new URL(feedUrl));
+            }
+
+        } catch (e) {
+            debug(e);
         }
         if (catalogLinkUrl) {
             const authToken = await getAuthenticationToken(catalogLinkUrl);
@@ -107,7 +112,7 @@ export class OpdsFeedViewConverter {
                 debug("catalog authentified: ", catalogLinkUrl.host);
                 authentified = true;
             } else {
-                debug("catalog NOT authentified: ", catalogLinkUrl.host);
+                debug("catalog NOT authentified: ", catalogLinkUrl.host, authToken);
             }
         } else {
             debug("No catalogLinkUrl found, return");

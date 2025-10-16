@@ -303,24 +303,27 @@ export function saga() {
             authActions.logout.ID,
             function* (action: authActions.logout.TAction) {
                 const feedUrl = action.payload.feedUrl;
-                // TODO: fix login/logout for DILICOM APIAPP
-                // let feedUrl = action.payload.feedUrl;
-                // if (feedUrl.startsWith("apiapp://")) {
-                //     const urlApiapp = feedUrl.slice("apiapp://".length);
-                //     const [idGln, urlLib] = urlApiapp.split(":apiapp:");
-
-                //     debug("APIAPP");
-                //     debug("ID_GNL=", idGln);
-                //     debug("URL_LIB=", urlLib);
-                //     if (urlLib) {
-                //         feedUrl = urlLib;
-                //     }
-                // }
                 let catalogLinkUrl: URL;
                 try {
-                    catalogLinkUrl = (new URL(feedUrl));
-                } catch {
-                    // nothing
+                    if (feedUrl.startsWith("apiapp://")) {
+                        if (feedUrl.startsWith("apiapp://")) {
+                            const urlApiapp = feedUrl.slice("apiapp://".length);
+                            const [idGln, urlLib] = urlApiapp.split(":apiapp:");
+
+                            debug("APIAPP");
+                            debug("ID_GNL=", idGln);
+                            debug("URL_LIB=", urlLib);
+                            if (urlLib) {
+                                catalogLinkUrl = (new URL(urlLib));
+                                catalogLinkUrl.host = `apiapploans.org.edrlab.thoriumreader.break.${idGln}.break.${catalogLinkUrl.host}`;
+                            }
+                        }
+                    } else {
+
+                        catalogLinkUrl = (new URL(feedUrl));
+                    }
+                } catch (e) {
+                    debug(e);
                 }
                 if (!catalogLinkUrl) {
                     debug("No catalogLinkUrl found, return");

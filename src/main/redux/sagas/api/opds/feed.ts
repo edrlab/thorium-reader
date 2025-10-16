@@ -84,7 +84,12 @@ export function* addFeed(data: OpdsFeed): SagaGenerator<IOpdsFeedView> {
 
         yield* spawnTyped(function* () {
             try {
-        
+
+                if (data.url.startsWith("apiapp://")) {
+                    debug("find authenticationUrl API-APP Url not supported", data.url, "return;");
+                    return;
+                }
+
                 const response = yield* callTyped(() => httpGetWithAuth(false)(data.url));
                 const opdsFeedJson:any = yield* callTyped(() => response.response.json());
                 const opdsFeed = TaJsonDeserialize(
