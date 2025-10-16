@@ -21,6 +21,7 @@ export interface IPdfPlayerEvent {
     "scale": (scale: IPdfPlayerScale) => any;
     "view": (view: IPdfPlayerView) => any;
     "column": (column: IPdfPlayerColumn) => any;
+    "spreadModeEven": (column: boolean) => any;
     "search": (searchWord: string) => any;
     "search-next": () => any;
     "search-previous": () => any;

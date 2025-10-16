@@ -160,6 +160,7 @@ function main() {
     const defaultView: IPdfPlayerView = "scrolled";
     const defaultScale: IPdfPlayerScale = "page-fit";
     const defaultCol: IPdfPlayerColumn = "1";
+    const defaultSpreadModeEven = false;
 
     // start dispatched from webview dom ready
     bus.subscribe("start", async (pdfPath: string) => {
@@ -183,6 +184,7 @@ function main() {
         bus.dispatch("scale", defaultScale);
         bus.dispatch("view", defaultView);
         bus.dispatch("column", defaultCol);
+        bus.dispatch("spreadModeEven", defaultSpreadModeEven);
 
     });
 
@@ -262,12 +264,27 @@ function main() {
 
     // spreadmode
     let colMode: IPdfPlayerColumn = defaultCol;
+    let spreadModeEven: boolean = defaultSpreadModeEven;
+    // const SpreadMode = {
+    //   UNKNOWN: -1,
+    //   NONE: 0, // Default value.
+    //   ODD: 1,
+    //   EVEN: 2,
+    // };
     {
         bus.subscribe("column", (col) => {
-            pdfjsEventBus.dispatch("switchspreadmode", { mode: col === "auto" ? 0 : col === "1" ? 0 : 1 });
-            // 1 = odd 2 = even
+
+            pdfjsEventBus.dispatch("switchspreadmode", { mode: col === "auto" ? 0 : col === "1" ? 0 : spreadModeEven ? 2 : 1 });
             bus.dispatch("column", col);
             colMode = col;
+        });
+    }
+    {
+        bus.subscribe("spreadModeEven", (v) => {
+
+            pdfjsEventBus.dispatch("switchspreadmode", { mode: colMode === "auto" ? 0 : colMode === "1" ? 0 : v ? 2 : 1 });
+            bus.dispatch("spreadModeEven", v);
+            spreadModeEven = v;
         });
     }
 

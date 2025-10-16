@@ -143,6 +143,7 @@ declare namespace typed_i18n {
   readonly "importAnnotation": string,
   readonly "lang": string,
   readonly "lastRead": string,
+  readonly "login": string,
   readonly "logout": string,
   readonly "moreInfo": string,
   readonly "myBooks": string,
@@ -233,6 +234,7 @@ declare namespace typed_i18n {
   (_: "catalog.importAnnotation", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.lastRead", __?: {}): string;
+  (_: "catalog.login", __?: {}): string;
   (_: "catalog.logout", __?: {}): string;
   (_: "catalog.moreInfo", __?: {}): string;
   (_: "catalog.myBooks", __?: {}): string;
@@ -1764,6 +1766,7 @@ declare namespace typed_i18n {
     readonly "noTemporaryNavTargetOutline": string,
     readonly "paginated": string,
     readonly "paraSpacing": string,
+    readonly "spreadModeEven": string,
     readonly "pdfZoom": {
       readonly "name": {
         readonly "100pct": string,
@@ -2156,6 +2159,7 @@ declare namespace typed_i18n {
   readonly "noTemporaryNavTargetOutline": string,
   readonly "paginated": string,
   readonly "paraSpacing": string,
+  readonly "spreadModeEven": string,
   readonly "pdfZoom": {
     readonly "name": {
       readonly "100pct": string,
@@ -2230,6 +2234,7 @@ declare namespace typed_i18n {
   (_: "reader.settings.noTemporaryNavTargetOutline", __?: {}): string;
   (_: "reader.settings.paginated", __?: {}): string;
   (_: "reader.settings.paraSpacing", __?: {}): string;
+  (_: "reader.settings.spreadModeEven", __?: {}): string;
   (_: "reader.settings.pdfZoom", __?: {}): {
   readonly "name": {
     readonly "100pct": string,

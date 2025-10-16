@@ -13,6 +13,7 @@ import {
     noteExport,
     customizationActions,
     screenReaderActions,
+    opdsActions,
 } from "readium-desktop/common/redux/actions";
 import { syncFactory } from "readium-desktop/renderer/common/redux/middleware/syncFactory";
 
@@ -79,6 +80,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     customizationActions.deleteProfile.ID,
 
     authActions.logout.ID,
+
+    opdsActions.refresh.ID,
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);

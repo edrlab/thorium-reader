@@ -86,6 +86,7 @@
         "importAnnotation": "Import notes",
         "lang": "Language",
         "lastRead": "Last Read",
+        "login": "Login",
         "logout": "Logout",
         "moreInfo": "Publication Details",
         "myBooks": "My publications",
@@ -818,6 +819,7 @@
             "noTemporaryNavTargetOutline": "Disable visual navigation indicators",
             "paginated": "Paginated",
             "paraSpacing": "Paragraph spacing",
+            "spreadModeEven": "Page spreads 'even' (default is 'odd')",
             "pdfZoom": {
                 "name": {
                     "100pct": "100%",

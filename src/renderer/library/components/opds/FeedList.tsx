@@ -33,7 +33,8 @@ import { DisplayType, IRouterLocationState } from "../../routing";
 import DeleteOpdsFeedConfirm from "../dialog/DeleteOpdsFeedConfirm";
 import OpdsFeedUpdateForm from "../dialog/OpdsFeedUpdateForm";
 import * as Popover from "@radix-ui/react-popover";
-import { authActions } from "readium-desktop/common/redux/actions";
+import { authActions, customizationActions, opdsActions } from "readium-desktop/common/redux/actions";
+import { subscribeToAction } from "readium-desktop/renderer/common/redux/middleware/actionSubscriber";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -52,6 +53,7 @@ interface IState {
 
 class FeedList extends React.Component<IProps, IState> {
     private unsubscribe: Unsubscribe;
+    private unsubscribeAction: Unsubscribe;
 
     constructor(props: IProps) {
         super(props);
@@ -68,16 +70,27 @@ class FeedList extends React.Component<IProps, IState> {
             "opds/deleteFeed",
             // "opds/updateFeed",
         ], this.loadFeeds);
+
+        this.unsubscribeAction = subscribeToAction(opdsActions.refresh.ID, (_action) => {
+            // console.log("Refresh opds feed list requested by the action ID=", opdsActions.refresh.ID);
+            this.loadFeeds();
+        });
     }
 
     public componentWillUnmount() {
-        this.unsubscribe();
+        if (this.unsubscribe) {
+            this.unsubscribe();
+        }
+        if (this.unsubscribeAction) {
+            this.unsubscribeAction();
+        }
     }
 
     public render(): React.ReactElement<{}> {
         if (!this.state.feedsResult) {
             return <></>;
         }
+
         const { __ } = this.props;
         return (
             <section>
@@ -151,7 +164,31 @@ class FeedList extends React.Component<IProps, IState> {
                                         </Popover.Content>
                                     </Popover.Portal>
                                 </Popover.Root>
-                                : <></>}
+                                : item.authenticationUrl ? <Popover.Root>
+                                    <Popover.Trigger asChild>
+                                        <button
+                                            className={stylesCatalogs.button_login}
+                                            title={__("catalog.login")}
+                                        >
+                                            <SVG ariaHidden={true} svg={AvatarIcon} />
+                                        </button>
+                                    </Popover.Trigger>
+                                    <Popover.Portal>
+                                        <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesPopoverDialog.delete_item}>
+                                            <Popover.Close
+                                                onClick={() => {
+                                                    this.props.triggerAuth(item.url, item.authenticationUrl);
+                                                    // setTimeout(() => this.loadFeeds(), 100);
+                                                }}
+                                                title={__("catalog.login")}
+                                            >
+                                                <SVG ariaHidden={true} svg={AvatarIcon} />
+                                                {__("catalog.login")}
+                                            </Popover.Close>
+                                            <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                                        </Popover.Content>
+                                    </Popover.Portal>
+                                </Popover.Root> : <></>}
                                 <OpdsFeedUpdateForm trigger={(
                                     <button
                                         className={stylesCatalogs.button_edit}
@@ -215,6 +252,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
         logout: (feedUrl: string) => {
             dispatch(authActions.logout.build(feedUrl));
+        },
+        triggerAuth: (feedUrl: string, authenticationUrl: string) => {
+            dispatch(customizationActions.triggerOpdsAuth.build(feedUrl, authenticationUrl));
         },
     };
 };

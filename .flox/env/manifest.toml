@@ -33,6 +33,7 @@ version = 1
 
 [install]
 nodejs_22.pkg-path = "nodejs_22"
+jq.pkg-path = "jq"
 
 [vars]
 FLOX_DISABLE_METRICS="true"

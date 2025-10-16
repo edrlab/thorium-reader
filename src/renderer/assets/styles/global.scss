@@ -31,7 +31,7 @@
 // https://github.com/radix-ui/primitives/issues/1496#issuecomment-1962839229
 html body[data-scroll-locked] {
   position: unset !important;
-} 
+}
 
 body {
   margin: 0;
@@ -83,7 +83,7 @@ h4, button, label {
 
 section {
   margin-bottom: 20px;
-} 
+}
 
 .main {
   width: calc(100% - 120px);
@@ -311,7 +311,6 @@ nav + nav + .breadcrumb + .main {
       margin: 0;
       font-size: 14px;
       color: var(--color-brand-primary);
-  
       &:visited {
         color: var(--color-brand-primary);
       }
@@ -409,7 +408,7 @@ nav + nav + .breadcrumb + .main {
 
     strong {
       font-size: 30px;
-    } 
+    }
 
     details {
       .summary_content {
@@ -433,13 +432,17 @@ nav + nav + .breadcrumb + .main {
           width: 16px;
         }
       }
-  
+
       p {
         font-size: 14px;
         width: fit-content;
       }
     }
   }
+}
+
+.checkbox_customsvg {
+  width: 12px !important;
 }
 
 .checkbox_custom {

@@ -65,10 +65,10 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
-                "publications": "",
-                "screen": "",
-                "title": ""
+                "description": "Geen profiel beschrijving",
+                "publications": "Profiel publicaties",
+                "screen": "Geen titel",
+                "title": "Profiel titel"
             }
         },
         "delete": "Verwijder",
@@ -86,7 +86,8 @@
         "importAnnotation": "Importeer aantekeningen",
         "lang": "Taal",
         "lastRead": "Laatst gelezen",
-        "logout": "",
+        "login": "",
+        "logout": "Uitloggen",
         "moreInfo": "Meer Informatie",
         "myBooks": "Mijn boeken",
         "noPublicationHelpL1": "Sleep een publicatie hier naar toe",
@@ -145,9 +146,9 @@
         "cancel": "Annuleer",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
-                "state": "",
-                "title": ""
+                "fallbackWelcomeScreen": "Geen welkomstscherm wordt weergeven",
+                "state": "{{- status}}",
+                "title": "Voorzieningen en activatie profiel aanpassingen"
             }
         },
         "deleteAnnotations": "Verwijder aantekeningen?",
@@ -255,7 +256,7 @@
         },
         "next": "Volgende",
         "previous": "Vorige",
-        "resumeBrowsing": "",
+        "resumeBrowsing": "Terug naar bladeren",
         "shelf": "Plank",
         "updateForm": {
             "name": "Naam:",
@@ -1148,15 +1149,15 @@
         "profiles": {
             "info": "",
             "thorium": {
-                "description": "",
-                "title": ""
+                "description": "Het Thorium Vanille profiel is de originele, ontworpen door EDRLab.",
+                "title": "Thorium Vanille"
             },
-            "version": ""
+            "version": "{{- versie}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "message": "",
-            "title": ""
+            "help": "Wanneer de app de aanwezigheid van hulpsoftware waarneemt, zal het gebruikersinterface beter werken voor schermlezers",
+            "message": "Verbeterde ondersteuning voor schermlezers",
+            "title": "Verbeterde schermlezer ervaring"
         },
         "session": {
             "title": "Stel sessie bewaring in"

@@ -20,4 +20,5 @@ export interface OpdsFeed {
     identifier?: string;
     title: string;
     url: string;
+    authenticationUrl?: string;
 }

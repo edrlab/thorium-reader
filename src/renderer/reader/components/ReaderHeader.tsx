@@ -437,6 +437,18 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             { id: 8, value: 2.5, name: "2.5x" },
             { id: 9, value: 2.75, name: "2.75x" },
             { id: 10, value: 3, name: "3x" },
+            { id: 11, value: 3.25, name: "3.25x" },
+            { id: 12, value: 3.5, name: "3.5x" },
+            { id: 13, value: 3.75, name: "3.75x" },
+            { id: 14, value: 4, name: "4x" },
+            { id: 15, value: 4.25, name: "4.25x" },
+            { id: 16, value: 4.5, name: "4.5x" },
+            { id: 17, value: 4.75, name: "4.75x" },
+            { id: 18, value: 5, name: "5x" },
+            { id: 19, value: 5.25, name: "5.25x" },
+            { id: 20, value: 5.5, name: "5.5x" },
+            { id: 21, value: 5.75, name: "5.75x" },
+            { id: 22, value: 6.00, name: "6x" },
         ];
 
         const isRTL = this.props.isRTLFlip();

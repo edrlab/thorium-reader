@@ -81,9 +81,23 @@ export class OpdsFeedViewConverter {
 
         let authentified: boolean = undefined;
 
+        const feedUrl = document.url;
+        // TODO: fix login/logout for DILICOM APIAPP
+        // let feedUrl = document.url;
+        // if (feedUrl.startsWith("apiapp://")) {
+        //     const urlApiapp = feedUrl.slice("apiapp://".length);
+        //     const [idGln, urlLib] = urlApiapp.split(":apiapp:");
+
+        //     debug("APIAPP");
+        //     debug("ID_GNL=", idGln);
+        //     debug("URL_LIB=", urlLib);
+        //     if (urlLib) {
+        //         feedUrl = urlLib;
+        //     }
+        // }
         let catalogLinkUrl: URL;
         try {
-            catalogLinkUrl = (new URL(document.url));
+            catalogLinkUrl = (new URL(feedUrl));
         } catch {
             // nothing
         }
@@ -129,6 +143,7 @@ export class OpdsFeedViewConverter {
             title: document.title,
             url: document.url,
             authentified: authentified,
+            authenticationUrl: document.authenticationUrl,
             // feedHasAuthentication: authentified || await feedHasAuthenticationFunction(),
         };
     }
