@@ -819,6 +819,16 @@ function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefine
 
     win.loadURL(url);
 
+    // Extract the origin from the initial auth URL to allow navigation within same domain
+    let initialOrigin: string | undefined;
+    try {
+        const initialUrl = new URL(url);
+        initialOrigin = initialUrl.origin;
+        debug("Auth window initial origin:", initialOrigin);
+    } catch (e) {
+        debug("Failed to parse initial auth URL origin:", e);
+    }
+
     const willNavigate = (navUrl: string | undefined | null) => {
 
         if (!navUrl) {
@@ -857,6 +867,19 @@ function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefine
         if (details.url === win.webContents.getURL()) {
             debug("same URL ==> PASS: ", details.url?.substring(0, 500));
             return;
+        }
+
+        // Allow navigation within the same origin as the initial auth URL
+        if (initialOrigin && details.url) {
+            try {
+                const navUrlObj = new URL(details.url);
+                if (navUrlObj.origin === initialOrigin) {
+                    debug("same origin ==> PASS: ", details.url?.substring(0, 500), " (origin:", initialOrigin, ")");
+                    return;
+                }
+            } catch (e) {
+                debug("Failed to parse navigation URL for origin check:", e);
+            }
         }
 
         details.preventDefault();
