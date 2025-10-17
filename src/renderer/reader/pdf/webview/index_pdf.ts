@@ -169,6 +169,15 @@ function main() {
 
             console.log("PDFDOC LOADED");
 
+            // setTimeout(() => {
+                const debounceSave = debounce(async (data: any) => {
+                    bus.dispatch("savePreferences", data);
+                }, 200);
+                pdfjsEventBus.on("__savePreferences", async (data: any) => {
+                    await debounceSave(data)
+                })
+            // }, 100);
+
             const toc = await getToc(pdf);
 
             console.log("TOC");
@@ -179,15 +188,6 @@ function main() {
 
             pdfjsEventBus.dispatch("scalechanged", { value: typeof scale === "number" ? `${scale / 100}` : scale });
             pdfjsEventBus.dispatch("switchspreadmode", { mode: spreadMode });
-
-            setTimeout(() => {
-                const debounceSave = debounce(async (data: any) => {
-                    bus.dispatch("savePreferences", data);
-                }, 200);
-                pdfjsEventBus.on("__savePreferences", async (data: any) => {
-                    await debounceSave(data)
-                })
-            }, 100);
 
         }).catch((e) => console.error(e));
 
