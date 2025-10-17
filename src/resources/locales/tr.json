@@ -86,7 +86,7 @@
         "importAnnotation": "Notları içe aktar",
         "lang": "Dil",
         "lastRead": "Son Okunan",
-        "login": "",
+        "login": "Giriş yap",
         "logout": "Oturumu Kapat",
         "moreInfo": "Eser Ayrıntıları",
         "myBooks": "Eserlerim",
@@ -862,7 +862,8 @@
                 },
                 "title": "Tema"
             },
-            "wordSpacing": "Kelime aralığı"
+            "wordSpacing": "Kelime aralığı",
+            "spreadModeEven": "Sayfa görüntülenmesi 'çift' (varsayılan 'tek'tir)"
         },
         "svg": {
             "left": "Sol",
