@@ -12,6 +12,7 @@ import { getLibraryWindowFromDi } from "readium-desktop/main/di";
 import { commandLineMainEntry } from ".";
 import { getOpenFileFromCliChannel } from "../event";
 import { isOpenUrl, setOpenUrl } from "./url";
+import { URL_PROTOCOL_APP_HANDLER_OPDS, URL_PROTOCOL_APP_HANDLER_THORIUM } from "readium-desktop/common/streamerProtocol";
 
 // Logger
 const filename = "readium-desktop:main:lock";
@@ -80,6 +81,21 @@ export function lockInstance() {
             debug("Someone tried to run a second instance, we should focus our window", argv);
             debug("#####");
 
+            // On Windows, protocol URLs are passed as the last argument
+            // Look for opds:// or thorium:// URLs in the argv
+            let protocolUrl: string | undefined;
+            for (let i = argv.length - 1; i >= 0; i--) {
+                const arg = argv[i];
+                if (arg && (arg.startsWith(`${URL_PROTOCOL_APP_HANDLER_OPDS}://`) ||
+                           arg.startsWith(`${URL_PROTOCOL_APP_HANDLER_THORIUM}://`) ||
+                           arg.startsWith("http://") ||
+                           arg.startsWith("https://"))) {
+                    protocolUrl = arg;
+                    debug("Found protocol URL in argv:", protocolUrl);
+                    break;
+                }
+            }
+
             // Someone tried to run a second instance, we should focus our window.
             debug("comandLine", argv, _workingDir);
 
@@ -96,7 +112,14 @@ export function lockInstance() {
                 // ignore
             }
 
-            commandLineMainEntry(argv.filter((arg) => !arg.startsWith("--")));
+            // If we found a protocol URL, handle it directly
+            if (protocolUrl && isOpenUrl(protocolUrl)) {
+                debug("Processing protocol URL from second instance:", protocolUrl);
+                setOpenUrl(protocolUrl);
+            } else {
+                // Otherwise, process as normal command line
+                commandLineMainEntry(argv.filter((arg) => !arg.startsWith("--")));
+            }
         });
     }
     return gotTheLock;
