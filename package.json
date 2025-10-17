@@ -327,7 +327,7 @@
     "pdf.js": "github:edrlab/pdf.js#ed14f255842aa972d6df4812ac12d3123066d7b1",
     "proxy-agent": "^6.5.0",
     "r2-lcp-js": "^1.0.44",
-    "r2-navigator-js": "^1.25.5",
+    "r2-navigator-js": "^1.25.6",
     "r2-opds-js": "^1.0.47",
     "r2-shared-js": "^1.0.84",
     "r2-streamer-js": "^1.0.51",
