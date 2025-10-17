@@ -98,6 +98,7 @@
         "opds": {
             "auth": {
                 "cancel": "Ακύρωση",
+                "external": "",
                 "login": "Είσοδος",
                 "password": "Κωδικός πρόσβασης",
                 "register": "Εγγραφή",
@@ -846,6 +847,7 @@
             "reduceMotion": "Μείωση κίνησης",
             "scrolled": "Μετακυλίσιμο",
             "spacing": "Διαστήματα",
+            "spreadModeEven": "",
             "text": "Κείμενο",
             "theme": {
                 "name": {

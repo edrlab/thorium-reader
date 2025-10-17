@@ -98,6 +98,7 @@
         "opds": {
             "auth": {
                 "cancel": "Atšaukti",
+                "external": "",
                 "login": "Prisijungimas",
                 "password": "Slaptažodis",
                 "register": "Užsiregistruoti",
@@ -846,6 +847,7 @@
             "reduceMotion": "Mažinti judesių kiekį",
             "scrolled": "Slenkantis",
             "spacing": "Išretinimas",
+            "spreadModeEven": "",
             "text": "Tekstas",
             "theme": {
                 "name": {

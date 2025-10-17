@@ -98,6 +98,7 @@
         "opds": {
             "auth": {
                 "cancel": "Отменить",
+                "external": "",
                 "login": "Логин",
                 "password": "Паполь",
                 "register": "Регистрация",
@@ -846,6 +847,7 @@
             "reduceMotion": "Уменьшить движение",
             "scrolled": "Потоковая",
             "spacing": "Интервал",
+            "spreadModeEven": "",
             "text": "Текст",
             "theme": {
                 "name": {

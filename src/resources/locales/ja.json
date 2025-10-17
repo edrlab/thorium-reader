@@ -98,6 +98,7 @@
         "opds": {
             "auth": {
                 "cancel": "キャンセル",
+                "external": "",
                 "login": "ログイン",
                 "password": "パスワード",
                 "register": "登録",
@@ -846,6 +847,7 @@
             "reduceMotion": "視差効果を減らす",
             "scrolled": "スクロール型",
             "spacing": "余白・間隔",
+            "spreadModeEven": "",
             "text": "文字",
             "theme": {
                 "name": {

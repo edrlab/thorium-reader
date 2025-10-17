@@ -98,6 +98,7 @@
         "opds": {
             "auth": {
                 "cancel": "გადაფიქრება",
+                "external": "",
                 "login": "შესვლა",
                 "password": "",
                 "register": "",
@@ -846,6 +847,7 @@
             "reduceMotion": "მოძრაობის შემცირება",
             "scrolled": "ბრუნვადი",
             "spacing": "დაშორება",
+            "spreadModeEven": "",
             "text": "ტექსტი",
             "theme": {
                 "name": {

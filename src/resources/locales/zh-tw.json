@@ -98,6 +98,7 @@
         "opds": {
             "auth": {
                 "cancel": "取消",
+                "external": "",
                 "login": "登入",
                 "password": "密碼",
                 "register": "註冊",
@@ -846,6 +847,7 @@
             "reduceMotion": "減少動態效果",
             "scrolled": "捲動",
             "spacing": "間距",
+            "spreadModeEven": "",
             "text": "文字",
             "theme": {
                 "name": {

@@ -98,6 +98,7 @@
         "opds": {
             "auth": {
                 "cancel": "Annuleer",
+                "external": "",
                 "login": "Login",
                 "password": "Wachtwoord",
                 "register": "Registreer",
@@ -846,6 +847,7 @@
             "reduceMotion": "Beperk beweging",
             "scrolled": "Doorlopend",
             "spacing": "Afstand",
+            "spreadModeEven": "",
             "text": "Tekst",
             "theme": {
                 "name": {

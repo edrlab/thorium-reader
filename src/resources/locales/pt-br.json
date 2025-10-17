@@ -98,6 +98,7 @@
         "opds": {
             "auth": {
                 "cancel": "Cancelar",
+                "external": "",
                 "login": "Login",
                 "password": "Senha",
                 "register": "Registrar-se",
@@ -846,6 +847,7 @@
             "reduceMotion": "Reduzir o movimento",
             "scrolled": "Escroleável",
             "spacing": "Espaçamento",
+            "spreadModeEven": "",
             "text": "Texto",
             "theme": {
                 "name": {

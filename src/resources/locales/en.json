@@ -820,7 +820,6 @@
             "noTemporaryNavTargetOutline": "Disable visual navigation indicators",
             "paginated": "Paginated",
             "paraSpacing": "Paragraph spacing",
-            "spreadModeEven": "Page spreads 'even' (default is 'odd')",
             "pdfZoom": {
                 "name": {
                     "100pct": "100%",
@@ -848,6 +847,7 @@
             "reduceMotion": "Reduce motion",
             "scrolled": "Scrollable",
             "spacing": "Spacing",
+            "spreadModeEven": "Page spreads 'even' (default is 'odd')",
             "text": "Text",
             "theme": {
                 "name": {

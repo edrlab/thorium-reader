@@ -98,6 +98,7 @@
         "opds": {
             "auth": {
                 "cancel": "Utzi",
+                "external": "",
                 "login": "Hasi saioa",
                 "password": "Pasahitza",
                 "register": "Izena eman",
@@ -846,6 +847,7 @@
             "reduceMotion": "Mugimendua gutxitu",
             "scrolled": "Desplazagarria",
             "spacing": "Tartea",
+            "spreadModeEven": "",
             "text": "Testua",
             "theme": {
                 "name": {
