@@ -98,6 +98,7 @@
         "opds": {
             "auth": {
                 "cancel": "Cancel",
+                "external": "The login page will open in your web browser, please follow the instructions. Once logged-in, the web browser will return you to this application.",
                 "login": "Login",
                 "password": "Password",
                 "register": "Register",

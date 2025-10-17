@@ -155,6 +155,7 @@ declare namespace typed_i18n {
   readonly "opds": {
     readonly "auth": {
       readonly "cancel": string,
+      readonly "external": string,
       readonly "login": string,
       readonly "password": string,
       readonly "register": string,
@@ -246,6 +247,7 @@ declare namespace typed_i18n {
   (_: "catalog.opds", __?: {}): {
   readonly "auth": {
     readonly "cancel": string,
+    readonly "external": string,
     readonly "login": string,
     readonly "password": string,
     readonly "register": string,
@@ -272,12 +274,14 @@ declare namespace typed_i18n {
 };
   (_: "catalog.opds.auth", __?: {}): {
   readonly "cancel": string,
+  readonly "external": string,
   readonly "login": string,
   readonly "password": string,
   readonly "register": string,
   readonly "username": string
 };
   (_: "catalog.opds.auth.cancel", __?: {}): string;
+  (_: "catalog.opds.auth.external", __?: {}): string;
   (_: "catalog.opds.auth.login", __?: {}): string;
   (_: "catalog.opds.auth.password", __?: {}): string;
   (_: "catalog.opds.auth.register", __?: {}): string;

@@ -13,7 +13,7 @@ const debug = debug_(filename);
 
 // import validator from "validator";
 import { getOpenUrlWithOpdsSchemeEventChannel, getOpenUrlWithThoriumSchemeEventChannel } from "../event";
-import { URL_PROTOCOL_APP_HANDLER_OPDS, URL_PROTOCOL_APP_HANDLER_THORIUM } from "readium-desktop/common/streamerProtocol";
+import { URL_HOST_OPDS_AUTH, URL_PROTOCOL_APP_HANDLER_OPDS, URL_PROTOCOL_APP_HANDLER_THORIUM, URL_PROTOCOL_OPDS } from "readium-desktop/common/streamerProtocol";
 
 export const isOpenUrl = (url: string): boolean => {
 
@@ -36,8 +36,16 @@ export const isOpenUrl = (url: string): boolean => {
 
 export const setOpenUrl = (url: string): void => {
 
+    if (url.startsWith(`${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`)) {
+        debug("OPEN URL WITH OPDS (AUTH) scheme");
+        const openUrl = url;
+        debug("OPEN URL =", openUrl);
+        const buf = getOpenUrlWithOpdsSchemeEventChannel();
+        buf.put(openUrl);
+    }
+
     // OR: if (new URL(url).protocol === `${URL_PROTOCOL_APP_HANDLER_OPDS}:`)
-    if (url.startsWith(`${URL_PROTOCOL_APP_HANDLER_OPDS}://`)) {
+    else if (url.startsWith(`${URL_PROTOCOL_APP_HANDLER_OPDS}://`)) {
         debug("OPEN URL WITH OPDS scheme");
         const openUrl = url.replace(`${URL_PROTOCOL_APP_HANDLER_OPDS}://`, "http://"); // HTTP to HTTPS redirect should be handled by the server
 

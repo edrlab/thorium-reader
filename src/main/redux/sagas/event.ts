@@ -29,8 +29,10 @@ import { ICommonRootState } from "readium-desktop/common/redux/states/commonRoot
 import { customizationPackageProvisioningAccumulator, customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
 import * as path from "path";
 import { ICustomizationProfileError, ICustomizationProfileProvisioned } from "readium-desktop/common/redux/states/customization";
-import { URL_HOST_CUSTOMPROFILE, URL_PROTOCOL_APP_HANDLER_THORIUM } from "readium-desktop/common/streamerProtocol";
+import { URL_HOST_CUSTOMPROFILE, URL_HOST_OPDS_AUTH, URL_PROTOCOL_APP_HANDLER_THORIUM, URL_PROTOCOL_OPDS } from "readium-desktop/common/streamerProtocol";
 import { EXT_THORIUM } from "readium-desktop/common/extension";
+import { getLibraryWindowFromDi } from "readium-desktop/main/di";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 // Logger
 const debug = debug_("readium-desktop:main:saga:event");
@@ -226,6 +228,21 @@ export function saga() {
 
                 try {
                     const url = yield* takeTyped(chan);
+
+                    if (url.startsWith(`${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`)) {
+                        debug("");
+                        // ===> opdsAuthFlow
+                        const libWin = getLibraryWindowFromDi();
+                        const children = libWin.getChildWindows(); // TODO: make sure this is the OPDS AUTH BrowserWindow!!
+                        if (children?.length) {
+                            const win = children[0];
+                            if (win.title === getTranslator().translate("catalog.opds.auth.login")) {
+                                yield* callTyped(() => win.loadURL(url));
+                            }
+                        }
+
+                        continue;
+                    }
 
                     const feed = yield* callTyped(opdsApi.addFeed, { title : url, url});
                     if (feed) {
