@@ -6,8 +6,8 @@
 // ==LICENSE-END=
 
 import * as debug_ from "debug";
-import { URL_PROTOCOL_OPDS_MEDIA, URL_HOST_COMMON, URL_PROTOCOL_OPDS, URL_HOST_OPDS_AUTH, AUTH_WIN_TITLE } from "readium-desktop/common/streamerProtocol";
-import { BrowserWindow, globalShortcut, HandlerDetails, Event as ElectronEvent, WebContentsWillNavigateEventParams, shell, session } from "electron";
+import { URL_PROTOCOL_OPDS_MEDIA, URL_HOST_COMMON, URL_PROTOCOL_OPDS, URL_HOST_OPDS_AUTH } from "readium-desktop/common/streamerProtocol";
+import { BrowserWindow, globalShortcut, HandlerDetails, Event as ElectronEvent, WebContentsWillNavigateEventParams, shell } from "electron";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
