@@ -775,7 +775,7 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
     };
 }
 
-function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefined {
+function createOpdsAuthenticationModalWin(urlStr: string): BrowserWindow | undefined {
 
     const libWin = tryCatchSync(() => getLibraryWindowFromDi(), filename_);
     if (!libWin || libWin.isDestroyed() || libWin.webContents.isDestroyed()) {
@@ -817,7 +817,7 @@ function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefine
         win.show();
     });
 
-    win.loadURL(url);
+    win.loadURL(urlStr);
 
     const willNavigate = (navUrl: string | undefined | null) => {
 
@@ -847,8 +847,8 @@ function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefine
         return { action: "deny" };
     });
 
-    win.webContents.on("will-navigate", (details: ElectronEvent<WebContentsWillNavigateEventParams>, url: string) => {
-        debug("BrowserWindow.webContents.on('will-navigate') (always PREVENT?): ", win.webContents.id, " --- ", details.url?.substring(0, 500), " *** ", url?.substring(0, 500), " === ", win.webContents.getURL()?.substring(0, 500));
+    win.webContents.on("will-navigate", (details: ElectronEvent<WebContentsWillNavigateEventParams>, detailsUrl: string) => {
+        debug("BrowserWindow.webContents.on('will-navigate') (always PREVENT?): ", win.webContents.id, " --- ", details.url?.substring(0, 500), " *** ", detailsUrl?.substring(0, 500), " ~~~ ", urlStr.substring(0, 500), " === ", win.webContents.getURL()?.substring(0, 500));
 
         if (details.url?.startsWith(`${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`)) {
             debug(`${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/ ==> PASS: `, details.url?.substring(0, 500));
@@ -857,6 +857,52 @@ function createOpdsAuthenticationModalWin(url: string): BrowserWindow | undefine
         if (details.url === win.webContents.getURL()) {
             debug("same URL ==> PASS: ", details.url?.substring(0, 500));
             return;
+        }
+
+        if (details.url && /^https?:\/\//.test(details.url)) {
+            let willNavigateOrigin: string | undefined;
+            try {
+                const detailsUrlURL = new URL(details.url);
+                willNavigateOrigin = detailsUrlURL.origin;
+                debug("willNavigateOrigin OK:", willNavigateOrigin);
+            } catch (e) {
+                debug("willNavigateOrigin NOK:", e);
+            }
+
+            if (willNavigateOrigin) {
+                let initialOrigin: string | undefined;
+                try {
+                    const initialUrl = new URL(urlStr);
+                    initialOrigin = initialUrl.origin;
+                    debug("initialOrigin OK:", initialOrigin);
+                } catch (e) {
+                    debug("initialOrigin NOK:", e);
+                }
+                if (initialOrigin) {
+                    if (willNavigateOrigin === initialOrigin) {
+                        debug("willNavigateOrigin === initialOrigin ==> PASS: ");
+                        return;
+                    }
+                }
+
+                const urlStrPossiblyRedirect = win.webContents.getURL();
+                if (urlStrPossiblyRedirect) {
+                    let possiblyRedirectOrigin: string | undefined;
+                    try {
+                        const possiblyRedirectUrl = new URL(urlStrPossiblyRedirect);
+                        possiblyRedirectOrigin = possiblyRedirectUrl.origin;
+                        debug("possiblyRedirectOrigin OK:", possiblyRedirectOrigin);
+                    } catch (e) {
+                        debug("possiblyRedirectOrigin NOK:", e);
+                    }
+                    if (possiblyRedirectOrigin) {
+                        if (willNavigateOrigin === possiblyRedirectOrigin) {
+                            debug("willNavigateOrigin === possiblyRedirectOrigin ==> PASS: ");
+                            return;
+                        }
+                    }
+                }
+            }
         }
 
         details.preventDefault();
