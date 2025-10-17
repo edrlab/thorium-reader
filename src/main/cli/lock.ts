@@ -12,7 +12,7 @@ import { getLibraryWindowFromDi } from "readium-desktop/main/di";
 import { commandLineMainEntry } from ".";
 import { getOpenFileFromCliChannel } from "../event";
 import { isOpenUrl, setOpenUrl } from "./url";
-import { URL_PROTOCOL_APP_HANDLER_OPDS, URL_PROTOCOL_APP_HANDLER_THORIUM } from "readium-desktop/common/streamerProtocol";
+import { URL_HOST_OPDS_AUTH, URL_PROTOCOL_APP_HANDLER_OPDS, URL_PROTOCOL_APP_HANDLER_THORIUM } from "readium-desktop/common/streamerProtocol";
 
 // Logger
 const filename = "readium-desktop:main:lock";
@@ -112,10 +112,30 @@ export function lockInstance() {
                 // ignore
             }
 
-            // If we found a protocol URL, handle it directly
+            // If we found a protocol URL, check if it's an auth callback or a feed URL
             if (protocolUrl && isOpenUrl(protocolUrl)) {
-                debug("Processing protocol URL from second instance:", protocolUrl);
-                setOpenUrl(protocolUrl);
+                // Check if this is an OPDS auth callback (opds://authorize/...)
+                // Auth callbacks must be handled by commandLineMainEntry, not setOpenUrl
+                let isAuthCallback = false;
+                try {
+                    const urlObj = new URL(protocolUrl);
+                    if (urlObj.protocol === `${URL_PROTOCOL_APP_HANDLER_OPDS}:` &&
+                        urlObj.hostname === URL_HOST_OPDS_AUTH) {
+                        isAuthCallback = true;
+                        debug("Detected OPDS auth callback URL, routing to commandLineMainEntry");
+                    }
+                } catch (e) {
+                    debug("Failed to parse protocol URL:", e);
+                }
+
+                if (isAuthCallback) {
+                    // Auth callback - let commandLineMainEntry handle it
+                    commandLineMainEntry(argv.filter((arg) => !arg.startsWith("--")));
+                } else {
+                    // Regular feed URL or file - use setOpenUrl
+                    debug("Processing feed/file URL from second instance:", protocolUrl);
+                    setOpenUrl(protocolUrl);
+                }
             } else {
                 // Otherwise, process as normal command line
                 commandLineMainEntry(argv.filter((arg) => !arg.startsWith("--")));
