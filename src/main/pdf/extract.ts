@@ -166,7 +166,7 @@ export const extractPDFData =
 
         } finally {
 
-            if (win) {
+            if (win && !win.isDestroyed() && !win.webContents.isDestroyed()) {
                 win.close();
             }
 

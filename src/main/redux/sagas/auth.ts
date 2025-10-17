@@ -221,7 +221,7 @@ const opdsAuthFlow =
 
             } finally {
 
-                if (win) {
+                if (win && !win.isDestroyed() && !win.webContents.isDestroyed()) {
                     win.close();
                 }
                 if (task.isRunning()) {
@@ -829,7 +829,11 @@ async function createOpdsAuthenticationModalWin(urlStr: string): Promise<Browser
             },
         });
 
-    const handler = () => win.close();
+    const handler = () => {
+        if (win && !win.isDestroyed() && !win.webContents.isDestroyed()) {
+            win.close();
+        }
+    };
     globalShortcut.register("esc", handler);
     win.on("close", () => {
         globalShortcut.unregister("esc");
