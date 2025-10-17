@@ -230,13 +230,15 @@ export function saga() {
                     const url = yield* takeTyped(chan);
 
                     if (url.startsWith(`${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`)) {
-                        debug("");
+                        debug("OPDS AUTH: ", `${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`);
                         // ===> opdsAuthFlow
                         const libWin = getLibraryWindowFromDi();
                         const children = libWin.getChildWindows(); // TODO: make sure this is the OPDS AUTH BrowserWindow!!
                         if (children?.length) {
+                            debug("OPDS AUTH: sub win?");
                             const win = children[0];
                             if (win.title === getTranslator().translate("catalog.opds.auth.login")) {
+                                debug("OPDS AUTH: sub win OK, load...", url);
                                 yield* callTyped(() => win.loadURL(url));
                             }
                         }
