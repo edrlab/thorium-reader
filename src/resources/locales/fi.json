@@ -98,6 +98,7 @@
         "opds": {
             "auth": {
                 "cancel": "Peru",
+                "external": "",
                 "login": "Kirjaudu",
                 "password": "Salasana",
                 "register": "Rekisteröidy",
@@ -846,6 +847,7 @@
             "reduceMotion": "Vähennä liikettä",
             "scrolled": "Vieritettävä",
             "spacing": "Välit",
+            "spreadModeEven": "",
             "text": "Teksti",
             "theme": {
                 "name": {

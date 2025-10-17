@@ -98,6 +98,7 @@
         "opds": {
             "auth": {
                 "cancel": "Avbryt",
+                "external": "",
                 "login": "Logga in",
                 "password": "Lösenord",
                 "register": "Registrera dig",
@@ -846,6 +847,7 @@
             "reduceMotion": "Minska rörelser",
             "scrolled": "Rullningsbar",
             "spacing": "Avstånd",
+            "spreadModeEven": "",
             "text": "Text",
             "theme": {
                 "name": {

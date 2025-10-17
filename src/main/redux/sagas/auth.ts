@@ -39,7 +39,7 @@ import {
     IOpdsAuthenticationToken, wipeAuthenticationTokenStorage,
 } from "readium-desktop/main/network/http";
 import { ContentType } from "readium-desktop/utils/contentType";
-import { tryCatchSync } from "readium-desktop/utils/tryCatch";
+import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, cancel, delay, join, put, race } from "redux-saga/effects";
 import { call as callTyped, fork as forkTyped, take as takeTyped } from "typed-redux-saga/macro";
@@ -156,11 +156,7 @@ const opdsAuthFlow =
                 };
             });
 
-            const win =
-                tryCatchSync(
-                    () => createOpdsAuthenticationModalWin(browserUrl),
-                    filename_,
-                );
+            const win = yield* callTyped(() => tryCatch(() => createOpdsAuthenticationModalWin(browserUrl), filename_));
             if (!win) {
                 debug("modal win undefined");
 
@@ -775,7 +771,7 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
     };
 }
 
-function createOpdsAuthenticationModalWin(urlStr: string): BrowserWindow | undefined {
+async function createOpdsAuthenticationModalWin(urlStr: string): Promise<BrowserWindow | undefined> {
 
     const libWin = tryCatchSync(() => getLibraryWindowFromDi(), filename_);
     if (!libWin || libWin.isDestroyed() || libWin.webContents.isDestroyed()) {
@@ -783,9 +779,35 @@ function createOpdsAuthenticationModalWin(urlStr: string): BrowserWindow | undef
         return undefined;
     }
 
+    let urlExternal: string | undefined;
+    let title: string | undefined;
+    if (/^data:text\/html/.test(urlStr)) {
+        // passthrough
+    } else if (/^https?:\/\//.test(urlStr)) {
+        urlExternal = urlStr;
+        title = getTranslator().translate("catalog.opds.auth.login");
+        let urlFriendly = urlExternal;
+        try {
+            const uF = new URL(urlExternal);
+            urlFriendly = uF.origin; // protocol + host + port
+        } catch (_e) {
+            // ignore
+        }
+
+        const html = encodeURIComponent_RFC3986(
+            htmlLoginExternalTemplate(title, urlFriendly, urlExternal),
+        );
+        urlStr = `data:text/html;charset=utf-8,${html}`;
+        // return undefined;
+    } else {
+        debug("INVALID AUTH urlStr", urlStr);
+        return undefined;
+    }
+
     const libWinBound = libWin.getBounds();
     const win = new BrowserWindow(
         {
+            title,
             width: libWinBound?.width || 800,
             height: libWinBound?.height || 600,
             parent: libWin,
@@ -817,8 +839,6 @@ function createOpdsAuthenticationModalWin(urlStr: string): BrowserWindow | undef
         win.show();
     });
 
-    win.loadURL(urlStr);
-
     const willNavigate = (navUrl: string | undefined | null) => {
 
         if (!navUrl) {
@@ -828,7 +848,7 @@ function createOpdsAuthenticationModalWin(urlStr: string): BrowserWindow | undef
 
         if (/^https?:\/\//.test(navUrl)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
 
-            debug("willNavigate ==> EXTERNAL: ", win.webContents.getURL(), " *** ", navUrl);
+            debug("willNavigate ==> EXTERNAL: ", win.webContents.getURL().substring(0, 500), " *** ", navUrl);
             setTimeout(async () => {
                 await shell.openExternal(navUrl);
             }, 0);
@@ -840,7 +860,7 @@ function createOpdsAuthenticationModalWin(urlStr: string): BrowserWindow | undef
     };
 
     win.webContents.setWindowOpenHandler((details: HandlerDetails) => {
-        debug("BrowserWindow.webContents.setWindowOpenHandler (always DENY): ", win.webContents.id, " --- ", details.url, " === ", win.webContents.getURL());
+        debug("BrowserWindow.webContents.setWindowOpenHandler (always DENY), win.webContents.id: ", win.webContents.id, "\n --- details.url: ", details.url.substring(0, 500), "\n === win.webContents.getURL()", win.webContents.getURL().substring(0, 500));
 
         // willNavigate(details.url);
 
@@ -848,7 +868,7 @@ function createOpdsAuthenticationModalWin(urlStr: string): BrowserWindow | undef
     });
 
     win.webContents.on("will-navigate", (details: ElectronEvent<WebContentsWillNavigateEventParams>, detailsUrl: string) => {
-        debug("BrowserWindow.webContents.on('will-navigate') (always PREVENT?): ", win.webContents.id, " --- ", details.url?.substring(0, 500), " *** ", detailsUrl?.substring(0, 500), " ~~~ ", urlStr.substring(0, 500), " === ", win.webContents.getURL()?.substring(0, 500));
+        debug("BrowserWindow.webContents.on('will-navigate') (always PREVENT?), win.webContents.id: ", win.webContents.id, "\n --- details.url: ", details.url?.substring(0, 500), "\n *** detailsUrl: ", detailsUrl?.substring(0, 500), "\n ~~~ urlStr: ", urlStr.substring(0, 500), "\n === win.webContents.getURL(): ", win.webContents.getURL()?.substring(0, 500));
 
         if (details.url?.startsWith(`${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`)) {
             debug(`${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/ ==> PASS: `, details.url?.substring(0, 500));
@@ -908,6 +928,50 @@ function createOpdsAuthenticationModalWin(urlStr: string): BrowserWindow | undef
         details.preventDefault();
         willNavigate(details.url);
     });
+
+    // win.on("close", () => {
+
+    // });
+
+    // win.webContents.once("did-start-loading", () => {
+    //     (win as any).___POST_PUT_HTTP_REQUEST_IN_MAINFRAME_WAS_DETECTED = false;
+    // });
+
+    // win.webContents.once("did-finish-load", () => {
+    //     debug("did-finish-load ==> onBeforeRequest hook", win.webContents.getURL());
+    //     const authSession = session.fromPartition(SESSION_PARTITION_AUTH, { cache: false });
+    //     authSession.webRequest.onBeforeRequest((details, callback) => {
+    //         debug("onBeforeRequest details.method", details.method);
+    //         debug("onBeforeRequest details.referrer", details.referrer);
+    //         debug("onBeforeRequest details.resourceType", details.resourceType);
+    //         debug("onBeforeRequest details.url", details.url);
+    //         debug("onBeforeRequest details.webContents?.getURL()", details.webContents?.getURL().substring(0, 500));
+
+    //         if ((details.method === "POST" || details.method === "PUT") // && details.resourceType === "mainFrame"
+    //             || (win as any).___POST_PUT_HTTP_REQUEST_IN_MAINFRAME_WAS_DETECTED) {
+
+    //             debug("onBeforeRequest ALLOW");
+    //             (win as any).___POST_PUT_HTTP_REQUEST_IN_MAINFRAME_WAS_DETECTED = true;
+    //             callback({ cancel: false, redirectURL: undefined });
+    //         } else { // GET ... HEAD PATCH etc.
+    //             debug("onBeforeRequest REJECT");
+    //             if (details.method === "GET" && details.resourceType === "mainFrame") {
+    //                 debug("onBeforeRequest REJECT reset");
+    //                 (win as any).___POST_PUT_HTTP_REQUEST_IN_MAINFRAME_WAS_DETECTED = false;
+    //             }
+    //             callback({ cancel: true, redirectURL: undefined });
+    //         }
+    //     });
+    // });
+
+    // win.webContents.loadURL
+    await win.loadURL(urlStr);
+
+    if (urlExternal) {
+        setTimeout(async () => {
+            await shell.openExternal(urlExternal);
+        }, 500);
+    }
 
     return win;
 }
@@ -1015,27 +1079,21 @@ function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
 
                 const implicitAuthData = getImplicitAuthData();
 
-                // Only validate the Id if it is present in the response
-                // This should ensure backwards compatibility with existing OPDS Authentication Providers
-                // who may be omitting it
                 if (data.id && implicitAuthData.authenticationDocumentId && data.id !== implicitAuthData.authenticationDocumentId) {
-                    debug("WARNING: OAuth 2.0 implicit grant flow contained an id but it did not match the id in the OPDS Authentication Document", "expected:", implicitAuthData.authenticationDocumentId, "actual:", data.id);
+                    debug("OAuth 2.0 implicit grant flow ID mismatch!", "expected (auth doc):", implicitAuthData.authenticationDocumentId, "actual (URL query param):", data.id);
                     return undefined;
                     // see https://github.com/edrlab/thorium-reader/pull/2510
-                }
-                else {
-                    debug("OAuth 2.0 implicit grant flow does not contain an id (search param OR auth doc), validation IGNORED and bypassed to ensure legacy compatibility with OPDS OAuth 2.0 servers", implicitAuthData.authenticationDocumentId, "actual:", data.id);
+                } else {
+                    debug("OAuth 2.0 implicit grant flow ID match or missing (URL query param and/or auth doc) ==> pass.", "expected (auth doc):", implicitAuthData.authenticationDocumentId, "actual (URL query param):", data.id);
                 }
 
-                 if (data.state !== implicitAuthData.nonce) {
-                    debug("OAuth 2.0 implicit grant flow response state parameter is not equal to the nonce sent", "expected:", implicitAuthData.nonce, "value=", data.state);
-                    debug("state nonce verification IGNORED and bypassed to ensure legacy compatibility with OPDS OAuth 2.0 servers");
-                    // TODO: improve this and enable the state verification
-
+                 if (data.state && implicitAuthData.nonce && data.state !== implicitAuthData.nonce) {
+                    debug("OAuth 2.0 implicit grant flow NONCE mismatch!", "expected (auth doc):", implicitAuthData.nonce, "actual (URL query param):", data.state);
+                    return undefined;
                     // https://auth0.com/docs/secure/attack-protection/state-parameters
                     // https://github.com/edrlab/thorium-reader/issues/2506
                 } else {
-                    debug("OAuth 2.0 implicit grant flow response parameters VERIFIED and CORRECT");
+                    debug("OAuth 2.0 implicit grant flow NONCE match or missing (URL query param and/or auth doc) ==> pass.", "expected (auth doc):", implicitAuthData.nonce, "actual (URL query param):", data.state);
                 }
 
                 return {
@@ -1468,13 +1526,394 @@ const htmlLoginTemplate = (
                             <p><input hidden type="text" name="algorithm" value="${DOMPurify.sanitize(algorithm)}"></p>
                             <p><input hidden type="text" name="realm" value="${DOMPurify.sanitize(realm)}"></p>
                             <div class="submit">
-                                <input type="button" name="cancel" value="${getTranslator().translate("catalog.opds.auth.cancel")}" onClick="window.location.href='${DOMPurify.sanitize(urlToSubmit)}';">
+                                <input
+                                    type="button"
+                                    name="cancel"
+                                    value="${getTranslator().translate("catalog.opds.auth.cancel")}"
+                                    onClick="window.close();">
+                                <!-- window.location.href='${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/' -->
                                 <div class="submit_button">
                                     <input type="submit" name="commit" value="${getTranslator().translate("catalog.opds.auth.login")}">
                                     <label for="commit">${LoginIcon}</label>
                                 </div>
                             </div>
                         </form>
+                    </div>
+                </div>
+            </div>
+        </body>
+
+    </html>`;
+};
+
+const htmlLoginExternalTemplate = (title: string, urlFriendly: string, urlExternal: string) => {
+    return `
+    <html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>${DOMPurify.sanitize(title)}</title>
+
+        <!-- Custom styles for this template -->
+        <style>
+        body {
+                font: 13px/20px Nunito, "Lucida Grande", Tahoma, Verdana, sans-serif;
+                font-weight: 400;
+                color: #404040;
+                background: #ECF2FD;
+                width: 100vw;
+                height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0;
+            }
+
+            .login {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                background: white;
+                border-radius: 20px;
+                margin: auto;
+                width: 60vw;
+                max-width: 700px;
+                min-height: 35vh;
+                height: fit-content;
+                padding: 20px 40px;
+                position: relative;
+                gap: 50px;
+                flex-wrap: wrap;
+                overflow: hidden;
+
+                @media only screen and (max-width: 1000px) {
+                    flex-direction: column;
+                }
+            }
+
+            .container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-between;
+                flex: 1;
+                flex-wrap: wrap;
+                width: 100%;
+            }
+
+            .presentation {
+                display: flex;
+                flex-direction: column;
+                max-height: 45vh;
+                justify-content: start;
+                width: 100%;
+            }
+
+            .presentation h1 {
+                line-height: 40px;
+                font-size: 30px;
+                font-weight: bold;
+                color: #555;
+                width: fit-content;
+                padding-right: 30px;
+                border-bottom: 1px solid #e5e5e5;
+            }
+
+            .content_wrapper {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 50px;
+
+                @media only screen and (max-width: 1000px) {
+                    gap: unset;
+                }
+            }
+
+            .content_informations {
+                display: flex;
+                flex-direction: column;
+                align-items: start;
+                gap: 10px;
+            }
+
+            .logo {
+                max-height: 200px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                flex: 1;
+
+                @media only screen and (max-width: 1000px) {
+                    // display: none;
+                    position: absolute;
+                    transform-origin: top right;
+                    right: 40px;
+                    top: 20px;
+                    max-height: 75px;
+                    max-width: 150px;
+                }
+
+                @media only screen and (max-width: 600px) {
+                    display: none;
+                }
+            }
+
+            .login form {
+                flex: 2;
+                border-bottom: 1px solid #e5e5e5;
+                width: fit-content;
+                align-items: end;
+                justify-content: center;
+                display: flex;
+                flex-direction: column;
+
+                @media only screen and (max-width: 1000px) {
+                    border: none;
+                    align-items: start;
+                }
+            }
+
+            .login p {
+                margin: 0;
+                position: relative;
+                max-width: 400px;
+                width: 100%;
+            }
+
+            .login p:has(input[name=login]) {
+                margin: 20px 0 10px;
+            }
+
+            .login p:has(input[name=password]):has(+ .register_button) {
+                margin: 10px 0 0;
+            }
+
+            .login p:has(input[name=password]) {
+                margin: 10px 0;
+            }
+
+            .login p label {
+                position: absolute;
+                top: -8px;
+                left: 20px;
+                background-color: white;
+                padding: 0 5px;
+            }
+
+            .login p svg {
+                height: 20px;
+                fill: black;
+                transform: translate(-50%, -50%);
+                position: absolute;
+                top: 50%;
+                left: 20px;
+            }
+
+            .login p:first-child {
+                margin-top: 0;
+            }
+
+            .login input[type=text], .login input[type=password] {
+                width: 100%;
+                height: 35px;
+                border: 1px solid black;
+                border-radius: 5px;
+            }
+
+            .login .submit {
+                text-align: right;
+                // position: absolute;
+                bottom: 20px;
+                right: 40px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                justify-content: end;
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .submit_button {
+                position: relative;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                padding: 0;
+            }
+
+            .submit_button label {
+                position: absolute;
+                transform: translate(-50%, -50%);
+                top: 50%;
+                left: 10px;
+            }
+
+            .submit_button label svg {
+                height: 15px;
+                width: 15px;
+                fill: white;
+                transition: 200ms linear;
+            }
+
+            .register_button {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                width: 100%;
+                max-width: 400px;
+                text-decoration: none;
+                color: #1053C8;
+                margin: 5px 5px 10px;
+            }
+
+            .register_button svg {
+                height: 12px;
+                fill: #1053C8;
+            }
+
+            .help_links {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 5px;
+                gap: 10px;
+                width: fit-content;
+                position: relative;
+
+                @media only screen and (max-width: 1000px) {
+                    position: absolute;
+                    flex-direction: row;
+                    bottom: -30px;
+                    left: 10px;
+                }
+            }
+
+            .help_links a {
+                color: #1053C8;
+            }
+
+            .help_links a:visited {
+                color: #1053C8;
+            }
+
+            :-moz-placeholder {
+                color: #c9c9c9 !important;
+                font-size: 13px;
+            }
+
+            ::-webkit-input-placeholder {
+                color: #ccc;
+                font-size: 13px;
+            }
+
+            input {
+                font-family: 'Lucida Grande', Tahoma, Verdana, sans-serif;
+                font-size: 14px;
+            }
+
+            input[type=text], input[type=password] {
+                margin: 5px;
+                padding: 0 10px 0 25px;
+                width: 300px;
+                height: 34px;
+                color: #404040;
+                background: white;
+                border: 1px solid;
+                border-color: #c4c4c4 #d1d1d1 #d4d4d4;
+                border-radius: 2px;
+                -moz-outline-radius: 3px;
+            }
+
+            input[type=text]:focus, input[type=password]:focus {
+                border-color: #1053C8;
+                outline-color: #1053C8;
+                outline-offset: 0;
+            }
+
+            input[type=submit] {
+                padding: 0 18px;
+                height: 29px;
+                font-size: 14px;
+                color: white;
+                background: #1053C8;
+                border-radius: 5px;
+                border: 1px solid transparent;
+                -webkit-box-sizing: content-box;
+                -moz-box-sizing: content-box;
+                box-sizing: content-box;
+                padding: 0 10px 0 20px;
+                transition: 200ms;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                cursor: pointer;
+            }
+
+            input[type=submit] > svg {
+                height: 15px;
+                fill: white;
+            }
+
+            input[type=button] {
+                padding: 0 18px;
+                height: 29px;
+                font-size: 14px;
+                color: #1053C8;
+                background: #ECF2FD;
+                border: 1px solid #1053C8;
+                border-radius: 5px;
+                -webkit-box-sizing: content-box;
+                -moz-box-sizing: content-box;
+                box-sizing: content-box;
+                padding: 0 1em;
+                transition: 200ms;
+                cursor: pointer;
+            }
+
+            input[type=submit]:hover {
+                background: #ECF2FD;
+                border-color: #1053C8;
+                color: #1053C8;
+            }
+
+            input[type=submit]:hover + label svg {
+                fill: #1053C8;
+            }
+
+            input[type=button]:hover {
+                background: white;
+            }
+
+            .lt-ie9 input[type=text], .lt-ie9 input[type=password] {
+                line-height: 34px;
+            }
+        </style>
+        </head>
+
+        <body class="text-center">
+            <div class="login">
+                <div class="container">
+                    <div class="presentation">
+                        <h1>${DOMPurify.sanitize(title)}</h1>
+                        <h2><a href="${urlExternal}">${DOMPurify.sanitize(urlFriendly)} (...)</a></h2>
+                    </div>
+                    <div class="content_wrapper">
+                        <b>${getTranslator().translate("catalog.opds.auth.external")}</b>
+                        <div class="submit">
+                            <input
+                                type="button"
+                                name="cancel"
+                                value="${getTranslator().translate("catalog.opds.auth.cancel")}"
+                                onClick="window.close();">
+                                <!-- window.location.href='${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/' -->
+                        </div>
                     </div>
                 </div>
             </div>

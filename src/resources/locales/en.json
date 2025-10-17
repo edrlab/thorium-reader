@@ -98,6 +98,7 @@
         "opds": {
             "auth": {
                 "cancel": "Cancel",
+                "external": "The login page will open in your web browser, please follow the instructions. Once logged-in, the web browser will return you to this application.",
                 "login": "Login",
                 "password": "Password",
                 "register": "Register",
@@ -819,7 +820,6 @@
             "noTemporaryNavTargetOutline": "Disable visual navigation indicators",
             "paginated": "Paginated",
             "paraSpacing": "Paragraph spacing",
-            "spreadModeEven": "Page spreads 'even' (default is 'odd')",
             "pdfZoom": {
                 "name": {
                     "100pct": "100%",
@@ -847,6 +847,7 @@
             "reduceMotion": "Reduce motion",
             "scrolled": "Scrollable",
             "spacing": "Spacing",
+            "spreadModeEven": "Page spreads 'even' (default is 'odd')",
             "text": "Text",
             "theme": {
                 "name": {

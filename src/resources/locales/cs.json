@@ -98,6 +98,7 @@
         "opds": {
             "auth": {
                 "cancel": "Zrušit",
+                "external": "",
                 "login": "Přihlásit se",
                 "password": "Heslo",
                 "register": "Registrovat",
@@ -846,6 +847,7 @@
             "reduceMotion": "",
             "scrolled": "",
             "spacing": "",
+            "spreadModeEven": "",
             "text": "Text",
             "theme": {
                 "name": {

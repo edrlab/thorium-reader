@@ -98,6 +98,7 @@
         "opds": {
             "auth": {
                 "cancel": "İptal",
+                "external": "",
                 "login": "Giriş Yap",
                 "password": "Şifre",
                 "register": "Kaydol",
@@ -846,6 +847,7 @@
             "reduceMotion": "Hareketi azalt",
             "scrolled": "Kaydırılabilir",
             "spacing": "Aralık ayarları",
+            "spreadModeEven": "",
             "text": "Metin ayarları",
             "theme": {
                 "name": {

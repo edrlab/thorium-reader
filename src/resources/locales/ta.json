@@ -98,6 +98,7 @@
         "opds": {
             "auth": {
                 "cancel": "ரத்துசெய்",
+                "external": "",
                 "login": "புகுபதிவு",
                 "password": "கடவுச்சொல்",
                 "register": "பதிவு செய்யுங்கள்",
@@ -846,6 +847,7 @@
             "reduceMotion": "இயக்கத்தைக் குறைக்கவும்",
             "scrolled": "கீறப்பட்டது",
             "spacing": "இடைவெளி",
+            "spreadModeEven": "",
             "text": "உரை",
             "theme": {
                 "name": {
