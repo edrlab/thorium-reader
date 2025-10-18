@@ -174,7 +174,7 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
                 aria-label={__("reader.marks.saveMark")}
                 onClick={(e) => {
                     e.preventDefault();
-                    const textareaNormalize = textAreaValue.trim(); // .replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
+                    const textareaNormalize = textAreaValue.trim(); // also see trimNormaliseWhitespaceAndCollapse()
                     // if (textareaNormalize) {
                     save(textareaNormalize, hexToRgb(colorSelected), tag);
                     saveConfig();

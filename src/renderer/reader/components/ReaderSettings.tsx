@@ -65,6 +65,7 @@ import { TTSStateEnum } from "@r2-navigator-js/electron/renderer/readaloud";
 import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
 import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
 import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/renderer/note";
+import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
 
 const noteColorCodeToColorTranslatorKeySet_ = {
     [rgbToHex(readerConfigInitialState.ttsHighlightColor)]: "Dark Yellow" as TTranslatorKeyParameter,
@@ -332,8 +333,8 @@ export const FontFamily = () => {
     const saveFont = (value: string) => {
         let val = value.trim();
         // a"b:c    ;d;<e>f'g&h
-        val = val.
-            replace(/\t/g, "").
+        val = trimNormaliseWhitespaceAndCollapse(
+            val.
             replace(/"/g, "").
             replace(/:/g, "").
             replace(/'/g, "").
@@ -342,9 +343,8 @@ export const FontFamily = () => {
             replace(/>/g, "").
             replace(/\\/g, "").
             replace(/\//g, "").
-            replace(/&/g, "").
-            replace(/\n/g, " ").
-            replace(/\s\s+/g, " ");
+            replace(/&/g, ""),
+        );
         if (!val) { // includes empty string (falsy)
             val = undefined;
         }

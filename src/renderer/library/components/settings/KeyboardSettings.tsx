@@ -52,6 +52,7 @@ import * as WindowsIcon from "readium-desktop/renderer/assets/icons/windows-icon
 import { useTranslator } from "../../../common/hooks/useTranslator";
 import { useDispatch } from "../../../common/hooks/useDispatch";
 import os from "node:os";
+import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
 
 const _isMac = os.platform() === "darwin";
 const _isWindows = os.platform() === "win32";
@@ -243,7 +244,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         const { __ } = this.props;
 
         const isSearchEmpty = !this.state.searchItem || this.state.searchItem.trim() === "";
-        const searchItem = isSearchEmpty ? undefined : this.state.searchItem.replace(/\s\s+/g, " ").trim().toLowerCase();
+        const searchItem = isSearchEmpty ? undefined : trimNormaliseWhitespaceAndCollapse(this.state.searchItem).toLowerCase();
         // console.log(`<${this.state.searchItem}>`, `<${searchItem}>`);
 
         const cleanNames = sortObject({

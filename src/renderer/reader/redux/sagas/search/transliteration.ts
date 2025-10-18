@@ -148,6 +148,8 @@ export const transliteratesSameLengths = {
     "۷": "7",
     "۸": "8",
     "۹": "9",
+    // https://github.com/sindresorhus/transliterate/blob/f4a527f5e8fa6dc7c2142c3125b594cfa3f0d0c2/index.js#L60-L61
+    // .replace(/\p{Dash_Punctuation}/gu, '-')
     "–": "-",
     "—": "-",
     "−": "-",
@@ -954,6 +956,10 @@ export const transliteratesPureDiacriticsEXTRA = {
     "ї": "і",
 } as { [str: string]: string };
 
+// https://github.com/sindresorhus/transliterate/blob/f4a527f5e8fa6dc7c2142c3125b594cfa3f0d0c2/index.js#L58
+// remove all remaining diacritics?
+// .normalize('NFD').replaceAll(/\p{Diacritic}/gu, '').normalize();
+
 // https://fr.wikipedia.org/wiki/%C5%92
 // Œuf œuf oeuf
 let _equivalentsList: Array<Set<string>> | undefined;
@@ -1033,12 +1039,4 @@ export const equivalents = () => {
         }
     }
     return _equivalentsList;
-};
-
-export const collapseWhitespaces = (str: string) => {
-    return str.replace(/[\r\n]/g, " ").replace(/\s\s+/g, " ");
-};
-
-export const cleanupStr = (str: string) => {
-    return collapseWhitespaces(str).trim();
 };

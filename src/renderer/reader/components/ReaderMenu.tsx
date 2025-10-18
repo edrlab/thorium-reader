@@ -104,6 +104,7 @@ import { getSaga } from "../createStore";
 import { clone } from "ramda";
 import { marked } from "readium-desktop/renderer/common/marked/marked";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
+import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
 
 (window as any).__shell_openExternal = (url: string) => url && /^https?:\/\//.test(url) ? shell.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
 
@@ -2485,7 +2486,7 @@ const GoToPageSection: React.FC<IBaseProps & { totalPages?: number }> = (props) 
         const isFixedLayoutPublication = !r2Publication.PageList &&
             r2Publication.Metadata?.Rendition?.Layout === "fixed";
 
-        const pageNbr = goToRef.current.value.trim().replace(/\s\s+/g, " ");
+        const pageNbr = trimNormaliseWhitespaceAndCollapse(goToRef.current.value);
         if (isFixedLayoutPublication) {
             try {
                 const spineIndex = parseInt(pageNbr, 10) - 1;
