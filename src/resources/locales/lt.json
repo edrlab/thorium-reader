@@ -98,7 +98,7 @@
         "opds": {
             "auth": {
                 "cancel": "Atšaukti",
-                "external": "",
+                "external": "Jūsų interneto naršyklėje atsidarys prisijungimo puslapis, sekite instrukcijas. Kai prisijungsite, interneto naršyklė grąžins jus į šią programą.",
                 "login": "Prisijungimas",
                 "password": "Slaptažodis",
                 "register": "Užsiregistruoti",
@@ -847,7 +847,7 @@
             "reduceMotion": "Mažinti judesių kiekį",
             "scrolled": "Slenkantis",
             "spacing": "Išretinimas",
-            "spreadModeEven": "",
+            "spreadModeEven": "Lyginis puslapių išdėstymas (numatytasis išdėstymas – nelyginis)",
             "text": "Tekstas",
             "theme": {
                 "name": {
@@ -862,8 +862,7 @@
                 },
                 "title": "Tema"
             },
-            "wordSpacing": "Tarpas tarp žodžių",
-            "spreadModeEven": "Lyginis puslapių išdėstymas (numatytasis išdėstymas – nelyginis)"
+            "wordSpacing": "Tarpas tarp žodžių"
         },
         "svg": {
             "left": "Kairė",
