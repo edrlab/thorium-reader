@@ -156,9 +156,11 @@ declare namespace typed_i18n {
     readonly "auth": {
       readonly "cancel": string,
       readonly "external": string,
+      readonly "fallback": string,
       readonly "login": string,
       readonly "password": string,
       readonly "register": string,
+      readonly "retry": string,
       readonly "username": string
     },
     readonly "info": {
@@ -248,9 +250,11 @@ declare namespace typed_i18n {
   readonly "auth": {
     readonly "cancel": string,
     readonly "external": string,
+    readonly "fallback": string,
     readonly "login": string,
     readonly "password": string,
     readonly "register": string,
+    readonly "retry": string,
     readonly "username": string
   },
   readonly "info": {
@@ -275,16 +279,20 @@ declare namespace typed_i18n {
   (_: "catalog.opds.auth", __?: {}): {
   readonly "cancel": string,
   readonly "external": string,
+  readonly "fallback": string,
   readonly "login": string,
   readonly "password": string,
   readonly "register": string,
+  readonly "retry": string,
   readonly "username": string
 };
   (_: "catalog.opds.auth.cancel", __?: {}): string;
   (_: "catalog.opds.auth.external", __?: {}): string;
+  (_: "catalog.opds.auth.fallback", __?: {}): string;
   (_: "catalog.opds.auth.login", __?: {}): string;
   (_: "catalog.opds.auth.password", __?: {}): string;
   (_: "catalog.opds.auth.register", __?: {}): string;
+  (_: "catalog.opds.auth.retry", __?: {}): string;
   (_: "catalog.opds.auth.username", __?: {}): string;
   (_: "catalog.opds.info", __?: {}): {
   readonly "availableSince": string,
@@ -1770,7 +1778,6 @@ declare namespace typed_i18n {
     readonly "noTemporaryNavTargetOutline": string,
     readonly "paginated": string,
     readonly "paraSpacing": string,
-    readonly "spreadModeEven": string,
     readonly "pdfZoom": {
       readonly "name": {
         readonly "100pct": string,
@@ -1798,6 +1805,7 @@ declare namespace typed_i18n {
     readonly "reduceMotion": string,
     readonly "scrolled": string,
     readonly "spacing": string,
+    readonly "spreadModeEven": string,
     readonly "text": string,
     readonly "theme": {
       readonly "name": {
@@ -2163,7 +2171,6 @@ declare namespace typed_i18n {
   readonly "noTemporaryNavTargetOutline": string,
   readonly "paginated": string,
   readonly "paraSpacing": string,
-  readonly "spreadModeEven": string,
   readonly "pdfZoom": {
     readonly "name": {
       readonly "100pct": string,
@@ -2191,6 +2198,7 @@ declare namespace typed_i18n {
   readonly "reduceMotion": string,
   readonly "scrolled": string,
   readonly "spacing": string,
+  readonly "spreadModeEven": string,
   readonly "text": string,
   readonly "theme": {
     readonly "name": {
@@ -2238,7 +2246,6 @@ declare namespace typed_i18n {
   (_: "reader.settings.noTemporaryNavTargetOutline", __?: {}): string;
   (_: "reader.settings.paginated", __?: {}): string;
   (_: "reader.settings.paraSpacing", __?: {}): string;
-  (_: "reader.settings.spreadModeEven", __?: {}): string;
   (_: "reader.settings.pdfZoom", __?: {}): {
   readonly "name": {
     readonly "100pct": string,
@@ -2293,6 +2300,7 @@ declare namespace typed_i18n {
   (_: "reader.settings.reduceMotion", __?: {}): string;
   (_: "reader.settings.scrolled", __?: {}): string;
   (_: "reader.settings.spacing", __?: {}): string;
+  (_: "reader.settings.spreadModeEven", __?: {}): string;
   (_: "reader.settings.text", __?: {}): string;
   (_: "reader.settings.theme", __?: {}): {
   readonly "name": {
