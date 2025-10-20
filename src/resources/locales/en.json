@@ -99,9 +99,11 @@
             "auth": {
                 "cancel": "Cancel",
                 "external": "The login page will open in your web browser, please follow the instructions. Once logged-in, the web browser will return you to this application.",
+                "fallback": "Note: in case of login problems with the default web browser method, try again with the alternative in-application method",
                 "login": "Login",
                 "password": "Password",
                 "register": "Register",
+                "retry": "Try again",
                 "username": "Username / Email Address"
             },
             "info": {

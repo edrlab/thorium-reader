@@ -226,7 +226,7 @@ export class OpdsService {
         const opdsAuthChannel = getOpdsAuthenticationChannel();
 
         debug("put the authentication model in the saga authChannel", JSON.stringify(r2OpdsAuth, null, 4));
-        opdsAuthChannel.put([r2OpdsAuth, responseUrl]);
+        opdsAuthChannel.put([r2OpdsAuth, responseUrl, false]); // retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser
 
     }
 
