@@ -86,7 +86,7 @@
         "importAnnotation": "Importuoti pastabas",
         "lang": "Kalba",
         "lastRead": "Pask. kartą skaityta",
-        "login": "",
+        "login": "Prisijungti",
         "logout": "Atsijungti",
         "moreInfo": "Daugiau informacijos",
         "myBooks": "Mano leidiniai",
@@ -98,6 +98,7 @@
         "opds": {
             "auth": {
                 "cancel": "Atšaukti",
+                "external": "",
                 "login": "Prisijungimas",
                 "password": "Slaptažodis",
                 "register": "Užsiregistruoti",
@@ -846,6 +847,7 @@
             "reduceMotion": "Mažinti judesių kiekį",
             "scrolled": "Slenkantis",
             "spacing": "Išretinimas",
+            "spreadModeEven": "",
             "text": "Tekstas",
             "theme": {
                 "name": {
@@ -860,7 +862,8 @@
                 },
                 "title": "Tema"
             },
-            "wordSpacing": "Tarpas tarp žodžių"
+            "wordSpacing": "Tarpas tarp žodžių",
+            "spreadModeEven": "Lyginis puslapių išdėstymas (numatytasis išdėstymas – nelyginis)"
         },
         "svg": {
             "left": "Kairė",

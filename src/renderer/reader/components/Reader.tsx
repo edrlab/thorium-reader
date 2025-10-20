@@ -26,7 +26,7 @@ import {
 } from "readium-desktop/common/models/reader";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { dialogActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
-import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { IReaderPdfConfig, IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { ok } from "readium-desktop/common/utils/assert";
 import { formatTime } from "readium-desktop/common/utils/time";
 import {
@@ -81,7 +81,7 @@ import {
 } from "@r2-navigator-js/electron/renderer/index";
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
-import { TToc } from "../pdf/common/pdfReader.type";
+import { IPdfPlayerScale, TToc } from "../pdf/common/pdfReader.type";
 import { pdfMount } from "../pdf/driver";
 import {
     readerLocalActionAnnotations,
@@ -250,6 +250,8 @@ interface IState {
 
     pdfPlayerToc: TToc | undefined;
     pdfPlayerNumberOfPages: number | undefined;
+    pdfPlayerZoom: IPdfPlayerScale;
+    pdfPlayerSpreadMode: number;
     pdfThumbnailImageCacheArray: string[];
 
     // openedSectionSettings: number | undefined;
@@ -351,6 +353,8 @@ class Reader extends React.Component<IProps, IState> {
 
             pdfPlayerToc: undefined,
             pdfPlayerNumberOfPages: undefined,
+            pdfPlayerZoom: "page-fit",
+            pdfPlayerSpreadMode: 0,
             pdfThumbnailImageCacheArray: [],
 
             // openedSectionSettings: undefined,
@@ -515,7 +519,35 @@ class Reader extends React.Component<IProps, IState> {
 
             this.loadPublicationIntoViewport();
 
-            createOrGetPdfEventBus().subscribe("savePreferences", ({ page, scrollTop }) => {
+            createOrGetPdfEventBus().subscribe("savePreferences", (options) => {
+
+                debug("PDF.JS subscribe on \"savePreference\": ", options);
+                /*
+                
+                {
+                  page: 1,
+                  scrollTop: 792,
+                  zoom: 100, // can be default : "page-fit"
+                  sidebarView: 0,
+                  scrollLeft: -47,
+                  rotation: 0,
+                  spreadMode: 2 // 0: one col, 1: two col odd, 2: two col even
+                }
+                
+                */
+
+                // data persistence: zoom and spreadMode
+                this.setState({
+                    pdfPlayerSpreadMode: typeof options.spreadMode === "number" && options.spreadMode >= 0 && options.spreadMode <= 2 ? options.spreadMode : 0,
+                    pdfPlayerZoom: typeof options.zoom === "number" ? options.zoom : (options.zoom === "page-fit") ? "page-fit" : (options.zoom === "page-width") ? "page-width" : "page-fit",
+                });
+
+                this.props.setPdfReaderConfig({
+                    spreadmode: (typeof options.spreadMode === "number" && options.spreadMode >= 0 && options.spreadMode <= 2 ? options.spreadMode : 0) as 0 | 1 | 2,
+                    scale: typeof options.zoom === "number" ? options.zoom : (options.zoom === "page-fit") ? "page-fit" : (options.zoom === "page-width") ? "page-width" : "page-fit",
+                });
+
+                const { page, scrollTop } = options;
                 const locatorExtended: LocatorExtended = {
                     audioPlaybackInfo: undefined,
                     paginationInfo: undefined,
@@ -530,6 +562,7 @@ class Reader extends React.Component<IProps, IState> {
                     locator: {
                         href: `${page}`,
                         locations: {
+                            // Todo keep synchronized scrollTop AND! scrollLeft
                             position: scrollTop,
                             progression: 0,
                         },
@@ -729,6 +762,16 @@ class Reader extends React.Component<IProps, IState> {
                 this.hideAnnotationsForTTSorMOPlay();
             }
         }
+        if (oldProps.pdfReaderConfig.scale !== this.props.pdfReaderConfig.scale && this.props.pdfReaderConfig.scale !== this.state.pdfPlayerZoom) {
+
+            console.log("SET PDF ZOOM to", this.props.pdfReaderConfig.scale);
+            this.setState({pdfPlayerZoom: this.props.pdfReaderConfig.scale});
+        }
+        if (oldProps.pdfReaderConfig.spreadmode !== this.props.pdfReaderConfig.spreadmode && this.props.pdfReaderConfig.spreadmode !== this.state.pdfPlayerSpreadMode) {
+
+            console.log("SET PDF spreadmode to", this.props.pdfReaderConfig.spreadmode);
+            this.setState({pdfPlayerSpreadMode: this.props.pdfReaderConfig.spreadmode});
+        }
     }
 
     public componentWillUnmount() {
@@ -837,6 +880,15 @@ class Reader extends React.Component<IProps, IState> {
                 this.setZenModeAndFXLZoom(zen, fxlZoom);
             },
             // searchEnable: this.props.searchEnable,
+
+            pdfPlayerZoom: this.state.pdfPlayerZoom,
+            // setPdfPlayerZoom: (value: IPdfPlayerScale) => {
+            //     this.setState({ pdfPlayerZoom: value });
+            // },
+            pdfPlayerSpreadMode: this.state.pdfPlayerSpreadMode,
+            // setPdfPlayerSpreadMode: (value: number) => {
+            //     this.setState({ pdfPlayerSpreadMode: value });
+            // },
         };
 
         const isAudioBook = isAudiobookFn(this.props.r2Publication);
@@ -3251,6 +3303,9 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         menuOpen: state.dialog.open && state.dialog.type === DialogTypeName.ReaderMenu || state.dock.open && state.dock.type === DockTypeName.ReaderMenu,
         settingsOpen: state.dialog.open && state.dialog.type === DialogTypeName.ReaderSettings || state.dock.open && state.dock.type === DockTypeName.ReaderSettings,
 
+
+        pdfReaderConfig: state.reader.pdfConfig,
+
         // Reader Lock Demo
         // lock: state.reader.lock,
         // Reader Lock Demo
@@ -3358,6 +3413,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
         toggleSettings: (data: readerLocalActionToggleSettings.Payload) => {
             dispatch(readerLocalActionToggleSettings.build(data));
+        },
+        setPdfReaderConfig: (data: IReaderPdfConfig) => {
+            dispatch(readerActions.pdfConfig.build(data));
         },
     };
 };

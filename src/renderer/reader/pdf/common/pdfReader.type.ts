@@ -10,7 +10,7 @@ import { IEventBus } from "./eventBus";
 
 // export type IPdfPlayerScale = "fit" | "width" | "50" | "100" | "150" | "200" | "300" | "500";
 export type IPdfPlayerScale = "page-fit" | "page-width" | number;
-export type IPdfPlayerView = "scrolled" | "paginated";
+export type IPdfPlayerView = "scrolled"; // | "paginated";
 export type IPdfPlayerColumn = "auto" | "1" | "2";
 
 export interface IPdfPlayerEvent {
@@ -30,7 +30,7 @@ export interface IPdfPlayerEvent {
     "page-next": () => any;
     "page-previous": () => any;
     "ready": () => any;
-    "start": (pdfPath: string) => any;
+    "start": (pdfPath: string, scale: IPdfPlayerScale, spreadMode: 0 | 1 | 2) => any;
     "copy": (text: string) => any;
     "keydown": (event: IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN) => any;
     "keyup": (event: IEventPayload_R2_EVENT_WEBVIEW_KEYUP) => any;
@@ -38,7 +38,7 @@ export interface IPdfPlayerEvent {
     "numberofpages": (pages: number) => any;
     "savePreferences": (data: {
         page: number,
-        zoom: string,
+        zoom: string | number,
         scrollLeft: number,
         scrollTop: number,
         rotation: number,

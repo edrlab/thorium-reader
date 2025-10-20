@@ -98,6 +98,7 @@
         "opds": {
             "auth": {
                 "cancel": "Annullér",
+                "external": "",
                 "login": "Log ind",
                 "password": "Adgangskode",
                 "register": "Registrér",
@@ -846,6 +847,7 @@
             "reduceMotion": "Reducér bevægelser",
             "scrolled": "Scrollbart",
             "spacing": "Mellemrum",
+            "spreadModeEven": "",
             "text": "Tekst",
             "theme": {
                 "name": {

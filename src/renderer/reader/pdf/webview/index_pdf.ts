@@ -157,17 +157,26 @@ function main() {
         },
     );
 
-    const defaultView: IPdfPlayerView = "scrolled";
-    const defaultScale: IPdfPlayerScale = "page-fit";
+    // const defaultView: IPdfPlayerView = "scrolled";
+    // const defaultScale: IPdfPlayerScale = "page-fit";
     const defaultCol: IPdfPlayerColumn = "1";
     const defaultSpreadModeEven = false;
 
     // start dispatched from webview dom ready
-    bus.subscribe("start", async (pdfPath: string) => {
+    bus.subscribe("start", async (pdfPath: string, scale: IPdfPlayerScale, spreadMode: 0 | 1 | 2) => {
 
         pdfDocument.then(async (pdf) => {
 
             console.log("PDFDOC LOADED");
+
+            // setTimeout(() => {
+                const debounceSave = debounce(async (data: any) => {
+                    bus.dispatch("savePreferences", data);
+                }, 200);
+                pdfjsEventBus.on("__savePreferences", async (data: any) => {
+                    await debounceSave(data)
+                })
+            // }, 100);
 
             const toc = await getToc(pdf);
 
@@ -177,14 +186,17 @@ function main() {
             bus.dispatch("toc", toc);
             bus.dispatch("numberofpages", pdf.numPages);
 
+            pdfjsEventBus.dispatch("scalechanged", { value: typeof scale === "number" ? `${scale / 100}` : scale });
+            pdfjsEventBus.dispatch("switchspreadmode", { mode: spreadMode });
+
         }).catch((e) => console.error(e));
 
         console.log("bus.subscribe start pdfPath", pdfPath);
 
-        bus.dispatch("scale", defaultScale);
-        bus.dispatch("view", defaultView);
-        bus.dispatch("column", defaultCol);
-        bus.dispatch("spreadModeEven", defaultSpreadModeEven);
+        // bus.dispatch("scale", defaultScale);
+        // bus.dispatch("view", defaultView);
+        // bus.dispatch("column", defaultCol);
+        // bus.dispatch("spreadModeEven", defaultSpreadModeEven);
 
     });
 
@@ -209,22 +221,18 @@ function main() {
         })
     }
 
-    {
-        const debounceSave = debounce(async (data: any) => {
-            bus.dispatch("savePreferences", data);
-        }, 200);
-        pdfjsEventBus.on("__savePreferences", async (data: any) => {
-            await debounceSave(data)
-        })
-    }
 
-    {
-        pdfjsEventBus.on("__ready", () => {
 
-            // send to reader.tsx ready to render pdf
-            bus.dispatch("ready");
-        });
-    }
+    // never send anymore
+    // {
+    //     pdfjsEventBus.on("__ready", () => {
+
+    //         // send to reader.tsx ready to render pdf
+    //         bus.dispatch("ready");
+
+
+    //     });
+    // }
 
     // search
     {
@@ -333,29 +341,29 @@ function main() {
 
     }
     // view
-    let lockViewMode = false;
+    // let lockViewMode = false;
     {
-        bus.subscribe("view", (view) => {
-            if (view === "paginated") {
-                pdfjsEventBus.dispatch("scalechanged", { value: "page-fit" });
-                bus.dispatch("scale", "page-fit");
-                document.body.className = "hidescrollbar";
-                lockViewMode = true;
-            } else if (view === "scrolled") {
-                document.body.className = "";
-                lockViewMode = false;
-            }
-            bus.dispatch("view", view);
-        });
+        // bus.subscribe("view", (view) => {
+        //     if (view === "paginated") {
+        //         pdfjsEventBus.dispatch("scalechanged", { value: "page-fit" });
+        //         bus.dispatch("scale", "page-fit");
+        //         document.body.className = "hidescrollbar";
+        //         lockViewMode = true;
+        //     } else if (view === "scrolled") {
+        //         document.body.className = "";
+        //         lockViewMode = false;
+        //     }
+        //     bus.dispatch("view", view);
+        // });
     }
     // scale
     {
         bus.subscribe("scale", (scale) => {
-            if (!lockViewMode) {
+            // if (!lockViewMode) {
 
-                pdfjsEventBus.dispatch("scalechanged", { value: typeof scale === "number" ? `${scale / 100}` : scale });
-                bus.dispatch("scale", scale);
-            }
+            pdfjsEventBus.dispatch("scalechanged", { value: typeof scale === "number" ? `${scale / 100}` : scale });
+            bus.dispatch("scale", scale);
+            // }
         });
         pdfjsEventBus.on("scalechanging", ({/*_scale, */ presetValue }: any) => bus.dispatch("scale", presetValue));
     }

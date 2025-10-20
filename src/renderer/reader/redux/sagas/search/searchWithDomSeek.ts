@@ -9,9 +9,10 @@ import { convertRange } from "@r2-navigator-js/electron/renderer/webview/selecti
 
 import { getCssSelector_ } from "./cssSelector";
 import { escapeRegExp } from "./regexp";
-import { cleanupStr, collapseWhitespaces, equivalents } from "./transliteration";
+import { equivalents } from "./transliteration";
 import { getCount } from "readium-desktop/utils/counter";
 import { ISearchResult } from "readium-desktop/common/redux/states/renderer/search";
+import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
 
 export async function searchDocDomSeek(searchInput: string, doc: Document, href: string): Promise<ISearchResult[]> {
     // https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent
@@ -24,8 +25,9 @@ export async function searchDocDomSeek(searchInput: string, doc: Document, href:
 
     const searchInput_ = searchInput;
 
+    // searchInput.normalize() ?? PROBLEM: doc.body.textContent is not .normalize() in order to match DOM exactly for Range computations
     // searchInput = searchInput.replace(/[\s]+/gmi, '\\s+')
-    searchInput = cleanupStr(searchInput);
+    searchInput = trimNormaliseWhitespaceAndCollapse(searchInput);
     if (!searchInput.length) {
         return [];
     }
@@ -102,7 +104,7 @@ export async function searchDocDomSeek(searchInput: string, doc: Document, href:
         }
     }
 
-    searchInput = searchInput.replace(/ /g, "\\s+"); // see cleanupStr() which collapsed all contiguous whitespaces in single space, and trimmed
+    searchInput = searchInput.replace(/ /g, "\\s+"); // see trimNormaliseWhitespaceAndCollapse() which collapsed all contiguous whitespaces in single space, and trimmed
 
     // https://github.com/julkue/mark.js/blob/7f7e9820514e2268918c2259b58aec3bd5f437f6/src/lib/regexpcreator.js#L279-L295
     // u+00ad = soft hyphen
@@ -144,14 +146,17 @@ export async function searchDocDomSeek(searchInput: string, doc: Document, href:
         // console.log("matches.index: ", matches.index);
         // console.log("matches[0].length: ", matches[0].length);
 
+        // SEE? (_extractSnippet + blockSelector) https://searchfox.org/firefox-main/source/toolkit/modules/FinderIterator.sys.mjs#375-451
+        // ALSO NOTE DIACRITICS HANDLED NATIVELY (@mozilla.org/typeaheadfind ==> @mozilla.org/embedcomp/rangefind) https://searchfox.org/firefox-main/source/toolkit/modules/Finder.sys.mjs#34-37 https://searchfox.org/firefox-main/source/toolkit/components/typeaheadfind/nsTypeAheadFind.h#117
+
         let i = Math.max(0, matches.index - snippetLength);
         let l = Math.min(snippetLength, matches.index);
-        let textBefore = collapseWhitespaces(text.substr(i, l));
+        let textBefore = trimNormaliseWhitespaceAndCollapse(text.substr(i, l), false);
         textBefore = textBefore.substr(textBefore.length - snippetLengthNormalized);
 
         i = regexp.lastIndex;
         l = Math.min(snippetLength, text.length - i);
-        const textAfter = collapseWhitespaces(text.substr(i, l)).substr(0, snippetLengthNormalized);
+        const textAfter = trimNormaliseWhitespaceAndCollapse(text.substr(i, l), false).substr(0, snippetLengthNormalized);
 
         const range = new Range(); // document.createRange()
 
@@ -259,7 +264,7 @@ export async function searchDocDomSeek(searchInput: string, doc: Document, href:
             const rangeInfo = tuple[0];
             // const textInfo = tuple[1];
             searchResults.push({
-                cleanText: collapseWhitespaces(matches[0]),
+                cleanText: trimNormaliseWhitespaceAndCollapse(matches[0], false),
                 cleanBefore: textBefore,
                 cleanAfter: textAfter,
                 // rawText: textInfo.rawText,

@@ -71,7 +71,6 @@ export const extractPDFData =
             });
 
             // win.hide(); // doesn't works on linux
-            await win.loadURL(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PDFJS}/web/viewer.html?file=${pdfPath}`);
 
             const willNavigate = (navUrl: string | undefined | null) => {
 
@@ -108,6 +107,9 @@ export const extractPDFData =
 
                 willNavigate(details.url);
             });
+
+            // win.webContents.loadURL
+            await win.loadURL(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PDFJS}/web/viewer.html?file=${pdfPath}`);
 
             const pdata = new Promise<TExtractPdfData>((resolve) =>
                 win.webContents.on("ipc-message", (e, c, ...arg) => {
@@ -164,7 +166,7 @@ export const extractPDFData =
 
         } finally {
 
-            if (win) {
+            if (win && !win.isDestroyed() && !win.webContents.isDestroyed()) {
                 win.close();
             }
 

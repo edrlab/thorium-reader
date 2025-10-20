@@ -98,6 +98,7 @@
         "opds": {
             "auth": {
                 "cancel": "إلغاء",
+                "external": "",
                 "login": "تسجيل الدخول",
                 "password": "كلمة المرور",
                 "register": "تسجيل",
@@ -846,6 +847,7 @@
             "reduceMotion": "تقليل الحركة",
             "scrolled": "قابل للتمرير",
             "spacing": "التباعد",
+            "spreadModeEven": "",
             "text": "النص",
             "theme": {
                 "name": {

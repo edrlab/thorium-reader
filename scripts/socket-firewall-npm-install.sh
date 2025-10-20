@@ -7,6 +7,12 @@ cp package.json package-sfw-backup.json ;\
 cp package-lock.json package-lock-sfw-backup.json ;\
 rm -f package-lock.json ;\
 
+# TODO?
+# Readium Speech v2
+# https://github.com/readium/speech/issues/19
+# https://github.com/readium/speech/blob/84bfec91d7421b238ecfa70ef4ec476650dec590/package.json#L32
+# string-strip-html
+#
 # https://github.com/readium/speech/blob/build/package.json
 node -e 'const path = require("path"); const fs = require("fs"); const filePath = path.join(process.cwd(), "package.json"); let fileStr = fs.readFileSync(filePath, { encoding: "utf8" }); fileStr = fileStr.replace(/^\s+"readium-speech":.+$/gm, ""); fs.writeFileSync(filePath, fileStr, { encoding: "utf8" });' ;\
 
