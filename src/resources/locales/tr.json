@@ -98,7 +98,7 @@
         "opds": {
             "auth": {
                 "cancel": "İptal",
-                "external": "",
+                "external": "giriş sayfası web tarayıcınızda açılacak, lütfen talimatları izleyin. Giriş yaptıktan sonra, web tarayıcısı sizi bu uygulamaya geri döndürecek.",
                 "login": "Giriş Yap",
                 "password": "Şifre",
                 "register": "Kaydol",
@@ -847,7 +847,7 @@
             "reduceMotion": "Hareketi azalt",
             "scrolled": "Kaydırılabilir",
             "spacing": "Aralık ayarları",
-            "spreadModeEven": "",
+            "spreadModeEven": "Sayfa görüntülenmesi 'çift' (varsayılan 'tek'tir)",
             "text": "Metin ayarları",
             "theme": {
                 "name": {
@@ -862,8 +862,7 @@
                 },
                 "title": "Tema"
             },
-            "wordSpacing": "Kelime aralığı",
-            "spreadModeEven": "Sayfa görüntülenmesi 'çift' (varsayılan 'tek'tir)"
+            "wordSpacing": "Kelime aralığı"
         },
         "svg": {
             "left": "Sol",
