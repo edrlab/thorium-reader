@@ -390,7 +390,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
             <Popover.Trigger asChild>
                 <li
                     {...(numberOfVisibleBookmarks ?
-                        { style: { backgroundColor: "var(--color-blue" } }
+                        { style: { backgroundColor: "var(--color-brand-primary)" } }
                         : {})}
                 >
                     <input
@@ -457,7 +457,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                         color={noteDefaultColor}
                         tags={[]}
                     />
-                    <Popover.Arrow style={{ fill: "var(--color-extralight-grey)" }} width={15} height={10} />
+                    <Popover.Arrow style={{ fill: "var(--color-gray-50" }} width={15} height={10} />
                 </Popover.Content>
             </Popover.Portal>
 

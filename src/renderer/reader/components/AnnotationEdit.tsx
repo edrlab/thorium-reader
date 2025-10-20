@@ -133,7 +133,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
             <h4>{__("reader.annotations.addNote")}</h4>
         }
         <div
-            className={classNames(displayFromReaderMenu ? "" : stylesAnnotations.annotations_line, dockedMode ? stylesAnnotations.docked_annotation_line : "")} style={{ backgroundColor: !displayFromReaderMenu ? "var(--color-extralight-grey)" : "" }}>
+            className={classNames(displayFromReaderMenu ? "" : stylesAnnotations.annotations_line, dockedMode ? stylesAnnotations.docked_annotation_line : "")} style={{ backgroundColor: !displayFromReaderMenu ? "var(--color-gray-50" : "" }}>
             <p>{
                 locatorExtended?.selectionInfo?.cleanText ?
                     (locatorExtended.selectionInfo.cleanText.length > (200 - 3) ?
@@ -150,7 +150,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                 maxLength={annotationMaxLength}
                 onChange={(a) => setAnnotationLength(a.currentTarget.value.length)}
             />
-            <span style={{fontSize: "10px", color: "var(--color-medium-grey)", width: "420px", textAlign: "end"}}>{annotationLength}/{annotationMaxLength}</span>
+            <span style={{fontSize: "10px", color: "var(--color-gray-400)", width: "420px", textAlign: "end"}}>{annotationLength}/{annotationMaxLength}</span>
 
         </div>
         <div className={stylesAnnotations.annotation_actions}>
@@ -167,7 +167,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
                                 aria-label={__(translatorKey)}
                             />
                             <label aria-hidden={true} title={__(translatorKey)} htmlFor={`${uuid}_color-${colorHex}`}
-                                style={{ backgroundColor: colorHex, border: colorSelected === colorHex ? "1px solid var(--color-dark-grey)" : "" }}
+                                style={{ backgroundColor: colorHex, border: colorSelected === colorHex ? "1px solid var(--color-gray-900)" : "" }}
                             >
                                 {colorSelected === colorHex ? <SVG ariaHidden svg={CheckIcon} /> : <></>}
                             </label>

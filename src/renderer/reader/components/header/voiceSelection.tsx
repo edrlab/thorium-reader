@@ -111,7 +111,7 @@ export const VoiceSelection: React.FC<IProps> = (props) => {
                     (section) =>
                         <ListBoxSection id={section.id}>
                             <ReactAriaHeader
-                                style={{ paddingLeft: "5px", fontSize: "16px", color: "var(--color-blue)", borderBottom: "1px solid var(--color-light-blue)" }}
+                                style={{ paddingLeft: "5px", fontSize: "16px", color: "var(--color-brand-primary)", borderBottom: "1px solid var(--color-brand-secondary)" }}
                             >
                                 {section.name}
                             </ReactAriaHeader>

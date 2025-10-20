@@ -89,7 +89,7 @@ const LanguageSettings: React.FC<{}> = () => {
     };
     const selectedKey = options.find(({name}) => name === currentLanguageString);
     return (
-        <ComboBox label={__("settings.language.languageChoice")} defaultItems={options} defaultSelectedKey={selectedKey?.id} onSelectionChange={setLang} svg={LanguageIcon} style={{borderBottom: "2px solid var(--color-extralight-grey)"}}>
+        <ComboBox label={__("settings.language.languageChoice")} defaultItems={options} defaultSelectedKey={selectedKey?.id} onSelectionChange={setLang} svg={LanguageIcon} style={{borderBottom: "2px solid var(--color-gray-50"}}>
             {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
         </ComboBox>
     );
@@ -159,7 +159,7 @@ const SaveSessionSettings: React.FC<{}> = () => {
                             }
                         }}
                         className={stylesGlobal.checkbox_custom}
-                        style={{ border: sessionSaveState ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: sessionSaveState ? "var(--color-blue)" : "transparent" }}>
+                        style={{ border: sessionSaveState ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: sessionSaveState ? "var(--color-brand-primary)" : "transparent" }}>
                         {sessionSaveState ?
                             <SVG ariaHidden svg={CheckIcon} />
                             :
@@ -211,7 +211,7 @@ const ScreenReaderSettings: React.FC<{}> = () => {
                             }
                         }}
                         className={stylesGlobal.checkbox_custom}
-                        style={{ border: screenReaderActivate ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: screenReaderActivate ? "var(--color-blue)" : "transparent" }}>
+                        style={{ border: screenReaderActivate ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: screenReaderActivate ? "var(--color-brand-primary)" : "transparent" }}>
                         {screenReaderActivate ?
                             <SVG ariaHidden svg={CheckIcon} />
                             :
@@ -345,7 +345,7 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
                             }
                         }}
                         className={stylesGlobal.checkbox_custom}
-                        style={{ border: enableCheckbox ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: enableCheckbox ? "var(--color-blue)" : "transparent" }}>
+                        style={{ border: enableCheckbox ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: enableCheckbox ? "var(--color-brand-primary)" : "transparent" }}>
                         {enableCheckbox ?
                             <SVG ariaHidden svg={CheckIcon} />
                             :
@@ -404,7 +404,7 @@ const ManageAccessToCatalogSettings = () => {
                             }
                         }}
                         className={stylesGlobal.checkbox_custom}
-                        style={{ border: enableAPIAPP ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: enableAPIAPP ? "var(--color-blue)" : "transparent" }}>
+                        style={{ border: enableAPIAPP ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: enableAPIAPP ? "var(--color-brand-primary)" : "transparent" }}>
                         {enableAPIAPP ?
                             <SVG ariaHidden svg={CheckIcon} />
                             :

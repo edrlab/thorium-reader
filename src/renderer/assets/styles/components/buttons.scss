@@ -9,8 +9,8 @@ button {
   background: none;
   border: 0;
   height: 30px;
-  color: var(--color-primary);
-  fill: var(--color-primary);
+  color: var(--color-text-primary);
+  fill: var(--color-text-primary);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -46,44 +46,44 @@ button {
 }
 
 .button_primary_blue {
-  border: 1px solid var(--color-blue);
+  border: 1px solid var(--color-brand-primary);
   height: 30px;
   border-radius: 4px;
   padding: 5px;
   min-width: 100px;
-  background-color: var(--color-blue);
-  color: var(--color-secondary);
+  background-color: var(--color-brand-primary);
+  color: var(--color-neutral-base);
   transition: 200ms linear;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
   &:focus-within, &:focus {
-    outline: var(--color-blue) solid 1px !important;
+    outline: var(--color-brand-primary) solid 1px !important;
     outline-offset: 2px;
     border-radius: 5px;
-    background-color: var(--color-blue);
-    color: var(--color-secondary)!important;
+    background-color: var(--color-brand-primary);
+    color: var(--color-neutral-base)!important;
 
     svg {
-      fill: var(--color-secondary)!important;
-      color: var(--color-secondary)!important;
+      fill: var(--color-neutral-base)!important;
+      color: var(--color-neutral-base)!important;
     }
   }
 
 
   svg {
     width: 14px;
-    fill: var(--color-secondary);
+    fill: var(--color-neutral-base);
   }
 
   &:hover {
-    color: var(--color-blue);
-    background-color: var(--color-light-blue);
+    color: var(--color-brand-primary);
+    background-color: var(--color-brand-secondary);
 
     svg {
-      fill: var(--color-blue)!important;
-      color: var(--color-blue)!important;
+      fill: var(--color-brand-primary)!important;
+      color: var(--color-brand-primary)!important;
     }
   }
 }
@@ -102,13 +102,13 @@ button {
       width: 14px;
       vertical-align: -2px;
       margin-left: 5px;
-      fill: var(--color-primary);
+      fill: var(--color-text-primary);
     }
 
     &.button_icon {
       height: 16px;
       padding: 8px 20px;
-      background: var(--color-secondary);
+      background: var(--color-neutral-base);
       overflow: visible;
 
       & input {
@@ -144,7 +144,7 @@ button {
     width: auto;
     height: 14px;
     transition: all 0.2s;
-    fill: var(--color-primary);
+    fill: var(--color-text-primary);
   }
 
   &.icon_end {
@@ -157,26 +157,26 @@ button {
 /* 4. .button_secondary */
 
 .button_secondary_blue {
-  border: 1px solid var(--color-buttons-border);
+  border: 1px solid var(--color-button-border);
   height: 30px;
   border-radius: 4px;
   padding: 5px;
   min-width: 100px;
-  background-color: var(--color-light-blue);
-  color: var(--color-blue);
+  background-color: var(--color-brand-secondary);
+  color: var(--color-brand-primary);
   display: flex;
   align-items: center;
   justify-content: center;
 
   &:hover {
-    color: var(--color-blue);
-    background-color: var(--color-secondary)
+    color: var(--color-brand-primary);
+    background-color: var(--color-neutral-base)
   }
 
   svg {
     width: 12px;
     height: 12px;
-    fill: var(--color-blue);
+    fill: var(--color-brand-primary);
   }
 }
 
@@ -184,12 +184,12 @@ button {
   padding: 10px 15px;
   position: relative;
   display: inline;
-  background-color: var(--color-accent);
+  background-color: var(--color-brand-primary);
   border: none;
   border-radius: 5px;
   text-align: center;
-  color: var(--color-accent-contrast);
-  fill: var(--color-accent-contrast);
+  color: var(--color-brand-primary-contrast);
+  fill: var(--color-brand-primary-contrast);
   text-decoration: none;
   overflow: hidden;
   cursor: pointer;
@@ -199,7 +199,7 @@ button {
 
   & svg {
     vertical-align: -2px;
-    fill: var(--color-accent-contrast);
+    fill: var(--color-brand-primary-contrast);
     width: auto;
     height: 14px;
     transition: all 0.2s;
@@ -217,7 +217,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-primary);
+  color: var(--color-text-primary);
   transition: all 0.2s;
   border-radius: 5px;
   background: rgb(0 0 0 / 0%);
@@ -227,7 +227,7 @@ button {
   cursor: pointer;
 
   & svg {
-    fill: var(--color-primary);
+    fill: var(--color-text-primary);
   }
 
   &:hover {
@@ -252,13 +252,13 @@ button {
   height: 30px;
   width: 30px;
   transition-duration: 0ms;
-  fill: var(--color-blue);
+  fill: var(--color-brand-primary);
 
   & svg {
     height: 20px;
     width: 20px;
-    fill: var(--color-buttons-border);
-    color: var(--color-buttons-border);
+    fill: var(--color-button-border);
+    color: var(--color-button-border);
     transition: all 0.2s 0.05s;
   }
 
@@ -275,7 +275,7 @@ button {
   }
 
   &:disabled {
-    background-color: var(--color-verylight-grey-alt);
+    background-color: var(--color-gray-250);
   }
 }
 
@@ -292,12 +292,12 @@ button {
 }
 
 .button_nav_primary {
-  border: 1px solid var(--color-buttons-border);
+  border: 1px solid var(--color-button-border);
   height: 20px;
   border-radius: 4px;
   padding: 5px;
-  background-color: var(--color-light-blue);
-  color: var(--color-blue);
+  background-color: var(--color-brand-secondary);
+  color: var(--color-brand-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -314,22 +314,22 @@ button {
   }
 
   &:focus-within, &:focus {
-    outline: var(--color-buttons-border) solid 1px !important;
+    outline: var(--color-button-border) solid 1px !important;
     outline-offset: 2px;
     border-radius: 5px;
-    background-color: var(--color-blue);
-    color: var(--color-secondary)!important;
+    background-color: var(--color-brand-primary);
+    color: var(--color-neutral-base)!important;
 
     svg {
-      fill: var(--color-secondary)!important;
-      color: var(--color-secondary)!important;
+      fill: var(--color-neutral-base)!important;
+      color: var(--color-neutral-base)!important;
     }
   }
 
   svg {
     width: 15px;
     height: 15px;
-    fill: var(--color-blue);
+    fill: var(--color-brand-primary);
   }
 
   input {
@@ -350,7 +350,7 @@ button {
   border-radius: 4px;
   padding: 5px;
   background-color: transparent;
-  color: var(--color-primary);
+  color: var(--color-text-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -362,7 +362,7 @@ button {
   svg {
     width: 15px;
     height: 15px;
-    fill: var(--color-primary);
+    fill: var(--color-text-primary);
   }
 
   input {
@@ -377,7 +377,7 @@ button {
   border-radius: 4px;
   padding: 5px;
   background-color: transparent;
-  color: var(--color-blue);
+  color: var(--color-brand-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -390,13 +390,13 @@ button {
   transition: 200ms;
 
   &:hover {
-    border-color: var(--color-blue);
+    border-color: var(--color-brand-primary);
   }
 
   &:focus-within {
     @include mx.R2_MIXIN_FOCUS_OUTLINE;
 
-    outline: var(--color-blue) solid 1px !important;
+    outline: var(--color-brand-primary) solid 1px !important;
     outline-offset: 2px;
     border-radius: 5px;
   }
@@ -412,8 +412,8 @@ button {
   svg {
     width: 15px;
     height: 15px;
-    fill: var(--color-blue);
-    color: var(--color-blue);
+    fill: var(--color-brand-primary);
+    color: var(--color-brand-primary);
     transform: rotate(0);
     transition: 200ms;
   }
@@ -429,10 +429,10 @@ button {
 }
 
 .button_catalog_infos {
-  color: var(--color-blue);
+  color: var(--color-brand-primary);
   border-radius: 4px;
   padding: 5px;
-  background-color: var(--color-light-blue);
+  background-color: var(--color-brand-secondary);
   margin: 10px 0;
   width: fit-content;
 
@@ -450,7 +450,7 @@ button {
 
   svg {
     width: 20px;
-    fill: var(--color-blue);
+    fill: var(--color-brand-primary);
   }
 }
 

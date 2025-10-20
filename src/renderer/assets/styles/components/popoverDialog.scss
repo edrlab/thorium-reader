@@ -16,11 +16,11 @@
   flex-direction: column;
   // overflow: hidden auto;
   align-content: flex-start;
-  color: var(--color-primary);
+  color: var(--color-text-primary);
   position: fixed;
   box-sizing: border-box;
   overflow: hidden;
-  border: 1px solid var(--color-verylight-grey-alt);
+  border: 1px solid var(--color-gray-250);
 
   @media only screen and (height <= 700px) {
     min-height: 550px;
@@ -49,7 +49,7 @@
 
 [data-theme="light"] {
   .modal_dialog_reader {
-    box-shadow: 0 1px 10px 2px var(--color-verylight-grey-alt);
+    box-shadow: 0 1px 10px 2px var(--color-gray-250);
     border: none;
   }
 }
@@ -57,7 +57,7 @@
 [data-theme="system"] {
   @media (prefers-color-scheme: light) {
     .modal_dialog_reader {
-      box-shadow: 0 1px 10px 2px var(--color-verylight-grey-alt);
+      box-shadow: 0 1px 10px 2px var(--color-gray-250);
       border: none;
     }
   }
@@ -71,10 +71,10 @@
   flex-direction: column;
   box-sizing: border-box;
   z-index: 100;
-  background-color: var(--color-secondary);
+  background-color: var(--color-neutral-base);
   position: absolute;
   overflow: hidden;
-  color: var(--color-primary);
+  color: var(--color-text-primary);
 
   .pages .react_aria_ComboBox .my_combobox_container { 
     > * {
@@ -102,19 +102,19 @@
 
   .display_options_item {
     background-color: transparent;
-    color: var(--color-primary);
+    color: var(--color-text-primary);
     font-size: 12px;
 
     &:disabled {
-      background-color: var(--color-extralight-grey);
+      background-color: var(--color-gray-50);
     }
   }
 
   .docked_header + .react_aria_ComboBox {
     padding: 15px 20px!important;
     width: calc(100% - 40px);
-    background-color: var(--color-docked-header);
-    border-bottom: 1px solid var(--color-extralight-grey-alt);
+    background-color: var(--color-header-docked);
+    border-bottom: 1px solid var(--color-gray-100);
 
     .my_combobox_container {
       width: 310px;
@@ -146,9 +146,9 @@
       width: 100%;
       min-width: 110px;
       height: 25px;
-      background-color: var(--color-light-blue);
-      color: var(--color-blue);
-      border-color: var(--color-blue) !important;
+      background-color: var(--color-brand-secondary);
+      color: var(--color-brand-primary);
+      border-color: var(--color-brand-primary) !important;
       display: flex;
       align-items: center;
 
@@ -158,7 +158,7 @@
       }
 
       > button {
-        color: var(--color-blue);
+        color: var(--color-brand-primary);
 
         > span {
           text-overflow: ellipsis;
@@ -168,7 +168,7 @@
         }
 
         svg {
-          fill: var(--color-blue);
+          fill: var(--color-brand-primary);
         }
       }
 
@@ -205,8 +205,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 10px;
-  background-color: var(--color-docked-header);
-  border-bottom: 1px solid var(--color-extralight-grey-alt);
+  background-color: var(--color-header-docked);
+  border-bottom: 1px solid var(--color-gray-100);
   height: 32px;
   gap: 10px;
 
@@ -260,7 +260,7 @@
   }
 
   .line, .subheading:not(.inert) {
-    color: var(--color-primary);
+    color: var(--color-text-primary);
     border-left: 2px solid transparent;
     transition: 200ms;
     width: fit-content;
@@ -272,7 +272,7 @@
     
     &.active:not(.inert) {
       &:hover {
-        background-color: var(--color-light-blue);
+        background-color: var(--color-brand-secondary);
       }
     }
   }
@@ -283,7 +283,7 @@
 
   & .subheading:not(.inert) {
     &:hover {
-      background-color: var(--color-light-blue) !important;
+      background-color: var(--color-brand-secondary) !important;
     }
   }
 
@@ -319,15 +319,15 @@
   }
 
   li[aria-level="1"] {
-    color: var(--color-primary);
-    border-left: 2px solid var(--color-blue);
+    color: var(--color-text-primary);
+    border-left: 2px solid var(--color-brand-primary);
     transition: 200ms;
     width: 90%;
     text-align: left;
     display: block;
     padding: 5px;
     margin: 5px 0;
-    background-color: var(--color-extralight-grey);
+    background-color: var(--color-gray-50);
   }
 }
 
@@ -357,8 +357,8 @@
 
   button svg {
     width: 20px;
-    fill: var(--color-blue);
-    color: var(--color-blue);
+    fill: var(--color-brand-primary);
+    color: var(--color-brand-primary);
   }
 
   button:disabled {
@@ -407,7 +407,7 @@
     font-family: Nunito, sans-serif;
 
     &:focus {
-      border: 2px solid var(--color-blue);
+      border: 2px solid var(--color-brand-primary);
     }
   }
 
@@ -423,8 +423,8 @@
   .bookmark_infos {
     // width: 100%;
     display: flex;
-    background-color: var(--color-extralight-grey);
-    border-left: 2px solid var(--color-blue);
+    background-color: var(--color-gray-50);
+    border-left: 2px solid var(--color-brand-primary);
     height: fit-content;
     padding: 0 10px;
 
@@ -462,17 +462,17 @@
       }
 
       &_buttons svg {
-        fill: var(--color-blue-alt);
-        color: var(--color-blue-alt);
+        fill: var(--color-brand-primary-inverse);
+        color: var(--color-brand-primary-inverse);
       }
 
       button {
         height: unset;
 
         &:focus {
-          // border: 1px solid var(--color-blue);
+          // border: 1px solid var(--color-brand-primary);
           border-radius: 5px;
-          background-color: var(--color-light-blue);
+          background-color: var(--color-brand-secondary);
         }
       }
     }
@@ -521,13 +521,13 @@
   width: 100%;
   margin-top: 2px;
   height: 4px;
-  background-color: var(--color-verylight-grey-alt);
+  background-color: var(--color-gray-250);
 
   & .fill {
     height: 100%;
     position: relative;
     width: 63%;
-    background-color: var(--color-mediumdark-grey-alt);
+    background-color: var(--color-gray-850);
   }
 }
 
@@ -559,7 +559,7 @@
         left: 10px;
         top: -13px;
         padding: 0 5px;
-        background-color: var(--color-secondary);
+        background-color: var(--color-neutral-base);
         text-overflow: ellipsis;
         overflow: hidden;
         max-width: 250px;
@@ -604,19 +604,19 @@
 
       svg {
         width: 15px;
-        fill: var(--color-secondary)!important;
-        color: var(--color-secondary)!important;
+        fill: var(--color-neutral-base)!important;
+        color: var(--color-neutral-base)!important;
       }
     }
   }
 
   & .title {
-    color: var(--reader-fontColor);
+    color: var(--color-text-reader);
     font-size: 1.1rem;
   }
 
   & .goToErrorMessage {
-    color: var(--color-error-dark);
+    color: var(--color-error-text);
   }
 }
 
@@ -643,7 +643,7 @@
 
     .react_aria_Button svg {
       // width: 15px;
-      color: var(--color-primary)!important;
+      color: var(--color-text-primary)!important;
     }
   }
 }
@@ -656,9 +656,9 @@
 //     padding-left: 10px!important;
 //   }
 //   .react_aria_ComboBox .my_combobox_container {
-//     background-color: var(--color-secondary)!important;
-//     color: var(--color-primary)!important;
-//     border-color: var(--color-primary)!important;
+//     background-color: var(--color-neutral-base)!important;
+//     color: var(--color-text-primary)!important;
+//     border-color: var(--color-text-primary)!important;
 //     max-width: 100px!important;
 //     button {
 //       padding: 0 5px;
@@ -672,25 +672,25 @@
   padding: 0!important;
   // padding-left: 10px!important;
   text-align: center;
-  border: 1px solid var(--color-dark-grey-alt);
+  border: 1px solid var(--color-gray-950);
   border-radius: 6px;
   display: flex;
   align-items: center;
   position: relative;
   padding-right: 0 !important;
   background-color: inherit;
-  color: var(--color-primary);
+  color: var(--color-text-primary);
 
   option {
-    background-color: var(--color-secondary);
+    background-color: var(--color-neutral-base);
   }
 }
 
 .modal_dialog_reader, .popover_dialog_reader {
   .pages .react_aria_ComboBox .my_combobox_container {
-    background-color: var(--color-secondary)!important;
-    color: var(--color-primary)!important;
-    border-color: var(--color-primary)!important;
+    background-color: var(--color-neutral-base)!important;
+    color: var(--color-text-primary)!important;
+    border-color: var(--color-text-primary)!important;
     max-width: 100px!important;
     
     input {
@@ -708,51 +708,51 @@
 
 .react_aria_ListBox {
   width: inherit;
-  background-color: var(--color-secondary);
-  color: var(--color-primary);
+  background-color: var(--color-neutral-base);
+  color: var(--color-text-primary);
 }
 
 .react_aria_ComboBox [role="group"]:focus-within {
-  outline: var(--color-blue) solid 2px !important;
+  outline: var(--color-brand-primary) solid 2px !important;
   outline-offset: -2px;
 }
 
 .delete_item_edition {
-  color: var(--color-blue);
+  color: var(--color-brand-primary);
   margin-left: 5px;
 
   &:hover {
-    background-color: var(--color-secondary);
+    background-color: var(--color-neutral-base);
   }
 
   svg {
-    color: var(--color-blue)!important;
+    color: var(--color-brand-primary)!important;
   }
 }
 
 
 .delete_item, .delete_item_edition {
   z-index: 1000;
-  border: 1px solid var(--color-blue);
-  background-color: var(--color-light-blue);
+  border: 1px solid var(--color-brand-primary);
+  background-color: var(--color-brand-secondary);
   border-radius: 5px;
   transition: 200ms;
 
   button {
     padding: 5px;
-    color: var(--color-blue);
+    color: var(--color-brand-primary);
     height: unset;
     border-radius: 5px;
 
     &:hover {
-      background-color: var(--color-secondary);
+      background-color: var(--color-neutral-base);
     }
 
     &:focus {
-      background-color: var(--color-blue);
-      border: 1px solid var(--color-secondary);
-      outline: 1px solid var(--color-blue);
-      color: var(--color-secondary);
+      background-color: var(--color-brand-primary);
+      border: 1px solid var(--color-neutral-base);
+      outline: 1px solid var(--color-brand-primary);
+      color: var(--color-neutral-base);
     }
 
     svg {

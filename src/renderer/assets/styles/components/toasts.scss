@@ -14,7 +14,7 @@
   margin-bottom: 1rem;
   position: relative;
   padding: 1rem;
-  border: 1px var(--color-success) solid;
+  border: 1px var(--color-success-text) solid;
   border-radius: 6px;
   width: 15rem;
   height: fit-content;
@@ -31,16 +31,16 @@
   }
 
   &.error {
-    background: var(--color-error);
-    border-color: var(--color-primary);
+    background: var(--color-error-bg);
+    border-color: var(--color-text-primary);
 
     .closeButton svg {
-      fill: var(--color-primary);
+      fill: var(--color-text-primary);
     }
   }
 
   &.success {
-    background: var(--color-success-light);
+    background: var(--color-success-bg);
   }
 
   p {
@@ -55,7 +55,7 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4;
-    color: var(--color-primary);
+    color: var(--color-text-primary);
   }
 
   .toast_open {
@@ -79,7 +79,7 @@
     svg {
       height: 20px;
       width: 20px;
-      fill: var(--color-success);
+      fill: var(--color-success-text);
     }
   }
 }

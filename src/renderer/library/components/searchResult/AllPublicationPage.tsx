@@ -2403,7 +2403,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                         width: W,
                                         minWidth: W,
                                         maxWidth: W,
-                                        borderBottom: "2px solid var(--color-blue)",
+                                        borderBottom: "2px solid var(--color-brand-primary)",
                                         position: "relative",
                                     }}
                                     className={stylesPublication.allBook_table_head}
@@ -2515,7 +2515,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                                 className={stylesPublication.setShowColumnFiltersCheckboxLabel}
                                                 aria-hidden="true"
                                                 htmlFor="setShowColumnFiltersCheckbox"
-                                                style={{ cursor: "pointer", padding: "0.2em", color: "var(--color-blue)", paddingBottom: "0", display: "inline-block", width: "20px" }}>
+                                                style={{ cursor: "pointer", padding: "0.2em", color: "var(--color-brand-primary)", paddingBottom: "0", display: "inline-block", width: "20px" }}>
                                                     <SVG ariaHidden svg={SearchIcon} />
                                                 </label></>
                                     }
@@ -2571,7 +2571,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
                                     <tr key={`bodytr_${index}`} {...row.getRowProps()}
                                         style={{
-                                            backgroundColor: index % 2 ? "var(--color-extralight-grey)" : undefined,
+                                            backgroundColor: index % 2 ? "var(--color-gray-50" : undefined,
                                         }}>{row.cells.map((cell, i) => {
                                             return (<td key={`bodytrtd_${i}`} {...cell.getCellProps()}
                                             >{

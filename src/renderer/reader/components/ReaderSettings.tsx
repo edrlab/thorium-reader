@@ -970,7 +970,7 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
                             }
                         }}
                         className={stylesGlobal.checkbox_custom}
-                        style={{ border: option.checked ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: option.checked ? "var(--color-blue)" : "transparent" }}>
+                        style={{ border: option.checked ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: option.checked ? "var(--color-brand-primary)" : "transparent" }}>
                         {option.checked ?
                             <SVG ariaHidden svg={CheckIcon} />
                             :
@@ -988,7 +988,7 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
         {!useMO ?
         (
         <>
-        <div style={{ border: "2px dotted var(--color-verylight-grey-alt)", borderRadius: "1em", padding: 6 }}>
+        <div style={{ border: "2px dotted var(--color-gray-250)", borderRadius: "1em", padding: 6 }}>
         <div className={stylesReader.ttsSelectRate}>
         <ComboBox label={__("tts.highlight.style")}
             defaultItems={ttsHighlightStyles}
@@ -1024,7 +1024,7 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
                             aria-label={__(translatorKey)}
                         />
                         <label aria-hidden={true} title={__(translatorKey)} htmlFor={`ttscolorpick${colorHex}`}
-                            style={{ backgroundColor: colorHex, border: ttsHighlightColorHex === colorHex ? "1px solid var(--color-dark-grey)" : "" }}
+                            style={{ backgroundColor: colorHex, border: ttsHighlightColorHex === colorHex ? "1px solid var(--color-gray-900)" : "" }}
                         >
                             {ttsHighlightColorHex === colorHex ? <SVG ariaHidden svg={DoubleCheckIcon} /> : <></>}
                         </label>
@@ -1050,7 +1050,7 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
                             aria-label={__(translatorKey)}
                         />
                         <label aria-hidden={true} title={__(translatorKey)} htmlFor={`ttscolorpickword${colorHex}`}
-                            style={{ backgroundColor: colorHex, border: ttsHighlightColor_WORDHex === colorHex ? "1px solid var(--color-dark-grey)" : "" }}
+                            style={{ backgroundColor: colorHex, border: ttsHighlightColor_WORDHex === colorHex ? "1px solid var(--color-gray-900)" : "" }}
                         >
                             {ttsHighlightColor_WORDHex === colorHex ? <SVG ariaHidden svg={DoubleCheckIcon} /> : <></>}
                         </label>
@@ -1070,7 +1070,7 @@ style={
     width: 0,
     flexBasis: "100%",
     marginTop: 10,
-    border: "1px solid var(--color-verylight-grey-alt)",
+    border: "1px solid var(--color-gray-250)",
     padding: 6,
 }
 }>
@@ -1273,7 +1273,7 @@ const ReadingDisplayCheckboxSettings = ({
                                     }
                                 }}
                                 className={stylesGlobal.checkbox_custom}
-                                style={{ border: option.checked ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: option.checked ? "var(--color-blue)" : "transparent" }}>
+                                style={{ border: option.checked ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: option.checked ? "var(--color-brand-primary)" : "transparent" }}>
                                 {option.checked ?
                                     <SVG ariaHidden svg={CheckIcon} />
                                     :
@@ -1455,7 +1455,7 @@ const AllowCustom = () => {
                         }
                     }}
                     className={stylesGlobal.checkbox_custom}
-                    style={{ border: overridePublisherDefault ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: overridePublisherDefault ? "var(--color-blue)" : "transparent" }}>
+                    style={{ border: overridePublisherDefault ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: overridePublisherDefault ? "var(--color-brand-primary)" : "transparent" }}>
                     {overridePublisherDefault ?
                         <SVG ariaHidden svg={CheckIcon} />
                         :
@@ -1714,7 +1714,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
 
     const PresetTrigger =
         <React.Fragment key="tab-preset">
-            <span style={{ width: "80%", height: "2px", backgroundColor: "var(--color-extralight-grey-alt)", margin: "10px auto" }}></span>
+            <span style={{ width: "80%", height: "2px", backgroundColor: "var(--color-gray-100)", margin: "10px auto" }}></span>
             <Tabs.Trigger value="tab-preset" disabled={false} title={__("reader.settings.preset.title")} data-value="tab-preset" style={{position: "relative"}}>
                 <SVG ariaHidden svg={GuearIcon} />
                 <h3>{__("reader.settings.preset.title")}</h3>
@@ -1810,7 +1810,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                 //         console.error("Combobox No value !!!");
                 //     }
                 // }}
-                style={{ margin: "0", padding: (dockedMode && isEpub) ? "10px 0" : "0", flexDirection: "row", backgroundColor: "var(--color-docked-header)" }}
+                style={{ margin: "0", padding: (dockedMode && isEpub) ? "10px 0" : "0", flexDirection: "row", backgroundColor: "var(--color-header-docked)" }}
                 ref={dockedModeRef}
             >
                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
