@@ -96,6 +96,8 @@ export function saga() {
 
             while (true) {
 
+                debug("Wait an event from the queue openFileFromCliChannel ...");
+
                 try {
                     const filePath = yield* takeTyped(chan);
 
@@ -110,7 +112,7 @@ export function saga() {
 
                         yield* callTyped(appActivate);
                         yield put(customizationActions.acquire.build(filePath));
-                        return ;
+                        continue ;
                     }
 
                     const pubViewArray = yield* callTyped(importFromFs, filePath);
