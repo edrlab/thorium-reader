@@ -50,11 +50,11 @@ const Controls = () => {
 
 .imgViewerControls button {
         border-radius: 6px;
-        background-color: var(--color-light-blue);
+        background-color: var(--color-brand-secondary);
         padding: 0 5px;
-        color: var(--color-blue);
-        fill: var(--color-blue);
-        border: 1px solid var(--color-blue);
+        color: var(--color-brand-primary);
+        fill: var(--color-brand-primary);
+        border: 1px solid var(--color-brand-primary);
         filter: opacity(0.8);
         transition: 200ms;
         width: 24px;
@@ -68,7 +68,7 @@ const Controls = () => {
 .imgViewerControls svg {
     width: 15px;
     height: 15px;
-    fill: var(--color-blue);
+    fill: var(--color-brand-primary);
 }
         `}</style>
             <div style={{ bottom: "20px", right: "50%", left: "50%" }} className="imgViewerControls">

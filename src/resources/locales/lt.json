@@ -98,9 +98,9 @@
         "opds": {
             "auth": {
                 "cancel": "Atšaukti",
-                "external": "",
+                "external": "Jūsų interneto naršyklėje atsidarys prisijungimo puslapis, sekite instrukcijas. Kai prisijungsite, interneto naršyklė grąžins jus į šią programą.",
                 "fallback": "",
-                "login": "Prisijungimas",
+                "login": "Prisijungim/as",
                 "password": "Slaptažodis",
                 "register": "Užsiregistruoti",
                 "retry": "",

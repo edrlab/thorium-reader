@@ -18,12 +18,12 @@
   height: auto;
   overflow: hidden;
   overflow-y: auto;
-  background: var(--color-extralight-grey);
-  border: 2px solid var(--color-light-blue);
+  background: var(--color-gray-50);
+  border: 2px solid var(--color-brand-secondary);
   margin: 0;
   padding: 10px;
   z-index: 110;
-  color: var(--color-primary);
+  color: var(--color-text-primary);
 
   li {
     display: inline-block;
@@ -58,7 +58,7 @@
     }
 
     progress:not(:indeterminate)::-webkit-progress-value {
-      background-color: var(--color-blue);
+      background-color: var(--color-brand-primary);
       border-radius: 0;
     }
 
@@ -79,18 +79,18 @@
       width: auto;
       margin: 0;
       padding: 3px;
-      color: var(--color-primary);
+      color: var(--color-text-primary);
 
       svg {
         width: 12px;
         height: 12px;
-        fill: var(--color-primary);
-        color: var(--color-primary);
+        fill: var(--color-text-primary);
+        color: var(--color-text-primary);
         transition: 200ms;
 
         &:hover {
-          fill: var(--color-error-dark);
-          color: var(--color-error-dark);
+          fill: var(--color-error-text);
+          color: var(--color-error-text);
         }
       }
     }

@@ -51,7 +51,7 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
                 <PublicationInfoLibWithRadixContent
                 />
             </PublicationInfoLibWithRadix>
-            <div style={{ borderBottom: "1px solid var(--color-blue)" }}></div>
+            <div style={{ borderBottom: "1px solid var(--color-brand-primary)" }}></div>
             {props.publicationView.lastReadTimeStamp ?
                 <button
                     className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
@@ -67,7 +67,7 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
                 </button>
                 : <></>
             }
-            <div style={{ borderBottom: "1px solid var(--color-blue)" }}></div>
+            <div style={{ borderBottom: "1px solid var(--color-brand-primary)" }}></div>
             <DeletePublicationConfirm
                 trigger={(
                     <button
@@ -79,11 +79,11 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
                 )}
                 publicationView={props.publicationView}
             />
-            <div style={{ borderBottom: "1px solid var(--color-blue)" }}></div>
+            <div style={{ borderBottom: "1px solid var(--color-brand-primary)" }}></div>
             <PublicationExportButton
                 publicationView={props.publicationView}
             />
-            <div style={{ borderBottom: "1px solid var(--color-blue)" }}></div>
+            <div style={{ borderBottom: "1px solid var(--color-brand-primary)" }}></div>
             <ImportAnnotationsDialog winId={undefined} publicationView={props.publicationView}>
                 <button
                     className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
@@ -92,7 +92,7 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
                     {__("catalog.importAnnotation")}
                 </button>
             </ImportAnnotationsDialog>
-            <div style={{ borderBottom: "1px solid var(--color-blue)" }}></div>
+            <div style={{ borderBottom: "1px solid var(--color-brand-primary)" }}></div>
             <button
                 className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                 onClick={debounce(async () => {

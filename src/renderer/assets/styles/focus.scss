@@ -6,7 +6,7 @@
 @use './partials/mixin' as mx;
 
 @mixin R2_MIXIN_FOCUS_OUTLINE {
-  outline: var(--color-blue) solid 2px !important;
+  outline: var(--color-brand-primary) solid 2px !important;
   // outline-offset: 2px;
 }
 

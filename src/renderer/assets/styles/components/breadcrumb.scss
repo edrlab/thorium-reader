@@ -23,7 +23,7 @@
   display: flex;
   align-items: center;
   font-weight: bold;
-  color: var(--color-blue);
+  color: var(--color-brand-primary);
   width: fit-content;
   // max-width: calc(100% - 300px);
   padding: 0;
@@ -99,8 +99,8 @@
     }
 
     &:hover {
-      background-color: var(--color-secondary);
-      border-color: var(--color-blue);
+      background-color: var(--color-neutral-base);
+      border-color: var(--color-brand-primary);
     }
 
     p {
@@ -114,7 +114,7 @@
 
    svg {
     height: 20px;
-    color: var(--color-blue);
+    color: var(--color-brand-primary);
   }
 }
 

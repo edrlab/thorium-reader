@@ -7,9 +7,9 @@
   padding-top: 0;
   padding-bottom: 0;
   height: 100vh;
-  background-color: var(--color-extralight-grey);
+  background-color: var(--color-gray-50);
   max-width: 204px;
-  border-right: 3px solid var(--color-extralight-grey-alt);
+  border-right: 3px solid var(--color-gray-100);
   flex: 1;
   transition: 200ms linear;
 
@@ -66,7 +66,7 @@
 
     & a, & button {
       text-decoration: none;
-      color: var(--color-primary);
+      color: var(--color-text-primary);
       min-width: 150px;
       justify-content: start;
       align-items: center;
@@ -98,21 +98,21 @@
       border-radius: 5px;
 
       &:not(.active):focus-within {
-        background-color: var(--color-extralight-grey);
-        outline: 2px solid var(--color-buttons-border);
+        background-color: var(--color-gray-50);
+        outline: 2px solid var(--color-button-border);
       }
 
       &:hover {
-        background-color: var(--color-secondary)!important;
-        border: 1px solid var(--color-buttons-border)!important;
+        background-color: var(--color-neutral-base)!important;
+        border: 1px solid var(--color-button-border)!important;
 
         a {
-          color: var(--color-blue);
+          color: var(--color-brand-primary);
         }
 
         svg {
-          fill: var(--color-blue);
-          color: var(--color-blue);
+          fill: var(--color-brand-primary);
+          color: var(--color-brand-primary);
         }
       }
 
@@ -125,19 +125,19 @@
       svg {
         width: 15px;
         height: 15px;
-        fill: var(--color-primary);
-        color: var(--color-primary);
+        fill: var(--color-text-primary);
+        color: var(--color-text-primary);
       }
 
       &.active {
-        color: var(--color-blue);
+        color: var(--color-brand-primary);
 
         a:focus-within {
-          background-color: var(--color-blue);
-          color: var(--color-secondary)!important;
+          background-color: var(--color-brand-primary);
+          color: var(--color-neutral-base)!important;
 
           svg {
-            color: var(--color-secondary)!important;
+            color: var(--color-neutral-base)!important;
           }
         }
 
@@ -146,8 +146,8 @@
         }
 
         svg {
-          fill: var(--color-blue);
-          color: var(--color-blue);
+          fill: var(--color-brand-primary);
+          color: var(--color-brand-primary);
         }
       }
     }
@@ -166,8 +166,8 @@
   flex-direction: row;
   align-items: end;
   justify-content: space-between;
-  border-bottom: 1px solid var(--color-verylight-grey-alt);
-  background-color: var(--color-secondary);
+  border-bottom: 1px solid var(--color-gray-250);
+  background-color: var(--color-neutral-base);
   z-index: 101;
   gap: 10px;
   padding-bottom: 30px;
@@ -197,7 +197,7 @@
     border: none;
     height: 35px;
     background-color: transparent;
-    color: var(--color-primary);
+    color: var(--color-text-primary);
     font-size: 0.9rem;
   }
 

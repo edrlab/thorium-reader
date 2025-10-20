@@ -66,7 +66,7 @@ class Catalog extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __, catalog, tags } = this.props;
 
-        const secondaryHeader = <span style={{ display: "flex", justifyContent: "end", alignItems: "end", height: "53px", borderBottom: "1px solid var(--color-verylight-grey-alt)", paddingBottom: "30px" }}><PublicationAddButton /></span>;
+        const secondaryHeader = <span style={{ display: "flex", justifyContent: "end", alignItems: "end", height: "53px", borderBottom: "1px solid var(--color-gray-250)", paddingBottom: "30px" }}><PublicationAddButton /></span>;
 
         const customizationProfileProvision = this.props.customizationProvision.find(({id}) => this.props.customizationProfileId === id);
         const profileTitle = typeof customizationProfileProvision?.title === "object" ?

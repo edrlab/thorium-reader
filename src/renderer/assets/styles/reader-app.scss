@@ -42,7 +42,7 @@
   --sideButtonColor: rgb(130 130 130 / 50%);
   --reader-mainColor: #FEFEFE;
   --reader-secondaryColor: #FEFEFE;
-  --reader-fontColor: #1E1E1E;
+  --color-text-reader: #1E1E1E;
   --reader-separatorColor: #c1c1c1;
   --reader-menuPartColor: #f8f8f8;
   --reader-menuPartTitleColor: #ededed;
@@ -59,7 +59,7 @@
 .nightMode {
   --reader-mainColor: #121212;
   --reader-secondaryColor: #121212;
-  --reader-fontColor: #EAEAEA;
+  --color-text-reader: #EAEAEA;
   --reader-separatorColor: #565656;
   --reader-menuPartColor: #353535;
   --reader-menuPartTitleColor: #151515;
@@ -69,7 +69,7 @@
 .sepiaMode {
   --reader-mainColor: #faf4e8;
   --reader-secondaryColor: #faf4e8;
-  --reader-fontColor: #050B17;
+  --color-text-reader: #050B17;
   --reader-separatorColor: #b3b3b3;
   --reader-menuPartColor: #ece6da;
   --reader-menuPartTitleColor: #e8dac5;
@@ -79,7 +79,7 @@
 .contrast1Mode {
   --reader-mainColor: #000;
   --reader-secondaryColor: #151515;
-  --reader-fontColor: white;
+  --color-text-reader: white;
   --reader-separatorColor: #565656;
   --reader-menuPartColor: #353535;
   --reader-menuPartTitleColor: #151515;
@@ -89,7 +89,7 @@
 .paperMode {
   --reader-mainColor: #E9DDC8;
   --reader-secondaryColor: #E9DDC8;
-  --reader-fontColor: black;
+  --color-text-reader: black;
   --reader-separatorColor: #565656;
   --reader-menuPartColor: #353535;
   --reader-menuPartTitleColor: #151515;
@@ -99,7 +99,7 @@
 .contrast2Mode {
   --reader-mainColor: #000;
   --reader-secondaryColor: #151515;
-  --reader-fontColor: #FF0;
+  --color-text-reader: #FF0;
   --reader-separatorColor: #565656;
   --reader-menuPartColor: #353535;
   --reader-menuPartTitleColor: #151515;
@@ -109,7 +109,7 @@
 .contrast3Mode {
   --reader-mainColor: #181842;
   --reader-secondaryColor: #181842;
-  --reader-fontColor: white;
+  --color-text-reader: white;
   --reader-separatorColor: #565656;
   --reader-menuPartColor: #353535;
   --reader-menuPartTitleColor: #151515;
@@ -119,7 +119,7 @@
 .contrast4Mode {
   --reader-mainColor: #C5E7CD;
   --reader-secondaryColor: #C5E7CD;
-  --reader-fontColor: black;
+  --color-text-reader: black;
   --reader-separatorColor: #565656;
   --reader-menuPartColor: #353535;
   --reader-menuPartTitleColor: #151515;
@@ -137,7 +137,7 @@ button {
   background: none;
   border: 0;
   cursor: pointer;
-  fill: var(--reader-fontColor);
+  fill: var(--color-text-reader);
   height: auto;
 
   &:hover {
@@ -157,8 +157,8 @@ button {
   flex-direction: column;
   overflow: hidden;
   background-color: var(--reader-mainColor);
-  color: var(--reader-fontColor);
-  fill: var(--reader-fontColor);
+  color: var(--color-text-reader);
+  fill: var(--color-text-reader);
 
   & input[type="range"] {
     position: relative;
@@ -178,7 +178,7 @@ button {
       height: 15px;
       width: 15px;
       border-radius: 10px;
-      background: var(--scrollbar-thumb);
+      background: var(--color-scrollbar-thumb);
       cursor: pointer;
       appearance: none;
       margin-top: -6px;
@@ -192,7 +192,7 @@ button {
   & .slider_marker {
     position: relative;
     vertical-align: middle;
-    color: var(--reader-fontColor);
+    color: var(--color-text-reader);
   }
 }
 
@@ -369,7 +369,7 @@ button {
   
       & a {
         text-decoration: none;
-        color: var(--reader-fontColor);
+        color: var(--color-text-reader);
   
         &:hover {
           text-decoration: underline;
@@ -392,7 +392,7 @@ button {
     cursor: pointer;
   
     &:hover {
-      color: var(--reader-fontColor);
+      color: var(--color-text-reader);
       background-color: rgb(255 255 255 / 60%);
     }
   }
@@ -462,7 +462,7 @@ button {
         width: auto;
 
         & > select {
-          color: var(--reader-fontColor);
+          color: var(--color-text-reader);
         }
       }
 
@@ -473,7 +473,7 @@ button {
 
         & > select {
           width: 180px;
-          color: var(--reader-fontColor);
+          color: var(--color-text-reader);
         }
       }
 
@@ -486,7 +486,7 @@ button {
       }
 
       & > li > select option {
-        color: var(--reader-fontColor);
+        color: var(--color-text-reader);
         background-color: var(--reader-secondaryColor);
       }
 
@@ -547,7 +547,7 @@ button {
       }
 
       & > .active {
-        color: var(--color-primary);
+        color: var(--color-text-primary);
         border-bottom: 3px solid black;
         padding-bottom: 15px;
       }
@@ -613,7 +613,7 @@ button {
   height: calc(100vh - 60px);
   z-index: 100;
   font-family: Arial, sans-serif;
-  color: var(--reader-fontColor);
+  color: var(--color-text-reader);
   background-color: var(--reader-secondaryColor);
 
   & > div > ul {
@@ -643,7 +643,7 @@ button {
         justify-content: space-between;
         align-items: center;
         margin: 0;
-        color: var(--reader-fontColor);
+        color: var(--color-text-reader);
 
         &:disabled {
           color: var(--disabled-color) !important;
@@ -668,7 +668,7 @@ button {
 .tab_content {
   position: relative;
   background-color: var(--reader-menuPartColor);
-  color: var(--reader-fontColor);
+  color: var(--color-text-reader);
   overflow: hidden;
   transition: max-height 0.5s;
 
@@ -731,7 +731,7 @@ button {
   }
 
   & .line.active {
-    color: var(--reader-fontColor);
+    color: var(--color-text-reader);
   }
 
   & .bookmarks_line {
@@ -769,7 +769,7 @@ button {
         overflow: hidden;
         text-overflow: ellipsis;
         width: 10rem;
-        color: var(--reader-fontColor);
+        color: var(--color-text-reader);
         text-align: left;
       }
     }
@@ -835,7 +835,7 @@ p.chapters_description {
 
   & > svg {
     height: 20px;
-    fill: var(--reader-fontColor);
+    fill: var(--color-text-reader);
   }
 
   &.active > button {
@@ -882,10 +882,10 @@ p.chapters_description {
   }
 
   & .active {
-    color: var(--reader-fontColor);
+    color: var(--color-text-reader);
 
     & svg {
-      fill: var(--reader-fontColor);
+      fill: var(--color-text-reader);
     }
   }
 
@@ -964,7 +964,7 @@ input[type="radio"] + label {
   font-weight: 600;
   text-align: left;
   margin-bottom: 1rem;
-  color: var(--reader-fontColor);
+  color: var(--color-text-reader);
 }
 
 .line_tab_content select {
@@ -978,8 +978,8 @@ input[type="radio"] + label {
 }
 
 .line_tab_content.config_save button {
-  border: 1px solid var(--reader-fontColor);
-  color: var(--reader-fontColor);
+  border: 1px solid var(--color-text-reader);
+  color: var(--color-text-reader);
   padding: 0.5em;
   border-radius: 0.3em;
   font-size: 0.8em;
@@ -1080,7 +1080,7 @@ input[type="radio"] + label {
 
 
     svg {
-      color: var(--color-blue);
+      color: var(--color-brand-primary);
       width: 25px;
     }
 }
@@ -1102,7 +1102,7 @@ input[type="radio"] + label {
   #buttonFXLZoom {
     border: 1px solid transparent;
     background-color: transparent;
-    color: var(--color-blue);
+    color: var(--color-brand-primary);
     padding: 5px;
     border-radius: 6px;
     text-align: center;
@@ -1122,9 +1122,9 @@ input[type="radio"] + label {
     }
   
     &:hover, &:focus {
-      border: 1px solid var(--color-blue);
-      background-color: var(--color-light-blue);
-      color: var(--color-blue);
+      border: 1px solid var(--color-brand-primary);
+      background-color: var(--color-brand-secondary);
+      color: var(--color-brand-primary);
     }
   }
 }
@@ -1146,7 +1146,7 @@ input[type="radio"] + label {
   width: fit-content;
 
   &:has(input:focus) {
-    outline: var(--color-blue) solid 2px !important;
+    outline: var(--color-brand-primary) solid 2px !important;
     outline-offset: -2px;
   }
 }

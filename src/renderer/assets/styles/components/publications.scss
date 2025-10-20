@@ -61,7 +61,7 @@
     box-sizing: border-box;
     // border: 1px solid #e2e2e2;
     border-radius: 6px;
-    background-color: var(--color-extralight-grey);
+    background-color: var(--color-gray-50);
   }
 
   .gradient {
@@ -120,7 +120,7 @@
         overflow: hidden;
         text-align: center;
         margin: 10px 5%;
-        color: var(--color-primary);
+        color: var(--color-text-primary);
 
         &:not(:first-child) {
           font-size: 90%;
@@ -164,15 +164,15 @@
   }
 
   &:hover, &:focus {
-    border: 1px solid var(--color-blue);
-    background-color: var(--color-light-blue);
+    border: 1px solid var(--color-brand-primary);
+    background-color: var(--color-brand-secondary);
   }
 }
 
 .expired {
   &:hover, &:focus {
     border: 1px solid red;
-    background-color: var(--color-error);
+    background-color: var(--color-error-bg);
   }
 }
 
@@ -208,13 +208,13 @@
       font-size: 12px;
 
       &:hover {
-        background-color: var(--color-light-blue);
+        background-color: var(--color-brand-secondary);
       }
     }
 
     & svg {
-      fill: var(--color-blue);
-      color: var(--color-blue);
+      fill: var(--color-brand-primary);
+      color: var(--color-brand-primary);
       border-radius: 4px;
       transition: 200ms linear;
     }
@@ -232,12 +232,12 @@
   svg {
     width: 13px;
     height: 13px;
-    color: var(--color-primary)!important;
+    color: var(--color-text-primary)!important;
   }
 }
 
 .lcp_over svg {
-  color: var(--color-error-dark)!important;
+  color: var(--color-error-text)!important;
 }
 
 /* 2. list */
@@ -252,7 +252,7 @@
   align-items: center;
 
   &:nth-child(odd) {
-    background-color: var(--color-light-grey);
+    background-color: var(--color-gray-300);
   }
 }
 
@@ -479,7 +479,7 @@
   & a,
   & span label {
     text-decoration: none;
-    color: var(--color-primary);
+    color: var(--color-text-primary);
     ;
     padding: 0.7rem;
     text-align: center;
@@ -540,7 +540,7 @@
     overflow: hidden;
     text-align: center;
     margin: 10px 5%;
-    color: var(--color-primary);
+    color: var(--color-text-primary);
   }
 
   & .box {
@@ -569,7 +569,7 @@
   box-sizing: border-box;
   // border: 1px solid #e2e2e2;
   border-radius: 6px;
-  background-color: var(--color-light-grey);
+  background-color: var(--color-gray-300);
 }
 
 .corner {
@@ -577,11 +577,11 @@
   position: absolute;
   // top: -15px;
   // right: -15px;
-  // background-color: var(--color-blue);
+  // background-color: var(--color-brand-primary);
   display : inline-block;
   height : 0;
   width : 0;
-  border-top : 50px solid var(--color-secondary);
+  border-top : 50px solid var(--color-neutral-base);
   border-left : 50px solid transparent;
   opacity: 0.8;
   right: 5px;
@@ -590,7 +590,7 @@
   svg {
     width: 15px;
     height: 15px;
-    color: var(--color-blue);
+    color: var(--color-brand-primary);
     position: absolute;
     transform: translate(-50%, -50%);
     top: -32px;
