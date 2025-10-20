@@ -149,11 +149,9 @@ const opdsAuthFlow =
 
             const task = yield* forkTyped(function*() {
 
-                                debug("OPDS auth parse 1");
                 const parsedRequest = yield* takeTyped(opdsRequestFromCustomProtocol);
                 // yield delay(1000);
 
-                debug("OPDS auth parse 2");
                 return {
                     request: parseRequestFromCustomProtocol(parsedRequest.request),
                     callback: parsedRequest.callback,
@@ -169,8 +167,6 @@ const opdsAuthFlow =
             }
 
             try {
-
-                debug("OPDS auth A");
                 yield race({
                     a: delay(240000),
                     b: join(task),
@@ -179,7 +175,6 @@ const opdsAuthFlow =
                             new Promise<void>((resolve) => win.on("close", () => resolve())),
                     ),
                 });
-                debug("OPDS auth B");
 
                 if (task.isRunning()) {
 
@@ -195,11 +190,9 @@ const opdsAuthFlow =
                     return;
 
                 } else {
-                    debug("OPDS auth X");
                     const { request: opdsCustomProtocolRequestParsed, callback } = task.result();
-                    debug("OPDS auth Y");
                     if (opdsCustomProtocolRequestParsed) {
-                        debug("OPDS auth Z");
+
                         if (!opdsCustomProtocolRequestParsed.data ||
                             !Object.keys(opdsCustomProtocolRequestParsed.data).length) {
 
@@ -236,13 +229,13 @@ const opdsAuthFlow =
 
                             return;
                         }
-                        debug("OPDS auth 1");
+
                         const [, err] = yield* callTyped(opdsSetAuthCredentials,
                             opdsCustomProtocolRequestParsed,
                             authCredentials,
                             authParsed.authenticationType,
                         );
-debug("OPDS auth 2");
+
                         callback({
                             url: undefined,
                         });
@@ -252,7 +245,6 @@ debug("OPDS auth 2");
 
                             return;
                         } else {
-                            debug("OPDS auth 3");
                             yield put(historyActions.refresh.build());
                             yield put(authActions.done.build());
                         }
@@ -873,12 +865,14 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
                 // fetch("URL_PROTOCOL_THORIUMHTTPS"+"://"+URL_HOST_COMMON+"/" + URL_PATH_PREFIX_PDFJS + "/web/viewer.html").then((r)=>r.text()).then((t)=>console.log(t));
             },
         });
+
     win.webContents.addListener("input-event", (_ev, inputEvent) => {
         if ((inputEvent.type === "keyUp" || inputEvent.type === "keyDown") && (inputEvent as KeyboardEvent).key === "Escape") {
             debug("win INPUT", inputEvent.type, (inputEvent as KeyboardEvent).key);
             win.webContents.loadURL(`${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`);
         }
-    })
+    });
+
     // const handler = () => {
     //     if (win && !win.isDestroyed() && !win.webContents.isDestroyed()) {
     //         win.close();
@@ -889,12 +883,10 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
     //     globalShortcut.unregister("esc");
     // });
 
-    debug("OPDS AUTH win ready-to-show 1");
     win.once("ready-to-show", () => {
         debug("OPDS AUTH win ready-to-show", urlStr.substring(0, 500));
         win.show();
     });
-    debug("OPDS AUTH win ready-to-show 2");
 
     const willNavigate = (navUrl: string | undefined | null) => {
 
