@@ -99,9 +99,11 @@
             "auth": {
                 "cancel": "Avbryt",
                 "external": "",
+                "fallback": "",
                 "login": "Logga in",
                 "password": "Lösenord",
                 "register": "Registrera dig",
+                "retry": "",
                 "username": "Användarnamn/e-postadress"
             },
             "info": {

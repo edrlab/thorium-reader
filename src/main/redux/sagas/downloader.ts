@@ -285,7 +285,7 @@ function* downloadLinkRequest(linkHref: string, controller: AbortController): Sa
         const opdsAuthChannel = getOpdsAuthenticationChannel();
 
         debug("put the authentication model in the saga authChannel", JSON.stringify(r2OpdsAuth, null, 4));
-        opdsAuthChannel.put([r2OpdsAuth, linkHref]);
+        opdsAuthChannel.put([r2OpdsAuth, linkHref, false]); // retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser
 
         const {cancel} = yield* raceTyped({
             cancel: takeTyped(authActions.cancel.build),

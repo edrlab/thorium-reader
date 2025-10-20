@@ -99,9 +99,11 @@
             "auth": {
                 "cancel": "Poništi",
                 "external": "",
+                "fallback": "",
                 "login": "Prijavi se",
                 "password": "",
                 "register": "",
+                "retry": "",
                 "username": ""
             },
             "info": {

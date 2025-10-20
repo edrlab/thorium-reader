@@ -99,9 +99,11 @@
             "auth": {
                 "cancel": "Annullér",
                 "external": "",
+                "fallback": "",
                 "login": "Log ind",
                 "password": "Adgangskode",
                 "register": "Registrér",
+                "retry": "",
                 "username": "Brugernavn / email-adresse"
             },
             "info": {

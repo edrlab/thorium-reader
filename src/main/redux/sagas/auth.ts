@@ -6,8 +6,8 @@
 // ==LICENSE-END=
 
 import * as debug_ from "debug";
-import { URL_PROTOCOL_OPDS_MEDIA, URL_HOST_COMMON, URL_PROTOCOL_OPDS, URL_HOST_OPDS_AUTH } from "readium-desktop/common/streamerProtocol";
-import { BrowserWindow, globalShortcut, HandlerDetails, Event as ElectronEvent, WebContentsWillNavigateEventParams, shell } from "electron";
+import { URL_PROTOCOL_OPDS_MEDIA, URL_HOST_COMMON, URL_PROTOCOL_OPDS, URL_HOST_OPDS_AUTH, URL_OPDS_AUTH_RETRY } from "readium-desktop/common/streamerProtocol";
+import { BrowserWindow, HandlerDetails, Event as ElectronEvent, WebContentsWillNavigateEventParams, shell } from "electron";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
@@ -41,7 +41,7 @@ import {
 import { ContentType } from "readium-desktop/utils/contentType";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { all, call, cancel, delay, join, put, race } from "redux-saga/effects";
+import { all, call, cancel, delay, join, put, race, spawn } from "redux-saga/effects";
 import { call as callTyped, fork as forkTyped, take as takeTyped } from "typed-redux-saga/macro";
 import { URL } from "url";
 
@@ -114,7 +114,7 @@ const LINK_TYPE: TLinkType[] = [
 
 const opdsAuthFlow =
     (opdsRequestFromCustomProtocol: ReturnType<typeof getOpdsRequestCustomProtocolEventChannel>) =>
-        function*([doc, baseUrl]: TOpdsAuthenticationChannel) {
+        function*([doc, baseUrl, retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser]: TOpdsAuthenticationChannel) {
 
             debug("opds authenticate flow");
             const baseUrlParsed = tryCatchSync(() => new URL(baseUrl), filename_);
@@ -150,13 +150,15 @@ const opdsAuthFlow =
             const task = yield* forkTyped(function*() {
 
                 const parsedRequest = yield* takeTyped(opdsRequestFromCustomProtocol);
+                // yield delay(1000);
+
                 return {
                     request: parseRequestFromCustomProtocol(parsedRequest.request),
                     callback: parsedRequest.callback,
                 };
             });
 
-            const win = yield* callTyped(() => tryCatch(() => createOpdsAuthenticationModalWin(browserUrl), filename_));
+            const win = yield* callTyped(() => tryCatch(() => createOpdsAuthenticationModalWin(browserUrl, retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser), filename_));
             if (!win) {
                 debug("modal win undefined");
 
@@ -165,7 +167,6 @@ const opdsAuthFlow =
             }
 
             try {
-
                 yield race({
                     a: delay(240000),
                     b: join(task),
@@ -176,6 +177,11 @@ const opdsAuthFlow =
                 });
 
                 if (task.isRunning()) {
+
+                    // code branch triggered by:
+                    // window.location.href='${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/'
+                    // (window.close() is not sufficient)
+
                     debug("no authentication credentials received");
                     debug("perhaps timeout or closing authentication window occured");
 
@@ -196,6 +202,33 @@ const opdsAuthFlow =
 
                             return;
                         }
+                        if (!retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser && opdsCustomProtocolRequestParsed.data[URL_OPDS_AUTH_RETRY] === URL_OPDS_AUTH_RETRY) {
+                            debug("OPDS auth retry ...", opdsCustomProtocolRequestParsed.url);
+
+                            callback({
+                                url: undefined,
+                            });
+
+                            yield put(authActions.done.build()); // ==> triggers nothing
+                            // yield put(authActions.cancel.build()); // ==> triggers historyGoBack
+
+                            // yield delay(2000);
+
+                            if (win && !win.isDestroyed() && !win.webContents.isDestroyed()) {
+                                win.close();
+                            }
+
+                            yield delay(500);
+
+                            // yield put(historyActions.refresh.build()); // ==> keep current context and recalls auth, but we need retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser
+                            yield spawn(function* () {
+                                debug("OPDS auth retry GO!", opdsCustomProtocolRequestParsed.url, baseUrl, JSON.stringify(doc, null, 4));
+                                const opdsAuthChannel = getOpdsAuthenticationChannel();
+                                opdsAuthChannel.put([doc, baseUrl, true]); // retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser
+                            });
+
+                            return;
+                        }
 
                         const [, err] = yield* callTyped(opdsSetAuthCredentials,
                             opdsCustomProtocolRequestParsed,
@@ -208,10 +241,9 @@ const opdsAuthFlow =
                         });
 
                         if (err instanceof Error) {
-                            debug(err.message);
+                            debug("OPDS auth err", err.message);
 
                             return;
-
                         } else {
                             yield put(historyActions.refresh.build());
                             yield put(authActions.done.build());
@@ -228,7 +260,6 @@ const opdsAuthFlow =
                     yield cancel(task);
                 }
             }
-
         };
 
 function* opdsAuthWipeData() {
@@ -771,7 +802,9 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
     };
 }
 
-async function createOpdsAuthenticationModalWin(urlStr: string): Promise<BrowserWindow | undefined> {
+async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser: boolean): Promise<BrowserWindow | undefined> {
+
+    debug("OPDS AUTH win URL", urlStr);
 
     const libWin = tryCatchSync(() => getLibraryWindowFromDi(), filename_);
     if (!libWin || libWin.isDestroyed() || libWin.webContents.isDestroyed()) {
@@ -784,21 +817,25 @@ async function createOpdsAuthenticationModalWin(urlStr: string): Promise<Browser
     if (/^data:text\/html/.test(urlStr)) {
         // passthrough
     } else if (/^https?:\/\//.test(urlStr)) {
-        urlExternal = urlStr;
-        title = getTranslator().translate("catalog.opds.auth.login");
-        let urlFriendly = urlExternal;
-        try {
-            const uF = new URL(urlExternal);
-            urlFriendly = uF.origin; // protocol + host + port
-        } catch (_e) {
-            // ignore
-        }
+        if (!retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser) {
+            debug("OPDS AUTH win URL EXTERNAL ...", urlStr);
 
-        const html = encodeURIComponent_RFC3986(
-            htmlLoginExternalTemplate(title, urlFriendly, urlExternal),
-        );
-        urlStr = `data:text/html;charset=utf-8,${html}`;
-        // return undefined;
+            urlExternal = urlStr;
+            title = getTranslator().translate("catalog.opds.auth.login");
+            let urlFriendly = urlExternal;
+            try {
+                const uF = new URL(urlExternal);
+                urlFriendly = uF.origin; // protocol + host + port
+            } catch (_e) {
+                // ignore
+            }
+
+            const html = encodeURIComponent_RFC3986(
+                htmlLoginExternalTemplate(title, urlFriendly, urlExternal),
+            );
+            urlStr = `data:text/html;charset=utf-8,${html}`;
+            // return undefined;
+        }
     } else {
         debug("INVALID AUTH urlStr", urlStr);
         return undefined;
@@ -829,17 +866,25 @@ async function createOpdsAuthenticationModalWin(urlStr: string): Promise<Browser
             },
         });
 
-    const handler = () => {
-        if (win && !win.isDestroyed() && !win.webContents.isDestroyed()) {
-            win.close();
+    win.webContents.addListener("input-event", (_ev, inputEvent) => {
+        if ((inputEvent.type === "keyUp" || inputEvent.type === "keyDown") && (inputEvent as KeyboardEvent).key === "Escape") {
+            debug("win INPUT", inputEvent.type, (inputEvent as KeyboardEvent).key);
+            win.webContents.loadURL(`${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`);
         }
-    };
-    globalShortcut.register("esc", handler);
-    win.on("close", () => {
-        globalShortcut.unregister("esc");
     });
 
+    // const handler = () => {
+    //     if (win && !win.isDestroyed() && !win.webContents.isDestroyed()) {
+    //         win.close();
+    //     }
+    // };
+    // globalShortcut.register("esc", handler);
+    // win.on("close", () => {
+    //     globalShortcut.unregister("esc");
+    // });
+
     win.once("ready-to-show", () => {
+        debug("OPDS AUTH win ready-to-show", urlStr.substring(0, 500));
         win.show();
     });
 
@@ -968,8 +1013,13 @@ async function createOpdsAuthenticationModalWin(urlStr: string): Promise<Browser
     //     });
     // });
 
+    debug("OPDS AUTH win LOAD 1", urlStr.substring(0, 500));
+
     // win.webContents.loadURL
-    await win.loadURL(urlStr);
+    // await DO NOT AWAIT!! (race condition when urlStr is a HTTP link that immediately redirects to OPDS://AUTHORIZE)
+    win.loadURL(urlStr);
+
+    debug("OPDS AUTH win LOAD 2", urlStr.substring(0, 500));
 
     if (urlExternal) {
         setTimeout(async () => {
@@ -988,7 +1038,7 @@ interface IParseRequestFromCustomProtocol<T = string> {
     };
 }
 function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
-    : IParseRequestFromCustomProtocol<TLabelName | TDigestInfo> | undefined {
+    : IParseRequestFromCustomProtocol<TLabelName | TDigestInfo | typeof URL_OPDS_AUTH_RETRY> | undefined {
 
     debug("########");
     debug("opds:// request:", req);
@@ -1059,6 +1109,16 @@ function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
 
         if (method === "GET") {
             if (host === URL_HOST_OPDS_AUTH) {
+
+                if (urlParsed.pathname.startsWith(`/${URL_OPDS_AUTH_RETRY}/`)) {
+                    debug("OPDS auth retry internal window", url);
+                    return {
+                        url: urlParsed,
+                        method: "GET",
+                        data: { [URL_OPDS_AUTH_RETRY]: URL_OPDS_AUTH_RETRY },
+                    };
+                }
+
                 // OPDS Authentication Document Specification is at odds with the OAuth 2.0 Implicit Grant Flow Specification:
                 //     OPDS Auth wants the response parameters in the query component of the Redirection URI
                 //     OAuth 2.0 Implicit Grant Flow wants the response parameters in the fragment component of the Redirection URI
@@ -1066,6 +1126,7 @@ function parseRequestFromCustomProtocol(req: Electron.ProtocolRequest)
                 const urlSearchParam = url.replace("#", "?");
 
                 const urlObject = new URL(urlSearchParam);
+
                 const data: Record<string, string> = {};
                 for (const [key, value] of urlObject.searchParams) {
                     data[key] = value;
@@ -1125,6 +1186,8 @@ const AddIcon = "<svg xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:cc=\"h
 const LoginIcon = `<svg width="9" height="9" viewBox="0 0 9 9" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 <path d="M5.64414 5.04819L4.08164 6.61069C3.99358 6.69875 3.87415 6.74823 3.74961 6.74823C3.62507 6.74823 3.50564 6.69875 3.41758 6.61069C3.32952 6.52263 3.28005 6.4032 3.28005 6.27866C3.28005 6.15413 3.32952 6.03469 3.41758 5.94663L4.17969 5.1853H0.9375C0.81318 5.1853 0.693951 5.13592 0.606044 5.04801C0.518136 4.9601 0.46875 4.84087 0.46875 4.71655C0.46875 4.59223 0.518136 4.473 0.606044 4.3851C0.693951 4.29719 0.81318 4.2478 0.9375 4.2478H4.17969L3.41836 3.48569C3.37476 3.44209 3.34017 3.39033 3.31657 3.33336C3.29297 3.27639 3.28083 3.21533 3.28083 3.15366C3.28083 3.02913 3.3303 2.90969 3.41836 2.82163C3.50642 2.73357 3.62585 2.6841 3.75039 2.6841C3.87493 2.6841 3.99436 2.73357 4.08242 2.82163L5.64492 4.38413C5.68857 4.42773 5.72318 4.47952 5.74678 4.53652C5.77037 4.59353 5.78247 4.65463 5.7824 4.71632C5.78233 4.77802 5.77008 4.83909 5.74635 4.89604C5.72263 4.95299 5.68789 5.0047 5.64414 5.04819ZM7.5 0.810303H5.3125C5.18818 0.810303 5.06895 0.859689 4.98104 0.947596C4.89314 1.0355 4.84375 1.15473 4.84375 1.27905C4.84375 1.40337 4.89314 1.5226 4.98104 1.61051C5.06895 1.69842 5.18818 1.7478 5.3125 1.7478H7.34375V7.6853H5.3125C5.18818 7.6853 5.06895 7.73469 4.98104 7.8226C4.89314 7.9105 4.84375 8.02973 4.84375 8.15405C4.84375 8.27837 4.89314 8.3976 4.98104 8.48551C5.06895 8.57342 5.18818 8.6228 5.3125 8.6228H7.5C7.7072 8.6228 7.90591 8.54049 8.05243 8.39398C8.19894 8.24747 8.28125 8.04875 8.28125 7.84155V1.59155C8.28125 1.38435 8.19894 1.18564 8.05243 1.03913C7.90591 0.892613 7.7072 0.810303 7.5 0.810303Z" fill="currenColor"/>
 </svg>`;
+
+const escapeKeyScript = "";  // `<script type="text/javascript">window.document.body.addEventListener("keyup", (ev) => { if (ev.key === "Escape") { ev.preventDefault(); ev.stopPropagation(); window.location.href='${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/'; } }, true)</script>`; // window.close();
 
 const htmlLoginTemplate = (
     urlToSubmit = "",
@@ -1534,8 +1597,8 @@ const htmlLoginTemplate = (
                                     type="button"
                                     name="cancel"
                                     value="${getTranslator().translate("catalog.opds.auth.cancel")}"
-                                    onClick="window.close();">
-                                <!-- window.location.href='${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/' -->
+                                    onClick="window.location.href='${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/';">
+                                <!-- window.close(); -->
                                 <div class="submit_button">
                                     <input type="submit" name="commit" value="${getTranslator().translate("catalog.opds.auth.login")}">
                                     <label for="commit">${LoginIcon}</label>
@@ -1545,6 +1608,7 @@ const htmlLoginTemplate = (
                     </div>
                 </div>
             </div>
+            ${escapeKeyScript}
         </body>
 
     </html>`;
@@ -1584,8 +1648,8 @@ const htmlLoginExternalTemplate = (title: string, urlFriendly: string, urlExtern
                 background: white;
                 border-radius: 20px;
                 margin: auto;
-                width: 60vw;
-                max-width: 700px;
+                width: 50vw;
+                max-width: 500px;
                 min-height: 35vh;
                 height: fit-content;
                 padding: 20px 40px;
@@ -1632,7 +1696,7 @@ const htmlLoginExternalTemplate = (title: string, urlFriendly: string, urlExtern
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                gap: 50px;
+                gap: 20px;
 
                 @media only screen and (max-width: 1000px) {
                     gap: unset;
@@ -1915,12 +1979,24 @@ const htmlLoginExternalTemplate = (title: string, urlFriendly: string, urlExtern
                                 type="button"
                                 name="cancel"
                                 value="${getTranslator().translate("catalog.opds.auth.cancel")}"
-                                onClick="window.close();">
-                                <!-- window.location.href='${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/' -->
+                                onClick="window.location.href='${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/';">
+                                <!-- window.close(); -->
+                        </div>
+                    </div>
+                    <hr style="width: 100%"/>
+                    <div class="content_wrapper">
+                        <i>${getTranslator().translate("catalog.opds.auth.fallback")}</i>
+                        <div class="submit">
+                            <input
+                                type="button"
+                                name="retry"
+                                value="${getTranslator().translate("catalog.opds.auth.retry")}"
+                                onClick="window.location.href='${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/${URL_OPDS_AUTH_RETRY}/${encodeURIComponent_RFC3986(urlExternal)}'">
                         </div>
                     </div>
                 </div>
             </div>
+            ${escapeKeyScript}
         </body>
 
     </html>`;

@@ -99,9 +99,11 @@
             "auth": {
                 "cancel": "취소",
                 "external": "",
+                "fallback": "",
                 "login": "로그인",
                 "password": "",
                 "register": "",
+                "retry": "",
                 "username": ""
             },
             "info": {

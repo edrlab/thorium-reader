@@ -99,9 +99,11 @@
             "auth": {
                 "cancel": "Atšaukti",
                 "external": "Jūsų interneto naršyklėje atsidarys prisijungimo puslapis, sekite instrukcijas. Kai prisijungsite, interneto naršyklė grąžins jus į šią programą.",
-                "login": "Prisijungimas",
+                "fallback": "",
+                "login": "Prisijungim/as",
                 "password": "Slaptažodis",
                 "register": "Užsiregistruoti",
+                "retry": "",
                 "username": "Naudotojo vardas / El. pašto adresas"
             },
             "info": {

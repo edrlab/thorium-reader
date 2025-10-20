@@ -99,9 +99,11 @@
             "auth": {
                 "cancel": "Peru",
                 "external": "",
+                "fallback": "",
                 "login": "Kirjaudu",
                 "password": "Salasana",
                 "register": "Rekisteröidy",
+                "retry": "",
                 "username": "Käyttäjätunnus / Sähköpostiosoite"
             },
             "info": {

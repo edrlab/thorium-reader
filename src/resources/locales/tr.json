@@ -99,9 +99,11 @@
             "auth": {
                 "cancel": "İptal",
                 "external": "giriş sayfası web tarayıcınızda açılacak, lütfen talimatları izleyin. Giriş yaptıktan sonra, web tarayıcısı sizi bu uygulamaya geri döndürecek.",
+                "fallback": "",
                 "login": "Giriş Yap",
                 "password": "Şifre",
                 "register": "Kaydol",
+                "retry": "",
                 "username": "Kullanıcı adı / E-posta adresi"
             },
             "info": {

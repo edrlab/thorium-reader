@@ -99,9 +99,11 @@
             "auth": {
                 "cancel": "キャンセル",
                 "external": "",
+                "fallback": "",
                 "login": "ログイン",
                 "password": "パスワード",
                 "register": "登録",
+                "retry": "",
                 "username": "ユーザー名 / メールアドレス"
             },
             "info": {

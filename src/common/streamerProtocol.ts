@@ -20,6 +20,7 @@ export const URL_PROTOCOL_STORE = "store";
 
 export const URL_PROTOCOL_OPDS = "opds"; // MUST be verbatim "opds"
 export const URL_HOST_OPDS_AUTH = "authorize"; // MUST be verbatim "authorize"
+export const URL_OPDS_AUTH_RETRY = "callback-retry";
 
 export const URL_PROTOCOL_APP_HANDLER_OPDS = "opds";
 export const URL_PROTOCOL_APP_HANDLER_THORIUM = "thorium";

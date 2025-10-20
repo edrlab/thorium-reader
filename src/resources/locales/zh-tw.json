@@ -99,9 +99,11 @@
             "auth": {
                 "cancel": "取消",
                 "external": "",
+                "fallback": "",
                 "login": "登入",
                 "password": "密碼",
                 "register": "註冊",
+                "retry": "",
                 "username": "使用者名稱/電子郵件地址"
             },
             "info": {
