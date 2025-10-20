@@ -98,10 +98,12 @@
         "opds": {
             "auth": {
                 "cancel": "Annuler",
-                "external": "",
+                "external": "La page de connexion va s'ouvrir dans votre navigateur web, veuillez suivre les instructions. Une fois connecté, le navigateur web reviendra dans l'application.",
+                "fallback": "NB: dans le cas d'un problème de connexion avec votre navigateur web, veuillez réessayer avec la méthode alternative directement dans l'application.",
                 "login": "Connexion",
                 "password": "Mot de passe",
                 "register": "Créer un compte",
+                "retry": "Réessayer",
                 "username": "Nom d'utilisateur / Adresse courriel"
             },
             "info": {

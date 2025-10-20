@@ -99,9 +99,11 @@
             "auth": {
                 "cancel": "Cancel·lar",
                 "external": "",
+                "fallback": "",
                 "login": "Iniciar sessió",
                 "password": "Contrasenya",
                 "register": "Registre",
+                "retry": "",
                 "username": "Usuari / Direcció de correu eletrònic"
             },
             "info": {

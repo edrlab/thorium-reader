@@ -99,9 +99,11 @@
             "auth": {
                 "cancel": "Prekliči",
                 "external": "",
+                "fallback": "",
                 "login": "Prijavi se",
                 "password": "Geslo",
                 "register": "Register",
+                "retry": "",
                 "username": "Uporabniško ime / elektronski naslov"
             },
             "info": {

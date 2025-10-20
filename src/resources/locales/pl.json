@@ -99,9 +99,11 @@
             "auth": {
                 "cancel": "Anuluj",
                 "external": "",
+                "fallback": "",
                 "login": "Login",
                 "password": "Hasło",
                 "register": "Rejestracja",
+                "retry": "",
                 "username": ""
             },
             "info": {

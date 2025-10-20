@@ -99,9 +99,11 @@
             "auth": {
                 "cancel": "Atšaukti",
                 "external": "",
+                "fallback": "",
                 "login": "Prisijungimas",
                 "password": "Slaptažodis",
                 "register": "Užsiregistruoti",
+                "retry": "",
                 "username": "Naudotojo vardas / El. pašto adresas"
             },
             "info": {
@@ -847,7 +849,7 @@
             "reduceMotion": "Mažinti judesių kiekį",
             "scrolled": "Slenkantis",
             "spacing": "Išretinimas",
-            "spreadModeEven": "",
+            "spreadModeEven": "Lyginis puslapių išdėstymas (numatytasis išdėstymas – nelyginis)",
             "text": "Tekstas",
             "theme": {
                 "name": {
@@ -862,8 +864,7 @@
                 },
                 "title": "Tema"
             },
-            "wordSpacing": "Tarpas tarp žodžių",
-            "spreadModeEven": "Lyginis puslapių išdėstymas (numatytasis išdėstymas – nelyginis)"
+            "wordSpacing": "Tarpas tarp žodžių"
         },
         "svg": {
             "left": "Kairė",

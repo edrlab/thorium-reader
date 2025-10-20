@@ -99,9 +99,11 @@
             "auth": {
                 "cancel": "İptal",
                 "external": "",
+                "fallback": "",
                 "login": "Giriş Yap",
                 "password": "Şifre",
                 "register": "Kaydol",
+                "retry": "",
                 "username": "Kullanıcı adı / E-posta adresi"
             },
             "info": {
@@ -847,7 +849,7 @@
             "reduceMotion": "Hareketi azalt",
             "scrolled": "Kaydırılabilir",
             "spacing": "Aralık ayarları",
-            "spreadModeEven": "",
+            "spreadModeEven": "Sayfa görüntülenmesi 'çift' (varsayılan 'tek'tir)",
             "text": "Metin ayarları",
             "theme": {
                 "name": {
@@ -862,8 +864,7 @@
                 },
                 "title": "Tema"
             },
-            "wordSpacing": "Kelime aralığı",
-            "spreadModeEven": "Sayfa görüntülenmesi 'çift' (varsayılan 'tek'tir)"
+            "wordSpacing": "Kelime aralığı"
         },
         "svg": {
             "left": "Sol",

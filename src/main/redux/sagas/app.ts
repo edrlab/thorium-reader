@@ -48,6 +48,7 @@ export function* init() {
     if (__TH__IS_DEV__) {
         const electronPath = process.execPath;
         const appPath = app.getAppPath();
+        debug("io.github.edrlab.thorium", electronPath, appPath);
 
         if (!app.isDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_OPDS, electronPath, [appPath])) {
             app.setAsDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_OPDS, electronPath, [appPath]);

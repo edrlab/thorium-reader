@@ -99,9 +99,11 @@
             "auth": {
                 "cancel": "取消",
                 "external": "",
+                "fallback": "",
                 "login": "登录",
                 "password": "密码",
                 "register": "注册",
+                "retry": "",
                 "username": "用户名/电子邮件地址"
             },
             "info": {

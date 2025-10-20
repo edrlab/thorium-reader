@@ -99,9 +99,11 @@
             "auth": {
                 "cancel": "Откажи",
                 "external": "",
+                "fallback": "",
                 "login": "Влез",
                 "password": "",
                 "register": "",
+                "retry": "",
                 "username": ""
             },
             "info": {

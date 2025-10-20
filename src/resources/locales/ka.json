@@ -99,9 +99,11 @@
             "auth": {
                 "cancel": "გადაფიქრება",
                 "external": "",
+                "fallback": "",
                 "login": "შესვლა",
                 "password": "",
                 "register": "",
+                "retry": "",
                 "username": ""
             },
             "info": {

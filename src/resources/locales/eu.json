@@ -99,9 +99,11 @@
             "auth": {
                 "cancel": "Utzi",
                 "external": "",
+                "fallback": "",
                 "login": "Hasi saioa",
                 "password": "Pasahitza",
                 "register": "Izena eman",
+                "retry": "",
                 "username": "Erabiltzaile izena / Helbide elektronikoa"
             },
             "info": {

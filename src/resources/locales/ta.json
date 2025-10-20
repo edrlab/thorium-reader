@@ -99,9 +99,11 @@
             "auth": {
                 "cancel": "ரத்துசெய்",
                 "external": "",
+                "fallback": "",
                 "login": "புகுபதிவு",
                 "password": "கடவுச்சொல்",
                 "register": "பதிவு செய்யுங்கள்",
+                "retry": "",
                 "username": "பயனர்பெயர் / மின்னஞ்சல் முகவரி"
             },
             "info": {

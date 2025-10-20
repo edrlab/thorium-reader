@@ -99,9 +99,11 @@
             "auth": {
                 "cancel": "Zrušit",
                 "external": "",
+                "fallback": "",
                 "login": "Přihlásit se",
                 "password": "Heslo",
                 "register": "Registrovat",
+                "retry": "",
                 "username": "Uživatelské jméno / e-mailová adresa"
             },
             "info": {
