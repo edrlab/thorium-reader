@@ -222,7 +222,8 @@
         },
         "open": {
             "error": ""
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {

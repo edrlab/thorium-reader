@@ -222,7 +222,8 @@
         },
         "open": {
             "error": "Loading publication failed: [{{- err}}]"
-        }
+        },
+        "wipeData": "Login data (access-tokens and cookies) successfully cleared !"
     },
     "opds": {
         "addForm": {

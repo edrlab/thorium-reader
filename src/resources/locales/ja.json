@@ -222,7 +222,8 @@
         },
         "open": {
             "error": "本を開けません：{{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {

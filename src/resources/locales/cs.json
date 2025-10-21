@@ -222,7 +222,8 @@
         },
         "open": {
             "error": "Načítání publikace sehlalo: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {

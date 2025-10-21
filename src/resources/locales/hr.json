@@ -222,7 +222,8 @@
         },
         "open": {
             "error": "Građa se ne može otvoriti: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {

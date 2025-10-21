@@ -222,7 +222,8 @@
         },
         "open": {
             "error": "无法打开出版物: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {

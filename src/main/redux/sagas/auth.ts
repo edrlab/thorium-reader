@@ -270,7 +270,8 @@ function* opdsAuthWipeData() {
 
     yield* callTyped(wipeAuthenticationTokenStorage);
 
-    yield put(toastActions.openRequest.build(ToastType.Success, "👍"));
+    const translator = getTranslator();
+    yield put(toastActions.openRequest.build(ToastType.Success, translator.__("message.wipeData")));
     debug("End of wipping auth data");
 }
 

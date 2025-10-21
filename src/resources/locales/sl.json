@@ -222,7 +222,8 @@
         },
         "open": {
             "error": "Publikacije ni mogoče odpreti: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {

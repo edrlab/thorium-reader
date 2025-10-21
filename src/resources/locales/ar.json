@@ -222,7 +222,8 @@
         },
         "open": {
             "error": "فشل تحميل المنشور: [{{- err}}]"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {

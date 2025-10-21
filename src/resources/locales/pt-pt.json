@@ -222,7 +222,8 @@
         },
         "open": {
             "error": "Não foi possível carregar o documento: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {

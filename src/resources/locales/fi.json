@@ -222,7 +222,8 @@
         },
         "open": {
             "error": "Julkaisua ei voi avata: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {

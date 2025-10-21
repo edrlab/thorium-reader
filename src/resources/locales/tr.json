@@ -222,7 +222,8 @@
         },
         "open": {
             "error": "Eser yüklemesi başarısız: [{{- err}}]"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {

@@ -222,7 +222,8 @@
         },
         "open": {
             "error": "Bogen kan ikke åbnes: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {

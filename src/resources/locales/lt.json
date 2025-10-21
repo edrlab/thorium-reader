@@ -222,7 +222,8 @@
         },
         "open": {
             "error": "Nepavyko atverti leidinio : [{{- err}}]"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {

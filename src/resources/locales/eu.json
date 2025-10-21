@@ -222,7 +222,8 @@
         },
         "open": {
             "error": "Ezin da argitalpena ireki: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {

@@ -514,7 +514,8 @@ declare namespace typed_i18n {
     readonly "fail": string,
     readonly "success": string
   },
-  readonly "open": { readonly "error": string }
+  readonly "open": { readonly "error": string },
+  readonly "wipeData": string
 };
   (_: "message.annotations", __?: {}): {
   readonly "alreadyImported": string,
@@ -542,6 +543,7 @@ declare namespace typed_i18n {
   (_: "message.import.success", __?: {}): string;
   (_: "message.open", __?: {}): { readonly "error": string };
   (_: "message.open.error", __?: {}): string;
+  (_: "message.wipeData", __?: {}): string;
   (_: "opds", __?: {}): {
   readonly "addForm": {
     readonly "addButton": string,

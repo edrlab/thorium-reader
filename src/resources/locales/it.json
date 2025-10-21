@@ -222,7 +222,8 @@
         },
         "open": {
             "error": "La pubblicazione non può essere aperta : {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {

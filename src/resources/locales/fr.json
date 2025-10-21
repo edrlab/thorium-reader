@@ -222,7 +222,8 @@
         },
         "open": {
             "error": "Le livre ne peut pas être ouvert : {{- err}}"
-        }
+        },
+        "wipeData": "Données d'authentification supprimées avec succès !"
     },
     "opds": {
         "addForm": {
