@@ -46,7 +46,7 @@ import { getAuthenticationToken } from "../network/http";
 const debug = debug_("readium-desktop:main/converter/opds");
 debug("opds-converter");
 
-const supportedFileTypeLinkArray = [
+const supportedFileTypeLinks = [
     ContentType.AudioBookPacked,
     ContentType.AudioBookPackedLcp,
     ContentType.Epub,
@@ -77,6 +77,18 @@ const supportedFileTypeLinkArray = [
 
     ContentType.Html, // https://github.com/edrlab/thorium-reader/issues/2208
     ContentType.Xhtml,
+];
+
+const supportedFileTypeLinksForPayWallAcquisition = [
+    ...supportedFileTypeLinks,
+
+    ContentType.Opds2,
+    ContentType.Opds2Auth,
+    ContentType.Opds2AuthVendorV1_0,
+    ContentType.Opds2Pub,
+    ContentType.TextXml,
+    ContentType.Xml,
+    ContentType.AtomXml,
 ];
 
 @injectable()
@@ -439,7 +451,7 @@ export class OpdsFeedViewConverter {
                 "http://opds-spec.org/acquisition/preview",
                 "preview", // see "preview" relation from drafts.opds.io/opds-2.0.html#53-acquisition-links
             ],
-            type: supportedFileTypeLinkArray,
+            type: supportedFileTypeLinks,
         }).map(attachLocalBookshelfPubId);
 
         const acquisitionLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
@@ -447,22 +459,22 @@ export class OpdsFeedViewConverter {
                 "http://opds-spec.org/acquisition",
                 "http://opds-spec.org/acquisition/open-access",
             ],
-            type: supportedFileTypeLinkArray,
+            type: supportedFileTypeLinks,
         }).map(attachLocalBookshelfPubId);
 
         const buyLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
             rel: "http://opds-spec.org/acquisition/buy",
-            type: supportedFileTypeLinkArray, // https://github.com/edrlab/thorium-reader/issues/3032
+            type: supportedFileTypeLinksForPayWallAcquisition, // https://github.com/edrlab/thorium-reader/issues/3032
         }).map(attachLocalBookshelfPubId);
 
         const borrowLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
             rel: "http://opds-spec.org/acquisition/borrow",
-            type: supportedFileTypeLinkArray, // https://github.com/edrlab/thorium-reader/issues/3032
+            type: supportedFileTypeLinksForPayWallAcquisition, // https://github.com/edrlab/thorium-reader/issues/3032
         }).map(attachLocalBookshelfPubId);
 
         const subscribeLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
             rel: "http://opds-spec.org/acquisition/subscribe",
-            type: supportedFileTypeLinkArray, // https://github.com/edrlab/thorium-reader/issues/3032
+            type: supportedFileTypeLinksForPayWallAcquisition, // https://github.com/edrlab/thorium-reader/issues/3032
         });
         const entrylinkView = fallback(
             this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
