@@ -27,7 +27,6 @@ import { findExtWithMimeType, findMimeTypeWithExtension, ADOBE_ADEPT_XML } from 
 
 import OpdsLinkProperties from "./OpdsLinkProperties";
 import { ContentType } from "readium-desktop/utils/contentType";
-import { shell } from "electron";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -95,19 +94,13 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                     (ln, idx) =>
                         <div key={`openAccessControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
                             <button
-                                onClick={async () => {
+                                onClick={() => {
 
                                     if (ln.type === ContentType.Html || ln.type === ContentType.Xhtml) {
-
-                                        if (ln.url && /^https?:\/\//.test(ln.url)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                            await shell.openExternal(ln.url);
-
-                                        } else {
-                                            this.props.link(
-                                                ln,
-                                                this.props.location,
-                                            );
-                                        }
+                                        this.props.link(
+                                            ln,
+                                            this.props.location,
+                                        );
                                     } else {
 
                                         verifyImport(
@@ -136,18 +129,13 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                     (ln, idx) =>
                         <div key={`sampleControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
                             <button
-                                onClick={async () => {
+                                onClick={() => {
+
                                     if (ln.type === ContentType.Html || ln.type === ContentType.Xhtml) {
-
-                                        if (ln.url && /^https?:\/\//.test(ln.url)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                            await shell.openExternal(ln.url);
-
-                                        } else {
-                                            this.props.link(
-                                                ln,
-                                                this.props.location,
-                                            );
-                                        }
+                                        this.props.link(
+                                            ln,
+                                            this.props.location,
+                                        );
                                     } else {
 
                                         verifyImport(
@@ -180,22 +168,13 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                             <div key={`buyControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
                                 <button
                                     className={classNames(stylesButtons.button_primary, stylesGlobal.mb_20)}
-                                    onClick={async () => {
-
-                                        if ((ln.type === ContentType.Html || ln.type === ContentType.Xhtml) &&
-                                            ln.url && /^https?:\/\//.test(ln.url)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                            await shell.openExternal(ln.url);
-
-                                        } else {
-
-                                            this.props.link(
-                                                ln,
-                                                this.props.location,
-                                                `${__("opds.menu.goBuyBook")} (${opdsPublicationView.documentTitle}))`,
-                                            );
-                                        }
-
-                                    }}
+                                    onClick={
+                                        () => this.props.link(
+                                            ln,
+                                            this.props.location,
+                                            `${__("opds.menu.goBuyBook")} (${opdsPublicationView.documentTitle}))`,
+                                        )
+                                    }
 
                                 >
                                     <SVG ariaHidden={true} svg={CartFillIcon} />
@@ -214,21 +193,10 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                             <div key={`borrowControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
                                 <button
                                     className={buyList.length > 0 ? stylesButtons.button_secondary : stylesButtons.button_primary}
-                                    onClick={async () => {
-
-                                        if ((ln.type === ContentType.Html || ln.type === ContentType.Xhtml) &&
-                                            ln.url && /^https?:\/\//.test(ln.url)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                            await shell.openExternal(ln.url);
-
-                                        } else {
-
-                                            this.props.link(
-                                            ln,
-                                            this.props.location,
-                                            `${__("opds.menu.goLoanBook")} (${opdsPublicationView.documentTitle})`);
-                                        }
-                                        
-                                    }}
+                                    onClick={() => this.props.link(
+                                        ln,
+                                        this.props.location,
+                                        `${__("opds.menu.goLoanBook")} (${opdsPublicationView.documentTitle})`)}
                                     disabled={ln.properties?.indirectAcquisitionTypes?.top === findMimeTypeWithExtension(ADOBE_ADEPT_XML)}
                                 >
                                     <SVG ariaHidden svg={BorrowIcon} />
@@ -247,19 +215,10 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                             <div key={`subscribeControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
                                 <button
                                     className={stylesButtons.button_secondary}
-                                    onClick={async () => {
-
-                                        if ((ln.type === ContentType.Html || ln.type === ContentType.Xhtml) &&
-                                            ln.url && /^https?:\/\//.test(ln.url)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                            await shell.openExternal(ln.url);
-
-                                        } else {
-                                            this.props.link(
-                                                ln,
-                                                this.props.location,
-                                                `${__("opds.menu.goSubBook")} (${opdsPublicationView.documentTitle})`);
-                                        }
-                                    }}
+                                    onClick={() => this.props.link(
+                                        ln,
+                                        this.props.location,
+                                        `${__("opds.menu.goSubBook")} (${opdsPublicationView.documentTitle})`)}
                                 >
                                     {__("opds.menu.goSubBook")}
                                 </button>
@@ -274,21 +233,14 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                         <div key={`revokeControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
                             <button
                                 className={stylesButtons.button_secondary}
-                                onClick={async () => {
-
-                                    if ((ln.type === ContentType.Html || ln.type === ContentType.Xhtml) &&
-                                        ln.url && /^https?:\/\//.test(ln.url)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                        await shell.openExternal(ln.url);
-
-                                    } else {
-                                        this.props.link(
-                                            ln,
-                                            this.props.location,
-                                            `${__("opds.menu.goRevokeLoanBook")} (${opdsPublicationView.documentTitle
-                                            })`,
-                                        );
-                                    }
-                                }}
+                                onClick={() =>
+                                    this.props.link(
+                                        ln,
+                                        this.props.location,
+                                        `${__("opds.menu.goRevokeLoanBook")} (${opdsPublicationView.documentTitle
+                                        })`,
+                                    )
+                                }
                             >
                                 {__("opds.menu.goRevokeLoanBook")}
                             </button>
