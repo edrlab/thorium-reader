@@ -437,14 +437,17 @@ export class OpdsFeedViewConverter {
 
         const buyLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
             rel: "http://opds-spec.org/acquisition/buy",
+            type: supportedFileTypeLinkArray, // https://github.com/edrlab/thorium-reader/issues/3032
         }).map(attachLocalBookshelfPubId);
 
         const borrowLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
             rel: "http://opds-spec.org/acquisition/borrow",
+            type: supportedFileTypeLinkArray, // https://github.com/edrlab/thorium-reader/issues/3032
         }).map(attachLocalBookshelfPubId);
 
         const subscribeLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
             rel: "http://opds-spec.org/acquisition/subscribe",
+            type: supportedFileTypeLinkArray, // https://github.com/edrlab/thorium-reader/issues/3032
         });
         const entrylinkView = fallback(
             this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
