@@ -31,7 +31,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 class OpdsLinkProperties extends React.Component<IProps, undefined> {
@@ -87,6 +87,9 @@ class OpdsLinkProperties extends React.Component<IProps, undefined> {
                 return undefined;
             }
         )();
+
+        // https://momentjs.com/docs/#/displaying/
+        moment.locale(this.props.locale);
 
         return (
             <>
