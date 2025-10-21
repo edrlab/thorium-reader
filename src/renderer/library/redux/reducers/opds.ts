@@ -11,7 +11,7 @@ import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/br
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { opdsActions } from "readium-desktop/renderer/library/redux/actions";
 import {
-    browseRequest, headerLinksUpdate, search,
+    browseRequest, headerLinksUpdate, search, headerTitleUpdate,
 } from "readium-desktop/renderer/library/redux/actions/opds";
 import {
     IOpdsHeaderState, IOpdsSearchState,
@@ -90,3 +90,18 @@ function opdsSearchLinkReducer_(
 }
 
 export const opdsSearchLinkReducer = opdsSearchLinkReducer_ as Reducer<ReturnType<typeof opdsSearchLinkReducer_>>;
+
+function opdsCatalogTitleReducer_(
+    state: string = "",
+    action: headerTitleUpdate.TAction,
+): string {
+    switch(action.type) {
+        case headerTitleUpdate.ID:
+            return action.payload;
+
+        default:
+            return state;
+    }
+}
+
+export const opdsCatalogTitleReducer = opdsCatalogTitleReducer_ as Reducer<ReturnType<typeof opdsCatalogTitleReducer_>>;
