@@ -223,7 +223,7 @@
         "open": {
             "error": "Nepavyko atverti leidinio : [{{- err}}]"
         },
-        "wipeData": ""
+        "wipeData": "Prisijungimo duomenys (prieigos žetonai ir slapukai) sėkmingai išvalyti!"
     },
     "opds": {
         "addForm": {
