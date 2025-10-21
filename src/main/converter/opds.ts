@@ -61,6 +61,20 @@ const supportedFileTypeLinkArray = [
     ContentType.Lpf,
     ContentType.Zip,
 
+    // indirect Acquisition through an HTML document
+    // {
+    //     "href": "/buy",
+    //     "rel": "http://opds-spec.org/acquisition/buy",
+    //     "type": "text/html",
+    //     "properties": {
+    //         "price": {
+    //             "currency": "USD",
+    //             "value": 4.99
+    //         },
+    //         "indirectAcquisition": [{ "type": "application/epub+zip" }]
+    //     }
+    // }
+
     ContentType.Html, // https://github.com/edrlab/thorium-reader/issues/2208
     ContentType.Xhtml,
 ];
@@ -423,6 +437,7 @@ export class OpdsFeedViewConverter {
             rel: [
                 "http://opds-spec.org/acquisition/sample",
                 "http://opds-spec.org/acquisition/preview",
+                "preview", // see "preview" relation from drafts.opds.io/opds-2.0.html#53-acquisition-links
             ],
             type: supportedFileTypeLinkArray,
         }).map(attachLocalBookshelfPubId);
