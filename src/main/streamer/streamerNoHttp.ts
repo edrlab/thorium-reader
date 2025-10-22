@@ -77,6 +77,59 @@ const URL_PARAM_SESSION_INFO = "r2_SESSION_INFO";
 // ... based on what metric, any particular HTTP server or client implementation?
 export const MAX_PREFETCH_LINKS = 10;
 
+const scriptTextDrag = `
+<script type="text/javascript">
+// document.addEventListener("DOMContentLoaded", () => {
+// });
+window.addEventListener("load", () => {
+setTimeout(() => {
+    document.addEventListener("dragstart", (e) => {
+        // console.log("dragstart capture currentTarget", typeof e.currentTarget, e.currentTarget);
+        // console.log("dragstart capture target", typeof e.target, e.target, e.target.tagName?.toLowerCase());
+
+        const sel = document.getSelection();
+        if (sel && !sel.isCollapsed) {
+            // console.log("dragstart capture document selection preventDefault");
+            // e.preventDefault();
+            e.dataTransfer.clearData();
+            e.dataTransfer.setData("text/plain", " ");
+        } else if (e.target.tagName) {
+            const n = e.target.tagName.toLowerCase();
+            if (n === "a") {
+                // console.log("dragstart capture target preventDefault ", n);
+                // e.preventDefault();
+                e.dataTransfer.clearData();
+                e.dataTransfer.setData("text/plain", "https://www.edrlab.org/software/thorium-reader/");
+            } else if (n === "img" || n === "video" || n === "svg") {
+                // console.log("dragstart capture target preventDefault ", n);
+                // e.preventDefault();
+                e.dataTransfer.clearData();
+                e.dataTransfer.setData("text/plain", " ");
+            }
+        }
+    }, true);
+
+    /*
+    document.addEventListener("dragend", (e) => {
+        console.log("dragend capture currentTarget", typeof e.currentTarget, e.currentTarget);
+        console.log("dragend capture target", typeof e.target, e.target);
+    }, true);
+
+    document.addEventListener("dragstart", (e) => {
+        console.log("dragstart not-capture currentTarget", typeof e.currentTarget, e.currentTarget);
+        console.log("dragstart not-capture target", typeof e.target, e.target);
+    }, false);
+
+    document.addEventListener("dragend", (e) => {
+        console.log("dragend not-capture currentTarget", typeof e.currentTarget, e.currentTarget);
+        console.log("dragend not-capture target", typeof e.target, e.target);
+    }, false);
+     */
+}, 100);
+});
+</script>
+`;
+
 if (true) { // !_USE_HTTP_STREAMER) {
     function isFixedLayout(publication: R2Publication, link: Link | undefined): boolean {
         if (link && link.Properties) {
@@ -796,9 +849,23 @@ const streamProtocolHandler = async (
         const contentType = `${findMimeTypeWithExtension(fileExtension) || ""}; charset=utf-8`;
         headers["Content-Type"] = contentType;
         debug("PDFJS content-type:", contentType, contentLength);
+
+        let buff: Buffer | undefined;
+        if (pdfjsFullPathname.endsWith("viewer.html")) {
+            try {
+                debug("PDFJS INTERCEPT:", pdfjsFullPathname);
+                let str = fs.readFileSync(pdfjsFullPathname, { encoding: "utf8" });
+                str = str.replace(/<\/head>/, `${scriptTextDrag}</head>`);
+                buff = Buffer.from(str, "utf8");
+            } catch (e) {
+                debug("PDFJS INTERCEPT ERROR:", pdfjsFullPathname);
+                debug(e);
+            }
+        }
+
         const obj = {
             // NodeJS.ReadableStream
-            data: fs.createReadStream(pdfjsFullPathname),
+            data: buff ? bufferToStream(buff) : fs.createReadStream(pdfjsFullPathname),
             headers,
             statusCode: 200,
         };
