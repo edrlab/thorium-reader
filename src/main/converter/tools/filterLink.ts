@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
 import { TLinkMayBeOpds } from "../type/link.type";
 import { ILinkFilter } from "../type/linkFilter.interface";
 
@@ -21,7 +20,7 @@ export function filterRelLink(
                     relFlag = true;
                 } else if (filter.rel instanceof RegExp && filter.rel.test(rel)) {
                     relFlag = true;
-                } else if (trimNormaliseWhitespaceAndCollapse(rel) === filter.rel) {
+                } else if (rel?.replace(/\s/g, "") === filter.rel) {
                     relFlag = true;
                 }
             });
@@ -38,7 +37,7 @@ export function filterTypeLink(
     let typeFlag = false;
     if (ln.TypeLink) {
 
-        const typeArray = [...new Set(trimNormaliseWhitespaceAndCollapse(ln.TypeLink).split(";"))];
+        const typeArray = [...new Set(ln.TypeLink.replace(/\s/g, "").split(";"))];
         if (Array.isArray(filter.type) && typeArray.reduce((pv, cv) => pv && (filter.type as Array<string>).includes(cv), true)) {
             typeFlag = true;
         } else if (filter.type instanceof RegExp && typeArray.reduce((pv, cv) => pv && (filter.type as RegExp).test(cv), true)) {
