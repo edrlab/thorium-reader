@@ -9,6 +9,7 @@ import { i18nActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { call as callTyped } from "typed-redux-saga/macro";
+import * as moment from "moment";
 
 function* setLocale(action: i18nActions.setLocale.TAction) {
 
@@ -18,6 +19,13 @@ function* setLocale(action: i18nActions.setLocale.TAction) {
     // }, 1000);
 
     yield* callTyped(() => getTranslator().setLocale(action.payload.locale));
+
+    yield* callTyped(() => {
+
+        /*const localeUsedByMoment = */moment.locale([action.payload.locale, "en"]);
+        // console.log("MOMENT SET LOCALE START", localeUsedByMoment);
+    });
+
 }
 
 export function saga() {

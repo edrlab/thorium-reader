@@ -54,7 +54,7 @@ class LcpInfo extends React.Component<IProps, undefined> {
         const lcpRightsPrintRangePubInfo = publicationLcp.lcpRightsPrints || [];
         const lcpRightsPrintCountPubInfo = lcpRightsPrintRangePubInfo.length;
 
-        const now = moment();
+        const now = moment().locale([this.props.locale, "en"]);
 
         const lcpRightsStartDate = (lcp?.rights?.start) ? lcp.rights.start : undefined;
         let lcpRightsStartDateStr = "";
@@ -62,7 +62,7 @@ class LcpInfo extends React.Component<IProps, undefined> {
         let futureDays=  "";
 
         if (lcpRightsStartDate) {
-            const momentStart = moment(lcpRightsStartDate);
+            const momentStart = moment(lcpRightsStartDate).locale([this.props.locale, "en"]);
             lcpRightsStartDateStr = momentStart.format("LLL");
             const timeStartDif = momentStart.diff(now, "days");
             if (timeStartDif > 1) {
@@ -75,7 +75,7 @@ class LcpInfo extends React.Component<IProps, undefined> {
         const lcpRightsEndDate = (lcp?.rights?.end) ? lcp.rights.end : undefined;
         let lcpRightsEndDateStr = "";
         if (lcpRightsEndDate) {
-            const momentEnd = moment(lcpRightsEndDate);
+            const momentEnd = moment(lcpRightsEndDate).locale([this.props.locale, "en"]);
             lcpRightsEndDateStr = momentEnd.format("LLL");
             const timeEndDif = momentEnd.diff(now, "days");
             if (timeEndDif > 1) {
@@ -84,7 +84,7 @@ class LcpInfo extends React.Component<IProps, undefined> {
                 remainingDays = `${timeEndDif} ${__("publication.day")}`;
             } else {
                 // const nowUTC = (new Date()).toISOString();
-                // const momentNow = moment(nowUTC);
+                // const momentNow = moment(nowUTC).locale([action.payload.locale, "en"]);
                 if (now.isAfter(momentEnd)) {
                     remainingDays = `${__("publication.expired")}`;
                 } else {

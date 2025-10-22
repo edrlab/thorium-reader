@@ -15,16 +15,17 @@ import { TPublication } from "readium-desktop/common/type/publication.type";
 export interface IProps {
     publicationViewMaybeOpds: TPublication;
     __: I18nFunction;
+    locale: string;
 }
 
 export const FormatPublisherDate: React.FC<IProps> = (props) => {
 
-    const { publicationViewMaybeOpds, __ } = props;
+    const { publicationViewMaybeOpds, __, locale } = props;
 
     let formatedPublishedDateComponent = (<></>);
 
     if (publicationViewMaybeOpds.publishedAt) {
-        const date = moment(publicationViewMaybeOpds.publishedAt).format("L");
+        const date = moment(publicationViewMaybeOpds.publishedAt).locale([locale, "en"]).format("L");
         if (date) {
             formatedPublishedDateComponent = (
                 <div>

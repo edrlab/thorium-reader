@@ -1469,8 +1469,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             // const authors = publicationView.authors ? formatContributorToString(publicationView.authorsLangString, translator) : "";
             // const publishers = publicationView.publishers ? formatContributorToString(publicationView.publishersLangString, translator) : "";
 
-            // publicationView.publishedAt = r2Publication.metadata.PublicationDate && moment(metadata.PublicationDate).toISOString();
-            const momPublishedDate_ = publicationView.publishedAt ? moment(publicationView.publishedAt) : undefined;
+            // publicationView.publishedAt = r2Publication.metadata.PublicationDate && moment(metadata.PublicationDate).locale([locale, "en"]).toISOString();
+            const momPublishedDate_ = publicationView.publishedAt ? moment(publicationView.publishedAt).locale([locale, "en"]) : undefined;
             const momPublishedDate = momPublishedDate_ && momPublishedDate_.isValid() ? momPublishedDate_.utc() : undefined;
             const MM = momPublishedDate ? (momPublishedDate.month() || 0) + 1 : undefined; // ZERO-based!
             const DD = momPublishedDate ? momPublishedDate.date() || 1 : undefined; // ONE-based!
@@ -1484,7 +1484,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 }
             }
 
-            const momLastRead_ = publicationView.lastReadTimeStamp ? moment(publicationView.lastReadTimeStamp) : undefined;
+            const momLastRead_ = publicationView.lastReadTimeStamp ? moment(publicationView.lastReadTimeStamp).locale([locale, "en"]) : undefined;
             const momLastRead = momLastRead_ && momLastRead_.isValid() ? momLastRead_.utc() : undefined;
             const M = momLastRead ? (momLastRead.month() || 0) + 1 : undefined; // ZERO-based!
             const D = momLastRead ? momLastRead.date() || 1 : undefined; // ONE-based!
@@ -1501,11 +1501,11 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             const isLcp = !!publicationView.lcp?.rights;
             const lcpRightsEndDate = (publicationView.lcp?.rights?.end) ? publicationView.lcp.rights.end : undefined;
             let remainingDays= "";
-            const now = moment();
+            const now = moment().locale([locale, "en"]);
             let hasEnded = false;
 
             if (lcpRightsEndDate) {
-                const momentEnd = moment(lcpRightsEndDate);
+                const momentEnd = moment(lcpRightsEndDate).locale([locale, "en"]);
                 const timeEndDif = momentEnd.diff(now, "days");
                 if (timeEndDif > 1) {
                     remainingDays = `${timeEndDif} ${__("publication.days")}`;

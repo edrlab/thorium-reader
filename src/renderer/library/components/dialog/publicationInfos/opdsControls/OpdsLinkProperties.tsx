@@ -138,13 +138,13 @@ class OpdsLinkProperties extends React.Component<IProps, undefined> {
                 {
                     properties.availabilitySince ?
                         <MetadataLineComponent text={__("catalog.opds.info.availableSince")}>
-                            <>{moment(properties.availabilitySince).format("LLL")}</>
+                            <>{moment(properties.availabilitySince).locale([this.props.locale, "en"]).format("LLL")}</>
                         </MetadataLineComponent> : <></>
                 }
                 {
                     properties.availabilityUntil ?
                         <MetadataLineComponent text={__("catalog.opds.info.availableUntil")}>
-                            <>{moment(properties.availabilityUntil).format("LLL")}</>
+                            <>{moment(properties.availabilityUntil).locale([this.props.locale, "en"]).format("LLL")}</>
                         </MetadataLineComponent> : <></>
                 }
             </>
