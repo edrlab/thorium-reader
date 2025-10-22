@@ -1170,7 +1170,8 @@
         "tabs": {
             "appearance": "Ulkoasu",
             "general": "Yleiset",
-            "keyboardShortcuts": "Pikanäppäimet"
+            "keyboardShortcuts": "Pikanäppäimet",
+            "profiles": ""
         },
         "theme": {
             "auto": "Automaattinen",

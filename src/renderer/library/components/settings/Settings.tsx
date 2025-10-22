@@ -14,6 +14,9 @@ import * as stylesInput from "readium-desktop/renderer/assets/styles/components/
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 
+// import { DirectionProvider } from "@radix-ui/react-direction";
+// import {I18nProvider} from 'react-aria';
+
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as Tabs from "@radix-ui/react-tabs";
@@ -60,9 +63,12 @@ import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 interface ISettingsProps {};
 
 const TabTitle = (props: React.PropsWithChildren<{title: string}>) => {
+    // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const isRTL = locale === "ar";
     return (
-        <div className={stylesSettings.settings_tab_title}>
-            <h2>{props.title}</h2>
+        <div dir={isRTL ? "rtl" : "ltr"} className={stylesSettings.settings_tab_title}>
+            <h2 dir={isRTL ? "rtl" : "ltr"}>{props.title}</h2>
             {props.children}
         </div>
     );
@@ -72,6 +78,7 @@ const LanguageSettings: React.FC<{}> = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    // const isRTL = locale === "ar";
 
     const currentLanguageISO = locale as keyof typeof availableLanguages;
     const currentLanguageString = availableLanguages[currentLanguageISO];
@@ -97,6 +104,9 @@ const LanguageSettings: React.FC<{}> = () => {
 
 export const Auth = () => {
     const [__] = useTranslator();
+    // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const isRTL = locale === "ar";
     const dispatch = useDispatch();
 
     return (
@@ -104,19 +114,22 @@ export const Auth = () => {
             className={stylesSettings.btn_primary}
             onClick={() => dispatch(authActions.wipeData.build())}>
             <SVG ariaHidden svg={BinIcon} />
-            <p>{__("settings.auth.wipeData")}</p>
+            <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.auth.wipeData")}</p>
         </button>
     );
 };
 
 const ConnectionSettings: React.FC<{}> = () => {
     const [__] = useTranslator();
+    // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const isRTL = locale === "ar";
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>
-            <h4>{__("settings.auth.title")}</h4>
+            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.auth.title")}</h4>
             <div className={stylesSettings.session_text}>
                 <SVG ariaHidden svg={InfoIcon} />
-                <p>{__("settings.auth.help")}</p>
+                <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.auth.help")}</p>
             </div>
             <Auth />
         </section>
@@ -125,6 +138,9 @@ const ConnectionSettings: React.FC<{}> = () => {
 
 const SaveSessionSettings: React.FC<{}> = () => {
     const [__] = useTranslator();
+    // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const isRTL = locale === "ar";
     const dispatch = useDispatch();
     const sessionSaveState = useSelector((state: ICommonRootState) => state.session.save);
     const onChange = () => {
@@ -132,12 +148,12 @@ const SaveSessionSettings: React.FC<{}> = () => {
     };
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>
-            <h4>{__("app.session.exit.askBox.message")}</h4>
+            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("app.session.exit.askBox.message")}</h4>
             <div className={stylesSettings.session_text} style={{ margin: "0" }}>
                 <SVG ariaHidden svg={InfoIcon} />
-                <p>{__("app.session.exit.askBox.help")}</p>
+                <p dir={isRTL ? "rtl" : "ltr"}>{__("app.session.exit.askBox.help")}</p>
             </div>
-            <div className={stylesAnnotations.annotations_checkbox}>
+            <div dir={isRTL ? "rtl" : "ltr"} className={stylesAnnotations.annotations_checkbox}>
                 <input type="checkbox" id="saveSessionSettings" className={stylesGlobal.checkbox_custom_input} name="saveSessionSettings" checked={sessionSaveState} onChange={onChange} />
                 <label htmlFor="saveSessionSettings" className={stylesGlobal.checkbox_custom_label}>
                     <div
@@ -167,7 +183,7 @@ const SaveSessionSettings: React.FC<{}> = () => {
                         }
                     </div>
                     <div aria-hidden>
-                        <h4>{__("settings.session.title")}</h4>
+                        <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.session.title")}</h4>
                     </div>
                 </label>
             </div>
@@ -177,6 +193,9 @@ const SaveSessionSettings: React.FC<{}> = () => {
 
 const ScreenReaderSettings: React.FC<{}> = () => {
     const [__] = useTranslator();
+    // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const isRTL = locale === "ar";
     const dispatch = useDispatch();
     const screenReaderActivate = useSelector((state: ICommonRootState) => state.screenReader.activate);
     const onChange = () => {
@@ -184,12 +203,12 @@ const ScreenReaderSettings: React.FC<{}> = () => {
     };
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>
-            <h4>{__("settings.screenReaderActivate.message")}</h4>
+            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.message")}</h4>
             <div className={stylesSettings.session_text} style={{ margin: "0" }}>
                 <SVG ariaHidden svg={InfoIcon} />
-                <p>{__("settings.screenReaderActivate.help")}</p>
+                <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.help")}</p>
             </div>
-            <div className={stylesAnnotations.annotations_checkbox}>
+            <div dir={isRTL ? "rtl" : "ltr"} className={stylesAnnotations.annotations_checkbox}>
                 <input type="checkbox" id="screenReaderSettings" className={stylesGlobal.checkbox_custom_input} name="screenReaderSettings" checked={screenReaderActivate} onChange={onChange} />
                 <label htmlFor="screenReaderSettings" className={stylesGlobal.checkbox_custom_label}>
                     <div
@@ -219,7 +238,7 @@ const ScreenReaderSettings: React.FC<{}> = () => {
                         }
                     </div>
                     <div aria-hidden>
-                        <h4>{__("settings.screenReaderActivate.title")}</h4>
+                        <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.title")}</h4>
                     </div>
                 </label>
             </div>
@@ -237,8 +256,12 @@ interface IRadioGroupItemProps {
 };
 
 const RadioGroupItem = (props: IRadioGroupItemProps) => {
+    // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const isRTL = locale === "ar";
     return (
         <RadioGroup.Item
+            dir={isRTL ? "rtl" : "ltr"}
             data-input-type="radio"
             value={props.value} id={props.value} className={props.className} disabled={props.disabled} style={props.style}>
             {props.description}
@@ -249,6 +272,9 @@ const RadioGroupItem = (props: IRadioGroupItemProps) => {
 
 const SaveCreatorSettings: React.FC<{}> = () => {
     const [__] = useTranslator();
+    // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const isRTL = locale === "ar";
     const dispatch = useDispatch();
     const creator = useSelector((state: ICommonRootState) => state.creator);
 
@@ -268,23 +294,23 @@ const SaveCreatorSettings: React.FC<{}> = () => {
 
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>
-            <h4>{__("settings.annotationCreator.creator")}</h4>
+            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.annotationCreator.creator")}</h4>
             <div className={stylesSettings.session_text} style={{ margin: "0" }}>
                 <SVG ariaHidden svg={InfoIcon} />
-                <p>{__("settings.annotationCreator.help")}</p>
+                <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.annotationCreator.help")}</p>
             </div>
             <div className={stylesInput.form_group} style={{ marginTop: "20px", width: "360px"}}>
-                <input type="text" name="creator-name" style={{ width: "100%", marginLeft: "10px" }} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={name} value={name} onChange={(e) => {
+                <input dir={isRTL ? "rtl" : "ltr"} type="text" name="creator-name" style={{ width: "100%", marginLeft: "10px" }} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={name} value={name} onChange={(e) => {
                     const v = e.target.value;
                     setName(v);
                 }} />
-                <label htmlFor="creator-name">{__("settings.annotationCreator.name")}</label>
+                <label dir={isRTL ? "rtl" : "ltr"} htmlFor="creator-name">{__("settings.annotationCreator.name")}</label>
             </div>
-            <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px", marginTop: "20px", flexWrap: "wrap" }}
+            <RadioGroup.Root dir={isRTL ? "rtl" : "ltr"} orientation="horizontal" style={{ display: "flex", gap: "10px", marginTop: "20px", flexWrap: "wrap" }}
                 value={type}
                 onValueChange={(option: "Organization" | "Person") => setType(option)}
             >
-                 <p>{__("settings.annotationCreator.type")}</p>
+                 <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.annotationCreator.type")}</p>
                 <RadioGroupItem value="Organization" description={`${__("settings.annotationCreator.organization")}`} className={stylesAnnotations.annotations_filter_tag} />
                 <RadioGroupItem value="Person" description={`${__("settings.annotationCreator.person")}`} className={stylesAnnotations.annotations_filter_tag} />
             </RadioGroup.Root>
@@ -296,6 +322,9 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
 
     const MAX_LEN = 100 * 1024;
     const [__] = useTranslator();
+    // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const isRTL = locale === "ar";
     const dispatch = useDispatch();
     const enableCheckbox = useSelector((state: ILibraryRootState) => state.noteExport.overrideHTMLTemplate);
     const htmlContent = useSelector((state: ILibraryRootState) => state.noteExport.htmlContent);
@@ -321,9 +350,9 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
 
         <section className={stylesSettings.section} style={{ position: "relative" }}>
 
-            <h4>{__("settings.note.export.overrideHTMLTemplate")}</h4>
+            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.note.export.overrideHTMLTemplate")}</h4>
             <input type="checkbox" className={stylesGlobal.checkbox_custom_input} name="enableCheckbox" />
-            <div className={stylesAnnotations.annotations_checkbox}>
+            <div dir={isRTL ? "rtl" : "ltr"} className={stylesAnnotations.annotations_checkbox}>
                 <input type="checkbox" id="enableCheckbox" className={stylesGlobal.checkbox_custom_input} name="enableCheckbox" checked={enableCheckbox} onChange={toggleEnableCheckbox} />
                 <label htmlFor="enableCheckbox" className={stylesGlobal.checkbox_custom_label}>
                     <div
@@ -353,14 +382,14 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
                         }
                     </div>
                     <div aria-hidden>
-                        <h4>{__("settings.note.export.enableCheckbox")}</h4>
+                        <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.note.export.enableCheckbox")}</h4>
                     </div>
                 </label>
             </div>
             {
                 enableCheckbox ? <>
                     <TextArea style={{ minWidth: "-webkit-fill-available", maxWidth: "-webkit-fill-available" }} name="htmlContent" wrap="hard" ref={textAreaRef} defaultValue={htmlContent} maxLength={MAX_LEN} onChange={(a) => updateHtmlContentDebounced(a.currentTarget.value)}></TextArea>
-                    <button className={stylesSettings.btn_primary} onClick={resetHtmlContent}>{__("settings.note.export.applyDefaultTemplate")}</button>
+                    <button dir={isRTL ? "rtl" : "ltr"} className={stylesSettings.btn_primary} onClick={resetHtmlContent}>{__("settings.note.export.applyDefaultTemplate")}</button>
                 </>
                     : <></>
             }
@@ -372,6 +401,9 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
 const ManageAccessToCatalogSettings = () => {
 
     const [__] = useTranslator();
+    // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const isRTL = locale === "ar";
     const dispatch = useDispatch();
     const enableAPIAPP = useSelector((state: ILibraryRootState) => state.settings.enableAPIAPP);
 
@@ -381,8 +413,8 @@ const ManageAccessToCatalogSettings = () => {
 
     return (
         <section className={stylesSettings.section} style={{ gap: "10px" }}>
-            <h4>{__("settings.library.title")}</h4>
-            <div className={stylesAnnotations.annotations_checkbox}>
+            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.library.title")}</h4>
+            <div dir={isRTL ? "rtl" : "ltr"} className={stylesAnnotations.annotations_checkbox}>
                 <input type="checkbox" id="enableAPIAPP" className={stylesGlobal.checkbox_custom_input} name="enableAPIAPP" checked={enableAPIAPP} onChange={toggleEnableAPIAPP} />
                 <label htmlFor="enableAPIAPP" className={stylesGlobal.checkbox_custom_label}>
                     <div
@@ -412,7 +444,7 @@ const ManageAccessToCatalogSettings = () => {
                         }
                     </div>
                     <div aria-hidden>
-                        <h4>{__("settings.library.enableAPIAPP")}</h4>
+                        <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.library.enableAPIAPP")}</h4>
                     </div>
                 </label>
             </div>
@@ -423,6 +455,9 @@ const ManageAccessToCatalogSettings = () => {
 
 const Themes = () => {
     const [__] = useTranslator();
+    // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const isRTL = locale === "ar";
     const dispatch = useDispatch();
     const theme = useSelector((s: ICommonRootState) => s.theme);
     const options: Array<{id: number, value: TTheme, name: string}> = [
@@ -448,7 +483,7 @@ const Themes = () => {
             {theme.name === "system" ? (
                 <div className={stylesSettings.session_text}>
                     <SVG ariaHidden svg={InfoIcon} />
-                    <p>{__("settings.theme.description")}</p>
+                    <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.theme.description")}</p>
                 </div>
             ) : (
                 <></>
@@ -462,14 +497,16 @@ const Profiles = () => {
     const { provision: packageProfileProvisioned, activate: { id: profileActivatedId } } = useSelector((s: ICommonRootState) => s.customization);
     const selectedProfile = packageProfileProvisioned.find(({id}) => id && id === profileActivatedId);
     const dispatch = useDispatch();
-    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
     const [__] = useTranslator();
+    // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const isRTL = locale === "ar";
 
     return (
         <>
             <div className={stylesSettings.session_text}>
                 <SVG ariaHidden svg={InfoIcon} />
-                <p>{__("settings.profiles.info")}</p>
+                <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.profiles.info")}</p>
             </div>
             <div
                 className={stylesSettings.profile_selection_form}
@@ -539,7 +576,7 @@ const Profiles = () => {
                                         </Popover.Trigger>
                                         <Popover.Portal>
                                             <Popover.Content collisionPadding={{ top: 180, bottom: 100 }} avoidCollisions alignOffset={-10} /* hideWhenDetached */ sideOffset={5} className={stylesPopoverDialog.delete_item}>
-                                                <Popover.Close
+                                                <Popover.Close dir={isRTL ? "rtl" : "ltr"}
                                                     onClick={() => {
                                                         dispatch(customizationActions.deleteProfile.build(profile.fileName));
                                                     }}
@@ -594,8 +631,8 @@ const Profiles = () => {
                             }}
                         >
                             <div>
-                                <h5>{__("settings.profiles.thorium.title")}</h5>
-                                <p>{__("settings.profiles.thorium.description")}</p>
+                                <h5 dir={isRTL ? "rtl" : "ltr"}>{__("settings.profiles.thorium.title")}</h5>
+                                <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.profiles.thorium.description")}</p>
                             </div>
                         </div>
                     </label>
@@ -607,13 +644,16 @@ const Profiles = () => {
 
 const TabHeader = (props: React.PropsWithChildren<{title: string}>) => {
     const [__] = useTranslator();
+    // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const isRTL = locale === "ar";
     return (
-        <div key="modal-header" className={stylesSettings.close_button_div}>
+        <div key="modal-header" className={stylesSettings.close_button_div} style={{justifyContent: isRTL ? "end" : undefined}}>
             <TabTitle title={props.title}>
             {props.children}
             </TabTitle>
             <Dialog.Close asChild>
-                <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
+                <button dir={isRTL ? "rtl" : "ltr"} data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
                     <SVG ariaHidden={true} svg={QuitIcon} />
                 </button>
             </Dialog.Close>
@@ -624,12 +664,17 @@ const TabHeader = (props: React.PropsWithChildren<{title: string}>) => {
 
 export const Settings: React.FC<ISettingsProps> = () => {
     const [__] = useTranslator();
+    // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const isRTL = locale === "ar";
 
+    // https://github.com/edrlab/thorium-reader/discussions/3177#discussioncomment-14752676
+    // <DirectionProvider dir={isRTL ? "rtl" : "ltr"}> ... </DirectionProvider>
     return <Dialog.Root>
         <Dialog.Trigger asChild>
             <button title={__("header.settings")} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                 <SVG ariaHidden svg={GearIcon} />
-                <h3>{__("header.settings")}</h3>
+                <h3 dir={isRTL ? "rtl" : "ltr"}>{__("header.settings")}</h3>
             </button>
         </Dialog.Trigger>
         <Dialog.Portal>
@@ -646,19 +691,19 @@ export const Settings: React.FC<ISettingsProps> = () => {
                     <Tabs.List className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
                         <Tabs.Trigger value="tab1">
                             <SVG ariaHidden svg={CogIcon} />
-                            <h3>{__("settings.tabs.general")}</h3>
+                            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.general")}</h3>
                         </Tabs.Trigger>
                         <Tabs.Trigger value="tab2">
                             <SVG ariaHidden svg={PaletteIcon} />
-                            <h3>{__("settings.tabs.appearance")}</h3>
+                            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.appearance")}</h3>
                         </Tabs.Trigger>
                         <Tabs.Trigger value="tab4">
                             <SVG ariaHidden svg={KeyReturnIcon} />
-                            <h3>{__("settings.tabs.keyboardShortcuts")}</h3>
+                            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.keyboardShortcuts")}</h3>
                         </Tabs.Trigger>
                         <Tabs.Trigger value="tab5">
                             <SVG ariaHidden svg={AvatarIcon} />
-                            <h3>Profiles</h3>
+                            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.profiles")}</h3>
                         </Tabs.Trigger>
                     </Tabs.List>
                     <div className={stylesSettings.settings_content} style={{ marginTop: "70px" }}>
@@ -689,7 +734,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             </div>
                         </Tabs.Content>
                         <Tabs.Content value="tab5" tabIndex={-1}>
-                            <TabHeader title="Profiles" />
+                            <TabHeader title={__("settings.tabs.profiles")} />
                             <div className={stylesSettings.settings_tab}>
                                 <Profiles />
                             </div>

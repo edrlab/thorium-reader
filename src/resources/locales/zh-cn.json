@@ -1170,7 +1170,8 @@
         "tabs": {
             "appearance": "外观",
             "general": "常规",
-            "keyboardShortcuts": "键盘快捷键"
+            "keyboardShortcuts": "键盘快捷键",
+            "profiles": ""
         },
         "theme": {
             "auto": "自动",

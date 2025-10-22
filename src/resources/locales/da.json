@@ -1170,7 +1170,8 @@
         "tabs": {
             "appearance": "Udseende",
             "general": "Generelt",
-            "keyboardShortcuts": "Tastaturgenveje"
+            "keyboardShortcuts": "Tastaturgenveje",
+            "profiles": ""
         },
         "theme": {
             "auto": "Automatisk",

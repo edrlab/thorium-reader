@@ -1170,7 +1170,8 @@
         "tabs": {
             "appearance": "Erscheinungsbild",
             "general": "Allgemein",
-            "keyboardShortcuts": "Tastaturkürzel"
+            "keyboardShortcuts": "Tastaturkürzel",
+            "profiles": ""
         },
         "theme": {
             "auto": "Automatisch",

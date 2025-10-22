@@ -1170,7 +1170,8 @@
         "tabs": {
             "appearance": "Внешний вид",
             "general": "Общие",
-            "keyboardShortcuts": "Горячие клавиши"
+            "keyboardShortcuts": "Горячие клавиши",
+            "profiles": ""
         },
         "theme": {
             "auto": "Автоматическая",

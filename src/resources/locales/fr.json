@@ -1170,7 +1170,8 @@
         "tabs": {
             "appearance": "Apparence",
             "general": "Géneral",
-            "keyboardShortcuts": "Raccourcis clavier"
+            "keyboardShortcuts": "Raccourcis clavier",
+            "profiles": "Profils"
         },
         "theme": {
             "auto": "Automatique",

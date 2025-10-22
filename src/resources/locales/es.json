@@ -1170,7 +1170,8 @@
         "tabs": {
             "appearance": "Aspecto visual",
             "general": "General",
-            "keyboardShortcuts": "Atajos de teclado"
+            "keyboardShortcuts": "Atajos de teclado",
+            "profiles": ""
         },
         "theme": {
             "auto": "Automático",

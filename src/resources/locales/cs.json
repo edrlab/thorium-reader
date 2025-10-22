@@ -1170,7 +1170,8 @@
         "tabs": {
             "appearance": "Vzhled",
             "general": "Obecné",
-            "keyboardShortcuts": "Klávesové zkratky"
+            "keyboardShortcuts": "Klávesové zkratky",
+            "profiles": ""
         },
         "theme": {
             "auto": "Automatický",

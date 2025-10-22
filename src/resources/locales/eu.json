@@ -1170,7 +1170,8 @@
         "tabs": {
             "appearance": "Itxura",
             "general": "Orokorra",
-            "keyboardShortcuts": "Teklatuko lasterbideak"
+            "keyboardShortcuts": "Teklatuko lasterbideak",
+            "profiles": ""
         },
         "theme": {
             "auto": "Automatikoa",

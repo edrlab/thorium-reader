@@ -8,6 +8,7 @@
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 
 import { shell } from "electron";
 import * as React from "react";
@@ -94,21 +95,24 @@ export const ApiappHowDoesItWorkInfoBox = () => {
 
 
     const [__] = useTranslator();
+    // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const isRTL = locale === "ar";
     const [infoOpen, setInfoOpen] = React.useState(false);
 
     return (
         <div>
-            <button className={classNames("button_catalog_infos")} onClick={(e) => { e.preventDefault(); setInfoOpen(!infoOpen); }}>
+            <button dir={isRTL ? "rtl" : "ltr"} className={classNames("button_catalog_infos")} onClick={(e) => { e.preventDefault(); setInfoOpen(!infoOpen); }}>
                 <SVG ariaHidden svg={InfoIcon} />
                 {__("apiapp.howItWorks")}
                 <SVG ariaHidden svg={infoOpen ? ChevronUp : ChevronDown} />
             </button>
             {infoOpen ?
                 <div className={classNames("catalog_infos_text")}>
-                    <p>
+                    <p dir={isRTL ? "rtl" : "ltr"}>
                         {__("apiapp.informations")}
                     </p>
-                    <a href=""
+                    <a dir={isRTL ? "rtl" : "ltr"} href=""
                         onClick={async (ev) => {
                             ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                             const href = "https://thorium.edrlab.org/";

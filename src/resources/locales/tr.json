@@ -1170,7 +1170,8 @@
         "tabs": {
             "appearance": "Görünüm",
             "general": "Genel",
-            "keyboardShortcuts": "Klavye kısayolları"
+            "keyboardShortcuts": "Klavye kısayolları",
+            "profiles": ""
         },
         "theme": {
             "auto": "Otomatik",

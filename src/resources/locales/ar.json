@@ -1170,7 +1170,8 @@
         "tabs": {
             "appearance": "المظهر",
             "general": "عام",
-            "keyboardShortcuts": "اختصارات لوحة المفاتيح"
+            "keyboardShortcuts": "اختصارات لوحة المفاتيح",
+            "profiles": ""
         },
         "theme": {
             "auto": "تلقائي",

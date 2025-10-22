@@ -1170,7 +1170,8 @@
         "tabs": {
             "appearance": "外観",
             "general": "一般",
-            "keyboardShortcuts": "キーボード ショートカット"
+            "keyboardShortcuts": "キーボード ショートカット",
+            "profiles": ""
         },
         "theme": {
             "auto": "自動",

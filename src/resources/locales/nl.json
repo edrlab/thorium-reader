@@ -1170,7 +1170,8 @@
         "tabs": {
             "appearance": "Verschijning",
             "general": "Algemeen",
-            "keyboardShortcuts": "Toetsenbord sneltoetsen"
+            "keyboardShortcuts": "Toetsenbord sneltoetsen",
+            "profiles": ""
         },
         "theme": {
             "auto": "Automatisch",

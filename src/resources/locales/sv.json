@@ -1170,7 +1170,8 @@
         "tabs": {
             "appearance": "Utseende",
             "general": "Allmänt",
-            "keyboardShortcuts": "Kortkommandon"
+            "keyboardShortcuts": "Kortkommandon",
+            "profiles": ""
         },
         "theme": {
             "auto": "Automatiskt",

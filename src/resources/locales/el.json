@@ -1170,7 +1170,8 @@
         "tabs": {
             "appearance": "Εμφάνιση",
             "general": "Γενικά",
-            "keyboardShortcuts": "Συντομεύσεις πληκτρολογίου"
+            "keyboardShortcuts": "Συντομεύσεις πληκτρολογίου",
+            "profiles": ""
         },
         "theme": {
             "auto": "Αυτόματο",

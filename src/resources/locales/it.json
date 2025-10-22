@@ -1170,7 +1170,8 @@
         "tabs": {
             "appearance": "Aspetto",
             "general": "Generale",
-            "keyboardShortcuts": "Scorciatoie da tastiera"
+            "keyboardShortcuts": "Scorciatoie da tastiera",
+            "profiles": ""
         },
         "theme": {
             "auto": "Automatico",

@@ -1170,7 +1170,8 @@
         "tabs": {
             "appearance": "Išvaizda",
             "general": "Bendros",
-            "keyboardShortcuts": "Spartieji klavišai"
+            "keyboardShortcuts": "Spartieji klavišai",
+            "profiles": ""
         },
         "theme": {
             "auto": "Automatinė",
