@@ -65,10 +65,10 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
-                "publications": "",
-                "screen": "",
-                "title": ""
+                "description": "Ingen profilbeskrivelse",
+                "publications": "Profil-udgivelser",
+                "screen": "Ingen titel",
+                "title": "Profil titel"
             }
         },
         "delete": "Slet",
@@ -86,8 +86,8 @@
         "importAnnotation": "Importér noter",
         "lang": "Sprog",
         "lastRead": "Senest læst",
-        "login": "",
-        "logout": "",
+        "login": "Log ind",
+        "logout": "Log ud",
         "moreInfo": "Bogdetaljer",
         "myBooks": "Mine bøger",
         "noPublicationHelpL1": "Træk en bog hertil",
@@ -98,12 +98,12 @@
         "opds": {
             "auth": {
                 "cancel": "Annullér",
-                "external": "",
-                "fallback": "",
+                "external": "Login-siden åbnes i din webbrowser. Følg venligst instruktionerne. Når du er logget ind, fører webbrowseren dig tilbage til denne applikation.",
+                "fallback": "Bemærk: Hvis du oplever problemer med at logge ind med din standard webbrowser, kan du prøve igen med den alternative metode inde i applikationen.",
                 "login": "Log ind",
                 "password": "Adgangskode",
                 "register": "Registrér",
-                "retry": "",
+                "retry": "Prøv igen",
                 "username": "Brugernavn / email-adresse"
             },
             "info": {
@@ -149,8 +149,8 @@
         "cancel": "Annullér",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
-                "state": "",
+                "fallbackWelcomeScreen": "Ingen velkomstskærm angivet",
+                "state": "Tilstand: {{- state}}",
                 "title": "Tilpasningsprofil for klargøring og aktivering"
             }
         },
@@ -260,7 +260,7 @@
         },
         "next": "Næste",
         "previous": "Forrige",
-        "resumeBrowsing": "",
+        "resumeBrowsing": "Genoptag browsing",
         "shelf": "Boghylde",
         "updateForm": {
             "name": "Navn:",
@@ -850,7 +850,7 @@
             "reduceMotion": "Reducér bevægelser",
             "scrolled": "Scrollbart",
             "spacing": "Mellemrum",
-            "spreadModeEven": "",
+            "spreadModeEven": "Sideopslag 'lige' (standard er 'ulige')",
             "text": "Tekst",
             "theme": {
                 "name": {
@@ -1157,12 +1157,12 @@
                 "description": "Thorium Vanilla profilen er den originale profil, designet af EDRLab.",
                 "title": "Thorium vanilla"
             },
-            "version": ""
+            "version": "Version: {{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "message": "",
-            "title": ""
+            "help": "Når applikationen registrerer at hjælpeteknologier benyttes, fungerer brugergrænsefladen bedre med skærmlæsere",
+            "message": "Forbedret understøttelse af skærmlæsere",
+            "title": "Forbedret oplevelse med skærmlæser"
         },
         "session": {
             "title": "Gem session"
