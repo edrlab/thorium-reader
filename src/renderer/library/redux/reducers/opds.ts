@@ -11,7 +11,7 @@ import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/br
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { opdsActions } from "readium-desktop/renderer/library/redux/actions";
 import {
-    browseRequest, headerLinksUpdate, search,
+    browseRequest, headerLinksUpdate, search, popBreadcrumb,
 } from "readium-desktop/renderer/library/redux/actions/opds";
 import {
     IOpdsHeaderState, IOpdsSearchState,
@@ -25,29 +25,30 @@ import { getTranslator } from "readium-desktop/common/services/translator";
 
 function opdsBreadcrumbReducer_(
     state: IBreadCrumbItem[] = [],
-    action: browseRequest.TAction,
+    action: browseRequest.TAction | popBreadcrumb.TActionPop,
 ): IBreadCrumbItem[] {
     switch (action.type) {
-        case opdsActions.browseRequest.ID:
+        case opdsActions.browseRequest.ID: {
             const { level, title, url, rootFeedIdentifier } = action.payload;
             const stateNew = state.slice(0, level - 1);
+
             if (stateNew.length === 0) {
                 stateNew.push({
                     name: getTranslator().__("opds.breadcrumbRoot"),
                     path: "/opds",
                 });
             }
-            // the slice() operation clones the array and returns a reference to a new array.
+
             stateNew.push({
                 name: title,
-                path: buildOpdsBrowserRoute(
-                    rootFeedIdentifier,
-                    title,
-                    url,
-                    level,
-                ),
+                path: buildOpdsBrowserRoute(rootFeedIdentifier, title, url, level),
             });
             return stateNew;
+        }
+
+        case opdsActions.popBreadcrumb.ID: {
+            return state.length > 1 ? state.slice(0, -1) : state;
+        }
 
         default:
             return state;

@@ -40,7 +40,7 @@ const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substri
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
     secondaryHeader?: React.ReactElement;
-    breadCrumb?: React.ReactElement;
+    catalogHeader?: React.ReactElement;
     title?: string;
     page?: string;
     mainClassName?: string;
@@ -129,7 +129,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         {(page === __("opds.breadcrumbRoot")) ?
                             <div style={{display: "flex", alignItems: "center", gap: "10px", padding: "10px 0"}}>
                                 <h2 className={stylesAllBooks.allBooks_header}>{this.props.title}</h2>
-                                {this.props.breadCrumb ?
+                                {this.props.catalogHeader ?
                                     <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
                                         {
                                             this.home()
@@ -147,9 +147,9 @@ class LibraryLayout extends React.Component<IProps, undefined> {
 
                             : <></>
                         }
-                        {this.props.breadCrumb ?
+                        {this.props.catalogHeader ?
                         <div className={stylesCatalogs.catalog_breadcrumbSearch_Wrapper}>
-                            { this.props.breadCrumb }
+                            { this.props.catalogHeader }
                             { this.props.search }
                         </div>
                         : <></>}
