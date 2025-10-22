@@ -1462,10 +1462,6 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
         },
     };
 
-    // const locale = translator.getLocale();
-    // // https://momentjs.com/docs/#/displaying/
-    // moment.locale(locale);
-
     const tableRows = React.useMemo(() => {
         return publicationViews.slice().reverse().map((publicationView) => {
 

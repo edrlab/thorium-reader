@@ -20,6 +20,7 @@ import {
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { createStoreFromDi, getStore } from "./createStore";
+import * as moment from "moment";
 
 if (__TH__IS_DEV__) {
     // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
@@ -87,6 +88,7 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
             const [store, _reduxHistory, _sagaMiddleware] = createStoreFromDi(preloadedState);
             const locale = store.getState().i18n.locale;
             getTranslator().setLocale(locale);
+            moment.locale(locale);
 
             store.dispatch(winActions.initRequest.build(data.payload.win.identifier));
 

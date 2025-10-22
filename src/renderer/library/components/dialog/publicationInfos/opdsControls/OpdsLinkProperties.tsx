@@ -88,9 +88,6 @@ class OpdsLinkProperties extends React.Component<IProps, undefined> {
             }
         )();
 
-        // https://momentjs.com/docs/#/displaying/
-        moment.locale(this.props.locale);
-
         return (
             <>
                 {

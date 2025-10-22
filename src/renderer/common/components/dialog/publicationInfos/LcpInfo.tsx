@@ -40,10 +40,7 @@ class LcpInfo extends React.Component<IProps, undefined> {
 
     public render() {
 
-        const { publicationLcp, locale, __ } = this.props;
-
-        // https://momentjs.com/docs/#/displaying/
-        moment.locale(locale);
+        const { publicationLcp, __ } = this.props;
 
         const lcp = publicationLcp.lcp;
 
