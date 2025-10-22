@@ -398,8 +398,6 @@ export class OpdsFeedViewConverter {
         }
 
 
-        debug(r2OpdsPublication.Links);
-
         const selfLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
             rel: "self",
             type: "application/opds-publication+json",
