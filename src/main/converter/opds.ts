@@ -347,7 +347,7 @@ export class OpdsFeedViewConverter {
                 return (
                     (filter.type && filter.rel)
                         ? (relFlag && typeFlag)
-                        : (relFlag || typeFlag)
+                        : (filter.rel) ? relFlag : (filter.type) ? typeFlag : false
                 );
             },
         );
