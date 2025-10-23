@@ -97,8 +97,7 @@
     "typescript-check": "npm run patch-types && tsc --showConfig --project ./tsconfig-cli.json && echo \"####################\" && tsc --listFilesOnly --project ./tsconfig-cli.json && echo \"####################\" && tsc --project ./tsconfig-cli.json --extendedDiagnostics --diagnostics && npm run unpatch-types",
     "typescript-check-GO": "npm run patch-types && tsgo --showConfig --project ./tsconfig-cli.json && echo \"####################\" && tsgo --project ./tsconfig-cli.json --listFiles --extendedDiagnostics --diagnostics && npm run unpatch-types",
     "typescript-check-GO:watch": "npm run patch-types && concurrently \"tsgo --project ./tsconfig-cli.json --watch --excludeDirectories **/node_modules\" \"npm run unpatch-types\"",
-    "make-customization-profile": "webpack --config webpack.config.customization.js && DEBUG=r2:*,readium-desktop:* node ./dist/make-package.js",
-    "action-validator": "node node_modules/@action-validator/cli/cli.mjs .github/workflows/main.yml && echo \"SUCCESS\" || echo \"FAIL\""
+    "make-customization-profile": "webpack --config webpack.config.customization.js && DEBUG=r2:*,readium-desktop:* node ./dist/make-package.js"
   },
   "repository": {
     "type": "git",
@@ -366,8 +365,6 @@
     "yazl": "^3.3.1"
   },
   "devDependencies": {
-    "@action-validator/cli": "^0.6.0",
-    "@action-validator/core": "^0.6.0",
     "@axe-core/react": "^4.10.2",
     "@babel/generator": "^7.28.3",
     "@electron/fuses": "^2.0.0",
