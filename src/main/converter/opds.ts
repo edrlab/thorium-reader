@@ -175,6 +175,7 @@ export class OpdsFeedViewConverter {
             url: document.url,
             authentified: authentified,
             authenticationUrl: document.authenticationUrl,
+            favorite: document.favorite,
             // feedHasAuthentication: authentified || await feedHasAuthenticationFunction(),
         };
     }

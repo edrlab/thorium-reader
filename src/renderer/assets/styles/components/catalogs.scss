@@ -53,13 +53,13 @@
             border-top: 1px solid var(--color-gray-300);
         }
 
-        svg {
-            width: 101%;
-            position: absolute;
-            top: 1px;
-            left: 1px;
-            padding: 0;
-        }
+        // svg {
+        //     width: 101%;
+        //     position: absolute;
+        //     top: 1px;
+        //     left: 1px;
+        //     padding: 0;
+        // }
 
         .catalog_title {
             position: absolute;
@@ -233,6 +233,35 @@
         svg {
         width: 14px;
         }
+    }
+}
+
+.catalog_favorite_icon_false, .catalog_favorite_icon_true {
+    stroke: var(--color-brand-primary);
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 5px;
+    left: unset;
+    right: 5px;
+}
+
+.catalog_favorite_icon {
+    &_false {
+        color: transparent;
+    }
+
+    &_true {
+        color: var(--color-brand-primary);
+    }
+}
+
+.modal_dialog_body {
+    .catalog_favorite_icon_false, .catalog_favorite_icon_true {
+        position: relative;
+        left: unset;
+        top: unset;
+        right: unset;
     }
 }
 

@@ -19,6 +19,7 @@ import * as DeleteIcon from "readium-desktop/renderer/assets/icons/trash-icon.sv
 import * as EditIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon.svg";
 import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar-icon.svg";
+import * as StarIcon from "readium-desktop/renderer/assets/icons/star-icon.svg";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -92,13 +93,16 @@ class FeedList extends React.Component<IProps, IState> {
         }
 
         const { __ } = this.props;
+
+        const favorites = this.state.feedsResult.filter(item => item.favorite);
+        const others = this.state.feedsResult.filter(item => !item.favorite);
         return (
             <section>
                 <h2>{__("header.myCatalogs")}</h2>
                 <ul className={stylesCatalogs.catalog_wrapper}>
-                    {this.state.feedsResult.map((item, index) => {
+                    {[...favorites, ...others].map((item) => {
                         return (
-                            <li key={"feed-" + index} className={stylesCatalogs.catalog_container}>
+                            <li key={"feed-" + item.title} className={stylesCatalogs.catalog_container}>
                                 <Link
                                     to={{
                                         ...this.props.location,
@@ -133,7 +137,9 @@ class FeedList extends React.Component<IProps, IState> {
                                         }
                                     }}
                                 >
-                                    <div style={{ width: "100%", height: "50px", backgroundColor: "var(--color-gray-50", borderBottom: "1px solid var(--color-gray-300)", position: "absolute", top: "2px" }}></div>
+                                    <div style={{ width: "100%", height: "50px", backgroundColor: "var(--color-gray-50", borderBottom: "1px solid var(--color-gray-300)", position: "absolute", top: "2px" }}>
+                                         <SVG svg={StarIcon} ariaHidden className={item.favorite ? stylesCatalogs.catalog_favorite_icon_true : stylesCatalogs.catalog_favorite_icon_false} />
+                                    </div>
                                     <div className={stylesCatalogs.catalog_title}>
                                         <SVG ariaHidden svg={GlobeIcon} />
                                         <p title={`${item.title} --- ${item.url}`}>{item.title}</p>

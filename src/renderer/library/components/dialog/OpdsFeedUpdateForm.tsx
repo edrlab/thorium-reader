@@ -8,10 +8,12 @@
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+import * as StarIcon from "readium-desktop/renderer/assets/icons/star-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import {
     TranslatorProps, withTranslator,
@@ -38,6 +40,7 @@ interface IProps extends IBaseProps {
 interface IState {
     title: string | undefined;
     url: string | undefined;
+    favorite: boolean | undefined;
 }
 
 class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
@@ -46,12 +49,14 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
         this.state = {
             title: props.feed?.title,
             url: props.feed?.url,
+            favorite: props.feed?.favorite,
         };
     }
     public render(): React.ReactElement<{}> {
 
         const { __ } = this.props;
-        const { title, url } = this.state;
+        const { title, url, favorite } = this.state;
+        
         return <Dialog.Root>
             <Dialog.Trigger asChild>
                 {this.props.trigger}
@@ -103,6 +108,10 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
                                     required
                                 />
                             </div>
+                            <button onClick={() => this.setState({favorite : !favorite})} className={stylesButtons.button_nav_primary} style={{marginTop: "20px"}}>
+                                <SVG svg={StarIcon} ariaHidden className={favorite ? stylesCatalogs.catalog_favorite_icon_true : stylesCatalogs.catalog_favorite_icon_false} />
+                                {favorite ? <p>Remove from favorites</p> :  <p>Add to favorites</p>}
+                            </button>
                         </div>
                         <div className={stylesModals.modal_dialog_footer}>
                             <Dialog.Close asChild>
@@ -121,11 +130,12 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
     private update = () => {
         const title = this.state.title;
         const url = this.state.url;
+        const favorite = this.state.favorite;
         if (!title || !url) {
             return;
         }
         apiAction("opds/deleteFeed", this.props.feed.identifier).then(() => {
-            apiAction("opds/addFeed", { title, url }).catch((err) => {
+            apiAction("opds/addFeed", { title, url, favorite }).catch((err) => {
                 console.error("Error to fetch api opds/addFeed", err);
             });
         }).catch((err) => {

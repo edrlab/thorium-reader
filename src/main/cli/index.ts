@@ -66,6 +66,9 @@ const yargsInit = () =>
                 }).positional("url", {
                     describe: "url opds feed",
                     type: "string",
+                }).positional("favorite", {
+                    describe: "favorite opds feed",
+                    type: "boolean",
                 })
             ,
             async (argv) => {
@@ -77,14 +80,14 @@ const yargsInit = () =>
                 __pendingCmd++;
 
                 try {
-                    const { title, url } = argv;
+                    const { title, url, favorite } = argv;
                     const hostname = (new URL(url)).hostname;
                     if (hostname) {
 
                         const sagaMiddleware = diMainGet("saga-middleware");
                         const opdsApi = diMainGet("opds-api");
 
-                        const feed = await sagaMiddleware.run(opdsApi.addFeed, { title, url }).toPromise();
+                        const feed = await sagaMiddleware.run(opdsApi.addFeed, { title, url, favorite }).toPromise();
                         process.stdout.write("OPDS import done : " + JSON.stringify(feed) + EOL);
 
                     } else {
