@@ -223,7 +223,7 @@
         "open": {
             "error": "Eser yüklemesi başarısız: [{{- err}}]"
         },
-        "wipeData": "Giriş verileri (erişim dizgecikleri ve çerezler) başarıyla temizlendi!"
+        "wipeData": "Giriş verileri başarıyla temizlendi (erişim dizgecikleri ve çerezler)"
     },
     "opds": {
         "addForm": {
