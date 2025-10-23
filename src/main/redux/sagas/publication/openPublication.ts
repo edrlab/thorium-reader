@@ -100,6 +100,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
     if (publicationDocument.lcp) {
         try {
             publicationDocument = yield* callTyped(
+                // DOES NOT MUTATE publicationDocument (returns a modified copy)
                 () => lcpManager.checkPublicationLicenseUpdate(publicationDocument),
             );
         } catch (error) {

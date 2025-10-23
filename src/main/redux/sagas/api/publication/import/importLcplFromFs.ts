@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { promises as fsp } from "fs";
+import * as fs from "fs";
 import * as moment from "moment";
 import * as path from "path";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
@@ -37,7 +37,7 @@ export function* importLcplFromFS(
     const lcpManager = diMainGet("lcp-manager");
     const publicationRepository = diMainGet("publication-repository");
 
-    const r2LCPStr = yield* callTyped(() => fsp.readFile(filePath, { encoding: "utf8" }));
+    const r2LCPStr = yield* callTyped(() => fs.promises.readFile(filePath, { encoding: "utf8" }));
     const r2LCPJson = JSON.parse(r2LCPStr);
 
     if (lcpLicenseIsNotWellFormed(r2LCPJson)) {

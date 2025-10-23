@@ -94,16 +94,19 @@ export class LcpManager {
     public async getAllSecrets(): Promise<TLCPSecrets> {
         debug("LCP getAllSecrets ...");
 
-        const buff = await tryCatch(() => fs.promises.readFile(lcpHashesFilePath), "");
+        const buff = await tryCatch(() => fs.promises.readFile(lcpHashesFilePath), "getAllSecrets fs.promises.readFile?");
         if (buff) {
-            debug("LCP getAllSecrets from JSON");
+            debug("LCP getAllSecrets from JSON", buff.length);
 
             const str = decryptPersist(buff, CONFIGREPOSITORY_LCP_SECRETS, lcpHashesFilePath);
+            // if (!!str) {
+            //     throw new Error("decryptPersist???!");
+            // }
             if (!str) {
                 return {};
             }
             const json = JSON.parse(str);
-            // debug("LCP getAllSecrets: ", json);
+            debug("LCP getAllSecrets: ", json);
             return json;
         }
 
@@ -161,7 +164,10 @@ export class LcpManager {
 
         const str = JSON.stringify(allSecrets);
         const encrypted = encryptPersist(str, CONFIGREPOSITORY_LCP_SECRETS, lcpHashesFilePath);
-        fs.promises.writeFile(lcpHashesFilePath, encrypted);
+        if (!!encrypted) {
+            throw new Error("encryptPersist???!");
+        }
+        await fs.promises.writeFile(lcpHashesFilePath, encrypted);
     }
 
     private async injectLcplIntoZip_(epubPath: string, lcpStr: string) {
@@ -256,6 +262,7 @@ export class LcpManager {
     //     return this.publicationRepository.save(newPublicationDocument);
     // }
 
+    // MUTATES publicationDocument
     public updateDocumentLcp(
         publicationDocument: PublicationDocumentWithoutTimestampable,
         r2LCP: LCP,
@@ -371,6 +378,7 @@ export class LcpManager {
     //     return r2Publication;
     // }
 
+    // DOES NOT MUTATE publicationDocument (returns a modified copy)
     public async checkPublicationLicenseUpdate(
         publicationDocument: PublicationDocument,
     ): Promise<PublicationDocument> {
@@ -383,12 +391,15 @@ export class LcpManager {
         this.store.dispatch(lcpActions.publicationFileLock.build({ [publicationDocument.identifier]: true }));
         try {
             const r2Publication = await this.publicationViewConverter.unmarshallR2Publication(publicationDocument); // , true
+
+            // DOES NOT MUTATE publicationDocument (returns a modified copy)
             return await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication);
         } finally {
             this.store.dispatch(lcpActions.publicationFileLock.build({ [publicationDocument.identifier]: false }));
         }
     }
 
+    // DOES NOT MUTATE publicationDocument (returns a modified copy)
     private async checkPublicationLicenseUpdate_(
         publicationDocument: PublicationDocument,
         r2Publication: R2Publication,
@@ -426,6 +437,8 @@ export class LcpManager {
                 hash: redoHash ? await extractCrc32OnZip(epubPath) : publicationDocument.hash,
             },
         );
+
+        // MUTATES newPublicationDocument
         this.updateDocumentLcp(newPublicationDocument, r2Publication.LCP);
 
         const newPubDocument = await this.publicationRepository.save(newPublicationDocument);
@@ -444,6 +457,7 @@ export class LcpManager {
         try {
             const r2Publication = await this.publicationViewConverter.unmarshallR2Publication(publicationDocument); // , true
 
+            // DOES NOT MUTATE publicationDocument (returns a modified copy)
             let newPubDocument = await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication);
 
             let redoHash = false;
@@ -530,6 +544,8 @@ export class LcpManager {
                             hash: redoHash ? await extractCrc32OnZip(epubPath) : publicationDocument.hash,
                         },
                     );
+
+                    // MUTATES newPublicationDocument
                     this.updateDocumentLcp(newPublicationDocument, r2Publication.LCP);
 
                     newPubDocument = await this.publicationRepository.save(newPublicationDocument);
@@ -558,6 +574,7 @@ export class LcpManager {
         try {
             const r2Publication = await this.publicationViewConverter.unmarshallR2Publication(publicationDocument); // , true
 
+            // DOES NOT MUTATE publicationDocument (returns a modified copy)
             let newPubDocument = await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication);
 
             let redoHash = false;
@@ -635,6 +652,8 @@ export class LcpManager {
                             hash: redoHash ? await extractCrc32OnZip(epubPath) : publicationDocument.hash,
                         },
                     );
+
+                    // MUTATES newPublicationDocument
                     this.updateDocumentLcp(newPublicationDocument, r2Publication.LCP);
 
                     newPubDocument = await this.publicationRepository.save(newPublicationDocument);

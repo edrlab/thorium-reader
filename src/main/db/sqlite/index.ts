@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { app } from "electron";
 import sqlite from "node:sqlite";
 import path from "path";
-import fs from "fs";
+import * as fs from "fs";
 import url from "url";
 
 const debug = debug_("readium-desktop:main:db:sqlite");

@@ -6,7 +6,7 @@
 // ==LICENSE-END=
 
 import * as debug_ from "debug";
-import { createWriteStream, readdirSync, statSync, readFileSync, unlinkSync, renameSync } from "fs";
+import * as fs from "fs";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
@@ -67,7 +67,7 @@ export async function createZip(
             // reject(err);
         });
 
-        const writeStream = createWriteStream(packagePath);
+        const writeStream = fs.createWriteStream(packagePath);
         writeStream.on("end", () => {
             debug("createWebpubZip writeStream END", packagePath);
         });
@@ -201,13 +201,13 @@ export async function createProfilePackageZip(
                 });
         });
 
-        unlinkSync(packagePath);
+        fs.unlinkSync(packagePath);
         await new Promise<void>((resolve, _reject) => {
             setTimeout(() => {
                 resolve();
             }, 200); // to avoid issues with some filesystems (allow extra completion time)
         });
-        renameSync(packagePathTMP, packagePath);
+        fs.renameSync(packagePathTMP, packagePath);
         await new Promise<void>((resolve, _reject) => {
             setTimeout(() => {
                 resolve();
@@ -262,11 +262,11 @@ if (__TH__IS_DEV__) {
 
             const dirPath = toBeVisit.shift();
             const dirAbsolutePath = path.join(inputDir, dirPath);
-            const fileNameArray = readdirSync(dirAbsolutePath);
+            const fileNameArray = fs.readdirSync(dirAbsolutePath);
             for (const fileName of fileNameArray) {
                 const filePath = path.join(dirPath, fileName);
                 const fileAbsolutePath = path.join(inputDir, filePath);
-                const stat = statSync(fileAbsolutePath);
+                const stat = fs.statSync(fileAbsolutePath);
                 if (stat.isDirectory()) {
                     toBeVisit.push(filePath);
                 } else {
@@ -279,7 +279,7 @@ if (__TH__IS_DEV__) {
 
         let manifest: ICustomizationManifest;
         try {
-            manifest = JSON.parse(readFileSync(path.join(inputDir, "manifest.json"), "utf-8"));
+            manifest = JSON.parse(fs.readFileSync(path.join(inputDir, "manifest.json"), "utf-8"));
         } catch {
             console.error("manifest not found!!!");
             process.exit(1);

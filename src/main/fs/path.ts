@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { promises as fsp } from "fs";
+import * as fs from "fs";
 import { tmpdir } from "os";
 import * as path from "path";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
@@ -21,14 +21,14 @@ export async function createTempDir(id: string, name = "download"): Promise<stri
     let pathDir = tmpDir;
     try {
         pathDir = path.resolve(tmpDir, _APP_NAME.toLowerCase(), name, id);
-        await fsp.mkdir(pathDir, { recursive: true });
+        await fs.promises.mkdir(pathDir, { recursive: true });
 
     } catch (err) {
         debug(err, err.trace);
 
         try {
             pathDir = path.resolve(tmpDir, id.toString());
-            await fsp.mkdir(pathDir);
+            await fs.promises.mkdir(pathDir);
         } catch (err) {
             debug(err, err.trace, err.code);
 

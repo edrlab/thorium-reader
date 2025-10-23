@@ -14,7 +14,7 @@ import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { extractCrc32OnZip } from "../tools/crc";
 import * as path from "path";
 import * as semver from "semver";
-import { readdirSync, existsSync, mkdirSync } from "fs";
+import * as fs from "fs";
 import { ICustomizationProfileProvisioned, ICustomizationProfileError, ICustomizationProfileProvisionedWithError } from "readium-desktop/common/redux/states/customization";
 import { app } from "electron";
 import { _CUSTOMIZATION_PROFILE_PUB_KEY } from "readium-desktop/preprocessor-directives";
@@ -34,8 +34,8 @@ const debug = debug_("readium-desktop:main#utils/customization/provisioning");
 export const customizationWellKnownFolder = path.join(app.getPath("userData"), "custom-profiles");
 
 try {
-    if (!existsSync(customizationWellKnownFolder)) {
-        mkdirSync(customizationWellKnownFolder);
+    if (!fs.existsSync(customizationWellKnownFolder)) {
+        fs.mkdirSync(customizationWellKnownFolder);
         debug(`Customization well-known folder created \"${customizationWellKnownFolder}\"`);
     }
 } catch (e) {
@@ -130,7 +130,7 @@ export async function customizationPackageProvisionningFromFolder(wellKnownFolde
 
     let packagesArray: ICustomizationProfileProvisioned[] = [];
     const packagesErrorArray: ICustomizationProfileError[] = [];
-    const results = readdirSync(wellKnownFolder, {withFileTypes: true});
+    const results = fs.readdirSync(wellKnownFolder, {withFileTypes: true});
 
     for (const dirent of results) {
         if (dirent.isFile() && path.extname(dirent.name) === EXT_THORIUM) {

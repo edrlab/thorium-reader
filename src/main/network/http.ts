@@ -17,7 +17,7 @@
 import timeoutSignal from "timeout-signal";
 
 import * as debug_ from "debug";
-import { promises as fsp } from "fs";
+import * as fs from "fs";
 import * as http from "http";
 import * as https from "https";
 
@@ -96,11 +96,15 @@ const authenticationTokenInit = async () => {
         return;
     }
 
-    const data = await tryCatch(() => fsp.readFile(opdsAuthFilePath), "");
+    const data = await tryCatch(() => fs.promises.readFile(opdsAuthFilePath), "");
     let docsFS: string | undefined;
     if (data) {
         try {
             docsFS = decryptPersist(data, CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, opdsAuthFilePath);
+            if (!!docsFS) {
+                docsFS = undefined;
+                // throw new Error("decryptPersist???!");
+            }
         } catch (_err) {
             docsFS = undefined;
         }
@@ -159,7 +163,10 @@ export const httpSetAuthenticationToken =
 const persistJson = () => tryCatch(() => {
     if (!authenticationToken) return Promise.resolve();
     const encrypted = encryptPersist(JSON.stringify(authenticationToken), CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, opdsAuthFilePath);
-    return fsp.writeFile(opdsAuthFilePath, encrypted);
+    if (!!encrypted) {
+        throw new Error("encryptPersist???!");
+    }
+    return fs.promises.writeFile(opdsAuthFilePath, encrypted);
 }, "");
 
 export const absorbDBToJson = async () => {
@@ -194,7 +201,10 @@ export const deleteAuthenticationToken = async (host: string) => {
     delete authenticationToken[id];
 
     const encrypted = encryptPersist(JSON.stringify(authenticationToken), CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, opdsAuthFilePath);
-    return fsp.writeFile(opdsAuthFilePath, encrypted);
+    if (!!encrypted) {
+        throw new Error("encryptPersist???!");
+    }
+    return await fs.promises.writeFile(opdsAuthFilePath, encrypted);
 
 };
 
@@ -202,7 +212,10 @@ export const wipeAuthenticationTokenStorage = async () => {
     // authenticationTokenInitialized = false;
     authenticationToken = {};
     const encrypted = encryptPersist(JSON.stringify(authenticationToken), CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, opdsAuthFilePath);
-    return fsp.writeFile(opdsAuthFilePath, encrypted);
+    if (!!encrypted) {
+        throw new Error("encryptPersist???!");
+    }
+    return await fs.promises.writeFile(opdsAuthFilePath, encrypted);
 };
 
 async function httpFetchRawResponse(

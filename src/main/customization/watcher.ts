@@ -12,14 +12,14 @@ import path from "path";
 const debug = debug_("readium-desktop:main#utils/customization/watcher");
 
 import chokidar, { FSWatcher } from "chokidar";
-import { existsSync } from "fs";
+import * as fs from "fs";
 import { EXT_THORIUM } from "readium-desktop/common/extension";
 
 export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder: string, callback: (fileName: string, removed: boolean) => void): FSWatcher {
 
     wellKnownFolder = path.join(wellKnownFolder, "/");
 
-    if (!existsSync(wellKnownFolder)) {
+    if (!fs.existsSync(wellKnownFolder)) {
         return undefined;
     }
 

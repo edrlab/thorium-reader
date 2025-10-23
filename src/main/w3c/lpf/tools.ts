@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { promises as fsp } from "fs";
+import * as fs from "fs";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
@@ -42,11 +42,11 @@ export async function copyAndMoveLpfToTmpWithNewExt(
     let pathDir: string;
     try {
         pathDir = path.resolve(tmpPath, _APP_NAME.toLowerCase(), tmpPathName, nanoid(8));
-        await fsp.mkdir(pathDir, { recursive: true });
+        await fs.promises.mkdir(pathDir, { recursive: true });
 
     } catch (_e) {
 
-        pathDir = await fsp.mkdtemp(`${_APP_NAME.toLowerCase()}-${tmpPathName}`);
+        pathDir = await fs.promises.mkdtemp(`${_APP_NAME.toLowerCase()}-${tmpPathName}`);
     }
 
     const lpfBasename = path.basename(lpfPath);

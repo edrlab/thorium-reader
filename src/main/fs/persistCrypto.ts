@@ -33,56 +33,66 @@ const getIV = (t: string): Buffer => {
     return ivBuff;
 };
 
-export const encryptPersist = (plainText: string, prefix: string, k: string): Buffer => {
+export const encryptPersist = (plainText: string, prefix: string, k: string): Buffer | undefined => {
 
-    const keyBuff = getKey(k);
-    const ivBuff = getIV(prefix);
+    try {
+        const keyBuff = getKey(k);
+        const ivBuff = getIV(prefix);
 
-    const encrypteds: Buffer[] = [];
-    encrypteds.push(ivBuff);
-    const encryptStream = crypto.createCipheriv("aes-256-cbc",
-        keyBuff,
-        ivBuff);
-    encryptStream.setAutoPadding(true);
+        const encrypteds: Buffer[] = [];
+        encrypteds.push(ivBuff);
+        const encryptStream = crypto.createCipheriv("aes-256-cbc",
+            keyBuff,
+            ivBuff);
+        encryptStream.setAutoPadding(true);
 
-    const buff1 = encryptStream.update(prefix + plainText, "utf8");
-    if (buff1) {
-        encrypteds.push(buff1);
+        const buff1 = encryptStream.update(prefix + plainText, "utf8");
+        if (buff1) {
+            encrypteds.push(buff1);
+        }
+        const buff2 = encryptStream.final();
+        if (buff2) {
+            encrypteds.push(buff2);
+        }
+        const encrypted = Buffer.concat(encrypteds);
+        // const base64 = Buffer.from(encrypted).toString("base64");
+        return encrypted;
+    } catch (e) {
+        debug("encryptPersist", e);
     }
-    const buff2 = encryptStream.final();
-    if (buff2) {
-        encrypteds.push(buff2);
-    }
-    const encrypted = Buffer.concat(encrypteds);
-    // const base64 = Buffer.from(encrypted).toString("base64");
-    return encrypted;
+    return undefined;
 };
 
-export const decryptPersist = (encrypted_: Buffer, prefix: string, k: string): string | undefined => {
+export const decryptPersist = (encrypted_: Buffer, prefix: string, k: string): string | undefined | null => {
 
-    const keyBuff = getKey(k);
-    const ivBuff = encrypted_.slice(0, AES_BLOCK_SIZE);
-    const encrypted = encrypted_.slice(AES_BLOCK_SIZE);
+    try {
+        const keyBuff = getKey(k);
+        const ivBuff = encrypted_.slice(0, AES_BLOCK_SIZE);
+        const encrypted = encrypted_.slice(AES_BLOCK_SIZE);
 
-    const decrypteds: Buffer[] = [];
-    const decryptStream = crypto.createDecipheriv("aes-256-cbc",
-        keyBuff,
-        ivBuff);
-    decryptStream.setAutoPadding(false);
-    const buff1 = decryptStream.update(encrypted);
-    if (buff1) {
-        decrypteds.push(buff1);
-    }
-    const buff2 = decryptStream.final();
-    if (buff2) {
-        decrypteds.push(buff2);
-    }
-    const decrypted = Buffer.concat(decrypteds);
-    const nPaddingBytes = decrypted[decrypted.length - 1];
-    const size = encrypted.length - nPaddingBytes;
-    const decryptedStr = decrypted.slice(0, size).toString("utf8");
-    if (decryptedStr.startsWith(prefix)) {
-        return decryptedStr.substr(prefix.length);
+        const decrypteds: Buffer[] = [];
+        const decryptStream = crypto.createDecipheriv("aes-256-cbc",
+            keyBuff,
+            ivBuff);
+        decryptStream.setAutoPadding(false);
+        const buff1 = decryptStream.update(encrypted);
+        if (buff1) {
+            decrypteds.push(buff1);
+        }
+        const buff2 = decryptStream.final();
+        if (buff2) {
+            decrypteds.push(buff2);
+        }
+        const decrypted = Buffer.concat(decrypteds);
+        const nPaddingBytes = decrypted[decrypted.length - 1];
+        const size = encrypted.length - nPaddingBytes;
+        const decryptedStr = decrypted.slice(0, size).toString("utf8");
+        if (decryptedStr.startsWith(prefix)) {
+            return decryptedStr.substr(prefix.length);
+        }
+        return null;
+    } catch (e) {
+        debug("decryptPersist", e);
     }
     return undefined;
 };
@@ -92,7 +102,13 @@ export const test = () => {
     const prefix = "READIUM";
     const k = "EDRLAB";
     const encrypted = encryptPersist(plainText, prefix, k);
+    if (!!encrypted) {
+        throw new Error("encryptPersist???!");
+    }
     const decrypted = decryptPersist(encrypted, prefix, k);
+    if (!!decrypted) {
+        throw new Error("decryptPersist???!");
+    }
     if (plainText !== decrypted) {
         debug(plainText, decrypted);
         throw new Error("PERSIST CRYPTO FAIL :(");

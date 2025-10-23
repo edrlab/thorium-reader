@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { promises as fsp } from "fs";
+import * as fs from "fs";
 import { patchFilePath, stateFilePath } from "readium-desktop/main/di";
 import { PersistRootState, RootState } from "readium-desktop/main/redux/states";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
@@ -55,7 +55,7 @@ const persistStateToFs = async (nextState: RootState) => {
         },
     };
 
-    await fsp.writeFile(stateFilePath, JSON.stringify(value), {encoding: "utf8"});
+    await fs.promises.writeFile(stateFilePath, JSON.stringify(value), {encoding: "utf8"});
     debug("end of persist reduxState in disk");
 };
 
@@ -82,7 +82,7 @@ export function* needToPersistPatch() {
         debug(data);
         if (data) {
             debug("start of patch persistence");
-            yield call(() => fsp.appendFile(patchFilePath, data, { encoding: "utf8" }));
+            yield call(() => fs.promises.appendFile(patchFilePath, data, { encoding: "utf8" }));
             debug("end of patch persistence");
         }
 

@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { createWriteStream, promises as fsp, WriteStream } from "fs";
+import * as fs from "fs";
 import * as path from "path";
 import { acceptedExtension, acceptedExtensionObject } from "readium-desktop/common/extension";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -134,7 +134,7 @@ function* downloaderServiceDownloadProcessTask(chan: Channel<TDownloaderChannel>
     const [pathFile, channel, readStream] = yield* callTyped(downloadLinkProcess, linkHref, id);
     if (channel) yield* putTyped(chan, channel);
 
-    const writeStream = createWriteStream(pathFile);
+    const writeStream = fs.createWriteStream(pathFile);
     writeStream.on("finish", () => {
         debug("WriteStream finish");
     });
@@ -150,7 +150,7 @@ function* downloaderServiceDownloadProcessTask(chan: Channel<TDownloaderChannel>
     return pathFile;
 }
 
-function* downloaderServiceProcessTaskStreamPipeline(readStream: NodeJS.ReadStream, writeStream: WriteStream): SagaGenerator<void> {
+function* downloaderServiceProcessTaskStreamPipeline(readStream: NodeJS.ReadStream, writeStream: fs.WriteStream): SagaGenerator<void> {
 
     if (!readStream || !writeStream) return;
 
@@ -315,7 +315,7 @@ function* downloadCreatePathFilename(pathDir: string, filename: string, rc = 0):
 
     const pathFileExists = yield* callTyped(async () => {
         try {
-            await fsp.access(pathFile);
+            await fs.promises.access(pathFile);
             return true;
         } catch {
             return false;

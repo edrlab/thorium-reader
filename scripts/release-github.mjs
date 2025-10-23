@@ -1,8 +1,10 @@
 // const fs = require("fs").promises;
-import { promises as fs } from "fs";
+import fs from "fs";
+// import * as fs from "fs";
 
 // const path = require("path");
-import * as path from "path";
+import path from "path";
+// import * as path from "path";
 
 // https://github.com/octokit/rest.js
 // https://octokit.github.io/rest.js/
@@ -317,7 +319,7 @@ const SAFE_DEBUG = false;
                     repo,
                     release_id: release_id2,
                     name: filename,
-                    data: await fs.readFile(filepath),
+                    data: await fs.promises.readFile(filepath),
                 });
             } catch (err) {
                 console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
@@ -338,7 +340,7 @@ const SAFE_DEBUG = false;
         };
 
         async function* getFiles(dirpath) {
-            const ents = await fs.readdir(dirpath, { withFileTypes: true });
+            const ents = await fs.promises.readdir(dirpath, { withFileTypes: true });
             for (const ent of ents) {
                 const fullPath = path.resolve(dirpath, ent.name);
                 if (fullPath.indexOf("node_modules") >= 0) {
