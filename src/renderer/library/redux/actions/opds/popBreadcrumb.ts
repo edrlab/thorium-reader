@@ -5,14 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as browseRequest from "./browseRequest";
-import * as popBreadcrumb from "./popBreadcrumb";
-import * as headerLinksUpdate from "./headerLinksUpdate";
-import * as search from "./search";
+import { Action } from "readium-desktop/common/models/redux";
 
-export {
-    headerLinksUpdate,
-    browseRequest,
-    popBreadcrumb,
-    search,
-};
+export const ID = "OPDS_BROWSE_POP";
+
+export function build():
+    Action<typeof ID, undefined> {
+    return {
+        type: ID,
+        payload: undefined,
+    };
+}
+build.toString = () => ID;
+export type TActionPop = ReturnType<typeof build>;
