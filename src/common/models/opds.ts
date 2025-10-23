@@ -21,4 +21,5 @@ export interface OpdsFeed {
     title: string;
     url: string;
     authenticationUrl?: string;
+    favorite?: boolean;
 }

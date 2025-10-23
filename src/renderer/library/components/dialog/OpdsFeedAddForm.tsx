@@ -15,6 +15,7 @@ import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
+import * as StarIcon from "readium-desktop/renderer/assets/icons/star-icon.svg";
 import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
@@ -66,11 +67,12 @@ export const OpdsFeedAddFormDialog = () => {
 
     const [title, setTitle] = React.useState("");
     const [url, setUrl] = React.useState("");
+    const [favorite, setFavorite] = React.useState(false);
     const addAction = () => {
         if (!title || !url) {
             return;
         }
-        apiAddFeedAction({ title, url });
+        apiAddFeedAction({ title, url, favorite });
     };
 
 
@@ -129,6 +131,10 @@ export const OpdsFeedAddFormDialog = () => {
                                 required
                             />
                         </div>
+                        <button onClick={() => setFavorite(!favorite)}>
+                            <SVG svg={StarIcon} ariaHidden className={favorite ? stylesCatalogs.catalog_favorite_icon_true : stylesCatalogs.catalog_favorite_icon_false} />
+                            Add to favorite
+                        </button>
                         <OpdsFeedHowDoesItWorksInfoBox />
                     </div>
                     <div className={stylesModals.modal_dialog_footer}>
