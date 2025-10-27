@@ -103,7 +103,7 @@
                 "login": "Autenticar",
                 "password": "Senha",
                 "register": "Registar",
-                "retry": "",
+                "retry": "Tentar novamente",
                 "username": "Nome de utilizador / Endereço de email"
             },
             "info": {
@@ -149,7 +149,7 @@
         "cancel": "Cancelar",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
+                "fallbackWelcomeScreen": "Ecrã de boas-vindas não fornecido",
                 "state": "Estado: {{- state}}",
                 "title": ""
             }
@@ -223,7 +223,7 @@
         "open": {
             "error": "Não foi possível carregar o documento: {{- err}}"
         },
-        "wipeData": ""
+        "wipeData": "Os dados de autenticação foram limpos (tokens de acesso e cookies)"
     },
     "opds": {
         "addForm": {
@@ -276,7 +276,7 @@
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "",
+                "compact": "Funções ARIA incluídas",
                 "descriptive": ""
             },
             "additional-accessibility-information-audio-descriptions": {
@@ -422,8 +422,8 @@
                 "descriptive": ""
             },
             "hazards-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Nenhuma informação disponível",
+                "descriptive": "Nenhuma informação disponível"
             },
             "hazards-none": {
                 "compact": "",
@@ -461,13 +461,13 @@
                 "descriptive": ""
             },
             "navigation-structural": {
-                "compact": "",
+                "compact": "Títulos",
                 "descriptive": ""
             },
-            "navigation-title": "",
+            "navigation-title": "Nevegação",
             "navigation-toc": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Índice",
+                "descriptive": "Índice para todos os capítulos de texto através de hiperligações"
             }
         },
         "rich-content": {
@@ -750,8 +750,8 @@
             "pdfscalemode": "Ajustar à página ou largura",
             "print": "",
             "printDisabled": "",
-            "screenNext": "",
-            "screenPrevious": "",
+            "screenNext": "Avançar",
+            "screenPrevious": "Recuar",
             "settingsTitle": "Configurações"
         },
         "notes": {
@@ -816,7 +816,7 @@
             "letterSpacing": "Espaçamento de letras",
             "lineSpacing": "Espaçamento de linhas",
             "margin": "Margem",
-            "mathjax": "",
+            "mathjax": "Ativar MathJax",
             "noFootnotes": "Desativar janelas de notas de rodapé",
             "noRTLFlip": "Desativar interface Direita-para-esquerda",
             "noRuby": "Ocultar Ruby Japonês",
