@@ -99,8 +99,8 @@ export class LcpManager {
             debug("LCP getAllSecrets from JSON", buff.length);
 
             const str = decryptPersist(buff, CONFIGREPOSITORY_LCP_SECRETS, lcpHashesFilePath);
-            // if (!!str) {
-            //     throw new Error("decryptPersist???!");
+            // if (!str) {
+            //     throw new Error("decryptPersist???! CONFIGREPOSITORY_LCP_SECRETS");
             // }
             if (!str) {
                 return {};
@@ -164,8 +164,8 @@ export class LcpManager {
 
         const str = JSON.stringify(allSecrets);
         const encrypted = encryptPersist(str, CONFIGREPOSITORY_LCP_SECRETS, lcpHashesFilePath);
-        if (!!encrypted) {
-            throw new Error("encryptPersist???!");
+        if (!encrypted) {
+            throw new Error("encryptPersist???! CONFIGREPOSITORY_LCP_SECRETS");
         }
         await fs.promises.writeFile(lcpHashesFilePath, encrypted);
     }

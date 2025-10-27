@@ -97,8 +97,8 @@ export const fetchCookieJarPersistence = async () => {
 
     const str = JSON.stringify(cookieJar.serializeSync());
     const encrypted = encryptPersist(str, CONFIGREPOSITORY_COOKIEJAR, cookiejarFilePath);
-    if (!!encrypted) {
-        throw new Error("encryptPersist???!");
+    if (!encrypted) {
+        throw new Error("encryptPersist???! CONFIGREPOSITORY_COOKIEJAR");
     }
     return await fs.promises.writeFile(cookiejarFilePath, encrypted);
 };
@@ -110,8 +110,8 @@ const fetchFactory = async () => {
         let data: Buffer | string | undefined = await tryCatch(() => fs.promises.readFile(cookiejarFilePath), "");
         if (data) {
             data = decryptPersist(data, CONFIGREPOSITORY_COOKIEJAR, cookiejarFilePath);
-            if (!!data) {
-                throw new Error("decryptPersist???!");
+            if (!data) {
+                throw new Error("decryptPersist???! CONFIGREPOSITORY_COOKIEJAR");
             }
         }
         ok(data, "NO COOKIE JAR FOUND ON FS");

@@ -102,12 +102,12 @@ export const test = () => {
     const prefix = "READIUM";
     const k = "EDRLAB";
     const encrypted = encryptPersist(plainText, prefix, k);
-    if (!!encrypted) {
-        throw new Error("encryptPersist???!");
+    if (!encrypted) {
+        throw new Error("encryptPersist???! TEST");
     }
     const decrypted = decryptPersist(encrypted, prefix, k);
-    if (!!decrypted) {
-        throw new Error("decryptPersist???!");
+    if (!decrypted) {
+        throw new Error("decryptPersist???! TEST");
     }
     if (plainText !== decrypted) {
         debug(plainText, decrypted);

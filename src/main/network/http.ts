@@ -101,9 +101,9 @@ const authenticationTokenInit = async () => {
     if (data) {
         try {
             docsFS = decryptPersist(data, CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, opdsAuthFilePath);
-            if (!!docsFS) {
+            if (!docsFS) {
                 docsFS = undefined;
-                // throw new Error("decryptPersist???!");
+                // throw new Error("decryptPersist???! CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN");
             }
         } catch (_err) {
             docsFS = undefined;
@@ -163,8 +163,8 @@ export const httpSetAuthenticationToken =
 const persistJson = () => tryCatch(() => {
     if (!authenticationToken) return Promise.resolve();
     const encrypted = encryptPersist(JSON.stringify(authenticationToken), CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, opdsAuthFilePath);
-    if (!!encrypted) {
-        throw new Error("encryptPersist???!");
+    if (!encrypted) {
+        throw new Error("encryptPersist???! CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN persistJson");
     }
     return fs.promises.writeFile(opdsAuthFilePath, encrypted);
 }, "");
@@ -201,8 +201,8 @@ export const deleteAuthenticationToken = async (host: string) => {
     delete authenticationToken[id];
 
     const encrypted = encryptPersist(JSON.stringify(authenticationToken), CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, opdsAuthFilePath);
-    if (!!encrypted) {
-        throw new Error("encryptPersist???!");
+    if (!encrypted) {
+        throw new Error("encryptPersist???! CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN deleteAuthenticationToken");
     }
     return await fs.promises.writeFile(opdsAuthFilePath, encrypted);
 
@@ -212,8 +212,8 @@ export const wipeAuthenticationTokenStorage = async () => {
     // authenticationTokenInitialized = false;
     authenticationToken = {};
     const encrypted = encryptPersist(JSON.stringify(authenticationToken), CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, opdsAuthFilePath);
-    if (!!encrypted) {
-        throw new Error("encryptPersist???!");
+    if (!encrypted) {
+        throw new Error("encryptPersist???! CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN wipeAuthenticationTokenStorage");
     }
     return await fs.promises.writeFile(opdsAuthFilePath, encrypted);
 };
