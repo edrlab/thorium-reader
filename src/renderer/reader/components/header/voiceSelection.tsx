@@ -19,8 +19,8 @@ import { HoverEvent } from "@react-types/shared";
 // To convert this file to an ECMAScript module, change its file extension to '.mts',
 // or add the field `"type": "module"` to 'package.json'.
 // @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore TS1479
+// e__slint-disable-next-line @typescript-eslint/ban-ts-comment
+// @__ts-ignore TS1479
 import { IVoices, ILanguages } from "readium-speech";
 
 export type TLanguageOptions = Array<{ id: string, name: string, count: number }>;

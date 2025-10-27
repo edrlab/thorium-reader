@@ -16,8 +16,8 @@ import * as debug_ from "debug";
 // To convert this file to an ECMAScript module, change its file extension to '.mts',
 // or add the field `"type": "module"` to 'package.json'.
 // @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore TS1479
+// e__slint-disable-next-line @typescript-eslint/ban-ts-comment
+// @__ts-ignore TS1479
 import nodeFetch from "node-fetch";
 
 import { ok } from "readium-desktop/common/utils/assert";

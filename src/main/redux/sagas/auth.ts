@@ -16,8 +16,8 @@ import { BrowserWindow, HandlerDetails, Event as ElectronEvent, WebContentsWillN
 // To convert this file to an ECMAScript module, change its file extension to '.mts',
 // or add the field `"type": "module"` to 'package.json'.
 // @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore TS1479
+// e__slint-disable-next-line @typescript-eslint/ban-ts-comment
+// @__ts-ignore TS1479
 import { Headers } from "node-fetch";
 
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -60,8 +60,8 @@ import isURL from "validator/lib/isURL";
 // To convert this file to an ECMAScript module, change its file extension to '.mts',
 // or add the field `"type": "module"` to 'package.json'.
 // @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore TS1479
+// e__slint-disable-next-line @typescript-eslint/ban-ts-comment
+// @__ts-ignore TS1479
 import { nanoid } from "nanoid";
 
 import { getTranslator } from "readium-desktop/common/services/translator";
