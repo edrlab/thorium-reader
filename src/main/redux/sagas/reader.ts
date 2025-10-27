@@ -394,7 +394,7 @@ function* readerPrint(action: readerActions.print.TAction) {
     if (pagesToPrint.length) {
         const actionToSend = readerActions.print.build(publicationIdentifier, pagesToPrint, (action as unknown as ActionWithSender)?.sender?.identifier);
         yield* putTyped(actionToSend);
-    
+
         yield* putTyped(toastActions.openRequest.build(ToastType.Success,
             `LCP [${translator.translate("app.edit.print")}] [${pagesToPrint}] / ${publicationDocument.lcp.rights.print}`,
             publicationIdentifier));
@@ -417,6 +417,8 @@ function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction) {
     const publicationDocument = yield* callTyped(() => publicationRepository.get(
         publicationIdentifier,
     ));
+
+    debug("LCP RIGHTS", JSON.stringify(publicationDocument.lcp?.rights, null, 4));
 
     if (!publicationDocument.lcp ||
         !publicationDocument.lcp.rights ||

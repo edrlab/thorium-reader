@@ -294,14 +294,24 @@ export async function importPublicationFromFS(
     const newPubDocument = await publicationRepository.save(pubDocument);
     debug("[END] Store publication in database", filePath);
 
+    // at this point, newPubDocument.lcp is undefined even if r2Publication.LCP
+    // passphrase saved for doc.id without provider
     if (lcpHashedPassphrase) {
         await lcpManager.saveSecret(newPubDocument, lcpHashedPassphrase);
     }
 
     if (r2Publication.LCP) {
-        setTimeout(async () => await lcpManager.checkPublicationLicenseUpdate(newPubDocument), 0);
+        setTimeout(async () => {
+            // DOES NOT MUTATE newPubDocument (returns a modified copy)
+            const updatedDoc = await lcpManager.checkPublicationLicenseUpdate(newPubDocument);
+            // passphrase saved for doc.id with provider, this time (overrides old entry mapped on doc.id)
+            if (lcpHashedPassphrase && updatedDoc) {
+                await lcpManager.saveSecret(updatedDoc, lcpHashedPassphrase);
+            }
+        }, 0);
     }
 
+    // at this point, newPubDocument.lcp is undefined even if r2Publication.LCP
     debug("Publication imported", filePath);
     return newPubDocument;
 }

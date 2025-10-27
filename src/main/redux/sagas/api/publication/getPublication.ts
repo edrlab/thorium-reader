@@ -34,6 +34,7 @@ export function* getPublication(identifier: string, checkLcpLsd = false) {
 
     try {
         if (checkLcpLsd && doc.lcp) {
+            // DOES NOT MUTATE doc (returns a modified copy)
             doc = yield* callTyped(() => lcpManager.checkPublicationLicenseUpdate(doc));
         }
     } catch (e) {

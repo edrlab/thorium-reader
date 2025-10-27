@@ -104,7 +104,7 @@ export class DeviceIdManager implements IDeviceIDManager {
 
         _cache = conf;
         const str = JSON.stringify(conf);
-        fs.promises.writeFile(lcpLsdDevicesFilePath, str, { encoding: "utf-8" });
+        await fs.promises.writeFile(lcpLsdDevicesFilePath, str, { encoding: "utf-8" });
     }
     private async getDeviceConfigJson(): Promise<DeviceConfig> {
 
@@ -115,7 +115,7 @@ export class DeviceIdManager implements IDeviceIDManager {
 
         debug("LCP LSD getDeviceConfig ...");
 
-        const str = await tryCatch(() => fs.promises.readFile(lcpLsdDevicesFilePath, { encoding: "utf-8" }), "");
+        const str = await tryCatch(() => fs.promises.readFile(lcpLsdDevicesFilePath, { encoding: "utf-8" }), "getDeviceConfigJson fs.promises.readFile?");
         if (str) {
             const json = JSON.parse(str);
             debug("LCP LSD getDeviceConfig from JSON: ", json);

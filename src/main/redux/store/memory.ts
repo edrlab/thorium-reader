@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { appendFileSync, promises as fsp } from "fs";
+import * as fs from "fs";
 import { deepStrictEqual, ok } from "readium-desktop/common/utils/assert";
 import {
     backupStateFilePathFn, memoryLoggerFilename, patchFilePath, runtimeStateFilePath, stateFilePath,
@@ -39,7 +39,7 @@ const debugStdout = debug_("readium-desktop:main:store:memory");
 const debug = (...a: Parameters<debug_.Debugger>) => {
     debugStdout(...a);
     tryCatchSync(() =>
-        appendFileSync(memoryLoggerFilename, a.map((v) => `${+new Date()} ${JSON.stringify(v)}`).join("\n") + "\n"),
+        fs.appendFileSync(memoryLoggerFilename, a.map((v) => `${+new Date()} ${JSON.stringify(v)}`).join("\n") + "\n"),
         "",
     );
 };
@@ -54,7 +54,7 @@ const checkReduxState = async (runtimeState: object, reduxState: PersistRootStat
 };
 
 const runtimeState = async (): Promise<object> => {
-    const runtimeStateStr = await tryCatch(() => fsp.readFile(runtimeStateFilePath, { encoding: "utf8" }), "");
+    const runtimeStateStr = await tryCatch(() => fs.promises.readFile(runtimeStateFilePath, { encoding: "utf8" }), "");
     const runtimeState = await tryCatch(() => JSON.parse(runtimeStateStr), "");
 
     ok(typeof runtimeState === "object");
@@ -64,7 +64,7 @@ const runtimeState = async (): Promise<object> => {
 
 const recoveryReduxState = async (runtimeState: object): Promise<object> => {
 
-    const patchFileStrRaw = await tryCatch(() => fsp.readFile(patchFilePath, { encoding: "utf8" }), "");
+    const patchFileStrRaw = await tryCatch(() => fs.promises.readFile(patchFilePath, { encoding: "utf8" }), "");
     const patchFileStr = "[" + patchFileStrRaw.slice(0, -2) + "]"; // remove the last comma
     const patch = await tryCatch(() => JSON.parse(patchFileStr), "");
 
@@ -107,7 +107,7 @@ export async function initStore()
 
     try {
 
-        const jsonStr = await fsp.readFile(stateFilePath, { encoding: "utf8" });
+        const jsonStr = await fs.promises.readFile(stateFilePath, { encoding: "utf8" });
         const json = JSON.parse(jsonStr);
         if (test(json))
             reduxState = json;
@@ -186,7 +186,7 @@ export async function initStore()
 
             const p = backupStateFilePathFn();
             await tryCatch(() =>
-                fsp.writeFile(p, JSON.stringify(reduxState), { encoding: "utf8" }),
+                fs.promises.writeFile(p, JSON.stringify(reduxState), { encoding: "utf8" }),
                 "");
 
             debug("RECOVERY : a state backup file is copied in " + p);
@@ -196,7 +196,7 @@ export async function initStore()
     } finally {
 
         await tryCatch(() =>
-            fsp.writeFile(
+            fs.promises.writeFile(
                 runtimeStateFilePath,
                 reduxState ? JSON.stringify(reduxState) : "{}",
                 { encoding: "utf8" },
@@ -205,7 +205,7 @@ export async function initStore()
 
         // the file doen't have a top array [...]
         // we need to add it before the parsing
-        await tryCatch(() => fsp.writeFile(patchFilePath, "", { encoding: "utf8" }), "");
+        await tryCatch(() => fs.promises.writeFile(patchFilePath, "", { encoding: "utf8" }), "");
     }
 
     if (!reduxState) {
@@ -246,7 +246,7 @@ export async function initStore()
         ...reduxState,
     } : {};
 
-    // SQLITE 
+    // SQLITE
     sqliteInitialisation();
     sqliteInitTableNote();
 

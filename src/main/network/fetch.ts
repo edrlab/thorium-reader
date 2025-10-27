@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import fetchCookie from "fetch-cookie";
-import { promises as fsp } from "fs";
+import * as fs from "fs";
 import * as debug_ from "debug";
 
 // TypeScript GO:
@@ -97,16 +97,22 @@ export const fetchCookieJarPersistence = async () => {
 
     const str = JSON.stringify(cookieJar.serializeSync());
     const encrypted = encryptPersist(str, CONFIGREPOSITORY_COOKIEJAR, cookiejarFilePath);
-    return fsp.writeFile(cookiejarFilePath, encrypted);
+    if (!!encrypted) {
+        throw new Error("encryptPersist???!");
+    }
+    return await fs.promises.writeFile(cookiejarFilePath, encrypted);
 };
 
 const fetchFactory = async () => {
 
     await tryCatch(async () => {
 
-        let data: Buffer | string | undefined = await tryCatch(() => fsp.readFile(cookiejarFilePath), "");
+        let data: Buffer | string | undefined = await tryCatch(() => fs.promises.readFile(cookiejarFilePath), "");
         if (data) {
             data = decryptPersist(data, CONFIGREPOSITORY_COOKIEJAR, cookiejarFilePath);
+            if (!!data) {
+                throw new Error("decryptPersist???!");
+            }
         }
         ok(data, "NO COOKIE JAR FOUND ON FS");
         cookieJar = CookieJar.deserializeSync(data as string);

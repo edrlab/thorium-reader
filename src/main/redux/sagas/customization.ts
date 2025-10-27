@@ -12,11 +12,10 @@ import { customizationPackageProvisioning, customizationPackageProvisionningFrom
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { error } from "readium-desktop/main/tools/error";
-import { copyFile } from "node:fs/promises";
+import * as fs from "fs";
 import { nanoid } from "nanoid";
 import * as semver from "semver";
 import { fork as forkTyped, call as callTyped, select as selectTyped, put as putTyped, take as takeTyped, race as raceTyped, delay, SagaGenerator, all as allTyped } from "typed-redux-saga/macro";
-import { existsSync, statSync, unlinkSync } from "node:fs";
 import path from "node:path";
 import { ICustomizationLockInfo } from "readium-desktop/common/redux/states/customization";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -26,7 +25,6 @@ import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authenticati
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { diMainGet } from "readium-desktop/main/di";
 import { net } from "electron";
-import * as fs from "fs";
 import isURL from "validator/lib/isURL";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { contentTypeisOpdsAuth, parseContentType } from "readium-desktop/utils/contentType";
@@ -186,12 +184,12 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
                 debug("Error to download the profile", e);
             }
 
-            if (!error && !existsSync(packagePath)) {
+            if (!error && !fs.existsSync(packagePath)) {
                 debug("ERROR: file doesn't exists", packagePath);
                 error = true;
             }
             if (!error) {
-                const filePathStat = statSync(packagePath);
+                const filePathStat = fs.statSync(packagePath);
                 if (!filePathStat.isFile()) {
                     debug("ERROR: file is not a file probably a directory", httpUrlOrFilePath);
                     error = true;
@@ -217,12 +215,12 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
 
     } else {
 
-        if (!existsSync(httpUrlOrFilePath)) {
+        if (!fs.existsSync(httpUrlOrFilePath)) {
             debug("ERROR: file doesn't exists", httpUrlOrFilePath);
             return;
         }
         const filePath = httpUrlOrFilePath;
-        const filePathStat = statSync(filePath);
+        const filePathStat = fs.statSync(filePath);
         if (!filePathStat.isFile()) {
             debug("ERROR: file is not a file probably a directory", httpUrlOrFilePath);
             return;
@@ -258,19 +256,19 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
             let error = false;
             debug(`COPY "${filePath}" to "${packagePath}"`);
             try {
-                yield* callTyped(() => copyFile(filePath, packagePath));
+                yield* callTyped(() => fs.promises.copyFile(filePath, packagePath));
                 debug("COPY SUCCESS");
             } catch (e) {
                 debug("ERROR: copy", filePath, e);
                 error = true;
             }
 
-            if (!error && !existsSync(packagePath)) {
+            if (!error && !fs.existsSync(packagePath)) {
                 debug("ERROR: file doesn't exists", packagePath);
                 error = true;
             }
             if (!error) {
-                const filePathStat = statSync(packagePath);
+                const filePathStat = fs.statSync(packagePath);
                 if (!filePathStat.isFile()) {
                     debug("ERROR: file is not a file probably a directory", httpUrlOrFilePath);
                     error = true;
@@ -315,7 +313,7 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
                     for (const { fileName } of oldProvisionedPackage) {
                         debug("REMOVE (unlinkSync):", fileName);
                         try {
-                            unlinkSync(path.join(customizationWellKnownFolder, fileName));
+                            fs.unlinkSync(path.join(customizationWellKnownFolder, fileName));
                         } catch (e) {
                             debug("not removed !?", e);
                         }
@@ -349,7 +347,7 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
                         yield* putTyped(customizationActions.activating.build(packageId));
                         yield* callTyped(() => removeOldPackage());
                         try {
-                            unlinkSync(path.join(customizationWellKnownFolder, fileNameErrorFound.fileName));
+                            fs.unlinkSync(path.join(customizationWellKnownFolder, fileNameErrorFound.fileName));
                         } catch (e) {
                             debug("not removed !?", e);
                         }
@@ -360,7 +358,7 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
                     yield* putTyped(toastActions.openRequest.build(ToastType.Error, `ERROR: profile (${fileName}) [${fileNameErrorFound.message}]`));
                     yield* putTyped(customizationActions.lock.build("IDLE"));
                     try {
-                        unlinkSync(path.join(customizationWellKnownFolder, fileNameErrorFound.fileName));
+                        fs.unlinkSync(path.join(customizationWellKnownFolder, fileNameErrorFound.fileName));
                     } catch (e) {
                         debug("not removed !?", e);
                     }
@@ -523,8 +521,8 @@ export function saga() {
             function* (action: customizationActions.deleteProfile.TAction) {
                 const filename = path.join(customizationWellKnownFolder, action.payload.fileName);
                 try {
-                    if (existsSync(filename)) {
-                        unlinkSync(filename);
+                    if (fs.existsSync(filename)) {
+                        fs.unlinkSync(filename);
                     }
                 } catch (e) {
                     debug("error to delete", filename, e);
