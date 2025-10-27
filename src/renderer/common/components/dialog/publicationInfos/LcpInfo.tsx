@@ -177,13 +177,13 @@ class LcpInfo extends React.Component<IProps, undefined> {
                     {/* typeof lcpRightsCopy !== "undefined" && lcpRightsCopy !== null && */
                         typeof lcpRightsCopy === "number" ? <>
                         <strong>{__("publication.lcpRightsCopy")}: </strong>
-                        <span>{lcpRightsCopy === 0 ? "x" : `${lcpRightsCopiesPubInfo} / ${lcpRightsCopy}`}</span><br />
+                        <span>{lcpRightsCopy === 0 ? "0" : `${lcpRightsCopiesPubInfo} / ${lcpRightsCopy}`}</span><br />
                     </> : <></>}
 
                     {/* typeof lcpRightsPrint !== "undefined" && lcpRightsPrint !== null && */
                         typeof lcpRightsPrint === "number" ? <>
                         <strong>{__("publication.lcpRightsPrint")}: </strong>
-                        <span>{lcpRightsCopy === 0 ? "-" : `${lcpRightsPrintCountPubInfo} / ${lcpRightsPrint}`}  </span>
+                        <span>{lcpRightsPrint === 0 ? "0" : `${lcpRightsPrintCountPubInfo} / ${lcpRightsPrint}`}  </span>
                         {lcpRightsPrintRangePubInfo.length ? ` [${lcpRightsPrintRangePubInfo}] ` : <></>}
                     </> : <></>}
                 </div>
