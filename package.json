@@ -423,7 +423,7 @@
     "eslint-plugin-local-rules": "^3.0.2",
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-hooks": "^7.0.1",
     "fork-ts-checker-webpack-plugin": "^9.1.0",
     "git-rev-sync": "^3.0.2",
     "html-loader": "^5.1.0",
