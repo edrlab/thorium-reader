@@ -797,9 +797,9 @@
         "settings": {
             "column": {
                 "auto": "Standard",
-                "one": "1 kolumn",
+                "one": "1 kol",
                 "title": "Kolumner",
-                "two": "2 kolumner"
+                "two": "2 kol"
             },
             "customFontSelected": "Du har valt ett eget typsnitt",
             "customizeReader": "Anpassa textformatering",
