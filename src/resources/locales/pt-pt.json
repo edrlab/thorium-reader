@@ -66,7 +66,7 @@
         "customization": {
             "fallback": {
                 "description": "Sem descrição de perfil",
-                "publications": "",
+                "publications": "Perfil de publicações",
                 "screen": "Sem título",
                 "title": "Titulo do perfil"
             }
@@ -335,11 +335,11 @@
                 "descriptive": ""
             },
             "conformance-aa": {
-                "compact": "",
+                "compact": "Esta publicação cumpre os padrões de acessibilidade aceites",
                 "descriptive": ""
             },
             "conformance-aaa": {
-                "compact": "",
+                "compact": "Esta publicação excede os padrões de acessibilidade aceites",
                 "descriptive": "A publicação indica cumprir as diretrizes de acessibilidade EPUB e WCAG 2 nível AAA"
             },
             "conformance-certifier": {
@@ -380,11 +380,11 @@
             },
             "conformance-details-wcag-2-1": {
                 "compact": "WCAG 2.1",
-                "descriptive": ""
+                "descriptive": "Orientações de Acessibilidade para Conteúdos Web (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
                 "compact": "WCAG 2.2",
-                "descriptive": ""
+                "descriptive": "Orientações de Acessibilidade para Conteúdos Web (WCAG) 2.2"
             },
             "conformance-no": {
                 "compact": "Sem informações disponíveis",
@@ -454,17 +454,17 @@
             },
             "navigation-no-metadata": {
                 "compact": "",
-                "descriptive": ""
+                "descriptive": "Sem informações disponíveis"
             },
             "navigation-page-navigation": {
-                "compact": "",
+                "compact": "Ir para página",
                 "descriptive": ""
             },
             "navigation-structural": {
                 "compact": "Títulos",
                 "descriptive": ""
             },
-            "navigation-title": "Nevegação",
+            "navigation-title": "Navegação",
             "navigation-toc": {
                 "compact": "Índice",
                 "descriptive": "Índice para todos os capítulos de texto através de hiperligações"
@@ -472,28 +472,28 @@
         },
         "rich-content": {
             "rich-content-accessible-chemistry-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Fórmulas químicas em LaTeX",
+                "descriptive": "Fórmulas químicas em formato acessível (LaTeX)"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Fórmulas químicas em MathML",
+                "descriptive": "Fórmulas químicas em formato acessível (MathML)"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Matemática como LaTeX",
+                "descriptive": "Fórmulas matemáticas em formato acessível (LaTeX)"
             },
             "rich-content-accessible-math-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Matemática como MathML",
+                "descriptive": "Fórmulas matemáticas em formato acessível (MathML)"
             },
             "rich-content-accessible-math-described": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Descrições de texto de matemática - São fornecidas",
+                "descriptive": "Descrições de texto de matemática - São fornecidas"
             },
             "rich-content-closed-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Vídeos têm legendas ocultas",
+                "descriptive": "Os vídeos incluídos nas publicações têm legendas ocultas"
             },
             "rich-content-extended": {
                 "compact": "",
