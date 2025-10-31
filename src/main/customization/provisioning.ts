@@ -236,10 +236,27 @@ export async function customizationPackageProvisioningAccumulator(packagesArray:
 
         }
 
-        return { id: manifest.identifier, fileName: packageFileName, version: manifest.version, logoUrl, title: manifest.title, description: manifest.description, opdsPublicationView: publicationsView };
+        const selfLinkUrl = manifest.links?.find(({rel}) => rel === "self")?.href;
+
+        return {
+            id: manifest.identifier,
+            fileName: packageFileName,
+            version: manifest.version,
+            logoUrl,
+            title: manifest.title,
+            description: manifest.description,
+            opdsPublicationView: publicationsView,
+            selfLinkUrl,
+        };
     }
 
-    return { id: manifest.identifier, fileName: packageFileName, version: manifest.version, error: true, message: "profile version is under or equal to the currrent provisioned profile version" };
+    return {
+        id: manifest.identifier,
+        fileName: packageFileName,
+        version: manifest.version,
+        error: true,
+        message: "profile version is under or equal to the currrent provisioned profile version",
+    };
 }
 
 export async function customizationPackageProvisioning(packageFileName: string): Promise<ICustomizationManifest> {

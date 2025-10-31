@@ -74,7 +74,7 @@ export function* sagaCustomizationProfileProvisioning() {
 
 export function* acquireProvisionsActivates(action: customizationActions.acquire.TAction) {
 
-    const { httpUrlOrFilePath } = action.payload;
+    const { httpUrlOrFilePath, version } = action.payload;
 
     let copyDownloadAndQuit = false;
     let lockInfo: ICustomizationLockInfo;
@@ -119,7 +119,7 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
                     return new Promise<void>((resolve, reject) => {
                         debug("[Download] Starting request...");
 
-                        const request = net.request({ method: "GET", url: httpUrlOrFilePath, redirect: "follow" });
+                        const request = net.request({ method: "GET", url: httpUrlOrFilePath, redirect: "follow", headers: version ? { ["If-Not-Match"]: version } : {} });
                         const fileStream = fs.createWriteStream(packagePath);
 
                         debug(`[Download] Created write stream for: ${packagePath}`);
@@ -503,6 +503,37 @@ function* triggerCatalogOpdsAuthentication(action: customizationActions.triggerO
     }
 }
 
+let ___timeoutProfileUpdatePolling: NodeJS.Timeout = undefined;
+function* pollSelfLinkProfileUpdate(id: string) {
+
+    if (___timeoutProfileUpdatePolling) {
+        debug("ProfilePolling update timeout not finish");
+        return ;
+    }
+    debug("ProfilePolling Set timeout before next polling to 10mn");
+    ___timeoutProfileUpdatePolling = setTimeout(() => {___timeoutProfileUpdatePolling = undefined;}, 10 * 60 * 1000);
+
+    const provisions = yield* selectTyped((state: ICommonRootState) => state.customization.provision);
+    const provision = provisions.find(({id: __id}) => __id === id);
+    if (!provision) {
+        debug("provisionned profile not found !!!", id);
+        return ;
+    }
+
+    const selfLinkUrl = provision.selfLinkUrl;
+    const version = provision.version;
+
+    if (!selfLinkUrl || !version) {
+        debug("ProfilePolling not available, because selfLinkUrl or version! not defined: ", selfLinkUrl, version);
+        return ;
+    }
+
+    debug(`Dispatch acquire profile with selfLink=${selfLinkUrl} and version=${version}`);
+
+    // yield* delay(2000); // delay !? activation lock still in progress  !?
+    yield* putTyped(customizationActions.acquire.build(selfLinkUrl, version));
+}
+
 export function saga() {
 
     return allTyped([
@@ -537,8 +568,16 @@ export function saga() {
                 const payload = action.payload;
                 const id = payload.id;
 
+                // debug("TODO need to persist activate ID profile HERE", id);
 
-                debug("TODO need to persist activate ID profile HERE", id);
+                if (!id) {
+                    debug("Request to activate the default thorium profile !!!");
+                } else {
+
+
+                    // trigger update polling on self link url
+                    yield* callTyped(pollSelfLinkProfileUpdate, id);
+                }
 
             },
             (e) => debug(e),

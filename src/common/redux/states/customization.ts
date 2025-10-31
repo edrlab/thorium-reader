@@ -18,6 +18,7 @@ export interface ICustomizationProfileProvisioned {
     title: IStringMap;
     description: IStringMap;
     opdsPublicationView: IOpdsPublicationView[];
+    selfLinkUrl: string;
 }
 
 export interface ICustomizationProfileError {
