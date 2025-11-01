@@ -72,9 +72,81 @@ export function* sagaCustomizationProfileProvisioning() {
 }
 
 
+const downloadProfile = (destination: string, url: string, version?: string) => new Promise<void>((resolve, reject) => {
+    debug("[Download] Starting request...");
+    debug(`[download] URL=${url} to DESTINATION=${destination} with version=${version}`);
+
+    const request = net.request({ method: "GET", url, redirect: "follow", headers: version ? { ["If-None-Match"]: version } : {} });
+    const fileStream = fs.createWriteStream(destination);
+
+    debug(`[Download] Created write stream for: ${destination}`);
+
+    fileStream.on("open", () => {
+        debug(`[FileStream] File opened for writing: ${destination}`);
+    });
+
+    fileStream.on("finish", () => {
+        debug("[FileStream] Writing finished successfully.");
+    });
+
+    fileStream.on("close", () => {
+        debug("[FileStream] Stream closed.");
+    });
+
+    fileStream.on("error", (err) => {
+        console.error("[FileStream] Error while writing file:", err);
+        reject(err);
+    });
+
+    request.on("response", (response) => {
+        debug(`[Download] Received response with status code: ${response.statusCode}`);
+
+        if (response.statusCode !== 200) {
+            if (response.statusCode === 304) {
+                debug("304 Not Modified");
+            } else {
+                console.error(`[Download] HTTP error: ${response.statusCode}`);
+                reject(new Error(`HTTP status ${response.statusCode}`));
+            }
+            try {
+                fs.unlinkSync(destination);
+            } catch (e) {
+                debug("not removed !?", e);
+            }
+            return;
+        }
+
+        response.on("data", (chunk) => {
+            debug(`[Download] Writing chunk of size: ${chunk.length}`);
+            fileStream.write(chunk);
+        });
+
+        response.on("end", () => {
+            debug("[Download] Response ended. Ending file stream...");
+            fileStream.end();
+            debug("[Download] File successfully written.");
+            resolve();
+        });
+
+        response.on("error", (err) => {
+            console.error("[Download] Error during response:", err);
+            fileStream.close();
+            reject(err);
+        });
+    });
+
+    request.on("error", (err) => {
+        console.error("[Download] Request error:", err);
+        reject(err);
+    });
+
+    request.end();
+    debug("[Download] Request sent.");
+});
+
 export function* acquireProvisionsActivates(action: customizationActions.acquire.TAction) {
 
-    const { httpUrlOrFilePath, version } = action.payload;
+    const { httpUrlOrFilePath } = action.payload;
 
     let copyDownloadAndQuit = false;
     let lockInfo: ICustomizationLockInfo;
@@ -114,70 +186,9 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
             let error = false;
             try {
 
-                yield* callTyped(() => {
+                yield* callTyped(async () => {
 
-                    return new Promise<void>((resolve, reject) => {
-                        debug("[Download] Starting request...");
-
-                        const request = net.request({ method: "GET", url: httpUrlOrFilePath, redirect: "follow", headers: version ? { ["If-Not-Match"]: version } : {} });
-                        const fileStream = fs.createWriteStream(packagePath);
-
-                        debug(`[Download] Created write stream for: ${packagePath}`);
-
-                        fileStream.on("open", () => {
-                            debug(`[FileStream] File opened for writing: ${packagePath}`);
-                        });
-
-                        fileStream.on("finish", () => {
-                            debug("[FileStream] Writing finished successfully.");
-                        });
-
-                        fileStream.on("close", () => {
-                            debug("[FileStream] Stream closed.");
-                        });
-
-                        fileStream.on("error", (err) => {
-                            console.error("[FileStream] Error while writing file:", err);
-                            reject(err);
-                        });
-
-                        request.on("response", (response) => {
-                            debug(`[Download] Received response with status code: ${response.statusCode}`);
-
-                            if (response.statusCode !== 200) {
-                                console.error(`[Download] HTTP error: ${response.statusCode}`);
-                                reject(new Error(`HTTP status ${response.statusCode}`));
-                                return;
-                            }
-
-                            response.on("data", (chunk) => {
-                                debug(`[Download] Writing chunk of size: ${chunk.length}`);
-                                fileStream.write(chunk);
-                            });
-
-                            response.on("end", () => {
-                                debug("[Download] Response ended. Ending file stream...");
-                                fileStream.end();
-                                debug("[Download] File successfully written.");
-                                resolve();
-                            });
-
-                            response.on("error", (err) => {
-                                console.error("[Download] Error during response:", err);
-                                fileStream.close();
-                                reject(err);
-                            });
-                        });
-
-                        request.on("error", (err) => {
-                            console.error("[Download] Request error:", err);
-                            reject(err);
-                        });
-
-                        request.end();
-                        debug("[Download] Request sent.");
-                    });
-
+                    await downloadProfile(packagePath, httpUrlOrFilePath);
                 });
             } catch (e) {
                 error = true;
@@ -531,7 +542,10 @@ function* pollSelfLinkProfileUpdate(id: string) {
     debug(`Dispatch acquire profile with selfLink=${selfLinkUrl} and version=${version}`);
 
     // yield* delay(2000); // delay !? activation lock still in progress  !?
-    yield* putTyped(customizationActions.acquire.build(selfLinkUrl, version));
+    // yield* putTyped(customizationActions.acquire.build(selfLinkUrl, version));
+    const fileName = `${nanoid(10)}_downloaded_profile.thorium`;
+    const destination = path.join(customizationWellKnownFolder, fileName);
+    yield* callTyped(() => downloadProfile(destination, selfLinkUrl, version));
 }
 
 export function saga() {

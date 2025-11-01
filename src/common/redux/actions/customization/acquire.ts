@@ -11,16 +11,14 @@ export const ID = "CUSTOMIZATION_ACQUIRE_PROFILE";
 
 export interface Payload {
     httpUrlOrFilePath: string;
-    version: string | undefined;
 }
 
-export function build(httpUrlOrFilePath: string, version?: string): Action<typeof ID, Payload> {
+export function build(httpUrlOrFilePath: string): Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
             httpUrlOrFilePath,
-            version,
         },
     };
 }
