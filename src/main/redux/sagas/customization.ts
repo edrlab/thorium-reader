@@ -145,12 +145,16 @@ const downloadProfile = (destination: string, url: string, version?: string) => 
 
         response.on("data", (chunk) => {
             debug_(`[Download] Writing chunk of size: ${chunk.length}`);
-            if (fileStreamOpen) {
-                fileStreamEmpty = false;
-                fileStream.write(chunk);
-            } else {
-                request.abort();
-                reject(new Error("Can not write data to a closed fileStream"));
+            if (!rejected) {
+                if (fileStreamOpen) {
+                    if (fileStreamEmpty) {
+                        fileStreamEmpty = false;
+                    }
+                    fileStream.write(chunk);
+                } else {
+                    request.abort();
+                    reject(new Error("Can not write data to a closed fileStream"));
+                }
             }
         });
 
@@ -196,12 +200,12 @@ const downloadProfile = (destination: string, url: string, version?: string) => 
     request.on("abort", () => {
         debug_("[Download] Request aborted");
         if (!rejected) {
+            if (fileStreamOpen) {
+                fileStream.end();
+                fileStream.close();
+            }
             debug_("[download] reject()");
             reject("aborted");
-        }
-        if (fileStreamOpen) {
-            fileStream.end();
-            fileStream.close();
         }
     });
 
