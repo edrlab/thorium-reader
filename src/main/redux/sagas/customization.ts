@@ -72,6 +72,155 @@ export function* sagaCustomizationProfileProvisioning() {
 }
 
 
+let ___downloadId = 0;
+const downloadProfile = (destination: string, url: string, version?: string) => new Promise<void>((resolve, reject_) => {
+
+    ___downloadId++;
+    const debug_ = (...a: any[]) => debug(___downloadId, ...a);
+
+    debug_("[Download] Starting request...");
+    debug_(`[download] URL=${url} to DESTINATION=${destination} with version=${version}`);
+
+    const request = net.request({ method: "GET", url, redirect: "follow", headers: version ? { ["If-None-Match"]: version } : {} });
+    const fileStream = fs.createWriteStream(destination);
+
+    debug_(`[Download] Created write stream for: ${destination}`);
+
+    let rejected = false;
+    let fileStreamOpen = false;
+    let fileStreamEmpty = true;
+    let responseEnded = false;
+
+    const reject = (reason: any) => {
+        rejected = true;
+        reject_(reason);
+    };
+
+    fileStream.on("open", () => {
+        debug_(`[FileStream] File opened for writing: ${destination}`);
+        fileStreamOpen = true;
+        if (rejected) {
+            fileStream.close();
+        }
+    });
+
+    fileStream.on("finish", () => {
+        debug_("[FileStream] Writing finished successfully.");
+    });
+
+    fileStream.on("close", () => {
+        debug_("[FileStream] Stream closed.");
+        fileStreamOpen = false;
+        if (fileStreamEmpty) {
+            debug_("[FileStream] File is empty so let's remove it...");
+            try {
+                fs.unlinkSync(destination);
+            } catch (e) {
+                debug_("not removed !?", e);
+            }
+        }
+    });
+
+    fileStream.on("error", (err) => {
+        debug_(`[FileStream] Error while writing file: reject(${err})`);
+        fileStreamOpen = false;
+        if (!responseEnded) {
+            request.abort();
+        }
+        reject(err);
+    });
+
+    request.on("response", (response) => {
+        debug_(`[Download] Received response with status code: ${response.statusCode}`);
+
+        if (response.statusCode !== 200 && response.statusCode !== 304) {
+            debug_(`[Download] HTTP error: ${response.statusCode}`);
+            if (fileStreamOpen) {
+                fileStream.close();
+            }
+            debug_(`[download] reject("HTTP status ${response.statusCode}")`);
+            reject(new Error(`HTTP status ${response.statusCode}`));
+            return;
+        }
+
+        response.on("data", (chunk) => {
+            debug_(`[Download] Writing chunk of size: ${chunk.length}`);
+            if (!rejected) {
+                if (fileStreamOpen) {
+                    if (fileStreamEmpty) {
+                        fileStreamEmpty = false;
+                    }
+                    fileStream.write(chunk);
+                } else {
+                    request.abort();
+                    reject(new Error("Can not write data to a closed fileStream"));
+                }
+            }
+        });
+
+        response.on("end", () => {
+            debug_("[Download] Response ended. Ending file stream...");
+            responseEnded = true;                
+            if (!rejected) {
+                if (fileStreamOpen) {
+                    fileStream.end();
+                    fileStream.close();
+                    debug_("[Download] File successfully written.");
+                }
+                debug_("[download] resolve()");
+                resolve();
+            }
+        });
+
+        response.on("error", (err) => {
+            debug_("[Download] Error during response:", err);
+            responseEnded = true;                
+            if (!rejected) {
+                if (fileStreamOpen) {
+                    fileStream.end();
+                    fileStream.close();
+                }
+                debug_("[download] reject()");
+                reject(err);
+            }
+        });
+    });
+
+    request.on("error", (err) => {
+        debug_("[Download] Request error:", err);
+        if (!rejected) {
+            if (fileStreamOpen) {
+                fileStream.end();
+                fileStream.close();
+            }
+            reject(err);
+        }
+    });
+
+    request.on("abort", () => {
+        debug_("[Download] Request aborted");
+        if (!rejected) {
+            if (fileStreamOpen) {
+                fileStream.end();
+                fileStream.close();
+            }
+            debug_("[download] reject()");
+            reject("aborted");
+        }
+    });
+
+    request.on("close", () => {
+        debug_("[Download] Request closed");
+    });
+
+    request.on("finish", () => {
+        debug_("[Download] request sent");
+    });
+
+    request.end();
+    debug_("[Download] Request sent...");
+});
+
 export function* acquireProvisionsActivates(action: customizationActions.acquire.TAction) {
 
     const { httpUrlOrFilePath } = action.payload;
@@ -114,70 +263,9 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
             let error = false;
             try {
 
-                yield* callTyped(() => {
+                yield* callTyped(async () => {
 
-                    return new Promise<void>((resolve, reject) => {
-                        debug("[Download] Starting request...");
-
-                        const request = net.request({ method: "GET", url: httpUrlOrFilePath, redirect: "follow" });
-                        const fileStream = fs.createWriteStream(packagePath);
-
-                        debug(`[Download] Created write stream for: ${packagePath}`);
-
-                        fileStream.on("open", () => {
-                            debug(`[FileStream] File opened for writing: ${packagePath}`);
-                        });
-
-                        fileStream.on("finish", () => {
-                            debug("[FileStream] Writing finished successfully.");
-                        });
-
-                        fileStream.on("close", () => {
-                            debug("[FileStream] Stream closed.");
-                        });
-
-                        fileStream.on("error", (err) => {
-                            console.error("[FileStream] Error while writing file:", err);
-                            reject(err);
-                        });
-
-                        request.on("response", (response) => {
-                            debug(`[Download] Received response with status code: ${response.statusCode}`);
-
-                            if (response.statusCode !== 200) {
-                                console.error(`[Download] HTTP error: ${response.statusCode}`);
-                                reject(new Error(`HTTP status ${response.statusCode}`));
-                                return;
-                            }
-
-                            response.on("data", (chunk) => {
-                                debug(`[Download] Writing chunk of size: ${chunk.length}`);
-                                fileStream.write(chunk);
-                            });
-
-                            response.on("end", () => {
-                                debug("[Download] Response ended. Ending file stream...");
-                                fileStream.end();
-                                debug("[Download] File successfully written.");
-                                resolve();
-                            });
-
-                            response.on("error", (err) => {
-                                console.error("[Download] Error during response:", err);
-                                fileStream.close();
-                                reject(err);
-                            });
-                        });
-
-                        request.on("error", (err) => {
-                            console.error("[Download] Request error:", err);
-                            reject(err);
-                        });
-
-                        request.end();
-                        debug("[Download] Request sent.");
-                    });
-
+                    await downloadProfile(packagePath, httpUrlOrFilePath);
                 });
             } catch (e) {
                 error = true;
@@ -503,6 +591,36 @@ function* triggerCatalogOpdsAuthentication(action: customizationActions.triggerO
     }
 }
 
+let ___timeoutProfileUpdatePolling: NodeJS.Timeout = undefined;
+function* pollSelfLinkProfileUpdate(id: string) {
+
+    if (___timeoutProfileUpdatePolling) {
+        debug("ProfilePolling update timeout not finish");
+        return ;
+    }
+    debug("ProfilePolling Set timeout before next polling to 10mn");
+    ___timeoutProfileUpdatePolling = setTimeout(() => {___timeoutProfileUpdatePolling = undefined;}, 10 * 60 * 1000);
+
+    const provisions = yield* selectTyped((state: ICommonRootState) => state.customization.provision);
+    const provision = provisions.find(({id: __id}) => __id === id);
+    if (!provision) {
+        debug("provisioned profile not found !!!", id);
+        return ;
+    }
+
+    const selfLinkUrl = provision.selfLinkUrl;
+    const version = provision.version;
+
+    if (!selfLinkUrl || !version) {
+        debug("ProfilePolling not available, because selfLinkUrl or version! not defined: ", selfLinkUrl, version);
+        return ;
+    }
+
+    const fileName = `${nanoid(10)}_downloaded_profile.thorium`;
+    const destination = path.join(customizationWellKnownFolder, fileName);
+    yield* callTyped(() => downloadProfile(destination, selfLinkUrl, version));
+}
+
 export function saga() {
 
     return allTyped([
@@ -537,8 +655,16 @@ export function saga() {
                 const payload = action.payload;
                 const id = payload.id;
 
+                // debug("TODO need to persist activate ID profile HERE", id);
 
-                debug("TODO need to persist activate ID profile HERE", id);
+                if (!id) {
+                    debug("Request to activate the default thorium profile !!!");
+                } else {
+
+
+                    // trigger update polling on self link url
+                    yield* callTyped(pollSelfLinkProfileUpdate, id);
+                }
 
             },
             (e) => debug(e),

@@ -135,7 +135,7 @@ const opdsAuthFlow =
                 debug("no valid authentication html url");
                 return;
             }
-            debug("Browser URL", browserUrl);
+            debug("Browser URL", browserUrl.slice(0, 100)+"...");
 
             const authCredentials: IOpdsAuthenticationToken = {
                 id: authParsed?.id || undefined,
@@ -805,7 +805,7 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
 
 async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser: boolean): Promise<BrowserWindow | undefined> {
 
-    debug("OPDS AUTH win URL", urlStr);
+    debug("OPDS AUTH win URL", urlStr.slice(0, 100) + (urlStr.length > 100 ? "..." : ""));
 
     const libWin = tryCatchSync(() => getLibraryWindowFromDi(), filename_);
     if (!libWin || libWin.isDestroyed() || libWin.webContents.isDestroyed()) {
