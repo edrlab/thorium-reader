@@ -100,24 +100,18 @@ const downloadProfile = (destination: string, url: string, version?: string) => 
 
     request.on("response", (response) => {
         debug(`[Download] Received response with status code: ${response.statusCode}`);
+        
+        let fileStreamEmpty = true;
 
-        if (response.statusCode !== 200) {
-            if (response.statusCode === 304) {
-                debug("304 Not Modified");
-            } else {
-                console.error(`[Download] HTTP error: ${response.statusCode}`);
-                reject(new Error(`HTTP status ${response.statusCode}`));
-            }
-            try {
-                fs.unlinkSync(destination);
-            } catch (e) {
-                debug("not removed !?", e);
-            }
+        if (response.statusCode !== 200 && response.statusCode !== 304) {
+            console.error(`[Download] HTTP error: ${response.statusCode}`);
+            reject(new Error(`HTTP status ${response.statusCode}`));
             return;
         }
 
         response.on("data", (chunk) => {
             debug(`[Download] Writing chunk of size: ${chunk.length}`);
+            fileStreamEmpty = false;
             fileStream.write(chunk);
         });
 
@@ -125,6 +119,15 @@ const downloadProfile = (destination: string, url: string, version?: string) => 
             debug("[Download] Response ended. Ending file stream...");
             fileStream.end();
             debug("[Download] File successfully written.");
+
+            if (fileStreamEmpty) {
+                debug("[Download] File empty so let's remove it...");
+                try {
+                    fs.unlinkSync(destination);
+                } catch (e) {
+                    debug("not removed !?", e);
+                }
+            }
             resolve();
         });
 
@@ -527,7 +530,7 @@ function* pollSelfLinkProfileUpdate(id: string) {
     const provisions = yield* selectTyped((state: ICommonRootState) => state.customization.provision);
     const provision = provisions.find(({id: __id}) => __id === id);
     if (!provision) {
-        debug("provisionned profile not found !!!", id);
+        debug("provisioned profile not found !!!", id);
         return ;
     }
 
@@ -539,10 +542,6 @@ function* pollSelfLinkProfileUpdate(id: string) {
         return ;
     }
 
-    debug(`Dispatch acquire profile with selfLink=${selfLinkUrl} and version=${version}`);
-
-    // yield* delay(2000); // delay !? activation lock still in progress  !?
-    // yield* putTyped(customizationActions.acquire.build(selfLinkUrl, version));
     const fileName = `${nanoid(10)}_downloaded_profile.thorium`;
     const destination = path.join(customizationWellKnownFolder, fileName);
     yield* callTyped(() => downloadProfile(destination, selfLinkUrl, version));
