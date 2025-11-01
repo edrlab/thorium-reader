@@ -72,7 +72,7 @@ export function* sagaCustomizationProfileProvisioning() {
 }
 
 
-const downloadProfile = (destination: string, url: string, version?: string) => new Promise<void>((resolve, reject) => {
+const downloadProfile = (destination: string, url: string, version?: string) => new Promise<void>((resolve, reject_) => {
     debug("[Download] Starting request...");
     debug(`[download] URL=${url} to DESTINATION=${destination} with version=${version}`);
 
@@ -81,12 +81,22 @@ const downloadProfile = (destination: string, url: string, version?: string) => 
 
     debug(`[Download] Created write stream for: ${destination}`);
 
+    let rejected = false;
     let fileStreamOpen = false;
     let fileStreamEmpty = true;
+    let requestClosed = false;
+
+    const reject = (reason: any) => {
+        rejected = true;
+        reject_(reason);
+    };
 
     fileStream.on("open", () => {
         debug(`[FileStream] File opened for writing: ${destination}`);
         fileStreamOpen = true;
+        if (rejected) {
+            fileStream.close();
+        }
     });
 
     fileStream.on("finish", () => {
@@ -108,6 +118,9 @@ const downloadProfile = (destination: string, url: string, version?: string) => 
 
     fileStream.on("error", (err) => {
         debug(`[FileStream] Error while writing file: reject(${err})`);
+        if (!requestClosed) {
+            request.abort();
+        }
         reject(err);
     });
 
@@ -129,11 +142,15 @@ const downloadProfile = (destination: string, url: string, version?: string) => 
             if (fileStreamOpen) {
                 fileStreamEmpty = false;
                 fileStream.write(chunk);
+            } else {
+                request.abort();
+                reject(new Error("Can not write data to a closed fileStream"));
             }
         });
 
         response.on("end", () => {
             debug("[Download] Response ended. Ending file stream...");
+            requestClosed = true;                
             if (fileStreamOpen) {
                 fileStream.end();
                 fileStream.close();
@@ -145,6 +162,7 @@ const downloadProfile = (destination: string, url: string, version?: string) => 
 
         response.on("error", (err) => {
             debug("[Download] Error during response:", err);
+            requestClosed = true;                
             if (fileStreamOpen) {
                 fileStream.end();
                 fileStream.close();
@@ -156,6 +174,10 @@ const downloadProfile = (destination: string, url: string, version?: string) => 
 
     request.on("error", (err) => {
         debug("[Download] Request error:", err);
+        if (fileStreamOpen) {
+            fileStream.end();
+            fileStream.close();
+        }
         reject(err);
     });
 
