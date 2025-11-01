@@ -81,8 +81,12 @@ const downloadProfile = (destination: string, url: string, version?: string) => 
 
     debug(`[Download] Created write stream for: ${destination}`);
 
+    let fileStreamOpen = false;
+    let fileStreamEmpty = true;
+
     fileStream.on("open", () => {
         debug(`[FileStream] File opened for writing: ${destination}`);
+        fileStreamOpen = true;
     });
 
     fileStream.on("finish", () => {
@@ -91,55 +95,67 @@ const downloadProfile = (destination: string, url: string, version?: string) => 
 
     fileStream.on("close", () => {
         debug("[FileStream] Stream closed.");
+        fileStreamOpen = false;
+        if (fileStreamEmpty) {
+            debug("[FileStream] File is empty so let's remove it...");
+            try {
+                fs.unlinkSync(destination);
+            } catch (e) {
+                debug("not removed !?", e);
+            }
+        }
     });
 
     fileStream.on("error", (err) => {
-        console.error("[FileStream] Error while writing file:", err);
+        debug(`[FileStream] Error while writing file: reject(${err})`);
         reject(err);
     });
 
     request.on("response", (response) => {
         debug(`[Download] Received response with status code: ${response.statusCode}`);
         
-        let fileStreamEmpty = true;
-
         if (response.statusCode !== 200 && response.statusCode !== 304) {
-            console.error(`[Download] HTTP error: ${response.statusCode}`);
+            debug(`[Download] HTTP error: ${response.statusCode}`);
+            if (fileStreamOpen) {
+                fileStream.close();
+            }
+            debug(`[download] reject("HTTP status ${response.statusCode}")`);
             reject(new Error(`HTTP status ${response.statusCode}`));
             return;
         }
 
         response.on("data", (chunk) => {
             debug(`[Download] Writing chunk of size: ${chunk.length}`);
-            fileStreamEmpty = false;
-            fileStream.write(chunk);
+            if (fileStreamOpen) {
+                fileStreamEmpty = false;
+                fileStream.write(chunk);
+            }
         });
 
         response.on("end", () => {
             debug("[Download] Response ended. Ending file stream...");
-            fileStream.end();
-            debug("[Download] File successfully written.");
-
-            if (fileStreamEmpty) {
-                debug("[Download] File empty so let's remove it...");
-                try {
-                    fs.unlinkSync(destination);
-                } catch (e) {
-                    debug("not removed !?", e);
-                }
+            if (fileStreamOpen) {
+                fileStream.end();
+                fileStream.close();
+                debug("[Download] File successfully written.");
             }
+            debug("[download] resolve()");
             resolve();
         });
 
         response.on("error", (err) => {
-            console.error("[Download] Error during response:", err);
-            fileStream.close();
+            debug("[Download] Error during response:", err);
+            if (fileStreamOpen) {
+                fileStream.end();
+                fileStream.close();
+            }
+            debug("[download] reject()");
             reject(err);
         });
     });
 
     request.on("error", (err) => {
-        console.error("[Download] Request error:", err);
+        debug("[Download] Request error:", err);
         reject(err);
     });
 

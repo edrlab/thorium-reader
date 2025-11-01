@@ -72,7 +72,7 @@ export function saga() {
                         }
                     }
 
-                    debug("dispatch provisionning action with ", JSON.stringify(packagesArray));
+                    debug("dispatch provisionning action with ", JSON.stringify(packagesArray)/*.slice(0, 100)+"..."*/);
                     yield* putTyped(customizationActions.provisioning.build(customizationState.provision, packagesArray, errorPackages));
 
                     // TODO: how to warn user of potentially a new version of the packages id, we have to put a diff between version for a same id !
