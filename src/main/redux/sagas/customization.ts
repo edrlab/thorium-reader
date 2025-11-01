@@ -89,8 +89,7 @@ const downloadProfile = (destination: string, url: string, version?: string) => 
     let rejected = false;
     let fileStreamOpen = false;
     let fileStreamEmpty = true;
-    const requestClosed = false;
-    let responseReceived = false;
+    let responseEnded = false;
 
     const reject = (reason: any) => {
         rejected = true;
@@ -125,7 +124,7 @@ const downloadProfile = (destination: string, url: string, version?: string) => 
     fileStream.on("error", (err) => {
         debug_(`[FileStream] Error while writing file: reject(${err})`);
         fileStreamOpen = false;
-        if (!requestClosed) {
+        if (!responseEnded) {
             request.abort();
         }
         reject(err);
@@ -133,7 +132,6 @@ const downloadProfile = (destination: string, url: string, version?: string) => 
 
     request.on("response", (response) => {
         debug_(`[Download] Received response with status code: ${response.statusCode}`);
-        responseReceived = true;
 
         if (response.statusCode !== 200 && response.statusCode !== 304) {
             debug_(`[Download] HTTP error: ${response.statusCode}`);
@@ -158,7 +156,7 @@ const downloadProfile = (destination: string, url: string, version?: string) => 
 
         response.on("end", () => {
             debug_("[Download] Response ended. Ending file stream...");
-            // requestClosed = true;                
+            responseEnded = true;                
             if (!rejected) {
                 if (fileStreamOpen) {
                     fileStream.end();
@@ -172,7 +170,7 @@ const downloadProfile = (destination: string, url: string, version?: string) => 
 
         response.on("error", (err) => {
             debug_("[Download] Error during response:", err);
-            // requestClosed = true;                
+            responseEnded = true;                
             if (!rejected) {
                 if (fileStreamOpen) {
                     fileStream.end();
