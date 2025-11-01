@@ -72,19 +72,25 @@ export function* sagaCustomizationProfileProvisioning() {
 }
 
 
+let ___downloadId = 0;
 const downloadProfile = (destination: string, url: string, version?: string) => new Promise<void>((resolve, reject_) => {
-    debug("[Download] Starting request...");
-    debug(`[download] URL=${url} to DESTINATION=${destination} with version=${version}`);
+
+    ___downloadId++;
+    const debug_ = (...a: any[]) => debug(___downloadId, ...a);
+
+    debug_("[Download] Starting request...");
+    debug_(`[download] URL=${url} to DESTINATION=${destination} with version=${version}`);
 
     const request = net.request({ method: "GET", url, redirect: "follow", headers: version ? { ["If-None-Match"]: version } : {} });
     const fileStream = fs.createWriteStream(destination);
 
-    debug(`[Download] Created write stream for: ${destination}`);
+    debug_(`[Download] Created write stream for: ${destination}`);
 
     let rejected = false;
     let fileStreamOpen = false;
     let fileStreamEmpty = true;
-    let requestClosed = false;
+    const requestClosed = false;
+    let responseReceived = false;
 
     const reject = (reason: any) => {
         rejected = true;
@@ -92,7 +98,7 @@ const downloadProfile = (destination: string, url: string, version?: string) => 
     };
 
     fileStream.on("open", () => {
-        debug(`[FileStream] File opened for writing: ${destination}`);
+        debug_(`[FileStream] File opened for writing: ${destination}`);
         fileStreamOpen = true;
         if (rejected) {
             fileStream.close();
@@ -100,24 +106,25 @@ const downloadProfile = (destination: string, url: string, version?: string) => 
     });
 
     fileStream.on("finish", () => {
-        debug("[FileStream] Writing finished successfully.");
+        debug_("[FileStream] Writing finished successfully.");
     });
 
     fileStream.on("close", () => {
-        debug("[FileStream] Stream closed.");
+        debug_("[FileStream] Stream closed.");
         fileStreamOpen = false;
         if (fileStreamEmpty) {
-            debug("[FileStream] File is empty so let's remove it...");
+            debug_("[FileStream] File is empty so let's remove it...");
             try {
                 fs.unlinkSync(destination);
             } catch (e) {
-                debug("not removed !?", e);
+                debug_("not removed !?", e);
             }
         }
     });
 
     fileStream.on("error", (err) => {
-        debug(`[FileStream] Error while writing file: reject(${err})`);
+        debug_(`[FileStream] Error while writing file: reject(${err})`);
+        fileStreamOpen = false;
         if (!requestClosed) {
             request.abort();
         }
@@ -125,20 +132,21 @@ const downloadProfile = (destination: string, url: string, version?: string) => 
     });
 
     request.on("response", (response) => {
-        debug(`[Download] Received response with status code: ${response.statusCode}`);
-        
+        debug_(`[Download] Received response with status code: ${response.statusCode}`);
+        responseReceived = true;
+
         if (response.statusCode !== 200 && response.statusCode !== 304) {
-            debug(`[Download] HTTP error: ${response.statusCode}`);
+            debug_(`[Download] HTTP error: ${response.statusCode}`);
             if (fileStreamOpen) {
                 fileStream.close();
             }
-            debug(`[download] reject("HTTP status ${response.statusCode}")`);
+            debug_(`[download] reject("HTTP status ${response.statusCode}")`);
             reject(new Error(`HTTP status ${response.statusCode}`));
             return;
         }
 
         response.on("data", (chunk) => {
-            debug(`[Download] Writing chunk of size: ${chunk.length}`);
+            debug_(`[Download] Writing chunk of size: ${chunk.length}`);
             if (fileStreamOpen) {
                 fileStreamEmpty = false;
                 fileStream.write(chunk);
@@ -149,40 +157,66 @@ const downloadProfile = (destination: string, url: string, version?: string) => 
         });
 
         response.on("end", () => {
-            debug("[Download] Response ended. Ending file stream...");
-            requestClosed = true;                
-            if (fileStreamOpen) {
-                fileStream.end();
-                fileStream.close();
-                debug("[Download] File successfully written.");
+            debug_("[Download] Response ended. Ending file stream...");
+            // requestClosed = true;                
+            if (!rejected) {
+                if (fileStreamOpen) {
+                    fileStream.end();
+                    fileStream.close();
+                    debug_("[Download] File successfully written.");
+                }
+                debug_("[download] resolve()");
+                resolve();
             }
-            debug("[download] resolve()");
-            resolve();
         });
 
         response.on("error", (err) => {
-            debug("[Download] Error during response:", err);
-            requestClosed = true;                
-            if (fileStreamOpen) {
-                fileStream.end();
-                fileStream.close();
+            debug_("[Download] Error during response:", err);
+            // requestClosed = true;                
+            if (!rejected) {
+                if (fileStreamOpen) {
+                    fileStream.end();
+                    fileStream.close();
+                }
+                debug_("[download] reject()");
+                reject(err);
             }
-            debug("[download] reject()");
-            reject(err);
         });
     });
 
     request.on("error", (err) => {
-        debug("[Download] Request error:", err);
+        debug_("[Download] Request error:", err);
+        if (!rejected) {
+            if (fileStreamOpen) {
+                fileStream.end();
+                fileStream.close();
+            }
+            reject(err);
+        }
+    });
+
+    request.on("abort", () => {
+        debug_("[Download] Request aborted");
+        if (!rejected) {
+            debug_("[download] reject()");
+            reject("aborted");
+        }
         if (fileStreamOpen) {
             fileStream.end();
             fileStream.close();
         }
-        reject(err);
+    });
+
+    request.on("close", () => {
+        debug_("[Download] Request closed");
+    });
+
+    request.on("finish", () => {
+        debug_("[Download] request sent");
     });
 
     request.end();
-    debug("[Download] Request sent.");
+    debug_("[Download] Request sent...");
 });
 
 export function* acquireProvisionsActivates(action: customizationActions.acquire.TAction) {
