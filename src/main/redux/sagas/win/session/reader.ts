@@ -10,7 +10,7 @@ import { normalizeRectangle } from "readium-desktop/common/rectangle/window";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { error } from "readium-desktop/main/tools/error";
 import { winActions } from "readium-desktop/main/redux/actions";
-import { eventChannel, Task } from "redux-saga";
+import { eventChannel, Task, buffers } from "redux-saga";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { cancel, debounce, fork, put, take } from "redux-saga/effects";
 
@@ -34,6 +34,7 @@ function* readerClosureManagement(action: winActions.session.registerReader.TAct
                 readerWindow.removeListener("close", handler);
             };
         },
+        buffers.none(),
     );
 
     // waiting for reader window to close
@@ -65,6 +66,7 @@ function* readerMoveOrResizeObserver(action: winActions.session.registerReader.T
                 reader.removeListener("resize", handler);
             };
         },
+        buffers.none(), // sliding(0) ?
     );
 
     yield debounce(DEBOUNCE_TIME, channel, function*() {

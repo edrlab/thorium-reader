@@ -8,7 +8,7 @@
 import * as debug_ from "debug";
 import { setImageClickHandler } from "@r2-navigator-js/electron/renderer";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { eventChannel } from "redux-saga";
+import { eventChannel, buffers } from "redux-saga";
 import { put as putTyped } from "typed-redux-saga";
 import { readerLocalActionSetImageClick } from "../actions";
 import { IEventPayload_R2_EVENT_IMAGE_CLICK } from "@r2-navigator-js/electron/common/events";
@@ -33,6 +33,7 @@ export function getWebviewImageClickChannel() {
                 // no destrutor
             };
         },
+        buffers.none(), // get latest
     );
 
     return channel;

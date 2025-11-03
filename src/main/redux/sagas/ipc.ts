@@ -11,7 +11,7 @@ import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
-import { eventChannel } from "redux-saga";
+import { eventChannel, buffers } from "redux-saga";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { put } from "redux-saga/effects";
 
@@ -38,6 +38,7 @@ function getIpcChannel() {
                 ipcMain.removeListener(syncIpc.CHANNEL, handler);
             };
         },
+        buffers.fixed(10),
     );
 
     return channel;

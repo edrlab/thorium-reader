@@ -10,7 +10,7 @@ import * as debug_ from "debug";
 // import { IEventPayload_R2_EVENT_HIGHLIGHT_CLICK } from "@r2-navigator-js/electron/common/events";
 import { zipWith } from "ramda";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { eventChannel, SagaIterator } from "redux-saga";
+import { eventChannel, SagaIterator, buffers } from "redux-saga";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { put } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
@@ -159,6 +159,7 @@ export function getHightlightClickChannel() {
                 // no destrutor
             };
         },
+        buffers.none(), // TODO: is it need to be buffered !?
     );
 
     return channel;
