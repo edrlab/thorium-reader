@@ -126,58 +126,87 @@ async function checkIfProfilePackageSigned(manifest: ICustomizationManifest, pac
     return true;
 }
 
-export async function customizationPackageProvisionningFromFolder(wellKnownFolder: string): Promise<[ICustomizationProfileProvisioned[], ICustomizationProfileError[]]>{
+export function customizationPackageProvisioningCheckVersion(profilesProvisionedAndLatest: ICustomizationProfileProvisioned[], packagesNotProvisionedOrOnError: ICustomizationProfileProvisionedWithError[], profile: ICustomizationProfileProvisioned): [ICustomizationProfileProvisioned[], ICustomizationProfileProvisionedWithError[]] {
 
-    let packagesArray: ICustomizationProfileProvisioned[] = [];
-    const packagesErrorArray: ICustomizationProfileError[] = [];
+    // 1. extraire tous les profiles avec le meme id
+    const profileProvisionedWithSameId = profilesProvisionedAndLatest.filter(({id}) => id === profile.id);
+    profileProvisionedWithSameId.push(profile);
+
+    // 2.  sort profile with same id by version
+    profileProvisionedWithSameId.sort(({version: v1}, {version: v2}) => semver.gt(v1, v2) ? 1 : -1);
+
+    // 3. pick the latest profile
+    const profileLastVersion = profileProvisionedWithSameId.pop();
+
+    // 4. new provisioned profiles
+    const oldProfilesProvisioned = profilesProvisionedAndLatest.filter(({id}) => !(id === profile.id));
+    oldProfilesProvisioned.push(profileLastVersion);
+
+    packagesNotProvisionedOrOnError.push(...profileProvisionedWithSameId as ICustomizationProfileProvisionedWithError[]);
+    return [oldProfilesProvisioned, packagesNotProvisionedOrOnError]; // [packagesProvisioned, packagesNotProvisionedOrOnError]
+}
+
+export async function customizationPackageProvisionningFromFolder(wellKnownFolder: string): Promise<[ICustomizationProfileProvisioned[], ICustomizationProfileProvisionedWithError[]]>{
+
     const results = fs.readdirSync(wellKnownFolder, {withFileTypes: true});
-
+    
+    let packagesNotProvisionedOrOnError: ICustomizationProfileProvisionedWithError[] = [];
+    let packagesProvisionedAndLatest: ICustomizationProfileProvisioned[] = [];
     for (const dirent of results) {
         if (dirent.isFile() && path.extname(dirent.name) === EXT_THORIUM) {
             const packageFileName = dirent.name;
             debug("Found => ", packageFileName);
-            const profileProvisioned = await customizationPackageProvisioningAccumulator(packagesArray, packageFileName);
-            if ((profileProvisioned as ICustomizationProfileError).error) {
-                debug("ERROR: Profile not provisioned, due to error :", (profileProvisioned as ICustomizationProfileError).message);
-                packagesErrorArray.push((profileProvisioned as ICustomizationProfileError));
+            const profileProvisionedOrOnError = await customizationPackageProvisioning(packageFileName);
+            if ((profileProvisionedOrOnError as ICustomizationProfileError).error) {
+                debug("ERROR: Profile not provisioned, due to error :", (profileProvisionedOrOnError as ICustomizationProfileError).message);
+                packagesNotProvisionedOrOnError.push((profileProvisionedOrOnError as ICustomizationProfileError));
             } else {
-                packagesArray = [
-                    ...packagesArray.filter(({id}) => (profileProvisioned as ICustomizationProfileProvisioned).id !== id),
-                    profileProvisioned as ICustomizationProfileProvisioned,
-                ];
+                
+                [packagesProvisionedAndLatest, packagesNotProvisionedOrOnError] = customizationPackageProvisioningCheckVersion(
+                    packagesProvisionedAndLatest,
+                    packagesNotProvisionedOrOnError,
+                    profileProvisionedOrOnError as ICustomizationProfileProvisioned,
+                );
             }
         }
     }
 
-    return [packagesArray, packagesErrorArray];
+    return [packagesProvisionedAndLatest, packagesNotProvisionedOrOnError];
 }
 
-export async function customizationPackageProvisioningAccumulator(packagesArray: ICustomizationProfileProvisioned[], packageFileName: string): Promise<ICustomizationProfileProvisionedWithError> {
+export async function customizationPackageProvisioning(packageFileName: string): Promise<ICustomizationProfileProvisionedWithError> {
 
-    const packageFileNameFound = packagesArray.find(({ fileName }) => fileName === packageFileName);
-    if (packageFileNameFound) {
-        packagesArray = packagesArray.filter(({ fileName }) => fileName !== packageFileName);
-    }
+    // const packageFileNameFound = packagesArray.find(({ fileName }) => fileName === packageFileName);
+    // if (packageFileNameFound) {
+    //     packagesArray = packagesArray.filter(({ fileName }) => fileName !== packageFileName);
+    // }
     let manifest: ICustomizationManifest;
     let error = "";
     try {
-        manifest = await customizationPackageProvisioning(packageFileName);
+        manifest = await customizationPackageProvisioningManifest(packageFileName);
     } catch (e) {
         debug("Error when provisioning this profile =>", packageFileName);
         error = `${e}`;
     }
 
     if (!manifest) {
-        return { id: undefined, fileName: packageFileName, version: undefined, error: true, message: error };
+        return { fileName: packageFileName, error: true, message: error } as ICustomizationProfileError;
     }
 
-    const packageProvisionedWithTheSameIdentifier = packagesArray.find(({ id }) => id === manifest.identifier);
-    if (!packageProvisionedWithTheSameIdentifier || semver.gt(manifest.version, packageProvisionedWithTheSameIdentifier.version)) {
+    const logoObj = manifest.images?.find((ln) => ln?.rel === "logo");
+    debug("find manifest for this profile", manifest.identifier, manifest.version, " LOGO Obj:", logoObj);
+    const baseUrl = `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_CUSTOMPROFILEZIP}/${encodeURIComponent_RFC3986(Buffer.from(manifest.identifier).toString("base64"))}/`;
+    const logoUrl = baseUrl + encodeURIComponent_RFC3986(Buffer.from(logoObj.href).toString("base64"));
 
-        const logoObj = manifest.images?.find((ln) => ln?.rel === "logo");
-        debug("find manifest for this profile", manifest.identifier, " LOGO Obj:", logoObj);
-        const baseUrl = `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_CUSTOMPROFILEZIP}/${encodeURIComponent_RFC3986(Buffer.from(manifest.identifier).toString("base64"))}/`;
-        const logoUrl = baseUrl + encodeURIComponent_RFC3986(Buffer.from(logoObj.href).toString("base64"));
+    const selfLinkUrl = manifest.links?.find(({ rel }) => rel === "self")?.href;
+
+    // const packagesProvisionedWithTheSameIdentifier = packagesArray.filter(({ id }) => id === manifest.identifier).sort(({version: v1}, {version: v2}) => semver.gt(v1, v2) ? -1 : 1);
+    // // 
+    // const lastPackageProvisionedWithTheSameIdentifier = packagesProvisionedWithTheSameIdentifier.pop();
+    // for (const packageProvisionedWithTheSameIdentifier_ of packagesProvisionedWithTheSameIdentifier) {
+    //     packageProvisionedWithTheSameIdentifier_.older = true;
+    // }    
+    // if (!lastPackageProvisionedWithTheSameIdentifier || semver.gt(manifest.version, lastPackageProvisionedWithTheSameIdentifier.version)) {
 
         const publicationsView = [];
         const publications = manifest.publications;
@@ -236,7 +265,6 @@ export async function customizationPackageProvisioningAccumulator(packagesArray:
 
         }
 
-        const selfLinkUrl = manifest.links?.find(({rel}) => rel === "self")?.href;
 
         return {
             id: manifest.identifier,
@@ -248,18 +276,24 @@ export async function customizationPackageProvisioningAccumulator(packagesArray:
             opdsPublicationView: publicationsView,
             selfLinkUrl,
         };
-    }
+    // } else if (lastPackageProvisionedWithTheSameIdentifier) {
+    //     lastPackageProvisionedWithTheSameIdentifier.older = true;
+    // }
 
-    return {
-        id: manifest.identifier,
-        fileName: packageFileName,
-        version: manifest.version,
-        error: true,
-        message: "profile version is under or equal to the currrent provisioned profile version",
-    };
+    // return {
+    //     id: manifest.identifier,
+    //     fileName: packageFileName,
+    //     version: manifest.version,
+    //     logoUrl,
+    //     title: manifest.title,
+    //     description: manifest.description,
+    //     opdsPublicationView: [],
+    //     selfLinkUrl,
+    //     older: true,
+    // };
 }
 
-export async function customizationPackageProvisioning(packageFileName: string): Promise<ICustomizationManifest> {
+export async function customizationPackageProvisioningManifest(packageFileName: string): Promise<ICustomizationManifest> {
 
     debug("start provisioning => ", packageFileName);
 

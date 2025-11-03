@@ -26,9 +26,9 @@ import { search } from "./api/publication/search";
 import { appActivate } from "./win/library";
 import { getAndStartCustomizationWellKnownFileWatchingEventChannel } from "./getEventChannel";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
-import { customizationPackageProvisioningAccumulator, customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
+import { customizationPackageProvisioning, customizationPackageProvisioningCheckVersion, customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
 import * as path from "path";
-import { ICustomizationProfileError, ICustomizationProfileProvisioned } from "readium-desktop/common/redux/states/customization";
+import { ICustomizationProfileError, ICustomizationProfileProvisioned, ICustomizationProfileProvisionedWithError } from "readium-desktop/common/redux/states/customization";
 import { URL_HOST_CUSTOMPROFILE, URL_HOST_OPDS_AUTH, URL_PROTOCOL_APP_HANDLER_THORIUM, URL_PROTOCOL_OPDS } from "readium-desktop/common/streamerProtocol";
 import { EXT_THORIUM } from "readium-desktop/common/extension";
 import { getLibraryWindowFromDi } from "readium-desktop/main/di";
@@ -49,31 +49,48 @@ export function saga() {
                     const [packageFileName, removed] = yield* takeTyped(chan);
 
                     const customizationState = yield* selectTyped((state: ICommonRootState) => state.customization);
-                    let packagesArray = customizationState.provision;
-                    const errorPackages: ICustomizationProfileError[] = [];
+                    let packagesProvisionedAndLatest = customizationState.provision;
+                    let packagesNotProvisionedOrOnError: ICustomizationProfileProvisionedWithError[] = [];
 
                     if (removed) {
-                        const packageFound = packagesArray.find(({ fileName }) => fileName === packageFileName);
+                        const packageFound = packagesProvisionedAndLatest.find(({ fileName }) => fileName === packageFileName);
                         if (packageFound && packageFound.id === customizationState.activate.id && packageFound.fileName === packageFileName) {
                             debug("rollback to thorium vanilla profile");
                             yield* putTyped(customizationActions.activating.build("")); // no profile
                         }
-                        packagesArray = packagesArray.filter(({ fileName }) => fileName !== packageFileName);
+                        packagesProvisionedAndLatest = packagesProvisionedAndLatest.filter(({ fileName }) => fileName !== packageFileName);
                     } else {
-                        const profileProvisioned = yield* callTyped(() => customizationPackageProvisioningAccumulator(packagesArray, packageFileName));
-                        if ((profileProvisioned as ICustomizationProfileError).error) {
-                            debug("ERROR: Profile not provisioned, due to error :", (profileProvisioned as ICustomizationProfileError).message);
-                            errorPackages.push((profileProvisioned as ICustomizationProfileError));
+
+                        debug("Found => ", packageFileName);
+                        const profileProvisionedOrOnError = yield* callTyped(() => customizationPackageProvisioning(packageFileName));
+                        if ((profileProvisionedOrOnError as ICustomizationProfileError).error) {
+                            debug("ERROR: Profile not provisioned, due to error :", (profileProvisionedOrOnError as ICustomizationProfileError).message);
+                            packagesNotProvisionedOrOnError.push((profileProvisionedOrOnError as ICustomizationProfileError));
                         } else {
-                            packagesArray = [
-                                ...packagesArray.filter(({ id }) => (profileProvisioned as ICustomizationProfileProvisioned).id !== id),
-                                profileProvisioned as ICustomizationProfileProvisioned,
-                            ];
+
+                            [packagesProvisionedAndLatest, packagesNotProvisionedOrOnError] = yield* callTyped(() => customizationPackageProvisioningCheckVersion(
+                                packagesProvisionedAndLatest,
+                                packagesNotProvisionedOrOnError,
+                                profileProvisionedOrOnError as ICustomizationProfileProvisioned,
+                            ));
                         }
+                        // const profileProvisioned = yield* callTyped(() => customizationPackageProvisioning(packageFileName));
+                        // if ((profileProvisioned as ICustomizationProfileError).error) {
+                        //     debug("ERROR: Profile not provisioned, due to error :", (profileProvisioned as ICustomizationProfileError).message);
+                        //     errorPackages.push((profileProvisioned as ICustomizationProfileError));
+                        // } else {
+
+                        //     // TODO check version profile id/version tuple here
+                        //     // and remove older profile
+                        //     packagesArray = [
+                        //         ...packagesArray.filter(({ id }) => (profileProvisioned as ICustomizationProfileProvisioned).id !== id),
+                        //         profileProvisioned as ICustomizationProfileProvisioned,
+                        //     ];
+                        // }
                     }
 
-                    debug("dispatch provisionning action with ", JSON.stringify(packagesArray)/*.slice(0, 100)+"..."*/);
-                    yield* putTyped(customizationActions.provisioning.build(customizationState.provision, packagesArray, errorPackages));
+                    debug("dispatch provisionning action with ", JSON.stringify(packagesProvisionedAndLatest)/*.slice(0, 100)+"..."*/);
+                    yield* putTyped(customizationActions.provisioning.build(packagesProvisionedAndLatest, packagesNotProvisionedOrOnError));
 
                     // TODO: how to warn user of potentially a new version of the packages id, we have to put a diff between version for a same id !
                     // And mostly a technical issue, how to update the view with the update. package streamer follow a package id
