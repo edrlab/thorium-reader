@@ -76,7 +76,7 @@ export const customizationManifestJsonSchema = {
     "manifestVersion",
     "identifier",
     "version",
-    "contentHash",
+    // "contentHash",
     "title",
     "description",
     "theme",
