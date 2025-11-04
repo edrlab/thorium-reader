@@ -1,5 +1,6 @@
 .history
 dist
+customization-dist
 release
 node_modules
 .DS_Store

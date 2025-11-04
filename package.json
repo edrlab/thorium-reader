@@ -97,7 +97,7 @@
     "typescript-check": "npm run patch-types && tsc --showConfig --project ./tsconfig-cli.json && echo \"####################\" && tsc --listFilesOnly --project ./tsconfig-cli.json && echo \"####################\" && tsc --project ./tsconfig-cli.json --extendedDiagnostics --diagnostics && npm run unpatch-types",
     "typescript-check-GO": "npm run patch-types && tsgo --showConfig --project ./tsconfig-cli.json && echo \"####################\" && tsgo --project ./tsconfig-cli.json --listFiles --extendedDiagnostics --diagnostics && npm run unpatch-types",
     "typescript-check-GO:watch": "npm run patch-types && concurrently \"tsgo --project ./tsconfig-cli.json --watch --excludeDirectories **/node_modules\" \"npm run unpatch-types\"",
-    "make-customization-profile": "webpack --config webpack.config.customization.js && DEBUG=r2:*,readium-desktop:* node ./dist/make-package.js",
+    "package-customization-profile": "sh ./scripts/package-customization-profile.sh && echo \"\nnode ./customization-dist/main/customization/cli.js\" && node ./customization-dist/main/customization/cli.js",
     "action-validator": "node node_modules/@action-validator/cli/cli.mjs .github/workflows/main.yml && echo \"SUCCESS\" || echo \"FAIL\""
   },
   "repository": {
@@ -451,6 +451,7 @@
     "ts-loader": "^9.5.4",
     "ts-prune": "^0.10.3",
     "ts-unused-exports": "^11.0.1",
+    "tsc-alias": "^1.8.16",
     "tsconfig-paths": "^4.2.0",
     "typed-scss-modules": "^8.1.1",
     "typescript": "^5.9.3",
