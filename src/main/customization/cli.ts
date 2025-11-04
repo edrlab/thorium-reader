@@ -105,14 +105,14 @@ function main() {
 
     const resourcesFiltered = resourcesMap.filter(([, filePath]) => manifestResources.includes(filePath));
 
-    // console.log("ressourcesMapFromDirectory:");
-    // console.log(resourcesMap)
+    console.log("ressourcesMapFromDirectory:");
+    console.log(resourcesMap)
 
-    // console.log("manifestRessources:");
-    // console.log(manifestResources);
+    console.log("manifestRessources:");
+    console.log(manifestResources);
 
-    // console.log("resourcesFiltered:");
-    // console.log(resourcesFiltered);
+    console.log("resourcesFiltered:");
+    console.log(resourcesFiltered);
 
     createProfilePackageZip(manifest, resourcesFiltered, outputDir, signed, true).then((outPath) => {
         console.log("OUTPUT=", outPath);
