@@ -8,7 +8,7 @@
 import * as debug_ from "debug";
 import { authActions, customizationActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
-import { customizationPackageProvisioningManifest, customizationPackageProvisionningFromFolder, customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
+import { customizationPackageProvisioningManifest, customizationPackageProvisioningFromFolder, customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { error } from "readium-desktop/main/tools/error";
@@ -51,7 +51,7 @@ export function* sagaCustomizationProfileProvisioning() {
 
     debug("INIT Customization with Persisted REDUX State :=> ", JSON.stringify(customizationState, null, 4));
 
-    const [packagesProvisionedAndLatest, packagesNotProvisionedOrOnError] = yield* callTyped(() => tryCatch(() => customizationPackageProvisionningFromFolder(customizationWellKnownFolder), filename_));
+    const [packagesProvisionedAndLatest, packagesNotProvisionedOrOnError] = yield* callTyped(() => tryCatch(() => customizationPackageProvisioningFromFolder(customizationWellKnownFolder), filename_));
     yield* putTyped(customizationActions.provisioning.build(packagesProvisionedAndLatest, packagesNotProvisionedOrOnError));
 
     removePackageProfile(packagesNotProvisionedOrOnError);

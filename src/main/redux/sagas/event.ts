@@ -74,19 +74,6 @@ export function saga() {
                                 profileProvisionedOrOnError as ICustomizationProfileProvisioned,
                             ));
                         }
-                        // const profileProvisioned = yield* callTyped(() => customizationPackageProvisioning(packageFileName));
-                        // if ((profileProvisioned as ICustomizationProfileError).error) {
-                        //     debug("ERROR: Profile not provisioned, due to error :", (profileProvisioned as ICustomizationProfileError).message);
-                        //     errorPackages.push((profileProvisioned as ICustomizationProfileError));
-                        // } else {
-
-                        //     // TODO check version profile id/version tuple here
-                        //     // and remove older profile
-                        //     packagesArray = [
-                        //         ...packagesArray.filter(({ id }) => (profileProvisioned as ICustomizationProfileProvisioned).id !== id),
-                        //         profileProvisioned as ICustomizationProfileProvisioned,
-                        //     ];
-                        // }
                     }
 
                     debug("dispatch provisionning action with ", JSON.stringify(packagesProvisionedAndLatest)/*.slice(0, 100)+"..."*/);

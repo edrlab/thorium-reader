@@ -128,17 +128,13 @@ async function checkIfProfilePackageSigned(manifest: ICustomizationManifest, pac
 
 export function customizationPackageProvisioningCheckVersion(profilesProvisionedAndLatest: ICustomizationProfileProvisioned[], packagesNotProvisionedOrOnError: ICustomizationProfileProvisionedWithError[], profile: ICustomizationProfileProvisioned): [ICustomizationProfileProvisioned[], ICustomizationProfileProvisionedWithError[]] {
 
-    // 1. extraire tous les profiles avec le meme id
     const profileProvisionedWithSameId = profilesProvisionedAndLatest.filter(({id}) => id === profile.id);
     profileProvisionedWithSameId.push(profile);
 
-    // 2.  sort profile with same id by version
     profileProvisionedWithSameId.sort(({version: v1}, {version: v2}) => semver.gt(v1, v2) ? 1 : -1);
 
-    // 3. pick the latest profile
     const profileLastVersion = profileProvisionedWithSameId.pop();
 
-    // 4. new provisioned profiles
     const oldProfilesProvisioned = profilesProvisionedAndLatest.filter(({id}) => !(id === profile.id));
     oldProfilesProvisioned.push(profileLastVersion);
 
@@ -146,7 +142,7 @@ export function customizationPackageProvisioningCheckVersion(profilesProvisioned
     return [oldProfilesProvisioned, packagesNotProvisionedOrOnError]; // [packagesProvisioned, packagesNotProvisionedOrOnError]
 }
 
-export async function customizationPackageProvisionningFromFolder(wellKnownFolder: string): Promise<[ICustomizationProfileProvisioned[], ICustomizationProfileProvisionedWithError[]]>{
+export async function customizationPackageProvisioningFromFolder(wellKnownFolder: string): Promise<[ICustomizationProfileProvisioned[], ICustomizationProfileProvisionedWithError[]]>{
 
     const results = fs.readdirSync(wellKnownFolder, {withFileTypes: true});
     
@@ -176,10 +172,6 @@ export async function customizationPackageProvisionningFromFolder(wellKnownFolde
 
 export async function customizationPackageProvisioning(packageFileName: string): Promise<ICustomizationProfileProvisionedWithError> {
 
-    // const packageFileNameFound = packagesArray.find(({ fileName }) => fileName === packageFileName);
-    // if (packageFileNameFound) {
-    //     packagesArray = packagesArray.filter(({ fileName }) => fileName !== packageFileName);
-    // }
     let manifest: ICustomizationManifest;
     let error = "";
     try {
@@ -200,97 +192,73 @@ export async function customizationPackageProvisioning(packageFileName: string):
 
     const selfLinkUrl = manifest.links?.find(({ rel }) => rel === "self")?.href;
 
-    // const packagesProvisionedWithTheSameIdentifier = packagesArray.filter(({ id }) => id === manifest.identifier).sort(({version: v1}, {version: v2}) => semver.gt(v1, v2) ? -1 : 1);
-    // // 
-    // const lastPackageProvisionedWithTheSameIdentifier = packagesProvisionedWithTheSameIdentifier.pop();
-    // for (const packageProvisionedWithTheSameIdentifier_ of packagesProvisionedWithTheSameIdentifier) {
-    //     packageProvisionedWithTheSameIdentifier_.older = true;
-    // }    
-    // if (!lastPackageProvisionedWithTheSameIdentifier || semver.gt(manifest.version, lastPackageProvisionedWithTheSameIdentifier.version)) {
+    const publicationsView = [];
+    const publications = manifest.publications;
+    if (publications?.length) {
+        const opdsFeedViewConverter = diMainGet("opds-feed-view-converter");
 
-        const publicationsView = [];
-        const publications = manifest.publications;
-        if (publications?.length) {
-            const opdsFeedViewConverter = diMainGet("opds-feed-view-converter");
+        for (const opdsPubJson of publications) {
 
-            for (const opdsPubJson of publications) {
-
-                const opdsPubJsonLinks = (opdsPubJson as any).links;
-                if (typeof opdsPubJsonLinks === "object" && Array.isArray(opdsPubJsonLinks)) {
-                    for (const _link of opdsPubJsonLinks) {
+            const opdsPubJsonLinks = (opdsPubJson as any).links;
+            if (typeof opdsPubJsonLinks === "object" && Array.isArray(opdsPubJsonLinks)) {
+                for (const _link of opdsPubJsonLinks) {
+                    debug("_link.href === \"", _link.href, "\"");
+                    if (typeof _link.href === "string") {
+                        if (isURL(_link.href)) {
+                            // let's go !
+                        } else {
+                            _link.href = baseUrl + encodeURIComponent_RFC3986(Buffer.from(_link.href).toString("base64"));
+                        }
                         debug("_link.href === \"", _link.href, "\"");
-                        if (typeof _link.href === "string") {
-                            if (isURL(_link.href)) {
-                                // let's go !
-                            } else {
-                                _link.href = baseUrl + encodeURIComponent_RFC3986(Buffer.from(_link.href).toString("base64"));
-                            }
-                            debug("_link.href === \"", _link.href, "\"");
-                        }
                     }
-                }
-
-                const opdsPubJsonImages = (opdsPubJson as any).images;
-                if (typeof opdsPubJsonImages === "object" && Array.isArray(opdsPubJsonImages)) {
-                    for (const _image of opdsPubJsonImages) {
-                        debug("_image.href === \"", _image.href, "\"");
-                        if (typeof _image.href === "string") {
-                            if (isURL(_image.href)) {
-                                // let's go !
-                            } else {
-                                _image.href = baseUrl + encodeURIComponent_RFC3986(Buffer.from(_image.href).toString("base64"));
-                            }
-                            debug("_image.href === \"", _image.href, "\"");
-                        }
-                    }
-                }
-
-                debug("opdsPubJson:");
-                debug(opdsPubJson);
-
-                try {
-                    const opdsPublication = TaJsonDeserialize(
-                        opdsPubJson,
-                        OPDSPublication,
-                    );
-                    const opdsPubView = opdsFeedViewConverter.convertOpdsPublicationToView(opdsPublication, "/");
-                    if (opdsPubView) {
-                        publicationsView.push(opdsPubView);
-                    }
-                } catch (e) {
-                    debug("ERROR to load a publication from the profile", (opdsPubJson as any)?.metadata?.identifier);
-                    debug(e);
                 }
             }
 
+            const opdsPubJsonImages = (opdsPubJson as any).images;
+            if (typeof opdsPubJsonImages === "object" && Array.isArray(opdsPubJsonImages)) {
+                for (const _image of opdsPubJsonImages) {
+                    debug("_image.href === \"", _image.href, "\"");
+                    if (typeof _image.href === "string") {
+                        if (isURL(_image.href)) {
+                            // let's go !
+                        } else {
+                            _image.href = baseUrl + encodeURIComponent_RFC3986(Buffer.from(_image.href).toString("base64"));
+                        }
+                        debug("_image.href === \"", _image.href, "\"");
+                    }
+                }
+            }
+
+            debug("opdsPubJson:");
+            debug(opdsPubJson);
+
+            try {
+                const opdsPublication = TaJsonDeserialize(
+                    opdsPubJson,
+                    OPDSPublication,
+                );
+                const opdsPubView = opdsFeedViewConverter.convertOpdsPublicationToView(opdsPublication, "/");
+                if (opdsPubView) {
+                    publicationsView.push(opdsPubView);
+                }
+            } catch (e) {
+                debug("ERROR to load a publication from the profile", (opdsPubJson as any)?.metadata?.identifier);
+                debug(e);
+            }
         }
 
+    }
 
-        return {
-            id: manifest.identifier,
-            fileName: packageFileName,
-            version: manifest.version,
-            logoUrl,
-            title: manifest.title,
-            description: manifest.description,
-            opdsPublicationView: publicationsView,
-            selfLinkUrl,
-        };
-    // } else if (lastPackageProvisionedWithTheSameIdentifier) {
-    //     lastPackageProvisionedWithTheSameIdentifier.older = true;
-    // }
-
-    // return {
-    //     id: manifest.identifier,
-    //     fileName: packageFileName,
-    //     version: manifest.version,
-    //     logoUrl,
-    //     title: manifest.title,
-    //     description: manifest.description,
-    //     opdsPublicationView: [],
-    //     selfLinkUrl,
-    //     older: true,
-    // };
+    return {
+        id: manifest.identifier,
+        fileName: packageFileName,
+        version: manifest.version,
+        logoUrl,
+        title: manifest.title,
+        description: manifest.description,
+        opdsPublicationView: publicationsView,
+        selfLinkUrl,
+    };
 }
 
 export async function customizationPackageProvisioningManifest(packageFileName: string): Promise<ICustomizationManifest> {
