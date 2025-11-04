@@ -126,140 +126,142 @@ async function checkIfProfilePackageSigned(manifest: ICustomizationManifest, pac
     return true;
 }
 
-export async function customizationPackageProvisionningFromFolder(wellKnownFolder: string): Promise<[ICustomizationProfileProvisioned[], ICustomizationProfileError[]]>{
+export function customizationPackageProvisioningCheckVersion(profilesProvisionedAndLatest: ICustomizationProfileProvisioned[], packagesNotProvisionedOrOnError: ICustomizationProfileProvisionedWithError[], profile: ICustomizationProfileProvisioned): [ICustomizationProfileProvisioned[], ICustomizationProfileProvisionedWithError[]] {
 
-    let packagesArray: ICustomizationProfileProvisioned[] = [];
-    const packagesErrorArray: ICustomizationProfileError[] = [];
+    const profileProvisionedWithSameId = profilesProvisionedAndLatest.filter(({id}) => id === profile.id);
+    profileProvisionedWithSameId.push(profile);
+
+    profileProvisionedWithSameId.sort(({version: v1}, {version: v2}) => semver.gt(v1, v2) ? 1 : -1);
+
+    const profileLastVersion = profileProvisionedWithSameId.pop();
+
+    const oldProfilesProvisioned = profilesProvisionedAndLatest.filter(({id}) => !(id === profile.id));
+    oldProfilesProvisioned.push(profileLastVersion);
+
+    packagesNotProvisionedOrOnError.push(...profileProvisionedWithSameId as ICustomizationProfileProvisionedWithError[]);
+    return [oldProfilesProvisioned, packagesNotProvisionedOrOnError]; // [packagesProvisioned, packagesNotProvisionedOrOnError]
+}
+
+export async function customizationPackageProvisioningFromFolder(wellKnownFolder: string): Promise<[ICustomizationProfileProvisioned[], ICustomizationProfileProvisionedWithError[]]>{
+
     const results = fs.readdirSync(wellKnownFolder, {withFileTypes: true});
-
+    
+    let packagesNotProvisionedOrOnError: ICustomizationProfileProvisionedWithError[] = [];
+    let packagesProvisionedAndLatest: ICustomizationProfileProvisioned[] = [];
     for (const dirent of results) {
         if (dirent.isFile() && path.extname(dirent.name) === EXT_THORIUM) {
             const packageFileName = dirent.name;
             debug("Found => ", packageFileName);
-            const profileProvisioned = await customizationPackageProvisioningAccumulator(packagesArray, packageFileName);
-            if ((profileProvisioned as ICustomizationProfileError).error) {
-                debug("ERROR: Profile not provisioned, due to error :", (profileProvisioned as ICustomizationProfileError).message);
-                packagesErrorArray.push((profileProvisioned as ICustomizationProfileError));
+            const profileProvisionedOrOnError = await customizationPackageProvisioning(packageFileName);
+            if ((profileProvisionedOrOnError as ICustomizationProfileError).error) {
+                debug("ERROR: Profile not provisioned, due to error :", (profileProvisionedOrOnError as ICustomizationProfileError).message);
+                packagesNotProvisionedOrOnError.push((profileProvisionedOrOnError as ICustomizationProfileError));
             } else {
-                packagesArray = [
-                    ...packagesArray.filter(({id}) => (profileProvisioned as ICustomizationProfileProvisioned).id !== id),
-                    profileProvisioned as ICustomizationProfileProvisioned,
-                ];
+                
+                [packagesProvisionedAndLatest, packagesNotProvisionedOrOnError] = customizationPackageProvisioningCheckVersion(
+                    packagesProvisionedAndLatest,
+                    packagesNotProvisionedOrOnError,
+                    profileProvisionedOrOnError as ICustomizationProfileProvisioned,
+                );
             }
         }
     }
 
-    return [packagesArray, packagesErrorArray];
+    return [packagesProvisionedAndLatest, packagesNotProvisionedOrOnError];
 }
 
-export async function customizationPackageProvisioningAccumulator(packagesArray: ICustomizationProfileProvisioned[], packageFileName: string): Promise<ICustomizationProfileProvisionedWithError> {
+export async function customizationPackageProvisioning(packageFileName: string): Promise<ICustomizationProfileProvisionedWithError> {
 
-    const packageFileNameFound = packagesArray.find(({ fileName }) => fileName === packageFileName);
-    if (packageFileNameFound) {
-        packagesArray = packagesArray.filter(({ fileName }) => fileName !== packageFileName);
-    }
     let manifest: ICustomizationManifest;
     let error = "";
     try {
-        manifest = await customizationPackageProvisioning(packageFileName);
+        manifest = await customizationPackageProvisioningManifest(packageFileName);
     } catch (e) {
         debug("Error when provisioning this profile =>", packageFileName);
         error = `${e}`;
     }
 
     if (!manifest) {
-        return { id: undefined, fileName: packageFileName, version: undefined, error: true, message: error };
+        return { fileName: packageFileName, error: true, message: error } as ICustomizationProfileError;
     }
 
-    const packageProvisionedWithTheSameIdentifier = packagesArray.find(({ id }) => id === manifest.identifier);
-    if (!packageProvisionedWithTheSameIdentifier || semver.gt(manifest.version, packageProvisionedWithTheSameIdentifier.version)) {
+    const logoObj = manifest.images?.find((ln) => ln?.rel === "logo");
+    debug("find manifest for this profile", manifest.identifier, manifest.version, " LOGO Obj:", logoObj);
+    const baseUrl = `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_CUSTOMPROFILEZIP}/${encodeURIComponent_RFC3986(Buffer.from(manifest.identifier).toString("base64"))}/`;
+    const logoUrl = baseUrl + encodeURIComponent_RFC3986(Buffer.from(logoObj.href).toString("base64"));
 
-        const logoObj = manifest.images?.find((ln) => ln?.rel === "logo");
-        debug("find manifest for this profile", manifest.identifier, " LOGO Obj:", logoObj);
-        const baseUrl = `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_CUSTOMPROFILEZIP}/${encodeURIComponent_RFC3986(Buffer.from(manifest.identifier).toString("base64"))}/`;
-        const logoUrl = baseUrl + encodeURIComponent_RFC3986(Buffer.from(logoObj.href).toString("base64"));
+    const selfLinkUrl = manifest.links?.find(({ rel }) => rel === "self")?.href;
 
-        const publicationsView = [];
-        const publications = manifest.publications;
-        if (publications?.length) {
-            const opdsFeedViewConverter = diMainGet("opds-feed-view-converter");
+    const publicationsView = [];
+    const publications = manifest.publications;
+    if (publications?.length) {
+        const opdsFeedViewConverter = diMainGet("opds-feed-view-converter");
 
-            for (const opdsPubJson of publications) {
+        for (const opdsPubJson of publications) {
 
-                const opdsPubJsonLinks = (opdsPubJson as any).links;
-                if (typeof opdsPubJsonLinks === "object" && Array.isArray(opdsPubJsonLinks)) {
-                    for (const _link of opdsPubJsonLinks) {
+            const opdsPubJsonLinks = (opdsPubJson as any).links;
+            if (typeof opdsPubJsonLinks === "object" && Array.isArray(opdsPubJsonLinks)) {
+                for (const _link of opdsPubJsonLinks) {
+                    debug("_link.href === \"", _link.href, "\"");
+                    if (typeof _link.href === "string") {
+                        if (isURL(_link.href)) {
+                            // let's go !
+                        } else {
+                            _link.href = baseUrl + encodeURIComponent_RFC3986(Buffer.from(_link.href).toString("base64"));
+                        }
                         debug("_link.href === \"", _link.href, "\"");
-                        if (typeof _link.href === "string") {
-                            if (isURL(_link.href)) {
-                                // let's go !
-                            } else {
-                                _link.href = baseUrl + encodeURIComponent_RFC3986(Buffer.from(_link.href).toString("base64"));
-                            }
-                            debug("_link.href === \"", _link.href, "\"");
-                        }
                     }
-                }
-
-                const opdsPubJsonImages = (opdsPubJson as any).images;
-                if (typeof opdsPubJsonImages === "object" && Array.isArray(opdsPubJsonImages)) {
-                    for (const _image of opdsPubJsonImages) {
-                        debug("_image.href === \"", _image.href, "\"");
-                        if (typeof _image.href === "string") {
-                            if (isURL(_image.href)) {
-                                // let's go !
-                            } else {
-                                _image.href = baseUrl + encodeURIComponent_RFC3986(Buffer.from(_image.href).toString("base64"));
-                            }
-                            debug("_image.href === \"", _image.href, "\"");
-                        }
-                    }
-                }
-
-                debug("opdsPubJson:");
-                debug(opdsPubJson);
-
-                try {
-                    const opdsPublication = TaJsonDeserialize(
-                        opdsPubJson,
-                        OPDSPublication,
-                    );
-                    const opdsPubView = opdsFeedViewConverter.convertOpdsPublicationToView(opdsPublication, "/");
-                    if (opdsPubView) {
-                        publicationsView.push(opdsPubView);
-                    }
-                } catch (e) {
-                    debug("ERROR to load a publication from the profile", (opdsPubJson as any)?.metadata?.identifier);
-                    debug(e);
                 }
             }
 
+            const opdsPubJsonImages = (opdsPubJson as any).images;
+            if (typeof opdsPubJsonImages === "object" && Array.isArray(opdsPubJsonImages)) {
+                for (const _image of opdsPubJsonImages) {
+                    debug("_image.href === \"", _image.href, "\"");
+                    if (typeof _image.href === "string") {
+                        if (isURL(_image.href)) {
+                            // let's go !
+                        } else {
+                            _image.href = baseUrl + encodeURIComponent_RFC3986(Buffer.from(_image.href).toString("base64"));
+                        }
+                        debug("_image.href === \"", _image.href, "\"");
+                    }
+                }
+            }
+
+            debug("opdsPubJson:");
+            debug(opdsPubJson);
+
+            try {
+                const opdsPublication = TaJsonDeserialize(
+                    opdsPubJson,
+                    OPDSPublication,
+                );
+                const opdsPubView = opdsFeedViewConverter.convertOpdsPublicationToView(opdsPublication, "/");
+                if (opdsPubView) {
+                    publicationsView.push(opdsPubView);
+                }
+            } catch (e) {
+                debug("ERROR to load a publication from the profile", (opdsPubJson as any)?.metadata?.identifier);
+                debug(e);
+            }
         }
 
-        const selfLinkUrl = manifest.links?.find(({rel}) => rel === "self")?.href;
-
-        return {
-            id: manifest.identifier,
-            fileName: packageFileName,
-            version: manifest.version,
-            logoUrl,
-            title: manifest.title,
-            description: manifest.description,
-            opdsPublicationView: publicationsView,
-            selfLinkUrl,
-        };
     }
 
     return {
         id: manifest.identifier,
         fileName: packageFileName,
         version: manifest.version,
-        error: true,
-        message: "profile version is under or equal to the currrent provisioned profile version",
+        logoUrl,
+        title: manifest.title,
+        description: manifest.description,
+        opdsPublicationView: publicationsView,
+        selfLinkUrl,
     };
 }
 
-export async function customizationPackageProvisioning(packageFileName: string): Promise<ICustomizationManifest> {
+export async function customizationPackageProvisioningManifest(packageFileName: string): Promise<ICustomizationManifest> {
 
     debug("start provisioning => ", packageFileName);
 

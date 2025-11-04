@@ -18,7 +18,7 @@ function customizationPackageProvisionReducer_(
 ): ICustomizationProfileProvisioned[] {
     switch (action.type) {
         case customizationActions.provisioning.ID:
-            return [...action.payload.newPackagesProvisioned || []];
+            return [...action.payload.provsionedPackages || []];
         default:
             return state;
     }

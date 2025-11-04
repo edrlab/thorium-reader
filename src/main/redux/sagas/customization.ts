@@ -8,16 +8,15 @@
 import * as debug_ from "debug";
 import { authActions, customizationActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
-import { customizationPackageProvisioning, customizationPackageProvisionningFromFolder, customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
+import { customizationPackageProvisioningManifest, customizationPackageProvisioningFromFolder, customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { error } from "readium-desktop/main/tools/error";
 import * as fs from "fs";
 import { nanoid } from "nanoid";
-import * as semver from "semver";
 import { fork as forkTyped, call as callTyped, select as selectTyped, put as putTyped, take as takeTyped, race as raceTyped, delay, SagaGenerator, all as allTyped } from "typed-redux-saga/macro";
 import path from "node:path";
-import { ICustomizationLockInfo } from "readium-desktop/common/redux/states/customization";
+import { ICustomizationLockInfo, ICustomizationProfileError, ICustomizationProfileProvisioned, ICustomizationProfileProvisionedWithError } from "readium-desktop/common/redux/states/customization";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { getAuthenticationToken, httpGet, httpGetWithAuth } from "readium-desktop/main/network/http";
 import { getOpdsAuthenticationChannel } from "readium-desktop/main/event";
@@ -33,6 +32,18 @@ import { EXT_THORIUM } from "readium-desktop/common/extension";
 const filename_ = "readium-desktop:main:redux:sagas:customization";
 const debug = debug_(filename_);
 
+const removePackageProfile = (packages: ICustomizationProfileProvisionedWithError[]) => {
+    debug("remove old or error packages:", JSON.stringify(packages, null, 4));
+    for (const { fileName } of packages) {
+        debug("REMOVE (unlinkSync):", fileName);
+        try {
+            fs.unlinkSync(path.join(customizationWellKnownFolder, fileName));
+        } catch (e) {
+            debug("not removed !?", e);
+        }
+    }
+};
+
 
 export function* sagaCustomizationProfileProvisioning() {
 
@@ -40,23 +51,20 @@ export function* sagaCustomizationProfileProvisioning() {
 
     debug("INIT Customization with Persisted REDUX State :=> ", JSON.stringify(customizationState, null, 4));
 
-    const [packagesArray, errorPackages] = yield* callTyped(() => tryCatch(() => customizationPackageProvisionningFromFolder(customizationWellKnownFolder), filename_));
-    if (!packagesArray || !packagesArray.length) {
-        debug("no package profile found");
-    } else {
-        debug("packages profile found =", JSON.stringify(packagesArray, null, 4));
-    }
-    yield* putTyped(customizationActions.provisioning.build(customizationState.provision, packagesArray || [], errorPackages || []));
+    const [packagesProvisionedAndLatest, packagesNotProvisionedOrOnError] = yield* callTyped(() => tryCatch(() => customizationPackageProvisioningFromFolder(customizationWellKnownFolder), filename_));
+    yield* putTyped(customizationActions.provisioning.build(packagesProvisionedAndLatest, packagesNotProvisionedOrOnError));
+
+    removePackageProfile(packagesNotProvisionedOrOnError);
 
     if (customizationState.activate.id) {
 
         let error = false;
-        const packageFileName = packagesArray.find(({id}) => id === customizationState.activate.id)?.fileName;
+        const packageFileName = packagesProvisionedAndLatest.find(({id}) => id === customizationState.activate.id)?.fileName;
         if (!packageFileName) {
             debug(`CRITICAL ERROR: no pointer to identifier:"${customizationState.activate.id}" found in provisioned array`);
             error = true;
         } else {
-            const manifest = yield* callTyped(() => tryCatch(() => customizationPackageProvisioning(packageFileName), filename_));
+            const manifest = yield* callTyped(() => tryCatch(() => customizationPackageProvisioningManifest(packageFileName), filename_));
             if (!manifest) {
                 debug(`CRITICAL ERROR: package not signed or correct in ${packageFileName}`);
                 error = true;
@@ -395,61 +403,42 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
                 const provisioningAction = yield* takeTyped(customizationActions.provisioning.build);
                 debug("Provisionning action found", JSON.stringify(provisioningAction, null, 4));
 
-                const removeOldPackage = () => {
-                    const oldProvisionedPackage = provisioningAction.payload.oldPackagesProvisioned.filter(({ fileName: fileNameOldPackage }) => !provisioningAction.payload.newPackagesProvisioned.find(({fileName: fileNameNewPackage}) => fileNameNewPackage === fileNameOldPackage));
-                    debug("OldProvisionedPackage need to be removed:", JSON.stringify(oldProvisionedPackage, null, 4));
-                    for (const { fileName } of oldProvisionedPackage) {
-                        debug("REMOVE (unlinkSync):", fileName);
-                        try {
-                            fs.unlinkSync(path.join(customizationWellKnownFolder, fileName));
-                        } catch (e) {
-                            debug("not removed !?", e);
-                        }
-                    }
-                };
-
-                const fileNameProvisionedFound = provisioningAction.payload.newPackagesProvisioned.find(({ fileName: fileNameProvisioned }) => fileNameProvisioned === fileName);
+                const fileNameProvisionedFound = provisioningAction.payload.provsionedPackages.find(({ fileName: fileName_ }) => fileName_ === fileName);
                 if (fileNameProvisionedFound) {
 
                     const packageId = fileNameProvisionedFound.id;
                     lockInfo.id = packageId;
                     yield* putTyped(customizationActions.lock.build("ACTIVATING", lockInfo));
                     yield* putTyped(customizationActions.activating.build(packageId));
-                    yield* callTyped(() => removeOldPackage());
+
                     return true;
                 } else {
 
-                    const fileNameErrorFound = provisioningAction.payload.errorPackages.find(({ fileName: fileNameProvisioned }) => fileNameProvisioned === fileName);
-                    if (!fileNameErrorFound) {
+                    const profileNotProvisioned = provisioningAction.payload.errorPackages.find(({ fileName: fileName_ }) => fileName_ === fileName);
+                    if (!profileNotProvisioned) {
                         debug("Error not found!?");
                         // return false;
                         continue ;
                     }
 
-                    const newPackagesProvisioned = provisioningAction.payload.newPackagesProvisioned;
-                    const packageProvisionedWithTheSameIdSortedBySemver = newPackagesProvisioned.filter(({ id }) => id && id === fileNameErrorFound.id).sort(({version: va}, {version: vb}) => semver.gt(va, vb) ? 1 : -1);
-                    if (packageProvisionedWithTheSameIdSortedBySemver.length) {
-                        const packageId = packageProvisionedWithTheSameIdSortedBySemver[0].id;
-                        lockInfo.id = packageId;
+                    // const newPackagesProvisioned = provisioningAction.payload.newPackagesProvisioned;
+                    // const packageProvisionedWithTheSameIdSortedBySemver = newPackagesProvisioned.filter(({ id }) => id && id === fileNameErrorFound.id).sort(({version: va}, {version: vb}) => semver.gt(va, vb) ? 1 : -1);
+                    const packageProvisionedWithTheSameIdSortedBySemver = provisioningAction.payload.provsionedPackages.find(
+                        ({ id }) => id && !(profileNotProvisioned as ICustomizationProfileError).error && id === (profileNotProvisioned as ICustomizationProfileProvisioned).id);
+                    if (packageProvisionedWithTheSameIdSortedBySemver) {
+                        lockInfo.id = packageProvisionedWithTheSameIdSortedBySemver.id;
                         yield* putTyped(customizationActions.lock.build("ACTIVATING", lockInfo));
-                        yield* putTyped(customizationActions.activating.build(packageId));
-                        yield* callTyped(() => removeOldPackage());
-                        try {
-                            fs.unlinkSync(path.join(customizationWellKnownFolder, fileNameErrorFound.fileName));
-                        } catch (e) {
-                            debug("not removed !?", e);
-                        }
-                        return true;
+                        yield* putTyped(customizationActions.activating.build(packageProvisionedWithTheSameIdSortedBySemver.id));
+
+                    } else {
+
+                        const message = (profileNotProvisioned as ICustomizationProfileError).error ? (profileNotProvisioned as ICustomizationProfileError).message : "not the latest version";
+
+                        debug(`ERROR: profile (${fileName}) [${message}]`);
+                        yield* putTyped(toastActions.openRequest.build(ToastType.Error, `ERROR: profile (${fileName}) [${message}]`));
+                        yield* putTyped(customizationActions.lock.build("IDLE"));
                     }
 
-                    debug(`ERROR: profile (${fileName}) [${fileNameErrorFound.message}]`);
-                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, `ERROR: profile (${fileName}) [${fileNameErrorFound.message}]`));
-                    yield* putTyped(customizationActions.lock.build("IDLE"));
-                    try {
-                        fs.unlinkSync(path.join(customizationWellKnownFolder, fileNameErrorFound.fileName));
-                    } catch (e) {
-                        debug("not removed !?", e);
-                    }
                     return true;
                 }
             }

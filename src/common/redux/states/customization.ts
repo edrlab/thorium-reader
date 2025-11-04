@@ -22,9 +22,7 @@ export interface ICustomizationProfileProvisioned {
 }
 
 export interface ICustomizationProfileError {
-    id: string; // identifier URI from manifest
     fileName: string; // relative file from well-known folder, not an absolute file path. Allow to move well-known folder without compromise internal redux state
-    version: string; // semantic versionning from manifest
     error: boolean;
     message: string;
 }
