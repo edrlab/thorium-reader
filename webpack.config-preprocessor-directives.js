@@ -40,6 +40,7 @@ const telemetrySecret = process.env.THORIUM_TELEMETRY_SECRET || "";
 
 // const USE_HTTP_STREAMER = false;
 
+// !!! do not forget to edit scripts/package-customization-profile.sh !!!
 const data = {
     // used for dead code removal (see typings.d.ts):
     __TH__IS_DEV__: JSON.stringify(isDev),
