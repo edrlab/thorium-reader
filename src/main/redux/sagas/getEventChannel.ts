@@ -7,7 +7,7 @@
 
 import { app, powerMonitor, session } from "electron";
 import { URL_PROTOCOL_OPDS, URL_PROTOCOL_OPDS_MEDIA } from "readium-desktop/common/streamerProtocol";
-import { channel as channelSaga, eventChannel } from "redux-saga";
+import { channel as channelSaga, eventChannel, buffers } from "redux-saga";
 import { customizationStartFileWatcherFromWellKnownFolder } from "readium-desktop/main/customization/watcher";
 
 import { SESSION_PARTITION_AUTH } from "readium-desktop/common/sessions";
@@ -31,6 +31,7 @@ export function getAndStartCustomizationWellKnownFileWatchingEventChannel(wellKn
                 }
             };
         },
+        buffers.sliding(10),
     );
 
     return channel;
@@ -49,6 +50,7 @@ export function getWindowAllClosedEventChannel() {
                 app.removeListener("window-all-closed", handler);
             };
         },
+        buffers.none(),
     );
 
     return channel;
@@ -67,6 +69,7 @@ export function getQuitEventChannel() {
                 app.removeListener("quit", handler);
             };
         },
+        buffers.sliding(10),
     );
 
     return channel;
@@ -85,6 +88,7 @@ export function getBeforeQuitEventChannel() {
                 app.removeListener("before-quit", handler);
             };
         },
+        buffers.none(),
     );
 
     return channel;
@@ -119,6 +123,7 @@ export function getShutdownEventChannel() {
                 powerMonitor.removeListener("shutdown", handler);
             };
         },
+        buffers.none(),
     );
 
     return channel;
@@ -148,6 +153,7 @@ export function getOpdsRequestCustomProtocolEventChannel() {
                 authSession?.protocol.unregisterProtocol(URL_PROTOCOL_OPDS);
             };
         },
+        buffers.sliding(10),
     );
 
     return channel;
@@ -179,6 +185,7 @@ export function getOpdsRequestMediaCustomProtocolEventChannel() {
                 session.defaultSession.protocol.unregisterProtocol(URL_PROTOCOL_OPDS_MEDIA);
             };
         },
+        buffers.sliding(10),
     );
 
     return channel;

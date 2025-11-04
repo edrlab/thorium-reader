@@ -25,7 +25,7 @@ import * as customization from "./customization";
 import { takeSpawnEvery, takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { setTheme } from "readium-desktop/common/redux/actions/theme";
 import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysListen, ttsListen } from "@r2-navigator-js/electron/renderer";
-import { eventChannel } from "redux-saga";
+import { eventChannel, buffers } from "redux-saga";
 import { put as putTyped, take as takeTyped, select as selectTyped, call as callTyped, delay as delayTyped, spawn as spawnTyped } from "typed-redux-saga/macro";
 import { readerLocalActionReader } from "../actions";
 import { readerActions } from "readium-desktop/common/redux/actions";
@@ -55,6 +55,7 @@ export function getMediaOverlayStateChannel() {
                 // no destrutor
             };
         },
+        buffers.none(), // get latest
     );
 
     return channel;
@@ -75,6 +76,7 @@ export function getTTSStateChannel() {
                 // no destrutor
             };
         },
+        buffers.none(), // get latest
     );
 
     return channel;
