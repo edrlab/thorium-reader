@@ -7,7 +7,7 @@ import addFormats from "ajv-formats";
 import { customizationManifestJsonSchema, ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
 import { createProfilePackageZip } from "./packager";
 
-// do not import "./provisioning" : build chain to heavy
+// do not import "./provisioning" : build chain too heavy, lots of unused import
 // import { __CUSTOMIZATION_PROFILE_MANIFEST_AJV_ERRORS, isCustomizationProfileManifest } from "./provisioning";
 
 let __CUSTOMIZATION_PROFILE_MANIFEST_AJV_ERRORS = "";
