@@ -106,7 +106,7 @@ function main() {
     const resourcesFiltered = resourcesMap.filter(([, filePath]) => manifestResources.includes(filePath));
 
     console.log("ressourcesMapFromDirectory:");
-    console.log(resourcesMap)
+    console.log(resourcesMap);
 
     console.log("manifestRessources:");
     console.log(manifestResources);
