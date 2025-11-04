@@ -25,7 +25,7 @@ node -e 'const path = require("path"); const fs = require("fs"); const filePath 
 
 git --no-pager diff package.json ;\
 # SFW_DEBUG=true
-sfw npm install --foreground-scripts ;\
+sfw npm install --ignore-scripts --foreground-scripts ;\
 cp package-lock-sfw-backup.json package-lock.json ;\
 cp package-sfw-backup.json package.json ;\
 rm -rf node_modules/ ;\
