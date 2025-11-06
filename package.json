@@ -403,7 +403,7 @@
     "@types/yazl": "^3.3.0",
     "@typescript-eslint/eslint-plugin": "^8.46.3",
     "@typescript-eslint/parser": "^8.46.3",
-    "@typescript/native-preview": "^7.0.0-dev.20251104.1",
+    "@typescript/native-preview": "^7.0.0-dev.20251106.1",
     "babel-loader": "^10.0.0",
     "babel-plugin-macros": "^3.1.0",
     "chokidar": "^4.0.3",
