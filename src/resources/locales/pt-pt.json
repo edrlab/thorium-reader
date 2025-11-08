@@ -284,8 +284,8 @@
                 "descriptive": "Descrições do áudio"
             },
             "additional-accessibility-information-braille": {
-                "compact": "Braile",
-                "descriptive": "Braile"
+                "compact": "Braille",
+                "descriptive": "Braille"
             },
             "additional-accessibility-information-full-ruby-annotations": {
                 "compact": "Anotações completas em Ruby",
@@ -564,7 +564,7 @@
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": "Todo o conteúdo pode ser lido em voz alta ou em braile dinâmico"
+                "textual": "Todo o conteúdo pode ser lido em voz alta ou em braille dinâmico"
             },
             "accessibilityFeature": {
                 "alternativeText": "Contém texto alternativo nas imagens",
