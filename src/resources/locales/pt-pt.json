@@ -98,8 +98,8 @@
         "opds": {
             "auth": {
                 "cancel": "Cancelar",
-                "external": "",
-                "fallback": "",
+                "external": "A página de autenticação será aberta no navegador Web; siga as instruções apresentadas. Depois de se autenticar, o navegador regressará a esta aplicação.",
+                "fallback": "Nota: em caso de problemas ao autenticar com o método do navegador predefinido, tente novamente utilizando o método alternativo dentro da aplicação.",
                 "login": "Autenticar",
                 "password": "Senha",
                 "register": "Registar",
@@ -151,7 +151,7 @@
             "splashscreen": {
                 "fallbackWelcomeScreen": "Ecrã de boas-vindas não fornecido",
                 "state": "Estado: {{- state}}",
-                "title": ""
+                "title": "A provisionar e a ativar o perfil de personalização"
             }
         },
         "deleteAnnotations": "Eliminar anotações?",
@@ -160,7 +160,7 @@
         "deleteBookmarksText": "Tem a certeza que quer eliminar {{- bookmarkListLength}} marcadores?",
         "deleteFeed": "Eliminar catálogo?",
         "deletePublication": "Eliminar documento?",
-        "deletePublicationWithNotes": "",
+        "deletePublicationWithNotes": "Aviso: este documento contém anotações e/ou marcadores, que também serão eliminados. (Se pretender mantê-los, exporte as notas antes de remover a publicação)",
         "import": "Confirmar importação:",
         "importError": "Ocorreu um erro, verifique a extensão do ficheiro ({{acceptedExtension}})",
         "renew": "Renovar empréstimo?",
@@ -277,7 +277,7 @@
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
                 "compact": "Funções ARIA incluídas",
-                "descriptive": ""
+                "descriptive": "O conteúdo é otimizado com funções ARIA para melhorar a organização e facilitar a navegação"
             },
             "additional-accessibility-information-audio-descriptions": {
                 "compact": "Descrição do áudio",
@@ -332,11 +332,11 @@
         "conformance": {
             "conformance-a": {
                 "compact": "Esta publicação cumpre os padrões mínimos de acessibilidade",
-                "descriptive": ""
+                "descriptive": "A publicação inclui uma declaração de conformidade que indica cumprir as normas EPUB Accessibility e WCAG 2 Nível A"
             },
             "conformance-aa": {
                 "compact": "Esta publicação cumpre os padrões de acessibilidade aceites",
-                "descriptive": ""
+                "descriptive": "O documento inclui uma declaração de conformidade que indica cumprir as normas EPUB Accessibility e WCAG 2 Nível AA"
             },
             "conformance-aaa": {
                 "compact": "Esta publicação excede os padrões de acessibilidade aceites",
@@ -392,49 +392,49 @@
             },
             "conformance-title": "Regras de acessibilidade",
             "conformance-unknown-standard": {
-                "compact": "",
+                "compact": "Não foi possível determinar a conformidade deste documento com as normas de acessibilidade aceites",
                 "descriptive": "Não foi possível determinar a conformidade com as normas de acessibilidade desta publicação"
             }
         },
         "hazards": {
             "hazards-flashing": {
                 "compact": "Conteúdo com luzes intermitentes",
-                "descriptive": ""
+                "descriptive": "O documento contém conteúdo intermitente que pode provocar crises fotossensíveis"
             },
             "hazards-flashing-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sem conteúdo intermitente",
+                "descriptive": "O documento não contém conteúdo intermitente"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Não foi possível determinar a presença de conteúdo intermitente",
+                "descriptive": "Não foi possível determinar a presença de conteúdo intermitente"
             },
             "hazards-motion": {
                 "compact": "Simulação de movimento",
-                "descriptive": ""
+                "descriptive": "O documento contém simulações de movimento que podem causar enjoo"
             },
             "hazards-motion-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sem simulações de movimento",
+                "descriptive": "O documento não contém simulações de movimento"
             },
             "hazards-motion-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Não foi possível determinar a presença de simulações de movimento",
+                "descriptive": "Não foi possível determinar a presença de simulações de movimento"
             },
             "hazards-no-metadata": {
                 "compact": "Nenhuma informação disponível",
                 "descriptive": "Nenhuma informação disponível"
             },
             "hazards-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sem perigos",
+                "descriptive": "A publicação não contém perigos conhecidos"
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sons sensíveis",
+                "descriptive": "O documento contém sons que podem causar desconforto"
             },
             "hazards-sound-none": {
-                "compact": "",
+                "compact": "Sem sons",
                 "descriptive": ""
             },
             "hazards-sound-unknown": {
