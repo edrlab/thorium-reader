@@ -18,3 +18,5 @@ export declare const loader: string;
 export declare const noPublication: string;
 export declare const numberOfItems: string;
 export declare const opds_browserResults: string;
+export declare const opds_header: string;
+export declare const opds_header_actions: string;

@@ -321,6 +321,35 @@
     }
 }
 
+.opds_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+
+    &_actions {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        .button_secondary_blue {
+            text-decoration: none;
+            
+            svg {
+                width: 20px;
+                height: 20px;
+            }
+            
+            p {
+                margin: 0;
+                padding: 0 10px;
+                font-size: 14px;
+            }
+        }
+    }
+}
+
 .CSS_END_components_catalogs {
     display: none;
 }

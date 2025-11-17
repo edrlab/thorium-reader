@@ -5,14 +5,17 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as browseRequest from "./browseRequest";
-import * as headerLinksUpdate from "./headerLinksUpdate";
-import * as search from "./search";
-import * as headerTitleUpdate from "./headerTitleUpdate";
+import { Action } from "readium-desktop/common/models/redux";
 
-export {
-    headerLinksUpdate,
-    browseRequest,
-    search,
-    headerTitleUpdate,
-};
+export const ID = "OPDS_HEADER_TITLE_UPDATE";
+
+export function build(payload: string):
+    Action<typeof ID, string> {
+
+    return {
+        type: ID,
+        payload,
+    };
+}
+build.toString = () => ID; // Redux StringableActionCreator
+export type TAction = ReturnType<typeof build>;

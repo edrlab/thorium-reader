@@ -24,6 +24,7 @@ export interface ILibraryRootState extends IRendererCommonRootState {
             breadcrumb: IBreadCrumbItem[];
             header: IOpdsHeaderState;
             search: IOpdsSearchState;
+            title: string;
         };
     };
     router: RouterState;
