@@ -93,7 +93,7 @@ export const customizationManifestJsonSchema = {
     "version": {
       "type": "string",
       "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
-      "format": "semver"
+      "format": "semver",
     },
     "contentHash": {
       "type": "string",
@@ -133,21 +133,21 @@ export const customizationManifestJsonSchema = {
         "type": "object",
         "properties": {
           "rel": {
-            "type": "string"
+            "type": "string",
           },
           "href": {
             "type": "string",
-            "format": "uri-reference"
+            "format": "uri-reference",
           },
           "type": {
-            "type": "string"
+            "type": "string",
           },
           "title": {
             "$ref": "#/definitions/ICustomizationManifestIStringMap",
           },
           "language": {
             "type": "string",
-            "pattern": "^([A-Za-z]{2})(-[A-Za-z]{2})?$"
+            "pattern": "^([A-Za-z]{2})(-[A-Za-z]{2})?$",
           },
           "properties": {
             "type": "object",
@@ -156,23 +156,23 @@ export const customizationManifestJsonSchema = {
                 "type": "object",
                 "properties": {
                   "type": { "type": "string" },
-                  "href": { "type": "string", "format": "uri" }
+                  "href": { "type": "string", "format": "uri" },
                 },
-                "required": ["type", "href"]
+                "required": ["type", "href"],
               },
               "logo": {
                 "type": "object",
                 "properties": {
                   "type": { "type": "string" },
-                  "href": { "type": "string", "format": "uri-reference" }
+                  "href": { "type": "string", "format": "uri-reference" },
                 },
-                "required": ["type", "href"]
-              }
+                "required": ["type", "href"],
+              },
             },
-          }
+          },
         },
-        "required": ["rel", "href"]
-      }
+        "required": ["rel", "href"],
+      },
     },
     "publications": {
       "type": "array",
@@ -190,22 +190,22 @@ export const customizationManifestJsonSchema = {
           "links": {
             "type": "array",
             "items": {
-              "$ref": "#/definitions/ICustomizationManifestReducedLinks"
-            }
+              "$ref": "#/definitions/ICustomizationManifestReducedLinks",
+            },
           },
           "images": {
             "type": "array",
             "items": {
-              "$ref": "#/definitions/ICustomizationManifestReducedLinks"
-            }
-          }
-        }
+              "$ref": "#/definitions/ICustomizationManifestReducedLinks",
+            },
+          },
+        },
       },
     },
     "images": {
       "type": "array",
       "items": {
-        "$ref": "#/definitions/ICustomizationManifestReducedLinks"
+        "$ref": "#/definitions/ICustomizationManifestReducedLinks",
       },
     },
   },
@@ -216,19 +216,19 @@ export const customizationManifestJsonSchema = {
       "type": "object",
       "properties": {
         "rel": {
-          "type": "string"
+          "type": "string",
         },
         "href": {
           "type": "string",
-          "format": "uri-reference"
+          "format": "uri-reference",
         },
         "type": {
-          "type": "string"
+          "type": "string",
         },
         "language": {
           "type": "string",
-          "pattern": "^([A-Za-z]{2})(-[A-Za-z]{2})?$"
-        }
+          "pattern": "^([A-Za-z]{2})(-[A-Za-z]{2})?$",
+        },
       },
       "required": [
         "href",
@@ -239,7 +239,7 @@ export const customizationManifestJsonSchema = {
       "title": "IStringMap",
       "type": "object",
       "propertyNames": {
-        "pattern": "^([A-Za-z]{2})(-[A-Za-z]{2})?$"
+        "pattern": "^([A-Za-z]{2})(-[A-Za-z]{2})?$",
       },
       "additionalProperties": {
         "type": "string",
@@ -253,35 +253,35 @@ export const customizationManifestJsonSchema = {
       "properties": {
         "neutral": {
           "type": "string",
-          "pattern": "^#[0-9A-F]{6}$"
+          "pattern": "^#[0-9A-F]{6}$",
         },
         "primary": {
           "type": "string",
-          "pattern": "^#[0-9A-F]{6}$"
+          "pattern": "^#[0-9A-F]{6}$",
         },
         "secondary": {
           "type": "string",
-          "pattern": "^#[0-9A-F]{6}$"
+          "pattern": "^#[0-9A-F]{6}$",
         },
         "border": {
           "type": "string",
-          "pattern": "^#[0-9A-F]{6}$"
+          "pattern": "^#[0-9A-F]{6}$",
         },
         "background": {
           "type": "string",
-          "pattern": "^#[0-9A-F]{6}$"
+          "pattern": "^#[0-9A-F]{6}$",
         },
         "appName": {
           "type": "string",
-          "pattern": "^#[0-9A-F]{6}$"
+          "pattern": "^#[0-9A-F]{6}$",
         },
         "scrollbarThumb": {
           "type": "string",
-          "pattern": "^#[0-9A-F]{6}$"
+          "pattern": "^#[0-9A-F]{6}$",
         },
         "buttonsBorder": {
           "type": "string",
-          "pattern": "^#[0-9A-F]{6}$"
+          "pattern": "^#[0-9A-F]{6}$",
         },
       },
       "required": [
