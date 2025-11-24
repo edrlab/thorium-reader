@@ -1100,7 +1100,7 @@
                 },
                 "Print": {
                     "description": "Dans la fenêtre du lecteur, ouvre une boîte de dialogue d'impression",
-                    "name": "Imprimmer"
+                    "name": "Imprimer"
                 },
                 "SearchNext": {
                     "description": "Dans la fenêtre du lecteur, lorsque l'entrée de texte de recherche globale de la publication est ouverte, trouve la correspondance précédente / suivante.",
