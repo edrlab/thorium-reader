@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# https://www.npmjs.com/package/npm-scripts-lifecycle
+# https://app.unpkg.com/npm-scripts-lifecycle@1.0.0/files/package.json
+
 npm cache clear --force
 rm -rf node_modules/ && rm -f package-lock.json && npm install --ignore-scripts --foreground-scripts && npm run build:prod
 
