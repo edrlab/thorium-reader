@@ -34,17 +34,17 @@
     {
       "attr_path": "jq",
       "broken": false,
-      "derivation": "/nix/store/a50a7kjf83i6i4n2d1bhmkjf3gvx5kg6-jq-1.8.1.drv",
+      "derivation": "/nix/store/m3i1xkbzl8di0sicfpwfbvwxf8gzlvg1-jq-1.8.1.drv",
       "description": "Lightweight and flexible command-line JSON processor",
       "install_id": "jq",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=b3d51a0365f6695e7dd5cdf3e180604530ed33b4",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=5ae3b07d8d6527c42f17c876e404993199144b6a",
       "name": "jq-1.8.1",
       "pname": "jq",
-      "rev": "b3d51a0365f6695e7dd5cdf3e180604530ed33b4",
-      "rev_count": 888552,
-      "rev_date": "2025-11-02T19:18:41Z",
-      "scrape_date": "2025-11-04T00:35:33.201623Z",
+      "rev": "5ae3b07d8d6527c42f17c876e404993199144b6a",
+      "rev_count": 901419,
+      "rev_date": "2025-11-24T06:39:56Z",
+      "scrape_date": "2025-11-26T02:53:38.611278Z",
       "stabilities": [
         "unstable"
       ],
@@ -55,11 +55,11 @@
         "man"
       ],
       "outputs": {
-        "bin": "/nix/store/vh3xibzhaz3nl5m97ka2i5sxivv59sgn-jq-1.8.1-bin",
-        "dev": "/nix/store/ni42jbsfngy5l81p2lz9v5wcl4kwl9nf-jq-1.8.1-dev",
-        "doc": "/nix/store/hy9hxygqscjkz0faz5xlxwkj7sn6v74i-jq-1.8.1-doc",
-        "man": "/nix/store/k9swya8a42jsa59jd2xcw0pvacj0xxyn-jq-1.8.1-man",
-        "out": "/nix/store/qabxprfzl0lygph7yg3kq6b8si410syd-jq-1.8.1"
+        "bin": "/nix/store/4hy1mm43nvmjpnyfsa80csbsg4wd8691-jq-1.8.1-bin",
+        "dev": "/nix/store/1l5dl9d9mcpm7i0r5bhb23xczlfd2i0i-jq-1.8.1-dev",
+        "doc": "/nix/store/baidiqpr2sqdv59asy5a3gajpfn8sqig-jq-1.8.1-doc",
+        "man": "/nix/store/054063ybv64v877qmqd55pl68hri679w-jq-1.8.1-man",
+        "out": "/nix/store/an0a5rm99xsaj4pqfnlwsnc288rb4chm-jq-1.8.1"
       },
       "system": "aarch64-darwin",
       "group": "toplevel",
@@ -68,17 +68,17 @@
     {
       "attr_path": "jq",
       "broken": false,
-      "derivation": "/nix/store/f2yda9q3f7miq3md0r47d25cbbwqwacw-jq-1.8.1.drv",
+      "derivation": "/nix/store/bs98djkzf9iajsmj6xikmg9cbgh2fv7b-jq-1.8.1.drv",
       "description": "Lightweight and flexible command-line JSON processor",
       "install_id": "jq",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=b3d51a0365f6695e7dd5cdf3e180604530ed33b4",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=5ae3b07d8d6527c42f17c876e404993199144b6a",
       "name": "jq-1.8.1",
       "pname": "jq",
-      "rev": "b3d51a0365f6695e7dd5cdf3e180604530ed33b4",
-      "rev_count": 888552,
-      "rev_date": "2025-11-02T19:18:41Z",
-      "scrape_date": "2025-11-05T16:29:18.638953Z",
+      "rev": "5ae3b07d8d6527c42f17c876e404993199144b6a",
+      "rev_count": 901419,
+      "rev_date": "2025-11-24T06:39:56Z",
+      "scrape_date": "2025-11-26T03:02:59.614401Z",
       "stabilities": [
         "unstable"
       ],
@@ -89,11 +89,11 @@
         "man"
       ],
       "outputs": {
-        "bin": "/nix/store/pqr9gww8fksrllfr38k9jvl7k5q5awf7-jq-1.8.1-bin",
-        "dev": "/nix/store/qqcccyr96a1p4j7ywgzhqi06n5y47mk0-jq-1.8.1-dev",
-        "doc": "/nix/store/ankng0jgm40wkgwiz3n8rj6hanmgdsx7-jq-1.8.1-doc",
-        "man": "/nix/store/n0y7a3f5hmglwifndimclg99mpn554bl-jq-1.8.1-man",
-        "out": "/nix/store/6h1mv44dhnq2jb94373cab59yaq5y8wz-jq-1.8.1"
+        "bin": "/nix/store/3rmzb92a65vp55dmmzmh2qygq5wkdmb8-jq-1.8.1-bin",
+        "dev": "/nix/store/xqy22d0ny10bcsczlgg02ni5lgp5zjc8-jq-1.8.1-dev",
+        "doc": "/nix/store/36zp3bh3q76jq8pix9g9j54v36ddz20n-jq-1.8.1-doc",
+        "man": "/nix/store/44gwjhi00hwkpy0csxjnm1h5zcsbvymw-jq-1.8.1-man",
+        "out": "/nix/store/h7qs29xm3i5zq058g0r0a0f8qzwfwpfv-jq-1.8.1"
       },
       "system": "aarch64-linux",
       "group": "toplevel",
@@ -102,17 +102,17 @@
     {
       "attr_path": "jq",
       "broken": false,
-      "derivation": "/nix/store/i9y8592ghv69f3djcq8fki41ml5b4a6x-jq-1.8.1.drv",
+      "derivation": "/nix/store/vgfa0axv2brriy9w3xj2qy1dh4kv3b0j-jq-1.8.1.drv",
       "description": "Lightweight and flexible command-line JSON processor",
       "install_id": "jq",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=b3d51a0365f6695e7dd5cdf3e180604530ed33b4",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=5ae3b07d8d6527c42f17c876e404993199144b6a",
       "name": "jq-1.8.1",
       "pname": "jq",
-      "rev": "b3d51a0365f6695e7dd5cdf3e180604530ed33b4",
-      "rev_count": 888552,
-      "rev_date": "2025-11-02T19:18:41Z",
-      "scrape_date": "2025-11-05T16:55:13.062148Z",
+      "rev": "5ae3b07d8d6527c42f17c876e404993199144b6a",
+      "rev_count": 901419,
+      "rev_date": "2025-11-24T06:39:56Z",
+      "scrape_date": "2025-11-26T03:12:39.070672Z",
       "stabilities": [
         "unstable"
       ],
@@ -123,11 +123,11 @@
         "man"
       ],
       "outputs": {
-        "bin": "/nix/store/r52fkpag200agnznp2var2p0f0d0i4ch-jq-1.8.1-bin",
-        "dev": "/nix/store/ijwpwk35g7l8amallvhqymwnnspmxgcy-jq-1.8.1-dev",
-        "doc": "/nix/store/zci6xwc00v98flb0jqhdaac0231pmgvb-jq-1.8.1-doc",
-        "man": "/nix/store/xbvg59a0kdin1fibnqrw4l445a5dh9bc-jq-1.8.1-man",
-        "out": "/nix/store/50fm8yn7mpxfks0cvrjifi58r90q5c6h-jq-1.8.1"
+        "bin": "/nix/store/0kz2h1wisnvpmavfra6n8fi0x2brhfg6-jq-1.8.1-bin",
+        "dev": "/nix/store/w96fml250mbz0p0an0f7p6zfblrpz0pn-jq-1.8.1-dev",
+        "doc": "/nix/store/k388l1qgp6dcn80njl1by9x5i2jy8i0m-jq-1.8.1-doc",
+        "man": "/nix/store/8xvsm6pzpya6jc3vfmxagxj46iz9hix9-jq-1.8.1-man",
+        "out": "/nix/store/30wa9jl18hjfi5756chyg4kl1164d5wk-jq-1.8.1"
       },
       "system": "x86_64-darwin",
       "group": "toplevel",
@@ -136,17 +136,17 @@
     {
       "attr_path": "jq",
       "broken": false,
-      "derivation": "/nix/store/qk16np2i3ls20ih6n8lc38l6f3y6s7i3-jq-1.8.1.drv",
+      "derivation": "/nix/store/q2mcmna9z3whdiapicqgzhm9l7xcr0hi-jq-1.8.1.drv",
       "description": "Lightweight and flexible command-line JSON processor",
       "install_id": "jq",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=b3d51a0365f6695e7dd5cdf3e180604530ed33b4",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=5ae3b07d8d6527c42f17c876e404993199144b6a",
       "name": "jq-1.8.1",
       "pname": "jq",
-      "rev": "b3d51a0365f6695e7dd5cdf3e180604530ed33b4",
-      "rev_count": 888552,
-      "rev_date": "2025-11-02T19:18:41Z",
-      "scrape_date": "2025-11-05T17:21:09.216301Z",
+      "rev": "5ae3b07d8d6527c42f17c876e404993199144b6a",
+      "rev_count": 901419,
+      "rev_date": "2025-11-24T06:39:56Z",
+      "scrape_date": "2025-11-26T03:22:07.022104Z",
       "stabilities": [
         "unstable"
       ],
@@ -157,11 +157,11 @@
         "man"
       ],
       "outputs": {
-        "bin": "/nix/store/frzsv47z1mcyrp941zab08mx6kardizi-jq-1.8.1-bin",
-        "dev": "/nix/store/caq8n6m9m5zyhf0by83ksbimqmpggkwr-jq-1.8.1-dev",
-        "doc": "/nix/store/n3wl5jkmnzfg0a1vjxxx8w2n7js1b5sr-jq-1.8.1-doc",
-        "man": "/nix/store/rs84gk428azdd7ca46ki3w60yqp54ksk-jq-1.8.1-man",
-        "out": "/nix/store/zsw99s8nv2qffdg47jf8x8pyml9b0x2r-jq-1.8.1"
+        "bin": "/nix/store/qvbwz06cqra3cmlra40v0adw75j6j7wm-jq-1.8.1-bin",
+        "dev": "/nix/store/jq07r49vk5wa10a1kk2y87nwbbl62qxz-jq-1.8.1-dev",
+        "doc": "/nix/store/brd1gvvbq8bblpbizmyjhsfwr7nlmvyq-jq-1.8.1-doc",
+        "man": "/nix/store/6wpy08grkd8315ad3wsx8dd92cx5n26z-jq-1.8.1-man",
+        "out": "/nix/store/gs6yqc24w093xsnnz3kkhls8jz7pnffy-jq-1.8.1"
       },
       "system": "x86_64-linux",
       "group": "toplevel",
@@ -170,29 +170,29 @@
     {
       "attr_path": "nodejs_22",
       "broken": false,
-      "derivation": "/nix/store/b3jin05mvigi75h9kzfms88kqaxnvw2v-nodejs-22.20.0.drv",
+      "derivation": "/nix/store/qn2ya2cwp8bnlzzlndigkjrc5cb08kwy-nodejs-22.21.1.drv",
       "description": "Event-driven I/O framework for the V8 JavaScript engine",
       "install_id": "nodejs_22",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=b3d51a0365f6695e7dd5cdf3e180604530ed33b4",
-      "name": "nodejs-22.20.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=5ae3b07d8d6527c42f17c876e404993199144b6a",
+      "name": "nodejs-22.21.1",
       "pname": "nodejs_22",
-      "rev": "b3d51a0365f6695e7dd5cdf3e180604530ed33b4",
-      "rev_count": 888552,
-      "rev_date": "2025-11-02T19:18:41Z",
-      "scrape_date": "2025-11-04T00:35:40.768450Z",
+      "rev": "5ae3b07d8d6527c42f17c876e404993199144b6a",
+      "rev_count": 901419,
+      "rev_date": "2025-11-24T06:39:56Z",
+      "scrape_date": "2025-11-26T02:53:46.126132Z",
       "stabilities": [
         "unstable"
       ],
       "unfree": false,
-      "version": "22.20.0",
+      "version": "22.21.1",
       "outputs_to_install": [
         "out"
       ],
       "outputs": {
-        "dev": "/nix/store/8ckn8ghxqbnd5z4c7ijsq7yps3ad1inj-nodejs-22.20.0-dev",
-        "libv8": "/nix/store/nxjx4dsqfc55mzk7is53f7qsb1lsqq4j-nodejs-22.20.0-libv8",
-        "out": "/nix/store/4whakvkkpcgbdzxl1y32vq7rb73k4faq-nodejs-22.20.0"
+        "dev": "/nix/store/bkir3agnj2cvpx80a0z1lj50pg2dhddi-nodejs-22.21.1-dev",
+        "libv8": "/nix/store/ivbmw7d10pxzkrz5397bimhqwwlrc8gp-nodejs-22.21.1-libv8",
+        "out": "/nix/store/92igwjsd6av0pg8dvygirhdwahwq2sh7-nodejs-22.21.1"
       },
       "system": "aarch64-darwin",
       "group": "toplevel",
@@ -201,29 +201,29 @@
     {
       "attr_path": "nodejs_22",
       "broken": false,
-      "derivation": "/nix/store/jah3x7rvz45pzy1z6qxvfq37pvx0j8lc-nodejs-22.20.0.drv",
+      "derivation": "/nix/store/v21as4jlvqh2qs8glb1w5kbjrb1bgc96-nodejs-22.21.1.drv",
       "description": "Event-driven I/O framework for the V8 JavaScript engine",
       "install_id": "nodejs_22",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=b3d51a0365f6695e7dd5cdf3e180604530ed33b4",
-      "name": "nodejs-22.20.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=5ae3b07d8d6527c42f17c876e404993199144b6a",
+      "name": "nodejs-22.21.1",
       "pname": "nodejs_22",
-      "rev": "b3d51a0365f6695e7dd5cdf3e180604530ed33b4",
-      "rev_count": 888552,
-      "rev_date": "2025-11-02T19:18:41Z",
-      "scrape_date": "2025-11-05T16:29:35.667815Z",
+      "rev": "5ae3b07d8d6527c42f17c876e404993199144b6a",
+      "rev_count": 901419,
+      "rev_date": "2025-11-24T06:39:56Z",
+      "scrape_date": "2025-11-26T03:03:16.968899Z",
       "stabilities": [
         "unstable"
       ],
       "unfree": false,
-      "version": "22.20.0",
+      "version": "22.21.1",
       "outputs_to_install": [
         "out"
       ],
       "outputs": {
-        "dev": "/nix/store/0vkqirb963hm21wh13y3zd23dmlbfk61-nodejs-22.20.0-dev",
-        "libv8": "/nix/store/8dijv5z9djsjckbp86vbm0jykwscbj53-nodejs-22.20.0-libv8",
-        "out": "/nix/store/82qylyr9s3i07hwvab44cbi0w4dc74ix-nodejs-22.20.0"
+        "dev": "/nix/store/1akvaqvrp0cf6pd7mkqy7m3gnzc3wfd7-nodejs-22.21.1-dev",
+        "libv8": "/nix/store/ykj9hi9qv7gwxnbg2vh6ca00w9zsbhm0-nodejs-22.21.1-libv8",
+        "out": "/nix/store/hps7k16bd9isj7pfsjzg7q0wgvrw47kn-nodejs-22.21.1"
       },
       "system": "aarch64-linux",
       "group": "toplevel",
@@ -232,29 +232,29 @@
     {
       "attr_path": "nodejs_22",
       "broken": false,
-      "derivation": "/nix/store/2knvyn9wmwnw1k9jpmkw4ggwhw08h6j2-nodejs-22.20.0.drv",
+      "derivation": "/nix/store/kb90gm20fllkjw1h62l5gqx65rnqhn8g-nodejs-22.21.1.drv",
       "description": "Event-driven I/O framework for the V8 JavaScript engine",
       "install_id": "nodejs_22",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=b3d51a0365f6695e7dd5cdf3e180604530ed33b4",
-      "name": "nodejs-22.20.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=5ae3b07d8d6527c42f17c876e404993199144b6a",
+      "name": "nodejs-22.21.1",
       "pname": "nodejs_22",
-      "rev": "b3d51a0365f6695e7dd5cdf3e180604530ed33b4",
-      "rev_count": 888552,
-      "rev_date": "2025-11-02T19:18:41Z",
-      "scrape_date": "2025-11-05T16:55:20.462313Z",
+      "rev": "5ae3b07d8d6527c42f17c876e404993199144b6a",
+      "rev_count": 901419,
+      "rev_date": "2025-11-24T06:39:56Z",
+      "scrape_date": "2025-11-26T03:12:46.634999Z",
       "stabilities": [
         "unstable"
       ],
       "unfree": false,
-      "version": "22.20.0",
+      "version": "22.21.1",
       "outputs_to_install": [
         "out"
       ],
       "outputs": {
-        "dev": "/nix/store/8087iiqh20y83h0pjrq7dz3c3drsk737-nodejs-22.20.0-dev",
-        "libv8": "/nix/store/q3idpy9brlwa5zn45jfj48xhrhni7js6-nodejs-22.20.0-libv8",
-        "out": "/nix/store/mh8lhrbhxnpxflx984l48c9hjwbpab8v-nodejs-22.20.0"
+        "dev": "/nix/store/haa4773lz7wfhnql05181azh4z5141r7-nodejs-22.21.1-dev",
+        "libv8": "/nix/store/0pswqdxlx8y0v54gq0ixwps19agv6bds-nodejs-22.21.1-libv8",
+        "out": "/nix/store/wfjyiwara336j7r1v0ia3kib8779wzwf-nodejs-22.21.1"
       },
       "system": "x86_64-darwin",
       "group": "toplevel",
@@ -263,29 +263,29 @@
     {
       "attr_path": "nodejs_22",
       "broken": false,
-      "derivation": "/nix/store/zhrr8c2lypbcb90gs113159pbzva0sah-nodejs-22.20.0.drv",
+      "derivation": "/nix/store/k16sz3xygmjy31qpnni5qyj98fxfznap-nodejs-22.21.1.drv",
       "description": "Event-driven I/O framework for the V8 JavaScript engine",
       "install_id": "nodejs_22",
       "license": "MIT",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=b3d51a0365f6695e7dd5cdf3e180604530ed33b4",
-      "name": "nodejs-22.20.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=5ae3b07d8d6527c42f17c876e404993199144b6a",
+      "name": "nodejs-22.21.1",
       "pname": "nodejs_22",
-      "rev": "b3d51a0365f6695e7dd5cdf3e180604530ed33b4",
-      "rev_count": 888552,
-      "rev_date": "2025-11-02T19:18:41Z",
-      "scrape_date": "2025-11-05T17:21:28.467611Z",
+      "rev": "5ae3b07d8d6527c42f17c876e404993199144b6a",
+      "rev_count": 901419,
+      "rev_date": "2025-11-24T06:39:56Z",
+      "scrape_date": "2025-11-26T03:22:24.288219Z",
       "stabilities": [
         "unstable"
       ],
       "unfree": false,
-      "version": "22.20.0",
+      "version": "22.21.1",
       "outputs_to_install": [
         "out"
       ],
       "outputs": {
-        "dev": "/nix/store/x62pydw9kpd88m4986kyc02q8x3ipp3j-nodejs-22.20.0-dev",
-        "libv8": "/nix/store/hx91x0nj1h9jigh5sm08mvd4cas3aw48-nodejs-22.20.0-libv8",
-        "out": "/nix/store/nvf9kaarb9kqqdbygl9cbzhli1y8yjik-nodejs-22.20.0"
+        "dev": "/nix/store/l1idqv7ff0m2kbcqnn1yr415wyga1wxf-nodejs-22.21.1-dev",
+        "libv8": "/nix/store/farc7vk89kr367hsx0qchmahf6i6sbk1-nodejs-22.21.1-libv8",
+        "out": "/nix/store/l85fis49agvp5q1ild1rfh4rrgmn92sr-nodejs-22.21.1"
       },
       "system": "x86_64-linux",
       "group": "toplevel",
