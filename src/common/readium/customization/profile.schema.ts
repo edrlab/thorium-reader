@@ -7,7 +7,6 @@ export const customizationManifestJsonSchemaMinimal = {
     "manifestVersion",
     "version",
     "identifier",
-    "created",
     "title",
     "description",
     "theme",
@@ -99,35 +98,27 @@ export const customizationManifestJsonSchemaMinimal = {
       "properties": {
         "neutral": {
           "type": "string",
-          "pattern": "^#[0-9A-F]{6}$",
         },
         "primary": {
           "type": "string",
-          "pattern": "^#[0-9A-F]{6}$",
         },
         "secondary": {
           "type": "string",
-          "pattern": "^#[0-9A-F]{6}$",
         },
         "border": {
           "type": "string",
-          "pattern": "^#[0-9A-F]{6}$",
         },
         "background": {
           "type": "string",
-          "pattern": "^#[0-9A-F]{6}$",
         },
         "appName": {
           "type": "string",
-          "pattern": "^#[0-9A-F]{6}$",
         },
         "scrollbarThumb": {
           "type": "string",
-          "pattern": "^#[0-9A-F]{6}$",
         },
         "buttonsBorder": {
           "type": "string",
-          "pattern": "^#[0-9A-F]{6}$",
         },
       },
       "required": [

@@ -70,7 +70,7 @@ class Catalog extends React.Component<IProps, undefined> {
         const secondaryHeader = <span style={{ display: "flex", justifyContent: "end", alignItems: "end", height: "53px", borderBottom: "1px solid var(--color-gray-250)", paddingBottom: "30px" }}><PublicationAddButton /></span>;
 
         const customizationProfileProvision = this.props.customizationProvision.find(({id}) => this.props.customizationProfileId === id);
-        const profileTitle = convertMultiLangStringToString(customizationProfileProvision.title, this.props.locale) || this.props.__("catalog.customization.fallback.publications");
+        const profileTitle = convertMultiLangStringToString(customizationProfileProvision?.title, this.props.locale) || this.props.__("catalog.customization.fallback.publications");
         return (
             <LibraryLayout
                 title={__("header.homeTitle")}
