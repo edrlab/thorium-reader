@@ -18,6 +18,7 @@ import { sanitizeForFilename } from "readium-desktop/common/safe-filename";
 import { injectBufferInZip } from "../tools/zipInjector";
 import { EXT_THORIUM } from "readium-desktop/common/extension";
 import { createZip, TResourcesFSCreateZip } from "../zip/create";
+import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 
 // Logger
 const debug = debug_("readium-desktop:main#customization/packager");
@@ -57,7 +58,7 @@ export async function createProfilePackageZip(
     testSignature = false,
 ) {
     const packagePath = path.resolve(outputProfilePath,
-        sanitizeForFilename((manifest.title["en"] || "") + "_" + (manifest.version || "") + EXT_THORIUM),
+        sanitizeForFilename((convertMultiLangStringToString(manifest.title, "en") || "profile") + "_" + (manifest.version || "") + EXT_THORIUM),
     );
     // const packagePathTMP = packagePath + ".tmp";
 

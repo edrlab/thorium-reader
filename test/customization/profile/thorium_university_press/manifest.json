@@ -17,7 +17,7 @@
                 "border": "#FF7A00",
                 "background": "#121212",
                 "appName": "#E0E0E0",
-                "scrollbarThumb": "",
+                "scrollbarThumb": "#000000",
                 "buttonsBorder": "#FF8C1A"
             },
             "light": {
@@ -27,7 +27,7 @@
                 "border": "#E16100",
                 "background": "#e6e8e6",
                 "appName": "#C9C5C9",
-                "scrollbarThumb": "",
+                "scrollbarThumb": "#000000",
                 "buttonsBorder": "#E77500"
             }
         }
