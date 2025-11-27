@@ -1365,6 +1365,9 @@ const htmlLoginTemplate = (
                 left: 20px;
                 background-color: white;
                 padding: 0 5px;
+                overflow: clip;
+                max-width: 90%;
+                height: 25px;
             }
 
             .login p svg {

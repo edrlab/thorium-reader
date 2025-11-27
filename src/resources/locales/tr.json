@@ -99,11 +99,11 @@
             "auth": {
                 "cancel": "İptal",
                 "external": "giriş sayfası web tarayıcınızda açılacak, lütfen talimatları izleyin. Giriş yaptıktan sonra, web tarayıcısı sizi bu uygulamaya geri döndürecek.",
-                "fallback": "",
+                "fallback": "Not: Varsayılan web tarayıcısı yöntemiyle giriş sorunları yaşamanız durumunda, uygulama içi alternatif yöntemle tekrar deneyin.",
                 "login": "Giriş Yap",
                 "password": "Şifre",
                 "register": "Kaydol",
-                "retry": "",
+                "retry": "Yeniden dene",
                 "username": "Kullanıcı adı / E-posta adresi"
             },
             "info": {
@@ -1154,7 +1154,7 @@
         "profiles": {
             "info": "Uygulamayı bir iş ortağı tedarikçinin marka ve  renkleriyle özelleştirmek için profiller arasında geçiş yapın. Her profil, size özel bir deneyim sunar.",
             "thorium": {
-                "description": "Thorium Vanilla profili, EDRLab tarafından tasarlanan özgün profildir.",
+                "description": "Thorium Vanilla profili, EDRLab tarafından tasarlanan özgün bir profildir.",
                 "title": "Thorium vanilla"
             },
             "version": "Sürüm: {{- version}}"
@@ -1171,7 +1171,7 @@
             "appearance": "Görünüm",
             "general": "Genel",
             "keyboardShortcuts": "Klavye kısayolları",
-            "profiles": ""
+            "profiles": "Profiller"
         },
         "theme": {
             "auto": "Otomatik",

@@ -178,7 +178,7 @@
         "allBooks": "Mes livres",
         "catalogs": "Catalogues",
         "downloads": "Téléchargements",
-        "fitlerTagTitle": "Filtrer par mot-clef",
+        "fitlerTagTitle": "Filtrer par mot-clé",
         "gridTitle": "Grille",
         "home": "Menu Principal",
         "homeTitle": "Accueil",
@@ -187,7 +187,7 @@
         "myCatalogs": "Mes catalogues",
         "refreshTitle": "Mettre à jour",
         "searchPlaceholder": "Rechercher",
-        "searchTitle": "Titre, auteur, format ou mot-clef",
+        "searchTitle": "Titre, auteur, format ou mot-clé",
         "settings": "Préférences",
         "viewMode": "Mode d'affichage"
     },
@@ -1100,7 +1100,7 @@
                 },
                 "Print": {
                     "description": "Dans la fenêtre du lecteur, ouvre une boîte de dialogue d'impression",
-                    "name": "Imprimmer"
+                    "name": "Imprimer"
                 },
                 "SearchNext": {
                     "description": "Dans la fenêtre du lecteur, lorsque l'entrée de texte de recherche globale de la publication est ouverte, trouve la correspondance précédente / suivante.",
