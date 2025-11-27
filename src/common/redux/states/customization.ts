@@ -15,8 +15,8 @@ export interface ICustomizationProfileProvisioned {
     fileName: string; // relative file from well-known folder, not an absolute file path. Allow to move well-known folder without compromise internal redux state
     version: string; // semantic versionning from manifest
     logoUrl: string;
-    title: IStringMap;
-    description: IStringMap;
+    title: string | IStringMap;
+    description: string | IStringMap;
     opdsPublicationView: IOpdsPublicationView[];
     selfLinkUrl: string;
 }

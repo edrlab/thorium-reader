@@ -4,8 +4,9 @@ import * as fs from "fs";
 import * as path from "path";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
-import { customizationManifestJsonSchema, ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
+import { ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
 import { createProfilePackageZip } from "./packager";
+import { customizationManifestJsonSchemaMinimal } from "readium-desktop/common/readium/customization/profile.schema";
 
 // do not import "./provisioning" : build chain too heavy, lots of unused import
 // import { __CUSTOMIZATION_PROFILE_MANIFEST_AJV_ERRORS, isCustomizationProfileManifest } from "./provisioning";
@@ -16,7 +17,8 @@ function isCustomizationProfileManifest(data: any): data is ICustomizationManife
     const ajv = new Ajv();
     addFormats(ajv);
 
-    const valid = ajv.validate(customizationManifestJsonSchema, data);
+    // TODO: just a minimal profile manifest json schema, not the extended one with webpub-languageMap, webpub-links and opds-publication schemas
+    const valid = ajv.validate(customizationManifestJsonSchemaMinimal, data);
 
     __CUSTOMIZATION_PROFILE_MANIFEST_AJV_ERRORS = ajv.errors?.length ? JSON.stringify(ajv.errors, null, 2) : "";
 

@@ -9,7 +9,7 @@ import { createVerify } from "crypto";
 import * as debug_ from "debug";
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
-import { customizationManifestJsonSchema, ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
+import { ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { extractCrc32OnZip } from "../tools/crc";
 import * as path from "path";
@@ -27,6 +27,7 @@ import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 import isURL from "validator/lib/isURL";
 import { EXT_THORIUM } from "readium-desktop/common/extension";
+import { customizationManifestJsonSchemaMinimal } from "readium-desktop/common/readium/customization/profile.schema";
 
 // Logger
 const debug = debug_("readium-desktop:main#utils/customization/provisioning");
@@ -42,15 +43,15 @@ try {
     debug("ERROR!!: Customization well-known folder not created", e);
 }
 
-export let __CUSTOMIZATION_PROFILE_MANIFEST_AJV_ERRORS = "";
+export let __CUSTOMIZATION_PROFILE_MANIFEST_RUNTIME_VALIDATION_AJV_ERRORS = "";
 export function isCustomizationProfileManifest(data: any): data is ICustomizationManifest {
 
     const ajv = new Ajv();
     addFormats(ajv);
 
-    const valid = ajv.validate(customizationManifestJsonSchema, data);
+    const valid = ajv.validate(customizationManifestJsonSchemaMinimal, data);
 
-    __CUSTOMIZATION_PROFILE_MANIFEST_AJV_ERRORS = ajv.errors?.length ? JSON.stringify(ajv.errors, null, 2) : "";
+    __CUSTOMIZATION_PROFILE_MANIFEST_RUNTIME_VALIDATION_AJV_ERRORS = ajv.errors?.length ? JSON.stringify(ajv.errors, null, 2) : "";
 
     return valid;
 }
@@ -82,8 +83,8 @@ async function getManifestFromPackageFileName(packageFileName: string): Promise<
 
     if (!isCustomizationProfileManifest(manifest)) { // version 1
 
-        debug("Error: ", __CUSTOMIZATION_PROFILE_MANIFEST_AJV_ERRORS);
-        return Promise.reject("Manifest parsing error: " + __CUSTOMIZATION_PROFILE_MANIFEST_AJV_ERRORS);
+        debug("Error: ", __CUSTOMIZATION_PROFILE_MANIFEST_RUNTIME_VALIDATION_AJV_ERRORS);
+        return Promise.reject("Manifest parsing error: " + __CUSTOMIZATION_PROFILE_MANIFEST_RUNTIME_VALIDATION_AJV_ERRORS);
     }
 
     return manifest;

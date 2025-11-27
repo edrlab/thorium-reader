@@ -32,6 +32,8 @@ import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import DOMPurify from "dompurify";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
+import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 // import { WizardModal } from "../Wizard";
 
 export interface NavigationHeader {
@@ -166,7 +168,7 @@ const Header = () => {
     }, [customizationManifest, locale]);
     const screenZipObj = React.useMemo(() => screenZipLinks?.map(({ href, title }) => href && customizationBaseUrl ? {url: customizationBaseUrl + encodeURIComponent_RFC3986(Buffer.from(href).toString("base64")), title } : undefined), [screenZipLinks, customizationBaseUrl]);
 
-    const [screenHtmlArray, setScreenHtmlArray] = React.useState([]);
+    const [screenHtmlArray, setScreenHtmlArray] = React.useState<Array<{ html: string, title: string | IStringMap }>>([]);
     const [cancel, setCancel] = React.useState(false);
 
     React.useEffect(() => {
@@ -238,7 +240,7 @@ const Header = () => {
                 // ignore
             }
             const hostEncoded = Buffer.from(encodeURIComponent(catalogOrigin), "utf-8").toString("base64");
-            const label = (catalog?.title && typeof catalog.title === "object") ? catalog.title[locale] || catalog.title["en"] || __("header.myCatalogs") : typeof catalog.title === "string" ? catalog.title : __("header.myCatalogs");
+            const label = convertMultiLangStringToString(catalog?.title, locale) || __("header.myCatalogs");
             headerNav.push({
                 route: buildOpdsBrowserRoute(hostEncoded, label, catalog.href),
                 label,
@@ -306,7 +308,9 @@ const Header = () => {
                         )
                     }
                 {
-                    screenHtmlArray.length ? screenHtmlArray.map(({html: htmlSanitized, title}, index) => {
+                    screenHtmlArray.length ? screenHtmlArray.map(({html: htmlSanitized, title: titleStringOrObject}, index) => {
+
+                        const title = convertMultiLangStringToString(titleStringOrObject, locale);
 
                         return <>
                             <li className={classNames("R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} key={`customization-screen-${index}`} style={{ height: "inherit" }}>

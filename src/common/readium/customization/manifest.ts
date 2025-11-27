@@ -16,8 +16,8 @@ export interface ICustomizationManifest {
     identifier: string; // URI
     version: string; // semantic versionning
     contentHash: string;
-    title: IStringMap;
-    description: IStringMap;
+    title: string | IStringMap;
+    description: string | IStringMap;
     // welcomeScreen: string; // replace with a link rel = "welcome-screen"
     // default_locale: string; // BCP47 // not used anymore but still in notion example manifest
     theme: ICustomizationManifestTheme;
@@ -53,34 +53,37 @@ export interface ICustomizationManifestSignature {
 }
 
 export interface ICustomizationManifestLinkPropertiesExtension {
-    showOnHomeSection?: boolean;
+    // showOnHomeSection?: boolean;
     // showDeletion?: boolean;
     // defaultProfile?: boolean;
     authenticate?: ICustomizationLink;
-    logo?: ICustomizationLink;
+    // logo?: ICustomizationLink; // never used in thorium-desktop
 }
 
 export interface ICustomizationLink {
+
+    // https://github.com/ajv-validator/ajv-formats/blob/4ca86d21bd07571a30178cbb3714133db6eada9a/src/formats.ts#L56
+    // https://developer.mozilla.org/en-US/docs/Web/URI/Reference
     href: string; // relative file path in zip directory or http(s) link => not fully an URI
+
     rel?: string;
     type?: string;
-    title?: IStringMap;
+    title?: string | IStringMap;
     language?: string; // bcp47
 }
 
-export const customizationManifestJsonSchema = {
+export const customizationManifestJsonSchemaMinimal = {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Thorium Manifest Schema",
+  "title": "Thorium Profile Manifest Json Schema (minimal)",
   "type": "object",
   "required": [
     "manifestVersion",
-    "identifier",
     "version",
-    // "contentHash",
+    "identifier",
+    "created",
     "title",
     "description",
     "theme",
-    "images",
   ],
   "properties": {
     "manifestVersion": {
@@ -92,17 +95,32 @@ export const customizationManifestJsonSchema = {
     },
     "version": {
       "type": "string",
-      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
-      "format": "semver",
-    },
-    "contentHash": {
-      "type": "string",
     },
     "title": {
-      "$ref": "#/definitions/ICustomizationManifestIStringMap",
+      "oneOf": [
+        {
+          "type": "string",
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+          },
+        },
+      ],
     },
     "description": {
-      "$ref": "#/definitions/ICustomizationManifestIStringMap",
+      "oneOf": [
+        {
+          "type": "string",
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+          },
+        },
+      ],
     },
     "theme": {
       "type": "object",
@@ -131,121 +149,164 @@ export const customizationManifestJsonSchema = {
       "type": "array",
       "items": {
         "type": "object",
-        "properties": {
-          "rel": {
-            "type": "string",
-          },
-          "href": {
-            "type": "string",
-            "format": "uri-reference",
-          },
-          "type": {
-            "type": "string",
-          },
-          "title": {
-            "$ref": "#/definitions/ICustomizationManifestIStringMap",
-          },
-          "language": {
-            "type": "string",
-            "pattern": "^([A-Za-z]{2})(-[A-Za-z]{2})?$",
-          },
-          "properties": {
-            "type": "object",
-            "properties": {
-              "authenticate": {
-                "type": "object",
-                "properties": {
-                  "type": { "type": "string" },
-                  "href": { "type": "string", "format": "uri" },
-                },
-                "required": ["type", "href"],
-              },
-              "logo": {
-                "type": "object",
-                "properties": {
-                  "type": { "type": "string" },
-                  "href": { "type": "string", "format": "uri-reference" },
-                },
-                "required": ["type", "href"],
-              },
-            },
-          },
-        },
-        "required": ["rel", "href"],
       },
     },
     "publications": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": [
-          "metadata",
-          "links",
-          "images",
-        ],
-        "properties": {
-          "metadata": {
-            "type": "object",
-          },
-          "links": {
-            "type": "array",
-            "items": {
-              "$ref": "#/definitions/ICustomizationManifestReducedLinks",
-            },
-          },
-          "images": {
-            "type": "array",
-            "items": {
-              "$ref": "#/definitions/ICustomizationManifestReducedLinks",
-            },
-          },
-        },
       },
     },
     "images": {
       "type": "array",
       "items": {
-        "$ref": "#/definitions/ICustomizationManifestReducedLinks",
+        "type": "object",
       },
     },
   },
   "definitions": {
-    "ICustomizationManifestReducedLinks": {
+    "ICustomizationManifestThemeColor": {
       "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "Links",
+      "title": "Theme color",
       "type": "object",
       "properties": {
-        "rel": {
+        "neutral": {
           "type": "string",
+          "pattern": "^#[0-9A-F]{6}$",
         },
-        "href": {
+        "primary": {
           "type": "string",
-          "format": "uri-reference",
+          "pattern": "^#[0-9A-F]{6}$",
         },
-        "type": {
+        "secondary": {
           "type": "string",
+          "pattern": "^#[0-9A-F]{6}$",
         },
-        "language": {
+        "border": {
           "type": "string",
-          "pattern": "^([A-Za-z]{2})(-[A-Za-z]{2})?$",
+          "pattern": "^#[0-9A-F]{6}$",
+        },
+        "background": {
+          "type": "string",
+          "pattern": "^#[0-9A-F]{6}$",
+        },
+        "appName": {
+          "type": "string",
+          "pattern": "^#[0-9A-F]{6}$",
+        },
+        "scrollbarThumb": {
+          "type": "string",
+          "pattern": "^#[0-9A-F]{6}$",
+        },
+        "buttonsBorder": {
+          "type": "string",
+          "pattern": "^#[0-9A-F]{6}$",
         },
       },
       "required": [
-        "href",
+        "neutral",
+        "primary",
+        "secondary",
+        "border",
+        "background",
+        "appName",
+        "scrollbarThumb",
+        "buttonsBorder",
       ],
     },
-    "ICustomizationManifestIStringMap": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "IStringMap",
-      "type": "object",
-      "propertyNames": {
-        "pattern": "^([A-Za-z]{2})(-[A-Za-z]{2})?$",
-      },
-      "additionalProperties": {
-        "type": "string",
-      },
-      "minProperties": 1,
+  },
+};
+
+export const customizationManifestJsonSchemaExtended = {
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Thorium Profile Manifest Json Schema",
+  "type": "object",
+  "required": [
+    "manifestVersion",
+    "version",
+    "identifier",
+    "contentHash",
+    "title",
+    "description",
+    "theme",
+    "images",
+    "links",
+    "signature",
+  ],
+  "properties": {
+    "manifestVersion": {
+      "type": "integer",
     },
+    "identifier": {
+      "type": "string",
+      "format": "uri",
+    },
+    "version": {
+      "type": "string",
+    },
+    "contentHash": {
+      "type": "string",
+    },
+    "title": {
+      "$ref": "https://readium.org/webpub-manifest/schema/language-map.schema.json",
+    },
+    "description": {
+      "$ref": "https://readium.org/webpub-manifest/schema/language-map.schema.json",
+    },
+    "theme": {
+      "type": "object",
+      "properties": {
+        "color": {
+          "type": "object",
+          "properties": {
+            "dark": {
+              "$ref": "#/definitions/ICustomizationManifestThemeColor",
+            },
+            "light": {
+              "$ref": "#/definitions/ICustomizationManifestThemeColor",
+            },
+          },
+          "required": [
+            "dark",
+            "light",
+          ],
+        },
+      },
+      "required": [
+        "color",
+      ],
+    },
+    "links": {
+		  "type": "array",
+		  "items": {
+		  
+		  /*
+		  *. TODO: link.schema.json doesn't inlude a title link of type StringMap
+		  *
+		  *     "title": {
+      *      "description": "Title of the linked resource",
+      *      "type": "string"
+			*		  },
+		  *
+			* title must be of type/ref equal to language-map.schema.json
+		  */
+			  "$ref": "https://readium.org/webpub-manifest/schema/link.schema.json",
+			},
+    },
+    "publications": {
+	    "type": "array",
+	    "items": {
+				"$ref": "https://drafts.opds.io/schema/publication.schema.json",
+			},
+    },
+    "images": {
+      "type": "array",
+      "items": {
+        "$ref": "https://readium.org/webpub-manifest/schema/link.schema.json",
+      },
+    },
+  },
+  "definitions": {
     "ICustomizationManifestThemeColor": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Theme color",
