@@ -13,7 +13,6 @@ import { ICustomizationManifest } from "readium-desktop/common/readium/customiza
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { extractCrc32OnZip } from "../tools/crc";
 import * as path from "path";
-import * as semver from "semver";
 import * as fs from "fs";
 import { ICustomizationProfileProvisioned, ICustomizationProfileError, ICustomizationProfileProvisionedWithError } from "readium-desktop/common/redux/states/customization";
 import { app } from "electron";
@@ -77,7 +76,7 @@ async function getManifestFromPackageFileName(packageFileName: string): Promise<
     const manifestBuffer = await streamToBufferPromise(manifestStream.stream);
     const manifest: ICustomizationManifest = JSON.parse(manifestBuffer.toString());
 
-    if (manifest.manifestVersion !== 1) {
+    if (manifest.version !== 1) {
         return Promise.reject("Not a valid manifestVersion");
     }
 
@@ -132,7 +131,7 @@ export function customizationPackageProvisioningCheckVersion(profilesProvisioned
     const profileProvisionedWithSameId = profilesProvisionedAndLatest.filter(({id}) => id === profile.id);
     profileProvisionedWithSameId.push(profile);
 
-    profileProvisionedWithSameId.sort(({version: v1}, {version: v2}) => semver.gt(v1, v2) ? 1 : -1);
+    profileProvisionedWithSameId.sort(({version: va}, {version: vb}) => va - vb);
 
     const profileLastVersion = profileProvisionedWithSameId.pop();
 
@@ -253,7 +252,7 @@ export async function customizationPackageProvisioning(packageFileName: string):
     return {
         id: manifest.identifier,
         fileName: packageFileName,
-        version: manifest.version,
+        version: (new Date(manifest.modified || manifest.created)).getTime(),
         logoUrl,
         title: manifest.title,
         description: manifest.description,

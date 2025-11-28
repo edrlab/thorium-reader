@@ -1,7 +1,8 @@
 {
-    "manifestVersion": 1,
+    "version": 1,
     "identifier": "thorium-manifest://org.edrlab.thorium.university",
-    "version": "1.0.0",
+    "created": "2025-11-27T09:37:37Z",
+    "modified": "2025-11-28T10:37:37Z",
     "title": {
       "en": "Thorium University Press"
     },

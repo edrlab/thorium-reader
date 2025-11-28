@@ -12,12 +12,13 @@ import { JsonArray } from "readium-desktop/typings/json";
 
 export interface ICustomizationManifest {
 
-    manifestVersion: number;
+    version: number;
     identifier: string; // URI
-    version: string; // semantic versionning
     contentHash: string;
     title: string | IStringMap;
     description: string | IStringMap;
+    created: string;
+    modified?: string;
     // welcomeScreen: string; // replace with a link rel = "welcome-screen"
     // default_locale: string; // BCP47 // not used anymore but still in notion example manifest
     theme: ICustomizationManifestTheme;

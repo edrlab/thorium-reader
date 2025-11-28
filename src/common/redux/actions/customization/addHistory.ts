@@ -10,10 +10,10 @@ export const ID = "CUSTOMIZATION_ADD_HISTORY";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IPayload {
     id: string;
-    version: string;
+    version: number | undefined;
 }
 
-export function build(profileIdentifier: string, version: string) {
+export function build(profileIdentifier: string, version: number | undefined) {
 
     return {
         type: ID,

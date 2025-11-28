@@ -604,10 +604,11 @@ function* pollSelfLinkProfileUpdate(id: string) {
         debug("ProfilePolling not available, because selfLinkUrl or version! not defined: ", selfLinkUrl, version);
         return ;
     }
+    const versionISOString = (new Date(version)).toISOString();
 
     const fileName = `${nanoid(10)}_downloaded_profile.thorium`;
     const destination = path.join(customizationWellKnownFolder, fileName);
-    yield* callTyped(() => downloadProfile(destination, selfLinkUrl, version));
+    yield* callTyped(() => downloadProfile(destination, selfLinkUrl, versionISOString));
 }
 
 export function saga() {

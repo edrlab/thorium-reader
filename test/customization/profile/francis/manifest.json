@@ -1,7 +1,7 @@
 {
-    "manifestVersion": 1,
+    "version": 1,
     "identifier": "thorium-manifest://org.edrlab.thorium.francis",
-    "version": "3.1.0",
+    "created": "2025-11-28T10:37:37Z",
     "title": "francis test customization profile",
     "description": {
         "en": "thorium test profile"

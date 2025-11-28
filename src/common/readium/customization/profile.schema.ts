@@ -4,7 +4,6 @@ export const customizationManifestJsonSchemaMinimal = {
   "title": "Thorium Profile Manifest Json Schema (minimal)",
   "type": "object",
   "required": [
-    "manifestVersion",
     "version",
     "identifier",
     "title",
@@ -12,15 +11,12 @@ export const customizationManifestJsonSchemaMinimal = {
     "theme",
   ],
   "properties": {
-    "manifestVersion": {
+    "version": {
       "type": "integer",
     },
     "identifier": {
       "type": "string",
       "format": "uri",
-    },
-    "version": {
-      "type": "string",
     },
     "title": {
       "oneOf": [

@@ -58,6 +58,7 @@ import { convertMultiLangStringToString } from "readium-desktop/common/language-
 
 // import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import * as moment from "moment";
 
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
 
@@ -560,7 +561,7 @@ const Profiles = () => {
                                             <div style={{ fontSize: "12px" }}>
                                                 {/* <span>Filename: {profile.fileName}</span><br/>
                                             <span>Identifier: {profile.id}</span><br/> */}
-                                                <span>{__("settings.profiles.version", { version: profile.version })}</span>
+                                                <span>{__("settings.profiles.version", { version: moment(profile.version).toISOString() })}</span>
                                             </div>
                                         </div>
                                     </div>
