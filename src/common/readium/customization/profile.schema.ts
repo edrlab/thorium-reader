@@ -5,6 +5,7 @@ export const customizationManifestJsonSchemaMinimal = {
   "type": "object",
   "required": [
     "version",
+    "created",
     "identifier",
     "title",
     "description",
@@ -17,6 +18,12 @@ export const customizationManifestJsonSchemaMinimal = {
     "identifier": {
       "type": "string",
       "format": "uri",
+    },
+    "created": {
+      "type": "string",
+    },
+    "modified": {
+      "type": "string",
     },
     "title": {
       "oneOf": [
