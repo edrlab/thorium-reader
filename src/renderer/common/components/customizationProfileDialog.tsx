@@ -42,7 +42,7 @@ export const CustomizationProfileDialog: React.FC = () => {
     const profileInHistoryFound = customization.history.find(({id}) => id && id === customization.activate.id);
 
     const dispatchProfileInHistoryFromWizard = (checkboxDoNotViewChecked: boolean) => dispatch(customizationActions.addHistory.build(profileInHistoryFound.id, checkboxDoNotViewChecked ? undefined : profileInHistoryFound.version));
-    const getIfWizardIsViewed = React.useCallback(() => profileInHistoryFound && manifest?.modified && profileInHistoryFound.version && (new Date(manifest.modified)).getTime() && profileInHistoryFound.version === (new Date(manifest.modified)).getTime(), [profileInHistoryFound, manifest?.modified]);
+    const getIfWizardIsViewed = React.useCallback(() => profileInHistoryFound && (manifest?.modified || manifest?.created) && profileInHistoryFound.version && (new Date(manifest.modified || manifest.created)).getTime() && profileInHistoryFound.version === (new Date(manifest.modified || manifest.created)).getTime(), [profileInHistoryFound, manifest?.modified, manifest?.created]);
     const [checked, setChecked] = React.useState<boolean>(getIfWizardIsViewed());
 
     React.useEffect(() => {
