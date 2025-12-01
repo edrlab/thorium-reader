@@ -599,15 +599,16 @@ function* pollSelfLinkProfileUpdate(id: string) {
 
     const selfLinkUrl = provision.selfLinkUrl;
     const version = provision.version;
+    const versionISOString = provision.version ? (new Date(version)).toISOString() : "";
 
-    if (!selfLinkUrl || !version) {
-        debug("ProfilePolling not available, because selfLinkUrl or version! not defined: ", selfLinkUrl, version);
+    if (!selfLinkUrl || !versionISOString) {
+        debug("ProfilePolling not available, because selfLinkUrl or version! not defined: ", selfLinkUrl, versionISOString);
         return ;
     }
 
     const fileName = `${nanoid(10)}_downloaded_profile.thorium`;
     const destination = path.join(customizationWellKnownFolder, fileName);
-    yield* callTyped(() => downloadProfile(destination, selfLinkUrl, version));
+    yield* callTyped(() => downloadProfile(destination, selfLinkUrl, versionISOString));
 }
 
 export function saga() {

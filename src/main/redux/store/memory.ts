@@ -486,6 +486,11 @@ export async function initStore()
         // (preloadedState as any).annotationImportQueue = undefined;
     }
 
+    if (Array.isArray(preloadedState?.customization?.history) && preloadedState.customization.history.some(({ version }) => typeof version === "string")) {
+        debug("dev data migration from version (semanticVersionning) to date-time (epoch timestamp) created/modified");
+        preloadedState.customization.history = preloadedState.customization.history.filter(({ version }) => typeof version === "number");
+    }
+
     // initLockInfo
     if (preloadedState?.customization?.lock) {
         preloadedState.customization.lock = {

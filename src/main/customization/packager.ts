@@ -58,7 +58,7 @@ export async function createProfilePackageZip(
     testSignature = false,
 ) {
     const packagePath = path.resolve(outputProfilePath,
-        sanitizeForFilename((convertMultiLangStringToString(manifest.title, "en") || "profile") + "_" + (manifest.version || "") + EXT_THORIUM),
+        sanitizeForFilename((convertMultiLangStringToString(manifest.title, "en") || "profile") + "_" + (manifest.modified || manifest.created) + EXT_THORIUM),
     );
     // const packagePathTMP = packagePath + ".tmp";
 
