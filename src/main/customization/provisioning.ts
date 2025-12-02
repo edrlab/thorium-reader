@@ -135,11 +135,12 @@ export function customizationPackageProvisioningCheckVersion(profilesProvisioned
 
     const profileLastVersion = profileProvisionedWithSameId.pop();
 
-    const oldProfilesProvisioned = profilesProvisionedAndLatest.filter(({id}) => !(id === profile.id));
-    oldProfilesProvisioned.push(profileLastVersion);
+    const provisionedProfile = profilesProvisionedAndLatest.filter(({id}) => !(id === profile.id));
+    provisionedProfile.push(profileLastVersion);
+    provisionedProfile.sort(({ id: a }, { id: b }) => a.localeCompare(b));
 
     packagesNotProvisionedOrOnError.push(...profileProvisionedWithSameId as ICustomizationProfileProvisionedWithError[]);
-    return [oldProfilesProvisioned, packagesNotProvisionedOrOnError]; // [packagesProvisioned, packagesNotProvisionedOrOnError]
+    return [provisionedProfile, packagesNotProvisionedOrOnError]; // [packagesProvisioned, packagesNotProvisionedOrOnError]
 }
 
 export async function customizationPackageProvisioningFromFolder(wellKnownFolder: string): Promise<[ICustomizationProfileProvisioned[], ICustomizationProfileProvisionedWithError[]]>{
