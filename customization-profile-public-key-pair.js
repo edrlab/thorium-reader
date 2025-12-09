@@ -1,4 +1,3 @@
-
 // node scripts/profile-generate-key-pair.js
 const pubKey = `-----BEGIN PUBLIC KEY-----
 MIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQBfuZMzJiHFuYrPHXkrzFvE4TLJCtt
@@ -20,4 +19,4 @@ Tg==
 module.exports = {
     pubKey,
     privateKey,
-}
+};
