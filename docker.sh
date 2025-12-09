@@ -1,5 +1,11 @@
 #!/bin/sh
 
+echo "ARCHI: [$ARCHI]"
+ARCH_SYS=$(uname -m)
+echo "uname -m: [$ARCH_SYS]"
+ARCHITECTURE=${ARCHI:-$ARCH_SYS}
+echo "==> ARCHITECTURE: [$ARCHITECTURE]"
+
 #$ arch ====> arm64
 #$ uname -m ====> arm64
 #$ env /usr/bin/arch -x86_64 /bin/zsh --login
@@ -7,7 +13,7 @@
 #$ uname -m ====> x86_64
 #$ flox activate (ideally after clearing .flox caches and manifest lock)
 
-if [[ $(uname -m) == 'arm64' ]]; then
+if [[ ${ARCHITECTURE} == 'arm64' ]]; then
 rm -f ./package.json.original
 cp ./package.json ./package.json.original
 sed 's/x64/arm64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json
@@ -24,7 +30,7 @@ docker info
 #--build-arg BUST_CACHE=`date +%s`
 #--build-arg BUST_CACHE=1
 
-if [[ $(uname -m) == 'arm64' ]]; then
+if [[ ${ARCHITECTURE} == 'arm64' ]]; then
 docker build --platform linux/arm64 --progress=plain --build-arg BUST_CACHE=$(date +%Y%m%d-%H%M%S) -f ./Dockerfile -t thorium-docker-image .
 else
 docker build --platform linux/amd64 --progress=plain --build-arg BUST_CACHE=$(date +%Y%m%d-%H%M%S) -f ./Dockerfile -t thorium-docker-image .
@@ -59,7 +65,7 @@ npm run clean
 # --detach
 # --rm
 #
-if [[ $(uname -m) == 'arm64' ]]; then
+if [[ ${ARCHITECTURE} == 'arm64' ]]; then
 docker run --platform linux/arm64 --name thorium-docker-container thorium-docker-image
 else
 docker run --platform linux/amd64 --name thorium-docker-container thorium-docker-image
@@ -99,7 +105,7 @@ fi
 FILENAME1=
 FILENAME2=
 VERSION=`cat package.json | grep 'version": ' | sed 's/  "version": "//' | sed 's/",//'`
-if [[ $(uname -m) == 'arm64' ]]; then
+if [[ ${ARCHITECTURE} == 'arm64' ]]; then
 FILENAME1="Thorium-"$VERSION"-arm64.AppImage"
 FILENAME2="EDRLab.ThoriumReader_"$VERSION"_arm64.deb"
 else
@@ -125,7 +131,7 @@ docker logs thorium-docker-container
 
 #(docker rm --force thorium-docker-container || echo ok_rm2) && echo _ok_rm2
 
-if [[ $(uname -m) == 'arm64' ]]; then
+if [[ ${ARCHITECTURE} == 'arm64' ]]; then
 rm -f ./package.json
 mv ./package.json.original ./package.json
 fi
