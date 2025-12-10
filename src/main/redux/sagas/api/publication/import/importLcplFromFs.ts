@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import * as fs from "fs";
-import * as moment from "moment";
+import moment from "moment";
 import * as path from "path";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { ToastType } from "readium-desktop/common/models/toast";

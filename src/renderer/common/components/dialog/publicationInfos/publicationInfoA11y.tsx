@@ -11,7 +11,7 @@
 
 // import { shell } from "electron";
 // import classNames from "classnames";
-// import * as debug_ from "debug";
+// import debug_ from "debug";
 // import DOMPurify from "dompurify";
 // import * as React from "react";
 // import { TPublication } from "readium-desktop/common/type/publication.type";

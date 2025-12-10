@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 
 import { ICFIFragmentSelector, ICfiSelector, ICssSelector, IProgressionSelector, ISelector, ITextPositionSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import { uniqueCssSelector } from "@r2-navigator-js/electron/renderer/common/cssselector3";

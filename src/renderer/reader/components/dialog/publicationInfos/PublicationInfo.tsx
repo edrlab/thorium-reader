@@ -10,7 +10,7 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 
 import * as Dialog from "@radix-ui/react-dialog";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
-import * as debug_ from "debug";
+import debug_ from "debug";
 import * as React from "react";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";

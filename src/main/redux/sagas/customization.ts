@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { authActions, customizationActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { customizationPackageProvisioningManifest, customizationPackageProvisioningFromFolder, customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
@@ -168,7 +168,7 @@ const downloadProfile = (destination: string, url: string, version?: string) => 
 
         response.on("end", () => {
             debug_("[Download] Response ended. Ending file stream...");
-            responseEnded = true;                
+            responseEnded = true;
             if (!rejected) {
                 if (fileStreamOpen) {
                     fileStream.end();
@@ -182,7 +182,7 @@ const downloadProfile = (destination: string, url: string, version?: string) => 
 
         response.on("error", (err) => {
             debug_("[Download] Error during response:", err);
-            responseEnded = true;                
+            responseEnded = true;
             if (!rejected) {
                 if (fileStreamOpen) {
                     fileStream.end();

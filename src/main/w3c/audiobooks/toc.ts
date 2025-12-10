@@ -10,7 +10,7 @@
  *
  */
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { JSDOM } from "jsdom";
 
 import { Link } from "@r2-shared-js/models/publication-link";

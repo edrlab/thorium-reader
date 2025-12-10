@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { dialog } from "electron";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";

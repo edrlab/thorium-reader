@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { URL_PROTOCOL_OPDS_MEDIA, URL_HOST_COMMON, URL_PROTOCOL_OPDS, URL_HOST_OPDS_AUTH, URL_OPDS_AUTH_RETRY } from "readium-desktop/common/streamerProtocol";
 import { BrowserWindow, HandlerDetails, Event as ElectronEvent, WebContentsWillNavigateEventParams, shell } from "electron";
 

@@ -7,7 +7,7 @@
 
 import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import * as React from "react";
 import { connect } from "react-redux";
 import { matchPath } from "react-router-dom";

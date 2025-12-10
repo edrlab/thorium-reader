@@ -1,5 +1,5 @@
 
-// import * as debug_ from "debug";
+// import debug_ from "debug";
 import * as fs from "fs";
 import * as path from "path";
 import Ajv from "ajv";

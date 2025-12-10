@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithDestination, ActionWithReaderPublicationIdentifierDestination, ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import {

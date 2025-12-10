@@ -8,7 +8,7 @@
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { UnknownAction, Dispatch, MiddlewareAPI, Unsubscribe } from "redux";
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 
 
 // Logger

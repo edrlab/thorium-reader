@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { app, dialog } from "electron";
 import * as path from "path";
 import { lockInstance } from "readium-desktop/main/cli/lock";

@@ -6,11 +6,11 @@
 // ==LICENSE-END==
 
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { shell } from "electron";
 import * as fs from "fs";
 import { inject, injectable } from "inversify";
-import * as moment from "moment";
+import moment from "moment";
 import * as path from "path";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";

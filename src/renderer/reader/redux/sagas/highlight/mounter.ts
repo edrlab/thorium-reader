@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 
 // import { IEventPayload_R2_EVENT_HIGHLIGHT_CLICK } from "@r2-navigator-js/electron/common/events";
 import { zipWith } from "ramda";

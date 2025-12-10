@@ -58,7 +58,7 @@ import { convertMultiLangStringToString } from "readium-desktop/common/language-
 
 // import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
-import * as moment from "moment";
+import moment from "moment";
 
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
 

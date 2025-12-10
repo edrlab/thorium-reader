@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import * as publicationInfoReaderAndLib from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfoReaderAndLib";
 import * as publicationInfoSyncTag from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
@@ -158,7 +158,7 @@ export function* rootSaga() {
                 yield* callTyped(noteSaga.noteUpdateLocatorExtendedFromImportSelector, note);
             }
         }),
-        spawnLeading(resourceCacheTimer), // resourceCache memory cleaning 
+        spawnLeading(resourceCacheTimer), // resourceCache memory cleaning
         takeSpawnEvery(
             readerActions.print.ID,
             function*(action: readerActions.print.TAction) {

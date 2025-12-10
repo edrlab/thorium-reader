@@ -9,7 +9,7 @@ import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles
 import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
 
 import classNames from "classnames";
-import * as debug_ from "debug";
+import debug_ from "debug";
 import DOMPurify from "dompurify";
 import * as React from "react";
 import { I18nFunction } from "readium-desktop/common/services/translator";

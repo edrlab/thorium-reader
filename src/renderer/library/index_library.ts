@@ -20,7 +20,7 @@ import {
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { createStoreFromDi, getStore } from "./createStore";
-import * as moment from "moment";
+import moment from "moment";
 
 if (__TH__IS_DEV__) {
     // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports

@@ -12,7 +12,7 @@ import * as stylesPrint from "readium-desktop/renderer/assets/styles/components/
 // import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 
 import classNames from "classnames";
-import * as debug_ from "debug";
+import debug_ from "debug";
 import * as React from "react";
 import * as Popover from "@radix-ui/react-popover";
 import * as Dialog from "@radix-ui/react-dialog";

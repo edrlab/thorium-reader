@@ -1,5 +1,5 @@
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { getSqliteDatabaseSync } from ".";
 import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import { JsonStringifySortedKeys } from "readium-desktop/common/utils/json";

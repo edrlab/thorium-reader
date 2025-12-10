@@ -9,7 +9,7 @@ import { Readable } from "node:stream";
 import { ReadableStream } from "node:stream/web";
 
 import * as crypto from "crypto";
-import * as debug_ from "debug";
+import debug_ from "debug";
 // BeforeSendResponse, HeadersReceivedResponse, OnBeforeSendHeadersListenerDetails, OnHeadersReceivedListenerDetails
 import { app, protocol, ProtocolRequest, ProtocolResponse, session } from "electron";
 import * as fs from "fs";

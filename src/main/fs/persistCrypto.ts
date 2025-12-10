@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as crypto from "crypto";
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { v4 as uuidv4 } from "uuid";
 
 const debug = debug_("readium-desktop:persistCrypto");

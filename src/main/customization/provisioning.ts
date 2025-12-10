@@ -6,7 +6,7 @@
 // ==LICENSE-END=
 
 import { createVerify } from "crypto";
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
 import { ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
@@ -146,7 +146,7 @@ export function customizationPackageProvisioningCheckVersion(profilesProvisioned
 export async function customizationPackageProvisioningFromFolder(wellKnownFolder: string): Promise<[ICustomizationProfileProvisioned[], ICustomizationProfileProvisionedWithError[]]>{
 
     const results = fs.readdirSync(wellKnownFolder, {withFileTypes: true});
-    
+
     let packagesNotProvisionedOrOnError: ICustomizationProfileProvisionedWithError[] = [];
     let packagesProvisionedAndLatest: ICustomizationProfileProvisioned[] = [];
     for (const dirent of results) {
@@ -158,7 +158,7 @@ export async function customizationPackageProvisioningFromFolder(wellKnownFolder
                 debug("ERROR: Profile not provisioned, due to error :", (profileProvisionedOrOnError as ICustomizationProfileError).message);
                 packagesNotProvisionedOrOnError.push((profileProvisionedOrOnError as ICustomizationProfileError));
             } else {
-                
+
                 [packagesProvisionedAndLatest, packagesNotProvisionedOrOnError] = customizationPackageProvisioningCheckVersion(
                     packagesProvisionedAndLatest,
                     packagesNotProvisionedOrOnError,

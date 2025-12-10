@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as crypto from "crypto";
-import * as debug_ from "debug";
+import debug_ from "debug";
 import * as fs from "fs";
 import * as yauzl from "yauzl";
 

@@ -18,7 +18,7 @@ import { getFileSize, rmDirSync } from "readium-desktop/utils/fs";
 import { PublicationParsePromise } from "@r2-shared-js/parser/publication-parser";
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { IZip } from "@r2-utils-js/_utils/zip/zip.d";
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { sanitizeForFilename } from "readium-desktop/common/safe-filename";
 import { URL_PROTOCOL_STORE } from "readium-desktop/common/streamerProtocol";
 

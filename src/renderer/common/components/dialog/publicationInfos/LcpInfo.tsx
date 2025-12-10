@@ -10,7 +10,7 @@ import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scs
 import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
 
 import classNames from "classnames";
-import * as moment from "moment";
+import moment from "moment";
 import * as React from "react";
 import { PublicationView } from "readium-desktop/common/views/publication";
 

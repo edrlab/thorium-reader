@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { injectable } from "inversify";
-import * as lunr from "lunr";
+import lunr from "lunr";
 import { ok } from "readium-desktop/common/utils/assert";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import {

@@ -8,7 +8,7 @@
 import { clearDefaultSession, clearSession, clearWebviewSession, getWebViewSession } from "@r2-navigator-js/electron/main/sessions";
 import { SESSION_PARTITION_AUTH, SESSION_PARTITION_PDFJS, SESSION_PARTITION_PDFJSEXTRACT } from "readium-desktop/common/sessions";
 import { URL_PROTOCOL_PDFJSEXTRACT, URL_PROTOCOL_FILEX, URL_PROTOCOL_STORE, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { net, session } from "electron";
 import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
 import { pathToFileURL } from "url";

@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { clipboard, screen } from "electron";
 import * as ramda from "ramda";
 import { ReaderMode } from "readium-desktop/common/models/reader";

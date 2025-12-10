@@ -61,7 +61,7 @@ import {
 import { Column, useTable, useFilters, useSortBy, usePagination, useGlobalFilter, useAsyncDebounce } from "react-table";
 import { formatTime } from "readium-desktop/common/utils/time";
 import DOMPurify from "dompurify";
-import * as moment from "moment";
+import moment from "moment";
 import { availableLanguages, I18nFunction } from "readium-desktop/common/services/translator";
 import * as React from "react";
 import { connect } from "react-redux";

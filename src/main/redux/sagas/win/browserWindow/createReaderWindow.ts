@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
 import * as path from "path";
 import { call as callTyped, put as putTyped } from "typed-redux-saga/macro";

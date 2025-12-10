@@ -12,7 +12,7 @@ import { customizationStartFileWatcherFromWellKnownFolder } from "readium-deskto
 
 import { SESSION_PARTITION_AUTH } from "readium-desktop/common/sessions";
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 const debug = debug_("readium-desktop:main#redux/sagas/getEventChannel");
 debug("_");
 

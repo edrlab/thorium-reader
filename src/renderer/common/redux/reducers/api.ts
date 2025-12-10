@@ -7,7 +7,7 @@
 
 import { type Reducer } from "redux";
 
-import * as moment from "moment";
+import moment from "moment";
 import { apiActions } from "readium-desktop/common/redux/actions/";
 import {
     ApiDataResponse, ApiState, LAST_API_SUCCESS_ID,

@@ -16,7 +16,7 @@
 // @__ts-ignore TS1479
 import timeoutSignal from "timeout-signal";
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import * as fs from "fs";
 import * as http from "http";
 import * as https from "https";

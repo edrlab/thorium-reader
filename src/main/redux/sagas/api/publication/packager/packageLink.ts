@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as crypto from "crypto";
-import * as debug_ from "debug";
+import debug_ from "debug";
 import * as path from "path";
 import { ok } from "readium-desktop/common/utils/assert";
 import { httpGet } from "readium-desktop/main/network/http";

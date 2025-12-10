@@ -5,13 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import * as path from "path";
 import * as fs from "fs";
 
 import { isAudiobookFn, isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
 import { inject, injectable } from "inversify";
-import * as moment from "moment";
+import moment from "moment";
 import { CoverView, PublicationView } from "readium-desktop/common/views/publication";
 // import { convertContributorArrayToStringArray } from "readium-desktop/common/language-string";
 import { PublicationDocument, PublicationDocumentWithoutTimestampable } from "readium-desktop/main/db/document/publication";

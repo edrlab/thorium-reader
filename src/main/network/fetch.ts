@@ -7,7 +7,7 @@
 
 import fetchCookie from "fetch-cookie";
 import * as fs from "fs";
-import * as debug_ from "debug";
+import debug_ from "debug";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;

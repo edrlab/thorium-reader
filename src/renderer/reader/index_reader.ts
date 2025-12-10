@@ -21,7 +21,7 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { publicationHasMediaOverlays } from "@r2-navigator-js/electron/renderer";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import * as moment from "moment";
+import moment from "moment";
 
 // let devTron: any;
 let axe: any;
