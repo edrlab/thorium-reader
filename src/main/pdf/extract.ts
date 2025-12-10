@@ -51,8 +51,11 @@ export const extractPDFData =
             debug("extractPDFData preload", preloadPath); // fs.existsSync(preloadPath)
 
             win = new BrowserWindow({
+                // title: "PDF",
                 width: 800,
                 height: 600,
+                // parent: undefined,
+                // modal: false,
                 // show: false,
                 webPreferences: {
                     // enableRemoteModule: false,
@@ -69,6 +72,7 @@ export const extractPDFData =
                     partition: SESSION_PARTITION_PDFJSEXTRACT,
                 },
             });
+            win.setMenu(null);
 
             // win.hide(); // doesn't works on linux
 

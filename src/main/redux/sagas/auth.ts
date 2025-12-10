@@ -866,6 +866,7 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
                 // fetch("URL_PROTOCOL_THORIUMHTTPS"+"://"+URL_HOST_COMMON+"/" + URL_PATH_PREFIX_PDFJS + "/web/viewer.html").then((r)=>r.text()).then((t)=>console.log(t));
             },
         });
+    win.setMenu(null);
 
     win.webContents.addListener("input-event", (_ev, inputEvent) => {
         if ((inputEvent.type === "keyUp" || inputEvent.type === "keyDown") && (inputEvent as KeyboardEvent).key === "Escape") {
