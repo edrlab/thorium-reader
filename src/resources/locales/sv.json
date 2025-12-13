@@ -65,9 +65,9 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
+                "description": "Profilen saknar beskrivning",
                 "publications": "",
-                "screen": "",
+                "screen": "Ingen titel",
                 "title": ""
             }
         },
@@ -86,8 +86,8 @@
         "importAnnotation": "Importera anteckningar",
         "lang": "Språk",
         "lastRead": "Senast läst",
-        "login": "",
-        "logout": "",
+        "login": "Logga in",
+        "logout": "Logga ut",
         "moreInfo": "Information om publikationen",
         "myBooks": "Mina böcker",
         "noPublicationHelpL1": "Släpp en publikation här",
@@ -98,12 +98,12 @@
         "opds": {
             "auth": {
                 "cancel": "Avbryt",
-                "external": "",
+                "external": "Loginsidan kommer att öppnas i din webbläsare. Följ instruktionerna. Efter att du har loggat in så kommer du att komma tillbaka till det här programmet.",
                 "fallback": "",
                 "login": "Logga in",
                 "password": "Lösenord",
                 "register": "Registrera dig",
-                "retry": "",
+                "retry": "Försök igen",
                 "username": "Användarnamn/e-postadress"
             },
             "info": {
@@ -149,8 +149,8 @@
         "cancel": "Avbryt",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
-                "state": "",
+                "fallbackWelcomeScreen": "Det finns ingen välkomstskärm",
+                "state": "Status: {{- state}}",
                 "title": ""
             }
         },
@@ -223,7 +223,7 @@
         "open": {
             "error": "Publikationen kan inte öppnas: {{- err}}"
         },
-        "wipeData": ""
+        "wipeData": "Inloggningsdata rensades (åtkomstnycklar och kakor)"
     },
     "opds": {
         "addForm": {
@@ -850,7 +850,7 @@
             "reduceMotion": "Minska rörelser",
             "scrolled": "Rullningsbar",
             "spacing": "Avstånd",
-            "spreadModeEven": "",
+            "spreadModeEven": "Siduppslag \"jämna\" (standard är \"udda\")",
             "text": "Text",
             "theme": {
                 "name": {
@@ -1154,15 +1154,15 @@
         "profiles": {
             "info": "",
             "thorium": {
-                "description": "",
-                "title": ""
+                "description": "Thorium Vanilla-profilen är originalet, designad av EDRLab.",
+                "title": "Thorium vanilla"
             },
-            "version": ""
+            "version": "Version: {{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "message": "",
-            "title": ""
+            "help": "När programmet upptäcker hjälpmedelsteknik så anpassas gränssnittet för att fungera bättre med skärmläsare",
+            "message": "Förbättrat stöd för skärmläsare",
+            "title": "Förbättra skärmläsarupplevelsen"
         },
         "session": {
             "title": "Spara session"
@@ -1171,7 +1171,7 @@
             "appearance": "Utseende",
             "general": "Allmänt",
             "keyboardShortcuts": "Kortkommandon",
-            "profiles": ""
+            "profiles": "Profiler"
         },
         "theme": {
             "auto": "Automatiskt",
