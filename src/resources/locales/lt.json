@@ -324,8 +324,8 @@
                 "descriptive": "Taktiliniai 3D objektai"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "Pateikiamos balso sintezės užuominos",
-                "descriptive": "Pateikiamos balso sintezės užuominos"
+                "compact": "Pateikiamos balso sintezės gairės",
+                "descriptive": "Pateikiamos balso sintezės gairės"
             },
             "additional-accessibility-information-title": "Papildoma prieinamumo informacija"
         },
@@ -703,7 +703,7 @@
             "delete": "Šalinti",
             "edit": "Keisti",
             "goTo": "Eiti į puslapį",
-            "landmarks": "Gairės",
+            "landmarks": "Orientyrai",
             "saveMark": "Išsaugoti",
             "search": "Paieška",
             "searchResult": "Ieškoti [{{- searchText}}]",
@@ -967,7 +967,7 @@
                     "name": "Nustatyti fiksuoto išdėstymo mastelį iš naujo"
                 },
                 "FocusMain": {
-                    "description": "Perkelti klaviatūros fokusą į pagrindinę turinio gairę grafinėje sąsajoje. Skaitytuvės lange fokusas perkeliamas į leidinio turinį",
+                    "description": "Perkelti klaviatūros fokusą į pagrindinį orientyrą grafinėje sąsajoje. Skaitytuvės lange fokusas perkeliamas į leidinio turinį",
                     "name": "Fokusuoti pagrindinį turinį"
                 },
                 "FocusMainDeep": {
@@ -1007,7 +1007,7 @@
                     "name": "Paieškos komanda"
                 },
                 "FocusToolbar": {
-                    "description": "Perkelti klaviatūros fokusą į grafinės sąsajos gairių sritį prieš pat „praleidimo nuorodą“ (kuri pati perkelia fokusą į pagrindinę bibliotekos arba skaitytuvės lango turinio sritį)",
+                    "description": "Perkelti klaviatūros fokusą į grafinės sąsajos orientyro sritį prieš pat „praleidimo nuorodą“ (kuri pati perkelia fokusą į pagrindinę bibliotekos arba skaitytuvės lango turinio sritį)",
                     "name": "Fokusuoti įrankių juostą"
                 },
                 "NavigateNextChapter": {

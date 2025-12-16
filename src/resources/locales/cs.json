@@ -3,14 +3,14 @@
         "bookMenu": "Menu",
         "closeDialog": "Zavřít",
         "importFile": "Nahrát publikaci",
-        "leftSlideButton": "",
+        "leftSlideButton": "Posunout doleva",
         "mainContent": "hlavní obsah",
-        "rightSlideButton": "",
+        "rightSlideButton": "Posunout doprava",
         "skipLink": "Přeskočit na obsah",
         "toolbar": "panel nástrojů"
     },
     "apiapp": {
-        "documentation": "",
+        "documentation": "Dokumentace k aplikaci Thorium",
         "howItWorks": "Jak to funguje?",
         "informations": "Ve Francii nabízí mnoho veřejných knihoven strojově čitelný katalog (podobný OPDS, avšak ne identický), který umožňuje čtenářům stahovat digitální publikace z jejich osobní knihovny. Začlenění této technologie do Thorium Readeru umožňuje stahovat e-knihu nebo audioknihu přímo do Thorium Readeru.\nJak propojit účet francouzských veřejných knihoven s Thorium Readerem? Je to jednoduché. Zadejte název francouzského města (např. Paříž) nebo část názvu knihovny do vyhledávacího pole a stiskněte tlačítko Hledat. Zobrazí se seznam veřejných knihoven odpovídající vašemu vyhledávání. Zvolte vybranou knihovnu a stiskněte Přidat. V aktualizovaném seznamu katalogů vyberte tuto knihovnu: zobrazí se ověřovací formulář. Zadejte své uživatelské jméno, popřípadě e-mail, a stiskněte Přihlásit se. Nyní uvidíte obsah vaší osobní knihovny, ze kterého můžete stahovat vaše půjčené e-knihy a audioknihy.",
         "noLibraryFound": "Knihovna {{- name}} nenalezena"
@@ -20,11 +20,11 @@
             "copy": "Kopírovat",
             "cut": "Vyjmout",
             "paste": "Vložit",
-            "print": "",
+            "print": "Vytisknout",
             "redo": "Zpět",
             "selectAll": "Vybrat vše",
             "title": "Upravit",
-            "undo": ""
+            "undo": "Znovu"
         },
         "hide": "Skrýt {{- appName}}",
         "quit": "Odejít z {{- appName}}",
@@ -43,7 +43,7 @@
         },
         "update": {
             "message": "Nová verze je dostupná. Klikněte sem, abyste se dozvěděli více.",
-            "title": "Aktualizace softwaru {{- appName}}"
+            "title": "Aktualizace softwaru {{- appName}}."
         },
         "window": {
             "showLibrary": "Zobrazit knihovnu / knihovničku"
@@ -65,29 +65,29 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
-                "publications": "",
+                "description": "Žádný popis profilu",
+                "publications": "Publikace profilu",
                 "screen": "",
-                "title": ""
+                "title": "Název profilu"
             }
         },
         "delete": "Odstranit",
         "deleteBook": "Odstranit",
         "deleteTag": "Odstranit štítek",
         "description": "Popis",
-        "emptyTagList": "Publikace bez štítků.",
+        "emptyTagList": "Žádné publikace se štítky.",
         "entry": {
             "continueReading": "Pokračovat ve čtení",
             "lastAdditions": "Nedávno přidané"
         },
         "export": "Uložit jako",
-        "exportAnnotation": "Exportovat poznámky...",
+        "exportAnnotation": "Exportovat poznámky",
         "format": "Formát",
         "importAnnotation": "Importovat poznámky",
         "lang": "Jazyk",
         "lastRead": "Naposledy čteno",
-        "login": "",
-        "logout": "",
+        "login": "Přihlásit se",
+        "logout": "Odhlásit se",
         "moreInfo": "Podropnosti o publikaci",
         "myBooks": "Mé publikace",
         "noPublicationHelpL1": "Sem přetáhněte soubory",
@@ -98,12 +98,12 @@
         "opds": {
             "auth": {
                 "cancel": "Zrušit",
-                "external": "",
-                "fallback": "",
+                "external": "Přihlašovací stránka se otevře ve webovém prohlížeči, postupujte prosím podle pokynů. Po přihlášení vás webový prohlížeč vrátí do této aplikace.",
+                "fallback": "Poznámka: v případě problémů s přihlašováním metodou s výchozím webovým prohlížečem, zkuste to znovu alternativní metodou v aplikaci.",
                 "login": "Přihlásit se",
                 "password": "Heslo",
                 "register": "Registrovat",
-                "retry": "",
+                "retry": "Zkusit znovu",
                 "username": "Uživatelské jméno / e-mailová adresa"
             },
             "info": {
@@ -118,8 +118,8 @@
                 "availableUntil": "Do",
                 "copyAvalaible": "Dostupné",
                 "copyTotal": "Kopie",
-                "holdPosition": "",
-                "holdTotal": "",
+                "holdPosition": "Držet pozici",
+                "holdTotal": "Drženo",
                 "numberOfItems": "Počet položek",
                 "priveValue": "Cena",
                 "state": "Stav"
@@ -136,31 +136,31 @@
     "dialog": {
         "annotations": {
             "descAuthor": "autor: {{- author}}",
-            "descCreator": "vytvořil",
+            "descCreator": "vytvořil(a)",
             "descList": "{{- nb}} poznámek od {{- creator}} bude importováno do „{{- title}}“, {{- author}}",
-            "descNewer": "",
-            "descOlder": "",
+            "descNewer": "Konflikt(y): {{- nb}} novější poznámka (novější poznámky)",
+            "descOlder": "Konflikt(y): {{- nb}} starší poznámka (starší poznámky)",
             "descTitle": "Anotace titulu: ",
             "importAll": "Importovat všechny poznámky",
-            "importWithoutConflict": "",
-            "origin": "",
+            "importWithoutConflict": "Importovat pouze poznámky bez konfliktů",
+            "origin": "Původní publikace: „{{- title}}“ {{- author}}",
             "title": "Importovat poznámky?"
         },
         "cancel": "Zrušit",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
-                "state": "",
+                "fallbackWelcomeScreen": "Uvítací obrazovka nebyla poskytnuta",
+                "state": "Stav: {{- state}}",
                 "title": ""
             }
         },
         "deleteAnnotations": "Odstranit anotace?",
         "deleteAnnotationsText": "Opravdu chcete odstranit {{- annotationListLength}} poznámek?",
-        "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteBookmarks": "Odstranit záložky?",
+        "deleteBookmarksText": "Jste si jisti, že chcete odstranit {{- bookmarkListLength}} záložek?",
         "deleteFeed": "Odstranit katalog?",
         "deletePublication": "Odstranit publikaci?",
-        "deletePublicationWithNotes": "",
+        "deletePublicationWithNotes": "Upozornění: tato publikace obsahuje anotace a/nebo záložky, které budou taktéž smazány! (pokud si je chcete ponechat, před odstraněním publikace poznámky exportujte)",
         "import": "Potvrdit import:",
         "importError": "Vyskytla se chyba, ověřte příponu souboru {{acceptedExtension}}",
         "renew": "Prodloužit výpůjčku?",
@@ -171,7 +171,7 @@
         "errorBox": {
             "error": "Chyba:",
             "message": "Chyba v souboru {{- filename}}",
-            "title": ""
+            "title": "Interní chyba {{- appName}}"
         }
     },
     "header": {
@@ -195,9 +195,9 @@
         "lcp": {
             "hint": "Nápověda:",
             "open": "Otevřít",
-            "password": "",
-            "sentence": "",
-            "urlHint": "",
+            "password": "Heslová fráze",
+            "sentence": "K otevření této publikace je třeba zadat heslovou frázi protokolu LCP",
+            "urlHint": "Zapomněli jste svou heslovou frázi? Po získání podpory klikněte zde.",
             "whatIsLcp?": "Co je LCP?",
             "whatIsLcpInfoDetails": "LCP znamená „Licensed Content Protection“.",
             "whatIsLcpInfoDetailsLink": "Pro více informací klikněte na tento odkaz na webovou stránku EDRLabu."
@@ -207,23 +207,23 @@
         "annotations": {
             "alreadyImported": "Všechny poznámky byly již importovány.",
             "emptyFile": "V souboru nejsou dostupné žádné poznámky.",
-            "errorParsing": "",
+            "errorParsing": "Chyba při analýze souboru: ",
             "noBelongTo": "Poznámky nebylo možné importovat – alespoň jedna poznámka nepatří k této publikaci.",
-            "nothing": "",
+            "nothing": "Žádná poznámka k importu, přerušuji import",
             "success": "Import úspěšně dokončen."
         },
         "download": {
-            "error": "Stahování publikace {{- title}} selhalo: {{- err}}"
+            "error": "Stahování publikace „{{- title}}“ selhalo: [{{- err}}]"
         },
         "import": {
-            "alreadyImport": "Publikace {{- title}} je již nahrána.",
-            "fail": "Import {{- path}} selhal: {{- err}}",
-            "success": "Import publikace {{- title}} dokončen."
+            "alreadyImport": "Publikace „{{- title}}“ je již nahráná.",
+            "fail": "Import [{{- path}}] selhal: [{{- err}}]",
+            "success": "Import publikace „{{- title}}“ dokončen."
         },
         "open": {
-            "error": "Načítání publikace sehlalo: {{- err}}"
+            "error": "Načítání publikace sehlalo: [{{- err}}]"
         },
-        "wipeData": ""
+        "wipeData": "Přihlašovací údaje byly vymazány (přístupové tokeny a cookies)"
     },
     "opds": {
         "addForm": {
@@ -236,12 +236,12 @@
         "addFormApiapp": {
             "title": "Přidat účet knihovny"
         },
-        "addMenu": "",
+        "addMenu": "Přidat OPDS feed",
         "breadcrumbRoot": "Katalogy",
-        "documentation": "",
+        "documentation": "oficiální webová stránka OPDS",
         "empty": "Nebyla nalezena žádná publikace",
         "firstPage": "První",
-        "informations": "",
+        "informations": "Představte si svět, kde můžete prozkoumávat a stahnovat digitální publikace z veřejných knihoven a digitálních knihkupců pomocí pár kliknutí. To je přesně to, co nabízí katalogový formát Open Publication Distribution System (OPDS). S OPDS můžete procházet katalogy od různých poskytovatelů e-knih, zaregistrovat se, půjčit si nebo si koupit publikaci nebo navštívit vaši osobní knihovnu. Dokonce si můžete stáhnout e-knihu nebo audioknihu přímo do Thorium Readeru pro okamžité čtení.\nJak najít katalog OPDS? Je to jednoduché. Hledejte hypertextový odkaz (URL) vedoucí do katalogu. Zkopírujte tuto URL do textového pole výše. Mějte na paměti, že neexistuje jedno kontaktní místo pro všechny aktivní katalogy OPDS. Budete muset kontaktovat svou preferovanou knihovnu nebo knihkupce a požádat o OPDS URL jejich katalogu. Pokud si nejste jisti, kde začít, Wikipedie má několik registrů katalogů OPDS v různých jazycích, které by mohly být užitečné.\nPole „Název“ je ponecháno pro vaše pohodlí; poskytuje snadný způsob, jak identifikovat feed v aplikaci Thorium Reader.",
         "lastPage": "Poslední",
         "menu": {
             "aboutBook": "O publikaci",
@@ -252,19 +252,19 @@
             "goSubBook": "Odebírat"
         },
         "network": {
-            "error": "",
+            "error": "Chyba při přístupu k feedu",
             "noInternet": "Bez připojení k internetu",
             "noInternetMessage": "Zkuste zkontrolovat síťový kabel, modem, router nebo wi-fi",
-            "reject": "",
-            "timeout": ""
+            "reject": "Neočekávaná chyba!",
+            "timeout": "Vypršel časový limit sítě, zkuste to prosím znovu později"
         },
         "next": "Další",
         "previous": "Předchozí",
-        "resumeBrowsing": "",
+        "resumeBrowsing": "Pokračovat v prohlížení",
         "shelf": "Polička",
         "updateForm": {
             "name": "Název:",
-            "title": "",
+            "title": "Upravit OPDS feed",
             "updateButton": "Upravit",
             "url": "Odkaz:"
         },
@@ -272,78 +272,78 @@
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": ""
+            "accessibility-summary-title": "Shrnutí přístupnosti"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Role ARIA zahrnuty",
+                "descriptive": "Obsah je vylepšení rolemi ARIA pro optimalizaci organizace a usnadnění navigace"
             },
             "additional-accessibility-information-audio-descriptions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Popis audia",
+                "descriptive": "Popis audia"
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Braillovo písmo",
+                "descriptive": "Braillovo písmo"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Úplná anotace znaky rubi",
+                "descriptive": "Úplná anotace znaky rubi"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Vysoký kontrast mezi zvukem v popředí a v pozadí",
+                "descriptive": "Vysoký kontrast mezi zvukem v popředí a v pozadí"
             },
             "additional-accessibility-information-high-contrast-between-text-and-background": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Vysoký kontrast mezi textem v popředí a pozadím",
+                "descriptive": "Vysoký kontrast mezi textem v popředí a pozadím"
             },
             "additional-accessibility-information-large-print": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Velký tisk",
+                "descriptive": "Velký tisk"
             },
             "additional-accessibility-information-page-breaks": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Konce stránky zahrnuty",
+                "descriptive": "Konce stránky zahrnuty z původního zdroje tisku"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Nějaké anotace znaky rubi",
+                "descriptive": "Nějaké anotace znaky rubi"
             },
             "additional-accessibility-information-sign-language": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Znaková řeč",
+                "descriptive": "Znaková řeč"
             },
             "additional-accessibility-information-tactile-graphics": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Zahrnuje hmatovou grafiku",
+                "descriptive": "Pro usnadnění přístupu nevidomých k vizuálním prvkům byla integrována hmatová grafika"
             },
             "additional-accessibility-information-tactile-objects": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Taktilní 3D objekty",
+                "descriptive": "Taktilní 3D objekty"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
                 "compact": "",
                 "descriptive": ""
             },
-            "additional-accessibility-information-title": ""
+            "additional-accessibility-information-title": "Další informace o přístupnosti"
         },
         "conformance": {
             "conformance-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Tato publikace splňuje minimální standardy přístupnosti",
+                "descriptive": "Publikace obsahuje prohlášení o shodě, že splňuje normu EPUB Accessibility a WCAG 2 Level A"
             },
             "conformance-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Tato publikace splňuje schválené normy přístupnosti",
+                "descriptive": "Publikace obsahuje prohlášení o shodě, že splňuje normu EPUB Accessibility a WCAG 2 Level AA"
             },
             "conformance-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Tato publikace překračuje přijaté normy přístupnosti",
+                "descriptive": "Publikace obsahuje prohlášení o shodě, že splňuje normu EPUB Accessibility a WCAG 2 Level AAA"
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "Tuto publikaci certifikoval "
             },
             "conformance-certifier-credentials": {
                 "compact": ""
@@ -352,74 +352,74 @@
                 "compact": ""
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Tato publikace tvrdí, že splňuje",
+                "descriptive": "Tato publikace tvrdí, že splňuje"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "normu EPUB Accessibility 1.0",
+                "descriptive": "normu EPUB Accessibility 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "normu EPUB Accessibility 1.1",
+                "descriptive": "normu EPUB Accessibility 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "normu Level A",
+                "descriptive": "normu Level A"
             },
             "conformance-details-level-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "normu Level AA",
+                "descriptive": "normu Level AA"
             },
             "conformance-details-level-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "normu Level AAA",
+                "descriptive": "normu Level AAA"
             },
             "conformance-details-wcag-2-0": {
-                "compact": ""
+                "compact": "normu WCAG 2.0"
             },
             "conformance-details-wcag-2-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "normu WCAG 2.1",
+                "descriptive": "normu Web Content Accessibility Guidelines (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "normu WCAG 2.2",
+                "descriptive": "normu Web Content Accessibility Guidelines (WCAG) 2.2"
             },
             "conformance-no": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Nejsou k dispozici žádné informace",
+                "descriptive": "Nejsou k dispozici žádné informace"
             },
-            "conformance-title": "",
+            "conformance-title": "Shoda",
             "conformance-unknown-standard": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Shoda s přijatými normami pro přístupnost této publikace nemůže být určena",
+                "descriptive": "Shoda s přijatými normami pro přístupnost této publikace nemůže být určena"
             }
         },
         "hazards": {
             "hazards-flashing": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Blikající obsah",
+                "descriptive": "Tato publikace obsahuje blikající obsah, který může vyvolat fotosenzitivní záchvaty"
             },
             "hazards-flashing-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Žádný blikající obsah",
+                "descriptive": "Tato publikace neobsahuje žádný blikající obsah"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Přítomnost blikajícího obsahu je neznámá",
+                "descriptive": "Přítomnost blikajícího obsahu je neznámá"
             },
             "hazards-motion": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Simulace pohybu",
+                "descriptive": "Tato publikace obsahuje simulace pohybu, které mohou vyvolat nemoc z pohybu"
             },
             "hazards-motion-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Žádná simulace pohybu",
+                "descriptive": "Tato publikace neobsahuje žádnou simulaci pohybu"
             },
             "hazards-motion-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Přítomnost simulace pohybu je neznámá",
+                "descriptive": "Přítomnost simulace pohybu je neznámá"
             },
             "hazards-no-metadata": {
                 "compact": "",
