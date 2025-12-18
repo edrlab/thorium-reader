@@ -5,11 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
-import debug_ from "debug";
+// import debug_ from "debug";
 import path from "path";
 
 // Logger
-const debug = debug_("readium-desktop:main#utils/customization/watcher");
+// const debug = debug_("readium-desktop:main#utils/customization/watcher");
+
+const debug = (...arg: any[]) => { process.stderr.write(`readium-desktop:main#utils/customization/watcher: ${arg.map((v) => JSON.stringify(v, null, 4))}\n`);};
+
 
 import chokidar, { FSWatcher } from "chokidar";
 import * as fs from "fs";
