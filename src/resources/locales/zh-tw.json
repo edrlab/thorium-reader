@@ -65,10 +65,10 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
-                "publications": "",
-                "screen": "",
-                "title": ""
+                "description": "無個人簡介",
+                "publications": "出版品簡介",
+                "screen": "無標題",
+                "title": "個人簡介標題"
             }
         },
         "delete": "刪除",
@@ -86,8 +86,8 @@
         "importAnnotation": "匯入註解",
         "lang": "語言",
         "lastRead": "最後閱讀",
-        "login": "",
-        "logout": "",
+        "login": "登入",
+        "logout": "登出",
         "moreInfo": "更多訊息",
         "myBooks": "我的書籍",
         "noPublicationHelpL1": "將文件拖放到此處",
@@ -98,8 +98,8 @@
         "opds": {
             "auth": {
                 "cancel": "取消",
-                "external": "",
-                "fallback": "",
+                "external": "登入頁面將在您的瀏覽器中打開，請按照提示操作。登入成功後，瀏覽器將自動返回此應用程式。",
+                "fallback": "注意：如果使用預設的網頁瀏覽器方法登入出現問題，請嘗試使用應用程式內的備用登入方法。",
                 "login": "登入",
                 "password": "密碼",
                 "register": "註冊",

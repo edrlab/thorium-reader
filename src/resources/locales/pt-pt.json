@@ -435,34 +435,34 @@
             },
             "hazards-sound-none": {
                 "compact": "Sem sons",
-                "descriptive": ""
+                "descriptive": "A publicação não contém sons"
             },
             "hazards-sound-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "A presença de sons é desconhecida",
+                "descriptive": "A presença de sons é desconhecida"
             },
             "hazards-title": "Pontos de atenção",
             "hazards-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "A presença de perigos é desconhecida",
+                "descriptive": "A existência de perigos é desconhecida"
             }
         },
         "navigation": {
             "navigation-index": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Índice",
+                "descriptive": "Índice com ligações às entradas referenciadas"
             },
             "navigation-no-metadata": {
-                "compact": "",
+                "compact": "Nenhuma informação disponível",
                 "descriptive": "Sem informações disponíveis"
             },
             "navigation-page-navigation": {
                 "compact": "Ir para página",
-                "descriptive": ""
+                "descriptive": "Lista de páginas a partir da versão impressa da fonte"
             },
             "navigation-structural": {
                 "compact": "Títulos",
-                "descriptive": ""
+                "descriptive": "Elementos como títulos, tabelas e outros para navegação estruturada"
             },
             "navigation-title": "Navegação",
             "navigation-toc": {
@@ -496,12 +496,12 @@
                 "descriptive": "Os vídeos incluídos nas publicações têm legendas ocultas"
             },
             "rich-content-extended": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Imagens com muita informação são acompanhadas por descrições detalhadas",
+                "descriptive": "Imagens com muita informação são acompanhadas por descrições detalhadas"
             },
             "rich-content-open-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Vídeos com legendas abertas",
+                "descriptive": "Vídeos incluídos nos documentos com legendas abertas"
             },
             "rich-content-title": "Conteúdo enriquecido",
             "rich-content-transcript": {
@@ -519,45 +519,45 @@
                 "descriptive": "Possui texto alternativo para descrição das imagens"
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sem informações disponíveis sobre leitura não visual",
+                "descriptive": "Sem informações disponíveis sobre leitura não visual"
             },
             "ways-of-reading-nonvisual-reading-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Não legível para leitura em voz alta ou em braille dinâmico",
+                "descriptive": "O conteúdo não é legível em voz alta ou braille dinâmico"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Não é totalmente legível em voz alta ou no braille dinâmico",
+                "descriptive": "Nem todo o conteúdo será legível em voz alta ou no braille dinâmico"
             },
             "ways-of-reading-nonvisual-reading-readable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Legível em voz alta ou no braille dinâmico",
+                "descriptive": "Todo o conteúdo pode ser lido em voz alta ou em braille dinâmico"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Clipes de áudio pré-gravados",
+                "descriptive": "Clipes de áudio pré-gravados estão integrados no conteúdo"
             },
             "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sem informações disponíveis sobre áudio pré-gravado",
+                "descriptive": "Sem informações disponíveis sobre áudio pré-gravado"
             },
             "ways-of-reading-prerecorded-audio-only": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Apenas áudio pré-gravado",
+                "descriptive": "Audiolivro sem alternativa de texto"
             },
             "ways-of-reading-prerecorded-audio-synchronized": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Áudio pré-gravado sincronizado com texto",
+                "descriptive": "Todo o conteúdo está disponível como áudio pré-gravado sincronizado com texto"
             },
-            "ways-of-reading-title": "",
+            "ways-of-reading-title": "Formas de leitura",
             "ways-of-reading-visual-adjustments-modifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "A aparência pode ser personalizada",
+                "descriptive": "A aparência do texto e o layout da página podem ser alterados de acordo com as capacidades do sistema de leitura (tipo e tamanho da fonte, espaços entre parágrafos, frases, palavras e letras, assim como cor do fundo e do texto)"
             },
             "ways-of-reading-visual-adjustments-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sem informações disponíveis sobre a personalização da aparência",
+                "descriptive": "Sem informações disponíveis sobre personalização da aparência"
             }
         }
     },
@@ -692,10 +692,10 @@
         },
         "goToContent": "Ir para o conteúdo",
         "imgViewer": {
-            "title": "",
-            "zoomIn": "",
-            "zoomOut": "",
-            "zoomReset": ""
+            "title": "Visualizador de imagens (zoom)",
+            "zoomIn": "Ampliar",
+            "zoomOut": "Diminuir",
+            "zoomReset": "Repor zoom"
         },
         "marks": {
             "annotations": "Anotações",
@@ -740,7 +740,7 @@
             "goToError": "A quebra de página não existe",
             "goToPlaceHolder": "Digitar n.º de página",
             "goToTitle": "Ir para a página",
-            "history": "",
+            "history": "Histórico de navegação",
             "historyNext": "Avançar no histórico de navegação",
             "historyPrevious": "Recuar no histórico de navegação",
             "infoTitle": "Informações",
@@ -748,8 +748,8 @@
             "openTableOfContentsTitle": "Navegação",
             "page": "Página",
             "pdfscalemode": "Ajustar à página ou largura",
-            "print": "",
-            "printDisabled": "",
+            "print": "Imprimir",
+            "printDisabled": "Imprimir proibido",
             "screenNext": "Avançar",
             "screenPrevious": "Recuar",
             "settingsTitle": "Configurações"
@@ -777,22 +777,22 @@
             "searchTitle": "Pesquisar:"
         },
         "print": {
-            "descriptionLcpCount": "",
-            "descriptionLcpPrintable": "",
-            "howTo": "",
-            "lcpInfo": "",
-            "noPagesLcpLimitReached": "",
-            "noPrintablePages": "",
-            "pageHelpInfo": "",
-            "pageHelpInfo1": "",
-            "pageHelpInfo2": "",
-            "pageHelpInfo3": "",
-            "pageHelpInfo4": "",
-            "pages": "",
-            "preview": "",
-            "print": "",
-            "printablePages": "",
-            "title": ""
+            "descriptionLcpCount": "Limite de páginas restantes: {{- count}}",
+            "descriptionLcpPrintable": "Páginas impressas anteriormente: {{- printable}} {{- count}}",
+            "howTo": "Como selecionar quais páginas imprimir",
+            "lcpInfo": "O número de páginas deste documento que pode imprimir está limitado a {{- count}}. Escolha aqui as páginas que deseja.",
+            "noPagesLcpLimitReached": "Você atingiu o limite do PLC",
+            "noPrintablePages": "Sem páginas imprimíveis",
+            "pageHelpInfo": "Sintaxe do seletor de páginas:",
+            "pageHelpInfo1": "digite um número de página para referenciar uma única página (por exemplo, «6»)",
+            "pageHelpInfo2": "digite dois números de página separados por um travessão para referenciar um intervalo de páginas contíguas (por exemplo, «6–13»)",
+            "pageHelpInfo3": "use um ponto e vírgula para separar várias páginas ou intervalos de páginas (por exemplo, «5;14–20;37»)",
+            "pageHelpInfo4": "omita um lado de um intervalo de páginas para referenciar a primeira ou a última página do documento (por exemplo, «–16» é equivalente a «1–16» e «34–» é equivalente a «34–100», supondo um livro com 100 páginas no total)",
+            "pages": "Páginas",
+            "preview": "Pré-visualização",
+            "print": "Imprimir",
+            "printablePages": "Páginas imprimíveis (total)",
+            "title": "Seleção de páginas imprimíveis"
         },
         "settings": {
             "column": {
