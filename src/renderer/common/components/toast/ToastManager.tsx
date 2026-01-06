@@ -87,6 +87,7 @@ export class ToastManager extends React.Component<IProps, IState> {
                                 close={ () => this.close(id) }
                                 type={toast.type}
                                 displaySystemNotification={false}
+                                title={toast.title}
                             />;
                         default:
                             return (<></>);

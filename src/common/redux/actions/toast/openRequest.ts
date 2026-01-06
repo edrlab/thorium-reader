@@ -13,10 +13,11 @@ export const ID = "TOAST_OPEN_REQUEST";
 export interface Payload {
     type: ToastType;
     data: string | undefined;
+    title: string | undefined;
     publicationIdentifier: string | undefined;
 }
 
-export function build(type: ToastType, data: string, publicationIdentifier?: string):
+export function build(type: ToastType, data: string, title?: string, publicationIdentifier?: string):
     Action<typeof ID, Payload> {
 
     return {
@@ -24,6 +25,7 @@ export function build(type: ToastType, data: string, publicationIdentifier?: str
         payload: {
             type,
             data,
+            title,
             publicationIdentifier,
         },
     };

@@ -77,7 +77,7 @@ export function* importFromLink(
             toastActions.openRequest.build(
                 ToastType.Error,
                 translate("message.import.fail",
-                    { path: link.url, err: e?.toString() }),
+                    { title: link.title, err: e?.toString() }),
             ),
         );
     }
@@ -168,11 +168,13 @@ export function* importFromFs(
                 } catch (error) {
 
                     debug("importFromFs (hash + import) fail with :" + filePath, error);
+
+                    const fileTitle = fpath.split("/").at(-1);
+                    const title =  translate("message.import.fail", { title: fileTitle });
+                    const msg = error?.message;
                     yield put(
                         toastActions.openRequest.build(
-                            ToastType.Error,
-                            translate("message.import.fail",
-                                { path: filePath, err: error?.toString() }),
+                            ToastType.Error, msg, title
                         ),
                     );
                 }

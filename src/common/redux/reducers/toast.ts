@@ -19,6 +19,7 @@ const initialState: ToastState = {
     open: false,
     type: ToastType.Success,
     data: undefined,
+    title: undefined,
     publicationIdentifier: undefined,
 };
 
@@ -35,6 +36,7 @@ function toastReducer_(
                     open: true,
                     type: action.payload.type,
                     data: action.payload.data,
+                    title: action.payload.title,
                     publicationIdentifier: action.payload.publicationIdentifier,
                 },
             );

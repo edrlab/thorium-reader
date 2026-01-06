@@ -31,6 +31,7 @@ interface IBaseProps extends TranslatorProps {
     message?: string;
     displaySystemNotification?: boolean;
     type?: ToastType;
+    title?: string;
 }
 
 // IProps may typically extend:
@@ -85,7 +86,7 @@ export class Toast extends React.Component<IProps, IState> {
         this.timer = window.setTimeout(() => {
             this.timer = undefined;
             this.handleClose();
-        }, fast ? 500 : 5000);
+        }, fast ? 500 : 8000);
     }
 
     public componentDidMount() {
@@ -155,10 +156,13 @@ export class Toast extends React.Component<IProps, IState> {
                     toRemove && stylesToasts.toRemove,
                     typeClassName,
                 )}
+                style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}
             >
                 {
                 // icon && <SVG className={styles.icon} svg={icon} />
                 }
+                {this.props.title ? 
+                <h5 style={{fontWeight: "bold", fontSize: "12px", margin: "0 0 5px"}}>{this.props.title}</h5> : <></>}
                 <p
                     aria-live="assertive"
                     aria-relevant="all"

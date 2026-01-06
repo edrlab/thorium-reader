@@ -10,13 +10,13 @@ import * as fs from "fs";
 import moment from "moment";
 import * as path from "path";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
-import { ToastType } from "readium-desktop/common/models/toast";
-import { toastActions } from "readium-desktop/common/redux/actions";
+// import { ToastType } from "readium-desktop/common/models/toast";
+// import { toastActions } from "readium-desktop/common/redux/actions";
 import { extractCrc32OnZip } from "readium-desktop/main/tools/crc";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { call, put } from "redux-saga/effects";
+import { call } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga";
 import { call as callTyped } from "typed-redux-saga/macro";
 
@@ -25,9 +25,12 @@ import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 
 import { downloader } from "../../../downloader";
 import { importPublicationFromFS } from "./importPublicationFromFs";
+// import { getTranslator } from "readium-desktop/common/services/translator";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/import/publicationLcplFromFs");
+
+// const translate = getTranslator().translate;
 
 export function* importLcplFromFS(
     filePath: string,
@@ -47,7 +50,6 @@ export function* importLcplFromFS(
     const r2LCP = TaJsonDeserialize(r2LCPJson, LCP);
     r2LCP.JsonSource = r2LCPStr;
     r2LCP.init();
-
     // LCP license checks to avoid unnecessary download:
     // CERTIFICATE_SIGNATURE_INVALID = 102
     // CERTIFICATE_REVOKED = 101
@@ -74,13 +76,12 @@ export function* importLcplFromFS(
                 debug(err);
             }
             if (res) {
-                const msg = lcpManager.convertUnlockPublicationResultToString(res, r2LCP.Issued?.toISOString() || "");
-                yield put(
-                    toastActions.openRequest.build(
-                        ToastType.Error, msg,
-                    ),
-                );
-                throw new Error(`[${msg}] (${filePath})`);
+                const msg = lcpManager.convertUnlockPublicationResultToString(res, r2LCP.Issued?.toISOString() || "");             
+                // yield put(
+                //     toastActions.openRequest.build(
+                //         ToastType.Error, msg, title)
+                // );
+                throw new Error(msg);
             }
         }
 
@@ -94,12 +95,12 @@ export function* importLcplFromFS(
                 // LICENSE_CERTIFICATE_DATE_INVALID (was LICENSE_SIGNATURE_DATE_INVALID) = 111
                 // LICENSE_SIGNATURE_INVALID = 112
                 const msg = lcpManager.convertUnlockPublicationResultToString(err, r2LCP.Issued?.toISOString() || "");
-                yield put(
-                    toastActions.openRequest.build(
-                        ToastType.Error, msg,
-                    ),
-                );
-                throw new Error(`[${msg}] (${filePath})`);
+                // yield put(
+                //     toastActions.openRequest.build(
+                //         ToastType.Error, msg, title
+                //     ),
+                // );
+                throw new Error(msg);
             }
         }
     }
@@ -107,7 +108,6 @@ export function* importLcplFromFS(
     const link = r2LCP?.Links?.reduce((pv, cv) => cv.Rel === "publication" ? cv : pv);
 
     if (link?.Href) {
-
         const title = link.Title || path.basename(filePath);
         const [downloadFilePath] = yield* callTyped(downloader, [{ href: link.Href, type: link.Type }], title);
 

@@ -177,7 +177,7 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
 
     } catch (e) {
 
-        const errMsg = e.toString();
+        const errMsg = e.message;
         if (errMsg === ERROR_MESSAGE_ENCRYPTED_NO_LICENSE) {
             yield put(
                 toastActions.openRequest.build(

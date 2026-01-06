@@ -213,15 +213,15 @@
             "success": "Import completed successfully."
         },
         "download": {
-            "error": "Downloading [{{- title}}] failed: [{{- err}}]"
+            "error": "Downloading \"{{- title}}\" failed: [{{- err}}]"
         },
         "import": {
-            "alreadyImport": "[{{- title}}] was already imported.",
-            "fail": "Importing [{{- path}}] failed: [{{- err}}]",
-            "success": "Importing [{{- title}}] completed."
+            "alreadyImport": "\"{{- title}}\" was already imported.",
+            "fail": "Error while importing \"{{- title}}.\"",
+            "success": "\"{{- title}}\" successfully imported."
         },
         "open": {
-            "error": "Loading publication failed: [{{- err}}]"
+            "error": "{{- err}}."
         },
         "wipeData": "Login data was cleared (access tokens and cookies)"
     },
@@ -597,9 +597,9 @@
             "tracks": "Tracks"
         },
         "author": "Author",
-        "cancelledLcp": "This publication's LCP license is cancelled.",
-        "certificateRevoked": "Revoked LCP license certificate.",
-        "certificateSignatureInvalid": "Invalid LCP license certificate signature.",
+        "cancelledLcp": "Your license to read this publication has been cancelled.",
+        "certificateRevoked": "This publication cannot be opened (X509 cert was revoked).",
+        "certificateSignatureInvalid": "This publication cannot be opened (invalid X509 cert signature).",
         "cover": {
             "img": "cover image"
         },
@@ -608,18 +608,18 @@
         "duration": {
             "title": "Duration"
         },
-        "encryptedNoLicense": "Publication is encrypted but lacks an LCP license!",
+        "encryptedNoLicense": "This publication cannot be opened (no license in encrypted file).",
         "expired": "Loan expired",
-        "expiredLcp": "This publication's LCP license is expired.",
+        "expiredLcp": "Your license to read this publication has expired.",
         "incorrectPassphrase": "No stored passphrase fits the publication, or the entered passphrase is wrong.",
         "lcpEnd": "End",
         "lcpRightsCopy": "Copied characters",
         "lcpRightsPrint": "Printed pages",
         "lcpStart": "Start",
         "licenceLCP": "License (LCP)",
-        "licenseCertificateDateInvalid": "The LCP provider certificate expired before the license issue date ({{- dateTime}}).",
-        "licenseOutOfDate": "Out of date LCP License.",
-        "licenseSignatureInvalid": "Invalid LCP license signature.",
+        "licenseCertificateDateInvalid": "This publication cannot be opened (X509 cert expired before license issue date).",
+        "licenseOutOfDate": "Your license to read this publication has expired or has not started.",
+        "licenseSignatureInvalid": "This publication cannot be opened (invalid license signature).",
         "licensed": "Licensed",
         "markAsRead": "Mark as read",
         "notStarted": "Not Started",
@@ -631,8 +631,8 @@
         "remainingTime": "Loan (remaining time)",
         "renewButton": "Renew",
         "returnButton": "Return",
-        "returnedLcp": "This LCP-protected publication is returned.",
-        "revokedLcp": "This publication's LCP license is revoked.",
+        "returnedLcp": "You already have returned this publication.",
+        "revokedLcp": "Your license to read this publication has been revoked.",
         "seeLess": "See less",
         "seeMore": "See more",
         "timeLeft": "Remaining time",
