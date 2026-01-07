@@ -1,1 +1,22 @@
-{}
+{
+    "accessibility": {
+        "bookMenu": "Menüü",
+        "closeDialog": "Sulge",
+        "leftSlideButton": "Viipa vasakule",
+        "mainContent": "põhiline sisu",
+        "rightSlideButton": "Viipa paremale"
+    },
+    "app": {
+        "edit": {
+            "copy": "Kopeeri",
+            "cut": "Lõika",
+            "paste": "Aseta",
+            "print": "Prindi",
+            "redo": "Korda tegevust",
+            "selectAll": "Vali kõik",
+            "title": "Muuda",
+            "undo": "Võta tegevus tagasi"
+        },
+        "hide": "Peida {{- appName}}"
+    }
+}
