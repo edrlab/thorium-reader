@@ -5,19 +5,22 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
-// import debug_ from "debug";
+import debug_ from "debug";
 import path from "path";
 
 // Logger
-// const debug = debug_("readium-desktop:main#utils/customization/watcher");
+const debug = debug_("readium-desktop:main#utils/customization/watcher");
 
-const debug = (...arg: any[]) => { process.stderr.write(`readium-desktop:main#utils/customization/watcher: ${arg.map((v) => typeof v === "string" || typeof v === "number" ? v : JSON.stringify(v, null, 4))}\n`);};
+// const debug = (...arg: any[]) => { process.stderr.write(`readium-desktop:main#utils/customization/watcher: ${arg.map((v) => typeof v === "string" || typeof v === "number" ? v : JSON.stringify(v, null, 4))}\n`);};
 
 // import os from "node:os";
 import chokidar, { FSWatcher } from "chokidar";
 import * as fs from "fs";
 import { EXT_THORIUM } from "readium-desktop/common/extension";
 
+/**
+ * Polling is not necessary in win11, So let's disable it for the moment
+ */
 const _isWindows = false; // os.platform() === "win32";
 
 export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder: string, callback: (fileName: string, removed: boolean) => void): FSWatcher {
@@ -30,7 +33,12 @@ export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder
 
     debug("START FILE WATCHING FROM ", wellKnownFolder);
 
-    const watcher = chokidar.watch(wellKnownFolder, {
+    const watcher = chokidar.watch(
+        wellKnownFolder
+        //`*${EXT_THORIUM}`
+        , {
+
+        // cwd: wellKnownFolder, // not working with the glob *.thorium, so let's filter it in ignored callback
         persistent: true, // default true
 
         usePolling: _isWindows ? true : false, // default false

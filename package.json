@@ -122,6 +122,11 @@
   },
   "homepage": "https://github.com/edrlab/readium-desktop",
   "build": {
+    "WindowsSigntoolConfiguration": {
+      "certificateFile": "C:\\Users\\plero\\Documents\\git\\thorium-reader\\C91F86A8-45E6-48E0-8015-8A5BF2B38BD4.pfx",
+      "certificatePassword": "edrlab",
+      "publisherName": "CN=C91F86A8-45E6-48E0-8015-8A5BF2B38BD4"
+    },
     "productName": "Thorium",
     "appId": "io.github.edrlab.thorium",
     "protocols": [
@@ -248,7 +253,8 @@
         "appx",
         "nsis"
       ],
-      "icon": "dist/assets/icons/icon.ico"
+      "icon": "dist/assets/icons/icon.ico",
+      "publisherName": "CN=C91F86A8-45E6-48E0-8015-8A5BF2B38BD4"
     },
     "nsis": {
       "oneClick": false,
