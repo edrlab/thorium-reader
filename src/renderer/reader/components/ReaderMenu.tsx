@@ -2973,12 +2973,12 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     };
 
     const GoToPageTrigger =
-        <Tabs.Trigger id="reader-menu-tab-gotopage-trigger" value="tab-gotopage" key={"tab-gotopage"} title={__("reader.marks.goTo")} data-value={"tab-gotopage"}>
+        <Tabs.Trigger id="reader-menu-tab-gotopage-trigger" value="tab-gotopage" key={"tab-gotopage"} title={__("reader.marks.goTo")} data-value={"tab-gotopage"} disabled={!pdfNumberOfPages}>
             <SVG ariaHidden svg={TargetIcon} />
             <h3>{__("reader.marks.goTo")}</h3>
         </Tabs.Trigger>;
     const optionGoToPageItem = {
-        id: 4, value: "tab-gotopage", name: __("reader.marks.goTo"), disabled: false,
+        id: 4, value: "tab-gotopage", name: __("reader.marks.goTo"), disabled: !pdfNumberOfPages,
         svg: TargetIcon,
     };
 
