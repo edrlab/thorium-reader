@@ -17,6 +17,7 @@ export interface IOpdsHeaderState {
     bookshelf?: string;
     self?: string;
     up?: string;
+    title?: string;
 }
 
 export interface IOpdsBrowserState {

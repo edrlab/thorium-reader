@@ -8,11 +8,9 @@
 import * as browseRequest from "./browseRequest";
 import * as headerLinksUpdate from "./headerLinksUpdate";
 import * as search from "./search";
-import * as headerTitleUpdate from "./headerTitleUpdate";
 
 export {
     headerLinksUpdate,
     browseRequest,
     search,
-    headerTitleUpdate,
 };

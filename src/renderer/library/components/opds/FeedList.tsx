@@ -35,7 +35,6 @@ import OpdsFeedUpdateForm from "../dialog/OpdsFeedUpdateForm";
 import * as Popover from "@radix-ui/react-popover";
 import { authActions, customizationActions, opdsActions } from "readium-desktop/common/redux/actions";
 import { subscribeToAction } from "readium-desktop/renderer/common/redux/middleware/actionSubscriber";
-import { headerTitleUpdate } from "../../redux/actions/opds";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -116,7 +115,6 @@ class FeedList extends React.Component<IProps, IState> {
                                             e.preventDefault();
                                             e.currentTarget.click();
                                         }
-                                        this.props.updateCatalogTitle(item.title);
                                     }}
                                     onKeyDown={(e) => {
                                         // if (e.code === "Space") {
@@ -131,7 +129,6 @@ class FeedList extends React.Component<IProps, IState> {
                                         // if (e.key === "Enter") { WORKS
                                         if (e.key === " ") { // WORKS
                                             e.preventDefault();
-                                            this.props.updateCatalogTitle(item.title);
                                             e.currentTarget.click();
                                         }
                                     }}
@@ -258,9 +255,6 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
         triggerAuth: (feedUrl: string, authenticationUrl: string) => {
             dispatch(customizationActions.triggerOpdsAuth.build(feedUrl, authenticationUrl));
-        },
-        updateCatalogTitle: (title: string) => {
-            dispatch(headerTitleUpdate.build(title));
         },
     };
 };

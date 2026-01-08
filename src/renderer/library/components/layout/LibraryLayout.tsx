@@ -128,7 +128,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         {this.props.secondaryHeader}
                         {(page === __("opds.breadcrumbRoot")) ?
                             <div className={stylesCatalogs.opds_header}>
-                                <h2 className={stylesAllBooks.allBooks_header}>{this.props.catalogTitle}</h2>
+                                <h2 className={stylesAllBooks.allBooks_header}>{this.props.headerLinks?.title || "-"}</h2>
                                 {this.props.breadCrumb ?
                                     <div className={stylesCatalogs.opds_header_actions}>
                                         {
@@ -435,7 +435,6 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     headerLinks: state.opds.browser.header,
     breadcrumb: state.opds.browser.breadcrumb,
     locale: state.i18n.locale, // refresh
-    catalogTitle: state.opds.browser.title,
 });
 
 export default connect(mapStateToProps)(withTranslator(LibraryLayout));

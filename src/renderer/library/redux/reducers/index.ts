@@ -15,7 +15,7 @@ import { loadReducer } from "readium-desktop/renderer/common/redux/reducers/load
 import { winReducer } from "readium-desktop/renderer/common/redux/reducers/win";
 import { historyReducer } from "readium-desktop/renderer/library/redux/reducers/history";
 import {
-    opdsBreadcrumbReducer, opdsHeaderLinkReducer, opdsSearchLinkReducer, opdsCatalogTitleReducer,
+    opdsBreadcrumbReducer, opdsHeaderLinkReducer, opdsSearchLinkReducer,
 } from "readium-desktop/renderer/library/redux/reducers/opds";
 import { priorityQueueReducer } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 import { combineReducers, Reducer } from "redux";
@@ -63,7 +63,6 @@ export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reduc
                 breadcrumb: opdsBreadcrumbReducer,
                 header: opdsHeaderLinkReducer,
                 search: opdsSearchLinkReducer,
-                title: opdsCatalogTitleReducer,
             }),
         }),
         win: winReducer,
