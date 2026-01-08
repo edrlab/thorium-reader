@@ -9,7 +9,6 @@ import * as stylesFooter from "readium-desktop/renderer/assets/styles/components
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 
 import { shell } from "electron";
-// import { existsSync, promises } from "fs";
 // import * as path from "path";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -108,7 +107,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                 }
                 {/* {
 
-                    this.props.customizationProfileId ? 
+                    this.props.customizationProfileId ?
                     <div style={{fontSize: "6px"}}>
                         <span>Filename: {customizationProfileProvisionedAndActivated.fileName}</span><br/>
                         <span>Identifier: {customizationProfileProvisionedAndActivated.id}</span><br/>
@@ -199,7 +198,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
     //         publication.Spine = [link];
 
     //         const imgPath = path.join(folderPath, imagesFolder);
-    //         const imgArray = await promises.readdir(imgPath);
+    //         const imgArray = await fs.promises.readdir(imgPath);
     //         publication.Resources = imgArray.map((i) => {
     //             const l = new Link();
     //             l.Href = `${imagesFolder}/${i}`; // path.join() backslash on Windows

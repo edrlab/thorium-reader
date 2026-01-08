@@ -2660,7 +2660,7 @@ const GoToPageSection: React.FC<IBaseProps & { totalPages?: number }> = (props) 
                     }
                     : null
             );
-        });
+        }).filter((i)=>!!i);
     } else if (isPdf) {
         options = Array.from({ length: r2Publication.Metadata?.NumberOfPages || 1 }, (_v, idx) => {
             const indexStr = (idx + 1).toString();

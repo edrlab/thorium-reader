@@ -514,7 +514,8 @@ declare namespace typed_i18n {
     readonly "fail": string,
     readonly "success": string
   },
-  readonly "open": { readonly "error": string }
+  readonly "open": { readonly "error": string },
+  readonly "wipeData": string
 };
   (_: "message.annotations", __?: {}): {
   readonly "alreadyImported": string,
@@ -542,6 +543,7 @@ declare namespace typed_i18n {
   (_: "message.import.success", __?: {}): string;
   (_: "message.open", __?: {}): { readonly "error": string };
   (_: "message.open.error", __?: {}): string;
+  (_: "message.wipeData", __?: {}): string;
   (_: "opds", __?: {}): {
   readonly "addForm": {
     readonly "addButton": string,
@@ -2643,7 +2645,8 @@ declare namespace typed_i18n {
   readonly "tabs": {
     readonly "appearance": string,
     readonly "general": string,
-    readonly "keyboardShortcuts": string
+    readonly "keyboardShortcuts": string,
+    readonly "profiles": string
   },
   readonly "theme": {
     readonly "auto": string,
@@ -3352,11 +3355,13 @@ declare namespace typed_i18n {
   (_: "settings.tabs", __?: {}): {
   readonly "appearance": string,
   readonly "general": string,
-  readonly "keyboardShortcuts": string
+  readonly "keyboardShortcuts": string,
+  readonly "profiles": string
 };
   (_: "settings.tabs.appearance", __?: {}): string;
   (_: "settings.tabs.general", __?: {}): string;
   (_: "settings.tabs.keyboardShortcuts", __?: {}): string;
+  (_: "settings.tabs.profiles", __?: {}): string;
   (_: "settings.theme", __?: {}): {
   readonly "auto": string,
   readonly "dark": string,

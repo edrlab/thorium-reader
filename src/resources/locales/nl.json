@@ -222,7 +222,8 @@
         },
         "open": {
             "error": "De publicatie kan niet worden geopend: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -1169,7 +1170,8 @@
         "tabs": {
             "appearance": "Verschijning",
             "general": "Algemeen",
-            "keyboardShortcuts": "Toetsenbord sneltoetsen"
+            "keyboardShortcuts": "Toetsenbord sneltoetsen",
+            "profiles": ""
         },
         "theme": {
             "auto": "Automatisch",

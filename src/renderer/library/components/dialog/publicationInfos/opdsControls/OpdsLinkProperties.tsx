@@ -7,7 +7,7 @@
 
 import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.scss";
 
-import * as moment from "moment";
+import moment from "moment";
 import * as React from "react";
 import { IOPDSPropertiesView } from "readium-desktop/common/views/opds";
 import {
@@ -31,7 +31,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProps extends IBaseProps {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 class OpdsLinkProperties extends React.Component<IProps, undefined> {
@@ -138,13 +138,13 @@ class OpdsLinkProperties extends React.Component<IProps, undefined> {
                 {
                     properties.availabilitySince ?
                         <MetadataLineComponent text={__("catalog.opds.info.availableSince")}>
-                            <>{moment(properties.availabilitySince).format("LLL")}</>
+                            <>{moment(properties.availabilitySince).locale([this.props.locale, "en"]).format("LLL")}</>
                         </MetadataLineComponent> : <></>
                 }
                 {
                     properties.availabilityUntil ?
                         <MetadataLineComponent text={__("catalog.opds.info.availableUntil")}>
-                            <>{moment(properties.availabilityUntil).format("LLL")}</>
+                            <>{moment(properties.availabilityUntil).locale([this.props.locale, "en"]).format("LLL")}</>
                         </MetadataLineComponent> : <></>
                 }
             </>

@@ -14,6 +14,8 @@ import * as stylesKeys from "readium-desktop/renderer/assets/styles/components/k
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 
 import { keyboardShortcutsMatch, keyboardShortcutMatches, defaultKeyboardShortcuts, TKeyboardShortcutScopeZone } from "readium-desktop/common/keyboard";
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 
 import classNames from "classnames";
 import * as React from "react";
@@ -93,6 +95,9 @@ function toUpperIfSimpleLowerCase(char: string): string {
 
 export const AdvancedTrigger = () => {
     const [ __ ]= useTranslator();
+    // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const isRTL = locale === "ar";
     const dispatch = useDispatch();
 
     const onClickKeyboardShortcutsShow = () => {
@@ -119,13 +124,13 @@ export const AdvancedTrigger = () => {
             <Popover.Portal>
                 <Popover.Content sideOffset={5} className={stylesDropDown.PopoverContent}>
                     <div className={stylesDropDown.dropdown_menu}>
-                        <button onClick={() => onClickKeyboardShortcutsReload(true)}>
+                        <button dir={isRTL ? "rtl" : "ltr"} onClick={() => onClickKeyboardShortcutsReload(true)}>
                             {__("settings.keyboard.resetDefaults")}
                         </button>
-                        <button onClick={() => onClickKeyboardShortcutsShow()}>
+                        <button dir={isRTL ? "rtl" : "ltr"} onClick={() => onClickKeyboardShortcutsShow()}>
                             {__("settings.keyboard.editUserJson")}
                         </button>
-                        <button onClick={() => onClickKeyboardShortcutsReload(false)}>
+                        <button dir={isRTL ? "rtl" : "ltr"} onClick={() => onClickKeyboardShortcutsReload(false)}>
                             {__("settings.keyboard.loadUserJson")}
                         </button>
                     </div>
@@ -241,7 +246,9 @@ class KeyboardSettings extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __ } = this.props;
+        const { __, locale } = this.props;
+
+        const isRTL = locale === "ar";
 
         const isSearchEmpty = !this.state.searchItem || this.state.searchItem.trim() === "";
         const searchItem = isSearchEmpty ? undefined : trimNormaliseWhitespaceAndCollapse(this.state.searchItem).toLowerCase();
@@ -509,6 +516,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                     </div>
                         <div>
                         <input
+                            dir={isRTL ? "rtl" : "ltr"}
                             type="text"
                             value={this.state.searchItem}
                             onChange={(e) => this.setState({searchItem: e.target.value})}
@@ -535,7 +543,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                     {    cleanNames[id].description.length ?
                                         <TooltipTrigger>
                                             <Button style={{ width: "15px" }} aria-label={cdesc}><SVG ariaHidden svg={InfoIcon} /></Button>
-                                            <Tooltip style={{border: "1px solid var(--color-text-primary)", maxWidth: "300px", width: "fit-content", zIndex: "1000", backgroundColor: "var(--color-neutral-base)", borderRadius: "6px", padding: "5px", color: "var(--color-text-primary)"}}>
+                                            <Tooltip dir={isRTL ? "rtl" : "ltr"} style={{border: "1px solid var(--color-text-primary)", maxWidth: "300px", width: "fit-content", zIndex: "1000", backgroundColor: "var(--color-neutral-base)", borderRadius: "6px", padding: "5px", color: "var(--color-text-primary)"}}>
                                                 <OverlayArrow>
                                                 <svg width={8} height={8} viewBox="0 0 8 8">
                                                     <path d="M0 0 L4 4 L8 0" />

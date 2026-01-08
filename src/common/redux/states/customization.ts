@@ -13,17 +13,16 @@ import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 export interface ICustomizationProfileProvisioned {
     id: string; // identifier URI from manifest
     fileName: string; // relative file from well-known folder, not an absolute file path. Allow to move well-known folder without compromise internal redux state
-    version: string; // semantic versionning from manifest
+    version: number; // unix epoch timestamp in Millisecond
     logoUrl: string;
-    title: IStringMap;
-    description: IStringMap;
+    title: string | IStringMap;
+    description: string | IStringMap;
     opdsPublicationView: IOpdsPublicationView[];
+    selfLinkUrl: string;
 }
 
 export interface ICustomizationProfileError {
-    id: string; // identifier URI from manifest
     fileName: string; // relative file from well-known folder, not an absolute file path. Allow to move well-known folder without compromise internal redux state
-    version: string; // semantic versionning from manifest
     error: boolean;
     message: string;
 }
@@ -32,7 +31,7 @@ export type ICustomizationProfileProvisionedWithError = ICustomizationProfilePro
 
 export interface ICustomizationProfileHistory {
     id: string,
-    version: string,
+    version: number; // unix epoch timestamp in Millisecond
 }
 
 export interface ICustomizationProfileActivated {

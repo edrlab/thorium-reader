@@ -6,6 +6,8 @@
 // ==LICENSE-END==
 
 import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 
 import * as React from "react";
 import { Button, ComboBox as ComboBoxReactAria, Input, Label, ListBox, ListBoxItem, Popover, ValidationResult, Group } from "react-aria-components";
@@ -61,11 +63,16 @@ export function ComboBox<T extends object>(
     { inputId, label, description, errorMessage, children, svg, refInputEl, placeholder, customWidth, ...props }: MyComboBoxProps<T>,
 ) {
 
+    // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const isRTL = locale === "ar";
+
+    //  dir={isRTL ? "rtl" : "ltr"} BREAKS ReactARIA ComboBox
     return (
         <ComboBoxReactAria {...props} className={StylesCombobox.react_aria_ComboBox} style={{width: customWidth ? `${customWidth + 20}px` : ""}}>
             {
                 label ?
-                    <Label className={StylesCombobox.react_aria_Label}>{label}</Label>
+                    <Label dir={isRTL ? "rtl" : "ltr"} className={StylesCombobox.react_aria_Label}>{label}</Label>
                     : <></>
             }
             <Group className={classNames(StylesCombobox.my_combobox_container, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")} style={{width: customWidth ? `${customWidth}px` : ""}}>
@@ -88,6 +95,10 @@ export function ComboBox<T extends object>(
 }
 
 export function ComboBoxItem<T extends object>(props: Parameters<typeof ListBoxItem<T>>[0]) {
+    // // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
+    // const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    // const isRTL = locale === "ar";
+    // dir={isRTL ? "rtl" : "ltr"}
     return (
         <ListBoxItem
             {...props}

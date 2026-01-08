@@ -6,23 +6,23 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { ICustomizationProfileError, ICustomizationProfileProvisioned } from "../../states/customization";
+import { ICustomizationProfileProvisioned, ICustomizationProfileProvisionedWithError } from "../../states/customization";
 
 export const ID = "CUSTOMIZATION_PROVISION_PROFILE";
 
 export interface Payload {
-    oldPackagesProvisioned: ICustomizationProfileProvisioned[];
-    newPackagesProvisioned: ICustomizationProfileProvisioned[];
-    errorPackages: ICustomizationProfileError[];
+    // oldPackagesProvisioned: ICustomizationProfileProvisioned[];
+    provsionedPackages: ICustomizationProfileProvisioned[];
+    errorPackages: ICustomizationProfileProvisionedWithError[];
 }
 
-export function build(oldPackagesProvisioned: ICustomizationProfileProvisioned[], newPackagesProvisioned: ICustomizationProfileProvisioned[], errorPackages: ICustomizationProfileError[]): Action<typeof ID, Payload> {
+export function build(/*oldPackagesProvisioned: ICustomizationProfileProvisioned[],*/ provsionedPackages: ICustomizationProfileProvisioned[], errorPackages: ICustomizationProfileProvisionedWithError[]): Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
-            oldPackagesProvisioned,
-            newPackagesProvisioned,
+            // oldPackagesProvisioned,
+            provsionedPackages,
             errorPackages,
         },
     };

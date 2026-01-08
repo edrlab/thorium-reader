@@ -1,0 +1,110 @@
+{
+  "compilerOptions": {
+    "outDir": "./customization-dist/",
+    "rootDir": "src",
+    "sourceMap": true,
+    "inlineSourceMap": false,
+    "inlineSources": false,
+    "removeComments": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "strictFunctionTypes": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "declaration": true,
+    "noEmit": false,
+    "noEmitHelpers": true,
+    "importHelpers": true,
+    "noEmitOnError": false,
+    "noLib": false,
+    "noResolve": false,
+    "forceConsistentCasingInFileNames": false,
+    "preserveConstEnums": true,
+    "isolatedModules": true,
+    "allowJs": false,
+    "maxNodeModuleJsDepth": 0,
+    "checkJs": false,
+    "stripInternal": false,
+    // "noImplicitUseStrict": false,
+    // "suppressExcessPropertyErrors": false,
+    // "suppressImplicitAnyIndexErrors": false,
+    "downlevelIteration": false,
+    "emitBOM": false,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "pretty": true,
+    "diagnostics": false,
+    "listFiles": false,
+    "listEmittedFiles": false,
+    "traceResolution": false,
+    "disableSizeLimit": false,
+    "skipLibCheck": true,
+    // NODENEXT does not work because of "typed-redux-saga/macro" in WebPack Babel config
+    // "module": "esnext", // 99
+    // "module": "ES2020", // 6
+    // "module": "preserve", // 200
+    "module": "nodenext", // 199
+    "moduleResolution": "nodenext", // 99
+    // "moduleResolution": "node", // 100
+    // "moduleResolution": "bundler", // 100
+    // "lib": [
+    //   "es2020",
+    //   "dom",
+    //   "dom.iterable"
+    // ],
+    "target": "es2020",
+    // "jsx": "react",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    // "baseUrl": ".",
+    "paths": {
+      "*": [
+        "./*",
+      ],
+      // "file-selector": [
+      //   "src/typings/noop.d.ts"
+      // ],
+      "readium-desktop/*": [
+        "./src/*"
+      ],
+      "test/*": [
+        "./test/*"
+      ],
+      "@r2-utils-js/*": [
+        "./node_modules/r2-utils-js/dist/es8-es2017/src/*"
+      ],
+      "@r2-opds-js/*": [
+        "./node_modules/r2-opds-js/dist/es8-es2017/src/*"
+      ],
+      "@r2-shared-js/*": [
+        "./node_modules/r2-shared-js/dist/es8-es2017/src/*"
+      ],
+      "@r2-streamer-js/*": [
+        "./node_modules/r2-streamer-js/dist/es8-es2017/src/*"
+      ],
+      "@r2-navigator-js/*": [
+        "./node_modules/r2-navigator-js/dist/es8-es2017/src/*"
+      ],
+      "@r2-lcp-js/*": [
+        "./node_modules/r2-lcp-js/dist/es8-es2017/src/*"
+      ],
+      "@lunr-languages/*": [
+        "./node_modules/lunr-languages/*"
+      ]
+    }
+  },
+  "include": [
+    "./src/main/customization/cli.ts",
+  ],
+  "exclude": [
+    "./node_modules"
+  ],
+  "files": [
+    "./typings.d.ts"
+  ]
+}

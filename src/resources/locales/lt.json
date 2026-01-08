@@ -99,11 +99,11 @@
             "auth": {
                 "cancel": "Atšaukti",
                 "external": "Jūsų interneto naršyklėje atsidarys prisijungimo puslapis, sekite instrukcijas. Kai prisijungsite, interneto naršyklė grąžins jus į šią programą.",
-                "fallback": "",
+                "fallback": "Pastaba: jei kyla problemų prisijungiant naudojant numatytąjį žiniatinklio naršyklės metodą, bandykite dar kartą naudodami alternatyvų programos metodą.",
                 "login": "Prisijungim/as",
                 "password": "Slaptažodis",
                 "register": "Užsiregistruoti",
-                "retry": "",
+                "retry": "Bandyti dar kartą",
                 "username": "Naudotojo vardas / El. pašto adresas"
             },
             "info": {
@@ -222,7 +222,8 @@
         },
         "open": {
             "error": "Nepavyko atverti leidinio : [{{- err}}]"
-        }
+        },
+        "wipeData": "Prisijungimo duomenys išvalyti (prieigos žetonai ir slapukai)"
     },
     "opds": {
         "addForm": {
@@ -1169,7 +1170,8 @@
         "tabs": {
             "appearance": "Išvaizda",
             "general": "Bendros",
-            "keyboardShortcuts": "Spartieji klavišai"
+            "keyboardShortcuts": "Spartieji klavišai",
+            "profiles": "Profiliai"
         },
         "theme": {
             "auto": "Automatinė",

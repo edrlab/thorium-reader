@@ -121,6 +121,8 @@
 
       p {
         font-size: inherit;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       svg {

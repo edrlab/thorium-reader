@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
-import { promises as fsp } from "fs";
-import * as moment from "moment";
+import debug_ from "debug";
+import * as fs from "fs";
+import moment from "moment";
 import * as path from "path";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -37,7 +37,7 @@ export function* importLcplFromFS(
     const lcpManager = diMainGet("lcp-manager");
     const publicationRepository = diMainGet("publication-repository");
 
-    const r2LCPStr = yield* callTyped(() => fsp.readFile(filePath, { encoding: "utf8" }));
+    const r2LCPStr = yield* callTyped(() => fs.promises.readFile(filePath, { encoding: "utf8" }));
     const r2LCPJson = JSON.parse(r2LCPStr);
 
     if (lcpLicenseIsNotWellFormed(r2LCPJson)) {

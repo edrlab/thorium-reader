@@ -26,7 +26,7 @@ const { privateKey, publicKey } = generateKeyPairSync('ec', {
 
 console.log(`
 // node scripts/profile-generate-key-pair.js
-const pubkey = \`${publicKey}\`;
+const pubKey = \`${publicKey}\`;
 const privateKey = \`${privateKey}\`;
 `)
 

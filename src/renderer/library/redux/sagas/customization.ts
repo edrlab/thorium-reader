@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { nanoid } from "nanoid";
 import { customizationActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
@@ -98,7 +98,7 @@ function* profileActivating(id: string): SagaGenerator<void> {
     const profileActivationHistory = yield* selectTyped((state: ICommonRootState) => state.customization.history);
 
     const profileHistoryFound = profileActivationHistory.find((profileHistory) => profileHistory.id === id);
-    const welcomeScreenNeeded = !profileHistoryFound || profileHistoryFound.version !== manifestJson.version;
+    const welcomeScreenNeeded = !profileHistoryFound || profileHistoryFound.version !== (new Date(manifestJson.modified || manifestJson.created)).getTime();
 
     yield* putTyped(customizationActions.welcomeScreen.build(welcomeScreenNeeded));
 
@@ -142,7 +142,7 @@ function* profileActivating(id: string): SagaGenerator<void> {
         yield* putTyped(customizationActions.triggerOpdsAuth.build(catalogLink.href, catalogLinkOpdsAuthenticateDocumentHref));
     }
 
-    yield* putTyped(customizationActions.addHistory.build(id, manifestJson.version));
+    yield* putTyped(customizationActions.addHistory.build(id, (new Date(manifestJson.modified || manifestJson.created)).getTime()));
 }
 
 
