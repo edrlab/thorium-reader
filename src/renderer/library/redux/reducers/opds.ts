@@ -19,7 +19,7 @@ import {
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { getTranslator } from "readium-desktop/common/services/translator";
 
-// import * as debug_ from "debug";
+// import debug_ from "debug";
 // Logger
 // const debug = debug_("readium-desktop:renderer:redux:reducer:opds");
 

@@ -7,7 +7,7 @@
 
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import * as React from "react";
 import { IOpdsTagView } from "readium-desktop/common/views/opds";
 import { TFormEvent } from "readium-desktop/typings/react";

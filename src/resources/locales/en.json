@@ -222,7 +222,8 @@
         },
         "open": {
             "error": "Loading publication failed: [{{- err}}]"
-        }
+        },
+        "wipeData": "Login data was cleared (access tokens and cookies)"
     },
     "opds": {
         "addForm": {
@@ -907,6 +908,7 @@
             "cancel": "Cancel",
             "disclaimer": "The application defaults were designed based on the physical location of keys on a QWERTY layout",
             "editUserJson": "Edit user file...",
+            "exportToHTML": "Export to HTML",
             "keyboardShortcuts": "Keyboard shortcuts",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1169,7 +1171,8 @@
         "tabs": {
             "appearance": "Appearance",
             "general": "General",
-            "keyboardShortcuts": "Keyboard shortcuts"
+            "keyboardShortcuts": "Keyboard shortcuts",
+            "profiles": "Profiles"
         },
         "theme": {
             "auto": "Automatic",

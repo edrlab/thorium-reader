@@ -1014,10 +1014,6 @@ $markdown-color-palette: (
   font-family: monospace;
 }
 
-.markdown-body body:has(:modal) {
-  padding-right: var(--dialog-scrollgutter) !important;
-}
-
 .markdown-body .pl-c {
   color: var(--color-prettylights-syntax-comment);
 }

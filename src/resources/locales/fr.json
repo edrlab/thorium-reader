@@ -178,7 +178,7 @@
         "allBooks": "Mes livres",
         "catalogs": "Catalogues",
         "downloads": "Téléchargements",
-        "fitlerTagTitle": "Filtrer par mot-clef",
+        "fitlerTagTitle": "Filtrer par mot-clé",
         "gridTitle": "Grille",
         "home": "Menu Principal",
         "homeTitle": "Accueil",
@@ -187,7 +187,7 @@
         "myCatalogs": "Mes catalogues",
         "refreshTitle": "Mettre à jour",
         "searchPlaceholder": "Rechercher",
-        "searchTitle": "Titre, auteur, format ou mot-clef",
+        "searchTitle": "Titre, auteur, format ou mot-clé",
         "settings": "Préférences",
         "viewMode": "Mode d'affichage"
     },
@@ -222,7 +222,8 @@
         },
         "open": {
             "error": "Le livre ne peut pas être ouvert : {{- err}}"
-        }
+        },
+        "wipeData": "Données d'authentification supprimées avec succès !"
     },
     "opds": {
         "addForm": {
@@ -907,6 +908,7 @@
             "cancel": "Annuler",
             "disclaimer": "Les paramètres par défaut de l'application ont été conçus en fonction de l'emplacement physique des touches sur une disposition QWERTY",
             "editUserJson": "Modifier le fichier utilisateur…",
+            "exportToHTML": "Exporter en HTML",
             "keyboardShortcuts": "Raccourcis clavier",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1099,7 +1101,7 @@
                 },
                 "Print": {
                     "description": "Dans la fenêtre du lecteur, ouvre une boîte de dialogue d'impression",
-                    "name": "Imprimmer"
+                    "name": "Imprimer"
                 },
                 "SearchNext": {
                     "description": "Dans la fenêtre du lecteur, lorsque l'entrée de texte de recherche globale de la publication est ouverte, trouve la correspondance précédente / suivante.",
@@ -1169,7 +1171,8 @@
         "tabs": {
             "appearance": "Apparence",
             "general": "Géneral",
-            "keyboardShortcuts": "Raccourcis clavier"
+            "keyboardShortcuts": "Raccourcis clavier",
+            "profiles": "Profils"
         },
         "theme": {
             "auto": "Automatique",

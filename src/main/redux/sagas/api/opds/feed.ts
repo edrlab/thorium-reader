@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OpdsFeed } from "readium-desktop/common/models/opds";
@@ -120,7 +120,7 @@ export function* addFeed(data: OpdsFeed): SagaGenerator<IOpdsFeedView> {
                 debug(e);
             }
         });
-    }    
+    }
 
     const doc = yield* callTyped(() => opdsFeedRepository.save(data));
     return yield* callTyped(() => opdsFeedViewConverter.convertDocumentToView(doc));

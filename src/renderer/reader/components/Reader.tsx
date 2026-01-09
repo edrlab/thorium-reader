@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 // import debounce from "debounce";
-import * as debug_ from "debug";
+import debug_ from "debug";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
 import { fixedLayoutZoomPercent } from "@r2-navigator-js/electron/renderer/dom";
@@ -523,7 +523,7 @@ class Reader extends React.Component<IProps, IState> {
 
                 debug("PDF.JS subscribe on \"savePreference\": ", options);
                 /*
-                
+
                 {
                   page: 1,
                   scrollTop: 792,
@@ -533,7 +533,7 @@ class Reader extends React.Component<IProps, IState> {
                   rotation: 0,
                   spreadMode: 2 // 0: one col, 1: two col odd, 2: two col even
                 }
-                
+
                 */
 
                 // data persistence: zoom and spreadMode

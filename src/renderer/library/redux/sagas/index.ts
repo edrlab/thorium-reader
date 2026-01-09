@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import * as publicationInfoSyncTags from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects

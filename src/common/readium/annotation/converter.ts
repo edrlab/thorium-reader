@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 
 import { ICssSelector, IReadiumAnnotation, IReadiumAnnotationSet, isCFIFragmentSelector, isCfiSelector, isCssSelector, isProgressionSelector, isTextPositionSelector, isTextQuoteSelector, ITextPositionSelector, ITextQuoteSelector } from "./annotationModel.type";
 import { v4 as uuidv4 } from "uuid";

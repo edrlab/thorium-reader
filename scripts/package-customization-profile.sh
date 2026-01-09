@@ -1,0 +1,6 @@
+#!/bin/sh
+
+set -xe
+./node_modules/typescript/bin/tsc -p tsconfig-customization.json
+node ./node_modules/tsc-alias/dist/bin/index.js -p tsconfig-customization.json
+node -e 'const fs = require("fs"); const file="./customization-dist/preprocessor-directives.js"; fs.writeFileSync(file, fs.readFileSync(file, "utf-8").replace("__TH__RENDERER_LIBRARY_BASE_URL__", "\"\"").replace("__TH__RENDERER_READER_BASE_URL__", "\"\"").replace("__TH__RENDERER_PDF_WEBVIEW_BASE_URL__", "\"\"").replace("__TH__RENDERER_PDF_WEBVIEW_BASE_URL__", "\"\"").replace("__TH__NODE_MODULE_RELATIVE_URL__", "\"\"").replace("__TH__DIST_RELATIVE_URL__", "\"\"").replace("__TH__APP_VERSION__", "\"\"").replace("__TH__PACK_NAME__", "\"\"").replace("__TH__APP_NAME__", "\"\"").replace("__TH__TELEMETRY_URL__", "\"\"").replace("__TH__TELEMETRY_SECRET__", "\"\"").replace("__TH__CUSTOMIZATION_PROFILE_PUB_KEY__", "process.env.__TH__CUSTOMIZATION_PROFILE_PUB_KEY__ || require(\"../customization-profile-public-key-pair\").pubKey;").replace("__TH__CUSTOMIZATION_PROFILE_PRIVATE_KEY__", "process.env.__TH__CUSTOMIZATION_PROFILE_PRIVATE_KEY__ || require(\"../customization-profile-public-key-pair\").privateKey;"), "utf-8");'

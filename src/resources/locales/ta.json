@@ -222,7 +222,8 @@
         },
         "open": {
             "error": "வெளியீட்டை ஏற்றுவது தோல்வியுற்றது: [{{- err}}]"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -1169,7 +1170,8 @@
         "tabs": {
             "appearance": "தோற்றம்",
             "general": "பொது",
-            "keyboardShortcuts": "விசைப்பலகை குறுக்குவழிகள்"
+            "keyboardShortcuts": "விசைப்பலகை குறுக்குவழிகள்",
+            "profiles": ""
         },
         "theme": {
             "auto": "தானியங்கி",

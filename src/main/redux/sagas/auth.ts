@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { URL_PROTOCOL_OPDS_MEDIA, URL_HOST_COMMON, URL_PROTOCOL_OPDS, URL_HOST_OPDS_AUTH, URL_OPDS_AUTH_RETRY } from "readium-desktop/common/streamerProtocol";
 import { BrowserWindow, HandlerDetails, Event as ElectronEvent, WebContentsWillNavigateEventParams, shell } from "electron";
 
@@ -16,8 +16,8 @@ import { BrowserWindow, HandlerDetails, Event as ElectronEvent, WebContentsWillN
 // To convert this file to an ECMAScript module, change its file extension to '.mts',
 // or add the field `"type": "module"` to 'package.json'.
 // @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore TS1479
+// e__slint-disable-next-line @typescript-eslint/ban-ts-comment
+// @__ts-ignore TS1479
 import { Headers } from "node-fetch";
 
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -60,8 +60,8 @@ import isURL from "validator/lib/isURL";
 // To convert this file to an ECMAScript module, change its file extension to '.mts',
 // or add the field `"type": "module"` to 'package.json'.
 // @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore TS1479
+// e__slint-disable-next-line @typescript-eslint/ban-ts-comment
+// @__ts-ignore TS1479
 import { nanoid } from "nanoid";
 
 import { getTranslator } from "readium-desktop/common/services/translator";
@@ -135,7 +135,7 @@ const opdsAuthFlow =
                 debug("no valid authentication html url");
                 return;
             }
-            debug("Browser URL", browserUrl);
+            debug("Browser URL", browserUrl.slice(0, 100)+"...");
 
             const authCredentials: IOpdsAuthenticationToken = {
                 id: authParsed?.id || undefined,
@@ -270,7 +270,8 @@ function* opdsAuthWipeData() {
 
     yield* callTyped(wipeAuthenticationTokenStorage);
 
-    yield put(toastActions.openRequest.build(ToastType.Success, "👍"));
+    const translator = getTranslator();
+    yield put(toastActions.openRequest.build(ToastType.Success, translator.__("message.wipeData")));
     debug("End of wipping auth data");
 }
 
@@ -804,7 +805,7 @@ function opdsAuthDocConverter(doc: OPDSAuthenticationDoc, baseUrl: string): IOPD
 
 async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser: boolean): Promise<BrowserWindow | undefined> {
 
-    debug("OPDS AUTH win URL", urlStr);
+    debug("OPDS AUTH win URL", urlStr.slice(0, 100) + (urlStr.length > 100 ? "..." : ""));
 
     const libWin = tryCatchSync(() => getLibraryWindowFromDi(), filename_);
     if (!libWin || libWin.isDestroyed() || libWin.webContents.isDestroyed()) {
@@ -865,6 +866,7 @@ async function createOpdsAuthenticationModalWin(urlStr: string, retryWithInterna
                 // fetch("URL_PROTOCOL_THORIUMHTTPS"+"://"+URL_HOST_COMMON+"/" + URL_PATH_PREFIX_PDFJS + "/web/viewer.html").then((r)=>r.text()).then((t)=>console.log(t));
             },
         });
+    win.setMenu(null);
 
     win.webContents.addListener("input-event", (_ev, inputEvent) => {
         if ((inputEvent.type === "keyUp" || inputEvent.type === "keyDown") && (inputEvent as KeyboardEvent).key === "Escape") {
@@ -1364,6 +1366,9 @@ const htmlLoginTemplate = (
                 left: 20px;
                 background-color: white;
                 padding: 0 5px;
+                overflow: clip;
+                max-width: 90%;
+                height: 25px;
             }
 
             .login p svg {

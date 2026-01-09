@@ -109,6 +109,9 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
         let index = undefined;
         if (isEpubNavigator) {
             index = allBookmarksForCurrentLocationHref.findIndex((bookmark) => {
+                if (!bookmark.locatorExtended) {
+                    return false;
+                }
                 const bookmarkLocations = bookmark.locatorExtended.locator.locations;
                 const currentLocations = locatorExtended.locator.locations;
 
@@ -120,6 +123,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
             });
         } else if (isAudiobook) {
             index = allBookmarksForCurrentLocationHref.findIndex((bookmark) =>
+                bookmark.locatorExtended &&
                 // bookmark.locator.href === locatorExtended.locator.href &&
                 Math.floor(locatorExtended.audioPlaybackInfo.globalTime) === Math.floor(locatorExtended.audioPlaybackInfo.globalDuration * bookmark.locatorExtended.locator.locations.position),
             );
@@ -329,7 +333,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
                     }
                 }
 
-                const visibleBookmarksPromise = allBookmarksForCurrentLocationHref.map<Promise<boolean>>((bookmark) => isLocatorVisible(bookmark.locatorExtended.locator));
+                const visibleBookmarksPromise = allBookmarksForCurrentLocationHref.map<Promise<boolean>>((bookmark) => !bookmark.locatorExtended ? Promise.resolve(false) : isLocatorVisible(bookmark.locatorExtended.locator));
                 Promise.all(visibleBookmarksPromise).then(
                     (visibleBookmarks) => {
                         const visibleBookmarksFiltered = visibleBookmarks.map((isVisible, index) => isVisible ? allBookmarksForCurrentLocationHref[index] : undefined).filter((bookmark) => !!bookmark);

@@ -222,7 +222,8 @@
         },
         "open": {
             "error": "Die Publikation kann nicht geöffnet werden: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -1169,7 +1170,8 @@
         "tabs": {
             "appearance": "Erscheinungsbild",
             "general": "Allgemein",
-            "keyboardShortcuts": "Tastaturkürzel"
+            "keyboardShortcuts": "Tastaturkürzel",
+            "profiles": ""
         },
         "theme": {
             "auto": "Automatisch",

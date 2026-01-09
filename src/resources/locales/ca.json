@@ -222,7 +222,8 @@
         },
         "open": {
             "error": "No es pot obrir la publicació: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -1169,7 +1170,8 @@
         "tabs": {
             "appearance": "Aparença",
             "general": "General",
-            "keyboardShortcuts": "Dreceres del teclat"
+            "keyboardShortcuts": "Dreceres del teclat",
+            "profiles": ""
         },
         "theme": {
             "auto": "Automàtic",

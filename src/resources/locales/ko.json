@@ -222,7 +222,8 @@
         },
         "open": {
             "error": "지원하지 않는 형식의 출판물입니다: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -1169,7 +1170,8 @@
         "tabs": {
             "appearance": "",
             "general": "",
-            "keyboardShortcuts": ""
+            "keyboardShortcuts": "",
+            "profiles": ""
         },
         "theme": {
             "auto": "",

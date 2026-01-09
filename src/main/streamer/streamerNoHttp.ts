@@ -9,7 +9,7 @@ import { Readable } from "node:stream";
 import { ReadableStream } from "node:stream/web";
 
 import * as crypto from "crypto";
-import * as debug_ from "debug";
+import debug_ from "debug";
 // BeforeSendResponse, HeadersReceivedResponse, OnBeforeSendHeadersListenerDetails, OnHeadersReceivedListenerDetails
 import { app, protocol, ProtocolRequest, ProtocolResponse, session } from "electron";
 import * as fs from "fs";
@@ -76,6 +76,59 @@ const URL_PARAM_SESSION_INFO = "r2_SESSION_INFO";
 // this ceiling value seems very arbitrary ... what would be a reasonable default value?
 // ... based on what metric, any particular HTTP server or client implementation?
 export const MAX_PREFETCH_LINKS = 10;
+
+const scriptTextDrag = `
+<script type="text/javascript">
+// document.addEventListener("DOMContentLoaded", () => {
+// });
+window.addEventListener("load", () => {
+setTimeout(() => {
+    document.addEventListener("dragstart", (e) => {
+        // console.log("dragstart capture currentTarget", typeof e.currentTarget, e.currentTarget);
+        // console.log("dragstart capture target", typeof e.target, e.target, e.target.tagName?.toLowerCase());
+
+        const sel = document.getSelection();
+        if (sel && !sel.isCollapsed) {
+            // console.log("dragstart capture document selection preventDefault");
+            // e.preventDefault();
+            e.dataTransfer.clearData();
+            e.dataTransfer.setData("text/plain", " ");
+        } else if (e.target.tagName) {
+            const n = e.target.tagName.toLowerCase();
+            if (n === "a") {
+                // console.log("dragstart capture target preventDefault ", n);
+                // e.preventDefault();
+                e.dataTransfer.clearData();
+                e.dataTransfer.setData("text/plain", "https://www.edrlab.org/software/thorium-reader/");
+            } else if (n === "img" || n === "video" || n === "svg") {
+                // console.log("dragstart capture target preventDefault ", n);
+                // e.preventDefault();
+                e.dataTransfer.clearData();
+                e.dataTransfer.setData("text/plain", " ");
+            }
+        }
+    }, true);
+
+    /*
+    document.addEventListener("dragend", (e) => {
+        console.log("dragend capture currentTarget", typeof e.currentTarget, e.currentTarget);
+        console.log("dragend capture target", typeof e.target, e.target);
+    }, true);
+
+    document.addEventListener("dragstart", (e) => {
+        console.log("dragstart not-capture currentTarget", typeof e.currentTarget, e.currentTarget);
+        console.log("dragstart not-capture target", typeof e.target, e.target);
+    }, false);
+
+    document.addEventListener("dragend", (e) => {
+        console.log("dragend not-capture currentTarget", typeof e.currentTarget, e.currentTarget);
+        console.log("dragend not-capture target", typeof e.target, e.target);
+    }, false);
+     */
+}, 100);
+});
+</script>
+`;
 
 if (true) { // !_USE_HTTP_STREAMER) {
     function isFixedLayout(publication: R2Publication, link: Link | undefined): boolean {
@@ -459,7 +512,12 @@ const streamProtocolHandler = async (
         const route = uPathname.substr(customProfileZipAssetsPrefix.length);
         const [idEncoded, pathInZipEncoded] = route.split(/\/(.*)/s);
         const id = Buffer.from(decodeURIComponent(idEncoded), "base64").toString();
-        const pathInZip = path.resolve("/", Buffer.from(decodeURIComponent(pathInZipEncoded), "base64").toString()).substr(1); // remove first '/'
+
+        const pathInZipEncoded_ = Buffer.from(decodeURIComponent(pathInZipEncoded), "base64").toString();
+        debug("streamProtocolHandler pathInZipEncoded_", pathInZipEncoded_);
+
+        const pathInZip = path.resolve("/", pathInZipEncoded_).replace(/\\/g, "/").substr(1).replace(/^:\//, "");
+        debug("streamProtocolHandler pathInZip", pathInZip);
 
         const state = diMainGet("store").getState();
         const profile = state.customization.provision.find((profile) => profile.id === id);
@@ -482,8 +540,6 @@ const streamProtocolHandler = async (
         const fileName = profile.fileName;
         const fileAbsolutePath = path.resolve(customizationWellKnownFolder, fileName);
         debug("profileFilePath", fileAbsolutePath);
-
-        debug("streamProtocolHandler pathInZip", pathInZip);
 
         if (!pathInZip) {
             const err = "PATH IN ZIP?? " + uPathname;
@@ -796,9 +852,23 @@ const streamProtocolHandler = async (
         const contentType = `${findMimeTypeWithExtension(fileExtension) || ""}; charset=utf-8`;
         headers["Content-Type"] = contentType;
         debug("PDFJS content-type:", contentType, contentLength);
+
+        let buff: Buffer | undefined;
+        if (pdfjsFullPathname.endsWith("viewer.html")) {
+            try {
+                debug("PDFJS INTERCEPT:", pdfjsFullPathname);
+                let str = fs.readFileSync(pdfjsFullPathname, { encoding: "utf8" });
+                str = str.replace(/<\/head>/, `${scriptTextDrag}</head>`);
+                buff = Buffer.from(str, "utf8");
+            } catch (e) {
+                debug("PDFJS INTERCEPT ERROR:", pdfjsFullPathname);
+                debug(e);
+            }
+        }
+
         const obj = {
             // NodeJS.ReadableStream
-            data: fs.createReadStream(pdfjsFullPathname),
+            data: buff ? bufferToStream(buff) : fs.createReadStream(pdfjsFullPathname),
             headers,
             statusCode: 200,
         };

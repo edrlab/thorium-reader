@@ -14,6 +14,8 @@ import * as stylesKeys from "readium-desktop/renderer/assets/styles/components/k
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 
 import { keyboardShortcutsMatch, keyboardShortcutMatches, defaultKeyboardShortcuts, TKeyboardShortcutScopeZone } from "readium-desktop/common/keyboard";
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
+import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 
 import classNames from "classnames";
 import * as React from "react";
@@ -93,6 +95,9 @@ function toUpperIfSimpleLowerCase(char: string): string {
 
 export const AdvancedTrigger = () => {
     const [ __ ]= useTranslator();
+    // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const isRTL = locale === "ar";
     const dispatch = useDispatch();
 
     const onClickKeyboardShortcutsShow = () => {
@@ -119,13 +124,13 @@ export const AdvancedTrigger = () => {
             <Popover.Portal>
                 <Popover.Content sideOffset={5} className={stylesDropDown.PopoverContent}>
                     <div className={stylesDropDown.dropdown_menu}>
-                        <button onClick={() => onClickKeyboardShortcutsReload(true)}>
+                        <button dir={isRTL ? "rtl" : "ltr"} onClick={() => onClickKeyboardShortcutsReload(true)}>
                             {__("settings.keyboard.resetDefaults")}
                         </button>
-                        <button onClick={() => onClickKeyboardShortcutsShow()}>
+                        <button dir={isRTL ? "rtl" : "ltr"} onClick={() => onClickKeyboardShortcutsShow()}>
                             {__("settings.keyboard.editUserJson")}
                         </button>
-                        <button onClick={() => onClickKeyboardShortcutsReload(false)}>
+                        <button dir={isRTL ? "rtl" : "ltr"} onClick={() => onClickKeyboardShortcutsReload(false)}>
                             {__("settings.keyboard.loadUserJson")}
                         </button>
                     </div>
@@ -140,6 +145,7 @@ export const AdvancedTrigger = () => {
 class KeyboardSettings extends React.Component<IProps, IState> {
 
     private selectRef: React.RefObject<HTMLSelectElement>;
+    private contentRef: React.RefObject<HTMLUListElement>;
     private _keyboardSinkIsActive: boolean;
 
     constructor(props: IProps) {
@@ -156,6 +162,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         this.onKeyUp = this.onKeyUp.bind(this);
 
         this.selectRef = React.createRef<HTMLSelectElement>();
+        this.contentRef = React.createRef<HTMLUListElement>();
 
         this._keyboardSinkIsActive = false;
     }
@@ -241,7 +248,9 @@ class KeyboardSettings extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __ } = this.props;
+        const { __, locale } = this.props;
+
+        const isRTL = locale === "ar";
 
         const isSearchEmpty = !this.state.searchItem || this.state.searchItem.trim() === "";
         const searchItem = isSearchEmpty ? undefined : trimNormaliseWhitespaceAndCollapse(this.state.searchItem).toLowerCase();
@@ -478,6 +487,82 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             cleanNames[key].description?.toLowerCase().includes(searchItem),
         );
 
+        const exportHtml = () => {
+            const element = this.contentRef?.current;
+
+            if (element) {
+                let htmlContent = element.outerHTML;
+
+                const replaceSvgWithSpanName = (html: string): string => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, "text/html");
+                    const spans = doc.querySelectorAll("span[title]");
+
+                    spans.forEach((span) => {
+                        const spanName = span.getAttribute("title") || "";
+                        span.innerHTML = `${spanName} + `;
+                    });
+
+                    return doc.body.innerHTML;
+                };
+
+                htmlContent = replaceSvgWithSpanName(htmlContent);
+
+
+                const getCssStyles = (): string => {
+                    let css = "";
+                    const styleSheets = document.styleSheets;
+
+                    for (let i = 0; i < styleSheets.length; i++) {
+                        const rules = styleSheets[i].cssRules;
+                        if (rules) {
+                            for (let j = 0; j < rules.length; j++) {
+                                css += rules[j].cssText;
+                            }
+                        }
+                    }
+                    return css;
+                };
+
+                const cssStyles = getCssStyles();
+
+                const completeHtml = `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>THORIUM DESKTOP Keyboard Shortcuts</title>
+          <style>
+            ${cssStyles}
+            h1, h2 {
+            text-align: center
+            }
+            .keyshortElement_container {
+                border-bottom: none
+            }
+          </style>
+        </head>
+        <body>
+            <h1>THORIUM DESKTOP</h1>
+            <h2>Keyboard Shortcuts</h2>
+          ${htmlContent}
+        </body>
+        </html>
+      `;
+
+                const blob = new Blob([completeHtml], { type: "text/html" });
+
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = "thorium_shortcuts.html";
+
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        };
+
         return (
             <>
                 <section onKeyDown={
@@ -507,16 +592,22 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                             <p>{__("settings.keyboard.disclaimer")}</p>
                         </div> */}
                     </div>
+                    
                         <div>
-                        <input
-                            type="text"
-                            value={this.state.searchItem}
-                            onChange={(e) => this.setState({searchItem: e.target.value})}
-                            placeholder={__("settings.keyboard.searchPlaceholder")}
-                            style={{width: "200px", borderRadius: "4px"}}
-                        />
+
+                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                            <input
+                                dir={isRTL ? "rtl" : "ltr"}
+                                type="text"
+                                value={this.state.searchItem}
+                                onChange={(e) => this.setState({ searchItem: e.target.value })}
+                                placeholder={__("settings.keyboard.searchPlaceholder")}
+                                style={{ width: "200px", borderRadius: "4px" }}
+                            />
+                            <button onClick={exportHtml} className={stylesButtons.button_secondary_blue}>{__("settings.keyboard.exportToHTML")}</button>
+                        </div>
                         {filteredShortcuts.length ?
-                            <ul className={stylesGlobal.p_0}>
+                            <ul className={stylesGlobal.p_0} ref={this.contentRef}>
                             {this.props.keyboardShortcuts &&
                             filteredShortcuts.map((id) => {
                                 const def = this.props.keyboardShortcuts[id];
@@ -535,7 +626,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                     {    cleanNames[id].description.length ?
                                         <TooltipTrigger>
                                             <Button style={{ width: "15px" }} aria-label={cdesc}><SVG ariaHidden svg={InfoIcon} /></Button>
-                                            <Tooltip style={{border: "1px solid var(--color-text-primary)", maxWidth: "300px", width: "fit-content", zIndex: "1000", backgroundColor: "var(--color-neutral-base)", borderRadius: "6px", padding: "5px", color: "var(--color-text-primary)"}}>
+                                            <Tooltip dir={isRTL ? "rtl" : "ltr"} style={{border: "1px solid var(--color-text-primary)", maxWidth: "300px", width: "fit-content", zIndex: "1000", backgroundColor: "var(--color-neutral-base)", borderRadius: "6px", padding: "5px", color: "var(--color-text-primary)"}}>
                                                 <OverlayArrow>
                                                 <svg width={8} height={8} viewBox="0 0 8 8">
                                                     <path d="M0 0 L4 4 L8 0" />

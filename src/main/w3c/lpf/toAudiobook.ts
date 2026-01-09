@@ -5,8 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
-import { promises as fsp } from "fs";
+import debug_ from "debug";
+import * as fs from "fs";
 import { dirname } from "path";
 import { readStreamToBuffer } from "readium-desktop/main/stream/stream";
 import { extractFileFromZip } from "readium-desktop/main/zip/extract";
@@ -106,8 +106,8 @@ export async function lpfToAudiobookConverter(lpfPath: string): Promise<[string,
 
     const cleanFct = async () => {
         try {
-            await fsp.unlink(audiobookPath);
-            await fsp.rmdir(dirname(audiobookPath));
+            await fs.promises.unlink(audiobookPath);
+            await fs.promises.rmdir(dirname(audiobookPath));
         } catch (_err) {
             // ignore
         }

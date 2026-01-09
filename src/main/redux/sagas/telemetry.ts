@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 
 import { _TELEMETRY_SECRET, _TELEMETRY_URL, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
@@ -23,8 +23,8 @@ import { httpPost } from "readium-desktop/main/network/http";
 // To convert this file to an ECMAScript module, change its file extension to '.mts',
 // or add the field `"type": "module"` to 'package.json'.
 // @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore TS1479
+// e__slint-disable-next-line @typescript-eslint/ban-ts-comment
+// @__ts-ignore TS1479
 import { Headers } from "node-fetch";
 
 import { createHmac } from "crypto";

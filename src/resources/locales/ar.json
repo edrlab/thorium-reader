@@ -222,7 +222,8 @@
         },
         "open": {
             "error": "فشل تحميل المنشور: [{{- err}}]"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -1169,7 +1170,8 @@
         "tabs": {
             "appearance": "المظهر",
             "general": "عام",
-            "keyboardShortcuts": "اختصارات لوحة المفاتيح"
+            "keyboardShortcuts": "اختصارات لوحة المفاتيح",
+            "profiles": ""
         },
         "theme": {
             "auto": "تلقائي",

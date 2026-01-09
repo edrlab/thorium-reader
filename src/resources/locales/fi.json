@@ -222,7 +222,8 @@
         },
         "open": {
             "error": "Julkaisua ei voi avata: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -796,9 +797,9 @@
         "settings": {
             "column": {
                 "auto": "Oletus",
-                "one": "1 palsta",
-                "title": "Palstat",
-                "two": "2 palstaa"
+                "one": "1 sarake",
+                "title": "Sarakkeet",
+                "two": "2 saraketta"
             },
             "customFontSelected": "Olet valinnut oman fontin",
             "customizeReader": "Mukauta tekstin ulkoasua",
@@ -1169,7 +1170,8 @@
         "tabs": {
             "appearance": "Ulkoasu",
             "general": "Yleiset",
-            "keyboardShortcuts": "Pikanäppäimet"
+            "keyboardShortcuts": "Pikanäppäimet",
+            "profiles": ""
         },
         "theme": {
             "auto": "Automaattinen",

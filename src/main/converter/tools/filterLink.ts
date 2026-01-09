@@ -36,24 +36,27 @@ export function filterTypeLink(
 
     let typeFlag = false;
     if (ln.TypeLink) {
-        if (Array.isArray(filter.type) && filter.type.includes(ln.TypeLink)) {
+
+        const typeArray = [...new Set(ln.TypeLink.replace(/\s/g, "").split(";"))];
+        if (Array.isArray(filter.type) && typeArray.reduce((pv, cv) => pv && (filter.type as Array<string>).includes(cv), true)) {
             typeFlag = true;
-        } else if (filter.type instanceof RegExp && filter.type.test(ln.TypeLink)) {
+        } else if (filter.type instanceof RegExp && typeArray.reduce((pv, cv) => pv && (filter.type as RegExp).test(cv), true)) {
             typeFlag = true;
         } else if (typeof filter.type === "string") {
 
             // compare typeSet and filterSet
             const filterSet = new Set(filter.type.split(";"));
-            const typeArray = new Set(ln.TypeLink.replace(/\s/g, "").split(";"));
 
             typeFlag = true;
             for (const i of filterSet) {
-                if (!typeArray.has(i)) {
+                if (!typeArray.includes(i)) {
                     typeFlag = false;
                     break;
                 }
             }
         }
+    } else {
+        typeFlag = true; // no type provided so we bypass the test
     }
 
     return typeFlag;
