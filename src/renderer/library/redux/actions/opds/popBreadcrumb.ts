@@ -10,11 +10,11 @@ import { Action } from "readium-desktop/common/models/redux";
 export const ID = "OPDS_BROWSE_POP";
 
 export function build():
-    Action<typeof ID, undefined> {
+    Action<typeof ID, {}> {
     return {
         type: ID,
-        payload: undefined,
+        payload: {},
     };
 }
 build.toString = () => ID;
-export type TActionPop = ReturnType<typeof build>;
+export type TAction = ReturnType<typeof build>;
