@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "Ajouter aux favoris",
         "about": {
             "title": "À propos de {{- appName}} (en ligne)"
         },
@@ -128,6 +129,7 @@
         "publisher": "Éditeur",
         "readBook": "Lire",
         "released": "Publié le",
+        "removeOfFavorites": "Supprimer des favoris",
         "sort": "Trier par",
         "tag": "Mot-clé",
         "tags": "Mots-clés",
