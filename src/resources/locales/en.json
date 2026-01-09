@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "Add to favorites",
         "about": {
             "title": "About {{- appName}} (online)"
         },
@@ -128,6 +129,7 @@
         "publisher": "Publisher",
         "readBook": "Read",
         "released": "Published on",
+        "removeFromFavorites": "Remove of favorites",
         "sort": "Sort by",
         "tag": "Tag",
         "tags": "Tags",

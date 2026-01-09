@@ -110,7 +110,7 @@ class OpdsFeedUpdateForm extends React.Component<IProps, IState> {
                             </div>
                             <button onClick={() => this.setState({favorite : !favorite})} className={stylesButtons.button_nav_primary} style={{marginTop: "20px"}}>
                                 <SVG svg={StarIcon} ariaHidden className={favorite ? stylesCatalogs.catalog_favorite_icon_true : stylesCatalogs.catalog_favorite_icon_false} />
-                                {favorite ? <p>Remove from favorites</p> :  <p>Add to favorites</p>}
+                                {favorite ? <p>{__("catalog.removeFromFavorites")}</p> :  <p>{__("catalog.AddToFavorites")}</p>}
                             </button>
                         </div>
                         <div className={stylesModals.modal_dialog_footer}>

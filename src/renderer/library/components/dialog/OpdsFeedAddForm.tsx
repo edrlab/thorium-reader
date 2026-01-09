@@ -133,7 +133,7 @@ export const OpdsFeedAddFormDialog = () => {
                         </div>
                         <button onClick={() => setFavorite(!favorite)}>
                             <SVG svg={StarIcon} ariaHidden className={favorite ? stylesCatalogs.catalog_favorite_icon_true : stylesCatalogs.catalog_favorite_icon_false} />
-                            Add to favorite
+                            {__("catalog.AddToFavorites")}
                         </button>
                         <OpdsFeedHowDoesItWorksInfoBox />
                     </div>

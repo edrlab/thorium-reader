@@ -94,15 +94,13 @@ class FeedList extends React.Component<IProps, IState> {
 
         const { __ } = this.props;
 
-        const favorites = this.state.feedsResult.filter(item => item.favorite);
-        const others = this.state.feedsResult.filter(item => !item.favorite);
         return (
             <section>
                 <h2>{__("header.myCatalogs")}</h2>
                 <ul className={stylesCatalogs.catalog_wrapper}>
-                    {[...favorites, ...others].map((item) => {
+                    {this.state.feedsResult.map((item, index) => {
                         return (
-                            <li key={"feed-" + item.title} className={stylesCatalogs.catalog_container}>
+                            <li key={"feed-" + index} className={stylesCatalogs.catalog_container}>
                                 <Link
                                     to={{
                                         ...this.props.location,

@@ -152,6 +152,8 @@ declare namespace typed_i18n {
   readonly "noPublicationHelpL3": string,
   readonly "noPublicationHelpL4": string,
   readonly "numberOfPages": string,
+  readonly "AddToFavorites": string,
+  readonly "removeFromFavorites": string,
   readonly "opds": {
     readonly "auth": {
       readonly "cancel": string,
@@ -246,6 +248,8 @@ declare namespace typed_i18n {
   (_: "catalog.noPublicationHelpL3", __?: {}): string;
   (_: "catalog.noPublicationHelpL4", __?: {}): string;
   (_: "catalog.numberOfPages", __?: {}): string;
+  (_: "catalog.AddToFavorites", __?: {}): string;
+  (_: "catalog.removeFromFavorites", __?: {}): string;
   (_: "catalog.opds", __?: {}): {
   readonly "auth": {
     readonly "cancel": string,
