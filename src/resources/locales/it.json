@@ -798,7 +798,7 @@
         },
         "settings": {
             "column": {
-                "auto": "Automatico",
+                "auto": "Auto",
                 "one": "1 col",
                 "title": "Colonne",
                 "two": "2 cols"
