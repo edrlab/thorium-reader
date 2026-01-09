@@ -127,10 +127,10 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                     >
                         {this.props.secondaryHeader}
                         {(page === __("opds.breadcrumbRoot")) ?
-                            <div style={{display: "flex", alignItems: "center", gap: "10px", padding: "10px 0"}}>
-                                <h2 className={stylesAllBooks.allBooks_header}>{this.props.title}</h2>
+                            <div className={stylesCatalogs.opds_header}>
+                                <h2 className={stylesAllBooks.allBooks_header}>{this.props.headerLinks?.title || "-"}</h2>
                                 {this.props.breadCrumb ?
-                                    <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                                    <div className={stylesCatalogs.opds_header_actions}>
                                         {
                                             this.home()
                                         }
@@ -227,9 +227,9 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         ...this.props.location,
                         pathname: route,
                     }}
-                    style={{ width: "20px"}}
+                    style={{ width: "20px", height: "20px"}}
                     state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                    className={stylesButtons.button_nav_tertiary}
+                    className={stylesButtons.button_secondary_blue}
                     onClick={(e) => {
                         if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                             e.preventDefault();
@@ -254,6 +254,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                     }}
                 >
                     <SVG svg={AvatarIcon} title={__("opds.shelf")} />
+                    <p>{__("opds.shelf")}</p>
                 </Link>
             );
         }
@@ -289,9 +290,9 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                         ...this.props.location,
                         pathname: route,
                     }}
-                    style={{ width: "20px" }}
+                    style={{ width: "20px", height: "20px" }}
                     state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
-                    className={stylesButtons.button_nav_tertiary}
+                    className={stylesButtons.button_secondary_blue}
                     onClick={(e) => {
                         if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                             e.preventDefault();
@@ -316,6 +317,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                     }}
                 >
                     <SVG svg={HomeIcon} title={__("header.homeTitle")} />
+                    <p>{__("header.homeTitle")}</p>
                 </Link>
             );
         }

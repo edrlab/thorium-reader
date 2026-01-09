@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { ok } from "readium-desktop/common/utils/assert";
 import { IHttpGetResult } from "readium-desktop/common/utils/http";
 import { IBrowserResultView, THttpGetBrowserResultView } from "readium-desktop/common/views/browser";

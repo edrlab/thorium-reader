@@ -5,7 +5,7 @@
 }
 
 .react_aria_ComboBox {
-  color: var(--text-color);
+  color: var(--color-text-primary);
   padding-bottom: 15px;
   margin: 10px 0;
   width: 100%;
@@ -45,7 +45,7 @@
     margin: 2px;
     font-size: 14px;
     background: transparent!important;
-    color: var(--field-text-color);
+    color: var(--color-text-primary);
     height: 24px;
     padding: 0 5px 0 30px;
     vertical-align: middle;
@@ -57,7 +57,7 @@
     
     // display: inline-block;
     background: var(--color-neutral-base);
-    color: var(--highlight-foreground);
+    color: var(--color-text-primary);
     forced-color-adjust: none;
     border-radius: 4px;
     border: none;

@@ -10,7 +10,7 @@ import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scs
 import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
 
 import classNames from "classnames";
-import * as moment from "moment";
+import moment from "moment";
 import * as React from "react";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
@@ -48,8 +48,8 @@ class LcpInfo extends React.Component<IProps, undefined> {
             return (<></>);
         }
 
-        const lcpRightsPrint = (lcp?.rights?.print) ? lcp.rights.print : 0;
-        const lcpRightsCopy = (lcp?.rights?.copy) ? lcp.rights.copy : 0;
+        const lcpRightsPrint = (typeof lcp?.rights?.print === "number") ? lcp.rights.print : undefined;
+        const lcpRightsCopy = (typeof lcp?.rights?.copy === "number") ? lcp.rights.copy : undefined;
         const lcpRightsCopiesPubInfo = publicationLcp.lcpRightsCopies || 0;
         const lcpRightsPrintRangePubInfo = publicationLcp.lcpRightsPrints || [];
         const lcpRightsPrintCountPubInfo = lcpRightsPrintRangePubInfo.length;
@@ -174,14 +174,16 @@ class LcpInfo extends React.Component<IProps, undefined> {
                         <br />
                     </>} */}
 
-                    {lcpRightsCopy ? <>
+                    {/* typeof lcpRightsCopy !== "undefined" && lcpRightsCopy !== null && */
+                        typeof lcpRightsCopy === "number" ? <>
                         <strong>{__("publication.lcpRightsCopy")}: </strong>
-                        <span>{lcpRightsCopiesPubInfo} / {lcpRightsCopy}</span><br />
+                        <span>{lcpRightsCopy === 0 ? "0" : `${lcpRightsCopiesPubInfo} / ${lcpRightsCopy}`}</span><br />
                     </> : <></>}
 
-                    {lcpRightsPrint ? <>
+                    {/* typeof lcpRightsPrint !== "undefined" && lcpRightsPrint !== null && */
+                        typeof lcpRightsPrint === "number" ? <>
                         <strong>{__("publication.lcpRightsPrint")}: </strong>
-                        <span>{lcpRightsPrintCountPubInfo} / {lcpRightsPrint}  </span>
+                        <span>{lcpRightsPrint === 0 ? "0" : `${lcpRightsPrintCountPubInfo} / ${lcpRightsPrint}`}  </span>
                         {lcpRightsPrintRangePubInfo.length ? ` [${lcpRightsPrintRangePubInfo}] ` : <></>}
                     </> : <></>}
                 </div>

@@ -5,8 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
-import { promises as fsp } from "fs";
+import debug_ from "debug";
+import * as fs from "fs";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
@@ -15,8 +15,8 @@ import { promises as fsp } from "fs";
 // To convert this file to an ECMAScript module, change its file extension to '.mts',
 // or add the field `"type": "module"` to 'package.json'.
 // @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore TS1479
+// e__slint-disable-next-line @typescript-eslint/ban-ts-comment
+// @__ts-ignore TS1479
 import { nanoid } from "nanoid";
 
 import * as os from "os";
@@ -42,11 +42,11 @@ export async function copyAndMoveLpfToTmpWithNewExt(
     let pathDir: string;
     try {
         pathDir = path.resolve(tmpPath, _APP_NAME.toLowerCase(), tmpPathName, nanoid(8));
-        await fsp.mkdir(pathDir, { recursive: true });
+        await fs.promises.mkdir(pathDir, { recursive: true });
 
     } catch (_e) {
 
-        pathDir = await fsp.mkdtemp(`${_APP_NAME.toLowerCase()}-${tmpPathName}`);
+        pathDir = await fs.promises.mkdtemp(`${_APP_NAME.toLowerCase()}-${tmpPathName}`);
     }
 
     const lpfBasename = path.basename(lpfPath);

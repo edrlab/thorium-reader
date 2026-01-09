@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { TApiMethod } from "readium-desktop/common/api/api.type";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
@@ -23,6 +23,7 @@ import { ContentType } from "readium-desktop/utils/contentType";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call, delay, put, take } from "redux-saga/effects";
 import { race as raceTyped, select as selectTyped } from "typed-redux-saga/macro";
+import { IOpdsHeaderState } from "src/common/redux/states/renderer/opds";
 
 export const BROWSE_OPDS_API_REQUEST_ID = "browseOpdsApiResult";
 export const SEARCH_OPDS_API_REQUEST_ID = "searchOpdsApiResult";
@@ -96,13 +97,14 @@ function* updateHeaderLinkWatcher(action: apiActions.result.TAction<THttpGetBrow
     if (action.payload.isFailure) return;
     if (typeof action.payload?.data?.opds?.links !== "object") return;
 
-    const { payload: { data: { opds: { links } } } } = action;
+    const { payload: { data: { opds: { links, title } } } } = action;
     if (links) {
-        const putLinks = {
+        const putLinks: IOpdsHeaderState = {
             start: links.start[0]?.url,
             up: links.up[0]?.url,
             bookshelf: links.bookshelf[0]?.url,
             self: links.self[0]?.url,
+            title,
         };
         debug("opds browse data received with feed links", putLinks, links.search);
         yield put(opdsActions.headerLinksUpdate.build(putLinks));

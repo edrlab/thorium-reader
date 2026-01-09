@@ -66,7 +66,7 @@
         "customization": {
             "fallback": {
                 "description": "Sem descrição de perfil",
-                "publications": "",
+                "publications": "Perfil de publicações",
                 "screen": "Sem título",
                 "title": "Titulo do perfil"
             }
@@ -98,12 +98,12 @@
         "opds": {
             "auth": {
                 "cancel": "Cancelar",
-                "external": "",
-                "fallback": "",
+                "external": "A página de autenticação será aberta no navegador Web; siga as instruções apresentadas. Depois de se autenticar, o navegador regressará a esta aplicação.",
+                "fallback": "Nota: em caso de problemas ao autenticar com o método do navegador predefinido, tente novamente utilizando o método alternativo dentro da aplicação.",
                 "login": "Autenticar",
                 "password": "Senha",
                 "register": "Registar",
-                "retry": "",
+                "retry": "Tentar novamente",
                 "username": "Nome de utilizador / Endereço de email"
             },
             "info": {
@@ -149,9 +149,9 @@
         "cancel": "Cancelar",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
+                "fallbackWelcomeScreen": "Ecrã de boas-vindas não fornecido",
                 "state": "Estado: {{- state}}",
-                "title": ""
+                "title": "A provisionar e a ativar o perfil de personalização"
             }
         },
         "deleteAnnotations": "Eliminar anotações?",
@@ -160,7 +160,7 @@
         "deleteBookmarksText": "Tem a certeza que quer eliminar {{- bookmarkListLength}} marcadores?",
         "deleteFeed": "Eliminar catálogo?",
         "deletePublication": "Eliminar documento?",
-        "deletePublicationWithNotes": "",
+        "deletePublicationWithNotes": "Aviso: este documento contém anotações e/ou marcadores, que também serão eliminados. (Se pretender mantê-los, exporte as notas antes de remover a publicação)",
         "import": "Confirmar importação:",
         "importError": "Ocorreu um erro, verifique a extensão do ficheiro ({{acceptedExtension}})",
         "renew": "Renovar empréstimo?",
@@ -223,7 +223,7 @@
         "open": {
             "error": "Não foi possível carregar o documento: {{- err}}"
         },
-        "wipeData": ""
+        "wipeData": "Os dados de autenticação foram limpos (tokens de acesso e cookies)"
     },
     "opds": {
         "addForm": {
@@ -276,16 +276,16 @@
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Funções ARIA incluídas",
+                "descriptive": "O conteúdo é otimizado com funções ARIA para melhorar a organização e facilitar a navegação"
             },
             "additional-accessibility-information-audio-descriptions": {
                 "compact": "Descrição do áudio",
                 "descriptive": "Descrições do áudio"
             },
             "additional-accessibility-information-braille": {
-                "compact": "Braile",
-                "descriptive": "Braile"
+                "compact": "Braille",
+                "descriptive": "Braille"
             },
             "additional-accessibility-information-full-ruby-annotations": {
                 "compact": "Anotações completas em Ruby",
@@ -332,14 +332,14 @@
         "conformance": {
             "conformance-a": {
                 "compact": "Esta publicação cumpre os padrões mínimos de acessibilidade",
-                "descriptive": ""
+                "descriptive": "A publicação inclui uma declaração de conformidade que indica cumprir as normas EPUB Accessibility e WCAG 2 Nível A"
             },
             "conformance-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Esta publicação cumpre os padrões de acessibilidade aceites",
+                "descriptive": "O documento inclui uma declaração de conformidade que indica cumprir as normas EPUB Accessibility e WCAG 2 Nível AA"
             },
             "conformance-aaa": {
-                "compact": "",
+                "compact": "Esta publicação excede os padrões de acessibilidade aceites",
                 "descriptive": "A publicação indica cumprir as diretrizes de acessibilidade EPUB e WCAG 2 nível AAA"
             },
             "conformance-certifier": {
@@ -380,11 +380,11 @@
             },
             "conformance-details-wcag-2-1": {
                 "compact": "WCAG 2.1",
-                "descriptive": ""
+                "descriptive": "Orientações de Acessibilidade para Conteúdos Web (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
                 "compact": "WCAG 2.2",
-                "descriptive": ""
+                "descriptive": "Orientações de Acessibilidade para Conteúdos Web (WCAG) 2.2"
             },
             "conformance-no": {
                 "compact": "Sem informações disponíveis",
@@ -392,49 +392,49 @@
             },
             "conformance-title": "Regras de acessibilidade",
             "conformance-unknown-standard": {
-                "compact": "",
+                "compact": "Não foi possível determinar a conformidade deste documento com as normas de acessibilidade aceites",
                 "descriptive": "Não foi possível determinar a conformidade com as normas de acessibilidade desta publicação"
             }
         },
         "hazards": {
             "hazards-flashing": {
                 "compact": "Conteúdo com luzes intermitentes",
-                "descriptive": ""
+                "descriptive": "O documento contém conteúdo intermitente que pode provocar crises fotossensíveis"
             },
             "hazards-flashing-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sem conteúdo intermitente",
+                "descriptive": "O documento não contém conteúdo intermitente"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Não foi possível determinar a presença de conteúdo intermitente",
+                "descriptive": "Não foi possível determinar a presença de conteúdo intermitente"
             },
             "hazards-motion": {
                 "compact": "Simulação de movimento",
-                "descriptive": ""
+                "descriptive": "O documento contém simulações de movimento que podem causar enjoo"
             },
             "hazards-motion-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sem simulações de movimento",
+                "descriptive": "O documento não contém simulações de movimento"
             },
             "hazards-motion-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Não foi possível determinar a presença de simulações de movimento",
+                "descriptive": "Não foi possível determinar a presença de simulações de movimento"
             },
             "hazards-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Nenhuma informação disponível",
+                "descriptive": "Nenhuma informação disponível"
             },
             "hazards-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sem perigos",
+                "descriptive": "A publicação não contém perigos conhecidos"
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sons sensíveis",
+                "descriptive": "O documento contém sons que podem causar desconforto"
             },
             "hazards-sound-none": {
-                "compact": "",
+                "compact": "Sem sons",
                 "descriptive": ""
             },
             "hazards-sound-unknown": {
@@ -454,46 +454,46 @@
             },
             "navigation-no-metadata": {
                 "compact": "",
-                "descriptive": ""
+                "descriptive": "Sem informações disponíveis"
             },
             "navigation-page-navigation": {
-                "compact": "",
+                "compact": "Ir para página",
                 "descriptive": ""
             },
             "navigation-structural": {
-                "compact": "",
+                "compact": "Títulos",
                 "descriptive": ""
             },
-            "navigation-title": "",
+            "navigation-title": "Navegação",
             "navigation-toc": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Índice",
+                "descriptive": "Índice para todos os capítulos de texto através de hiperligações"
             }
         },
         "rich-content": {
             "rich-content-accessible-chemistry-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Fórmulas químicas em LaTeX",
+                "descriptive": "Fórmulas químicas em formato acessível (LaTeX)"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Fórmulas químicas em MathML",
+                "descriptive": "Fórmulas químicas em formato acessível (MathML)"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Matemática como LaTeX",
+                "descriptive": "Fórmulas matemáticas em formato acessível (LaTeX)"
             },
             "rich-content-accessible-math-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Matemática como MathML",
+                "descriptive": "Fórmulas matemáticas em formato acessível (MathML)"
             },
             "rich-content-accessible-math-described": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Descrições de texto de matemática - São fornecidas",
+                "descriptive": "Descrições de texto de matemática - São fornecidas"
             },
             "rich-content-closed-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Vídeos têm legendas ocultas",
+                "descriptive": "Os vídeos incluídos nas publicações têm legendas ocultas"
             },
             "rich-content-extended": {
                 "compact": "",
@@ -564,7 +564,7 @@
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": "Todo o conteúdo pode ser lido em voz alta ou em braile dinâmico"
+                "textual": "Todo o conteúdo pode ser lido em voz alta ou em braille dinâmico"
             },
             "accessibilityFeature": {
                 "alternativeText": "Contém texto alternativo nas imagens",
@@ -750,8 +750,8 @@
             "pdfscalemode": "Ajustar à página ou largura",
             "print": "",
             "printDisabled": "",
-            "screenNext": "",
-            "screenPrevious": "",
+            "screenNext": "Avançar",
+            "screenPrevious": "Recuar",
             "settingsTitle": "Configurações"
         },
         "notes": {
@@ -816,7 +816,7 @@
             "letterSpacing": "Espaçamento de letras",
             "lineSpacing": "Espaçamento de linhas",
             "margin": "Margem",
-            "mathjax": "",
+            "mathjax": "Ativar MathJax",
             "noFootnotes": "Desativar janelas de notas de rodapé",
             "noRTLFlip": "Desativar interface Direita-para-esquerda",
             "noRuby": "Ocultar Ruby Japonês",

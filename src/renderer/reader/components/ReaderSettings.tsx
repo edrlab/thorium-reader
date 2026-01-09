@@ -656,7 +656,7 @@ const ReadingDisplayCol = ({ isPdf, spreadModeEven, pdfCol }: Pick<IBaseProps, "
                                 }
                             }}
                             className={stylesGlobal.checkbox_custom}
-                            style={{ border: !!spreadModeEven ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: !!spreadModeEven ? "var(--color-brand-primary)" : "transparent" }}>
+                            style={{ border: !!spreadModeEven ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: !!spreadModeEven ? "var(--color-brand-primary)" : "transparent" }}>
                             {!!spreadModeEven ?
                                 <SVG ariaHidden svg={CheckIcon} className={stylesGlobal.checkbox_customsvg} />
                                 :

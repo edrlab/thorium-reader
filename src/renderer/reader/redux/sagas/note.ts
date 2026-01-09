@@ -8,7 +8,7 @@
 // note.ts
 // bookmarks or annotations
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { SagaGenerator } from "typed-redux-saga";
 import { select as selectTyped, take as takeTyped, race as raceTyped, put as putTyped, all as allTyped, call as callTyped, spawn as spawnTyped, delay as delayTyped} from "typed-redux-saga/macro";
@@ -99,7 +99,7 @@ export function* noteUpdateLocatorExtendedFromImportSelector(note: INoteState) {
 
             const isABookmark = note.group === "bookmark"; // TODO: need a better way do distinguish bookmark selector from annotation selector with one character ? See https://github.com/edrlab/thorium-reader/issues/2988
             const locatorExtended = yield* callTyped(convertSelectorTargetToLocatorExtended, target, undefined, isABookmark, xmlDom, target.source);
-            
+
             if (equals(locatorExtended, note.locatorExtended)) {
                 debug(`ERROR: ${note.uuid} locatorExtended not updated, same as previous one`);
                 return ;

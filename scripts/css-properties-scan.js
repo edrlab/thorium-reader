@@ -43,7 +43,7 @@ for (const matchUseVar of matchesUseVar) {
 // console.log("#######################");
 }
 const blockListStartWith = ["--inspect", "--protocolHandler", ,"--remote", "--js"];
-const blockList = ["--theme-", "--transforms", "--IRangeInfo", "--debug", "--config", "--version", "--ts-ignore", "--signed", "--pending", "--experimental-network-inspector", "--gtk-version", "--help"];
+const blockList = ["--theme-", "--transforms", "--IRangeInfo", "--debug", "--config", "--version", "--ts-ignore", "--signed", "--pending", "--experimental-network-inspector", "--gtk-version", "--help", "--trigger-width"];
 for (const useVar of setUseVar) {
   if (!setDeclareVar.has(useVar) && !blockListStartWith.find((prefix) => useVar.startsWith(prefix)) && !blockList.includes(useVar)) {
     setUseVarWithoutDeclare.add(useVar);

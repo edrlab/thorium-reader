@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { dialog } from "electron";
-import { readFile } from "fs/promises";
+import * as fs from "fs";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { annotationActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
@@ -129,7 +129,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     try {
 
         // read filePath
-        const dataString = yield* callTyped(() => readFile(filePath, { encoding: "utf8" }));
+        const dataString = yield* callTyped(() => fs.promises.readFile(filePath, { encoding: "utf8" }));
         const readiumAnnotationFormat = JSON.parse(dataString);
         debug("filePath size=", dataString.length);
         debug("filePath serialized and ready to pass the type checker");

@@ -908,6 +908,7 @@
             "cancel": "Cancel",
             "disclaimer": "The application defaults were designed based on the physical location of keys on a QWERTY layout",
             "editUserJson": "Edit user file...",
+            "exportToHTML": "Export to HTML",
             "keyboardShortcuts": "Keyboard shortcuts",
             "list": {
                 "AddBookmarkWithLabel": {

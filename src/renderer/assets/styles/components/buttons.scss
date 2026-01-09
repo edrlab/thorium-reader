@@ -188,8 +188,8 @@ button {
   border: none;
   border-radius: 5px;
   text-align: center;
-  color: var(--color-brand-primary-contrast);
-  fill: var(--color-brand-primary-contrast);
+  color: var(--color-brand-primary-inverse);
+  fill: var(--color-brand-primary-inverse);
   text-decoration: none;
   overflow: hidden;
   cursor: pointer;
@@ -199,7 +199,7 @@ button {
 
   & svg {
     vertical-align: -2px;
-    fill: var(--color-brand-primary-contrast);
+    fill: var(--color-brand-primary-inverse);
     width: auto;
     height: 14px;
     transition: all 0.2s;

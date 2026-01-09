@@ -7,7 +7,7 @@
 
 import "reflect-metadata";
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { app, BrowserWindow } from "electron";
 import * as fs from "fs";
 import { Container } from "inversify";

@@ -54,9 +54,11 @@ import * as RadioGroup from "@radix-ui/react-radio-group";
 import { TextArea } from "react-aria-components";
 import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/annotation/htmlTemplate";
 import * as Popover from "@radix-ui/react-popover";
+import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 
 // import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import moment from "moment";
 
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
 
@@ -514,8 +516,8 @@ const Profiles = () => {
             >
                 {
                     packageProfileProvisioned.map((profile, index) => {
-                        const profileTitle = (profile?.title && typeof profile.title === "object") ? profile.title[locale] || profile.title["en"] || __("catalog.customization.fallback.title") : typeof profile.title === "string" ? profile.title : __("catalog.customization.fallback.title");
-                        const profileDescription = (profile?.description && typeof profile.description === "object") ? profile.description[locale] || profile.description["en"] || __("catalog.customization.fallback.description") : typeof profile.description === "string" ? profile.description : __("catalog.customization.fallback.description");
+                        const profileTitle = convertMultiLangStringToString(profile.title, locale) || __("catalog.customization.fallback.title");
+                        const profileDescription = convertMultiLangStringToString(profile.description, locale) || __("catalog.customization.fallback.description");
 
                         return (
                             <div
@@ -559,7 +561,7 @@ const Profiles = () => {
                                             <div style={{ fontSize: "12px" }}>
                                                 {/* <span>Filename: {profile.fileName}</span><br/>
                                             <span>Identifier: {profile.id}</span><br/> */}
-                                                <span>{__("settings.profiles.version", { version: profile.version })}</span>
+                                                <span>{__("settings.profiles.version", { version: moment(profile.version).toISOString() })}</span>
                                             </div>
                                         </div>
                                     </div>

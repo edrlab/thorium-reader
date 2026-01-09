@@ -35,7 +35,7 @@ import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar2-i
 import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as KeyIcon from "readium-desktop/renderer/assets/icons/key-icon.svg";
 import classNames from "classnames";
-import * as moment from "moment";
+import moment from "moment";
 import { formatTime } from "readium-desktop/common/utils/time";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/common/components/hoc/translator";

@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import * as path from "path";
 import { acceptedExtensionObject, isAcceptedExtension } from "readium-desktop/common/extension";
 import { computeFileHash, extractCrc32OnZip } from "readium-desktop/main/tools/crc";

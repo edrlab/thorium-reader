@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { Action } from "readium-desktop/common/models/redux";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
 import { lcpActions } from "readium-desktop/common/redux/actions/";
@@ -100,6 +100,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
     if (publicationDocument.lcp) {
         try {
             publicationDocument = yield* callTyped(
+                // DOES NOT MUTATE publicationDocument (returns a modified copy)
                 () => lcpManager.checkPublicationLicenseUpdate(publicationDocument),
             );
         } catch (error) {

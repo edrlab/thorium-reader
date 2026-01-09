@@ -2387,6 +2387,7 @@ declare namespace typed_i18n {
     readonly "cancel": string,
     readonly "disclaimer": string,
     readonly "editUserJson": string,
+    readonly "exportToHTML": string,
     readonly "keyboardShortcuts": string,
     readonly "list": {
       readonly "AddBookmarkWithLabel": {
@@ -2683,6 +2684,7 @@ declare namespace typed_i18n {
   readonly "cancel": string,
   readonly "disclaimer": string,
   readonly "editUserJson": string,
+  readonly "exportToHTML": string,
   readonly "keyboardShortcuts": string,
   readonly "list": {
     readonly "AddBookmarkWithLabel": {
@@ -2916,6 +2918,7 @@ declare namespace typed_i18n {
   (_: "settings.keyboard.cancel", __?: {}): string;
   (_: "settings.keyboard.disclaimer", __?: {}): string;
   (_: "settings.keyboard.editUserJson", __?: {}): string;
+  (_: "settings.keyboard.exportToHTML", __?: {}): string;
   (_: "settings.keyboard.keyboardShortcuts", __?: {}): string;
   (_: "settings.keyboard.list", __?: {}): {
   readonly "AddBookmarkWithLabel": {
