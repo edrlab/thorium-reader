@@ -11,7 +11,7 @@ import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/br
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { opdsActions } from "readium-desktop/renderer/library/redux/actions";
 import {
-    browseRequest, headerLinksUpdate, search, popBreadcrumb
+    browseRequest, headerLinksUpdate, search, popBreadcrumb,
 } from "readium-desktop/renderer/library/redux/actions/opds";
 import {
     IOpdsHeaderState, IOpdsSearchState,
