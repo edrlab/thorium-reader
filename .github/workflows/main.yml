@@ -36,6 +36,7 @@ jobs:
       fail-fast: false
       matrix:
         osarch: [windows-intel, windows-arm, macos-intel, macos-arm, linux-intel, linux-arm]
+        # osarch: [windows-intel, windows-arm]
 # Thorium for MacOS x64 and arm64 is built on GitHub Actions arm64 runners
 # Thorium for Linux x64 and arm64 is built on GitHub Actions x64 runners
 # Thorium for Windows x64 and arm64 is built on GitHub Actions x64 runners
@@ -45,7 +46,7 @@ jobs:
 # To ensure x64, the trick is:
 #       npm ci --foreground-scripts --arch=x64 --cpu=x64
 #       `package.json` already specifies "x64"
-# windows-latest is currently windows-2022
+# windows-latest is currently windows-2022, but becomes windows-2025 in September 2025 (windows-2022 remains supported for 3 years)
 #       https://github.com/actions/runner-images/blob/main/images/windows/Windows2022-Readme.md
 # windows-2025 is beta / public preview
 #       https://github.com/actions/runner-images/blob/main/images/windows/Windows2025-Readme.md
@@ -62,11 +63,11 @@ jobs:
 #       https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2004-Readme.md
         include:
           - osarch: windows-intel
-            runson: windows-latest #windows-2022
+            runson: windows-2025
             packname: win
             release_tag: latest-windows-intel
           - osarch: windows-arm
-            runson: windows-latest #windows-2022
+            runson: windows-2025
             packname: win
             release_tag: latest-windows-arm
           - osarch: macos-intel
@@ -96,12 +97,12 @@ jobs:
     - name: Microsoft Windows dumpbin to PATH
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        $VS_ROOT = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC"; $VS_VERSION = (Get-ChildItem -Path $VS_ROOT | Sort-Object Name -Descending | Select-Object -First 1).Name; $VS_BIN = "$VS_ROOT\$VS_VERSION\bin\Hostx64\x64"; echo $VS_BIN >> $env:GITHUB_PATH; echo $VS_BIN
+        $VS_ROOT = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC"; Get-ChildItem -Path $VS_ROOT -Force; $VS_VERSION = (Get-ChildItem -Path $VS_ROOT | Sort-Object Name -Descending | Select-Object -First 1).Name; $VS_BIN = "$VS_ROOT\$VS_VERSION\bin\Hostx64\x64"; echo $VS_BIN >> $env:GITHUB_PATH; echo $VS_BIN
       shell: powershell
     - name: Microsoft Windows dumpbin check
       if: startsWith(matrix.osarch, 'windows-')
       run: >
-        dumpbin /headers "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.43.34808\bin\Hostx64\x64\dumpbin.exe" | findstr /i machine
+        dir /A "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC" && dumpbin /headers "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\dumpbin.exe" | findstr /i machine
       shell: cmd
 # - name: Microsoft Windows msbuild to PATH
 #   if: startsWith(matrix.osarch, 'windows-')
@@ -109,9 +110,9 @@ jobs:
 # "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin"
 # "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools"
 # "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\bin\amd64"
-# "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64"
-# "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.42.34433\bin\Hostx64\x64"
-# "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.43.34808\bin\Hostx64\x64"
+# "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x64"
+# "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64"
+    #- run: exit 1
     - run: echo 'RELEASE_TAG:' ${{ env.RELEASE_TAG }}
     - run: 'echo "GITHUB_RUN_NUMBER: ${{ github.run_number }}"'
     - run: 'echo "GITHUB_RUN_ID: ${{ github.run_id }}"'
@@ -183,12 +184,12 @@ jobs:
     - name: NPM install (arm64)
       #if: ${{ matrix.osarch == 'linux-arm' || matrix.osarch == 'windows-arm' || matrix.osarch == 'macos-arm' }}
       if: endsWith(matrix.osarch, '-arm')
-      run: npm ci --foreground-scripts --arch=arm64 --cpu=arm64
+      run: npm ci --ignore-scripts --foreground-scripts --arch=arm64 --cpu=arm64 && cd node_modules/electron && npm run postinstall --arch=arm64 --cpu=arm64 && cd -
       #export npm_config_arch=arm64 && export npm_config_cpu=arm64 &&
     - name: NPM install (x64)
       #if: ${{ matrix.osarch == 'linux-intel' || matrix.osarch == 'windows-intel' || matrix.osarch == 'macos-intel' }}
       if: endsWith(matrix.osarch, '-intel')
-      run: npm ci --foreground-scripts --arch=x64 --cpu=x64
+      run: npm ci --ignore-scripts --foreground-scripts --arch=x64 --cpu=x64 && cd node_modules/electron && npm run postinstall --arch=x64 --cpu=x64 && cd -
       #export npm_config_arch=x64 && export npm_config_cpu=x64 &&
     - name: Electron version + arch (Windows)
       #if: ${{ matrix.osarch == 'windows-intel' || matrix.osarch == 'windows-arm' }}
@@ -217,13 +218,14 @@ jobs:
     - name: non-PR action (build and package) ARM
       #if: ${{ github.event_name != 'pull_request' && (matrix.osarch == 'linux-arm' || matrix.osarch == 'windows-arm' || matrix.osarch == 'macos-arm') }}
       if: ${{ github.event_name != 'pull_request' && endsWith(matrix.osarch, '-arm') }}
-      #run: sed 's/x64/arm64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json && npm run package:${{ matrix.packname }} && sed 's/arm64/x64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json
+      #run: sed 's/--x64/--arm64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json && npm run package:${{ matrix.packname }} && sed 's/--arm64/--x64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json
       run: >
-        node -e 'const path = require("path"); const fs = require("fs"); const filePath = path.join(process.cwd(), "package.json"); let fileStr = fs.readFileSync(filePath, { encoding: "utf8" }); fileStr = fileStr.replace(/x64/g, "arm64"); fs.writeFileSync(filePath, fileStr, { encoding: "utf8" });' && npm run package:${{ matrix.packname }}
+        node -e 'const path = require("path"); const fs = require("fs"); const filePath = path.join(process.cwd(), "package.json"); let fileStr = fs.readFileSync(filePath, { encoding: "utf8" }); fileStr = fileStr.replace(/--x64/g, "--arm64"); fs.writeFileSync(filePath, fileStr, { encoding: "utf8" });' && npm run package:${{ matrix.packname }}
     - name: non-PR action (build and package) INTEL
       #if: ${{ github.event_name != 'pull_request' && (matrix.osarch == 'linux-intel' || matrix.osarch == 'windows-intel' || matrix.osarch == 'macos-intel') }}
       if: ${{ github.event_name != 'pull_request' && endsWith(matrix.osarch, '-intel') }}
-      run: npm run package:${{ matrix.packname }}
+      run: >
+        node -e 'const path = require("path"); const fs = require("fs"); const filePath = path.join(process.cwd(), "package.json"); let fileStr = fs.readFileSync(filePath, { encoding: "utf8" }); fileStr = fileStr.replace(/--arm64/g, "--x64"); fs.writeFileSync(filePath, fileStr, { encoding: "utf8" });' && npm run package:${{ matrix.packname }}
     #- run: ls -alsR release
     #- run: npm install @octokit/rest
     - name: GitHub Tagged Release Delete/ReCreate and Upload Build Artefacts

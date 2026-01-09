@@ -31,11 +31,12 @@ import { winModeReducer } from "readium-desktop/common/redux/reducers/winModeRed
 import { readerDivinaReducer } from "./divina";
 import { readerRTLFlipReducer } from "readium-desktop/common/redux/reducers/reader/rtlFlip";
 import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
+import { screenReaderReducer } from "readium-desktop/common/redux/reducers/screenReader";
 import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducers/reader/defaultConfig";
 import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
 import { versionUpdateReducer } from "readium-desktop/common/redux/reducers/version-update";
 import { annotationModeEnableReducer } from "./annotationModeEnable";
-import { readerActions } from "readium-desktop/common/redux/actions";
+import { customizationActions, readerActions } from "readium-desktop/common/redux/actions";
 import { readerMediaOverlayReducer } from "./mediaOverlay";
 import { readerTTSReducer } from "./tts";
 import { readerTransientConfigReducer } from "./readerTransientConfig";
@@ -43,7 +44,6 @@ import { readerAllowCustomConfigReducer } from "readium-desktop/common/redux/red
 import { creatorReducer } from "readium-desktop/common/redux/reducers/creator";
 import { importAnnotationReducer } from "readium-desktop/renderer/common/redux/reducers/importAnnotation";
 import { tagReducer } from "readium-desktop/common/redux/reducers/tag";
-import { readerResourceCacheReducer } from "./resourceCache";
 import { readerLockReducer } from "./lock";
 import { imageClickReducer } from "./imageClick";
 import { dockReducer } from "readium-desktop/common/redux/reducers/dock";
@@ -52,6 +52,13 @@ import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 import { arrayReducer } from "readium-desktop/utils/redux-reducers/array.reducer";
 import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import { noteExportReducer } from "readium-desktop/common/redux/reducers/noteExport";
+import { customizationPackageProvisioningReducer } from "readium-desktop/common/redux/reducers/customization/provision";
+import { customizationPackageActivatingReducer } from "readium-desktop/common/redux/reducers/customization/activate";
+import { customizationPackageActivatingLockReducer } from "readium-desktop/common/redux/reducers/customization/lock";
+import { ICustomizationProfileHistory } from "readium-desktop/common/redux/states/customization";
+import { customizationPackageWelcomeScreenReducer } from "readium-desktop/common/redux/reducers/customization/welcomeScreen";
+import { ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
+import { readerPdfConfigReducer } from "readium-desktop/common/redux/reducers/reader/pdfConfig";
 
 export const rootReducer = () => {
 
@@ -59,6 +66,7 @@ export const rootReducer = () => {
         versionUpdate: versionUpdateReducer,
         theme: themeReducer,
         session: sessionReducer,
+        screenReader: screenReaderReducer,
         api: apiReducer,
         i18n: i18nReducer,
         reader: combineReducers({ // IReaderStateReader, dehydrated from main process registry (preloaded state)
@@ -149,9 +157,9 @@ export const rootReducer = () => {
             mediaOverlay: readerMediaOverlayReducer,
             tts: readerTTSReducer,
             lock: readerLockReducer,
+            pdfConfig: readerPdfConfigReducer,
         }),
         search: searchReducer,
-        resourceCache: readerResourceCacheReducer,
         annotation: annotationModeEnableReducer,
         noteTagsIndex: arrayReducer<readerActions.note.addUpdate.TAction | readerActions.note.remove.TAction, undefined, { tag: string, index: number }, { tag: string }>(
             {
@@ -209,5 +217,25 @@ export const rootReducer = () => {
         img: imageClickReducer,
         lcp: lcpReducer,
         noteExport: noteExportReducer,
+        customization: combineReducers({
+            history: arrayReducer<customizationActions.addHistory.TAction, undefined, ICustomizationProfileHistory, Pick<ICustomizationProfileHistory, "id">>(
+                {
+                    add: {
+                        type: customizationActions.addHistory.ID,
+                        selector: (payload, _state) => {
+                            const { id, version } = payload;
+                            return [{ id, version }];
+                        },
+                    },
+                    remove: undefined,
+                    getId: (item) => item.id,
+                },
+            ),
+            activate: customizationPackageActivatingReducer,
+            provision: customizationPackageProvisioningReducer,
+            lock: customizationPackageActivatingLockReducer,
+            welcomeScreen: customizationPackageWelcomeScreenReducer,
+            manifest: () => null as ICustomizationManifest,
+        }),
     });
 };

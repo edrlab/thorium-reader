@@ -54,6 +54,8 @@ export const dispatchOpdsLink =
                     // state: {} // we preserve the existing route state
                 }, location.state as IRouterLocationState);
             } else {
-                await shell.openExternal(ln.url);
+                if (ln.url && /^https?:\/\//.test(ln.url)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
+                    await shell.openExternal(ln.url);
+                }
             }
         };

@@ -46,7 +46,7 @@ This release includes the following (notable) new features, improvements and bug
 Git commit diff since `3.0.0`:
 https://github.com/edrlab/thorium-reader/compare/v3.0.0...v3.1.0
 
-=> *272** GitHub Git commits:
+=> **272** GitHub Git commits:
 
 * [(_)](https://github.com/edrlab/thorium-reader/commit/8b5834d2dad54bbde33c04d42d0c6a6245c2b8f4) __chore(NPM):__ package updates
 * [(_)](https://github.com/edrlab/thorium-reader/commit/cd6d3d2eb19e9bae07ae810cdcc18838c4808798) __fix(l10n):__ updated Slovenian translation via GitLocalize (PR [#2800](https://github.com/edrlab/thorium-reader/pull/2800))
@@ -324,6 +324,6 @@ https://github.com/edrlab/thorium-reader/compare/v3.0.0...v3.1.0
 __Developer Notes__:
 
 * The [standard-changelog](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/standard-changelog) utility (`npx standard-changelog --first-release`) somehow only generates a limited number of commits, so we use a one-liner command line / shell script instead:
-* `git --no-pager log --decorate=short --pretty=oneline v2.4.1...v3.0.0 | cut -d " " -f 1- | sed -En '/^([0-9a-zA-Z]+)[[:space:]]([^:]+):(.+)$/!p;s//\1 __\2:__\3/p' | sed -En 's/^(.+)$/* \1/p' | sed -En '/PR[[:space:]]*#([0-9]+)/!p;s//PR [#\1](https:\/\/github.com\/edrlab\/thorium-reader\/pull\/\1)/gp' | sed -En '/\(#([0-9]+)/!p;s//(PR [#\1](https:\/\/github.com\/edrlab\/thorium-reader\/pull\/\1)/gp' | sed -En '/(Fixes|See|Fix|Fixed)[[:space:]]*#([0-9]+)/!p;s//\1 [#\2](https:\/\/github.com\/edrlab\/thorium-reader\/issues\/\2)/gp' | sed -En '/^.[[:space:]]([0-9a-zA-Z]+)[[:space:]]/!p;s//* [(_)](https:\/\/github.com\/edrlab\/thorium-reader\/commit\/\1) /p' | sed -En '/[[:space:]]#([0-9]+)/!p;s// [#\1](https:\/\/github.com\/edrlab\/thorium-reader\/issues\/\1)/gp'`
+* `git --no-pager log --decorate=short --pretty=oneline v3.0.0...v3.1.0 | cut -d " " -f 1- | sed -En '/^([0-9a-zA-Z]+)[[:space:]]([^:]+):(.+)$/!p;s//\1 __\2:__\3/p' | sed -En 's/^(.+)$/* \1/p' | sed -En '/PR[[:space:]]*#([0-9]+)/!p;s//PR [#\1](https:\/\/github.com\/edrlab\/thorium-reader\/pull\/\1)/gp' | sed -En '/\(#([0-9]+)/!p;s//(PR [#\1](https:\/\/github.com\/edrlab\/thorium-reader\/pull\/\1)/gp' | sed -En '/(Fixes|See|Fix|Fixed)[[:space:]]*#([0-9]+)/!p;s//\1 [#\2](https:\/\/github.com\/edrlab\/thorium-reader\/issues\/\2)/gp' | sed -En '/^.[[:space:]]([0-9a-zA-Z]+)[[:space:]]/!p;s//* [(_)](https:\/\/github.com\/edrlab\/thorium-reader\/commit\/\1) /p' | sed -En '/[[:space:]]#([0-9]+)/!p;s// [#\1](https:\/\/github.com\/edrlab\/thorium-reader\/issues\/\1)/gp'`
 * ...append `| pbcopy` on MacOS to copy the result into the clipboard.
 * ...append `| wc -l` to verify that the result actually matches the number of Git commits.

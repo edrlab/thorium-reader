@@ -7,7 +7,7 @@
 
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import * as React from "react";
 import { IOpdsTagView } from "readium-desktop/common/views/opds";
 import { TFormEvent } from "readium-desktop/typings/react";
@@ -18,7 +18,7 @@ import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/componen
 import { connect } from "react-redux";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { TranslatorProps, withTranslator } from "../../../hoc/translator";
-
+import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProps extends ReturnType<typeof mapStateToProps>, TranslatorProps {
@@ -104,7 +104,7 @@ class AddTag extends React.Component<IProps, IState> {
         const { tagArray } = this.props;
 
         const tags = Array.isArray(tagArray) ? tagArray.slice() : [];
-        const tagName = this.state.tagName.trim().replace(/\s\s+/g, " ").toLowerCase();
+        const tagName = trimNormaliseWhitespaceAndCollapse(this.state.tagName).toLowerCase();
 
         this.setState({ tagName: "" });
 

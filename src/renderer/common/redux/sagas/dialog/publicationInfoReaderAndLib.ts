@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { TApiMethod } from "readium-desktop/common/api/api.type";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { apiActions, dialogActions } from "readium-desktop/common/redux/actions";
@@ -67,9 +67,9 @@ function* checkReaderAndLibPublication(action: dialogActions.openRequest.TAction
     }
 }
 
-function* getApi(id: string, lsd: boolean) {
+function* getApi(id: string, checkLcpLsd: boolean) {
 
-    yield apiSaga("publication/get", REQUEST_ID, id, lsd);
+    yield apiSaga("publication/get", REQUEST_ID, id, checkLcpLsd);
     while (true) {
         const action:
             apiActions.result.TAction<TReturnPromiseOrGeneratorType<TApiMethod["publication/get"]>>
@@ -114,3 +114,5 @@ export function saga() {
         ),
     ]);
 }
+
+export const publicationInfoReaderLibGetPublicationApiCall = getApi;

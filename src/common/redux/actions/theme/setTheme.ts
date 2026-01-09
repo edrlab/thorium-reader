@@ -14,7 +14,7 @@ export interface Payload {
     name: TTheme;
 }
 
-export function build(theme: TTheme): Action<typeof ID, Payload> {
+export function build(theme?: TTheme): Action<typeof ID, Payload> {
 
     return {
         type: ID,

@@ -48,7 +48,7 @@ export const FormatContributorWithLink: React.FC<IProps> = (props) => {
                 retElement.push(
                     <a
                         onClick={onClickLinkCb(newContributor as IOpdsContributorView)}
-                        onKeyUp={(e) => { // necessary because no href (with href, preventDefault() inside onClick would be necessary to avoid SHIT and OPT/ALT key mods on the hyperlink, and CSS visited styles would need to be added)
+                        onKeyUp={(e) => { // necessary because no href (with href, preventDefault() inside onClick would be necessary to avoid SHIFT, OPT/ALT, META key mods on the hyperlink, and CSS visited styles would need to be added)
                             if (e.key === "Enter") {
                                onClickLinkCb(newContributor as IOpdsContributorView)();
                                e.preventDefault();

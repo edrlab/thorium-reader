@@ -19,6 +19,7 @@ import * as loadActions from "./load";
 import * as readerActions from "./reader/";
 import * as toastActions from "./toast/";
 import * as sessionActions from "./session/";
+import * as screenReaderActions from "./screenReader/";
 import * as catalogActions from "./catalog";
 import * as publicationActions from "./publication";
 import * as themeActions from "./theme";
@@ -28,6 +29,8 @@ import * as annotationActions from "./annotation";
 import * as creatorActions from "./creator";
 import * as settingsActions from "./settings";
 import * as noteExport from "./noteExport";
+import * as customizationActions from "./customization";
+import * as opdsActions from "./opds";
 
 export {
     historyActions,
@@ -44,6 +47,7 @@ export {
     keyboardActions,
     loadActions,
     sessionActions,
+    screenReaderActions,
     catalogActions,
     publicationActions,
     themeActions,
@@ -53,4 +57,6 @@ export {
     creatorActions,
     settingsActions,
     noteExport,
+    customizationActions,
+    opdsActions,
 };

@@ -75,6 +75,7 @@ RUN rm -rf /THORIUM/* &&\
 COPY ./typings* /THORIUM/
 COPY ./tsconfig* /THORIUM/
 COPY ./package* /THORIUM/
+COPY ./customization-profile-public-key-pair* /THORIUM/
 COPY ./pat* /THORIUM/
 COPY ./jest* /THORIUM/
 COPY ./eslint* /THORIUM/

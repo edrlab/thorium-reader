@@ -8,6 +8,7 @@
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 
 import { shell } from "electron";
 import * as React from "react";
@@ -18,7 +19,18 @@ import SVG from "readium-desktop/renderer/common/components/SVG";
 import { IApiappSearchResultView } from "readium-desktop/common/api/interface/apiappApi.interface";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
+
+// TypeScript GO:
+// The current file is a CommonJS module whose imports will produce 'require' calls;
+// however, the referenced file is an ECMAScript module and cannot be imported with 'require'.
+// Consider writing a dynamic 'import("...")' call instead.
+// To convert this file to an ECMAScript module, change its file extension to '.mts',
+// or add the field `"type": "module"` to 'package.json'.
+// @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
+// e__slint-disable-next-line @typescript-eslint/ban-ts-comment
+// @__ts-ignore TS1479
 import { nanoid } from "nanoid";
+
 import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
 import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
@@ -44,8 +56,8 @@ const Item = ({v}: {v: IApiappSearchResultView}) => {
                     cursor: "pointer",
                     padding: "8px",
                     marginTop: "1rem",
-                    backgroundColor: selectSearchResult === v ? "var(--color-light-blue)" : "transparent",
-                    border: selectSearchResult === v ? "2px solid var(--color-blue)" : "2px solid transparent",
+                    backgroundColor: selectSearchResult === v ? "var(--color-brand-secondary)" : "transparent",
+                    border: selectSearchResult === v ? "2px solid var(--color-brand-primary)" : "2px solid transparent",
                     borderRadius: "8px",
                 }}
                     role="option"
@@ -83,24 +95,30 @@ export const ApiappHowDoesItWorkInfoBox = () => {
 
 
     const [__] = useTranslator();
+    // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const isRTL = locale === "ar";
     const [infoOpen, setInfoOpen] = React.useState(false);
 
     return (
         <div>
-            <button className={classNames("button_catalog_infos")} onClick={(e) => { e.preventDefault(); setInfoOpen(!infoOpen); }}>
+            <button dir={isRTL ? "rtl" : "ltr"} className={classNames("button_catalog_infos")} onClick={(e) => { e.preventDefault(); setInfoOpen(!infoOpen); }}>
                 <SVG ariaHidden svg={InfoIcon} />
                 {__("apiapp.howItWorks")}
                 <SVG ariaHidden svg={infoOpen ? ChevronUp : ChevronDown} />
             </button>
             {infoOpen ?
                 <div className={classNames("catalog_infos_text")}>
-                    <p>
+                    <p dir={isRTL ? "rtl" : "ltr"}>
                         {__("apiapp.informations")}
                     </p>
-                    <a href=""
+                    <a dir={isRTL ? "rtl" : "ltr"} href=""
                         onClick={async (ev) => {
                             ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
-                            await shell.openExternal("https://thorium.edrlab.org/");
+                            const href = "https://thorium.edrlab.org/";
+                            if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
+                                await shell.openExternal(href);
+                            }
                         }}>
                         {__("apiapp.documentation")}
                         <SVG ariaHidden svg={FollowLinkIcon} />

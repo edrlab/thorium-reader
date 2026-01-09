@@ -5,8 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
-import * as debug_ from "debug";
-import { historyActions, readerActions } from "readium-desktop/common/redux/actions";
+import debug_ from "debug";
+import { customizationActions, historyActions, readerActions } from "readium-desktop/common/redux/actions";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import {
@@ -16,7 +16,7 @@ import {
 } from "readium-desktop/main/event";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, put, spawn } from "redux-saga/effects";
-import { call as callTyped, take as takeTyped } from "typed-redux-saga/macro";
+import { call as callTyped, take as takeTyped, select as selectTyped, put as putTyped /*race as raceTyped, delay as delayTyped*/ } from "typed-redux-saga/macro";
 import { opdsApi } from "./api";
 import { browse } from "./api/browser/browse";
 import { addFeed } from "./api/opds/feed";
@@ -24,6 +24,15 @@ import { addFeed } from "./api/opds/feed";
 import { importFromFs, importFromLink } from "./api/publication/import";
 import { search } from "./api/publication/search";
 import { appActivate } from "./win/library";
+import { getAndStartCustomizationWellKnownFileWatchingEventChannel } from "./getEventChannel";
+import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
+import { customizationPackageProvisioning, customizationPackageProvisioningCheckVersion, customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
+import * as path from "path";
+import { ICustomizationProfileError, ICustomizationProfileProvisioned, ICustomizationProfileProvisionedWithError } from "readium-desktop/common/redux/states/customization";
+import { URL_HOST_CUSTOMPROFILE, URL_HOST_OPDS_AUTH, URL_PROTOCOL_APP_HANDLER_THORIUM, URL_PROTOCOL_OPDS } from "readium-desktop/common/streamerProtocol";
+import { EXT_THORIUM } from "readium-desktop/common/extension";
+import { getLibraryWindowFromDi } from "readium-desktop/main/di";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 // Logger
 const debug = debug_("readium-desktop:main:saga:event");
@@ -32,12 +41,83 @@ export function saga() {
     return all([
         spawn(function*() {
 
-            const chan = getOpenFileFromCliChannel();
+            const chan = getAndStartCustomizationWellKnownFileWatchingEventChannel(customizationWellKnownFolder);
 
             while (true) {
 
                 try {
+                    const [packageFileName, removed] = yield* takeTyped(chan);
+
+                    const customizationState = yield* selectTyped((state: ICommonRootState) => state.customization);
+                    let packagesProvisionedAndLatest = customizationState.provision;
+                    let packagesNotProvisionedOrOnError: ICustomizationProfileProvisionedWithError[] = [];
+
+                    if (removed) {
+                        const packageFound = packagesProvisionedAndLatest.find(({ fileName }) => fileName === packageFileName);
+                        if (packageFound && packageFound.id === customizationState.activate.id && packageFound.fileName === packageFileName) {
+                            debug("rollback to thorium vanilla profile");
+                            yield* putTyped(customizationActions.activating.build("")); // no profile
+                        }
+                        packagesProvisionedAndLatest = packagesProvisionedAndLatest.filter(({ fileName }) => fileName !== packageFileName);
+                    } else {
+
+                        debug("Found => ", packageFileName);
+                        const profileProvisionedOrOnError = yield* callTyped(() => customizationPackageProvisioning(packageFileName));
+                        if ((profileProvisionedOrOnError as ICustomizationProfileError).error) {
+                            debug("ERROR: Profile not provisioned, due to error :", (profileProvisionedOrOnError as ICustomizationProfileError).message);
+                            packagesNotProvisionedOrOnError.push((profileProvisionedOrOnError as ICustomizationProfileError));
+                        } else {
+
+                            [packagesProvisionedAndLatest, packagesNotProvisionedOrOnError] = yield* callTyped(() => customizationPackageProvisioningCheckVersion(
+                                packagesProvisionedAndLatest,
+                                packagesNotProvisionedOrOnError,
+                                profileProvisionedOrOnError as ICustomizationProfileProvisioned,
+                            ));
+                        }
+                    }
+
+                    debug("dispatch provisionning action with ", JSON.stringify(packagesProvisionedAndLatest)/*.slice(0, 100)+"..."*/);
+                    yield* putTyped(customizationActions.provisioning.build(packagesProvisionedAndLatest, packagesNotProvisionedOrOnError));
+
+                    // TODO: how to warn user of potentially a new version of the packages id, we have to put a diff between version for a same id !
+                    // And mostly a technical issue, how to update the view with the update. package streamer follow a package id
+
+
+                } catch (e) {
+
+                    debug("ERROR to importFromFs and to open the publication");
+                    debug(e);
+                }
+            }
+
+
+        }),
+        spawn(function*() {
+
+            const chan = getOpenFileFromCliChannel();
+
+            debug(`openFileFromCliChannel loaded and ready, ${chan}, ${typeof chan}`);
+
+            while (true) {
+
+                debug("Wait an event from the queue openFileFromCliChannel ...");
+
+                try {
                     const filePath = yield* takeTyped(chan);
+
+                    debug(`Receive ${filePath} from openFileFromCliChannel`);
+
+                    const fileName = path.basename(filePath);
+                    const extension = path.extname(fileName);
+                    if (extension === EXT_THORIUM) {
+
+                        debug("It's a custom profile extension");
+                        debug("AppActivate Thorium and acquire (provision/activate) the profile");
+
+                        yield* callTyped(appActivate);
+                        yield put(customizationActions.acquire.build(filePath));
+                        continue ;
+                    }
 
                     const pubViewArray = yield* callTyped(importFromFs, filePath);
                     const pubView = Array.isArray(pubViewArray) ? pubViewArray[0] : pubViewArray;
@@ -91,8 +171,43 @@ export function saga() {
                 try {
                     const url = yield* takeTyped(chan);
 
+                    // const prom = new Promise<boolean>(
+                    //     (res, _rej) => {
+
+                    //         const request = net.request({ method: "HEAD", url });
+                    //         request.on("response", (response) => {
+                    //             debug(`URL: ${url}`);
+                    //             debug(`STATUS: ${response.statusCode}`);
+                    //             debug(`HEADERS: ${JSON.stringify(response.headers)}`);
+
+                    //             if (response.headers["content-type"] === mimeTypes["thorium"]) {
+                    //                 debug("This is a thorium custom profile extension");
+
+                    //                 res(true);
+                    //             }
+                    //         });
+                    //     });
+
+                    // debug("THORIUM event custom url scheme received :");
+                    // debug("HEAD request to ", url);
+                    // const {a: __isATimeout, b: isAProfileExtension} = yield* raceTyped({ a: delayTyped(10000), b: callTyped(() => prom) });
+                    // if (isAProfileExtension) {
+                    //     yield* putTyped(customizationActions.acquire.build(url));
+                    //     return ;
+                    // }
+
+                    // handle thorium://<token>/...
+                    if (url.startsWith(`${URL_PROTOCOL_APP_HANDLER_THORIUM}://${URL_HOST_CUSTOMPROFILE}/`)) {
+                        const profileUrl = url.replace(`${URL_PROTOCOL_APP_HANDLER_THORIUM}://${URL_HOST_CUSTOMPROFILE}/`, "http://");
+                        debug("THORIUM customization-profile url", profileUrl);
+                        yield* putTyped(customizationActions.acquire.build(profileUrl));
+                        continue ;
+                    }
+
+                    const openUrl = url.replace(`${URL_PROTOCOL_APP_HANDLER_THORIUM}://`, "http://"); // HTTP to HTTPS redirect should be handled by the server
+
                     const link: IOpdsLinkView = {
-                        url,
+                        url: openUrl,
                     };
 
                     const pubViewArray = (yield* callTyped(importFromLink, link)) as PublicationView | PublicationView[];
@@ -119,6 +234,23 @@ export function saga() {
 
                 try {
                     const url = yield* takeTyped(chan);
+
+                    if (url.startsWith(`${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`)) {
+                        debug("OPDS AUTH: ", `${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`);
+                        // ===> opdsAuthFlow
+                        const libWin = getLibraryWindowFromDi();
+                        const children = libWin.getChildWindows(); // TODO: make sure this is the OPDS AUTH BrowserWindow!!
+                        if (children?.length) {
+                            debug("OPDS AUTH: sub win?");
+                            const win = children[0];
+                            if (win.title === getTranslator().translate("catalog.opds.auth.login")) {
+                                debug("OPDS AUTH: sub win OK, load...", url);
+                                yield* callTyped(() => win.loadURL(url));
+                            }
+                        }
+
+                        continue;
+                    }
 
                     const feed = yield* callTyped(opdsApi.addFeed, { title : url, url});
                     if (feed) {

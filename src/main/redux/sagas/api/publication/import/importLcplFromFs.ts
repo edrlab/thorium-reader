@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
-import { promises as fsp } from "fs";
-import * as moment from "moment";
+import debug_ from "debug";
+import * as fs from "fs";
+import moment from "moment";
 import * as path from "path";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -37,7 +37,7 @@ export function* importLcplFromFS(
     const lcpManager = diMainGet("lcp-manager");
     const publicationRepository = diMainGet("publication-repository");
 
-    const r2LCPStr = yield* callTyped(() => fsp.readFile(filePath, { encoding: "utf8" }));
+    const r2LCPStr = yield* callTyped(() => fs.promises.readFile(filePath, { encoding: "utf8" }));
     const r2LCPJson = JSON.parse(r2LCPStr);
 
     if (lcpLicenseIsNotWellFormed(r2LCPJson)) {
@@ -74,7 +74,7 @@ export function* importLcplFromFS(
                 debug(err);
             }
             if (res) {
-                const msg = lcpManager.convertUnlockPublicationResultToString(res);
+                const msg = lcpManager.convertUnlockPublicationResultToString(res, r2LCP.Issued?.toISOString() || "");
                 yield put(
                     toastActions.openRequest.build(
                         ToastType.Error, msg,
@@ -93,7 +93,7 @@ export function* importLcplFromFS(
                 // CERTIFICATE_REVOKED = 101
                 // LICENSE_CERTIFICATE_DATE_INVALID (was LICENSE_SIGNATURE_DATE_INVALID) = 111
                 // LICENSE_SIGNATURE_INVALID = 112
-                const msg = lcpManager.convertUnlockPublicationResultToString(err);
+                const msg = lcpManager.convertUnlockPublicationResultToString(err, r2LCP.Issued?.toISOString() || "");
                 yield put(
                     toastActions.openRequest.build(
                         ToastType.Error, msg,

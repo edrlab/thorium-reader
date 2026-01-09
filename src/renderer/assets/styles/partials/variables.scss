@@ -5,88 +5,163 @@
   display: none;
 }
 
+// GLOBAL COLORS
+
+$color-white-1: #fff;
+$color-white-2: #d9d9d9;
+$color-black-1: #2D2D2D;
+$color-black-2: #1E1E1E;
+$color-grey-1: #61646B;
+$color-grey-2: #7c7d86;
+
+// THORIUM SET OF COLORS 
+
+$thorium-theme-neutral-light: $color-white-1;
+$thorium-theme-neutral-dark: #1D1D1E;
+$thorium-theme-primary-light: #1053C8;
+$thorium-theme-primary-dark: #99A9E3;
+$thorium-theme-secondary-light: #ECF2FD;
+$thorium-theme-secondary-dark: $color-black-1;
+$thorium-theme-border-light: #afb1b6;
+$thorium-theme-border-dark: #48484b;
+$thorium-theme-background-light: #f5f5f5;
+$thorium-theme-background-dark: #27272a;
+$thorium-theme-appName-light: $thorium-theme-border-light;
+$thorium-theme-appName-dark: #EAEAEA;
+$thorium-theme-scrollbar-thumb: $color-grey-2;
+$thorium-theme-button-hover-light: $color-white-1;
+$thorium-theme-button-hover-dark: #48484b;
+$thorium-theme-buttons-border-light: #1053C8;
+$thorium-theme-buttons-border-dark: #99A9E3;
+
+
+// CUSTOM SET OF COLORS (DEFAULT TO THORIUM)
+
+$theme-neutral-light: var(--theme-neutral_light, $thorium-theme-neutral-light);
+$theme-neutral-dark: var(--theme-neutral_dark, $thorium-theme-neutral-dark);
+$theme-main-primary-light: var(--theme-primary_light, $thorium-theme-primary-light);
+$theme-main-primary-dark: var(--theme-primary_dark, $thorium-theme-primary-dark);
+$theme-main-secondary-light: var(--theme-secondary_light, $thorium-theme-secondary-light);
+$theme-main-secondary-dark: var(--theme-secondary_dark, $thorium-theme-secondary-dark);
+$theme-border-light: var(--theme-border_light, $thorium-theme-border-light);
+$theme-border-dark: var(--theme-border_dark, $thorium-theme-border-dark);
+$theme-background-light: var(--theme-background_light, $thorium-theme-background-light);
+$theme-background-dark: var(--theme-background_dark, $thorium-theme-background-dark);
+$theme-appName-light: var(--theme-appName_light, $thorium-theme-appName-light);
+$theme-appName-dark: var(--theme-appName_dark, $thorium-theme-appName-dark);
+$theme-scrollbar-thumb-light: var(--theme-scrollbarThumb_light, $thorium-theme-scrollbar-thumb);
+$theme-scrollbar-thumb-dark: var(--theme-scrollbarThumb_dark, $thorium-theme-scrollbar-thumb);
+$theme-button-hover-light: var(--theme-neutral_light, $thorium-theme-button-hover-light);
+$theme-button-hover-dark: var(--theme-neutral_dark, $thorium-theme-button-hover-dark);
+$theme-buttons-border-light: var(--theme-buttonsBorder_light, $thorium-theme-buttons-border-light);
+$theme-buttons-border-dark: var(--theme-buttonsBorder_dark, $thorium-theme-buttons-border-dark);
+
+// FINAL VARIABLES PALETTE
+
 $color-palette: (
   light: (
-    --color-primary: #4d4d4d,
-    --color-secondary: #fff,
-    --color-blue: #1053C8,
-    --color-blue-alt: #1053C8,
-    --color-light-blue: #ECF2FD,
-    --color-extralight-grey: #f5f5f5,
-    --color-extralight-grey-alt: color.adjust(#f5f5f5, $lightness: -5%),
-    --color-verylight-grey: #d9d9d9,
-    --color-verylight-grey-alt: #d9d9d9,
-    --color-verylight-grey-alt2: #d9d9d9,
-    --color-light-grey: #afb1b6,
-    --color-medium-grey: #61646B,
-    --color-mediumdark-grey: #2D2D2D,
-    --color-mediumdark-grey-alt: #2D2D2D,
-    --color-dark-grey: #1E1E1E,
-    --color-dark-grey-alt: #1E1E1E,
-    --color-accent: #00BCD4,
-    --color-accent-contrast: #fff,
-    --reader-fontColor: #000,
-    --scrollbar-thumb: #98989d,
-    --color-disabled: #61646B,
-    --color-error: #FCEEF1,
-    --color-error-dark: #D52A54,
-    --color-success: #0B8454,
-    --color-success-light: #ECFEF7,
-    --color-appName: #AFB1B6,
-    --color-annotations-txt: #f5f5f5,
-    --color-annotations-txt-area: #fff,
-    --color-annotations-bg: #fff,
-    --color-button-hover: #fff,
-    --color-docked-header: #f5f5f5,
+    // ===== MAIN ===== //
+    --color-text-primary: #4d4d4d,
+    --color-text-reader: #000,
+    --color-neutral-base: $theme-neutral-light,
+    --color-brand-primary: $theme-main-primary-light,
+    --color-brand-primary-inverse: $theme-main-primary-light,
+    --color-brand-secondary: $theme-main-secondary-light,
+
+    // ===== GREY ===== //
+    --color-gray-50: $theme-background-light,
+    --color-gray-100: color.adjust($thorium-theme-background-light, $lightness: -5%),
+    --color-gray-200: $color-white-2,
+    --color-gray-250: $color-white-2,
+    --color-gray-275: $color-white-2,
+    --color-gray-300: $theme-border-light,
+    --color-gray-400: $color-grey-1,
+    --color-gray-800: $color-black-1,
+    --color-gray-850: $color-black-1,
+    --color-gray-900: $color-black-2,
+    --color-gray-950: $color-black-2,
+
+    // ===== STATE ===== //
+    --color-disabled: $color-grey-1,
+    --color-error-text: #D52A54,
+    --color-error-bg: #FCEEF1,
+    --color-success-text: #0B8454,
+    --color-success-bg: #ECFEF7,
+
+    // ===== COMPONENTS ===== //
+    --color-appName: $theme-appName-light,
+    --color-scrollbar-thumb: $theme-scrollbar_thumb_light,
+
+    // ===== ANNOTATIONS ===== //
+    --color-annotation-text: #f5f5f5,
+    --color-annotation-textarea: $color-white-1,
+    --color-annotation-bg: $color-white-1,
+
+    // ===== BUTTONS ===== //
+    --color-button-hover: $theme-button-hover-light,
+    --color-button-border: $theme-buttons-border-light,
+
+    // ===== HEADER ===== //
+    --color-header-docked: #f5f5f5,
   ),
   dark: (
-    --color-primary: #e7eaf8,
-    --color-secondary: #1D1D1E,
-    --color-blue: #99A9E3,
-    --color-blue-alt: #fff,
-    --color-light-blue: #2D2D2D,
-    --color-extralight-grey: #27272a,
-    --color-extralight-grey-alt: color.adjust(#27272a, $lightness: 5%),
-    --color-verylight-grey: color.adjust(#61646B, $lightness: 25%),
-    --color-verylight-grey-alt: #7c7d86,
-    --color-verylight-grey-alt2: #454547,
-    --color-light-grey: #48484b,
-    --color-medium-grey: #7c7d86,
-    --color-mediumdark-grey: #2D2D2D,
-    --color-mediumdark-grey-alt: #d9d9d9,
-    --color-dark-grey: #1E1E1E,
-    --color-dark-grey-alt: #7c7d86,
-    --color-accent: #00BCD4,
-    --color-accent-contrast: #fff,
-    --reader-fontColor: #000,
-    --scrollbar-thumb: #98989d,
+    // ===== MAIN ===== //
+    --color-text-primary: #e7eaf8,
+    --color-text-reader: #000,
+    --color-neutral-base: $theme-neutral-dark,
+    --color-brand-primary: $theme-main-primary-dark,
+    --color-brand-primary-inverse: $color-white-1,
+    --color-brand-secondary: $theme-main-secondary-dark,
+
+    // ===== GREY ===== //
+    --color-gray-50: $theme-background-dark,
+    --color-gray-100: color.adjust($thorium-theme-background-dark, $lightness: 5%),
+    --color-gray-200: color.adjust($color-grey-1, $lightness: 25%),
+    --color-gray-250: $color-grey-2,
+    --color-gray-275: #454547,
+    --color-gray-300: $theme-border-dark,
+    --color-gray-400: $color-grey-2,
+    --color-gray-800: $color-black-1,
+    --color-gray-850: $color-white-2,
+    --color-gray-900: $color-black-2,
+    --color-gray-950: $color-grey-2,
+
+    //  ===== STATE ===== //
     --color-disabled: #a7a9b3,
-    --color-error: #4f1d1d,
-    --color-error-dark: #F590A9,
-    --color-success: #303936,
-    --color-success-light: #121d19,
-    --color-appName: #EAEAEA,
-    --color-annotations-txt: #3b3c3f,
-    --color-annotations-txt-area: #3b3c3f,
-    --color-annotations-bg: #2D2D2D,
-    --color-button-hover: #48484b,
-    --color-docked-header: #121212,
+    --color-error-bg: #4f1d1d,
+    --color-error-text: #F590A9,
+    --color-success-bg: #121d19,
+    --color-success-text: #303936,
+
+    //  ===== COMPONENTS ===== //
+    --color-app-name: $theme-appName-dark,
+    --color-scrollbar-thumb: $theme-scrollbar_thumb_dark,
+
+    // ===== ANNOTATIONS ===== //
+    --color-annotation-text: #3b3c3f,
+    --color-annotation-textarea: #3b3c3f,
+    --color-annotation-background: $color-black-1,
+
+    // ===== BUTTONS ===== //
+    --color-button-hover: $theme-button-hover-dark,
+    --color-button-border: $theme-buttons-border-dark,
+
+    // ===== HEADER ===== //
+    --color-header-docked: #121212,
 
   /*
-    --color-primary: #fff,
-    --color-secondary: #4d4d4d,
+    --color-text-primary: #fff,
+    --color-neutral-base: #4d4d4d,
     --color-tertiary: #67a3e0,
     --color-disabled: #b7b7b7,
-    --color-light-grey: #f1f1f1,
-    --color-medium-grey: #e5e5e5,
-    --color-accent: rgb(0, 188, 212),
-    --color-accent-contrast: #fff,
-    --reader-fontColor: #fff,
-    --color-blue: rgba(16, 83, 200, 1),
-    --color-light-blue: rgba(236, 242, 253, 1),
+    --color-gray-300: #f1f1f1,
+    --color-gray-400: #e5e5e5,
+    --color-text-reader: #fff,
+    --color-brand-primary: rgba(16, 83, 200, 1),
+    --color-brand-secondary: rgba(236, 242, 253, 1),
     --color-bg-tab: rgba(16, 18, 22, 0.6),
     --setting-btn-primary: #fff,
-    --setting-btn-secondary: var(--color-secondary),
+    --setting-btn-secondary: var(--color-neutral-base),
         */
   ),
 );

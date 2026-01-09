@@ -55,7 +55,7 @@ export const TagButton: React.FC<React.PropsWithChildren<IProps>> = (props) => {
                     }}
                     state={{ displayType: "list" }}
                     onClick={(e) => {
-                        if (e.altKey || e.shiftKey || e.ctrlKey) {
+                        if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                             e.preventDefault();
                             e.currentTarget.click();
                         }
@@ -179,4 +179,3 @@ export const TagReaderButton: React.FC<React.PropsWithChildren<IBaseProps>> = (p
 const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
 });
-

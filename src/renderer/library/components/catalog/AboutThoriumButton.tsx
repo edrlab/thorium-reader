@@ -9,14 +9,13 @@ import * as stylesFooter from "readium-desktop/renderer/assets/styles/components
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 
 import { shell } from "electron";
-// import { existsSync, promises } from "fs";
 // import * as path from "path";
 import * as React from "react";
 import { connect } from "react-redux";
 // import { ABOUT_BOOK_TITLE_PREFIX } from "readium-desktop/common/constant";
 // import { readerActions } from "readium-desktop/common/redux/actions";
 // import { PublicationView } from "readium-desktop/common/views/publication";
-import { _APP_NAME, _APP_VERSION, _PACKAGING } from "readium-desktop/preprocessor-directives";
+import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -71,6 +70,8 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
         const locale = encodeURIComponent_RFC3986(this.props.locale);
         const app_version = encodeURIComponent_RFC3986(_APP_VERSION);
 
+        // const customizationProfileProvisionedAndActivated = this.props.customizationProvision.find(({id}) => this.props.customizationProfileId === id);
+
         return (
             <section className={stylesFooter.footer_wrapper} style={{justifyContent: displayVersionToast ? "space-between" : "end"}}>
                                 {
@@ -85,7 +86,9 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                             onClick={async (ev) => {
                                 ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                                 this.setState({ versionInfo : false });
-                                await shell.openExternal(this.props.newVersionURL);
+                                if (this.props.newVersionURL && /^https?:\/\//.test(this.props.newVersionURL)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
+                                    await shell.openExternal(this.props.newVersionURL);
+                                }
                             }}>{`${this.props.__("app.update.message")}`}</a> <span>(v{this.props.newVersion})</span></p>
                         </div>
                         {/* <button onClick={async () => {
@@ -102,12 +105,26 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                     </div>
                     : <></>
                 }
+                {/* {
+
+                    this.props.customizationProfileId ?
+                    <div style={{fontSize: "6px"}}>
+                        <span>Filename: {customizationProfileProvisionedAndActivated.fileName}</span><br/>
+                        <span>Identifier: {customizationProfileProvisionedAndActivated.id}</span><br/>
+                        <span>Version: {customizationProfileProvisionedAndActivated.version}</span>
+                    </div>
+                    : <></>
+
+                } */}
                 <div className={stylesFooter.footer_about}>
                     <div>
                     <p>{`v${_APP_VERSION}`}</p>
                     <a href="" onClick={async (ev) => {
                                 ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
-                                await shell.openExternal(`https://thorium.edrlab.org/?lang=${locale}&v=${app_version}`);
+                                const href = `https://thorium.edrlab.org/?lang=${locale}&v=${app_version}`;
+                                if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
+                                    await shell.openExternal(href);
+                                }
                             }}
                         tabIndex={0}>{__("catalog.about.title", { appName: capitalizedAppName })}</a>
                     </div>
@@ -142,7 +159,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
 
     //         let folderPath = path.join(window.location.pathname.replace(/^\/\//, "/"), "..", infoFolderRelativePath);
     //         let folderPath = path.join((global as any).__dirname, infoFolderRelativePath);
-    //         if (_PACKAGING === "0") {
+    //         if (!__TH__IS_PACKAGED__) {
     //             folderPath = path.join(process.cwd(), "dist", infoFolderRelativePath);
     //         }
 
@@ -181,7 +198,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
     //         publication.Spine = [link];
 
     //         const imgPath = path.join(folderPath, imagesFolder);
-    //         const imgArray = await promises.readdir(imgPath);
+    //         const imgArray = await fs.promises.readdir(imgPath);
     //         publication.Resources = imgArray.map((i) => {
     //             const l = new Link();
     //             l.Href = `${imagesFolder}/${i}`; // path.join() backslash on Windows
@@ -215,6 +232,9 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
         locale: state.i18n.locale, // refresh
         newVersionURL: state.versionUpdate.newVersionURL,
         newVersion: state.versionUpdate.newVersion,
+
+        customizationProvision: state.customization.provision,
+        customizationProfileId: state.customization.activate.id,
     };
 };
 

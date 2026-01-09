@@ -5,8 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
-import { appendFileSync, promises as fsp } from "fs";
+import debug_ from "debug";
+import * as fs from "fs";
 import { deepStrictEqual, ok } from "readium-desktop/common/utils/assert";
 import {
     backupStateFilePathFn, memoryLoggerFilename, patchFilePath, runtimeStateFilePath, stateFilePath,
@@ -15,7 +15,6 @@ import { reduxSyncMiddleware } from "readium-desktop/main/redux/middleware/sync"
 import { rootReducer } from "readium-desktop/main/redux/reducers";
 import { rootSaga } from "readium-desktop/main/redux/sagas";
 import { PersistRootState, RootState } from "readium-desktop/main/redux/states";
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 import { applyMiddleware, legacy_createStore as createStore, type Store } from "redux";
 import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
@@ -26,9 +25,11 @@ import { readerConfigInitialState } from "readium-desktop/common/redux/states/re
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
 import { minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 import { EDrawType, INoteState, NOTE_DEFAULT_COLOR_OBJ, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
-import { clone } from "ramda";
 import { TBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { TAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
+import { sqliteInitTableNote, sqliteTableNoteDeleteWherePubId, sqliteTableNoteInsert, sqliteTableSelectLastModifiedDateWherePubId } from "readium-desktop/main/db/sqlite/note";
+import { sqliteInitialisation } from "readium-desktop/main/db/sqlite";
+import { IReaderStateReaderSession } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -38,7 +39,7 @@ const debugStdout = debug_("readium-desktop:main:store:memory");
 const debug = (...a: Parameters<debug_.Debugger>) => {
     debugStdout(...a);
     tryCatchSync(() =>
-        appendFileSync(memoryLoggerFilename, a.map((v) => `${+new Date()} ${JSON.stringify(v)}`).join("\n") + "\n"),
+        fs.appendFileSync(memoryLoggerFilename, a.map((v) => `${+new Date()} ${JSON.stringify(v)}`).join("\n") + "\n"),
         "",
     );
 };
@@ -53,7 +54,7 @@ const checkReduxState = async (runtimeState: object, reduxState: PersistRootStat
 };
 
 const runtimeState = async (): Promise<object> => {
-    const runtimeStateStr = await tryCatch(() => fsp.readFile(runtimeStateFilePath, { encoding: "utf8" }), "");
+    const runtimeStateStr = await tryCatch(() => fs.promises.readFile(runtimeStateFilePath, { encoding: "utf8" }), "");
     const runtimeState = await tryCatch(() => JSON.parse(runtimeStateStr), "");
 
     ok(typeof runtimeState === "object");
@@ -63,7 +64,7 @@ const runtimeState = async (): Promise<object> => {
 
 const recoveryReduxState = async (runtimeState: object): Promise<object> => {
 
-    const patchFileStrRaw = await tryCatch(() => fsp.readFile(patchFilePath, { encoding: "utf8" }), "");
+    const patchFileStrRaw = await tryCatch(() => fs.promises.readFile(patchFilePath, { encoding: "utf8" }), "");
     const patchFileStr = "[" + patchFileStrRaw.slice(0, -2) + "]"; // remove the last comma
     const patch = await tryCatch(() => JSON.parse(patchFileStr), "");
 
@@ -106,7 +107,7 @@ export async function initStore()
 
     try {
 
-        const jsonStr = await fsp.readFile(stateFilePath, { encoding: "utf8" });
+        const jsonStr = await fs.promises.readFile(stateFilePath, { encoding: "utf8" });
         const json = JSON.parse(jsonStr);
         if (test(json))
             reduxState = json;
@@ -185,7 +186,7 @@ export async function initStore()
 
             const p = backupStateFilePathFn();
             await tryCatch(() =>
-                fsp.writeFile(p, JSON.stringify(reduxState), { encoding: "utf8" }),
+                fs.promises.writeFile(p, JSON.stringify(reduxState), { encoding: "utf8" }),
                 "");
 
             debug("RECOVERY : a state backup file is copied in " + p);
@@ -195,7 +196,7 @@ export async function initStore()
     } finally {
 
         await tryCatch(() =>
-            fsp.writeFile(
+            fs.promises.writeFile(
                 runtimeStateFilePath,
                 reduxState ? JSON.stringify(reduxState) : "{}",
                 { encoding: "utf8" },
@@ -204,7 +205,7 @@ export async function initStore()
 
         // the file doen't have a top array [...]
         // we need to add it before the parsing
-        await tryCatch(() => fsp.writeFile(patchFilePath, "", { encoding: "utf8" }), "");
+        await tryCatch(() => fs.promises.writeFile(patchFilePath, "", { encoding: "utf8" }), "");
     }
 
     if (!reduxState) {
@@ -244,6 +245,10 @@ export async function initStore()
     const preloadedState: Partial<PersistRootState> = reduxState ? {
         ...reduxState,
     } : {};
+
+    // SQLITE
+    sqliteInitialisation();
+    sqliteInitTableNote();
 
     if (preloadedState.win?.registry?.reader) {
         for (const id in preloadedState.win.registry.reader) {
@@ -349,8 +354,42 @@ export async function initStore()
             }
 
             if (state?.reduxState) {
-                if (!state.reduxState.note) {
-                    state.reduxState.note = [];
+                if (!(state.reduxState as any).note) {
+                    (state.reduxState as any).note = [];
+                } else if ((state.reduxState as Partial<IReaderStateReaderSession>).note?.length) {
+
+
+                    debug("We are checking notes (", (state.reduxState as Partial<IReaderStateReaderSession>).note?.length, "); json to sqlite migration for pubicationId=", id);
+
+                    const lastNoteModifiedEpochFromJson = (state.reduxState as Partial<IReaderStateReaderSession>).note.reduce((acc, cv) => {
+
+                        const currentModifiedEpoch = cv.modified || cv.created;
+                        if (currentModifiedEpoch > acc) {
+                            return currentModifiedEpoch;
+                        }
+                        return acc;
+
+                    }, 0);
+
+                    const lastNotesModifiedEpochFromSqlite = sqliteTableSelectLastModifiedDateWherePubId(id);
+
+
+                    debug("lastNoteModifiedEpochFromJson=", lastNoteModifiedEpochFromJson, "lastNotesModifiedEpochFromSqlite=", lastNotesModifiedEpochFromSqlite);
+
+                    if (lastNotesModifiedEpochFromSqlite >= lastNoteModifiedEpochFromJson) {
+                        debug("SQLITE WON, no migration");
+                    } else {
+                        debug("JSON WON, migration needed!!");
+                        if (sqliteTableNoteDeleteWherePubId(id)) {
+                            if (sqliteTableNoteInsert(id, (state.reduxState as any).note)) {
+                                debug("SQLITE NOTE MIGRATION DONE for this publicationId=", id);
+                            } else {
+                                debug("ERROR on SQLITE NOTE MIGRATION, publicationId=", id);
+                            }
+                        } else {
+                            debug("ERROR cannot delete note attached to pubId=", id);
+                        }
+                    }
                 }
             }
 
@@ -362,7 +401,7 @@ export async function initStore()
                 }
                 state.reduxState.noteTotalCount.state = (state?.reduxState as any)?.bookmarkTotalCount?.state || 0;
                 (state.reduxState as any).bookmarkTotalCount = undefined;
-            } 
+            }
 
             if ((state?.reduxState as any)?.bookmark) {
 
@@ -383,7 +422,7 @@ export async function initStore()
                         group: "bookmark",
                     };
 
-                    state.reduxState.note.push(clone(note));
+                    sqliteTableNoteInsert(id, [ note ]);
                 }
                 (state.reduxState as any).bookmark = undefined;
 
@@ -414,7 +453,7 @@ export async function initStore()
                         group: "annotation",
                     };
 
-                    state.reduxState.note.push(clone(note));
+                    sqliteTableNoteInsert(id, [ note ]);
                 }
                 (state.reduxState as any).annotation = undefined;
 
@@ -440,11 +479,26 @@ export async function initStore()
     }
 
     if ((preloadedState as any)?.annotationImportQueue) {
-        // How to deal with the annotationImportQueue migration ? 
+        // How to deal with the annotationImportQueue migration ?
         // A wise decision will be to merge INotePreState to InoteState readerState.note
-        // But it is really necessary, the probability that the user upgrade thorium during an annotations import is pretty low ! Isn't it ? 
+        // But it is really necessary, the probability that the user upgrade thorium during an annotations import is pretty low ! Isn't it ?
 
         // (preloadedState as any).annotationImportQueue = undefined;
+    }
+
+    if (Array.isArray(preloadedState?.customization?.history) && preloadedState.customization.history.some(({ version }) => typeof version === "string")) {
+        debug("dev data migration from version (semanticVersionning) to date-time (epoch timestamp) created/modified");
+        preloadedState.customization.history = preloadedState.customization.history.filter(({ version }) => typeof version === "number");
+    }
+
+    // initLockInfo
+    if (preloadedState?.customization?.lock) {
+        preloadedState.customization.lock = {
+            state: "IDLE",
+            lockInfo: {
+                uuid: "",
+            },
+        };
     }
 
     const sagaMiddleware = createSagaMiddleware();
@@ -456,7 +510,7 @@ export async function initStore()
     );
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
-    const middleware = IS_DEV ? require("remote-redux-devtools").composeWithDevTools(
+    const middleware = __TH__IS_DEV__ ? require("remote-redux-devtools").composeWithDevTools(
         {
             port: REDUX_REMOTE_DEVTOOLS_PORT,
         },

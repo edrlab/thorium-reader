@@ -26,6 +26,7 @@ interface IBaseProps extends TranslatorProps {
     opdsPublicationView?: IOpdsPublicationView[] | undefined;
     links: IOpdsResultView["links"];
     pageInfo?: IOpdsResultView["metadata"];
+    opdsGroupsFound?: boolean;
 }
 
 // IProps may typically extend:
@@ -44,7 +45,6 @@ class EntryPublicationList extends React.Component<IProps, undefined> {
 
     public render() {
         // const displayType = (this.props.location?.state && (this.props.location.state as IRouterLocationState).displayType) || DisplayType.Grid;
-
         return (
             <>
                 {this.props.opdsPublicationView?.length > 0
@@ -62,6 +62,7 @@ class EntryPublicationList extends React.Component<IProps, undefined> {
                         <PageNavigation
                             pageLinks={this.props.links}
                             pageInfo={this.props.pageInfo}
+                            opdsGroupsFound={this.props.opdsGroupsFound}
                         />
                     </>
                     :

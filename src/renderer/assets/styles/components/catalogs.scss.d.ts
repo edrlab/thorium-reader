@@ -1,5 +1,6 @@
 export declare const button_delete: string;
 export declare const button_edit: string;
+export declare const button_login: string;
 export declare const button_transparency: string;
 export declare const catalog_breadcrumbSearch_Wrapper: string;
 export declare const catalog_container: string;
@@ -17,3 +18,5 @@ export declare const loader: string;
 export declare const noPublication: string;
 export declare const numberOfItems: string;
 export declare const opds_browserResults: string;
+export declare const opds_header: string;
+export declare const opds_header_actions: string;

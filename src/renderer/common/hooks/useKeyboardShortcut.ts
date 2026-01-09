@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 // import * as React from "react";
-// import { TKeyboardShortcutReadOnly, keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
+// import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 // import { ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener } from "../keyboard";
 // import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 // import { ReactReduxContext, ReactReduxContextValue } from "react-redux";
@@ -14,7 +14,7 @@
 // import { useSyncExternalStoreWithSelector } from "./useSyncExternalStore";
 
 // TODO: ensure keyboardShortcut() and callback() have a "stable" identity (Object.is during the React functional component lifecycle so that they do not cause unnecessary triggers of the React.useEffect() inside this custom hook
-// export function useKeyboardShortcut(ListenForKeyUP: boolean, keyboardShortcut: (s: ICommonRootState["keyboard"]["shortcuts"]) => TKeyboardShortcutReadOnly, callback: () => void) {
+// export function useKeyboardShortcut(ListenForKeyUP: boolean, keyboardShortcut: (s: ICommonRootState["keyboard"]["shortcuts"]) => TKeyboardShortcut, callback: () => void) {
 
 //     React.useEffect(() => {
 //         ensureKeyboardListenerIsInstalled();

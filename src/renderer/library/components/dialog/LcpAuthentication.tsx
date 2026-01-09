@@ -128,7 +128,9 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                 <a href=""
                                     onClick={async (ev) => {
                                         ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
-                                        await shell.openExternal(this.props.urlHint.href);
+                                        if (this.props.urlHint.href && /^https?:\/\//.test(this.props.urlHint.href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
+                                            await shell.openExternal(this.props.urlHint.href);
+                                        }
                                     }} className={stylesModals.urlHint}>
                                     {this.props.urlHint.title || __("library.lcp.urlHint")}
                                 </a>
@@ -147,7 +149,10 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                 <a href=""
                                     onClick={async (ev) => {
                                         ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
-                                        await shell.openExternal("https://www.edrlab.org/readium-lcp/");
+                                        const href = "https://www.edrlab.org/readium-lcp/";
+                                        if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
+                                            await shell.openExternal(href);
+                                        }
                                     }}>
                                     {__("library.lcp.whatIsLcpInfoDetailsLink")}
                                     <SVG ariaHidden svg={FollowLinkIcon} />

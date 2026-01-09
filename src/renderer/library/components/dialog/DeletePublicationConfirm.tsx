@@ -17,6 +17,8 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { dialogActions } from "readium-desktop/common/redux/actions";
 import SVG from "../../../common/components/SVG";
 import * as Trash from "readium-desktop/renderer/assets/icons/trash-icon.svg";
+import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_PUBNOTES } from "readium-desktop/common/streamerProtocol";
+import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 
 const DeletePublicationConfirm = (props: { publicationView: PublicationView, trigger: React.ReactNode } & AlertDialog.AlertDialogProps) => {
     const [__] = useTranslator();
@@ -26,6 +28,24 @@ const DeletePublicationConfirm = (props: { publicationView: PublicationView, tri
         dispatch(dialogActions.closeRequest.build());
         remove(props.publicationView.identifier);
     }, [dispatch, remove, props.publicationView.identifier]);
+    const [hasNotes, setHasNotes] = React.useState(false);
+
+    React.useEffect(() => {
+
+        (async () => {
+
+            try {
+                const notes: INoteState[] = await(await fetch(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PUBNOTES}/${props.publicationView.identifier}`)).json();
+
+                if (Array.isArray(notes) && notes.length) {
+                    setHasNotes(true);
+                }
+            } catch (_) {
+                // nothing
+            }
+        })();
+
+    }, [props.publicationView.identifier]);
 
     return (
         <AlertDialog.Root {...props}>
@@ -39,6 +59,9 @@ const DeletePublicationConfirm = (props: { publicationView: PublicationView, tri
                     <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
                         {props.publicationView.documentTitle}
                     </AlertDialog.Description>
+                    {hasNotes ? <div>
+                        <p style={{fontSize: "14px", color: "var(--color-error-text"}}>{__("dialog.deletePublicationWithNotes")}</p>
+                    </div> : <></>}
                     <div className={stylesAlertModals.AlertDialogButtonContainer}>
                         <AlertDialog.Cancel asChild>
                             <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>

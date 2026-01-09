@@ -67,7 +67,7 @@ class Header extends React.Component<IProps, undefined> {
                             aria-pressed={displayType === DisplayType.Grid}
                             role={"button"}
                             onClick={(e) => {
-                                if (e.altKey || e.shiftKey || e.ctrlKey) {
+                                if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                                     e.preventDefault();
                                     e.currentTarget.click();
                                 }
@@ -107,7 +107,7 @@ class Header extends React.Component<IProps, undefined> {
                             aria-pressed={displayType === DisplayType.List}
                             role={"button"}
                             onClick={(e) => {
-                                if (e.altKey || e.shiftKey || e.ctrlKey) {
+                                if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                                     e.preventDefault();
                                     e.currentTarget.click();
                                 }

@@ -5,12 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
-import { app, protocol, ipcMain, net } from "electron";
-import * as path from "path";
-import { pathToFileURL } from "url";
+import debug_ from "debug";
+import { app, ipcMain } from "electron";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
 import { closeProcessLock, diMainGet, getLibraryWindowFromDi, getAllReaderWindowFromDi } from "readium-desktop/main/di";
 import { getOpdsNewCatalogsStringUrlChannel } from "readium-desktop/main/event";
 import {
@@ -19,12 +16,13 @@ import {
 import { absorbDBToJson as absorbDBToJsonOpdsAuth } from "readium-desktop/main/network/http";
 import { needToPersistFinalState } from "readium-desktop/main/redux/sagas/persist";
 import { error } from "readium-desktop/main/tools/error";
-import { _APP_NAME, _PACKAGING, IS_DEV } from "readium-desktop/preprocessor-directives";
+import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, race, spawn, take } from "redux-saga/effects";
 import { delay as delayTyped, put as putTyped, race as raceTyped } from "typed-redux-saga/macro";
 
-import { clearSessions } from "@r2-navigator-js/electron/main/sessions";
+// import { clearSessions } from "@r2-navigator-js/electron/main/sessions";
+import { clearSessions } from "readium-desktop/main/sessions";
 
 import { streamerActions } from "../actions";
 import {
@@ -33,6 +31,7 @@ import {
 } from "./getEventChannel";
 import { availableLanguages } from "readium-desktop/common/services/translator";
 import { i18nActions } from "readium-desktop/common/redux/actions";
+import { URL_PROTOCOL_APP_HANDLER_OPDS, URL_PROTOCOL_APP_HANDLER_THORIUM } from "readium-desktop/common/streamerProtocol";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -45,12 +44,27 @@ export function* init() {
     // https://www.electronjs.org/fr/docs/latest/api/app#appsetasdefaultprotocolclientprotocol-path-args
     // https://www.electron.build/generated/platformspecificbuildoptions
     // Define custom protocol handler. Deep linking works on packaged versions of the application!
-    if (!app.isDefaultProtocolClient("opds")) {
-        app.setAsDefaultProtocolClient("opds");
-    }
 
-    if (!app.isDefaultProtocolClient("thorium")) {
-        app.setAsDefaultProtocolClient("thorium");
+    if (__TH__IS_DEV__) {
+        const electronPath = process.execPath;
+        const appPath = app.getAppPath();
+        debug("io.github.edrlab.thorium", electronPath, appPath);
+
+        if (!app.isDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_OPDS, electronPath, [appPath])) {
+            app.setAsDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_OPDS, electronPath, [appPath]);
+        }
+
+        if (!app.isDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM, electronPath, [appPath])) {
+            app.setAsDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM, electronPath, [appPath]);
+        }
+    } else {
+        if (!app.isDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_OPDS)) {
+            app.setAsDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_OPDS);
+        }
+
+        if (!app.isDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM)) {
+            app.setAsDefaultProtocolClient(URL_PROTOCOL_APP_HANDLER_THORIUM);
+        }
     }
 
     // moved to saga/persist.ts
@@ -92,9 +106,11 @@ export function* init() {
         }
         browserWindows.forEach((win) => {
             if (!win.isDestroyed() && !win.webContents.isDestroyed()) {
-                console.log("webContents.send - accessibility-support-changed: ", accessibilitySupportEnabled, win.id);
+                const store = diMainGet("store");
+                const screenReaderActivated = store.getState().screenReader.activate;
+                console.log("webContents.send - accessibility-support-changed: ", accessibilitySupportEnabled, screenReaderActivated, win.id);
                 try {
-                    win.webContents.send("accessibility-support-changed", accessibilitySupportEnabled);
+                    win.webContents.send("accessibility-support-changed", accessibilitySupportEnabled && screenReaderActivated);
                 } catch (e) {
                     debug("webContents.send - accessibility-support-changed ERROR?", e);
                 }
@@ -106,33 +122,17 @@ export function* init() {
     // so there is no duplicate event handler.
     ipcMain.on("accessibility-support-query", (e) => {
         const accessibilitySupportEnabled = app.accessibilitySupportEnabled; // .isAccessibilitySupportEnabled()
-        console.log("ipcMain.on - accessibility-support-query, sender.send - accessibility-support-changed: ", accessibilitySupportEnabled);
-        e.sender.send("accessibility-support-changed", accessibilitySupportEnabled);
+        const store = diMainGet("store");
+        const screenReaderActivated = store.getState().screenReader.activate;
+        console.log("ipcMain.on - accessibility-support-query, sender.send - accessibility-support-changed: ", accessibilitySupportEnabled, screenReaderActivated);
+        e.sender.send("accessibility-support-changed", accessibilitySupportEnabled && screenReaderActivated);
     });
 
     yield call(() => app.whenReady());
 
     debug("Main app ready");
 
-    const protocolHandler_FILEX = (
-        request: Request,
-    ): Response | Promise<Response> => {
-        debug("---protocolHandler_FILEX");
-        debug(request);
-        const urlPath = request.url.substring("filex://host/".length);
-        debug(urlPath);
-        const urlPathDecoded = urlPath.split("/").map((segment) => {
-            return segment?.length ? tryDecodeURIComponent(segment) : "";
-        }).join("/");
-        debug(urlPathDecoded);
-        const filePathUrl = pathToFileURL(urlPathDecoded).toString();
-        debug(filePathUrl);
-        return net.fetch(filePathUrl); // potential security hole: local filesystem access (mitigated by URL scheme not .registerSchemesAsPrivileged() and not .handle() or .registerXXXProtocol() on r2-navigator-js.getWebViewSession().protocol or Electron.session.defaultSession.protocol)
-    };
-    protocol.handle("filex", protocolHandler_FILEX);
-    // protocol.unhandle("filex");
-
-    if (IS_DEV) {
+    if (__TH__IS_DEV__) {
         // https://github.com/MarshallOfSound/electron-devtools-installer
         // https://github.com/facebook/react/issues/25843
         // https://github.com/electron/electron/issues/36545
@@ -158,50 +158,12 @@ export function* init() {
         });
     }
 
-    const protocolHandler_Store = (
-        request: Request,
-    ): Response | Promise<Response> => {
-        debug("---protocolHandler_Store");
-        debug(request);
-        const urlPath = request.url.substring("store://".length);
-        debug(urlPath);
-        // const urlPathDecoded = tryDecodeURIComponent(urlPath);
-        // debug(urlPathDecoded);
-        const pubStorage = diMainGet("publication-storage");
-        const rootPath = pubStorage.getRootPath();
-        debug(rootPath);
-        const filePath = path.join(rootPath, urlPath);
-        debug(filePath);
-        const filePathUrl = pathToFileURL(filePath).toString();
-        debug(filePathUrl);
-        return net.fetch(filePathUrl); // potential security hole: local filesystem access (mitigated by URL scheme not .registerSchemesAsPrivileged() and not .handle() or .registerXXXProtocol() on r2-navigator-js.getWebViewSession().protocol or Electron.session.defaultSession.protocol)
-    };
-    protocol.handle("store", protocolHandler_Store);
-    // protocol.unhandle("store");
-
     app.on("will-quit", () => {
 
         debug("#####");
         debug("will-quit");
         debug("#####");
     });
-
-    const protocolHandler_PDF = (
-        request: Request,
-    ): Response | Promise<Response> => {
-        debug("---protocolHandler_PDF");
-        debug(request);
-        const urlPath = request.url.substring("pdfjs-extract://host/".length);
-        debug(urlPath);
-        const urlPathDecoded = tryDecodeURIComponent(urlPath);
-        debug(urlPathDecoded);
-        const filePathUrl = pathToFileURL(urlPathDecoded).toString();
-        debug(filePathUrl);
-        return net.fetch(filePathUrl); // potential security hole: local filesystem access (mitigated by URL scheme not .registerSchemesAsPrivileged() and not .handle() or .registerXXXProtocol() on r2-navigator-js.getWebViewSession().protocol or Electron.session.defaultSession.protocol)
-    };
-    protocol.handle("pdfjs-extract", protocolHandler_PDF);
-    // protocol.unhandle("pdfjs-extract");
-
 
     yield call(() => {
         const deviceIdManager = diMainGet("device-id-manager");
@@ -273,9 +235,8 @@ function* closeProcess() {
                 call(function*() {
 
                     try {
-                        // clear session in r2-navigator
                         yield call(clearSessions);
-                        debug("Success to clearSession in r2-navigator");
+                        debug("Success to clearSessions");
                     } catch (e) {
                         debug("ERROR to clearSessions", e);
                     }
@@ -330,7 +291,7 @@ export function exit() {
         const shutdownEventChannel = getShutdownEventChannel();
         const windowAllClosedEventChannel = getWindowAllClosedEventChannel();
         const quitEventChannel = getQuitEventChannel();
-        let shouldExit = process.platform !== "darwin" || IS_DEV;
+        let shouldExit = process.platform !== "darwin" || __TH__IS_DEV__;
 
         /*
         // events order :

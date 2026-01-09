@@ -5,14 +5,19 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
-import * as debug_ from "debug";
-import { BrowserWindow } from "electron";
+import debug_ from "debug";
+import * as path from "path";
+// import * as fs from "fs";
+import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
 
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 import { IInfo } from "./extract.type";
-import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_PDFJS } from "readium-desktop/common/streamerProtocol";
+import { SESSION_PARTITION_PDFJSEXTRACT } from "readium-desktop/common/sessions";
+import { URL_PROTOCOL_PDFJSEXTRACT } from "readium-desktop/common/streamerProtocol";
+
+const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
 
 const debug = debug_("readium-desktop:main/pdf/extract/index.ts");
 debug("_");
@@ -35,38 +40,83 @@ export const extractPDFData =
         // ...but the lonely non-encoded percent char triggers a crash if not handled correctly!
         // (really, the double-encoding is for "viewer.html?file=" in loadURL() below!)
 
-        pdfPath = "pdfjs-extract://host/" + encodeURIComponent_RFC3986(encodeURIComponent_RFC3986(pdfPath));
+        pdfPath = `${URL_PROTOCOL_PDFJSEXTRACT}://${URL_HOST_COMMON}/` + encodeURIComponent_RFC3986(encodeURIComponent_RFC3986(pdfPath));
         debug("extractPDFData", pdfPath);
 
         let win: BrowserWindow;
-
         try {
 
+            //`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PDFJS}/../../../index_pdf.js`
+            const preloadPath = path.normalize(path.join(__dirname, "index_pdf_extract.js")).replace(/\\/g, "/");
+            debug("extractPDFData preload", preloadPath); // fs.existsSync(preloadPath)
+
             win = new BrowserWindow({
+                // title: "PDF",
                 width: 800,
                 height: 600,
+                // parent: undefined,
+                // modal: false,
                 // show: false,
                 webPreferences: {
                     // enableRemoteModule: false,
                     allowRunningInsecureContent: false,
                     backgroundThrottling: true,
-                    devTools: IS_DEV, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
-                    nodeIntegration: true,
-                    contextIsolation: false,
+                    devTools: ENABLE_DEV_TOOLS, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
+                    nodeIntegration: false,
+                    sandbox: true,
+                    contextIsolation: true,
                     nodeIntegrationInWorker: false,
-                    sandbox: false,
                     webSecurity: true,
                     webviewTag: false,
+                    preload: preloadPath, // "file://" + ... when setting the "preload" attribute on webview, but not with webPreferences
+                    partition: SESSION_PARTITION_PDFJSEXTRACT,
                 },
             });
+            win.setMenu(null);
 
             // win.hide(); // doesn't works on linux
-            await win.loadURL(`${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0/pdfjs/web/viewer.html?file=${pdfPath}`);
 
-            const content = win.webContents;
+            const willNavigate = (navUrl: string | undefined | null) => {
+
+                if (!navUrl) {
+                    debug("willNavigate ==> nil: ", navUrl);
+                    return;
+                }
+
+                if (/^https?:\/\//.test(navUrl)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
+
+                    debug("willNavigate ==> EXTERNAL: ", win.webContents.getURL(), " *** ", navUrl);
+                    setTimeout(async () => {
+                        await shell.openExternal(navUrl);
+                    }, 0);
+
+                    return;
+                }
+
+                debug("willNavigate ==> noop: ", navUrl);
+            };
+
+            win.webContents.setWindowOpenHandler((details: HandlerDetails) => {
+                debug("BrowserWindow.webContents.setWindowOpenHandler (always DENY): ", win.webContents.id, " --- ", details.url, " === ", win.webContents.getURL());
+
+                willNavigate(details.url);
+
+                return { action: "deny" };
+            });
+
+            win.webContents.on("will-navigate", (details: ElectronEvent<WebContentsWillNavigateEventParams>, url: string) => {
+                debug("BrowserWindow.webContents.on('will-navigate') (always PREVENT): ", win.webContents.id, " --- ", details.url, " *** ", url, " === ", win.webContents.getURL());
+
+                details.preventDefault();
+
+                willNavigate(details.url);
+            });
+
+            // win.webContents.loadURL
+            await win.loadURL(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PDFJS}/web/viewer.html?file=${pdfPath}`);
 
             const pdata = new Promise<TExtractPdfData>((resolve) =>
-                content.on("ipc-message", (e, c, ...arg) => {
+                win.webContents.on("ipc-message", (e, c, ...arg) => {
                     debug("IPC");
                     debug(e, c, arg);
 
@@ -120,7 +170,7 @@ export const extractPDFData =
 
         } finally {
 
-            if (win) {
+            if (win && !win.isDestroyed() && !win.webContents.isDestroyed()) {
                 win.close();
             }
 

@@ -61,7 +61,7 @@ import {
 import { Column, useTable, useFilters, useSortBy, usePagination, useGlobalFilter, useAsyncDebounce } from "react-table";
 import { formatTime } from "readium-desktop/common/utils/time";
 import DOMPurify from "dompurify";
-import * as moment from "moment";
+import moment from "moment";
 import { availableLanguages, I18nFunction } from "readium-desktop/common/services/translator";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -88,7 +88,7 @@ import classNames from "classnames";
 import * as Popover from "@radix-ui/react-popover";
 
 // import { PublicationInfoLibWithRadix, PublicationInfoLibWithRadixContent, PublicationInfoLibWithRadixTrigger } from "../dialog/publicationInfos/PublicationInfo";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 // import * as FilterIcon from "readium-desktop/renderer/assets/icons/filter-icon.svg";
 // import * as DeleteFilter from "readium-desktop/renderer/assets/icons/deleteFilter-icon.svg";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
@@ -254,7 +254,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
     }
 
     private accessibilitySupportChanged = (_e: Electron.IpcRendererEvent, accessibilitySupportEnabled: boolean) => {
-        console.log("ipcRenderer.on - accessibility-support-changed: ", accessibilitySupportEnabled);
+        console.log("ALLPUBPAGES.tsx ipcRenderer.on - accessibility-support-changed: ", accessibilitySupportEnabled);
 
         // prevents infinite loop via componentDidUpdate()
         if (accessibilitySupportEnabled !== this.state.accessibilitySupportEnabled) {
@@ -451,6 +451,7 @@ interface ITableCellProps_Filter {
     displayType: DisplayType;
 
     showColumnFilters: boolean,
+    setShowColumnFilters: (show: boolean) => void,
     accessibilitySupportEnabled: boolean,
 
     selectedTag: string,
@@ -513,11 +514,23 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
     const [searchParams] = useSearchParams();
     const searchParamsFocus = searchParams.get("focus");
     const searchParamsValue = searchParams.get("value");
+    const navigate = useNavigate();
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const searchParamsFocus_ = queryParams.get("focus") || undefined;
+    const searchParamsValue_ = queryParams.get("value") || undefined;
+    const setShowColumnFilters = props.setShowColumnFilters;
     React.useEffect(() => {
         if (searchParamsFocus === "tags" && props.column.id === "colTags") {
             console.log("focus=tags");
+            console.log(searchParamsFocus, searchParamsFocus_);
+            console.log(searchParamsValue, searchParamsValue_);
             if (!inputRef.current) {
                 console.log("NO REF!");
+                if (!props.showColumnFilters) {
+                    console.log("setShowColumnFilters FORCE");
+                    setShowColumnFilters(true);
+                }
                 return;
 
             }
@@ -533,7 +546,7 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
                     (inputRef?.current?.value || "").trim() || undefined);
             }
         }
-    }, [props.column.id, props.accessibilitySupportEnabled, props.column, searchParamsFocus, searchParamsValue, onInputChange]);
+    }, [props.showColumnFilters, setShowColumnFilters, props.column.id, props.accessibilitySupportEnabled, props.column, searchParamsFocus, searchParamsValue, searchParamsFocus_, searchParamsValue_, onInputChange]);
 
     return props.showColumnFilters ?
         <div className={stylesPublication.showColFilters_wrapper}>
@@ -547,6 +560,12 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
                 ref={inputRef}
                 type="search"
                 onChange={(e) => {
+                    if (queryParams.has("focus") || queryParams.has("value")) {
+                         navigate(location.pathname, {
+                             state: location.state,
+                             replace: true,
+                         });
+                     }
                     // setValue(e.target.value);
                     // forceReRender(NaN);
                     if (!props.accessibilitySupportEnabled) {
@@ -564,7 +583,7 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
                             (inputRef?.current?.value || "").trim() || undefined);
                         if (props.column.id === "colTags") {
                             props.setSelectedTag(inputRef?.current?.value.trim());
-                            console.log(inputRef.current.value);
+                            // console.log(inputRef.current.value);
                         }
                     }
                 }}
@@ -1395,6 +1414,9 @@ interface ITableCellProps_TableView {
 export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Common> = (props) => {
 
     const [showColumnFilters, setShowColumnFilters] = React.useState(false);
+    const setShowColumnFilters_ = React.useCallback((show: boolean) => {
+        setShowColumnFilters(show);
+    }, [setShowColumnFilters]);
     const [selectedTag, setSelectedTag] = React.useState("");
 
     const scrollToViewRef = React.useRef(null);
@@ -1409,6 +1431,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
         displayType,
 
         showColumnFilters,
+        setShowColumnFilters: setShowColumnFilters_,
         accessibilitySupportEnabled,
 
         selectedTag,
@@ -1439,10 +1462,6 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
         },
     };
 
-    // const locale = translator.getLocale();
-    // // https://momentjs.com/docs/#/displaying/
-    // moment.locale(locale);
-
     const tableRows = React.useMemo(() => {
         return publicationViews.slice().reverse().map((publicationView) => {
 
@@ -1450,8 +1469,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             // const authors = publicationView.authors ? formatContributorToString(publicationView.authorsLangString, translator) : "";
             // const publishers = publicationView.publishers ? formatContributorToString(publicationView.publishersLangString, translator) : "";
 
-            // publicationView.publishedAt = r2Publication.metadata.PublicationDate && moment(metadata.PublicationDate).toISOString();
-            const momPublishedDate_ = publicationView.publishedAt ? moment(publicationView.publishedAt) : undefined;
+            // publicationView.publishedAt = r2Publication.metadata.PublicationDate && moment(metadata.PublicationDate).locale([locale, "en"]).toISOString();
+            const momPublishedDate_ = publicationView.publishedAt ? moment(publicationView.publishedAt).locale([locale, "en"]) : undefined;
             const momPublishedDate = momPublishedDate_ && momPublishedDate_.isValid() ? momPublishedDate_.utc() : undefined;
             const MM = momPublishedDate ? (momPublishedDate.month() || 0) + 1 : undefined; // ZERO-based!
             const DD = momPublishedDate ? momPublishedDate.date() || 1 : undefined; // ONE-based!
@@ -1465,7 +1484,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 }
             }
 
-            const momLastRead_ = publicationView.lastReadTimeStamp ? moment(publicationView.lastReadTimeStamp) : undefined;
+            const momLastRead_ = publicationView.lastReadTimeStamp ? moment(publicationView.lastReadTimeStamp).locale([locale, "en"]) : undefined;
             const momLastRead = momLastRead_ && momLastRead_.isValid() ? momLastRead_.utc() : undefined;
             const M = momLastRead ? (momLastRead.month() || 0) + 1 : undefined; // ZERO-based!
             const D = momLastRead ? momLastRead.date() || 1 : undefined; // ONE-based!
@@ -1482,11 +1501,11 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             const isLcp = !!publicationView.lcp?.rights;
             const lcpRightsEndDate = (publicationView.lcp?.rights?.end) ? publicationView.lcp.rights.end : undefined;
             let remainingDays= "";
-            const now = moment();
+            const now = moment().locale([locale, "en"]);
             let hasEnded = false;
 
             if (lcpRightsEndDate) {
-                const momentEnd = moment(lcpRightsEndDate);
+                const momentEnd = moment(lcpRightsEndDate).locale([locale, "en"]);
                 const timeEndDif = momentEnd.diff(now, "days");
                 if (timeEndDif > 1) {
                     remainingDays = `${timeEndDif} ${__("publication.days")}`;
@@ -2191,6 +2210,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
                                 <div className={stylesPublication.filter_container}>
                                     <ComboBox
+                                        label={__("header.fitlerTagTitle")}
                                         defaultItems={tagsOptions}
                                         defaultSelectedKey={
                                             tagsOptions.findIndex((tag) =>
@@ -2379,7 +2399,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                         width: W,
                                         minWidth: W,
                                         maxWidth: W,
-                                        borderBottom: "2px solid var(--color-blue)",
+                                        borderBottom: "2px solid var(--color-brand-primary)",
                                         position: "relative",
                                     }}
                                     className={stylesPublication.allBook_table_head}
@@ -2491,7 +2511,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                                 className={stylesPublication.setShowColumnFiltersCheckboxLabel}
                                                 aria-hidden="true"
                                                 htmlFor="setShowColumnFiltersCheckbox"
-                                                style={{ cursor: "pointer", padding: "0.2em", color: "var(--color-blue)", paddingBottom: "0", display: "inline-block", width: "20px" }}>
+                                                style={{ cursor: "pointer", padding: "0.2em", color: "var(--color-brand-primary)", paddingBottom: "0", display: "inline-block", width: "20px" }}>
                                                     <SVG ariaHidden svg={SearchIcon} />
                                                 </label></>
                                     }
@@ -2547,7 +2567,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
                                     <tr key={`bodytr_${index}`} {...row.getRowProps()}
                                         style={{
-                                            backgroundColor: index % 2 ? "var(--color-extralight-grey)" : undefined,
+                                            backgroundColor: index % 2 ? "var(--color-gray-50" : undefined,
                                         }}>{row.cells.map((cell, i) => {
                                             return (<td key={`bodytrtd_${i}`} {...cell.getCellProps()}
                                             >{

@@ -7,6 +7,7 @@
 
 import * as attachModeRequest from "./attachModeRequest";
 import * as clipboardCopy from "./clipboardCopy";
+import * as print from "./print";
 import * as closeError from "./closeError";
 import * as closeRequest from "./closeRequest";
 import * as closeRequestFromPublication from "./closeRequestFromPublication";
@@ -21,6 +22,7 @@ import * as setReduxState from "./setReduxState";
 import * as disableRTLFlip from "./rtlFlip";
 import * as setTheLock from "./setTheLock";
 import * as note from "./note";
+import * as pdfConfig from "./pdfConfig";
 
 export {
     openRequest,
@@ -39,4 +41,6 @@ export {
     disableRTLFlip,
     note,
     setTheLock,
+    print,
+    pdfConfig,
 };

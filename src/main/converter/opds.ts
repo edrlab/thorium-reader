@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { inject, injectable } from "inversify";
-import * as moment from "moment";
+import moment from "moment";
 import {
     IOpdsAuthView, IOpdsCoverView, IOpdsFeedMetadataView, IOpdsFeedView, IOpdsGroupView,
     IOpdsLinkView, IOpdsNavigationLink, IOpdsNavigationLinkView, IOPDSPropertiesView,
@@ -17,7 +17,7 @@ import { convertMultiLangStringToString } from "readium-desktop/common/language-
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { ContentType } from "readium-desktop/utils/contentType";
 
-import { IWithAdditionalJSON } from "@r2-lcp-js/serializable";
+import { IWithAdditionalJSON, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { OPDSAvailabilityEnum } from "@r2-opds-js/opds/opds2/opds2-availability";
@@ -39,12 +39,14 @@ import { ILinkFilter } from "./type/linkFilter.interface";
 import { diSymbolTable } from "../diSymbolTable";
 import { type Store } from "redux";
 import { RootState } from "../redux/states";
+import { PublicationRepository } from "../db/repository/publication";
+import { getAuthenticationToken } from "../network/http";
 
 // Logger
 const debug = debug_("readium-desktop:main/converter/opds");
 debug("opds-converter");
 
-const supportedFileTypeLinkArray = [
+const supportedFileTypeLinks = [
     ContentType.AudioBookPacked,
     ContentType.AudioBookPackedLcp,
     ContentType.Epub,
@@ -59,8 +61,34 @@ const supportedFileTypeLinkArray = [
     ContentType.Lpf,
     ContentType.Zip,
 
+    // indirect Acquisition through an HTML document
+    // {
+    //     "href": "/buy",
+    //     "rel": "http://opds-spec.org/acquisition/buy",
+    //     "type": "text/html",
+    //     "properties": {
+    //         "price": {
+    //             "currency": "USD",
+    //             "value": 4.99
+    //         },
+    //         "indirectAcquisition": [{ "type": "application/epub+zip" }]
+    //     }
+    // }
+
     ContentType.Html, // https://github.com/edrlab/thorium-reader/issues/2208
     ContentType.Xhtml,
+];
+
+const supportedFileTypeLinksForPayWallAcquisition = [
+    ...supportedFileTypeLinks,
+
+    ContentType.Opds2,
+    ContentType.Opds2Auth,
+    ContentType.Opds2AuthVendorV1_0,
+    ContentType.Opds2Pub,
+    ContentType.TextXml,
+    ContentType.Xml,
+    ContentType.AtomXml,
 ];
 
 @injectable()
@@ -69,11 +97,85 @@ export class OpdsFeedViewConverter {
     @inject(diSymbolTable.store)
     private readonly store!: Store<RootState>;
 
-    public convertDocumentToView(document: OpdsFeedDocument): IOpdsFeedView {
+    @inject(diSymbolTable["publication-repository"])
+    private readonly publicationRepository!: PublicationRepository;
+
+    // @inject(diSymbolTable["opds-service"])
+    // private readonly opdsService!: OpdsService;
+
+    public async convertDocumentToView(document: OpdsFeedDocument): Promise<IOpdsFeedView> {
+
+        let authentified: boolean = undefined;
+
+        const feedUrl = document.url;
+        let catalogLinkUrl: URL;
+        try {
+
+            if (feedUrl.startsWith("apiapp://")) {
+                if (feedUrl.startsWith("apiapp://")) {
+                    const urlApiapp = feedUrl.slice("apiapp://".length);
+                    const [idGln, urlLib] = urlApiapp.split(":apiapp:");
+
+                    debug("APIAPP");
+                    debug("ID_GNL=", idGln);
+                    debug("URL_LIB=", urlLib);
+                    if (urlLib) {
+                        catalogLinkUrl = (new URL(urlLib));
+                        catalogLinkUrl.host = `apiapploans.org.edrlab.thoriumreader.break.${idGln}.break.${catalogLinkUrl.host}`;
+                    }
+                }
+            } else {
+
+                catalogLinkUrl = (new URL(feedUrl));
+            }
+
+        } catch (e) {
+            debug(e);
+        }
+        if (catalogLinkUrl) {
+            const authToken = await getAuthenticationToken(catalogLinkUrl);
+            if (authToken?.accessToken) {
+                debug("catalog authentified: ", catalogLinkUrl.host);
+                authentified = true;
+            } else {
+                debug("catalog NOT authentified: ", catalogLinkUrl.host, authToken);
+            }
+        } else {
+            debug("No catalogLinkUrl found, return");
+        }
+
+        // let's trigger the same event as customization profile catalog
+        // const feedHasAuthenticationFunction = async () => {
+        //     try {
+        //         const response = await httpGetWithAuth(false)(document.url);
+        //         const opdsService = diMainGet("opds-service"); // circular-reference issue
+        //         const opdsView = await opdsService.opdsRequestTransformer(response);
+        //         if (!opdsView) {
+        //             const bookshelf = opdsView.links?.bookshelf;
+        //             if (bookshelf?.length) {
+        //                 if (bookshelf[0].url) {
+        //                     const bookshelfUrl = bookshelf[0].url;
+        //                     const response = await httpGetWithAuth(false)(bookshelfUrl);
+        //                     const mimeType = parseContentType(response.contentType);
+        //                     if (contentTypeisOpdsAuth(mimeType)) {
+        //                         return true;
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     } catch {
+        //         // ignore
+        //     }
+        //     return false;
+        // }
+
         return {
             identifier: document.identifier, // preserve Identifiable identifier
             title: document.title,
             url: document.url,
+            authentified: authentified,
+            authenticationUrl: document.authenticationUrl,
+            // feedHasAuthentication: authentified || await feedHasAuthenticationFunction(),
         };
     }
 
@@ -207,7 +309,6 @@ export class OpdsFeedViewConverter {
 
         // transform to absolute url
         ln.Href = urlPathResolve(baseUrl, ln.Href);
-
         // safe copy on each filtered links
         return {
             url: ln.Href,
@@ -246,7 +347,7 @@ export class OpdsFeedViewConverter {
                 return (
                     (filter.type && filter.rel)
                         ? (relFlag && typeFlag)
-                        : (relFlag || typeFlag)
+                        : (filter.rel) ? relFlag : (filter.type) ? typeFlag : false
                 );
             },
         );
@@ -322,29 +423,58 @@ export class OpdsFeedViewConverter {
             };
         }
 
+
+        const selfLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
+            rel: "self",
+            type: "application/opds-publication+json",
+        });
+        const selfLinkUrl = selfLinkView.length === 1 ? selfLinkView[0].url : undefined;
+
+
+        const attachLocalBookshelfPubId = (opdsLinkView: IOpdsLinkView) => {
+            const { url, type } = opdsLinkView;
+            const pubs = this.publicationRepository.findByOpdsPublication(url, type, workIdentifier, selfLinkUrl);
+            if (pubs.length > 1) {
+                debug("attachLocalBookshelf on ", opdsLinkView);
+                debug("too many publications !!!", "attached to", workIdentifier, selfLinkUrl);
+                debug(pubs);
+            } else if (pubs.length) {
+                opdsLinkView.localBookshelfPublicationId = pubs[0].identifier;
+            }
+            return opdsLinkView;
+        };
+
         // Get opds entry
         const sampleLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
             rel: [
                 "http://opds-spec.org/acquisition/sample",
                 "http://opds-spec.org/acquisition/preview",
+                "preview", // see "preview" relation from drafts.opds.io/opds-2.0.html#53-acquisition-links
             ],
-            type: supportedFileTypeLinkArray,
-        });
+            type: supportedFileTypeLinks,
+        }).map(attachLocalBookshelfPubId);
+
         const acquisitionLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
             rel: [
                 "http://opds-spec.org/acquisition",
                 "http://opds-spec.org/acquisition/open-access",
             ],
-            type: supportedFileTypeLinkArray,
-        });
+            type: supportedFileTypeLinks,
+        }).map(attachLocalBookshelfPubId);
+
         const buyLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
             rel: "http://opds-spec.org/acquisition/buy",
-        });
+            type: supportedFileTypeLinksForPayWallAcquisition, // https://github.com/edrlab/thorium-reader/issues/3032
+        }).map(attachLocalBookshelfPubId);
+
         const borrowLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
             rel: "http://opds-spec.org/acquisition/borrow",
-        });
+            type: supportedFileTypeLinksForPayWallAcquisition, // https://github.com/edrlab/thorium-reader/issues/3032
+        }).map(attachLocalBookshelfPubId);
+
         const subscribeLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
             rel: "http://opds-spec.org/acquisition/subscribe",
+            type: supportedFileTypeLinksForPayWallAcquisition, // https://github.com/edrlab/thorium-reader/issues/3032
         });
         const entrylinkView = fallback(
             this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
@@ -426,6 +556,8 @@ export class OpdsFeedViewConverter {
             // convertMultiLangStringToLangString()
             a11y_accessibilitySummary: r2OpdsPublication.Metadata.Accessibility?.Summary || r2OpdsPublication.Metadata.AccessibilitySummary, // string | IStringMap
 
+            opdsPublicationStringified: JSON.stringify(TaJsonSerialize(r2OpdsPublication)), // NOTE: This is not a idempotent json serialization from the original json , strict comparaison between json response request will not be equal to this !
+            selfLink: selfLinkView.length === 1 ? selfLinkView[0] : undefined,
         };
     }
     public convertOpdsAuthToView(r2OpdsAuth: OPDSAuthenticationDoc, baseUrl: string): IOpdsResultView {

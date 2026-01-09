@@ -10,14 +10,18 @@ import { IEventBus } from "./eventBus";
 
 // export type IPdfPlayerScale = "fit" | "width" | "50" | "100" | "150" | "200" | "300" | "500";
 export type IPdfPlayerScale = "page-fit" | "page-width" | number;
-export type IPdfPlayerView = "scrolled" | "paginated";
+export type IPdfPlayerView = "scrolled"; // | "paginated";
 export type IPdfPlayerColumn = "auto" | "1" | "2";
 
 export interface IPdfPlayerEvent {
-    "page": (pageNumber: string) => any;
+    "pageNumber": (pageNumber: number) => any;
+    "pageLabel": (pageLabel: string) => any;
+    "firstpage": () => any;
+    "lastpage": () => any;
     "scale": (scale: IPdfPlayerScale) => any;
     "view": (view: IPdfPlayerView) => any;
     "column": (column: IPdfPlayerColumn) => any;
+    "spreadModeEven": (column: boolean) => any;
     "search": (searchWord: string) => any;
     "search-next": () => any;
     "search-previous": () => any;
@@ -26,12 +30,25 @@ export interface IPdfPlayerEvent {
     "page-next": () => any;
     "page-previous": () => any;
     "ready": () => any;
-    "start": (pdfPath: string) => any;
+    "start": (pdfPath: string, scale: IPdfPlayerScale, spreadMode: 0 | 1 | 2) => any;
     "copy": (text: string) => any;
     "keydown": (event: IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN) => any;
     "keyup": (event: IEventPayload_R2_EVENT_WEBVIEW_KEYUP) => any;
     "toc": (event: TToc) => any;
     "numberofpages": (pages: number) => any;
+    "savePreferences": (data: {
+        page: number,
+        zoom: string | number,
+        scrollLeft: number,
+        scrollTop: number,
+        rotation: number,
+        sidebarView: number,
+        scrollMode: number,
+        spreadMode: number,
+      }) => any;
+    "print": (pageRange: number[]) => any;
+    "thumbnailRequest": (pageIndexZeroBased: number) => any;
+    "thumbnailRendered": (pageNumber: number, imgSrc: string) => any;
 }
 
 export interface IEventBusPdfPlayer extends IEventBus {

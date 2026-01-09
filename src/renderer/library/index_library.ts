@@ -9,9 +9,8 @@ import { ipcRenderer } from "electron";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
-import { ActionWithSender } from "readium-desktop/common/models/sync";
+import { type ActionWithSender } from "readium-desktop/common/models/sync";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
@@ -21,8 +20,9 @@ import {
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { createStoreFromDi, getStore } from "./createStore";
+import moment from "moment";
 
-if (IS_DEV) {
+if (__TH__IS_DEV__) {
     // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
     const cr = require("@r2-navigator-js/electron/renderer/common/console-redirect");
     // const releaseConsoleRedirect =
@@ -40,7 +40,7 @@ if (IS_DEV) {
 
 // let devTron: any;
 let axe: any;
-if (IS_DEV) {
+if (__TH__IS_DEV__) {
     // requires electron.remote!
     // enableRemoteModule: false
     // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -60,7 +60,7 @@ initGlobalConverters_GENERIC();
 // const lcpNativePluginPath = path.normalize(path.join((global as any).__dirname, "external-assets", "lcp.node"));
 // setLcpNativePluginPath(lcpNativePluginPath);
 
-// if (IS_DEV) {
+// if (__TH__IS_DEV__) {
 //     setTimeout(() => {
 //         devTron.install();
 //     }, 5000);
@@ -79,13 +79,17 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
                 settings: data.payload.settings,
                 publication: data.payload.publication,
                 session: data.payload.session,
+                screenReader: data.payload.screenReader,
                 creator: data.payload.creator,
                 lcp: data.payload.lcp,
                 noteExport: data.payload.noteExport,
+                customization: data.payload.customization,
             };
             const [store, _reduxHistory, _sagaMiddleware] = createStoreFromDi(preloadedState);
             const locale = store.getState().i18n.locale;
             getTranslator().setLocale(locale);
+            /*const localeUsedByMoment = */moment.locale([locale, "en"]);
+            // console.log("MOMENT SET LOCALE START", localeUsedByMoment);
 
             store.dispatch(winActions.initRequest.build(data.payload.win.identifier));
 
@@ -111,7 +115,12 @@ ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: syncIpc.EventPayload) => {
     }
 });
 
-if (IS_DEV) {
+if (__TH__IS_DEV__) {
+    // // Uncomment to test sourcemaps:
+    // setTimeout(() => {
+    //     throw new Error("Test exception 1 ...");
+    // }, 1000);
+
     ipcRenderer.once("AXE_A11Y", () => {
         // https://github.com/dequelabs/axe-core/blob/master/doc/API.md#api-name-axeconfigure
         const config = {

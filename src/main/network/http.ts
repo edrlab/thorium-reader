@@ -5,17 +5,37 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+// TypeScript GO:
+// The current file is a CommonJS module whose imports will produce 'require' calls;
+// however, the referenced file is an ECMAScript module and cannot be imported with 'require'.
+// Consider writing a dynamic 'import("...")' call instead.
+// To convert this file to an ECMAScript module, change its file extension to '.mts',
+// or add the field `"type": "module"` to 'package.json'.
+// @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
+// e__slint-disable-next-line @typescript-eslint/ban-ts-comment
+// @__ts-ignore TS1479
 import timeoutSignal from "timeout-signal";
-import * as debug_ from "debug";
-import { promises as fsp } from "fs";
+
+import debug_ from "debug";
+import * as fs from "fs";
 import * as http from "http";
 import * as https from "https";
+
+// TypeScript GO:
+// The current file is a CommonJS module whose imports will produce 'require' calls;
+// however, the referenced file is an ECMAScript module and cannot be imported with 'require'.
+// Consider writing a dynamic 'import("...")' call instead.
+// To convert this file to an ECMAScript module, change its file extension to '.mts',
+// or add the field `"type": "module"` to 'package.json'.
+// @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
+// e__slint-disable-next-line @typescript-eslint/ban-ts-comment
+// @__ts-ignore TS1479
 import { AbortError, Headers, RequestInit, Response } from "node-fetch";
+
 import {
     IHttpGetResult, THttpGetCallback, THttpOptions, THttpResponse,
 } from "readium-desktop/common/utils/http";
 import { decryptPersist, encryptPersist } from "readium-desktop/main/fs/persistCrypto";
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { tryCatch, tryCatchSync } from "readium-desktop/utils/tryCatch";
 
 import { diMainGet, opdsAuthFilePath } from "../di";
@@ -23,6 +43,7 @@ import { fetchWithCookie } from "./fetch";
 import { digestAuthentication, parseDigestString} from "readium-desktop/utils/digest";
 import { ProxyAgent } from "proxy-agent";
 import { availableLanguages } from "readium-desktop/common/services/translator";
+import { opdsActions } from "readium-desktop/common/redux/actions";
 
 // Logger
 const filename_ = "readium-desktop:main/http";
@@ -50,10 +71,10 @@ let authenticationToken: Record<string, IOpdsAuthenticationToken> = {};
 // https://github.com/valeriangalliat/fetch-cookie#max-redirects
 const MAX_FOLLOW_REDIRECT = 20;
 
-export const httpSetHeaderAuthorization =
+const httpSetHeaderAuthorization =
     (type: string, credentials: string) => `${type} ${credentials}`;
 
-export const CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN = "CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN";
+const CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN = "CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN";
 const CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN_fn =
     (host: string) => `${CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN}.${Buffer.from(host).toString("base64")}`;
 
@@ -75,11 +96,15 @@ const authenticationTokenInit = async () => {
         return;
     }
 
-    const data = await tryCatch(() => fsp.readFile(opdsAuthFilePath), "");
+    const data = await tryCatch(() => fs.promises.readFile(opdsAuthFilePath), "");
     let docsFS: string | undefined;
     if (data) {
         try {
             docsFS = decryptPersist(data, CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, opdsAuthFilePath);
+            if (!docsFS) {
+                docsFS = undefined;
+                // throw new Error("decryptPersist???! CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN");
+            }
         } catch (_err) {
             docsFS = undefined;
         }
@@ -122,13 +147,26 @@ export const httpSetAuthenticationToken =
 
         await persistJson();
 
+
+        // trigger refresh opds feed local state in FeedList.tsx component
+        // see addFeed function in api/opds/feed.ts
+        try {
+            const store = diMainGet("store");
+            store.dispatch(opdsActions.refresh.build());
+        } catch {
+            // ignore
+        }
+
         return res;
     };
 
 const persistJson = () => tryCatch(() => {
     if (!authenticationToken) return Promise.resolve();
     const encrypted = encryptPersist(JSON.stringify(authenticationToken), CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, opdsAuthFilePath);
-    return fsp.writeFile(opdsAuthFilePath, encrypted);
+    if (!encrypted) {
+        throw new Error("encryptPersist???! CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN persistJson");
+    }
+    return fs.promises.writeFile(opdsAuthFilePath, encrypted);
 }, "");
 
 export const absorbDBToJson = async () => {
@@ -163,7 +201,10 @@ export const deleteAuthenticationToken = async (host: string) => {
     delete authenticationToken[id];
 
     const encrypted = encryptPersist(JSON.stringify(authenticationToken), CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, opdsAuthFilePath);
-    return fsp.writeFile(opdsAuthFilePath, encrypted);
+    if (!encrypted) {
+        throw new Error("encryptPersist???! CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN deleteAuthenticationToken");
+    }
+    return await fs.promises.writeFile(opdsAuthFilePath, encrypted);
 
 };
 
@@ -171,10 +212,13 @@ export const wipeAuthenticationTokenStorage = async () => {
     // authenticationTokenInitialized = false;
     authenticationToken = {};
     const encrypted = encryptPersist(JSON.stringify(authenticationToken), CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, opdsAuthFilePath);
-    return fsp.writeFile(opdsAuthFilePath, encrypted);
+    if (!encrypted) {
+        throw new Error("encryptPersist???! CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN wipeAuthenticationTokenStorage");
+    }
+    return await fs.promises.writeFile(opdsAuthFilePath, encrypted);
 };
 
-export async function httpFetchRawResponse(
+async function httpFetchRawResponse(
     url: string | URL,
     options: THttpOptions = {},
     // redirectCounter = 0,
@@ -205,7 +249,7 @@ export async function httpFetchRawResponse(
     // https://github.com/edrlab/thorium-reader/issues/1323#issuecomment-911772951
     const httpsAgent = new https.Agent({
         timeout: options.timeout || DEFAULT_HTTP_TIMEOUT,
-        rejectUnauthorized: IS_DEV ? false : true,
+        rejectUnauthorized: !__TH__IS_DEV__,
     });
     const httpAgent = new http.Agent({
         timeout: options.timeout || DEFAULT_HTTP_TIMEOUT,
@@ -233,10 +277,10 @@ export async function httpFetchRawResponse(
 
     options.agent = proxyAgent;
 
-    // if (!options.agent && url.toString().startsWith("https:")) {
+    // if (!options.agent && /^https:\/\//.test(url.toString())) {
     //     const httpsAgent = new https.Agent({
     //         timeout: options.timeout || DEFAULT_HTTP_TIMEOUT,
-    //         rejectUnauthorized: IS_DEV ? false : true,
+    //         rejectUnauthorized: __TH__IS_DEV__ ? false : true,
     //     });
     //     options.agent = httpsAgent;
     // }
@@ -394,7 +438,7 @@ const handleCallback =
         return res;
     };
 
-export async function httpFetchFormattedResponse<TData = undefined>(
+async function httpFetchFormattedResponse<TData = undefined>(
     url: string | URL,
     options?: THttpOptions,
     callback?: THttpGetCallback<TData>,
@@ -448,7 +492,8 @@ export async function httpFetchFormattedResponse<TData = undefined>(
         const errStr = err.toString();
 
         debug("### HTTP FETCH ERROR ###");
-        debug(errStr);
+        // debug(errStr);
+        debug(err);
         debug("url: ", url);
         debug("options: ", options);
 
@@ -587,21 +632,20 @@ const httpGetUnauthorized =
                         const responseAfterRefresh = await httpGetUnauthorizedRefresh(
                             auth,
                         )(url, options, _callback, ..._arg);
-                        return responseAfterRefresh || response;
-                    } else {
-                        // Most likely because of a wrong access token.
-                        // In some cases the returned content won't launch a new authentication process
-                        // It's safer to just delete the access token and start afresh now.
-                        await deleteAuthenticationToken(url.host);
-                        (options.headers as Headers).delete("Authorization");
-                        const responseWithoutAuth = await httpGetWithAuth(
-                            false,
-                        )(url, options, _callback, ..._arg);
-                        return responseWithoutAuth || response;
+                        if (responseAfterRefresh) {
+                            return responseAfterRefresh;
+                        }
                     }
-                } else {
-                    return await handleCallback(response, _callback);
+                    // Most likely because of a wrong access token, rovoked/invalid token
+                    // In some cases the returned content won't launch a new authentication process
+                    // It's safer to just delete the access token and start afresh now.
+                    await deleteAuthenticationToken(url.host);
+                    (options.headers as Headers).delete("Authorization");
+                    return await httpGetWithAuth(
+                        false,
+                    )(url, options, _callback, ..._arg);
                 }
+                return await handleCallback(response, _callback);
             }
             return response;
         };

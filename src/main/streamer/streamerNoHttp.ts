@@ -5,13 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { Readable } from "node:stream";
+import { ReadableStream } from "node:stream/web";
+
 import * as crypto from "crypto";
-import * as debug_ from "debug";
+import debug_ from "debug";
+// BeforeSendResponse, HeadersReceivedResponse, OnBeforeSendHeadersListenerDetails, OnHeadersReceivedListenerDetails
 import { app, protocol, ProtocolRequest, ProtocolResponse, session } from "electron";
 import * as fs from "fs";
 import * as mime from "mime-types";
 import * as path from "path";
-import { _PACKAGING, IS_DEV } from "readium-desktop/preprocessor-directives";
 
 import { TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { parseDOM, serializeDOM } from "@r2-navigator-js/electron/common/dom";
@@ -20,7 +23,7 @@ import { readiumCssTransformHtml } from "@r2-navigator-js/electron/common/readiu
 import {
     convertCustomSchemeToHttpUrl, convertHttpUrlToCustomScheme, READIUM2_ELECTRON_HTTP_PROTOCOL,
 } from "@r2-navigator-js/electron/common/sessions";
-import { clearSessions, getWebViewSession } from "@r2-navigator-js/electron/main/sessions";
+import { getWebViewSession } from "@r2-navigator-js/electron/main/sessions";
 import {
     URL_PARAM_CLIPBOARD_INTERCEPT, URL_PARAM_CSS, URL_PARAM_DEBUG_VISUALS,
     URL_PARAM_EPUBREADINGSYSTEM, URL_PARAM_IS_IFRAME, URL_PARAM_SECOND_WEBVIEW,
@@ -41,20 +44,28 @@ import { bufferToStream } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { IStreamAndLength, IZip } from "@r2-utils-js/_utils/zip/zip";
 
 import {
-    computeReadiumCssJsonMessageInStreamer, MATHJAX_FILE_PATH, MATHJAX_URL_PATH,
+    computeReadiumCssJsonMessageInStreamer, MATHJAX_FILE_PATH,
     READIUMCSS_FILE_PATH, setupMathJaxTransformer,
 } from "./streamerCommon";
-// import { OPDS_MEDIA_SCHEME } from "readium-desktop/main/redux/sagas/getEventChannel";
-import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
+// import { URL_PROTOCOL_OPDS_MEDIA } from "readium-desktop/main/redux/sagas/getEventChannel";
+import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP, URL_PATH_PREFIX_PUBNOTES, URL_PATH_PREFIX_MATHJAX, URL_PATH_PREFIX_READIUMCSS, URL_PATH_PREFIX_PUB, URL_PATH_PREFIX_PDFJS } from "readium-desktop/common/streamerProtocol";
 import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
 import { diMainGet } from "../di";
 import { getNotesFromMainWinState } from "../redux/sagas/note";
 import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
+import { customizationWellKnownFolder } from "../customization/provisioning";
+import { SESSION_PARTITION_PDFJS, SESSION_PARTITION_PDFJSEXTRACT } from "readium-desktop/common/sessions";
+
+// import { clearSessions } from "@r2-navigator-js/electron/main/sessions";
+import { clearSessions, initPermissions, initProtocols } from "readium-desktop/main/sessions";
 
 // import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
 const debug = debug_("readium-desktop:main#streamerNoHttp");
 debug("_");
+
+const USE_NEW_PROTOCOL_HANDLER = false;
 
 // !!!!!!
 /// BE CAREFUL DEBUG HAS BEED DISABLED IN package.json
@@ -66,8 +77,58 @@ const URL_PARAM_SESSION_INFO = "r2_SESSION_INFO";
 // ... based on what metric, any particular HTTP server or client implementation?
 export const MAX_PREFETCH_LINKS = 10;
 
+const scriptTextDrag = `
+<script type="text/javascript">
+// document.addEventListener("DOMContentLoaded", () => {
+// });
+window.addEventListener("load", () => {
+setTimeout(() => {
+    document.addEventListener("dragstart", (e) => {
+        // console.log("dragstart capture currentTarget", typeof e.currentTarget, e.currentTarget);
+        // console.log("dragstart capture target", typeof e.target, e.target, e.target.tagName?.toLowerCase());
 
-const READIUM_CSS_URL_PATH = "readium-css";
+        const sel = document.getSelection();
+        if (sel && !sel.isCollapsed) {
+            // console.log("dragstart capture document selection preventDefault");
+            // e.preventDefault();
+            e.dataTransfer.clearData();
+            e.dataTransfer.setData("text/plain", " ");
+        } else if (e.target.tagName) {
+            const n = e.target.tagName.toLowerCase();
+            if (n === "a") {
+                // console.log("dragstart capture target preventDefault ", n);
+                // e.preventDefault();
+                e.dataTransfer.clearData();
+                e.dataTransfer.setData("text/plain", "https://www.edrlab.org/software/thorium-reader/");
+            } else if (n === "img" || n === "video" || n === "svg") {
+                // console.log("dragstart capture target preventDefault ", n);
+                // e.preventDefault();
+                e.dataTransfer.clearData();
+                e.dataTransfer.setData("text/plain", " ");
+            }
+        }
+    }, true);
+
+    /*
+    document.addEventListener("dragend", (e) => {
+        console.log("dragend capture currentTarget", typeof e.currentTarget, e.currentTarget);
+        console.log("dragend capture target", typeof e.target, e.target);
+    }, true);
+
+    document.addEventListener("dragstart", (e) => {
+        console.log("dragstart not-capture currentTarget", typeof e.currentTarget, e.currentTarget);
+        console.log("dragstart not-capture target", typeof e.target, e.target);
+    }, false);
+
+    document.addEventListener("dragend", (e) => {
+        console.log("dragend not-capture currentTarget", typeof e.currentTarget, e.currentTarget);
+        console.log("dragend not-capture target", typeof e.target, e.target);
+    }, false);
+     */
+}, 100);
+});
+</script>
+`;
 
 if (true) { // !_USE_HTTP_STREAMER) {
     function isFixedLayout(publication: R2Publication, link: Link | undefined): boolean {
@@ -128,10 +189,11 @@ if (true) { // !_USE_HTTP_STREAMER) {
 
         if (readiumcssJson) {
             if (!readiumcssJson.urlRoot) {
-                // `/${READIUM_CSS_URL_PATH}/`
-                readiumcssJson.urlRoot = THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://0.0.0.0";
+                // `/${URL_PATH_PREFIX_READIUMCSS}/`
+                readiumcssJson.urlRoot = URL_PROTOCOL_THORIUMHTTPS + "://" + URL_HOST_COMMON;
+                // readiumcssJson.urlRoot = convertHttpUrlToCustomScheme(readiumcssJson.urlRoot + "/xx/yy/zz").replace(/\/xx\/yy\/zz$/, "");
             }
-            if (IS_DEV) {
+            if (__TH__IS_DEV__) {
                 debug("_____ readiumCssJson.urlRoot (setupReadiumCSS() transformer): ", readiumcssJson.urlRoot);
             }
 
@@ -149,7 +211,7 @@ if (true) { // !_USE_HTTP_STREAMER) {
     Transformers.instance().add(new TransformerHTML(transformerReadiumCss));
 
     setupMathJaxTransformer(
-        () => `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0/${MATHJAX_URL_PATH}/es5/tex-mml-chtml.js`,
+        () => `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_MATHJAX}/es5/tex-mml-chtml.js`,
     );
 }
 
@@ -157,12 +219,25 @@ function getPreFetchResources(publication: R2Publication): Link[] {
     const links: Link[] = [];
 
     if (publication.Resources) {
-        // https://w3c.github.io/publ-epub-revision/epub32/spec/epub-spec.html#cmt-grp-font
-        const mediaTypes = ["text/css",
-            "text/javascript", "application/javascript",
-            "application/vnd.ms-opentype", "font/otf", "application/font-sfnt",
-            "font/ttf", "application/font-sfnt",
-            "font/woff", "application/font-woff", "font/woff2"];
+        //https://www.w3.org/TR/epub-33/#sec-core-media-types
+        // "application/x-font-sfnt" ?
+        // https://github.com/w3c/epub-tests/pull/306
+        // https://github.com/w3c/epubcheck/issues/1612
+        // https://github.com/w3c/epub-specs/issues/667
+        // https://github.com/w3c/epub-specs/pull/2726
+        const mediaTypes = [
+            "text/css",
+            "text/javascript",
+            "application/javascript",
+            "application/vnd.ms-opentype",
+            "font/otf",
+            "application/x-font-ttf",
+            "font/ttf",
+            "application/font-sfnt",
+            "font/woff",
+            "application/font-woff",
+            "font/woff2",
+        ];
         for (const mediaType of mediaTypes) {
             for (const link of publication.Resources) {
                 if (link.TypeLink === mediaType) {
@@ -175,23 +250,165 @@ function getPreFetchResources(publication: R2Publication): Link[] {
     return links;
 }
 
+const nodeStreamToWeb = (resultStream: Readable): ReadableStream => { // NodeJS.ReadStream
+
+    // TODO: in some cases, NodeJS Readable.toWeb closes its controller twice!
+    // https://github.com/nodejs/node/blob/e578c0b1e8d3dd817e692a0c5df1b97580bc7c7f/lib/internal/webstreams/adapters.js#L454
+    // https://github.com/laurent22/joplin/blob/984bb0f3ef3943a3abd0e3de1110ce1723363ef7/packages/app-desktop/utils/customProtocols/handleCustomProtocols.ts#L32
+    // https://github.com/nodejs/node/issues/54205
+    return Readable.toWeb(resultStream);
+
+	// resultStream.pause();
+
+	// let closed = false;
+
+	// return new ReadableStream({
+	// 	start: (controller) => {
+	// 		resultStream.on('data', (chunk) => {
+	// 			if (closed) {
+	// 				return;
+	// 			}
+
+	// 			if (Buffer.isBuffer(chunk)) {
+	// 				controller.enqueue(new Uint8Array(chunk));
+	// 			} else {
+	// 				controller.enqueue(chunk);
+	// 			}
+
+	// 			if (controller.desiredSize <= 0) {
+	// 				resultStream.pause();
+	// 			}
+	// 		});
+
+	// 		resultStream.on('error', (error) => {
+	// 			controller.error(error);
+	// 		});
+
+	// 		resultStream.on('end', () => {
+	// 			if (!closed) {
+	// 				closed = true;
+	// 				controller.close();
+	// 			}
+	// 		});
+	// 	},
+	// 	pull: (_controller) => {
+	// 		if (closed) {
+	// 			return;
+	// 		}
+
+	// 		resultStream.resume();
+	// 	},
+	// 	cancel: () => {
+	// 		if (!closed) {
+	// 			closed = true;
+	// 			// resultStream.close();
+ //                resultStream.destroy();
+	// 		}
+	// 	},
+	// }, { highWaterMark: resultStream.readableHighWaterMark });
+};
+
+// handler: (request: GlobalRequest) => (GlobalResponse) | (Promise<GlobalResponse>)
+const streamProtocolHandlerTunnel_NEW = async (req: GlobalRequest): Promise<GlobalResponse> => {
+
+    const headers: Record<string, string> = {};
+    for (const entry of req.headers.entries()) {
+        headers[entry[0]] = entry[1];
+    }
+
+    return new Promise<GlobalResponse>(async (resolve) => {
+        await streamProtocolHandlerTunnel({
+            headers,
+            method: req.method,
+            referrer: req.referrer,
+            url: req.url,
+        },
+        // (res: (NodeJS.ReadableStream) | (ProtocolResponse)) => {
+        (res: ProtocolResponse) => {
+            const arr: Array<[string, string]> = [];
+            const keys = Object.keys(res.headers as Record<string, string>);
+            for (const key of keys) {
+                const value = (res.headers as Record<string, string>)[key];
+                arr.push([key, value]);
+            }
+            const resHeaders = new Headers(arr);
+            if (__TH__IS_DEV__) {
+                debug("BEFORE NEW RESPONSE TUNNEL...", req.method, req.url, req.referrer, headers, typeof Response, res.statusCode, res.headers, typeof res.data, res.data instanceof ReadableStream, (res.data as any).readable, (res.data as any).writable, arr);
+            }
+            // as import("undici-types").Response
+            // typeof import("@types/node").Response
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ ts-expect-error TS 2345
+            // resolve(new global.Response(res.data as NodeJS.ReadableStream, {
+            resolve(new Response(nodeStreamToWeb(res.data as NodeJS.ReadStream) as BodyInit, {
+                status: res.statusCode,
+                headers: resHeaders,
+            }));
+        },
+        );
+    });
+};
+
 const streamProtocolHandlerTunnel = async (
     req: ProtocolRequest,
-    callback: (stream: (NodeJS.ReadableStream) | (ProtocolResponse)) => void) => {
+    // callback: (stream: (NodeJS.ReadableStream) | (ProtocolResponse)) => void,
+    callback: (res: ProtocolResponse) => void,
+) => {
 
     debug("............... streamProtocolHandlerTunnel req.url", req.url);
     req.url = convertCustomSchemeToHttpUrl(req.url);
-    streamProtocolHandler(req, callback);
+    await streamProtocolHandler(req, callback);
 };
 
 // super hacky!! :(
 // see usages of this boolean...
 let _customUrlProtocolSchemeHandlerWasCalled = false;
 
+// handler: (request: GlobalRequest) => (GlobalResponse) | (Promise<GlobalResponse>)
+const streamProtocolHandler_NEW = async (req: GlobalRequest): Promise<GlobalResponse> => {
+
+    const headers: Record<string, string> = {};
+    for (const entry of req.headers.entries()) {
+        headers[entry[0]] = entry[1];
+    }
+
+    return new Promise<GlobalResponse>(async (resolve) => {
+        await streamProtocolHandler({
+            headers,
+            method: req.method,
+            referrer: req.referrer,
+            url: req.url,
+        },
+        // (res: (NodeJS.ReadableStream) | (ProtocolResponse)) => {
+        (res: ProtocolResponse) => {
+            const arr: Array<[string, string]> = [];
+            const keys = Object.keys(res.headers as Record<string, string>);
+            for (const key of keys) {
+                const value = (res.headers as Record<string, string>)[key];
+                arr.push([key, value]);
+            }
+            const resHeaders = new Headers(arr);
+            if (__TH__IS_DEV__) {
+                debug("BEFORE NEW RESPONSE...", req.method, req.url, req.referrer, headers, typeof Response, res.statusCode, res.headers, typeof res.data, res.data instanceof ReadableStream, (res.data as any).readable, (res.data as any).writable, arr);
+            }
+            // as import("undici-types").Response
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ ts-expect-error TS 2345
+            // resolve(new Response(res.data as NodeJS.ReadableStream, {
+            resolve(new Response(nodeStreamToWeb(res.data as NodeJS.ReadStream) as BodyInit, {
+                status: res.statusCode,
+                headers: resHeaders,
+            }));
+        },
+        );
+    });
+};
+
 const streamProtocolHandler = async (
     req: ProtocolRequest,
-    callback: (stream: (NodeJS.ReadableStream) | (ProtocolResponse)) => void) => {
-
+    // callback: (stream: (NodeJS.ReadableStream) | (ProtocolResponse)) => void,
+    callback: (res: ProtocolResponse) => void,
+) => {
     _customUrlProtocolSchemeHandlerWasCalled = true;
 
     // debug("streamProtocolHandler:");
@@ -218,30 +435,35 @@ const streamProtocolHandler = async (
         }
     }
 
-    const notesFromPublicationPrefix = "/publication-notes/";
+    const customProfileZipAssetsPrefix = `/${URL_PATH_PREFIX_CUSTOMPROFILEZIP}/`;
+    const isCustomProfileZipAssets = uPathname.startsWith(customProfileZipAssetsPrefix);
+
+    const notesFromPublicationPrefix = `/${URL_PATH_PREFIX_PUBNOTES}/`;
     const isNotesFromPublicationRequest = uPathname.startsWith(notesFromPublicationPrefix);
 
-    const pdfjsAssetsPrefix = "/pdfjs/";
+    const pdfjsAssetsPrefix = `/${URL_PATH_PREFIX_PDFJS}/`;
     const isPdfjsAssets = uPathname.startsWith(pdfjsAssetsPrefix);
 
-    const publicationAssetsPrefix = "/pub/";
+    const publicationAssetsPrefix = `/${URL_PATH_PREFIX_PUB}/`;
     const isPublicationAssets = uPathname.startsWith(publicationAssetsPrefix);
 
-    const mathJaxPrefix = `/${MATHJAX_URL_PATH}/`;
+    const mediaOverlaysSuffix = `/${mediaOverlayURLPath}`;
+    const isMediaOverlays = uPathname.endsWith(mediaOverlaysSuffix);
+
+    const mathJaxPrefix = `/${URL_PATH_PREFIX_MATHJAX}/`;
     const isMathJax = uPathname.startsWith(mathJaxPrefix);
 
-    const readiumCssPrefix = `/${READIUM_CSS_URL_PATH}/`;
+    const readiumCssPrefix = `/${URL_PATH_PREFIX_READIUMCSS}/`;
     const isReadiumCSS = uPathname.startsWith(readiumCssPrefix);
 
-    const mediaOverlaysPrefix = `/${mediaOverlayURLPath}`;
-    const isMediaOverlays = uPathname.endsWith(mediaOverlaysPrefix);
-
     debug("streamProtocolHandler uPathname", uPathname);
+    debug("streamProtocolHandler isCustomProfileZipAssets", isCustomProfileZipAssets);
+    debug("streamProtocolHandler isNotesFromPublicationRequest", isNotesFromPublicationRequest);
     debug("streamProtocolHandler isPdfjsAssets", isPdfjsAssets);
     debug("streamProtocolHandler isPublicationAssets", isPublicationAssets);
+    debug("streamProtocolHandler isMediaOverlays", isMediaOverlays);
     debug("streamProtocolHandler isMathJax", isMathJax);
     debug("streamProtocolHandler isReadiumCSS", isReadiumCSS);
-    debug("streamProtocolHandler isMediaOverlays", isMediaOverlays);
 
     const isHead = req.method.toLowerCase() === "head";
     if (isHead) {
@@ -255,7 +477,7 @@ const streamProtocolHandler = async (
         debug("streamProtocolHandler req.referrer", ref);
     }
 
-    if (IS_DEV) {
+    if (__TH__IS_DEV__) {
         Object.keys(req.headers).forEach((header: string) => {
             const val = req.headers[header];
 
@@ -267,12 +489,15 @@ const streamProtocolHandler = async (
         });
     }
 
-    const headers: Record<string, (string) | (string[])> = {};
+    // const headers: Record<string, (string) | (string[])> = {};
+    const headers: Record<string, string> = {};
     if (ref && ref !== "null" && !/^https?:\/\/localhost.+/.test(ref) && !/^https?:\/\/127\.0\.0\.1.+/.test(ref)) {
         headers.referer = ref;
     } else {
-        headers.referer = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0/`;
+        headers.referer = `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/`;
     }
+
+    // headers["Content-Security-Policy"] = `default-src 'self' 'unsafe-inline' 'unsafe-eval' data: http: https: ${URL_PROTOCOL_THORIUMHTTPS}: ${READIUM2_ELECTRON_HTTP_PROTOCOL}:`;
 
     // CORS everything!
     headers["Access-Control-Allow-Origin"] = "*";
@@ -280,7 +505,299 @@ const streamProtocolHandler = async (
     headers["Access-Control-Allow-Headers"] = "Content-Type, Content-Length, Accept-Ranges, Content-Range, Range, Link, Transfer-Encoding, X-Requested-With, Authorization, Accept, Origin, User-Agent, DNT, Cache-Control, Keep-Alive, If-Modified-Since";
     headers["Access-Control-Expose-Headers"] = "Content-Type, Content-Length, Accept-Ranges, Content-Range, Range, Link, Transfer-Encoding, X-Requested-With, Authorization, Accept, Origin, User-Agent, DNT, Cache-Control, Keep-Alive, If-Modified-Since";
 
-    if (isNotesFromPublicationRequest) {
+    if (isCustomProfileZipAssets) {
+
+        // /custom-profile-zip/<id-encoded>/<path-to-zip-encoded>/
+
+        const route = uPathname.substr(customProfileZipAssetsPrefix.length);
+        const [idEncoded, pathInZipEncoded] = route.split(/\/(.*)/s);
+        const id = Buffer.from(decodeURIComponent(idEncoded), "base64").toString();
+
+        const pathInZipEncoded_ = Buffer.from(decodeURIComponent(pathInZipEncoded), "base64").toString();
+        debug("streamProtocolHandler pathInZipEncoded_", pathInZipEncoded_);
+
+        const pathInZip = path.resolve("/", pathInZipEncoded_).replace(/\\/g, "/").substr(1).replace(/^:\//, "");
+        debug("streamProtocolHandler pathInZip", pathInZip);
+
+        const state = diMainGet("store").getState();
+        const profile = state.customization.provision.find((profile) => profile.id === id);
+
+        if (!profile) {
+            const err = "PROFILE ID " + uPathname + " ; " + id;
+            debug(err);
+            const buff = Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
+            headers["Content-Length"] = buff.length.toString();
+            const obj = {
+                // NodeJS.ReadableStream
+                data: bufferToStream(buff),
+                headers,
+                statusCode: 500,
+            };
+            callback(obj);
+            return;
+        }
+
+        const fileName = profile.fileName;
+        const fileAbsolutePath = path.resolve(customizationWellKnownFolder, fileName);
+        debug("profileFilePath", fileAbsolutePath);
+
+        if (!pathInZip) {
+            const err = "PATH IN ZIP?? " + uPathname;
+            debug(err);
+            const buff = Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
+            headers["Content-Length"] = buff.length.toString();
+            const obj = {
+                // NodeJS.ReadableStream
+                data: bufferToStream(buff),
+                headers,
+                statusCode: 500,
+            };
+            callback(obj);
+            return;
+        }
+
+        // https://github.com/edrlab/r2-shared-js/blob/develop/src/parser/epub.ts#L171C1-L183C6
+        let zip: IZip;
+        try {
+            zip = await zipLoadPromise(fileAbsolutePath);
+        } catch (err) {
+            debug(err);
+            // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+            // return Promise.reject(err);
+            zip = undefined;
+        }
+
+        if (!zip.hasEntries()) {
+            // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+            // return Promise.reject("EPUB zip empty");
+            zip = undefined;
+        }
+
+        if (!zip) {
+            const err = "No publication zip!";
+            debug(err);
+            const buff = Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
+            headers["Content-Length"] = buff.length.toString();
+            const obj = {
+                // NodeJS.ReadableStream
+                data: bufferToStream(buff),
+                headers,
+                statusCode: 500,
+            };
+            callback(obj);
+            return;
+        }
+
+        if (!zipHasEntry(zip, pathInZip, undefined)) {
+            const err = "Asset not in zip! " + pathInZip;
+            debug(err);
+            const buff = Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
+            headers["Content-Length"] = buff.length.toString();
+            const obj = {
+                // NodeJS.ReadableStream
+                data: bufferToStream(buff),
+                headers,
+                statusCode: 500,
+            };
+            callback(obj);
+            return;
+        }
+
+
+        // TODO: find link in manifest.json
+
+        const mediaType = mime.lookup(pathInZip) || "stream/octet";
+        // if (link && link.TypeLink) {
+        //     mediaType = link.TypeLink;
+        // }
+        debug("streamProtocolHandler mediaType", mediaType);
+
+        const isEncrypted = false;
+        const headersRange = req.headers.Range || req.headers.range;
+
+        const isPartialByteRangeRequest = ((req.headers && headersRange) ? true : false);
+        debug("streamProtocolHandler isPartialByteRangeRequest", isPartialByteRangeRequest);
+
+        // if (isEncrypted && isPartialByteRangeRequest) {
+        //     const err = "Encrypted video/audio not supported (HTTP 206 partial request byte range)";
+        //     debug(err);
+        //     res.status(500).send("<html><body><p>Internal Server Error</p><p>"
+        //         + err + "</p></body></html>");
+        //     return;
+        // }
+
+        let partialByteBegin = 0; // inclusive boundaries
+        let partialByteEnd = -1;
+        if (isPartialByteRangeRequest) {
+            debug("streamProtocolHandler isPartialByteRangeRequest", headersRange);
+
+            const ranges = parseRangeHeader(headersRange);
+            // debug(ranges);
+
+            if (ranges && ranges.length) {
+                if (ranges.length > 1) {
+                    const err = "Too many HTTP ranges: " + headersRange;
+                    debug(err);
+                    const buff =
+                        Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
+                    headers["Content-Length"] = buff.length.toString();
+                    // headers["Content-Range"] = `*/${contentLength}`;
+                    const obj = {
+                        // NodeJS.ReadableStream
+                        data: bufferToStream(buff),
+                        headers,
+                        statusCode: 416,
+                    };
+                    callback(obj);
+                    return;
+                }
+                partialByteBegin = ranges[0].begin;
+                partialByteEnd = ranges[0].end;
+
+                if (partialByteBegin < 0) {
+                    partialByteBegin = 0;
+                }
+            }
+
+            debug("streamProtocolHandler isPartialByteRangeRequest", `${pathInZip} >> ${partialByteBegin}-${partialByteEnd}`);
+        }
+        let zipStream_: IStreamAndLength;
+        try {
+            if (isPartialByteRangeRequest && !isEncrypted && !(partialByteBegin === 0 && partialByteEnd === -1)) {
+                zipStream_ = await zip.entryStreamRangePromise(pathInZip, partialByteBegin, partialByteEnd);
+            } else {
+                zipStream_ = await zip.entryStreamPromise(pathInZip);
+            }
+        } catch (err) {
+            debug(err);
+            const buff = Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
+            headers["Content-Length"] = buff.length.toString();
+            const obj = {
+                // NodeJS.ReadableStream
+                data: bufferToStream(buff),
+                headers,
+                statusCode: 500,
+            };
+            callback(obj);
+            return;
+        }
+
+        // The HTML transforms are chained here too, so cannot check server.disableDecryption at this level!
+        // const doTransform = false; // !isEncrypted || (isObfuscatedFont || !server.disableDecryption);
+
+        // decodeURIComponent already done
+        const sessionInfo = u.searchParams.get(URL_PARAM_SESSION_INFO) || undefined;
+        debug("streamProtocolHandler sessionInfo", sessionInfo);
+
+        // if (doTransform && link) {
+
+        //     const fullUrl = req.url; // `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}${uPathname}`;
+
+        //     let transformedStream: IStreamAndLength;
+        //     try {
+        //         transformedStream = await Transformers.tryStream(
+        //             publication,
+        //             link,
+        //             fullUrl,
+        //             zipStream_,
+        //             isPartialByteRangeRequest,
+        //             partialByteBegin,
+        //             partialByteEnd,
+        //             sessionInfo,
+        //         );
+        //     } catch (err) {
+        //         debug(err);
+        //         const buff = Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
+        //         headers["Content-Length"] = buff.length.toString();
+        //         const obj = {
+        //             // NodeJS.ReadableStream
+        //             data: bufferToStream(buff),
+        //             headers,
+        //             statusCode: 500,
+        //         };
+        //         callback(obj);
+        //         return;
+        //     }
+        //     if (transformedStream) {
+        //         if (transformedStream !== zipStream_) {
+        //             debug("streamProtocolHandler Asset transformed ok", link.Href);
+        //         }
+        //         zipStream_ = transformedStream; // can be unchanged
+        //     } else {
+        //         const err = "Transform fail (encryption scheme not supported?)";
+        //         debug(err);
+        //         const buff = Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
+        //         headers["Content-Length"] = buff.length.toString();
+        //         const obj = {
+        //             // NodeJS.ReadableStream
+        //             data: bufferToStream(buff),
+        //             headers,
+        //             statusCode: 500,
+        //         };
+        //         callback(obj);
+        //         return;
+        //     }
+        // }
+
+        if (isPartialByteRangeRequest) {
+            headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            headers.Pragma = "no-cache";
+            headers.Expires = "0";
+        } else {
+            headers["Cache-Control"] = "public,max-age=86400";
+        }
+
+        if (mediaType) {
+            headers["Content-Type"] = mediaType;
+            // res.type(mediaType);
+        }
+
+        headers["Accept-Ranges"] = "bytes";
+        headers["X-Content-Type-Options"] = "nosniff";
+
+        let statusCode = 200;
+        if (isPartialByteRangeRequest) {
+            if (partialByteEnd < 0) {
+                partialByteEnd = zipStream_.length - 1;
+            }
+            const partialByteLength = isPartialByteRangeRequest ?
+                partialByteEnd - partialByteBegin + 1 :
+                zipStream_.length;
+            // res.setHeader("Connection", "close");
+            // res.setHeader("Transfer-Encoding", "chunked");
+            headers["Content-Length"] = `${partialByteLength}`;
+            const rangeHeader = `bytes ${partialByteBegin}-${partialByteEnd}/${zipStream_.length}`;
+            debug("streamProtocolHandler +++> " + rangeHeader + " (( " + partialByteLength);
+            headers["Content-Range"] = rangeHeader;
+            statusCode = 206;
+        } else {
+            headers["Content-Length"] = `${zipStream_.length}`;
+            debug("streamProtocolHandler ---> " + zipStream_.length);
+            statusCode = 200;
+        }
+
+        if (isHead) {
+            debug("streamProtocolHandler HEAD RESPONSE HEADERS: ", headers);
+            const obj: ProtocolResponse = {
+                // NodeJS.ReadableStream
+                data: null,
+                headers,
+                statusCode,
+            };
+            callback(obj);
+        } else {
+            debug("streamProtocolHandler GET RESPONSE HEADERS: ", headers);
+            const obj = {
+                // NodeJS.ReadableStream
+                data: zipStream_.stream,
+                headers,
+                statusCode,
+            };
+            callback(obj);
+        }
+
+        return ;
+    } else if (isNotesFromPublicationRequest) {
 
         const publicationUUID = uPathname.substr(notesFromPublicationPrefix.length);
 
@@ -307,10 +824,26 @@ const streamProtocolHandler = async (
 
         const pdfjsFolder = "assets/lib/pdfjs";
         let folderPath: string = path.join(__dirname, pdfjsFolder);
-        if (_PACKAGING === "0") {
+        if (!__TH__IS_PACKAGED__) {
             folderPath = path.join(process.cwd(), "dist", pdfjsFolder);
         }
-        const pdfjsFullPathname = path.normalize(`${folderPath}/${pdfjsUrlPathname}`);
+        folderPath = path.normalize(folderPath);
+        const pdfjsFullPathname = path.normalize(path.join(folderPath, pdfjsUrlPathname));
+
+        if (!pdfjsFullPathname.startsWith(folderPath) || !fs.existsSync(pdfjsFullPathname)) {
+            const err = "404 NOT FOUND: " + pdfjsFullPathname;
+            debug(err);
+            const buff = Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
+            headers["Content-Length"] = buff.length.toString();
+            const objz = {
+                // NodeJS.ReadableStream
+                data: bufferToStream(buff),
+                headers,
+                statusCode: 404,
+            };
+            callback(objz);
+            return;
+        }
         const fileExtension = path.extname(pdfjsFullPathname);
         debug("PDFJS full path name :", pdfjsFullPathname);
 
@@ -319,15 +852,29 @@ const streamProtocolHandler = async (
         const contentType = `${findMimeTypeWithExtension(fileExtension) || ""}; charset=utf-8`;
         headers["Content-Type"] = contentType;
         debug("PDFJS content-type:", contentType, contentLength);
+
+        let buff: Buffer | undefined;
+        if (pdfjsFullPathname.endsWith("viewer.html")) {
+            try {
+                debug("PDFJS INTERCEPT:", pdfjsFullPathname);
+                let str = fs.readFileSync(pdfjsFullPathname, { encoding: "utf8" });
+                str = str.replace(/<\/head>/, `${scriptTextDrag}</head>`);
+                buff = Buffer.from(str, "utf8");
+            } catch (e) {
+                debug("PDFJS INTERCEPT ERROR:", pdfjsFullPathname);
+                debug(e);
+            }
+        }
+
         const obj = {
             // NodeJS.ReadableStream
-            data: fs.createReadStream(pdfjsFullPathname),
+            data: buff ? bufferToStream(buff) : fs.createReadStream(pdfjsFullPathname),
             headers,
             statusCode: 200,
         };
         callback(obj);
         return;
-    } else if (isPublicationAssets || isMediaOverlays) {
+    } else if (isPublicationAssets) { //  || isMediaOverlays IMPLIED!
         let b64Path = uPathname.substr(publicationAssetsPrefix.length);
         const i = b64Path.indexOf("/");
         let pathInZip = "";
@@ -355,7 +902,16 @@ const streamProtocolHandler = async (
             return;
         }
 
-        const pathBase64Str = Buffer.from(b64Path, "base64").toString("utf8");
+        let pathBase64Str = Buffer.from(b64Path, "base64").toString("utf8");
+        debug("streamProtocolHandler pathBase64Str", pathBase64Str);
+        if (
+            (!pathBase64Str.includes("/") && !pathBase64Str.includes("\\")) // not a path on the filesystem
+            || /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(pathBase64Str) // UUID v4 syntax ... though this is never reached because of the first predicate in the conditional if
+            // || !fs.existsSync(pathBase64Str)
+        ) {
+            const pubStorage = diMainGet("publication-storage");
+            pathBase64Str = pubStorage.getPublicationEpubPath(pathBase64Str);
+        }
 
         // const fileName = path.basename(pathBase64Str);
         // const ext = path.extname(fileName).toLowerCase();
@@ -481,8 +1037,10 @@ const streamProtocolHandler = async (
 
         if (pathInZip === "manifest.json") {
 
-            const rootUrl = "THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL://0.0.0.0/pub/" + encodeURIComponent_RFC3986(b64Path);
-            const manifestURL = rootUrl + "/" + "manifest.json";
+            const rootUrl = URL_PROTOCOL_THORIUMHTTPS + "://" + URL_HOST_COMMON + "/" + URL_PATH_PREFIX_PUB + "/" + encodeURIComponent_RFC3986(b64Path);
+            // const rootUrl = convertHttpUrlToCustomScheme(rootUrl_ + "/zz").replace(/\/zz$/, "");
+            const manifestURL = convertHttpUrlToCustomScheme(rootUrl + "/" + "manifest.json");
+            debug("manifest.json ROOT URL", rootUrl);
 
             const contentType =
                 (publication.Metadata && publication.Metadata.RDFType &&
@@ -498,7 +1056,7 @@ const streamProtocolHandler = async (
             }
 
             function absoluteURL(href: string): string {
-                return rootUrl + "/" + href;
+                return convertHttpUrlToCustomScheme(rootUrl + "/" + href);
             }
 
             let hasMO = false;
@@ -722,6 +1280,26 @@ const streamProtocolHandler = async (
         }
         debug("streamProtocolHandler mediaType", mediaType);
 
+
+        // https://www.electronjs.org/docs/latest/api/client-request
+        // https://developer.mozilla.org/en-US/docs/Web/API/Window/fetch#redirect
+        // protocol.handle("http", (request) => {
+        //     return net.fetch(request.url, { redirect: "manual" });
+        // });
+        // session.defaultSession.interceptHttpProtocol("http", (request, callback) => {
+        //     callback({...request, redirect: "manual", session: null});
+        // });
+        // if (mediaType.startsWith("audio")) {
+        //     debug("streamProtocolHandler AUDIO redirect...", req.headers);
+        //     callback({
+        //         data: null,
+        //         // headers: req.headers,
+        //         headers: { ...req.headers, Location: "https://woolyss.com/f/audio-sample.mp3" }, // https://tools.woolyss.com/html5-audio-video-tester/?u=woolyss.com/f/audio-sample.mp3
+        //         statusCode: 301,
+        //     });
+        //     return;
+        // }
+
         // const isText = (typeof mediaType === "string") && (
         //     mediaType.indexOf("text/") === 0 ||
         //     mediaType.indexOf("application/xhtml") === 0 ||
@@ -748,7 +1326,9 @@ const streamProtocolHandler = async (
         //         || link.Properties.Encrypted.Algorithm === "http://www.idpf.org/2008/embedding");
         debug("streamProtocolHandler isEncrypted", isEncrypted);
 
-        const isPartialByteRangeRequest = ((req.headers && req.headers.Range) ? true : false);
+        const headersRange = req.headers.Range || req.headers.range;
+
+        const isPartialByteRangeRequest = ((req.headers && headersRange) ? true : false);
         debug("streamProtocolHandler isPartialByteRangeRequest", isPartialByteRangeRequest);
 
         // if (isEncrypted && isPartialByteRangeRequest) {
@@ -762,14 +1342,14 @@ const streamProtocolHandler = async (
         let partialByteBegin = 0; // inclusive boundaries
         let partialByteEnd = -1;
         if (isPartialByteRangeRequest) {
-            debug("streamProtocolHandler isPartialByteRangeRequest", req.headers.Range);
+            debug("streamProtocolHandler isPartialByteRangeRequest", headersRange);
 
-            const ranges = parseRangeHeader(req.headers.Range);
+            const ranges = parseRangeHeader(headersRange);
             // debug(ranges);
 
             if (ranges && ranges.length) {
                 if (ranges.length > 1) {
-                    const err = "Too many HTTP ranges: " + req.headers.Range;
+                    const err = "Too many HTTP ranges: " + headersRange;
                     debug(err);
                     const buff =
                         Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
@@ -796,9 +1376,11 @@ const streamProtocolHandler = async (
         }
         let zipStream_: IStreamAndLength;
         try {
-            zipStream_ = isPartialByteRangeRequest && !isEncrypted ?
-                await zip.entryStreamRangePromise(pathInZip, partialByteBegin, partialByteEnd) :
-                await zip.entryStreamPromise(pathInZip);
+            if (isPartialByteRangeRequest && !isEncrypted && !(partialByteBegin === 0 && partialByteEnd === -1)) {
+                zipStream_ = await zip.entryStreamRangePromise(pathInZip, partialByteBegin, partialByteEnd);
+            } else {
+                zipStream_ = await zip.entryStreamPromise(pathInZip);
+            }
         } catch (err) {
             debug(err);
             const buff = Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
@@ -822,7 +1404,7 @@ const streamProtocolHandler = async (
 
         if (doTransform && link) {
 
-            const fullUrl = req.url; // `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0${uPathname}`;
+            const fullUrl = req.url; // `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}${uPathname}`;
 
             let transformedStream: IStreamAndLength;
             try {
@@ -884,6 +1466,7 @@ const streamProtocolHandler = async (
         }
 
         headers["Accept-Ranges"] = "bytes";
+        headers["X-Content-Type-Options"] = "nosniff";
 
         let statusCode = 200;
         if (isPartialByteRangeRequest) {
@@ -927,11 +1510,11 @@ const streamProtocolHandler = async (
         }
     } else if (isMathJax || isReadiumCSS) {
 
-        const p = path.join(isReadiumCSS ? READIUMCSS_FILE_PATH : MATHJAX_FILE_PATH,
-            uPathname.substr((isReadiumCSS ? readiumCssPrefix : mathJaxPrefix).length));
+        const rootPathConstraint = path.normalize(isReadiumCSS ? READIUMCSS_FILE_PATH : MATHJAX_FILE_PATH);
+        const p = path.normalize(path.join(rootPathConstraint, uPathname.substr((isReadiumCSS ? readiumCssPrefix : mathJaxPrefix).length)));
         debug("streamProtocolHandler isMathJax || isReadiumCSS", p);
 
-        if (!fs.existsSync(p)) {
+        if (!p.startsWith(rootPathConstraint) || !fs.existsSync(p)) {
             const err = "404 NOT FOUND: " + p;
             debug(err);
             const buff = Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");
@@ -1154,9 +1737,6 @@ const transformerIFrames: TTransformFunction = (
 };
 
 export function initSessions() {
-    app.commandLine.appendSwitch("autoplay-policy", "no-user-gesture-required");
-    app.commandLine.appendSwitch("enable-speech-dispatcher");
-
     Transformers.instance().add(new TransformerHTML(transformerIFrames));
 
     protocol.registerSchemesAsPrivileged([
@@ -1173,7 +1753,7 @@ export function initSessions() {
     //         standard: false, // Default false
     //         codeCache: false, // Default false (only works with standard=true)
     //     },
-    //     scheme: "store",
+    //     scheme: URL_PROTOCOL_STORE,
     // },
     // {
     //     privileges: {
@@ -1186,7 +1766,7 @@ export function initSessions() {
     //         standard: false, // Default false
     //         codeCache: false, // Default false (only works with standard=true)
     //     },
-    //     scheme: "filex",
+    //     scheme: URL_PROTOCOL_FILEX,
     // },
     // {
     //     privileges: {
@@ -1199,7 +1779,7 @@ export function initSessions() {
     //         standard: false, // Default false
     //         codeCache: false, // Default false (only works with standard=true)
     //     },
-    //     scheme: "pdfjs-extract",
+    //     scheme: URL_PROTOCOL_PDFJSEXTRACT,
     // },
     // {
     //     privileges: {
@@ -1212,7 +1792,7 @@ export function initSessions() {
     //         standard: false, // Default false
     //         codeCache: false, // Default false (only works with standard=true)
     //     },
-    //     scheme: OPDS_MEDIA_SCHEME, // TODO: what about OPDS_AUTH_SCHEME?
+    //     scheme: URL_PROTOCOL_OPDS_MEDIA, // TODO: what about URL_PROTOCOL_OPDS?
     // },
     {
         privileges: {
@@ -1225,7 +1805,7 @@ export function initSessions() {
             standard: true, // Default false
             codeCache: false, // Default false (only works with standard=true)
         },
-        scheme: THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
+        scheme: URL_PROTOCOL_THORIUMHTTPS,
     }, {
         privileges: {
             allowServiceWorkers: false,
@@ -1240,8 +1820,92 @@ export function initSessions() {
         scheme: READIUM2_ELECTRON_HTTP_PROTOCOL,
     }]);
 
+    // const filter = { urls: ["*://*/*", URL_PROTOCOL_THORIUMHTTPS + "://*/*", READIUM2_ELECTRON_HTTP_PROTOCOL + "://*/*"] };
+
+    // const onBeforeSendHeadersCB = (
+    //     details: OnBeforeSendHeadersListenerDetails,
+    //     callback: (beforeSendResponse: BeforeSendResponse) => void) => {
+
+    //     debug("onBeforeSendHeaders");
+    //     debug(details);
+
+    //     // details.requestHeaders["User-Agent"] = "R2 Electron";
+
+    //     if (!details.url) {
+    //         callback({});
+    //         return;
+    //     }
+
+    //     if (details.url.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") || details.url.startsWith(URL_PROTOCOL_THORIUMHTTPS + "://")) {
+    //         debug("onBeforeSendHeaders YES");
+    //         details.requestHeaders["X-Thorium-Test"] = "Header";
+    //         callback({
+    //             cancel: false,
+    //             requestHeaders: {
+    //                 ...details.requestHeaders,
+    //             },
+    //         });
+    //     } else {
+    //         debug("onBeforeSendHeaders NO");
+    //         // HTTP headers passthrough
+    //         // https://github.com/electron/electron/issues/23988
+    //         callback({
+    //             cancel: false,
+    //             requestHeaders: {
+    //                 ...details.requestHeaders,
+    //             },
+    //         });
+    //     }
+    // };
+
+    // const onHeadersReceivedCB = (
+    //     details: OnHeadersReceivedListenerDetails,
+    //     callback: (headersReceivedResponse: HeadersReceivedResponse) => void) => {
+
+    //     debug("onHeadersReceived");
+    //     debug(details);
+
+    //     if (!details.url) {
+    //         callback({});
+    //         return;
+    //     }
+
+    //     if (details.url.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") || details.url.startsWith(URL_PROTOCOL_THORIUMHTTPS + "://")) {
+    //         debug("onHeadersReceived YES CSP");
+    //         callback({
+    //             cancel: false,
+    //             responseHeaders: {
+    //                 ...details.responseHeaders,
+    //                 "cross-origin-resource-policy": "cross-origin",
+    //                 // https://github.com/electron/electron/blob/master/docs/tutorial/security.md#csp-http-header
+    //                 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy#fetch_directives
+    //                 // https://www.electronjs.org/docs/latest/tutorial/security
+    //                 "Content-Security-Policy":
+    //                     // "default-src 'none'; style-src 'unsafe-inline'; sandbox"
+    //                     `default-src 'self' 'unsafe-inline' 'unsafe-eval' data: http: https: ${READIUM2_ELECTRON_HTTP_PROTOCOL}: ${URL_PROTOCOL_THORIUMHTTPS}:`,
+    //             },
+    //             // statusLine
+    //         });
+    //     } else {
+    //         debug("onHeadersReceived NO CSP");
+    //         // HTTP headers passthrough
+    //         // https://github.com/electron/electron/issues/23988
+    //         callback({
+    //             cancel: false,
+    //             responseHeaders: {
+    //                 ...details.responseHeaders,
+    //             },
+    //             // statusLine
+    //         });
+    //     }
+    // };
+
     app.on("ready", async () => {
         debug("app ready");
+
+        initProtocols();
+
+        initPermissions();
 
         try {
             await clearSessions();
@@ -1250,29 +1914,78 @@ export function initSessions() {
         }
 
         if (session.defaultSession) {
-            session.defaultSession.protocol.registerStreamProtocol(
-                THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
-                streamProtocolHandler);
-            session.defaultSession.protocol.registerStreamProtocol(
-                READIUM2_ELECTRON_HTTP_PROTOCOL,
-                streamProtocolHandlerTunnel);
+            // session.defaultSession.webRequest.onHeadersReceived(filter, onHeadersReceivedCB);
+            // session.defaultSession.webRequest.onBeforeSendHeaders(filter, onBeforeSendHeadersCB);
+            // session.defaultSession.setCertificateVerifyProc(setCertificateVerifyProcCB);
+
+            if (USE_NEW_PROTOCOL_HANDLER) {
+                session.defaultSession.protocol.handle(URL_PROTOCOL_THORIUMHTTPS, streamProtocolHandler_NEW);
+                session.defaultSession.protocol.handle(READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandlerTunnel_NEW);
+            } else {
+                session.defaultSession.protocol.registerStreamProtocol(
+                    URL_PROTOCOL_THORIUMHTTPS,
+                    streamProtocolHandler);
+                session.defaultSession.protocol.registerStreamProtocol(
+                    READIUM2_ELECTRON_HTTP_PROTOCOL,
+                    streamProtocolHandlerTunnel);
+            }
         }
+
         const webViewSession = getWebViewSession();
         if (webViewSession) {
-            webViewSession.protocol.registerStreamProtocol(
-                THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL,
-                streamProtocolHandler);
+            // webViewSession.webRequest.onHeadersReceived(filter, onHeadersReceivedCB);
+            // webViewSession.webRequest.onBeforeSendHeaders(filter, onBeforeSendHeadersCB);
+            // webViewSession.setCertificateVerifyProc(setCertificateVerifyProcCB);
 
-            webViewSession.protocol.registerStreamProtocol(
-                READIUM2_ELECTRON_HTTP_PROTOCOL,
-                streamProtocolHandlerTunnel);
+            if (USE_NEW_PROTOCOL_HANDLER) {
+                webViewSession.protocol.handle(URL_PROTOCOL_THORIUMHTTPS, streamProtocolHandler_NEW);
+                webViewSession.protocol.handle(READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandlerTunnel_NEW);
+            } else {
+                webViewSession.protocol.registerStreamProtocol(
+                    URL_PROTOCOL_THORIUMHTTPS,
+                    streamProtocolHandler);
+                webViewSession.protocol.registerStreamProtocol(
+                    READIUM2_ELECTRON_HTTP_PROTOCOL,
+                    streamProtocolHandlerTunnel);
+            }
+        }
 
-            webViewSession.setPermissionRequestHandler((wc, permission, callback) => {
-                debug("setPermissionRequestHandler");
-                debug(wc.getURL());
-                debug(permission);
-                callback(true);
-            });
+        const pdfSession = session.fromPartition(SESSION_PARTITION_PDFJS, { cache: false });
+        if (pdfSession) {
+            // pdfSession.webRequest.onHeadersReceived(filter, onHeadersReceivedCB);
+            // pdfSession.webRequest.onBeforeSendHeaders(filter, onBeforeSendHeadersCB);
+            // pdfSession.setCertificateVerifyProc(setCertificateVerifyProcCB);
+
+            if (USE_NEW_PROTOCOL_HANDLER) {
+                pdfSession.protocol.handle(URL_PROTOCOL_THORIUMHTTPS, streamProtocolHandler_NEW);
+                // pdfSession.protocol.handle(READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandlerTunnel_NEW);
+            } else {
+                pdfSession.protocol.registerStreamProtocol(
+                    URL_PROTOCOL_THORIUMHTTPS,
+                    streamProtocolHandler);
+                // pdfSession.protocol.registerStreamProtocol(
+                //     READIUM2_ELECTRON_HTTP_PROTOCOL,
+                //     streamProtocolHandlerTunnel);
+            }
+        }
+
+        const pdfExtractSession = session.fromPartition(SESSION_PARTITION_PDFJSEXTRACT, { cache: false });
+        if (pdfExtractSession) {
+            // pdfExtractSession.webRequest.onHeadersReceived(filter, onHeadersReceivedCB);
+            // pdfExtractSession.webRequest.onBeforeSendHeaders(filter, onBeforeSendHeadersCB);
+            // pdfExtractSession.setCertificateVerifyProc(setCertificateVerifyProcCB);
+
+            if (USE_NEW_PROTOCOL_HANDLER) {
+                pdfExtractSession.protocol.handle(URL_PROTOCOL_THORIUMHTTPS, streamProtocolHandler_NEW);
+                // pdfExtractSession.protocol.handle(READIUM2_ELECTRON_HTTP_PROTOCOL, streamProtocolHandlerTunnel_NEW);
+            } else {
+                pdfExtractSession.protocol.registerStreamProtocol(
+                    URL_PROTOCOL_THORIUMHTTPS,
+                    streamProtocolHandler);
+                // pdfExtractSession.protocol.registerStreamProtocol(
+                //     READIUM2_ELECTRON_HTTP_PROTOCOL,
+                //     streamProtocolHandlerTunnel);
+            }
         }
     });
 }
@@ -1290,7 +2003,7 @@ export function streamerAddPublications(pubs: string[]): string[] {
 
     return pubs.map((pub) => {
         const pubid = encodeURIComponent_RFC3986(Buffer.from(pub).toString("base64"));
-        return `/pub/${pubid}/manifest.json`;
+        return `/${URL_PATH_PREFIX_PUB}/${pubid}/manifest.json`;
     });
 }
 
@@ -1305,7 +2018,7 @@ export function streamerRemovePublications(pubs: string[]): string[] {
 
     return pubs.map((pub) => {
         const pubid = encodeURIComponent_RFC3986(Buffer.from(pub).toString("base64"));
-        return `/pub/${pubid}/manifest.json`;
+        return `/${URL_PATH_PREFIX_PUB}/${pubid}/manifest.json`;
     });
 }
 

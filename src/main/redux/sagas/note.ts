@@ -5,19 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { dialog } from "electron";
-import { readFile } from "fs/promises";
+import * as fs from "fs";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { annotationActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
 import { SagaGenerator } from "typed-redux-saga";
-import { call as callTyped, put as putTyped, select as selectTyped, take as takeTyped, delay as delayTyped } from "typed-redux-saga/macro";
+import { call as callTyped, put as putTyped, take as takeTyped, delay as delayTyped, all as allTyped } from "typed-redux-saga/macro";
 import { hexToRgb } from "readium-desktop/common/rgb";
 import { isNil } from "readium-desktop/utils/nil";
-import { RootState } from "../states";
-import { __READIUM_ANNOTATION_AJV_ERRORS, isCFIFragmentSelector, isFragmentSelector, isIReadiumAnnotationSet, isTextPositionSelector, isTextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import { __READIUM_ANNOTATION_AJV_ERRORS, isCFIFragmentSelector, isCfiSelector, isCssSelector, isFragmentSelector, isIReadiumAnnotationSet, isTextPositionSelector, isTextQuoteSelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
 import path from "path";
 import { getPublication } from "./api/publication/getPublication";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
@@ -27,9 +26,10 @@ import { v4 as uuidv4 } from "uuid";
 import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLatest";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { EDrawType, INoteState, NOTE_DEFAULT_COLOR, noteColorCodeToColorSet, noteColorSetToColorCode } from "readium-desktop/common/redux/states/renderer/note";
-import { winActions } from "../actions";
-import { WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/constant";
-
+import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
+import { sqliteTableNoteDelete, sqliteTableNoteDeleteWherePubId, sqliteTableNoteInsert, sqliteTableNoteUpdate, sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
+import { publicationActions as publicationActionsFromMainAction } from "../actions";
+import { EXT_ANNOTATIONS } from "readium-desktop/common/extension";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:annotationsImporter";
@@ -39,53 +39,56 @@ debug("_");
 export function* getNotesFromMainWinState(publicationIdentifier: string): SagaGenerator<INoteState[]> {
 
     let notes: INoteState[] = [];
-    const sessionReader = yield* selectTyped((state: RootState) => state.win.session.reader);
-    const winSessionReaderStateArray = Object.values(sessionReader).filter((v) => v.publicationIdentifier === publicationIdentifier);
-    if (winSessionReaderStateArray.length) {
-        const winSessionReaderStateFirst = winSessionReaderStateArray[0]; // TODO: get the first only !?!
-        notes = winSessionReaderStateFirst?.reduxState?.note || [];
 
-        debug("current publication AnnotationsList come from the readerSession (there are one or many readerWin currently open)");
-    } else {
-        const sessionRegistry = yield* selectTyped((state: RootState) => state.win.registry.reader);
-        if (Object.keys(sessionRegistry).find((v) => v === publicationIdentifier)) {
-            notes = sessionRegistry[publicationIdentifier]?.reduxState?.note || [];
+    notes = yield* callTyped(() => sqliteTableSelectAllNotesWherePubId(publicationIdentifier));
+    // const sessionReader = yield* selectTyped((state: RootState) => state.win.session.reader);
+    // const winSessionReaderStateArray = Object.values(sessionReader).filter((v) => v.publicationIdentifier === publicationIdentifier);
+    // if (winSessionReaderStateArray.length) {
+    //     const winSessionReaderStateFirst = winSessionReaderStateArray[0]; // TODO: get the first only !?!
+    //     notes = winSessionReaderStateFirst?.reduxState?.note || [];
 
-            debug("current publication AnnotationsList come from the readerRegistry (no readerWin currently open)");
-        }
-    }
-    debug("There are", notes.length, "annotation(s) loaded from the current publicationIdentifier");
-    if (!notes.length) {
-        debug("Be careful, there are no annotation loaded for this publication!");
-    }
+    //     debug("current publication AnnotationsList come from the readerSession (there are one or many readerWin currently open)");
+    // } else {
+    //     const sessionRegistry = yield* selectTyped((state: RootState) => state.win.registry.reader);
+    //     if (Object.keys(sessionRegistry).find((v) => v === publicationIdentifier)) {
+    //         notes = sessionRegistry[publicationIdentifier]?.reduxState?.note || [];
+
+    //         debug("current publication AnnotationsList come from the readerRegistry (no readerWin currently open)");
+    //     }
+    // }
+    // debug("There are", notes.length, "annotation(s) loaded from the current publicationIdentifier");
+    // if (!notes.length) {
+    //     debug("Be careful, there are no annotation loaded for this publication!");
+    // }
 
     return notes;
 }
 
 function* pushNotesFromMainWindow(publicationIdentifier: string, notes: INoteState[]): SagaGenerator<void> {
 
-    const sessionReader = yield* selectTyped((state: RootState) => state.win.session.reader);
-    const winSessionReaderStateArray = Object.values(sessionReader).filter((v) => v.publicationIdentifier === publicationIdentifier);
-
-    if (winSessionReaderStateArray.length) {
-        // dispatch action
-        for (const note of notes) {
-            yield* delayTyped(1);
-            yield* putTyped(readerActions.note.addUpdate.build(publicationIdentifier, note));
-        }
-
-    } else {
-        const sessionRegistry = yield* selectTyped((state: RootState) => state.win.registry.reader);
-        const reduxState = sessionRegistry[publicationIdentifier]?.reduxState || {};
-        reduxState.note = [...(reduxState.note || []), ...notes];
-        const winBound = sessionRegistry[publicationIdentifier]?.windowBound || { height: WINDOW_MIN_HEIGHT, width: WINDOW_MIN_WIDTH, x: 0, y: 0 };
-
-        yield* putTyped(winActions.registry.registerReaderPublication.build(
-            publicationIdentifier,
-            winBound,
-            reduxState),
-        );
+    for (const note of notes) {
+        yield* delayTyped(1);
+        yield* putTyped(readerActions.note.addUpdate.build(publicationIdentifier, note));
     }
+
+    // const sessionReader = yield* selectTyped((state: RootState) => state.win.session.reader);
+    // const winSessionReaderStateArray = Object.values(sessionReader).filter((v) => v.publicationIdentifier === publicationIdentifier);
+
+    // if (winSessionReaderStateArray.length) {
+    //     // dispatch action
+
+    // } else {
+    //     const sessionRegistry = yield* selectTyped((state: RootState) => state.win.registry.reader);
+    //     const reduxState = sessionRegistry[publicationIdentifier]?.reduxState || {};
+    //     // reduxState.note = [...(reduxState.note || []), ...notes];
+    //     const winBound = sessionRegistry[publicationIdentifier]?.windowBound || { height: WINDOW_MIN_HEIGHT, width: WINDOW_MIN_WIDTH, x: 0, y: 0 };
+
+    //     yield* putTyped(winActions.registry.registerReaderPublication.build(
+    //         publicationIdentifier,
+    //         winBound,
+    //         reduxState),
+    //     );
+    // }
 }
 
 function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAction): SagaGenerator<void> {
@@ -108,7 +111,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     try {
 
         debug("Open ShowOpenDialog and ask to user the filePath");
-        const res = yield* callTyped(() => dialog.showOpenDialog(win, { filters: [{ extensions: ["annotation"], name: "Readium Annotation Set (.annotation)" }], properties: ["openFile"] }));
+        const res = yield* callTyped(() => dialog.showOpenDialog(win, { filters: [{ extensions: [EXT_ANNOTATIONS.substring(1)], name: "Readium Annotation Set (" + EXT_ANNOTATIONS + ")" }], properties: ["openFile"] }));
 
         if (!res.canceled) {
             filePath = res.filePaths[0] || "";
@@ -121,12 +124,12 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     }
 
     debug("FilePath=", filePath);
-    const fileName = path.basename(filePath).slice(0, -1 * ".annotation".length);
+    const fileName = path.basename(filePath).slice(0, -1 * EXT_ANNOTATIONS.length);
 
     try {
 
         // read filePath
-        const dataString = yield* callTyped(() => readFile(filePath, { encoding: "utf8" }));
+        const dataString = yield* callTyped(() => fs.promises.readFile(filePath, { encoding: "utf8" }));
         const readiumAnnotationFormat = JSON.parse(dataString);
         debug("filePath size=", dataString.length);
         debug("filePath serialized and ready to pass the type checker");
@@ -186,21 +189,38 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
 
         // loop on each annotation to check conflicts and import it
         for (const incommingAnnotation of annotationsIncommingArray) {
-
-            const textQuoteSelector = incommingAnnotation.target.selector.find(isTextQuoteSelector);
-            const textPositionSelector = incommingAnnotation.target.selector.find(isTextPositionSelector);
-            const fragmentSelectorArray = incommingAnnotation.target.selector.filter(isFragmentSelector);
-            const cfiFragmentSelector = fragmentSelectorArray.find(isCFIFragmentSelector);
             const creator = incommingAnnotation.creator;
+
             const uuid = incommingAnnotation.id.split("urn:uuid:")[1] || uuidv4(); // TODO : may not be an uuid format and maybe we should hash the uuid to get a unique identifier based on the original uuid
 
-            if (cfiFragmentSelector) {
-                debug(`for ${uuid} a CFI selector is available (${JSON.stringify(cfiFragmentSelector, null, 4)})`);
+            const cssSelector = incommingAnnotation.target.selector.find(isCssSelector);
+            if (cssSelector) {
+                debug(`for ${uuid} a CFI selector is available (${JSON.stringify(cssSelector, null, 4)})`);
             }
 
-            // check if thorium selector available
-            if (!(textQuoteSelector || textPositionSelector)) {
-                debug(`for ${uuid} no selector available (TextQuote/TextPosition)`);
+            const textQuoteSelector = incommingAnnotation.target.selector.find(isTextQuoteSelector);
+            if (textQuoteSelector) {
+                debug(`for ${uuid} a CFI selector is available (${JSON.stringify(textQuoteSelector, null, 4)})`);
+            }
+
+            const textPositionSelector = incommingAnnotation.target.selector.find(isTextPositionSelector);
+            if (textPositionSelector) {
+                debug(`for ${uuid} a CFI selector is available (${JSON.stringify(textPositionSelector, null, 4)})`);
+            }
+
+            const cfiSelector = incommingAnnotation.target.selector.find(isCfiSelector);
+            if (cfiSelector) {
+                debug(`for ${uuid} a CFI selector is available (${JSON.stringify(cfiSelector, null, 4)})`);
+            }
+
+            const fragmentSelectorArray = incommingAnnotation.target.selector.filter(isFragmentSelector);
+            const cfiFragmentSelector = fragmentSelectorArray.find(isCFIFragmentSelector);
+            if (cfiFragmentSelector) {
+                debug(`for ${uuid} a CFI Fragment selector is available (${JSON.stringify(cfiFragmentSelector, null, 4)})`);
+            }
+
+            if (!(cssSelector || textQuoteSelector || textPositionSelector || cfiFragmentSelector || cfiSelector)) {
+                debug(`for ${uuid} no selector available (cssSelector || textQuoteSelector || textPositionSelector || cfiFragmentSelector || cfiSelector)`);
                 continue;
             }
 
@@ -336,11 +356,61 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     return;
 }
 
-
 export function saga() {
-    return takeSpawnLatest(
-        annotationActions.importAnnotationSet.ID,
-        importAnnotationSet,
-        (e) => error(filename_, e),
-    );
+    return allTyped([
+        takeSpawnLatest(
+            annotationActions.importAnnotationSet.ID,
+            importAnnotationSet,
+            (e) => error(filename_, e),
+        ),
+        takeSpawnLeading(
+            publicationActionsFromMainAction.deletePublication.ID,
+            function* (action: publicationActionsFromMainAction.deletePublication.TAction): SagaGenerator<void> {
+                debug("RECEIVE PUBLICATION DELETE ACTION");
+                debug(action);
+                const ok = yield* callTyped(() => sqliteTableNoteDeleteWherePubId(action.payload.publicationIdentifier));
+                debug(ok);
+                // const notes: INoteState[] = yield* callTyped(() => sqliteTableSelectAllNotesWherePubId(action.payload.publicationIdentifier));
+                // if (notes?.length) {
+                //     for (const note of notes) {
+                //         yield* callTyped(() => sqliteTableNoteDelete(note.uuid));
+                //     }
+                // }
+            },
+            (e) => error(filename_, e),
+        ),
+        takeSpawnLeading(
+            readerActions.note.addUpdate.ID,
+            function* (action: readerActions.note.addUpdate.TAction): SagaGenerator<void> {
+                debug("RECEIVE ADD/UPDATE ACTION");
+                debug(action);
+
+                const payload = action.payload;
+                const pubId = action.destination.publicationIdentifier;
+                const { previousNote, newNote } = payload;
+
+                if (!previousNote) {
+                    debug("NO PreviousNote ==> INSERT new note");
+                    yield* callTyped(() => sqliteTableNoteInsert(pubId, [ newNote ]));
+                } else {
+                    debug("PreviousNote ==> UPDATE new note");
+                    yield* callTyped(() => sqliteTableNoteUpdate(newNote));
+                }
+            },
+            (e) => error(filename_, e),
+        ),
+        takeSpawnLeading(
+            readerActions.note.remove.ID,
+            function* (action: readerActions.note.remove.TAction): SagaGenerator<void> {
+                debug("RECEIVE REMOVE ACTION");
+                debug(action);
+
+                const payload = action.payload;
+                const { note } = payload;
+
+                yield* callTyped(() => sqliteTableNoteDelete(note.uuid));
+            },
+            (e) => error(filename_, e),
+        ),
+    ]);
 }

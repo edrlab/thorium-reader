@@ -20,6 +20,7 @@
             "copy": "복사",
             "cut": "잘라내기",
             "paste": "붙여넣기",
+            "print": "",
             "redo": "다시 실행",
             "selectAll": "모두 선택",
             "title": "수정",
@@ -62,6 +63,14 @@
             "descending": "내림차순",
             "unsorted": "정렬없움"
         },
+        "customization": {
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
+        },
         "delete": "삭제",
         "deleteBook": "도서 삭제",
         "deleteTag": "태그 삭제",
@@ -77,6 +86,8 @@
         "importAnnotation": "",
         "lang": "언어선택",
         "lastRead": "최근 읽은 자료",
+        "login": "",
+        "logout": "",
         "moreInfo": "상세정보",
         "myBooks": "내 도서",
         "noPublicationHelpL1": "출판물을 여기로 가져오십시오.",
@@ -87,9 +98,12 @@
         "opds": {
             "auth": {
                 "cancel": "취소",
+                "external": "",
+                "fallback": "",
                 "login": "로그인",
                 "password": "",
                 "register": "",
+                "retry": "",
                 "username": ""
             },
             "info": {
@@ -133,12 +147,20 @@
             "title": ""
         },
         "cancel": "취소",
+        "customization": {
+            "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
+                "title": ""
+            }
+        },
         "deleteAnnotations": "",
         "deleteAnnotationsText": "",
         "deleteBookmarks": "",
         "deleteBookmarksText": "",
         "deleteFeed": "카탈로그를 제거하겠습니까?",
         "deletePublication": "출판물을 제거하겠습니까?",
+        "deletePublicationWithNotes": "",
         "import": "파일들을 열겠습니까:",
         "importError": "오류가 발생했습니다. 파일 확장자를 확인하십시오. ({{acceptedExtension}})",
         "renew": "출판물의 라이선스를 갱신하겠습니까?",
@@ -200,7 +222,8 @@
         },
         "open": {
             "error": "지원하지 않는 형식의 출판물입니다: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -237,6 +260,7 @@
         },
         "next": "다음",
         "previous": "이전",
+        "resumeBrowsing": "",
         "shelf": "내서재",
         "updateForm": {
             "name": "이름",
@@ -593,7 +617,7 @@
         "lcpRightsPrint": "인쇄된 페이지",
         "lcpStart": "시작",
         "licenceLCP": "",
-        "licenseCertificateDateInvalid": "라이선스 서명날짜가 유효하지 않습니다",
+        "licenseCertificateDateInvalid": "라이선스 서명날짜가 유효하지 않습니다 ({{- dateTime}})",
         "licenseOutOfDate": "라이선스가 만료되었습니다",
         "licenseSignatureInvalid": "라이선스 서명이 유효하지 않습니다",
         "licensed": "",
@@ -667,6 +691,12 @@
             "fit": ""
         },
         "goToContent": "",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "주석",
             "bookmarks": "북마크",
@@ -710,6 +740,7 @@
             "goToError": "페이지 구분이 존재하지 않습니다.",
             "goToPlaceHolder": "페이지 번호를 입력하세요.",
             "goToTitle": "페이지로 이동",
+            "history": "",
             "historyNext": "앞으로 이동",
             "historyPrevious": "뒤로 이동",
             "infoTitle": "정보",
@@ -717,6 +748,10 @@
             "openTableOfContentsTitle": "탐색",
             "page": "",
             "pdfscalemode": "페이지 또는 너비 맞춤",
+            "print": "",
+            "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "설정"
         },
         "notes": {
@@ -741,6 +776,24 @@
             },
             "searchTitle": "검색:"
         },
+        "print": {
+            "descriptionLcpCount": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "preview": "",
+            "print": "",
+            "printablePages": "",
+            "title": ""
+        },
         "settings": {
             "column": {
                 "auto": "자동",
@@ -763,6 +816,7 @@
             "letterSpacing": "문자 간격",
             "lineSpacing": "줄 간격",
             "margin": "여백",
+            "mathjax": "",
             "noFootnotes": "각주 비활성화",
             "noRTLFlip": "",
             "noRuby": "",
@@ -796,6 +850,7 @@
             "reduceMotion": "모션 줄이기",
             "scrolled": "스크롤",
             "spacing": "간격",
+            "spreadModeEven": "",
             "text": "텍스트",
             "theme": {
                 "name": {
@@ -854,9 +909,233 @@
             "disclaimer": "",
             "editUserJson": "사용자 파일 편집...",
             "keyboardShortcuts": "키보드 단축키",
+            "list": {
+                "AddBookmarkWithLabel": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreate": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreateQuick": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsToggleMargin": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPlayPause": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioStop": {
+                    "description": "",
+                    "name": ""
+                },
+                "CloseReader": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomIn": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomOut": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomReset": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMain": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMainDeep": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderGotoPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigation": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationAnnotations": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationBookmarks": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationTOC": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderSettings": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusToolbar": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToBegin": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToEnd": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfo": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "Print": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SpeakReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleBookmark": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleReaderFullscreen": {
+                    "description": "",
+                    "name": ""
+                }
+            },
             "loadUserJson": "사용자 파일에서 로드",
+            "noShortcutFound": "",
             "resetDefaults": "재설정(기본값 로드)",
-            "save": "저장"
+            "save": "저장",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "언어 선택"
@@ -872,13 +1151,27 @@
                 "overrideHTMLTemplate": ""
             }
         },
+        "profiles": {
+            "info": "",
+            "thorium": {
+                "description": "",
+                "title": ""
+            },
+            "version": ""
+        },
+        "screenReaderActivate": {
+            "help": "",
+            "message": "",
+            "title": ""
+        },
         "session": {
             "title": "세션 저장"
         },
         "tabs": {
             "appearance": "",
             "general": "",
-            "keyboardShortcuts": ""
+            "keyboardShortcuts": "",
+            "profiles": ""
         },
         "theme": {
             "auto": "",

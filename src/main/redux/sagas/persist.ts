@@ -5,8 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
-import { promises as fsp } from "fs";
+import debug_ from "debug";
+import * as fs from "fs";
 import { patchFilePath, stateFilePath } from "readium-desktop/main/di";
 import { PersistRootState, RootState } from "readium-desktop/main/redux/states";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
@@ -37,6 +37,7 @@ const persistStateToFs = async (nextState: RootState) => {
         publication: nextState.publication,
         reader: nextState.reader,
         session: nextState.session,
+        screenReader: nextState.screenReader,
         i18n: nextState.i18n,
         opds: nextState.opds,
         version: nextState.version,
@@ -44,9 +45,17 @@ const persistStateToFs = async (nextState: RootState) => {
         settings: nextState.settings,
         creator: nextState.creator,
         noteExport: nextState.noteExport,
+        customization: {
+            provision: [],
+            lock: undefined,
+            history: nextState.customization.history,
+            activate: nextState.customization.activate,
+            welcomeScreen: undefined,
+            manifest: undefined,
+        },
     };
 
-    await fsp.writeFile(stateFilePath, JSON.stringify(value), {encoding: "utf8"});
+    await fs.promises.writeFile(stateFilePath, JSON.stringify(value), {encoding: "utf8"});
     debug("end of persist reduxState in disk");
 };
 
@@ -73,7 +82,7 @@ export function* needToPersistPatch() {
         debug(data);
         if (data) {
             debug("start of patch persistence");
-            yield call(() => fsp.appendFile(patchFilePath, data, { encoding: "utf8" }));
+            yield call(() => fs.promises.appendFile(patchFilePath, data, { encoding: "utf8" }));
             debug("end of patch persistence");
         }
 

@@ -14,7 +14,6 @@ import * as readerLocalActionSetConfig from "./setConfig";
 import * as readerLocalActionSetTransientConfig from "./setTransientConfig";
 import * as readerLocalActionSetLocator from "./setLocator";
 import * as readerLocalActionReader from "./reader";
-import * as readerLocalActionSetResourceToCache from "./resourceCache";
 import * as readerLocalActionSetImageClick from "./setImgClick";
 import * as readerLocalActionToggleMenu from "./toggleMenu";
 import * as readerLocalActionToggleSettings from "./toggleSettings";
@@ -22,7 +21,6 @@ import * as readerLocalActionToggleSettings from "./toggleSettings";
 export {
     readerLocalActionToggleSettings,
     readerLocalActionToggleMenu,
-    readerLocalActionSetResourceToCache,
     readerLocalActionAnnotations,
     readerLocalActionSetConfig,
     readerLocalActionSetTransientConfig,

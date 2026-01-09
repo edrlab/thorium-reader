@@ -26,7 +26,7 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import { Link } from "@r2-shared-js/models/publication-link";
 
 import { readerLocalActionSearch } from "../redux/actions";
-import { ISearchResult } from "readium-desktop/utils/search/search";
+import { ISearchResult } from "readium-desktop/common/redux/states/renderer/search";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps {
@@ -159,7 +159,7 @@ function renderSearchLinks(label: string, foundArray: ISearchResult[], nMatchPag
                                 >
                                     <span dir={isRTL ? "rtl" : "ltr"}>{
                                     `...${v.cleanBefore}`
-                                    }<span style={{backgroundColor: "var(--color-blue)", color: "white", padding: "0 2px"}}>{
+                                    }<span style={{backgroundColor: "var(--color-brand-primary)", color: "white", padding: "0 2px"}}>{
                                     `${v.cleanText}`
                                     }</span>{
                                     `${v.cleanAfter}...`

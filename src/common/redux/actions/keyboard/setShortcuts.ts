@@ -5,17 +5,17 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { TKeyboardShortcutsMapReadOnly } from "readium-desktop/common/keyboard";
+import { TKeyboardShortcutsMap } from "readium-desktop/common/keyboard";
 import { Action } from "readium-desktop/common/models/redux";
 
 export const ID = "SHORTCUTS_SET";
 
 export interface Payload {
-    shortcuts: TKeyboardShortcutsMapReadOnly;
+    shortcuts: TKeyboardShortcutsMap;
     save: boolean;
 }
 
-export function build(shortcuts: TKeyboardShortcutsMapReadOnly, save: boolean): Action<typeof ID, Payload> {
+export function build(shortcuts: TKeyboardShortcutsMap, save: boolean): Action<typeof ID, Payload> {
 
     return {
         type: ID,

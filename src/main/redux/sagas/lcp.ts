@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { lcpActions, readerActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { diMainGet } from "readium-desktop/main/di";
@@ -54,12 +54,6 @@ function* unlockPublicationWithPassphrase(action: lcpActions.unlockPublicationWi
 
         debug(unlockPublicationRes, "'undefined' means OKay the publication is decrypted, Well Done !");
         if (typeof unlockPublicationRes !== "undefined") {
-            const message =
-                // unlockPublicationRes === 11 ?
-                // this.translator.translate("publication.expiredLcp") :
-                yield* callTyped(() => lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes));
-            debug(message);
-
             // import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
             // import { Publication as R2Publication } from "@r2-shared-js/models/publication";
             // const r2PublicationStr = Buffer.from(publicationView.r2PublicationBase64, "base64").toString("utf-8");
@@ -74,6 +68,12 @@ function* unlockPublicationWithPassphrase(action: lcpActions.unlockPublicationWi
                 debug("LCP !!?");
                 return;
             }
+
+            const message =
+                // unlockPublicationRes === 11 ?
+                // this.translator.translate("publication.expiredLcp") :
+                yield* callTyped(() => lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes, publicationView.lcp?.issued || publicationDocument.lcp?.issued || ""));
+            debug(message);
 
             // !r2Publication?.LCP?.Encryption?.UserKey?.TextHint
             if (!publicationView.lcp.textHint) {

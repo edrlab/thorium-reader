@@ -17,7 +17,7 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 
 import BreadCrumb from "../layout/BreadCrumb";
 import BrowserResult from "./BrowserResult";
-import Header from "./Header";
+// import Header from "./Header";
 import SearchForm from "./SearchForm";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as ForbiddenIcon from "readium-desktop/renderer/assets/icons/forbidden-icon.svg";
@@ -40,7 +40,7 @@ class Browser extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<IProps>  {
-        const secondaryHeader = <Header/>;
+        // const secondaryHeader = <Header/>;
         const breadCrumb = <BreadCrumb />;
         const search = <SearchForm />;
         const catalogTitle = this.props.breadrumb[1]?.name;
@@ -50,7 +50,7 @@ class Browser extends React.Component<IProps, undefined> {
             <LibraryLayout
                 page={this.props.__("opds.breadcrumbRoot")}
                 title={catalogTitle}
-                secondaryHeader={secondaryHeader}
+                // secondaryHeader={secondaryHeader}
                 breadCrumb={breadCrumb}
                 search={search}
             >

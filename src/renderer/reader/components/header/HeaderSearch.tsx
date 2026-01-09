@@ -26,6 +26,7 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import { readerLocalActionSearch } from "../../redux/actions";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import SearchPicker from "../picker/Search";
+import { createOrGetPdfEventBus } from "../../pdf/driver";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -168,7 +169,18 @@ class HeaderSearch extends React.Component<IProps> {
             }
             return;
         }
-        this.props.enableSearch(v || !this.props.isOnSearch);
+
+        if (this.props.isAudiobook || this.props.isDivina) {
+
+        } else {
+
+            if (this.props.isPdf) {
+                if (!v) {
+                    createOrGetPdfEventBus().dispatch("search-wipe");
+                }
+            }
+            this.props.enableSearch(v || !this.props.isOnSearch);
+        }
     };
 
 }

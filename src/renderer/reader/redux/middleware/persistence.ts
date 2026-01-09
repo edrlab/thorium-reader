@@ -55,11 +55,11 @@ export const reduxPersistMiddleware: Middleware
                     readerState.disableRTLFlip = nextState.reader.disableRTLFlip;
                     dispatchFlag = true;
                 }
-                if (!ramda.equals(prevState.reader.note, nextState.reader.note)) {
+                // if (!ramda.equals(prevState.reader.note, nextState.reader.note)) {
 
-                    readerState.note = nextState.reader.note;
-                    dispatchFlag = true;
-                }
+                //     readerState.note = nextState.reader.note;
+                //     dispatchFlag = true;
+                // }
                 if (!ramda.equals(prevState.reader.allowCustomConfig, nextState.reader.allowCustomConfig)) {
 
                     readerState.allowCustomConfig = nextState.reader.allowCustomConfig;
@@ -68,6 +68,11 @@ export const reduxPersistMiddleware: Middleware
                 if (!ramda.equals(prevState.reader.noteTotalCount, nextState.reader.noteTotalCount)) {
 
                     readerState.noteTotalCount = nextState.reader.noteTotalCount;
+                    dispatchFlag = true;
+                }
+                if (!ramda.equals(prevState.reader.pdfConfig, nextState.reader.pdfConfig)) {
+
+                    readerState.pdfConfig = nextState.reader.pdfConfig;
                     dispatchFlag = true;
                 }
                 if (dispatchFlag) {

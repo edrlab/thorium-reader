@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { downloadActions } from "readium-desktop/common/redux/actions";
+import { customizationActions, downloadActions } from "readium-desktop/common/redux/actions";
 import { dialogReducer } from "readium-desktop/common/redux/reducers/dialog";
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard";
@@ -24,6 +24,7 @@ import { combineReducers, Reducer } from "redux";
 
 import { RouterState } from "redux-first-history";
 import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
+import { screenReaderReducer } from "readium-desktop/common/redux/reducers/screenReader";
 import { catalogViewReducer } from "./catalog";
 import { tagReducer } from "readium-desktop/common/redux/reducers/tag";
 import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducers/reader/defaultConfig";
@@ -38,6 +39,13 @@ import { settingsReducer } from "readium-desktop/common/redux/reducers/settings"
 import { importAnnotationReducer } from "readium-desktop/renderer/common/redux/reducers/importAnnotation";
 import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 import { noteExportReducer } from "readium-desktop/common/redux/reducers/noteExport";
+import { customizationPackageActivatingReducer } from "readium-desktop/common/redux/reducers/customization/activate";
+import { customizationPackageProvisioningReducer } from "readium-desktop/common/redux/reducers/customization/provision";
+import { customizationPackageActivatingLockReducer } from "readium-desktop/common/redux/reducers/customization/lock";
+import { arrayReducer } from "readium-desktop/utils/redux-reducers/array.reducer";
+import { ICustomizationProfileHistory } from "readium-desktop/common/redux/states/customization";
+import { customizationPackageWelcomeScreenReducer } from "readium-desktop/common/redux/reducers/customization/welcomeScreen";
+import { customizationPackageManifestReducer } from "readium-desktop/common/redux/reducers/customization/manifest";
 
 export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reducer<Partial<ILibraryRootState>>
     return combineReducers({ // ILibraryRootState
@@ -48,6 +56,7 @@ export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reduc
             disableRTLFlip: readerRTLFlipReducer,
         }),
         session: sessionReducer,
+        screenReader: screenReaderReducer,
         i18n: i18nReducer,
         opds: combineReducers({
             browser: combineReducers({
@@ -86,7 +95,7 @@ export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reduc
         history: historyReducer,
         keyboard: keyboardReducer,
         load: loadReducer,
-        publication:  combineReducers({
+        publication: combineReducers({
             catalog: catalogViewReducer,
             tag: tagReducer,
         }),
@@ -96,5 +105,25 @@ export const rootReducer = (routerReducer: Reducer<RouterState>) => { // : Reduc
         importAnnotations: importAnnotationReducer,
         lcp: lcpReducer,
         noteExport: noteExportReducer,
+        customization: combineReducers({
+            history: arrayReducer<customizationActions.addHistory.TAction, undefined, ICustomizationProfileHistory, Pick<ICustomizationProfileHistory, "id">>(
+                {
+                    add: {
+                        type: customizationActions.addHistory.ID,
+                        selector: (payload, _state) => {
+                            const { id, version } = payload;
+                            return [{ id, version }];
+                        },
+                    },
+                    remove: undefined,
+                    getId: (item) => item.id,
+                },
+            ),
+            activate: customizationPackageActivatingReducer,
+            provision: customizationPackageProvisioningReducer,
+            lock: customizationPackageActivatingLockReducer,
+            welcomeScreen: customizationPackageWelcomeScreenReducer,
+            manifest: customizationPackageManifestReducer,
+        }),
     });
 };

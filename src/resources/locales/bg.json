@@ -20,6 +20,7 @@
             "copy": "Копиране",
             "cut": "Изрязване",
             "paste": "Поставяне",
+            "print": "",
             "redo": "Връщане",
             "selectAll": "Изберане на всички",
             "title": "Редактиране",
@@ -62,6 +63,14 @@
             "descending": "низходящ",
             "unsorted": "несортиран"
         },
+        "customization": {
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
+        },
         "delete": "Изтрий",
         "deleteBook": "Изтрий",
         "deleteTag": "Изтрий маркер",
@@ -77,6 +86,8 @@
         "importAnnotation": "",
         "lang": "Език",
         "lastRead": "Последно четено",
+        "login": "",
+        "logout": "",
         "moreInfo": "Подробности за книгата",
         "myBooks": "Моите книги",
         "noPublicationHelpL1": "Пусни книгата тук",
@@ -87,9 +98,12 @@
         "opds": {
             "auth": {
                 "cancel": "Откажи",
+                "external": "",
+                "fallback": "",
                 "login": "Влез",
                 "password": "",
                 "register": "",
+                "retry": "",
                 "username": ""
             },
             "info": {
@@ -133,12 +147,20 @@
             "title": ""
         },
         "cancel": "Отказ",
+        "customization": {
+            "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
+                "title": ""
+            }
+        },
         "deleteAnnotations": "",
         "deleteAnnotationsText": "",
         "deleteBookmarks": "",
         "deleteBookmarksText": "",
         "deleteFeed": "Наистина ли искате да изтриете този каталог?",
         "deletePublication": "Наистина ли искате да изтриете тази книга?",
+        "deletePublicationWithNotes": "",
         "import": "Наистина ли искате да добавите тези файлове:",
         "importError": "възникна грешка, проверете файловото разширение ({{acceptedExtension}})",
         "renew": "Наистина ли искате да подновите лиценза за тази книга?",
@@ -171,11 +193,11 @@
     },
     "library": {
         "lcp": {
-            "hint": "Подсказка: ",
-            "open": "",
+            "hint": "Подсказка:",
+            "open": "Отвори",
             "password": "Парола",
             "sentence": "Тази публикация се нуждае от LCP парола, за да бъде отворена: ",
-            "urlHint": "Забравили сте паролата си? Намерете помощ тук",
+            "urlHint": "Забравили сте паролата си? Намерете помощ тук.",
             "whatIsLcp?": "",
             "whatIsLcpInfoDetails": "",
             "whatIsLcpInfoDetailsLink": ""
@@ -194,13 +216,14 @@
             "error": "Изтеглянето на {{- title}} е неуспешно: [{{- err}}]"
         },
         "import": {
-            "alreadyImport": "{{- title}} вече е била добавена",
+            "alreadyImport": "{{- title}} вече е била добавена.",
             "fail": "Добавянето на {{- path}} се провали. {{- err}}",
             "success": "Добавянето на {{- title}} завърши."
         },
         "open": {
             "error": "Книгата не може да бъде отворена: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -237,6 +260,7 @@
         },
         "next": "Следващ",
         "previous": "Предишен",
+        "resumeBrowsing": "",
         "shelf": "Лавица",
         "updateForm": {
             "name": "Име:",
@@ -574,8 +598,8 @@
         },
         "author": "Автор",
         "cancelledLcp": "Тази книга не може да бъде прочетена, защото лицензът за LCP е анулиран.",
-        "certificateRevoked": "Сертификатът е анулиран",
-        "certificateSignatureInvalid": "Ключа за сертификата е невалиден",
+        "certificateRevoked": "Сертификатът е анулиран.",
+        "certificateSignatureInvalid": "Ключа за сертификата е невалиден.",
         "cover": {
             "img": "корица"
         },
@@ -593,9 +617,9 @@
         "lcpRightsPrint": "Печат на страници",
         "lcpStart": "Начало",
         "licenceLCP": "",
-        "licenseCertificateDateInvalid": "Датата на ключа за лиценза е невалидна",
-        "licenseOutOfDate": "Изтекъл срок на лиценза",
-        "licenseSignatureInvalid": "Ключа за лиценза е невалиден",
+        "licenseCertificateDateInvalid": "Датата на ключа за лиценза е невалидна. ({{- dateTime}})",
+        "licenseOutOfDate": "Изтекъл срок на лиценза.",
+        "licenseSignatureInvalid": "Ключа за лиценза е невалиден.",
         "licensed": "",
         "markAsRead": "",
         "notStarted": "",
@@ -613,7 +637,7 @@
         "seeMore": "Виж повече",
         "timeLeft": "",
         "title": "Title",
-        "userKeyCheckInvalid": "Паролата е невалидна"
+        "userKeyCheckInvalid": "Паролата е невалидна."
     },
     "reader": {
         "annotations": {
@@ -667,6 +691,12 @@
             "fit": ""
         },
         "goToContent": "",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "Анотации",
             "bookmarks": "Отметки",
@@ -710,6 +740,7 @@
             "goToError": "Това местоположение не съществува",
             "goToPlaceHolder": "Въведи номер на страница",
             "goToTitle": "Иди на страница",
+            "history": "",
             "historyNext": "Прескочи напред",
             "historyPrevious": "Прескочи назад",
             "infoTitle": "Информация",
@@ -717,6 +748,10 @@
             "openTableOfContentsTitle": "навигация",
             "page": "",
             "pdfscalemode": "Побиране в екрана или в ширината му",
+            "print": "",
+            "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "настройки"
         },
         "notes": {
@@ -741,6 +776,24 @@
             },
             "searchTitle": "Търси:"
         },
+        "print": {
+            "descriptionLcpCount": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "preview": "",
+            "print": "",
+            "printablePages": "",
+            "title": ""
+        },
         "settings": {
             "column": {
                 "auto": "Автоматично",
@@ -763,6 +816,7 @@
             "letterSpacing": "Разстояние между буквите",
             "lineSpacing": "Разстояние между редовете",
             "margin": "Отстъпи",
+            "mathjax": "",
             "noFootnotes": "Деактивирайте бележките под линия",
             "noRTLFlip": "",
             "noRuby": "",
@@ -796,6 +850,7 @@
             "reduceMotion": "Намали движението",
             "scrolled": "Скролируем",
             "spacing": "Интервал",
+            "spreadModeEven": "",
             "text": "Текст",
             "theme": {
                 "name": {
@@ -854,9 +909,233 @@
             "disclaimer": "",
             "editUserJson": "Редактиране на потребителски файл...",
             "keyboardShortcuts": "Бързи клавиши",
+            "list": {
+                "AddBookmarkWithLabel": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreate": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreateQuick": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsToggleMargin": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPlayPause": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioStop": {
+                    "description": "",
+                    "name": ""
+                },
+                "CloseReader": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomIn": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomOut": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomReset": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMain": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMainDeep": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderGotoPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigation": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationAnnotations": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationBookmarks": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationTOC": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderSettings": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusToolbar": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToBegin": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToEnd": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfo": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "Print": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SpeakReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleBookmark": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleReaderFullscreen": {
+                    "description": "",
+                    "name": ""
+                }
+            },
             "loadUserJson": "Зареждане от потребителски файл",
+            "noShortcutFound": "",
             "resetDefaults": "Нулирай (Зареди по подразбиране)",
-            "save": "Запис"
+            "save": "Запис",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "Избор на език"
@@ -872,13 +1151,27 @@
                 "overrideHTMLTemplate": ""
             }
         },
+        "profiles": {
+            "info": "",
+            "thorium": {
+                "description": "",
+                "title": ""
+            },
+            "version": ""
+        },
+        "screenReaderActivate": {
+            "help": "",
+            "message": "",
+            "title": ""
+        },
         "session": {
             "title": "Запиши сесията"
         },
         "tabs": {
             "appearance": "",
             "general": "",
-            "keyboardShortcuts": ""
+            "keyboardShortcuts": "",
+            "profiles": ""
         },
         "theme": {
             "auto": "",

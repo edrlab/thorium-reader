@@ -10,7 +10,7 @@ import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scs
 import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
 
 import classNames from "classnames";
-import * as moment from "moment";
+import moment from "moment";
 import * as React from "react";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
@@ -22,7 +22,7 @@ import { TranslatorProps, withTranslator } from "../../hoc/translator";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    publicationLcp: Partial<Pick<PublicationView, "lcp" | "lcpRightsCopies">>;
+    publicationLcp: Partial<Pick<PublicationView, "lcp" | "lcpRightsCopies" | "lcpRightsPrints">>;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -40,10 +40,7 @@ class LcpInfo extends React.Component<IProps, undefined> {
 
     public render() {
 
-        const { publicationLcp, locale, __ } = this.props;
-
-        // https://momentjs.com/docs/#/displaying/
-        moment.locale(locale);
+        const { publicationLcp, __ } = this.props;
 
         const lcp = publicationLcp.lcp;
 
@@ -51,11 +48,13 @@ class LcpInfo extends React.Component<IProps, undefined> {
             return (<></>);
         }
 
-        const lcpRightsPrint = (lcp?.rights?.print) ? lcp.rights.print : 0;
-        const lcpRightsCopy = (lcp?.rights?.copy) ? lcp.rights.copy : 0;
-        const lcpRightsCopies = publicationLcp.lcpRightsCopies ?? 0;
+        const lcpRightsPrint = (typeof lcp?.rights?.print === "number") ? lcp.rights.print : undefined;
+        const lcpRightsCopy = (typeof lcp?.rights?.copy === "number") ? lcp.rights.copy : undefined;
+        const lcpRightsCopiesPubInfo = publicationLcp.lcpRightsCopies || 0;
+        const lcpRightsPrintRangePubInfo = publicationLcp.lcpRightsPrints || [];
+        const lcpRightsPrintCountPubInfo = lcpRightsPrintRangePubInfo.length;
 
-        const now = moment();
+        const now = moment().locale([this.props.locale, "en"]);
 
         const lcpRightsStartDate = (lcp?.rights?.start) ? lcp.rights.start : undefined;
         let lcpRightsStartDateStr = "";
@@ -63,7 +62,7 @@ class LcpInfo extends React.Component<IProps, undefined> {
         let futureDays=  "";
 
         if (lcpRightsStartDate) {
-            const momentStart = moment(lcpRightsStartDate);
+            const momentStart = moment(lcpRightsStartDate).locale([this.props.locale, "en"]);
             lcpRightsStartDateStr = momentStart.format("LLL");
             const timeStartDif = momentStart.diff(now, "days");
             if (timeStartDif > 1) {
@@ -76,7 +75,7 @@ class LcpInfo extends React.Component<IProps, undefined> {
         const lcpRightsEndDate = (lcp?.rights?.end) ? lcp.rights.end : undefined;
         let lcpRightsEndDateStr = "";
         if (lcpRightsEndDate) {
-            const momentEnd = moment(lcpRightsEndDate);
+            const momentEnd = moment(lcpRightsEndDate).locale([this.props.locale, "en"]);
             lcpRightsEndDateStr = momentEnd.format("LLL");
             const timeEndDif = momentEnd.diff(now, "days");
             if (timeEndDif > 1) {
@@ -85,7 +84,7 @@ class LcpInfo extends React.Component<IProps, undefined> {
                 remainingDays = `${timeEndDif} ${__("publication.day")}`;
             } else {
                 // const nowUTC = (new Date()).toISOString();
-                // const momentNow = moment(nowUTC);
+                // const momentNow = moment(nowUTC).locale([action.payload.locale, "en"]);
                 if (now.isAfter(momentEnd)) {
                     remainingDays = `${__("publication.expired")}`;
                 } else {
@@ -175,15 +174,18 @@ class LcpInfo extends React.Component<IProps, undefined> {
                         <br />
                     </>} */}
 
-                    {lcpRightsCopy ? <>
+                    {/* typeof lcpRightsCopy !== "undefined" && lcpRightsCopy !== null && */
+                        typeof lcpRightsCopy === "number" ? <>
                         <strong>{__("publication.lcpRightsCopy")}: </strong>
-                        <span>{lcpRightsCopies} / {lcpRightsCopy}</span><br />
-                    </> : undefined}
+                        <span>{lcpRightsCopy === 0 ? "0" : `${lcpRightsCopiesPubInfo} / ${lcpRightsCopy}`}</span><br />
+                    </> : <></>}
 
-                    {lcpRightsPrint ? <>
+                    {/* typeof lcpRightsPrint !== "undefined" && lcpRightsPrint !== null && */
+                        typeof lcpRightsPrint === "number" ? <>
                         <strong>{__("publication.lcpRightsPrint")}: </strong>
-                        <span>0 / {lcpRightsPrint}</span><br />
-                    </> : undefined}
+                        <span>{lcpRightsPrint === 0 ? "0" : `${lcpRightsPrintCountPubInfo} / ${lcpRightsPrint}`}  </span>
+                        {lcpRightsPrintRangePubInfo.length ? ` [${lcpRightsPrintRangePubInfo}] ` : <></>}
+                    </> : <></>}
                 </div>
             </>
         );

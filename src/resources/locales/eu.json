@@ -20,6 +20,7 @@
             "copy": "Kopiatu",
             "cut": "Moztu",
             "paste": "Itsatsi",
+            "print": "",
             "redo": "Berregin",
             "selectAll": "Hautatu dena",
             "title": "Editatu",
@@ -62,6 +63,14 @@
             "descending": "beheranzkoa",
             "unsorted": "ordenatu gabe"
         },
+        "customization": {
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
+        },
         "delete": "Ezabatu",
         "deleteBook": "Ezabatu",
         "deleteTag": "Ezabatu etiketa",
@@ -77,6 +86,8 @@
         "importAnnotation": "",
         "lang": "Hizkuntza",
         "lastRead": "Azken Irakurketa",
+        "login": "",
+        "logout": "",
         "moreInfo": "Informazio gehiago",
         "myBooks": "Nire liburuak",
         "noPublicationHelpL1": "Lerratu argitalpen bat hemen",
@@ -87,9 +98,12 @@
         "opds": {
             "auth": {
                 "cancel": "Utzi",
+                "external": "",
+                "fallback": "",
                 "login": "Hasi saioa",
                 "password": "Pasahitza",
                 "register": "Izena eman",
+                "retry": "",
                 "username": "Erabiltzaile izena / Helbide elektronikoa"
             },
             "info": {
@@ -133,12 +147,20 @@
             "title": ""
         },
         "cancel": "Ezeztatu",
+        "customization": {
+            "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
+                "title": ""
+            }
+        },
         "deleteAnnotations": "",
         "deleteAnnotationsText": "",
         "deleteBookmarks": "",
         "deleteBookmarksText": "",
         "deleteFeed": "Ziur zaude katalogo hau ezabatu nahi duzula?",
         "deletePublication": "Ziur zaude argitalpen hau ezabatu nahi duzula?",
+        "deletePublicationWithNotes": "",
         "import": "Ziur zaude fitxategi hauek inportatu nahi dituzula?",
         "importError": "Errore bat gertatu da. Egiaztatu zure fitxategiaren luzapena ({{acceptedExtension}})",
         "renew": "Ziur zaude argitalpen honetarako lizentzia berritu nahi duzula?",
@@ -200,7 +222,8 @@
         },
         "open": {
             "error": "Ezin da argitalpena ireki: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -237,6 +260,7 @@
         },
         "next": "Hurrengoa",
         "previous": "Aurrekoa",
+        "resumeBrowsing": "",
         "shelf": "Apala",
         "updateForm": {
             "name": "Izena:",
@@ -593,7 +617,7 @@
         "lcpRightsPrint": "Inprimagailuaren kopia",
         "lcpStart": "Hasiera",
         "licenceLCP": "Lizentzia (LCP)",
-        "licenseCertificateDateInvalid": "Lizentzia-sinaduraren data ez da baliozkoa",
+        "licenseCertificateDateInvalid": "Lizentzia-sinaduraren data ez da baliozkoa ({{- dateTime}})",
         "licenseOutOfDate": "Lizentzia ez dago eguneratuta",
         "licenseSignatureInvalid": "Lizentziaren sinadura ez da baliozkoa",
         "licensed": "Lizentziarekin",
@@ -667,6 +691,12 @@
             "fit": "Egokitu"
         },
         "goToContent": "",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "Oharrak",
             "bookmarks": "Markatzaileak",
@@ -710,6 +740,7 @@
             "goToError": "Orrialde-jauzi hori ez dago",
             "goToPlaceHolder": "Sartu orrialde-zenbaki bat",
             "goToTitle": "Orrialdera joan",
+            "history": "",
             "historyNext": "Aurrera egin",
             "historyPrevious": "Jauzi atzera",
             "infoTitle": "Informazioa",
@@ -717,6 +748,10 @@
             "openTableOfContentsTitle": "Nabigazioa",
             "page": "Orria",
             "pdfscalemode": "Orriaren doikuntza edo zabalera",
+            "print": "",
+            "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "Konfigurazio-aukerak"
         },
         "notes": {
@@ -741,6 +776,24 @@
             },
             "searchTitle": "Bilatu:"
         },
+        "print": {
+            "descriptionLcpCount": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "preview": "",
+            "print": "",
+            "printablePages": "",
+            "title": ""
+        },
         "settings": {
             "column": {
                 "auto": "Automatiko",
@@ -763,6 +816,7 @@
             "letterSpacing": "Letren tartea",
             "lineSpacing": "Lerroartea",
             "margin": "Marjina",
+            "mathjax": "",
             "noFootnotes": "Oin-oharrak desaktibatu",
             "noRTLFlip": "Desgaitu eskuinetik ezkerrera UI",
             "noRuby": "Ezkutatu Japoniako Ruby",
@@ -796,6 +850,7 @@
             "reduceMotion": "Mugimendua gutxitu",
             "scrolled": "Desplazagarria",
             "spacing": "Tartea",
+            "spreadModeEven": "",
             "text": "Testua",
             "theme": {
                 "name": {
@@ -854,9 +909,233 @@
             "disclaimer": "Lasterbideak QWERTY teklatuaren diseinutik definitu ziren.",
             "editUserJson": "Editatu erabiltzaile-fitxategia",
             "keyboardShortcuts": "Teklatuko lasterbideak",
+            "list": {
+                "AddBookmarkWithLabel": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreate": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreateQuick": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsToggleMargin": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPlayPause": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioStop": {
+                    "description": "",
+                    "name": ""
+                },
+                "CloseReader": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomIn": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomOut": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomReset": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMain": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMainDeep": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderGotoPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigation": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationAnnotations": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationBookmarks": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationTOC": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderSettings": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusToolbar": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToBegin": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToEnd": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfo": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "Print": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SpeakReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleBookmark": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleReaderFullscreen": {
+                    "description": "",
+                    "name": ""
+                }
+            },
             "loadUserJson": "Kargatu erabiltzaile-fitxategia",
+            "noShortcutFound": "",
             "resetDefaults": "Lehenetsitako balioak berrezartzea",
-            "save": "Gorde"
+            "save": "Gorde",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "Hizkuntza hautatzea"
@@ -872,13 +1151,27 @@
                 "overrideHTMLTemplate": ""
             }
         },
+        "profiles": {
+            "info": "",
+            "thorium": {
+                "description": "",
+                "title": ""
+            },
+            "version": ""
+        },
+        "screenReaderActivate": {
+            "help": "",
+            "message": "",
+            "title": ""
+        },
         "session": {
             "title": "Gorde saioa"
         },
         "tabs": {
             "appearance": "Itxura",
             "general": "Orokorra",
-            "keyboardShortcuts": "Teklatuko lasterbideak"
+            "keyboardShortcuts": "Teklatuko lasterbideak",
+            "profiles": ""
         },
         "theme": {
             "auto": "Automatikoa",
@@ -936,7 +1229,7 @@
         "title": {
             "allBooks": "Nire argitalpen guztiak",
             "newFeature": "Ezaugarri berria: oharrak",
-            "welcome": "Ongi etorri Thorium 3.0ra"
+            "welcome": "Ongi etorri Thorium 3ra"
         }
     }
 }

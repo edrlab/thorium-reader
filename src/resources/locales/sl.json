@@ -20,6 +20,7 @@
             "copy": "Kopiraj",
             "cut": "Izreži",
             "paste": "Prilepi",
+            "print": "",
             "redo": "Ponovi",
             "selectAll": "Izberi vse",
             "title": "Uredi",
@@ -62,6 +63,14 @@
             "descending": "padajoče",
             "unsorted": "nerazvrščeno"
         },
+        "customization": {
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
+        },
         "delete": "Izbriši",
         "deleteBook": "Izbriši",
         "deleteTag": "Odstrani oznako",
@@ -77,6 +86,8 @@
         "importAnnotation": "Uvoz opomb",
         "lang": "Jezik",
         "lastRead": "Nazadnje brano",
+        "login": "",
+        "logout": "",
         "moreInfo": "Osnovni podatki",
         "myBooks": "Moje knjige",
         "noPublicationHelpL1": "Tukaj spusti datoteke",
@@ -87,9 +98,12 @@
         "opds": {
             "auth": {
                 "cancel": "Prekliči",
+                "external": "",
+                "fallback": "",
                 "login": "Prijavi se",
                 "password": "Geslo",
                 "register": "Register",
+                "retry": "",
                 "username": "Uporabniško ime / elektronski naslov"
             },
             "info": {
@@ -133,12 +147,20 @@
             "title": "Uvozim opombe?"
         },
         "cancel": "Prekliči",
+        "customization": {
+            "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
+                "title": ""
+            }
+        },
         "deleteAnnotations": "Želiš izbrisati opombe?",
         "deleteAnnotationsText": "Ali si prepričan, da želiš izbrisati {{- annotationListLength}} opombe?",
         "deleteBookmarks": "",
         "deleteBookmarksText": "",
         "deleteFeed": "Ali res želiš izbrisati katalog?",
         "deletePublication": "Ali res želiš izbrisati publikacijo?",
+        "deletePublicationWithNotes": "",
         "import": "Ali res želiš uvoziti te datoteke:",
         "importError": "napaka, preveri datotečno končnico ({{acceptedExtension}})",
         "renew": "Ali res želiš obnoviti licenco za to publikacijo?",
@@ -200,7 +222,8 @@
         },
         "open": {
             "error": "Publikacije ni mogoče odpreti: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -237,6 +260,7 @@
         },
         "next": "Naslednja",
         "previous": "Prejšnja",
+        "resumeBrowsing": "",
         "shelf": "Polica",
         "updateForm": {
             "name": "Ime:",
@@ -593,7 +617,7 @@
         "lcpRightsPrint": "Tiskane strani",
         "lcpStart": "Začetek",
         "licenceLCP": "Licenca (LCP)",
-        "licenseCertificateDateInvalid": "Datum podpisa licence ni veljaven",
+        "licenseCertificateDateInvalid": "Datum podpisa licence ni veljaven ({{- dateTime}})",
         "licenseOutOfDate": "Licenca ni več veljavna",
         "licenseSignatureInvalid": "Podpis licence ni veljaven",
         "licensed": "Licencirano",
@@ -667,6 +691,12 @@
             "fit": "Prilagajanje zaslonu"
         },
         "goToContent": "Pojdi na vsebino",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "Opombe",
             "bookmarks": "Zaznamki",
@@ -710,6 +740,7 @@
             "goToError": "Prelom strani ne obstaja",
             "goToPlaceHolder": "Vnesi številko strani",
             "goToTitle": "Pojdi na stran",
+            "history": "",
             "historyNext": "Skok naprej",
             "historyPrevious": "Skok nazaj",
             "infoTitle": "informacije",
@@ -717,6 +748,10 @@
             "openTableOfContentsTitle": "navigacija",
             "page": "Stran",
             "pdfscalemode": "Prileganje strani ali širine",
+            "print": "",
+            "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "nastavitve"
         },
         "notes": {
@@ -741,6 +776,24 @@
             },
             "searchTitle": "Iskanje:"
         },
+        "print": {
+            "descriptionLcpCount": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "preview": "",
+            "print": "",
+            "printablePages": "",
+            "title": ""
+        },
         "settings": {
             "column": {
                 "auto": "Privzeto",
@@ -763,6 +816,7 @@
             "letterSpacing": "Razmik med črkami",
             "lineSpacing": "Razmik med vrsticami",
             "margin": "Obroba",
+            "mathjax": "",
             "noFootnotes": "Onemogoči opombe",
             "noRTLFlip": "Onemogoči uporabniški vmesnik od desne proti levi",
             "noRuby": "Skrij japonski Ruby",
@@ -796,6 +850,7 @@
             "reduceMotion": "Zmanjšaj gibanje",
             "scrolled": "Pomikanje",
             "spacing": "Razmik",
+            "spreadModeEven": "",
             "text": "Besedilo",
             "theme": {
                 "name": {
@@ -854,9 +909,233 @@
             "disclaimer": "Bližnjice so bile določene na podlagi postavitve tipkovnice QWERTY.",
             "editUserJson": "Uredi datoteko uporabnika...",
             "keyboardShortcuts": "Bližnjice tipkovnice",
+            "list": {
+                "AddBookmarkWithLabel": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreate": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreateQuick": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsToggleMargin": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPlayPause": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioStop": {
+                    "description": "",
+                    "name": ""
+                },
+                "CloseReader": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomIn": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomOut": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomReset": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMain": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMainDeep": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderGotoPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigation": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationAnnotations": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationBookmarks": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationTOC": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderSettings": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusToolbar": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToBegin": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToEnd": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfo": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "Print": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SpeakReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleBookmark": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleReaderFullscreen": {
+                    "description": "",
+                    "name": ""
+                }
+            },
             "loadUserJson": "Nalaganje iz datoteke uporabnika",
+            "noShortcutFound": "",
             "resetDefaults": "Ponastavitev (naloži privzete nastavitve)",
-            "save": "Shrani"
+            "save": "Shrani",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "Izbira jezika"
@@ -872,13 +1151,27 @@
                 "overrideHTMLTemplate": ""
             }
         },
+        "profiles": {
+            "info": "",
+            "thorium": {
+                "description": "",
+                "title": ""
+            },
+            "version": ""
+        },
+        "screenReaderActivate": {
+            "help": "",
+            "message": "",
+            "title": ""
+        },
         "session": {
             "title": "Shrani sejo"
         },
         "tabs": {
             "appearance": "Izgled",
             "general": "Splošno",
-            "keyboardShortcuts": "Bližnjice tipkovnice"
+            "keyboardShortcuts": "Bližnjice tipkovnice",
+            "profiles": ""
         },
         "theme": {
             "auto": "Samodejno",
@@ -936,7 +1229,7 @@
         "title": {
             "allBooks": "Vse publikacije",
             "newFeature": "Nova funkcija: opombe",
-            "welcome": "Dobrodošli v Thorium 3.0"
+            "welcome": "Dobrodošli v Thorium 3"
         }
     }
 }

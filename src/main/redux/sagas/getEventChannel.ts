@@ -5,8 +5,37 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { app, powerMonitor, protocol } from "electron";
-import { channel as channelSaga, eventChannel } from "redux-saga";
+import { app, powerMonitor, session } from "electron";
+import { URL_PROTOCOL_OPDS, URL_PROTOCOL_OPDS_MEDIA } from "readium-desktop/common/streamerProtocol";
+import { channel as channelSaga, eventChannel, buffers } from "redux-saga";
+import { customizationStartFileWatcherFromWellKnownFolder } from "readium-desktop/main/customization/watcher";
+
+import { SESSION_PARTITION_AUTH } from "readium-desktop/common/sessions";
+
+import debug_ from "debug";
+const debug = debug_("readium-desktop:main#redux/sagas/getEventChannel");
+debug("_");
+
+export function getAndStartCustomizationWellKnownFileWatchingEventChannel(wellKnownFolder: string) {
+
+    const channel = eventChannel<[string, boolean]>(
+        (emit) => {
+
+            const handler = (filePath: string, removed: boolean) => emit([filePath, removed]);
+
+            const watcher = customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder, handler);
+
+            return async () => {
+                if (watcher) {
+                    await watcher.close();
+                }
+            };
+        },
+        buffers.sliding(10),
+    );
+
+    return channel;
+}
 
 export function getWindowAllClosedEventChannel() {
 
@@ -21,6 +50,7 @@ export function getWindowAllClosedEventChannel() {
                 app.removeListener("window-all-closed", handler);
             };
         },
+        buffers.none(),
     );
 
     return channel;
@@ -39,6 +69,7 @@ export function getQuitEventChannel() {
                 app.removeListener("quit", handler);
             };
         },
+        buffers.sliding(10),
     );
 
     return channel;
@@ -57,6 +88,7 @@ export function getBeforeQuitEventChannel() {
                 app.removeListener("before-quit", handler);
             };
         },
+        buffers.none(),
     );
 
     return channel;
@@ -91,13 +123,12 @@ export function getShutdownEventChannel() {
                 powerMonitor.removeListener("shutdown", handler);
             };
         },
+        buffers.none(),
     );
 
     return channel;
 
 }
-
-export const OPDS_AUTH_SCHEME = "opds";
 
 export interface TregisterHttpProtocolHandler {
     request: Electron.ProtocolRequest;
@@ -108,45 +139,53 @@ export function getOpdsRequestCustomProtocolEventChannel() {
 
     const channel = eventChannel<TregisterHttpProtocolHandler>(
         (emit) => {
-            const handler = (
-                request: Electron.ProtocolRequest,
-                callback: (response: Electron.ProtocolResponse) => void,
-            ) => emit({ request, callback });
-            protocol.registerHttpProtocol(OPDS_AUTH_SCHEME, handler);
+            const authSession = session.fromPartition(SESSION_PARTITION_AUTH, { cache: false });
+
+            if (authSession) {
+                const handler = (
+                    request: Electron.ProtocolRequest,
+                    callback: (response: Electron.ProtocolResponse) => void,
+                ) => emit({ request, callback });
+                authSession.protocol.registerHttpProtocol(URL_PROTOCOL_OPDS, handler);
+            }
 
             return () => {
-                protocol.unregisterProtocol(OPDS_AUTH_SCHEME);
+                authSession?.protocol.unregisterProtocol(URL_PROTOCOL_OPDS);
             };
         },
+        buffers.sliding(10),
     );
 
     return channel;
 }
 
-export const OPDS_MEDIA_SCHEME = "opds-media";
-
 // HACK!! TODO: FIXME (Electron lifecycle requires this before app.ready, and called only once!)
 // see src/main/streamer/streamerNoHttp.ts
 // protocol.registerSchemesAsPrivileged([
-//     { scheme: OPDS_MEDIA_SCHEME, privileges: { bypassCSP: true, corsEnabled: false, stream: true } },
+//     { scheme: URL_PROTOCOL_OPDS_MEDIA, privileges: { bypassCSP: true, corsEnabled: false, stream: true } },
 // ]);
 
 export function getOpdsRequestMediaCustomProtocolEventChannel() {
 
     const channel = eventChannel<TregisterHttpProtocolHandler>(
         (emit) => {
+
+            // Electron.protocol === Electron.session.defaultSession.protocol
+            // const xxxSession = session.fromPartition("persist:partitionxxx", { cache: false });
+
             const handler = (
                 request: Electron.ProtocolRequest,
                 callback: (response: Electron.ProtocolResponse) => void,
             ) => {
                 emit({ request, callback });
             };
-            protocol.registerStreamProtocol(OPDS_MEDIA_SCHEME, handler);
+            session.defaultSession.protocol.registerStreamProtocol(URL_PROTOCOL_OPDS_MEDIA, handler);
 
             return () => {
-                protocol.unregisterProtocol(OPDS_MEDIA_SCHEME);
+                session.defaultSession.protocol.unregisterProtocol(URL_PROTOCOL_OPDS_MEDIA);
             };
         },
+        buffers.sliding(10),
     );
 
     return channel;

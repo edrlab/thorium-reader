@@ -121,6 +121,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                                         opdsPublicationView={opds.publications}
                                         links={opds.links}
                                         pageInfo={opds.metadata}
+                                        opdsGroupsFound={opds.groups ? true : false}
                                     />
                                 </div>
                             </div>
@@ -143,6 +144,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                                     opdsPublicationView={opds.publications}
                                     links={opds.links}
                                     pageInfo={opds.metadata}
+                                    opdsGroupsFound={opds.groups ? true : false}
                                 />
                                 : <></>
                             }
@@ -163,6 +165,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                                         {
                                             group.publications?.length > 1 ?
                                                     <Slider
+                                                        resetSliderPosition={false}
                                                         content={group.publications.map((pub, pubId) =>
                                                             <PublicationCard
                                                                 key={`opds-group-${i}-${pubId}`}

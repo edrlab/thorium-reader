@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 
 import { _TELEMETRY_SECRET, _TELEMETRY_URL, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
@@ -15,8 +15,21 @@ import * as fs from "fs";
 import * as path from "path";
 import { app } from "electron";
 import { httpPost } from "readium-desktop/main/network/http";
+
+// TypeScript GO:
+// The current file is a CommonJS module whose imports will produce 'require' calls;
+// however, the referenced file is an ECMAScript module and cannot be imported with 'require'.
+// Consider writing a dynamic 'import("...")' call instead.
+// To convert this file to an ECMAScript module, change its file extension to '.mts',
+// or add the field `"type": "module"` to 'package.json'.
+// @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
+// e__slint-disable-next-line @typescript-eslint/ban-ts-comment
+// @__ts-ignore TS1479
 import { Headers } from "node-fetch";
+
 import { createHmac } from "crypto";
+
+import isURL from "validator/lib/isURL";
 
 interface ITelemetryInfo {
     os_version: string;
@@ -133,10 +146,16 @@ const sendTelemetry = async (queue: ITelemetryInfo[]) => {
     headers.append("Authorization", `EDRLAB ${telemetryHmac(body)}`);
     headers.append("Content-Type", "application/json");
 
-    debug("TELEMETRY: ", _TELEMETRY_URL + _APP_VERSION, JSON.stringify({timestamp, data}, null, 4));
+    const href = _TELEMETRY_URL + _APP_VERSION;
 
-    // http post request with HMAC
-    const res = await httpPost(_TELEMETRY_URL + _APP_VERSION, {
+    debug("TELEMETRY: ", href, JSON.stringify({timestamp, data}, null, 4));
+
+    // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+    if (!href || !isURL(href)) {
+        debug("isURL() NOK", href);
+        return false;
+    }
+    const res = await httpPost(href, {
         headers,
         body,
     });

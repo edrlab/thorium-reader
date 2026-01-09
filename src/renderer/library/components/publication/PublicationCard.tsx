@@ -35,7 +35,7 @@ import * as CalendarIcon from "readium-desktop/renderer/assets/icons/calendar2-i
 import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import * as KeyIcon from "readium-desktop/renderer/assets/icons/key-icon.svg";
 import classNames from "classnames";
-import * as moment from "moment";
+import moment from "moment";
 import { formatTime } from "readium-desktop/common/utils/time";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -89,12 +89,12 @@ class PublicationCard extends React.Component<IProps> {
 
         const lcpRightsEndDate = (publicationView.lcp?.rights?.end) ? publicationView.lcp.rights.end : undefined;
         let remainingDays= "";
-        const now = moment();
+        const now = moment().locale([this.props.locale, "en"]);
         let hasEnded = false;
         const isLcp = publicationView.lcp?.rights ? true : false;
 
         if (lcpRightsEndDate) {
-            const momentEnd = moment(lcpRightsEndDate);
+            const momentEnd = moment(lcpRightsEndDate).locale([this.props.locale, "en"]);
             const timeEndDif = momentEnd.diff(now, "days");
             if (timeEndDif > 1) {
                 remainingDays = `${timeEndDif} ${__("publication.days")}`;
@@ -102,7 +102,7 @@ class PublicationCard extends React.Component<IProps> {
                 remainingDays = `${timeEndDif} ${__("publication.day")}`;
             } else {
                 // const nowUTC = (new Date()).toISOString();
-                // const momentNow = moment(nowUTC);
+                // const momentNow = moment(nowUTC).locale([this.props.locale, "en"]);
                 if (now.isAfter(momentEnd)) {
                     remainingDays = `${__("publication.expired")}`;
                     hasEnded = true;

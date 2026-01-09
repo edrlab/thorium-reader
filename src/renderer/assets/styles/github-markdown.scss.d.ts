@@ -1,5 +1,6 @@
 export declare const absent: string;
 export declare const anchor: string;
+export declare const CSS_END_partials_variables: string;
 export declare const emoji: string;
 export declare const enabled: string;
 export declare const footnotes: string;

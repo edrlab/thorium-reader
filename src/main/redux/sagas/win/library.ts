@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { winIpc } from "readium-desktop/common/ipc";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
@@ -40,6 +40,22 @@ export function* appActivate() {
 
         error(filename_ + "appActivate", new Error("closing process not completed"));
     } else {
+
+        const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+        const readerWindows = ObjectValues(readers)
+            .map((reader) => getReaderWindowFromDi(reader.identifier))
+            .filter((w) => w && !w.isDestroyed() && !w.webContents.isDestroyed());
+
+        // Prefer an existing reader window when the app is re-activated from the Dock
+        // Prevents library window opening in front of the book window when clicking the Dock icon
+        const readerWindow = readerWindows[0];
+        if (readerWindow) {
+            if (readerWindow.isMinimized()) {
+                readerWindow.restore();
+            }
+            readerWindow.show();
+            return;
+        }
 
         const libWinState = yield* selectTyped((state: RootState) => state.win.session.library);
 
@@ -112,10 +128,14 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
             // state: state.session.state,
             save: state.session.save,
         },
+        screenReader: {
+            activate: state.screenReader.activate,
+        },
         creator: state.creator,
         settings: state.settings,
         lcp: state.lcp,
         noteExport: state.noteExport,
+        customization: state.customization,
     };
     try {
         const publication = yield* callTyped(getCatalog);
@@ -265,6 +285,18 @@ function* winClose(_action: winActions.library.closed.TAction) {
             );
 
         }
+    }
+
+    if (libraryWin && libraryWin.getChildWindows()?.length) {
+        debug("WIN CHILDREN ", libraryWin.getChildWindows()?.length, libraryWin.isDestroyed(), libraryWin.webContents.isDestroyed());
+        for (const child of libraryWin.getChildWindows()) {
+            try {
+                child.destroy();
+            } catch (_e) {
+                // ignore
+            }
+        }
+        yield delay(50);
     }
 
     if (sessionSaving) {

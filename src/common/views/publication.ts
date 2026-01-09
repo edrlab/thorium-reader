@@ -69,6 +69,7 @@ export interface PublicationView extends Identifiable {
 
     lcp?: LcpInfo;
     lcpRightsCopies?: number;
+    lcpRightsPrints?: number[];
 
     r2PublicationJson: JsonMap;
     // Legacy Base64 data blobs

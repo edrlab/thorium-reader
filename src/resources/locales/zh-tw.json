@@ -3,9 +3,9 @@
         "bookMenu": "菜單",
         "closeDialog": "關閉",
         "importFile": "匯入出版物",
-        "leftSlideButton": "將列表劃至左側",
+        "leftSlideButton": "將列表移至左側",
         "mainContent": "主要內容",
-        "rightSlideButton": "將列表劃至右側",
+        "rightSlideButton": "將列表移至右側",
         "skipLink": "跳轉至內容",
         "toolbar": "工具欄"
     },
@@ -13,13 +13,14 @@
         "documentation": "Thorium 文件",
         "howItWorks": "它是如何運作的？",
         "informations": "在法國，許多公共圖書館提供程式可讀的目錄（類似於 OPDS，但不相同），讓顧客從個人書架下載數位出版物。將此技術整合到 Thorium Reader 中，您可以將電子書或有聲書直接下載到 Thorium Reader 中進行即時閱讀。\n如何將您的法國公共圖書館帳戶連接到 Thorium Reader？這很簡單。在搜尋欄位中輸入法國城市（「巴黎」）或圖書館名稱的一部分，然後按一下搜尋按鈕。將出現與您的搜尋相對應的公共圖書館清單。選擇一個庫並點擊\"新增\"。在更新的目錄清單中，選擇該圖書館：將顯示身份驗證表單。輸入您的使用者名稱/電子郵件地址和密碼，然後點擊「登入」。現在您可以看到您的個人書架的內容，您可以從中下載和閱讀之前借閱的電子書和有聲書。",
-        "noLibraryFound": "未找到套件庫 ({{- name}})"
+        "noLibraryFound": "未找到圖書館 ({{- name}})"
     },
     "app": {
         "edit": {
             "copy": "複製",
             "cut": "剪下",
             "paste": "貼上",
+            "print": "列印",
             "redo": "重做",
             "selectAll": "全選",
             "title": "編輯",
@@ -62,6 +63,14 @@
             "descending": "降冪",
             "unsorted": "亂序"
         },
+        "customization": {
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
+        },
         "delete": "刪除",
         "deleteBook": "刪除書籍",
         "deleteTag": "刪除標籤",
@@ -77,6 +86,8 @@
         "importAnnotation": "匯入註解",
         "lang": "語言",
         "lastRead": "最後閱讀",
+        "login": "",
+        "logout": "",
         "moreInfo": "更多訊息",
         "myBooks": "我的書籍",
         "noPublicationHelpL1": "將文件拖放到此處",
@@ -87,9 +98,12 @@
         "opds": {
             "auth": {
                 "cancel": "取消",
+                "external": "",
+                "fallback": "",
                 "login": "登入",
                 "password": "密碼",
                 "register": "註冊",
+                "retry": "",
                 "username": "使用者名稱/電子郵件地址"
             },
             "info": {
@@ -98,13 +112,13 @@
                     "available": "在售",
                     "ready": "準備中",
                     "reserved": "已預訂",
-                    "unavailable": "售空",
+                    "unavailable": "不可用",
                     "unknown": "不明"
                 },
-                "availableUntil": "結束時間",
-                "copyAvalaible": "在售數",
-                "copyTotal": "拷貝數",
-                "holdPosition": "你的持倉位置",
+                "availableUntil": "直到",
+                "copyAvalaible": "可用",
+                "copyTotal": "副本",
+                "holdPosition": "保持位置",
                 "holdTotal": "已持有",
                 "numberOfItems": "項目數",
                 "priveValue": "價格",
@@ -133,12 +147,20 @@
             "title": "導入註解？"
         },
         "cancel": "取消",
+        "customization": {
+            "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
+                "title": ""
+            }
+        },
         "deleteAnnotations": "刪除註解？",
-        "deleteAnnotationsText": "您確定要刪除 {{-annotationListLength}} 條註解嗎？",
-        "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteAnnotationsText": "您確定要刪除 {{- annotationListLength}} 條註解嗎？",
+        "deleteBookmarks": "刪除書籤？",
+        "deleteBookmarksText": "您確定要刪除 {{- bookmarkListLength}} 個書籤嗎？",
         "deleteFeed": "你真的要刪除此出版目錄嗎？",
         "deletePublication": "你真的要刪除此出版物嗎？",
+        "deletePublicationWithNotes": "警告：此出版物包含註釋和/或書籤，它們也將被刪除！ （如果您想保留它們，請確保在刪除出版物之前匯出註釋）",
         "import": "你真的要匯入這些文件嗎：",
         "importError": "出現錯誤，請確認文件的副檔名（{{acceptedExtension}}）",
         "renew": "你真的要更新此出版物的許可證嗎？",
@@ -200,7 +222,8 @@
         },
         "open": {
             "error": "無法打開出版物：[{{- err}}]"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -237,6 +260,7 @@
         },
         "next": "下一個",
         "previous": "上一個",
+        "resumeBrowsing": "",
         "shelf": "書架",
         "updateForm": {
             "name": "名稱：",
@@ -248,24 +272,24 @@
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": ""
+            "accessibility-summary-title": "輔助功能摘要"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "包括 ARIA 角色",
+                "descriptive": "內容透過ARIA角色增強，以優化組織並便利導航"
             },
             "additional-accessibility-information-audio-descriptions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "音訊描述",
+                "descriptive": "音訊描述"
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "點字",
+                "descriptive": "點字"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "完整的Ruby註釋",
+                "descriptive": "完整的 Ruby 註釋"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
                 "compact": "",
@@ -276,68 +300,68 @@
                 "descriptive": ""
             },
             "additional-accessibility-information-large-print": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "大字體",
+                "descriptive": "大字體"
             },
             "additional-accessibility-information-page-breaks": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "包含分頁符",
+                "descriptive": "包含原始印刷來源的分頁符"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "一些 Ruby 註釋",
+                "descriptive": "一些 Ruby 註釋"
             },
             "additional-accessibility-information-sign-language": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "手語",
+                "descriptive": "手語"
             },
             "additional-accessibility-information-tactile-graphics": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "包含觸覺圖形",
+                "descriptive": "融入觸覺圖形，方便盲人取得視覺元素"
             },
             "additional-accessibility-information-tactile-objects": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "觸覺 3D 物體",
+                "descriptive": "觸覺 3D 物體"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "提供文字轉語音提示",
+                "descriptive": "提供文字轉語音提示"
             },
-            "additional-accessibility-information-title": ""
+            "additional-accessibility-information-title": "其他無障礙訊息"
         },
         "conformance": {
             "conformance-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "本出版品符合最低無障礙標準",
+                "descriptive": "該出版物包含符合 EPUB 可訪問性和 WCAG 2 級別 A 標準的一致性聲明"
             },
             "conformance-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "本出版品符合公認的無障礙標準",
+                "descriptive": "該出版物包含符合 EPUB 可訪問性和 WCAG 2 AA 級標準的一致性聲明"
             },
             "conformance-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "本出版品超出了公認的無障礙標準",
+                "descriptive": "該出版品包含一份符合聲明，表示其符合 EPUB 無障礙性和 WCAG 2 等級 AAA 標準"
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "該出版物已通過以下機構認證 "
             },
             "conformance-certifier-credentials": {
-                "compact": ""
+                "compact": "認證人的憑證是 "
             },
             "conformance-details-certifier-report": {
-                "compact": ""
+                "compact": "更多資訊請參閱認證機構的報告"
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "本出版品聲稱滿足",
+                "descriptive": "本出版品聲稱滿足"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB 無障礙功能 1.0",
+                "descriptive": "EPUB 無障礙功能 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB 無障礙功能 1.1",
+                "descriptive": "EPUB 無障礙功能 1.1"
             },
             "conformance-details-level-a": {
                 "compact": "",
@@ -593,7 +617,7 @@
         "lcpRightsPrint": "列印頁數",
         "lcpStart": "開始",
         "licenceLCP": "授權（LCP）",
-        "licenseCertificateDateInvalid": "LCP 提供者憑證已過期。",
+        "licenseCertificateDateInvalid": "LCP 提供者憑證已過期。 ({{- dateTime}})",
         "licenseOutOfDate": "LCP 許可證已過期。",
         "licenseSignatureInvalid": "LCP 許可證簽章無效。",
         "licensed": "已授權",
@@ -667,6 +691,12 @@
             "fit": "Fit"
         },
         "goToContent": "轉至內容",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "註解",
             "bookmarks": "書籤",
@@ -710,6 +740,7 @@
             "goToError": "此頁不存在",
             "goToPlaceHolder": "輸入頁碼",
             "goToTitle": "轉到頁",
+            "history": "",
             "historyNext": "向前跳",
             "historyPrevious": "跳回來",
             "infoTitle": "訊息",
@@ -717,6 +748,10 @@
             "openTableOfContentsTitle": "導航",
             "page": "頁",
             "pdfscalemode": "適合頁面寬度",
+            "print": "",
+            "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "設定"
         },
         "notes": {
@@ -741,6 +776,24 @@
             },
             "searchTitle": "搜索："
         },
+        "print": {
+            "descriptionLcpCount": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "preview": "",
+            "print": "",
+            "printablePages": "",
+            "title": ""
+        },
         "settings": {
             "column": {
                 "auto": "自動",
@@ -763,6 +816,7 @@
             "letterSpacing": "字符間距",
             "lineSpacing": "行間距",
             "margin": "頁邊距",
+            "mathjax": "",
             "noFootnotes": "沒有附註",
             "noRTLFlip": "禁用從右到左的 UI",
             "noRuby": "隱藏日文漢字注音",
@@ -796,6 +850,7 @@
             "reduceMotion": "減少動態效果",
             "scrolled": "捲動",
             "spacing": "間距",
+            "spreadModeEven": "",
             "text": "文字",
             "theme": {
                 "name": {
@@ -854,9 +909,233 @@
             "disclaimer": "快捷鍵是根據 QWERTY 鍵盤佈局定義的。",
             "editUserJson": "編輯使用者文件...",
             "keyboardShortcuts": "鍵盤快捷鍵",
+            "list": {
+                "AddBookmarkWithLabel": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreate": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreateQuick": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsToggleMargin": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPlayPause": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioStop": {
+                    "description": "",
+                    "name": ""
+                },
+                "CloseReader": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomIn": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomOut": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomReset": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMain": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMainDeep": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderGotoPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigation": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationAnnotations": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationBookmarks": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationTOC": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderSettings": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusToolbar": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToBegin": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToEnd": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfo": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "Print": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SpeakReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleBookmark": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleReaderFullscreen": {
+                    "description": "",
+                    "name": ""
+                }
+            },
             "loadUserJson": "從使用者檔案載入",
+            "noShortcutFound": "",
             "resetDefaults": "重置 (載入初始設定)",
-            "save": "保存"
+            "save": "保存",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "選擇語言"
@@ -872,13 +1151,27 @@
                 "overrideHTMLTemplate": ""
             }
         },
+        "profiles": {
+            "info": "",
+            "thorium": {
+                "description": "",
+                "title": ""
+            },
+            "version": ""
+        },
+        "screenReaderActivate": {
+            "help": "",
+            "message": "",
+            "title": ""
+        },
         "session": {
             "title": "保存登入狀態"
         },
         "tabs": {
             "appearance": "外觀",
             "general": "一般",
-            "keyboardShortcuts": "鍵盤快捷鍵"
+            "keyboardShortcuts": "鍵盤快捷鍵",
+            "profiles": ""
         },
         "theme": {
             "auto": "自動的",
@@ -936,7 +1229,7 @@
         "title": {
             "allBooks": "我所有的出版物",
             "newFeature": "新功能：註解",
-            "welcome": "歡迎來到 Thorium 3.0"
+            "welcome": "歡迎來到 Thorium 3"
         }
     }
 }

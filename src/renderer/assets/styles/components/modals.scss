@@ -42,7 +42,7 @@
   align-content: flex-start;
   position: fixed;
   box-sizing: border-box;
-  border: 1px solid var(--color-verylight-grey-alt);
+  border: 1px solid var(--color-gray-250);
 
   &.modal_dialog_full {
     position: relative;
@@ -54,29 +54,29 @@
     }
   }
   
-  background-color: var(--color-secondary);
-  color: var(--color-primary);
+  background-color: var(--color-neutral-base);
+  color: var(--color-text-primary);
 
   &_reader {
     .display_options_item {
-      color: var(--color-primary);
+      color: var(--color-text-primary);
     }
 
     .settings_container {
-      background-color: var(--color-secondary);
+      background-color: var(--color-neutral-base);
     }
 
-    color: var(--color-primary);
+    color: var(--color-text-primary);
 
     .react_aria_ComboBox {
       .react_aria_Button {
-        // background-color: var(--color-secondary);
+        // background-color: var(--color-neutral-base);
         background-color: inherit;
       }
 
       .react_aria_Input {
         background-color: var(--reader-secondaryColor);    
-        color: var(--color-primary);
+        color: var(--color-text-primary);
       }
     }
   }
@@ -118,7 +118,7 @@
 
 .modal_dialog_header {
   justify-content: space-between;
-  border-bottom: 1px solid var(--color-light-grey);
+  border-bottom: 1px solid var(--color-gray-300);
 
   & h1 {
     font-weight: bold;
@@ -133,11 +133,11 @@
 
 .modal_dialog_footer {
   justify-content: end;
-  border-top: 1px solid var(--color-light-grey);
+  border-top: 1px solid var(--color-gray-300);
   position: sticky;
   bottom: 0;
   right: 0;
-  background-color: var(--color-secondary);
+  background-color: var(--color-neutral-base);
   gap: 10px;
 
   & [type="submit"], .button_secondary_blue {
@@ -197,8 +197,8 @@
 }
 
 .lcp_hint {
-  color: var(--color-blue);
-  background-color: var(--color-light-blue);
+  color: var(--color-brand-primary);
+  background-color: var(--color-brand-secondary);
   padding: 5px;
   display: flex;
   align-items: center;
@@ -213,7 +213,7 @@
 
 .urlHint {
   font-size: 14px;
-  color: var(--color-blue);
+  color: var(--color-brand-primary);
 }
 
 .guidedTour_content {

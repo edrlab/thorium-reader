@@ -7,7 +7,7 @@
 
 import { /*BrowserWindow,*/ Rectangle, screen } from "electron";
 
-// import * as debug_ from "debug";
+// import debug_ from "debug";
 // // Logger
 // const debug = debug_("readium-desktop:common:rectangle:window");
 

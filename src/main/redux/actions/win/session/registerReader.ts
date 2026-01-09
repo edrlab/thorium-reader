@@ -69,6 +69,7 @@ export function build(
             },
             lock: false,
         },          
+        note: [], // hydrated by sagas/win/reader/winOpen
     };
 
     return {

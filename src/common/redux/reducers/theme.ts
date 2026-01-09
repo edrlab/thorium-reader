@@ -11,12 +11,16 @@ import { themeActions } from "../actions";
 import { ITheme } from "../states/theme";
 
 function themeReducer_(
-    state: ITheme = {name: "system"},
+    state: ITheme = {
+        name: "system",
+    },
     action: themeActions.setTheme.TAction,
 ): ITheme {
     switch (action.type) {
         case themeActions.setTheme.ID:
-            return {name: action.payload.name};
+            return {
+                name: action.payload.name ? action.payload.name : state.name,
+            };
         default:
             return state;
     }

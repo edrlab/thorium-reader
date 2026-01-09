@@ -20,6 +20,7 @@ export function* exportPublication(publicationView: PublicationView) {
     const publicationStorage = diMainGet("publication-storage");
 
     const defaultFilename =  publicationStorage.getPublicationFilename(publicationView);
+
     // Open a dialog to select a folder then copy the publication in it
     const res = yield* callTyped(() => dialog.showSaveDialog(
         libraryAppWindow ? libraryAppWindow : undefined,

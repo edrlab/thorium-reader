@@ -27,6 +27,7 @@ import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives
 interface IBaseProps {
     catalogEntries: CatalogEntryView[];
     tags?: string[];
+    hasCustomPublications: boolean;
 }
 
 // IProps may typically extend:
@@ -51,13 +52,16 @@ enum SortStatus {
 const EntrySection = ({entry, entryIndex}: {entry: CatalogEntryView, entryIndex: number}) => {
     const [__] = useTranslator();
     let title = "";
+    let resetSliderPosition = false;
 
     switch (entry.id) {
         case "lastAdditions":
             title = __("catalog.entry.lastAdditions");
+            resetSliderPosition = false;
             break;
         case "continueReading":
             title = __("catalog.entry.continueReading");
+            resetSliderPosition = true;
             break;
     }
 
@@ -66,6 +70,7 @@ const EntrySection = ({entry, entryIndex}: {entry: CatalogEntryView, entryIndex:
                 <h2>{title}</h2>
             {
                 <Slider
+                    resetSliderPosition={resetSliderPosition}
                     className={classNames(stylesSlider.slider)}
                     content={entry.publicationViews.map((pub) =>
                         <PublicationCard
@@ -113,6 +118,7 @@ class CatalogGridView extends React.Component<IProps, IState> {
         const catalogEntriesIsEmpty = this.props.catalogEntries.filter(
             (entry) => entry.totalCount > 0,
         ).length === 0;
+        
 
         return (
             <>
@@ -131,7 +137,7 @@ class CatalogGridView extends React.Component<IProps, IState> {
                     )
                 }
                 {
-                    this.state.tabTags.length === 0 && catalogEntriesIsEmpty
+                    this.state.tabTags.length === 0 && catalogEntriesIsEmpty && !this.props.hasCustomPublications
                         ? <NoPublicationInfo />
                         : <></>
                 }

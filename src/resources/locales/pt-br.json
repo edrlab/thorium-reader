@@ -20,6 +20,7 @@
             "copy": "Copiar",
             "cut": "Cortar",
             "paste": "Colar",
+            "print": "",
             "redo": "Refazer",
             "selectAll": "Selecionar tudo",
             "title": "Editar",
@@ -62,6 +63,14 @@
             "descending": "descendente",
             "unsorted": "não ordenado"
         },
+        "customization": {
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
+        },
         "delete": "Apagar",
         "deleteBook": "Remover",
         "deleteTag": "Apagar a tag",
@@ -77,6 +86,8 @@
         "importAnnotation": "Importar notas",
         "lang": "Idioma",
         "lastRead": "Última leitura",
+        "login": "",
+        "logout": "",
         "moreInfo": "Detalhes da publicação",
         "myBooks": "Meus livros",
         "noPublicationHelpL1": "Solte um arquivo aqui",
@@ -87,10 +98,13 @@
         "opds": {
             "auth": {
                 "cancel": "Cancelar",
+                "external": "",
+                "fallback": "",
                 "login": "Login",
                 "password": "Senha",
                 "register": "Registrar-se",
-                "username": "Usuário / Email"
+                "retry": "",
+                "username": "Usuário / E-mail"
             },
             "info": {
                 "availableSince": "Desde",
@@ -133,12 +147,20 @@
             "title": "Importar notas?"
         },
         "cancel": "Cancelar",
+        "customization": {
+            "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
+                "title": ""
+            }
+        },
         "deleteAnnotations": "Excluir anotações?",
         "deleteAnnotationsText": "Tem certeza de que deseja excluir {{- annotationListLength}} notas(s)?",
         "deleteBookmarks": "",
         "deleteBookmarksText": "",
         "deleteFeed": "Deseja excluir este catálogo?",
         "deletePublication": "Deseja excluir esta publicação?",
+        "deletePublicationWithNotes": "",
         "import": "Deseja importar estes arquivos:",
         "importError": "ocorreu um erro, verifique a extensão do arquivo ({{acceptedExtension}})",
         "renew": "Renovar/estender o empréstimo?",
@@ -200,7 +222,8 @@
         },
         "open": {
             "error": "Erro na abertura da publicação: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -237,6 +260,7 @@
         },
         "next": "Próximo",
         "previous": "Anterior",
+        "resumeBrowsing": "",
         "shelf": "Estante",
         "updateForm": {
             "name": "Nome:",
@@ -593,7 +617,7 @@
         "lcpRightsPrint": "Páginas impressas",
         "lcpStart": "Iniciar",
         "licenceLCP": "Licença (LCP)",
-        "licenseCertificateDateInvalid": "Certificado do provedor LCP expirado.",
+        "licenseCertificateDateInvalid": "Certificado do provedor LCP expirado. ({{- dateTime}})",
         "licenseOutOfDate": "Licença LCP vencida.",
         "licenseSignatureInvalid": "A assinatura da licença LCP é inválida.",
         "licensed": "Licenciado",
@@ -667,6 +691,12 @@
             "fit": "Ajustar"
         },
         "goToContent": "Ir para o conteúdo",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "Anotações",
             "bookmarks": "Marcadores",
@@ -710,6 +740,7 @@
             "goToError": "Esta quebra de página não existe",
             "goToPlaceHolder": "Digite um número de página",
             "goToTitle": "Ir para a página",
+            "history": "",
             "historyNext": "Ir para frente",
             "historyPrevious": "Ir para trás",
             "infoTitle": "informação",
@@ -717,6 +748,10 @@
             "openTableOfContentsTitle": "navegação",
             "page": "Página",
             "pdfscalemode": "Ajustar página ou largura",
+            "print": "",
+            "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "configurações"
         },
         "notes": {
@@ -741,6 +776,24 @@
             },
             "searchTitle": "Buscar:"
         },
+        "print": {
+            "descriptionLcpCount": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "preview": "",
+            "print": "",
+            "printablePages": "",
+            "title": ""
+        },
         "settings": {
             "column": {
                 "auto": "Padrão",
@@ -763,6 +816,7 @@
             "letterSpacing": "Espaçamento de letras",
             "lineSpacing": "Espaçamento de linhas",
             "margin": "Margem",
+            "mathjax": "",
             "noFootnotes": "Desativar notas de rodapé popup",
             "noRTLFlip": "Desativar UI da direita para a esquerda",
             "noRuby": "Ocultar Ruby Japonês",
@@ -796,6 +850,7 @@
             "reduceMotion": "Reduzir o movimento",
             "scrolled": "Escroleável",
             "spacing": "Espaçamento",
+            "spreadModeEven": "",
             "text": "Texto",
             "theme": {
                 "name": {
@@ -854,9 +909,233 @@
             "disclaimer": "Os atalhos foram definidos a partir do layout do teclado QWERTY.",
             "editUserJson": "Editar arquivo de usuário...",
             "keyboardShortcuts": "Atalhos de teclado",
+            "list": {
+                "AddBookmarkWithLabel": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreate": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreateQuick": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsToggleMargin": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPlayPause": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioStop": {
+                    "description": "",
+                    "name": ""
+                },
+                "CloseReader": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomIn": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomOut": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomReset": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMain": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMainDeep": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderGotoPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigation": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationAnnotations": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationBookmarks": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationTOC": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderSettings": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusToolbar": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToBegin": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToEnd": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfo": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "Print": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SpeakReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleBookmark": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleReaderFullscreen": {
+                    "description": "",
+                    "name": ""
+                }
+            },
             "loadUserJson": "Carregar de arquivo de usuário",
+            "noShortcutFound": "",
             "resetDefaults": "Redefinir (carregar padrões)",
-            "save": "Salvar"
+            "save": "Salvar",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "Idioma"
@@ -872,13 +1151,27 @@
                 "overrideHTMLTemplate": ""
             }
         },
+        "profiles": {
+            "info": "",
+            "thorium": {
+                "description": "",
+                "title": ""
+            },
+            "version": ""
+        },
+        "screenReaderActivate": {
+            "help": "",
+            "message": "",
+            "title": ""
+        },
         "session": {
             "title": "Salvar sessão"
         },
         "tabs": {
             "appearance": "Aparência",
             "general": "Geral",
-            "keyboardShortcuts": "Atalhos do teclado"
+            "keyboardShortcuts": "Atalhos do teclado",
+            "profiles": ""
         },
         "theme": {
             "auto": "Automático",
@@ -936,7 +1229,7 @@
         "title": {
             "allBooks": "Todas as minhas publicações",
             "newFeature": "Novo recurso: Anotações",
-            "welcome": "Bem-vindo ao Thorium 3.0"
+            "welcome": "Bem-vindo ao Thorium 3"
         }
     }
 }

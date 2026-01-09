@@ -20,6 +20,7 @@
             "copy": "Kopírovat",
             "cut": "Vyjmout",
             "paste": "Vložit",
+            "print": "",
             "redo": "Zpět",
             "selectAll": "Vybrat vše",
             "title": "Upravit",
@@ -62,6 +63,14 @@
             "descending": "sestupně",
             "unsorted": "netříděno"
         },
+        "customization": {
+            "fallback": {
+                "description": "",
+                "publications": "",
+                "screen": "",
+                "title": ""
+            }
+        },
         "delete": "Odstranit",
         "deleteBook": "Odstranit",
         "deleteTag": "Odstranit štítek",
@@ -77,6 +86,8 @@
         "importAnnotation": "Importovat poznámky",
         "lang": "Jazyk",
         "lastRead": "Naposledy čteno",
+        "login": "",
+        "logout": "",
         "moreInfo": "Podropnosti o publikaci",
         "myBooks": "Mé publikace",
         "noPublicationHelpL1": "Sem přetáhněte soubory",
@@ -87,9 +98,12 @@
         "opds": {
             "auth": {
                 "cancel": "Zrušit",
+                "external": "",
+                "fallback": "",
                 "login": "Přihlásit se",
                 "password": "Heslo",
                 "register": "Registrovat",
+                "retry": "",
                 "username": "Uživatelské jméno / e-mailová adresa"
             },
             "info": {
@@ -133,12 +147,20 @@
             "title": "Importovat poznámky?"
         },
         "cancel": "Zrušit",
+        "customization": {
+            "splashscreen": {
+                "fallbackWelcomeScreen": "",
+                "state": "",
+                "title": ""
+            }
+        },
         "deleteAnnotations": "Odstranit anotace?",
         "deleteAnnotationsText": "Opravdu chcete odstranit {{- annotationListLength}} poznámek?",
         "deleteBookmarks": "",
         "deleteBookmarksText": "",
         "deleteFeed": "Odstranit katalog?",
         "deletePublication": "Odstranit publikaci?",
+        "deletePublicationWithNotes": "",
         "import": "Potvrdit import:",
         "importError": "Vyskytla se chyba, ověřte příponu souboru {{acceptedExtension}}",
         "renew": "Prodloužit výpůjčku?",
@@ -200,7 +222,8 @@
         },
         "open": {
             "error": "Načítání publikace sehlalo: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -237,6 +260,7 @@
         },
         "next": "Další",
         "previous": "Předchozí",
+        "resumeBrowsing": "",
         "shelf": "Polička",
         "updateForm": {
             "name": "Název:",
@@ -667,6 +691,12 @@
             "fit": ""
         },
         "goToContent": "Přejít na obsah",
+        "imgViewer": {
+            "title": "",
+            "zoomIn": "",
+            "zoomOut": "",
+            "zoomReset": ""
+        },
         "marks": {
             "annotations": "Anotace",
             "bookmarks": "Záložky",
@@ -710,6 +740,7 @@
             "goToError": "Zalomení stránky neexistuje",
             "goToPlaceHolder": "Zadejte číslo stránky",
             "goToTitle": "Jít na stránku",
+            "history": "",
             "historyNext": "",
             "historyPrevious": "",
             "infoTitle": "informace",
@@ -717,6 +748,10 @@
             "openTableOfContentsTitle": "navigace",
             "page": "Stránka",
             "pdfscalemode": "",
+            "print": "",
+            "printDisabled": "",
+            "screenNext": "",
+            "screenPrevious": "",
             "settingsTitle": "nastavení"
         },
         "notes": {
@@ -741,6 +776,24 @@
             },
             "searchTitle": "Hledat:"
         },
+        "print": {
+            "descriptionLcpCount": "",
+            "descriptionLcpPrintable": "",
+            "howTo": "",
+            "lcpInfo": "",
+            "noPagesLcpLimitReached": "",
+            "noPrintablePages": "",
+            "pageHelpInfo": "",
+            "pageHelpInfo1": "",
+            "pageHelpInfo2": "",
+            "pageHelpInfo3": "",
+            "pageHelpInfo4": "",
+            "pages": "",
+            "preview": "",
+            "print": "",
+            "printablePages": "",
+            "title": ""
+        },
         "settings": {
             "column": {
                 "auto": "Výchozí",
@@ -763,6 +816,7 @@
             "letterSpacing": "Proložení písmen",
             "lineSpacing": "Řádkování",
             "margin": "Okraj",
+            "mathjax": "",
             "noFootnotes": "Vypnout poznámky pod čarou",
             "noRTLFlip": "",
             "noRuby": "Skrýt japonské znaky rubi",
@@ -796,6 +850,7 @@
             "reduceMotion": "",
             "scrolled": "",
             "spacing": "",
+            "spreadModeEven": "",
             "text": "Text",
             "theme": {
                 "name": {
@@ -854,9 +909,233 @@
             "disclaimer": "",
             "editUserJson": "Upravit uživatelský soubor...",
             "keyboardShortcuts": "Klávesové zkratky",
+            "list": {
+                "AddBookmarkWithLabel": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreate": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsCreateQuick": {
+                    "description": "",
+                    "name": ""
+                },
+                "AnnotationsToggleMargin": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPlayPause": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "AudioStop": {
+                    "description": "",
+                    "name": ""
+                },
+                "CloseReader": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomIn": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomOut": {
+                    "description": "",
+                    "name": ""
+                },
+                "FXLZoomReset": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMain": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusMainDeep": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderGotoPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigation": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationAnnotations": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationBookmarks": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderNavigationTOC": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusReaderSettings": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusSearch": {
+                    "description": "",
+                    "name": ""
+                },
+                "FocusToolbar": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateNextPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapter": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousChapterAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousHistory": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousLibraryPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousOPDSPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPage": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigatePreviousPageAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToBegin": {
+                    "description": "",
+                    "name": ""
+                },
+                "NavigateToEnd": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfo": {
+                    "description": "",
+                    "name": ""
+                },
+                "OpenReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "Print": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNext": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchNextAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPrevious": {
+                    "description": "",
+                    "name": ""
+                },
+                "SearchPreviousAlt": {
+                    "description": "",
+                    "name": ""
+                },
+                "SpeakReaderInfoWhereAmI": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleBookmark": {
+                    "description": "",
+                    "name": ""
+                },
+                "ToggleReaderFullscreen": {
+                    "description": "",
+                    "name": ""
+                }
+            },
             "loadUserJson": "Načíst z uživatelského souboru",
+            "noShortcutFound": "",
             "resetDefaults": "Obnovit (načíst výchozí)",
-            "save": "Uložit"
+            "save": "Uložit",
+            "searchPlaceholder": ""
         },
         "language": {
             "languageChoice": "Jazyk"
@@ -872,13 +1151,27 @@
                 "overrideHTMLTemplate": ""
             }
         },
+        "profiles": {
+            "info": "",
+            "thorium": {
+                "description": "",
+                "title": ""
+            },
+            "version": ""
+        },
+        "screenReaderActivate": {
+            "help": "",
+            "message": "",
+            "title": ""
+        },
         "session": {
             "title": "Povolit ukládání relací"
         },
         "tabs": {
             "appearance": "Vzhled",
             "general": "Obecné",
-            "keyboardShortcuts": "Klávesové zkratky"
+            "keyboardShortcuts": "Klávesové zkratky",
+            "profiles": ""
         },
         "theme": {
             "auto": "Automatický",
@@ -936,7 +1229,7 @@
         "title": {
             "allBooks": "Všechny mé publikace",
             "newFeature": "Nová funkce: Anotace",
-            "welcome": "Vítejte v aplikaci Thorium 3.0"
+            "welcome": "Vítejte v aplikaci Thorium 3"
         }
     }
 }

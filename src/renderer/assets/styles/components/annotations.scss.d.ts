@@ -44,5 +44,4 @@ export declare const separator: string;
 export declare const settings_tab: string;
 export declare const stylePicker: string;
 export declare const tag: string;
-export declare const textValue: string;
 export declare const update_form: string;

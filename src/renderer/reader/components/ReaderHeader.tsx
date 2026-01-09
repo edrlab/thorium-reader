@@ -8,10 +8,11 @@
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
+import * as stylesPrint from "readium-desktop/renderer/assets/styles/components/print.scss";
 // import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 
 import classNames from "classnames";
-import * as debug_ from "debug";
+import debug_ from "debug";
 import * as React from "react";
 import * as Popover from "@radix-ui/react-popover";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -75,12 +76,26 @@ import { AnnotationEdit } from "./AnnotationEdit";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { VoiceSelection } from "./header/voiceSelection";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
+
+// TypeScript GO:
+// The current file is a CommonJS module whose imports will produce 'require' calls;
+// however, the referenced file is an ECMAScript module and cannot be imported with 'require'.
+// Consider writing a dynamic 'import("...")' call instead.
+// To convert this file to an ECMAScript module, change its file extension to '.mts',
+// or add the field `"type": "module"` to 'package.json'.
+// @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
+// e__slint-disable-next-line @typescript-eslint/ban-ts-comment
+// @__ts-ignore TS1479
 import { convertToSpeechSynthesisVoices, filterOnLanguage, getLanguages, getVoices, groupByLanguages, groupByRegions, ILanguages, IVoices, parseSpeechSynthesisVoices } from "readium-speech";
+
 import { BookmarkButton } from "./header/BookmarkButton";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { DockTypeName } from "readium-desktop/common/models/dock";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { TDrawType } from "readium-desktop/common/redux/states/renderer/note";
+import { PrintContainer } from "./Print";
+import * as PrinterIcon from "readium-desktop/renderer/assets/icons/printer-icon.svg";
+import { PublicationView } from "readium-desktop/common/views/publication";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -104,6 +119,7 @@ interface IBaseProps extends TranslatorProps {
     // menuOpen: boolean;
     infoOpen: boolean;
     shortcutEnable: boolean;
+    setShortcutEnable: (v: boolean) => void;
     mode?: ReaderMode;
     // settingsOpen: boolean;
     // handleMenuClick: (open?: boolean) => void;
@@ -137,11 +153,20 @@ interface IBaseProps extends TranslatorProps {
     currentLocation: MiniLocatorExtended;
     isDivina: boolean;
     isPdf: boolean;
+    isAudiobook: boolean;
     divinaSoundPlay: (play: boolean) => void;
 
     showSearchResults: () => void;
     disableRTLFlip: boolean;
     isRTLFlip: () => boolean;
+
+    pdfPlayerNumberOfPages: number;
+    pdfThumbnailImageCacheArray: string[];
+
+    pdfPrintOpen: boolean;
+    setPdfPrintOpen: (value: boolean) => void;
+
+    publicationView: PublicationView;
 }
 
 // IProps may typically extend:
@@ -412,6 +437,18 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             { id: 8, value: 2.5, name: "2.5x" },
             { id: 9, value: 2.75, name: "2.75x" },
             { id: 10, value: 3, name: "3x" },
+            { id: 11, value: 3.25, name: "3.25x" },
+            { id: 12, value: 3.5, name: "3.5x" },
+            { id: 13, value: 3.75, name: "3.75x" },
+            { id: 14, value: 4, name: "4x" },
+            { id: 15, value: 4.25, name: "4.25x" },
+            { id: 16, value: 4.5, name: "4.5x" },
+            { id: 17, value: 4.75, name: "4.75x" },
+            { id: 18, value: 5, name: "5x" },
+            { id: 19, value: 5.25, name: "5.25x" },
+            { id: 20, value: 5.5, name: "5.5x" },
+            { id: 21, value: 5.75, name: "5.75x" },
+            { id: 22, value: 6.00, name: "6x" },
         ];
 
         const isRTL = this.props.isRTLFlip();
@@ -513,7 +550,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         className={stylesReader.menu_button}
                                         ref={this.infoMenuButtonRef}
                                         title={__("reader.navigation.infoTitle")}
-                                        disabled={(this.props.settingsOpen || this.props.menuOpen) && !isDockedMode}
+                                        disabled={(this.props.settingsOpen || this.props.menuOpen || this.props.pdfPrintOpen) && !isDockedMode}
                                     >
                                         <SVG ariaHidden={true} svg={InfosIcon} />
                                     </button>
@@ -651,7 +688,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                             this.props.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING ||
                                                             !useMO &&
                                                             this.props.ttsState === TTSStateEnum.PLAYING) ?
-                                                            <li style={{ backgroundColor: "var(--color-blue)" }}>
+                                                            <li style={{ backgroundColor: "var(--color-brand-primary)" }}>
                                                                 <button
                                                                     className={stylesReader.menu_button}
                                                                     onClick={
@@ -730,14 +767,14 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             <li>
                                                 <Popover.Root open={this.state.ttsPopoverOpen} onOpenChange={(open) => this.setState({ ttsPopoverOpen: open })}>
                                                     <Popover.Trigger asChild>
-                                                        <button className={stylesReader.menu_button} style={{ backgroundColor: this.state.ttsPopoverOpen ? "var(--color-blue)" : "" }} aria-label={__("reader.tts.options")} title={__("reader.tts.options")}>
+                                                        <button className={stylesReader.menu_button} style={{ backgroundColor: this.state.ttsPopoverOpen ? "var(--color-brand-primary)" : "" }} aria-label={__("reader.tts.options")} title={__("reader.tts.options")}>
                                                             <SVG ariaHidden svg={HeadphoneIcon} className={this.state.ttsPopoverOpen ? stylesReaderHeader.active_svg : ""} />
                                                         </button>
                                                     </Popover.Trigger>
                                                     <Popover.Portal container={appOverlayElement}>
                                                         <Popover.Content style={{ zIndex: 100 }}>
                                                             <div className={stylesReaderHeader.Tts_popover_container}>
-                                                                <div style={{ paddingRight: 25 /* , borderRight: "1px solid var(--color-verylight-grey-alt)" */ }}>
+                                                                <div style={{ paddingRight: 25 /* , borderRight: "1px solid var(--color-gray-250)" */ }}>
                                                                     <div className={stylesReader.ttsSelectRate} style={{ paddingLeft: 8 }}>
                                                                         <ComboBox
                                                                             label={useMO ?
@@ -799,13 +836,51 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                     }
 
                     <ul className={stylesReader.menu_option}>
+
+                        {
+                            (this.props.readerMenuProps.isPdf
+                                && (!!this.props.publicationView.lcp?.rights && (this.props.publicationView.lcp?.rights?.print === null || typeof this.props.publicationView.lcp?.rights?.print === "undefined" || this.props.publicationView.lcp.rights.print >= 0)
+                                    || !this.props.publicationView.lcp)
+                            ) ?
+                                <li
+                                    {...(this.props.pdfPrintOpen &&
+                                        { style: { backgroundColor: "var(--color-brand-primary)" } })}
+                                >
+                                    <Dialog.Root open={this.props.pdfPrintOpen} onOpenChange={(open) => {
+                                        this.props.setShortcutEnable(!open);
+                                        this.props.setPdfPrintOpen(open);
+                                    }}>
+                                        <Dialog.Trigger asChild>
+                                            <button
+                                                disabled={!!this.props.publicationView.lcp?.rights && this.props.publicationView.lcp.rights.print < 1}
+                                                aria-pressed={this.props.pdfPrintOpen}
+                                                aria-label={__("reader.navigation.print")}
+                                                className={stylesReader.menu_button}
+                                                title={!!this.props.publicationView.lcp?.rights && this.props.publicationView.lcp.rights.print < 1 ? __("reader.navigation.printDisabled") : __("reader.navigation.print")}
+                                            >
+                                                <SVG ariaHidden svg={PrinterIcon} className={this.props.pdfPrintOpen ? stylesReaderHeader.active_svg : ""} />
+                                            </button>
+                                        </Dialog.Trigger>
+                                        <Dialog.Portal container={appOverlayElement}>
+                                            <Dialog.Content style={{ zIndex: 101, height: "fit-content" }}
+                                            className={classNames(stylesPopoverDialog.modal_dialog_reader, stylesPrint.modal_dialog_print)}
+                                            // onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
+                                            // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
+                                            >
+                                                <PrintContainer pdfPageRange={[1, this.props.pdfPlayerNumberOfPages]} pdfThumbnailImageCacheArray={this.props.pdfThumbnailImageCacheArray} />
+                                            </Dialog.Content>
+                                        </Dialog.Portal>
+                                    </Dialog.Root>
+                                </li>
+                                : <></>
+                        }
                         <li
-                            {...(this.props.isOnSearch && { style: { backgroundColor: "var(--color-blue" } })}
+                            {...(this.props.isOnSearch && { style: { backgroundColor: "var(--color-brand-primary)" } })}
                         >
-                               <HeaderSearch shortcutEnable={this.props.shortcutEnable} isPdf={this.props.isPdf} showSearchResults={this.props.showSearchResults} isAudiobook={isAudioBook} isDivina={this.props.isDivina}></HeaderSearch>
+                            <HeaderSearch shortcutEnable={this.props.shortcutEnable} isPdf={this.props.isPdf} showSearchResults={this.props.showSearchResults} isAudiobook={isAudioBook} isDivina={this.props.isDivina}></HeaderSearch>
                         </li>
 
-                        <BookmarkButton shortcutEnable={this.props.shortcutEnable} isOnSearch={this.props.isOnSearch}/>
+                        <BookmarkButton shortcutEnable={this.props.shortcutEnable} isOnSearch={this.props.isOnSearch} />
 
                         <Popover.Root open={this.props.isAnnotationModeEnabled} onOpenChange={(open) => {
                             if (!open) {
@@ -815,7 +890,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             <Popover.Trigger asChild>
                                 <li
                                     {...(this.props.isAnnotationModeEnabled &&
-                                        { style: { backgroundColor: "var(--color-blue" } })}
+                                        { style: { backgroundColor: "var(--color-brand-primary)" } })}
                                 >
                                     <input
                                         disabled={this.props.isPdf || this.props.isDivina || isAudioBook}
@@ -865,7 +940,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         comment=""
                                         locatorExtended={this.props.annotationLocatorExtended}
                                     />
-                                    <Popover.Arrow style={{ fill: "var(--color-extralight-grey)" }} width={15} height={10} />
+                                    <Popover.Arrow style={{ fill: "var(--color-gray-50" }} width={15} height={10} />
                                 </Popover.Content>
                             </Popover.Portal>
                         </Popover.Root>
@@ -873,7 +948,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
                         <li
                             {...(this.props.menuOpen &&
-                                { style: { backgroundColor: "var(--color-blue)" } })}
+                                { style: { backgroundColor: "var(--color-brand-primary)" } })}
                         >
 
                             {/* { this.props.menuOpen ? */}
@@ -916,8 +991,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             <div
                                                 className={containerClassName}
                                                 style={{
-                                                    borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-extralight-grey-alt)" : "",
-                                                    borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-extralight-grey-alt)" : "",
+                                                    borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
+                                                    borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
                                                     right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
                                                     left: (this.props.readerConfig.readerDockingMode === "left") ? "0" : "",
                                                     height: (isOnSearch) ? "calc(100dvh - 159px)" : "",
@@ -928,6 +1003,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     {...this.props.readerMenuProps}
                                                     isDivina={this.props.isDivina}
                                                     isPdf={this.props.isPdf}
+                                                    isAudiobook={this.props.isAudiobook}
                                                     currentLocation={this.props.currentLocation}
                                                     // focusNaviguationMenu={this.focusNaviguationMenuButton}
                                                     // handleMenuClick={this.props.handleMenuClick}
@@ -958,12 +1034,12 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 }}
                                                 className={containerClassName}
                                                 style={{
-                                                    borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-extralight-grey-alt)" : "",
-                                                    borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-extralight-grey-alt)" : "",
+                                                    borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
+                                                    borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
                                                     right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
                                                     left: /*(isDockedMode && this.props.readerConfig.readerDockingMode === "left") ? "0" :*/ "",
                                                     height: /*(isDockedMode && isOnSearch) ? "calc(100dvh - 159px)" :*/ "",
-                                                    marginTop: /*(isDockedMode && !isOnSearch) ? "70px" :*/ "20px",
+                                                    marginTop: /*(isDockedMode && !isOnSearch) ? "70px" :*/ "0px",
                                                 }}
                                                 aria-describedby={undefined}
                                             >
@@ -980,6 +1056,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                     }}
                                                     isDivina={this.props.isDivina}
                                                     isPdf={this.props.isPdf}
+                                                    isAudiobook={this.props.isAudiobook}
                                                     currentLocation={this.props.currentLocation}
                                                     // focusNaviguationMenu={this.focusNaviguationMenuButton}
                                                     // handleMenuClick={this.props.handleMenuClick}
@@ -991,7 +1068,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         </li>
                         <li
                             {...(this.props.settingsOpen &&
-                                { style: { backgroundColor: "var(--color-blue" } })}
+                                { style: { backgroundColor: "var(--color-brand-primary)" } })}
                         >
                             <Dialog.Root
                                 open={this.props.settingsOpen}
@@ -1030,8 +1107,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         <div
                                             className={containerClassName}
                                             style={{
-                                                borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-extralight-grey-alt)" : "",
-                                                borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-extralight-grey-alt)" : "",
+                                                borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
+                                                borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
                                                 right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
                                                 left: this.props.readerConfig.readerDockingMode === "left" ? "0" : "",
                                                 height: isOnSearch ? "calc(100dvh - 159px)" : "",
@@ -1051,12 +1128,12 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             // onInteractOutside={(e) => { e.preventDefault(); console.log("SettingsModal onInteractOutside"); }}
                                             className={containerClassName}
                                             style={{
-                                                borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-extralight-grey-alt)" : "",
-                                                borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-extralight-grey-alt)" : "",
+                                                borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
+                                                borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
                                                 right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
                                                 left: /*isDockedMode && this.props.readerConfig.readerDockingMode === "left" ? "0" :*/ "",
                                                 height: /*isDockedMode && isOnSearch ? "calc(100dvh - 159px)" :*/ "",
-                                                marginTop: /*isDockedMode && !isOnSearch ? "70px" :*/ "20px",
+                                                marginTop: /*isDockedMode && !isOnSearch ? "70px" :*/ "0px",
                                             }}
                                             aria-describedby={undefined}
                                         >
@@ -1079,7 +1156,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             this.props.isPdf
                                 ? <li
                                     {...(this.state.pdfScaleMode === "page-width" &&
-                                        { style: { backgroundColor: "var(--color-blue" } })}
+                                        { style: { backgroundColor: "var(--color-brand-primary)" } })}
                                 >
                                     <input
                                         id="pdfScaleButton"
@@ -1107,7 +1184,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 ? <li className={stylesReader.select_fxl}>
                                     {/* <button
                                         {...(this.state.fxlZoomPercent !== 0 &&
-                                            { style: { border: "2px solid var(--color-blue)", borderRadius: "6px" } })}
+                                            { style: { border: "2px solid var(--color-brand-primary)", borderRadius: "6px" } })}
                                         id="buttonFXLZoom"
                                         className={classNames(stylesReader.menu_button)}
                                         onWheel={this.onwheel}
@@ -1138,7 +1215,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         {this.state.fxlZoomPercent > 0 ?
                                             <label
                                                 htmlFor="buttonFXLZoom"
-                                                style={{ pointerEvents: "none", color: "var(--color-blue)", fontSize: "80%" }}>{this.state.fxlZoomPercent > 0 ? `${this.state.fxlZoomPercent}%` : " "}</label>
+                                                style={{ pointerEvents: "none", color: "var(--color-brand-primary)", fontSize: "80%" }}>{this.state.fxlZoomPercent > 0 ? `${this.state.fxlZoomPercent}%` : " "}</label>
                                             :
                                             <SVG ariaHidden={true} svg={viewMode} />
                                         }
@@ -1181,7 +1258,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 </li>
                                 : <></>
                         }
-                        <span style={{width: "1px", height: "30px", backgroundColor: "var(--color-verylight-grey)", margin: "auto 5px"}}></span>
+                        <span style={{width: "1px", height: "30px", backgroundColor: "var(--color-gray-200)", margin: "auto 5px"}}></span>
                         <li className={classNames(stylesReader.blue)}>
                             <button
                                 className={classNames(stylesReader.menu_button)}

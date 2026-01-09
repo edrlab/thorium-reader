@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithDestination, ActionWithReaderPublicationIdentifierDestination, ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import {
@@ -15,6 +15,9 @@ import {
     creatorActions,
     annotationActions,
     noteExport,
+    customizationActions,
+    screenReaderActions,
+    opdsActions,
 } from "readium-desktop/common/redux/actions";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
@@ -78,6 +81,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     readerActions.note.remove.ID,
 
     sessionActions.save.ID,
+    screenReaderActions.save.ID,
 
     creatorActions.set.ID,
 
@@ -89,6 +93,16 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     lcpActions.publicationFileLock.ID,
 
     noteExport.overrideHTMLTemplate.ID,
+
+    readerActions.print.ID,
+
+    customizationActions.activating.ID,
+    customizationActions.provisioning.ID,
+    customizationActions.acquire.ID,
+    customizationActions.lock.ID,
+    customizationActions.addHistory.ID,
+
+    opdsActions.refresh.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware

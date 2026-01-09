@@ -2,6 +2,9 @@
   "compilerOptions": {
     "outDir": "./dist/",
     "sourceMap": true,
+    "inlineSourceMap": false,
+    "inlineSources": false,
+    "removeComments": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
@@ -10,7 +13,6 @@
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noImplicitUseStrict": false,
     "declaration": true,
     "noEmit": false,
     "noEmitHelpers": true,
@@ -19,16 +21,15 @@
     "noLib": false,
     "noResolve": false,
     "forceConsistentCasingInFileNames": false,
-    "inlineSources": true,
-    "inlineSourceMap": false,
     "preserveConstEnums": true,
     "isolatedModules": true,
     "allowJs": false,
     "maxNodeModuleJsDepth": 0,
     "checkJs": false,
     "stripInternal": false,
-    "suppressExcessPropertyErrors": false,
-    "suppressImplicitAnyIndexErrors": false,
+    // "noImplicitUseStrict": false,
+    // "suppressExcessPropertyErrors": false,
+    // "suppressImplicitAnyIndexErrors": false,
     "downlevelIteration": false,
     "emitBOM": false,
     "esModuleInterop": false,
@@ -41,10 +42,15 @@
     "listEmittedFiles": false,
     "traceResolution": false,
     "disableSizeLimit": false,
-    "removeComments": true,
-    "skipLibCheck": false,
-    "module": "ES2020",
-    "moduleResolution": "Node",
+    "skipLibCheck": true,
+    // NODENEXT does not work because of "typed-redux-saga/macro" in WebPack Babel config
+    "module": "esnext", // 99
+    // "module": "ES2020", // 6
+    // "module": "preserve", // 200
+    // "module": "nodenext", // 199
+    // "moduleResolution": "nodenext", // 99
+    // "moduleResolution": "node", // 100
+    "moduleResolution": "bundler", // 100
     "lib": [
       "es2020",
       "dom",
@@ -54,11 +60,14 @@
     "jsx": "react",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "baseUrl": ".",
+    // "baseUrl": ".",
     "paths": {
-      "file-selector": [
-        "src/typings/noop.d.ts"
+      "*": [
+        "./*",
       ],
+      // "file-selector": [
+      //   "src/typings/noop.d.ts"
+      // ],
       "readium-desktop/*": [
         "./src/*"
       ],
@@ -66,25 +75,25 @@
         "./test/*"
       ],
       "@r2-utils-js/*": [
-        "node_modules/r2-utils-js/dist/es8-es2017/src/*"
+        "./node_modules/r2-utils-js/dist/es8-es2017/src/*"
       ],
       "@r2-opds-js/*": [
-        "node_modules/r2-opds-js/dist/es8-es2017/src/*"
+        "./node_modules/r2-opds-js/dist/es8-es2017/src/*"
       ],
       "@r2-shared-js/*": [
-        "node_modules/r2-shared-js/dist/es8-es2017/src/*"
+        "./node_modules/r2-shared-js/dist/es8-es2017/src/*"
       ],
       "@r2-streamer-js/*": [
-        "node_modules/r2-streamer-js/dist/es8-es2017/src/*"
+        "./node_modules/r2-streamer-js/dist/es8-es2017/src/*"
       ],
       "@r2-navigator-js/*": [
-        "node_modules/r2-navigator-js/dist/es8-es2017/src/*"
+        "./node_modules/r2-navigator-js/dist/es8-es2017/src/*"
       ],
       "@r2-lcp-js/*": [
-        "node_modules/r2-lcp-js/dist/es8-es2017/src/*"
+        "./node_modules/r2-lcp-js/dist/es8-es2017/src/*"
       ],
       "@lunr-languages/*": [
-        "node_modules/lunr-languages/*"
+        "./node_modules/lunr-languages/*"
       ]
     }
   },
@@ -93,9 +102,9 @@
     "./test/**/*"
   ],
   "exclude": [
-    "node_modules"
+    "./node_modules"
   ],
   "files": [
-    "typings.d.ts"
+    "./typings.d.ts"
   ]
 }

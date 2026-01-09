@@ -1,0 +1,43 @@
+{
+    "version": 1,
+    "identifier": "thorium-manifest://org.edrlab.thorium.romanesco",
+    "created": "2025-11-27T09:37:37Z",
+    "modified": "2025-11-28T10:37:37Z",
+    "title": {
+        "en": "romanesco test customization profile"
+    },
+    "description": {
+        "en": "thorium test profile"
+    },
+    "welcomeScreen": "<html>Hello World</html>",
+    "theme": {
+        "color": {
+            "dark": {
+                "neutral": "#333333",
+                "primary": "#444444",
+                "secondary": "#555555",
+                "border": "#666666",
+                "background": "#222222",
+                "appName": "#666666",
+                "scrollbarThumb": "#012345",
+                "buttonsBorder": "#543210"
+            },
+            "light": {
+                "neutral": "#FFFFFF",
+                "primary": "#F5F5F5",
+                "secondary": "#E8E8E8",
+                "border": "#E0E0E0",
+                "background": "#F0F0F0",
+                "appName": "#E8E8E8",
+                "scrollbarThumb": "#012345",
+                "buttonsBorder": "#543210"
+            }
+        }
+    },
+    "images": [
+        {
+            "rel": "logo",
+            "href": "./images/logo.svg"
+        }
+    ]
+}

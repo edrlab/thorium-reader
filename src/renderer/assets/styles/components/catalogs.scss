@@ -29,7 +29,7 @@
         border-radius: 6px;
         border-width: 1px;
         border-style: solid;
-        border-color: var(--color-light-grey);
+        border-color: var(--color-gray-300);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -39,7 +39,7 @@
         box-shadow: 0 2px 15px rgb(0 0 0 / 0%);
         transition: all 0.3s;
         padding: 0;
-        background-color: var(--color-secondary);
+        background-color: var(--color-neutral-base);
 
         &::after {
             content: "";
@@ -49,8 +49,8 @@
             top: -8px;
             right: -10px;
             border-radius: 6px;
-            border-right: 1px solid var(--color-light-grey);
-            border-top: 1px solid var(--color-light-grey);
+            border-right: 1px solid var(--color-gray-300);
+            border-top: 1px solid var(--color-gray-300);
         }
 
         svg {
@@ -71,8 +71,8 @@
                 width: 30px;
                 height: 30px;
                 margin-bottom: 30px;
-                color: var(--color-blue);
-                background-color: var(--color-secondary);
+                color: var(--color-brand-primary);
+                background-color: var(--color-neutral-base);
                 padding: 11px;
                 border-radius: 50%;
                 position: absolute;
@@ -85,21 +85,21 @@
                 padding-right: 10px;
                 top: 35px;
                 left: -10px;
-                color: var(--color-primary);                    
+                color: var(--color-text-primary);                    
                 overflow-wrap: anywhere;
                 overflow: hidden;
                 display: -webkit-box;
                 -webkit-line-clamp: 4;
-                        line-clamp: 4; 
+                        line-clamp: 4;
                 -webkit-box-orient: vertical;
             }
         }
     }
 
-    .button_edit, .button_delete {
+    .button_edit, .button_delete, .button_login {
         position: absolute;
         bottom: 10px;
-        color: var(--color-blue);
+        color: var(--color-brand-primary);
         transition: 200ms ease-in-out;
         border: 1px solid transparent;
         border-radius: 4px;
@@ -109,9 +109,13 @@
         box-sizing: content-box;
 
         &:hover {
-            border: 1px solid var(--color-blue);
-            background-color: var(--color-light-blue);
+            border: 1px solid var(--color-brand-primary);
+            background-color: var(--color-brand-secondary);
         }
+    }
+
+    .button_login {
+        right: 77px;
     }
 
     .button_edit {
@@ -140,7 +144,7 @@
         border-radius: 6px;
         border-width: 1px;
         border-style: solid;
-        border-color: var(--color-light-grey);
+        border-color: var(--color-gray-300);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -160,8 +164,8 @@
             top: -8px;
             right: -10px;
             border-radius: 6px;
-            border-right: 1px solid var(--color-light-grey);
-            border-top: 1px solid var(--color-light-grey);
+            border-right: 1px solid var(--color-gray-300);
+            border-top: 1px solid var(--color-gray-300);
         }
 
         a {
@@ -183,7 +187,7 @@
                 overflow: hidden;
                 display: -webkit-box;
                 -webkit-line-clamp: 3; /* number of lines to show */
-                        line-clamp: 3; 
+                        line-clamp: 3;
                 -webkit-box-orient: vertical;
             }
         }
@@ -208,9 +212,9 @@
         &::after {
             border: none;
         }
-        
+
         &:hover {
-            background-color: var(--color-light-blue)!important;
+            background-color: var(--color-brand-secondary)!important;
         }
     }
 }
@@ -221,7 +225,7 @@
     max-width: 750px;
 
     a {
-        color: var(--color-blue);
+        color: var(--color-brand-primary);
         display: flex;
         align-items: center;
         gap: 5px;
@@ -235,13 +239,13 @@
 .catalog_breadcrumbSearch_Wrapper {
     display: flex;
     align-items: center;
-    background-color: var(--color-extralight-grey);
+    background-color: var(--color-gray-50);
     padding: 15px;
     min-height: 40px;
     margin-bottom: 40px;
 
     label {
-        background-color: var(--color-extralight-grey)!important;
+        background-color: var(--color-gray-50)!important;
         // top: -18px!important;
     }
 
@@ -275,10 +279,10 @@
 }
 
 .noPublication {
-    
+
     // width: 100%;
-    border: 1px solid var(--color-blue);
-    background-color: var(--color-light-blue);
+    border: 1px solid var(--color-brand-primary);
+    background-color: var(--color-brand-secondary);
     font-size: 16px;
     padding: 5px;
     border-radius: 6px;
@@ -288,13 +292,13 @@
 
     svg {
         width: 16px;
-        color: var(--color-blue);
+        color: var(--color-brand-primary);
     }
 }
 
 .opds_browserResults {
     overflow: auto;
-    inset: 260px 20px 30px 30px;
+    inset: 160px 20px 30px 30px;
     padding: 0;
     position: absolute;
     padding-right: 25px;
@@ -314,6 +318,35 @@
 
     .loader {
         margin: 20%;
+    }
+}
+
+.opds_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+
+    &_actions {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        .button_secondary_blue {
+            text-decoration: none;
+            
+            svg {
+                width: 20px;
+                height: 20px;
+            }
+            
+            p {
+                margin: 0;
+                padding: 0 10px;
+                font-size: 14px;
+            }
+        }
     }
 }
 

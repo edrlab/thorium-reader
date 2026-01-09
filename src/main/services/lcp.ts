@@ -6,11 +6,11 @@
 // ==LICENSE-END==
 
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { shell } from "electron";
 import * as fs from "fs";
 import { inject, injectable } from "inversify";
-import * as moment from "moment";
+import moment from "moment";
 import * as path from "path";
 import { acceptedExtensionObject } from "readium-desktop/common/extension";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
@@ -27,7 +27,6 @@ import { decryptPersist, encryptPersist } from "readium-desktop/main/fs/persistC
 import { RootState } from "readium-desktop/main/redux/states";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { streamerCachedPublication } from "readium-desktop/main/streamer/streamerNoHttp";
-import { IS_DEV, LCP_SKIP_LSD } from "readium-desktop/preprocessor-directives";
 import { ContentType } from "readium-desktop/utils/contentType";
 import { toSha256Hex } from "readium-desktop/utils/lcp";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
@@ -95,15 +94,19 @@ export class LcpManager {
     public async getAllSecrets(): Promise<TLCPSecrets> {
         debug("LCP getAllSecrets ...");
 
-        const buff = await tryCatch(() => fs.promises.readFile(lcpHashesFilePath), "");
+        const buff = await tryCatch(() => fs.promises.readFile(lcpHashesFilePath), "getAllSecrets fs.promises.readFile?");
         if (buff) {
-            debug("LCP getAllSecrets from JSON");
+            debug("LCP getAllSecrets from JSON", buff.length);
 
             const str = decryptPersist(buff, CONFIGREPOSITORY_LCP_SECRETS, lcpHashesFilePath);
+            // if (!str) {
+            //     throw new Error("decryptPersist???! CONFIGREPOSITORY_LCP_SECRETS");
+            // }
             if (!str) {
                 return {};
             }
             const json = JSON.parse(str);
+            debug("LCP getAllSecrets: ", json);
             return json;
         }
 
@@ -120,7 +123,7 @@ export class LcpManager {
         const ids = Object.keys(allSecrets);
         for (const id of ids) {
             const val = allSecrets[id];
-            if (val.passphrase) {
+            if (val.passphrase && !secrets.includes(val.passphrase)) {
                 const provider = doc.lcp?.provider;
 
                 if (doc.identifier === id ||
@@ -161,7 +164,10 @@ export class LcpManager {
 
         const str = JSON.stringify(allSecrets);
         const encrypted = encryptPersist(str, CONFIGREPOSITORY_LCP_SECRETS, lcpHashesFilePath);
-        fs.promises.writeFile(lcpHashesFilePath, encrypted);
+        if (!encrypted) {
+            throw new Error("encryptPersist???! CONFIGREPOSITORY_LCP_SECRETS");
+        }
+        await fs.promises.writeFile(lcpHashesFilePath, encrypted);
     }
 
     private async injectLcplIntoZip_(epubPath: string, lcpStr: string) {
@@ -256,6 +262,7 @@ export class LcpManager {
     //     return this.publicationRepository.save(newPublicationDocument);
     // }
 
+    // MUTATES publicationDocument
     public updateDocumentLcp(
         publicationDocument: PublicationDocumentWithoutTimestampable,
         r2LCP: LCP,
@@ -371,6 +378,7 @@ export class LcpManager {
     //     return r2Publication;
     // }
 
+    // DOES NOT MUTATE publicationDocument (returns a modified copy)
     public async checkPublicationLicenseUpdate(
         publicationDocument: PublicationDocument,
     ): Promise<PublicationDocument> {
@@ -383,12 +391,15 @@ export class LcpManager {
         this.store.dispatch(lcpActions.publicationFileLock.build({ [publicationDocument.identifier]: true }));
         try {
             const r2Publication = await this.publicationViewConverter.unmarshallR2Publication(publicationDocument); // , true
+
+            // DOES NOT MUTATE publicationDocument (returns a modified copy)
             return await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication);
         } finally {
             this.store.dispatch(lcpActions.publicationFileLock.build({ [publicationDocument.identifier]: false }));
         }
     }
 
+    // DOES NOT MUTATE publicationDocument (returns a modified copy)
     private async checkPublicationLicenseUpdate_(
         publicationDocument: PublicationDocument,
         r2Publication: R2Publication,
@@ -426,6 +437,8 @@ export class LcpManager {
                 hash: redoHash ? await extractCrc32OnZip(epubPath) : publicationDocument.hash,
             },
         );
+
+        // MUTATES newPublicationDocument
         this.updateDocumentLcp(newPublicationDocument, r2Publication.LCP);
 
         const newPubDocument = await this.publicationRepository.save(newPublicationDocument);
@@ -444,6 +457,7 @@ export class LcpManager {
         try {
             const r2Publication = await this.publicationViewConverter.unmarshallR2Publication(publicationDocument); // , true
 
+            // DOES NOT MUTATE publicationDocument (returns a modified copy)
             let newPubDocument = await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication);
 
             let redoHash = false;
@@ -460,7 +474,9 @@ export class LcpManager {
                 }
                 if (renewLink.Type !== ContentType.Lsd) {
                     if (renewLink.Type === ContentType.Html) {
-                        await shell.openExternal(renewLink.Href);
+                        if (renewLink.Href && /^https?:\/\//.test(renewLink.Href)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
+                            await shell.openExternal(renewLink.Href);
+                        }
                         return newPubDocument;
                     }
                     debug(`renewLink.Type: ${renewLink.Type}`);
@@ -528,6 +544,8 @@ export class LcpManager {
                             hash: redoHash ? await extractCrc32OnZip(epubPath) : publicationDocument.hash,
                         },
                     );
+
+                    // MUTATES newPublicationDocument
                     this.updateDocumentLcp(newPublicationDocument, r2Publication.LCP);
 
                     newPubDocument = await this.publicationRepository.save(newPublicationDocument);
@@ -556,6 +574,7 @@ export class LcpManager {
         try {
             const r2Publication = await this.publicationViewConverter.unmarshallR2Publication(publicationDocument); // , true
 
+            // DOES NOT MUTATE publicationDocument (returns a modified copy)
             let newPubDocument = await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication);
 
             let redoHash = false;
@@ -572,7 +591,9 @@ export class LcpManager {
                 }
                 if (returnLink.Type !== ContentType.Lsd) {
                     if (returnLink.Type === ContentType.Html || returnLink.Type === ContentType.Xhtml) {
-                        await shell.openExternal(returnLink.Href);
+                        if (returnLink.Href && /^https?:\/\//.test(returnLink.Href)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
+                            await shell.openExternal(returnLink.Href);
+                        }
                         return newPubDocument;
                     }
                     debug(`returnLink.Type: ${returnLink.Type}`);
@@ -631,6 +652,8 @@ export class LcpManager {
                             hash: redoHash ? await extractCrc32OnZip(epubPath) : publicationDocument.hash,
                         },
                     );
+
+                    // MUTATES newPublicationDocument
                     this.updateDocumentLcp(newPublicationDocument, r2Publication.LCP);
 
                     newPubDocument = await this.publicationRepository.save(newPublicationDocument);
@@ -647,7 +670,7 @@ export class LcpManager {
         }
     }
 
-    public convertUnlockPublicationResultToString(val: any): string | undefined {
+    public convertUnlockPublicationResultToString(val: any, licenseIssueDate: string): string | undefined {
         let message: string | undefined;
         if (typeof val === "string") {
             message = val;
@@ -679,7 +702,7 @@ export class LcpManager {
                 }
                 case 111: {
                     // message = "LICENSE_CERTIFICATE_DATE_INVALID (was LICENSE_SIGNATURE_DATE_INVALID): " + val;
-                    message = this.translator.translate("publication.licenseCertificateDateInvalid");
+                    message = this.translator.translate("publication.licenseCertificateDateInvalid", { dateTime: licenseIssueDate });
                     break;
                 }
                 case 112: {
@@ -1081,7 +1104,7 @@ export class LcpManager {
             };
 
             // use this to temporarily bypass LSD checks during dev
-            if (IS_DEV && LCP_SKIP_LSD) {
+            if (__TH__SKIP_LCP_LSD__) {
                 await callback(undefined);
                 return;
             }

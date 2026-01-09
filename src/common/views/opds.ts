@@ -19,6 +19,8 @@ export const OPDS_OPEN_SEARCH_DATA_SEPARATOR = "^$%*£@";
 export interface IOpdsFeedView extends Identifiable {
     title: string;
     url: string;
+    authentified: boolean;
+    authenticationUrl?: string;
 }
 
 export interface IOpdsCoverView {
@@ -72,6 +74,9 @@ export interface IOpdsPublicationView {
     a11y_accessModeSufficient?: (string[])[];
 
     a11y_accessibilitySummary?: string | IStringMap; // convertMultiLangStringToLangString()
+
+    opdsPublicationStringified?: string;
+    selfLink?: IOpdsLinkView;
 }
 
 export interface IOpdsNavigationLinkView {
@@ -155,6 +160,8 @@ export interface IOpdsLinkView {
     type?: string | undefined;
     properties?: IOPDSPropertiesView;
     rel?: string;
+
+    localBookshelfPublicationId?: string | undefined;
 }
 
 export interface IOpdsNavigationLink {

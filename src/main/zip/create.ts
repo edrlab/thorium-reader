@@ -5,9 +5,20 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
-import * as debug_ from "debug";
-import { createWriteStream } from "fs";
+import debug_ from "debug";
+import * as fs from "fs";
+
+// TypeScript GO:
+// The current file is a CommonJS module whose imports will produce 'require' calls;
+// however, the referenced file is an ECMAScript module and cannot be imported with 'require'.
+// Consider writing a dynamic 'import("...")' call instead.
+// To convert this file to an ECMAScript module, change its file extension to '.mts',
+// or add the field `"type": "module"` to 'package.json'.
+// @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
+// e__slint-disable-next-line @typescript-eslint/ban-ts-comment
+// @__ts-ignore TS1479
 import { nanoid } from "nanoid";
+
 import * as path from "path";
 import { ZipFile } from "yazl";
 import { EventEmitter } from "events";
@@ -30,18 +41,13 @@ const doDeflate = (_zipPath: string) => true;
 
 export type TResourcesFSCreateZip = Array<[fsPath: string, zipPath: string]>;
 export type TResourcesBUFFERCreateZip = Array<[chuncks: Buffer, zipPath: string]>;
-export async function createWebpubZip(
-    manifestBuffer: Buffer,
+
+export async function createZip(
+    packagePath: string,
     resourcesMapFs: TResourcesFSCreateZip,
     resourcesMapBuffer?: TResourcesBUFFERCreateZip,
-    name = "misc",
-) {
-    const pathFile = await createTempDir(nanoid(8), name);
-    const packagePath = path.resolve(pathFile, "package.webpub");
-
-    debug("createWebpubZip", packagePath);
-
-    await new Promise<void>((resolve, reject) => {
+): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
         const zipfile = new ZipFile();
 
         // https://unpkg.com/browse/@types/yazl@2.4.5/index.d.ts
@@ -53,7 +59,7 @@ export async function createWebpubZip(
             // reject(err);
         });
 
-        const writeStream = createWriteStream(packagePath);
+        const writeStream = fs.createWriteStream(packagePath);
         writeStream.on("end", () => {
             debug("createWebpubZip writeStream END", packagePath);
         });
@@ -86,9 +92,6 @@ export async function createWebpubZip(
 
         zipfile.outputStream.pipe(writeStream);
 
-        debug("createWebpubZip addBuffer", "manifest.json");
-        zipfile.addBuffer(manifestBuffer, "manifest.json", { compress: true });
-
         resourcesMapFs.forEach(([fsPath, zipPath]) => {
             const compress = doDeflate(zipPath);
             debug("createWebpubZip addFile", zipPath, compress);
@@ -104,6 +107,17 @@ export async function createWebpubZip(
         debug("createWebpubZip ENDING ...", packagePath);
         zipfile.end();
     });
+}
 
+export async function createWebpubZip(
+    manifestBuffer: Buffer,
+    resourcesMapFs: TResourcesFSCreateZip,
+    resourcesMapBuffer?: TResourcesBUFFERCreateZip,
+    name = "misc",
+) {
+    const pathFile = await createTempDir(nanoid(8), name);
+    const packagePath = path.resolve(pathFile, "package.webpub");
+    debug("createWebpubZip", packagePath);
+    await createZip(packagePath, resourcesMapFs, [...(resourcesMapBuffer || []), [manifestBuffer, "manifest.json"]]);
     return packagePath;
 }

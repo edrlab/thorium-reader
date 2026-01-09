@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { diMainGet } from "readium-desktop/main/di";
@@ -19,7 +19,7 @@ import { SagaIterator } from "redux-saga";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, put } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
-import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
 
 // import * as portfinder from_"portfinder";
 // import { Server } from "@r2-streamer-js/http/server";
@@ -47,8 +47,8 @@ function* startRequest(): SagaIterator {
     try {
         // const streamerUrl = _USE_HTTP_STREAMER ?
         //     yield* callTyped(() => startStreamer(streamer)) :
-        //     `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0`;
-        const streamerUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://0.0.0.0`;
+        //     `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}`;
+        const streamerUrl = `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}`;
 
         yield put(streamerActions.startSuccess.build(streamerUrl));
     } catch (error) {

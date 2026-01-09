@@ -5,12 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { normalizeRectangle } from "readium-desktop/common/rectangle/window";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { error } from "readium-desktop/main/tools/error";
 import { winActions } from "readium-desktop/main/redux/actions";
-import { eventChannel, Task } from "redux-saga";
+import { eventChannel, Task, buffers } from "redux-saga";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { cancel, debounce, fork, put, take } from "redux-saga/effects";
 
@@ -37,6 +37,7 @@ function* libraryClosureManagement(action: winActions.session.registerLibrary.TA
                 library.removeListener("close", handler);
             };
         },
+        buffers.none(),
     );
 
     // waiting for library window to close
@@ -69,6 +70,7 @@ function* libraryMoveOrResizeObserver(action: winActions.session.registerLibrary
                 library.removeListener("resize", handler);
             };
         },
+        buffers.none(), // sliding(0) ?
     );
 
     yield debounce(DEBOUNCE_TIME, channel, function*() {

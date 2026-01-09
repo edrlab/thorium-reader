@@ -11,6 +11,9 @@ import {
     creatorActions,
     settingsActions,
     noteExport,
+    customizationActions,
+    screenReaderActions,
+    opdsActions,
 } from "readium-desktop/common/redux/actions";
 import { syncFactory } from "readium-desktop/renderer/common/redux/middleware/syncFactory";
 
@@ -58,6 +61,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     wizardActions.setWizard.ID,
 
     sessionActions.save.ID,
+    screenReaderActions.save.ID,
 
     annotationActions.importAnnotationSet.ID,
     annotationActions.importConfirmOrAbort.ID,
@@ -67,6 +71,17 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     settingsActions.enableAPIAPP.ID,
 
     noteExport.overrideHTMLTemplate.ID,
+
+    customizationActions.activating.ID,
+    customizationActions.acquire.ID,
+    customizationActions.lock.ID,
+    customizationActions.addHistory.ID,
+    customizationActions.triggerOpdsAuth.ID,
+    customizationActions.deleteProfile.ID,
+
+    authActions.logout.ID,
+
+    opdsActions.refresh.ID,
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);

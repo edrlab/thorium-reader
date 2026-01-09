@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
+import debug_ from "debug";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-import * as debug_ from "debug";
-import { BrowserWindow, Event, HandlerDetails, shell } from "electron";
+import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
 import * as path from "path";
 import { defaultRectangle, normalizeRectangle } from "readium-desktop/common/rectangle/window";
 import { diMainGet } from "readium-desktop/main/di";
@@ -15,7 +15,7 @@ import { setMenu } from "readium-desktop/main/menu";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import {
-    _RENDERER_LIBRARY_BASE_URL, _VSCODE_LAUNCH, IS_DEV, OPEN_DEV_TOOLS, _CONTINUOUS_INTEGRATION_DEPLOY,
+    _RENDERER_LIBRARY_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
@@ -24,11 +24,12 @@ import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro
 
 import { contextMenuSetup } from "@r2-navigator-js/electron/main/browser-window-tracker";
 import { WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/constant";
+import { URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
 
 // Logger
 const debug = debug_("readium-desktop:createLibraryWindow");
 
-const ENABLE_DEV_TOOLS = IS_DEV || _CONTINUOUS_INTEGRATION_DEPLOY;
+const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
 
 // Global reference to the main window,
 // so the garbage collector doesn't close it.
@@ -54,10 +55,10 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
             allowRunningInsecureContent: false,
             backgroundThrottling: true,
             devTools: ENABLE_DEV_TOOLS, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
-            nodeIntegration: true,
-            contextIsolation: false,
-            nodeIntegrationInWorker: false,
+            nodeIntegration: true, // ==> disables sandbox https://www.electronjs.org/docs/latest/tutorial/sandbox
             sandbox: false,
+            contextIsolation: false, // must be false because nodeIntegration, see https://github.com/electron/electron/issues/23506
+            nodeIntegrationInWorker: false,
             webSecurity: true,
             webviewTag: false,
         },
@@ -83,7 +84,7 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
     // let httpReferrer: string | undefined;
     let rendererBaseUrl = _RENDERER_LIBRARY_BASE_URL;
     const htmlPath = "index_library.html";
-    if (rendererBaseUrl === "filex://host/") {
+    if (rendererBaseUrl === `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/`) {
         // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
         rendererBaseUrl += path.normalize(path.join(__dirname, htmlPath)).replace(/\\/g, "/").split("/").map((segment) => encodeURIComponent_RFC3986(segment)).join("/");
         // baseURLForDataURL = rendererBaseUrl; // + "/../";
@@ -94,7 +95,7 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         rendererBaseUrl = rendererBaseUrl.replace(/\\/g, "/");
     }
 
-    if (true) { // IS_DEV
+    if (true) { // __TH__IS_DEV__
 
         libWindow.webContents.on("did-finish-load", () => {
             // see app.whenReady() in src/main/redux/sagas/app.ts
@@ -124,21 +125,21 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
 
         });
 
-        if (_VSCODE_LAUNCH !== "true" && OPEN_DEV_TOOLS) {
-            setTimeout(() => {
-                if (!libWindow.isDestroyed() && !libWindow.webContents.isDestroyed()) {
-                    debug("opening dev tools (library) ...");
-                    libWindow.webContents.openDevTools({ activate: true, mode: "detach" });
-                }
-            }, 2000);
-        }
+        // if (!__TH__IS_VSCODE_LAUNCH__ && OPEN_DEV_TOOLS) {
+        //     setTimeout(() => {
+        //         if (!libWindow.isDestroyed() && !libWindow.webContents.isDestroyed()) {
+        //             debug("opening dev tools (library) ...");
+        //             libWindow.webContents.openDevTools({ activate: true, mode: "detach" });
+        //         }
+        //     }, 2000);
+        // }
     }
 
     yield* callTyped(() => libWindow.loadURL(rendererBaseUrl /*, {baseURLForDataURL, httpReferrer} */));
     // the promise will resolve when the page has finished loading (see did-finish-load)
     // and rejects if the page fails to load (see did-fail-load).
 
-    // if (!IS_DEV) {
+    // if (!__TH__IS_DEV__) {
     //     // see 'did-finish-load' otherwise
     //     const identifier = yield* selectTyped((state: RootState) => state.win.session.library.identifier);
     //     yield put(winActions.library.openSucess.build(libWindow, identifier));
@@ -146,30 +147,46 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
 
     setMenu(libWindow, false);
 
-    // Redirect link to an external browser
-    const handleRedirect = async (event: Event, url: string) => {
-        if (url === libWindow.webContents.getURL()) {
+    const willNavigate = (navUrl: string | undefined | null) => {
+
+        if (!navUrl) {
+            debug("willNavigate ==> nil: ", navUrl);
             return;
         }
 
-        event.preventDefault();
-        await shell.openExternal(url);
-    };
-    libWindow.webContents.on("will-navigate", handleRedirect);
+        if (/^https?:\/\//.test(navUrl)
+            && !navUrl.startsWith("http://localhost") && !navUrl.startsWith("http://127.0.0.1")) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
 
-    // https://www.electronjs.org/releases/stable?version=12&page=4#breaking-changes-1200
-    // https://github.com/electron/electron/blob/main/docs/breaking-changes.md#deprecated-webcontents-new-window-event
-    // libWindow.webContents.on("new-window", handleRedirect);
-    libWindow.webContents.setWindowOpenHandler((details: HandlerDetails) => {
-        if (details.url === libWindow.webContents.getURL()) {
-            return { action: "allow" };
+            debug("willNavigate ==> EXTERNAL: ", libWindow.webContents.getURL(), " *** ", navUrl);
+            setTimeout(async () => {
+                await shell.openExternal(navUrl);
+            }, 0);
+
+            return;
         }
 
-        setTimeout(async () => {
-            await shell.openExternal(details.url);
-        }, 0);
+        debug("willNavigate ==> noop: ", navUrl);
+    };
+
+    libWindow.webContents.setWindowOpenHandler((details: HandlerDetails) => {
+        debug("BrowserWindow.webContents.setWindowOpenHandler (always DENY): ", libWindow.webContents.id, " --- ", details.url, " === ", libWindow.webContents.getURL());
+
+        // willNavigate(details.url);
 
         return { action: "deny" };
+    });
+
+    libWindow.webContents.on("will-navigate", (details: ElectronEvent<WebContentsWillNavigateEventParams>, url: string) => {
+        debug("BrowserWindow.webContents.on('will-navigate') (always PREVENT): ", libWindow.webContents.id, " --- ", details.url, " *** ", url, " === ", libWindow.webContents.getURL());
+
+        // if (details.url === libWindow.webContents.getURL()) {
+        //     debug("will-navigate PASS", details.url);
+        //     return;
+        // }
+
+        details.preventDefault();
+
+        willNavigate(details.url);
     });
 
     // Clear all cache to prevent weird behaviours

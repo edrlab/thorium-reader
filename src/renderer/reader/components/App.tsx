@@ -17,7 +17,7 @@ import * as path from "path";
 import * as React from "react";
 import { Provider } from "react-redux";
 import {
-    _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL,
+    _NODE_MODULE_RELATIVE_URL, _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 import ToastManager from "readium-desktop/renderer/common/components/toast/ToastManager";
 
@@ -31,7 +31,8 @@ import Reader from "./Reader";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { getStore } from "../createStore";
 import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
-import { ImageClickManager } from "./ImageClickManager";
+import { ImageClickManagerImgViewerOnly } from "./ImageClickManagerViewerOnly";
+import { URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
 
 export default class App extends React.Component<{}, undefined> {
 
@@ -53,15 +54,15 @@ export default class App extends React.Component<{}, undefined> {
 
                 const RCSSP = "ReadiumCSS";
                 let rcssPath = RCSSP;
-                if (_PACKAGING === "1") {
-                    rcssPath = "filex://host/" + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", RCSSP)).replace(/\\/g, "/").split("/").map((segment) => encodeURIComponent_RFC3986(segment)).join("/");
+                if (__TH__IS_PACKAGED__) {
+                    rcssPath = `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/` + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", RCSSP)).replace(/\\/g, "/").split("/").map((segment) => encodeURIComponent_RFC3986(segment)).join("/");
                 } else {
                     rcssPath = "r2-navigator-js/dist/ReadiumCSS";
 
-                    if (_RENDERER_READER_BASE_URL === "filex://host/") {
+                    if (_RENDERER_READER_BASE_URL === `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/`) {
 
                         // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
-                        rcssPath = "filex://host/" + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", _NODE_MODULE_RELATIVE_URL, rcssPath)).replace(/\\/g, "/").split("/").map((segment) => encodeURIComponent_RFC3986(segment)).join("/");
+                        rcssPath = `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/` + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", _NODE_MODULE_RELATIVE_URL, rcssPath)).replace(/\\/g, "/").split("/").map((segment) => encodeURIComponent_RFC3986(segment)).join("/");
 
                         // const debugStr = `[[APP.TSX ${rcssPath} >>> ${window.location.href} *** ${window.location.pathname} === ${process.cwd()} ^^^ ${(global as any).__dirname} --- ${_NODE_MODULE_RELATIVE_URL} @@@ ${rcssPath}]]`;
                         // if (document.body.firstElementChild) {
@@ -86,7 +87,7 @@ export default class App extends React.Component<{}, undefined> {
                 }
 
                 console.log("readium css path:",
-                    rcssPath, _PACKAGING, _NODE_MODULE_RELATIVE_URL, _RENDERER_READER_BASE_URL);
+                    rcssPath, __TH__IS_PACKAGED__, _NODE_MODULE_RELATIVE_URL, _RENDERER_READER_BASE_URL);
 
                 const css = `
 /*
@@ -238,7 +239,7 @@ url("${rcssPath}/fonts/iAWriterDuospace-Regular.ttf") format("truetype");
                 <TranslatorContext.Provider value={getTranslator()}>
                     <Reader />
                     <ToastManager />
-                    <ImageClickManager />
+                    <ImageClickManagerImgViewerOnly />
                 </TranslatorContext.Provider>
             </Provider>
         );

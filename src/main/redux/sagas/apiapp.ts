@@ -5,11 +5,22 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { createHmac } from "node:crypto";
 import { THttpGetCallback } from "readium-desktop/common/utils/http";
 import { httpGet } from "readium-desktop/main/network/http";
+
+// TypeScript GO:
+// The current file is a CommonJS module whose imports will produce 'require' calls;
+// however, the referenced file is an ECMAScript module and cannot be imported with 'require'.
+// Consider writing a dynamic 'import("...")' call instead.
+// To convert this file to an ECMAScript module, change its file extension to '.mts',
+// or add the field `"type": "module"` to 'package.json'.
+// @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
+// e__slint-disable-next-line @typescript-eslint/ban-ts-comment
+// @__ts-ignore TS1479
 import { Headers } from "node-fetch";
+
 import { IApiappSearchResultView } from "readium-desktop/common/api/interface/apiappApi.interface";
 import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
 import isURL from "validator/lib/isURL";
@@ -64,6 +75,11 @@ const httpDilicomGet = async <T>(url: string, callback?: THttpGetCallback<T>) =>
         headers,
     };
 
+    // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+    if (!url || !isURL(url)) {
+        debug("isURL() NOK", url);
+        throw new Error("invalid URL [" + url + "]");
+    }
     const result = await httpGet<T>(url, options, callback);
 
     return result;
@@ -90,7 +106,9 @@ export const librarySearch = async (query: string): Promise<IApiappSearchResultV
 
                     const libView: IApiappSearchResultView[] = libs
                     .filter((v) => typeof v === "object")
-                    .filter(({libraryGLN, libraryName, libraryWebServiceOperator, libraryWebServiceURL}) => typeof libraryGLN === "string" && typeof libraryName === "string" && libraryWebServiceOperator === "PROVIDER" && isURL(libraryWebServiceURL))
+                    .filter(({libraryGLN, libraryName, libraryWebServiceOperator, libraryWebServiceURL}) => typeof libraryGLN === "string" && typeof libraryName === "string" && libraryWebServiceOperator === "PROVIDER" &&
+                        // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+                        libraryWebServiceURL && isURL(libraryWebServiceURL))
                     .map(({libraryGLN, libraryName, libraryAddress, libraryTown, libraryPostalCode, libraryWebServiceURL}) => {
                         return {
                             id: libraryGLN,
@@ -111,10 +129,11 @@ export const librarySearch = async (query: string): Promise<IApiappSearchResultV
 
 export const authenticationRequestFromLibraryWebServiceURL = async (url: string): Promise<IAuthentication | undefined> => {
 
-    if(!isURL(url)) {
+    // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+    if(!url || !isURL(url)) {
+        debug("isURL() NOK", url);
         throw new Error("not a valid url " + url);
     }
-
     const result = await httpGet(url);
 
     if (result.isSuccess && parseContentType(result.contentType) === ContentType.Json) {
@@ -140,9 +159,14 @@ export const getEndpointFromAuthenticationRequest = (auth: IAuthentication | und
     if (!auth) return undefined;
 
     const endpoint = Array.isArray(auth.resources) ? auth.resources[0].endpoint : undefined;
-    if (endpoint && isURL(endpoint)) {
-        return endpoint;
+    if (endpoint) {
+        // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+        if (isURL(endpoint)) {
+            return endpoint;
+        }
+        debug("isURL() NOK", endpoint);
     }
+
     return undefined;
 };
 
@@ -169,10 +193,12 @@ export const initClientSecretToken = async (idGnl: string) => {
 interface IApiAppLoansPublication { loanhLink: string, beginDate: string; endDate: string; standardTitle: string; description: string; frontCoverMedium: string; publicationDate: string; language: string; imprintName: string; collection: string; categoryClil: string; }
 
 export const getLoansPublicationFromLibrary = async (url: string): Promise<Array<IApiAppLoansPublication> | undefined> => {
+
+    // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
     if (!url || !isURL(url)) {
+        debug("isURL() NOK", url);
         throw new Error("not a loans URL " + url);
     }
-
     const result = await httpGet(url);
 
     if (result.isSuccess && parseContentType(result.contentType) === ContentType.Json) {
@@ -186,7 +212,9 @@ export const getLoansPublicationFromLibrary = async (url: string): Promise<Array
             const loansArray: Array<IApiAppLoansPublication> = loans.filter(
                 (v) =>
                 typeof v === "object" &&
-                typeof v.loanhLink === "string" && isURL(v.loanhLink) &&
+                typeof v.loanhLink === "string" &&
+                // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+                v.loanhLink && isURL(v.loanhLink) &&
                 // typeof v.beginDate === "string" &&
                 // typeof v.endDate === "string" &&
                 typeof v.standardTitle === "string",

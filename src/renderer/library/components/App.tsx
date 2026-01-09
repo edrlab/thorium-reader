@@ -19,7 +19,7 @@ import * as path from "path";
 import * as React from "react";
 import Dropzone, { DropEvent, DropzoneRootProps } from "react-dropzone";
 import { Provider } from "react-redux";
-import { acceptedExtension, acceptedExtensionObject } from "readium-desktop/common/extension";
+import { acceptedExtension, acceptedExtensionObject, EXT_THORIUM } from "readium-desktop/common/extension";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import ToastManager from "readium-desktop/renderer/common/components/toast/ToastManager";
@@ -30,7 +30,7 @@ import DialogManager from "readium-desktop/renderer/library/components/dialog/Di
 import PageManager from "readium-desktop/renderer/library/components/PageManager";
 import DownloadsPanel from "./DownloadsPanel";
 import LoaderMainLoad from "./LoaderMainLoad";
-import { toastActions } from "readium-desktop/common/redux/actions";
+import { customizationActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ToastType } from "readium-desktop/common/models/toast";
 
 import { acceptedExtensionArray } from "readium-desktop/common/extension";
@@ -40,8 +40,13 @@ import NunitoBold from "readium-desktop/renderer/assets/fonts/NunitoSans_10pt-Se
 import { WizardModal } from "./Wizard";
 import { getReduxHistory, getStore } from "../createStore";
 import { getTranslator } from "readium-desktop/common/services/translator";
+import { CustomizationProfileDialog } from "readium-desktop/renderer/common/components/customizationProfileDialog";
 // eslintxx-disable-next-line @typescript-eslint/no-unused-expressions
 // globalScssStyle.__LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__;
+
+import { shell } from "electron";
+
+(window as any).__shell_openExternal = (url: string) => url && /^https?:\/\//.test(url) ? shell.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
 
 export default class App extends React.Component<{}, undefined> {
 
@@ -67,7 +72,7 @@ export default class App extends React.Component<{}, undefined> {
     public onDrop(acceptedFiles: File[]) {
         const store = getStore();
 
-        console.log(acceptedFiles);
+        console.log("Drag-on-Drop: acceptedFiles", acceptedFiles);
 
         const filez = acceptedFiles
             .filter(
@@ -98,6 +103,16 @@ export default class App extends React.Component<{}, undefined> {
             // const absolutePath = file.path ? file.path : webUtils.getPathForFile(file);
             const absolutePath = webUtils.getPathForFile(file);
             // console.log("absolutePath 3: " + absolutePath);
+
+
+            if (path.extname(absolutePath) === EXT_THORIUM) {
+
+                console.log("dispatch thorium customization filePath: copy, provisions and activates profile =>", absolutePath);
+                store.dispatch(customizationActions.acquire.build(absolutePath));
+                return ;
+            }
+
+
             const acceptedExtension = acceptedFiles.length === 1 ? `[${path.extname(absolutePath)}] ${acceptedExtensionArray.join(" ")}` : acceptedExtensionArray.join(" ");
             store.dispatch(toastActions.openRequest.build(ToastType.Error, getTranslator().__("dialog.importError", {
                 acceptedExtension,
@@ -215,6 +230,7 @@ export default class App extends React.Component<{}, undefined> {
                                     <LoaderMainLoad />
                                     <ToastManager />
                                     <WizardModal />
+                                    <CustomizationProfileDialog />
                                 </div>;
                             }}
                         </Dropzone>

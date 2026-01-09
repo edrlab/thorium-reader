@@ -47,7 +47,10 @@ export const OpdsFeedHowDoesItWorksInfoBox = () => {
                 <a href=""
                     onClick={async (ev) => {
                         ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
-                        await shell.openExternal("https://opds.io/");
+                        const href = "https://opds.io/";
+                        if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
+                            await shell.openExternal(href);
+                        }
                     }}>
                     {__("opds.documentation")}
                     <SVG ariaHidden svg={FollowLinkIcon} />

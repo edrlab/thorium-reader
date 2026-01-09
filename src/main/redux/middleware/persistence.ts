@@ -33,6 +33,7 @@ export const reduxPersistMiddleware: Middleware
                     reader: prevState.reader,
                     i18n: prevState.i18n,
                     session: prevState.session,
+                    screenReader: prevState.screenReader,
                     publication: {
                         db: prevState.publication.db,
                         lastReadingQueue: prevState.publication.lastReadingQueue,
@@ -44,6 +45,14 @@ export const reduxPersistMiddleware: Middleware
                     settings: prevState.settings,
                     creator: prevState.creator,
                     noteExport: prevState.noteExport,
+                    customization: {
+                        provision: [],
+                        history: prevState.customization.history,
+                        activate: prevState.customization.activate,
+                        lock: undefined,
+                        welcomeScreen: undefined,
+                        manifest: undefined,
+                    },
                 };
 
                 const persistNextState: PersistRootState = {
@@ -53,6 +62,7 @@ export const reduxPersistMiddleware: Middleware
                     reader: nextState.reader,
                     i18n: nextState.i18n,
                     session: nextState.session,
+                    screenReader: nextState.screenReader,
                     publication: {
                         db: nextState.publication.db,
                         lastReadingQueue: nextState.publication.lastReadingQueue,
@@ -64,6 +74,14 @@ export const reduxPersistMiddleware: Middleware
                     settings: nextState.settings,
                     creator: nextState.creator,
                     noteExport: nextState.noteExport,
+                    customization: {
+                        provision: [],
+                        history: nextState.customization.history,
+                        activate: nextState.customization.activate,
+                        lock: undefined,
+                        welcomeScreen: undefined,
+                        manifest: undefined,
+                    },
                 };
 
                 // RangeError: Maximum call stack size exceeded

@@ -20,6 +20,7 @@
             "copy": "Kopijuoti",
             "cut": "Iškirpti",
             "paste": "Įklijuoti",
+            "print": "Spausdinti",
             "redo": "Atkurti",
             "selectAll": "Pažymėti viską",
             "title": "Keisti",
@@ -34,7 +35,7 @@
                         "no": "Ne",
                         "yes": "Taip"
                     },
-                    "help": "Aktyvuokite, jei norite, kad programos uždarymo metu atverti langai automatiškai atsivertų kito paleidimo metu.",
+                    "help": "Aktyvuokite, jei norite, kad programos uždarymo metu atverti skaitytuvės langai automatiškai atsivertų kito paleidimo metu.",
                     "message": "Skaitymo sesijos išsaugojimas ir atkūrimas",
                     "title": "Išsaugoti sesiją?"
                 }
@@ -62,6 +63,14 @@
             "descending": "mažėjančia tvarka",
             "unsorted": "nerikiuoti"
         },
+        "customization": {
+            "fallback": {
+                "description": "Nėra profilio aprašymo",
+                "publications": "Profilio leidiniai",
+                "screen": "Be pavadinimo",
+                "title": "Profilio pavadinimas"
+            }
+        },
         "delete": "Šalinti",
         "deleteBook": "Šalinti",
         "deleteTag": "Šalinti žymę",
@@ -72,11 +81,13 @@
             "lastAdditions": "Paskiausiai pridėti"
         },
         "export": "Eksportuoti",
-        "exportAnnotation": "Išsaugoti pastabas kaip...",
+        "exportAnnotation": "Eksportuoti pastabas",
         "format": "Formatas",
         "importAnnotation": "Importuoti pastabas",
         "lang": "Kalba",
         "lastRead": "Pask. kartą skaityta",
+        "login": "Prisijungti",
+        "logout": "Atsijungti",
         "moreInfo": "Daugiau informacijos",
         "myBooks": "Mano leidiniai",
         "noPublicationHelpL1": "Nutempkite leidinį čia",
@@ -87,9 +98,12 @@
         "opds": {
             "auth": {
                 "cancel": "Atšaukti",
-                "login": "Prisijungimas",
+                "external": "Jūsų interneto naršyklėje atsidarys prisijungimo puslapis, sekite instrukcijas. Kai prisijungsite, interneto naršyklė grąžins jus į šią programą.",
+                "fallback": "Pastaba: jei kyla problemų prisijungiant naudojant numatytąjį žiniatinklio naršyklės metodą, bandykite dar kartą naudodami alternatyvų programos metodą.",
+                "login": "Prisijungim/as",
                 "password": "Slaptažodis",
                 "register": "Užsiregistruoti",
+                "retry": "Bandyti dar kartą",
                 "username": "Naudotojo vardas / El. pašto adresas"
             },
             "info": {
@@ -133,12 +147,20 @@
             "title": "Importuoti pastabas?"
         },
         "cancel": "Nutraukti",
+        "customization": {
+            "splashscreen": {
+                "fallbackWelcomeScreen": "Nėra pasveikinimo ekrano",
+                "state": "Būsena: {{- state}}",
+                "title": "Aktyvuojamas tinkinimo profilis"
+            }
+        },
         "deleteAnnotations": "Šalinti pastabas?",
         "deleteAnnotationsText": "Ar tikrai norite pašalinti {{- annotationListLength}} pastabą(-as, -ų)?",
-        "deleteBookmarks": "Šalinti žymes?",
-        "deleteBookmarksText": "Ar tikrai norite pašalinti {{- bookmarkListLength}} žymę(-es, -ų)?",
+        "deleteBookmarks": "Šalinti skirtukus?",
+        "deleteBookmarksText": "Ar tikrai norite pašalinti {{- bookmarkListLength}} skirtuką(-us, -ų)?",
         "deleteFeed": "Pašalinti katalogą?",
         "deletePublication": "Pašalinti leidinį?",
+        "deletePublicationWithNotes": "Įspėjimas: šiame leidinyje yra pastabų ir (arba) skirtukų, kurios taip pat bus pašalintos! (jei norite jas išsaugoti, prieš pašalindami leidinį eksportuokite pastabas)",
         "import": "Patvirtinkite importą:",
         "importError": "Įvyko klaida, patikrinkite failo plėtinį ({{acceptedExtension}})",
         "renew": "Atnaujinti/pratęsti skolinimo terminą?",
@@ -200,7 +222,8 @@
         },
         "open": {
             "error": "Nepavyko atverti leidinio : [{{- err}}]"
-        }
+        },
+        "wipeData": "Prisijungimo duomenys išvalyti (prieigos žetonai ir slapukai)"
     },
     "opds": {
         "addForm": {
@@ -237,6 +260,7 @@
         },
         "next": "Tolesnis",
         "previous": "Ankstesnis",
+        "resumeBrowsing": "Tęsti naršymą",
         "shelf": "Lentyna",
         "updateForm": {
             "name": "Pavadinimas:",
@@ -248,292 +272,292 @@
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": ""
+            "accessibility-summary-title": "Prieinamumo santrauka"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Įtrauktos ARIA rolės",
+                "descriptive": "Turinys papildytas ARIA rolėmis, siekiant optimizuoti organizavimą ir palengvinti naršymą"
             },
             "additional-accessibility-information-audio-descriptions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Garsinis vaizdavimas",
+                "descriptive": "Garsinis vaizdavimas"
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Brailio raštas",
+                "descriptive": "Brailio raštas"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Pilnos „ruby“ anotacijos",
+                "descriptive": "Pilnos „ruby“ anotacijos"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Didelis kontrastas tarp priekinio plano ir foninio garso",
+                "descriptive": "Didelis kontrastas tarp priekinio plano ir foninio garso"
             },
             "additional-accessibility-information-high-contrast-between-text-and-background": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Didelis kontrastas tarp priekinio plano teksto ir fono",
+                "descriptive": "Didelis kontrastas tarp priekinio plano teksto ir fono"
             },
             "additional-accessibility-information-large-print": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Padidintas šriftas",
+                "descriptive": "Padidintas šriftas"
             },
             "additional-accessibility-information-page-breaks": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Įtraukti puslapių skirtukai",
+                "descriptive": "Įtraukti puslapių skirtukai iš pradinio spausdinto šaltinio"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Dalinės „ruby“ anotacijos",
+                "descriptive": "Dalinės „ruby“ anotacijos"
             },
             "additional-accessibility-information-sign-language": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Gestų kalba",
+                "descriptive": "Gestų kalba"
             },
             "additional-accessibility-information-tactile-graphics": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Įtraukta taktilinė grafika",
+                "descriptive": "Integruota taktilinė grafika, kad vaizdiniai elementai būtų lengviau prieinami neregiams"
             },
             "additional-accessibility-information-tactile-objects": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Taktiliniai 3D objektai",
+                "descriptive": "Taktiliniai 3D objektai"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Pateikiamos balso sintezės užuominos",
+                "descriptive": "Pateikiamos balso sintezės užuominos"
             },
-            "additional-accessibility-information-title": ""
+            "additional-accessibility-information-title": "Papildoma prieinamumo informacija"
         },
         "conformance": {
             "conformance-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Šis leidinys atitinka minimalius prieinamumo standartus",
+                "descriptive": "Leidinyje yra atitikties pareiškimas, jog jis atitinka EPUB Accessibility ir WCAG 2 A lygio standartą"
             },
             "conformance-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Šis leidinys atitinka priimtus prieinamumo standartus",
+                "descriptive": "Leidinyje yra atitikties pareiškimas, jog jis atitinka EPUB Accessibility ir WCAG 2 AA lygio standartą"
             },
             "conformance-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Šis leidinys viršija priimtus prieinamumo standartus",
+                "descriptive": "Leidinyje yra atitikties pareiškimas, jog jis atitinka EPUB Accessibility ir WCAG 2 AAA lygio standartą"
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "Leidinį sertifikavo "
             },
             "conformance-certifier-credentials": {
-                "compact": ""
+                "compact": "Sertifikuotojo įgaliojimas yra "
             },
             "conformance-details-certifier-report": {
-                "compact": ""
+                "compact": "Daugiau informacijos rasite sertifikuotojo ataskaitoje"
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Šis leidinys teigia atitinkantis",
+                "descriptive": "Šis leidinys teigia atitinkantis"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Accessibility 1.0",
+                "descriptive": "EPUB Accessibility 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB Accessibility 1.1",
+                "descriptive": "EPUB Accessibility 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "A lygį",
+                "descriptive": "A lygį"
             },
             "conformance-details-level-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "AA lygį",
+                "descriptive": "AA lygį"
             },
             "conformance-details-level-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "AAA lygį",
+                "descriptive": "AAA lygį"
             },
             "conformance-details-wcag-2-0": {
-                "compact": ""
+                "compact": "WCAG 2.0"
             },
             "conformance-details-wcag-2-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.1",
+                "descriptive": "Žiniatinklio turinio prieinamumo gairės (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.2",
+                "descriptive": "Žiniatinklio turinio prieinamumo gairės (WCAG) 2.2"
             },
             "conformance-no": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Informacijos nėra",
+                "descriptive": "Informacijos nėra"
             },
-            "conformance-title": "",
+            "conformance-title": "Atitiktis",
             "conformance-unknown-standard": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Šio leidinio atitikties priimtiems prieinamumo standartams nustatyti negalima",
+                "descriptive": "Šio leidinio atitikties priimtiems prieinamumo standartams nustatyti negalima"
             }
         },
         "hazards": {
             "hazards-flashing": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Blykčiojantis turinys",
+                "descriptive": "Leidinyje yra blykčiojančio turinio, galinčio sukelti jautrumo šviesai priepuolius"
             },
             "hazards-flashing-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Nėra blykčiojančio turinio",
+                "descriptive": "Leidinyje nėra blykčiojančio turinio"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Blykčiojančio turinio buvimas nežinomas",
+                "descriptive": "Blykčiojančio turinio buvimas nežinomas"
             },
             "hazards-motion": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Judesio imitavimas",
+                "descriptive": "Leidinyje yra judesio imitacijų, galinčių sukelti jūros ligą"
             },
             "hazards-motion-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Nėra judesio imitacijų",
+                "descriptive": "Leidinyje nėra judesio imitacijų"
             },
             "hazards-motion-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Judesio imitacijų buvimas nežinomas",
+                "descriptive": "Judesio imitacijų buvimas nežinomas"
             },
             "hazards-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Informacijos nėra",
+                "descriptive": "Informacijos nėra"
             },
             "hazards-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Pavojų nėra",
+                "descriptive": "Leidinyje nėra jokių pavojų"
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Garsai",
+                "descriptive": "Leidinyje yra garsų, kurie gali būti nemalonūs"
             },
             "hazards-sound-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Nėra garsų",
+                "descriptive": "Leidinyje nėra garsų"
             },
             "hazards-sound-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Garsų buvimas nežinomas",
+                "descriptive": "Garsų buvimas nežinomas"
             },
-            "hazards-title": "",
+            "hazards-title": "Pavojai",
             "hazards-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Pavojų buvimas nežinomas",
+                "descriptive": "Pavojų buvimas nežinomas"
             }
         },
         "navigation": {
             "navigation-index": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Rodyklė",
+                "descriptive": "Rodyklė su nuorodomis į susietus įrašus"
             },
             "navigation-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Informacijos nėra",
+                "descriptive": "Informacijos nėra"
             },
             "navigation-page-navigation": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Eiti į puslapį",
+                "descriptive": "Puslapių sąrašas, skirtas pereiti į spausdintinos leidinio versijos puslapius"
             },
             "navigation-structural": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Antraštės",
+                "descriptive": "Elementai, tokie kaip antraštės, lentelės ir kt., skirti struktūrizuotam naršymui"
             },
-            "navigation-title": "",
+            "navigation-title": "Naršymas",
             "navigation-toc": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Turinys",
+                "descriptive": "Turinys su nuorodomis į visus teksto skyrius"
             }
         },
         "rich-content": {
             "rich-content-accessible-chemistry-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Cheminės formulės kaip LaTeX",
+                "descriptive": "Cheminės formulės prieinamu formatu (LaTeX)"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Cheminės formulės kaip MathML",
+                "descriptive": "Cheminės formulės prieinamu formatu (MathML)"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Matematinės formulės kaip LaTeX",
+                "descriptive": "Matematinės formulės prieinamu formatu (LaTeX)"
             },
             "rich-content-accessible-math-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Matematinės formulės kaip MathML",
+                "descriptive": "Matematinės formulės prieinamu formatu (MathML)"
             },
             "rich-content-accessible-math-described": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Pateikiami tekstiniai matematinių formulių aprašymai",
+                "descriptive": "Pateikiami tekstiniai matematinių formulių aprašymai"
             },
             "rich-content-closed-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Vaizdo įrašuose yra uždarieji subtitrai",
+                "descriptive": "Leidiniuose esantys vaizdo įrašai turi uždaruosius subtitrus"
             },
             "rich-content-extended": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Informaciniai vaizdai aprašomi išplėstiniais aprašymais",
+                "descriptive": "Informaciniai vaizdai aprašomi išplėstiniais aprašymais"
             },
             "rich-content-open-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Vaizdo įrašuose yra atvirieji subtitrai",
+                "descriptive": "Leidiniuose esantys vaizdo įrašai turi atviruosius subtitrus"
             },
-            "rich-content-title": "",
+            "rich-content-title": "Raiškusis turinys",
             "rich-content-transcript": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Pateikiamas(-i) transkriptas(-ai)",
+                "descriptive": "Pateikiamas(-i) transkriptas(-ai)"
             },
             "rich-content-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Informacijos nėra",
+                "descriptive": "Informacijos nėra"
             }
         },
         "ways-of-reading": {
             "ways-of-reading-nonvisual-reading-alt-text": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Turi alternatyvųjį tekstą",
+                "descriptive": "Turi alternatyviojo teksto aprašymus vaizdams"
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Informacijos apie nevizualinį skaitymą nėra",
+                "descriptive": "Informacijos apie nevizualinį skaitymą nėra"
             },
             "ways-of-reading-nonvisual-reading-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Neįskaitomas balso sinteze ar Brailio eilute",
+                "descriptive": "Turinys negali būti perskaitytas balso sinteze ar Brailio eilute"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Nepilnai skaitomas balso sinteze ar Brailio eilute",
+                "descriptive": "Ne visas turinys gali būti perskaitytas balso sinteze ar Brailio eilute"
             },
             "ways-of-reading-nonvisual-reading-readable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Skaitomas balso sinteze ar Brailio eilute",
+                "descriptive": "Visas turinys gali būti perskaitytas balso sinteze ar Brailio eilute"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Iš anksto įrašyti garso įrašai",
+                "descriptive": "Turinyje įterpti iš anksto įrašyti garso įrašai"
             },
             "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Informacijos apie iš anksto įrašytus garso įrašus nėra",
+                "descriptive": "Informacijos apie iš anksto įrašytus garso įrašus nėra"
             },
             "ways-of-reading-prerecorded-audio-only": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Tik iš anksto įrašytas garsas",
+                "descriptive": "Garsinė knyga be teksto alternatyvos"
             },
             "ways-of-reading-prerecorded-audio-synchronized": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Garso įrašas, sinchronizuotas su tekstu",
+                "descriptive": "Visas turinys prieinamas kaip garso įrašas, sinchronizuotas su tekstu"
             },
-            "ways-of-reading-title": "",
+            "ways-of-reading-title": "Skaitymo būdai",
             "ways-of-reading-visual-adjustments-modifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Galima keisti išvaizdą",
+                "descriptive": "Priklausomai nuo skaitymo sistemos galimybių galima keisti teksto išvaizdą ir puslapio išdėstymą (šriftų šeimą ir dydį, tarpus tarp pastraipų, sakinių, žodžių ir raidžių, fono ir teksto spalvą)"
             },
             "ways-of-reading-visual-adjustments-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Informacijos apie išvaizdos keitimo galimybes nėra",
+                "descriptive": "Informacijos apie išvaizdos keitimo galimybes nėra"
             }
         }
     },
@@ -553,10 +577,10 @@
             },
             "accessibilityHazard": {
                 "flashing": "Blykčiojimas",
-                "motionSimulation": "Judesių imitavimas",
-                "name": "Rizika:",
+                "motionSimulation": "Judesio imitavimas",
+                "name": "Pavojus:",
                 "noFlashing": "Be blykčiojimo",
-                "noMotionSimulation": "Be judesių imitavimo",
+                "noMotionSimulation": "Nėra judesio imitacijų",
                 "noSound": "Be garso",
                 "none": "Nėra",
                 "sound": "Garsas",
@@ -593,7 +617,7 @@
         "lcpRightsPrint": "Spausdintos kopijos",
         "lcpStart": "Pradžia",
         "licenceLCP": "Licencija (LCP)",
-        "licenseCertificateDateInvalid": "Baigėsi LCP teikėjo sertifikato galiojimo laikas.",
+        "licenseCertificateDateInvalid": "LCP teikėjo sertifikato galiojimo laikas baigėsi anksčiau už licencijos išdavimo datą ({{- dateTime}}).",
         "licenseOutOfDate": "LCP licencijos galiojimas pasibaigęs.",
         "licenseSignatureInvalid": "Negaliojantis LCP licencijos parašas.",
         "licensed": "Licencijuotas",
@@ -657,7 +681,7 @@
             }
         },
         "bookmarks": {
-            "index": "{{- index}} žymė"
+            "index": "{{- index}} skirtukas"
         },
         "divina": {
             "mute": "išjungti garsą",
@@ -667,9 +691,15 @@
             "fit": "Talpinti"
         },
         "goToContent": "Eiti į turinį",
+        "imgViewer": {
+            "title": "Vaizdų peržiūra (mastelio keitimas)",
+            "zoomIn": "Didinti",
+            "zoomOut": "Mažinti",
+            "zoomReset": "Nustatyti mastelį iš naujo"
+        },
         "marks": {
             "annotations": "Pastabos",
-            "bookmarks": "Žymės",
+            "bookmarks": "Skirtukai",
             "delete": "Šalinti",
             "edit": "Keisti",
             "goTo": "Eiti į puslapį",
@@ -700,24 +730,29 @@
         "navigation": {
             "ZenModeExit": "Išeiti iš Zen režimo",
             "ZenModeTitle": "Zen režimas",
-            "annotationTitle": "pastaba",
-            "backHomeTitle": "Užverti šį skaitymo langą (grįžti į knygų lentyną)",
-            "bookmarkTitle": "sukurti žymę",
+            "annotationTitle": "Pastaba",
+            "backHomeTitle": "Užverti šį skaitytuvės langą (grįžti į knygų lentyną)",
+            "bookmarkTitle": "Sukurti skirtuką",
             "currentPage": "Dabartinis puslapis: {{- current}}",
             "currentPageTotal": "Dabartinis puslapis: {{- current}}/{{- total}}",
-            "detachWindowTitle": "rodyti bibliotekos / lentynos langą",
+            "detachWindowTitle": "Rodyti bibliotekos / lentynos langą",
             "goTo": "Eiti į",
             "goToError": "Toks puslapių skirtukas neegzistuoja",
             "goToPlaceHolder": "Įveskite puslapio numerį",
             "goToTitle": "Eiti į puslapį",
-            "historyNext": "Peršokti į priekį",
-            "historyPrevious": "Peršokti atgal",
-            "infoTitle": "informacija",
-            "magnifyingGlassButton": "ieškoti leidinyje",
-            "openTableOfContentsTitle": "naršymas",
+            "history": "Naršymo istorija",
+            "historyNext": "Peršokti į priekį naršymo istorijoje",
+            "historyPrevious": "Peršokti atgal naršymo istorijoje",
+            "infoTitle": "Informacija",
+            "magnifyingGlassButton": "Ieškoti leidinyje",
+            "openTableOfContentsTitle": "Naršymas",
             "page": "Puslapis",
             "pdfscalemode": "talpinti pritaikant prie puslapio aukščio/pločio",
-            "settingsTitle": "nuostatos"
+            "print": "Spausdinti",
+            "printDisabled": "Spausdinti draudžiama",
+            "screenNext": "Eiti pirmyn",
+            "screenPrevious": "Eiti atgal",
+            "settingsTitle": "Nuostatos"
         },
         "notes": {
             "colors": {
@@ -741,9 +776,27 @@
             },
             "searchTitle": "Paieška:"
         },
+        "print": {
+            "descriptionLcpCount": "Likusių puslapių apribojimas: {{- count}}",
+            "descriptionLcpPrintable": "Anksčiau atspausdinti puslapiai: {{- printable}} ({{- count}})",
+            "howTo": "Kaip pasirinkti spausdintinų puslapių rėžį",
+            "lcpInfo": "Šio leidinio puslapių, kuriuos galite spausdinti, kiekis apribotas iki {{- count}}. Pasirinkite reikiamus puslapius čia.",
+            "noPagesLcpLimitReached": "Pasiekėte LCP ribą",
+            "noPrintablePages": "Spausdintinų puslapių nėra",
+            "pageHelpInfo": "Puslapių pasirinkimo sintaksė:",
+            "pageHelpInfo1": "jei norite įtraukti vieną puslapį, įveskite jo numerį (pvz. „6“)",
+            "pageHelpInfo2": "jei norite įtraukti iš eilės einančių puslapių rėžį, įveskite du brūkšnio simboliu atskirtus puslapio numerius (pvz. „6-13“)",
+            "pageHelpInfo3": "jei norite atskirti kelis puslapius ar puslapių rėžius, naudokite kabliataškio simbolį (pvz. „5;14-20;37“)",
+            "pageHelpInfo4": "jei norite įtraukti puslapius nuo pirmo ar iki paskutinio leidinio puslapio, praleiskite pirmą ar paskutinį rėžio puslapį (pvz. „-16“ yra ekvivalentus „1-16“, o „34-“ yra ekvivalentus „34-100“, jei leidinyje iš viso yra 100 puslapių)",
+            "pages": "Puslapiai",
+            "preview": "Peržiūra",
+            "print": "Spausdinti",
+            "printablePages": "Spausdintini puslapiai (iš viso)",
+            "title": "Spausdintinų puslapių atranka"
+        },
         "settings": {
             "column": {
-                "auto": "Automatinis",
+                "auto": "Numatytasis",
                 "one": "1 stulpelis",
                 "title": "Stulpeliai",
                 "two": "2 stulpeliai"
@@ -763,9 +816,10 @@
             "letterSpacing": "Raidžių išretinimas",
             "lineSpacing": "Eilučių išretinimas",
             "margin": "Paraštė",
+            "mathjax": "Įgalinti MathJax",
             "noFootnotes": "Išjungti iššokančias išnašas",
             "noRTLFlip": "Išjungti iš-dešinės-į-kairę naudotojo sąsają",
-            "noRuby": "Slėpti japonų kalbos Ruby simbolius",
+            "noRuby": "Slėpti japonų kalbos „ruby“ simbolius",
             "noTemporaryNavTargetOutline": "Išjungti vaizdinius naršymo indikatorius",
             "paginated": "Skaidyti į puslapius",
             "paraSpacing": "Tarpas tarp pastraipų",
@@ -789,13 +843,14 @@
                 "reset": "Nustatyti iš naujo",
                 "resetDetails": "Nustatyti pageidautiną konfigūraciją į numatytąsias reikšmes.",
                 "save": "Išsaugoti",
-                "saveDetails": "Šis veiksmas išsaugo dabartinę konfigūraciją, t. y. Jūsų pageidautinus išvaizdos ir teksto formatavimo parametrus. Šias nuostatas galėsite taikyti kitiems leidiniams jų skaitymo lange paspaudę mygtuką „Taikyti“.",
+                "saveDetails": "Šis veiksmas išsaugo dabartinę konfigūraciją, t. y. Jūsų pageidautinus išvaizdos ir teksto formatavimo parametrus. Šias nuostatas galėsite taikyti kitiems leidiniams skaitytuvės lange paspaudę mygtuką „Taikyti“.",
                 "title": "Nuostatos"
             },
             "preview": "Peržiūrėti",
             "reduceMotion": "Mažinti judesių kiekį",
             "scrolled": "Slenkantis",
             "spacing": "Išretinimas",
+            "spreadModeEven": "Lyginis puslapių išdėstymas (numatytasis išdėstymas – nelyginis)",
             "text": "Tekstas",
             "theme": {
                 "name": {
@@ -849,14 +904,238 @@
             "wipeData": "Išvalyti prisijungimo duomenis"
         },
         "keyboard": {
-            "advancedMenu": "Meniu",
+            "advancedMenu": "Išplėstinis sparčiųjų klavišų meniu",
             "cancel": "Nutraukti",
-            "disclaimer": "Spartieji klavišai nustatyti remiantis QWERTY klaviatūros išdėstymu.",
+            "disclaimer": "Programos numatytieji nustatymai buvo sukurti atsižvelgiant į fizinę klavišų vietą QWERTY klaviatūroje",
             "editUserJson": "Keisti naudotojo failą...",
             "keyboardShortcuts": "Spartieji klavišai",
+            "list": {
+                "AddBookmarkWithLabel": {
+                    "description": "Atverti skirtuko kūrimo dialogo langą ir redaguoti tekstinę etiketę (pastabą), spalvą ir žymę",
+                    "name": "Kurti skirtuką su etikete"
+                },
+                "AnnotationsCreate": {
+                    "description": "Atverti pasirinkto dokumento teksto anotacijos kūrimo dialogo langą ir redaguoti tekstinę pastabą, paryškinimo spalvą ir tipą bei žymę",
+                    "name": "Kurti pastabą"
+                },
+                "AnnotationsCreateQuick": {
+                    "description": "Greitai sukurti pasirinkto teksto pastabą su paskiausiai naudota paryškinimo spalva ir tipu (pastaba ir žymė bus tuščios)",
+                    "name": "Kurti greitą pastabą"
+                },
+                "AnnotationsToggleMargin": {
+                    "description": "Perjungti pastabų ir skirtukų vaizdinius indikatorius dokumento paraštėje arba tekste",
+                    "name": "Perjungti paraštės pastabą"
+                },
+                "AudioNext": {
+                    "description": "Pereiti prie kito garso segmento pasakojime (EPUB3 leidinyje su teksto ir garso sinchronizacija, balso sintezėje arba iš anksto įrašytoje garsinėje knygoje)",
+                    "name": "Kitas garso segmentas"
+                },
+                "AudioNextAlt": {
+                    "description": "Pereiti prie kito garso segmento pasakojime (EPUB3 leidinyje su teksto ir garso sinchronizacija, balso sintezėje arba iš anksto įrašytoje garsinėje knygoje). Bet kokia šiuo metu aktyvi teksto struktūra su išėjimo galimybe praleidžiama",
+                    "name": "Kitas garso segmentas (išėjimas)"
+                },
+                "AudioPlayPause": {
+                    "description": "Perjungti dabartinio pasakojimo atkūrimą/pristabdymą (EPUB3 leidinyje su teksto ir garso sinchronizacija, balso sintezėje arba iš anksto įrašytoje garsinėje knygoje)",
+                    "name": "Atkurti/pristabdyti garsą"
+                },
+                "AudioPrevious": {
+                    "description": "Grįžti į ankstesnį garso segmentą pasakojime (EPUB3 leidinyje su teksto ir garso sinchronizacija, balso sintezėje arba iš anksto įrašytoje garsinėje knygoje)",
+                    "name": "Ankstesnis garso segmentas"
+                },
+                "AudioPreviousAlt": {
+                    "description": "Grįžti į ankstesnį garso segmentą pasakojime (EPUB3 leidinyje su teksto ir garso sinchronizacija, balso sintezėje arba iš anksto įrašytoje garsinėje knygoje). Bet kokia šiuo metu aktyvi teksto struktūra su išėjimo galimybe praleidžiama",
+                    "name": "Ankstesnis garso segmentas (išėjimas)"
+                },
+                "AudioStop": {
+                    "description": "Stabdyti dabartinį garso įrašą (EPUB3 leidinyje su teksto ir garso sinchronizacija, balso sintezėje arba iš anksto įrašytoje garsinėje knygoje)",
+                    "name": "Stabdyti garso įrašą"
+                },
+                "CloseReader": {
+                    "description": "Uždaryti skaitytuvės langą ir grįžti į biblioteką",
+                    "name": "Uždaryti skaitytuvę"
+                },
+                "FXLZoomIn": {
+                    "description": "Didinti fiksuotame vieno ar dviejų puslapių išdėstyme.",
+                    "name": "Didinti fiksuotame išdėstyme"
+                },
+                "FXLZoomOut": {
+                    "description": "Mažinti fiksuotame vieno ar dviejų puslapių išdėstyme.",
+                    "name": "Mažinti fiksuotame išdėstyme"
+                },
+                "FXLZoomReset": {
+                    "description": "Nustatyti mastelį iš naujo fiksuotame vieno ar dviejų puslapių išdėstyme.",
+                    "name": "Nustatyti fiksuoto išdėstymo mastelį iš naujo"
+                },
+                "FocusMain": {
+                    "description": "Perkelti klaviatūros fokusą į pagrindinę turinio gairę grafinėje sąsajoje. Skaitytuvės lange fokusas perkeliamas į leidinio turinį",
+                    "name": "Fokusuoti pagrindinį turinį"
+                },
+                "FocusMainDeep": {
+                    "description": "Skaitytuvės lange perkelti klaviatūros fokusą į leidinio turinį naudojant patikimesnį ekrano skaitytuvams skirtą metodą",
+                    "name": "Giliau fokusuoti pagrindinį turinį"
+                },
+                "FocusReaderGotoPage": {
+                    "description": "Perkelti klaviatūros fokusą į „Eiti į puslapį“ skiltį skaitytuvės lango naršymo skydelyje",
+                    "name": "Fokusuoti „Eiti į puslapį“"
+                },
+                "FocusReaderNavigation": {
+                    "description": "Perkelti klaviatūros fokusą į skaitytuvės lango naršymo skydelį",
+                    "name": "Fokusuoti naršymo skydelį"
+                },
+                "FocusReaderNavigationAnnotations": {
+                    "description": "Perkelti klaviatūros fokusą į „Pastabos“ skiltį skaitytuvės lango naršymo skydelyje",
+                    "name": "Fokusuoti „Pastabos“"
+                },
+                "FocusReaderNavigationBookmarks": {
+                    "description": "Perkelti klaviatūros fokusą į „Skirtukai“ skiltį skaitytuvės lango naršymo skydelyje",
+                    "name": "Fokusuoti „Skirtukai“"
+                },
+                "FocusReaderNavigationSearch": {
+                    "description": "Perkelti klaviatūros fokusą į „Paieška“ skiltį skaitytuvės lango naršymo skydelyje",
+                    "name": "Fokusuoti „Paieška“"
+                },
+                "FocusReaderNavigationTOC": {
+                    "description": "Perkelti klaviatūros fokusą į „Turinys“ skiltį skaitytuvės lango naršymo skydelyje",
+                    "name": "Fokusuoti „Turinys“"
+                },
+                "FocusReaderSettings": {
+                    "description": "Perkelti klaviatūros fokusą į skaitytuvės lango nuostatų skydelį (atvaizdavimo nuostatos ir t. t.)",
+                    "name": "Fokusuoti skaitytuvės nuostatas"
+                },
+                "FocusSearch": {
+                    "description": "Perkelti klaviatūros fokusą į paieškos laukelį skaitytuvės lange arba bibliotekos lange — ieškoti lentynoje arba aktyviame OPDS sklaidos kanale",
+                    "name": "Paieškos komanda"
+                },
+                "FocusToolbar": {
+                    "description": "Perkelti klaviatūros fokusą į grafinės sąsajos gairių sritį prieš pat „praleidimo nuorodą“ (kuri pati perkelia fokusą į pagrindinę bibliotekos arba skaitytuvės lango turinio sritį)",
+                    "name": "Fokusuoti įrankių juostą"
+                },
+                "NavigateNextChapter": {
+                    "description": "Skaitytuvės lange atversti kitą dokumentą pagal leidinio skaitymo tvarką (pvz. skyrių). Atkreipkite dėmesį, kad yra alternatyvus spartusis klavišas šiam numatytajam",
+                    "name": "Eiti į kitą skyrių"
+                },
+                "NavigateNextChapterAlt": {
+                    "description": "Skaitytuvės lange atversti kitą dokumentą pagal leidinio skaitymo tvarką (pvz. skyrių). Šis spartusis klavišas yra alternatyvus numatytajam",
+                    "name": "Eiti į kitą skyrių (alternatyvus)"
+                },
+                "NavigateNextHistory": {
+                    "description": "Skaitytuvės lange peršokti vienu žingsniu į priekį naršymo istorijoje",
+                    "name": "Eiti į priekį istorijoje"
+                },
+                "NavigateNextLibraryPage": {
+                    "description": "Bibliotekos lange rodyti kitą leidinių sąrašo puslapį. Atkreipkite dėmesį, kad yra alternatyvus spartusis klavišas šiam numatytajam",
+                    "name": "Eiti į kitą bibliotekos puslapį"
+                },
+                "NavigateNextLibraryPageAlt": {
+                    "description": "Bibliotekos lange rodyti kitą leidinių sąrašo puslapį. Šis spartusis klavišas yra alternatyvus numatytajam",
+                    "name": "Eiti į kitą bibliotekos puslapį (alternatyvus)"
+                },
+                "NavigateNextOPDSPage": {
+                    "description": "Katalogų / OPDS sklaidos kanalų bibliotekos lange atverti kitą puslapiavimo nuorodą. Atkreipkite dėmesį, kad yra alternatyvus spartusis klavišas šiam numatytajam",
+                    "name": "Eiti į kitą OPDS puslapį"
+                },
+                "NavigateNextOPDSPageAlt": {
+                    "description": "Katalogų / OPDS sklaidos kanalų bibliotekos lange atverti kitą puslapiavimo nuorodą. Šis spartusis klavišas yra alternatyvus numatytajam",
+                    "name": "Eiti į kitą OPDS puslapį (alternatyvus)"
+                },
+                "NavigateNextPage": {
+                    "description": "Skaitytuvės lange atversti kitą leidinio „puslapį“. Atkreipkite dėmesį, kad yra alternatyvus spartusis klavišas šiam numatytajam",
+                    "name": "Eiti į kitą puslapį"
+                },
+                "NavigateNextPageAlt": {
+                    "description": "Skaitytuvės lange atversti kitą leidinio „puslapį“. Šis spartusis klavišas yra alternatyvus numatytajam",
+                    "name": "Eiti į kitą puslapį (alternatyvus)"
+                },
+                "NavigatePreviousChapter": {
+                    "description": "Skaitytuvės lange atversti ankstesnį dokumentą pagal leidinio skaitymo tvarką (pvz. skyrių). Atkreipkite dėmesį, kad yra alternatyvus spartusis klavišas šiam numatytajam",
+                    "name": "Eiti į ankstesnį skyrių"
+                },
+                "NavigatePreviousChapterAlt": {
+                    "description": "Skaitytuvės lange atversti ankstesnį dokumentą pagal leidinio skaitymo tvarką (pvz. skyrių). Šis spartusis klavišas yra alternatyvus numatytajam",
+                    "name": "Eiti į ankstesnį skyrių (alternatyvus)"
+                },
+                "NavigatePreviousHistory": {
+                    "description": "Skaitytuvės lange peršokti vienu žingsniu atgal naršymo istorijoje",
+                    "name": "Eiti atgal istorijoje"
+                },
+                "NavigatePreviousLibraryPage": {
+                    "description": "Bibliotekos lange rodyti ankstesnį leidinių sąrašo puslapį. Atkreipkite dėmesį, kad yra alternatyvus spartusis klavišas šiam numatytajam",
+                    "name": "Eiti į ankstesnį bibliotekos puslapį"
+                },
+                "NavigatePreviousLibraryPageAlt": {
+                    "description": "Bibliotekos lange rodyti ankstesnį leidinių sąrašo puslapį. Šis spartusis klavišas yra alternatyvus numatytajam",
+                    "name": "Eiti į ankstesnį bibliotekos puslapį (alternatyvus)"
+                },
+                "NavigatePreviousOPDSPage": {
+                    "description": "Katalogų / OPDS sklaidos kanalų bibliotekos lange atverti ankstesnę puslapiavimo nuorodą. Atkreipkite dėmesį, kad yra alternatyvus spartusis klavišas šiam numatytajam",
+                    "name": "Eiti į ankstesnį OPDS puslapį"
+                },
+                "NavigatePreviousOPDSPageAlt": {
+                    "description": "Katalogų / OPDS sklaidos kanalų bibliotekos lange atverti ankstesnę puslapiavimo nuorodą. Šis spartusis klavišas yra alternatyvus numatytajam",
+                    "name": "Eiti į ankstesnį OPDS puslapį (alternatyvus)"
+                },
+                "NavigatePreviousPage": {
+                    "description": "Skaitytuvės lange atversti ankstesnį leidinio „puslapį“. Atkreipkite dėmesį, kad yra alternatyvus spartusis klavišas šiam numatytajam",
+                    "name": "Eiti į ankstesnį puslapį"
+                },
+                "NavigatePreviousPageAlt": {
+                    "description": "Skaitytuvės lange atversti ankstesnį leidinio „puslapį“. Šis spartusis klavišas yra alternatyvus numatytajam",
+                    "name": "Eiti į ankstesnį puslapį (alternatyvus)"
+                },
+                "NavigateToBegin": {
+                    "description": "Skaitytuvės lange eiti į leidinio pradžią",
+                    "name": "Eiti į pradžią"
+                },
+                "NavigateToEnd": {
+                    "description": "Skaitytuvės lange eiti į leidinio pabaigą",
+                    "name": "Eiti į pabaigą"
+                },
+                "OpenReaderInfo": {
+                    "description": "Skaitytuvės lange atverti leidinio informacijos dialogo langą",
+                    "name": "Rodyti leidinio informaciją"
+                },
+                "OpenReaderInfoWhereAmI": {
+                    "description": "Skaitytuvės lange atverti iššokantį dialogo langą, kuriame atvaizduojama informacija apie leidinį, ir sufokusuoti klaviatūrą į sritį, kurioje rodomas dabartinės skaitymo vietos kontekstas",
+                    "name": "Rodyti leidinio informaciją, rodyti skaitymo vietą"
+                },
+                "Print": {
+                    "description": "Skaitytuvės lange atverti spausdinimo dialogo langą",
+                    "name": "Spausdinti"
+                },
+                "SearchNext": {
+                    "description": "Skaitytuvės lango paieškos įrankyje eiti į kitą paieškos rezultatą. Atkreipkite dėmesį, kad yra alternatyvus spartusis klavišas šiam numatytajam",
+                    "name": "Tolesnis paieškos rezultatas"
+                },
+                "SearchNextAlt": {
+                    "description": "Skaitytuvės lango paieškos įrankyje eiti į kitą paieškos rezultatą. Šis spartusis klavišas yra alternatyvus numatytajam",
+                    "name": "Tolesnis paieškos rezultatas (alternatyvus)"
+                },
+                "SearchPrevious": {
+                    "description": "Skaitytuvės lango paieškos įrankyje eiti į ankstesnį paieškos rezultatą. Atkreipkite dėmesį, kad yra alternatyvus spartusis klavišas šiam numatytajam",
+                    "name": "Ankstesnis paieškos rezultatas"
+                },
+                "SearchPreviousAlt": {
+                    "description": "Skaitytuvės lango paieškos įrankyje eiti į ankstesnį paieškos rezultatą. Šis spartusis klavišas yra alternatyvus numatytajam",
+                    "name": "Ankstesnis paieškos rezultatas (alternatyvus)"
+                },
+                "SpeakReaderInfoWhereAmI": {
+                    "description": "Skaitytuvės lange apibūdinti dabartinės skaitymo vietos kontekstą naudojant su ekrano skaitytuvais suderinamą tekstą",
+                    "name": "Apibūdinti skaitymo vietą (balsu)"
+                },
+                "ToggleBookmark": {
+                    "description": "Pridėti naują skirtuką arba šalinti egzistuojantį, jei jis šiuo metu pažymėtas",
+                    "name": "Perjungti skirtuką"
+                },
+                "ToggleReaderFullscreen": {
+                    "description": "Skaitytuvės lange įjungti sistemos viso ekrano režimą arba atkurti įprastą lango režimą. Atkreipkite dėmesį, jog tai skiriasi nuo „zen“ režimo, kuris supaprastina naudotojo sąsają",
+                    "name": "Perjungti viso ekrano režimą"
+                }
+            },
             "loadUserJson": "Įkelti iš naudotojo failo",
+            "noShortcutFound": "Sparčiųjų klavišų su tokia etikete nerasta",
             "resetDefaults": "Atkurti numatytuosius",
-            "save": "Įrašyti"
+            "save": "Įrašyti",
+            "searchPlaceholder": "Įveskite, kad ieškotumėte sparčiojo klavišo"
         },
         "language": {
             "languageChoice": "Kalba"
@@ -867,10 +1146,23 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "",
-                "enableCheckbox": "",
-                "overrideHTMLTemplate": ""
+                "applyDefaultTemplate": "Įkelti numatytąjį šabloną",
+                "enableCheckbox": "Tinkinti HTML šabloną",
+                "overrideHTMLTemplate": "Užrašų eksportavimas (pastabos ir skirtukai)"
             }
+        },
+        "profiles": {
+            "info": "Perjunkite profilius, kad pritaikytumėte programą pagal tiekėjo partnerio prekės ženklą ir spalvas. Kiekvienas profilis siūlo individualiai pritaikytą patirtį.",
+            "thorium": {
+                "description": "„Thorium Vanilla“ profilis yra originalus, sukurtas „EDRLab“.",
+                "title": "Thorium Vanilla"
+            },
+            "version": "Versija: {{- version}}"
+        },
+        "screenReaderActivate": {
+            "help": "Kai programa aptinka naudojamas pagalbines technologijas, vartotojo sąsaja geriau veikia su ekrano skaitytuvais",
+            "message": "Patobulintas ekrano skaitytuvų palaikymas",
+            "title": "Pagerinkite ekrano skaitytuvo patirtį"
         },
         "session": {
             "title": "Įgalinti sesijos išsaugojimą"
@@ -878,7 +1170,8 @@
         "tabs": {
             "appearance": "Išvaizda",
             "general": "Bendros",
-            "keyboardShortcuts": "Spartieji klavišai"
+            "keyboardShortcuts": "Spartieji klavišai",
+            "profiles": "Profiliai"
         },
         "theme": {
             "auto": "Automatinė",
@@ -922,7 +1215,7 @@
             "catalogs": "Pasiskolinkite leidinius iš savo vietinės bibliotekos bei atraskite leidinius OPDS sklaidos kanaluose. Internetinių katalogų dėka gaukite prieigą prie gausybės leidinių iš skirtingų šaltinių.",
             "home": "Thorium atrodo kitaip! Sužinokite, kas naujo...",
             "readingView1": "Tinkinkite savo skaitymo ir klausymosi nuostatas: nuo šiol Thorium siūlo keletą spalvų temų naudotojo sąsajai bei leidinių dokumentams. Dabar taip pat tapo lengviau konfigūruoti „readaloud“ el. knygas su sintetinio balso ir sinchronizuoto teksto/garso skaitymu.",
-            "readingView2": "Patobulinta Thorium naudotojo sąsaja leidžia lengviau rasti tekstą leidiniuose, peržvelgti paieškos rezultatus, atversti tam tikrą puslapį, naršyti turinyje, kurti žymes ir t.t. naujų „pritvirtintų“ skydelių dėka, o viso ekrano skaitymo režimas ir toliau suteikia aplinką be dėmesio išblaškymo.",
+            "readingView2": "Patobulinta Thorium naudotojo sąsaja leidžia lengviau rasti tekstą leidiniuose, peržvelgti paieškos rezultatus, atversti tam tikrą puslapį, naršyti turinyje, kurti skirtukus ir t.t. naujų „pritvirtintų“ skydelių dėka, o viso ekrano skaitymo režimas ir toliau suteikia aplinką be dėmesio išblaškymo.",
             "yourBooks": "Su jumis sveikinasi iš naujo suprojektuota asmeninė knygų lentyna! „Tinklelio“ peržiūros režime be vargo galėsite filtruoti pagal žymes arba rasti leidinius pagal raktinius žodžius. „Sąrašo“ režime galėsite peržiurėti, pažymėti ir rikiuoti leidinius pagal konkretų autorių, pavadinimą, datą, formatą ir t.t."
         },
         "dontShow": "Daugiau neberodyti",
@@ -936,7 +1229,7 @@
         "title": {
             "allBooks": "Visi mano leidiniai",
             "newFeature": "Nauja funkcija: Pastabos",
-            "welcome": "Su jumis sveikinasi Thorium 3.0"
+            "welcome": "Su jumis sveikinasi Thorium 3"
         }
     }
 }

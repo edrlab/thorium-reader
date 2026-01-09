@@ -30,6 +30,7 @@ import * as ChevronRight from "readium-desktop/renderer/assets/icons/chevron-rig
 interface IBaseProps extends TranslatorProps {
     pageLinks?: IOpdsResultView["links"];
     pageInfo?: IOpdsResultView["metadata"];
+    opdsGroupsFound?: boolean;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -73,7 +74,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
         const element = this.fixedElementRef.current;
         const container = document.getElementById("opds_browserResults");
         const cardWrapper = document.getElementById("card_wrapper");
-        if (cardWrapper.scrollHeight >container.clientHeight) {
+        if (cardWrapper.scrollHeight >container.clientHeight || this.props.opdsGroupsFound) {
           element.style.position = "unset";
         } else {
           element.style.position = "fixed";
@@ -107,7 +108,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                     pathname: buildRoute(pageLinks.first[0]),
                                 }}
                                 onClick={(e) => {
-                                    if (e.altKey || e.shiftKey || e.ctrlKey) {
+                                    if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                                         e.preventDefault();
                                         e.currentTarget.click();
                                     }
@@ -151,7 +152,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                         pathname: buildRoute(pageLinks.previous[0]),
                                     }}
                                     onClick={(e) => {
-                                        if (e.altKey || e.shiftKey || e.ctrlKey) {
+                                        if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                                             e.preventDefault();
                                             e.currentTarget.click();
                                         }
@@ -221,7 +222,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                     pathname: buildRoute(pageLinks.next[0]),
                                 }}
                                 onClick={(e) => {
-                                    if (e.altKey || e.shiftKey || e.ctrlKey) {
+                                    if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                                         e.preventDefault();
                                         e.currentTarget.click();
                                     }
@@ -262,7 +263,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
                                         pathname: buildRoute(pageLinks.last[0]),
                                     }}
                                     onClick={(e) => {
-                                        if (e.altKey || e.shiftKey || e.ctrlKey) {
+                                        if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                                             e.preventDefault();
                                             e.currentTarget.click();
                                         }

@@ -16,11 +16,11 @@
     }
 
     &_docked_left {
-        left: 352px;
+        left: 372px;
     }
 
     &_docked_right {
-        right: 353px;
+        right: 373px;
     }
 }
 
@@ -29,11 +29,13 @@
     width: 50px;
     z-index: 1;
 
-    &:hover {
-        button {
-            opacity: 1 !important;
-        }
+    &:not(.isPaginated) button {
+      opacity: 0;
     }
+}
+
+:root.R2_CSS_CLASS__KEYBOARD_INTERACT .arrows button:focus {
+    opacity: 1 !important;
 }
 
 .arrows button {
@@ -44,8 +46,12 @@
     z-index: 10;
     transition: 200ms;
 
+    &:hover {
+        opacity: 1 !important;
+    }
+
     svg {
-        fill: var(--color-blue);
+        fill: var(--color-brand-primary);
 
         // @media (prefers-color-scheme: dark) {
         //     fill: #FEFEFE;
@@ -58,8 +64,8 @@
     position: relative;
     width: 100%;
     height: 10px;
-    background-color: var(--color-extralight-grey);
-    border: 1px solid var(--color-verylight-grey);
+    background-color: var(--color-gray-50);
+    border: 1px solid var(--color-gray-200);
     border-radius: 6px;
     overflow: hidden;
 }
@@ -71,7 +77,7 @@
     cursor: pointer;
     margin: 0;
 }
-  
+
 
 .reader_footer {
     position: fixed;
@@ -105,7 +111,7 @@
         margin: 0 10px;
 
         svg {
-            color: var(--color-blue);
+            color: var(--color-brand-primary);
 
             // @media (prefers-color-scheme: dark) {
             //     fill: #FEFEFE;
@@ -115,17 +121,17 @@
 
         &.disabled {
             cursor: not-allowed;
-            background-color: var(--color-verylight-grey);
+            background-color: var(--color-gray-200);
 
             svg {
-                color: var(--color-dark-grey);
-                fill: var(--color-dark-grey);
+                color: var(--color-gray-900);
+                fill: var(--color-gray-900);
             }
         }
     }
 
         & svg {
-        fill: var(--reader-fontColor);
+        fill: var(--color-text-reader);
         opacity: 1;
         transform: scale(0.8);
         }
@@ -150,10 +156,10 @@
     & .track_reading_wrapper {
         padding: 1rem 5rem 1rem 8rem;
         bottom: 0;
-        
+
         // margin-top: 1rem;
-        color: var(--color-primary);
-        background-color: var(--color-secondary);
+        color: var(--color-text-primary);
+        background-color: var(--color-neutral-base);
     }
 
     & .track_reading_wrapper_noArrows {
@@ -165,14 +171,14 @@
 
 [data-theme="dark"] {
     .reader_footer .history button svg {
-        color: var(--color-primary);
+        color: var(--color-text-primary);
     }
 }
 
 [data-theme="system"] {
     @media (prefers-color-scheme: dark) {
         .reader_footer .history button svg {
-        color: var(--color-primary);
+        color: var(--color-text-primary);
         }
     }
 }
@@ -212,15 +218,15 @@
 
     &:hover {
         span:has(span) {
-            border-left: 1px solid var(--color-extralight-grey);
+            border-left: 1px solid var(--color-gray-50);
 
             span {
-                border-left: 1px solid var(--color-extralight-grey);
+                border-left: 1px solid var(--color-gray-50);
             }
         }
 
         span {
-            border-left: 1px solid var(--color-blue);
+            border-left: 1px solid var(--color-brand-primary);
         }
     }
 
@@ -234,7 +240,7 @@
         }
 
         &:hover {
-            outline: var(--color-blue) solid 1px;
+            outline: var(--color-brand-primary) solid 1px;
             z-index: 10;
             outline-offset: 0;
             background-color: rgb(255 255 255 / 90%);
@@ -248,7 +254,7 @@
     &.more_information > span {
         &.currentSpineItem {
             border-radius: 6px;
-            outline: var(--color-blue) solid 1px;
+            outline: var(--color-brand-primary) solid 1px;
             outline-offset: 0;
             background-color: white;
 
@@ -265,7 +271,7 @@
 
         & > span {
         display: block;
-        background-color: var(--color-blue);
+        background-color: var(--color-brand-primary);
         width: 100%;
         height: 100%;
         }
@@ -280,7 +286,7 @@
     z-index: 1000;
 
     span {
-        fill: var(--color-light-grey);
+        fill: var(--color-gray-300);
     }
 }
 
@@ -288,12 +294,12 @@
 width: fit-content;
 height: auto;
 padding: 10px 5px 5px;
-background: var(--color-secondary);
-border: 1px solid var(--color-medium-grey);
+background: var(--color-neutral-base);
+border: 1px solid var(--color-gray-400);
 font-size: 16px;
-color: var(--color-primary);
+color: var(--color-text-primary);
 text-align: left;
-// box-shadow: 0 3px 2px 0 var(--color-medium-grey);
+// box-shadow: 0 3px 2px 0 var(--color-gray-400);
 
 
 & span {

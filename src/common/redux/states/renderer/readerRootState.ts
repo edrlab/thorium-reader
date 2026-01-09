@@ -22,16 +22,19 @@ import { IAnnotationModeState /*TAnnotationState,*/ } from "./annotation";
 import { ITTSState } from "readium-desktop/renderer/reader/redux/state/tts";
 import { IMediaOverlayState } from "readium-desktop/renderer/reader/redux/state/mediaOverlay";
 import { IAllowCustomConfigState } from "readium-desktop/renderer/reader/redux/state/allowCustom";
-import { ICacheDocument } from "./resourceCache";
 import { IImageClickState } from "readium-desktop/renderer/reader/redux/state/imageClick";
 import { DockState } from "../dock";
 import { IBookmarkTotalCountState } from "readium-desktop/renderer/reader/redux/state/bookmarkTotalCount";
 import { INoteState } from "./note";
 
+export interface IReaderPdfConfig{
+        scale: "page-fit" | "page-width" | number;
+        spreadmode: 0 | 1 | 2;
+    }
+
 export interface IReaderRootState extends IRendererCommonRootState {
     reader: IReaderStateReader;
     search: ISearchState;
-    resourceCache: ICacheDocument[];
     mode: ReaderMode;
     annotation: IAnnotationModeState;
     noteTagsIndex: Array<{ tag: string, index: number }>;
@@ -61,6 +64,8 @@ export interface IReaderStateReader {
     transientConfig: ReaderConfigPublisher;
     noteTotalCount: IBookmarkTotalCountState;
 
+    pdfConfig: IReaderPdfConfig;
+
 
     // got the lock
     // acquired on first reader opened with the same publication UUID instance
@@ -69,6 +74,6 @@ export interface IReaderStateReader {
     lock: boolean;
 }
 
-export type IReaderStateReaderPersistence = Pick<IReaderStateReader, "config" | "locator" | "divina" | "disableRTLFlip" | "note" | "allowCustomConfig" | "noteTotalCount">;
-export type IReaderStateReaderSession = Partial<IReaderStateReaderPersistence> & Pick<IReaderStateReader, "lock" | "info">;
+export type IReaderStateReaderPersistence = Pick<IReaderStateReader, "config" | "locator" | "divina" | "disableRTLFlip" | "allowCustomConfig" | "noteTotalCount" | "pdfConfig">;
+export type IReaderStateReaderSession = Partial<IReaderStateReaderPersistence> & Pick<IReaderStateReader, "lock" | "info" | "note">;
 export type IReaderStateReaderHydration = IRendererCommonRootStateHydration & { reader: IReaderStateReaderSession };

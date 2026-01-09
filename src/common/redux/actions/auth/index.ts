@@ -8,9 +8,11 @@
 import * as wipeData from "./wipeData";
 import * as done from "./done";
 import * as cancel from "./cancel";
+import * as logout from "./logout";
 
 export {
     done,
     wipeData,
     cancel,
+    logout,
 };

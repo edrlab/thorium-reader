@@ -7,7 +7,7 @@
 
 import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";

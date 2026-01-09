@@ -7,7 +7,7 @@
 
 import { KeyboardEvent, BaseWindow, BrowserWindow, Menu, MenuItem, webContents } from "electron";
 import {
-    _APP_NAME, _CONTINUOUS_INTEGRATION_DEPLOY, IS_DEV,
+    _APP_NAME,
 } from "readium-desktop/preprocessor-directives";
 
 import { showLibrary } from "./tools/showLibrary";
@@ -30,7 +30,7 @@ export function setMenu(win: BrowserWindow, isReaderView: boolean) {
 
 function devMenu(win: BrowserWindow, _isReaderView: boolean): Electron.MenuItemConstructorOptions {
     // Thorium now exposes the same debugging tools in CI buids as in command-line developer builds
-    // if (_CONTINUOUS_INTEGRATION_DEPLOY) {
+    // if (__TH__IS_CI__) {
     //     return {
     //         label: "EPUB DEBUG",
     //         submenu: [
@@ -140,7 +140,7 @@ function devMenu(win: BrowserWindow, _isReaderView: boolean): Electron.MenuItemC
 }
 
 function setMenuWindowsLinux(win: BrowserWindow, isReaderView: boolean) {
-    if (IS_DEV || (isReaderView && _CONTINUOUS_INTEGRATION_DEPLOY)) {
+    if (__TH__IS_DEV__ || (isReaderView && __TH__IS_CI__)) {
         const template: Electron.MenuItemConstructorOptions[] = [];
         template.push(devMenu(win, isReaderView));
 
@@ -263,8 +263,8 @@ function setMenuDarwin(win: BrowserWindow, isReaderView: boolean) {
         },
     ];
     // isReaderView never invoked because single app-wide menu, does not depend on BrowserWindows
-    // if (IS_DEV || (isReaderView && _CONTINUOUS_INTEGRATION_DEPLOY)) {
-    if (IS_DEV || _CONTINUOUS_INTEGRATION_DEPLOY) {
+    // if (__TH__IS_DEV__ || (isReaderView && __TH__IS_CI__)) {
+    if (__TH__IS_DEV__ || __TH__IS_CI__) {
         template.push(devMenu(win, isReaderView));
     }
     Menu.setApplicationMenu(Menu.buildFromTemplate(template));

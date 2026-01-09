@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { app, dialog, shell } from "electron";
 import { keyboardActions, versionUpdateActions } from "readium-desktop/common/redux/actions";
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
@@ -35,9 +35,11 @@ import * as telemetry from "./telemetry";
 import * as lcp from "./lcp";
 import * as catalog from "./catalog";
 import * as annotation from "./note";
+import * as customization from "./customization";
 
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { getTranslator } from "readium-desktop/common/services/translator";
+import { sagaCustomizationProfileProvisioning } from "./customization";
+import isURL from "validator/lib/isURL";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -59,6 +61,7 @@ export function* rootSaga() {
             // wait for the app.whenReady()
             call(appSaga.init),
             call(keyboardShortcuts.init),
+            call(sagaCustomizationProfileProvisioning),
         ]);
 
     } catch (e) {
@@ -74,6 +77,9 @@ export function* rootSaga() {
 
         app.exit(code);
     }
+
+    // customization profile acquire, provisioned and activate
+    yield customization.saga();
 
     // watch all electon exit event
     yield appSaga.exit();
@@ -171,11 +177,11 @@ function* checkAppVersionUpdate() {
     // Correct HTTP header content-type, but reliance on GitHack servers:
     // const JSON_URL = `https://raw.githack.com/edrlab/thorium-reader/${BRANCH}/latest.json`;
     try {
-        let version = IS_DEV ? yield* selectTyped((state: RootState) => state.version) : null;
+        let version = __TH__IS_DEV__ ? yield* selectTyped((state: RootState) => state.version) : null;
         // src/common/redux/reducers/version.ts
         // version is null (initial state) or current _APP_VERSION (package.json version)
         // telemetry.collectSaveAndSend (prev_version handling) is called before appActions.initSuccess, and finally this checkAppVersionUpdate Saga is called after appActions.initSuccess
-        if (IS_DEV && _APP_VERSION !== version) {
+        if (__TH__IS_DEV__ && _APP_VERSION !== version) {
             // at that point, this should never happen (see Saga order described in comment above)
             debug("VERSION MISMATCH (checkAppVersionUpdate): ", _APP_VERSION, " !== ", version);
         }
@@ -192,6 +198,11 @@ function* checkAppVersionUpdate() {
             // headers.append("user-agent", "readium-desktop");
             // headers.append("accept-language", `${locale},en-US;q=0.7,en;q=0.5`);
 
+            // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
+            if (!url || !isURL(url)) {
+                debug("isURL() NOK", url);
+                return undefined;
+            }
             const res = await httpGet(url,
                 // { headers },
             );
@@ -238,7 +249,7 @@ function* checkAppVersionUpdate() {
 
                     yield put(versionUpdateActions.notify.build(json.version, json.url));
 
-                    if (IS_DEV) {
+                    if (__TH__IS_DEV__) {
                         yield call(async () => {
 
                             const translate = getTranslator().translate;
@@ -258,7 +269,9 @@ function* checkAppVersionUpdate() {
                                 normalizeAccessKeys: false,
                             });
                             if (res.response === 0) {
-                                await shell.openExternal(json.url);
+                                if (json.url && /^https?:\/\//.test(json.url)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
+                                    await shell.openExternal(json.url);
+                                }
                             }
                         });
                     }

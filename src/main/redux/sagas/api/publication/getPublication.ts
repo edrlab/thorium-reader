@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { call as callTyped } from "typed-redux-saga/macro";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
@@ -34,6 +34,7 @@ export function* getPublication(identifier: string, checkLcpLsd = false) {
 
     try {
         if (checkLcpLsd && doc.lcp) {
+            // DOES NOT MUTATE doc (returns a modified copy)
             doc = yield* callTyped(() => lcpManager.checkPublicationLicenseUpdate(doc));
         }
     } catch (e) {

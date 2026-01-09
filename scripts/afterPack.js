@@ -53,7 +53,8 @@ module.exports = async function afterPack(context) {
         [FuseV1Options.RunAsNode]: false, // ELECTRON_RUN_AS_NODE
 
         // EnableCookieEncryption = 1,
-        [FuseV1Options.EnableCookieEncryption]: false, // TODO: make this TRUE
+        // https://www.electron.build/tutorials/adding-electron-fuses.html#enablecookieencryption
+        [FuseV1Options.EnableCookieEncryption]: true, // TODO: make this TRUE
 
         // EnableNodeOptionsEnvironmentVariable = 2,
         [FuseV1Options.EnableNodeOptionsEnvironmentVariable]: false, // NODE_OPTIONS + NODE_EXTRA_CA_CERTS
@@ -65,7 +66,21 @@ module.exports = async function afterPack(context) {
         // https://github.com/electron/fuses/issues/7
         // https://github.com/electron-userland/electron-builder/pull/8245
         // https://github.com/electron-userland/electron-builder/issues/6930
-        [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: false,
+        // https://www.electronjs.org/docs/latest/tutorial/asar-integrity
+        // https://www.electron.build/tutorials/adding-electron-fuses.html#enableembeddedasarintegrityvalidation
+        // https://github.com/advisories/GHSA-vmqv-hx8q-j7mg
+        // https://advisories.gitlab.com/pkg/npm/electron/CVE-2023-44402/
+        // https://infosecwriteups.com/electron-js-asar-integrity-bypass-431ac4269ed5 --- https://blog.souravkalal.tech/electron-js-asar-integrity-bypass-431ac4269ed5
+        // https://karol-mazurek.medium.com/cracking-electron-integrity-0a10e0d5f239
+        // https://github.com/Just-Hack-For-Fun/Electron-Security
+        // https://doyensec.com/resources/us-17-Carettoni-Electronegativity-A-Study-Of-Electron-Security.pdf
+        // npx electron-fuses read --app /PATH/TO/Thorium.app/Contents/MacOS/Thorium
+        // node -e "const filePath = process.argv[1]; console.log(filePath, require('crypto').createHash('sha256').update(require('@electron/asar').getRawHeader(filePath).headerString).digest('hex'))" /PATH/TO/Thorium.app/Contents/Resources/app.asar
+        // npx asar e /PATH/TO/Thorium.app/Contents/Resources/app.asar /PATH/TO/ASAR-EXTRACTED/
+        // modify ASAR manifest, for example edit `/PATH/TO/ASAR-EXTRACTED/main.js`
+        // npx asar p /PATH/TO/ASAR-EXTRACTED/ /PATH/TO/Thorium.app/Contents/Resources/app.asar
+        // DOES NOT WORK ON MACOS ARM and INTEL (`strings` empty in 50KB executable binary): xxd /PATH/TO/Thorium.app/Contents/MacOS/Thorium | sed 's/OLD_SHA/NEW_SHA/' | xxd -r > /PATH/TO/Thorium.app/Contents/MacOS/Thorium
+        [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
 
         // OnlyLoadAppFromAsar = 5,
         [FuseV1Options.OnlyLoadAppFromAsar]: true,
