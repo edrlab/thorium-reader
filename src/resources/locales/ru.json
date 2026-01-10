@@ -1138,7 +1138,8 @@
             "noShortcutFound": "Горячая клавиша с этой меткой не найдена",
             "resetDefaults": "Сбросить (загрузка по умолчанию)",
             "save": "Сохранить",
-            "searchPlaceholder": "Введите текст для поиска горячей клавиши"
+            "searchPlaceholder": "Введите текст для поиска горячей клавиши",
+            "exportToHTML": "Экспорт в HTML"
         },
         "language": {
             "languageChoice": "Выбор языка"
