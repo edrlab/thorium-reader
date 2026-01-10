@@ -152,7 +152,7 @@
         "customization": {
             "splashscreen": {
                 "fallbackWelcomeScreen": "",
-                "state": "",
+                "state": "狀態： {{- state}}",
                 "title": ""
             }
         },
@@ -199,7 +199,7 @@
             "open": "開啟",
             "password": "密碼",
             "sentence": "此出版物需要 LCP 密碼才能打開",
-            "urlHint": "忘記密碼？按此處取得幫助",
+            "urlHint": "忘記密碼？按此處取得幫助。",
             "whatIsLcp?": "什麼是 LCP？",
             "whatIsLcpInfoDetails": "LCP 代表「許可內容保護」。",
             "whatIsLcpInfoDetailsLink": "要了解更多訊息，請點擊連結前往 EDRLab。"
@@ -218,14 +218,14 @@
             "error": "下載 [{{- title}}] 失敗：[{{- err}}]"
         },
         "import": {
-            "alreadyImport": "{{- title}} 已被匯入",
+            "alreadyImport": "{{- title}} 已被匯入。",
             "fail": "匯入 [{{- path}}] 失敗：[{{- err}}]",
             "success": "匯入 [{{- title}}] 完成。"
         },
         "open": {
             "error": "無法打開出版物：[{{- err}}]"
         },
-        "wipeData": ""
+        "wipeData": "登入資料已清除（帳號token和 cookies）"
     },
     "opds": {
         "addForm": {
@@ -432,11 +432,11 @@
                 "descriptive": ""
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "聲音",
+                "descriptive": "發行物（書籍）可能包含會覺得不舒服的聲音"
             },
             "hazards-sound-none": {
-                "compact": "",
+                "compact": "無聲",
                 "descriptive": ""
             },
             "hazards-sound-unknown": {
