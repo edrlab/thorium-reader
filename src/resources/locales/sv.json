@@ -67,9 +67,9 @@
         "customization": {
             "fallback": {
                 "description": "Profilen saknar beskrivning",
-                "publications": "",
+                "publications": "Profilpublikationer",
                 "screen": "Ingen titel",
-                "title": ""
+                "title": "Profilnamn"
             }
         },
         "delete": "Ta bort",
