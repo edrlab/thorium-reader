@@ -358,12 +358,12 @@
                 "descriptive": "Η δημοσίευση αυτή ισχυρίζεται ότι ανταποκρίνεται"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "EPUB Accessibility 1.0",
-                "descriptive": "EPUB Accessibility 1.0"
+                "compact": "EPUB Προσβασιμότητα 1.0",
+                "descriptive": "EPUB Προσβασιμότητα 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "EPUB Accessibility 1.1",
-                "descriptive": "EPUB Accessibility 1.1"
+                "compact": "EPUB Προσβασιμότητα 1.1",
+                "descriptive": "EPUB Προσβασιμότητα 1.1"
             },
             "conformance-details-level-a": {
                 "compact": "Επίπεδο A",
@@ -382,11 +382,11 @@
             },
             "conformance-details-wcag-2-1": {
                 "compact": "WCAG 2.1",
-                "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.1"
+                "descriptive": "Οδηγίες προσβασιμότητας περιεχομένου Web (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
                 "compact": "WCAG 2.2",
-                "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.2"
+                "descriptive": "Οδηγίες προσβασιμότητας περιεχομένου Web (WCAG) 2.2"
             },
             "conformance-no": {
                 "compact": "Καμία διαθέσιμη πληροφορία",
@@ -1138,7 +1138,8 @@
             "noShortcutFound": "Δεν βρέθηκε συντόμευση με αυτήν την ετικέτα",
             "resetDefaults": "Επαναφορά (φόρτωση προεπιλογών)",
             "save": "Αποθήκευση",
-            "searchPlaceholder": "Πληκτρολογήστε για αναζήτηση συντόμευσης"
+            "searchPlaceholder": "Πληκτρολογήστε για αναζήτηση συντόμευσης",
+            "exportToHTML": "Εξαγωγή σε HTML"
         },
         "language": {
             "languageChoice": "Γλώσσα"
