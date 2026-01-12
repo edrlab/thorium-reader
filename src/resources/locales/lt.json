@@ -1138,7 +1138,8 @@
             "noShortcutFound": "Sparčiųjų klavišų su tokia etikete nerasta",
             "resetDefaults": "Atkurti numatytuosius",
             "save": "Įrašyti",
-            "searchPlaceholder": "Įveskite, kad ieškotumėte sparčiojo klavišo"
+            "searchPlaceholder": "Įveskite, kad ieškotumėte sparčiojo klavišo",
+            "exportToHTML": "Eksportuoti į HTML"
         },
         "language": {
             "languageChoice": "Kalba"
