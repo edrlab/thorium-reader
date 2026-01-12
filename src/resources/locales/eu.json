@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "Honi buruz {{appName}}"
         },
@@ -128,6 +129,7 @@
         "publisher": "Editorea",
         "readBook": "Irakurri",
         "released": "Hemen argitaratua",
+        "removeFromFavorites": "",
         "sort": "Ordenatu honen arabera",
         "tag": "Etiketa",
         "tags": "Etiketak",
@@ -908,6 +910,7 @@
             "cancel": "Indargabetu ",
             "disclaimer": "Lasterbideak QWERTY teklatuaren diseinutik definitu ziren.",
             "editUserJson": "Editatu erabiltzaile-fitxategia",
+            "exportToHTML": "",
             "keyboardShortcuts": "Teklatuko lasterbideak",
             "list": {
                 "AddBookmarkWithLabel": {

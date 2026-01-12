@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "O {{- appName}}"
         },
@@ -128,6 +129,7 @@
         "publisher": "Izdavač",
         "readBook": "Čitaj",
         "released": "Datum izdavanja",
+        "removeFromFavorites": "",
         "sort": "Sortiraj po",
         "tag": "",
         "tags": "Oznake",
@@ -908,6 +910,7 @@
             "cancel": "Poništi",
             "disclaimer": "",
             "editUserJson": "Uredi dokument korisnika...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Prečaci na tipkovnici",
             "list": {
                 "AddBookmarkWithLabel": {

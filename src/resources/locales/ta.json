@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "பற்றி {{- appName}} (ஆன்லைன்)"
         },
@@ -128,6 +129,7 @@
         "publisher": "வெளியீட்டாளர்",
         "readBook": "படிக்க",
         "released": "வெளியிடப்பட்டது",
+        "removeFromFavorites": "",
         "sort": "வரிசைப்படுத்தவும்",
         "tag": "குறிச்சொல்",
         "tags": "குறிச்சொற்கள்",
@@ -908,6 +910,7 @@
             "cancel": "ரத்துசெய்",
             "disclaimer": "பயன்பாட்டு இயல்புநிலைகள் qwerty தளவமைப்பில் விசைகளின் இயற்பியல் இருப்பிடத்தின் அடிப்படையில் வடிவமைக்கப்பட்டன",
             "editUserJson": "பயனர் கோப்பைத் திருத்து ...",
+            "exportToHTML": "",
             "keyboardShortcuts": "விசைப்பலகை குறுக்குவழிகள்",
             "list": {
                 "AddBookmarkWithLabel": {

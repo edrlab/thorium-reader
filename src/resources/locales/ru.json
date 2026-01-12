@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "О приложении {{- appName}} (он-лайн)"
         },
@@ -128,6 +129,7 @@
         "publisher": "Издатель",
         "readBook": "Читать",
         "released": "Дата издания",
+        "removeFromFavorites": "",
         "sort": "Сортировать по",
         "tag": "Тег",
         "tags": "Теги",
@@ -908,6 +910,7 @@
             "cancel": "Отменить",
             "disclaimer": "Настройки приложения по умолчанию были разработаны на основе физического расположения клавиш на раскладке QWERTY",
             "editUserJson": "Редактировать файл пользователя...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Горячие клавиши",
             "list": {
                 "AddBookmarkWithLabel": {

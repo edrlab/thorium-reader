@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "Sobre {{- appName}} (em linha)"
         },
@@ -128,6 +129,7 @@
         "publisher": "Editora",
         "readBook": "Ler",
         "released": "Publicado em",
+        "removeFromFavorites": "",
         "sort": "Ordenar por",
         "tag": "Etiquetar",
         "tags": "Etiquetas",
@@ -908,6 +910,7 @@
             "cancel": "Cancelar",
             "disclaimer": "Os padrões da aplicação foram definidos com base na disposição de um teclado QWERTY",
             "editUserJson": "Editar ficheiro de utilizador...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Atalhos de teclado",
             "list": {
                 "AddBookmarkWithLabel": {

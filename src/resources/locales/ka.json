@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "{{- appName}}-ის შესახებ (ინტერნეტში)"
         },
@@ -128,6 +129,7 @@
         "publisher": "გამომცემელი",
         "readBook": "წაკითხვა",
         "released": "გამოცემის თარიღი",
+        "removeFromFavorites": "",
         "sort": "დალაგება",
         "tag": "",
         "tags": "იარლიყები",
@@ -908,6 +910,7 @@
             "cancel": "გადაფიქრება",
             "disclaimer": "",
             "editUserJson": "მომხმარებლის ფაილის რედაქტირება...",
+            "exportToHTML": "",
             "keyboardShortcuts": "კლავიატურით სწრაფი გამოძახება",
             "list": {
                 "AddBookmarkWithLabel": {

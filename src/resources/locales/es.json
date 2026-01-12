@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "Acerca de {{appName}}"
         },
@@ -128,6 +129,7 @@
         "publisher": "Editor",
         "readBook": "Leer",
         "released": "Publicado en",
+        "removeFromFavorites": "",
         "sort": "Ordenar por",
         "tag": "Etiqueta",
         "tags": "Etiquetas",
@@ -908,6 +910,7 @@
             "cancel": "Cancelar",
             "disclaimer": "Los atajos se definieron a partir de la distribución del teclado QWERTY.",
             "editUserJson": "Editar archivo de usuario...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Atajos de teclado",
             "list": {
                 "AddBookmarkWithLabel": {

@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "O {{- appName}}"
         },
@@ -128,6 +129,7 @@
         "publisher": "Založba",
         "readBook": "Začni brati",
         "released": "Objavljeno na",
+        "removeFromFavorites": "",
         "sort": "Razvrsti po",
         "tag": "Oznaka",
         "tags": "Oznake",
@@ -908,6 +910,7 @@
             "cancel": "Prekliči",
             "disclaimer": "Bližnjice so bile določene na podlagi postavitve tipkovnice QWERTY.",
             "editUserJson": "Uredi datoteko uporabnika...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Bližnjice tipkovnice",
             "list": {
                 "AddBookmarkWithLabel": {

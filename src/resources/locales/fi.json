@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "Tietoa ohjelmasta {{- appName}}"
         },
@@ -128,6 +129,7 @@
         "publisher": "Julkaisija",
         "readBook": "Lue",
         "released": "Julkaistu",
+        "removeFromFavorites": "",
         "sort": "Lajittele",
         "tag": "Tunniste",
         "tags": "Tunnisteet",
@@ -908,6 +910,7 @@
             "cancel": "Peruuta",
             "disclaimer": "Oletuspikanäppäimet perustuvat QWERTY-näppäinasetteluun",
             "editUserJson": "Muokkaa käyttäjän tiedostoa...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Pikanäppäimet",
             "list": {
                 "AddBookmarkWithLabel": {

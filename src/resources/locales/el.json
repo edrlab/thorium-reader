@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "Σχετικά {{- appName}}"
         },
@@ -128,6 +129,7 @@
         "publisher": "Εκδότης",
         "readBook": "Ανάγνωση",
         "released": "Δημοσιεύθηκε στις",
+        "removeFromFavorites": "",
         "sort": "Ταξινόμηση με",
         "tag": "Ετικέτα",
         "tags": "Ετικέτες",
@@ -908,6 +910,7 @@
             "cancel": "Ακύρωση",
             "disclaimer": "Οι προεπιλογές της εφαρμογής σχεδιάστηκαν με βάση τη φυσική θέση των πλήκτρων σε μια διάταξη QWERTY",
             "editUserJson": "Επεξεργασία αρχείου χρήστη...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Συντομεύσεις πληκτρολογίου",
             "list": {
                 "AddBookmarkWithLabel": {

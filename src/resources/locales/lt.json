@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "Apie {{- appName}} (internete)"
         },
@@ -128,6 +129,7 @@
         "publisher": "Leidėjas",
         "readBook": "Skaityti",
         "released": "Išleidimo data",
+        "removeFromFavorites": "",
         "sort": "Rikiuoti pagal",
         "tag": "Žymė",
         "tags": "Žymės",
@@ -908,6 +910,7 @@
             "cancel": "Nutraukti",
             "disclaimer": "Programos numatytieji nustatymai buvo sukurti atsižvelgiant į fizinę klavišų vietą QWERTY klaviatūroje",
             "editUserJson": "Keisti naudotojo failą...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Spartieji klavišai",
             "list": {
                 "AddBookmarkWithLabel": {

@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "关于 {{- appName}} （在线）"
         },
@@ -128,6 +129,7 @@
         "publisher": "出版社",
         "readBook": "阅读",
         "released": "出版日期",
+        "removeFromFavorites": "",
         "sort": "排序方式",
         "tag": "标签",
         "tags": "标签",
@@ -908,6 +910,7 @@
             "cancel": "取消",
             "disclaimer": "应用程序的默认设置是根据 QWERTY 键盘布局上按键的物理位置设计的",
             "editUserJson": "编辑用户文件...",
+            "exportToHTML": "",
             "keyboardShortcuts": "键盘快捷键",
             "list": {
                 "AddBookmarkWithLabel": {

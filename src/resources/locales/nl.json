@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "Over {{- appName}}"
         },
@@ -128,6 +129,7 @@
         "publisher": "Uitgever",
         "readBook": "Gelezen",
         "released": "Uitgegeven op",
+        "removeFromFavorites": "",
         "sort": "Sorteer op",
         "tag": "Label",
         "tags": "Labels",
@@ -908,6 +910,7 @@
             "cancel": "Annuleer",
             "disclaimer": "Snelkoppelingen zijn gedefinieerd op basis van de QWERTY-toetsenbordindeling",
             "editUserJson": "Wijzig gebruikersbestand...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Toetsenbord shortcuts",
             "list": {
                 "AddBookmarkWithLabel": {

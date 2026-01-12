@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "Om {{- appName}}"
         },
@@ -128,6 +129,7 @@
         "publisher": "Utgivare",
         "readBook": "Läs",
         "released": "Publicerad den",
+        "removeFromFavorites": "",
         "sort": "Sortera efter",
         "tag": "Tagg",
         "tags": "Taggar",
@@ -908,6 +910,7 @@
             "cancel": "Avbryt",
             "disclaimer": "Kortkommandona baserar sig på QWERTY-tangentbordslayouten",
             "editUserJson": "Redigera användarfil ...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Kortkommandon",
             "list": {
                 "AddBookmarkWithLabel": {

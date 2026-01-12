@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "Om {{- appName}}"
         },
@@ -128,6 +129,7 @@
         "publisher": "Udgiver",
         "readBook": "Læs bog",
         "released": "Udgivelsesdato",
+        "removeFromFavorites": "",
         "sort": "Sortér efter",
         "tag": "Tag",
         "tags": "Tags",
@@ -908,6 +910,7 @@
             "cancel": "Annullér",
             "disclaimer": "Standard tastaturgenveje er designet ud fra et QWERTY tastaturlayout",
             "editUserJson": "Rediger brugerfilen...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Tastaturgenveje",
             "list": {
                 "AddBookmarkWithLabel": {

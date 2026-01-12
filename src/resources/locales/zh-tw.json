@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "關於 {{- appName}} (線上)"
         },
@@ -128,6 +129,7 @@
         "publisher": "出版社",
         "readBook": "閱讀",
         "released": "出版日期",
+        "removeFromFavorites": "",
         "sort": "排序方式",
         "tag": "標籤",
         "tags": "標籤",
@@ -908,6 +910,7 @@
             "cancel": "取消",
             "disclaimer": "快捷鍵是根據 QWERTY 鍵盤佈局定義的。",
             "editUserJson": "編輯使用者文件...",
+            "exportToHTML": "",
             "keyboardShortcuts": "鍵盤快捷鍵",
             "list": {
                 "AddBookmarkWithLabel": {

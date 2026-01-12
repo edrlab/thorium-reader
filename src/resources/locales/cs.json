@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "O aplikaci {{- appName}} (on-line)"
         },
@@ -128,6 +129,7 @@
         "publisher": "Vydavatel",
         "readBook": "Číst",
         "released": "Publikováno",
+        "removeFromFavorites": "",
         "sort": "Třídit",
         "tag": "Štítek",
         "tags": "Štítky",
@@ -908,6 +910,7 @@
             "cancel": "Zrušit",
             "disclaimer": "",
             "editUserJson": "Upravit uživatelský soubor...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Klávesové zkratky",
             "list": {
                 "AddBookmarkWithLabel": {

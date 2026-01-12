@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "حول {{- appName}}"
         },
@@ -128,6 +129,7 @@
         "publisher": "الناشر",
         "readBook": "اقرأ",
         "released": "تاريخ النشر",
+        "removeFromFavorites": "",
         "sort": "فرز حسب",
         "tag": "الوسم",
         "tags": "الوسوم",
@@ -908,6 +910,7 @@
             "cancel": "إلغاء",
             "disclaimer": "تم تصميم الإعدادات الافتراضية للتطبيق بناءً على تخطيط لوحة مفاتيح كويرتي (QWERTY)",
             "editUserJson": "تحرير ملف المستخدم...",
+            "exportToHTML": "",
             "keyboardShortcuts": "اختصارات لوحة المفاتيح",
             "list": {
                 "AddBookmarkWithLabel": {

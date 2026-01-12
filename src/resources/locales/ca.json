@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "Sobre {{appName}}"
         },
@@ -128,6 +129,7 @@
         "publisher": "Editor",
         "readBook": "Llegir",
         "released": "Publicat en",
+        "removeFromFavorites": "",
         "sort": "Ordenar per",
         "tag": "Etiqueta",
         "tags": "Etiquetes",
@@ -908,6 +910,7 @@
             "cancel": "Cancel·lar",
             "disclaimer": "Les dreceres es van definir a partir de la disposició de teclat QWERTY.",
             "editUserJson": "Editar arxiu d'usuari",
+            "exportToHTML": "",
             "keyboardShortcuts": "Dreceres de teclat",
             "list": {
                 "AddBookmarkWithLabel": {

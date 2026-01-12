@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "{{- appName}} 정보"
         },
@@ -128,6 +129,7 @@
         "publisher": "출판사",
         "readBook": "읽기",
         "released": "발행일",
+        "removeFromFavorites": "",
         "sort": "정렬 기준",
         "tag": "",
         "tags": "태그",
@@ -908,6 +910,7 @@
             "cancel": "취소",
             "disclaimer": "",
             "editUserJson": "사용자 파일 편집...",
+            "exportToHTML": "",
             "keyboardShortcuts": "키보드 단축키",
             "list": {
                 "AddBookmarkWithLabel": {

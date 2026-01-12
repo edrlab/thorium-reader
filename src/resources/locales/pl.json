@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": ""
         },
@@ -128,6 +129,7 @@
         "publisher": "",
         "readBook": "",
         "released": "",
+        "removeFromFavorites": "",
         "sort": "",
         "tag": "",
         "tags": "",
@@ -908,6 +910,7 @@
             "cancel": "",
             "disclaimer": "",
             "editUserJson": "",
+            "exportToHTML": "",
             "keyboardShortcuts": "",
             "list": {
                 "AddBookmarkWithLabel": {

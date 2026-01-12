@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "{{- appName}} について（オンライン）"
         },
@@ -128,6 +129,7 @@
         "publisher": "出版社",
         "readBook": "本を読む",
         "released": "出版日",
+        "removeFromFavorites": "",
         "sort": "並び替え",
         "tag": "タグ",
         "tags": "タグ",
@@ -908,6 +910,7 @@
             "cancel": "キャンセル",
             "disclaimer": "ショートカットは、QWERTY配列のキーボードレイアウトから定義されました。",
             "editUserJson": "ユーザーファイルを編集…",
+            "exportToHTML": "",
             "keyboardShortcuts": "キーボードショートカット",
             "list": {
                 "AddBookmarkWithLabel": {

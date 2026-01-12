@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "Относно {{- appName}}"
         },
@@ -128,6 +129,7 @@
         "publisher": "Издател",
         "readBook": "Прочети",
         "released": "Публикувано на",
+        "removeFromFavorites": "",
         "sort": "Сортирай по",
         "tag": "",
         "tags": "Маркери",
@@ -908,6 +910,7 @@
             "cancel": "Отказ",
             "disclaimer": "",
             "editUserJson": "Редактиране на потребителски файл...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Бързи клавиши",
             "list": {
                 "AddBookmarkWithLabel": {

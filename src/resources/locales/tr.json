@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "{{- appName}} Hakkında (online)"
         },
@@ -128,6 +129,7 @@
         "publisher": "Yayımcı",
         "readBook": "Oku",
         "released": "Yayın tarihi:",
+        "removeFromFavorites": "",
         "sort": "Şuna göre sırala:",
         "tag": "Etiket",
         "tags": "Etiketler",
@@ -908,6 +910,7 @@
             "cancel": "İptal",
             "disclaimer": "Uygulama varsayılanları, QWERTY klavye düzenindeki tuşların fiziki konumları esas alınarak tasarlanmıştır",
             "editUserJson": "Kullanıcı dosyasını düzenle...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Klavye kısayolları",
             "list": {
                 "AddBookmarkWithLabel": {
