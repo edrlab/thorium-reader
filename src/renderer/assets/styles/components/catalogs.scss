@@ -96,7 +96,7 @@
         }
     }
 
-    .button_edit, .button_delete, .button_login {
+    .button_edit, .button_delete, .button_login, .button_favorites {
         position: absolute;
         bottom: 10px;
         color: var(--color-brand-primary);
@@ -112,6 +112,11 @@
             border: 1px solid var(--color-brand-primary);
             background-color: var(--color-brand-secondary);
         }
+    }
+
+    .button_favorites {
+        top: 10px;
+        right: 10px;
     }
 
     .button_login {
@@ -240,10 +245,8 @@
     stroke: var(--color-brand-primary);
     width: 20px;
     height: 20px;
-    position: absolute;
-    top: 5px;
-    left: unset;
     right: 5px;
+    z-index: 1000;
 }
 
 .catalog_favorite_icon {
@@ -251,7 +254,7 @@
         color: transparent;
     }
 
-    &_true {
+    &_true  {
         color: var(--color-brand-primary);
     }
 }

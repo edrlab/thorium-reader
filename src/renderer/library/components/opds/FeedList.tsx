@@ -98,9 +98,9 @@ class FeedList extends React.Component<IProps, IState> {
             <section>
                 <h2>{__("header.myCatalogs")}</h2>
                 <ul className={stylesCatalogs.catalog_wrapper}>
-                    {this.state.feedsResult.map((item, index) => {
+                    {this.state.feedsResult.map((item) => {
                         return (
-                            <li key={"feed-" + index} className={stylesCatalogs.catalog_container}>
+                            <li key={"feed-" + item.identifier} className={stylesCatalogs.catalog_container}>
                                 <Link
                                     to={{
                                         ...this.props.location,
@@ -135,14 +135,29 @@ class FeedList extends React.Component<IProps, IState> {
                                         }
                                     }}
                                 >
-                                    <div style={{ width: "100%", height: "50px", backgroundColor: "var(--color-gray-50", borderBottom: "1px solid var(--color-gray-300)", position: "absolute", top: "2px" }}>
-                                         <SVG svg={StarIcon} ariaHidden className={item.favorite ? stylesCatalogs.catalog_favorite_icon_true : stylesCatalogs.catalog_favorite_icon_false} />
+                                    <div style={{ width: "100%", height: "50px", backgroundColor: "var(--color-gray-50", borderBottom: "1px solid var(--color-gray-300)", position: "absolute", top: "2px"}}>
                                     </div>
                                     <div className={stylesCatalogs.catalog_title}>
                                         <SVG ariaHidden svg={GlobeIcon} />
                                         <p title={`${item.title} --- ${item.url}`}>{item.title}</p>
                                     </div>
                                 </Link>
+                                <button onClick={() => {
+                                    apiAction("opds/deleteFeed", item.identifier).then(() => {
+                                        apiAction("opds/addFeed", { 
+                                            title: item.title, 
+                                            url: item.url, 
+                                            favorite: !item.favorite, 
+                                        }).catch((err) => {
+                                            console.error("Error to fetch api opds/addFeed", err);
+                                        });
+                                    }).catch((err) => {
+                                        console.error("Error to fetch api opds/deleteFeed", err);
+                                    });
+                                        }}
+                                        className={stylesCatalogs.button_favorites}>
+                                        <SVG svg={StarIcon} ariaHidden  className={item.favorite ? stylesCatalogs.catalog_favorite_icon_true : stylesCatalogs.catalog_favorite_icon_false} />
+                                        </button>
                                 {item.authentified ? <Popover.Root>
                                     <Popover.Trigger asChild>
                                         <button
