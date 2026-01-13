@@ -202,7 +202,9 @@
             "urlHint": "Forgot your passphrase? Click here to get support.",
             "whatIsLcp?": "What is LCP?",
             "whatIsLcpInfoDetails": "LCP stands for 'Licensed Content Protection'.",
-            "whatIsLcpInfoDetailsLink": "To learn more, click this link to the EDRLab website."
+            "whatIsLcpInfoDetailsLink": "To learn more, click this link to the EDRLab website.",
+            "showPassphrase": "Show passphrase",
+            "hidePassphrase": "Hide passphrase"
         }
     },
     "message": {

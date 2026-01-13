@@ -24,8 +24,10 @@ import * as FollowLinkIcon from "readium-desktop/renderer/assets/icons/followLin
 // import * as CrossIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
 import * as InfosIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import * as LockIcon from "readium-desktop/renderer/assets/icons/lock-icon.svg";
-import * as KeyholeIcon from "readium-desktop/renderer/assets/icons/keyhole-icon.svg";
+// import * as KeyholeIcon from "readium-desktop/renderer/assets/icons/keyhole-icon.svg";
 import * as LightBulbIcon from "readium-desktop/renderer/assets/icons/lightbulb-icon.svg";
+import * as EyeOpenIcon from "readium-desktop/renderer/assets/icons/eye-icon.svg";
+import * as EyeClosedIcon from "readium-desktop/renderer/assets/icons/eye-password-hide-icon.svg";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -49,6 +51,7 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 
 interface IState {
     password: string | undefined;
+    showPassword: boolean,
     // infoOpen: boolean;
 }
 
@@ -62,6 +65,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
 
         this.state = {
             password: undefined,
+            showPassword: false,
             // infoOpen : false,
         };
     }
@@ -83,6 +87,8 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
         // };
 
         const { __ } = this.props;
+        const { showPassword } = this.state;
+        const inputType = showPassword ? "text" : "password";
         return <Dialog.Root defaultOpen={true} onOpenChange={(open) => { if (open === false) { this.props.closeDialog(); } }}>
             <Dialog.Portal>
                 <div className={stylesModals.modal_dialog_overlay}></div>
@@ -104,11 +110,16 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                         </p>
                         <div className={classNames(stylesInputs.form_group, stylesInputs.form_group_catalog)} style={{marginTop: "0", width: "99%"}}>
                             <label htmlFor="passphrase" style={{fontSize: "14px"}}>{__("library.lcp.password")}</label>
-                            <SVG ariaHidden svg={KeyholeIcon} />
+                            <button 
+                            onClick={() => this.setState({showPassword: !showPassword})}
+                            aria-label={showPassword ? __("library.lcp.hidePassphrase") : __("library.lcp.showPassphrase")}
+                            >
+                                <SVG ariaHidden svg={showPassword ? EyeOpenIcon : EyeClosedIcon} />
+                            </button>
                             <input
                                 id="passphrase"
                                 aria-label={__("library.lcp.password")}
-                                type="password"
+                                type={inputType}
                                 onChange={this.onPasswordChange}
                                 ref={this.focusRef}
                                 className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"

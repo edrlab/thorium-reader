@@ -482,7 +482,9 @@ declare namespace typed_i18n {
     readonly "urlHint": string,
     readonly "whatIsLcp?": string,
     readonly "whatIsLcpInfoDetails": string,
-    readonly "whatIsLcpInfoDetailsLink": string
+    readonly "whatIsLcpInfoDetailsLink": string,
+    readonly "showPassphrase": string,
+    readonly "hidePassphrase": string
   }
 };
   (_: "library.lcp", __?: {}): {
@@ -493,7 +495,9 @@ declare namespace typed_i18n {
   readonly "urlHint": string,
   readonly "whatIsLcp?": string,
   readonly "whatIsLcpInfoDetails": string,
-  readonly "whatIsLcpInfoDetailsLink": string
+  readonly "whatIsLcpInfoDetailsLink": string,
+  readonly "showPassphrase": string,
+  readonly "hidePassphrase": string
 };
   (_: "library.lcp.hint", __?: {}): string;
   (_: "library.lcp.open", __?: {}): string;
@@ -503,6 +507,8 @@ declare namespace typed_i18n {
   (_: "library.lcp.whatIsLcp?", __?: {}): string;
   (_: "library.lcp.whatIsLcpInfoDetails", __?: {}): string;
   (_: "library.lcp.whatIsLcpInfoDetailsLink", __?: {}): string;
+  (_: "library.lcp.showPassphrase", __?: {}): string;
+  (_: "library.lcp.hidePassphrase", __?: {}): string;
   (_: "message", __?: {}): {
   readonly "annotations": {
     readonly "alreadyImported": string,
