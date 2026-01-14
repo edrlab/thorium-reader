@@ -50,7 +50,7 @@
         }
     },
     "catalog": {
-        "AddToFavorites": "",
+        "AddToFavorites": "Προσθήκη στα αγαπημένα",
         "about": {
             "title": "Σχετικά {{- appName}}"
         },
@@ -129,7 +129,7 @@
         "publisher": "Εκδότης",
         "readBook": "Ανάγνωση",
         "released": "Δημοσιεύθηκε στις",
-        "removeFromFavorites": "",
+        "removeFromFavorites": "Αφαίρεση από τα αγαπημένα",
         "sort": "Ταξινόμηση με",
         "tag": "Ετικέτα",
         "tags": "Ετικέτες",
@@ -910,7 +910,7 @@
             "cancel": "Ακύρωση",
             "disclaimer": "Οι προεπιλογές της εφαρμογής σχεδιάστηκαν με βάση τη φυσική θέση των πλήκτρων σε μια διάταξη QWERTY",
             "editUserJson": "Επεξεργασία αρχείου χρήστη...",
-            "exportToHTML": "",
+            "exportToHTML": "Εξαγωγή σε HTML",
             "keyboardShortcuts": "Συντομεύσεις πληκτρολογίου",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1138,8 +1138,7 @@
             "noShortcutFound": "Δεν βρέθηκε συντόμευση με αυτήν την ετικέτα",
             "resetDefaults": "Επαναφορά (φόρτωση προεπιλογών)",
             "save": "Αποθήκευση",
-            "searchPlaceholder": "Πληκτρολογήστε για αναζήτηση συντόμευσης",
-            "exportToHTML": "Εξαγωγή σε HTML"
+            "searchPlaceholder": "Πληκτρολογήστε για αναζήτηση συντόμευσης"
         },
         "language": {
             "languageChoice": "Γλώσσα"
