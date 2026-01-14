@@ -17,6 +17,9 @@ const collapsePluralKeys = (obj) => {
             collapsePluralKeys(val);
             continue;
         }
+        // https://github.com/i18next/i18next/blob/485b4ec8183952b3de8fe5e79dff6467c3afd9d3/src/PluralResolver.js#L4-L11
+        // https://jsfiddle.net/6bpxsgd4
+        //
         if (key.endsWith("_zero") ||
             key.endsWith("_one") ||
             key.endsWith("_two") ||
