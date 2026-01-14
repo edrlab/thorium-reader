@@ -139,9 +139,9 @@
         "annotations": {
             "descAuthor": "autor: {{- author}}",
             "descCreator": "vytvořil(a)",
-            "descList": "{{- nb}} poznámek od {{- creator}} bude importováno do „{{- title}}“, {{- author}}",
-            "descNewer": "Konflikt(y): {{- nb}} novější poznámka (novější poznámky)",
-            "descOlder": "Konflikt(y): {{- nb}} starší poznámka (starší poznámky)",
+            "descList": "{{- count}} poznámek od {{- creator}} bude importováno do „{{- title}}“, {{- author}}",
+            "descNewer": "Konflikt(y): {{- count}} novější poznámka (novější poznámky)",
+            "descOlder": "Konflikt(y): {{- count}} starší poznámka (starší poznámky)",
             "descTitle": "Anotace titulu: ",
             "importAll": "Importovat všechny poznámky",
             "importWithoutConflict": "Importovat pouze poznámky bez konfliktů",
@@ -157,9 +157,9 @@
             }
         },
         "deleteAnnotations": "Odstranit anotace?",
-        "deleteAnnotationsText": "Opravdu chcete odstranit {{- annotationListLength}} poznámek?",
+        "deleteAnnotationsText": "Opravdu chcete odstranit {{- count}} poznámek?",
         "deleteBookmarks": "Odstranit záložky?",
-        "deleteBookmarksText": "Jste si jisti, že chcete odstranit {{- bookmarkListLength}} záložek?",
+        "deleteBookmarksText": "Jste si jisti, že chcete odstranit {{- count}} záložek?",
         "deleteFeed": "Odstranit katalog?",
         "deletePublication": "Odstranit publikaci?",
         "deletePublicationWithNotes": "Upozornění: tato publikace obsahuje anotace a/nebo záložky, které budou taktéž smazány! (pokud si je chcete ponechat, před odstraněním publikace poznámky exportujte)",
@@ -768,7 +768,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} shod",
+                "founds": "{{- count}} shod",
                 "input": "přesná shoda",
                 "next": "Další",
                 "notFound": "žádná shoda",
