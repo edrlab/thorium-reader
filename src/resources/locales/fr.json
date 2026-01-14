@@ -780,9 +780,9 @@
         },
         "picker": {
             "search": {
-                "founds_one": "{{- count}} correspondance(s)",
+                "founds_one": "{{- count}} correspondance",
                 "founds_many": "{{- count}} correspondance(s)",
-                "founds_other": "{{- count}} correspondance(s)",
+                "founds_other": "{{- count}} correspondances",
                 "input": "Texte à trouver",
                 "next": "Suivant",
                 "notFound": "Auncune correspondance",
