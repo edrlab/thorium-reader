@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
 import * as path from "path";
@@ -24,6 +24,7 @@ import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro
 
 import { contextMenuSetup } from "@r2-navigator-js/electron/main/browser-window-tracker";
 import { WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/constant";
+import { URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
 
 // Logger
 const debug = debug_("readium-desktop:createLibraryWindow");
@@ -83,7 +84,7 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
     // let httpReferrer: string | undefined;
     let rendererBaseUrl = _RENDERER_LIBRARY_BASE_URL;
     const htmlPath = "index_library.html";
-    if (rendererBaseUrl === "filex://host/") {
+    if (rendererBaseUrl === `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/`) {
         // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
         rendererBaseUrl += path.normalize(path.join(__dirname, htmlPath)).replace(/\\/g, "/").split("/").map((segment) => encodeURIComponent_RFC3986(segment)).join("/");
         // baseURLForDataURL = rendererBaseUrl; // + "/../";

@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "Add to favorites",
         "about": {
             "title": "About {{- appName}} (online)"
         },
@@ -86,6 +87,7 @@
         "importAnnotation": "Import notes",
         "lang": "Language",
         "lastRead": "Last Read",
+        "login": "Login",
         "logout": "Logout",
         "moreInfo": "Publication Details",
         "myBooks": "My publications",
@@ -97,9 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "Cancel",
+                "external": "The login page will open in your web browser, please follow the instructions. Once logged-in, the web browser will return you to this application.",
+                "fallback": "Note: in case of login problems with the default web browser method, try again with the alternative in-application method.",
                 "login": "Login",
                 "password": "Password",
                 "register": "Register",
+                "retry": "Try again",
                 "username": "Username / Email Address"
             },
             "info": {
@@ -124,6 +129,7 @@
         "publisher": "Publisher",
         "readBook": "Read",
         "released": "Published on",
+        "removeFromFavorites": "Remove from favorites",
         "sort": "Sort by",
         "tag": "Tag",
         "tags": "Tags",
@@ -223,7 +229,8 @@
         },
         "open": {
             "error": "Loading publication failed: [{{- err}}]"
-        }
+        },
+        "wipeData": "Login data was cleared (access tokens and cookies)"
     },
     "opds": {
         "addForm": {
@@ -851,6 +858,7 @@
             "reduceMotion": "Reduce motion",
             "scrolled": "Scrollable",
             "spacing": "Spacing",
+            "spreadModeEven": "Page spreads 'even' (default is 'odd')",
             "text": "Text",
             "theme": {
                 "name": {
@@ -908,6 +916,7 @@
             "cancel": "Cancel",
             "disclaimer": "The application defaults were designed based on the physical location of keys on a QWERTY layout",
             "editUserJson": "Edit user file...",
+            "exportToHTML": "Export to HTML",
             "keyboardShortcuts": "Keyboard shortcuts",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1154,7 +1163,7 @@
         "profiles": {
             "info": "Switch profiles to customize the app with a partner vendor’s branding and colors. Each profile offers a tailored experience.",
             "thorium": {
-                "description": "The Thorium Vanilla profile is the orignal one, designed by EDRLab.",
+                "description": "The Thorium Vanilla profile is the original one, designed by EDRLab.",
                 "title": "Thorium vanilla"
             },
             "version": "Version: {{- version}}"
@@ -1170,7 +1179,8 @@
         "tabs": {
             "appearance": "Appearance",
             "general": "General",
-            "keyboardShortcuts": "Keyboard shortcuts"
+            "keyboardShortcuts": "Keyboard shortcuts",
+            "profiles": "Profiles"
         },
         "theme": {
             "auto": "Automatic",

@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "O {{- appName}}"
         },
@@ -86,6 +87,7 @@
         "importAnnotation": "",
         "lang": "Jezik",
         "lastRead": "Zadnje čitano",
+        "login": "",
         "logout": "",
         "moreInfo": "Detalji građe",
         "myBooks": "Moje knjige",
@@ -97,9 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "Poništi",
+                "external": "",
+                "fallback": "",
                 "login": "Prijavi se",
                 "password": "",
                 "register": "",
+                "retry": "",
                 "username": ""
             },
             "info": {
@@ -124,6 +129,7 @@
         "publisher": "Izdavač",
         "readBook": "Čitaj",
         "released": "Datum izdavanja",
+        "removeFromFavorites": "",
         "sort": "Sortiraj po",
         "tag": "",
         "tags": "Oznake",
@@ -218,7 +224,8 @@
         },
         "open": {
             "error": "Građa se ne može otvoriti: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -845,6 +852,7 @@
             "reduceMotion": "Smanji kretanje",
             "scrolled": "Mogućnost klizanja",
             "spacing": "Razmak",
+            "spreadModeEven": "",
             "text": "Tekst",
             "theme": {
                 "name": {
@@ -902,6 +910,7 @@
             "cancel": "Poništi",
             "disclaimer": "",
             "editUserJson": "Uredi dokument korisnika...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Prečaci na tipkovnici",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1164,7 +1173,8 @@
         "tabs": {
             "appearance": "",
             "general": "",
-            "keyboardShortcuts": ""
+            "keyboardShortcuts": "",
+            "profiles": ""
         },
         "theme": {
             "auto": "",

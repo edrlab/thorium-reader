@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "Acerca de {{appName}}"
         },
@@ -86,6 +87,7 @@
         "importAnnotation": "Importar anotación",
         "lang": "Idioma",
         "lastRead": "Último leído",
+        "login": "",
         "logout": "",
         "moreInfo": "Detalles del libro",
         "myBooks": "Mis libros",
@@ -97,9 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "Cancelar",
+                "external": "",
+                "fallback": "",
                 "login": "Iniciar sesión",
                 "password": "Contraseña",
                 "register": "Registrar",
+                "retry": "",
                 "username": "Nombre de usuario/dirección de correo electrónico"
             },
             "info": {
@@ -124,6 +129,7 @@
         "publisher": "Editor",
         "readBook": "Leer",
         "released": "Publicado en",
+        "removeFromFavorites": "",
         "sort": "Ordenar por",
         "tag": "Etiqueta",
         "tags": "Etiquetas",
@@ -218,7 +224,8 @@
         },
         "open": {
             "error": "No se puede abrir la publicación: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -845,6 +852,7 @@
             "reduceMotion": "Disminuir movimiento",
             "scrolled": "Desplazable",
             "spacing": "Espaciado",
+            "spreadModeEven": "",
             "text": "Texto",
             "theme": {
                 "name": {
@@ -902,6 +910,7 @@
             "cancel": "Cancelar",
             "disclaimer": "Los atajos se definieron a partir de la distribución del teclado QWERTY.",
             "editUserJson": "Editar archivo de usuario...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Atajos de teclado",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1164,7 +1173,8 @@
         "tabs": {
             "appearance": "Aspecto visual",
             "general": "General",
-            "keyboardShortcuts": "Atajos de teclado"
+            "keyboardShortcuts": "Atajos de teclado",
+            "profiles": ""
         },
         "theme": {
             "auto": "Automático",

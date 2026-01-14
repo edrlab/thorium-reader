@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import * as path from "path";
 import { computeReadiumCssJsonMessage } from "readium-desktop/common/computeReadiumCssJsonMessage";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
@@ -67,7 +67,6 @@ mathJaxPath = mathJaxPath.replace(/\\/g, "/");
 debug("MathJax path:", mathJaxPath);
 
 export const MATHJAX_FILE_PATH = mathJaxPath;
-export const MATHJAX_URL_PATH = "math-jax";
 
 let rcssPath = "ReadiumCSS";
 if (__TH__IS_PACKAGED__) {

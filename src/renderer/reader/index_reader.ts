@@ -21,6 +21,7 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { publicationHasMediaOverlays } from "@r2-navigator-js/electron/renderer";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import moment from "moment";
 
 // let devTron: any;
 let axe: any;
@@ -88,6 +89,8 @@ ipcRenderer.on(readerIpc.CHANNEL,
                 const store = createStoreFromDi({ ...data.payload, noteTagsIndex } as Partial<IReaderRootState>);
                 const locale = store.getState().i18n.locale;
                 getTranslator().setLocale(locale);
+                /*const localeUsedByMoment = */moment.locale([locale, "en"]);
+                // console.log("MOMENT SET LOCALE START", localeUsedByMoment);
 
                 store.dispatch(winActions.initRequest.build(data.payload.win.identifier));
 

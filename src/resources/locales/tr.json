@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "Favorilere ekle",
         "about": {
             "title": "{{- appName}} Hakkında (online)"
         },
@@ -65,10 +66,10 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
-                "publications": "",
-                "screen": "",
-                "title": ""
+                "description": "Profil açıklaması yok",
+                "publications": "Profil eserleri",
+                "screen": "Başlık yok",
+                "title": "Profil başlığı"
             }
         },
         "delete": "Sil",
@@ -86,7 +87,8 @@
         "importAnnotation": "Notları içe aktar",
         "lang": "Dil",
         "lastRead": "Son Okunan",
-        "logout": "",
+        "login": "Giriş yap",
+        "logout": "Oturumu Kapat",
         "moreInfo": "Eser Ayrıntıları",
         "myBooks": "Eserlerim",
         "noPublicationHelpL1": "Dosyaları buraya bırakın",
@@ -97,9 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "İptal",
+                "external": "giriş sayfası web tarayıcınızda açılacak, lütfen talimatları izleyin. Giriş yaptıktan sonra, web tarayıcısı sizi bu uygulamaya geri döndürecek.",
+                "fallback": "Not: Varsayılan web tarayıcısı yöntemiyle giriş sorunları yaşamanız durumunda, uygulama içi alternatif yöntemle tekrar deneyin.",
                 "login": "Giriş Yap",
                 "password": "Şifre",
                 "register": "Kaydol",
+                "retry": "Yeniden dene",
                 "username": "Kullanıcı adı / E-posta adresi"
             },
             "info": {
@@ -124,6 +129,7 @@
         "publisher": "Yayımcı",
         "readBook": "Oku",
         "released": "Yayın tarihi:",
+        "removeFromFavorites": "Favorilerden kaldır",
         "sort": "Şuna göre sırala:",
         "tag": "Etiket",
         "tags": "Etiketler",
@@ -145,8 +151,8 @@
         "cancel": "İptal",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
-                "state": "",
+                "fallbackWelcomeScreen": "Hoşgeldiniz ekranı sağlanmadı",
+                "state": "Durum: {{- state}}",
                 "title": "Özelleştirme profilinin hazırlanması ve etkinleştirilmesi"
             }
         },
@@ -218,7 +224,8 @@
         },
         "open": {
             "error": "Eser yüklemesi başarısız: [{{- err}}]"
-        }
+        },
+        "wipeData": "Giriş verileri başarıyla temizlendi (erişim dizgecikleri ve çerezler)"
     },
     "opds": {
         "addForm": {
@@ -255,7 +262,7 @@
         },
         "next": "Sonraki",
         "previous": "Önceki",
-        "resumeBrowsing": "",
+        "resumeBrowsing": "Göz atmaya kaldığınız yerden devam edin",
         "shelf": "Raf",
         "updateForm": {
             "name": "İsim:",
@@ -845,6 +852,7 @@
             "reduceMotion": "Hareketi azalt",
             "scrolled": "Kaydırılabilir",
             "spacing": "Aralık ayarları",
+            "spreadModeEven": "Sayfa görüntülenmesi 'çift' (varsayılan 'tek'tir)",
             "text": "Metin ayarları",
             "theme": {
                 "name": {
@@ -902,6 +910,7 @@
             "cancel": "İptal",
             "disclaimer": "Uygulama varsayılanları, QWERTY klavye düzenindeki tuşların fiziki konumları esas alınarak tasarlanmıştır",
             "editUserJson": "Kullanıcı dosyasını düzenle...",
+            "exportToHTML": "HTML olarak dışa aktar",
             "keyboardShortcuts": "Klavye kısayolları",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1146,17 +1155,17 @@
             }
         },
         "profiles": {
-            "info": "",
+            "info": "Uygulamayı bir iş ortağı tedarikçinin marka ve  renkleriyle özelleştirmek için profiller arasında geçiş yapın. Her profil, size özel bir deneyim sunar.",
             "thorium": {
-                "description": "",
-                "title": ""
+                "description": "Thorium Vanilla profili, EDRLab tarafından tasarlanan özgün bir profildir.",
+                "title": "Thorium vanilla"
             },
-            "version": ""
+            "version": "Sürüm: {{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "message": "",
-            "title": ""
+            "help": "Uygulama yardımcı teknolojinin mevcudiyetini saptadığında, kullanıcı arayüzü ekran okuyucularla daha iyi çalışır",
+            "message": "Ekran okuyucular için geliştirilmiş destek",
+            "title": "Ekran okuyucu deneyimini iyileştir"
         },
         "session": {
             "title": "Oturum kaydetmeyi etkinleştir"
@@ -1164,7 +1173,8 @@
         "tabs": {
             "appearance": "Görünüm",
             "general": "Genel",
-            "keyboardShortcuts": "Klavye kısayolları"
+            "keyboardShortcuts": "Klavye kısayolları",
+            "profiles": "Profiller"
         },
         "theme": {
             "auto": "Otomatik",

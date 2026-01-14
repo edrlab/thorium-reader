@@ -12,7 +12,7 @@ import * as stylesPrint from "readium-desktop/renderer/assets/styles/components/
 // import * as StylesCombobox from "readium-desktop/renderer/assets/styles/components/combobox.scss";
 
 import classNames from "classnames";
-import * as debug_ from "debug";
+import debug_ from "debug";
 import * as React from "react";
 import * as Popover from "@radix-ui/react-popover";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -84,8 +84,8 @@ import { VoiceSelection } from "./header/voiceSelection";
 // To convert this file to an ECMAScript module, change its file extension to '.mts',
 // or add the field `"type": "module"` to 'package.json'.
 // @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore TS1479
+// e__slint-disable-next-line @typescript-eslint/ban-ts-comment
+// @__ts-ignore TS1479
 import { convertToSpeechSynthesisVoices, filterOnLanguage, getLanguages, getVoices, groupByLanguages, groupByRegions, ILanguages, IVoices, parseSpeechSynthesisVoices } from "readium-speech";
 
 import { BookmarkButton } from "./header/BookmarkButton";
@@ -437,6 +437,18 @@ export class ReaderHeader extends React.Component<IProps, IState> {
             { id: 8, value: 2.5, name: "2.5x" },
             { id: 9, value: 2.75, name: "2.75x" },
             { id: 10, value: 3, name: "3x" },
+            { id: 11, value: 3.25, name: "3.25x" },
+            { id: 12, value: 3.5, name: "3.5x" },
+            { id: 13, value: 3.75, name: "3.75x" },
+            { id: 14, value: 4, name: "4x" },
+            { id: 15, value: 4.25, name: "4.25x" },
+            { id: 16, value: 4.5, name: "4.5x" },
+            { id: 17, value: 4.75, name: "4.75x" },
+            { id: 18, value: 5, name: "5x" },
+            { id: 19, value: 5.25, name: "5.25x" },
+            { id: 20, value: 5.5, name: "5.5x" },
+            { id: 21, value: 5.75, name: "5.75x" },
+            { id: 22, value: 6.00, name: "6x" },
         ];
 
         const isRTL = this.props.isRTLFlip();
@@ -676,7 +688,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                             this.props.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING ||
                                                             !useMO &&
                                                             this.props.ttsState === TTSStateEnum.PLAYING) ?
-                                                            <li style={{ backgroundColor: "var(--color-blue)" }}>
+                                                            <li style={{ backgroundColor: "var(--color-brand-primary)" }}>
                                                                 <button
                                                                     className={stylesReader.menu_button}
                                                                     onClick={
@@ -755,14 +767,14 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             <li>
                                                 <Popover.Root open={this.state.ttsPopoverOpen} onOpenChange={(open) => this.setState({ ttsPopoverOpen: open })}>
                                                     <Popover.Trigger asChild>
-                                                        <button className={stylesReader.menu_button} style={{ backgroundColor: this.state.ttsPopoverOpen ? "var(--color-blue)" : "" }} aria-label={__("reader.tts.options")} title={__("reader.tts.options")}>
+                                                        <button className={stylesReader.menu_button} style={{ backgroundColor: this.state.ttsPopoverOpen ? "var(--color-brand-primary)" : "" }} aria-label={__("reader.tts.options")} title={__("reader.tts.options")}>
                                                             <SVG ariaHidden svg={HeadphoneIcon} className={this.state.ttsPopoverOpen ? stylesReaderHeader.active_svg : ""} />
                                                         </button>
                                                     </Popover.Trigger>
                                                     <Popover.Portal container={appOverlayElement}>
                                                         <Popover.Content style={{ zIndex: 100 }}>
                                                             <div className={stylesReaderHeader.Tts_popover_container}>
-                                                                <div style={{ paddingRight: 25 /* , borderRight: "1px solid var(--color-verylight-grey-alt)" */ }}>
+                                                                <div style={{ paddingRight: 25 /* , borderRight: "1px solid var(--color-gray-250)" */ }}>
                                                                     <div className={stylesReader.ttsSelectRate} style={{ paddingLeft: 8 }}>
                                                                         <ComboBox
                                                                             label={useMO ?
@@ -832,7 +844,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             ) ?
                                 <li
                                     {...(this.props.pdfPrintOpen &&
-                                        { style: { backgroundColor: "var(--color-blue)" } })}
+                                        { style: { backgroundColor: "var(--color-brand-primary)" } })}
                                 >
                                     <Dialog.Root open={this.props.pdfPrintOpen} onOpenChange={(open) => {
                                         this.props.setShortcutEnable(!open);
@@ -863,7 +875,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 : <></>
                         }
                         <li
-                            {...(this.props.isOnSearch && { style: { backgroundColor: "var(--color-blue" } })}
+                            {...(this.props.isOnSearch && { style: { backgroundColor: "var(--color-brand-primary)" } })}
                         >
                             <HeaderSearch shortcutEnable={this.props.shortcutEnable} isPdf={this.props.isPdf} showSearchResults={this.props.showSearchResults} isAudiobook={isAudioBook} isDivina={this.props.isDivina}></HeaderSearch>
                         </li>
@@ -878,7 +890,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             <Popover.Trigger asChild>
                                 <li
                                     {...(this.props.isAnnotationModeEnabled &&
-                                        { style: { backgroundColor: "var(--color-blue" } })}
+                                        { style: { backgroundColor: "var(--color-brand-primary)" } })}
                                 >
                                     <input
                                         disabled={this.props.isPdf || this.props.isDivina || isAudioBook}
@@ -928,7 +940,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         comment=""
                                         locatorExtended={this.props.annotationLocatorExtended}
                                     />
-                                    <Popover.Arrow style={{ fill: "var(--color-extralight-grey)" }} width={15} height={10} />
+                                    <Popover.Arrow style={{ fill: "var(--color-gray-50" }} width={15} height={10} />
                                 </Popover.Content>
                             </Popover.Portal>
                         </Popover.Root>
@@ -936,7 +948,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
                         <li
                             {...(this.props.menuOpen &&
-                                { style: { backgroundColor: "var(--color-blue)" } })}
+                                { style: { backgroundColor: "var(--color-brand-primary)" } })}
                         >
 
                             {/* { this.props.menuOpen ? */}
@@ -979,8 +991,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             <div
                                                 className={containerClassName}
                                                 style={{
-                                                    borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-extralight-grey-alt)" : "",
-                                                    borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-extralight-grey-alt)" : "",
+                                                    borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
+                                                    borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
                                                     right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
                                                     left: (this.props.readerConfig.readerDockingMode === "left") ? "0" : "",
                                                     height: (isOnSearch) ? "calc(100dvh - 159px)" : "",
@@ -1022,8 +1034,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 }}
                                                 className={containerClassName}
                                                 style={{
-                                                    borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-extralight-grey-alt)" : "",
-                                                    borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-extralight-grey-alt)" : "",
+                                                    borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
+                                                    borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
                                                     right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
                                                     left: /*(isDockedMode && this.props.readerConfig.readerDockingMode === "left") ? "0" :*/ "",
                                                     height: /*(isDockedMode && isOnSearch) ? "calc(100dvh - 159px)" :*/ "",
@@ -1056,7 +1068,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                         </li>
                         <li
                             {...(this.props.settingsOpen &&
-                                { style: { backgroundColor: "var(--color-blue" } })}
+                                { style: { backgroundColor: "var(--color-brand-primary)" } })}
                         >
                             <Dialog.Root
                                 open={this.props.settingsOpen}
@@ -1095,8 +1107,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         <div
                                             className={containerClassName}
                                             style={{
-                                                borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-extralight-grey-alt)" : "",
-                                                borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-extralight-grey-alt)" : "",
+                                                borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
+                                                borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
                                                 right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
                                                 left: this.props.readerConfig.readerDockingMode === "left" ? "0" : "",
                                                 height: isOnSearch ? "calc(100dvh - 159px)" : "",
@@ -1116,8 +1128,8 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             // onInteractOutside={(e) => { e.preventDefault(); console.log("SettingsModal onInteractOutside"); }}
                                             className={containerClassName}
                                             style={{
-                                                borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-extralight-grey-alt)" : "",
-                                                borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-extralight-grey-alt)" : "",
+                                                borderLeft: this.props.readerConfig.readerDockingMode === "right" ? "2px solid var(--color-gray-100)" : "",
+                                                borderRight: this.props.readerConfig.readerDockingMode === "left" ? "2px solid var(--color-gray-100)" : "",
                                                 right: this.props.readerConfig.readerDockingMode === "right" ? "0" : "unset",
                                                 left: /*isDockedMode && this.props.readerConfig.readerDockingMode === "left" ? "0" :*/ "",
                                                 height: /*isDockedMode && isOnSearch ? "calc(100dvh - 159px)" :*/ "",
@@ -1144,7 +1156,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                             this.props.isPdf
                                 ? <li
                                     {...(this.state.pdfScaleMode === "page-width" &&
-                                        { style: { backgroundColor: "var(--color-blue" } })}
+                                        { style: { backgroundColor: "var(--color-brand-primary)" } })}
                                 >
                                     <input
                                         id="pdfScaleButton"
@@ -1172,7 +1184,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 ? <li className={stylesReader.select_fxl}>
                                     {/* <button
                                         {...(this.state.fxlZoomPercent !== 0 &&
-                                            { style: { border: "2px solid var(--color-blue)", borderRadius: "6px" } })}
+                                            { style: { border: "2px solid var(--color-brand-primary)", borderRadius: "6px" } })}
                                         id="buttonFXLZoom"
                                         className={classNames(stylesReader.menu_button)}
                                         onWheel={this.onwheel}
@@ -1203,7 +1215,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         {this.state.fxlZoomPercent > 0 ?
                                             <label
                                                 htmlFor="buttonFXLZoom"
-                                                style={{ pointerEvents: "none", color: "var(--color-blue)", fontSize: "80%" }}>{this.state.fxlZoomPercent > 0 ? `${this.state.fxlZoomPercent}%` : " "}</label>
+                                                style={{ pointerEvents: "none", color: "var(--color-brand-primary)", fontSize: "80%" }}>{this.state.fxlZoomPercent > 0 ? `${this.state.fxlZoomPercent}%` : " "}</label>
                                             :
                                             <SVG ariaHidden={true} svg={viewMode} />
                                         }
@@ -1246,7 +1258,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                 </li>
                                 : <></>
                         }
-                        <span style={{width: "1px", height: "30px", backgroundColor: "var(--color-verylight-grey)", margin: "auto 5px"}}></span>
+                        <span style={{width: "1px", height: "30px", backgroundColor: "var(--color-gray-200)", margin: "auto 5px"}}></span>
                         <li className={classNames(stylesReader.blue)}>
                             <button
                                 className={classNames(stylesReader.menu_button)}

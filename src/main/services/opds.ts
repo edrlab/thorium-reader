@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { inject, injectable } from "inversify";
 import { removeUTF8BOM } from "readium-desktop/common/utils/bom";
 import { IHttpGetResult } from "readium-desktop/common/utils/http";
@@ -15,7 +15,7 @@ import { httpGet } from "readium-desktop/main/network/http";
 import {
     ContentType, contentTypeisOpds, contentTypeisOpdsAuth, contentTypeisXml, parseContentType,
 } from "readium-desktop/utils/contentType";
-import * as URITemplate from "urijs/src/URITemplate";
+import URITemplate from "urijs/src/URITemplate";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import {
@@ -226,7 +226,7 @@ export class OpdsService {
         const opdsAuthChannel = getOpdsAuthenticationChannel();
 
         debug("put the authentication model in the saga authChannel", JSON.stringify(r2OpdsAuth, null, 4));
-        opdsAuthChannel.put([r2OpdsAuth, responseUrl]);
+        opdsAuthChannel.put([r2OpdsAuth, responseUrl, false]); // retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser
 
     }
 

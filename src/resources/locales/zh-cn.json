@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "关于 {{- appName}} （在线）"
         },
@@ -86,6 +87,7 @@
         "importAnnotation": "导入笔记",
         "lang": "语言",
         "lastRead": "上次阅读",
+        "login": "",
         "logout": "",
         "moreInfo": "更多信息",
         "myBooks": "我的图书",
@@ -97,9 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "取消",
+                "external": "",
+                "fallback": "",
                 "login": "登录",
                 "password": "密码",
                 "register": "注册",
+                "retry": "",
                 "username": "用户名/电子邮件地址"
             },
             "info": {
@@ -124,6 +129,7 @@
         "publisher": "出版社",
         "readBook": "阅读",
         "released": "出版日期",
+        "removeFromFavorites": "",
         "sort": "排序方式",
         "tag": "标签",
         "tags": "标签",
@@ -218,7 +224,8 @@
         },
         "open": {
             "error": "无法打开出版物: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -845,6 +852,7 @@
             "reduceMotion": "减少动态效果",
             "scrolled": "滚屏",
             "spacing": "间距",
+            "spreadModeEven": "",
             "text": "文字",
             "theme": {
                 "name": {
@@ -902,6 +910,7 @@
             "cancel": "取消",
             "disclaimer": "应用程序的默认设置是根据 QWERTY 键盘布局上按键的物理位置设计的",
             "editUserJson": "编辑用户文件...",
+            "exportToHTML": "",
             "keyboardShortcuts": "键盘快捷键",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1164,7 +1173,8 @@
         "tabs": {
             "appearance": "外观",
             "general": "常规",
-            "keyboardShortcuts": "键盘快捷键"
+            "keyboardShortcuts": "键盘快捷键",
+            "profiles": ""
         },
         "theme": {
             "auto": "自动",

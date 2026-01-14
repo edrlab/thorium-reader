@@ -15,7 +15,7 @@
 
 
         &_navigation {
-            background-color: var(--color-extralight-grey);
+            background-color: var(--color-gray-50);
             border-radius: 6px;
             height: 75px;
             display: flex;
@@ -48,7 +48,7 @@
                 height: 30px!important;
 
                 &:has(input:focus) {
-                    outline: var(--color-blue) solid 2px !important;
+                    outline: var(--color-brand-primary) solid 2px !important;
                     outline-offset: -2px;
                   }
 
@@ -57,7 +57,7 @@
                 }
 
                 label {
-                    background-color: var(--color-extralight-grey);
+                    background-color: var(--color-gray-50);
                     // top: -18px;
                 }
 
@@ -129,11 +129,11 @@
                 margin: 0;
                 padding: 0;
                 width: 30px;
-                color: var(--color-blue);
+                color: var(--color-brand-primary);
                 height: 32px;
 
                 a {
-                    color: var(--color-blue);
+                    color: var(--color-brand-primary);
                 }
             }
 
@@ -148,8 +148,8 @@
                 border: 1px solid gray;
                 border-radius: 4px;
                 height: 30px;
-                background-color: var(--color-secondary);
-                color: var(--color-primary);
+                background-color: var(--color-neutral-base);
+                color: var(--color-text-primary);
             }
 
             &_opds_currentPage {
@@ -193,11 +193,11 @@
         align-items: center;
 
         .showColFilters_input {
-            border: 1px solid var(--color-blue);
+            border: 1px solid var(--color-brand-primary);
             border-radius: 4px;
             margin: 0;
             padding: 0.2em;
-            background-color: var(--color-secondary);        }
+            background-color: var(--color-neutral-base);        }
     }
 
     > button {
@@ -268,7 +268,7 @@
 
         &:hover {
             &::-webkit-scrollbar-thumb {
-                background-color: var(--color-blue);
+                background-color: var(--color-brand-primary);
             }
         }
 
@@ -305,7 +305,7 @@
             position: absolute;
             right: 0;
             bottom: -20px;
-            color: var(--color-blue);
+            color: var(--color-brand-primary);
             width: 15px;
             height: 15px;
         }
@@ -313,7 +313,7 @@
 }
 
 .setShowColumnFiltersCheckboxLabel[data-focussed] {
-    outline: var(--color-blue) solid 2px !important;
+    outline: var(--color-brand-primary) solid 2px !important;
     outline-offset: 4px;
 }
 
@@ -337,7 +337,7 @@
         margin-top: 0;
         margin-bottom: 0.4em;
         position: absolute;
-        background-color: var(--color-secondary);
+        background-color: var(--color-neutral-base);
 
         @media screen and (width <= 1072px) {
             inset: 280px 20px 75px 26px;
@@ -348,7 +348,7 @@
         &::-webkit-scrollbar {
             width: 10px;
             height: 10px;
-            background-color: var(--color-secondary);
+            background-color: var(--color-neutral-base);
 
             &:hover {
                 border-left: 0;
@@ -361,14 +361,14 @@
     }
 
     &_head {
-        border-bottom: 2px solid var(--color-light-blue);
+        border-bottom: 2px solid var(--color-brand-secondary);
         padding: 0.7em;
         margin: 0;
-        background-color: var(--color-light-blue);
+        background-color: var(--color-brand-secondary);
         white-space: nowrap;
 
         button, h4 {
-            color: var(--color-blue);
+            color: var(--color-brand-primary);
             height: auto;
             padding: 0.2em;
             margin: 0;
@@ -382,7 +382,7 @@
         // grid-gap: 15px;
         row-gap: 30px;
         margin-bottom: 20px;
-        background-color: var(--color-secondary);
+        background-color: var(--color-neutral-base);
 
         tr td {
             border-bottom: none;
@@ -409,7 +409,7 @@
 
         .my_combobox_container {
             // min-width: 150px;
-            background-color: var(--color-secondary);
+            background-color: var(--color-neutral-base);
             padding: 2px 0;
             width: 264px;
             height: 30px;

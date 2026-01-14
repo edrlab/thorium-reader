@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 
 // TypeScript GO:
 // The current file is a CommonJS module whose imports will produce 'require' calls;
@@ -14,8 +14,8 @@ import * as debug_ from "debug";
 // To convert this file to an ECMAScript module, change its file extension to '.mts',
 // or add the field `"type": "module"` to 'package.json'.
 // @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore TS1479
+// e__slint-disable-next-line @typescript-eslint/ban-ts-comment
+// @__ts-ignore TS1479
 import { nanoid } from "nanoid";
 
 import * as path from "path";
@@ -294,14 +294,24 @@ export async function importPublicationFromFS(
     const newPubDocument = await publicationRepository.save(pubDocument);
     debug("[END] Store publication in database", filePath);
 
+    // at this point, newPubDocument.lcp is undefined even if r2Publication.LCP
+    // passphrase saved for doc.id without provider
     if (lcpHashedPassphrase) {
         await lcpManager.saveSecret(newPubDocument, lcpHashedPassphrase);
     }
 
     if (r2Publication.LCP) {
-        setTimeout(async () => await lcpManager.checkPublicationLicenseUpdate(newPubDocument), 0);
+        setTimeout(async () => {
+            // DOES NOT MUTATE newPubDocument (returns a modified copy)
+            const updatedDoc = await lcpManager.checkPublicationLicenseUpdate(newPubDocument);
+            // passphrase saved for doc.id with provider, this time (overrides old entry mapped on doc.id)
+            if (lcpHashedPassphrase && updatedDoc) {
+                await lcpManager.saveSecret(updatedDoc, lcpHashedPassphrase);
+            }
+        }, 0);
     }
 
+    // at this point, newPubDocument.lcp is undefined even if r2Publication.LCP
     debug("Publication imported", filePath);
     return newPubDocument;
 }

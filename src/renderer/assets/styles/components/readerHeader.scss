@@ -6,16 +6,16 @@
 
 [data-theme="dark"] {
     .toolbar_navigation, .picker_container {
-        background-color: var(--color-secondary);
-        // border-bottom: 2px solid var(--color-mediumdark-grey);
+        background-color: var(--color-neutral-base);
+        // border-bottom: 2px solid var(--color-gray-800);
     }
 }
 
 [data-theme="system"] {
     @media (prefers-color-scheme: dark) {
         .toolbar_navigation, .picker_container {
-        background-color: var(--color-secondary);
-        // border-bottom: 2px solid var(--color-mediumdark-grey);
+        background-color: var(--color-neutral-base);
+        // border-bottom: 2px solid var(--color-gray-800);
         }
     }
 }
@@ -24,8 +24,8 @@
     height: 70px;
     width: 100%;
     padding: 0;
-    background-color: var(--color-extralight-grey);
-    border-bottom: 3px solid var(--color-extralight-grey-alt);
+    background-color: var(--color-gray-50);
+    border-bottom: 3px solid var(--color-gray-100);
     box-sizing: border-box;
 
     &.ttsAudioActivated .tts_toolbar::before {
@@ -35,7 +35,7 @@
             top: 42px;
             height: 1px;
             width: 210px;  /* or 100px */
-            border-bottom: 2px solid var(--color-blue);
+            border-bottom: 2px solid var(--color-brand-primary);
     }
 
     > ul {
@@ -86,8 +86,8 @@
                     }
 
                     svg {
-                    fill: var(--color-medium-grey);
-                    color: var(--color-medium-grey);
+                    fill: var(--color-gray-400);
+                    color: var(--color-gray-400);
                     }
                 }
             }
@@ -110,15 +110,15 @@
                 border-radius: 5px;
 
                 &:not(:has(.active_svg)):hover {
-                    border-color: var(--color-blue);
-                    background-color: var(--color-light-blue);
+                    border-color: var(--color-brand-primary);
+                    background-color: var(--color-brand-secondary);
                 }
 
                 svg {
                     height: 20px;
                     width: 30px;
-                    fill: var(--color-blue-alt);
-                    color: var(--color-blue-alt);
+                    fill: var(--color-brand-primary-inverse);
+                    color: var(--color-brand-primary-inverse);
 
                     // @media (prefers-color-scheme: dark) {
                     //     fill: #FEFEFE;
@@ -141,7 +141,7 @@
                 svg {
                     width: inherit;
                     height: inherit;
-                    fill: var(--color-blue);
+                    fill: var(--color-brand-primary);
                 }
             }
         }
@@ -156,8 +156,8 @@
 }
 
 .active_svg {
-    fill: var(--color-secondary)!important;
-    color: var(--color-secondary)!important;
+    fill: var(--color-neutral-base)!important;
+    color: var(--color-neutral-base)!important;
 
     // @media (prefers-color-scheme: dark) {
     //     fill: black!important;
@@ -171,12 +171,12 @@
     padding: 0;
     width: 100vw;
     height: 48px;
-    background-color: var(--color-extralight-grey);
+    background-color: var(--color-gray-50);
     z-index: 100;
     top: 70px;
     right: 0;
     left: unset;
-    border-bottom: 2px solid var(--color-extralight-grey-alt);
+    border-bottom: 2px solid var(--color-gray-100);
     position: absolute;
 
     button[title="Close"] {
@@ -200,12 +200,12 @@
 
         label {
         top: -18px;
-        background-color: var(--color-extralight-grey);
+        background-color: var(--color-gray-50);
         }
 
         button {
             svg {
-                fill: var(--color-blue);
+                fill: var(--color-brand-primary);
             }
         }
     }
@@ -218,7 +218,7 @@
     }
 
     &_arrow {
-        fill: var(--color-extralight-grey);
+        fill: var(--color-gray-50);
         width: 15px;
         height: 10px;
     }
@@ -229,14 +229,14 @@
     flex-wrap: wrap;
     align-items: center;
     height: fit-content;
-    background-color: var(--color-extralight-grey);
+    background-color: var(--color-gray-50);
     border-radius: 6px;
     list-style-type: none;
     margin: 0;
     padding: 10px;
-    border: 1px solid var(--color-verylight-grey-alt);
+    border: 1px solid var(--color-gray-250);
     /* gap: 20px; */
-    color: var(--color-primary);
+    color: var(--color-text-primary);
 
     @media only screen and (width <= 980px) {
         max-height: 520px;
@@ -257,8 +257,8 @@
 
     .react_aria_ComboBox{
         .react_aria_Input {
-            background-color: var(--color-secondary)!important;
-            color: var(--color-primary)!important;
+            background-color: var(--color-neutral-base)!important;
+            color: var(--color-text-primary)!important;
         }
 
         select {
@@ -266,8 +266,8 @@
             height: 30px;
             border-radius: 6px;
             padding: 0 10px;
-            background-color: var(--color-secondary);
-            color: var(--color-primary);
+            background-color: var(--color-neutral-base);
+            color: var(--color-text-primary);
         }
 
         .react_aria_ComboBox {
@@ -284,7 +284,7 @@
 
     .ttsSelectVoice {
         margin-top: 2em;
-        border: 2px dotted var(--color-verylight-grey-alt);
+        border: 2px dotted var(--color-gray-250);
         border-radius: 1em;
         padding: 0.4em;
 
@@ -305,14 +305,14 @@
 }
 
 .popover_arrow {
-    border-top: 2px solid var(--color-extralight-grey);
-    fill: var(--color-extralight-grey);
+    border-top: 2px solid var(--color-gray-50);
+    fill: var(--color-gray-50);
     width: 15px;
     height: 10px;
 }
 
 .bookmarkButton:focus + label {
-    outline: var(--color-blue) solid 2px !important;
+    outline: var(--color-brand-primary) solid 2px !important;
     outline-offset: -2px;
 }
 
@@ -346,16 +346,16 @@
 }
 
 #bookmarkLabel:has(.bookmarkIcon.active_svg_option){
-    background-color: var(--color-blue) !important;
+    background-color: var(--color-brand-primary) !important;
 }
 
 #bookmarkLabel:has(.bookmarkIcon.active_svg_option) .bookmarkRemove.active_svg_option,
 #bookmarkLabel:has(.bookmarkIcon.active_svg_option) .bookmarkIcon.active_svg_option{
-    color: var(--color-secondary) !important;
+    color: var(--color-neutral-base) !important;
 }
 
 #bookmarkLabel:has(.bookmarkIcon.active_svg_option) .bookmarkAdd.active_svg_option{
-    fill: var(--color-secondary) !important;
+    fill: var(--color-neutral-base) !important;
 }
 
 .annotationsIcon svg {
@@ -383,7 +383,7 @@
             top: 47px;
             height: 1px;
             width: 200px;
-            border-bottom: 2px solid var(--color-blue);
+            border-bottom: 2px solid var(--color-brand-primary);
         }
     }
 
@@ -394,7 +394,7 @@
         top: 37px;
         height: 1px;
         width: 100%;
-        border-bottom: 2px solid var(--color-blue);
+        border-bottom: 2px solid var(--color-brand-primary);
     }
 }
 

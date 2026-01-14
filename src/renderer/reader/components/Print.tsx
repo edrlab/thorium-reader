@@ -194,7 +194,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                             </ul>
                         </div>
                     </div>
-                    : <div style={{ margin: "10px", borderBottom: "2px solid var(--color-extralight-grey)" }} />
+                    : <div style={{ margin: "10px", borderBottom: "2px solid var(--color-gray-50" }} />
 
             }
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "20px" }}>
@@ -213,7 +213,7 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
             </div>
 
             <h3>{__("reader.print.preview")}</h3>
-            <div style={{ padding: "10px 15px 5px", backgroundColor: "var(--color-extralight-grey)" }}>
+            <div style={{ padding: "10px 15px 5px", backgroundColor: "var(--color-gray-50" }}>
                 <div id="print-dialog-image-container" className={stylesPrint.print_dialog_image_container}>
 
                     {

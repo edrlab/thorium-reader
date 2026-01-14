@@ -109,6 +109,7 @@ declare namespace typed_i18n {
   (_: "app.window", __?: {}): { readonly "showLibrary": string };
   (_: "app.window.showLibrary", __?: {}): string;
   (_: "catalog", __?: {}): {
+  readonly "AddToFavorites": string,
   readonly "about": { readonly "title": string },
   readonly "addBookToLib": string,
   readonly "addTags": string,
@@ -143,6 +144,7 @@ declare namespace typed_i18n {
   readonly "importAnnotation": string,
   readonly "lang": string,
   readonly "lastRead": string,
+  readonly "login": string,
   readonly "logout": string,
   readonly "moreInfo": string,
   readonly "myBooks": string,
@@ -154,9 +156,12 @@ declare namespace typed_i18n {
   readonly "opds": {
     readonly "auth": {
       readonly "cancel": string,
+      readonly "external": string,
+      readonly "fallback": string,
       readonly "login": string,
       readonly "password": string,
       readonly "register": string,
+      readonly "retry": string,
       readonly "username": string
     },
     readonly "info": {
@@ -181,11 +186,13 @@ declare namespace typed_i18n {
   readonly "publisher": string,
   readonly "readBook": string,
   readonly "released": string,
+  readonly "removeFromFavorites": string,
   readonly "sort": string,
   readonly "tag": string,
   readonly "tags": string,
   readonly "update": string
 };
+  (_: "catalog.AddToFavorites", __?: {}): string;
   (_: "catalog.about", __?: {}): { readonly "title": string };
   (_: "catalog.about.title", __?: {}): string;
   (_: "catalog.addBookToLib", __?: {}): string;
@@ -233,6 +240,7 @@ declare namespace typed_i18n {
   (_: "catalog.importAnnotation", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.lastRead", __?: {}): string;
+  (_: "catalog.login", __?: {}): string;
   (_: "catalog.logout", __?: {}): string;
   (_: "catalog.moreInfo", __?: {}): string;
   (_: "catalog.myBooks", __?: {}): string;
@@ -244,9 +252,12 @@ declare namespace typed_i18n {
   (_: "catalog.opds", __?: {}): {
   readonly "auth": {
     readonly "cancel": string,
+    readonly "external": string,
+    readonly "fallback": string,
     readonly "login": string,
     readonly "password": string,
     readonly "register": string,
+    readonly "retry": string,
     readonly "username": string
   },
   readonly "info": {
@@ -270,15 +281,21 @@ declare namespace typed_i18n {
 };
   (_: "catalog.opds.auth", __?: {}): {
   readonly "cancel": string,
+  readonly "external": string,
+  readonly "fallback": string,
   readonly "login": string,
   readonly "password": string,
   readonly "register": string,
+  readonly "retry": string,
   readonly "username": string
 };
   (_: "catalog.opds.auth.cancel", __?: {}): string;
+  (_: "catalog.opds.auth.external", __?: {}): string;
+  (_: "catalog.opds.auth.fallback", __?: {}): string;
   (_: "catalog.opds.auth.login", __?: {}): string;
   (_: "catalog.opds.auth.password", __?: {}): string;
   (_: "catalog.opds.auth.register", __?: {}): string;
+  (_: "catalog.opds.auth.retry", __?: {}): string;
   (_: "catalog.opds.auth.username", __?: {}): string;
   (_: "catalog.opds.info", __?: {}): {
   readonly "availableSince": string,
@@ -322,6 +339,7 @@ declare namespace typed_i18n {
   (_: "catalog.publisher", __?: {}): string;
   (_: "catalog.readBook", __?: {}): string;
   (_: "catalog.released", __?: {}): string;
+  (_: "catalog.removeFromFavorites", __?: {}): string;
   (_: "catalog.sort", __?: {}): string; (_: "catalog.tag", __?: {}): string;
   (_: "catalog.tags", __?: {}): string;
   (_: "catalog.update", __?: {}): string;
@@ -500,7 +518,8 @@ declare namespace typed_i18n {
     readonly "fail": string,
     readonly "success": string
   },
-  readonly "open": { readonly "error": string }
+  readonly "open": { readonly "error": string },
+  readonly "wipeData": string
 };
   (_: "message.annotations", __?: {}): {
   readonly "alreadyImported": string,
@@ -528,6 +547,7 @@ declare namespace typed_i18n {
   (_: "message.import.success", __?: {}): string;
   (_: "message.open", __?: {}): { readonly "error": string };
   (_: "message.open.error", __?: {}): string;
+  (_: "message.wipeData", __?: {}): string;
   (_: "opds", __?: {}): {
   readonly "addForm": {
     readonly "addButton": string,
@@ -1791,6 +1811,7 @@ declare namespace typed_i18n {
     readonly "reduceMotion": string,
     readonly "scrolled": string,
     readonly "spacing": string,
+    readonly "spreadModeEven": string,
     readonly "text": string,
     readonly "theme": {
       readonly "name": {
@@ -2183,6 +2204,7 @@ declare namespace typed_i18n {
   readonly "reduceMotion": string,
   readonly "scrolled": string,
   readonly "spacing": string,
+  readonly "spreadModeEven": string,
   readonly "text": string,
   readonly "theme": {
     readonly "name": {
@@ -2284,6 +2306,7 @@ declare namespace typed_i18n {
   (_: "reader.settings.reduceMotion", __?: {}): string;
   (_: "reader.settings.scrolled", __?: {}): string;
   (_: "reader.settings.spacing", __?: {}): string;
+  (_: "reader.settings.spreadModeEven", __?: {}): string;
   (_: "reader.settings.text", __?: {}): string;
   (_: "reader.settings.theme", __?: {}): {
   readonly "name": {
@@ -2368,6 +2391,7 @@ declare namespace typed_i18n {
     readonly "cancel": string,
     readonly "disclaimer": string,
     readonly "editUserJson": string,
+    readonly "exportToHTML": string,
     readonly "keyboardShortcuts": string,
     readonly "list": {
       readonly "AddBookmarkWithLabel": {
@@ -2626,7 +2650,8 @@ declare namespace typed_i18n {
   readonly "tabs": {
     readonly "appearance": string,
     readonly "general": string,
-    readonly "keyboardShortcuts": string
+    readonly "keyboardShortcuts": string,
+    readonly "profiles": string
   },
   readonly "theme": {
     readonly "auto": string,
@@ -2663,6 +2688,7 @@ declare namespace typed_i18n {
   readonly "cancel": string,
   readonly "disclaimer": string,
   readonly "editUserJson": string,
+  readonly "exportToHTML": string,
   readonly "keyboardShortcuts": string,
   readonly "list": {
     readonly "AddBookmarkWithLabel": {
@@ -2896,6 +2922,7 @@ declare namespace typed_i18n {
   (_: "settings.keyboard.cancel", __?: {}): string;
   (_: "settings.keyboard.disclaimer", __?: {}): string;
   (_: "settings.keyboard.editUserJson", __?: {}): string;
+  (_: "settings.keyboard.exportToHTML", __?: {}): string;
   (_: "settings.keyboard.keyboardShortcuts", __?: {}): string;
   (_: "settings.keyboard.list", __?: {}): {
   readonly "AddBookmarkWithLabel": {
@@ -3335,11 +3362,13 @@ declare namespace typed_i18n {
   (_: "settings.tabs", __?: {}): {
   readonly "appearance": string,
   readonly "general": string,
-  readonly "keyboardShortcuts": string
+  readonly "keyboardShortcuts": string,
+  readonly "profiles": string
 };
   (_: "settings.tabs.appearance", __?: {}): string;
   (_: "settings.tabs.general", __?: {}): string;
   (_: "settings.tabs.keyboardShortcuts", __?: {}): string;
+  (_: "settings.tabs.profiles", __?: {}): string;
   (_: "settings.theme", __?: {}): {
   readonly "auto": string,
   readonly "dark": string,

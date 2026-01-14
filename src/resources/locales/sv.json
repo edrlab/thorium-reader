@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "Lägg till favoriter",
         "about": {
             "title": "Om {{- appName}}"
         },
@@ -65,10 +66,10 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
-                "publications": "",
-                "screen": "",
-                "title": ""
+                "description": "Profilen saknar beskrivning",
+                "publications": "Profilpublikationer",
+                "screen": "Ingen titel",
+                "title": "Profilnamn"
             }
         },
         "delete": "Ta bort",
@@ -86,7 +87,8 @@
         "importAnnotation": "Importera anteckningar",
         "lang": "Språk",
         "lastRead": "Senast läst",
-        "logout": "",
+        "login": "Logga in",
+        "logout": "Logga ut",
         "moreInfo": "Information om publikationen",
         "myBooks": "Mina böcker",
         "noPublicationHelpL1": "Släpp en publikation här",
@@ -97,9 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "Avbryt",
+                "external": "Loginsidan kommer att öppnas i din webbläsare. Följ instruktionerna. Efter att du har loggat in så kommer du att komma tillbaka till det här programmet.",
+                "fallback": "Obs!: Vid inloggningsproblem med standardwebbläsarmetoden, försök igen med den alternativa inbyggda metoden i appen.",
                 "login": "Logga in",
                 "password": "Lösenord",
                 "register": "Registrera dig",
+                "retry": "Försök igen",
                 "username": "Användarnamn/e-postadress"
             },
             "info": {
@@ -124,6 +129,7 @@
         "publisher": "Utgivare",
         "readBook": "Läs",
         "released": "Publicerad den",
+        "removeFromFavorites": "Ta bort från favoriter",
         "sort": "Sortera efter",
         "tag": "Tagg",
         "tags": "Taggar",
@@ -145,9 +151,9 @@
         "cancel": "Avbryt",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
-                "state": "",
-                "title": ""
+                "fallbackWelcomeScreen": "Det finns ingen välkomstskärm",
+                "state": "Status: {{- state}}",
+                "title": "Tillhandahålla och aktivera anpassningsprofil"
             }
         },
         "deleteAnnotations": "Radera anteckningar?",
@@ -218,7 +224,8 @@
         },
         "open": {
             "error": "Publikationen kan inte öppnas: {{- err}}"
-        }
+        },
+        "wipeData": "Inloggningsdata rensades (åtkomstnycklar och kakor)"
     },
     "opds": {
         "addForm": {
@@ -234,7 +241,7 @@
         "addMenu": "Lägg till ett OPDS-flöde",
         "breadcrumbRoot": "Kataloger",
         "documentation": "OPDS officiella webbplats",
-        "empty": "Inga publikationer hittades",
+        "empty": "Ingen bok hittades",
         "firstPage": "Första",
         "informations": "Föreställ dig en värld där du kan utforska och ladda ner digitala publikationer från offentliga bibliotek och digitala bokhandlar med bara några få klick. Det är precis vad katalogformatet Open Publication Distribution System (OPDS) erbjuder. Med OPDS kan du navigera genom kataloger från olika e-boksleverantörer, registrera dig, låna, köpa en publikation eller besöka din personliga bokhylla. Du kan till och med ladda ner en e-bok eller ljudbok direkt till Thorium Reader för omedelbar läsning.\nSå, hur hittar du en OPDS-katalog? Det är enkelt. Leta efter en länk (URL) som leder till katalogen. Kopiera denna URL till länkfältet ovan. Tänk på att det inte finns någon central plats för alla aktiva OPDS-kataloger. Du måste kontakta ditt föredragna bibliotek eller bokhandlare och be om deras OPDS-katalog-URL. Om du är osäker på var du ska börja, har Wikipedia några register över OPDS-kataloger på olika språk som kan vara till hjälp.\nI namnfältet kan du ange ett valfritt namn för att enkelt identifiera flödet i Thorium Reader.",
         "lastPage": "Sista",
@@ -255,7 +262,7 @@
         },
         "next": "Nästa",
         "previous": "Föregående",
-        "resumeBrowsing": "",
+        "resumeBrowsing": "Fortsätt surfa",
         "shelf": "Hylla",
         "updateForm": {
             "name": "Namn:",
@@ -792,9 +799,9 @@
         "settings": {
             "column": {
                 "auto": "Standard",
-                "one": "1 kolumn",
+                "one": "1 kolumn",
                 "title": "Kolumner",
-                "two": "2 kolumner"
+                "two": "2 kolumner"
             },
             "customFontSelected": "Du har valt ett eget typsnitt",
             "customizeReader": "Anpassa textformatering",
@@ -845,6 +852,7 @@
             "reduceMotion": "Minska rörelser",
             "scrolled": "Rullningsbar",
             "spacing": "Avstånd",
+            "spreadModeEven": "Siduppslag \"jämna\" (standard är \"udda\")",
             "text": "Text",
             "theme": {
                 "name": {
@@ -902,6 +910,7 @@
             "cancel": "Avbryt",
             "disclaimer": "Kortkommandona baserar sig på QWERTY-tangentbordslayouten",
             "editUserJson": "Redigera användarfil ...",
+            "exportToHTML": "Export till HTML",
             "keyboardShortcuts": "Kortkommandon",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1146,17 +1155,17 @@
             }
         },
         "profiles": {
-            "info": "",
+            "info": "Byt profiler för att anpassa appen med en leverantörpartners varumärke och färger. Varje profil erbjuder en skräddarsydd upplevelse.",
             "thorium": {
-                "description": "",
-                "title": ""
+                "description": "Thorium Vanilla-profilen är originalet, designad av EDRLab.",
+                "title": "Thorium vanilla"
             },
-            "version": ""
+            "version": "Version: {{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "message": "",
-            "title": ""
+            "help": "När programmet upptäcker hjälpmedelsteknik så anpassas gränssnittet för att fungera bättre med skärmläsare",
+            "message": "Förbättrat stöd för skärmläsare",
+            "title": "Förbättra skärmläsarupplevelsen"
         },
         "session": {
             "title": "Spara session"
@@ -1164,7 +1173,8 @@
         "tabs": {
             "appearance": "Utseende",
             "general": "Allmänt",
-            "keyboardShortcuts": "Kortkommandon"
+            "keyboardShortcuts": "Kortkommandon",
+            "profiles": "Profiler"
         },
         "theme": {
             "auto": "Automatiskt",
@@ -1200,16 +1210,16 @@
     "wizard": {
         "buttons": {
             "discover": "Upptäck vad som är nytt",
-            "goToBooks": "Gå till mina publikationer",
+            "goToBooks": "Gå till mina böcker",
             "next": "Nästa"
         },
         "description": {
             "annotations": "Markera text i dokumentet, välj stil och färg, bifoga egna anteckningar. Skapa anteckningar i snabbläge för att kringgå redigeraren (du kan ange text och markeringsstil senare). Du kan också använda omedelbart-läget som skapar en anteckning direkt efter att du markerat texten i dokumentet.",
-            "catalogs": "Låna publikationer från ditt lokala bibliotek eller upptäck publikationer via OPDS-flöden. Få tillgång till en mängd olika publikationer från flera källor tack vare onlinekataloger.",
+            "catalogs": "Låna böcker från ditt lokala bibliotek eller upptäck böcker via OPDS-flöden. Få tillgång till en mängd olika böcker från flera källor tack vare onlinekataloger.",
             "home": "Thorium ser annorlunda ut! Upptäck vad som är nytt ...",
-            "readingView1": "Ställ in Thorium efter dina läs- och lyssningspreferenser: Du kan välja mellan flera färgteman för både användargränssnitt och publikationer. Du kan också bättre än tidigare anpassa uppläsningen av e-böcker med syntetiskt tal eller synkroniserat text och ljud.",
-            "readingView2": "Thoriums förbättrade användargränssnitt gör det lättare att hitta text i publikationer, utforska sökresultat, gå till specifika sidor, bläddra i innehållsförteckningen och skapa bokmärken tack vare de nya dockade panelerna. Helskärmsläsläget erbjuder en distraktionsfri läsupplevelse.",
-            "yourBooks": "Välkommen till din omdesignade personliga bokhylla! I gallerivyn kan du enkelt filtrera efter taggar eller hitta publikationer med nyckelord. I den avancerade tabellvyn kan du välja och sortera publikationer efter författare, titel, datum, format med mera."
+            "readingView1": "Du kan välja färgtema för både programmet och böckerna du läser. Du kan också ställa in hur e-böcker ska läsas upp – med syntetiskt tal eller med text och ljud som är synkroniserade.",
+            "readingView2": "Thoriums förbättrade användargränssnitt gör det lättare att hitta text i böcker, utforska sökresultat, gå till specifika sidor, bläddra i innehållsförteckningen och skapa bokmärken tack vare de nya dockade panelerna. Om du vill läsa utan störningar kan du välja helskärmsläge.",
+            "yourBooks": "Välkommen till din omdesignade personliga bokhylla! I gallerivyn kan du enkelt filtrera efter taggar eller hitta böcker med nyckelord. I den avancerade tabellvyn kan du välja och sortera böcker efter författare, titel, datum, format med mera."
         },
         "dontShow": "Visa inte igen",
         "tab": {
@@ -1217,10 +1227,10 @@
             "catalogs": "Kataloger",
             "home": "Hem",
             "readingView": "Läsvy",
-            "yourBooks": "Dina publikationer"
+            "yourBooks": "Dina böcker"
         },
         "title": {
-            "allBooks": "Alla mina publikationer",
+            "allBooks": "Alla mina böcker",
             "newFeature": "Ny funktion: Anteckningar",
             "welcome": "Välkommen till Thorium 3"
         }

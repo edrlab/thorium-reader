@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "{{- appName}} について（オンライン）"
         },
@@ -86,6 +87,7 @@
         "importAnnotation": "メモを取りこむ",
         "lang": "言語",
         "lastRead": "最終閲覧",
+        "login": "",
         "logout": "",
         "moreInfo": "詳細情報",
         "myBooks": "わたしの本",
@@ -97,9 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "キャンセル",
+                "external": "",
+                "fallback": "",
                 "login": "ログイン",
                 "password": "パスワード",
                 "register": "登録",
+                "retry": "",
                 "username": "ユーザー名 / メールアドレス"
             },
             "info": {
@@ -124,6 +129,7 @@
         "publisher": "出版社",
         "readBook": "本を読む",
         "released": "出版日",
+        "removeFromFavorites": "",
         "sort": "並び替え",
         "tag": "タグ",
         "tags": "タグ",
@@ -218,7 +224,8 @@
         },
         "open": {
             "error": "本を開けません：{{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -845,6 +852,7 @@
             "reduceMotion": "視差効果を減らす",
             "scrolled": "スクロール型",
             "spacing": "余白・間隔",
+            "spreadModeEven": "",
             "text": "文字",
             "theme": {
                 "name": {
@@ -902,6 +910,7 @@
             "cancel": "キャンセル",
             "disclaimer": "ショートカットは、QWERTY配列のキーボードレイアウトから定義されました。",
             "editUserJson": "ユーザーファイルを編集…",
+            "exportToHTML": "",
             "keyboardShortcuts": "キーボードショートカット",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1164,7 +1173,8 @@
         "tabs": {
             "appearance": "外観",
             "general": "一般",
-            "keyboardShortcuts": "キーボード ショートカット"
+            "keyboardShortcuts": "キーボード ショートカット",
+            "profiles": ""
         },
         "theme": {
             "auto": "自動",

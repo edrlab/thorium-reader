@@ -15,8 +15,8 @@ import { ipcRenderer } from "electron"; // contextBridge
 // To convert this file to an ECMAScript module, change its file extension to '.mts',
 // or add the field `"type": "module"` to 'package.json'.
 // @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore TS1479
+// e__slint-disable-next-line @typescript-eslint/ban-ts-comment
+// @__ts-ignore TS1479
 import { PDFDocumentProxy } from "pdf.js";
 
 import {
@@ -157,16 +157,26 @@ function main() {
         },
     );
 
-    const defaultView: IPdfPlayerView = "scrolled";
-    const defaultScale: IPdfPlayerScale = "page-fit";
+    // const defaultView: IPdfPlayerView = "scrolled";
+    // const defaultScale: IPdfPlayerScale = "page-fit";
     const defaultCol: IPdfPlayerColumn = "1";
+    const defaultSpreadModeEven = false;
 
     // start dispatched from webview dom ready
-    bus.subscribe("start", async (pdfPath: string) => {
+    bus.subscribe("start", async (pdfPath: string, scale: IPdfPlayerScale, spreadMode: 0 | 1 | 2) => {
 
         pdfDocument.then(async (pdf) => {
 
             console.log("PDFDOC LOADED");
+
+            // setTimeout(() => {
+                const debounceSave = debounce(async (data: any) => {
+                    bus.dispatch("savePreferences", data);
+                }, 200);
+                pdfjsEventBus.on("__savePreferences", async (data: any) => {
+                    await debounceSave(data)
+                })
+            // }, 100);
 
             const toc = await getToc(pdf);
 
@@ -176,13 +186,17 @@ function main() {
             bus.dispatch("toc", toc);
             bus.dispatch("numberofpages", pdf.numPages);
 
+            pdfjsEventBus.dispatch("scalechanged", { value: typeof scale === "number" ? `${scale / 100}` : scale });
+            pdfjsEventBus.dispatch("switchspreadmode", { mode: spreadMode });
+
         }).catch((e) => console.error(e));
 
         console.log("bus.subscribe start pdfPath", pdfPath);
 
-        bus.dispatch("scale", defaultScale);
-        bus.dispatch("view", defaultView);
-        bus.dispatch("column", defaultCol);
+        // bus.dispatch("scale", defaultScale);
+        // bus.dispatch("view", defaultView);
+        // bus.dispatch("column", defaultCol);
+        // bus.dispatch("spreadModeEven", defaultSpreadModeEven);
 
     });
 
@@ -207,22 +221,18 @@ function main() {
         })
     }
 
-    {
-        const debounceSave = debounce(async (data: any) => {
-            bus.dispatch("savePreferences", data);
-        }, 200);
-        pdfjsEventBus.on("__savePreferences", async (data: any) => {
-            await debounceSave(data)
-        })
-    }
 
-    {
-        pdfjsEventBus.on("__ready", () => {
 
-            // send to reader.tsx ready to render pdf
-            bus.dispatch("ready");
-        });
-    }
+    // never send anymore
+    // {
+    //     pdfjsEventBus.on("__ready", () => {
+
+    //         // send to reader.tsx ready to render pdf
+    //         bus.dispatch("ready");
+
+
+    //     });
+    // }
 
     // search
     {
@@ -262,12 +272,27 @@ function main() {
 
     // spreadmode
     let colMode: IPdfPlayerColumn = defaultCol;
+    let spreadModeEven: boolean = defaultSpreadModeEven;
+    // const SpreadMode = {
+    //   UNKNOWN: -1,
+    //   NONE: 0, // Default value.
+    //   ODD: 1,
+    //   EVEN: 2,
+    // };
     {
         bus.subscribe("column", (col) => {
-            pdfjsEventBus.dispatch("switchspreadmode", { mode: col === "auto" ? 0 : col === "1" ? 0 : 1 });
-            // 1 = odd 2 = even
+
+            pdfjsEventBus.dispatch("switchspreadmode", { mode: col === "auto" ? 0 : col === "1" ? 0 : spreadModeEven ? 2 : 1 });
             bus.dispatch("column", col);
             colMode = col;
+        });
+    }
+    {
+        bus.subscribe("spreadModeEven", (v) => {
+
+            pdfjsEventBus.dispatch("switchspreadmode", { mode: colMode === "auto" ? 0 : colMode === "1" ? 0 : v ? 2 : 1 });
+            bus.dispatch("spreadModeEven", v);
+            spreadModeEven = v;
         });
     }
 
@@ -316,29 +341,29 @@ function main() {
 
     }
     // view
-    let lockViewMode = false;
+    // let lockViewMode = false;
     {
-        bus.subscribe("view", (view) => {
-            if (view === "paginated") {
-                pdfjsEventBus.dispatch("scalechanged", { value: "page-fit" });
-                bus.dispatch("scale", "page-fit");
-                document.body.className = "hidescrollbar";
-                lockViewMode = true;
-            } else if (view === "scrolled") {
-                document.body.className = "";
-                lockViewMode = false;
-            }
-            bus.dispatch("view", view);
-        });
+        // bus.subscribe("view", (view) => {
+        //     if (view === "paginated") {
+        //         pdfjsEventBus.dispatch("scalechanged", { value: "page-fit" });
+        //         bus.dispatch("scale", "page-fit");
+        //         document.body.className = "hidescrollbar";
+        //         lockViewMode = true;
+        //     } else if (view === "scrolled") {
+        //         document.body.className = "";
+        //         lockViewMode = false;
+        //     }
+        //     bus.dispatch("view", view);
+        // });
     }
     // scale
     {
         bus.subscribe("scale", (scale) => {
-            if (!lockViewMode) {
+            // if (!lockViewMode) {
 
-                pdfjsEventBus.dispatch("scalechanged", { value: typeof scale === "number" ? `${scale / 100}` : scale });
-                bus.dispatch("scale", scale);
-            }
+            pdfjsEventBus.dispatch("scalechanged", { value: typeof scale === "number" ? `${scale / 100}` : scale });
+            bus.dispatch("scale", scale);
+            // }
         });
         pdfjsEventBus.on("scalechanging", ({/*_scale, */ presetValue }: any) => bus.dispatch("scale", presetValue));
     }

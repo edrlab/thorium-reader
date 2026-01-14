@@ -15,7 +15,7 @@ import {
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { ENABLE_SKIP_LINK } from "@r2-navigator-js/electron/common/styles";
 import { removeUTF8BOM } from "readium-desktop/common/utils/bom";
 
@@ -111,7 +111,7 @@ function* getResourceCache__(from: Link, r2Manifest: R2Publication): SagaGenerat
     if (!linkFound) {
         return undefined;
     }
-    
+
     const found = __resourceCache.get(from.Href);
     if (found) {
         found._live = TIMEOUT_LIVE;
@@ -182,6 +182,6 @@ export function* getResourceCacheAll(): SagaGenerator<ICacheDocument[]> {
             cacheDocs.push(cacheDoc);
         }
     }
-    
+
     return cacheDocs;
 }

@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "Honi buruz {{appName}}"
         },
@@ -86,6 +87,7 @@
         "importAnnotation": "",
         "lang": "Hizkuntza",
         "lastRead": "Azken Irakurketa",
+        "login": "",
         "logout": "",
         "moreInfo": "Informazio gehiago",
         "myBooks": "Nire liburuak",
@@ -97,9 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "Utzi",
+                "external": "",
+                "fallback": "",
                 "login": "Hasi saioa",
                 "password": "Pasahitza",
                 "register": "Izena eman",
+                "retry": "",
                 "username": "Erabiltzaile izena / Helbide elektronikoa"
             },
             "info": {
@@ -124,6 +129,7 @@
         "publisher": "Editorea",
         "readBook": "Irakurri",
         "released": "Hemen argitaratua",
+        "removeFromFavorites": "",
         "sort": "Ordenatu honen arabera",
         "tag": "Etiketa",
         "tags": "Etiketak",
@@ -218,7 +224,8 @@
         },
         "open": {
             "error": "Ezin da argitalpena ireki: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -845,6 +852,7 @@
             "reduceMotion": "Mugimendua gutxitu",
             "scrolled": "Desplazagarria",
             "spacing": "Tartea",
+            "spreadModeEven": "",
             "text": "Testua",
             "theme": {
                 "name": {
@@ -902,6 +910,7 @@
             "cancel": "Indargabetu ",
             "disclaimer": "Lasterbideak QWERTY teklatuaren diseinutik definitu ziren.",
             "editUserJson": "Editatu erabiltzaile-fitxategia",
+            "exportToHTML": "",
             "keyboardShortcuts": "Teklatuko lasterbideak",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1164,7 +1173,8 @@
         "tabs": {
             "appearance": "Itxura",
             "general": "Orokorra",
-            "keyboardShortcuts": "Teklatuko lasterbideak"
+            "keyboardShortcuts": "Teklatuko lasterbideak",
+            "profiles": ""
         },
         "theme": {
             "auto": "Automatikoa",

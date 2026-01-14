@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "Tietoa ohjelmasta {{- appName}}"
         },
@@ -86,6 +87,7 @@
         "importAnnotation": "Tuo muistiinpanot",
         "lang": "Kieli",
         "lastRead": "Luettu viimeksi",
+        "login": "",
         "logout": "",
         "moreInfo": "Tietoa julkaisusta",
         "myBooks": "Omat kirjat",
@@ -97,9 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "Peru",
+                "external": "",
+                "fallback": "",
                 "login": "Kirjaudu",
                 "password": "Salasana",
                 "register": "Rekisteröidy",
+                "retry": "",
                 "username": "Käyttäjätunnus / Sähköpostiosoite"
             },
             "info": {
@@ -124,6 +129,7 @@
         "publisher": "Julkaisija",
         "readBook": "Lue",
         "released": "Julkaistu",
+        "removeFromFavorites": "",
         "sort": "Lajittele",
         "tag": "Tunniste",
         "tags": "Tunnisteet",
@@ -218,7 +224,8 @@
         },
         "open": {
             "error": "Julkaisua ei voi avata: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -792,9 +799,9 @@
         "settings": {
             "column": {
                 "auto": "Oletus",
-                "one": "1 palsta",
-                "title": "Palstat",
-                "two": "2 palstaa"
+                "one": "1 sarake",
+                "title": "Sarakkeet",
+                "two": "2 saraketta"
             },
             "customFontSelected": "Olet valinnut oman fontin",
             "customizeReader": "Mukauta tekstin ulkoasua",
@@ -845,6 +852,7 @@
             "reduceMotion": "Vähennä liikettä",
             "scrolled": "Vieritettävä",
             "spacing": "Välit",
+            "spreadModeEven": "",
             "text": "Teksti",
             "theme": {
                 "name": {
@@ -902,6 +910,7 @@
             "cancel": "Peruuta",
             "disclaimer": "Oletuspikanäppäimet perustuvat QWERTY-näppäinasetteluun",
             "editUserJson": "Muokkaa käyttäjän tiedostoa...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Pikanäppäimet",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1164,7 +1173,8 @@
         "tabs": {
             "appearance": "Ulkoasu",
             "general": "Yleiset",
-            "keyboardShortcuts": "Pikanäppäimet"
+            "keyboardShortcuts": "Pikanäppäimet",
+            "profiles": ""
         },
         "theme": {
             "auto": "Automaattinen",

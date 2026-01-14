@@ -5,20 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { authActions, customizationActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
-import { customizationPackageProvisioning, customizationPackageProvisionningFromFolder, customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
+import { customizationPackageProvisioningManifest, customizationPackageProvisioningFromFolder, customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { error } from "readium-desktop/main/tools/error";
-import { copyFile } from "node:fs/promises";
+import * as fs from "fs";
 import { nanoid } from "nanoid";
-import * as semver from "semver";
 import { fork as forkTyped, call as callTyped, select as selectTyped, put as putTyped, take as takeTyped, race as raceTyped, delay, SagaGenerator, all as allTyped } from "typed-redux-saga/macro";
-import { existsSync, statSync, unlinkSync } from "node:fs";
 import path from "node:path";
-import { ICustomizationLockInfo } from "readium-desktop/common/redux/states/customization";
+import { ICustomizationLockInfo, ICustomizationProfileError, ICustomizationProfileProvisioned, ICustomizationProfileProvisionedWithError } from "readium-desktop/common/redux/states/customization";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { getAuthenticationToken, httpGet, httpGetWithAuth } from "readium-desktop/main/network/http";
 import { getOpdsAuthenticationChannel } from "readium-desktop/main/event";
@@ -26,11 +24,25 @@ import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authenticati
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { diMainGet } from "readium-desktop/main/di";
 import { net } from "electron";
-import * as fs from "fs";
 import isURL from "validator/lib/isURL";
+import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { contentTypeisOpdsAuth, parseContentType } from "readium-desktop/utils/contentType";
+import { EXT_THORIUM } from "readium-desktop/common/extension";
 
 const filename_ = "readium-desktop:main:redux:sagas:customization";
 const debug = debug_(filename_);
+
+const removePackageProfile = (packages: ICustomizationProfileProvisionedWithError[]) => {
+    debug("remove old or error packages:", JSON.stringify(packages, null, 4));
+    for (const { fileName } of packages) {
+        debug("REMOVE (unlinkSync):", fileName);
+        try {
+            fs.unlinkSync(path.join(customizationWellKnownFolder, fileName));
+        } catch (e) {
+            debug("not removed !?", e);
+        }
+    }
+};
 
 
 export function* sagaCustomizationProfileProvisioning() {
@@ -39,23 +51,20 @@ export function* sagaCustomizationProfileProvisioning() {
 
     debug("INIT Customization with Persisted REDUX State :=> ", JSON.stringify(customizationState, null, 4));
 
-    const [packagesArray, errorPackages] = yield* callTyped(() => tryCatch(() => customizationPackageProvisionningFromFolder(customizationWellKnownFolder), filename_));
-    if (!packagesArray || !packagesArray.length) {
-        debug("no package profile found");
-    } else {
-        debug("packages profile found =", JSON.stringify(packagesArray, null, 4));
-    }
-    yield* putTyped(customizationActions.provisioning.build(customizationState.provision, packagesArray || [], errorPackages || []));
+    const [packagesProvisionedAndLatest, packagesNotProvisionedOrOnError] = yield* callTyped(() => tryCatch(() => customizationPackageProvisioningFromFolder(customizationWellKnownFolder), filename_));
+    yield* putTyped(customizationActions.provisioning.build(packagesProvisionedAndLatest, packagesNotProvisionedOrOnError));
+
+    removePackageProfile(packagesNotProvisionedOrOnError);
 
     if (customizationState.activate.id) {
 
         let error = false;
-        const packageFileName = packagesArray.find(({id}) => id === customizationState.activate.id)?.fileName;
+        const packageFileName = packagesProvisionedAndLatest.find(({id}) => id === customizationState.activate.id)?.fileName;
         if (!packageFileName) {
             debug(`CRITICAL ERROR: no pointer to identifier:"${customizationState.activate.id}" found in provisioned array`);
             error = true;
         } else {
-            const manifest = yield* callTyped(() => tryCatch(() => customizationPackageProvisioning(packageFileName), filename_));
+            const manifest = yield* callTyped(() => tryCatch(() => customizationPackageProvisioningManifest(packageFileName), filename_));
             if (!manifest) {
                 debug(`CRITICAL ERROR: package not signed or correct in ${packageFileName}`);
                 error = true;
@@ -70,6 +79,155 @@ export function* sagaCustomizationProfileProvisioning() {
     }
 }
 
+
+let ___downloadId = 0;
+const downloadProfile = (destination: string, url: string, version?: string) => new Promise<void>((resolve, reject_) => {
+
+    ___downloadId++;
+    const debug_ = (...a: any[]) => debug(___downloadId, ...a);
+
+    debug_("[Download] Starting request...");
+    debug_(`[download] URL=${url} to DESTINATION=${destination} with version=${version}`);
+
+    const request = net.request({ method: "GET", url, redirect: "follow", headers: version ? { ["If-None-Match"]: version } : {} });
+    const fileStream = fs.createWriteStream(destination);
+
+    debug_(`[Download] Created write stream for: ${destination}`);
+
+    let rejected = false;
+    let fileStreamOpen = false;
+    let fileStreamEmpty = true;
+    let responseEnded = false;
+
+    const reject = (reason: any) => {
+        rejected = true;
+        reject_(reason);
+    };
+
+    fileStream.on("open", () => {
+        debug_(`[FileStream] File opened for writing: ${destination}`);
+        fileStreamOpen = true;
+        if (rejected) {
+            fileStream.close();
+        }
+    });
+
+    fileStream.on("finish", () => {
+        debug_("[FileStream] Writing finished successfully.");
+    });
+
+    fileStream.on("close", () => {
+        debug_("[FileStream] Stream closed.");
+        fileStreamOpen = false;
+        if (fileStreamEmpty) {
+            debug_("[FileStream] File is empty so let's remove it...");
+            try {
+                fs.unlinkSync(destination);
+            } catch (e) {
+                debug_("not removed !?", e);
+            }
+        }
+    });
+
+    fileStream.on("error", (err) => {
+        debug_(`[FileStream] Error while writing file: reject(${err})`);
+        fileStreamOpen = false;
+        if (!responseEnded) {
+            request.abort();
+        }
+        reject(err);
+    });
+
+    request.on("response", (response) => {
+        debug_(`[Download] Received response with status code: ${response.statusCode}`);
+
+        if (response.statusCode !== 200 && response.statusCode !== 304) {
+            debug_(`[Download] HTTP error: ${response.statusCode}`);
+            if (fileStreamOpen) {
+                fileStream.close();
+            }
+            debug_(`[download] reject("HTTP status ${response.statusCode}")`);
+            reject(new Error(`HTTP status ${response.statusCode}`));
+            return;
+        }
+
+        response.on("data", (chunk) => {
+            debug_(`[Download] Writing chunk of size: ${chunk.length}`);
+            if (!rejected) {
+                if (fileStreamOpen) {
+                    if (fileStreamEmpty) {
+                        fileStreamEmpty = false;
+                    }
+                    fileStream.write(chunk);
+                } else {
+                    request.abort();
+                    reject(new Error("Can not write data to a closed fileStream"));
+                }
+            }
+        });
+
+        response.on("end", () => {
+            debug_("[Download] Response ended. Ending file stream...");
+            responseEnded = true;
+            if (!rejected) {
+                if (fileStreamOpen) {
+                    fileStream.end();
+                    fileStream.close();
+                    debug_("[Download] File successfully written.");
+                }
+                debug_("[download] resolve()");
+                resolve();
+            }
+        });
+
+        response.on("error", (err) => {
+            debug_("[Download] Error during response:", err);
+            responseEnded = true;
+            if (!rejected) {
+                if (fileStreamOpen) {
+                    fileStream.end();
+                    fileStream.close();
+                }
+                debug_("[download] reject()");
+                reject(err);
+            }
+        });
+    });
+
+    request.on("error", (err) => {
+        debug_("[Download] Request error:", err);
+        if (!rejected) {
+            if (fileStreamOpen) {
+                fileStream.end();
+                fileStream.close();
+            }
+            reject(err);
+        }
+    });
+
+    request.on("abort", () => {
+        debug_("[Download] Request aborted");
+        if (!rejected) {
+            if (fileStreamOpen) {
+                fileStream.end();
+                fileStream.close();
+            }
+            debug_("[download] reject()");
+            reject("aborted");
+        }
+    });
+
+    request.on("close", () => {
+        debug_("[Download] Request closed");
+    });
+
+    request.on("finish", () => {
+        debug_("[Download] request sent");
+    });
+
+    request.end();
+    debug_("[Download] Request sent...");
+});
 
 export function* acquireProvisionsActivates(action: customizationActions.acquire.TAction) {
 
@@ -113,82 +271,21 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
             let error = false;
             try {
 
-                yield* callTyped(() => {
+                yield* callTyped(async () => {
 
-                    return new Promise<void>((resolve, reject) => {
-                        debug("[Download] Starting request...");
-
-                        const request = net.request({ method: "GET", url: httpUrlOrFilePath, redirect: "follow" });
-                        const fileStream = fs.createWriteStream(packagePath);
-
-                        debug(`[Download] Created write stream for: ${packagePath}`);
-
-                        fileStream.on("open", () => {
-                            debug(`[FileStream] File opened for writing: ${packagePath}`);
-                        });
-
-                        fileStream.on("finish", () => {
-                            debug("[FileStream] Writing finished successfully.");
-                        });
-
-                        fileStream.on("close", () => {
-                            debug("[FileStream] Stream closed.");
-                        });
-
-                        fileStream.on("error", (err) => {
-                            console.error("[FileStream] Error while writing file:", err);
-                            reject(err);
-                        });
-
-                        request.on("response", (response) => {
-                            debug(`[Download] Received response with status code: ${response.statusCode}`);
-
-                            if (response.statusCode !== 200) {
-                                console.error(`[Download] HTTP error: ${response.statusCode}`);
-                                reject(new Error(`HTTP status ${response.statusCode}`));
-                                return;
-                            }
-
-                            response.on("data", (chunk) => {
-                                debug(`[Download] Writing chunk of size: ${chunk.length}`);
-                                fileStream.write(chunk);
-                            });
-
-                            response.on("end", () => {
-                                debug("[Download] Response ended. Ending file stream...");
-                                fileStream.end();
-                                debug("[Download] File successfully written.");
-                                resolve();
-                            });
-
-                            response.on("error", (err) => {
-                                console.error("[Download] Error during response:", err);
-                                fileStream.close();
-                                reject(err);
-                            });
-                        });
-
-                        request.on("error", (err) => {
-                            console.error("[Download] Request error:", err);
-                            reject(err);
-                        });
-
-                        request.end();
-                        debug("[Download] Request sent.");
-                    });
-
+                    await downloadProfile(packagePath, httpUrlOrFilePath);
                 });
             } catch (e) {
                 error = true;
                 debug("Error to download the profile", e);
             }
 
-            if (!error && !existsSync(packagePath)) {
+            if (!error && !fs.existsSync(packagePath)) {
                 debug("ERROR: file doesn't exists", packagePath);
                 error = true;
             }
             if (!error) {
-                const filePathStat = statSync(packagePath);
+                const filePathStat = fs.statSync(packagePath);
                 if (!filePathStat.isFile()) {
                     debug("ERROR: file is not a file probably a directory", httpUrlOrFilePath);
                     error = true;
@@ -214,18 +311,18 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
 
     } else {
 
-        if (!existsSync(httpUrlOrFilePath)) {
+        if (!fs.existsSync(httpUrlOrFilePath)) {
             debug("ERROR: file doesn't exists", httpUrlOrFilePath);
             return;
         }
         const filePath = httpUrlOrFilePath;
-        const filePathStat = statSync(filePath);
+        const filePathStat = fs.statSync(filePath);
         if (!filePathStat.isFile()) {
             debug("ERROR: file is not a file probably a directory", httpUrlOrFilePath);
             return;
         }
         fileName = `${nanoid(10)}_${path.basename(filePath)}`;
-        if (path.extname(fileName) !== ".thorium") {
+        if (path.extname(fileName) !== EXT_THORIUM) {
             debug("ERROR: file is not a .thorium extension", fileName);
             return;
         }
@@ -255,19 +352,19 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
             let error = false;
             debug(`COPY "${filePath}" to "${packagePath}"`);
             try {
-                yield* callTyped(() => copyFile(filePath, packagePath));
+                yield* callTyped(() => fs.promises.copyFile(filePath, packagePath));
                 debug("COPY SUCCESS");
             } catch (e) {
                 debug("ERROR: copy", filePath, e);
                 error = true;
             }
 
-            if (!error && !existsSync(packagePath)) {
+            if (!error && !fs.existsSync(packagePath)) {
                 debug("ERROR: file doesn't exists", packagePath);
                 error = true;
             }
             if (!error) {
-                const filePathStat = statSync(packagePath);
+                const filePathStat = fs.statSync(packagePath);
                 if (!filePathStat.isFile()) {
                     debug("ERROR: file is not a file probably a directory", httpUrlOrFilePath);
                     error = true;
@@ -284,7 +381,11 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
                     yield* putTyped(customizationActions.lock.build("IDLE"));
                     return;
                 }
-                yield* putTyped(customizationActions.lock.build("PROVISIONING", lockInfo));
+
+                const lock = yield* selectTyped((state: ICommonRootState) => state.customization.lock);
+                if (lock.state === "ACTIVATING") {
+                    yield* putTyped(customizationActions.lock.build("PROVISIONING", lockInfo));
+                }
             }
         });
     }
@@ -302,60 +403,42 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
                 const provisioningAction = yield* takeTyped(customizationActions.provisioning.build);
                 debug("Provisionning action found", JSON.stringify(provisioningAction, null, 4));
 
-                const removeOldPackage = () => {
-                    const oldProvisionedPackage = provisioningAction.payload.oldPackagesProvisioned.filter(({ fileName: fileNameOldPackage }) => !provisioningAction.payload.newPackagesProvisioned.find(({fileName: fileNameNewPackage}) => fileNameNewPackage === fileNameOldPackage));
-                    debug("OldProvisionedPackage need to be removed:", JSON.stringify(oldProvisionedPackage, null, 4));
-                    for (const { fileName } of oldProvisionedPackage) {
-                        debug("REMOVE (unlinkSync):", fileName);
-                        try {
-                            unlinkSync(path.join(customizationWellKnownFolder, fileName));
-                        } catch (e) {
-                            debug("not removed !?", e);
-                        }
-                    }
-                };
-
-                const fileNameProvisionedFound = provisioningAction.payload.newPackagesProvisioned.find(({ fileName: fileNameProvisioned }) => fileNameProvisioned === fileName);
+                const fileNameProvisionedFound = provisioningAction.payload.provsionedPackages.find(({ fileName: fileName_ }) => fileName_ === fileName);
                 if (fileNameProvisionedFound) {
 
                     const packageId = fileNameProvisionedFound.id;
                     lockInfo.id = packageId;
                     yield* putTyped(customizationActions.lock.build("ACTIVATING", lockInfo));
                     yield* putTyped(customizationActions.activating.build(packageId));
-                    yield* callTyped(() => removeOldPackage());
+
                     return true;
                 } else {
 
-                    const fileNameErrorFound = provisioningAction.payload.errorPackages.find(({ fileName: fileNameProvisioned }) => fileNameProvisioned === fileName);
-                    if (!fileNameErrorFound) {
+                    const profileNotProvisioned = provisioningAction.payload.errorPackages.find(({ fileName: fileName_ }) => fileName_ === fileName);
+                    if (!profileNotProvisioned) {
                         debug("Error not found!?");
-                        return false;
+                        // return false;
+                        continue ;
                     }
 
-                    const newPackagesProvisioned = provisioningAction.payload.newPackagesProvisioned;
-                    const packageProvisionedWithTheSameIdSortedBySemver = newPackagesProvisioned.filter(({ id }) => id && id === fileNameErrorFound.id).sort(({version: va}, {version: vb}) => semver.gt(va, vb) ? 1 : -1);
-                    if (packageProvisionedWithTheSameIdSortedBySemver.length) {
-                        const packageId = packageProvisionedWithTheSameIdSortedBySemver[0].id;
-                        lockInfo.id = packageId;
+                    // const newPackagesProvisioned = provisioningAction.payload.newPackagesProvisioned;
+                    // const packageProvisionedWithTheSameIdSortedBySemver = newPackagesProvisioned.filter(({ id }) => id && id === fileNameErrorFound.id).sort(({version: va}, {version: vb}) => semver.gt(va, vb) ? 1 : -1);
+                    const packageProvisionedWithTheSameIdSortedBySemver = provisioningAction.payload.provsionedPackages.find(
+                        ({ id }) => id && !(profileNotProvisioned as ICustomizationProfileError).error && id === (profileNotProvisioned as ICustomizationProfileProvisioned).id);
+                    if (packageProvisionedWithTheSameIdSortedBySemver) {
+                        lockInfo.id = packageProvisionedWithTheSameIdSortedBySemver.id;
                         yield* putTyped(customizationActions.lock.build("ACTIVATING", lockInfo));
-                        yield* putTyped(customizationActions.activating.build(packageId));
-                        yield* callTyped(() => removeOldPackage());
-                        try {
-                            unlinkSync(path.join(customizationWellKnownFolder, fileNameErrorFound.fileName));
-                        } catch (e) {
-                            debug("not removed !?", e);
-                        }
-                        return true;
+                        yield* putTyped(customizationActions.activating.build(packageProvisionedWithTheSameIdSortedBySemver.id));
+
+                    } else {
+
+                        const message = (profileNotProvisioned as ICustomizationProfileError).error ? (profileNotProvisioned as ICustomizationProfileError).message : "not the latest version";
+
+                        debug(`ERROR: profile (${fileName}) [${message}]`);
+                        yield* putTyped(toastActions.openRequest.build(ToastType.Error, `ERROR: profile (${fileName}) [${message}]`));
+                        yield* putTyped(customizationActions.lock.build("IDLE"));
                     }
 
-                    debug(`ERROR: profile (${fileName}) [${fileNameErrorFound.message}]`);
-                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, `ERROR: profile (${fileName}) [${fileNameErrorFound.message}]`));
-                    yield* putTyped(customizationActions.lock.build("IDLE"));
-                    try {
-                        unlinkSync(path.join(customizationWellKnownFolder, fileNameErrorFound.fileName));
-                    } catch (e) {
-                        debug("not removed !?", e);
-                    }
                     return true;
                 }
             }
@@ -421,7 +504,7 @@ function* triggerCatalogOpdsAuthentication(action: customizationActions.triggerO
         const opdsAuthChannel = getOpdsAuthenticationChannel();
 
         debug("put the authentication model in the saga authChannel", JSON.stringify(r2OpdsAuth, null, 4));
-        opdsAuthChannel.put([r2OpdsAuth, linkHref]);
+        opdsAuthChannel.put([r2OpdsAuth, linkHref, false]); // retryWithInternalBrowserWindowInsteadOfDefaultExternalWebBrowser
 
         const { cancel } = yield* raceTyped({
             cancel: takeTyped(authActions.cancel.build),
@@ -478,10 +561,12 @@ function* triggerCatalogOpdsAuthentication(action: customizationActions.triggerO
                 debug("isURL() NOK", opdsAuthenticationHref);
                 return;
             }
-            const response = yield* callTyped(() => httpGetWithAuth(false)(opdsAuthenticationHref));
-            if (response.isSuccess) {
+            const response = yield* callTyped(() => httpGetWithAuth(true)(opdsAuthenticationHref));
+            const mimeType = parseContentType(response.contentType);
+            if (response.isSuccess || contentTypeisOpdsAuth(mimeType)) {
                 debug("authentication document receive");
                 const opdsAuthJsonObj = yield* callTyped(() => response.response.json());
+                debug("opdsAuthJsonObj:");
                 debug(opdsAuthJsonObj);
                 const cancelled = yield* callTyped(triggerAndWaitAuthenticationDialogModal, catalogHref, opdsAuthJsonObj);
                 if (cancelled) {
@@ -495,6 +580,37 @@ function* triggerCatalogOpdsAuthentication(action: customizationActions.triggerO
     }
 }
 
+let ___timeoutProfileUpdatePolling: NodeJS.Timeout = undefined;
+function* pollSelfLinkProfileUpdate(id: string) {
+
+    if (___timeoutProfileUpdatePolling) {
+        debug("ProfilePolling update timeout not finish");
+        return ;
+    }
+    debug("ProfilePolling Set timeout before next polling to 10mn");
+    ___timeoutProfileUpdatePolling = setTimeout(() => {___timeoutProfileUpdatePolling = undefined;}, 10 * 60 * 1000);
+
+    const provisions = yield* selectTyped((state: ICommonRootState) => state.customization.provision);
+    const provision = provisions.find(({id: __id}) => __id === id);
+    if (!provision) {
+        debug("provisioned profile not found !!!", id);
+        return ;
+    }
+
+    const selfLinkUrl = provision.selfLinkUrl;
+    const version = provision.version;
+    const versionISOString = provision.version ? (new Date(version)).toISOString() : "";
+
+    if (!selfLinkUrl || !versionISOString) {
+        debug("ProfilePolling not available, because selfLinkUrl or version! not defined: ", selfLinkUrl, versionISOString);
+        return ;
+    }
+
+    const fileName = `${nanoid(10)}_downloaded_profile.thorium`;
+    const destination = path.join(customizationWellKnownFolder, fileName);
+    yield* callTyped(() => downloadProfile(destination, selfLinkUrl, versionISOString));
+}
+
 export function saga() {
 
     return allTyped([
@@ -503,7 +619,7 @@ export function saga() {
             triggerCatalogOpdsAuthentication,
             (e) => error(filename_, e),
         ),
-        takeSpawnLeading(
+        takeSpawnEvery(
             customizationActions.acquire.ID,
             acquireProvisionsActivates,
             (e) => error(filename_, e),
@@ -513,8 +629,8 @@ export function saga() {
             function* (action: customizationActions.deleteProfile.TAction) {
                 const filename = path.join(customizationWellKnownFolder, action.payload.fileName);
                 try {
-                    if (existsSync(filename)) {
-                        unlinkSync(filename);
+                    if (fs.existsSync(filename)) {
+                        fs.unlinkSync(filename);
                     }
                 } catch (e) {
                     debug("error to delete", filename, e);
@@ -529,8 +645,16 @@ export function saga() {
                 const payload = action.payload;
                 const id = payload.id;
 
+                // debug("TODO need to persist activate ID profile HERE", id);
 
-                debug("TODO need to persist activate ID profile HERE", id);
+                if (!id) {
+                    debug("Request to activate the default thorium profile !!!");
+                } else {
+
+
+                    // trigger update polling on self link url
+                    yield* callTyped(pollSelfLinkProfileUpdate, id);
+                }
 
             },
             (e) => debug(e),

@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { app, dialog } from "electron";
 import * as path from "path";
 import { lockInstance } from "readium-desktop/main/cli/lock";
@@ -66,6 +66,9 @@ const yargsInit = () =>
                 }).positional("url", {
                     describe: "url opds feed",
                     type: "string",
+                }).positional("favorite", {
+                    describe: "favorite opds feed",
+                    type: "boolean",
                 })
             ,
             async (argv) => {
@@ -77,14 +80,14 @@ const yargsInit = () =>
                 __pendingCmd++;
 
                 try {
-                    const { title, url } = argv;
+                    const { title, url, favorite } = argv;
                     const hostname = (new URL(url)).hostname;
                     if (hostname) {
 
                         const sagaMiddleware = diMainGet("saga-middleware");
                         const opdsApi = diMainGet("opds-api");
 
-                        const feed = await sagaMiddleware.run(opdsApi.addFeed, { title, url }).toPromise();
+                        const feed = await sagaMiddleware.run(opdsApi.addFeed, { title, url, favorite }).toPromise();
                         process.stdout.write("OPDS import done : " + JSON.stringify(feed) + EOL);
 
                     } else {
@@ -233,12 +236,9 @@ const yargsInit = () =>
 
                 debug("lauch command", argv);
 
+                if (Array.isArray(pathArgv) ? pathArgv.length > 0 : !!pathArgv) {
 
-                // TODO: profile option, ...
-
-
-                const openPublicationRequestedBool = Array.isArray(pathArgv) ? pathArgv.length > 0 : !!pathArgv;
-                if (openPublicationRequestedBool) {
+                    debug("open arg requested", pathArgv);
 
                     // flush session because user ask to read a publication
                     flushSession();
@@ -248,8 +248,10 @@ const yargsInit = () =>
                     //
                     // handle opds:// thorium:// https:// http://
                     // to add the feed and open it
-                    const url = pathArgv[0];
-                    if (isOpenUrl(url)) {
+                    const urlOrFilePath = pathArgv[0];
+                    if (isOpenUrl(urlOrFilePath)) {
+                        const url = urlOrFilePath;
+
                         debug("Need to import/open an URL : ", url);
                         setOpenUrl(url);
                         return;
@@ -261,6 +263,7 @@ const yargsInit = () =>
                     for (const pathArgvName of pathArgvArray) {
 
                         const pathArgvNameResolve = path.resolve(pathArgvName);
+                        debug(`Push (${pathArgvNameResolve}) to openFileFromCliChannel`);
                         openFileFromCliChannel.put(pathArgvNameResolve);
                     }
                 }
@@ -324,7 +327,7 @@ export function commandLineMainEntry(
 
     const argFormated = processArgv
         .filter((arg) => knownOption(arg) || !arg.startsWith("-"))
-        .slice(!__TH__IS_PACKAGED__ ? 2 : 1);
+        .slice(!__TH__IS_PACKAGED__ && processArgv[0].endsWith("Electron") ? 2 : 1);
 
     debug("processArgv", processArgv, "arg", argFormated);
 

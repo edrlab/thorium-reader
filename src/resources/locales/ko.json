@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "{{- appName}} 정보"
         },
@@ -86,6 +87,7 @@
         "importAnnotation": "",
         "lang": "언어선택",
         "lastRead": "최근 읽은 자료",
+        "login": "",
         "logout": "",
         "moreInfo": "상세정보",
         "myBooks": "내 도서",
@@ -97,9 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "취소",
+                "external": "",
+                "fallback": "",
                 "login": "로그인",
                 "password": "",
                 "register": "",
+                "retry": "",
                 "username": ""
             },
             "info": {
@@ -124,6 +129,7 @@
         "publisher": "출판사",
         "readBook": "읽기",
         "released": "발행일",
+        "removeFromFavorites": "",
         "sort": "정렬 기준",
         "tag": "",
         "tags": "태그",
@@ -218,7 +224,8 @@
         },
         "open": {
             "error": "지원하지 않는 형식의 출판물입니다: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -845,6 +852,7 @@
             "reduceMotion": "모션 줄이기",
             "scrolled": "스크롤",
             "spacing": "간격",
+            "spreadModeEven": "",
             "text": "텍스트",
             "theme": {
                 "name": {
@@ -902,6 +910,7 @@
             "cancel": "취소",
             "disclaimer": "",
             "editUserJson": "사용자 파일 편집...",
+            "exportToHTML": "",
             "keyboardShortcuts": "키보드 단축키",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1164,7 +1173,8 @@
         "tabs": {
             "appearance": "",
             "general": "",
-            "keyboardShortcuts": ""
+            "keyboardShortcuts": "",
+            "profiles": ""
         },
         "theme": {
             "auto": "",

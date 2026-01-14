@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "Über {{-appName}} (online)"
         },
@@ -86,6 +87,7 @@
         "importAnnotation": "Notizen importieren",
         "lang": "Sprache",
         "lastRead": "Zuletzt gelesen",
+        "login": "",
         "logout": "",
         "moreInfo": "Mehr Informationen",
         "myBooks": "Meine Bücher",
@@ -97,9 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "Abbrechen",
+                "external": "",
+                "fallback": "",
                 "login": "Anmelden",
                 "password": "Passwort",
                 "register": "Registrieren",
+                "retry": "",
                 "username": "Benutzername / E-Mail-Adresse"
             },
             "info": {
@@ -124,6 +129,7 @@
         "publisher": "Herausgeber",
         "readBook": "Lesen",
         "released": "Veröffentlicht am",
+        "removeFromFavorites": "",
         "sort": "Sortieren nach",
         "tag": "Tag",
         "tags": "Tags",
@@ -218,7 +224,8 @@
         },
         "open": {
             "error": "Die Publikation kann nicht geöffnet werden: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -845,6 +852,7 @@
             "reduceMotion": "Bewegung reduzieren",
             "scrolled": "Fortlaufend",
             "spacing": "Abstand",
+            "spreadModeEven": "",
             "text": "Text",
             "theme": {
                 "name": {
@@ -902,6 +910,7 @@
             "cancel": "Abbrechen",
             "disclaimer": "Tastenkombinationen orientieren sich am QWERTZ-Tastaturlayout.",
             "editUserJson": "Benutzerdatei bearbeiten ...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Tastaturkürzel",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1164,7 +1173,8 @@
         "tabs": {
             "appearance": "Erscheinungsbild",
             "general": "Allgemein",
-            "keyboardShortcuts": "Tastaturkürzel"
+            "keyboardShortcuts": "Tastaturkürzel",
+            "profiles": ""
         },
         "theme": {
             "auto": "Automatisch",

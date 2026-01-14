@@ -61,7 +61,7 @@ import {
 import { Column, useTable, useFilters, useSortBy, usePagination, useGlobalFilter, useAsyncDebounce } from "react-table";
 import { formatTime } from "readium-desktop/common/utils/time";
 import DOMPurify from "dompurify";
-import * as moment from "moment";
+import moment from "moment";
 import { availableLanguages, I18nFunction } from "readium-desktop/common/services/translator";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -1462,10 +1462,6 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
         },
     };
 
-    // const locale = translator.getLocale();
-    // // https://momentjs.com/docs/#/displaying/
-    // moment.locale(locale);
-
     const tableRows = React.useMemo(() => {
         return publicationViews.slice().reverse().map((publicationView) => {
 
@@ -1473,8 +1469,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             // const authors = publicationView.authors ? formatContributorToString(publicationView.authorsLangString, translator) : "";
             // const publishers = publicationView.publishers ? formatContributorToString(publicationView.publishersLangString, translator) : "";
 
-            // publicationView.publishedAt = r2Publication.metadata.PublicationDate && moment(metadata.PublicationDate).toISOString();
-            const momPublishedDate_ = publicationView.publishedAt ? moment(publicationView.publishedAt) : undefined;
+            // publicationView.publishedAt = r2Publication.metadata.PublicationDate && moment(metadata.PublicationDate).locale([locale, "en"]).toISOString();
+            const momPublishedDate_ = publicationView.publishedAt ? moment(publicationView.publishedAt).locale([locale, "en"]) : undefined;
             const momPublishedDate = momPublishedDate_ && momPublishedDate_.isValid() ? momPublishedDate_.utc() : undefined;
             const MM = momPublishedDate ? (momPublishedDate.month() || 0) + 1 : undefined; // ZERO-based!
             const DD = momPublishedDate ? momPublishedDate.date() || 1 : undefined; // ONE-based!
@@ -1488,7 +1484,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 }
             }
 
-            const momLastRead_ = publicationView.lastReadTimeStamp ? moment(publicationView.lastReadTimeStamp) : undefined;
+            const momLastRead_ = publicationView.lastReadTimeStamp ? moment(publicationView.lastReadTimeStamp).locale([locale, "en"]) : undefined;
             const momLastRead = momLastRead_ && momLastRead_.isValid() ? momLastRead_.utc() : undefined;
             const M = momLastRead ? (momLastRead.month() || 0) + 1 : undefined; // ZERO-based!
             const D = momLastRead ? momLastRead.date() || 1 : undefined; // ONE-based!
@@ -1505,11 +1501,11 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             const isLcp = !!publicationView.lcp?.rights;
             const lcpRightsEndDate = (publicationView.lcp?.rights?.end) ? publicationView.lcp.rights.end : undefined;
             let remainingDays= "";
-            const now = moment();
+            const now = moment().locale([locale, "en"]);
             let hasEnded = false;
 
             if (lcpRightsEndDate) {
-                const momentEnd = moment(lcpRightsEndDate);
+                const momentEnd = moment(lcpRightsEndDate).locale([locale, "en"]);
                 const timeEndDif = momentEnd.diff(now, "days");
                 if (timeEndDif > 1) {
                     remainingDays = `${timeEndDif} ${__("publication.days")}`;
@@ -2403,7 +2399,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                         width: W,
                                         minWidth: W,
                                         maxWidth: W,
-                                        borderBottom: "2px solid var(--color-blue)",
+                                        borderBottom: "2px solid var(--color-brand-primary)",
                                         position: "relative",
                                     }}
                                     className={stylesPublication.allBook_table_head}
@@ -2515,7 +2511,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                                 className={stylesPublication.setShowColumnFiltersCheckboxLabel}
                                                 aria-hidden="true"
                                                 htmlFor="setShowColumnFiltersCheckbox"
-                                                style={{ cursor: "pointer", padding: "0.2em", color: "var(--color-blue)", paddingBottom: "0", display: "inline-block", width: "20px" }}>
+                                                style={{ cursor: "pointer", padding: "0.2em", color: "var(--color-brand-primary)", paddingBottom: "0", display: "inline-block", width: "20px" }}>
                                                     <SVG ariaHidden svg={SearchIcon} />
                                                 </label></>
                                     }
@@ -2571,7 +2567,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
                                     <tr key={`bodytr_${index}`} {...row.getRowProps()}
                                         style={{
-                                            backgroundColor: index % 2 ? "var(--color-extralight-grey)" : undefined,
+                                            backgroundColor: index % 2 ? "var(--color-gray-50" : undefined,
                                         }}>{row.cells.map((cell, i) => {
                                             return (<td key={`bodytrtd_${i}`} {...cell.getCellProps()}
                                             >{

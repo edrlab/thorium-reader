@@ -1,10 +1,9 @@
 {
-    "manifestVersion": 1,
+    "version": 1,
     "identifier": "thorium-manifest://org.edrlab.thorium.francis",
-    "version": "3.0.3",
-    "title": {
-        "en": "francis test customization profile"
-    },
+    "created": "2025-11-28T10:37:37Z",
+    "modified": "2025-11-28T12:18:00Z",
+    "title": "francis test customization profile",
     "description": {
         "en": "thorium test profile"
     },
@@ -43,9 +42,7 @@
         {
             "rel": "catalog",
             "href": "https://demoreader.cantookstation.com/v1/home.opds2",
-            "title": {
-                "en": "francis catalog"
-            },
+            "title": "francis catalog",
             "properties": {
                 "authenticate": {
                     "type": "application/opds-authentication+json",

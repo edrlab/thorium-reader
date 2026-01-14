@@ -7,6 +7,12 @@ cp package.json package-sfw-backup.json ;\
 cp package-lock.json package-lock-sfw-backup.json ;\
 rm -f package-lock.json ;\
 
+# TODO?
+# Readium Speech v2
+# https://github.com/readium/speech/issues/19
+# https://github.com/readium/speech/blob/84bfec91d7421b238ecfa70ef4ec476650dec590/package.json#L32
+# string-strip-html
+#
 # https://github.com/readium/speech/blob/build/package.json
 node -e 'const path = require("path"); const fs = require("fs"); const filePath = path.join(process.cwd(), "package.json"); let fileStr = fs.readFileSync(filePath, { encoding: "utf8" }); fileStr = fileStr.replace(/^\s+"readium-speech":.+$/gm, ""); fs.writeFileSync(filePath, fileStr, { encoding: "utf8" });' ;\
 
@@ -19,7 +25,7 @@ node -e 'const path = require("path"); const fs = require("fs"); const filePath 
 
 git --no-pager diff package.json ;\
 # SFW_DEBUG=true
-sfw npm install --foreground-scripts ;\
+sfw npm install --ignore-scripts --foreground-scripts ;\
 cp package-lock-sfw-backup.json package-lock.json ;\
 cp package-sfw-backup.json package.json ;\
 rm -rf node_modules/ ;\

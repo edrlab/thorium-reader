@@ -104,6 +104,7 @@ import { getSaga } from "../createStore";
 import { clone } from "ramda";
 import { marked } from "readium-desktop/renderer/common/marked/marked";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
+import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
 
 (window as any).__shell_openExternal = (url: string) => url && /^https?:\/\//.test(url) ? shell.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
 
@@ -315,7 +316,7 @@ const renderLinkTree = (currentLocation: MiniLocatorExtended, isRTLfn: (_link: I
 
                 let emphasis = undefined;
                 if (link === headingTrailLink) {
-                    emphasis = { backgroundColor: "var(--color-extralight-grey)", borderLeft: "2px solid var(--color-blue)" };
+                    emphasis = { backgroundColor: "var(--color-gray-50", borderLeft: "2px solid var(--color-brand-primary)" };
                 } else if ((link as any).__inHeadingsTrail) {
                     emphasis = { border: "1px dashed silver" };
                 }
@@ -542,7 +543,7 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
 
     return (<li
         className={stylesAnnotations.annotations_line}
-        style={{ backgroundColor: dockedEditAnnotation ? "var(--color-extralight-grey)" : "", borderLeft: dockedEditAnnotation ? "none" : `4px solid ${annotationColor}` }}
+        style={{ backgroundColor: dockedEditAnnotation ? "var(--color-gray-50" : "", borderLeft: dockedEditAnnotation ? "none" : `4px solid ${annotationColor}` }}
         onKeyDown={isEdited ? (e) => {
             if (e.key === "Escape") {
                 e.preventDefault();
@@ -564,7 +565,7 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
                 : <button className={classNames(stylesAnnotations.annotation_name, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
                     // title={bname}
                     aria-label={`${__("reader.goToContent")} (${btext})`}
-                    style={{ borderLeft: dockedEditAnnotation && "2px solid var(--color-blue)" }}
+                    style={{ borderLeft: dockedEditAnnotation && "2px solid var(--color-brand-primary)" }}
                     onClick={(e) => {
                         e.preventDefault();
                         const closeNavAnnotation = !dockedMode && !(e.shiftKey && e.altKey);
@@ -853,7 +854,7 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
 
     return (<li
         className={stylesAnnotations.annotations_line}
-        style={{ backgroundColor: dockedEditBookmark ? "var(--color-extralight-grey)" : "", borderLeft: dockedEditBookmark ? "none" : `4px solid ${rgbToHex(color)}` }}
+        style={{ backgroundColor: dockedEditBookmark ? "var(--color-gray-50" : "", borderLeft: dockedEditBookmark ? "none" : `4px solid ${rgbToHex(color)}` }}
         onKeyDown={isEdited ? (e) => {
             if (e.key === "Escape") {
                 e.preventDefault();
@@ -875,7 +876,7 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
                     <button className={classNames(stylesAnnotations.annotation_name, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
                     // title={bname}
                     aria-label={`${__("reader.goToContent")} (${__("reader.bookmarks.index", {index: bookmark.index})})`}
-                    style={{ borderLeft: dockedEditBookmark && "2px solid var(--color-blue)" }}
+                    style={{ borderLeft: dockedEditBookmark && "2px solid var(--color-brand-primary)" }}
                     onClick={(e) => {
                         e.preventDefault();
                         const closeNavAnnotation = !dockedMode && !(e.shiftKey && e.altKey);
@@ -1266,7 +1267,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                         </Popover.Trigger>
                         <Popover.Portal>
                             <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2) }}>
-                                <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
+                                <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-gray-50" }} />
                                 <ListBox
                                     selectedKeys={sortType}
                                     onSelectionChange={setSortType}
@@ -1308,7 +1309,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                         </Popover.Trigger>
                         <Popover.Portal>
                             <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_filter_container} style={{ maxHeight: Math.round(window.innerHeight / 2) }}>
-                                <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
+                                <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-gray-50" }} />
                                 <FocusLock>
                                     <TagGroup
                                         selectionMode="multiple"
@@ -1506,7 +1507,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                         </Popover.Trigger>
                         <Popover.Portal>
                             <Popover.Content collisionBoundary={popoverBoundary} avoidCollisions alignOffset={-10} align="end" hideWhenDetached sideOffset={5} className={stylesAnnotations.annotations_sorting_container} style={{ maxHeight: Math.round(window.innerHeight / 2), padding: "15px 0" }}>
-                                <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
+                                <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-gray-50" }} />
                                 <div
                                     className={stylesAnnotations.annotationsTitle_form_container}
                                 >
@@ -1576,7 +1577,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                             </AlertDialog.Content>
                         </AlertDialog.Portal>
                     </AlertDialog.Root>
-                    <span style={{height: "30px", width: "2px", borderRight: "2px solid var(--color-extralight-grey)"}}></span>
+                    <span style={{height: "30px", width: "2px", borderRight: "2px solid var(--color-gray-50"}}></span>
                     <Popover.Root open={optionsOpen} onOpenChange={(open) => setOptionsOpen(open)}>
                         <Popover.Trigger className={stylesAnnotations.annotations_filter_trigger_button} title={__("reader.annotations.annotationsOptions")} aria-label={__("reader.annotations.annotationsOptions")}>
                             <SVG ariaHidden svg={OptionsIcon} />
@@ -1605,7 +1606,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                                 }
                                             }}
                                             className={stylesGlobal.checkbox_custom}
-                                            style={{ border: serialAnnotator ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: serialAnnotator ? "var(--color-blue)" : "transparent" }}>
+                                            style={{ border: serialAnnotator ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: serialAnnotator ? "var(--color-brand-primary)" : "transparent" }}>
                                             {serialAnnotator ?
                                                 <SVG ariaHidden svg={CheckIcon} />
                                                 :
@@ -1642,7 +1643,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                                 }
                                             }}
                                             className={stylesGlobal.checkbox_custom}
-                                            style={{ border: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "var(--color-blue)" : "transparent" }}>
+                                            style={{ border: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: readerConfig.annotation_popoverNotOpenOnNoteTaking ? "var(--color-brand-primary)" : "transparent" }}>
                                             {readerConfig.annotation_popoverNotOpenOnNoteTaking ?
                                                 <SVG ariaHidden svg={CheckIcon} />
                                                 :
@@ -1672,7 +1673,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                                 }
                                             }}
                                             className={stylesGlobal.checkbox_custom}
-                                            style={{ border: readerConfig.annotation_defaultDrawView === "margin" ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "margin" ? "var(--color-blue)" : "transparent" }}>
+                                            style={{ border: readerConfig.annotation_defaultDrawView === "margin" ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "margin" ? "var(--color-brand-primary)" : "transparent" }}>
                                             {readerConfig.annotation_defaultDrawView === "margin" ?
                                                 <SVG ariaHidden svg={CheckIcon} />
                                                 :
@@ -1703,7 +1704,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                                 }
                                             }}
                                             className={stylesGlobal.checkbox_custom}
-                                            style={{ border: readerConfig.annotation_defaultDrawView === "hide" ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "hide" ? "var(--color-blue)" : "transparent" }}>
+                                            style={{ border: readerConfig.annotation_defaultDrawView === "hide" ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "hide" ? "var(--color-brand-primary)" : "transparent" }}>
                                             {readerConfig.annotation_defaultDrawView === "hide" ?
                                                 <SVG ariaHidden svg={CheckIcon} />
                                                 :
@@ -1712,7 +1713,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                         </div>
                                         <h4 aria-hidden>{__("reader.annotations.hide")}</h4></label>
                                 </div>
-                                <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
+                                <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-gray-50" }} />
                             </Popover.Content>
                         </Popover.Portal>
                     </Popover.Root>
@@ -2005,7 +2006,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                 className={stylesBookmarks.bookmarks_sorting_container}
                                 style={{ maxHeight: Math.round(window.innerHeight / 2) }}
                             >
-                                <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
+                                <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-gray-50" }} />
                                 <ListBox
                                     selectedKeys={sortType}
                                     onSelectionChange={setSortType}
@@ -2056,7 +2057,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                 className={stylesBookmarks.bookmarks_filter_container}
                                 style={{ maxHeight: Math.round(window.innerHeight / 2) }}
                             >
-                                <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
+                                <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-gray-50" }} />
                                 <FocusLock>
                                     <TagGroup
                                         selectionMode="multiple"
@@ -2223,7 +2224,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                 className={stylesBookmarks.bookmarks_sorting_container}
                                 style={{ maxHeight: Math.round(window.innerHeight / 2), padding: "15px 0" }}
                             >
-                                <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
+                                <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-gray-50" }} />
                                 <div
                                     className={stylesBookmarks.bookmarksTitle_form_container}
                                 >
@@ -2292,7 +2293,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                             </AlertDialog.Content>
                         </AlertDialog.Portal>
                     </AlertDialog.Root>
-                    <span style={{ height: "30px", width: "2px", borderRight: "2px solid var(--color-extralight-grey)" }}></span>
+                    <span style={{ height: "30px", width: "2px", borderRight: "2px solid var(--color-gray-50" }}></span>
                     <Popover.Root open={optionsOpen} onOpenChange={(open) => setOptionsOpen(open)}>
                         <Popover.Trigger className={stylesAnnotations.annotations_filter_trigger_button} title={__("reader.annotations.annotationsOptions")} aria-label={__("reader.annotations.annotationsOptions")}>
                             <SVG ariaHidden svg={OptionsIcon} />
@@ -2330,7 +2331,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                                 }
                                             }}
                                             className={stylesGlobal.checkbox_custom}
-                                            style={{ border: readerConfig.annotation_defaultDrawView === "hide" ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "hide" ? "var(--color-blue)" : "transparent" }}>
+                                            style={{ border: readerConfig.annotation_defaultDrawView === "hide" ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "hide" ? "var(--color-brand-primary)" : "transparent" }}>
                                             {readerConfig.annotation_defaultDrawView === "hide" ?
                                                 <SVG ariaHidden svg={CheckIcon} />
                                                 :
@@ -2339,7 +2340,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                         </div>
                                         <h4 aria-hidden>{__("reader.annotations.hide")}</h4></label>
                                 </div>
-                                <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-extralight-grey)" }} />
+                                <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-gray-50" }} />
                             </Popover.Content>
                         </Popover.Portal>
                     </Popover.Root>
@@ -2485,7 +2486,7 @@ const GoToPageSection: React.FC<IBaseProps & { totalPages?: number }> = (props) 
         const isFixedLayoutPublication = !r2Publication.PageList &&
             r2Publication.Metadata?.Rendition?.Layout === "fixed";
 
-        const pageNbr = goToRef.current.value.trim().replace(/\s\s+/g, " ");
+        const pageNbr = trimNormaliseWhitespaceAndCollapse(goToRef.current.value);
         if (isFixedLayoutPublication) {
             try {
                 const spineIndex = parseInt(pageNbr, 10) - 1;
@@ -2659,7 +2660,7 @@ const GoToPageSection: React.FC<IBaseProps & { totalPages?: number }> = (props) 
                     }
                     : null
             );
-        });
+        }).filter((i)=>!!i);
     } else if (isPdf) {
         options = Array.from({ length: r2Publication.Metadata?.NumberOfPages || 1 }, (_v, idx) => {
             const indexStr = (idx + 1).toString();
@@ -2993,7 +2994,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     };
 
     const Separator =
-        <span key={"separator"} style={{ borderBottom: "2px solid var(--color-extralight-grey-alt)", width: "80%", margin: "0 10%" }}></span>;
+        <span key={"separator"} style={{ borderBottom: "2px solid var(--color-gray-100)", width: "80%", margin: "0 10%" }}></span>;
 
     sectionsArray.push(TocTrigger);
     options.push(optionTocItem);

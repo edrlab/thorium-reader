@@ -243,7 +243,7 @@
   border: none;
   height: 35px;
   background-color: transparent;
-  color: var(--color-primary);
+  color: var(--color-text-primary);
   font-size: 0.9rem;
   border-bottom: 1px solid #c1c1c1;
 
@@ -291,7 +291,7 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background: linear-gradient(rgb(255 255 255 / 0%), var(--color-secondary));
+      background: linear-gradient(rgb(255 255 255 / 0%), var(--color-neutral-base));
       height: 2rem;
     }
   }
@@ -339,7 +339,7 @@
   }
 
   &_unavailable {
-    color: var(--color-error-dark);
+    color: var(--color-error-text);
   }
 }
 

@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { inject, injectable } from "inversify";
-import * as moment from "moment";
+import moment from "moment";
 import {
     IOpdsAuthView, IOpdsCoverView, IOpdsFeedMetadataView, IOpdsFeedView, IOpdsGroupView,
     IOpdsLinkView, IOpdsNavigationLink, IOpdsNavigationLinkView, IOPDSPropertiesView,
@@ -46,7 +46,7 @@ import { getAuthenticationToken } from "../network/http";
 const debug = debug_("readium-desktop:main/converter/opds");
 debug("opds-converter");
 
-const supportedFileTypeLinkArray = [
+const supportedFileTypeLinks = [
     ContentType.AudioBookPacked,
     ContentType.AudioBookPackedLcp,
     ContentType.Epub,
@@ -61,8 +61,34 @@ const supportedFileTypeLinkArray = [
     ContentType.Lpf,
     ContentType.Zip,
 
+    // indirect Acquisition through an HTML document
+    // {
+    //     "href": "/buy",
+    //     "rel": "http://opds-spec.org/acquisition/buy",
+    //     "type": "text/html",
+    //     "properties": {
+    //         "price": {
+    //             "currency": "USD",
+    //             "value": 4.99
+    //         },
+    //         "indirectAcquisition": [{ "type": "application/epub+zip" }]
+    //     }
+    // }
+
     ContentType.Html, // https://github.com/edrlab/thorium-reader/issues/2208
     ContentType.Xhtml,
+];
+
+const supportedFileTypeLinksForPayWallAcquisition = [
+    ...supportedFileTypeLinks,
+
+    ContentType.Opds2,
+    ContentType.Opds2Auth,
+    ContentType.Opds2AuthVendorV1_0,
+    ContentType.Opds2Pub,
+    ContentType.TextXml,
+    ContentType.Xml,
+    ContentType.AtomXml,
 ];
 
 @injectable()
@@ -81,11 +107,30 @@ export class OpdsFeedViewConverter {
 
         let authentified: boolean = undefined;
 
+        const feedUrl = document.url;
         let catalogLinkUrl: URL;
         try {
-            catalogLinkUrl = (new URL(document.url));
-        } catch {
-            // nothing
+
+            if (feedUrl.startsWith("apiapp://")) {
+                if (feedUrl.startsWith("apiapp://")) {
+                    const urlApiapp = feedUrl.slice("apiapp://".length);
+                    const [idGln, urlLib] = urlApiapp.split(":apiapp:");
+
+                    debug("APIAPP");
+                    debug("ID_GNL=", idGln);
+                    debug("URL_LIB=", urlLib);
+                    if (urlLib) {
+                        catalogLinkUrl = (new URL(urlLib));
+                        catalogLinkUrl.host = `apiapploans.org.edrlab.thoriumreader.break.${idGln}.break.${catalogLinkUrl.host}`;
+                    }
+                }
+            } else {
+
+                catalogLinkUrl = (new URL(feedUrl));
+            }
+
+        } catch (e) {
+            debug(e);
         }
         if (catalogLinkUrl) {
             const authToken = await getAuthenticationToken(catalogLinkUrl);
@@ -93,7 +138,7 @@ export class OpdsFeedViewConverter {
                 debug("catalog authentified: ", catalogLinkUrl.host);
                 authentified = true;
             } else {
-                debug("catalog NOT authentified: ", catalogLinkUrl.host);
+                debug("catalog NOT authentified: ", catalogLinkUrl.host, authToken);
             }
         } else {
             debug("No catalogLinkUrl found, return");
@@ -129,6 +174,8 @@ export class OpdsFeedViewConverter {
             title: document.title,
             url: document.url,
             authentified: authentified,
+            authenticationUrl: document.authenticationUrl,
+            favorite: document.favorite || false,
             // feedHasAuthentication: authentified || await feedHasAuthenticationFunction(),
         };
     }
@@ -301,7 +348,7 @@ export class OpdsFeedViewConverter {
                 return (
                     (filter.type && filter.rel)
                         ? (relFlag && typeFlag)
-                        : (relFlag || typeFlag)
+                        : (filter.rel) ? relFlag : (filter.type) ? typeFlag : false
                 );
             },
         );
@@ -403,8 +450,9 @@ export class OpdsFeedViewConverter {
             rel: [
                 "http://opds-spec.org/acquisition/sample",
                 "http://opds-spec.org/acquisition/preview",
+                "preview", // see "preview" relation from drafts.opds.io/opds-2.0.html#53-acquisition-links
             ],
-            type: supportedFileTypeLinkArray,
+            type: supportedFileTypeLinks,
         }).map(attachLocalBookshelfPubId);
 
         const acquisitionLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
@@ -412,19 +460,22 @@ export class OpdsFeedViewConverter {
                 "http://opds-spec.org/acquisition",
                 "http://opds-spec.org/acquisition/open-access",
             ],
-            type: supportedFileTypeLinkArray,
+            type: supportedFileTypeLinks,
         }).map(attachLocalBookshelfPubId);
 
         const buyLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
             rel: "http://opds-spec.org/acquisition/buy",
+            type: supportedFileTypeLinksForPayWallAcquisition, // https://github.com/edrlab/thorium-reader/issues/3032
         }).map(attachLocalBookshelfPubId);
 
         const borrowLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
             rel: "http://opds-spec.org/acquisition/borrow",
+            type: supportedFileTypeLinksForPayWallAcquisition, // https://github.com/edrlab/thorium-reader/issues/3032
         }).map(attachLocalBookshelfPubId);
 
         const subscribeLinkView = this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {
             rel: "http://opds-spec.org/acquisition/subscribe",
+            type: supportedFileTypeLinksForPayWallAcquisition, // https://github.com/edrlab/thorium-reader/issues/3032
         });
         const entrylinkView = fallback(
             this.convertFilterLinksToView(baseUrl, r2OpdsPublication.Links, {

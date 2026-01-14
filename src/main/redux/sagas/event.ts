@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { customizationActions, historyActions, readerActions } from "readium-desktop/common/redux/actions";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -26,9 +26,13 @@ import { search } from "./api/publication/search";
 import { appActivate } from "./win/library";
 import { getAndStartCustomizationWellKnownFileWatchingEventChannel } from "./getEventChannel";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
-import { customizationPackageProvisioningAccumulator, customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
+import { customizationPackageProvisioning, customizationPackageProvisioningCheckVersion, customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
 import * as path from "path";
-import { ICustomizationProfileError, ICustomizationProfileProvisioned } from "readium-desktop/common/redux/states/customization";
+import { ICustomizationProfileError, ICustomizationProfileProvisioned, ICustomizationProfileProvisionedWithError } from "readium-desktop/common/redux/states/customization";
+import { URL_HOST_CUSTOMPROFILE, URL_HOST_OPDS_AUTH, URL_PROTOCOL_APP_HANDLER_THORIUM, URL_PROTOCOL_OPDS } from "readium-desktop/common/streamerProtocol";
+import { EXT_THORIUM } from "readium-desktop/common/extension";
+import { getLibraryWindowFromDi } from "readium-desktop/main/di";
+import { getTranslator } from "readium-desktop/common/services/translator";
 
 // Logger
 const debug = debug_("readium-desktop:main:saga:event");
@@ -45,35 +49,39 @@ export function saga() {
                     const [packageFileName, removed] = yield* takeTyped(chan);
 
                     const customizationState = yield* selectTyped((state: ICommonRootState) => state.customization);
-                    let packagesArray = customizationState.provision;
-                    const errorPackages: ICustomizationProfileError[] = [];
+                    let packagesProvisionedAndLatest = customizationState.provision;
+                    let packagesNotProvisionedOrOnError: ICustomizationProfileProvisionedWithError[] = [];
 
                     if (removed) {
-                        const packageFound = packagesArray.find(({ fileName }) => fileName === packageFileName);
+                        const packageFound = packagesProvisionedAndLatest.find(({ fileName }) => fileName === packageFileName);
                         if (packageFound && packageFound.id === customizationState.activate.id && packageFound.fileName === packageFileName) {
                             debug("rollback to thorium vanilla profile");
                             yield* putTyped(customizationActions.activating.build("")); // no profile
                         }
-                        packagesArray = packagesArray.filter(({ fileName }) => fileName !== packageFileName);
+                        packagesProvisionedAndLatest = packagesProvisionedAndLatest.filter(({ fileName }) => fileName !== packageFileName);
                     } else {
-                        const profileProvisioned = yield* callTyped(() => customizationPackageProvisioningAccumulator(packagesArray, packageFileName));
-                        if ((profileProvisioned as ICustomizationProfileError).error) {
-                            debug("ERROR: Profile not provisioned, due to error :", (profileProvisioned as ICustomizationProfileError).message);
-                            errorPackages.push((profileProvisioned as ICustomizationProfileError));
+
+                        debug("Found => ", packageFileName);
+                        const profileProvisionedOrOnError = yield* callTyped(() => customizationPackageProvisioning(packageFileName));
+                        if ((profileProvisionedOrOnError as ICustomizationProfileError).error) {
+                            debug("ERROR: Profile not provisioned, due to error :", (profileProvisionedOrOnError as ICustomizationProfileError).message);
+                            packagesNotProvisionedOrOnError.push((profileProvisionedOrOnError as ICustomizationProfileError));
                         } else {
-                            packagesArray = [
-                                ...packagesArray.filter(({ id }) => (profileProvisioned as ICustomizationProfileProvisioned).id !== id),
-                                profileProvisioned as ICustomizationProfileProvisioned,
-                            ];
+
+                            [packagesProvisionedAndLatest, packagesNotProvisionedOrOnError] = yield* callTyped(() => customizationPackageProvisioningCheckVersion(
+                                packagesProvisionedAndLatest,
+                                packagesNotProvisionedOrOnError,
+                                profileProvisionedOrOnError as ICustomizationProfileProvisioned,
+                            ));
                         }
                     }
 
-                    debug("dispatch provisionning action with ", JSON.stringify(packagesArray));
-                    yield* putTyped(customizationActions.provisioning.build(customizationState.provision, packagesArray, errorPackages));
+                    debug("dispatch provisionning action with ", JSON.stringify(packagesProvisionedAndLatest)/*.slice(0, 100)+"..."*/);
+                    yield* putTyped(customizationActions.provisioning.build(packagesProvisionedAndLatest, packagesNotProvisionedOrOnError));
 
                     // TODO: how to warn user of potentially a new version of the packages id, we have to put a diff between version for a same id !
-                    // And mostly a technical issue, how to update the view with the update. package streamer follow a package id 
-                    
+                    // And mostly a technical issue, how to update the view with the update. package streamer follow a package id
+
 
                 } catch (e) {
 
@@ -88,17 +96,27 @@ export function saga() {
 
             const chan = getOpenFileFromCliChannel();
 
+            debug(`openFileFromCliChannel loaded and ready, ${chan}, ${typeof chan}`);
+
             while (true) {
+
+                debug("Wait an event from the queue openFileFromCliChannel ...");
 
                 try {
                     const filePath = yield* takeTyped(chan);
 
+                    debug(`Receive ${filePath} from openFileFromCliChannel`);
+
                     const fileName = path.basename(filePath);
                     const extension = path.extname(fileName);
-                    if (extension === ".thorium") {
-                    
+                    if (extension === EXT_THORIUM) {
+
+                        debug("It's a custom profile extension");
+                        debug("AppActivate Thorium and acquire (provision/activate) the profile");
+
+                        yield* callTyped(appActivate);
                         yield put(customizationActions.acquire.build(filePath));
-                        return ;
+                        continue ;
                     }
 
                     const pubViewArray = yield* callTyped(importFromFs, filePath);
@@ -179,14 +197,14 @@ export function saga() {
                     // }
 
                     // handle thorium://<token>/...
-                    if (url.startsWith("thorium://customization-profile/")) {
-                        const profileUrl = url.replace(/^thorium:\/\/customization-profile\//, "http://");
+                    if (url.startsWith(`${URL_PROTOCOL_APP_HANDLER_THORIUM}://${URL_HOST_CUSTOMPROFILE}/`)) {
+                        const profileUrl = url.replace(`${URL_PROTOCOL_APP_HANDLER_THORIUM}://${URL_HOST_CUSTOMPROFILE}/`, "http://");
                         debug("THORIUM customization-profile url", profileUrl);
                         yield* putTyped(customizationActions.acquire.build(profileUrl));
                         continue ;
                     }
 
-                    const openUrl = url.replace("thorium://", "http://"); // HTTP to HTTPS redirect should be handled by the server
+                    const openUrl = url.replace(`${URL_PROTOCOL_APP_HANDLER_THORIUM}://`, "http://"); // HTTP to HTTPS redirect should be handled by the server
 
                     const link: IOpdsLinkView = {
                         url: openUrl,
@@ -216,6 +234,23 @@ export function saga() {
 
                 try {
                     const url = yield* takeTyped(chan);
+
+                    if (url.startsWith(`${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`)) {
+                        debug("OPDS AUTH: ", `${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`);
+                        // ===> opdsAuthFlow
+                        const libWin = getLibraryWindowFromDi();
+                        const children = libWin.getChildWindows(); // TODO: make sure this is the OPDS AUTH BrowserWindow!!
+                        if (children?.length) {
+                            debug("OPDS AUTH: sub win?");
+                            const win = children[0];
+                            if (win.title === getTranslator().translate("catalog.opds.auth.login")) {
+                                debug("OPDS AUTH: sub win OK, load...", url);
+                                yield* callTyped(() => win.loadURL(url));
+                            }
+                        }
+
+                        continue;
+                    }
 
                     const feed = yield* callTyped(opdsApi.addFeed, { title : url, url});
                     if (feed) {

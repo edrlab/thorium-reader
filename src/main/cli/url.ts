@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 
 // Logger
 const filename = "readium-desktop:main:cli:url";
@@ -13,18 +13,19 @@ const debug = debug_(filename);
 
 // import validator from "validator";
 import { getOpenUrlWithOpdsSchemeEventChannel, getOpenUrlWithThoriumSchemeEventChannel } from "../event";
+import { URL_HOST_OPDS_AUTH, URL_PROTOCOL_APP_HANDLER_OPDS, URL_PROTOCOL_APP_HANDLER_THORIUM, URL_PROTOCOL_OPDS } from "readium-desktop/common/streamerProtocol";
 
 export const isOpenUrl = (url: string): boolean => {
 
     // const urlIsValid = validator.isURL(url, {
-    //     protocols: ["http", "https", "opds", "thorium"],
+    //     protocols: ["http", "https", URL_PROTOCOL_APP_HANDLER_OPDS, URL_PROTOCOL_APP_HANDLER_THORIUM],
     // });
 
     let urlIsValid = false;
 
     try {
         const _url = new URL(url);
-        if (["http:", "https:", "opds:", "thorium:"].some((v) => v === _url.protocol)) {
+        if (["http:", "https:", `${URL_PROTOCOL_APP_HANDLER_OPDS}:`, `${URL_PROTOCOL_APP_HANDLER_THORIUM}:`].some((v) => v === _url.protocol)) {
             urlIsValid = true;
         }
     } catch {
@@ -35,10 +36,18 @@ export const isOpenUrl = (url: string): boolean => {
 
 export const setOpenUrl = (url: string): void => {
 
-    // OR: if (new URL(url).protocol === "opds:")
-    if (url.startsWith("opds://")) {
+    if (url.startsWith(`${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`)) {
+        debug("OPEN URL WITH OPDS (AUTH) scheme");
+        const openUrl = url;
+        debug("OPEN URL =", openUrl);
+        const buf = getOpenUrlWithOpdsSchemeEventChannel();
+        buf.put(openUrl);
+    }
+
+    // OR: if (new URL(url).protocol === `${URL_PROTOCOL_APP_HANDLER_OPDS}:`)
+    else if (url.startsWith(`${URL_PROTOCOL_APP_HANDLER_OPDS}://`)) {
         debug("OPEN URL WITH OPDS scheme");
-        const openUrl = url.replace("opds://", "http://"); // HTTP to HTTPS redirect should be handled by the server
+        const openUrl = url.replace(`${URL_PROTOCOL_APP_HANDLER_OPDS}://`, "http://"); // HTTP to HTTPS redirect should be handled by the server
 
         debug("OPEN URL =", openUrl);
 
@@ -46,8 +55,8 @@ export const setOpenUrl = (url: string): void => {
         buf.put(openUrl);
     }
 
-    // OR: if (new URL(url).protocol === "thorium:")
-    else if (url.startsWith("thorium://")) {
+    // OR: if (new URL(url).protocol === `${URL_PROTOCOL_APP_HANDLER_THORIUM}:`)
+    else if (url.startsWith(`${URL_PROTOCOL_APP_HANDLER_THORIUM}://`)) {
 
         debug("OPEN URL WITH thorium scheme");
         const buf = getOpenUrlWithThoriumSchemeEventChannel();

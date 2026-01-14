@@ -10,7 +10,7 @@ import "reflect-metadata";
 import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
 import * as stylesSpinner from "readium-desktop/renderer/assets/styles/components/spinnerContainer.scss";
 
-import { OPDS_MEDIA_SCHEME, OPDS_MEDIA_SCHEME__IP_ORIGIN_COVER_IMG } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_OPDS_MEDIA, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
 
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import * as React from "react";
@@ -136,7 +136,7 @@ class Cover extends React.Component<IProps, IState> {
                     ref={this.props.forwardedRef}
                     src={this.state.imgUrl}
                     onError={this.imageOnError}
-                    onLoad={() => { } /* TO TEST OPDS_MEDIA_SCHEME without auth error on cover image: */ /* this.imageOnError */ }
+                    onLoad={() => { } /* TO TEST URL_PROTOCOL_OPDS_MEDIA without auth error on cover image: */ /* this.imageOnError */ }
                     {...this.props.imgRadixProp}
                 />
                 {/* {tagString === "/finished/"  ?
@@ -197,7 +197,7 @@ class Cover extends React.Component<IProps, IState> {
         if (this.state.imgErroredOnce) return;
 
         const b64 = Buffer.from(this.state.imgUrl).toString("base64");
-        const imgUrl = OPDS_MEDIA_SCHEME + "://" + OPDS_MEDIA_SCHEME__IP_ORIGIN_COVER_IMG + "/" + encodeURIComponent_RFC3986(b64);
+        const imgUrl = URL_PROTOCOL_OPDS_MEDIA + "://" + URL_HOST_COMMON + "/" + encodeURIComponent_RFC3986(b64);
         this.setState({imgUrl, imgErroredOnce: true});
     }
 }

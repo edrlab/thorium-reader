@@ -11,13 +11,13 @@
 .print_dialog_form {
     @include mx.scrollbar_styling;
 
-    background-color: var(--color-secondary);
+    background-color: var(--color-neutral-base);
     border-radius: 10px;
-    border: 1px solid var(--color-light-grey);
+    border: 1px solid var(--color-gray-300);
     display: flex;
     flex-direction: column;
     padding: 10px 20px;
-    color: var(--color-primary);
+    color: var(--color-text-primary);
     height: 100%;
     overflow: auto;
     padding-bottom: 20px;
@@ -57,7 +57,7 @@
         height: 9px;
 
         &-track {
-            background-color: var(--color-extralight-grey);
+            background-color: var(--color-gray-50);
         }
 
     &-thumb {
@@ -70,7 +70,7 @@
     overflow: auto hidden;
     // width: 430px;
     height: 200px;
-    background-color: var(--color-extralight-grey);
+    background-color: var(--color-gray-50);
     padding-bottom: 5px;
 }
 
@@ -114,7 +114,7 @@
     top: 0;
     left: 0;
     height: 100%;
-    border: 1px solid var(--color-light-grey);
+    border: 1px solid var(--color-gray-300);
     outline: 4px;
 }
 
@@ -158,8 +158,8 @@
 .info_text {
     display: flex;
     flex-direction: column;
-    background-color: var(--color-light-blue);
-    color: var(--color-primary);
+    background-color: var(--color-brand-secondary);
+    color: var(--color-text-primary);
     padding: 5px 10px;
     border-radius: 5px;
     margin: 10px 0;
@@ -179,7 +179,7 @@
         svg {
             width: 15px;
             height: 15px;
-            color: var(--color-blue);;
+            color: var(--color-brand-primary);
         }
     }
 

@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import * as path from "path";
 // import * as fs from "fs";
 import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
@@ -13,7 +13,9 @@ import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebConten
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 import { IInfo } from "./extract.type";
-import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_EXTRACT_PDF } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_PDFJS } from "readium-desktop/common/streamerProtocol";
+import { SESSION_PARTITION_PDFJSEXTRACT } from "readium-desktop/common/sessions";
+import { URL_PROTOCOL_PDFJSEXTRACT } from "readium-desktop/common/streamerProtocol";
 
 const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
 
@@ -38,19 +40,22 @@ export const extractPDFData =
         // ...but the lonely non-encoded percent char triggers a crash if not handled correctly!
         // (really, the double-encoding is for "viewer.html?file=" in loadURL() below!)
 
-        pdfPath = "pdfjs-extract://host/" + encodeURIComponent_RFC3986(encodeURIComponent_RFC3986(pdfPath));
+        pdfPath = `${URL_PROTOCOL_PDFJSEXTRACT}://${URL_HOST_COMMON}/` + encodeURIComponent_RFC3986(encodeURIComponent_RFC3986(pdfPath));
         debug("extractPDFData", pdfPath);
 
         let win: BrowserWindow;
         try {
 
-            //`${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_EXTRACT_PDF}/pdfjs/../../../index_pdf.js`
+            //`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PDFJS}/../../../index_pdf.js`
             const preloadPath = path.normalize(path.join(__dirname, "index_pdf_extract.js")).replace(/\\/g, "/");
             debug("extractPDFData preload", preloadPath); // fs.existsSync(preloadPath)
 
             win = new BrowserWindow({
+                // title: "PDF",
                 width: 800,
                 height: 600,
+                // parent: undefined,
+                // modal: false,
                 // show: false,
                 webPreferences: {
                     // enableRemoteModule: false,
@@ -64,12 +69,12 @@ export const extractPDFData =
                     webSecurity: true,
                     webviewTag: false,
                     preload: preloadPath, // "file://" + ... when setting the "preload" attribute on webview, but not with webPreferences
-                    partition: "persist:partitionpdfjsextract",
+                    partition: SESSION_PARTITION_PDFJSEXTRACT,
                 },
             });
+            win.setMenu(null);
 
             // win.hide(); // doesn't works on linux
-            await win.loadURL(`${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_EXTRACT_PDF}/pdfjs/web/viewer.html?file=${pdfPath}`);
 
             const willNavigate = (navUrl: string | undefined | null) => {
 
@@ -106,6 +111,9 @@ export const extractPDFData =
 
                 willNavigate(details.url);
             });
+
+            // win.webContents.loadURL
+            await win.loadURL(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PDFJS}/web/viewer.html?file=${pdfPath}`);
 
             const pdata = new Promise<TExtractPdfData>((resolve) =>
                 win.webContents.on("ipc-message", (e, c, ...arg) => {
@@ -162,7 +170,7 @@ export const extractPDFData =
 
         } finally {
 
-            if (win) {
+            if (win && !win.isDestroyed() && !win.webContents.isDestroyed()) {
                 win.close();
             }
 

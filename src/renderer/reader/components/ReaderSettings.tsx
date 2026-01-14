@@ -65,6 +65,7 @@ import { TTSStateEnum } from "@r2-navigator-js/electron/renderer/readaloud";
 import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
 import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
 import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/renderer/note";
+import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
 
 const noteColorCodeToColorTranslatorKeySet_ = {
     [rgbToHex(readerConfigInitialState.ttsHighlightColor)]: "Dark Yellow" as TTranslatorKeyParameter,
@@ -84,6 +85,7 @@ interface IState {
     pdfScale?: IPdfPlayerScale | undefined;
     pdfView?: IPdfPlayerView | undefined;
     pdfCol?: IPdfPlayerColumn | undefined;
+    spreadModeEven?: boolean | undefined;
 }
 
 const TabTitle = ({ value }: { value: string }) => {
@@ -331,8 +333,8 @@ export const FontFamily = () => {
     const saveFont = (value: string) => {
         let val = value.trim();
         // a"b:c    ;d;<e>f'g&h
-        val = val.
-            replace(/\t/g, "").
+        val = trimNormaliseWhitespaceAndCollapse(
+            val.
             replace(/"/g, "").
             replace(/:/g, "").
             replace(/'/g, "").
@@ -341,9 +343,8 @@ export const FontFamily = () => {
             replace(/>/g, "").
             replace(/\\/g, "").
             replace(/\//g, "").
-            replace(/&/g, "").
-            replace(/\n/g, " ").
-            replace(/\s\s+/g, " ");
+            replace(/&/g, ""),
+        );
         if (!val) { // includes empty string (falsy)
             val = undefined;
         }
@@ -585,7 +586,7 @@ const ReadingDisplayLayout = ({ isFXL }: { isFXL: boolean }) => {
     );
 };
 
-const ReadingDisplayCol = ({ isPdf, pdfCol }: Pick<IBaseProps, "isPdf"> & Pick<IState, "pdfCol">) => {
+const ReadingDisplayCol = ({ isPdf, spreadModeEven, pdfCol }: Pick<IBaseProps, "isPdf"> & Pick<IState, "spreadModeEven"> & Pick<IState, "pdfCol">) => {
     const [__] = useTranslator();
 
     const paged = useReaderConfig("paged");
@@ -602,13 +603,15 @@ const ReadingDisplayCol = ({ isPdf, pdfCol }: Pick<IBaseProps, "isPdf"> & Pick<I
         }
     }, [scrollable, colCount]);
 
+    // console.log("ReadingDisplayCol spreadModeEven", spreadModeEven);
+    // console.log("ReadingDisplayCol pdfCol", pdfCol);
     return (
         <section className={stylesSettings.section}>
             <div>
                 <h4>{__("reader.settings.column.title")}</h4>
             </div>
             <div className={stylesSettings.display_options}>
-                <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={isPdf ? pdfCol : state}
+                <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={isPdf ? (pdfCol ? pdfCol : "1") : state}
                     onValueChange={(v) => {
                         if (isPdf) {
                             createOrGetPdfEventBus().dispatch("column", v === "auto" ? "1" : v === "1" ? "1" : "2");
@@ -622,6 +625,50 @@ const ReadingDisplayCol = ({ isPdf, pdfCol }: Pick<IBaseProps, "isPdf"> & Pick<I
                     <RadioGroupItem value="2" description={`${__("reader.settings.column.two")}`} svg={TwoColsIcon} disabled={isPdf ? false : scrollable} />
                 </RadioGroup.Root>
             </div>
+            {!isPdf || pdfCol === "auto" || pdfCol === "1" /* disabled={pdfCol === "auto" || pdfCol === "1"} */
+                ? <></> :
+                <div className={stylesSettings.display_options}>
+                    <input type="checkbox"
+                        checked={!!spreadModeEven}
+                        onChange={() => { createOrGetPdfEventBus().dispatch("spreadModeEven", !(!!spreadModeEven)); }}
+                        id="spreadModeEvenCheckbox" name="spreadModeEvenCheckbox" className={stylesGlobal.checkbox_custom_input} />
+                    {/* label htmlFor clicked with mouse cursor causes onChange() of input (which is display:none), but keyboard interaction (tab stop and space bar toggle) occurs with the div role="checkbox" below! (onChange is not called, only onKeyUp) */}
+                    <label htmlFor="spreadModeEvenCheckbox" className={stylesGlobal.checkbox_custom_label}>
+                        <div
+                            tabIndex={0}
+                            role="checkbox"
+                            aria-checked={!!spreadModeEven}
+                            aria-label={__("reader.settings.spreadModeEven")}
+                            onKeyDown={(e) => {
+                                // if (e.code === "Space") {
+                                if (e.key === " ") {
+                                    e.preventDefault(); // prevent scroll
+                                }
+                            }}
+                            onKeyUp={(e) => {
+                                // Includes screen reader tests:
+                                // if (e.code === "Space") { WORKS
+                                // if (e.key === "Space") { DOES NOT WORK
+                                // if (e.key === "Enter") { WORKS
+                                if (e.key === " ") { // WORKS
+                                    e.preventDefault();
+                                    createOrGetPdfEventBus().dispatch("spreadModeEven", !(!!spreadModeEven));
+                                }
+                            }}
+                            className={stylesGlobal.checkbox_custom}
+                            style={{ border: !!spreadModeEven ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: !!spreadModeEven ? "var(--color-brand-primary)" : "transparent" }}>
+                            {!!spreadModeEven ?
+                                <SVG ariaHidden svg={CheckIcon} className={stylesGlobal.checkbox_customsvg} />
+                                :
+                                <></>
+                            }
+                        </div>
+                        <span aria-hidden>
+                            {__("reader.settings.spreadModeEven")}
+                        </span>
+                    </label>
+                </div>
+            }
         </section>
     );
 };
@@ -923,7 +970,7 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
                             }
                         }}
                         className={stylesGlobal.checkbox_custom}
-                        style={{ border: option.checked ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: option.checked ? "var(--color-blue)" : "transparent" }}>
+                        style={{ border: option.checked ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: option.checked ? "var(--color-brand-primary)" : "transparent" }}>
                         {option.checked ?
                             <SVG ariaHidden svg={CheckIcon} />
                             :
@@ -941,7 +988,7 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
         {!useMO ?
         (
         <>
-        <div style={{ border: "2px dotted var(--color-verylight-grey-alt)", borderRadius: "1em", padding: 6 }}>
+        <div style={{ border: "2px dotted var(--color-gray-250)", borderRadius: "1em", padding: 6 }}>
         <div className={stylesReader.ttsSelectRate}>
         <ComboBox label={__("tts.highlight.style")}
             defaultItems={ttsHighlightStyles}
@@ -977,7 +1024,7 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
                             aria-label={__(translatorKey)}
                         />
                         <label aria-hidden={true} title={__(translatorKey)} htmlFor={`ttscolorpick${colorHex}`}
-                            style={{ backgroundColor: colorHex, border: ttsHighlightColorHex === colorHex ? "1px solid var(--color-dark-grey)" : "" }}
+                            style={{ backgroundColor: colorHex, border: ttsHighlightColorHex === colorHex ? "1px solid var(--color-gray-900)" : "" }}
                         >
                             {ttsHighlightColorHex === colorHex ? <SVG ariaHidden svg={DoubleCheckIcon} /> : <></>}
                         </label>
@@ -1003,7 +1050,7 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
                             aria-label={__(translatorKey)}
                         />
                         <label aria-hidden={true} title={__(translatorKey)} htmlFor={`ttscolorpickword${colorHex}`}
-                            style={{ backgroundColor: colorHex, border: ttsHighlightColor_WORDHex === colorHex ? "1px solid var(--color-dark-grey)" : "" }}
+                            style={{ backgroundColor: colorHex, border: ttsHighlightColor_WORDHex === colorHex ? "1px solid var(--color-gray-900)" : "" }}
                         >
                             {ttsHighlightColor_WORDHex === colorHex ? <SVG ariaHidden svg={DoubleCheckIcon} /> : <></>}
                         </label>
@@ -1023,7 +1070,7 @@ style={
     width: 0,
     flexBasis: "100%",
     marginTop: 10,
-    border: "1px solid var(--color-verylight-grey-alt)",
+    border: "1px solid var(--color-gray-250)",
     padding: 6,
 }
 }>
@@ -1226,7 +1273,7 @@ const ReadingDisplayCheckboxSettings = ({
                                     }
                                 }}
                                 className={stylesGlobal.checkbox_custom}
-                                style={{ border: option.checked ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: option.checked ? "var(--color-blue)" : "transparent" }}>
+                                style={{ border: option.checked ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: option.checked ? "var(--color-brand-primary)" : "transparent" }}>
                                 {option.checked ?
                                     <SVG ariaHidden svg={CheckIcon} />
                                     :
@@ -1330,10 +1377,10 @@ const DivinaSetReadingMode = ({ handleDivinaReadingMode, divinaReadingMode, divi
     );
 };
 
-const PdfZoom = ({ pdfScale, pdfView }: Pick<IState, "pdfScale" | "pdfView">) => {
+const PdfZoom = ({ pdfScale /*, pdfView*/ }: Pick<IState, "pdfScale" | "pdfView">) => {
     const [__] = useTranslator();
 
-    const inputComponent = (scale: IPdfPlayerScale, disabled = false) => {
+    const inputComponent = (scale: IPdfPlayerScale/*, disabled = false*/) => {
         return <div>
             <input
                 id={"radio-" + `${scale}`}
@@ -1341,10 +1388,10 @@ const PdfZoom = ({ pdfScale, pdfView }: Pick<IState, "pdfScale" | "pdfView">) =>
                 name="pdfZoomRadios"
                 onChange={() => createOrGetPdfEventBus().dispatch("scale", scale)}
                 checked={pdfScale === scale}
-                disabled={disabled}
+                // disabled={disabled}
             />
             <label
-                aria-disabled={disabled}
+                // aria-disabled={disabled}
                 htmlFor={"radio-" + `${scale}`}
             >
                 {pdfScale === scale && <SVG svg={DoneIcon} ariaHidden />}
@@ -1366,13 +1413,13 @@ const PdfZoom = ({ pdfScale, pdfView }: Pick<IState, "pdfScale" | "pdfView">) =>
     return (
         <div id={stylesReader.themes_list} role="radiogroup" aria-label={__("reader.settings.pdfZoom.title")}>
             {inputComponent("page-fit")}
-            {inputComponent("page-width", pdfView === "paginated")}
-            {inputComponent(50, pdfView === "paginated")}
-            {inputComponent(100, pdfView === "paginated")}
-            {inputComponent(150, pdfView === "paginated")}
-            {inputComponent(200, pdfView === "paginated")}
-            {inputComponent(300, pdfView === "paginated")}
-            {inputComponent(500, pdfView === "paginated")}
+            {inputComponent("page-width" /* pdfView === "paginated"*/)}
+            {inputComponent(50 /* pdfView === "paginated"*/)}
+            {inputComponent(100 /* pdfView === "paginated"*/)}
+            {inputComponent(150 /* pdfView === "paginated"*/)}
+            {inputComponent(200 /* pdfView === "paginated"*/)}
+            {inputComponent(300 /* pdfView === "paginated"*/)}
+            {inputComponent(500 /* pdfView === "paginated"*/)}
         </div>
     );
 };
@@ -1408,7 +1455,7 @@ const AllowCustom = () => {
                         }
                     }}
                     className={stylesGlobal.checkbox_custom}
-                    style={{ border: overridePublisherDefault ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: overridePublisherDefault ? "var(--color-blue)" : "transparent" }}>
+                    style={{ border: overridePublisherDefault ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: overridePublisherDefault ? "var(--color-brand-primary)" : "transparent" }}>
                     {overridePublisherDefault ?
                         <SVG ariaHidden svg={CheckIcon} />
                         :
@@ -1523,51 +1570,28 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     //     setTranscientStateOverridePublisherDefault,
     // ] = React.useState<ReaderConfig>(readerConfig);
 
-    const [pdfState, setPdfState] = React.useState<IState>({
-        pdfScale: undefined,
-        pdfCol: undefined,
-        pdfView: undefined,
-    });
+    // TODO none of these PDF states persist!! (very noticeable with the checkbox which is always reset to false / unticked)
 
-    const setScale = (scale: IPdfPlayerScale) => {
+    // const [pdfScale, setPdfScale] = React.useState<IState["pdfScale"]>(props.pdfPlayerZoom as IPdfPlayerScale);
+    // const [pdfCol, setPdfCol] = React.useState<IState["pdfCol"]>(props.pdfPlayerSpreadMode === 0 ? "1" : props.pdfPlayerSpreadMode > 0 ? "2" : "1" /* OR "auto" */);
+    // const [pdfView, setPdfView] = React.useState<IState["pdfView"]>("scrolled"); // never changed always scrolled // so let's comment it for the moment
+    // const [pdfSpreadModeEven, setPdfSpreadModeEven] = React.useState<IState["spreadModeEven"]>(props.pdfPlayerSpreadMode === 2);
 
-        console.log("scale", scale);
+    // React.useEffect(() => {
+    //     // console.log("React.useEffect setPdfState");
 
-        setPdfState({
-            pdfScale: scale,
-        });
-    };
+    //     createOrGetPdfEventBus().subscribe("view", setPdfView);
+    //     createOrGetPdfEventBus().subscribe("scale", setPdfScale);
+    //     createOrGetPdfEventBus().subscribe("column", setPdfCol);
+    //     createOrGetPdfEventBus().subscribe("spreadModeEven", setPdfSpreadModeEven);
 
-    const setView = (view: IPdfPlayerView) => {
-
-        console.log("view", view);
-
-        setPdfState({
-            pdfView: view,
-        });
-    };
-
-    const setCol = (col: IPdfPlayerColumn) => {
-
-        console.log("col", col);
-
-        setPdfState({
-            pdfCol: col,
-        });
-    };
-
-    React.useEffect(() => {
-        createOrGetPdfEventBus().subscribe("scale", setScale);
-        createOrGetPdfEventBus().subscribe("view", setView);
-        createOrGetPdfEventBus().subscribe("column", setCol);
-
-        return () => {
-            createOrGetPdfEventBus().remove(setScale, "scale");
-            createOrGetPdfEventBus().remove(setView, "view");
-            createOrGetPdfEventBus().remove(setCol, "column");
-        };
-
-    }, []);
+    //     return () => {
+    //         createOrGetPdfEventBus().remove(setPdfScale, "scale");
+    //         // createOrGetPdfEventBus().remove(setPdfView, "view");
+    //         createOrGetPdfEventBus().remove(setPdfCol, "column");
+    //         createOrGetPdfEventBus().remove(setPdfSpreadModeEven , "spreadModeEven");
+    //     };
+    // }, [setPdfScale, /*setPdfView,*/ setPdfCol, setPdfSpreadModeEven]);
 
     // TODO: transform it to a saga logic, triggered by allowCustomCheckbox
     // const setPartialSettingsDebounced = React.useMemo(() => {
@@ -1690,7 +1714,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
 
     const PresetTrigger =
         <React.Fragment key="tab-preset">
-            <span style={{ width: "80%", height: "2px", backgroundColor: "var(--color-extralight-grey-alt)", margin: "10px auto" }}></span>
+            <span style={{ width: "80%", height: "2px", backgroundColor: "var(--color-gray-100)", margin: "10px auto" }}></span>
             <Tabs.Trigger value="tab-preset" disabled={false} title={__("reader.settings.preset.title")} data-value="tab-preset" style={{position: "relative"}}>
                 <SVG ariaHidden svg={GuearIcon} />
                 <h3>{__("reader.settings.preset.title")}</h3>
@@ -1727,7 +1751,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
         sections.push(SpacingTrigger);
         options.push(optionSpacingItem);
     }
-    if (isPdf || isEpub) {
+    if (isEpub) {
         sections.push(PresetTrigger);
         options.push(optionPresetItem);
     }
@@ -1753,7 +1777,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
     const SelectRefComponent = () => {
         return (
              <SelectRef
-                id="reader-settings-nav" 
+                id="reader-settings-nav"
                 items={options}
                 selectedKey={optionSelected}
                 disabledKeys={optionDisabled}
@@ -1786,13 +1810,13 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                 //         console.error("Combobox No value !!!");
                 //     }
                 // }}
-                style={{ margin: "0", padding: (dockedMode && isEpub) ? "10px 0" : "0", flexDirection: "row", backgroundColor: "var(--color-docked-header)", borderBottom: "1px solid var(--color-extralight-grey-alt)" }}
+                style={{ margin: "0", padding: (dockedMode && isEpub) ? "10px 0" : "0", flexDirection: "row", backgroundColor: "var(--color-header-docked)" }}
                 ref={dockedModeRef}
             >
                 {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
             </SelectRef>
         );
-    }; 
+    };
 
     const TabHeader = () => {
 
@@ -1870,7 +1894,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                     <Tabs.Content value="tab-pdfzoom" tabIndex={-1} id="readerSettings_tabs-tab-pdfzoom" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <TabHeader />
                         <div className={stylesSettings.settings_tab}>
-                            <PdfZoom pdfScale={pdfState.pdfScale} pdfView={pdfState.pdfView} />
+                            <PdfZoom pdfScale={props.pdfPlayerZoom} /*pdfView={pdfView}*/ />
                         </div>
                     </Tabs.Content>
                     <Tabs.Content value="tab-text" tabIndex={-1} id="readerSettings_tabs-tab-text" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
@@ -1892,7 +1916,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                             {isPdf ? <></> : <Theme dockedMode={dockedMode} />}
                             {isPdf ? <></> : <ReadingDisplayLayout isFXL={props.isFXL} />}
                             {isPdf ? <></> : <ReadingDisplayAlign />}
-                            <ReadingDisplayCol isPdf={props.isPdf} pdfCol={pdfState.pdfCol} />
+                            <ReadingDisplayCol isPdf={props.isPdf} pdfCol={props.pdfPlayerSpreadMode === 0 ? "1" : props.pdfPlayerSpreadMode > 0 ? "2" : "1" /* OR "auto" */} spreadModeEven={props.pdfPlayerSpreadMode === 2} />
                             {isPdf ? <></> : <ReadingDisplayCheckboxSettings disableRTLFlip={props.disableRTLFlip} setDisableRTLFlip={props.setDisableRTLFlip} />}
                         </section>
                     </Tabs.Content>

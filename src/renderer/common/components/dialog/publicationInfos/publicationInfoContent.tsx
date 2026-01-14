@@ -458,7 +458,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                             <h4>{__("catalog.moreInfo")}</h4>
                         </div>
                         <div className={stylePublication.publicationInfo_moreInfo_content}>
-                            <FormatPublisherDate publicationViewMaybeOpds={publicationViewMaybeOpds} __={__} />
+                            <FormatPublisherDate publicationViewMaybeOpds={publicationViewMaybeOpds} __={__} locale={locale} />
                             {
                                 publicationViewMaybeOpds.publishersLangString?.length ?
                                     <div>

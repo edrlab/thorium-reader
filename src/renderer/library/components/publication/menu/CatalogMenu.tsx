@@ -23,7 +23,7 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { ImportAnnotationsDialog } from "../../../../common/components/ImportAnnotationsDialog";
 import { exportAnnotationSet } from "readium-desktop/renderer/common/redux/sagas/readiumAnnotation/export";
-import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_PUB_NOTES } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_PUBNOTES } from "readium-desktop/common/streamerProtocol";
 import debounce from "debounce";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
@@ -51,7 +51,7 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
                 <PublicationInfoLibWithRadixContent
                 />
             </PublicationInfoLibWithRadix>
-            <div style={{ borderBottom: "1px solid var(--color-blue)" }}></div>
+            <div style={{ borderBottom: "1px solid var(--color-brand-primary)" }}></div>
             {props.publicationView.lastReadTimeStamp ?
                 <button
                     className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
@@ -67,7 +67,7 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
                 </button>
                 : <></>
             }
-            <div style={{ borderBottom: "1px solid var(--color-blue)" }}></div>
+            <div style={{ borderBottom: "1px solid var(--color-brand-primary)" }}></div>
             <DeletePublicationConfirm
                 trigger={(
                     <button
@@ -79,11 +79,11 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
                 )}
                 publicationView={props.publicationView}
             />
-            <div style={{ borderBottom: "1px solid var(--color-blue)" }}></div>
+            <div style={{ borderBottom: "1px solid var(--color-brand-primary)" }}></div>
             <PublicationExportButton
                 publicationView={props.publicationView}
             />
-            <div style={{ borderBottom: "1px solid var(--color-blue)" }}></div>
+            <div style={{ borderBottom: "1px solid var(--color-brand-primary)" }}></div>
             <ImportAnnotationsDialog winId={undefined} publicationView={props.publicationView}>
                 <button
                     className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
@@ -92,12 +92,12 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
                     {__("catalog.importAnnotation")}
                 </button>
             </ImportAnnotationsDialog>
-            <div style={{ borderBottom: "1px solid var(--color-blue)" }}></div>
+            <div style={{ borderBottom: "1px solid var(--color-brand-primary)" }}></div>
             <button
                 className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                 onClick={debounce(async () => {
                     try {
-                        const notes = await (await fetch(`${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_PUB_NOTES}/publication-notes/${props.publicationView.identifier}`)).json();
+                        const notes = await (await fetch(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PUBNOTES}/${props.publicationView.identifier}`)).json();
 
                         const annoSetTitle = convertMultiLangStringToString(props.publicationView.publicationTitle, locale) || "thorium-notes";
 

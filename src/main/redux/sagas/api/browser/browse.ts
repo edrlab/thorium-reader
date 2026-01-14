@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { ok } from "readium-desktop/common/utils/assert";
 import { IHttpGetResult } from "readium-desktop/common/utils/http";
 import { IBrowserResultView, THttpGetBrowserResultView } from "readium-desktop/common/views/browser";
@@ -19,13 +19,15 @@ import { SagaGenerator } from "typed-redux-saga";
 import { call as callTyped } from "typed-redux-saga/macro";
 import { authenticationRequestFromLibraryWebServiceURL, convertLoansPublicationToOpdsPublicationsRawJson, getEndpointFromAuthenticationRequest, getLoansPublicationFromLibrary } from "../../apiapp";
 import isURL from "validator/lib/isURL";
+import { URL_PROTOCOL_APP_HANDLER_OPDS } from "readium-desktop/common/streamerProtocol";
 
 const debug = debug_("readium-desktop:main#redux/saga/api/browser");
 
 const checkUrl = (url: string) => {
     try {
-        if (new URL(url).protocol === "opds:") {
-            url = url.replace("opds://", "http://"); // HTTP to HTTPS redirect should be handled by the server
+        // OR: if (url.startsWith(`${URL_PROTOCOL_APP_HANDLER_OPDS}://`))
+        if (new URL(url).protocol === `${URL_PROTOCOL_APP_HANDLER_OPDS}:`) {
+            url = url.replace(`${URL_PROTOCOL_APP_HANDLER_OPDS}://`, "http://"); // HTTP to HTTPS redirect should be handled by the server
         }
     } catch (e) {
         throw new Error(`Not a valid URL ${e.message || e}`);

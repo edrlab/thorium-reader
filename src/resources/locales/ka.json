@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "{{- appName}}-ის შესახებ (ინტერნეტში)"
         },
@@ -86,6 +87,7 @@
         "importAnnotation": "",
         "lang": "ენა",
         "lastRead": "",
+        "login": "",
         "logout": "",
         "moreInfo": "მეტი ინფორმაცია",
         "myBooks": "ჩემი წიგნები",
@@ -97,9 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "გადაფიქრება",
+                "external": "",
+                "fallback": "",
                 "login": "შესვლა",
                 "password": "",
                 "register": "",
+                "retry": "",
                 "username": ""
             },
             "info": {
@@ -124,6 +129,7 @@
         "publisher": "გამომცემელი",
         "readBook": "წაკითხვა",
         "released": "გამოცემის თარიღი",
+        "removeFromFavorites": "",
         "sort": "დალაგება",
         "tag": "",
         "tags": "იარლიყები",
@@ -218,7 +224,8 @@
         },
         "open": {
             "error": "პუბლიკაცია ვერ იხსნება: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -845,6 +852,7 @@
             "reduceMotion": "მოძრაობის შემცირება",
             "scrolled": "ბრუნვადი",
             "spacing": "დაშორება",
+            "spreadModeEven": "",
             "text": "ტექსტი",
             "theme": {
                 "name": {
@@ -902,6 +910,7 @@
             "cancel": "გადაფიქრება",
             "disclaimer": "",
             "editUserJson": "მომხმარებლის ფაილის რედაქტირება...",
+            "exportToHTML": "",
             "keyboardShortcuts": "კლავიატურით სწრაფი გამოძახება",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1164,7 +1173,8 @@
         "tabs": {
             "appearance": "",
             "general": "",
-            "keyboardShortcuts": ""
+            "keyboardShortcuts": "",
+            "profiles": ""
         },
         "theme": {
             "auto": "",

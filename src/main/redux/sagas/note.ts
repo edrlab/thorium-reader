@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { dialog } from "electron";
-import { readFile } from "fs/promises";
+import * as fs from "fs";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { annotationActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
@@ -29,6 +29,7 @@ import { EDrawType, INoteState, NOTE_DEFAULT_COLOR, noteColorCodeToColorSet, not
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { sqliteTableNoteDelete, sqliteTableNoteDeleteWherePubId, sqliteTableNoteInsert, sqliteTableNoteUpdate, sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
 import { publicationActions as publicationActionsFromMainAction } from "../actions";
+import { EXT_ANNOTATIONS } from "readium-desktop/common/extension";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:annotationsImporter";
@@ -110,7 +111,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     try {
 
         debug("Open ShowOpenDialog and ask to user the filePath");
-        const res = yield* callTyped(() => dialog.showOpenDialog(win, { filters: [{ extensions: ["annotation"], name: "Readium Annotation Set (.annotation)" }], properties: ["openFile"] }));
+        const res = yield* callTyped(() => dialog.showOpenDialog(win, { filters: [{ extensions: [EXT_ANNOTATIONS.substring(1)], name: "Readium Annotation Set (" + EXT_ANNOTATIONS + ")" }], properties: ["openFile"] }));
 
         if (!res.canceled) {
             filePath = res.filePaths[0] || "";
@@ -123,12 +124,12 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     }
 
     debug("FilePath=", filePath);
-    const fileName = path.basename(filePath).slice(0, -1 * ".annotation".length);
+    const fileName = path.basename(filePath).slice(0, -1 * EXT_ANNOTATIONS.length);
 
     try {
 
         // read filePath
-        const dataString = yield* callTyped(() => readFile(filePath, { encoding: "utf8" }));
+        const dataString = yield* callTyped(() => fs.promises.readFile(filePath, { encoding: "utf8" }));
         const readiumAnnotationFormat = JSON.parse(dataString);
         debug("filePath size=", dataString.length);
         debug("filePath serialized and ready to pass the type checker");

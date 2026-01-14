@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "حول {{- appName}}"
         },
@@ -86,6 +87,7 @@
         "importAnnotation": "استيراد الملاحظات",
         "lang": "اللغة",
         "lastRead": "آخر قراءة",
+        "login": "",
         "logout": "",
         "moreInfo": "تفاصيل المنشور",
         "myBooks": "منشوراتي",
@@ -97,9 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "إلغاء",
+                "external": "",
+                "fallback": "",
                 "login": "تسجيل الدخول",
                 "password": "كلمة المرور",
                 "register": "تسجيل",
+                "retry": "",
                 "username": "اسم المستخدم / البريد الإلكتروني"
             },
             "info": {
@@ -124,6 +129,7 @@
         "publisher": "الناشر",
         "readBook": "اقرأ",
         "released": "تاريخ النشر",
+        "removeFromFavorites": "",
         "sort": "فرز حسب",
         "tag": "الوسم",
         "tags": "الوسوم",
@@ -218,7 +224,8 @@
         },
         "open": {
             "error": "فشل تحميل المنشور: [{{- err}}]"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -845,6 +852,7 @@
             "reduceMotion": "تقليل الحركة",
             "scrolled": "قابل للتمرير",
             "spacing": "التباعد",
+            "spreadModeEven": "",
             "text": "النص",
             "theme": {
                 "name": {
@@ -902,6 +910,7 @@
             "cancel": "إلغاء",
             "disclaimer": "تم تصميم الإعدادات الافتراضية للتطبيق بناءً على تخطيط لوحة مفاتيح كويرتي (QWERTY)",
             "editUserJson": "تحرير ملف المستخدم...",
+            "exportToHTML": "",
             "keyboardShortcuts": "اختصارات لوحة المفاتيح",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1164,7 +1173,8 @@
         "tabs": {
             "appearance": "المظهر",
             "general": "عام",
-            "keyboardShortcuts": "اختصارات لوحة المفاتيح"
+            "keyboardShortcuts": "اختصارات لوحة المفاتيح",
+            "profiles": ""
         },
         "theme": {
             "auto": "تلقائي",

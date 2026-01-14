@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "பற்றி {{- appName}} (ஆன்லைன்)"
         },
@@ -86,6 +87,7 @@
         "importAnnotation": "குறிப்புகளை இறக்குமதி செய்யுங்கள்",
         "lang": "மொழி",
         "lastRead": "கடைசியாக படியுங்கள்",
+        "login": "",
         "logout": "",
         "moreInfo": "வெளியீட்டு விவரங்கள்",
         "myBooks": "எனது வெளியீடுகள்",
@@ -97,9 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "ரத்துசெய்",
+                "external": "",
+                "fallback": "",
                 "login": "புகுபதிவு",
                 "password": "கடவுச்சொல்",
                 "register": "பதிவு செய்யுங்கள்",
+                "retry": "",
                 "username": "பயனர்பெயர் / மின்னஞ்சல் முகவரி"
             },
             "info": {
@@ -124,6 +129,7 @@
         "publisher": "வெளியீட்டாளர்",
         "readBook": "படிக்க",
         "released": "வெளியிடப்பட்டது",
+        "removeFromFavorites": "",
         "sort": "வரிசைப்படுத்தவும்",
         "tag": "குறிச்சொல்",
         "tags": "குறிச்சொற்கள்",
@@ -218,7 +224,8 @@
         },
         "open": {
             "error": "வெளியீட்டை ஏற்றுவது தோல்வியுற்றது: [{{- err}}]"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -845,6 +852,7 @@
             "reduceMotion": "இயக்கத்தைக் குறைக்கவும்",
             "scrolled": "கீறப்பட்டது",
             "spacing": "இடைவெளி",
+            "spreadModeEven": "",
             "text": "உரை",
             "theme": {
                 "name": {
@@ -902,6 +910,7 @@
             "cancel": "ரத்துசெய்",
             "disclaimer": "பயன்பாட்டு இயல்புநிலைகள் qwerty தளவமைப்பில் விசைகளின் இயற்பியல் இருப்பிடத்தின் அடிப்படையில் வடிவமைக்கப்பட்டன",
             "editUserJson": "பயனர் கோப்பைத் திருத்து ...",
+            "exportToHTML": "",
             "keyboardShortcuts": "விசைப்பலகை குறுக்குவழிகள்",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1164,7 +1173,8 @@
         "tabs": {
             "appearance": "தோற்றம்",
             "general": "பொது",
-            "keyboardShortcuts": "விசைப்பலகை குறுக்குவழிகள்"
+            "keyboardShortcuts": "விசைப்பலகை குறுக்குவழிகள்",
+            "profiles": ""
         },
         "theme": {
             "auto": "தானியங்கி",

@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { nanoid } from "nanoid";
 import { customizationActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
@@ -14,7 +14,7 @@ import { ICustomizationLockInfo } from "readium-desktop/common/redux/states/cust
 import { ToastType } from "readium-desktop/common/models/toast";
 import { call as callTyped, select as selectTyped, put as putTyped, /*take as takeTyped, race as raceTyped, delay,*/ SagaGenerator, all as allTyped } from "typed-redux-saga/macro";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP } from "readium-desktop/common/streamerProtocol";
 import { ICustomizationManifest, ICustomizationManifestColor } from "readium-desktop/common/readium/customization/manifest";
 import { contentTypeisOpdsAuth, parseContentType } from "readium-desktop/utils/contentType";
 
@@ -71,7 +71,7 @@ function* profileActivating(id: string): SagaGenerator<void> {
     // yield* delay(1000);
 
 
-    const baseUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/custom-profile-zip/${encodeURIComponent_RFC3986(Buffer.from(id).toString("base64"))}/`;
+    const baseUrl = `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_CUSTOMPROFILEZIP}/${encodeURIComponent_RFC3986(Buffer.from(id).toString("base64"))}/`;
     const manifestURL = baseUrl + encodeURIComponent_RFC3986(Buffer.from("manifest.json").toString("base64"));
     const response = yield* callTyped(() => fetch(manifestURL));
     if (response.status !== 200) {
@@ -98,7 +98,7 @@ function* profileActivating(id: string): SagaGenerator<void> {
     const profileActivationHistory = yield* selectTyped((state: ICommonRootState) => state.customization.history);
 
     const profileHistoryFound = profileActivationHistory.find((profileHistory) => profileHistory.id === id);
-    const welcomeScreenNeeded = !profileHistoryFound || profileHistoryFound.version !== manifestJson.version;
+    const welcomeScreenNeeded = !profileHistoryFound || profileHistoryFound.version !== (new Date(manifestJson.modified || manifestJson.created)).getTime();
 
     yield* putTyped(customizationActions.welcomeScreen.build(welcomeScreenNeeded));
 
@@ -142,7 +142,7 @@ function* profileActivating(id: string): SagaGenerator<void> {
         yield* putTyped(customizationActions.triggerOpdsAuth.build(catalogLink.href, catalogLinkOpdsAuthenticateDocumentHref));
     }
 
-    yield* putTyped(customizationActions.addHistory.build(id, manifestJson.version));
+    yield* putTyped(customizationActions.addHistory.build(id, (new Date(manifestJson.modified || manifestJson.created)).getTime()));
 }
 
 

@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "Apie {{- appName}} (internete)"
         },
@@ -86,6 +87,7 @@
         "importAnnotation": "Importuoti pastabas",
         "lang": "Kalba",
         "lastRead": "Pask. kartą skaityta",
+        "login": "Prisijungti",
         "logout": "Atsijungti",
         "moreInfo": "Daugiau informacijos",
         "myBooks": "Mano leidiniai",
@@ -97,9 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "Atšaukti",
-                "login": "Prisijungimas",
+                "external": "Jūsų interneto naršyklėje atsidarys prisijungimo puslapis, sekite instrukcijas. Kai prisijungsite, interneto naršyklė grąžins jus į šią programą.",
+                "fallback": "Pastaba: jei kyla problemų prisijungiant naudojant numatytąjį žiniatinklio naršyklės metodą, bandykite dar kartą naudodami alternatyvų programos metodą.",
+                "login": "Prisijungim/as",
                 "password": "Slaptažodis",
                 "register": "Užsiregistruoti",
+                "retry": "Bandyti dar kartą",
                 "username": "Naudotojo vardas / El. pašto adresas"
             },
             "info": {
@@ -124,6 +129,7 @@
         "publisher": "Leidėjas",
         "readBook": "Skaityti",
         "released": "Išleidimo data",
+        "removeFromFavorites": "",
         "sort": "Rikiuoti pagal",
         "tag": "Žymė",
         "tags": "Žymės",
@@ -151,8 +157,8 @@
         "cancel": "Nutraukti",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
-                "state": "",
+                "fallbackWelcomeScreen": "Nėra pasveikinimo ekrano",
+                "state": "Būsena: {{- state}}",
                 "title": "Aktyvuojamas tinkinimo profilis"
             }
         },
@@ -228,7 +234,8 @@
         },
         "open": {
             "error": "Nepavyko atverti leidinio : [{{- err}}]"
-        }
+        },
+        "wipeData": "Prisijungimo duomenys išvalyti (prieigos žetonai ir slapukai)"
     },
     "opds": {
         "addForm": {
@@ -265,7 +272,7 @@
         },
         "next": "Tolesnis",
         "previous": "Ankstesnis",
-        "resumeBrowsing": "",
+        "resumeBrowsing": "Tęsti naršymą",
         "shelf": "Lentyna",
         "updateForm": {
             "name": "Pavadinimas:",
@@ -329,8 +336,8 @@
                 "descriptive": "Taktiliniai 3D objektai"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "Pateikiamos balso sintezės užuominos",
-                "descriptive": "Pateikiamos balso sintezės užuominos"
+                "compact": "Pateikiamos balso sintezės gairės",
+                "descriptive": "Pateikiamos balso sintezės gairės"
             },
             "additional-accessibility-information-title": "Papildoma prieinamumo informacija"
         },
@@ -708,7 +715,7 @@
             "delete": "Šalinti",
             "edit": "Keisti",
             "goTo": "Eiti į puslapį",
-            "landmarks": "Gairės",
+            "landmarks": "Orientyrai",
             "saveMark": "Išsaugoti",
             "search": "Paieška",
             "searchResult": "Ieškoti [{{- searchText}}]",
@@ -857,6 +864,7 @@
             "reduceMotion": "Mažinti judesių kiekį",
             "scrolled": "Slenkantis",
             "spacing": "Išretinimas",
+            "spreadModeEven": "Lyginis puslapių išdėstymas (numatytasis išdėstymas – nelyginis)",
             "text": "Tekstas",
             "theme": {
                 "name": {
@@ -914,6 +922,7 @@
             "cancel": "Nutraukti",
             "disclaimer": "Programos numatytieji nustatymai buvo sukurti atsižvelgiant į fizinę klavišų vietą QWERTY klaviatūroje",
             "editUserJson": "Keisti naudotojo failą...",
+            "exportToHTML": "Eksportuoti į HTML",
             "keyboardShortcuts": "Spartieji klavišai",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -973,7 +982,7 @@
                     "name": "Nustatyti fiksuoto išdėstymo mastelį iš naujo"
                 },
                 "FocusMain": {
-                    "description": "Perkelti klaviatūros fokusą į pagrindinę turinio gairę grafinėje sąsajoje. Skaitytuvės lange fokusas perkeliamas į leidinio turinį",
+                    "description": "Perkelti klaviatūros fokusą į pagrindinį orientyrą grafinėje sąsajoje. Skaitytuvės lange fokusas perkeliamas į leidinio turinį",
                     "name": "Fokusuoti pagrindinį turinį"
                 },
                 "FocusMainDeep": {
@@ -1013,7 +1022,7 @@
                     "name": "Paieškos komanda"
                 },
                 "FocusToolbar": {
-                    "description": "Perkelti klaviatūros fokusą į grafinės sąsajos gairių sritį prieš pat „praleidimo nuorodą“ (kuri pati perkelia fokusą į pagrindinę bibliotekos arba skaitytuvės lango turinio sritį)",
+                    "description": "Perkelti klaviatūros fokusą į grafinės sąsajos orientyro sritį prieš pat „praleidimo nuorodą“ (kuri pati perkelia fokusą į pagrindinę bibliotekos arba skaitytuvės lango turinio sritį)",
                     "name": "Fokusuoti įrankių juostą"
                 },
                 "NavigateNextChapter": {
@@ -1158,17 +1167,17 @@
             }
         },
         "profiles": {
-            "info": "",
+            "info": "Perjunkite profilius, kad pritaikytumėte programą pagal tiekėjo partnerio prekės ženklą ir spalvas. Kiekvienas profilis siūlo individualiai pritaikytą patirtį.",
             "thorium": {
-                "description": "",
-                "title": ""
+                "description": "„Thorium Vanilla“ profilis yra originalus, sukurtas „EDRLab“.",
+                "title": "Thorium Vanilla"
             },
-            "version": ""
+            "version": "Versija: {{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "message": "",
-            "title": ""
+            "help": "Kai programa aptinka naudojamas pagalbines technologijas, vartotojo sąsaja geriau veikia su ekrano skaitytuvais",
+            "message": "Patobulintas ekrano skaitytuvų palaikymas",
+            "title": "Pagerinkite ekrano skaitytuvo patirtį"
         },
         "session": {
             "title": "Įgalinti sesijos išsaugojimą"
@@ -1176,7 +1185,8 @@
         "tabs": {
             "appearance": "Išvaizda",
             "general": "Bendros",
-            "keyboardShortcuts": "Spartieji klavišai"
+            "keyboardShortcuts": "Spartieji klavišai",
+            "profiles": "Profiliai"
         },
         "theme": {
             "auto": "Automatinė",

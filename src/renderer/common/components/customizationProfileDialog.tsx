@@ -25,7 +25,7 @@ import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg"
 
 import DOMPurify from "dompurify";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP } from "readium-desktop/common/streamerProtocol";
 import Loader from "./Loader";
 
 export const CustomizationProfileDialog: React.FC = () => {
@@ -40,14 +40,17 @@ export const CustomizationProfileDialog: React.FC = () => {
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
 
     const profileInHistoryFound = customization.history.find(({id}) => id && id === customization.activate.id);
-    const [checked, setChecked] = React.useState<boolean>(profileInHistoryFound && manifest?.version && profileInHistoryFound.version === manifest?.version);
+
+    const dispatchProfileInHistoryFromWizard = (checkboxDoNotViewChecked: boolean) => dispatch(customizationActions.addHistory.build(profileInHistoryFound.id, checkboxDoNotViewChecked ? undefined : profileInHistoryFound.version));
+    const getIfWizardIsViewed = React.useCallback(() => profileInHistoryFound && (manifest?.modified || manifest?.created) && profileInHistoryFound.version && (new Date(manifest.modified || manifest.created)).getTime() && profileInHistoryFound.version === (new Date(manifest.modified || manifest.created)).getTime(), [profileInHistoryFound, manifest?.modified, manifest?.created]);
+    const [checked, setChecked] = React.useState<boolean>(getIfWizardIsViewed());
 
     React.useEffect(() => {
-        setChecked(profileInHistoryFound && manifest?.version && profileInHistoryFound.version === manifest?.version);
-    }, [setChecked, manifest?.version, profileInHistoryFound]);
+        setChecked(getIfWizardIsViewed());
+    }, [setChecked, getIfWizardIsViewed]);
 
     const customizationId = customization.manifest?.identifier;
-    const customizationBaseUrl = customizationId ? `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/custom-profile-zip/${encodeURIComponent_RFC3986(Buffer.from(customizationId).toString("base64"))}/` : "";
+    const customizationBaseUrl = customizationId ? `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_CUSTOMPROFILEZIP}/${encodeURIComponent_RFC3986(Buffer.from(customizationId).toString("base64"))}/` : "";
     const welcomeScreenImgZipPath = manifest?.images?.find((ln) => ln.rel === "welcome-screen")?.href;
     const welcomeScreenImgHref = customizationBaseUrl && welcomeScreenImgZipPath ? customizationBaseUrl + encodeURIComponent_RFC3986(Buffer.from(welcomeScreenImgZipPath).toString("base64")) : "";
     const welcomeScreenHtmlZipPath = customization.manifest?.links?.find((ln) => ln.rel === "welcome-screen" && (!ln.type || ln.type === "text/html") && ln.language === locale)?.href || customization.manifest?.links?.find((ln) => ln.rel === "welcome-screen" && (!ln.type || ln.type === "text/html") && (ln.language === "en" || !ln.language))?.href;
@@ -147,7 +150,7 @@ export const CustomizationProfileDialog: React.FC = () => {
                             <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
                         </AlertDialog.Cancel>
                         {customization.welcomeScreen.enable && profileInHistoryFound ? <div style={{ display: "flex", alignItems: "center", gap: "10px"}}>
-                            <input type="checkbox" checked={checked} onChange={() => { setChecked(!checked); dispatch(customizationActions.addHistory.build(profileInHistoryFound.id, checked ? "" : profileInHistoryFound.version)); }} id="wizardCheckbox" name="wizardCheckbox" className={stylesGlobal.checkbox_custom_input} />
+                            <input type="checkbox" checked={checked} onChange={() => { setChecked(!checked); dispatchProfileInHistoryFromWizard(checked); }} id="wizardCheckbox" name="wizardCheckbox" className={stylesGlobal.checkbox_custom_input} />
                             <label htmlFor="wizardCheckbox" className={stylesGlobal.checkbox_custom_label}>
                                 <div
                                     tabIndex={0}
@@ -168,11 +171,11 @@ export const CustomizationProfileDialog: React.FC = () => {
                                         if (e.key === " ") { // WORKS
                                             e.preventDefault();
                                             setChecked(!checked);
-                                            dispatch(customizationActions.addHistory.build(profileInHistoryFound.id, checked ? "" : profileInHistoryFound.version));
+                                            dispatchProfileInHistoryFromWizard(checked);
                                         }
                                     }}
                                     className={stylesGlobal.checkbox_custom}
-                                    style={{ border: checked ? "2px solid transparent" : "2px solid var(--color-primary)", backgroundColor: checked ? "var(--color-blue)" : "transparent" }}>
+                                    style={{ border: checked ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: checked ? "var(--color-brand-primary)" : "transparent" }}>
                                     {checked ?
                                         <SVG ariaHidden svg={CheckIcon} />
                                         :

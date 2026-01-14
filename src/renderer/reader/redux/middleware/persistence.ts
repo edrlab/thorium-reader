@@ -70,6 +70,11 @@ export const reduxPersistMiddleware: Middleware
                     readerState.noteTotalCount = nextState.reader.noteTotalCount;
                     dispatchFlag = true;
                 }
+                if (!ramda.equals(prevState.reader.pdfConfig, nextState.reader.pdfConfig)) {
+
+                    readerState.pdfConfig = nextState.reader.pdfConfig;
+                    dispatchFlag = true;
+                }
                 if (dispatchFlag) {
 
                     dispatchSetReduxState(store, readerState);

@@ -12,12 +12,12 @@
 // To convert this file to an ECMAScript module, change its file extension to '.mts',
 // or add the field `"type": "module"` to 'package.json'.
 // @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore TS1479
+// e__slint-disable-next-line @typescript-eslint/ban-ts-comment
+// @__ts-ignore TS1479
 import timeoutSignal from "timeout-signal";
 
-import * as debug_ from "debug";
-import { promises as fsp } from "fs";
+import debug_ from "debug";
+import * as fs from "fs";
 import * as http from "http";
 import * as https from "https";
 
@@ -28,8 +28,8 @@ import * as https from "https";
 // To convert this file to an ECMAScript module, change its file extension to '.mts',
 // or add the field `"type": "module"` to 'package.json'.
 // @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore TS1479
+// e__slint-disable-next-line @typescript-eslint/ban-ts-comment
+// @__ts-ignore TS1479
 import { AbortError, Headers, RequestInit, Response } from "node-fetch";
 
 import {
@@ -43,6 +43,7 @@ import { fetchWithCookie } from "./fetch";
 import { digestAuthentication, parseDigestString} from "readium-desktop/utils/digest";
 import { ProxyAgent } from "proxy-agent";
 import { availableLanguages } from "readium-desktop/common/services/translator";
+import { opdsActions } from "readium-desktop/common/redux/actions";
 
 // Logger
 const filename_ = "readium-desktop:main/http";
@@ -95,11 +96,15 @@ const authenticationTokenInit = async () => {
         return;
     }
 
-    const data = await tryCatch(() => fsp.readFile(opdsAuthFilePath), "");
+    const data = await tryCatch(() => fs.promises.readFile(opdsAuthFilePath), "");
     let docsFS: string | undefined;
     if (data) {
         try {
             docsFS = decryptPersist(data, CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, opdsAuthFilePath);
+            if (!docsFS) {
+                docsFS = undefined;
+                // throw new Error("decryptPersist???! CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN");
+            }
         } catch (_err) {
             docsFS = undefined;
         }
@@ -142,13 +147,26 @@ export const httpSetAuthenticationToken =
 
         await persistJson();
 
+
+        // trigger refresh opds feed local state in FeedList.tsx component
+        // see addFeed function in api/opds/feed.ts
+        try {
+            const store = diMainGet("store");
+            store.dispatch(opdsActions.refresh.build());
+        } catch {
+            // ignore
+        }
+
         return res;
     };
 
 const persistJson = () => tryCatch(() => {
     if (!authenticationToken) return Promise.resolve();
     const encrypted = encryptPersist(JSON.stringify(authenticationToken), CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, opdsAuthFilePath);
-    return fsp.writeFile(opdsAuthFilePath, encrypted);
+    if (!encrypted) {
+        throw new Error("encryptPersist???! CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN persistJson");
+    }
+    return fs.promises.writeFile(opdsAuthFilePath, encrypted);
 }, "");
 
 export const absorbDBToJson = async () => {
@@ -183,7 +201,10 @@ export const deleteAuthenticationToken = async (host: string) => {
     delete authenticationToken[id];
 
     const encrypted = encryptPersist(JSON.stringify(authenticationToken), CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, opdsAuthFilePath);
-    return fsp.writeFile(opdsAuthFilePath, encrypted);
+    if (!encrypted) {
+        throw new Error("encryptPersist???! CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN deleteAuthenticationToken");
+    }
+    return await fs.promises.writeFile(opdsAuthFilePath, encrypted);
 
 };
 
@@ -191,7 +212,10 @@ export const wipeAuthenticationTokenStorage = async () => {
     // authenticationTokenInitialized = false;
     authenticationToken = {};
     const encrypted = encryptPersist(JSON.stringify(authenticationToken), CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN, opdsAuthFilePath);
-    return fsp.writeFile(opdsAuthFilePath, encrypted);
+    if (!encrypted) {
+        throw new Error("encryptPersist???! CONFIGREPOSITORY_OPDS_AUTHENTICATION_TOKEN wipeAuthenticationTokenStorage");
+    }
+    return await fs.promises.writeFile(opdsAuthFilePath, encrypted);
 };
 
 async function httpFetchRawResponse(

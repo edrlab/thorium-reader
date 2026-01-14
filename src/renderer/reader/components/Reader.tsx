@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 // import debounce from "debounce";
-import * as debug_ from "debug";
+import debug_ from "debug";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
 import { fixedLayoutZoomPercent } from "@r2-navigator-js/electron/renderer/dom";
@@ -26,7 +26,7 @@ import {
 } from "readium-desktop/common/models/reader";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { dialogActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
-import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { IReaderPdfConfig, IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { ok } from "readium-desktop/common/utils/assert";
 import { formatTime } from "readium-desktop/common/utils/time";
 import {
@@ -81,7 +81,7 @@ import {
 } from "@r2-navigator-js/electron/renderer/index";
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
-import { TToc } from "../pdf/common/pdfReader.type";
+import { IPdfPlayerScale, TToc } from "../pdf/common/pdfReader.type";
 import { pdfMount } from "../pdf/driver";
 import {
     readerLocalActionAnnotations,
@@ -107,10 +107,11 @@ import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 import { translateContentFieldHelper } from "readium-desktop/common/services/translator";
 import { getStore } from "../createStore";
-import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_PUB } from "readium-desktop/common/streamerProtocol";
 import { DockTypeName } from "readium-desktop/common/models/dock";
 import { TDrawView } from "readium-desktop/common/redux/states/renderer/note";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
+import { URL_PROTOCOL_FILEX } from "readium-desktop/common/streamerProtocol";
 
 const debug = debug_("readium-desktop:renderer:reader:components:Reader");
 debug("_");
@@ -172,7 +173,7 @@ const handleLinkUrl_UpdateHistoryState = (url: string, isFromOnPopState = false)
 
     // if (/https?:\/\//.test(url_)) {
     if (!url_.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") &&
-        !url_.startsWith(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://")) {
+        !url_.startsWith(URL_PROTOCOL_THORIUMHTTPS + "://")) {
         console.log(">> HISTORY POP STATE SKIP URL (1)", url_);
         return;
     }
@@ -249,6 +250,8 @@ interface IState {
 
     pdfPlayerToc: TToc | undefined;
     pdfPlayerNumberOfPages: number | undefined;
+    pdfPlayerZoom: IPdfPlayerScale;
+    pdfPlayerSpreadMode: number;
     pdfThumbnailImageCacheArray: string[];
 
     // openedSectionSettings: number | undefined;
@@ -350,6 +353,8 @@ class Reader extends React.Component<IProps, IState> {
 
             pdfPlayerToc: undefined,
             pdfPlayerNumberOfPages: undefined,
+            pdfPlayerZoom: "page-fit",
+            pdfPlayerSpreadMode: 0,
             pdfThumbnailImageCacheArray: [],
 
             // openedSectionSettings: undefined,
@@ -514,7 +519,35 @@ class Reader extends React.Component<IProps, IState> {
 
             this.loadPublicationIntoViewport();
 
-            createOrGetPdfEventBus().subscribe("savePreferences", ({ page, scrollTop }) => {
+            createOrGetPdfEventBus().subscribe("savePreferences", (options) => {
+
+                debug("PDF.JS subscribe on \"savePreference\": ", options);
+                /*
+
+                {
+                  page: 1,
+                  scrollTop: 792,
+                  zoom: 100, // can be default : "page-fit"
+                  sidebarView: 0,
+                  scrollLeft: -47,
+                  rotation: 0,
+                  spreadMode: 2 // 0: one col, 1: two col odd, 2: two col even
+                }
+
+                */
+
+                // data persistence: zoom and spreadMode
+                this.setState({
+                    pdfPlayerSpreadMode: typeof options.spreadMode === "number" && options.spreadMode >= 0 && options.spreadMode <= 2 ? options.spreadMode : 0,
+                    pdfPlayerZoom: typeof options.zoom === "number" ? options.zoom : (options.zoom === "page-fit") ? "page-fit" : (options.zoom === "page-width") ? "page-width" : "page-fit",
+                });
+
+                this.props.setPdfReaderConfig({
+                    spreadmode: (typeof options.spreadMode === "number" && options.spreadMode >= 0 && options.spreadMode <= 2 ? options.spreadMode : 0) as 0 | 1 | 2,
+                    scale: typeof options.zoom === "number" ? options.zoom : (options.zoom === "page-fit") ? "page-fit" : (options.zoom === "page-width") ? "page-width" : "page-fit",
+                });
+
+                const { page, scrollTop } = options;
                 const locatorExtended: LocatorExtended = {
                     audioPlaybackInfo: undefined,
                     paginationInfo: undefined,
@@ -529,6 +562,7 @@ class Reader extends React.Component<IProps, IState> {
                     locator: {
                         href: `${page}`,
                         locations: {
+                            // Todo keep synchronized scrollTop AND! scrollLeft
                             position: scrollTop,
                             progression: 0,
                         },
@@ -728,6 +762,16 @@ class Reader extends React.Component<IProps, IState> {
                 this.hideAnnotationsForTTSorMOPlay();
             }
         }
+        if (oldProps.pdfReaderConfig.scale !== this.props.pdfReaderConfig.scale && this.props.pdfReaderConfig.scale !== this.state.pdfPlayerZoom) {
+
+            console.log("SET PDF ZOOM to", this.props.pdfReaderConfig.scale);
+            this.setState({pdfPlayerZoom: this.props.pdfReaderConfig.scale});
+        }
+        if (oldProps.pdfReaderConfig.spreadmode !== this.props.pdfReaderConfig.spreadmode && this.props.pdfReaderConfig.spreadmode !== this.state.pdfPlayerSpreadMode) {
+
+            console.log("SET PDF spreadmode to", this.props.pdfReaderConfig.spreadmode);
+            this.setState({pdfPlayerSpreadMode: this.props.pdfReaderConfig.spreadmode});
+        }
     }
 
     public componentWillUnmount() {
@@ -836,6 +880,15 @@ class Reader extends React.Component<IProps, IState> {
                 this.setZenModeAndFXLZoom(zen, fxlZoom);
             },
             // searchEnable: this.props.searchEnable,
+
+            pdfPlayerZoom: this.state.pdfPlayerZoom,
+            // setPdfPlayerZoom: (value: IPdfPlayerScale) => {
+            //     this.setState({ pdfPlayerZoom: value });
+            // },
+            pdfPlayerSpreadMode: this.state.pdfPlayerSpreadMode,
+            // setPdfPlayerSpreadMode: (value: number) => {
+            //     this.setState({ pdfPlayerSpreadMode: value });
+            // },
         };
 
         const isAudioBook = isAudiobookFn(this.props.r2Publication);
@@ -2067,7 +2120,7 @@ class Reader extends React.Component<IProps, IState> {
             } else if (typeof popState.state.data === "string") {
                 // if (!/https?:\/\//.test(popState.state.data)) {
                 if (popState.state.data.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL + "://") ||
-                    popState.state.data.startsWith(THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL + "://")) {
+                    popState.state.data.startsWith(URL_PROTOCOL_THORIUMHTTPS + "://")) {
                     this.handleLinkClick(undefined, popState.state.data, !isDocked, true);
                 } else {
                     console.log(">> HISTORY POP STATE SKIP URL (2)", popState.state.data);
@@ -2529,7 +2582,7 @@ class Reader extends React.Component<IProps, IState> {
                     "es8-es2017" +
                     "/src/electron/renderer/webview/preload.js";
 
-                if (_RENDERER_READER_BASE_URL === "filex://host/") {
+                if (_RENDERER_READER_BASE_URL === `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/`) {
                     // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
                     preloadPath = "file://" + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", PREPATH)).replace(/\\/g, "/");
 
@@ -3206,13 +3259,11 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     const isAudioBook = isAudiobookFn(state.reader.info.r2Publication);
 
     // const manifestUrlR2Protocol = state.reader.info.manifestUrlR2Protocol; // httpsr2:// "CustomScheme"
-    const manifestUrlHttp = state.reader.info.manifestUrlHttp.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ? convertCustomSchemeToHttpUrl(state.reader.info.manifestUrlHttp) : state.reader.info.manifestUrlHttp; // thoriumhttps://
-    // export const THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL = "thoriumhttps";
-    // export const THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER = "0.0.0.0";
-    const pubPathBase64 = decodeURIComponent(manifestUrlHttp.replace(/\/manifest.json$/, "").replace("thoriumhttps://0.0.0.0/pub/", ""));
+    const manifestUrlHttp = state.reader.info.manifestUrlHttp.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ? convertCustomSchemeToHttpUrl(state.reader.info.manifestUrlHttp) : state.reader.info.manifestUrlHttp;
+    const pubPathBase64 = decodeURIComponent(manifestUrlHttp.replace(/\/manifest.json$/, "").replace(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PUB}/`, ""));
     const pubPath = Buffer.from(pubPathBase64, "base64").toString();
 
-    const manifestUrlR2Protocol_pub_id_not_path = convertHttpUrlToCustomScheme(`${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}/pub/${encodeURIComponent_RFC3986(Buffer.from(state.reader.info.publicationIdentifier || state.reader.info.publicationView.identifier, "utf8").toString("base64"))}/manifest.json`);
+    const manifestUrlR2Protocol_pub_id_not_path = convertHttpUrlToCustomScheme(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PUB}/${encodeURIComponent_RFC3986(Buffer.from(state.reader.info.publicationIdentifier || state.reader.info.publicationView.identifier, "utf8").toString("base64"))}/manifest.json`);
 
     debug("manifestUrlR2Protocol_pub_id_not_path", manifestUrlR2Protocol_pub_id_not_path);
     debug("state.reader.info.manifestUrlR2Protocol", state.reader.info.manifestUrlR2Protocol);
@@ -3251,6 +3302,9 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
         ttsPlaybackRate: state.reader.config.ttsPlaybackRate,
         menuOpen: state.dialog.open && state.dialog.type === DialogTypeName.ReaderMenu || state.dock.open && state.dock.type === DockTypeName.ReaderMenu,
         settingsOpen: state.dialog.open && state.dialog.type === DialogTypeName.ReaderSettings || state.dock.open && state.dock.type === DockTypeName.ReaderSettings,
+
+
+        pdfReaderConfig: state.reader.pdfConfig,
 
         // Reader Lock Demo
         // lock: state.reader.lock,
@@ -3359,6 +3413,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
         toggleSettings: (data: readerLocalActionToggleSettings.Payload) => {
             dispatch(readerLocalActionToggleSettings.build(data));
+        },
+        setPdfReaderConfig: (data: IReaderPdfConfig) => {
+            dispatch(readerActions.pdfConfig.build(data));
         },
     };
 };

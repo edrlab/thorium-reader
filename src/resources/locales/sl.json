@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "O {{- appName}}"
         },
@@ -86,6 +87,7 @@
         "importAnnotation": "Uvoz opomb",
         "lang": "Jezik",
         "lastRead": "Nazadnje brano",
+        "login": "",
         "logout": "",
         "moreInfo": "Osnovni podatki",
         "myBooks": "Moje knjige",
@@ -97,9 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "Prekliči",
+                "external": "",
+                "fallback": "",
                 "login": "Prijavi se",
                 "password": "Geslo",
                 "register": "Register",
+                "retry": "",
                 "username": "Uporabniško ime / elektronski naslov"
             },
             "info": {
@@ -124,6 +129,7 @@
         "publisher": "Založba",
         "readBook": "Začni brati",
         "released": "Objavljeno na",
+        "removeFromFavorites": "",
         "sort": "Razvrsti po",
         "tag": "Oznaka",
         "tags": "Oznake",
@@ -218,7 +224,8 @@
         },
         "open": {
             "error": "Publikacije ni mogoče odpreti: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -845,6 +852,7 @@
             "reduceMotion": "Zmanjšaj gibanje",
             "scrolled": "Pomikanje",
             "spacing": "Razmik",
+            "spreadModeEven": "",
             "text": "Besedilo",
             "theme": {
                 "name": {
@@ -902,6 +910,7 @@
             "cancel": "Prekliči",
             "disclaimer": "Bližnjice so bile določene na podlagi postavitve tipkovnice QWERTY.",
             "editUserJson": "Uredi datoteko uporabnika...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Bližnjice tipkovnice",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1164,7 +1173,8 @@
         "tabs": {
             "appearance": "Izgled",
             "general": "Splošno",
-            "keyboardShortcuts": "Bližnjice tipkovnice"
+            "keyboardShortcuts": "Bližnjice tipkovnice",
+            "profiles": ""
         },
         "theme": {
             "auto": "Samodejno",

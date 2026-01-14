@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "Informazioni su {{- appName}}"
         },
@@ -86,6 +87,7 @@
         "importAnnotation": "Importa note",
         "lang": "Lingua",
         "lastRead": "Ultimi letti",
+        "login": "",
         "logout": "",
         "moreInfo": "Più info",
         "myBooks": "I miei libri",
@@ -97,9 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "Annulla",
+                "external": "",
+                "fallback": "",
                 "login": "Accedi",
                 "password": "Password",
                 "register": "Registrati",
+                "retry": "",
                 "username": "Nome utente / indirizzo e-mail"
             },
             "info": {
@@ -124,6 +129,7 @@
         "publisher": "Editore",
         "readBook": "Leggi",
         "released": "Pubblicato il",
+        "removeFromFavorites": "",
         "sort": "Ordina per",
         "tag": "Tag",
         "tags": "Tags",
@@ -218,7 +224,8 @@
         },
         "open": {
             "error": "La pubblicazione non può essere aperta : {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -791,7 +798,7 @@
         },
         "settings": {
             "column": {
-                "auto": "Automatico",
+                "auto": "Auto",
                 "one": "1 col",
                 "title": "Colonne",
                 "two": "2 cols"
@@ -845,6 +852,7 @@
             "reduceMotion": "Riduci movimento",
             "scrolled": "Scrollabile",
             "spacing": "Spaziatura",
+            "spreadModeEven": "",
             "text": "Testo",
             "theme": {
                 "name": {
@@ -902,6 +910,7 @@
             "cancel": "Annulla",
             "disclaimer": "Le impostazioni predefinite dell'applicazione sono state progettate in base alla posizione fisica dei tasti in una tastiera QWERTY",
             "editUserJson": "Modifica il file utente...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Scorciatoie da tastiera",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1164,7 +1173,8 @@
         "tabs": {
             "appearance": "Aspetto",
             "general": "Generale",
-            "keyboardShortcuts": "Scorciatoie da tastiera"
+            "keyboardShortcuts": "Scorciatoie da tastiera",
+            "profiles": ""
         },
         "theme": {
             "auto": "Automatico",

@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "Относно {{- appName}}"
         },
@@ -86,6 +87,7 @@
         "importAnnotation": "",
         "lang": "Език",
         "lastRead": "Последно четено",
+        "login": "",
         "logout": "",
         "moreInfo": "Подробности за книгата",
         "myBooks": "Моите книги",
@@ -97,9 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "Откажи",
+                "external": "",
+                "fallback": "",
                 "login": "Влез",
                 "password": "",
                 "register": "",
+                "retry": "",
                 "username": ""
             },
             "info": {
@@ -124,6 +129,7 @@
         "publisher": "Издател",
         "readBook": "Прочети",
         "released": "Публикувано на",
+        "removeFromFavorites": "",
         "sort": "Сортирай по",
         "tag": "",
         "tags": "Маркери",
@@ -218,7 +224,8 @@
         },
         "open": {
             "error": "Книгата не може да бъде отворена: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -845,6 +852,7 @@
             "reduceMotion": "Намали движението",
             "scrolled": "Скролируем",
             "spacing": "Интервал",
+            "spreadModeEven": "",
             "text": "Текст",
             "theme": {
                 "name": {
@@ -902,6 +910,7 @@
             "cancel": "Отказ",
             "disclaimer": "",
             "editUserJson": "Редактиране на потребителски файл...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Бързи клавиши",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1164,7 +1173,8 @@
         "tabs": {
             "appearance": "",
             "general": "",
-            "keyboardShortcuts": ""
+            "keyboardShortcuts": "",
+            "profiles": ""
         },
         "theme": {
             "auto": "",

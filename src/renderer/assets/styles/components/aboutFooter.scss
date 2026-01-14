@@ -7,7 +7,7 @@
 //     justify-content: end;
 //     align-items: center;
 //     gap: 10px;
-//     border-top: 1px solid var(--color-extralight-grey);
+//     border-top: 1px solid var(--color-gray-50);
 //     margin: 0;
 
 //     a {
@@ -21,7 +21,7 @@
     position: fixed;
     bottom: -10px;
     right: 40px;
-    border-top: 1px solid var(--color-extralight-grey);
+    border-top: 1px solid var(--color-gray-50);
     margin: 0;
     margin-bottom: 10px;
     display: flex;
@@ -30,7 +30,7 @@
     gap: 10px;
     height: 75px;
     width: calc(100% - 247px);
-    background-color: var(--color-secondary);
+    background-color: var(--color-neutral-base);
     z-index: 1;
 
     .footer_about {
@@ -55,10 +55,10 @@
         font-style: italic;
         text-decoration: underline;
         cursor: pointer;
-        color: var(--color-primary);
+        color: var(--color-text-primary);
 
         &:visited {
-          color: var(--color-primary);
+          color: var(--color-text-primary);
         }
     }
 }

@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "Acerca de {{appName}}"
         },
@@ -86,6 +87,7 @@
         "importAnnotation": "",
         "lang": "Idioma",
         "lastRead": "Último Lido",
+        "login": "",
         "logout": "",
         "moreInfo": "Máis información",
         "myBooks": "Os meus libros",
@@ -97,9 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "Cancelar",
+                "external": "",
+                "fallback": "",
                 "login": "Iniciar sesión",
                 "password": "Password",
                 "register": "Rexistro",
+                "retry": "",
                 "username": "Username / Enderezo de correo electrónico"
             },
             "info": {
@@ -124,6 +129,7 @@
         "publisher": "Editor",
         "readBook": "Ler",
         "released": "Publicado en",
+        "removeFromFavorites": "",
         "sort": "Ordenar por",
         "tag": "Etiqueta",
         "tags": "Etiquetas",
@@ -218,7 +224,8 @@
         },
         "open": {
             "error": "Non se pode abrir a publicación: {{-  err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -845,6 +852,7 @@
             "reduceMotion": "Diminuír movemento",
             "scrolled": "Desplazable",
             "spacing": "Espazado",
+            "spreadModeEven": "",
             "text": "Texto",
             "theme": {
                 "name": {
@@ -902,6 +910,7 @@
             "cancel": "Cancelar",
             "disclaimer": "Os atallos definíronse a partir da distribución do teclado QWERTY.",
             "editUserJson": "Editar arquivo de usuario",
+            "exportToHTML": "",
             "keyboardShortcuts": "Atallos de teclado",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1164,7 +1173,8 @@
         "tabs": {
             "appearance": "Aspecto visual",
             "general": "General",
-            "keyboardShortcuts": "Atallos de teclado"
+            "keyboardShortcuts": "Atallos de teclado",
+            "profiles": ""
         },
         "theme": {
             "auto": "Automático\n",

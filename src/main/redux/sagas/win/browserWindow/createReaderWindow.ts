@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
 import * as path from "path";
 import { call as callTyped, put as putTyped } from "typed-redux-saga/macro";
@@ -23,6 +23,7 @@ import {
 
 import { getPublication } from "../../api/publication/getPublication";
 import { WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/constant";
+import { URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
 
 // Logger
 const debug = debug_("readium-desktop:createReaderWindow");
@@ -87,7 +88,7 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
 
     let readerUrl = _RENDERER_READER_BASE_URL;
     const htmlPath = "index_reader.html";
-    if (readerUrl === "filex://host/") {
+    if (readerUrl === `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/`) {
         // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
         readerUrl += path.normalize(path.join(__dirname, htmlPath)).replace(/\\/g, "/").split("/").map((segment) => encodeURIComponent_RFC3986(segment)).join("/");
     } else {

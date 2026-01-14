@@ -159,7 +159,7 @@ function renderSearchLinks(label: string, foundArray: ISearchResult[], nMatchPag
                                 >
                                     <span dir={isRTL ? "rtl" : "ltr"}>{
                                     `...${v.cleanBefore}`
-                                    }<span style={{backgroundColor: "var(--color-blue)", color: "white", padding: "0 2px"}}>{
+                                    }<span style={{backgroundColor: "var(--color-brand-primary)", color: "white", padding: "0 2px"}}>{
                                     `${v.cleanText}`
                                     }</span>{
                                     `${v.cleanAfter}...`

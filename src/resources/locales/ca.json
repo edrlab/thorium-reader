@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "Sobre {{appName}}"
         },
@@ -86,6 +87,7 @@
         "importAnnotation": "",
         "lang": "Idioma",
         "lastRead": "Última lectura",
+        "login": "",
         "logout": "",
         "moreInfo": "Més información",
         "myBooks": "Els meus llibres",
@@ -97,9 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "Cancel·lar",
+                "external": "",
+                "fallback": "",
                 "login": "Iniciar sessió",
                 "password": "Contrasenya",
                 "register": "Registre",
+                "retry": "",
                 "username": "Usuari / Direcció de correu eletrònic"
             },
             "info": {
@@ -124,6 +129,7 @@
         "publisher": "Editor",
         "readBook": "Llegir",
         "released": "Publicat en",
+        "removeFromFavorites": "",
         "sort": "Ordenar per",
         "tag": "Etiqueta",
         "tags": "Etiquetes",
@@ -218,7 +224,8 @@
         },
         "open": {
             "error": "No es pot obrir la publicació: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -845,6 +852,7 @@
             "reduceMotion": "Disminuir moviment",
             "scrolled": "Desplaçable",
             "spacing": "Espaiat",
+            "spreadModeEven": "",
             "text": "Text",
             "theme": {
                 "name": {
@@ -902,6 +910,7 @@
             "cancel": "Cancel·lar",
             "disclaimer": "Les dreceres es van definir a partir de la disposició de teclat QWERTY.",
             "editUserJson": "Editar arxiu d'usuari",
+            "exportToHTML": "",
             "keyboardShortcuts": "Dreceres de teclat",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1164,7 +1173,8 @@
         "tabs": {
             "appearance": "Aparença",
             "general": "General",
-            "keyboardShortcuts": "Dreceres del teclat"
+            "keyboardShortcuts": "Dreceres del teclat",
+            "profiles": ""
         },
         "theme": {
             "auto": "Automàtic",

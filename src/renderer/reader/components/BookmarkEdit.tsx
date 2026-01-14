@@ -35,8 +35,8 @@ import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/componen
 // To convert this file to an ECMAScript module, change its file extension to '.mts',
 // or add the field `"type": "module"` to 'package.json'.
 // @__ts-expect-error TS1479 (with TypeScript tsc ==> TS2578: Unused '@ts-expect-error' directive)
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore TS1479
+// e__slint-disable-next-line @typescript-eslint/ban-ts-comment
+// @__ts-ignore TS1479
 import {subscribe} from "@github/paste-markdown";
 
 interface IProps {
@@ -93,7 +93,7 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
     }, [uuid]);
 
     return <form className={stylesBookmarks.bookmark_form}>
-        <div style={{ backgroundColor: "var(--color-extralight-grey)" }}>
+        <div style={{ backgroundColor: "var(--color-gray-50" }}>
 
             {/* <p>{bookmark.locatorExtended.selectionInfo?.cleanText ?
             (bookmark.locatorExtended.selectionInfo.cleanText.length > (200 - 3) ?
@@ -110,7 +110,7 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
                     onChange={(a) => setTextAreaValue(a.currentTarget.value)}
                     ref={textAreaRef}
                 />
-                <div style={{ display: "flex" }}><span style={{ fontSize: "10px", color: "var(--color-medium-grey)", marginLeft: "auto" }}>{textAreaValue.length}/{bookmarkMaxLength}</span></div>
+                <div style={{ display: "flex" }}><span style={{ fontSize: "10px", color: "var(--color-gray-400)", marginLeft: "auto" }}>{textAreaValue.length}/{bookmarkMaxLength}</span></div>
             </div>
             <div className={stylesBookmarks.bookmarks_actions_container} style={{ marginTop: "-15px" }}>
                 <h4>{__("reader.annotations.Color")}</h4>
@@ -124,7 +124,7 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
                                 aria-label={__(translatorKey)}
                             />
                             <label aria-hidden={true} title={__(translatorKey)} htmlFor={`${uuid}_color-${colorHex}`}
-                                style={{ backgroundColor: colorHex, border: colorSelected === colorHex ? "1px solid var(--color-dark-grey)" : "" }}
+                                style={{ backgroundColor: colorHex, border: colorSelected === colorHex ? "1px solid var(--color-gray-900)" : "" }}
                             >
                                 {colorSelected === colorHex ? <SVG ariaHidden svg={CheckIcon} /> : <></>}
                             </label>
@@ -174,7 +174,7 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
                 aria-label={__("reader.marks.saveMark")}
                 onClick={(e) => {
                     e.preventDefault();
-                    const textareaNormalize = textAreaValue.trim(); // .replace(/\s*\n\s*/gm, "\0").replace(/\s\s*/g, " ").replace(/\0/g, "\n");
+                    const textareaNormalize = textAreaValue.trim(); // also see trimNormaliseWhitespaceAndCollapse()
                     // if (textareaNormalize) {
                     save(textareaNormalize, hexToRgb(colorSelected), tag);
                     saveConfig();

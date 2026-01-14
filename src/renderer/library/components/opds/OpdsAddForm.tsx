@@ -107,11 +107,11 @@ const OpdsAddForm: React.FC = () => {
             >
                 { /* typeof item.svg === "string" ? <img width={"20px"} height={"20px"} src={item.svg}></img> : <SVG ariaHidden svg={item.svg} /> */ }
                 <SVG ariaHidden svg={item.svg} />
-                <h3>{item.label}</h3>
+                <span>{item.label}</span>
             </Link>
             : <></>
             }
-            <div style={{display: "flex", alignItems: "center", gap: "20px"}}>
+            <div style={{display: "flex", alignItems: "center", gap: "10px"}}>
                 <OpdsFeedAddFormDialog/>
                 <ApiappAddFormDialog/>
             </div>

@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "Over {{- appName}}"
         },
@@ -65,10 +66,10 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
-                "publications": "",
-                "screen": "",
-                "title": ""
+                "description": "Geen profiel beschrijving",
+                "publications": "Profiel publicaties",
+                "screen": "Geen titel",
+                "title": "Profiel titel"
             }
         },
         "delete": "Verwijder",
@@ -86,7 +87,8 @@
         "importAnnotation": "Importeer aantekeningen",
         "lang": "Taal",
         "lastRead": "Laatst gelezen",
-        "logout": "",
+        "login": "",
+        "logout": "Uitloggen",
         "moreInfo": "Meer Informatie",
         "myBooks": "Mijn boeken",
         "noPublicationHelpL1": "Sleep een publicatie hier naar toe",
@@ -97,9 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "Annuleer",
+                "external": "",
+                "fallback": "",
                 "login": "Login",
                 "password": "Wachtwoord",
                 "register": "Registreer",
+                "retry": "",
                 "username": "Gebruikersnaam / e-mailadres"
             },
             "info": {
@@ -124,6 +129,7 @@
         "publisher": "Uitgever",
         "readBook": "Gelezen",
         "released": "Uitgegeven op",
+        "removeFromFavorites": "",
         "sort": "Sorteer op",
         "tag": "Label",
         "tags": "Labels",
@@ -145,9 +151,9 @@
         "cancel": "Annuleer",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
-                "state": "",
-                "title": ""
+                "fallbackWelcomeScreen": "Geen welkomstscherm wordt weergeven",
+                "state": "{{- status}}",
+                "title": "Voorzieningen en activatie profiel aanpassingen"
             }
         },
         "deleteAnnotations": "Verwijder aantekeningen?",
@@ -218,7 +224,8 @@
         },
         "open": {
             "error": "De publicatie kan niet worden geopend: {{- err}}"
-        }
+        },
+        "wipeData": ""
     },
     "opds": {
         "addForm": {
@@ -255,7 +262,7 @@
         },
         "next": "Volgende",
         "previous": "Vorige",
-        "resumeBrowsing": "",
+        "resumeBrowsing": "Terug naar bladeren",
         "shelf": "Plank",
         "updateForm": {
             "name": "Naam:",
@@ -845,6 +852,7 @@
             "reduceMotion": "Beperk beweging",
             "scrolled": "Doorlopend",
             "spacing": "Afstand",
+            "spreadModeEven": "",
             "text": "Tekst",
             "theme": {
                 "name": {
@@ -902,6 +910,7 @@
             "cancel": "Annuleer",
             "disclaimer": "Snelkoppelingen zijn gedefinieerd op basis van de QWERTY-toetsenbordindeling",
             "editUserJson": "Wijzig gebruikersbestand...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Toetsenbord shortcuts",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1148,15 +1157,15 @@
         "profiles": {
             "info": "",
             "thorium": {
-                "description": "",
-                "title": ""
+                "description": "Het Thorium Vanille profiel is de originele, ontworpen door EDRLab.",
+                "title": "Thorium Vanille"
             },
-            "version": ""
+            "version": "{{- versie}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "message": "",
-            "title": ""
+            "help": "Wanneer de app de aanwezigheid van hulpsoftware waarneemt, zal het gebruikersinterface beter werken voor schermlezers",
+            "message": "Verbeterde ondersteuning voor schermlezers",
+            "title": "Verbeterde schermlezer ervaring"
         },
         "session": {
             "title": "Stel sessie bewaring in"
@@ -1164,7 +1173,8 @@
         "tabs": {
             "appearance": "Verschijning",
             "general": "Algemeen",
-            "keyboardShortcuts": "Toetsenbord sneltoetsen"
+            "keyboardShortcuts": "Toetsenbord sneltoetsen",
+            "profiles": ""
         },
         "theme": {
             "auto": "Automatisch",

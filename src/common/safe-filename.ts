@@ -8,6 +8,7 @@
 import slugify from "slugify";
 import { TextEncoder as NodeTextEncoder, TextDecoder as NodeTextDecoder } from "util";
 import path from "path";
+import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
 
 // https://github.com/parshap/node-sanitize-filename/blob/209c39b914c8eb48ee27bcbde64b2c7822fdf3de/index.js#L1
 // https://gist.github.com/barbietunnie/7bc6d48a424446c44ff4
@@ -34,7 +35,7 @@ const windowsTrailingRe = /[\.\s]+$/;
 const replacement = "_";
 
 export function sanitizeForFilename(str: string) {
-    const trimmedAndWhitespaceCollapsed = str.trim().replace(/\s\s+/g, " ");
+    const trimmedAndWhitespaceCollapsed = trimNormaliseWhitespaceAndCollapse(str);
     try {
         const normalized = trimmedAndWhitespaceCollapsed
             .replace(illegalRe, replacement)

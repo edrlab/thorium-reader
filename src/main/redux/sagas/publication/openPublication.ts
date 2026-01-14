@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { Action } from "readium-desktop/common/models/redux";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
 import { lcpActions } from "readium-desktop/common/redux/actions/";
@@ -24,7 +24,7 @@ import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { getTranslator } from "readium-desktop/common/services/translator";
-import { THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL, THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER } from "readium-desktop/common/streamerProtocol";
+import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
 // import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
@@ -100,6 +100,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
     if (publicationDocument.lcp) {
         try {
             publicationDocument = yield* callTyped(
+                // DOES NOT MUTATE publicationDocument (returns a modified copy)
                 () => lcpManager.checkPublicationLicenseUpdate(publicationDocument),
             );
         } catch (error) {
@@ -273,8 +274,8 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
 
     // const manifestUrl = _USE_HTTP_STREAMER ?
     //     streamer.serverUrl() + manifestPaths[0] :
-    //     `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}${manifestPaths[0]}`;
-    const manifestUrl = `${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL}://${THORIUM_READIUM2_ELECTRON_HTTP_PROTOCOL__IP_ORIGIN_STREAMER}${manifestPaths[0]}`;
+    //     `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}${manifestPaths[0]}`;
+    const manifestUrl = `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}${manifestPaths[0]}`;
 
     debug(pubId, " streamed on ", manifestUrl);
 

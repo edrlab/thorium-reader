@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "關於 {{- appName}} (線上)"
         },
@@ -65,10 +66,10 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
-                "publications": "",
-                "screen": "",
-                "title": ""
+                "description": "無個人簡介",
+                "publications": "出版品簡介",
+                "screen": "無標題",
+                "title": "個人簡介標題"
             }
         },
         "delete": "刪除",
@@ -86,7 +87,8 @@
         "importAnnotation": "匯入註解",
         "lang": "語言",
         "lastRead": "最後閱讀",
-        "logout": "",
+        "login": "登入",
+        "logout": "登出",
         "moreInfo": "更多訊息",
         "myBooks": "我的書籍",
         "noPublicationHelpL1": "將文件拖放到此處",
@@ -97,9 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "取消",
+                "external": "登入頁面將在您的瀏覽器中打開，請按照提示操作。登入成功後，瀏覽器將自動返回此應用程式。",
+                "fallback": "注意：如果使用預設的網頁瀏覽器方法登入出現問題，請嘗試使用應用程式內的備用登入方法。",
                 "login": "登入",
                 "password": "密碼",
                 "register": "註冊",
+                "retry": "在試一次",
                 "username": "使用者名稱/電子郵件地址"
             },
             "info": {
@@ -124,6 +129,7 @@
         "publisher": "出版社",
         "readBook": "閱讀",
         "released": "出版日期",
+        "removeFromFavorites": "",
         "sort": "排序方式",
         "tag": "標籤",
         "tags": "標籤",
@@ -146,7 +152,7 @@
         "customization": {
             "splashscreen": {
                 "fallbackWelcomeScreen": "",
-                "state": "",
+                "state": "狀態： {{- state}}",
                 "title": ""
             }
         },
@@ -193,7 +199,7 @@
             "open": "開啟",
             "password": "密碼",
             "sentence": "此出版物需要 LCP 密碼才能打開",
-            "urlHint": "忘記密碼？按此處取得幫助",
+            "urlHint": "忘記密碼？按此處取得幫助。",
             "whatIsLcp?": "什麼是 LCP？",
             "whatIsLcpInfoDetails": "LCP 代表「許可內容保護」。",
             "whatIsLcpInfoDetailsLink": "要了解更多訊息，請點擊連結前往 EDRLab。"
@@ -212,13 +218,14 @@
             "error": "下載 [{{- title}}] 失敗：[{{- err}}]"
         },
         "import": {
-            "alreadyImport": "{{- title}} 已被匯入",
+            "alreadyImport": "{{- title}} 已被匯入。",
             "fail": "匯入 [{{- path}}] 失敗：[{{- err}}]",
             "success": "匯入 [{{- title}}] 完成。"
         },
         "open": {
             "error": "無法打開出版物：[{{- err}}]"
-        }
+        },
+        "wipeData": "登入資料已清除（帳號token和 cookies）"
     },
     "opds": {
         "addForm": {
@@ -425,11 +432,11 @@
                 "descriptive": ""
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "聲音",
+                "descriptive": "發行物（書籍）可能包含會覺得不舒服的聲音"
             },
             "hazards-sound-none": {
-                "compact": "",
+                "compact": "無聲",
                 "descriptive": ""
             },
             "hazards-sound-unknown": {
@@ -845,6 +852,7 @@
             "reduceMotion": "減少動態效果",
             "scrolled": "捲動",
             "spacing": "間距",
+            "spreadModeEven": "",
             "text": "文字",
             "theme": {
                 "name": {
@@ -902,6 +910,7 @@
             "cancel": "取消",
             "disclaimer": "快捷鍵是根據 QWERTY 鍵盤佈局定義的。",
             "editUserJson": "編輯使用者文件...",
+            "exportToHTML": "",
             "keyboardShortcuts": "鍵盤快捷鍵",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1164,7 +1173,8 @@
         "tabs": {
             "appearance": "外觀",
             "general": "一般",
-            "keyboardShortcuts": "鍵盤快捷鍵"
+            "keyboardShortcuts": "鍵盤快捷鍵",
+            "profiles": ""
         },
         "theme": {
             "auto": "自動的",
