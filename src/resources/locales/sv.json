@@ -50,7 +50,7 @@
         }
     },
     "catalog": {
-        "AddToFavorites": "",
+        "AddToFavorites": "Lägg till favoriter",
         "about": {
             "title": "Om {{- appName}}"
         },
@@ -100,7 +100,7 @@
             "auth": {
                 "cancel": "Avbryt",
                 "external": "Loginsidan kommer att öppnas i din webbläsare. Följ instruktionerna. Efter att du har loggat in så kommer du att komma tillbaka till det här programmet.",
-                "fallback": "",
+                "fallback": "Obs!: Vid inloggningsproblem med standardwebbläsarmetoden, försök igen med den alternativa inbyggda metoden i appen.",
                 "login": "Logga in",
                 "password": "Lösenord",
                 "register": "Registrera dig",
@@ -129,7 +129,7 @@
         "publisher": "Utgivare",
         "readBook": "Läs",
         "released": "Publicerad den",
-        "removeFromFavorites": "",
+        "removeFromFavorites": "Ta bort från favoriter",
         "sort": "Sortera efter",
         "tag": "Tagg",
         "tags": "Taggar",
@@ -153,7 +153,7 @@
             "splashscreen": {
                 "fallbackWelcomeScreen": "Det finns ingen välkomstskärm",
                 "state": "Status: {{- state}}",
-                "title": ""
+                "title": "Tillhandahålla och aktivera anpassningsprofil"
             }
         },
         "deleteAnnotations": "Radera anteckningar?",
@@ -262,7 +262,7 @@
         },
         "next": "Nästa",
         "previous": "Föregående",
-        "resumeBrowsing": "",
+        "resumeBrowsing": "Fortsätt surfa",
         "shelf": "Hylla",
         "updateForm": {
             "name": "Namn:",
@@ -910,7 +910,7 @@
             "cancel": "Avbryt",
             "disclaimer": "Kortkommandona baserar sig på QWERTY-tangentbordslayouten",
             "editUserJson": "Redigera användarfil ...",
-            "exportToHTML": "",
+            "exportToHTML": "Export till HTML",
             "keyboardShortcuts": "Kortkommandon",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1155,7 +1155,7 @@
             }
         },
         "profiles": {
-            "info": "",
+            "info": "Byt profiler för att anpassa appen med en leverantörpartners varumärke och färger. Varje profil erbjuder en skräddarsydd upplevelse.",
             "thorium": {
                 "description": "Thorium Vanilla-profilen är originalet, designad av EDRLab.",
                 "title": "Thorium vanilla"
