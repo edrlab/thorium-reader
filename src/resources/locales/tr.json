@@ -774,7 +774,7 @@
         "picker": {
             "search": {
                 "founds_one": "{{- count}} eşleşme(ler)",
-                "founds_other": "{{- count}} eşleşme(ler)",
+                "founds_other": "{{- count}} eşleşme",
                 "input": "eşleşecek metin",
                 "next": "Sonraki",
                 "notFound": "eşleşme yok",
