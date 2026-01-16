@@ -50,7 +50,7 @@
         }
     },
     "catalog": {
-        "AddToFavorites": "",
+        "AddToFavorites": "Lägg till favoriter",
         "about": {
             "title": "Om {{- appName}}"
         },
@@ -66,10 +66,10 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
-                "publications": "",
-                "screen": "",
-                "title": ""
+                "description": "Profilen saknar beskrivning",
+                "publications": "Profilpublikationer",
+                "screen": "Ingen titel",
+                "title": "Profilnamn"
             }
         },
         "delete": "Ta bort",
@@ -87,8 +87,8 @@
         "importAnnotation": "Importera anteckningar",
         "lang": "Språk",
         "lastRead": "Senast läst",
-        "login": "",
-        "logout": "",
+        "login": "Logga in",
+        "logout": "Logga ut",
         "moreInfo": "Information om publikationen",
         "myBooks": "Mina böcker",
         "noPublicationHelpL1": "Släpp en publikation här",
@@ -99,12 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "Avbryt",
-                "external": "",
-                "fallback": "",
+                "external": "Loginsidan kommer att öppnas i din webbläsare. Följ instruktionerna. Efter att du har loggat in så kommer du att komma tillbaka till det här programmet.",
+                "fallback": "Obs!: Vid inloggningsproblem med standardwebbläsarmetoden, försök igen med den alternativa inbyggda metoden i appen.",
                 "login": "Logga in",
                 "password": "Lösenord",
                 "register": "Registrera dig",
-                "retry": "",
+                "retry": "Försök igen",
                 "username": "Användarnamn/e-postadress"
             },
             "info": {
@@ -129,7 +129,7 @@
         "publisher": "Utgivare",
         "readBook": "Läs",
         "released": "Publicerad den",
-        "removeFromFavorites": "",
+        "removeFromFavorites": "Ta bort från favoriter",
         "sort": "Sortera efter",
         "tag": "Tagg",
         "tags": "Taggar",
@@ -139,9 +139,12 @@
         "annotations": {
             "descAuthor": "av {{- author}}",
             "descCreator": "skapad(e) av",
-            "descList": "{{- nb}} anteckning(ar) {{- creator}} kommer att importeras till {{- title}} {{- author}}",
-            "descNewer": "Konflikter: {{- nb}} nyare anteckning(ar)",
-            "descOlder": "Konflikter: {{- nb}} äldre anteckning(ar)",
+            "descList_one": "{{- count}} anteckning(ar) {{- creator}} kommer att importeras till {{- title}} {{- author}}",
+            "descList_other": "{{- count}} anteckning(ar) {{- creator}} kommer att importeras till {{- title}} {{- author}}",
+            "descNewer_one": "Konflikter: {{- count}} nyare anteckning(ar)",
+            "descNewer_other": "Konflikter: {{- count}} nyare anteckning(ar)",
+            "descOlder_one": "Konflikter: {{- count}} äldre anteckning(ar)",
+            "descOlder_other": "Konflikter: {{- count}} äldre anteckning(ar)",
             "descTitle": "Anteckningarnas titel: ",
             "importAll": "Importera alla anteckningar",
             "importWithoutConflict": "Importera anteckningar utan konflikter",
@@ -151,15 +154,17 @@
         "cancel": "Avbryt",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
-                "state": "",
-                "title": ""
+                "fallbackWelcomeScreen": "Det finns ingen välkomstskärm",
+                "state": "Status: {{- state}}",
+                "title": "Tillhandahålla och aktivera anpassningsprofil"
             }
         },
         "deleteAnnotations": "Radera anteckningar?",
-        "deleteAnnotationsText": "Vill du radera {{- annotationListLength}} anteckning(ar)?",
+        "deleteAnnotationsText_one": "Vill du radera {{- count}} anteckning(ar)?",
+        "deleteAnnotationsText_other": "Vill du radera {{- count}} anteckning(ar)?",
         "deleteBookmarks": "Radera bokmärken?",
-        "deleteBookmarksText": "Vill du radera {{- bookmarkListLength}} bokmärke(n)?",
+        "deleteBookmarksText_one": "Vill du radera {{- count}} bokmärke(n)?",
+        "deleteBookmarksText_other": "Vill du radera {{- count}} bokmärke(n)?",
         "deleteFeed": "Vill du ta bort den här katalogen?",
         "deletePublication": "Vill du ta bort den här publikationen?",
         "deletePublicationWithNotes": "Varning: Det finns anteckningar och/eller bokmärken som också kommer att raderas! (Om du vill behålla dem så måste du exportera anteckningar och bokmärken innan du tar bort boken)",
@@ -225,7 +230,7 @@
         "open": {
             "error": "Publikationen kan inte öppnas: {{- err}}"
         },
-        "wipeData": ""
+        "wipeData": "Inloggningsdata rensades (åtkomstnycklar och kakor)"
     },
     "opds": {
         "addForm": {
@@ -262,7 +267,7 @@
         },
         "next": "Nästa",
         "previous": "Föregående",
-        "resumeBrowsing": "",
+        "resumeBrowsing": "Fortsätt surfa",
         "shelf": "Hylla",
         "updateForm": {
             "name": "Namn:",
@@ -768,7 +773,8 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} träff(ar)",
+                "founds_one": "{{- count}} träff(ar)",
+                "founds_other": "{{- count}} träff(ar)",
                 "input": "text att söka på",
                 "next": "Nästa",
                 "notFound": "inga träffar",
@@ -852,7 +858,7 @@
             "reduceMotion": "Minska rörelser",
             "scrolled": "Rullningsbar",
             "spacing": "Avstånd",
-            "spreadModeEven": "",
+            "spreadModeEven": "Siduppslag \"jämna\" (standard är \"udda\")",
             "text": "Text",
             "theme": {
                 "name": {
@@ -910,7 +916,7 @@
             "cancel": "Avbryt",
             "disclaimer": "Kortkommandona baserar sig på QWERTY-tangentbordslayouten",
             "editUserJson": "Redigera användarfil ...",
-            "exportToHTML": "",
+            "exportToHTML": "Export till HTML",
             "keyboardShortcuts": "Kortkommandon",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1155,17 +1161,17 @@
             }
         },
         "profiles": {
-            "info": "",
+            "info": "Byt profiler för att anpassa appen med en leverantörpartners varumärke och färger. Varje profil erbjuder en skräddarsydd upplevelse.",
             "thorium": {
-                "description": "",
-                "title": ""
+                "description": "Thorium Vanilla-profilen är originalet, designad av EDRLab.",
+                "title": "Thorium vanilla"
             },
-            "version": ""
+            "version": "Version: {{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "message": "",
-            "title": ""
+            "help": "När programmet upptäcker hjälpmedelsteknik så anpassas gränssnittet för att fungera bättre med skärmläsare",
+            "message": "Förbättrat stöd för skärmläsare",
+            "title": "Förbättra skärmläsarupplevelsen"
         },
         "session": {
             "title": "Spara session"
@@ -1174,7 +1180,7 @@
             "appearance": "Utseende",
             "general": "Allmänt",
             "keyboardShortcuts": "Kortkommandon",
-            "profiles": ""
+            "profiles": "Profiler"
         },
         "theme": {
             "auto": "Automatiskt",

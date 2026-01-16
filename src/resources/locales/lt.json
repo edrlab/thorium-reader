@@ -139,9 +139,18 @@
         "annotations": {
             "descAuthor": "'{{- author}}'",
             "descCreator": ", kurią(-ias) sukūrė",
-            "descList": "{{- nb}} pastaba(-os, -ų){{- creator}}, bus susietos su {{- author}} leidiniu '{{- title}}'",
-            "descNewer": "Konfliktas(-ai): {{- nb}} naujesnė(-s, -ių) pastaba(-os, -ų)",
-            "descOlder": "Konfliktas(-ai): {{- nb}} senesnė(-s, -ių) pastaba(-os, -ų)",
+            "descList_one": "{{- count}} pastaba{{- creator}}, bus susieta su {{- author}} leidiniu '{{- title}}'",
+            "descList_few": "{{- count}} pastabos{{- creator}}, bus susietos su {{- author}} leidiniu '{{- title}}'",
+            "descList_many": "{{- count}} pastabų{{- creator}}, bus susietos su {{- author}} leidiniu '{{- title}}'",
+            "descList_other": "{{- count}} pastabų{{- creator}}, bus susietos su {{- author}} leidiniu '{{- title}}'",
+            "descNewer_one": "Konfliktas(-ai): {{- count}} naujesnė pastaba",
+            "descNewer_few": "Konfliktas(-ai): {{- count}} naujesnės pastabos",
+            "descNewer_many": "Konfliktas(-ai): {{- count}} naujesnių pastabų",
+            "descNewer_other": "Konfliktas(-ai): {{- count}} naujesnių pastabų",
+            "descOlder_one": "Konfliktas(-ai): {{- count}} senesnė pastaba",
+            "descOlder_few": "Konfliktas(-ai): {{- count}} senesnės pastabos",
+            "descOlder_many": "Konfliktas(-ai): {{- count}} senesnių pastabų",
+            "descOlder_other": "Konfliktas(-ai): {{- count}} senesnių pastabų",
             "descTitle": "Pastabų pavadinimas: ",
             "importAll": "Importuoti visas pastabas",
             "importWithoutConflict": "Importuoti pastabas, neturinčias konfliktų",
@@ -157,9 +166,15 @@
             }
         },
         "deleteAnnotations": "Šalinti pastabas?",
-        "deleteAnnotationsText": "Ar tikrai norite pašalinti {{- annotationListLength}} pastabą(-as, -ų)?",
+        "deleteAnnotationsText_one": "Ar tikrai norite pašalinti {{- count}} pastabą?",
+        "deleteAnnotationsText_few": "Ar tikrai norite pašalinti {{- count}} pastabas?",
+        "deleteAnnotationsText_many": "Ar tikrai norite pašalinti {{- count}} pastabų?",
+        "deleteAnnotationsText_other": "Ar tikrai norite pašalinti {{- count}} pastabų?",
         "deleteBookmarks": "Šalinti skirtukus?",
-        "deleteBookmarksText": "Ar tikrai norite pašalinti {{- bookmarkListLength}} skirtuką(-us, -ų)?",
+        "deleteBookmarksText_one": "Ar tikrai norite pašalinti {{- count}} skirtuką?",
+        "deleteBookmarksText_few": "Ar tikrai norite pašalinti {{- count}} skirtukus?",
+        "deleteBookmarksText_many": "Ar tikrai norite pašalinti {{- count}} skirtukų?",
+        "deleteBookmarksText_other": "Ar tikrai norite pašalinti {{- count}} skirtukų?",
         "deleteFeed": "Pašalinti katalogą?",
         "deletePublication": "Pašalinti leidinį?",
         "deletePublicationWithNotes": "Įspėjimas: šiame leidinyje yra pastabų ir (arba) skirtukų, kurios taip pat bus pašalintos! (jei norite jas išsaugoti, prieš pašalindami leidinį eksportuokite pastabas)",
@@ -326,8 +341,8 @@
                 "descriptive": "Taktiliniai 3D objektai"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "Pateikiamos balso sintezės užuominos",
-                "descriptive": "Pateikiamos balso sintezės užuominos"
+                "compact": "Pateikiamos balso sintezės gairės",
+                "descriptive": "Pateikiamos balso sintezės gairės"
             },
             "additional-accessibility-information-title": "Papildoma prieinamumo informacija"
         },
@@ -705,7 +720,7 @@
             "delete": "Šalinti",
             "edit": "Keisti",
             "goTo": "Eiti į puslapį",
-            "landmarks": "Gairės",
+            "landmarks": "Orientyrai",
             "saveMark": "Išsaugoti",
             "search": "Paieška",
             "searchResult": "Ieškoti [{{- searchText}}]",
@@ -768,7 +783,10 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} atitikmuo(-ys, -ų)",
+                "founds_one": "{{- count}} atitikmuo",
+                "founds_few": "{{- count}} atitikmenys",
+                "founds_many": "{{- count}} atitikmenų",
+                "founds_other": "{{- count}} atitikmenų",
                 "input": "ieškomas tekstas",
                 "next": "Kitas",
                 "notFound": "atitikmenų nėra",
@@ -910,7 +928,7 @@
             "cancel": "Nutraukti",
             "disclaimer": "Programos numatytieji nustatymai buvo sukurti atsižvelgiant į fizinę klavišų vietą QWERTY klaviatūroje",
             "editUserJson": "Keisti naudotojo failą...",
-            "exportToHTML": "",
+            "exportToHTML": "Eksportuoti į HTML",
             "keyboardShortcuts": "Spartieji klavišai",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -970,7 +988,7 @@
                     "name": "Nustatyti fiksuoto išdėstymo mastelį iš naujo"
                 },
                 "FocusMain": {
-                    "description": "Perkelti klaviatūros fokusą į pagrindinę turinio gairę grafinėje sąsajoje. Skaitytuvės lange fokusas perkeliamas į leidinio turinį",
+                    "description": "Perkelti klaviatūros fokusą į pagrindinį orientyrą grafinėje sąsajoje. Skaitytuvės lange fokusas perkeliamas į leidinio turinį",
                     "name": "Fokusuoti pagrindinį turinį"
                 },
                 "FocusMainDeep": {
@@ -1010,7 +1028,7 @@
                     "name": "Paieškos komanda"
                 },
                 "FocusToolbar": {
-                    "description": "Perkelti klaviatūros fokusą į grafinės sąsajos gairių sritį prieš pat „praleidimo nuorodą“ (kuri pati perkelia fokusą į pagrindinę bibliotekos arba skaitytuvės lango turinio sritį)",
+                    "description": "Perkelti klaviatūros fokusą į grafinės sąsajos orientyro sritį prieš pat „praleidimo nuorodą“ (kuri pati perkelia fokusą į pagrindinę bibliotekos arba skaitytuvės lango turinio sritį)",
                     "name": "Fokusuoti įrankių juostą"
                 },
                 "NavigateNextChapter": {

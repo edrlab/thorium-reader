@@ -32,7 +32,7 @@
 version = 1
 
 [install]
-nodejs_22.pkg-path = "nodejs_22"
+nodejs_24.pkg-path = "nodejs_24"
 jq.pkg-path = "jq"
 
 [vars]
