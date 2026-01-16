@@ -66,10 +66,10 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
-                "publications": "",
-                "screen": "",
-                "title": ""
+                "description": "無個人簡介",
+                "publications": "出版品簡介",
+                "screen": "無標題",
+                "title": "個人簡介標題"
             }
         },
         "delete": "刪除",
@@ -87,8 +87,8 @@
         "importAnnotation": "匯入註解",
         "lang": "語言",
         "lastRead": "最後閱讀",
-        "login": "",
-        "logout": "",
+        "login": "登入",
+        "logout": "登出",
         "moreInfo": "更多訊息",
         "myBooks": "我的書籍",
         "noPublicationHelpL1": "將文件拖放到此處",
@@ -99,12 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "取消",
-                "external": "",
-                "fallback": "",
+                "external": "登入頁面將在您的瀏覽器中打開，請按照提示操作。登入成功後，瀏覽器將自動返回此應用程式。",
+                "fallback": "注意：如果使用預設的網頁瀏覽器方法登入出現問題，請嘗試使用應用程式內的備用登入方法。",
                 "login": "登入",
                 "password": "密碼",
                 "register": "註冊",
-                "retry": "",
+                "retry": "在試一次",
                 "username": "使用者名稱/電子郵件地址"
             },
             "info": {
@@ -139,9 +139,9 @@
         "annotations": {
             "descAuthor": "經由 '{{- author}}'",
             "descCreator": "創建者",
-            "descList": "{{- nb}} 註解 {{- creator}} 將會被匯入到 '{{- title}}' {{- author}}",
-            "descNewer": "衝突：{{- nb}} 個較新的註解",
-            "descOlder": "衝突：{{- nb}} 個舊註解",
+            "descList": "{{- count}} 註解 {{- creator}} 將會被匯入到 '{{- title}}' {{- author}}",
+            "descNewer": "衝突：{{- count}} 個較新的註解",
+            "descOlder": "衝突：{{- count}} 個舊註解",
             "descTitle": "註解標題： ",
             "importAll": "匯入所有註解",
             "importWithoutConflict": "僅匯入無衝突的註解",
@@ -152,14 +152,14 @@
         "customization": {
             "splashscreen": {
                 "fallbackWelcomeScreen": "",
-                "state": "",
+                "state": "狀態： {{- state}}",
                 "title": ""
             }
         },
         "deleteAnnotations": "刪除註解？",
-        "deleteAnnotationsText": "您確定要刪除 {{- annotationListLength}} 條註解嗎？",
+        "deleteAnnotationsText": "您確定要刪除 {{- count}} 條註解嗎？",
         "deleteBookmarks": "刪除書籤？",
-        "deleteBookmarksText": "您確定要刪除 {{- bookmarkListLength}} 個書籤嗎？",
+        "deleteBookmarksText": "您確定要刪除 {{- count}} 個書籤嗎？",
         "deleteFeed": "你真的要刪除此出版目錄嗎？",
         "deletePublication": "你真的要刪除此出版物嗎？",
         "deletePublicationWithNotes": "警告：此出版物包含註釋和/或書籤，它們也將被刪除！ （如果您想保留它們，請確保在刪除出版物之前匯出註釋）",
@@ -199,7 +199,7 @@
             "open": "開啟",
             "password": "密碼",
             "sentence": "此出版物需要 LCP 密碼才能打開",
-            "urlHint": "忘記密碼？按此處取得幫助",
+            "urlHint": "忘記密碼？按此處取得幫助。",
             "whatIsLcp?": "什麼是 LCP？",
             "whatIsLcpInfoDetails": "LCP 代表「許可內容保護」。",
             "whatIsLcpInfoDetailsLink": "要了解更多訊息，請點擊連結前往 EDRLab。"
@@ -218,14 +218,14 @@
             "error": "下載 [{{- title}}] 失敗：[{{- err}}]"
         },
         "import": {
-            "alreadyImport": "{{- title}} 已被匯入",
+            "alreadyImport": "{{- title}} 已被匯入。",
             "fail": "匯入 [{{- path}}] 失敗：[{{- err}}]",
             "success": "匯入 [{{- title}}] 完成。"
         },
         "open": {
             "error": "無法打開出版物：[{{- err}}]"
         },
-        "wipeData": ""
+        "wipeData": "登入資料已清除（帳號token和 cookies）"
     },
     "opds": {
         "addForm": {
@@ -432,11 +432,11 @@
                 "descriptive": ""
             },
             "hazards-sound": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "聲音",
+                "descriptive": "發行物（書籍）可能包含會覺得不舒服的聲音"
             },
             "hazards-sound-none": {
-                "compact": "",
+                "compact": "無聲",
                 "descriptive": ""
             },
             "hazards-sound-unknown": {
@@ -768,7 +768,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} 個匹配",
+                "founds": "{{- count}} 個匹配",
                 "input": "輸入搜索文字",
                 "next": "後一個",
                 "notFound": "無匹配",
