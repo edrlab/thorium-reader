@@ -110,12 +110,6 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                         </p>
                         <div className={classNames(stylesInputs.form_group, stylesInputs.form_group_catalog)} style={{marginTop: "0", width: "99%"}}>
                             <label htmlFor="passphrase" style={{fontSize: "14px"}}>{__("library.lcp.password")}</label>
-                            <button 
-                            onClick={() => this.setState({showPassword: !showPassword})}
-                            aria-label={showPassword ? __("library.lcp.hidePassphrase") : __("library.lcp.showPassphrase")}
-                            >
-                                <SVG ariaHidden svg={showPassword ? EyeOpenIcon : EyeClosedIcon} />
-                            </button>
                             <input
                                 id="passphrase"
                                 aria-label={__("library.lcp.password")}
@@ -124,6 +118,13 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                 ref={this.focusRef}
                                 className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                             />
+                            <button 
+                            onClick={() => this.setState({showPassword: !showPassword})}
+                            aria-label={showPassword ? __("library.lcp.hidePassphrase") : __("library.lcp.showPassphrase")}
+                            style={{width: "30px"}}
+                            >
+                                <SVG ariaHidden svg={showPassword ? EyeOpenIcon : EyeClosedIcon} />
+                            </button>
                         </div>
                         {
                             typeof this.props.message === "string" ?

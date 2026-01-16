@@ -113,7 +113,7 @@ select {
       border:none;
       width: calc(100% - 35px);
       height: 25px;
-      margin-left: 30px;
+      margin-left: 15px;
       background-color: transparent;
   }
 
@@ -155,10 +155,7 @@ select {
 
   svg {
     height: 14px;
-    position: absolute;
-    left: 20px;
-    transform: translate(-50%, -50%);
-    top: 50%;
+    width: 30px;
   }
 }
 
