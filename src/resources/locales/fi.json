@@ -50,7 +50,7 @@
         }
     },
     "catalog": {
-        "AddToFavorites": "",
+        "AddToFavorites": "Lisää suosikkeihin",
         "about": {
             "title": "Tietoa ohjelmasta {{- appName}}"
         },
@@ -66,10 +66,10 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
-                "publications": "",
-                "screen": "",
-                "title": ""
+                "description": "Ei profiilin kuvausta",
+                "publications": "Profiilin julkaisut",
+                "screen": "Ei otsikkoa",
+                "title": "Profiilin otsikko"
             }
         },
         "delete": "Poista",
@@ -87,8 +87,8 @@
         "importAnnotation": "Tuo muistiinpanot",
         "lang": "Kieli",
         "lastRead": "Luettu viimeksi",
-        "login": "",
-        "logout": "",
+        "login": "Kirjautuminen",
+        "logout": "Uloskirjautuminen",
         "moreInfo": "Tietoa julkaisusta",
         "myBooks": "Omat kirjat",
         "noPublicationHelpL1": "Pudota julkaisu tähän",
@@ -99,12 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "Peru",
-                "external": "",
-                "fallback": "",
+                "external": "Kirjautumissivu aukeaa verkkoselaimessa, seuraa sivun ohjeita. Kun olet kirjautunut sisään, verkkoselain palauttaa sinut tähän sovellukseen.",
+                "fallback": "Huom. Jos oletuskirjautumistapa selaimen kautta ei toimi, yritä kirjautua vaihtoehtoisella tavalla sovelluksen sisällä.",
                 "login": "Kirjaudu",
                 "password": "Salasana",
                 "register": "Rekisteröidy",
-                "retry": "",
+                "retry": "Yritä uudelleen",
                 "username": "Käyttäjätunnus / Sähköpostiosoite"
             },
             "info": {
@@ -129,7 +129,7 @@
         "publisher": "Julkaisija",
         "readBook": "Lue",
         "released": "Julkaistu",
-        "removeFromFavorites": "",
+        "removeFromFavorites": "Poista suosikeista",
         "sort": "Lajittele",
         "tag": "Tunniste",
         "tags": "Tunnisteet",
@@ -154,9 +154,9 @@
         "cancel": "Peru",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
-                "state": "",
-                "title": ""
+                "fallbackWelcomeScreen": "Aloitusnäyttöä ei ole määritelty",
+                "state": "Tila: {{- state}}",
+                "title": "Mukautetun profiilin käyttöönotto ja aktivointi"
             }
         },
         "deleteAnnotations": "Poistetaanko muistiinpanot?",
@@ -207,7 +207,9 @@
             "urlHint": "Unohtuiko salasana? Lisätietoja:",
             "whatIsLcp?": "Mikä on LCP?",
             "whatIsLcpInfoDetails": "LCP (Licensed Content Protection) on sisällön suojaustapa.",
-            "whatIsLcpInfoDetailsLink": "Lisätietoja on EDRLabin sivustolla."
+            "whatIsLcpInfoDetailsLink": "Lisätietoja on EDRLabin sivustolla.",
+            "showPassphrase": "Näytä salasana",
+            "hidePassphrase": "Piilota salasana"
         }
     },
     "message": {
@@ -230,7 +232,7 @@
         "open": {
             "error": "Julkaisua ei voi avata: {{- err}}"
         },
-        "wipeData": ""
+        "wipeData": "Kirjautumistiedot tyhjennettiin (käyttöoikeustunnukset ja evästeet)"
     },
     "opds": {
         "addForm": {
@@ -267,7 +269,7 @@
         },
         "next": "Seuraava",
         "previous": "Edellinen",
-        "resumeBrowsing": "",
+        "resumeBrowsing": "Palaa selailuun",
         "shelf": "Hylly",
         "updateForm": {
             "name": "Nimi:",
@@ -747,7 +749,7 @@
             "goToError": "Sivua ei löydy",
             "goToPlaceHolder": "Syötä sivunumero",
             "goToTitle": "Siirry sivulle",
-            "history": "",
+            "history": "Navigointihistoria",
             "historyNext": "Hyppää eteenpäin",
             "historyPrevious": "Hyppää taaksepäin",
             "infoTitle": "Tiedot",
