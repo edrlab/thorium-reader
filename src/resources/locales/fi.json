@@ -759,8 +759,8 @@
             "pdfscalemode": "Sovita sivun kokoon tai leveyteen",
             "print": "Tulosta",
             "printDisabled": "Tulostus kielletty",
-            "screenNext": "",
-            "screenPrevious": "",
+            "screenNext": "Siirry eteenpäin",
+            "screenPrevious": "Siirry taaksepäin",
             "settingsTitle": "Asetukset"
         },
         "notes": {
@@ -860,7 +860,7 @@
             "reduceMotion": "Vähennä liikettä",
             "scrolled": "Vieritettävä",
             "spacing": "Välit",
-            "spreadModeEven": "",
+            "spreadModeEven": "Parilliset aukeamat (oletus on pariton)",
             "text": "Teksti",
             "theme": {
                 "name": {
@@ -918,7 +918,7 @@
             "cancel": "Peruuta",
             "disclaimer": "Oletuspikanäppäimet perustuvat QWERTY-näppäinasetteluun",
             "editUserJson": "Muokkaa käyttäjän tiedostoa...",
-            "exportToHTML": "",
+            "exportToHTML": "Vie html-muotoon",
             "keyboardShortcuts": "Pikanäppäimet",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1163,17 +1163,17 @@
             }
         },
         "profiles": {
-            "info": "",
+            "info": "Vaihda profiilia, jotta voit mukauttaa sovellusta vastaamaan kumppanitoimittajan brändiä ja värejä. Jokainen profiili tarjoaa räätälöidyn kokemuksen.",
             "thorium": {
-                "description": "",
-                "title": ""
+                "description": "Thorium Vanilla on alkuperäinen, EDRLabin suunnittelema profiili.",
+                "title": "Thorium vanilla"
             },
-            "version": ""
+            "version": "Versio: {{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "message": "",
-            "title": ""
+            "help": "Kun sovellus havaitsee, että käytössä on avustavaa teknologiaa, käyttöliittymä mukautuu toimimaan paremmin yhteen ruudunlukuohjelmien kanssa.",
+            "message": "Parannettu tuki ruudunlukuohjelmille",
+            "title": "Paranna ruudunlukukokemusta"
         },
         "session": {
             "title": "Tallenna istunto"
@@ -1182,7 +1182,7 @@
             "appearance": "Ulkoasu",
             "general": "Yleiset",
             "keyboardShortcuts": "Pikanäppäimet",
-            "profiles": ""
+            "profiles": "Profiilit"
         },
         "theme": {
             "auto": "Automaattinen",
