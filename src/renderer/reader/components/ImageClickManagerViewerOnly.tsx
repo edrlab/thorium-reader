@@ -37,11 +37,11 @@ const Controls = () => {
         <style>{`
 
 .imgViewerControls {
-    position: absolute;
+    // position: absolute;
     align-items: center;
     justify-content: center;
     z-index: 105;
-    transform: translate(-50%, 50%);
+    // transform: translate(-50%, 50%);
     display: flex;
     // opacity: 0;
     transition: 200ms;
@@ -82,7 +82,7 @@ const Controls = () => {
 
 export const ImageClickManagerImgViewerOnly: React.FC = () => {
 
-    const { open, isSVGFragment, HTMLImgSrc_SVGImageHref_SVGFragmentMarkup, altAttributeOf_HTMLImg_SVGImage_SVGFragment, titleAttributeOf_HTMLImg_SVGImage_SVGFragment, ariaLabelAttributeOf_HTMLImg_SVGImage_SVGFragment, naturalWidthOf_HTMLImg_SVGImage, naturalHeightOf_HTMLImg_SVGImage } = useSelector((state: IReaderRootState) => state.img);
+    const { open, isSVGFragment, HTMLImgSrc_SVGImageHref_SVGFragmentMarkup, altAttributeOf_HTMLImg_SVGImage_SVGFragment, titleAttributeOf_HTMLImg_SVGImage_SVGFragment, ariaLabelAttributeOf_HTMLImg_SVGImage_SVGFragment, naturalWidthOf_HTMLImg_SVGImage, naturalHeightOf_HTMLImg_SVGImage, dom_describedbyText, dom_detailsText, dom_figcaptionText, dom_labelledByText } = useSelector((state: IReaderRootState) => state.img);
     const dispatch = useDispatch();
     const [__] = useTranslator();
 
@@ -90,6 +90,8 @@ export const ImageClickManagerImgViewerOnly: React.FC = () => {
     const scaleY = naturalHeightOf_HTMLImg_SVGImage ? ((window.innerWidth - 50) / naturalHeightOf_HTMLImg_SVGImage) : 1;
     let scale = Math.min(scaleX, scaleY);
     if (scale > 1) scale = 1;
+
+    const imageDescription = dom_detailsText || dom_figcaptionText || dom_describedbyText || dom_labelledByText || altAttributeOf_HTMLImg_SVGImage_SVGFragment || "";
 
     return (<>
 
@@ -113,9 +115,8 @@ export const ImageClickManagerImgViewerOnly: React.FC = () => {
                         </Dialog.Close>
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", padding: "5px 10px", alignItems: "center", flex: 1 }}>
-                        <div style={{ position: "relative", display: "flex", gap: 10, width: "100%", height: "100%", paddingLeft: 5, flex: 1 }}>
+                        <div style={{ position: "relative", display: "flex", gap: 10, width: "100%", height: "100%", paddingLeft: 5, flex: 1, flexDirection: "column" }}>
                             <TransformWrapper initialScale={scale} minScale={scale / 2} maxScale={4 * scale}>
-                                <Controls />
                                 <TransformComponent wrapperStyle={{ display: "flex", width: "100%", height: "100%", minHeight: "350px", flex: "1", position: "relative" }} >
                                     <img
                                         style={{ height: "100%", width: "100%", maxHeight: "calc(100vh - 250px)", backgroundColor: "white", color: "black", fill: "currentcolor", stroke: "currentcolor" }}
@@ -126,7 +127,14 @@ export const ImageClickManagerImgViewerOnly: React.FC = () => {
                                         tabIndex={0}
                                     />
                                 </TransformComponent>
+                                <Controls />
                             </TransformWrapper>
+                            {imageDescription ?
+                                <p style={{ maxWidth: "unset", fontStyle: "italic"}}>
+                                    {imageDescription}
+                                </p>
+                                : <></>
+                            }
                         </div>
                     </div>
                 </Dialog.Content>
