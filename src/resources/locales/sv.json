@@ -207,7 +207,9 @@
             "urlHint": "Har du glömt ditt lösenord? Här kan du få hjälp.",
             "whatIsLcp?": "Vad är LCP?",
             "whatIsLcpInfoDetails": "LCP står för \"Licensed Content Protection\".",
-            "whatIsLcpInfoDetailsLink": "För mer information, klicka på denna länk till EDRLabs webbplats."
+            "whatIsLcpInfoDetailsLink": "För mer information, klicka på denna länk till EDRLabs webbplats.",
+            "showPassphrase": "Visa passfras",
+            "hidePassphrase": "Dölj passfras"
         }
     },
     "message": {
