@@ -50,7 +50,7 @@
         }
     },
     "catalog": {
-        "AddToFavorites": "",
+        "AddToFavorites": "Добавить в избранное",
         "about": {
             "title": "О приложении {{- appName}} (он-лайн)"
         },
@@ -129,7 +129,7 @@
         "publisher": "Издатель",
         "readBook": "Читать",
         "released": "Дата издания",
-        "removeFromFavorites": "",
+        "removeFromFavorites": "Удалить из избранного",
         "sort": "Сортировать по",
         "tag": "Тег",
         "tags": "Теги",
@@ -217,7 +217,8 @@
             "urlHint": "Забыли парольную фразу? Поддержка доступна:",
             "whatIsLcp?": "Что такое LCP?",
             "whatIsLcpInfoDetails": "LCP означает \"защита лицензионного контента\".",
-            "whatIsLcpInfoDetailsLink": "Чтобы узнать больше, перейдите по этой ссылке на сайт EDRLab."
+            "whatIsLcpInfoDetailsLink": "Чтобы узнать больше, перейдите по этой ссылке на сайт EDRLab.",
+            "showPassphrase": "Показать пароль"
         }
     },
     "message": {
