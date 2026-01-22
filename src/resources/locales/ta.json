@@ -199,6 +199,12 @@
         "viewMode": "பார்வை பயன்முறையை"
     },
     "library": {
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "reset": "",
+            "selectOption": ""
+        },
         "lcp": {
             "hidePassphrase": "",
             "hint": "குறிப்பு:",
@@ -209,23 +215,15 @@
             "urlHint": "உங்கள் கடவுச்சொல் மறந்துவிட்டீர்களா? ஆதரவைப் பெற இங்கே சொடுக்கு செய்க.",
             "whatIsLcp?": "எல்.சி.பி என்றால் என்ன?",
             "whatIsLcpInfoDetails": "எல்.சி.பி என்பது 'உரிமம் பெற்ற உள்ளடக்க பாதுகாப்பு' என்பதைக் குறிக்கிறது.",
-            "whatIsLcpInfoDetailsLink": "மேலும் அறிய, எட்ர்லாப் வலைத்தளத்திற்கான இந்த இணைப்பைக் சொடுக்கு செய்க.",
-            "showPassphrase": "",
-            "hidePassphrase": ""
-        },
-        "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "selectOption": "",
-            "reset": ""
+            "whatIsLcpInfoDetailsLink": "மேலும் அறிய, எட்ர்லாப் வலைத்தளத்திற்கான இந்த இணைப்பைக் சொடுக்கு செய்க."
         },
         "sorting": {
             "addSorting": "",
-            "sortBy": "",
-            "title": "",
             "author": "",
             "language": "",
-            "readingState": ""
+            "readingState": "",
+            "sortBy": "",
+            "title": ""
         }
     },
     "message": {

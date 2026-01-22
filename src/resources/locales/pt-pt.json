@@ -204,6 +204,12 @@
         "viewMode": "Modo de visualização"
     },
     "library": {
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "reset": "",
+            "selectOption": ""
+        },
         "lcp": {
             "hidePassphrase": "",
             "hint": "Dica:",
@@ -214,23 +220,15 @@
             "urlHint": "Esqueceu-se da sua frase-passe? Clique aqui para ajuda.",
             "whatIsLcp?": "O que é PCL?",
             "whatIsLcpInfoDetails": "PCL significa 'Proteção de Conteúdo Licenciado'.",
-            "whatIsLcpInfoDetailsLink": "Para saber mais, visite esta página do sítio EDRLab.",
-            "showPassphrase": "",
-            "hidePassphrase": ""
-        },
-        "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "selectOption": "",
-            "reset": ""
+            "whatIsLcpInfoDetailsLink": "Para saber mais, visite esta página do sítio EDRLab."
         },
         "sorting": {
             "addSorting": "",
-            "sortBy": "",
-            "title": "",
             "author": "",
             "language": "",
-            "readingState": ""
+            "readingState": "",
+            "sortBy": "",
+            "title": ""
         }
     },
     "message": {

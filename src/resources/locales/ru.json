@@ -209,33 +209,31 @@
         "viewMode": "Режим просмотра"
     },
     "library": {
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "reset": "",
+            "selectOption": ""
+        },
         "lcp": {
             "hidePassphrase": "",
             "hint": "Подсказка :",
             "open": "Открыть",
             "password": "Пароль",
             "sentence": "Для открытия этой книги требуется пароль LCP",
-            "showPassphrase": "Показать пароль",
+            "showPassphrase": "",
             "urlHint": "Забыли парольную фразу? Поддержка доступна:",
             "whatIsLcp?": "Что такое LCP?",
             "whatIsLcpInfoDetails": "LCP означает \"защита лицензионного контента\".",
-            "whatIsLcpInfoDetailsLink": "Чтобы узнать больше, перейдите по этой ссылке на сайт EDRLab.",
-            "showPassphrase": "",
-            "hidePassphrase": ""
-        },
-        "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "selectOption": "",
-            "reset": ""
+            "whatIsLcpInfoDetailsLink": "Чтобы узнать больше, перейдите по этой ссылке на сайт EDRLab."
         },
         "sorting": {
             "addSorting": "",
-            "sortBy": "",
-            "title": "",
             "author": "",
             "language": "",
-            "readingState": ""
+            "readingState": "",
+            "sortBy": "",
+            "title": ""
         }
     },
     "message": {

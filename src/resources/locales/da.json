@@ -199,6 +199,12 @@
         "viewMode": "Visningstilstand"
     },
     "library": {
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "reset": "",
+            "selectOption": ""
+        },
         "lcp": {
             "hidePassphrase": "",
             "hint": "Hint til nøgleord:",
@@ -209,23 +215,15 @@
             "urlHint": "Har du glemt dit nøgleord? Få hjælp her.",
             "whatIsLcp?": "Hvad er LCP?",
             "whatIsLcpInfoDetails": "LCP står for 'Licensed Content Protection'.",
-            "whatIsLcpInfoDetailsLink": "For at læse mere, følg dette link til EDRLab websitet.",
-            "showPassphrase": "",
-            "hidePassphrase": ""
-        },
-        "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "selectOption": "",
-            "reset": ""
+            "whatIsLcpInfoDetailsLink": "For at læse mere, følg dette link til EDRLab websitet."
         },
         "sorting": {
             "addSorting": "",
-            "sortBy": "",
-            "title": "",
             "author": "",
             "language": "",
-            "readingState": ""
+            "readingState": "",
+            "sortBy": "",
+            "title": ""
         }
     },
     "message": {

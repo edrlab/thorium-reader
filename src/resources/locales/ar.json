@@ -219,6 +219,12 @@
         "viewMode": "وضع العرض"
     },
     "library": {
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "reset": "",
+            "selectOption": ""
+        },
         "lcp": {
             "hidePassphrase": "",
             "hint": "تلميح:",
@@ -229,23 +235,15 @@
             "urlHint": "هل نسيت عبارة مرورك؟ اضغط هنا للحصول على الدعم.",
             "whatIsLcp?": "ما هي LCP؟",
             "whatIsLcpInfoDetails": "ترمز LCP إلى 'حماية المحتوى المرخَّص'.",
-            "whatIsLcpInfoDetailsLink": "لمعرفة المزيد، اضغط على هذا الرابط لزيارة موقع EDRLab.",
-            "showPassphrase": "",
-            "hidePassphrase": ""
-        },
-        "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "selectOption": "",
-            "reset": ""
+            "whatIsLcpInfoDetailsLink": "لمعرفة المزيد، اضغط على هذا الرابط لزيارة موقع EDRLab."
         },
         "sorting": {
             "addSorting": "",
-            "sortBy": "",
-            "title": "",
             "author": "",
             "language": "",
-            "readingState": ""
+            "readingState": "",
+            "sortBy": "",
+            "title": ""
         }
     },
     "message": {

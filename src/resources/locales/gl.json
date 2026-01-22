@@ -199,6 +199,12 @@
         "viewMode": "Modo de vista"
     },
     "library": {
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "reset": "",
+            "selectOption": ""
+        },
         "lcp": {
             "hidePassphrase": "",
             "hint": "Pista : ",
@@ -209,23 +215,15 @@
             "urlHint": "Esqueciches o teu contrasinal? Atopa axuda aquí",
             "whatIsLcp?": "Que é LCP?",
             "whatIsLcpInfoDetails": "Apoios de LCP para 'Protección de Contido con licenza'.",
-            "whatIsLcpInfoDetailsLink": "Para aprender máis, clic esta ligazón ao EDRLab sitio web.",
-            "showPassphrase": "",
-            "hidePassphrase": ""
-        },
-        "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "selectOption": "",
-            "reset": ""
+            "whatIsLcpInfoDetailsLink": "Para aprender máis, clic esta ligazón ao EDRLab sitio web."
         },
         "sorting": {
             "addSorting": "",
-            "sortBy": "",
-            "title": "",
             "author": "",
             "language": "",
-            "readingState": ""
+            "readingState": "",
+            "sortBy": "",
+            "title": ""
         }
     },
     "message": {
