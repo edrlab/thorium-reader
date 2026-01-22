@@ -474,6 +474,12 @@ declare namespace typed_i18n {
   (_: "header.settings", __?: {}): string;
   (_: "header.viewMode", __?: {}): string;
   (_: "library", __?: {}): {
+  readonly "filter": {
+    readonly "addFilters": string,
+    readonly "filterBy": string,
+    readonly "reset": string,
+    readonly "selectOption": string
+  },
   readonly "lcp": {
     readonly "hidePassphrase": string,
     readonly "hint": string,
@@ -485,8 +491,26 @@ declare namespace typed_i18n {
     readonly "whatIsLcp?": string,
     readonly "whatIsLcpInfoDetails": string,
     readonly "whatIsLcpInfoDetailsLink": string
+  },
+  readonly "sorting": {
+    readonly "addSorting": string,
+    readonly "author": string,
+    readonly "language": string,
+    readonly "readingState": string,
+    readonly "sortBy": string,
+    readonly "title": string
   }
 };
+  (_: "library.filter", __?: {}): {
+  readonly "addFilters": string,
+  readonly "filterBy": string,
+  readonly "reset": string,
+  readonly "selectOption": string
+};
+  (_: "library.filter.addFilters", __?: {}): string;
+  (_: "library.filter.filterBy", __?: {}): string;
+  (_: "library.filter.reset", __?: {}): string;
+  (_: "library.filter.selectOption", __?: {}): string;
   (_: "library.lcp", __?: {}): {
   readonly "hidePassphrase": string,
   readonly "hint": string,
@@ -509,6 +533,20 @@ declare namespace typed_i18n {
   (_: "library.lcp.whatIsLcp?", __?: {}): string;
   (_: "library.lcp.whatIsLcpInfoDetails", __?: {}): string;
   (_: "library.lcp.whatIsLcpInfoDetailsLink", __?: {}): string;
+  (_: "library.sorting", __?: {}): {
+  readonly "addSorting": string,
+  readonly "author": string,
+  readonly "language": string,
+  readonly "readingState": string,
+  readonly "sortBy": string,
+  readonly "title": string
+};
+  (_: "library.sorting.addSorting", __?: {}): string;
+  (_: "library.sorting.author", __?: {}): string;
+  (_: "library.sorting.language", __?: {}): string;
+  (_: "library.sorting.readingState", __?: {}): string;
+  (_: "library.sorting.sortBy", __?: {}): string;
+  (_: "library.sorting.title", __?: {}): string;
   (_: "message", __?: {}): {
   readonly "annotations": {
     readonly "alreadyImported": string,

@@ -229,7 +229,23 @@
             "urlHint": "هل نسيت عبارة مرورك؟ اضغط هنا للحصول على الدعم.",
             "whatIsLcp?": "ما هي LCP؟",
             "whatIsLcpInfoDetails": "ترمز LCP إلى 'حماية المحتوى المرخَّص'.",
-            "whatIsLcpInfoDetailsLink": "لمعرفة المزيد، اضغط على هذا الرابط لزيارة موقع EDRLab."
+            "whatIsLcpInfoDetailsLink": "لمعرفة المزيد، اضغط على هذا الرابط لزيارة موقع EDRLab.",
+            "showPassphrase": "",
+            "hidePassphrase": ""
+        },
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "selectOption": "",
+            "reset": ""
+        },
+        "sorting": {
+            "addSorting": "",
+            "sortBy": "",
+            "title": "",
+            "author": "",
+            "language": "",
+            "readingState": ""
         }
     },
     "message": {

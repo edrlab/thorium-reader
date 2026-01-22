@@ -209,7 +209,23 @@
             "urlHint": "Забравили сте паролата си? Намерете помощ тук.",
             "whatIsLcp?": "",
             "whatIsLcpInfoDetails": "",
-            "whatIsLcpInfoDetailsLink": ""
+            "whatIsLcpInfoDetailsLink": "",
+            "showPassphrase": "",
+            "hidePassphrase": ""
+        },
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "selectOption": "",
+            "reset": ""
+        },
+        "sorting": {
+            "addSorting": "",
+            "sortBy": "",
+            "title": "",
+            "author": "",
+            "language": "",
+            "readingState": ""
         }
     },
     "message": {

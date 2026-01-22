@@ -214,7 +214,23 @@
             "urlHint": "Zaboravljena zaporka? Pomoć",
             "whatIsLcp?": "",
             "whatIsLcpInfoDetails": "",
-            "whatIsLcpInfoDetailsLink": ""
+            "whatIsLcpInfoDetailsLink": "",
+            "showPassphrase": "",
+            "hidePassphrase": ""
+        },
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "selectOption": "",
+            "reset": ""
+        },
+        "sorting": {
+            "addSorting": "",
+            "sortBy": "",
+            "title": "",
+            "author": "",
+            "language": "",
+            "readingState": ""
         }
     },
     "message": {

@@ -209,7 +209,23 @@
             "urlHint": "Ξέχασες τα αναγνωριστικά σου; Κλίκαρε εδώ για βοήθεια.",
             "whatIsLcp?": "Τι είναι η προστασία LCP;",
             "whatIsLcpInfoDetails": "Το LCP σημαίνει 'Προστασία αδειοδοτημένου περιεχομένου'.",
-            "whatIsLcpInfoDetailsLink": "Για περισσότερα, κάντε κλικ σε αυτόν τον σύνδεσμο προς τον ιστότοπο του EDRLab."
+            "whatIsLcpInfoDetailsLink": "Για περισσότερα, κάντε κλικ σε αυτόν τον σύνδεσμο προς τον ιστότοπο του EDRLab.",
+            "showPassphrase": "",
+            "hidePassphrase": ""
+        },
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "selectOption": "",
+            "reset": ""
+        },
+        "sorting": {
+            "addSorting": "",
+            "sortBy": "",
+            "title": "",
+            "author": "",
+            "language": "",
+            "readingState": ""
         }
     },
     "message": {

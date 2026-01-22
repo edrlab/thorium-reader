@@ -209,7 +209,23 @@
             "urlHint": "დაგავიწყდათ საკვანძო ფრაზა? მხარდაჭერის მისაღებად დააწკაპუნეთ აქ.",
             "whatIsLcp?": "",
             "whatIsLcpInfoDetails": "",
-            "whatIsLcpInfoDetailsLink": ""
+            "whatIsLcpInfoDetailsLink": "",
+            "showPassphrase": "",
+            "hidePassphrase": ""
+        },
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "selectOption": "",
+            "reset": ""
+        },
+        "sorting": {
+            "addSorting": "",
+            "sortBy": "",
+            "title": "",
+            "author": "",
+            "language": "",
+            "readingState": ""
         }
     },
     "message": {

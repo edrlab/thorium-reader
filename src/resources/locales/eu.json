@@ -209,7 +209,23 @@
             "urlHint": "Pasahitza ahaztu duzu? Bilatu laguntza hemen",
             "whatIsLcp?": "Zer da LCP?",
             "whatIsLcpInfoDetails": "LCP \"Lizentziadun edukien babesa\" esan nahi du.",
-            "whatIsLcpInfoDetailsLink": "Gehiago jakiteko, egin klik EDRLab webgunerako esteka honetan."
+            "whatIsLcpInfoDetailsLink": "Gehiago jakiteko, egin klik EDRLab webgunerako esteka honetan.",
+            "showPassphrase": "",
+            "hidePassphrase": ""
+        },
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "selectOption": "",
+            "reset": ""
+        },
+        "sorting": {
+            "addSorting": "",
+            "sortBy": "",
+            "title": "",
+            "author": "",
+            "language": "",
+            "readingState": ""
         }
     },
     "message": {

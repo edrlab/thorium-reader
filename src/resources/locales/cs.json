@@ -219,7 +219,23 @@
             "urlHint": "Zapomněli jste svou heslovou frázi? Po získání podpory klikněte zde.",
             "whatIsLcp?": "Co je LCP?",
             "whatIsLcpInfoDetails": "LCP znamená „Licensed Content Protection“.",
-            "whatIsLcpInfoDetailsLink": "Pro více informací klikněte na tento odkaz na webovou stránku EDRLabu."
+            "whatIsLcpInfoDetailsLink": "Pro více informací klikněte na tento odkaz na webovou stránku EDRLabu.",
+            "showPassphrase": "",
+            "hidePassphrase": ""
+        },
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "selectOption": "",
+            "reset": ""
+        },
+        "sorting": {
+            "addSorting": "",
+            "sortBy": "",
+            "title": "",
+            "author": "",
+            "language": "",
+            "readingState": ""
         }
     },
     "message": {

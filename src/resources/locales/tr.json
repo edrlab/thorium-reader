@@ -209,7 +209,23 @@
             "urlHint": "Parolanızı mı unuttunuz? Destek almak için buraya tıklayın.",
             "whatIsLcp?": "LCP nedir?",
             "whatIsLcpInfoDetails": "LCP, 'Licensed Content Protection', Lisanslı İçerik Koruması anlamına gelir.",
-            "whatIsLcpInfoDetailsLink": "EDRLab web sitesinde daha fazlasını öğrenmek için bu bağlantıyı tıklayın."
+            "whatIsLcpInfoDetailsLink": "EDRLab web sitesinde daha fazlasını öğrenmek için bu bağlantıyı tıklayın.",
+            "showPassphrase": "",
+            "hidePassphrase": ""
+        },
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "selectOption": "",
+            "reset": ""
+        },
+        "sorting": {
+            "addSorting": "",
+            "sortBy": "",
+            "title": "",
+            "author": "",
+            "language": "",
+            "readingState": ""
         }
     },
     "message": {

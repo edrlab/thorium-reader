@@ -215,6 +215,20 @@
             "whatIsLcp?": "Qu'est-ce que LCP ?",
             "whatIsLcpInfoDetails": "LCP signifie 'Licensed Content Protection'. Il s'agit d'une technologie de protection des libres numériques contre la copie pirate, souvent appelée DRM. Ouvrir un livre protégé par LCP nécessite une clé LCP, c'est à dire un ou plusieurs mots séparés par des espaces. LCP est un standard ouvert, qui équilibre facilité d'usage et demandes des éditeurs. ",
             "whatIsLcpInfoDetailsLink": "Pour en savoir plus, cliquez ce lien, qui renvoie vers le site web de EDRLab."
+        },
+        "filter": {
+            "addFilters": "Ajouter des filtres",
+            "filterBy": "Filtrer par",
+            "selectOption": "Selectionner un élement",
+            "reset": "Raffraichir"
+        },
+        "sorting": {
+            "addSorting": "Ajouter un tri",
+            "sortBy": "Trier par : ",
+            "title": "Titre",
+            "author": "Auteur",
+            "language": "Langue",
+            "readingState": "État de lecture"
         }
     },
     "message": {

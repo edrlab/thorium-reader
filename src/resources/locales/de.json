@@ -209,7 +209,23 @@
             "urlHint": "Passwort vergessen? Klicke hier für Support.",
             "whatIsLcp?": "Was ist LCP?",
             "whatIsLcpInfoDetails": "LCP steht für „Licensed Content Protection“.",
-            "whatIsLcpInfoDetailsLink": "Um mehr zu erfahren, klicken Sie auf diesen Link zur EDRLab-Website."
+            "whatIsLcpInfoDetailsLink": "Um mehr zu erfahren, klicken Sie auf diesen Link zur EDRLab-Website.",
+            "showPassphrase": "",
+            "hidePassphrase": ""
+        },
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "selectOption": "",
+            "reset": ""
+        },
+        "sorting": {
+            "addSorting": "",
+            "sortBy": "",
+            "title": "",
+            "author": "",
+            "language": "",
+            "readingState": ""
         }
     },
     "message": {

@@ -219,7 +219,23 @@
             "urlHint": "Pozabljeno geslo? Tu lahko poiščeš pomoč",
             "whatIsLcp?": "Kaj je LCP?",
             "whatIsLcpInfoDetails": "LCP je kratica za 'Licensed Content Protection'.",
-            "whatIsLcpInfoDetailsLink": "Za več informacij kliknite na to povezavo in obiščite spletno stran EDRLab."
+            "whatIsLcpInfoDetailsLink": "Za več informacij kliknite na to povezavo in obiščite spletno stran EDRLab.",
+            "showPassphrase": "",
+            "hidePassphrase": ""
+        },
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "selectOption": "",
+            "reset": ""
+        },
+        "sorting": {
+            "addSorting": "",
+            "sortBy": "",
+            "title": "",
+            "author": "",
+            "language": "",
+            "readingState": ""
         }
     },
     "message": {

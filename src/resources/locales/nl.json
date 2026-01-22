@@ -209,7 +209,23 @@
             "urlHint": "Wachtwoordzin vergeten? Vind hulp hier.",
             "whatIsLcp?": "Wat is LCP?",
             "whatIsLcpInfoDetails": "LCP staat voor 'Licensed Content Protection'.",
-            "whatIsLcpInfoDetailsLink": "Klik voor meer informatie op deze link naar de EDRLab-website."
+            "whatIsLcpInfoDetailsLink": "Klik voor meer informatie op deze link naar de EDRLab-website.",
+            "showPassphrase": "",
+            "hidePassphrase": ""
+        },
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "selectOption": "",
+            "reset": ""
+        },
+        "sorting": {
+            "addSorting": "",
+            "sortBy": "",
+            "title": "",
+            "author": "",
+            "language": "",
+            "readingState": ""
         }
     },
     "message": {

@@ -210,6 +210,20 @@
             "whatIsLcp?": "What is LCP?",
             "whatIsLcpInfoDetails": "LCP stands for 'Licensed Content Protection'.",
             "whatIsLcpInfoDetailsLink": "To learn more, click this link to the EDRLab website."
+        },
+        "filter": {
+            "addFilters": "Add filters",
+            "filterBy": "Filter by",
+            "selectOption": "Select an item",
+            "reset": "Reset"
+        },
+        "sorting": {
+            "addSorting": "Add sorting",
+            "sortBy": "Sort by: ",
+            "title": "Title",
+            "author": "Author",
+            "language": "Language",
+            "readingState": "Reading State"
         }
     },
     "message": {

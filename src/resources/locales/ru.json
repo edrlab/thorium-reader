@@ -219,7 +219,23 @@
             "urlHint": "Забыли парольную фразу? Поддержка доступна:",
             "whatIsLcp?": "Что такое LCP?",
             "whatIsLcpInfoDetails": "LCP означает \"защита лицензионного контента\".",
-            "whatIsLcpInfoDetailsLink": "Чтобы узнать больше, перейдите по этой ссылке на сайт EDRLab."
+            "whatIsLcpInfoDetailsLink": "Чтобы узнать больше, перейдите по этой ссылке на сайт EDRLab.",
+            "showPassphrase": "",
+            "hidePassphrase": ""
+        },
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "selectOption": "",
+            "reset": ""
+        },
+        "sorting": {
+            "addSorting": "",
+            "sortBy": "",
+            "title": "",
+            "author": "",
+            "language": "",
+            "readingState": ""
         }
     },
     "message": {

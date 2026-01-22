@@ -204,7 +204,23 @@
             "urlHint": "パスワードを忘れましたか？ サポートに確認してください。",
             "whatIsLcp?": "LCPとはなんですか？",
             "whatIsLcpInfoDetails": "LCPはLicensed Content Protectionの略です。",
-            "whatIsLcpInfoDetailsLink": "詳しくは、EDRLabのWebサイトを参照してください。"
+            "whatIsLcpInfoDetailsLink": "詳しくは、EDRLabのWebサイトを参照してください。",
+            "showPassphrase": "",
+            "hidePassphrase": ""
+        },
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "selectOption": "",
+            "reset": ""
+        },
+        "sorting": {
+            "addSorting": "",
+            "sortBy": "",
+            "title": "",
+            "author": "",
+            "language": "",
+            "readingState": ""
         }
     },
     "message": {
