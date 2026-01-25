@@ -1178,9 +1178,9 @@
         },
         "theme": {
             "auto": "",
-            "dark": "",
+            "dark": "Tume kujundus",
             "description": "",
-            "light": "",
+            "light": "Hele kujundus",
             "title": ""
         }
     },
