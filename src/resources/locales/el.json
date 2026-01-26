@@ -139,9 +139,9 @@
         "annotations": {
             "descAuthor": "από '{{- author}}'",
             "descCreator": "δημιουργήθηκε από",
-            "descList_one": "{{- count}} σημειώσεις {{- creator}} θα εισαγχθούν στον τίτλο '{{- title}}' {{- author}}",
+            "descList_one": "{{- count}} σημείωση {{- creator}} θα εισαγχθεί στον τίτλο '{{- title}}' {{- author}}",
             "descList_other": "{{- count}} σημειώσεις {{- creator}} θα εισαγχθούν στον τίτλο '{{- title}}' {{- author}}",
-            "descNewer_one": "Συγκρούσεις: {{- count}} νεώτερες σημειώσεις",
+            "descNewer_one": "Σύγκρουση: {{- count}} νεώτερη σημείωση",
             "descNewer_other": "Συγκρούσεις: {{- count}} νεώτερες σημειώσεις",
             "descOlder_one": "Συγκρούσεις: {{- count}} παλιότερες σημειώσεις",
             "descOlder_other": "Συγκρούσεις: {{- count}} παλιότερες σημειώσεις",
