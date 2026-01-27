@@ -50,7 +50,7 @@
         }
     },
     "catalog": {
-        "AddToFavorites": "",
+        "AddToFavorites": "Aggiungi ai preferiti",
         "about": {
             "title": "Informazioni su {{- appName}}"
         },
@@ -66,10 +66,10 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
-                "publications": "",
-                "screen": "",
-                "title": ""
+                "description": "Nessuna descrizione del profilo",
+                "publications": "Descrizione del profilo",
+                "screen": "Nessun titolo",
+                "title": "Titolo del profilo"
             }
         },
         "delete": "Elimina",
@@ -87,8 +87,8 @@
         "importAnnotation": "Importa note",
         "lang": "Lingua",
         "lastRead": "Ultimi letti",
-        "login": "",
-        "logout": "",
+        "login": "Login",
+        "logout": "Logout",
         "moreInfo": "Più info",
         "myBooks": "I miei libri",
         "noPublicationHelpL1": "Rilascia una pubblicazione qui",
