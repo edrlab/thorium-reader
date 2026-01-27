@@ -143,7 +143,7 @@
             "descList_other": "{{- count}} σημειώσεις {{- creator}} θα εισαγχθούν στον τίτλο '{{- title}}' {{- author}}",
             "descNewer_one": "Σύγκρουση: {{- count}} νεώτερη σημείωση",
             "descNewer_other": "Συγκρούσεις: {{- count}} νεώτερες σημειώσεις",
-            "descOlder_one": "Συγκρούσεις: {{- count}} παλιότερες σημειώσεις",
+            "descOlder_one": "Σύγκρουση: {{- count}} παλιότερη σημείωση",
             "descOlder_other": "Συγκρούσεις: {{- count}} παλιότερες σημειώσεις",
             "descTitle": "Τίτλος σχολιασμών: ",
             "importAll": "Εισαγωγή όλων των σημειώσεων",
@@ -160,10 +160,10 @@
             }
         },
         "deleteAnnotations": "Διαγραφή σχολίων;",
-        "deleteAnnotationsText_one": "Είσαι σίγουρος/η για τη διαγραφή σημειώσεων {{- count}};",
-        "deleteAnnotationsText_other": "Είσαι σίγουρος/η για τη διαγραφή σημειώσεων {{- count}};",
+        "deleteAnnotationsText_one": "Είστε σίγουροι για τη διαγραφή σημείωσης {{- count}};",
+        "deleteAnnotationsText_other": "Είστε σίγουροι για τη διαγραφή σημειώσεων {{- count}};",
         "deleteBookmarks": "Διαγραφή σελιδοδεικτών;",
-        "deleteBookmarksText_one": "Είστε σίγουροι ότι θέλετε να διαγράψετε {{- count}} σελιδοδείκτες;",
+        "deleteBookmarksText_one": "Είστε σίγουροι ότι θέλετε να διαγράψετε {{- count}} σελιδοδείκτη;",
         "deleteBookmarksText_other": "Είστε σίγουροι ότι θέλετε να διαγράψετε {{- count}} σελιδοδείκτες;",
         "deleteFeed": "Διαγραφή καταλόγου;",
         "deletePublication": "Διαγραφή βιβλίου;",
@@ -775,7 +775,7 @@
         },
         "picker": {
             "search": {
-                "founds_one": "{{- count}} αποτελέσματα",
+                "founds_one": "{{- count}} αποτέλεσμα",
                 "founds_other": "{{- count}} αποτελέσματα",
                 "input": "κείμενο προς ανάκτηση",
                 "next": "Επόμενο",
