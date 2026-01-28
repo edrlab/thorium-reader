@@ -100,7 +100,7 @@
             "auth": {
                 "cancel": "Peru",
                 "external": "Kirjautumissivu aukeaa verkkoselaimessa, seuraa sivun ohjeita. Kun olet kirjautunut sisään, verkkoselain palauttaa sinut tähän sovellukseen.",
-                "fallback": "Huom. Jos oletuskirjautumistapa selaimen kautta ei toimi, yritä kirjautua vaihtoehtoisella tavalla sovelluksen sisällä.",
+                "fallback": "Huom. Jos kirjautuminen selaimen kautta ei toimi, yritä kirjautua vaihtoehtoisella tavalla sovelluksen sisällä.",
                 "login": "Kirjaudu",
                 "password": "Salasana",
                 "register": "Rekisteröidy",
@@ -232,7 +232,7 @@
         "open": {
             "error": "Julkaisua ei voi avata: {{- err}}"
         },
-        "wipeData": "Kirjautumistiedot tyhjennettiin (käyttöoikeustunnukset ja evästeet)"
+        "wipeData": "Kirjautumistiedot tyhjennettiin (pääsytunnukset ja evästeet)"
     },
     "opds": {
         "addForm": {
@@ -750,7 +750,7 @@
             "goToPlaceHolder": "Syötä sivunumero",
             "goToTitle": "Siirry sivulle",
             "history": "Navigointihistoria",
-            "historyNext": "Hyppää eteenpäin",
+            "historyNext": "Siirry eteenpäin",
             "historyPrevious": "Siirry taaksepäin",
             "infoTitle": "Tiedot",
             "magnifyingGlassButton": "Hae julkaisusta",
