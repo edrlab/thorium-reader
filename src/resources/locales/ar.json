@@ -50,7 +50,7 @@
         }
     },
     "catalog": {
-        "AddToFavorites": "",
+        "AddToFavorites": "أضف إلى المفضلة",
         "about": {
             "title": "حول {{- appName}}"
         },
@@ -66,10 +66,10 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
-                "publications": "",
-                "screen": "",
-                "title": ""
+                "description": "لا يوجد وصف للملف الشخصي",
+                "publications": "منشورات الملف الشخصي",
+                "screen": "لا يوجد عنوان",
+                "title": "عنوان الملف الشخصي"
             }
         },
         "delete": "حذف",
@@ -87,8 +87,8 @@
         "importAnnotation": "استيراد الملاحظات",
         "lang": "اللغة",
         "lastRead": "آخر قراءة",
-        "login": "",
-        "logout": "",
+        "login": "تسجيل الدخول",
+        "logout": "تسجيل الخروج",
         "moreInfo": "تفاصيل المنشور",
         "myBooks": "منشوراتي",
         "noPublicationHelpL1": "أفلت الملفات هنا",
@@ -99,12 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "إلغاء",
-                "external": "",
-                "fallback": "",
+                "external": "ستفتح صفحة تسجيل الدخول في متصفح الويب الخاص بك، يرجى اتباع التعليمات. بعد تسجيل الدخول، سيعيدك متصفح الويب إلى هذا التطبيق.",
+                "fallback": "ملاحظة: في حال حدوث مشاكل في تسجيل الدخول باستخدام طريقة متصفح الويب الافتراضية، حاول مرة أخرى باستخدام الطريقة البديلة داخل التطبيق.",
                 "login": "تسجيل الدخول",
                 "password": "كلمة المرور",
                 "register": "تسجيل",
-                "retry": "",
+                "retry": "حاول مرة أخرى",
                 "username": "اسم المستخدم / البريد الإلكتروني"
             },
             "info": {
@@ -119,7 +119,7 @@
                 "availableUntil": "حتى",
                 "copyAvalaible": "متوفر",
                 "copyTotal": "النُّسخ",
-                "holdPosition": "الموقع في الطابور",
+                "holdPosition": "حفظ الموضع",
                 "holdTotal": "تم الحجز",
                 "numberOfItems": "عدد البنود",
                 "priveValue": "السعر",
@@ -128,8 +128,8 @@
         },
         "publisher": "الناشر",
         "readBook": "اقرأ",
-        "released": "تاريخ النشر",
-        "removeFromFavorites": "",
+        "released": "نُشر في",
+        "removeFromFavorites": "إزالة من المفضلة",
         "sort": "فرز حسب",
         "tag": "الوسم",
         "tags": "الوسوم",
@@ -139,18 +139,18 @@
         "annotations": {
             "descAuthor": "تأليف '{{- author}}'",
             "descCreator": "أنشأه",
-            "descList_few": "سيتم استيراد {{- count}} ملاحظة (ملاحظات) من {{- creator}} إلى '{{- title}}' لـ {{- author}}",
-            "descList_many": "سيتم استيراد {{- count}} ملاحظة (ملاحظات) من {{- creator}} إلى '{{- title}}' لـ {{- author}}",
-            "descList_one": "سيتم استيراد {{- count}} ملاحظة (ملاحظات) من {{- creator}} إلى '{{- title}}' لـ {{- author}}",
-            "descList_other": "سيتم استيراد {{- count}} ملاحظة (ملاحظات) من {{- creator}} إلى '{{- title}}' لـ {{- author}}",
-            "descList_two": "سيتم استيراد {{- count}} ملاحظة (ملاحظات) من {{- creator}} إلى '{{- title}}' لـ {{- author}}",
-            "descList_zero": "سيتم استيراد {{- count}} ملاحظة (ملاحظات) من {{- creator}} إلى '{{- title}}' لـ {{- author}}",
-            "descNewer_few": "تعارض: {{- count}} ملاحظة (ملاحظات) أحدث",
-            "descNewer_many": "تعارض: {{- count}} ملاحظة (ملاحظات) أحدث",
-            "descNewer_one": "تعارض: {{- count}} ملاحظة (ملاحظات) أحدث",
-            "descNewer_other": "تعارض: {{- count}} ملاحظة (ملاحظات) أحدث",
-            "descNewer_two": "تعارض: {{- count}} ملاحظة (ملاحظات) أحدث",
-            "descNewer_zero": "تعارض: {{- count}} ملاحظة (ملاحظات) أحدث",
+            "descList_few": "سيتم استيراد {{- count}} ملاحظات من {{- creator}} إلى '{{- title}}' لـ {{- author}}",
+            "descList_many": "سيتم استيراد {{- count}} ملاحظة من {{- creator}} إلى '{{- title}}' لـ {{- author}}",
+            "descList_one": "سيتم استيراد {{- count}} ملاحظةمن {{- creator}} إلى '{{- title}}' لـ {{- author}}",
+            "descList_other": "سيتم استيراد {{- count}} ملاحظة من {{- creator}} إلى '{{- title}}' لـ {{- author}}",
+            "descList_two": "سيتم استيراد ملاحظتان من {{- creator}} إلى '{{- title}}' لـ {{- author}}",
+            "descList_zero": "سيتم استيراد {{- count}} ملاحظة من {{- creator}} إلى '{{- title}}' لـ {{- author}}",
+            "descNewer_few": "تعارض: {{- count}} أحدث ملاحظات",
+            "descNewer_many": "تعارض: {{- count}} أحدث ملاحظة",
+            "descNewer_one": "تعارض: {{- count}} أحدث ملاحظة",
+            "descNewer_other": "تعارض: {{- count}} أحدث ملاحظة",
+            "descNewer_two": "تعارض:أحدث(ملاحظتان",
+            "descNewer_zero": "تعارض: {{- count}} أحدث ملاحظة",
             "descOlder_few": "تعارض: {{- count}} ملاحظة (ملاحظات) أقدم",
             "descOlder_many": "تعارض: {{- count}} ملاحظة (ملاحظات) أقدم",
             "descOlder_one": "تعارض: {{- count}} ملاحظة (ملاحظات) أقدم",
@@ -166,25 +166,25 @@
         "cancel": "إلغاء",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
-                "state": "",
-                "title": ""
+                "fallbackWelcomeScreen": "لا توجد شاشة ترحيب",
+                "state": "الحالة:{{- state}}",
+                "title": "تهيئة وتفعيل ملف التخصيص"
             }
         },
         "deleteAnnotations": "حذف التعليقات؟",
-        "deleteAnnotationsText_few": "هل أنت متأكد من حذف {{- count}} ملاحظة (ملاحظات)؟",
-        "deleteAnnotationsText_many": "هل أنت متأكد من حذف {{- count}} ملاحظة (ملاحظات)؟",
-        "deleteAnnotationsText_one": "هل أنت متأكد من حذف {{- count}} ملاحظة (ملاحظات)؟",
-        "deleteAnnotationsText_other": "هل أنت متأكد من حذف {{- count}} ملاحظة (ملاحظات)؟",
-        "deleteAnnotationsText_two": "هل أنت متأكد من حذف {{- count}} ملاحظة (ملاحظات)؟",
-        "deleteAnnotationsText_zero": "هل أنت متأكد من حذف {{- count}} ملاحظة (ملاحظات)؟",
+        "deleteAnnotationsText_few": "هل أنت متأكد من حذف {{- count}} ملاحظات؟",
+        "deleteAnnotationsText_many": "هل أنت متأكد من حذف {{- count}} ملاحظة؟",
+        "deleteAnnotationsText_one": "هل أنت متأكد من حذف {{- count}} ملاحظة؟",
+        "deleteAnnotationsText_other": "هل أنت متأكد من حذف {{- count}} ملاحظة؟",
+        "deleteAnnotationsText_two": "هل أنت متأكد من حذف ملاحظتان؟",
+        "deleteAnnotationsText_zero": "هل أنت متأكد من حذف {{- count}} ملاحظة؟",
         "deleteBookmarks": "حذف الإشارات المرجعية؟",
-        "deleteBookmarksText_few": "هل أنت متأكد من حذف {{- count}} إشارة (إشارات) مرجعية؟",
-        "deleteBookmarksText_many": "هل أنت متأكد من حذف {{- count}} إشارة (إشارات) مرجعية؟",
-        "deleteBookmarksText_one": "هل أنت متأكد من حذف {{- count}} إشارة (إشارات) مرجعية؟",
-        "deleteBookmarksText_other": "هل أنت متأكد من حذف {{- count}} إشارة (إشارات) مرجعية؟",
-        "deleteBookmarksText_two": "هل أنت متأكد من حذف {{- count}} إشارة (إشارات) مرجعية؟",
-        "deleteBookmarksText_zero": "هل أنت متأكد من حذف {{- count}} إشارة (إشارات) مرجعية؟",
+        "deleteBookmarksText_few": "هل أنت متأكد من حذف {{- count}} إشارات مرجعية؟",
+        "deleteBookmarksText_many": "هل أنت متأكد من حذف {{- count}} إشارة مرجعية؟",
+        "deleteBookmarksText_one": "هل أنت متأكد من حذف {{- count}} إشارة مرجعية؟",
+        "deleteBookmarksText_other": "هل أنت متأكد من حذف {{- count}} إشارة مرجعية؟",
+        "deleteBookmarksText_two": "هل أنت متأكد من حذف إشارتان مرجعيتان؟",
+        "deleteBookmarksText_zero": "هل أنت متأكد من حذف {{- count}} إشارة مرجعية؟",
         "deleteFeed": "حذف الفهرس؟",
         "deletePublication": "حذف المنشور؟",
         "deletePublicationWithNotes": "تحذير: يحتوي هذا المنشور على تعليقات و/أو إشارات مرجعية، سيتم حذفها أيضًا! (إذا كنت ترغب في الاحتفاظ بها، تأكد من تصدير الملاحظات قبل إزالة المنشور)",
@@ -220,12 +220,12 @@
     },
     "library": {
         "lcp": {
-            "hidePassphrase": "",
+            "hidePassphrase": "إخفاء عبارة المرور",
             "hint": "تلميح:",
             "open": "فتح",
             "password": "عبارة المرور",
             "sentence": "لفتح هذا المنشور، تحتاج إلى عبارة مرور LCP",
-            "showPassphrase": "",
+            "showPassphrase": "إظهار عبارة المرور",
             "urlHint": "هل نسيت عبارة مرورك؟ اضغط هنا للحصول على الدعم.",
             "whatIsLcp?": "ما هي LCP؟",
             "whatIsLcpInfoDetails": "ترمز LCP إلى 'حماية المحتوى المرخَّص'.",
@@ -252,7 +252,7 @@
         "open": {
             "error": "فشل تحميل المنشور: [{{- err}}]"
         },
-        "wipeData": ""
+        "wipeData": "تم مسح بيانات تسجيل الدخول (رموز الوصول وملفات تعريف الارتباط)"
     },
     "opds": {
         "addForm": {
@@ -289,7 +289,7 @@
         },
         "next": "التالي",
         "previous": "السابق",
-        "resumeBrowsing": "",
+        "resumeBrowsing": "استئناف التصفح",
         "shelf": "الرف",
         "updateForm": {
             "name": "الاسم:",
@@ -317,8 +317,8 @@
                 "descriptive": "برايل"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "التعليقات التوضيحية باستخدام أحرف الروبي",
-                "descriptive": "التعليقات التوضيحية باستخدام أحرف الروبي"
+                "compact": "حواشي النطق (Ruby) كاملة",
+                "descriptive": "حواشي النطق (Ruby) كاملة"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
                 "compact": "تباين عالٍ بين الصوت الرئيسي وصوت الخلفية",
@@ -337,7 +337,7 @@
                 "descriptive": "فواصل الصفحات متضمَّنة من المصدر المطبوع الأصلي"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "بعض التعليقات التوضيحية باستخدام أحرف الروبي",
+                "compact": "بعض حواشي النطق (Ruby)",
                 "descriptive": "بعض التعليقات التوضيحية باستخدام أحرف الروبي"
             },
             "additional-accessibility-information-sign-language": {
@@ -654,7 +654,7 @@
         "notStarted": "لم يبدأ",
         "onGoing": "جارٍ التنفيذ",
         "progression": {
-            "title": "مقدار التقدّم"
+            "title": "التقدّم في القراءة"
         },
         "read": "انتهى",
         "remainingTime": "الاستعارة (الوقت المتبقي)",
@@ -724,7 +724,7 @@
             "title": "عارض الصور (تكبير)",
             "zoomIn": "تكبير",
             "zoomOut": "تصغير",
-            "zoomReset": "إعادة ضبط التكبير"
+            "zoomReset": "إعادة ضبط التكبير/التصغير"
         },
         "marks": {
             "annotations": "التعليقات",
@@ -770,8 +770,8 @@
             "goToPlaceHolder": "اكتب رقم الصفحة",
             "goToTitle": "الانتقال إلى صفحة",
             "history": "تاريخ التصفح",
-            "historyNext": "القفز إلى الأمام",
-            "historyPrevious": "القفز إلى الخلف",
+            "historyNext": "القفز إلى الأمام في سجل التنقّل",
+            "historyPrevious": "القفز إلى الخلف في سجل التنقّل",
             "infoTitle": "معلومات",
             "magnifyingGlassButton": "بحث في المنشور",
             "openTableOfContentsTitle": "التنقل",
@@ -796,9 +796,9 @@
         "picker": {
             "search": {
                 "founds_few": "تم العثور على {{- count}} تطابقات",
-                "founds_many": "تم العثور على {{- count}} تطابقات",
-                "founds_one": "تم العثور على {{- count}} تطابقات",
-                "founds_other": "تم العثور على {{- count}} تطابقات",
+                "founds_many": "تم العثور على {{- count}} تطابق",
+                "founds_one": "تم العثور على {{- count}} تطابق",
+                "founds_other": "تم العثور على {{- count}} تطابق",
                 "founds_two": "تم العثور على {{- count}} تطابقات",
                 "founds_zero": "تم العثور على {{- count}} تطابقات",
                 "input": "النص المطلوب مطابقته",
@@ -806,7 +806,7 @@
                 "notFound": "لم يتم العثور على تطابقات",
                 "previous": "السابق",
                 "results": "النتائج",
-                "submit": "بحث"
+                "submit": "ابحث"
             },
             "searchTitle": "البحث عن:"
         },
@@ -833,7 +833,7 @@
                 "auto": "افتراضي",
                 "one": "عمود واحد",
                 "title": "الأعمدة",
-                "two": "عمودان"
+                "two": "2 عمود"
             },
             "customFontSelected": "لقد اخترت خطاً شخصياً",
             "customizeReader": "تخصيص تنسيق النص",
@@ -884,7 +884,7 @@
             "reduceMotion": "تقليل الحركة",
             "scrolled": "قابل للتمرير",
             "spacing": "التباعد",
-            "spreadModeEven": "",
+            "spreadModeEven": "توزيع الصفحات: 'زوجية' (الافتراضي: 'فردية')",
             "text": "النص",
             "theme": {
                 "name": {
@@ -942,7 +942,7 @@
             "cancel": "إلغاء",
             "disclaimer": "تم تصميم الإعدادات الافتراضية للتطبيق بناءً على تخطيط لوحة مفاتيح كويرتي (QWERTY)",
             "editUserJson": "تحرير ملف المستخدم...",
-            "exportToHTML": "",
+            "exportToHTML": "تصدير إلى HTML",
             "keyboardShortcuts": "اختصارات لوحة المفاتيح",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1150,11 +1150,11 @@
                     "name": "نتيجة البحث السابقة"
                 },
                 "SearchPreviousAlt": {
-                    "description": "في أداة البحث في نافذة القارئ، انتقل لنتيجة البحث السابقة. ملحوظة: يوجد اختصار لوحة مفاتيح بديل لهذا الاختصار الافتراضي",
+                    "description": "في أداة البحث في نافذة القارئ، انتقل لنتيجة البحث السابقة. هذا اختصار لوحة مفاتيح بديل للاختصار الافتراضي",
                     "name": "نتيجة البحث السابقة (بديل)"
                 },
                 "SpeakReaderInfoWhereAmI": {
-                    "description": "في نافذة القارئ، وصف سياق موقع القراءة الحالي باستخدام نص منطوق متوافق مع قارئات الشاشة",
+                    "description": "في نافذة القارئ، قدم وصفًا لسياق موقع القراءة الحالي باستخدام نص منطوق متوافق مع قارئات الشاشة",
                     "name": "وصف موقع القراءة (صوتي)"
                 },
                 "ToggleBookmark": {
@@ -1187,17 +1187,17 @@
             }
         },
         "profiles": {
-            "info": "",
+            "info": "غيّر الملف الشخصي لتخصيص التطبيق بعلامة تجارية وألوان الشريك. كل ملف شخصي يوفر تجربة مخصصة.",
             "thorium": {
-                "description": "",
-                "title": ""
+                "description": "الملف الشخصي Thorium Vanilla هو الأصلي، صممه EDRLab.",
+                "title": "Thorium vanilla"
             },
-            "version": ""
+            "version": "إصدار: {{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "message": "",
-            "title": ""
+            "help": "عند اكتشاف التطبيق للتقنيات المساعدة، تعمل واجهة المستخدم بشكل أفضل مع قارئات الشاشة",
+            "message": "دعم محسّن لقارئات الشاشة",
+            "title": "تحسين تجربة قارئ الشاشة"
         },
         "session": {
             "title": "تفعيل حفظ الجلسة"
@@ -1206,7 +1206,7 @@
             "appearance": "المظهر",
             "general": "عام",
             "keyboardShortcuts": "اختصارات لوحة المفاتيح",
-            "profiles": ""
+            "profiles": "الملفات الشخصية"
         },
         "theme": {
             "auto": "تلقائي",
