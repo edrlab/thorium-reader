@@ -87,8 +87,8 @@
         "importAnnotation": "Tuo muistiinpanot",
         "lang": "Kieli",
         "lastRead": "Luettu viimeksi",
-        "login": "Kirjautuminen",
-        "logout": "Uloskirjautuminen",
+        "login": "Kirjaudu sisään",
+        "logout": "Kirjaudu ulos",
         "moreInfo": "Tietoa julkaisusta",
         "myBooks": "Omat kirjat",
         "noPublicationHelpL1": "Pudota julkaisu tähän",
@@ -374,7 +374,7 @@
             },
             "conformance-details-level-a": {
                 "compact": "Taso A",
-                "descriptive": "Taso AA"
+                "descriptive": "Taso A"
             },
             "conformance-details-level-aa": {
                 "compact": "Taso AAA",
@@ -751,7 +751,7 @@
             "goToTitle": "Siirry sivulle",
             "history": "Navigointihistoria",
             "historyNext": "Hyppää eteenpäin",
-            "historyPrevious": "Hyppää taaksepäin",
+            "historyPrevious": "Siirry taaksepäin",
             "infoTitle": "Tiedot",
             "magnifyingGlassButton": "Hae julkaisusta",
             "openTableOfContentsTitle": "Navigaatio",
