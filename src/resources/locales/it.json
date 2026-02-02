@@ -99,12 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "Annulla",
-                "external": "",
-                "fallback": "",
+                "external": "La pagina di connessione si aprirà nel vostro navigatore web, si prega di seguire le istruzioni. Una volta connesso, il navigatore web dirigerà all'applicazione.",
+                "fallback": "NB: in caso di problemi di connessione con il vostro navigatore web, si prega di riprovare con il metodo alternativo proposto dall'applicazione.",
                 "login": "Accedi",
                 "password": "Password",
                 "register": "Registrati",
-                "retry": "",
+                "retry": "Riprovare",
                 "username": "Nome utente / indirizzo e-mail"
             },
             "info": {
@@ -129,7 +129,7 @@
         "publisher": "Editore",
         "readBook": "Leggi",
         "released": "Pubblicato il",
-        "removeFromFavorites": "",
+        "removeFromFavorites": "Elimina dai favoriti",
         "sort": "Ordina per",
         "tag": "Tag",
         "tags": "Tags",
@@ -157,9 +157,9 @@
         "cancel": "Annulla",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
-                "state": "",
-                "title": ""
+                "fallbackWelcomeScreen": "Nessuna pagina di benvenuto prevista",
+                "state": "Stato: {{- state}}",
+                "title": "Personalizzazione del profilo fornita e attivata"
             }
         },
         "deleteAnnotations": "Eliminare la nota?",
@@ -205,7 +205,7 @@
     },
     "library": {
         "lcp": {
-            "hidePassphrase": "",
+            "hidePassphrase": "Nascondi la password",
             "hint": "Suggerimento : ",
             "open": "Apri",
             "password": "Passphrase",
