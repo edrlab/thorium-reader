@@ -168,7 +168,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                                                         resetSliderPosition={false}
                                                         content={group.publications.map((pub) =>
                                                             <PublicationCard
-                                                                key={`opds-group-${i}-${pub.documentTitle}`}
+                                                                key={`opds-group-${i}-${pub.workIdentifier}`}
                                                                 publicationViewMaybeOpds={pub}
                                                                 isOpds={true}
                                                             />,
