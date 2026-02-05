@@ -207,7 +207,9 @@
             "urlHint": "Har du glemt dit nøgleord? Få hjælp her.",
             "whatIsLcp?": "Hvad er LCP?",
             "whatIsLcpInfoDetails": "LCP står for 'Licensed Content Protection'.",
-            "whatIsLcpInfoDetailsLink": "For at læse mere, følg dette link til EDRLab websitet."
+            "whatIsLcpInfoDetailsLink": "For at læse mere, følg dette link til EDRLab websitet.",
+            "showPassphrase": "",
+            "hidePassphrase": ""
         }
     },
     "message": {
@@ -702,7 +704,15 @@
             "title": "Billedfremviser",
             "zoomIn": "Zoom ind",
             "zoomOut": "Zoom ud",
-            "zoomReset": "Nulstil Zoom"
+            "zoomReset": "Nulstil Zoom",
+            "description": {
+                "altText": "",
+                "details": "",
+                "figcaption": "",
+                "describedby": "",
+                "labelledby": "",
+                "about": ""
+            }
         },
         "marks": {
             "annotations": "Noter",

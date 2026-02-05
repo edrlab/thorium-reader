@@ -44,6 +44,8 @@
   box-sizing: border-box;
   border: 1px solid var(--color-gray-250);
 
+  @include mx.scrollbar_styling;
+
   &.modal_dialog_full {
     position: relative;
     box-sizing: border-box;
@@ -53,7 +55,6 @@
       height: calc(100vh - 100px);
     }
   }
-  
   background-color: var(--color-neutral-base);
   color: var(--color-text-primary);
 
@@ -258,6 +259,19 @@
       margin: 20px 0;
     }
   }
+}
+
+.imageViewerContent {
+  position: relative;
+  display: flex;
+  gap: 10;
+  width: 100%;
+  height: 100%;
+  padding-left: 5;
+  flex: 1;
+  flex-direction: column;
+
+  @include mx.scrollbar_styling
 }
 
 .CSS_END_components_modals {

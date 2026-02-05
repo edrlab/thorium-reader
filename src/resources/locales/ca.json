@@ -212,7 +212,9 @@
             "urlHint": "Has olvidat la contrassenya? Clica si necessites ajuda",
             "whatIsLcp?": "Què és LCP?",
             "whatIsLcpInfoDetails": "LCP significa 'Protecció del contingut llicenciat'.",
-            "whatIsLcpInfoDetailsLink": "Per saber-ne més, feu clic en aquest enllaç a la pàgina web de l'EDRLab."
+            "whatIsLcpInfoDetailsLink": "Per saber-ne més, feu clic en aquest enllaç a la pàgina web de l'EDRLab.",
+            "showPassphrase": "",
+            "hidePassphrase": ""
         }
     },
     "message": {
@@ -707,7 +709,15 @@
             "title": "",
             "zoomIn": "",
             "zoomOut": "",
-            "zoomReset": ""
+            "zoomReset": "",
+            "description": {
+                "altText": "",
+                "details": "",
+                "figcaption": "",
+                "describedby": "",
+                "labelledby": "",
+                "about": ""
+            }
         },
         "marks": {
             "annotations": "Anotacions",

@@ -202,7 +202,9 @@
             "urlHint": "忘記密碼？按此處取得幫助。",
             "whatIsLcp?": "什麼是 LCP？",
             "whatIsLcpInfoDetails": "LCP 代表「許可內容保護」。",
-            "whatIsLcpInfoDetailsLink": "要了解更多訊息，請點擊連結前往 EDRLab。"
+            "whatIsLcpInfoDetailsLink": "要了解更多訊息，請點擊連結前往 EDRLab。",
+            "showPassphrase": "",
+            "hidePassphrase": ""
         }
     },
     "message": {
@@ -697,7 +699,15 @@
             "title": "",
             "zoomIn": "",
             "zoomOut": "",
-            "zoomReset": ""
+            "zoomReset": "",
+            "description": {
+                "altText": "",
+                "details": "",
+                "figcaption": "",
+                "describedby": "",
+                "labelledby": "",
+                "about": ""
+            }
         },
         "marks": {
             "annotations": "註解",

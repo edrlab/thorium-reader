@@ -9,6 +9,7 @@ export declare const field: string;
 export declare const guidedTour_buttons: string;
 export declare const guidedTour_content: string;
 export declare const guidedTour_tab: string;
+export declare const imageViewerContent: string;
 export declare const lcp_hint: string;
 export declare const modal_dialog: string;
 export declare const modal_dialog_body: string;

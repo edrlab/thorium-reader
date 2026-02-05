@@ -475,40 +475,40 @@ declare namespace typed_i18n {
   (_: "header.viewMode", __?: {}): string;
   (_: "library", __?: {}): {
   readonly "lcp": {
+    readonly "hidePassphrase": string,
     readonly "hint": string,
     readonly "open": string,
     readonly "password": string,
     readonly "sentence": string,
+    readonly "showPassphrase": string,
     readonly "urlHint": string,
     readonly "whatIsLcp?": string,
     readonly "whatIsLcpInfoDetails": string,
-    readonly "whatIsLcpInfoDetailsLink": string,
-    readonly "showPassphrase": string,
-    readonly "hidePassphrase": string
+    readonly "whatIsLcpInfoDetailsLink": string
   }
 };
   (_: "library.lcp", __?: {}): {
+  readonly "hidePassphrase": string,
   readonly "hint": string,
   readonly "open": string,
   readonly "password": string,
   readonly "sentence": string,
+  readonly "showPassphrase": string,
   readonly "urlHint": string,
   readonly "whatIsLcp?": string,
   readonly "whatIsLcpInfoDetails": string,
-  readonly "whatIsLcpInfoDetailsLink": string,
-  readonly "showPassphrase": string,
-  readonly "hidePassphrase": string
+  readonly "whatIsLcpInfoDetailsLink": string
 };
+  (_: "library.lcp.hidePassphrase", __?: {}): string;
   (_: "library.lcp.hint", __?: {}): string;
   (_: "library.lcp.open", __?: {}): string;
   (_: "library.lcp.password", __?: {}): string;
   (_: "library.lcp.sentence", __?: {}): string;
+  (_: "library.lcp.showPassphrase", __?: {}): string;
   (_: "library.lcp.urlHint", __?: {}): string;
   (_: "library.lcp.whatIsLcp?", __?: {}): string;
   (_: "library.lcp.whatIsLcpInfoDetails", __?: {}): string;
   (_: "library.lcp.whatIsLcpInfoDetailsLink", __?: {}): string;
-  (_: "library.lcp.showPassphrase", __?: {}): string;
-  (_: "library.lcp.hidePassphrase", __?: {}): string;
   (_: "message", __?: {}): {
   readonly "annotations": {
     readonly "alreadyImported": string,
@@ -1661,6 +1661,14 @@ declare namespace typed_i18n {
   readonly "fxl": { readonly "fit": string },
   readonly "goToContent": string,
   readonly "imgViewer": {
+    readonly "description": {
+      readonly "about": string,
+      readonly "altText": string,
+      readonly "describedby": string,
+      readonly "details": string,
+      readonly "figcaption": string,
+      readonly "labelledby": string
+    },
     readonly "title": string,
     readonly "zoomIn": string,
     readonly "zoomOut": string,
@@ -1952,11 +1960,33 @@ declare namespace typed_i18n {
   (_: "reader.fxl.fit", __?: {}): string;
   (_: "reader.goToContent", __?: {}): string;
   (_: "reader.imgViewer", __?: {}): {
+  readonly "description": {
+    readonly "about": string,
+    readonly "altText": string,
+    readonly "describedby": string,
+    readonly "details": string,
+    readonly "figcaption": string,
+    readonly "labelledby": string
+  },
   readonly "title": string,
   readonly "zoomIn": string,
   readonly "zoomOut": string,
   readonly "zoomReset": string
 };
+  (_: "reader.imgViewer.description", __?: {}): {
+  readonly "about": string,
+  readonly "altText": string,
+  readonly "describedby": string,
+  readonly "details": string,
+  readonly "figcaption": string,
+  readonly "labelledby": string
+};
+  (_: "reader.imgViewer.description.about", __?: {}): string;
+  (_: "reader.imgViewer.description.altText", __?: {}): string;
+  (_: "reader.imgViewer.description.describedby", __?: {}): string;
+  (_: "reader.imgViewer.description.details", __?: {}): string;
+  (_: "reader.imgViewer.description.figcaption", __?: {}): string;
+  (_: "reader.imgViewer.description.labelledby", __?: {}): string;
   (_: "reader.imgViewer.title", __?: {}): string;
   (_: "reader.imgViewer.zoomIn", __?: {}): string;
   (_: "reader.imgViewer.zoomOut", __?: {}): string;

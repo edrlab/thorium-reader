@@ -207,7 +207,9 @@
             "urlHint": "Parolanızı mı unuttunuz? Destek almak için buraya tıklayın.",
             "whatIsLcp?": "LCP nedir?",
             "whatIsLcpInfoDetails": "LCP, 'Licensed Content Protection', Lisanslı İçerik Koruması anlamına gelir.",
-            "whatIsLcpInfoDetailsLink": "EDRLab web sitesinde daha fazlasını öğrenmek için bu bağlantıyı tıklayın."
+            "whatIsLcpInfoDetailsLink": "EDRLab web sitesinde daha fazlasını öğrenmek için bu bağlantıyı tıklayın.",
+            "showPassphrase": "",
+            "hidePassphrase": ""
         }
     },
     "message": {
@@ -702,7 +704,15 @@
             "title": "Görsel görüntüleyici (yakınlaştır/uzaklaştır)",
             "zoomIn": "Yakınlaştır",
             "zoomOut": "Uzaklaştır",
-            "zoomReset": "Yakınlaştırmayı/Uzaklaştırmayı Sıfırla"
+            "zoomReset": "Yakınlaştırmayı/Uzaklaştırmayı Sıfırla",
+            "description": {
+                "altText": "",
+                "details": "",
+                "figcaption": "",
+                "describedby": "",
+                "labelledby": "",
+                "about": ""
+            }
         },
         "marks": {
             "annotations": "Açıklayıcı notlar",

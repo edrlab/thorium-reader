@@ -139,9 +139,6 @@
         "annotations": {
             "descAuthor": "",
             "descCreator": "",
-            "descList": "",
-            "descNewer": "",
-            "descOlder": "",
             "descTitle": "",
             "importAll": "",
             "importWithoutConflict": "",
@@ -157,9 +154,7 @@
             }
         },
         "deleteAnnotations": "",
-        "deleteAnnotationsText": "",
         "deleteBookmarks": "",
-        "deleteBookmarksText": "",
         "deleteFeed": "카탈로그를 제거하겠습니까?",
         "deletePublication": "출판물을 제거하겠습니까?",
         "deletePublicationWithNotes": "",
@@ -202,7 +197,9 @@
             "urlHint": "암호를 잊으셨습니까? 여기서 도움말을 확인하십시오",
             "whatIsLcp?": "",
             "whatIsLcpInfoDetails": "",
-            "whatIsLcpInfoDetailsLink": ""
+            "whatIsLcpInfoDetailsLink": "",
+            "showPassphrase": "",
+            "hidePassphrase": ""
         }
     },
     "message": {
@@ -697,7 +694,15 @@
             "title": "",
             "zoomIn": "",
             "zoomOut": "",
-            "zoomReset": ""
+            "zoomReset": "",
+            "description": {
+                "altText": "",
+                "details": "",
+                "figcaption": "",
+                "describedby": "",
+                "labelledby": "",
+                "about": ""
+            }
         },
         "marks": {
             "annotations": "주석",

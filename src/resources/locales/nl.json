@@ -207,7 +207,9 @@
             "urlHint": "Wachtwoordzin vergeten? Vind hulp hier.",
             "whatIsLcp?": "Wat is LCP?",
             "whatIsLcpInfoDetails": "LCP staat voor 'Licensed Content Protection'.",
-            "whatIsLcpInfoDetailsLink": "Klik voor meer informatie op deze link naar de EDRLab-website."
+            "whatIsLcpInfoDetailsLink": "Klik voor meer informatie op deze link naar de EDRLab-website.",
+            "showPassphrase": "",
+            "hidePassphrase": ""
         }
     },
     "message": {
@@ -702,7 +704,15 @@
             "title": "Beeldviewer (zoom)",
             "zoomIn": "Inzoomen",
             "zoomOut": "Uitzoomen",
-            "zoomReset": "Herstel Vergroting"
+            "zoomReset": "Herstel Vergroting",
+            "description": {
+                "altText": "",
+                "details": "",
+                "figcaption": "",
+                "describedby": "",
+                "labelledby": "",
+                "about": ""
+            }
         },
         "marks": {
             "annotations": "Annotaties",

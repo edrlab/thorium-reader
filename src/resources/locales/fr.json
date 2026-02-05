@@ -709,7 +709,15 @@
             "title": "Visualiseur d'image (zoom)",
             "zoomIn": "Agrandir le zoom",
             "zoomOut": "Rétrécir le zoom",
-            "zoomReset": "Réinitialiser le zoom"
+            "zoomReset": "Réinitialiser le zoom",
+            "description": {
+                "altText": "",
+                "details": "",
+                "figcaption": "",
+                "describedby": "",
+                "labelledby": "",
+                "about": ""
+            }
         },
         "marks": {
             "annotations": "Annotations",

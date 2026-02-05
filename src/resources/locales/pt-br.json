@@ -212,7 +212,9 @@
             "urlHint": "Esqueceu sua senha? O suporte está disponível.",
             "whatIsLcp?": "O que é LCP?",
             "whatIsLcpInfoDetails": "LCP significa 'Proteção de Conteúdo Licenciado'.",
-            "whatIsLcpInfoDetailsLink": "Para saber mais, clique neste link para o site do EDRLab."
+            "whatIsLcpInfoDetailsLink": "Para saber mais, clique neste link para o site do EDRLab.",
+            "showPassphrase": "",
+            "hidePassphrase": ""
         }
     },
     "message": {
@@ -707,7 +709,15 @@
             "title": "",
             "zoomIn": "",
             "zoomOut": "",
-            "zoomReset": ""
+            "zoomReset": "",
+            "description": {
+                "altText": "",
+                "details": "",
+                "figcaption": "",
+                "describedby": "",
+                "labelledby": "",
+                "about": ""
+            }
         },
         "marks": {
             "annotations": "Anotações",

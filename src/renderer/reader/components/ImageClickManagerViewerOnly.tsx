@@ -46,6 +46,7 @@ const Controls = () => {
     // opacity: 0;
     transition: 200ms;
     gap: 10px;
+    margin-top: 10px;
 }
 
 .imgViewerControls button {
@@ -91,7 +92,38 @@ export const ImageClickManagerImgViewerOnly: React.FC = () => {
     let scale = Math.min(scaleX, scaleY);
     if (scale > 1) scale = 1;
 
-    const imageDescription = dom_detailsText || dom_figcaptionText || dom_describedbyText || dom_labelledByText || altAttributeOf_HTMLImg_SVGImage_SVGFragment || "";
+    const descriptions = [
+        { label: __("reader.imgViewer.description.details"), value: dom_detailsText },
+        { label: __("reader.imgViewer.description.figcaption"), value: dom_figcaptionText },
+        { label: __("reader.imgViewer.description.describedby"), value: dom_describedbyText },
+        { label: __("reader.imgViewer.description.labelledby"), value: dom_labelledByText },
+    ];
+
+    const hasAlt = !!altAttributeOf_HTMLImg_SVGImage_SVGFragment;
+    const activeDescriptions = descriptions.filter(d => !!d.value);
+    const hasOtherDescriptions = activeDescriptions.length > 0;
+
+    const imageHasDescription = hasAlt || hasOtherDescriptions;
+    const imageHasOnlyAltDescription = hasAlt && !hasOtherDescriptions;
+
+    const DescriptionList = (
+        <details style={{ fontSize: "14px", cursor: "pointer" }}>
+            <summary>
+                {altAttributeOf_HTMLImg_SVGImage_SVGFragment || __("reader.imgViewer.description.about")}
+            </summary>
+            <ul style={{ marginTop: "10px", listStyleType: "none", paddingLeft: 0 }}>
+                {activeDescriptions.map(({ label, value }) => (
+                    <li key={label} style={{ marginBottom: "10px" }}>
+                        <strong>{label}: </strong> {value}
+                    </li>
+                ))}
+            </ul>
+        </details>
+    );
+
+    const imageDescription = imageHasOnlyAltDescription 
+        ? altAttributeOf_HTMLImg_SVGImage_SVGFragment 
+        : DescriptionList;
 
     return (<>
 
@@ -115,9 +147,10 @@ export const ImageClickManagerImgViewerOnly: React.FC = () => {
                         </Dialog.Close>
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", padding: "5px 10px", alignItems: "center", flex: 1 }}>
-                        <div style={{ position: "relative", display: "flex", gap: 10, width: "100%", height: "100%", paddingLeft: 5, flex: 1, flexDirection: "column" }}>
+                        <div className={stylesModals.imageViewerContent}>
+                            <div style={{transition: "600ms ease-in-out"}}>
                             <TransformWrapper initialScale={scale} minScale={scale / 2} maxScale={4 * scale}>
-                                <TransformComponent wrapperStyle={{ display: "flex", width: "100%", height: "100%", minHeight: "350px", flex: "1", position: "relative" }} >
+                                <TransformComponent wrapperStyle={{ display: "flex", margin: "auto", width: "90%", height: "90%", minHeight: "350px", flex: "1", position: "relative", transition: "600ms ease-in-out" }} >
                                     <img
                                         style={{ height: "100%", width: "100%", maxHeight: "calc(100vh - 250px)", backgroundColor: "white", color: "black", fill: "currentcolor", stroke: "currentcolor" }}
                                         src={isSVGFragment ? ("data:image/svg+xml;base64," + Buffer.from(HTMLImgSrc_SVGImageHref_SVGFragmentMarkup).toString("base64")) : HTMLImgSrc_SVGImageHref_SVGFragmentMarkup}
@@ -129,12 +162,12 @@ export const ImageClickManagerImgViewerOnly: React.FC = () => {
                                 </TransformComponent>
                                 <Controls />
                             </TransformWrapper>
-                            {imageDescription ?
-                                <p style={{ maxWidth: "unset", fontStyle: "italic"}}>
+                            </div>
+                            {imageHasDescription && (
+                                <div style={{ width: "100%", marginTop: "10px" }}>
                                     {imageDescription}
-                                </p>
-                                : <></>
-                            }
+                                </div>
+                            )}
                         </div>
                     </div>
                 </Dialog.Content>

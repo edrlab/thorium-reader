@@ -212,7 +212,9 @@
             "urlHint": "Esqueceu-se da sua frase-passe? Clique aqui para ajuda.",
             "whatIsLcp?": "O que é PCL?",
             "whatIsLcpInfoDetails": "PCL significa 'Proteção de Conteúdo Licenciado'.",
-            "whatIsLcpInfoDetailsLink": "Para saber mais, visite esta página do sítio EDRLab."
+            "whatIsLcpInfoDetailsLink": "Para saber mais, visite esta página do sítio EDRLab.",
+            "showPassphrase": "",
+            "hidePassphrase": ""
         }
     },
     "message": {
@@ -707,7 +709,15 @@
             "title": "Visualizador de imagens (zoom)",
             "zoomIn": "Ampliar",
             "zoomOut": "Diminuir",
-            "zoomReset": "Repor zoom"
+            "zoomReset": "Repor zoom",
+            "description": {
+                "altText": "",
+                "details": "",
+                "figcaption": "",
+                "describedby": "",
+                "labelledby": "",
+                "about": ""
+            }
         },
         "marks": {
             "annotations": "Anotações",

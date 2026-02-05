@@ -207,7 +207,9 @@
             "urlHint": "Esqueciches o teu contrasinal? Atopa axuda aquí",
             "whatIsLcp?": "Que é LCP?",
             "whatIsLcpInfoDetails": "Apoios de LCP para 'Protección de Contido con licenza'.",
-            "whatIsLcpInfoDetailsLink": "Para aprender máis, clic esta ligazón ao EDRLab sitio web."
+            "whatIsLcpInfoDetailsLink": "Para aprender máis, clic esta ligazón ao EDRLab sitio web.",
+            "showPassphrase": "",
+            "hidePassphrase": ""
         }
     },
     "message": {
@@ -702,7 +704,15 @@
             "title": "",
             "zoomIn": "",
             "zoomOut": "",
-            "zoomReset": ""
+            "zoomReset": "",
+            "description": {
+                "altText": "",
+                "details": "",
+                "figcaption": "",
+                "describedby": "",
+                "labelledby": "",
+                "about": ""
+            }
         },
         "marks": {
             "annotations": "Anotacións",

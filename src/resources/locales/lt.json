@@ -217,7 +217,9 @@
             "urlHint": "Pamiršote slaptafrazę? Pagalbos ieškokite čia.",
             "whatIsLcp?": "LCP - kas tai?",
             "whatIsLcpInfoDetails": "LCP yra termino „Licensed Content Protection“ (licencijuoto turinio apsauga) santrumpa.",
-            "whatIsLcpInfoDetailsLink": "Jei norite sužinoti daugiau, paspauskite ant šios nuorodos į EDRLab svetainę."
+            "whatIsLcpInfoDetailsLink": "Jei norite sužinoti daugiau, paspauskite ant šios nuorodos į EDRLab svetainę.",
+            "showPassphrase": "",
+            "hidePassphrase": ""
         }
     },
     "message": {
@@ -712,7 +714,15 @@
             "title": "Vaizdų peržiūra (mastelio keitimas)",
             "zoomIn": "Didinti",
             "zoomOut": "Mažinti",
-            "zoomReset": "Nustatyti mastelį iš naujo"
+            "zoomReset": "Nustatyti mastelį iš naujo",
+            "description": {
+                "altText": "",
+                "details": "",
+                "figcaption": "",
+                "describedby": "",
+                "labelledby": "",
+                "about": ""
+            }
         },
         "marks": {
             "annotations": "Pastabos",

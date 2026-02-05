@@ -704,7 +704,15 @@
             "title": "Image viewer (zoom)",
             "zoomIn": "Zoom In",
             "zoomOut": "Zoom Out",
-            "zoomReset": "Reset Zoom"
+            "zoomReset": "Reset Zoom",
+            "description" : {
+                "altText": "Alternative text",
+                "details": "Details",
+                "figcaption": "Figcaption",
+                "describedby": "DescribedBy",
+                "labelledby": "LabelledBy",
+                "about": "About this image"
+            }
         },
         "marks": {
             "annotations": "Annotations",

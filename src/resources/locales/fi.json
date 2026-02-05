@@ -207,7 +207,9 @@
             "urlHint": "Unohtuiko salasana? Lisätietoja:",
             "whatIsLcp?": "Mikä on LCP?",
             "whatIsLcpInfoDetails": "LCP (Licensed Content Protection) on sisällön suojaustapa.",
-            "whatIsLcpInfoDetailsLink": "Lisätietoja on EDRLabin sivustolla."
+            "whatIsLcpInfoDetailsLink": "Lisätietoja on EDRLabin sivustolla.",
+            "showPassphrase": "",
+            "hidePassphrase": ""
         }
     },
     "message": {
@@ -702,7 +704,15 @@
             "title": "Kuvan tarkasteluikkuna (lähennä)",
             "zoomIn": "Lähennä",
             "zoomOut": "Loitonna",
-            "zoomReset": "Nollaa zoom"
+            "zoomReset": "Nollaa zoom",
+            "description": {
+                "altText": "",
+                "details": "",
+                "figcaption": "",
+                "describedby": "",
+                "labelledby": "",
+                "about": ""
+            }
         },
         "marks": {
             "annotations": "Muistiinpanot",
