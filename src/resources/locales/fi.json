@@ -50,7 +50,7 @@
         }
     },
     "catalog": {
-        "AddToFavorites": "",
+        "AddToFavorites": "Lisää suosikkeihin",
         "about": {
             "title": "Tietoa ohjelmasta {{- appName}}"
         },
@@ -66,10 +66,10 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
-                "publications": "",
-                "screen": "",
-                "title": ""
+                "description": "Ei profiilin kuvausta",
+                "publications": "Profiilin julkaisut",
+                "screen": "Ei otsikkoa",
+                "title": "Profiilin otsikko"
             }
         },
         "delete": "Poista",
@@ -87,8 +87,8 @@
         "importAnnotation": "Tuo muistiinpanot",
         "lang": "Kieli",
         "lastRead": "Luettu viimeksi",
-        "login": "",
-        "logout": "",
+        "login": "Kirjautuminen",
+        "logout": "Uloskirjautuminen",
         "moreInfo": "Tietoa julkaisusta",
         "myBooks": "Omat kirjat",
         "noPublicationHelpL1": "Pudota julkaisu tähän",
@@ -99,12 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "Peru",
-                "external": "",
-                "fallback": "",
+                "external": "Kirjautumissivu aukeaa verkkoselaimessa, seuraa sivun ohjeita. Kun olet kirjautunut sisään, verkkoselain palauttaa sinut tähän sovellukseen.",
+                "fallback": "Huom. Jos oletuskirjautumistapa selaimen kautta ei toimi, yritä kirjautua vaihtoehtoisella tavalla sovelluksen sisällä.",
                 "login": "Kirjaudu",
                 "password": "Salasana",
                 "register": "Rekisteröidy",
-                "retry": "",
+                "retry": "Yritä uudelleen",
                 "username": "Käyttäjätunnus / Sähköpostiosoite"
             },
             "info": {
@@ -129,7 +129,7 @@
         "publisher": "Julkaisija",
         "readBook": "Lue",
         "released": "Julkaistu",
-        "removeFromFavorites": "",
+        "removeFromFavorites": "Poista suosikeista",
         "sort": "Lajittele",
         "tag": "Tunniste",
         "tags": "Tunnisteet",
@@ -154,9 +154,9 @@
         "cancel": "Peru",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
-                "state": "",
-                "title": ""
+                "fallbackWelcomeScreen": "Aloitusnäyttöä ei ole määritelty",
+                "state": "Tila: {{- state}}",
+                "title": "Mukautetun profiilin käyttöönotto ja aktivointi"
             }
         },
         "deleteAnnotations": "Poistetaanko muistiinpanot?",
@@ -200,16 +200,16 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "",
             "hint": "Vihje:",
             "open": "Avaa",
             "password": "Salasana",
             "sentence": "Julkaisun avaamiseen tarvitaan LCP-salasana",
+            "showPassphrase": "",
             "urlHint": "Unohtuiko salasana? Lisätietoja:",
             "whatIsLcp?": "Mikä on LCP?",
             "whatIsLcpInfoDetails": "LCP (Licensed Content Protection) on sisällön suojaustapa.",
-            "whatIsLcpInfoDetailsLink": "Lisätietoja on EDRLabin sivustolla.",
-            "showPassphrase": "",
-            "hidePassphrase": ""
+            "whatIsLcpInfoDetailsLink": "Lisätietoja on EDRLabin sivustolla."
         }
     },
     "message": {
@@ -232,7 +232,7 @@
         "open": {
             "error": "Julkaisua ei voi avata: {{- err}}"
         },
-        "wipeData": ""
+        "wipeData": "Kirjautumistiedot tyhjennettiin (käyttöoikeustunnukset ja evästeet)"
     },
     "opds": {
         "addForm": {
@@ -269,7 +269,7 @@
         },
         "next": "Seuraava",
         "previous": "Edellinen",
-        "resumeBrowsing": "",
+        "resumeBrowsing": "Palaa selailuun",
         "shelf": "Hylly",
         "updateForm": {
             "name": "Nimi:",
@@ -701,18 +701,18 @@
         },
         "goToContent": "Siirry sisältöön",
         "imgViewer": {
+            "description": {
+                "about": "",
+                "altText": "",
+                "describedby": "",
+                "details": "",
+                "figcaption": "",
+                "labelledby": ""
+            },
             "title": "Kuvan tarkasteluikkuna (lähennä)",
             "zoomIn": "Lähennä",
             "zoomOut": "Loitonna",
-            "zoomReset": "Nollaa zoom",
-            "description": {
-                "altText": "",
-                "details": "",
-                "figcaption": "",
-                "describedby": "",
-                "labelledby": "",
-                "about": ""
-            }
+            "zoomReset": "Nollaa zoom"
         },
         "marks": {
             "annotations": "Muistiinpanot",
@@ -757,7 +757,7 @@
             "goToError": "Sivua ei löydy",
             "goToPlaceHolder": "Syötä sivunumero",
             "goToTitle": "Siirry sivulle",
-            "history": "",
+            "history": "Navigointihistoria",
             "historyNext": "Hyppää eteenpäin",
             "historyPrevious": "Hyppää taaksepäin",
             "infoTitle": "Tiedot",
@@ -767,8 +767,8 @@
             "pdfscalemode": "Sovita sivun kokoon tai leveyteen",
             "print": "Tulosta",
             "printDisabled": "Tulostus kielletty",
-            "screenNext": "",
-            "screenPrevious": "",
+            "screenNext": "Siirry eteenpäin",
+            "screenPrevious": "Siirry taaksepäin",
             "settingsTitle": "Asetukset"
         },
         "notes": {
@@ -868,7 +868,7 @@
             "reduceMotion": "Vähennä liikettä",
             "scrolled": "Vieritettävä",
             "spacing": "Välit",
-            "spreadModeEven": "",
+            "spreadModeEven": "Parilliset aukeamat (oletus on pariton)",
             "text": "Teksti",
             "theme": {
                 "name": {
@@ -926,7 +926,7 @@
             "cancel": "Peruuta",
             "disclaimer": "Oletuspikanäppäimet perustuvat QWERTY-näppäinasetteluun",
             "editUserJson": "Muokkaa käyttäjän tiedostoa...",
-            "exportToHTML": "",
+            "exportToHTML": "Vie html-muotoon",
             "keyboardShortcuts": "Pikanäppäimet",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1171,17 +1171,17 @@
             }
         },
         "profiles": {
-            "info": "",
+            "info": "Vaihda profiilia, jotta voit mukauttaa sovellusta vastaamaan kumppanitoimittajan brändiä ja värejä. Jokainen profiili tarjoaa räätälöidyn kokemuksen.",
             "thorium": {
-                "description": "",
-                "title": ""
+                "description": "Thorium Vanilla on alkuperäinen, EDRLabin suunnittelema profiili.",
+                "title": "Thorium vanilla"
             },
-            "version": ""
+            "version": "Versio: {{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "message": "",
-            "title": ""
+            "help": "Kun sovellus havaitsee, että käytössä on avustavaa teknologiaa, käyttöliittymä mukautuu toimimaan paremmin yhteen ruudunlukuohjelmien kanssa.",
+            "message": "Parannettu tuki ruudunlukuohjelmille",
+            "title": "Paranna ruudunlukukokemusta"
         },
         "session": {
             "title": "Tallenna istunto"
@@ -1190,7 +1190,7 @@
             "appearance": "Ulkoasu",
             "general": "Yleiset",
             "keyboardShortcuts": "Pikanäppäimet",
-            "profiles": ""
+            "profiles": "Profiilit"
         },
         "theme": {
             "auto": "Automaattinen",

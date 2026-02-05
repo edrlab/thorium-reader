@@ -139,14 +139,14 @@
         "annotations": {
             "descAuthor": "",
             "descCreator": "",
-            "descList_one": "",
             "descList_few": "",
+            "descList_one": "",
             "descList_other": "",
-            "descNewer_one": "",
             "descNewer_few": "",
+            "descNewer_one": "",
             "descNewer_other": "",
-            "descOlder_one": "",
             "descOlder_few": "",
+            "descOlder_one": "",
             "descOlder_other": "",
             "descTitle": "",
             "importAll": "",
@@ -163,12 +163,12 @@
             }
         },
         "deleteAnnotations": "",
-        "deleteAnnotationsText_one": "",
         "deleteAnnotationsText_few": "",
+        "deleteAnnotationsText_one": "",
         "deleteAnnotationsText_other": "",
         "deleteBookmarks": "",
-        "deleteBookmarksText_one": "",
         "deleteBookmarksText_few": "",
+        "deleteBookmarksText_one": "",
         "deleteBookmarksText_other": "",
         "deleteFeed": "Želiš li stvarno izbrisati ovaj katalog ?",
         "deletePublication": "Želiš li stvarno izbrisati ovu građu ?",
@@ -205,16 +205,16 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "",
             "hint": "Podsjetnik: ",
             "open": "",
             "password": "Zaporka",
             "sentence": "Ova građa treba LCP zaporku za otvaranje:",
+            "showPassphrase": "",
             "urlHint": "Zaboravljena zaporka? Pomoć",
             "whatIsLcp?": "",
             "whatIsLcpInfoDetails": "",
-            "whatIsLcpInfoDetailsLink": "",
-            "showPassphrase": "",
-            "hidePassphrase": ""
+            "whatIsLcpInfoDetailsLink": ""
         }
     },
     "message": {
@@ -706,18 +706,18 @@
         },
         "goToContent": "",
         "imgViewer": {
+            "description": {
+                "about": "",
+                "altText": "",
+                "describedby": "",
+                "details": "",
+                "figcaption": "",
+                "labelledby": ""
+            },
             "title": "",
             "zoomIn": "",
             "zoomOut": "",
-            "zoomReset": "",
-            "description": {
-                "altText": "",
-                "details": "",
-                "figcaption": "",
-                "describedby": "",
-                "labelledby": "",
-                "about": ""
-            }
+            "zoomReset": ""
         },
         "marks": {
             "annotations": "Anotacije",
@@ -788,8 +788,8 @@
         },
         "picker": {
             "search": {
-                "founds_one": "{{- count}} podudaranje(a)",
                 "founds_few": "{{- count}} podudaranje(a)",
+                "founds_one": "{{- count}} podudaranje(a)",
                 "founds_other": "{{- count}} podudaranje(a)",
                 "input": "tekst za pretragu",
                 "next": "Sljedeće",

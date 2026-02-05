@@ -200,16 +200,16 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "",
             "hint": "Συμβουλή:",
             "open": "Άνοιγμα",
             "password": "Συνθηματική φράση",
             "sentence": "Xρειάζεται μια συνθηματική φράση LCP για να ανοίξει το βιβλίο",
+            "showPassphrase": "",
             "urlHint": "Ξέχασες τα αναγνωριστικά σου; Κλίκαρε εδώ για βοήθεια.",
             "whatIsLcp?": "Τι είναι η προστασία LCP;",
             "whatIsLcpInfoDetails": "Το LCP σημαίνει 'Προστασία αδειοδοτημένου περιεχομένου'.",
-            "whatIsLcpInfoDetailsLink": "Για περισσότερα, κάντε κλικ σε αυτόν τον σύνδεσμο προς τον ιστότοπο του EDRLab.",
-            "showPassphrase": "",
-            "hidePassphrase": ""
+            "whatIsLcpInfoDetailsLink": "Για περισσότερα, κάντε κλικ σε αυτόν τον σύνδεσμο προς τον ιστότοπο του EDRLab."
         }
     },
     "message": {
@@ -701,18 +701,18 @@
         },
         "goToContent": "Μετάβαση στο περιεχόμενο",
         "imgViewer": {
+            "description": {
+                "about": "",
+                "altText": "",
+                "describedby": "",
+                "details": "",
+                "figcaption": "",
+                "labelledby": ""
+            },
             "title": "Προβολή εικόνων (zoom)",
             "zoomIn": "Μεγέθυνση",
             "zoomOut": "Σμίκρυνση",
-            "zoomReset": "Επαναφορά Zoom",
-            "description": {
-                "altText": "",
-                "details": "",
-                "figcaption": "",
-                "describedby": "",
-                "labelledby": "",
-                "about": ""
-            }
+            "zoomReset": "Επαναφορά Zoom"
         },
         "marks": {
             "annotations": "Σχόλια",

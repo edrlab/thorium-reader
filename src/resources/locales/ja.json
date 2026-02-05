@@ -195,16 +195,16 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "",
             "hint": "ヒント：",
             "open": "開く",
             "password": "パスワード",
             "sentence": "この本を開くためにはLCPパスワードが必要です",
+            "showPassphrase": "",
             "urlHint": "パスワードを忘れましたか？ サポートに確認してください。",
             "whatIsLcp?": "LCPとはなんですか？",
             "whatIsLcpInfoDetails": "LCPはLicensed Content Protectionの略です。",
-            "whatIsLcpInfoDetailsLink": "詳しくは、EDRLabのWebサイトを参照してください。",
-            "showPassphrase": "",
-            "hidePassphrase": ""
+            "whatIsLcpInfoDetailsLink": "詳しくは、EDRLabのWebサイトを参照してください。"
         }
     },
     "message": {
@@ -696,18 +696,18 @@
         },
         "goToContent": "コンテンツへ移動",
         "imgViewer": {
+            "description": {
+                "about": "",
+                "altText": "",
+                "describedby": "",
+                "details": "",
+                "figcaption": "",
+                "labelledby": ""
+            },
             "title": "",
             "zoomIn": "",
             "zoomOut": "",
-            "zoomReset": "",
-            "description": {
-                "altText": "",
-                "details": "",
-                "figcaption": "",
-                "describedby": "",
-                "labelledby": "",
-                "about": ""
-            }
+            "zoomReset": ""
         },
         "marks": {
             "annotations": "メモ",

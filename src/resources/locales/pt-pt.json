@@ -139,14 +139,14 @@
         "annotations": {
             "descAuthor": "por {{- author}}",
             "descCreator": "criado por",
-            "descList_one": "{{- count}} anotações de {{- creator}} serão associadas a {{- title}} {{- author}}",
             "descList_many": "{{- count}} anotações de {{- creator}} serão associadas a {{- title}} {{- author}}",
+            "descList_one": "{{- count}} anotações de {{- creator}} serão associadas a {{- title}} {{- author}}",
             "descList_other": "{{- count}} anotações de {{- creator}} serão associadas a {{- title}} {{- author}}",
-            "descNewer_one": "Conflitos: {{- count}} anotações mais recentes",
             "descNewer_many": "Conflitos: {{- count}} anotações mais recentes",
+            "descNewer_one": "Conflitos: {{- count}} anotações mais recentes",
             "descNewer_other": "Conflitos: {{- count}} anotações mais recentes",
-            "descOlder_one": "Conflitos: {{- count}} anotações mais antigas",
             "descOlder_many": "Conflitos: {{- count}} anotações mais antigas",
+            "descOlder_one": "Conflitos: {{- count}} anotações mais antigas",
             "descOlder_other": "Conflitos: {{- count}} anotações mais antigas",
             "descTitle": "Título das anotações: ",
             "importAll": "Importar todas as anotações",
@@ -163,12 +163,12 @@
             }
         },
         "deleteAnnotations": "Eliminar anotações?",
-        "deleteAnnotationsText_one": "Quer mesmo eliminar {{- count}} anotações?",
         "deleteAnnotationsText_many": "Quer mesmo eliminar {{- count}} anotações?",
+        "deleteAnnotationsText_one": "Quer mesmo eliminar {{- count}} anotações?",
         "deleteAnnotationsText_other": "Quer mesmo eliminar {{- count}} anotações?",
         "deleteBookmarks": "Eliminar marcadores?",
-        "deleteBookmarksText_one": "Tem a certeza que quer eliminar {{- count}} marcadores?",
         "deleteBookmarksText_many": "Tem a certeza que quer eliminar {{- count}} marcadores?",
+        "deleteBookmarksText_one": "Tem a certeza que quer eliminar {{- count}} marcadores?",
         "deleteBookmarksText_other": "Tem a certeza que quer eliminar {{- count}} marcadores?",
         "deleteFeed": "Eliminar catálogo?",
         "deletePublication": "Eliminar documento?",
@@ -205,16 +205,16 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "",
             "hint": "Dica:",
             "open": "Abrir",
             "password": "Frase-passe",
             "sentence": "Este documento necessita de uma frase-passe PCL para ser aberto",
+            "showPassphrase": "",
             "urlHint": "Esqueceu-se da sua frase-passe? Clique aqui para ajuda.",
             "whatIsLcp?": "O que é PCL?",
             "whatIsLcpInfoDetails": "PCL significa 'Proteção de Conteúdo Licenciado'.",
-            "whatIsLcpInfoDetailsLink": "Para saber mais, visite esta página do sítio EDRLab.",
-            "showPassphrase": "",
-            "hidePassphrase": ""
+            "whatIsLcpInfoDetailsLink": "Para saber mais, visite esta página do sítio EDRLab."
         }
     },
     "message": {
@@ -706,18 +706,18 @@
         },
         "goToContent": "Ir para o conteúdo",
         "imgViewer": {
+            "description": {
+                "about": "",
+                "altText": "",
+                "describedby": "",
+                "details": "",
+                "figcaption": "",
+                "labelledby": ""
+            },
             "title": "Visualizador de imagens (zoom)",
             "zoomIn": "Ampliar",
             "zoomOut": "Diminuir",
-            "zoomReset": "Repor zoom",
-            "description": {
-                "altText": "",
-                "details": "",
-                "figcaption": "",
-                "describedby": "",
-                "labelledby": "",
-                "about": ""
-            }
+            "zoomReset": "Repor zoom"
         },
         "marks": {
             "annotations": "Anotações",
@@ -788,8 +788,8 @@
         },
         "picker": {
             "search": {
-                "founds_one": "{{- count}} correspondência(s)",
                 "founds_many": "{{- count}} correspondência(s)",
+                "founds_one": "{{- count}} correspondência(s)",
                 "founds_other": "{{- count}} correspondência(s)",
                 "input": "texto a encontrar",
                 "next": "Seguinte",

@@ -537,7 +537,7 @@ const Profiles = () => {
                                     aria-label={profile.id}
                                 />
                                 <label htmlFor={profile.id} className={stylesSettings.profile_selection_label}>
-                                    <img src={profile.logoUrl} alt="" />
+                                    { profile.logoUrl ? <img src={profile.logoUrl} alt="" /> : <></> }
                                     <div
                                         className={stylesSettings.profile_selection_description}
                                         role="radio"

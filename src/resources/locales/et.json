@@ -27,13 +27,13 @@
             "undo": "Võta tegevus tagasi"
         },
         "hide": "Peida {{- appName}}",
-        "quit": "",
+        "quit": "Sulge {{- appName}}",
         "session": {
             "exit": {
                 "askBox": {
                     "button": {
-                        "no": "",
-                        "yes": ""
+                        "no": "Ei",
+                        "yes": "Jah"
                     },
                     "help": "",
                     "message": "",

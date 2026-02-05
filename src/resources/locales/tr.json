@@ -200,16 +200,16 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "",
             "hint": "İpucu:",
             "open": "Aç",
             "password": "Parola",
             "sentence": "Bu eserin açılabilmesi için bir LCP parolası gerekir",
+            "showPassphrase": "",
             "urlHint": "Parolanızı mı unuttunuz? Destek almak için buraya tıklayın.",
             "whatIsLcp?": "LCP nedir?",
             "whatIsLcpInfoDetails": "LCP, 'Licensed Content Protection', Lisanslı İçerik Koruması anlamına gelir.",
-            "whatIsLcpInfoDetailsLink": "EDRLab web sitesinde daha fazlasını öğrenmek için bu bağlantıyı tıklayın.",
-            "showPassphrase": "",
-            "hidePassphrase": ""
+            "whatIsLcpInfoDetailsLink": "EDRLab web sitesinde daha fazlasını öğrenmek için bu bağlantıyı tıklayın."
         }
     },
     "message": {
@@ -701,18 +701,18 @@
         },
         "goToContent": "İçeriğe git",
         "imgViewer": {
+            "description": {
+                "about": "",
+                "altText": "",
+                "describedby": "",
+                "details": "",
+                "figcaption": "",
+                "labelledby": ""
+            },
             "title": "Görsel görüntüleyici (yakınlaştır/uzaklaştır)",
             "zoomIn": "Yakınlaştır",
             "zoomOut": "Uzaklaştır",
-            "zoomReset": "Yakınlaştırmayı/Uzaklaştırmayı Sıfırla",
-            "description": {
-                "altText": "",
-                "details": "",
-                "figcaption": "",
-                "describedby": "",
-                "labelledby": "",
-                "about": ""
-            }
+            "zoomReset": "Yakınlaştırmayı/Uzaklaştırmayı Sıfırla"
         },
         "marks": {
             "annotations": "Açıklayıcı notlar",
@@ -784,7 +784,7 @@
         "picker": {
             "search": {
                 "founds_one": "{{- count}} eşleşme(ler)",
-                "founds_other": "{{- count}} eşleşme(ler)",
+                "founds_other": "{{- count}} eşleşme",
                 "input": "eşleşecek metin",
                 "next": "Sonraki",
                 "notFound": "eşleşme yok",

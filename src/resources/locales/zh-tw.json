@@ -195,16 +195,16 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "",
             "hint": "提示：",
             "open": "開啟",
             "password": "密碼",
             "sentence": "此出版物需要 LCP 密碼才能打開",
+            "showPassphrase": "",
             "urlHint": "忘記密碼？按此處取得幫助。",
             "whatIsLcp?": "什麼是 LCP？",
             "whatIsLcpInfoDetails": "LCP 代表「許可內容保護」。",
-            "whatIsLcpInfoDetailsLink": "要了解更多訊息，請點擊連結前往 EDRLab。",
-            "showPassphrase": "",
-            "hidePassphrase": ""
+            "whatIsLcpInfoDetailsLink": "要了解更多訊息，請點擊連結前往 EDRLab。"
         }
     },
     "message": {
@@ -696,18 +696,18 @@
         },
         "goToContent": "轉至內容",
         "imgViewer": {
+            "description": {
+                "about": "",
+                "altText": "",
+                "describedby": "",
+                "details": "",
+                "figcaption": "",
+                "labelledby": ""
+            },
             "title": "",
             "zoomIn": "",
             "zoomOut": "",
-            "zoomReset": "",
-            "description": {
-                "altText": "",
-                "details": "",
-                "figcaption": "",
-                "describedby": "",
-                "labelledby": "",
-                "about": ""
-            }
+            "zoomReset": ""
         },
         "marks": {
             "annotations": "註解",

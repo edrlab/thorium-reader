@@ -200,16 +200,16 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "",
             "hint": "Hint:",
             "open": "Open",
             "password": "Wachtwoordzin",
             "sentence": "Deze publicatie vereist een LCP wachtwoordzin om te openen",
+            "showPassphrase": "",
             "urlHint": "Wachtwoordzin vergeten? Vind hulp hier.",
             "whatIsLcp?": "Wat is LCP?",
             "whatIsLcpInfoDetails": "LCP staat voor 'Licensed Content Protection'.",
-            "whatIsLcpInfoDetailsLink": "Klik voor meer informatie op deze link naar de EDRLab-website.",
-            "showPassphrase": "",
-            "hidePassphrase": ""
+            "whatIsLcpInfoDetailsLink": "Klik voor meer informatie op deze link naar de EDRLab-website."
         }
     },
     "message": {
@@ -701,18 +701,18 @@
         },
         "goToContent": "Ga naar de Inhoud",
         "imgViewer": {
+            "description": {
+                "about": "",
+                "altText": "",
+                "describedby": "",
+                "details": "",
+                "figcaption": "",
+                "labelledby": ""
+            },
             "title": "Beeldviewer (zoom)",
             "zoomIn": "Inzoomen",
             "zoomOut": "Uitzoomen",
-            "zoomReset": "Herstel Vergroting",
-            "description": {
-                "altText": "",
-                "details": "",
-                "figcaption": "",
-                "describedby": "",
-                "labelledby": "",
-                "about": ""
-            }
+            "zoomReset": "Herstel Vergroting"
         },
         "marks": {
             "annotations": "Annotaties",

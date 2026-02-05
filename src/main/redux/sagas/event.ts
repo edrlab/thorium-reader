@@ -27,15 +27,33 @@ import { appActivate } from "./win/library";
 import { getAndStartCustomizationWellKnownFileWatchingEventChannel } from "./getEventChannel";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { customizationPackageProvisioning, customizationPackageProvisioningCheckVersion, customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
-import * as path from "path";
 import { ICustomizationProfileError, ICustomizationProfileProvisioned, ICustomizationProfileProvisionedWithError } from "readium-desktop/common/redux/states/customization";
 import { URL_HOST_CUSTOMPROFILE, URL_HOST_OPDS_AUTH, URL_PROTOCOL_APP_HANDLER_THORIUM, URL_PROTOCOL_OPDS } from "readium-desktop/common/streamerProtocol";
 import { EXT_THORIUM } from "readium-desktop/common/extension";
 import { getLibraryWindowFromDi } from "readium-desktop/main/di";
 import { getTranslator } from "readium-desktop/common/services/translator";
 
+import { app } from "electron";
+import * as path from "path";
+import * as fs from "fs";;
+
 // Logger
 const debug = debug_("readium-desktop:main:saga:event");
+
+const userDataPath = app.getPath("userData");
+const folderPath = path.join(
+    userDataPath,
+    "app-logs",
+);
+const PROCESS_LOGS = "processLogs.txt";
+const appLogs = path.join(
+    folderPath,
+    PROCESS_LOGS,
+);
+
+if (!fs.existsSync(folderPath)) {
+    fs.mkdirSync(folderPath);
+};
 
 export function saga() {
     return all([
@@ -235,33 +253,56 @@ export function saga() {
                 try {
                     const url = yield* takeTyped(chan);
 
+
+                    let dump = "#############################################\n";
+                    dump += `take opds url from channel: URL="${url}"\n`;
+                    dump += `Date: ${(new Date()).toISOString()}\n`;
+                    // dump += 
+
                     if (url.startsWith(`${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`)) {
                         debug("OPDS AUTH: ", `${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`);
+                        dump += "This is an authentication flow\n";
                         // ===> opdsAuthFlow
                         const libWin = getLibraryWindowFromDi();
                         const children = libWin.getChildWindows(); // TODO: make sure this is the OPDS AUTH BrowserWindow!!
                         if (children?.length) {
                             debug("OPDS AUTH: sub win?");
                             const win = children[0];
+                            dump += "child win from libwin\n";
                             if (win.title === getTranslator().translate("catalog.opds.auth.login")) {
                                 debug("OPDS AUTH: sub win OK, load...", url);
-                                yield* callTyped(() => win.loadURL(url));
+                                dump += "OPDS AUTH: sub win OK, load...\n";
+                                try {
+                                    yield* callTyped(() => win.loadURL(url));
+                                } catch (e) {
+                                    dump += `error to load '${url}' in auth child window => e=${JSON.stringify(e, null, 4)}\n`;
+                                    debug(`error to load '${url}' in auth child window => e=${JSON.stringify(e, null, 4)}`);
+                                }
+                            } else {
+                                debug("This is not an auth login window");
+                                dump += "This is not an auth login window\n";
                             }
+                        } else {
+                            debug("No child window on library window");
+                            dump += "No child window on library window\n";
                         }
 
-                        continue;
+                    } else {
+
+                        const feed = yield* callTyped(opdsApi.addFeed, { title: url, url });
+                        if (feed) {
+
+                            yield* callTyped(appActivate);
+
+                            debug("Feed added ", feed);
+                            dump += `feed added: ${feed}\n`;
+                            debug("Open in library catalogs");
+                            // open the feed in libraryWindow
+                            yield put(historyActions.pushFeed.build(feed));
+                        }
                     }
-
-                    const feed = yield* callTyped(opdsApi.addFeed, { title : url, url});
-                    if (feed) {
-
-                        yield* callTyped(appActivate);
-
-                        debug("Feed added ", feed);
-                        debug("Open in library catalogs");
-                        // open the feed in libraryWindow
-                        yield put(historyActions.pushFeed.build(feed));
-                    }
+                    dump += "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$44\n";
+                    fs.appendFileSync(appLogs, dump);
 
                 } catch (e) {
 

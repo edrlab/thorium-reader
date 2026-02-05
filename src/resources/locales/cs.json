@@ -139,17 +139,17 @@
         "annotations": {
             "descAuthor": "autor: {{- author}}",
             "descCreator": "vytvořil(a)",
-            "descList_one": "{{- count}} poznámek od {{- creator}} bude importováno do „{{- title}}“, {{- author}}",
             "descList_few": "{{- count}} poznámek od {{- creator}} bude importováno do „{{- title}}“, {{- author}}",
             "descList_many": "{{- count}} poznámek od {{- creator}} bude importováno do „{{- title}}“, {{- author}}",
+            "descList_one": "{{- count}} poznámek od {{- creator}} bude importováno do „{{- title}}“, {{- author}}",
             "descList_other": "{{- count}} poznámek od {{- creator}} bude importováno do „{{- title}}“, {{- author}}",
-            "descNewer_one": "Konflikt(y): {{- count}} novější poznámka (novější poznámky)",
             "descNewer_few": "Konflikt(y): {{- count}} novější poznámka (novější poznámky)",
             "descNewer_many": "Konflikt(y): {{- count}} novější poznámka (novější poznámky)",
+            "descNewer_one": "Konflikt(y): {{- count}} novější poznámka (novější poznámky)",
             "descNewer_other": "Konflikt(y): {{- count}} novější poznámka (novější poznámky)",
-            "descOlder_one": "Konflikt(y): {{- count}} starší poznámka (starší poznámky)",
             "descOlder_few": "Konflikt(y): {{- count}} starší poznámka (starší poznámky)",
             "descOlder_many": "Konflikt(y): {{- count}} starší poznámka (starší poznámky)",
+            "descOlder_one": "Konflikt(y): {{- count}} starší poznámka (starší poznámky)",
             "descOlder_other": "Konflikt(y): {{- count}} starší poznámka (starší poznámky)",
             "descTitle": "Anotace titulu: ",
             "importAll": "Importovat všechny poznámky",
@@ -166,14 +166,14 @@
             }
         },
         "deleteAnnotations": "Odstranit anotace?",
-        "deleteAnnotationsText_one": "Opravdu chcete odstranit {{- count}} poznámek?",
         "deleteAnnotationsText_few": "Opravdu chcete odstranit {{- count}} poznámek?",
         "deleteAnnotationsText_many": "Opravdu chcete odstranit {{- count}} poznámek?",
+        "deleteAnnotationsText_one": "Opravdu chcete odstranit {{- count}} poznámek?",
         "deleteAnnotationsText_other": "Opravdu chcete odstranit {{- count}} poznámek?",
         "deleteBookmarks": "Odstranit záložky?",
-        "deleteBookmarksText_one": "Jste si jisti, že chcete odstranit {{- count}} záložek?",
         "deleteBookmarksText_few": "Jste si jisti, že chcete odstranit {{- count}} záložek?",
         "deleteBookmarksText_many": "Jste si jisti, že chcete odstranit {{- count}} záložek?",
+        "deleteBookmarksText_one": "Jste si jisti, že chcete odstranit {{- count}} záložek?",
         "deleteBookmarksText_other": "Jste si jisti, že chcete odstranit {{- count}} záložek?",
         "deleteFeed": "Odstranit katalog?",
         "deletePublication": "Odstranit publikaci?",
@@ -210,16 +210,16 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "",
             "hint": "Nápověda:",
             "open": "Otevřít",
             "password": "Heslová fráze",
             "sentence": "K otevření této publikace je třeba zadat heslovou frázi protokolu LCP",
+            "showPassphrase": "",
             "urlHint": "Zapomněli jste svou heslovou frázi? Po získání podpory klikněte zde.",
             "whatIsLcp?": "Co je LCP?",
             "whatIsLcpInfoDetails": "LCP znamená „Licensed Content Protection“.",
-            "whatIsLcpInfoDetailsLink": "Pro více informací klikněte na tento odkaz na webovou stránku EDRLabu.",
-            "showPassphrase": "",
-            "hidePassphrase": ""
+            "whatIsLcpInfoDetailsLink": "Pro více informací klikněte na tento odkaz na webovou stránku EDRLabu."
         }
     },
     "message": {
@@ -711,18 +711,18 @@
         },
         "goToContent": "Přejít na obsah",
         "imgViewer": {
+            "description": {
+                "about": "",
+                "altText": "",
+                "describedby": "",
+                "details": "",
+                "figcaption": "",
+                "labelledby": ""
+            },
             "title": "",
             "zoomIn": "",
             "zoomOut": "",
-            "zoomReset": "",
-            "description": {
-                "altText": "",
-                "details": "",
-                "figcaption": "",
-                "describedby": "",
-                "labelledby": "",
-                "about": ""
-            }
+            "zoomReset": ""
         },
         "marks": {
             "annotations": "Anotace",
@@ -793,9 +793,9 @@
         },
         "picker": {
             "search": {
-                "founds_one": "{{- count}} shod",
                 "founds_few": "{{- count}} shod",
                 "founds_many": "{{- count}} shod",
+                "founds_one": "{{- count}} shod",
                 "founds_other": "{{- count}} shod",
                 "input": "přesná shoda",
                 "next": "Další",

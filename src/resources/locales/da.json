@@ -200,16 +200,16 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "",
             "hint": "Hint til nøgleord:",
             "open": "Åben",
             "password": "Nøgleord",
             "sentence": "Denne bog kræver et LCP-nøgleord for at åbnes",
+            "showPassphrase": "",
             "urlHint": "Har du glemt dit nøgleord? Få hjælp her.",
             "whatIsLcp?": "Hvad er LCP?",
             "whatIsLcpInfoDetails": "LCP står for 'Licensed Content Protection'.",
-            "whatIsLcpInfoDetailsLink": "For at læse mere, følg dette link til EDRLab websitet.",
-            "showPassphrase": "",
-            "hidePassphrase": ""
+            "whatIsLcpInfoDetailsLink": "For at læse mere, følg dette link til EDRLab websitet."
         }
     },
     "message": {
@@ -701,18 +701,18 @@
         },
         "goToContent": "Gå til indhold",
         "imgViewer": {
+            "description": {
+                "about": "",
+                "altText": "",
+                "describedby": "",
+                "details": "",
+                "figcaption": "",
+                "labelledby": ""
+            },
             "title": "Billedfremviser",
             "zoomIn": "Zoom ind",
             "zoomOut": "Zoom ud",
-            "zoomReset": "Nulstil Zoom",
-            "description": {
-                "altText": "",
-                "details": "",
-                "figcaption": "",
-                "describedby": "",
-                "labelledby": "",
-                "about": ""
-            }
+            "zoomReset": "Nulstil Zoom"
         },
         "marks": {
             "annotations": "Noter",

@@ -139,18 +139,18 @@
         "annotations": {
             "descAuthor": "avtor '{{- avtor}}'",
             "descCreator": "ustvaril",
-            "descList_one": "{{- count}} opombe {{- creator}} bodo uvožene v '{{- title}}' {{- avtor}}",
-            "descList_two": "{{- count}} opombe {{- creator}} bodo uvožene v '{{- title}}' {{- avtor}}",
             "descList_few": "{{- count}} opombe {{- creator}} bodo uvožene v '{{- title}}' {{- avtor}}",
+            "descList_one": "{{- count}} opombe {{- creator}} bodo uvožene v '{{- title}}' {{- avtor}}",
             "descList_other": "{{- count}} opombe {{- creator}} bodo uvožene v '{{- title}}' {{- avtor}}",
-            "descNewer_one": "Konflikti: {{- count}} novejši zapiski",
-            "descNewer_two": "Konflikti: {{- count}} novejši zapiski",
+            "descList_two": "{{- count}} opombe {{- creator}} bodo uvožene v '{{- title}}' {{- avtor}}",
             "descNewer_few": "Konflikti: {{- count}} novejši zapiski",
+            "descNewer_one": "Konflikti: {{- count}} novejši zapiski",
             "descNewer_other": "Konflikti: {{- count}} novejši zapiski",
-            "descOlder_one": "Konflikti: {{- count}} starejši zapiski",
-            "descOlder_two": "Konflikti: {{- count}} starejši zapiski",
+            "descNewer_two": "Konflikti: {{- count}} novejši zapiski",
             "descOlder_few": "Konflikti: {{- count}} starejši zapiski",
+            "descOlder_one": "Konflikti: {{- count}} starejši zapiski",
             "descOlder_other": "Konflikti: {{- count}} starejši zapiski",
+            "descOlder_two": "Konflikti: {{- count}} starejši zapiski",
             "descTitle": "Naslov opomb: ",
             "importAll": "Uvozi vse zapiske",
             "importWithoutConflict": "Uvozi zapiske brez sporov",
@@ -166,15 +166,15 @@
             }
         },
         "deleteAnnotations": "Želiš izbrisati opombe?",
-        "deleteAnnotationsText_one": "Ali si prepričan, da želiš izbrisati {{- count}} opombe?",
-        "deleteAnnotationsText_two": "Ali si prepričan, da želiš izbrisati {{- count}} opombe?",
         "deleteAnnotationsText_few": "Ali si prepričan, da želiš izbrisati {{- count}} opombe?",
+        "deleteAnnotationsText_one": "Ali si prepričan, da želiš izbrisati {{- count}} opombe?",
         "deleteAnnotationsText_other": "Ali si prepričan, da želiš izbrisati {{- count}} opombe?",
+        "deleteAnnotationsText_two": "Ali si prepričan, da želiš izbrisati {{- count}} opombe?",
         "deleteBookmarks": "",
-        "deleteBookmarksText_one": "",
-        "deleteBookmarksText_two": "",
         "deleteBookmarksText_few": "",
+        "deleteBookmarksText_one": "",
         "deleteBookmarksText_other": "",
+        "deleteBookmarksText_two": "",
         "deleteFeed": "Ali res želiš izbrisati katalog?",
         "deletePublication": "Ali res želiš izbrisati publikacijo?",
         "deletePublicationWithNotes": "",
@@ -210,16 +210,16 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "",
             "hint": "Namig: ",
             "open": "Odpri",
             "password": "Geslo",
             "sentence": "Za odprtje publikacije vnesi LCP geslo: ",
+            "showPassphrase": "",
             "urlHint": "Pozabljeno geslo? Tu lahko poiščeš pomoč",
             "whatIsLcp?": "Kaj je LCP?",
             "whatIsLcpInfoDetails": "LCP je kratica za 'Licensed Content Protection'.",
-            "whatIsLcpInfoDetailsLink": "Za več informacij kliknite na to povezavo in obiščite spletno stran EDRLab.",
-            "showPassphrase": "",
-            "hidePassphrase": ""
+            "whatIsLcpInfoDetailsLink": "Za več informacij kliknite na to povezavo in obiščite spletno stran EDRLab."
         }
     },
     "message": {
@@ -711,18 +711,18 @@
         },
         "goToContent": "Pojdi na vsebino",
         "imgViewer": {
+            "description": {
+                "about": "",
+                "altText": "",
+                "describedby": "",
+                "details": "",
+                "figcaption": "",
+                "labelledby": ""
+            },
             "title": "",
             "zoomIn": "",
             "zoomOut": "",
-            "zoomReset": "",
-            "description": {
-                "altText": "",
-                "details": "",
-                "figcaption": "",
-                "describedby": "",
-                "labelledby": "",
-                "about": ""
-            }
+            "zoomReset": ""
         },
         "marks": {
             "annotations": "Opombe",
@@ -793,10 +793,10 @@
         },
         "picker": {
             "search": {
-                "founds_one": "{{- count}} zadetek(kov)",
-                "founds_two": "{{- count}} zadetek(kov)",
                 "founds_few": "{{- count}} zadetek(kov)",
+                "founds_one": "{{- count}} zadetek(kov)",
                 "founds_other": "{{- count}} zadetek(kov)",
+                "founds_two": "{{- count}} zadetek(kov)",
                 "input": "besedilo, ki se ujema z",
                 "next": "Naslednje",
                 "notFound": "ni zadetkov",

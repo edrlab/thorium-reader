@@ -139,14 +139,14 @@
         "annotations": {
             "descAuthor": "",
             "descCreator": "",
-            "descList_one": "",
             "descList_many": "",
+            "descList_one": "",
             "descList_other": "",
-            "descNewer_one": "",
             "descNewer_many": "",
+            "descNewer_one": "",
             "descNewer_other": "",
-            "descOlder_one": "",
             "descOlder_many": "",
+            "descOlder_one": "",
             "descOlder_other": "",
             "descTitle": "",
             "importAll": "",
@@ -163,12 +163,12 @@
             }
         },
         "deleteAnnotations": "",
-        "deleteAnnotationsText_one": "",
         "deleteAnnotationsText_many": "",
+        "deleteAnnotationsText_one": "",
         "deleteAnnotationsText_other": "",
         "deleteBookmarks": "",
-        "deleteBookmarksText_one": "",
         "deleteBookmarksText_many": "",
+        "deleteBookmarksText_one": "",
         "deleteBookmarksText_other": "",
         "deleteFeed": "Segur que vols eliminar aquest catàleg?",
         "deletePublication": "Segur que vols eliminar aquesta publicació?",
@@ -205,16 +205,16 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "",
             "hint": "Suggeriment : ",
             "open": "",
             "password": "Contrassenya",
             "sentence": "Aquesta publicació requereix una contrassenya LCP per obrir-se: ",
+            "showPassphrase": "",
             "urlHint": "Has olvidat la contrassenya? Clica si necessites ajuda",
             "whatIsLcp?": "Què és LCP?",
             "whatIsLcpInfoDetails": "LCP significa 'Protecció del contingut llicenciat'.",
-            "whatIsLcpInfoDetailsLink": "Per saber-ne més, feu clic en aquest enllaç a la pàgina web de l'EDRLab.",
-            "showPassphrase": "",
-            "hidePassphrase": ""
+            "whatIsLcpInfoDetailsLink": "Per saber-ne més, feu clic en aquest enllaç a la pàgina web de l'EDRLab."
         }
     },
     "message": {
@@ -706,18 +706,18 @@
         },
         "goToContent": "",
         "imgViewer": {
+            "description": {
+                "about": "",
+                "altText": "",
+                "describedby": "",
+                "details": "",
+                "figcaption": "",
+                "labelledby": ""
+            },
             "title": "",
             "zoomIn": "",
             "zoomOut": "",
-            "zoomReset": "",
-            "description": {
-                "altText": "",
-                "details": "",
-                "figcaption": "",
-                "describedby": "",
-                "labelledby": "",
-                "about": ""
-            }
+            "zoomReset": ""
         },
         "marks": {
             "annotations": "Anotacions",
@@ -788,8 +788,8 @@
         },
         "picker": {
             "search": {
-                "founds_one": "{{- count}} trobat/s",
                 "founds_many": "{{- count}} trobat/s",
+                "founds_one": "{{- count}} trobat/s",
                 "founds_other": "{{- count}} trobat/s",
                 "input": "text de cerca",
                 "next": "Següent",

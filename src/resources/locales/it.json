@@ -139,14 +139,14 @@
         "annotations": {
             "descAuthor": "di {{- author}}",
             "descCreator": "creata da",
-            "descList_one": "{{- count}} note di {{- creator}} saranno associate a {{- title}} {{- author}}",
             "descList_many": "{{- count}} note di {{- creator}} saranno associate a {{- title}} {{- author}}",
+            "descList_one": "{{- count}} note di {{- creator}} saranno associate a {{- title}} {{- author}}",
             "descList_other": "{{- count}} note di {{- creator}} saranno associate a {{- title}} {{- author}}",
-            "descNewer_one": "{{- count}} nuove versioni di queste note sono già associate alla pubblicazione.",
             "descNewer_many": "{{- count}} nuove versioni di queste note sono già associate alla pubblicazione.",
+            "descNewer_one": "{{- count}} nuove versioni di queste note sono già associate alla pubblicazione.",
             "descNewer_other": "{{- count}} nuove versioni di queste note sono già associate alla pubblicazione.",
-            "descOlder_one": "{{- count}} versioni precedenti di queste note sono già associate alla pubblicazione.",
             "descOlder_many": "{{- count}} versioni precedenti di queste note sono già associate alla pubblicazione.",
+            "descOlder_one": "{{- count}} versioni precedenti di queste note sono già associate alla pubblicazione.",
             "descOlder_other": "{{- count}} versioni precedenti di queste note sono già associate alla pubblicazione.",
             "descTitle": "Titolo del set:",
             "importAll": "Importa tutte le note",
@@ -163,12 +163,12 @@
             }
         },
         "deleteAnnotations": "Eliminare la nota?",
-        "deleteAnnotationsText_one": "Si desidera eliminare {{- count}} note?",
         "deleteAnnotationsText_many": "Si desidera eliminare {{- count}} note?",
+        "deleteAnnotationsText_one": "Si desidera eliminare {{- count}} note?",
         "deleteAnnotationsText_other": "Si desidera eliminare {{- count}} note?",
         "deleteBookmarks": "Cancellare i segnalibri?",
-        "deleteBookmarksText_one": "Sei sicuro di voler eliminare {{- count}} segnalibri?",
         "deleteBookmarksText_many": "Sei sicuro di voler eliminare {{- count}} segnalibri?",
+        "deleteBookmarksText_one": "Sei sicuro di voler eliminare {{- count}} segnalibri?",
         "deleteBookmarksText_other": "Sei sicuro di voler eliminare {{- count}} segnalibri?",
         "deleteFeed": "Vuoi davvero eliminare questo catalogo ?",
         "deletePublication": "Vuoi davvero eliminare questa pubblicazione ?",
@@ -205,16 +205,16 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "",
             "hint": "Suggerimento : ",
             "open": "Apri",
             "password": "Passphrase",
             "sentence": "Questa pubblicazione ha bisogno di una passphrase LCP per essere aperta: ",
+            "showPassphrase": "",
             "urlHint": "Hai dimenticato la tua passphrase? Ottieni un aiuto qui",
             "whatIsLcp?": "Cos'è LCP?",
             "whatIsLcpInfoDetails": "LCP sta per \"Licensed Content Protection\".",
-            "whatIsLcpInfoDetailsLink": "Per saperne di più, fare clic su questo link al sito web di EDRLab.",
-            "showPassphrase": "",
-            "hidePassphrase": ""
+            "whatIsLcpInfoDetailsLink": "Per saperne di più, fare clic su questo link al sito web di EDRLab."
         }
     },
     "message": {
@@ -706,18 +706,18 @@
         },
         "goToContent": "Vai al contenuto",
         "imgViewer": {
+            "description": {
+                "about": "",
+                "altText": "",
+                "describedby": "",
+                "details": "",
+                "figcaption": "",
+                "labelledby": ""
+            },
             "title": "Visualizzatore di immagini (zoom)",
             "zoomIn": "Ingrandimento",
             "zoomOut": "Riduci",
-            "zoomReset": "Ripristino dello zoom",
-            "description": {
-                "altText": "",
-                "details": "",
-                "figcaption": "",
-                "describedby": "",
-                "labelledby": "",
-                "about": ""
-            }
+            "zoomReset": "Ripristino dello zoom"
         },
         "marks": {
             "annotations": "Annotazioni",
@@ -788,8 +788,8 @@
         },
         "picker": {
             "search": {
-                "founds_one": "{{- count}} risultato/i",
                 "founds_many": "{{- count}} risultato/i",
+                "founds_one": "{{- count}} risultato/i",
                 "founds_other": "{{- count}} risultato/i",
                 "input": "testo ta cercare",
                 "next": "Prossimo",

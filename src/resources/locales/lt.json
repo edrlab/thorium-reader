@@ -139,17 +139,17 @@
         "annotations": {
             "descAuthor": "'{{- author}}'",
             "descCreator": ", kurią(-ias) sukūrė",
-            "descList_one": "{{- count}} pastaba{{- creator}}, bus susieta su {{- author}} leidiniu '{{- title}}'",
             "descList_few": "{{- count}} pastabos{{- creator}}, bus susietos su {{- author}} leidiniu '{{- title}}'",
             "descList_many": "{{- count}} pastabų{{- creator}}, bus susietos su {{- author}} leidiniu '{{- title}}'",
+            "descList_one": "{{- count}} pastaba{{- creator}}, bus susieta su {{- author}} leidiniu '{{- title}}'",
             "descList_other": "{{- count}} pastabų{{- creator}}, bus susietos su {{- author}} leidiniu '{{- title}}'",
-            "descNewer_one": "Konfliktas(-ai): {{- count}} naujesnė pastaba",
             "descNewer_few": "Konfliktas(-ai): {{- count}} naujesnės pastabos",
             "descNewer_many": "Konfliktas(-ai): {{- count}} naujesnių pastabų",
+            "descNewer_one": "Konfliktas(-ai): {{- count}} naujesnė pastaba",
             "descNewer_other": "Konfliktas(-ai): {{- count}} naujesnių pastabų",
-            "descOlder_one": "Konfliktas(-ai): {{- count}} senesnė pastaba",
             "descOlder_few": "Konfliktas(-ai): {{- count}} senesnės pastabos",
             "descOlder_many": "Konfliktas(-ai): {{- count}} senesnių pastabų",
+            "descOlder_one": "Konfliktas(-ai): {{- count}} senesnė pastaba",
             "descOlder_other": "Konfliktas(-ai): {{- count}} senesnių pastabų",
             "descTitle": "Pastabų pavadinimas: ",
             "importAll": "Importuoti visas pastabas",
@@ -166,14 +166,14 @@
             }
         },
         "deleteAnnotations": "Šalinti pastabas?",
-        "deleteAnnotationsText_one": "Ar tikrai norite pašalinti {{- count}} pastabą?",
         "deleteAnnotationsText_few": "Ar tikrai norite pašalinti {{- count}} pastabas?",
         "deleteAnnotationsText_many": "Ar tikrai norite pašalinti {{- count}} pastabų?",
+        "deleteAnnotationsText_one": "Ar tikrai norite pašalinti {{- count}} pastabą?",
         "deleteAnnotationsText_other": "Ar tikrai norite pašalinti {{- count}} pastabų?",
         "deleteBookmarks": "Šalinti skirtukus?",
-        "deleteBookmarksText_one": "Ar tikrai norite pašalinti {{- count}} skirtuką?",
         "deleteBookmarksText_few": "Ar tikrai norite pašalinti {{- count}} skirtukus?",
         "deleteBookmarksText_many": "Ar tikrai norite pašalinti {{- count}} skirtukų?",
+        "deleteBookmarksText_one": "Ar tikrai norite pašalinti {{- count}} skirtuką?",
         "deleteBookmarksText_other": "Ar tikrai norite pašalinti {{- count}} skirtukų?",
         "deleteFeed": "Pašalinti katalogą?",
         "deletePublication": "Pašalinti leidinį?",
@@ -210,16 +210,16 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "",
             "hint": "Užuomina:",
             "open": "Atverti",
             "password": "Slaptafrazė",
             "sentence": "Šiam leidiniui atverti reikalinga LCP slaptafrazė",
+            "showPassphrase": "",
             "urlHint": "Pamiršote slaptafrazę? Pagalbos ieškokite čia.",
             "whatIsLcp?": "LCP - kas tai?",
             "whatIsLcpInfoDetails": "LCP yra termino „Licensed Content Protection“ (licencijuoto turinio apsauga) santrumpa.",
-            "whatIsLcpInfoDetailsLink": "Jei norite sužinoti daugiau, paspauskite ant šios nuorodos į EDRLab svetainę.",
-            "showPassphrase": "",
-            "hidePassphrase": ""
+            "whatIsLcpInfoDetailsLink": "Jei norite sužinoti daugiau, paspauskite ant šios nuorodos į EDRLab svetainę."
         }
     },
     "message": {
@@ -711,18 +711,18 @@
         },
         "goToContent": "Eiti į turinį",
         "imgViewer": {
+            "description": {
+                "about": "",
+                "altText": "",
+                "describedby": "",
+                "details": "",
+                "figcaption": "",
+                "labelledby": ""
+            },
             "title": "Vaizdų peržiūra (mastelio keitimas)",
             "zoomIn": "Didinti",
             "zoomOut": "Mažinti",
-            "zoomReset": "Nustatyti mastelį iš naujo",
-            "description": {
-                "altText": "",
-                "details": "",
-                "figcaption": "",
-                "describedby": "",
-                "labelledby": "",
-                "about": ""
-            }
+            "zoomReset": "Nustatyti mastelį iš naujo"
         },
         "marks": {
             "annotations": "Pastabos",
@@ -793,9 +793,9 @@
         },
         "picker": {
             "search": {
-                "founds_one": "{{- count}} atitikmuo",
                 "founds_few": "{{- count}} atitikmenys",
                 "founds_many": "{{- count}} atitikmenų",
+                "founds_one": "{{- count}} atitikmuo",
                 "founds_other": "{{- count}} atitikmenų",
                 "input": "ieškomas tekstas",
                 "next": "Kitas",

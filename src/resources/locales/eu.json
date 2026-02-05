@@ -200,16 +200,16 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "",
             "hint": "Adierazi : ",
             "open": "",
             "password": "Pasahitza",
             "sentence": "Argitalpen honek LCP pasahitza behar du irekitzeko: ",
+            "showPassphrase": "",
             "urlHint": "Pasahitza ahaztu duzu? Bilatu laguntza hemen",
             "whatIsLcp?": "Zer da LCP?",
             "whatIsLcpInfoDetails": "LCP \"Lizentziadun edukien babesa\" esan nahi du.",
-            "whatIsLcpInfoDetailsLink": "Gehiago jakiteko, egin klik EDRLab webgunerako esteka honetan.",
-            "showPassphrase": "",
-            "hidePassphrase": ""
+            "whatIsLcpInfoDetailsLink": "Gehiago jakiteko, egin klik EDRLab webgunerako esteka honetan."
         }
     },
     "message": {
@@ -701,18 +701,18 @@
         },
         "goToContent": "",
         "imgViewer": {
+            "description": {
+                "about": "",
+                "altText": "",
+                "describedby": "",
+                "details": "",
+                "figcaption": "",
+                "labelledby": ""
+            },
             "title": "",
             "zoomIn": "",
             "zoomOut": "",
-            "zoomReset": "",
-            "description": {
-                "altText": "",
-                "details": "",
-                "figcaption": "",
-                "describedby": "",
-                "labelledby": "",
-                "about": ""
-            }
+            "zoomReset": ""
         },
         "marks": {
             "annotations": "Oharrak",

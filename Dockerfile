@@ -54,6 +54,8 @@ RUN apt-get install libnotify4 libdrm2 libgbm1 libx11-xcb1 libxcb-dri3-0 libxtst
 ARG BUST_CACHE
 RUN arch &&\
     uname &&\
+    free -m &&\
+    free -g &&\
 #    lsb_release -a &&\
     ldd --version &&\
     node --version &&\

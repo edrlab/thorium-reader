@@ -200,16 +200,16 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "Hide passphrase",
             "hint": "Hint:",
             "open": "Open",
             "password": "Passphrase",
             "sentence": "This publication needs an LCP passphrase to be opened",
+            "showPassphrase": "Show passphrase",
             "urlHint": "Forgot your passphrase? Click here to get support.",
             "whatIsLcp?": "What is LCP?",
             "whatIsLcpInfoDetails": "LCP stands for 'Licensed Content Protection'.",
-            "whatIsLcpInfoDetailsLink": "To learn more, click this link to the EDRLab website.",
-            "showPassphrase": "Show passphrase",
-            "hidePassphrase": "Hide passphrase"
+            "whatIsLcpInfoDetailsLink": "To learn more, click this link to the EDRLab website."
         }
     },
     "message": {
@@ -701,18 +701,18 @@
         },
         "goToContent": "Go to the content",
         "imgViewer": {
+            "description": {
+                "about": "About this image",
+                "altText": "Alternative text",
+                "describedby": "DescribedBy",
+                "details": "Details",
+                "figcaption": "Figcaption",
+                "labelledby": "LabelledBy"
+            },
             "title": "Image viewer (zoom)",
             "zoomIn": "Zoom In",
             "zoomOut": "Zoom Out",
-            "zoomReset": "Reset Zoom",
-            "description" : {
-                "altText": "Alternative text",
-                "details": "Details",
-                "figcaption": "Figcaption",
-                "describedby": "DescribedBy",
-                "labelledby": "LabelledBy",
-                "about": "About this image"
-            }
+            "zoomReset": "Reset Zoom"
         },
         "marks": {
             "annotations": "Annotations",

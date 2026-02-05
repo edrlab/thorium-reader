@@ -200,16 +200,16 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "",
             "hint": "Hinweis:",
             "open": "Öffnen",
             "password": "Passwort",
             "sentence": "Diese LCP-geschütze Publikation benötigt zum Öffnen ein Passwort",
+            "showPassphrase": "",
             "urlHint": "Passwort vergessen? Klicke hier für Support.",
             "whatIsLcp?": "Was ist LCP?",
             "whatIsLcpInfoDetails": "LCP steht für „Licensed Content Protection“.",
-            "whatIsLcpInfoDetailsLink": "Um mehr zu erfahren, klicken Sie auf diesen Link zur EDRLab-Website.",
-            "showPassphrase": "",
-            "hidePassphrase": ""
+            "whatIsLcpInfoDetailsLink": "Um mehr zu erfahren, klicken Sie auf diesen Link zur EDRLab-Website."
         }
     },
     "message": {
@@ -701,18 +701,18 @@
         },
         "goToContent": "Zum Inhalt gehen",
         "imgViewer": {
+            "description": {
+                "about": "",
+                "altText": "",
+                "describedby": "",
+                "details": "",
+                "figcaption": "",
+                "labelledby": ""
+            },
             "title": "",
             "zoomIn": "",
             "zoomOut": "",
-            "zoomReset": "",
-            "description": {
-                "altText": "",
-                "details": "",
-                "figcaption": "",
-                "describedby": "",
-                "labelledby": "",
-                "about": ""
-            }
+            "zoomReset": ""
         },
         "marks": {
             "annotations": "Meine Anmerkungen",

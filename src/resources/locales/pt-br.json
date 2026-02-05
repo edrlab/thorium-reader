@@ -139,14 +139,14 @@
         "annotations": {
             "descAuthor": "por '{{- author}} '",
             "descCreator": "criado por",
-            "descList_one": "{{- count}} A(s) nota(s) de {{- creator}} será(ão) importada(s) em '{{- title}}' {{- author}}",
             "descList_many": "{{- count}} A(s) nota(s) de {{- creator}} será(ão) importada(s) em '{{- title}}' {{- author}}",
+            "descList_one": "{{- count}} A(s) nota(s) de {{- creator}} será(ão) importada(s) em '{{- title}}' {{- author}}",
             "descList_other": "{{- count}} A(s) nota(s) de {{- creator}} será(ão) importada(s) em '{{- title}}' {{- author}}",
-            "descNewer_one": "Conflito(s): {{- count}} nota(s) mais recente(s)",
             "descNewer_many": "Conflito(s): {{- count}} nota(s) mais recente(s)",
+            "descNewer_one": "Conflito(s): {{- count}} nota(s) mais recente(s)",
             "descNewer_other": "Conflito(s): {{- count}} nota(s) mais recente(s)",
-            "descOlder_one": "Conflito(s): {{- count}} nota)(s) mais antiga(s)",
             "descOlder_many": "Conflito(s): {{- count}} nota)(s) mais antiga(s)",
+            "descOlder_one": "Conflito(s): {{- count}} nota)(s) mais antiga(s)",
             "descOlder_other": "Conflito(s): {{- count}} nota)(s) mais antiga(s)",
             "descTitle": "Título de anotações: ",
             "importAll": "Importar todas as notas",
@@ -163,12 +163,12 @@
             }
         },
         "deleteAnnotations": "Excluir anotações?",
-        "deleteAnnotationsText_one": "Tem certeza de que deseja excluir {{- count}} notas(s)?",
         "deleteAnnotationsText_many": "Tem certeza de que deseja excluir {{- count}} notas(s)?",
+        "deleteAnnotationsText_one": "Tem certeza de que deseja excluir {{- count}} notas(s)?",
         "deleteAnnotationsText_other": "Tem certeza de que deseja excluir {{- count}} notas(s)?",
         "deleteBookmarks": "",
-        "deleteBookmarksText_one": "",
         "deleteBookmarksText_many": "",
+        "deleteBookmarksText_one": "",
         "deleteBookmarksText_other": "",
         "deleteFeed": "Deseja excluir este catálogo?",
         "deletePublication": "Deseja excluir esta publicação?",
@@ -205,16 +205,16 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "",
             "hint": "Dica :",
             "open": "Abrir",
             "password": "Senha",
             "sentence": "Insira a senha desta publicação protegida por LCP",
+            "showPassphrase": "",
             "urlHint": "Esqueceu sua senha? O suporte está disponível.",
             "whatIsLcp?": "O que é LCP?",
             "whatIsLcpInfoDetails": "LCP significa 'Proteção de Conteúdo Licenciado'.",
-            "whatIsLcpInfoDetailsLink": "Para saber mais, clique neste link para o site do EDRLab.",
-            "showPassphrase": "",
-            "hidePassphrase": ""
+            "whatIsLcpInfoDetailsLink": "Para saber mais, clique neste link para o site do EDRLab."
         }
     },
     "message": {
@@ -706,18 +706,18 @@
         },
         "goToContent": "Ir para o conteúdo",
         "imgViewer": {
+            "description": {
+                "about": "",
+                "altText": "",
+                "describedby": "",
+                "details": "",
+                "figcaption": "",
+                "labelledby": ""
+            },
             "title": "",
             "zoomIn": "",
             "zoomOut": "",
-            "zoomReset": "",
-            "description": {
-                "altText": "",
-                "details": "",
-                "figcaption": "",
-                "describedby": "",
-                "labelledby": "",
-                "about": ""
-            }
+            "zoomReset": ""
         },
         "marks": {
             "annotations": "Anotações",
@@ -788,8 +788,8 @@
         },
         "picker": {
             "search": {
-                "founds_one": "{{- count}} correspondência(s)",
                 "founds_many": "{{- count}} correspondência(s)",
+                "founds_one": "{{- count}} correspondência(s)",
                 "founds_other": "{{- count}} correspondência(s)",
                 "input": "texto para correspondência",
                 "next": "Próximo",

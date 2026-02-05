@@ -190,16 +190,16 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "",
             "hint": "힌트: ",
             "open": "",
             "password": "암호",
             "sentence": "이 출판물을 열기 위해서는 LCP 암호가 필요합니다: ",
+            "showPassphrase": "",
             "urlHint": "암호를 잊으셨습니까? 여기서 도움말을 확인하십시오",
             "whatIsLcp?": "",
             "whatIsLcpInfoDetails": "",
-            "whatIsLcpInfoDetailsLink": "",
-            "showPassphrase": "",
-            "hidePassphrase": ""
+            "whatIsLcpInfoDetailsLink": ""
         }
     },
     "message": {
@@ -691,18 +691,18 @@
         },
         "goToContent": "",
         "imgViewer": {
+            "description": {
+                "about": "",
+                "altText": "",
+                "describedby": "",
+                "details": "",
+                "figcaption": "",
+                "labelledby": ""
+            },
             "title": "",
             "zoomIn": "",
             "zoomOut": "",
-            "zoomReset": "",
-            "description": {
-                "altText": "",
-                "details": "",
-                "figcaption": "",
-                "describedby": "",
-                "labelledby": "",
-                "about": ""
-            }
+            "zoomReset": ""
         },
         "marks": {
             "annotations": "주석",
