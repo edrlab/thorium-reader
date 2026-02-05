@@ -1040,3 +1040,11 @@ export const equivalents = () => {
     }
     return _equivalentsList;
 };
+
+export const collapseWhitespaces = (str: string) => {
+    return str.replace(/[\r\n]/g, " ").replace(/\s\s+/g, " ");
+};
+
+export const cleanupStr = (str: string) => {
+    return collapseWhitespaces(str).trim();
+};
