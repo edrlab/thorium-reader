@@ -455,7 +455,7 @@
                 "compact": "A presença de sons é desconhecida",
                 "descriptive": "A presença de sons é desconhecida"
             },
-            "hazards-title": "Pontos de atenção",
+            "hazards-title": "Perigos",
             "hazards-unknown": {
                 "compact": "A presença de perigos é desconhecida",
                 "descriptive": "A existência de perigos é desconhecida"
@@ -481,7 +481,7 @@
             "navigation-title": "Navegação",
             "navigation-toc": {
                 "compact": "Índice",
-                "descriptive": "Índice de todos os capítulos de texto através de ligações"
+                "descriptive": "Índice com ligações para todos os capítulos do texto"
             }
         },
         "rich-content": {
