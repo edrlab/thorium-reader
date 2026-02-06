@@ -12,7 +12,7 @@
     "apiapp": {
         "documentation": "Documentação Thorium",
         "howItWorks": "Como funciona?",
-        "informations": "Em França, muitas bibliotecas públicas disponibilizam um catálogo legível por máquina (semelhante ao OPDS, mas não idêntico), permitindo aos utilizadores descarregar publicações digitais da sua estante pessoal. A integração desta tecnologia no Thorium Reader permite-lhe descarregar um ebook ou audiolivro diretamente no Thorium Reader para leitura imediata.\nComo associar a sua conta de uma biblioteca pública francesa ao Thorium Reader? É simples. Digite uma cidade francesa ('Paris') ou parte do nome da biblioteca no campo Pesquisar e clique no botão Pesquisar. Aparecerá uma lista de bibliotecas públicas correspondente à sua pesquisa. Selecione uma biblioteca e clique em Adicionar. Na lista atualizada de catálogos, selecione esta biblioteca: um formulário de autenticação será exibido. Digite seu nome de utilizador/endereço de email e senha e clique em Autenticar. Agora já poderá ver o conteúdo da sua estante pessoal, da qual pode baixar e ler os ebooks e audiolivros que tenha feito o empréstimo anteriormente.",
+        "informations": "Em França, muitas bibliotecas públicas disponibilizam um catálogo legível por máquina (semelhante ao OPDS, mas não idêntico), permitindo aos utilizadores descarregar publicações digitais da sua estante pessoal. A integração desta tecnologia no Thorium Reader permite-lhe descarregar um ebook ou audiolivro diretamente no Thorium Reader para leitura imediata.\nComo associar a sua conta de uma biblioteca pública francesa ao Thorium Reader? É simples. Digite o nome de uma cidade francesa (\"Paris\") ou parte do nome da biblioteca no campo de pesquisa e clique no botão Pesquisar. Será apresentada uma lista de bibliotecas públicas correspondentes à sua pesquisa. Selecione uma biblioteca e clique em Adicionar. Na lista atualizada de catálogos, selecione essa biblioteca: será apresentado um formulário de autenticação. Digite seu nome de utilizador/endereço de email e senha e clique em Autenticar. Agora já poderá ver o conteúdo da sua estante pessoal, a partir da qual pode descarregar e ler os ebooks e audiolivros que tenha requisitado anteriormente.",
         "noLibraryFound": "Nenhuma biblioteca encontrada ({{- name}})"
     },
     "app": {
@@ -50,7 +50,7 @@
         }
     },
     "catalog": {
-        "AddToFavorites": "",
+        "AddToFavorites": "Adicionar aos favoritos",
         "about": {
             "title": "Sobre {{- appName}} (em linha)"
         },
@@ -129,7 +129,7 @@
         "publisher": "Editora",
         "readBook": "Ler",
         "released": "Publicado em",
-        "removeFromFavorites": "",
+        "removeFromFavorites": "Remover dos favoritos",
         "sort": "Ordenar por",
         "tag": "Etiquetar",
         "tags": "Etiquetas",
@@ -205,12 +205,12 @@
     },
     "library": {
         "lcp": {
-            "hidePassphrase": "",
+            "hidePassphrase": "Ocultar senha",
             "hint": "Dica:",
             "open": "Abrir",
             "password": "Frase-passe",
             "sentence": "Este documento necessita de uma frase-passe PCL para ser aberto",
-            "showPassphrase": "",
+            "showPassphrase": "Mostrar senha",
             "urlHint": "Esqueceu-se da sua frase-passe? Clique aqui para ajuda.",
             "whatIsLcp?": "O que é PCL?",
             "whatIsLcpInfoDetails": "PCL significa 'Proteção de Conteúdo Licenciado'.",
@@ -924,7 +924,7 @@
             "cancel": "Cancelar",
             "disclaimer": "Os padrões da aplicação foram definidos com base na disposição de um teclado QWERTY",
             "editUserJson": "Editar ficheiro de utilizador...",
-            "exportToHTML": "",
+            "exportToHTML": "Exportar para HTML",
             "keyboardShortcuts": "Atalhos de teclado",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -933,11 +933,11 @@
                 },
                 "AnnotationsCreate": {
                     "description": "",
-                    "name": ""
+                    "name": "Criar anotação"
                 },
                 "AnnotationsCreateQuick": {
                     "description": "",
-                    "name": ""
+                    "name": "Criar anotação rápida"
                 },
                 "AnnotationsToggleMargin": {
                     "description": "",
