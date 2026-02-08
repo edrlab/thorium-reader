@@ -79,6 +79,16 @@ if (nodeEnv !== "production") {
                 return callback();
             }
 
+            const isRDeskR2 = request.indexOf("@r2-") === 0;
+            if (isRDeskR2) {
+                if (!_externalsCache.has(request)) {
+                    console.log(`WEBPACK EXTERNAL (MAIN): READIUM-DESKTOP @R2 [${request}]`);
+                }
+                _externalsCache.add(request);
+
+                return callback();
+            }
+
             let request_ = request;
             if (aliases) {
                 // const isR2 = /^r2-.+-js/.test(request);
