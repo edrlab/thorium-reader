@@ -318,7 +318,6 @@
     "debug": "^4.4.3",
     "divina-player-js": "git+https://github.com/readium/divina-player-js.git#4e1f859afb14b916923ec136af0284a72e22a990",
     "dompurify": "^3.3.1",
-    "dot-prop": "^10.1.0",
     "express": "^5.2.1",
     "fast-deep-equal": "^3.1.3",
     "fetch-cookie": "^3.2.0",

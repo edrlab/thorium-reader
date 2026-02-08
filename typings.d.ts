@@ -57,7 +57,6 @@ declare module "json-diff";
 // declare module "json-markup";
 // declare module "filehound";
 // declare module "selfsigned";
-declare module "dot-prop";
 declare module "cssesc";
 declare module "css.escape";
 // declare module "node-stream-zip";
