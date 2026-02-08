@@ -1,5 +1,5 @@
-import {IEpubCfiAssertionNode} from './assertion/IEpubCfiAssertionNode.js';
-import {IEpubCfiNode} from './IEpubCfiNode.js';
+import {IEpubCfiAssertionNode} from './assertion/IEpubCfiAssertionNode';
+import {IEpubCfiNode} from './IEpubCfiNode';
 
 /**
  * Describes a step in an EPUB CFI path.

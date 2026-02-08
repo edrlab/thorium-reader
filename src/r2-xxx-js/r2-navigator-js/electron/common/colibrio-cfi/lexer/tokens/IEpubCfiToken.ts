@@ -1,4 +1,4 @@
-import {EpubCfiTokenType} from '../EpubCfiTokenType.js';
+import {EpubCfiTokenType} from '../EpubCfiTokenType';
 
 export interface IEpubCfiToken {
     srcOffset: number;

@@ -1,10 +1,10 @@
 // import {describe, expect, it} from 'vitest';
-// import {isTextNode} from '../common/Utils.js';
-// import {EpubCfiIntendedTargetType} from './EpubCfiIntendedTargetType.js';
-// import {EpubCfiResolvedTarget} from './EpubCfiResolvedTarget.js';
-// import {EpubCfiResolver} from './EpubCfiResolver.js';
-// import {EpubCfiSideBias} from './EpubCfiSideBias.js';
-// import {EpubCfiVirtualTarget} from './EpubCfiVirtualTarget.js';
+// import {isTextNode} from '../common/Utils';
+// import {EpubCfiIntendedTargetType} from './EpubCfiIntendedTargetType';
+// import {EpubCfiResolvedTarget} from './EpubCfiResolvedTarget';
+// import {EpubCfiResolver} from './EpubCfiResolver';
+// import {EpubCfiSideBias} from './EpubCfiSideBias';
+// import {EpubCfiVirtualTarget} from './EpubCfiVirtualTarget';
 // // @ts-ignore
 // import testOpf from './test-data/testBookOpf.xml?raw';
 // // @ts-ignore

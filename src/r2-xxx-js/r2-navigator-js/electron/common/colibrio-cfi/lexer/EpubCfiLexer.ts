@@ -1,11 +1,11 @@
-import {CharCode} from '../common/definitions/CharCode.js';
-import {isString} from '../common/Utils.js';
-import {EpubCfiTokenType} from './EpubCfiTokenType.js';
-import {EpubCfiToken} from './tokens/EpubCfiToken.js';
-import {IEpubCfiAssertionToken} from './tokens/IEpubCfiAssertionToken.js';
-import {EpubCfiNumberTokenType, IEpubCfiNumberToken} from './tokens/IEpubCfiNumberToken.js';
-import {EpubCfiStringTokenType, IEpubCfiStringToken} from './tokens/IEpubCfiStringToken.js';
-import {IEpubCfiValueToken} from './tokens/IEpubCfiValueToken.js';
+import {CharCode} from '../common/definitions/CharCode';
+import {isString} from '../common/Utils';
+import {EpubCfiTokenType} from './EpubCfiTokenType';
+import {EpubCfiToken} from './tokens/EpubCfiToken';
+import {IEpubCfiAssertionToken} from './tokens/IEpubCfiAssertionToken';
+import {EpubCfiNumberTokenType, IEpubCfiNumberToken} from './tokens/IEpubCfiNumberToken';
+import {EpubCfiStringTokenType, IEpubCfiStringToken} from './tokens/IEpubCfiStringToken';
+import {IEpubCfiValueToken} from './tokens/IEpubCfiValueToken';
 
 /**
  * A lexer implementation for Epub CFI strings.

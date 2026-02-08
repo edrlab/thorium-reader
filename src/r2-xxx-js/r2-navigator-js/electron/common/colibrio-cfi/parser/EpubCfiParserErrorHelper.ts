@@ -1,7 +1,7 @@
-import {isArray, isObject, isString} from '../common/Utils.js';
-import {EpubCfiToken} from '../lexer/tokens/EpubCfiToken.js';
-import {EpubCfiParserErrorType} from './EpubCfiParserErrorType.js';
-import {IEpubCfiParserError} from './IEpubCfiParserError.js';
+import {isArray, isObject, isString} from '../common/Utils';
+import {EpubCfiToken} from '../lexer/tokens/EpubCfiToken';
+import {EpubCfiParserErrorType} from './EpubCfiParserErrorType';
+import {IEpubCfiParserError} from './IEpubCfiParserError';
 
 export class EpubCfiParserErrorHelper {
     static createError(errorType: EpubCfiParserErrorType, token?: EpubCfiToken | number): IEpubCfiParserError {

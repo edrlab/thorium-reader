@@ -1,5 +1,5 @@
-import {IEpubCfiCharacterOffsetNode} from './IEpubCfiCharacterOffsetNode.js';
-import {IEpubCfiSpatialOffsetNode} from './IEpubCfiSpatialOffsetNode.js';
-import {IEpubCfiTemporalOffsetNode} from './IEpubCfiTemporalOffsetNode.js';
+import {IEpubCfiCharacterOffsetNode} from './IEpubCfiCharacterOffsetNode';
+import {IEpubCfiSpatialOffsetNode} from './IEpubCfiSpatialOffsetNode';
+import {IEpubCfiTemporalOffsetNode} from './IEpubCfiTemporalOffsetNode';
 
 export type EpubCfiOffsetNode = IEpubCfiCharacterOffsetNode | IEpubCfiSpatialOffsetNode | IEpubCfiTemporalOffsetNode

@@ -1,6 +1,6 @@
 // import {describe, expect, it} from 'vitest';
-// import {EpubCfiParser} from '../parser/EpubCfiParser.js';
-// import {EpubCfiStringifier} from './EpubCfiStringifier.js';
+// import {EpubCfiParser} from '../parser/EpubCfiParser';
+// import {EpubCfiStringifier} from './EpubCfiStringifier';
 
 // describe('EpubCfiStringifier', () => {
 //     it('should stringify back to same string: epubcfi(/6/4[chap01ref]!/4[body01]/10[para05]/2/1:3[yyy])', () => {

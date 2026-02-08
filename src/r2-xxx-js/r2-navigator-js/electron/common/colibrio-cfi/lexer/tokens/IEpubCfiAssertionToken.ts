@@ -1,7 +1,7 @@
-import {EpubCfiTokenType} from '../EpubCfiTokenType.js';
-import {IEpubCfiStringToken} from './IEpubCfiStringToken.js';
-import {IEpubCfiToken} from './IEpubCfiToken.js';
-import {IEpubCfiValueToken} from './IEpubCfiValueToken.js';
+import {EpubCfiTokenType} from '../EpubCfiTokenType';
+import {IEpubCfiStringToken} from './IEpubCfiStringToken';
+import {IEpubCfiToken} from './IEpubCfiToken';
+import {IEpubCfiValueToken} from './IEpubCfiValueToken';
 
 export interface IEpubCfiAssertionToken extends IEpubCfiToken {
     type: EpubCfiTokenType.ASSERTION;

@@ -1,4 +1,4 @@
-import {EpubCfiParserErrorType} from './EpubCfiParserErrorType.js';
+import {EpubCfiParserErrorType} from './EpubCfiParserErrorType';
 
 /**
  * Describes an EPUB CFI parser error.

@@ -1,6 +1,6 @@
-import {IEpubCfiAssertionToken} from './IEpubCfiAssertionToken.js';
-import {IEpubCfiNumberToken} from './IEpubCfiNumberToken.js';
-import {IEpubCfiStringToken} from './IEpubCfiStringToken.js';
-import {IEpubCfiValueToken} from './IEpubCfiValueToken.js';
+import {IEpubCfiAssertionToken} from './IEpubCfiAssertionToken';
+import {IEpubCfiNumberToken} from './IEpubCfiNumberToken';
+import {IEpubCfiStringToken} from './IEpubCfiStringToken';
+import {IEpubCfiValueToken} from './IEpubCfiValueToken';
 
 export type EpubCfiToken = IEpubCfiAssertionToken | IEpubCfiNumberToken | IEpubCfiStringToken | IEpubCfiValueToken;

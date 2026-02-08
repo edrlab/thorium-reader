@@ -1,9 +1,9 @@
 // import {describe, expect, it} from 'vitest';
-// import {isArray} from '../common/Utils.js';
-// import {EpubCfiLexer} from './EpubCfiLexer.js';
-// import {EpubCfiTokenType} from './EpubCfiTokenType.js';
-// import {IEpubCfiAssertionToken} from './tokens/IEpubCfiAssertionToken.js';
-// import {IEpubCfiToken} from './tokens/IEpubCfiToken.js';
+// import {isArray} from '../common/Utils';
+// import {EpubCfiLexer} from './EpubCfiLexer';
+// import {EpubCfiTokenType} from './EpubCfiTokenType';
+// import {IEpubCfiAssertionToken} from './tokens/IEpubCfiAssertionToken';
+// import {IEpubCfiToken} from './tokens/IEpubCfiToken';
 
 // describe('EpubCfiLexer', () => {
 

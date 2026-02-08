@@ -1,12 +1,12 @@
-import {EpubCfiError} from '../EpubCfiError.js';
-import {EpubCfiErrorType} from '../EpubCfiErrorType.js';
-import {EpubCfiUtils} from '../EpubCfiUtils.js';
-import {IEpubCfiPathNode} from '../model/IEpubCfiPathNode.js';
-import {IEpubCfiRootNode} from '../model/IEpubCfiRootNode.js';
-import {EpubCfiStringifier} from '../stringifier/EpubCfiStringifier.js';
-import {EpubCfiBuilderHelper} from './EpubCfiBuilderHelper.js';
-import {copy} from "../common/Utils.js";
-import {ArrayUtils} from "../common/ArrayUtils.js";
+import {EpubCfiError} from '../EpubCfiError';
+import {EpubCfiErrorType} from '../EpubCfiErrorType';
+import {EpubCfiUtils} from '../EpubCfiUtils';
+import {IEpubCfiPathNode} from '../model/IEpubCfiPathNode';
+import {IEpubCfiRootNode} from '../model/IEpubCfiRootNode';
+import {EpubCfiStringifier} from '../stringifier/EpubCfiStringifier';
+import {EpubCfiBuilderHelper} from './EpubCfiBuilderHelper';
+import {copy} from "../common/Utils";
+import {ArrayUtils} from "../common/ArrayUtils";
 
 /**
  * Used for programmatically building EPUB CFI model objects from XML-based documents.

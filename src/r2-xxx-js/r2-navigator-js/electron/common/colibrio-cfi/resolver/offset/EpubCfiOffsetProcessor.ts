@@ -1,10 +1,10 @@
-import {isElement, isNumber, isTextNode} from '../../common/Utils.js';
-import {EpubCfiOffsetType} from '../../model/offset/EpubCfiOffsetType.js';
-import {IEpubCfiCharacterOffsetNode} from '../../model/offset/IEpubCfiCharacterOffsetNode.js';
-import {IEpubCfiSpatialOffsetNode} from '../../model/offset/IEpubCfiSpatialOffsetNode.js';
-import {IEpubCfiTemporalOffsetNode} from '../../model/offset/IEpubCfiTemporalOffsetNode.js';
-import {EpubCfiIntendedTargetType} from '../EpubCfiIntendedTargetType.js';
-import {EpubCfiResolvedPath} from '../EpubCfiResolvedPath.js';
+import {isElement, isNumber, isTextNode} from '../../common/Utils';
+import {EpubCfiOffsetType} from '../../model/offset/EpubCfiOffsetType';
+import {IEpubCfiCharacterOffsetNode} from '../../model/offset/IEpubCfiCharacterOffsetNode';
+import {IEpubCfiSpatialOffsetNode} from '../../model/offset/IEpubCfiSpatialOffsetNode';
+import {IEpubCfiTemporalOffsetNode} from '../../model/offset/IEpubCfiTemporalOffsetNode';
+import {EpubCfiIntendedTargetType} from '../EpubCfiIntendedTargetType';
+import {EpubCfiResolvedPath} from '../EpubCfiResolvedPath';
 
 export class EpubCfiOffsetProcessor {
     constructor() {

@@ -1,5 +1,6 @@
 module.exports = {
     ignorePatterns: [
+        "src/r2-xxx-js/r2-navigator-js/electron/common/colibrio-cfi/*",
         ".vscode/*",
         ".history/*",
         ".github/*",
@@ -16,7 +17,7 @@ module.exports = {
         "src/renderer/assets/*",
         "src/renderer/reader/pdf/*",
         ".zed/*",
-        ".flox/*"
+        ".flox/*",
     ],
     // ignorePatterns: [ "*.*" ],
     parser: "@typescript-eslint/parser",

@@ -1,4 +1,4 @@
-import {NodeType} from './definitions/NodeType.js';
+import {NodeType} from './definitions/NodeType';
 
 export function isDocument(node: any): node is Document {
     return node && node.nodeType === NodeType.DOCUMENT_NODE;

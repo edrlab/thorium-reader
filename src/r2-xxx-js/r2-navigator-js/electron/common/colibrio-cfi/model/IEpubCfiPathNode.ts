@@ -1,6 +1,6 @@
-import {IEpubCfiLocalPathNode} from './IEpubCfiLocalPathNode.js';
-import {IEpubCfiNode} from './IEpubCfiNode.js';
-import {EpubCfiOffsetNode} from './offset/EpubCfiOffsetNode.js';
+import {IEpubCfiLocalPathNode} from './IEpubCfiLocalPathNode';
+import {IEpubCfiNode} from './IEpubCfiNode';
+import {EpubCfiOffsetNode} from './offset/EpubCfiOffsetNode';
 
 /**
  * Describes a full parent path, range start, or range end path.

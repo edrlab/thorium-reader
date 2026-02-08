@@ -1,6 +1,6 @@
-import {IEpubCfiParserError} from '../parser/IEpubCfiParserError.js';
-import {IEpubCfiNode} from './IEpubCfiNode.js';
-import {IEpubCfiPathNode} from './IEpubCfiPathNode.js';
+import {IEpubCfiParserError} from '../parser/IEpubCfiParserError';
+import {IEpubCfiNode} from './IEpubCfiNode';
+import {IEpubCfiPathNode} from './IEpubCfiPathNode';
 
 /**
  * The root node of the EPUB CFI AST (Abstract Syntax Tree).

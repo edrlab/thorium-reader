@@ -1,13 +1,13 @@
-import {ArrayUtils} from '../common/ArrayUtils.js';
-import {isDocument} from '../common/Utils.js';
-import {IEpubCfiPathNode} from '../model/IEpubCfiPathNode.js';
-import {EpubCfiIntendedTargetType} from './EpubCfiIntendedTargetType.js';
-import {EpubCfiResolvedLocalPath} from './EpubCfiResolvedLocalPath.js';
-import {EpubCfiSideBias} from './EpubCfiSideBias.js';
-import {EpubCfiVirtualTarget} from './EpubCfiVirtualTarget.js';
-import {IEpubCfiResolverError} from './IEpubCfiResolverError.js';
-import {IEpubCfiSpatialOffset} from './offset/IEpubCfiSpatialOffset.js';
-import {IEpubCfiTemporalOffset} from './offset/IEpubCfiTemporalOffset.js';
+import {ArrayUtils} from '../common/ArrayUtils';
+import {isDocument} from '../common/Utils';
+import {IEpubCfiPathNode} from '../model/IEpubCfiPathNode';
+import {EpubCfiIntendedTargetType} from './EpubCfiIntendedTargetType';
+import {EpubCfiResolvedLocalPath} from './EpubCfiResolvedLocalPath';
+import {EpubCfiSideBias} from './EpubCfiSideBias';
+import {EpubCfiVirtualTarget} from './EpubCfiVirtualTarget';
+import {IEpubCfiResolverError} from './IEpubCfiResolverError';
+import {IEpubCfiSpatialOffset} from './offset/IEpubCfiSpatialOffset';
+import {IEpubCfiTemporalOffset} from './offset/IEpubCfiTemporalOffset';
 
 export class EpubCfiResolvedPath {
 

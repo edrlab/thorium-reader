@@ -1,13 +1,13 @@
-import {DomUtils} from '../common/DomUtils.js';
-import {isElement, isTextNode} from '../common/Utils.js';
-import {EpubCfiUtils} from '../EpubCfiUtils.js';
-import {IEpubCfiLocalPathNode} from '../model/IEpubCfiLocalPathNode.js';
-import {IEpubCfiStepNode} from '../model/IEpubCfiStepNode.js';
-import {EpubCfiIntendedTargetType} from './EpubCfiIntendedTargetType.js';
-import {EpubCfiResolvedLocalPath} from './EpubCfiResolvedLocalPath.js';
-import {EpubCfiResolvedPath} from './EpubCfiResolvedPath.js';
-import {EpubCfiResolverErrorType} from './EpubCfiResolverErrorType.js';
-import {EpubCfiVirtualTarget} from './EpubCfiVirtualTarget.js';
+import {DomUtils} from '../common/DomUtils';
+import {isElement, isTextNode} from '../common/Utils';
+import {EpubCfiUtils} from '../EpubCfiUtils';
+import {IEpubCfiLocalPathNode} from '../model/IEpubCfiLocalPathNode';
+import {IEpubCfiStepNode} from '../model/IEpubCfiStepNode';
+import {EpubCfiIntendedTargetType} from './EpubCfiIntendedTargetType';
+import {EpubCfiResolvedLocalPath} from './EpubCfiResolvedLocalPath';
+import {EpubCfiResolvedPath} from './EpubCfiResolvedPath';
+import {EpubCfiResolverErrorType} from './EpubCfiResolverErrorType';
+import {EpubCfiVirtualTarget} from './EpubCfiVirtualTarget';
 
 /**
  * Resolves all element steps and text steps in an IEpubCfiLocalPathNode.
@@ -218,5 +218,3 @@ export class EpubCfiLocalPathResolver {
     }
 
 }
-
-

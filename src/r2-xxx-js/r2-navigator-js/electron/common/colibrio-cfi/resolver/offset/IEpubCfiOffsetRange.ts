@@ -1,6 +1,6 @@
-import {IEpubCfiCharacterOffset} from './IEpubCfiCharacterOffset.js';
-import {IEpubCfiSpatialOffset} from './IEpubCfiSpatialOffset.js';
-import {IEpubCfiTemporalOffset} from './IEpubCfiTemporalOffset.js';
+import {IEpubCfiCharacterOffset} from './IEpubCfiCharacterOffset';
+import {IEpubCfiSpatialOffset} from './IEpubCfiSpatialOffset';
+import {IEpubCfiTemporalOffset} from './IEpubCfiTemporalOffset';
 
 /**
  * Generic type to describe a range between two EPUB CFI Offsets.

@@ -1,7 +1,7 @@
-import {EpubCfiTokenType} from './EpubCfiTokenType.js';
-import {IEpubCfiNumberToken} from './tokens/IEpubCfiNumberToken.js';
-import {IEpubCfiStringToken} from './tokens/IEpubCfiStringToken.js';
-import {IEpubCfiValueToken} from './tokens/IEpubCfiValueToken.js';
+import {EpubCfiTokenType} from './EpubCfiTokenType';
+import {IEpubCfiNumberToken} from './tokens/IEpubCfiNumberToken';
+import {IEpubCfiStringToken} from './tokens/IEpubCfiStringToken';
+import {IEpubCfiValueToken} from './tokens/IEpubCfiValueToken';
 
 export interface IEpubCfiTokenTypeMapping {
     [EpubCfiTokenType.NUMBER]: IEpubCfiNumberToken;

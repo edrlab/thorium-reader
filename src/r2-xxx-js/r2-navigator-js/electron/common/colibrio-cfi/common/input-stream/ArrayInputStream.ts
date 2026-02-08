@@ -1,4 +1,4 @@
-import {IInputStream} from './IInputStream.js';
+import {IInputStream} from './IInputStream';
 
 export class ArrayInputStream<T> implements IInputStream<T> {
 

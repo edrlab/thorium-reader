@@ -1,5 +1,5 @@
-import {IEpubCfiNode} from './IEpubCfiNode.js';
-import {IEpubCfiStepNode} from './IEpubCfiStepNode.js';
+import {IEpubCfiNode} from './IEpubCfiNode';
+import {IEpubCfiStepNode} from './IEpubCfiStepNode';
 
 /**
  * Describes the path to a target node within a document.

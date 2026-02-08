@@ -1,4 +1,4 @@
-import {IEpubCfiNode} from '../IEpubCfiNode.js';
+import {IEpubCfiNode} from '../IEpubCfiNode';
 
 /**
  * Describes a parameter name/value pair inside an assertion.

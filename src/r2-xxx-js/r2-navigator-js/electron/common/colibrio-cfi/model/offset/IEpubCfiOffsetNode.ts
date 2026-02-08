@@ -1,6 +1,6 @@
-import {IEpubCfiAssertionNode} from '../assertion/IEpubCfiAssertionNode.js';
-import {IEpubCfiNode} from '../IEpubCfiNode.js';
-import {EpubCfiOffsetType} from './EpubCfiOffsetType.js';
+import {IEpubCfiAssertionNode} from '../assertion/IEpubCfiAssertionNode';
+import {IEpubCfiNode} from '../IEpubCfiNode';
+import {EpubCfiOffsetType} from './EpubCfiOffsetType';
 
 /**
  * The base type for all various EPUB CFI offset types.

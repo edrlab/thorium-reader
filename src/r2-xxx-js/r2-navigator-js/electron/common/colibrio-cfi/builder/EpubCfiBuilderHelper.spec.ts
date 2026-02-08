@@ -1,9 +1,9 @@
 // import {describe, expect, it} from 'vitest';
-// import {NodeType} from '../common/definitions/NodeType.js';
-// import {DomUtils} from '../common/DomUtils.js';
-// import {EpubCfiOffsetType} from '../model/offset/EpubCfiOffsetType.js';
-// import {IEpubCfiCharacterOffsetNode} from '../model/offset/IEpubCfiCharacterOffsetNode.js';
-// import {EpubCfiBuilderHelper} from './EpubCfiBuilderHelper.js';
+// import {NodeType} from '../common/definitions/NodeType';
+// import {DomUtils} from '../common/DomUtils';
+// import {EpubCfiOffsetType} from '../model/offset/EpubCfiOffsetType';
+// import {IEpubCfiCharacterOffsetNode} from '../model/offset/IEpubCfiCharacterOffsetNode';
+// import {EpubCfiBuilderHelper} from './EpubCfiBuilderHelper';
 // // @ts-ignore
 // import testXhtml from './test-data/example-doc.xhtml?raw';
 

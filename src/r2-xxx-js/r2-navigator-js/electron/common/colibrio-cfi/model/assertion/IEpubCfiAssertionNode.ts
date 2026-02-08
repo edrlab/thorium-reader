@@ -1,5 +1,5 @@
-import {IEpubCfiNode} from '../IEpubCfiNode.js';
-import {IEpubCfiAssertionParameterNode} from './IEpubCfiAssertionParameterNode.js';
+import {IEpubCfiNode} from '../IEpubCfiNode';
+import {IEpubCfiAssertionParameterNode} from './IEpubCfiAssertionParameterNode';
 
 /**
  * The base type used for assertions.

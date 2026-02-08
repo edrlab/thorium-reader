@@ -1,5 +1,5 @@
-import {EpubCfiTokenType} from '../EpubCfiTokenType.js';
-import {IEpubCfiToken} from './IEpubCfiToken.js';
+import {EpubCfiTokenType} from '../EpubCfiTokenType';
+import {IEpubCfiToken} from './IEpubCfiToken';
 
 export interface IEpubCfiStringToken extends IEpubCfiToken {
     type: EpubCfiStringTokenType;

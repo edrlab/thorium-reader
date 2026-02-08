@@ -1,13 +1,13 @@
-import {IEpubCfiRootNode} from '../model/IEpubCfiRootNode.js';
-import {IEpubCfiParserError} from '../parser/IEpubCfiParserError.js';
-import {EpubCfiResolvedPath} from './EpubCfiResolvedPath.js';
-import {EpubCfiSideBias} from './EpubCfiSideBias.js';
-import {IEpubCfiResolverError} from './IEpubCfiResolverError.js';
-import {IEpubCfiIndirection} from './indirection/IEpubCfiIndirection.js';
-import {IEpubCfiCharacterOffset} from './offset/IEpubCfiCharacterOffset.js';
-import {EpubCfiOffsetRangeType, IEpubCfiOffsetRange} from './offset/IEpubCfiOffsetRange.js';
-import {IEpubCfiSpatialOffset} from './offset/IEpubCfiSpatialOffset.js';
-import {IEpubCfiTemporalOffset} from './offset/IEpubCfiTemporalOffset.js';
+import {IEpubCfiRootNode} from '../model/IEpubCfiRootNode';
+import {IEpubCfiParserError} from '../parser/IEpubCfiParserError';
+import {EpubCfiResolvedPath} from './EpubCfiResolvedPath';
+import {EpubCfiSideBias} from './EpubCfiSideBias';
+import {IEpubCfiResolverError} from './IEpubCfiResolverError';
+import {IEpubCfiIndirection} from './indirection/IEpubCfiIndirection';
+import {IEpubCfiCharacterOffset} from './offset/IEpubCfiCharacterOffset';
+import {EpubCfiOffsetRangeType, IEpubCfiOffsetRange} from './offset/IEpubCfiOffsetRange';
+import {IEpubCfiSpatialOffset} from './offset/IEpubCfiSpatialOffset';
+import {IEpubCfiTemporalOffset} from './offset/IEpubCfiTemporalOffset';
 
 /**
  * The result of running the EpubCfiResolver against an EPUB CFI.

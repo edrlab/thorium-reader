@@ -1,21 +1,21 @@
-import {ArrayUtils} from '../common/ArrayUtils.js';
-import {DomUtils} from '../common/DomUtils.js';
-import {isDocument, isDocumentFragment, isElement, isString} from '../common/Utils.js';
-import {IEpubCfiAssertionNode} from '../model/assertion/IEpubCfiAssertionNode.js';
-import {IEpubCfiLocalPathNode} from '../model/IEpubCfiLocalPathNode.js';
-import {IEpubCfiPathNode} from '../model/IEpubCfiPathNode.js';
-import {IEpubCfiRootNode} from '../model/IEpubCfiRootNode.js';
-import {EpubCfiParser} from '../parser/EpubCfiParser.js';
-import {EpubCfiIntendedTargetType} from './EpubCfiIntendedTargetType.js';
-import {EpubCfiLocalPathResolver} from './EpubCfiLocalPathResolver.js';
-import {EpubCfiPathType} from './EpubCfiPathType.js';
-import {EpubCfiResolvedLocalPath} from './EpubCfiResolvedLocalPath.js';
-import {EpubCfiResolvedPath} from './EpubCfiResolvedPath.js';
-import {EpubCfiResolvedTarget} from './EpubCfiResolvedTarget.js';
-import {EpubCfiResolverErrorType} from './EpubCfiResolverErrorType.js';
-import {EpubCfiSideBias} from './EpubCfiSideBias.js';
-import {IEpubCfiIndirectionResult} from './indirection/IEpubCfiIndirectionResult.js';
-import {EpubCfiOffsetProcessor} from './offset/EpubCfiOffsetProcessor.js';
+import {ArrayUtils} from '../common/ArrayUtils';
+import {DomUtils} from '../common/DomUtils';
+import {isDocument, isDocumentFragment, isElement, isString} from '../common/Utils';
+import {IEpubCfiAssertionNode} from '../model/assertion/IEpubCfiAssertionNode';
+import {IEpubCfiLocalPathNode} from '../model/IEpubCfiLocalPathNode';
+import {IEpubCfiPathNode} from '../model/IEpubCfiPathNode';
+import {IEpubCfiRootNode} from '../model/IEpubCfiRootNode';
+import {EpubCfiParser} from '../parser/EpubCfiParser';
+import {EpubCfiIntendedTargetType} from './EpubCfiIntendedTargetType';
+import {EpubCfiLocalPathResolver} from './EpubCfiLocalPathResolver';
+import {EpubCfiPathType} from './EpubCfiPathType';
+import {EpubCfiResolvedLocalPath} from './EpubCfiResolvedLocalPath';
+import {EpubCfiResolvedPath} from './EpubCfiResolvedPath';
+import {EpubCfiResolvedTarget} from './EpubCfiResolvedTarget';
+import {EpubCfiResolverErrorType} from './EpubCfiResolverErrorType';
+import {EpubCfiSideBias} from './EpubCfiSideBias';
+import {IEpubCfiIndirectionResult} from './indirection/IEpubCfiIndirectionResult';
+import {EpubCfiOffsetProcessor} from './offset/EpubCfiOffsetProcessor';
 
 /**
  * Used for resolving an EPUB CFI against XML-based documents.

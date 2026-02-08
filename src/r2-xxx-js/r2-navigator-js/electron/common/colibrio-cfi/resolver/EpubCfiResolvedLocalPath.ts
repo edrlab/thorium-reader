@@ -1,9 +1,9 @@
-import {isDocument, isElement} from '../common/Utils.js';
-import {IEpubCfiLocalPathNode} from '../model/IEpubCfiLocalPathNode.js';
-import {EpubCfiIntendedTargetType} from './EpubCfiIntendedTargetType.js';
-import {EpubCfiResolverErrorType} from './EpubCfiResolverErrorType.js';
-import {EpubCfiVirtualTarget} from './EpubCfiVirtualTarget.js';
-import {IEpubCfiResolverError} from './IEpubCfiResolverError.js';
+import {isDocument, isElement} from '../common/Utils';
+import {IEpubCfiLocalPathNode} from '../model/IEpubCfiLocalPathNode';
+import {EpubCfiIntendedTargetType} from './EpubCfiIntendedTargetType';
+import {EpubCfiResolverErrorType} from './EpubCfiResolverErrorType';
+import {EpubCfiVirtualTarget} from './EpubCfiVirtualTarget';
+import {IEpubCfiResolverError} from './IEpubCfiResolverError';
 
 export class EpubCfiResolvedLocalPath {
 

@@ -1,14 +1,14 @@
-import {isNumber} from '../common/Utils.js';
-import {IEpubCfiAssertionNode} from '../model/assertion/IEpubCfiAssertionNode.js';
-import {IEpubCfiLocalPathNode} from '../model/IEpubCfiLocalPathNode.js';
-import {IEpubCfiPathNode} from '../model/IEpubCfiPathNode.js';
-import {IEpubCfiRootNode} from '../model/IEpubCfiRootNode.js';
-import {IEpubCfiStepNode} from '../model/IEpubCfiStepNode.js';
-import {EpubCfiOffsetNode} from '../model/offset/EpubCfiOffsetNode.js';
-import {EpubCfiOffsetType} from '../model/offset/EpubCfiOffsetType.js';
-import {IEpubCfiCharacterOffsetNode} from '../model/offset/IEpubCfiCharacterOffsetNode.js';
-import {IEpubCfiSpatialOffsetNode} from '../model/offset/IEpubCfiSpatialOffsetNode.js';
-import {IEpubCfiTemporalOffsetNode} from '../model/offset/IEpubCfiTemporalOffsetNode.js';
+import {isNumber} from '../common/Utils';
+import {IEpubCfiAssertionNode} from '../model/assertion/IEpubCfiAssertionNode';
+import {IEpubCfiLocalPathNode} from '../model/IEpubCfiLocalPathNode';
+import {IEpubCfiPathNode} from '../model/IEpubCfiPathNode';
+import {IEpubCfiRootNode} from '../model/IEpubCfiRootNode';
+import {IEpubCfiStepNode} from '../model/IEpubCfiStepNode';
+import {EpubCfiOffsetNode} from '../model/offset/EpubCfiOffsetNode';
+import {EpubCfiOffsetType} from '../model/offset/EpubCfiOffsetType';
+import {IEpubCfiCharacterOffsetNode} from '../model/offset/IEpubCfiCharacterOffsetNode';
+import {IEpubCfiSpatialOffsetNode} from '../model/offset/IEpubCfiSpatialOffsetNode';
+import {IEpubCfiTemporalOffsetNode} from '../model/offset/IEpubCfiTemporalOffsetNode';
 
 /**
  * Used for serializing parsed EPUB CFI object trees into fragment selector strings.

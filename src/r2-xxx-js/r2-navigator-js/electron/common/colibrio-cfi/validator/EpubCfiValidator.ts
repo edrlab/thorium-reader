@@ -1,11 +1,11 @@
-import {ArrayUtils} from '../common/ArrayUtils.js';
-import {EpubCfiUtils} from '../EpubCfiUtils.js';
-import {IEpubCfiPathNode} from '../model/IEpubCfiPathNode.js';
-import {IEpubCfiRootNode} from '../model/IEpubCfiRootNode.js';
-import {IEpubCfiStepNode} from '../model/IEpubCfiStepNode.js';
-import {EpubCfiOffsetType} from '../model/offset/EpubCfiOffsetType.js';
-import {EpubCfiParserErrorHelper} from '../parser/EpubCfiParserErrorHelper.js';
-import {EpubCfiParserErrorType} from '../parser/EpubCfiParserErrorType.js';
+import {ArrayUtils} from '../common/ArrayUtils';
+import {EpubCfiUtils} from '../EpubCfiUtils';
+import {IEpubCfiPathNode} from '../model/IEpubCfiPathNode';
+import {IEpubCfiRootNode} from '../model/IEpubCfiRootNode';
+import {IEpubCfiStepNode} from '../model/IEpubCfiStepNode';
+import {EpubCfiOffsetType} from '../model/offset/EpubCfiOffsetType';
+import {EpubCfiParserErrorHelper} from '../parser/EpubCfiParserErrorHelper';
+import {EpubCfiParserErrorType} from '../parser/EpubCfiParserErrorType';
 
 /**
  * Contains various validation and correction methods to repair broken EPUB CFIs.

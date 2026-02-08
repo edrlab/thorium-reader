@@ -1,4 +1,4 @@
-import {EpubCfiResolverErrorType} from './EpubCfiResolverErrorType.js';
+import {EpubCfiResolverErrorType} from './EpubCfiResolverErrorType';
 
 /**
  *

@@ -1,15 +1,15 @@
-import {DomUtils} from '../common/DomUtils.js';
-import {isElement, isTextNode} from '../common/Utils.js';
-import {EpubCfiError} from '../EpubCfiError.js';
-import {EpubCfiErrorType} from '../EpubCfiErrorType.js';
-import {EpubCfiUtils} from '../EpubCfiUtils.js';
-import {IEpubCfiAssertionNode} from '../model/assertion/IEpubCfiAssertionNode.js';
-import {IEpubCfiLocalPathNode} from '../model/IEpubCfiLocalPathNode.js';
-import {IEpubCfiPathNode} from '../model/IEpubCfiPathNode.js';
-import {IEpubCfiRootNode} from '../model/IEpubCfiRootNode.js';
-import {IEpubCfiStepNode} from '../model/IEpubCfiStepNode.js';
-import {EpubCfiOffsetType} from '../model/offset/EpubCfiOffsetType.js';
-import {IEpubCfiCharacterOffsetNode} from '../model/offset/IEpubCfiCharacterOffsetNode.js';
+import {DomUtils} from '../common/DomUtils';
+import {isElement, isTextNode} from '../common/Utils';
+import {EpubCfiError} from '../EpubCfiError';
+import {EpubCfiErrorType} from '../EpubCfiErrorType';
+import {EpubCfiUtils} from '../EpubCfiUtils';
+import {IEpubCfiAssertionNode} from '../model/assertion/IEpubCfiAssertionNode';
+import {IEpubCfiLocalPathNode} from '../model/IEpubCfiLocalPathNode';
+import {IEpubCfiPathNode} from '../model/IEpubCfiPathNode';
+import {IEpubCfiRootNode} from '../model/IEpubCfiRootNode';
+import {IEpubCfiStepNode} from '../model/IEpubCfiStepNode';
+import {EpubCfiOffsetType} from '../model/offset/EpubCfiOffsetType';
+import {IEpubCfiCharacterOffsetNode} from '../model/offset/IEpubCfiCharacterOffsetNode';
 
 /**
  * This is a helper class intended to be used internally.

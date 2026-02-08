@@ -1,12 +1,12 @@
 // import {describe, expect, it} from 'vitest';
-// import {ArrayUtils} from '../common/ArrayUtils.js';
-// import {IEpubCfiPathNode} from '../model/IEpubCfiPathNode.js';
-// import {EpubCfiOffsetType} from '../model/offset/EpubCfiOffsetType.js';
-// import {IEpubCfiCharacterOffsetNode} from '../model/offset/IEpubCfiCharacterOffsetNode.js';
-// import {IEpubCfiSpatialOffsetNode} from '../model/offset/IEpubCfiSpatialOffsetNode.js';
-// import {IEpubCfiTemporalOffsetNode} from '../model/offset/IEpubCfiTemporalOffsetNode.js';
-// import {EpubCfiParser} from './EpubCfiParser.js';
-// import {EpubCfiParserErrorType} from './EpubCfiParserErrorType.js';
+// import {ArrayUtils} from '../common/ArrayUtils';
+// import {IEpubCfiPathNode} from '../model/IEpubCfiPathNode';
+// import {EpubCfiOffsetType} from '../model/offset/EpubCfiOffsetType';
+// import {IEpubCfiCharacterOffsetNode} from '../model/offset/IEpubCfiCharacterOffsetNode';
+// import {IEpubCfiSpatialOffsetNode} from '../model/offset/IEpubCfiSpatialOffsetNode';
+// import {IEpubCfiTemporalOffsetNode} from '../model/offset/IEpubCfiTemporalOffsetNode';
+// import {EpubCfiParser} from './EpubCfiParser';
+// import {EpubCfiParserErrorType} from './EpubCfiParserErrorType';
 
 // describe('EpubCfiParser', () => {
 

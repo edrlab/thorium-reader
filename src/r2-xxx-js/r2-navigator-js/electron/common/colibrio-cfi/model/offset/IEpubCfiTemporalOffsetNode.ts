@@ -1,5 +1,5 @@
-import {EpubCfiOffsetType} from './EpubCfiOffsetType.js';
-import {IEpubCfiOffsetNode} from './IEpubCfiOffsetNode.js';
+import {EpubCfiOffsetType} from './EpubCfiOffsetType';
+import {IEpubCfiOffsetNode} from './IEpubCfiOffsetNode';
 
 /**
  * Describes a temporal offset within a media element, and optionally spatial coordinates.
