@@ -95,7 +95,7 @@
         "noPublicationHelpL2": "eller använd \"{{- importTitle }}\"-knappen ovanför.",
         "noPublicationHelpL3": "LCP-skyddade filer stöds.",
         "noPublicationHelpL4": "Filtyper som stöds:",
-        "numberOfPages": "Sida",
+        "numberOfPages": "Antal sidor",
         "opds": {
             "auth": {
                 "cancel": "Avbryt",
@@ -261,7 +261,7 @@
             "goSubBook": "Prenumerera"
         },
         "network": {
-            "error": "Kunde inte nå OPDS-flödet",
+            "error": "Fel åtkomst till feed",
             "noInternet": "Inget internet",
             "noInternetMessage": "Prova detta: kolla nätverkssladden, modemet, routern eller det trådlösa nätverket",
             "reject": "Ett oväntat fel uppstod!",
@@ -729,7 +729,7 @@
             "next": "Nästa",
             "pause": "Pausa",
             "play": "Läs upp",
-            "previous": "Föregående",
+            "previous": "Föregående högläsning",
             "skip": "Överhoppning",
             "skipDescription": "Hoppa över sekundärt innehåll såsom sidbrytningar, fotnoter och slutnoter.",
             "speed": "Uppläsningshastighet",
@@ -891,7 +891,7 @@
             "options": "Alternativ för text-till-tal",
             "pause": "Pausa",
             "play": "Läs upp",
-            "previous": "Föregående",
+            "previous": "Föregående text-till-tal",
             "sentenceDetect": "Markera text-till-tal på meningsnivå",
             "sentenceDetectDescription": "Dela upp långa stycken i meningar.",
             "speed": "Uppläsningshastighet",
