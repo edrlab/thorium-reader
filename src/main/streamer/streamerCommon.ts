@@ -75,7 +75,7 @@ if (__TH__IS_PACKAGED__) {
     // rcssPath = "r2-navigator-js/dist/ReadiumCSS";
     // rcssPath = path.normalize(path.join(__dirname, _NODE_MODULE_RELATIVE_URL, rcssPath));
 
-    rcssPath = "src/resources/ReadiumCSS";
+    // rcssPath = "src/resources/ReadiumCSS";
     rcssPath = path.normalize(path.join(__dirname, rcssPath));
 }
 
