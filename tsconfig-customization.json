@@ -76,22 +76,22 @@
         "./test/*"
       ],
       "@r2-utils-js/*": [
-        "./node_modules/r2-utils-js/dist/es8-es2017/src/*"
+        "./src/r2-xxx-js/r2-utils-js/*"
       ],
       "@r2-opds-js/*": [
-        "./node_modules/r2-opds-js/dist/es8-es2017/src/*"
+        "./src/r2-xxx-js/r2-opds-js/*"
       ],
       "@r2-shared-js/*": [
-        "./node_modules/r2-shared-js/dist/es8-es2017/src/*"
+        "./src/r2-xxx-js/r2-shared-js/*"
       ],
       "@r2-streamer-js/*": [
-        "./node_modules/r2-streamer-js/dist/es8-es2017/src/*"
+        "./src/r2-xxx-js/r2-streamer-js/*"
       ],
       "@r2-navigator-js/*": [
-        "./node_modules/r2-navigator-js/dist/es8-es2017/src/*"
+        "./src/r2-xxx-js/r2-navigator-js/*"
       ],
       "@r2-lcp-js/*": [
-        "./node_modules/r2-lcp-js/dist/es8-es2017/src/*"
+        "./src/r2-xxx-js/r2-lcp-js/*"
       ],
       "@lunr-languages/*": [
         "./node_modules/lunr-languages/*"
