@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import * as mime from "mime-types";
-import * as moment from "moment";
+import moment from "moment";
 import * as path from "path";
 import * as xmldom from "@xmldom/xmldom";
 
@@ -1945,7 +1945,7 @@ export const flattenDaisy2SmilAudioSeq = (_smilPathInZip: string, smilXmlDoc: Do
 };
 
 // mo.initialized true/false is automatically handled
-export const lazyLoadMediaOverlays = async (publication: Publication, mo: MediaOverlayNode) => {
+export const lazyLoadMediaOverlays = async (publication: Publication, mo: MediaOverlayNode): Promise<void> => {
 
     if (mo.initialized || !mo.SmilPathInZip) {
         return;

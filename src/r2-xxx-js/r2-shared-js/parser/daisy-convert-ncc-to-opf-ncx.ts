@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as he from "he";
-import * as debug_ from "debug";
+import debug_ from "debug";
 import * as mime from "mime-types";
 import * as path from "path";
 import * as xmldom from "@xmldom/xmldom";

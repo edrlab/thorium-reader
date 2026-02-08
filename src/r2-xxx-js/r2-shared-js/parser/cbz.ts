@@ -7,7 +7,7 @@
 
 import * as mime from "mime-types";
 import * as path from "path";
-import * as slugify from "slugify";
+import slugify from "slugify";
 import * as xmldom from "@xmldom/xmldom";
 
 import { Metadata } from "@r2-shared-js/models/metadata";

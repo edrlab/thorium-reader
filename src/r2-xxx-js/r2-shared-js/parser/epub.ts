@@ -5,10 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import * as fs from "fs";
 import { imageSize } from "image-size";
-import { ISize } from "image-size/dist/types/interface";
+// import { ISize } from "image-size/dist/types/interface";
 import * as path from "path";
 import { URL } from "url";
 import * as xmldom from "@xmldom/xmldom";
@@ -93,7 +93,7 @@ export const addCoverDimensions = async (publication: Publication, coverLink: Li
         try {
             zipData = await streamToBufferPromise(zipStream.stream);
 
-            const imageInfo = imageSize(zipData) as ISize;
+            const imageInfo = imageSize(zipData);
             if (imageInfo && imageInfo.width && imageInfo.height) {
                 coverLink.Width = imageInfo.width;
                 coverLink.Height = imageInfo.height;

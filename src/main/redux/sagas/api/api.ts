@@ -43,7 +43,7 @@ function* processRequest(requestAction: apiActions.request.TAction): SagaGenerat
         );
 
         yield put(apiActions.result.build(api, result));
-    } catch (error) {
+    } catch (error: any) {
         debug("API-ERROR", error, "requestAction: ", requestAction);
         yield put(apiActions.result.build(api, new CodeError("API-ERROR", error.message)));
     } finally {

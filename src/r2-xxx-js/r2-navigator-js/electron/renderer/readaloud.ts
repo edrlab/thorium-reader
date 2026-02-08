@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debounce from "debounce";
+import debounce from "debounce";
 
 import {
     IEventPayload_R2_EVENT_TTS_CLICK_ENABLE, IEventPayload_R2_EVENT_TTS_DO_NEXT_OR_PREVIOUS,
@@ -27,7 +27,7 @@ import { ReadiumElectronBrowserWindow, IReadiumElectronWebview } from "./webview
 import { IColor } from "../common/highlight";
 import { IRangeInfo } from "../common/selection";
 
-// import * as debug_ from "debug";
+// import debug_ from "debug";
 // const debug = debug_("r2:navigator#electron/renderer/index");
 // const IS_DEV = (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev");
 
@@ -216,7 +216,7 @@ export function ttsPlay(speed: number, voice: SpeechSynthesisVoice[] | SpeechSyn
     } else if (voice && Array.isArray(voice)) {
         ttsVoices(voice);
     } else {
-        ttsVoice(voice); // when null, same as ttsVoices(null) ==> resets the entire set
+        ttsVoice(voice as SpeechSynthesisVoice | null); // when null, same as ttsVoices(null) ==> resets the entire set
     }
 
     let startElementCSSSelector: string | undefined;

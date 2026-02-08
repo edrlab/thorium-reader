@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as crypto from "crypto";
-import * as debounce from "debounce";
+import debounce from "debounce";
 import { ipcRenderer } from "electron";
 
 import {

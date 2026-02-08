@@ -168,6 +168,6 @@ export const readiumCSSDefaults = {
 
     // 0 | 0.0675rem | 0.125rem | 0.1875rem | 0.25rem | 0.3125rem | 0.375rem | 0.4375rem | 0.5rem | 1rem
     wordSpacing: undefined,
-};
+} as IReadiumCSS;
 
 export const READIUM_CSS_URL_PATH = "readium-css";

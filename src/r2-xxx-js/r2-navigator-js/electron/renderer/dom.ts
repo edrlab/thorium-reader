@@ -7,7 +7,7 @@
 
 const IS_DEV = (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev");
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { ipcRenderer } from "electron";
 
 import { Link } from "@r2-shared-js/models/publication-link";

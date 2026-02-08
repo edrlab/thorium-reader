@@ -3,7 +3,7 @@ import { Transform } from "stream";
 import { Publication } from "@models/publication";
 import { Link } from "@models/publication-link";
 import { IStreamAndLength } from "@utils/zip/zip";
-import * as debug_ from "debug";
+import debug_ from "debug";
 import * as forge from "node-forge";
 
 import { ICryptoInfo, TransformerLCP } from "./transformer-lcp";

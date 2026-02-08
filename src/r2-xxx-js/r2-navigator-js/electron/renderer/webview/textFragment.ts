@@ -110,10 +110,10 @@ const isNodeVisible = (node: Node): boolean => {
         elt = elt.parentNode;
     }
     if (elt) {
-        if (isHiddenUntilFound(elt)) {
+        if (isHiddenUntilFound(elt as Element)) {
             return true;
         }
-        const nodeStyle = window.getComputedStyle(elt);
+        const nodeStyle = window.getComputedStyle(elt as Element);
         if (nodeStyle.visibility === "hidden"
             || nodeStyle.display === "none" ||
             parseInt(nodeStyle.height, 10) === 0 ||

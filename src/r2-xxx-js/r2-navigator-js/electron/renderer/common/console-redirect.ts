@@ -104,7 +104,7 @@ export function consoleRedirect(
                         // can be used to dump the raw message into the shell console:
                         const nsp = debugNodeInstance.namespace;
                         debugNodeInstance.namespace = ns;
-                        debugNodeInstance.apply(debugNodeInstance, newAr);
+                        debugNodeInstance.apply(debugNodeInstance, newAr as [formatter: any, ...args: any[]]);
                         debugNodeInstance.namespace = nsp;
                         processed = true;
                     }
@@ -117,7 +117,7 @@ export function consoleRedirect(
             // process.stderr.write("FALLBACK: " + util.inspect(args,
             //     { showHidden: false, depth: 1000, colors: true, customInspect: true }) + "\n");
 
-            debugNodeInstance.apply(debugNodeInstance, args);
+            debugNodeInstance.apply(debugNodeInstance, args as [formatter: any, ...args: any[]]);
             // outStream.write(util.format.apply(util, args) + "\n");
         }
     }

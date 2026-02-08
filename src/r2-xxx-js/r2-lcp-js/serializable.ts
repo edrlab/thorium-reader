@@ -8,7 +8,7 @@
 // https://github.com/edcarroll/ta-json
 import { JSON as TAJSON } from "ta-json-x";
 
-// import * as debug_ from "debug";
+// import debug_ from "debug";
 // const debug = debug_("r2:lcp/serializable");
 
 export type AnyJson = JsonPrimitives | JsonArray | JsonMap;

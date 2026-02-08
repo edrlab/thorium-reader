@@ -202,7 +202,7 @@ export class EpubCfiParser {
             this.createError(errorType, nextToken || createInvalidEndToken(previousToken ?
                 previousToken.srcOffset :
                 this.lexer.getNextOffset()));
-            return;
+            return undefined;
         }
         return stream.next() as IEpubCfiTokenTypeMapping[TTokenType];
     }
@@ -514,5 +514,3 @@ function createAssertion(
         srcOffset: srcOffset,
     };
 }
-
-

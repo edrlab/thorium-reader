@@ -15,7 +15,7 @@ import { IStreamAndLength } from "@r2-utils-js/_utils/zip/zip";
 
 import { ITransformer } from "./transformer";
 
-// import * as debug_ from "debug";
+// import debug_ from "debug";
 // const debug = debug_("r2:shared#transform/transformer-lcp");
 
 export class TransformerLCP implements ITransformer {

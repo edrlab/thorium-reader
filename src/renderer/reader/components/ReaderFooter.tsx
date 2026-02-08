@@ -65,7 +65,7 @@ function throttle(callback: (...args: any) => void, limit: number) {
     return function(this: any) {
         if (!waiting) {
             // eslint-disable-next-line prefer-rest-params
-            callback.apply(this, arguments);
+            callback.apply(this, arguments as any);
             waiting = true;
             setTimeout(() => {
                 waiting = false;

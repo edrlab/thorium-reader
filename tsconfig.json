@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "strictNullChecks": false,
+    "strictPropertyInitialization": false,
     "outDir": "./dist/",
     "sourceMap": true,
     "inlineSourceMap": false,
@@ -98,8 +100,7 @@
     }
   },
   "include": [
-    "./src/**/*",
-    "./test/**/*"
+    "./src/**/*"
   ],
   "exclude": [
     "./node_modules"

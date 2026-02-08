@@ -181,8 +181,8 @@ export class PopupDialog {
         clickY: -1,
     };
 
-    private readonly _onKeyUp: () => void;
-    private readonly _onKeyDown: () => void;
+    private readonly _onKeyUp: (ev: KeyboardEvent) => void;
+    private readonly _onKeyDown: (ev: KeyboardEvent) => void;
     // private readonly _onFocus: () => void;
 
     // private shown: boolean;

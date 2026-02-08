@@ -577,7 +577,7 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
                             if (txt) {
                                 pageBreakNeedsDeepDive = false;
                                 const lang = getLanguage(childElement);
-                                const dir = undefined;
+                                const dir: string | undefined = undefined;
                                 ttsQueue.push({
                                     combinedText: txt,
                                     combinedTextSentences: undefined,
@@ -597,7 +597,7 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
                                 if (txt) {
                                     pageBreakNeedsDeepDive = false;
                                     const lang = getLanguage(childElement);
-                                    const dir = undefined;
+                                    const dir: string | undefined = undefined;
                                     ttsQueue.push({
                                         combinedText: txt,
                                         combinedTextSentences: undefined,
@@ -623,7 +623,7 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
                             if (txt) {
                                 linkNeedsDeepDive = false;
                                 const lang = getLanguage(childElement);
-                                const dir = undefined;
+                                const dir: string | undefined = undefined;
                                 ttsQueue.push({
                                     combinedText: txt,
                                     combinedTextSentences: undefined,
@@ -643,7 +643,7 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
                                 if (txt) {
                                     linkNeedsDeepDive = false;
                                     const lang = getLanguage(childElement);
-                                    const dir = undefined;
+                                    const dir: string | undefined = undefined;
                                     ttsQueue.push({
                                         combinedText: txt,
                                         combinedTextSentences: undefined,
@@ -688,7 +688,7 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
                                 const txt = altAttr.trim();
                                 if (txt) {
                                     const lang = getLanguage(childElement);
-                                    const dir = undefined;
+                                    const dir: string | undefined = undefined;
                                     ttsQueue.push({
                                         combinedText: txt,
                                         combinedTextSentences: undefined,
@@ -744,7 +744,7 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
                                     const txt = altAttr.trim();
                                     if (txt) {
                                         const lang = getLanguage(childElement);
-                                        const dir = undefined;
+                                        const dir: string | undefined = undefined;
                                         ttsQueue.push({
                                             combinedText: txt,
                                             combinedTextSentences: undefined,
@@ -763,7 +763,7 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
                                         const txt = altAttr.trim();
                                         if (txt) {
                                             const lang = getLanguage(mathJaxElMathML);
-                                            const dir = undefined;
+                                            const dir: string | undefined = undefined;
                                             ttsQueue.push({
                                                 combinedText: txt,
                                                 combinedTextSentences: undefined,
@@ -804,7 +804,7 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
                                 const txt = altAttr.trim();
                                 if (txt) {
                                     const lang = getLanguage(childElement);
-                                    const dir = undefined;
+                                    const dir: string | undefined = undefined;
                                     ttsQueue.push({
                                         combinedText: txt,
                                         combinedTextSentences: undefined,
@@ -823,7 +823,7 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
                                     const txt = altAttr.trim();
                                     if (txt) {
                                         const lang = getLanguage(childElement);
-                                        const dir = undefined;
+                                        const dir: string | undefined = undefined;
                                         ttsQueue.push({
                                             combinedText: txt,
                                             combinedTextSentences: undefined,
@@ -846,7 +846,7 @@ export function generateTtsQueue(rootElement: Element, splitSentences: boolean):
                                 if (txt) {
                                     done = true;
                                     const lang = getLanguage(childElement);
-                                    const dir = undefined;
+                                    const dir: string | undefined = undefined;
                                     ttsQueue.push({
                                         combinedText: txt,
                                         combinedTextSentences: undefined,

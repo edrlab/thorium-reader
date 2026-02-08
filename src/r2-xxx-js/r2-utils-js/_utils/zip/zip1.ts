@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
-// eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
-import StreamZip = require("node-stream-zip");
+import debug_ from "debug";
+
+import StreamZip from "node-stream-zip";
 
 import { IStreamAndLength, IZip, Zip } from "./zip";
 

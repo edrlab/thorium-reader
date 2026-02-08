@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debounce from "debounce";
+import debounce from "debounce";
 import { ipcRenderer } from "electron";
 
 import {
@@ -806,8 +806,8 @@ function wrapHighlightWord(
 
                 //     rangeInfo,
                 // },
-            },
-        ] satisfies IHighlightDefinition[];
+            } as IHighlightDefinition,
+        ];
         _ttsQueueItemHighlightsWord = createHighlights(
             win,
             highlightDefinitions,
@@ -1020,8 +1020,8 @@ function wrapHighlight(
 
                     //     rangeInfo,
                     // },
-                },
-            ] satisfies IHighlightDefinition[];
+                } as IHighlightDefinition,
+            ];
             _ttsQueueItemHighlightsSentence = createHighlights(
                 win,
                 highlightDefinitions,

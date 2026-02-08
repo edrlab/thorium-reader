@@ -177,7 +177,7 @@ export class EpubCfiBuilderHelper {
 
         let index: number;
         if (previousSibling) {
-            index = DomUtils.getElementIndex(previousSibling) * 2 + 3;
+            index = DomUtils.getElementIndex(previousSibling as Element) * 2 + 3;
         } else {
             index = 1;
         }

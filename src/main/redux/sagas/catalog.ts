@@ -128,9 +128,9 @@ function* getPublicationView() {
     for (const doc of lastAddedPublicationsDocument) {
         try {
             lastAddedPublicationsView.push(yield* callTyped(() => publicationViewConverter.convertDocumentToView(doc)));
-        } catch (e) {
+        } catch (e: any) {
             debug("lastadded publication view converter", e);
-            yield* callTyped(errorDeletePub, doc, e);
+            yield* callTyped(errorDeletePub, doc, e as Error);
         }
     }
 
@@ -138,9 +138,9 @@ function* getPublicationView() {
     for (const doc of lastReadedPublicationDocument) {
         try {
             lastReadedPublicationsView.push(yield* callTyped(() => publicationViewConverter.convertDocumentToView(doc)));
-        } catch (e) {
+        } catch (e: any) {
             debug("lastreaded publication view converter", e);
-            yield* callTyped(errorDeletePub, doc, e);
+            yield* callTyped(errorDeletePub, doc, e as Error);
         }
     }
 

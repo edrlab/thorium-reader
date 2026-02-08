@@ -47,21 +47,21 @@ declare const __TH__SKIP_LCP_LSD__: boolean;
 declare const __TH__IS_VSCODE_LAUNCH__: boolean;
 declare const __TH__IS_CI__: boolean;
 
-// declare module "bindings";
+declare module "bindings";
 declare module "debug/src/node";
 declare module "debug/src/browser";
 declare module "debug/src/common";
 declare module "json-diff";
-declare module "slugify";
-declare module "css2json";
-declare module "json-markup";
-declare module "filehound";
-declare module "selfsigned";
+// declare module "slugify";
+// declare module "css2json";
+// declare module "json-markup";
+// declare module "filehound";
+// declare module "selfsigned";
 declare module "dot-prop";
 declare module "cssesc";
 declare module "css.escape";
-declare module "node-stream-zip";
-declare module "unzipper";
+// declare module "node-stream-zip";
+// declare module "unzipper";
 
 declare module "@flatten-js/polygon-offset" {
     import { type Polygon } from "@flatten-js/core";

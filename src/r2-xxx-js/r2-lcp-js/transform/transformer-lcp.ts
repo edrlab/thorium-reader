@@ -6,11 +6,11 @@
 // ==LICENSE-END==
 
 import * as crypto from "crypto";
-import * as debug_ from "debug";
+import debug_ from "debug";
 import * as zlib from "zlib";
 
-import { Encrypted } from "@r2-shared-js/models/metadata-encrypted";
-import { IDecryptedBuffer, LCP } from "@r2-shared-js/parser/epub/lcp";
+import { Encrypted } from "@r2-lcp-js/models/metadata-encrypted";
+import { IDecryptedBuffer, LCP } from "@r2-lcp-js/parser/epub/lcp";
 import { bufferToStream, streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { RangeStream } from "@r2-utils-js/_utils/stream/RangeStream";
 import { IStreamAndLength } from "@r2-utils-js/_utils/zip/zip";

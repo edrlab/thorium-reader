@@ -14,7 +14,7 @@ import {
 import { IHighlight, IHighlightDefinition } from "../common/highlight";
 import { ReadiumElectronBrowserWindow, IReadiumElectronWebview } from "./webview/state";
 
-// import * as debug_ from "debug";
+// import debug_ from "debug";
 // const debug = debug_("r2:navigator#electron/renderer/index");
 // const IS_DEV = (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev");
 

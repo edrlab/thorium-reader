@@ -7,7 +7,7 @@
 
 import "reflect-metadata";
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { JsonProperty } from "ta-json-x";
 import { getDefinition } from "ta-json-x/dist/cjs/classes/object-definition";
 import * as util from "util";

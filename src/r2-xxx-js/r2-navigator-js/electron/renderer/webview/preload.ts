@@ -5,8 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debounce from "debounce";
-import * as debug_ from "debug";
+import debounce from "debounce";
+import debug_ from "debug";
 import { ipcRenderer } from "electron";
 import { isFocusable } from "tabbable";
 
@@ -3263,10 +3263,10 @@ function loaded(forced: boolean) {
 
             if (has) {
                 if (!isSVGFragment &&
-                    !/^(https?|thoriumhttps):\/\//.test(href_src) &&
-                    !href_src.startsWith((READIUM2_ELECTRON_HTTP_PROTOCOL + "://"))) {
+                    !/^(https?|thoriumhttps):\/\//.test(href_src as string) &&
+                    !(href_src as string).startsWith((READIUM2_ELECTRON_HTTP_PROTOCOL + "://"))) {
 
-                    const destUrl = new URL(href_src, win.location.origin + win.location.pathname);
+                    const destUrl = new URL(href_src as string, win.location.origin + win.location.pathname);
                     href_src = destUrl.toString();
                     debug(`IMG CLICK ABSOLUTE-ized: ${href_src}`);
                 }
@@ -3293,7 +3293,7 @@ function loaded(forced: boolean) {
                     hostDocumentURL,
                     isSVGFragment,
                     isSVGImage,
-                    HTMLImgSrc_SVGImageHref_SVGFragmentMarkup: href_src,
+                    HTMLImgSrc_SVGImageHref_SVGFragmentMarkup: href_src as string,
                     cssSelectorOf_HTMLImg_SVGImage_SVGFragment,
                     languageOf_HTMLImg_SVGImage_SVGFragment: getLanguage(HTMLImg_SVGImage_SVGFragment),
                     directionOf_HTMLImg_SVGImage_SVGFragment: getDirection(HTMLImg_SVGImage_SVGFragment), // TODO: really, only useful for child title element of SVG, not in the general case
@@ -3330,7 +3330,7 @@ function loaded(forced: boolean) {
                     imageObject.onerror = function() {
                         ipcRenderer.sendToHost(R2_EVENT_IMAGE_CLICK, payload);
                     };
-                    imageObject.src = href_src; // HTMLImgSrc_SVGImageHref_SVGFragmentMarkup
+                    imageObject.src = href_src as string; // HTMLImgSrc_SVGImageHref_SVGFragmentMarkup
                 } else {
                     ipcRenderer.sendToHost(R2_EVENT_IMAGE_CLICK, payload);
                 }
@@ -4868,7 +4868,7 @@ const findPrecedingAncestorSiblingEpubPageBreak = (element: Element): { epubPage
         }
     }
 
-    const nil = { epubPage: undefined, epubPageID: undefined };
+    const nil = { epubPage: undefined, epubPageID: undefined } as { epubPage: string | undefined, epubPageID: string | undefined };
     if (_allEpubPageBreaks.length > 0) {
         const first = { epubPage: _allEpubPageBreaks[0].text, epubPageID: _allEpubPageBreaks[0].element.getAttribute("id") || undefined };
 
@@ -4916,7 +4916,6 @@ const findFollowingDescendantSiblingElementsWithID = (el: Element): string[] | u
                 const elementWithID = _elementsWithID[i];
                 const id = elementWithID.id || elementWithID.getAttribute("id");
                 if (!id) {
-                    // @ts-expect-error temporary null, to eject later (filter)
                     _elementsWithID[i] = null;
                     continue;
                 }
@@ -4951,7 +4950,6 @@ const findFollowingDescendantSiblingElementsWithID = (el: Element): string[] | u
                 }
 
                 if (!keep) {
-                    // @ts-expect-error temporary null, to eject later (filter)
                     _elementsWithID[i] = null;
                 }
             }

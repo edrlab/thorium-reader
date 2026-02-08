@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { BrowserWindow, HandlerDetails, Menu, WebContentsWillNavigateEventParams, Event as ElectronEvent, app, ipcMain, webContents, shell } from "electron";
 
 import { CONTEXT_MENU_SETUP } from "../common/context-menu";

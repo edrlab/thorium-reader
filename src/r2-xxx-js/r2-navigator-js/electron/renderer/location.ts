@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+import debug_ from "debug";
 import { ipcRenderer, shell } from "electron";
 import * as path from "path";
 import { URL } from "url";
@@ -61,8 +61,7 @@ import {
 } from "./readium-css";
 import { ReadiumElectronBrowserWindow, IReadiumElectronWebview } from "./webview/state";
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
-import URI = require("urijs");
+import URI from "urijs";
 const debug = debug_("r2:navigator#electron/renderer/location");
 
 const IS_DEV = (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev");
