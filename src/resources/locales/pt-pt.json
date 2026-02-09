@@ -929,7 +929,7 @@
             "list": {
                 "AddBookmarkWithLabel": {
                     "description": "",
-                    "name": ""
+                    "name": "Criar marcador com etiqueta"
                 },
                 "AnnotationsCreate": {
                     "description": "",
@@ -941,7 +941,7 @@
                 },
                 "AnnotationsToggleMargin": {
                     "description": "",
-                    "name": ""
+                    "name": "Ativar/desativar margem de anotações"
                 },
                 "AudioNext": {
                     "description": "",
@@ -949,7 +949,7 @@
                 },
                 "AudioNextAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Segmento áudio seguinte (escape)"
                 },
                 "AudioPlayPause": {
                     "description": "",
@@ -968,7 +968,7 @@
                     "name": "Parar áudio"
                 },
                 "CloseReader": {
-                    "description": "",
+                    "description": "Fechar a janela do leitor e voltar à biblioteca",
                     "name": "Fechar leitor"
                 },
                 "FXLZoomIn": {
@@ -985,11 +985,11 @@
                 },
                 "FocusMain": {
                     "description": "",
-                    "name": ""
+                    "name": "Focar no conteúdo principal"
                 },
                 "FocusMainDeep": {
                     "description": "",
-                    "name": ""
+                    "name": "Focar profundo no conteúdo principal"
                 },
                 "FocusReaderGotoPage": {
                     "description": "",
@@ -1174,12 +1174,12 @@
                 "description": "",
                 "title": ""
             },
-            "version": ""
+            "version": "Versão: {{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "message": "",
-            "title": ""
+            "help": "Quando a aplicação deteta a presença de tecnologia de apoio, a interface do utilizador funciona melhor com leitores de ecrã",
+            "message": "Suporte otimizado para leitores de ecrã",
+            "title": "Melhorar a experiência do leitor de ecrã"
         },
         "session": {
             "title": "Ativar guardar sessão"
@@ -1188,7 +1188,7 @@
             "appearance": "Visual",
             "general": "Geral",
             "keyboardShortcuts": "Atalhos de teclado",
-            "profiles": ""
+            "profiles": "Perfis"
         },
         "theme": {
             "auto": "Automático",
