@@ -8,6 +8,7 @@
 import debug_ from "debug";
 import * as fs from "fs";
 import * as path from "path";
+import * as crypto from "crypto";
 
 import { extractCrc32OnZip } from "../tools/crc";
 import { createSign, createVerify } from "crypto";
@@ -107,7 +108,7 @@ export async function createProfilePackageZip(
             }, 200); // to avoid issues with some filesystems (allow extra completion time)
         });
     } else {
-        manifest.contentHash = "";
+        manifest.contentHash = crypto.createHash("sha1").update("|").digest("hex");
         manifest.signature = undefined;
 
         if (signed) {

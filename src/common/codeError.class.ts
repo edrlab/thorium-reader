@@ -28,7 +28,7 @@ export class CodeError extends Error implements CodeMessage {
     constructor(code: number | string, message?: string) {
         super(message);
         this.code = code;
-        this.message = message;
+        this.message = message || "";
     }
 
     public toJson(): CodeMessageWithClass {

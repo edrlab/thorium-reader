@@ -23,13 +23,13 @@ export async function createTempDir(id: string, name = "download"): Promise<stri
         pathDir = path.resolve(tmpDir, _APP_NAME.toLowerCase(), name, id);
         await fs.promises.mkdir(pathDir, { recursive: true });
 
-    } catch (err) {
+    } catch (err: any) {
         debug(err, err.trace);
 
         try {
             pathDir = path.resolve(tmpDir, id.toString());
             await fs.promises.mkdir(pathDir);
-        } catch (err) {
+        } catch (err: any) {
             debug(err, err.trace, err.code);
 
             if (err.code !== "EEXIST") {

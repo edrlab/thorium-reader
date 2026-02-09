@@ -244,8 +244,11 @@ export function* importFromLinkService(
 
             const route = uPathname.substr(customProfileZipAssetsPrefix.length);
             const [idEncoded, pathInZipEncoded] = route.split(/\/(.*)/s);
+            const pathInZipDecoded = decodeURIComponent(pathInZipEncoded);
+            const pathInZipBase64Decoded = Buffer.from(pathInZipDecoded, "base64").toString().replace(/\\/g, "/");
             const id = Buffer.from(decodeURIComponent(idEncoded), "base64").toString();
-            const pathInZip = path.resolve("/", Buffer.from(decodeURIComponent(pathInZipEncoded), "base64").toString()).substr(1); // remove first '/'
+            const pathInZip = path.posix.normalize(pathInZipBase64Decoded).trim().replace(/^\/+/, ""); // remove one or more '/' prefix(es)
+            debug("PathInZip=", pathInZip);
 
             const state = diMainGet("store").getState();
             const profile = state.customization.provision.find((profile) => profile.id === id);

@@ -87,8 +87,8 @@
         "importAnnotation": "Tuo muistiinpanot",
         "lang": "Kieli",
         "lastRead": "Luettu viimeksi",
-        "login": "Kirjautuminen",
-        "logout": "Uloskirjautuminen",
+        "login": "Kirjaudu sisään",
+        "logout": "Kirjaudu ulos",
         "moreInfo": "Tietoa julkaisusta",
         "myBooks": "Omat kirjat",
         "noPublicationHelpL1": "Pudota julkaisu tähän",
@@ -100,7 +100,7 @@
             "auth": {
                 "cancel": "Peru",
                 "external": "Kirjautumissivu aukeaa verkkoselaimessa, seuraa sivun ohjeita. Kun olet kirjautunut sisään, verkkoselain palauttaa sinut tähän sovellukseen.",
-                "fallback": "Huom. Jos oletuskirjautumistapa selaimen kautta ei toimi, yritä kirjautua vaihtoehtoisella tavalla sovelluksen sisällä.",
+                "fallback": "Huom. Jos kirjautuminen selaimen kautta ei toimi, yritä kirjautua vaihtoehtoisella tavalla sovelluksen sisällä.",
                 "login": "Kirjaudu",
                 "password": "Salasana",
                 "register": "Rekisteröidy",
@@ -139,11 +139,11 @@
         "annotations": {
             "descAuthor": "{{- author}}",
             "descCreator": "tekijältä",
-            "descList_one": "Tuodaan {{- count}} muistiinpano(a) {{- creator}} julkaisuun {{- author}}: {{- title}}",
-            "descList_other": "Tuodaan {{- count}} muistiinpano(a) {{- creator}} julkaisuun {{- author}}: {{- title}}",
-            "descNewer_one": "Ristiriita: {{- count}} uudempaa muistiinpanoa",
+            "descList_one": "Tuodaan {{- count}} muistiinpano {{- creator}} julkaisuun {{- author}}: {{- title}}",
+            "descList_other": "Tuodaan {{- count}} muistiinpanoa {{- creator}} julkaisuun {{- author}}: {{- title}}",
+            "descNewer_one": "Ristiriita: {{- count}} uudempi muistiinpano",
             "descNewer_other": "Ristiriita: {{- count}} uudempaa muistiinpanoa",
-            "descOlder_one": "Ristiriita: {{- count}} vanhempaa muistiinpanoa",
+            "descOlder_one": "Ristiriita: {{- count}} vanhempi muistiinpano",
             "descOlder_other": "Ristiriita: {{- count}} vanhempaa muistiinpanoa",
             "descTitle": "Muistiinpanojen otsikko: ",
             "importAll": "Tuo kaikki muistiinpanot",
@@ -160,10 +160,10 @@
             }
         },
         "deleteAnnotations": "Poistetaanko muistiinpanot?",
-        "deleteAnnotationsText_one": "Haluatko varmasti poistaa {{- count}} muistiinpanoa?",
+        "deleteAnnotationsText_one": "Haluatko varmasti poistaa {{- count}} muistiinpanon?",
         "deleteAnnotationsText_other": "Haluatko varmasti poistaa {{- count}} muistiinpanoa?",
         "deleteBookmarks": "Poistetaanko kirjanmerkit?",
-        "deleteBookmarksText_one": "Haluatko varmasti poistaa {{- count}} kirjanmerkkiä?",
+        "deleteBookmarksText_one": "Haluatko varmasti poistaa {{- count}} kirjanmerkin?",
         "deleteBookmarksText_other": "Haluatko varmasti poistaa {{- count}} kirjanmerkkiä?",
         "deleteFeed": "Haluatko poistaa tämän luettelon?",
         "deletePublication": "Haluatko poistaa tämän julkaisun?",
@@ -246,7 +246,7 @@
         "open": {
             "error": "Julkaisua ei voi avata: {{- err}}"
         },
-        "wipeData": "Kirjautumistiedot tyhjennettiin (käyttöoikeustunnukset ja evästeet)"
+        "wipeData": "Kirjautumistiedot tyhjennettiin (pääsytunnukset ja evästeet)"
     },
     "opds": {
         "addForm": {
@@ -388,7 +388,7 @@
             },
             "conformance-details-level-a": {
                 "compact": "Taso A",
-                "descriptive": "Taso AA"
+                "descriptive": "Taso A"
             },
             "conformance-details-level-aa": {
                 "compact": "Taso AAA",
@@ -764,8 +764,8 @@
             "goToPlaceHolder": "Syötä sivunumero",
             "goToTitle": "Siirry sivulle",
             "history": "Navigointihistoria",
-            "historyNext": "Hyppää eteenpäin",
-            "historyPrevious": "Hyppää taaksepäin",
+            "historyNext": "Siirry eteenpäin",
+            "historyPrevious": "Siirry taaksepäin",
             "infoTitle": "Tiedot",
             "magnifyingGlassButton": "Hae julkaisusta",
             "openTableOfContentsTitle": "Navigaatio",
@@ -789,8 +789,8 @@
         },
         "picker": {
             "search": {
-                "founds_one": "{{- count}} osuma(a)",
-                "founds_other": "{{- count}} osuma(a)",
+                "founds_one": "{{- count}} osuma",
+                "founds_other": "{{- count}} osumaa",
                 "input": "etsittävä teksti",
                 "next": "Seuraava",
                 "notFound": "ei osumia",

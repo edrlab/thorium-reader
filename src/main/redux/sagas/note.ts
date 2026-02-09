@@ -343,7 +343,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         // ref: https://github.com/readium/r2-navigator-js/blob/a08126622ac87e04200a178cc438fd7e1b256c52/src/electron/renderer/webview/selection.ts#L342
 
 
-    } catch (e) {
+    } catch (e: any) {
         debug("Error to read the file: ", e);
         if (e?.path !== "") {
             yield* putTyped(toastActions.openRequest.build(ToastType.Error, "" + e, readerPublicationIdentifier));

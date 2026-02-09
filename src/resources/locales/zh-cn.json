@@ -50,7 +50,7 @@
         }
     },
     "catalog": {
-        "AddToFavorites": "",
+        "AddToFavorites": "添加到收藏",
         "about": {
             "title": "关于 {{- appName}} （在线）"
         },
@@ -66,8 +66,8 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
-                "publications": "",
+                "description": "无配置文件描述",
+                "publications": "配置文件发行日期",
                 "screen": "",
                 "title": ""
             }

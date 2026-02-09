@@ -76,7 +76,7 @@
   overflow: hidden;
   color: var(--color-text-primary);
 
-  .pages .react_aria_ComboBox .my_combobox_container { 
+  .pages .react_aria_ComboBox .my_combobox_container {
     > * {
     margin: 0!important;
     }
@@ -84,7 +84,7 @@
     input {
       max-width: 70px!important;
     }
-  } 
+  }
 
   .settings_container {
     height: calc(100dvh - 200px)!important;
@@ -132,7 +132,7 @@
     }
 
     .react_aria_ComboBox .my_combobox_container button {
-      padding-left: 0!important; 
+      padding-left: 0!important;
       margin: 0!important;
     }
   }
@@ -196,7 +196,7 @@
   .bookmarks_line .bookmark_textArea {
     min-width: unset;
     width: 270px;
-  } 
+  }
 }
 
 
@@ -212,7 +212,7 @@
 
   .my_combobox_container button {
     min-width: 110px;
-  }  
+  }
 
   &_controls {
     width: 135px;
@@ -269,7 +269,7 @@
     padding: 5px;
     margin: 5px 0;
     border-radius: 4px;
-    
+
     &.active:not(.inert) {
       &:hover {
         background-color: var(--color-brand-secondary);
@@ -343,7 +343,7 @@
     flex-direction: column;
     align-items: start;
     justify-content: center;
-    
+
     .react_aria_ComboBox {
       margin: 0;
       padding: 0;
@@ -372,7 +372,7 @@
     button {
       width: fit-content;
       padding: 0 10px;
-      
+
       svg {
         margin-left: unset;
       }
@@ -670,14 +670,12 @@
   width: 160px;
   height: 30px;
   padding: 0!important;
-  // padding-left: 10px!important;
   text-align: center;
   border: 1px solid var(--color-gray-950);
   border-radius: 6px;
   display: flex;
   align-items: center;
   position: relative;
-  padding-right: 0 !important;
   background-color: inherit;
   color: var(--color-text-primary);
 
@@ -692,7 +690,7 @@
     color: var(--color-text-primary)!important;
     border-color: var(--color-text-primary)!important;
     max-width: 100px!important;
-    
+
     input {
       width: fit-content!important;
       max-width: 80px;
@@ -703,8 +701,8 @@
     button {
       padding: 0 5px!important;
     }
-  } 
-} 
+  }
+}
 
 .react_aria_ListBox {
   width: inherit;

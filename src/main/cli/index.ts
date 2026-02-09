@@ -8,6 +8,7 @@
 import debug_ from "debug";
 import { app, dialog } from "electron";
 import * as path from "path";
+import * as fs from "fs";
 import { lockInstance } from "readium-desktop/main/cli/lock";
 import { _APP_NAME, _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import yargs from "yargs";
@@ -46,6 +47,21 @@ if (gotTheLock) {
 //  and then exits.
 //  The second-instance event is still received, but the argv is ignored for the CLI,
 //  as it has already been executed by the "second instance" itself (see Yargs handlers).
+
+const userDataPath = app.getPath("userData");
+const folderPath = path.join(
+    userDataPath,
+    "app-logs",
+);
+const PROCESS_LOGS = "processLogs.txt";
+const appLogs = path.join(
+    folderPath,
+    PROCESS_LOGS,
+);
+
+if (!fs.existsSync(folderPath)) {
+    fs.mkdirSync(folderPath);
+}
 
 let __appStarted = false;
 let __returnCode = 0;
@@ -226,6 +242,10 @@ const yargsInit = () =>
             ,
             async (argv) => {
 
+                let dump = "#############################################\n";
+                dump += "Default command start parsing:\n";
+                dump += `Date: ${(new Date()).toISOString()}\n`;
+
                 __appStarted = true;
                 await Promise.all([
                     createStoreFromDi().then((store) => store.dispatch(appActions.initRequest.build())),
@@ -233,12 +253,13 @@ const yargsInit = () =>
                 ]);
 
                 const { path: pathArgv } = argv;
-
+                dump += `argv: ${JSON.stringify(argv)}\n`;
                 debug("lauch command", argv);
 
                 if (Array.isArray(pathArgv) ? pathArgv.length > 0 : !!pathArgv) {
 
                     debug("open arg requested", pathArgv);
+                    dump += `pathArgv found: ${JSON.stringify(pathArgv)}\n`;
 
                     // flush session because user ask to read a publication
                     flushSession();
@@ -254,19 +275,29 @@ const yargsInit = () =>
 
                         debug("Need to import/open an URL : ", url);
                         setOpenUrl(url);
-                        return;
+                        dump += `open the url: ${url}\n`;
+                    } else {
+                        debug("not an url or file path");
+                        dump += `pathArgv[0]="${pathArgv[0]}" is not an url or file path\n`;
+                        // not an URL
+                        const openFileFromCliChannel = getOpenFileFromCliChannel();
+                        const pathArgvArray = Array.isArray(pathArgv) ? pathArgv : [pathArgv];
+                        dump += `pathArgvArray = ${JSON.stringify(pathArgvArray)}\n`;
+                        for (const pathArgvName of pathArgvArray) {
+    
+                            const pathArgvNameResolve = path.resolve(pathArgvName);
+                            debug(`Push (${pathArgvNameResolve}) to openFileFromCliChannel`);
+                            dump += `Push (${pathArgvNameResolve}) to openFileFromCliChannel\n`;
+                            openFileFromCliChannel.put(pathArgvNameResolve);
+                        }
                     }
 
-                    // not an URL
-                    const openFileFromCliChannel = getOpenFileFromCliChannel();
-                    const pathArgvArray = Array.isArray(pathArgv) ? pathArgv : [pathArgv];
-                    for (const pathArgvName of pathArgvArray) {
-
-                        const pathArgvNameResolve = path.resolve(pathArgvName);
-                        debug(`Push (${pathArgvNameResolve}) to openFileFromCliChannel`);
-                        openFileFromCliChannel.put(pathArgvNameResolve);
-                    }
+                } else {
+                    debug("pathArgv not defined");
+                    dump += "pathArgv not defined\n";
                 }
+                dump += "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$44\n";
+                fs.appendFileSync(appLogs, dump);
             },
         )
         .help()
@@ -322,6 +353,9 @@ export function commandLineMainEntry(
             }
         }
     }
+    let dump = "#############################################\n";
+    dump += "Commend Line Parsing start:\n";
+    dump += `Date: ${(new Date()).toISOString()}\n`;
 
     const y = yargsInit();
 
@@ -331,11 +365,16 @@ export function commandLineMainEntry(
 
     debug("processArgv", processArgv, "arg", argFormated);
 
+    dump += `argvFormated: ${JSON.stringify(argFormated)}\n`;
+
     try {
         y.parse(argFormated);
     } catch (e) {
         debug("YARGS ERROR !!!!!", e);
     }
+
+    dump += "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$44\n";
+    fs.appendFileSync(appLogs, dump);
 }
 
 // arrow function to filter declared option in yargs

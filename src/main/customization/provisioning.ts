@@ -99,7 +99,10 @@ async function checkIfProfilePackageSigned(manifest: ICustomizationManifest, pac
         return Promise.reject("no signature found");
     }
 
-    if (manifest.signature.key !== _CUSTOMIZATION_PROFILE_PUB_KEY) {
+    if ((manifest.signature.key || "").trim() !== _CUSTOMIZATION_PROFILE_PUB_KEY.trim()) {
+
+        debug("manifest.signature.key", manifest.signature.key);
+        debug("PUBLIC_KEY", _CUSTOMIZATION_PROFILE_PUB_KEY);
         return Promise.reject("manifest public key different from shipped public key");
 
     }
@@ -120,6 +123,8 @@ async function checkIfProfilePackageSigned(manifest: ICustomizationManifest, pac
     const packageAbsolutePath = path.join(customizationWellKnownFolder, packageFileName);
     const contentHash = await extractCrc32OnZip(packageAbsolutePath, "profile");
     if (manifest.contentHash !== contentHash) {
+        debug("manifest.contentHash=", manifest.contentHash);
+        debug("contentHash=", contentHash);
         return Promise.reject("manifest contentHash missmatch");
     }
 
@@ -189,7 +194,7 @@ export async function customizationPackageProvisioning(packageFileName: string):
     const logoObj = manifest.images?.find((ln) => ln?.rel === "logo");
     debug("find manifest for this profile", manifest.identifier, manifest.version, " LOGO Obj:", logoObj);
     const baseUrl = `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_CUSTOMPROFILEZIP}/${encodeURIComponent_RFC3986(Buffer.from(manifest.identifier).toString("base64"))}/`;
-    const logoUrl = baseUrl + encodeURIComponent_RFC3986(Buffer.from(logoObj.href).toString("base64"));
+    const logoUrl = logoObj ? baseUrl + encodeURIComponent_RFC3986(Buffer.from(logoObj.href).toString("base64")) : undefined;
 
     const selfLinkUrl = manifest.links?.find(({ rel }) => rel === "self")?.href;
 

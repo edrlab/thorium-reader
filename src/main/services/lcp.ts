@@ -796,9 +796,9 @@ export class LcpManager {
             if (passphraseHash) {
                 await this.saveSecret(publicationDocument, passphraseHash);
             }
-        } catch (err) {
+        } catch (err: any) {
             debug("FAIL publication.LCP.tryUserKeys()", err);
-            return err;
+            return err as string | number | null | undefined;
             // DRMErrorCode (from r2-lcp-client)
             // 1 === NO CORRECT PASSPHRASE / UERKEY IN GIVEN ARRAY
             //     // No error

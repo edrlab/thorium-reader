@@ -8,15 +8,16 @@ const webpack = require("webpack");
 
 const preprocessorDirectives = require("./webpack.config-preprocessor-directives");
 
+const _src = path.resolve(__dirname, "src");
 const aliases = {
-    "readium-desktop": path.resolve(__dirname, "src"),
+    "readium-desktop": _src,
 
-    "@r2-utils-js": "r2-utils-js/dist/es8-es2017/src",
-    "@r2-lcp-js": "r2-lcp-js/dist/es8-es2017/src",
-    "@r2-opds-js": "r2-opds-js/dist/es8-es2017/src",
-    "@r2-shared-js": "r2-shared-js/dist/es8-es2017/src",
-    "@r2-streamer-js": "r2-streamer-js/dist/es8-es2017/src",
-    "@r2-navigator-js": "r2-navigator-js/dist/es8-es2017/src",
+    "@r2-utils-js": path.join(_src, "r2-xxx-js/r2-utils-js"),
+    "@r2-lcp-js": path.join(_src, "r2-xxx-js/r2-lcp-js"),
+    "@r2-opds-js": path.join(_src, "r2-xxx-js/r2-opds-js"),
+    "@r2-shared-js": path.join(_src, "r2-xxx-js/r2-shared-js"),
+    "@r2-streamer-js": path.join(_src, "r2-xxx-js/r2-streamer-js"),
+    "@r2-navigator-js": path.join(_src, "r2-xxx-js/r2-navigator-js"),
 };
 
 // Get node environment
@@ -33,6 +34,7 @@ const checkTypeScriptSkip =
     nodeEnv !== "production" ? (process.env.SKIP_CHECK_TYPESCRIPT === "1" ? true : false) : false;
 let externals = {
     bindings: "bindings",
+    "file-uri-to-path": "file-uri-to-path",
     fsevents: "fsevents",
     "electron-devtools-installer": "electron-devtools-installer",
     "remote-redux-devtools": "remote-redux-devtools",
@@ -62,6 +64,16 @@ if (nodeEnv !== "production") {
             if (isRDesk) {
                 if (!_externalsCache.has(request)) {
                     console.log(`WEBPACK EXTERNAL (PDF EXTRACT): READIUM-DESKTOP [${request}]`);
+                }
+                _externalsCache.add(request);
+
+                return callback();
+            }
+
+            const isRDeskR2 = request.indexOf("@r2-") === 0;
+            if (isRDeskR2) {
+                if (!_externalsCache.has(request)) {
+                    console.log(`WEBPACK EXTERNAL (MAIN): READIUM-DESKTOP @R2 [${request}]`);
                 }
                 _externalsCache.add(request);
 

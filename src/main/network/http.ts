@@ -487,7 +487,7 @@ async function httpFetchFormattedResponse<TData = undefined>(
             contentType: response.headers.get("Content-Type"),
             // cookies: response.headers.get("Set-Cookie"),
         };
-    } catch (err) {
+    } catch (err: any) {
 
         const errStr = err.toString();
 

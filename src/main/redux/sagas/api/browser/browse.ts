@@ -29,7 +29,7 @@ const checkUrl = (url: string) => {
         if (new URL(url).protocol === `${URL_PROTOCOL_APP_HANDLER_OPDS}:`) {
             url = url.replace(`${URL_PROTOCOL_APP_HANDLER_OPDS}://`, "http://"); // HTTP to HTTPS redirect should be handled by the server
         }
-    } catch (e) {
+    } catch (e: any) {
         throw new Error(`Not a valid URL ${e.message || e}`);
     }
     return url;

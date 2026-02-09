@@ -2,16 +2,16 @@
     "accessibility": {
         "bookMenu": "Menüü",
         "closeDialog": "Sulge",
-        "importFile": "",
+        "importFile": "Impordi teos",
         "leftSlideButton": "Viipa vasakule",
         "mainContent": "põhiline sisu",
         "rightSlideButton": "Viipa paremale",
-        "skipLink": "",
-        "toolbar": ""
+        "skipLink": "Mine sisu juurde",
+        "toolbar": "tööriistariba"
     },
     "apiapp": {
-        "documentation": "",
-        "howItWorks": "",
+        "documentation": "Thoriumi juhend",
+        "howItWorks": "Kuidas see toimib?",
         "informations": "",
         "noLibraryFound": ""
     },
@@ -54,19 +54,19 @@
         "about": {
             "title": ""
         },
-        "addBookToLib": "",
-        "addTags": "",
-        "addTagsButton": "",
-        "allBooks": "",
-        "bookInfo": "",
+        "addBookToLib": "Impordi",
+        "addTags": "Lisa silt",
+        "addTagsButton": "Lisa",
+        "allBooks": "Kõik minu raamatud",
+        "bookInfo": "Selle raamatu teave",
         "column": {
-            "ascending": "",
-            "descending": "",
-            "unsorted": ""
+            "ascending": "kasvavalt",
+            "descending": "kahanevalt",
+            "unsorted": "pole järjestatud"
         },
         "customization": {
             "fallback": {
-                "description": "",
+                "description": "Profiili kirjeldus puudub",
                 "publications": "",
                 "screen": "",
                 "title": ""
@@ -139,9 +139,12 @@
         "annotations": {
             "descAuthor": "",
             "descCreator": "",
-            "descList": "",
-            "descNewer": "",
-            "descOlder": "",
+            "descList_one": "{{- count}} märge kasutajalt „{{- creator}}“ imporditakse teosesse „{{- title}}“, mille autor on „{{- author}}“",
+            "descList_other": "{{- count}} märget kasutajalt „{{- creator}}“ imporditakse teosesse „{{- title}}“, mille autor on „{{- author}}“",
+            "descNewer_one": "Vastuolu: {{- count}} uuem märge",
+            "descNewer_other": "Vastuolu: {{- count}} uuemat märget",
+            "descOlder_one": "Vastuolu: {{- count}} vanem märge",
+            "descOlder_other": "Vastuolu: {{- count}} vanemat märget",
             "descTitle": "",
             "importAll": "",
             "importWithoutConflict": "",
@@ -157,9 +160,11 @@
             }
         },
         "deleteAnnotations": "",
-        "deleteAnnotationsText": "",
+        "deleteAnnotationsText_one": "Kas oled kindel, et soovid {{- count}} märke kustutada?",
+        "deleteAnnotationsText_other": "Kas oled kindel, et soovid {{- count}} märget kustutada?",
         "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteBookmarksText_one": "Kas oled kindel, et soovid {{- count}} järjehoidja kustutada?",
+        "deleteBookmarksText_other": "Kas oled kindel, et soovid {{- count}} järjehoidjat kustutada?",
         "deleteFeed": "",
         "deletePublication": "",
         "deletePublicationWithNotes": "",
@@ -195,10 +200,12 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "",
             "hint": "",
             "open": "",
             "password": "",
             "sentence": "",
+            "showPassphrase": "",
             "urlHint": "",
             "whatIsLcp?": "",
             "whatIsLcpInfoDetails": "",
@@ -768,7 +775,8 @@
         },
         "picker": {
             "search": {
-                "founds": "",
+                "founds_one": "{{- count}} vaste",
+                "founds_other": "{{- count}} vastet",
                 "input": "",
                 "next": "",
                 "notFound": "",
@@ -856,25 +864,25 @@
             "text": "",
             "theme": {
                 "name": {
-                    "Contrast1": "",
-                    "Contrast2": "",
-                    "Contrast3": "",
-                    "Contrast4": "",
-                    "Neutral": "",
-                    "Night": "",
-                    "Paper": "",
-                    "Sepia": ""
+                    "Contrast1": "Kontrastne 1",
+                    "Contrast2": "Kontrastne 2",
+                    "Contrast3": "Kontrastne 3",
+                    "Contrast4": "Kontrastne 4",
+                    "Neutral": "Neutraalne",
+                    "Night": "Öine",
+                    "Paper": "Paberilaadne",
+                    "Sepia": "Seepia"
                 },
-                "title": ""
+                "title": "Kujundus"
             },
-            "wordSpacing": ""
+            "wordSpacing": "Sõnavahed"
         },
         "svg": {
-            "left": "",
-            "right": ""
+            "left": "Vasakul",
+            "right": "Paremal"
         },
         "toc": {
-            "publicationNoToc": ""
+            "publicationNoToc": "Sisukord puudub"
         },
         "tts": {
             "activate": "",
@@ -1177,11 +1185,11 @@
             "profiles": ""
         },
         "theme": {
-            "auto": "",
-            "dark": "",
-            "description": "",
-            "light": "",
-            "title": ""
+            "auto": "Automaatne",
+            "dark": "Tume kujundus",
+            "description": "Rakenduse kujundus vastab operatsioonisüsteemile.",
+            "light": "Hele kujundus",
+            "title": "Rakenduse kujundus"
         }
     },
     "tts": {
@@ -1217,7 +1225,7 @@
             "annotations": "",
             "catalogs": "",
             "home": "",
-            "readingView1": "",
+            "readingView1": "Kohenda oma lugemis- ja kuulamiseelistusi. Thoriumil on nüüd mitu kujundusvarianti nii kasutajaliidese, kui dokumentide jaoks. Lihtsam on ka seadistada e-raamatute ettelugemist ja teksti+heli sünkroonis esitamist.",
             "readingView2": "",
             "yourBooks": ""
         },

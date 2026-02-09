@@ -70,7 +70,7 @@ export function* importFromLink(
 
         return publicationView;
 
-    } catch (e) {
+    } catch (e: any) {
 
         debug("importFromLink failed", e.toString(), e.trace);
         yield put(
