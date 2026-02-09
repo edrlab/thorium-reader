@@ -2572,12 +2572,9 @@ const GoToPageSection: React.FC<IBaseProps & { totalPages?: number }> = (props) 
     }
 
     // // currentLocation.docInfo.isFixedLayout
-    // const isFixedLayout = r2Publication.Metadata?.Rendition?.Layout === "fixed";
-    // const isFixedLayoutWithPageList = isFixedLayout && r2Publication.PageList;
-    // const isFixedLayoutNoPageList = isFixedLayout && !isFixedLayoutWithPageList;
     const isFixedLayoutPublication = r2Publication.Metadata?.Rendition?.Layout === "fixed";
     const isFixedLayoutWithPageList = isFixedLayoutPublication && r2Publication.PageList;
-    const isFixedLayoutNoPageList = isFixedLayoutPublication && !isFixedLayoutWithPageList;
+    const isFixedLayoutNoPageList = isFixedLayoutPublication && !!r2Publication.PageList;
 
     let currentPageInPageList: string | undefined;
     if (currentLocation?.epubPageID && r2Publication.PageList) {
@@ -2857,7 +2854,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
 
     // const isFixedLayoutPublication = r2Publication.Metadata?.Rendition?.Layout === "fixed";
     // const isFixedLayoutWithPageList = isFixedLayoutPublication && r2Publication.PageList;
-    // const isFixedLayoutNoPageList = isFixedLayoutPublication && !isFixedLayoutWithPageList;
+    // const isFixedLayoutNoPageList = isFixedLayoutPublication && !!r2Publication.PageList;
 
     const dispatch = useDispatch();
 
@@ -2920,6 +2917,12 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
         return <>Critical Error no R2Publication available</>;
     }
 
+    // // currentLocation.docInfo.isFixedLayout
+
+    const isFixedLayoutPublication = r2Publication.Metadata?.Rendition?.Layout === "fixed";
+    // const isFixedLayoutWithPageList = isFixedLayoutPublication && r2Publication.PageList;
+    const isFixedLayoutNoPageList = isFixedLayoutPublication && !!r2Publication.PageList;
+
     const sectionsArray: Array<React.JSX.Element> = [];
     const options: Array<{ id: number, value: string, name: string, disabled: boolean, svg: {} }> = [];
 
@@ -2973,12 +2976,19 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     };
 
     const GoToPageTrigger =
-        <Tabs.Trigger id="reader-menu-tab-gotopage-trigger" value="tab-gotopage" key={"tab-gotopage"} title={__("reader.marks.goTo")} data-value={"tab-gotopage"} disabled={!r2Publication.Metadata.NumberOfPages}>
+        <Tabs.Trigger
+            id="reader-menu-tab-gotopage-trigger"
+            value="tab-gotopage"
+            key={"tab-gotopage"}
+            title={__("reader.marks.goTo")}
+            data-value={"tab-gotopage"}
+            disabled={!(isFixedLayoutNoPageList || r2Publication.PageList || isDivina || isPdf) /* !r2Publication.Metadata.NumberOfPages */}>
+
             <SVG ariaHidden svg={TargetIcon} />
             <h3>{__("reader.marks.goTo")}</h3>
         </Tabs.Trigger>;
     const optionGoToPageItem = {
-        id: 4, value: "tab-gotopage", name: __("reader.marks.goTo"), disabled: !r2Publication.Metadata.NumberOfPages,
+        id: 4, value: "tab-gotopage", name: __("reader.marks.goTo"), disabled: !(isFixedLayoutNoPageList || r2Publication.PageList || isDivina || isPdf), // !r2Publication.Metadata.NumberOfPages
         svg: TargetIcon,
     };
 
