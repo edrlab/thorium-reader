@@ -101,7 +101,12 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                             {__("library.lcp.sentence")}
                         </Dialog.Title>
                     </div>
-                    <form className={stylesModals.modal_dialog_body}>
+                    <form className={stylesModals.modal_dialog_body}
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        this.submit();
+                    }}
+                    >
                         <p>
                             <span className={stylesModals.lcp_hint}>
                                 <SVG ariaHidden svg={LightBulbIcon} />
@@ -119,6 +124,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                 className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
                             />
                             <button 
+                            type="button"
                             onClick={() => this.setState({showPassword: !showPassword})}
                             aria-label={showPassword ? __("library.lcp.hidePassphrase") : __("library.lcp.showPassphrase")}
                             style={{width: "30px"}}
