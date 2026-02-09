@@ -644,7 +644,7 @@ const Profiles = () => {
     );
 };
 
-const TabHeader = (props: React.PropsWithChildren<{title: string}>) => {
+const TabHeader = (props: React.PropsWithChildren<{title: string, advancedTrigger: boolean}>) => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
@@ -653,6 +653,11 @@ const TabHeader = (props: React.PropsWithChildren<{title: string}>) => {
         <div key="modal-header" className={stylesSettings.close_button_div} style={{justifyContent: isRTL ? "end" : undefined}}>
             <TabTitle title={props.title}>
             {props.children}
+            {
+                props.advancedTrigger ? 
+                <AdvancedTrigger/>
+                : <></>
+            }
             </TabTitle>
             <Dialog.Close asChild>
                 <button dir={isRTL ? "rtl" : "ltr"} data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
@@ -669,6 +674,8 @@ export const Settings: React.FC<ISettingsProps> = () => {
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
     const isRTL = locale === "ar";
+
+    const [tabTitle, setTabTitle] = React.useState(__("settings.tabs.general"));
 
     // https://github.com/edrlab/thorium-reader/discussions/3177#discussioncomment-14752676
     // <DirectionProvider dir={isRTL ? "rtl" : "ltr"}> ... </DirectionProvider>
@@ -690,27 +697,27 @@ export const Settings: React.FC<ISettingsProps> = () => {
                     </VisuallyHidden.Root>
                 }
                 <Tabs.Root defaultValue="tab1" data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
+                    <TabHeader title={tabTitle} advancedTrigger={tabTitle === __("settings.tabs.keyboardShortcuts") ? true : false} />
                     <Tabs.List className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
-                        <Tabs.Trigger value="tab1">
+                        <Tabs.Trigger value="tab1" onFocus={() => setTabTitle(__("settings.tabs.general"))}>
                             <SVG ariaHidden svg={CogIcon} />
                             <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.general")}</h3>
                         </Tabs.Trigger>
-                        <Tabs.Trigger value="tab2">
+                        <Tabs.Trigger value="tab2" onFocus={() => setTabTitle(__("settings.tabs.appearance"))}>
                             <SVG ariaHidden svg={PaletteIcon} />
                             <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.appearance")}</h3>
                         </Tabs.Trigger>
-                        <Tabs.Trigger value="tab4">
+                        <Tabs.Trigger value="tab4" onFocus={() => setTabTitle(__("settings.tabs.keyboardShortcuts"))}>
                             <SVG ariaHidden svg={KeyReturnIcon} />
                             <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.keyboardShortcuts")}</h3>
                         </Tabs.Trigger>
-                        <Tabs.Trigger value="tab5">
+                        <Tabs.Trigger value="tab5" onFocus={() => setTabTitle(__("settings.tabs.profiles"))}>
                             <SVG ariaHidden svg={AvatarIcon} />
                             <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.profiles")}</h3>
                         </Tabs.Trigger>
                     </Tabs.List>
                     <div className={stylesSettings.settings_content} style={{ marginTop: "70px" }}>
                         <Tabs.Content value="tab1" tabIndex={-1}>
-                            <TabHeader title={__("settings.tabs.general")} />
                             <div className={stylesSettings.settings_tab}>
                                 <LanguageSettings />
                                 <ScreenReaderSettings />
@@ -722,21 +729,16 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             </div>
                         </Tabs.Content>
                         <Tabs.Content value="tab2" tabIndex={-1}>
-                            <TabHeader title={__("settings.tabs.appearance")} />
                             <div className={stylesSettings.settings_tab}>
                                 <Themes />
                             </div>
                         </Tabs.Content>
                         <Tabs.Content value="tab4" tabIndex={-1}>
-                            <TabHeader title={__("settings.tabs.keyboardShortcuts")}>
-                                <AdvancedTrigger />
-                            </TabHeader>
                             <div className={stylesSettings.settings_tab}>
                                 <KeyboardSettings />
                             </div>
                         </Tabs.Content>
                         <Tabs.Content value="tab5" tabIndex={-1}>
-                            <TabHeader title={__("settings.tabs.profiles")} />
                             <div className={stylesSettings.settings_tab}>
                                 <Profiles />
                             </div>

@@ -82,6 +82,7 @@ export const WizardModal = () => {
             <div className={stylesModals.modal_dialog_overlay}></div>
             <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined}>
                 <Tabs.Root defaultValue="tab1" data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
+                    <TabHeader title={""} />
                     <Tabs.List className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
                         <Tabs.Trigger value="tab1">
                             <SVG ariaHidden svg={HomeIcon} />
@@ -144,7 +145,6 @@ export const WizardModal = () => {
                     </Tabs.List>
                     <div className={classNames(stylesSettings.settings_content, stylesModals.guidedTour_content)} style={{ marginTop: "70px" }}>
                         <Tabs.Content value="tab1" tabIndex={-1} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                            <TabHeader title={""} />
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
                                 <h3>{__("wizard.title.welcome")}</h3>
                                 <p>{__("wizard.description.home")}</p>
@@ -165,7 +165,6 @@ export const WizardModal = () => {
                             </div>
                         </Tabs.Content>
                         <Tabs.Content value="tab2" tabIndex={-1} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                            <TabHeader title={""} />
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
                                 <h3>{__("wizard.title.allBooks")}</h3>
                                 <p>
@@ -183,7 +182,6 @@ export const WizardModal = () => {
                             </div>
                         </Tabs.Content>
                         <Tabs.Content value="tab3" tabIndex={-1} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                            <TabHeader title={""} />
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
                                 <h3>{__("wizard.tab.catalogs")}</h3>
                                 <p>
@@ -201,7 +199,6 @@ export const WizardModal = () => {
                             </div>
                         </Tabs.Content>
                         <Tabs.Content value="tab4" tabIndex={-1} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                            <TabHeader title={""} />
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
                                 <h3>{__("wizard.tab.readingView")}</h3>
                                 <p>{__("wizard.description.readingView1")}</p>
@@ -218,7 +215,6 @@ export const WizardModal = () => {
                             </div>
                         </Tabs.Content>
                         <Tabs.Content value="tab5" tabIndex={-1} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                            <TabHeader title={""} />
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
                                 <h3>{__("wizard.title.newFeature")}</h3>
                                 <p>

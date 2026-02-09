@@ -213,14 +213,14 @@ let config = Object.assign(
                     },
                 ],
             }),
-            new CopyWebpackPlugin({
-                patterns: [
-                    {
-                        from: path.join(__dirname, "src", "resources", "information"),
-                        to: "assets/md/information",
-                    },
-                ],
-            }),
+            // new CopyWebpackPlugin({
+            //     patterns: [
+            //         {
+            //             from: path.join(__dirname, "src", "resources", "information"),
+            //             to: "assets/md/information",
+            //         },
+            //     ],
+            // }),
             new CopyWebpackPlugin({
                 patterns: [
                     {
