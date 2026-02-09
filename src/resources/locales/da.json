@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "Om {{- appName}}"
         },
@@ -128,6 +129,7 @@
         "publisher": "Udgiver",
         "readBook": "Læs bog",
         "released": "Udgivelsesdato",
+        "removeFromFavorites": "",
         "sort": "Sortér efter",
         "tag": "Tag",
         "tags": "Tags",
@@ -137,9 +139,12 @@
         "annotations": {
             "descAuthor": "af {{- author}}",
             "descCreator": "lavet af",
-            "descList": "{{- nb}} note(r) fra {{- creator}} vil blive associeret med {{- title}} {{- author}}",
-            "descNewer": "{{- nb}} nyere version af disse noter er allerede associeret med denne bog",
-            "descOlder": "{{- nb}} ældre version af disse noter er allerede associeret med denne bog",
+            "descList_one": "{{- count}} note(r) fra {{- creator}} vil blive associeret med {{- title}} {{- author}}",
+            "descList_other": "{{- count}} note(r) fra {{- creator}} vil blive associeret med {{- title}} {{- author}}",
+            "descNewer_one": "{{- count}} nyere version af disse noter er allerede associeret med denne bog",
+            "descNewer_other": "{{- count}} nyere version af disse noter er allerede associeret med denne bog",
+            "descOlder_one": "{{- count}} ældre version af disse noter er allerede associeret med denne bog",
+            "descOlder_other": "{{- count}} ældre version af disse noter er allerede associeret med denne bog",
             "descTitle": "Navn på notesamling: ",
             "importAll": "Importér alle noter",
             "importWithoutConflict": "Importér noter uden sammenfald",
@@ -155,9 +160,11 @@
             }
         },
         "deleteAnnotations": "Slet alle noter?",
-        "deleteAnnotationsText": "Vil du slette {{- annotationListLength}} note(r)?",
+        "deleteAnnotationsText_one": "Vil du slette {{- count}} note(r)?",
+        "deleteAnnotationsText_other": "Vil du slette {{- count}} note(r)?",
         "deleteBookmarks": "Slet bogmærker?",
-        "deleteBookmarksText": "Er du sikker på at du vil slette {{- bookmarkListLength}} bogmærke(r)?",
+        "deleteBookmarksText_one": "Er du sikker på at du vil slette {{- count}} bogmærke(r)?",
+        "deleteBookmarksText_other": "Er du sikker på at du vil slette {{- count}} bogmærke(r)?",
         "deleteFeed": "Er du sikker på at du vil slette dette katalog?",
         "deletePublication": "Er du sikker på at du vil fjerne bogen?",
         "deletePublicationWithNotes": "Advarsel: denne bog har noter og/eller bogmærker, som også vil blive slettet! (hvis du vil beholde dem, så eksporter dem venligst inden du sletter bogen)",
@@ -193,10 +200,12 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "",
             "hint": "Hint til nøgleord:",
             "open": "Åben",
             "password": "Nøgleord",
             "sentence": "Denne bog kræver et LCP-nøgleord for at åbnes",
+            "showPassphrase": "",
             "urlHint": "Har du glemt dit nøgleord? Få hjælp her.",
             "whatIsLcp?": "Hvad er LCP?",
             "whatIsLcpInfoDetails": "LCP står for 'Licensed Content Protection'.",
@@ -766,7 +775,8 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} resultat(er)",
+                "founds_one": "{{- count}} resultat(er)",
+                "founds_other": "{{- count}} resultat(er)",
                 "input": "søgetekst",
                 "next": "Næste",
                 "notFound": "ingen resultater",
@@ -908,6 +918,7 @@
             "cancel": "Annullér",
             "disclaimer": "Standard tastaturgenveje er designet ud fra et QWERTY tastaturlayout",
             "editUserJson": "Rediger brugerfilen...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Tastaturgenveje",
             "list": {
                 "AddBookmarkWithLabel": {

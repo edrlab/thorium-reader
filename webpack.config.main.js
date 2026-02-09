@@ -37,6 +37,7 @@ const aliases = {
 
 let externals = {
     bindings: "bindings",
+    "file-uri-to-path": "file-uri-to-path",
     fsevents: "fsevents",
     "electron-devtools-installer": "electron-devtools-installer",
     "remote-redux-devtools": "remote-redux-devtools",
@@ -188,11 +189,27 @@ let config = Object.assign(
             new CopyWebpackPlugin({
                 patterns: [
                     {
-                        from: path.join(__dirname, "src", "resources", "information"),
-                        to: "assets/md/information",
+                        from: path.join(__dirname, "node_modules", "bindings"),
+                        to: "node_modules/bindings",
                     },
                 ],
             }),
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: path.join(__dirname, "node_modules", "file-uri-to-path"),
+                        to: "node_modules/file-uri-to-path",
+                    },
+                ],
+            }),
+            // new CopyWebpackPlugin({
+            //     patterns: [
+            //         {
+            //             from: path.join(__dirname, "src", "resources", "information"),
+            //             to: "assets/md/information",
+            //         },
+            //     ],
+            // }),
             new CopyWebpackPlugin({
                 patterns: [
                     {

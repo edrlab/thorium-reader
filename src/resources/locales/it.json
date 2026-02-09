@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "Aggiungi ai preferiti",
         "about": {
             "title": "Informazioni su {{- appName}}"
         },
@@ -65,10 +66,10 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
-                "publications": "",
-                "screen": "",
-                "title": ""
+                "description": "Nessuna descrizione del profilo",
+                "publications": "Descrizione del profilo",
+                "screen": "Nessun titolo",
+                "title": "Titolo del profilo"
             }
         },
         "delete": "Elimina",
@@ -86,8 +87,8 @@
         "importAnnotation": "Importa note",
         "lang": "Lingua",
         "lastRead": "Ultimi letti",
-        "login": "",
-        "logout": "",
+        "login": "Login",
+        "logout": "Logout",
         "moreInfo": "Più info",
         "myBooks": "I miei libri",
         "noPublicationHelpL1": "Rilascia una pubblicazione qui",
@@ -98,12 +99,12 @@
         "opds": {
             "auth": {
                 "cancel": "Annulla",
-                "external": "",
-                "fallback": "",
+                "external": "La pagina di connessione si aprirà nel vostro navigatore web, si prega di seguire le istruzioni. Una volta connesso, il navigatore web dirigerà all'applicazione.",
+                "fallback": "NB: in caso di problemi di connessione con il vostro navigatore web, si prega di riprovare con il metodo alternativo proposto dall'applicazione.",
                 "login": "Accedi",
                 "password": "Password",
                 "register": "Registrati",
-                "retry": "",
+                "retry": "Riprovare",
                 "username": "Nome utente / indirizzo e-mail"
             },
             "info": {
@@ -128,6 +129,7 @@
         "publisher": "Editore",
         "readBook": "Leggi",
         "released": "Pubblicato il",
+        "removeFromFavorites": "Elimina dai favoriti",
         "sort": "Ordina per",
         "tag": "Tag",
         "tags": "Tags",
@@ -137,9 +139,15 @@
         "annotations": {
             "descAuthor": "di {{- author}}",
             "descCreator": "creata da",
-            "descList": "{{- nb}} note di {{- creator}} saranno associate a {{- title}} {{- author}}",
-            "descNewer": "{{- nb}} nuove versioni di queste note sono già associate alla pubblicazione.",
-            "descOlder": "{{- nb}} versioni precedenti di queste note sono già associate alla pubblicazione.",
+            "descList_many": "{{- count}} note di {{- creator}} saranno associate a {{- title}} {{- author}}",
+            "descList_one": "{{- count}} note di {{- creator}} saranno associate a {{- title}} {{- author}}",
+            "descList_other": "{{- count}} note di {{- creator}} saranno associate a {{- title}} {{- author}}",
+            "descNewer_many": "{{- count}} nuove versioni di queste note sono già associate alla pubblicazione.",
+            "descNewer_one": "{{- count}} nuove versioni di queste note sono già associate alla pubblicazione.",
+            "descNewer_other": "{{- count}} nuove versioni di queste note sono già associate alla pubblicazione.",
+            "descOlder_many": "{{- count}} versioni precedenti di queste note sono già associate alla pubblicazione.",
+            "descOlder_one": "{{- count}} versioni precedenti di queste note sono già associate alla pubblicazione.",
+            "descOlder_other": "{{- count}} versioni precedenti di queste note sono già associate alla pubblicazione.",
             "descTitle": "Titolo del set:",
             "importAll": "Importa tutte le note",
             "importWithoutConflict": "Importa le note senza conflitti",
@@ -149,15 +157,19 @@
         "cancel": "Annulla",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
-                "state": "",
-                "title": ""
+                "fallbackWelcomeScreen": "Nessuna pagina di benvenuto prevista",
+                "state": "Stato: {{- state}}",
+                "title": "Personalizzazione del profilo fornita e attivata"
             }
         },
         "deleteAnnotations": "Eliminare la nota?",
-        "deleteAnnotationsText": "Si desidera eliminare {{- annotationListLength}} note?",
+        "deleteAnnotationsText_many": "Si desidera eliminare {{- count}} note?",
+        "deleteAnnotationsText_one": "Si desidera eliminare {{- count}} note?",
+        "deleteAnnotationsText_other": "Si desidera eliminare {{- count}} note?",
         "deleteBookmarks": "Cancellare i segnalibri?",
-        "deleteBookmarksText": "Sei sicuro di voler eliminare {{- bookmarkListLength}} segnalibri?",
+        "deleteBookmarksText_many": "Sei sicuro di voler eliminare {{- count}} segnalibri?",
+        "deleteBookmarksText_one": "Sei sicuro di voler eliminare {{- count}} segnalibri?",
+        "deleteBookmarksText_other": "Sei sicuro di voler eliminare {{- count}} segnalibri?",
         "deleteFeed": "Vuoi davvero eliminare questo catalogo ?",
         "deletePublication": "Vuoi davvero eliminare questa pubblicazione ?",
         "deletePublicationWithNotes": "Attenzione: questa pubblicazione contiene annotazioni e/o segnalibri, che verranno eliminati anch'essi! (se desideri conservarli, assicurati di esportare le note prima di rimuovere la pubblicazione)",
@@ -193,10 +205,12 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "Nascondi la password",
             "hint": "Suggerimento : ",
             "open": "Apri",
             "password": "Passphrase",
             "sentence": "Questa pubblicazione ha bisogno di una passphrase LCP per essere aperta: ",
+            "showPassphrase": "",
             "urlHint": "Hai dimenticato la tua passphrase? Ottieni un aiuto qui",
             "whatIsLcp?": "Cos'è LCP?",
             "whatIsLcpInfoDetails": "LCP sta per \"Licensed Content Protection\".",
@@ -766,7 +780,9 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} risultato/i",
+                "founds_many": "{{- count}} risultato/i",
+                "founds_one": "{{- count}} risultato/i",
+                "founds_other": "{{- count}} risultato/i",
                 "input": "testo ta cercare",
                 "next": "Prossimo",
                 "notFound": "Nessun risultato",
@@ -796,7 +812,7 @@
         },
         "settings": {
             "column": {
-                "auto": "Automatico",
+                "auto": "Auto",
                 "one": "1 col",
                 "title": "Colonne",
                 "two": "2 cols"
@@ -908,6 +924,7 @@
             "cancel": "Annulla",
             "disclaimer": "Le impostazioni predefinite dell'applicazione sono state progettate in base alla posizione fisica dei tasti in una tastiera QWERTY",
             "editUserJson": "Modifica il file utente...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Scorciatoie da tastiera",
             "list": {
                 "AddBookmarkWithLabel": {

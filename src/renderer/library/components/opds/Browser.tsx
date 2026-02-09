@@ -15,12 +15,13 @@ import {
 import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
-import BreadCrumb from "../layout/BreadCrumb";
+// import BreadCrumb from "../layout/BreadCrumb";
 import BrowserResult from "./BrowserResult";
 // import Header from "./Header";
 import SearchForm from "./SearchForm";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as ForbiddenIcon from "readium-desktop/renderer/assets/icons/forbidden-icon.svg";
+import { CatalogHeader } from "./CatalogHeader";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -41,17 +42,19 @@ class Browser extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<IProps>  {
         // const secondaryHeader = <Header/>;
-        const breadCrumb = <BreadCrumb />;
+        // const breadCrumb = <BreadCrumb />;
         const search = <SearchForm />;
         const catalogTitle = this.props.breadrumb[1]?.name;
-
+        const lastBreadCrumb = this.props.breadrumb[this.props.breadrumb.length - 1];
+        const previousLocation = this.props.breadrumb[this.props.breadrumb.length - 2];
+        const catalogHeader = <CatalogHeader currentLocation={lastBreadCrumb} previousLocation={previousLocation} />;
 
         return (
             <LibraryLayout
                 page={this.props.__("opds.breadcrumbRoot")}
                 title={catalogTitle}
                 // secondaryHeader={secondaryHeader}
-                breadCrumb={breadCrumb}
+                catalogHeader={catalogHeader}
                 search={search}
             >
                 {this.props.breadrumb.length ?

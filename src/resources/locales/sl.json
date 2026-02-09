@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "O {{- appName}}"
         },
@@ -128,6 +129,7 @@
         "publisher": "Založba",
         "readBook": "Začni brati",
         "released": "Objavljeno na",
+        "removeFromFavorites": "",
         "sort": "Razvrsti po",
         "tag": "Oznaka",
         "tags": "Oznake",
@@ -137,9 +139,18 @@
         "annotations": {
             "descAuthor": "avtor '{{- avtor}}'",
             "descCreator": "ustvaril",
-            "descList": "{{- nb}} opombe {{- creator}} bodo uvožene v '{{- title}}' {{- avtor}}",
-            "descNewer": "Konflikti: {{- nb}} novejši zapiski",
-            "descOlder": "Konflikti: {{- nb}} starejši zapiski",
+            "descList_few": "{{- count}} opombe {{- creator}} bodo uvožene v '{{- title}}' {{- avtor}}",
+            "descList_one": "{{- count}} opombe {{- creator}} bodo uvožene v '{{- title}}' {{- avtor}}",
+            "descList_other": "{{- count}} opombe {{- creator}} bodo uvožene v '{{- title}}' {{- avtor}}",
+            "descList_two": "{{- count}} opombe {{- creator}} bodo uvožene v '{{- title}}' {{- avtor}}",
+            "descNewer_few": "Konflikti: {{- count}} novejši zapiski",
+            "descNewer_one": "Konflikti: {{- count}} novejši zapiski",
+            "descNewer_other": "Konflikti: {{- count}} novejši zapiski",
+            "descNewer_two": "Konflikti: {{- count}} novejši zapiski",
+            "descOlder_few": "Konflikti: {{- count}} starejši zapiski",
+            "descOlder_one": "Konflikti: {{- count}} starejši zapiski",
+            "descOlder_other": "Konflikti: {{- count}} starejši zapiski",
+            "descOlder_two": "Konflikti: {{- count}} starejši zapiski",
             "descTitle": "Naslov opomb: ",
             "importAll": "Uvozi vse zapiske",
             "importWithoutConflict": "Uvozi zapiske brez sporov",
@@ -155,9 +166,15 @@
             }
         },
         "deleteAnnotations": "Želiš izbrisati opombe?",
-        "deleteAnnotationsText": "Ali si prepričan, da želiš izbrisati {{- annotationListLength}} opombe?",
+        "deleteAnnotationsText_few": "Ali si prepričan, da želiš izbrisati {{- count}} opombe?",
+        "deleteAnnotationsText_one": "Ali si prepričan, da želiš izbrisati {{- count}} opombe?",
+        "deleteAnnotationsText_other": "Ali si prepričan, da želiš izbrisati {{- count}} opombe?",
+        "deleteAnnotationsText_two": "Ali si prepričan, da želiš izbrisati {{- count}} opombe?",
         "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteBookmarksText_few": "",
+        "deleteBookmarksText_one": "",
+        "deleteBookmarksText_other": "",
+        "deleteBookmarksText_two": "",
         "deleteFeed": "Ali res želiš izbrisati katalog?",
         "deletePublication": "Ali res želiš izbrisati publikacijo?",
         "deletePublicationWithNotes": "",
@@ -193,10 +210,12 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "",
             "hint": "Namig: ",
             "open": "Odpri",
             "password": "Geslo",
             "sentence": "Za odprtje publikacije vnesi LCP geslo: ",
+            "showPassphrase": "",
             "urlHint": "Pozabljeno geslo? Tu lahko poiščeš pomoč",
             "whatIsLcp?": "Kaj je LCP?",
             "whatIsLcpInfoDetails": "LCP je kratica za 'Licensed Content Protection'.",
@@ -766,7 +785,10 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} zadetek(kov)",
+                "founds_few": "{{- count}} zadetek(kov)",
+                "founds_one": "{{- count}} zadetek(kov)",
+                "founds_other": "{{- count}} zadetek(kov)",
+                "founds_two": "{{- count}} zadetek(kov)",
                 "input": "besedilo, ki se ujema z",
                 "next": "Naslednje",
                 "notFound": "ni zadetkov",
@@ -908,6 +930,7 @@
             "cancel": "Prekliči",
             "disclaimer": "Bližnjice so bile določene na podlagi postavitve tipkovnice QWERTY.",
             "editUserJson": "Uredi datoteko uporabnika...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Bližnjice tipkovnice",
             "list": {
                 "AddBookmarkWithLabel": {

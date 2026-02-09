@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "{{- appName}} 정보"
         },
@@ -128,6 +129,7 @@
         "publisher": "출판사",
         "readBook": "읽기",
         "released": "발행일",
+        "removeFromFavorites": "",
         "sort": "정렬 기준",
         "tag": "",
         "tags": "태그",
@@ -193,10 +195,12 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "",
             "hint": "힌트: ",
             "open": "",
             "password": "암호",
             "sentence": "이 출판물을 열기 위해서는 LCP 암호가 필요합니다: ",
+            "showPassphrase": "",
             "urlHint": "암호를 잊으셨습니까? 여기서 도움말을 확인하십시오",
             "whatIsLcp?": "",
             "whatIsLcpInfoDetails": "",
@@ -766,7 +770,7 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} 일치",
+                "founds": "{{- count}} 일치",
                 "input": "텍스트 입력",
                 "next": "다음",
                 "notFound": "일치하는 내용이 없습니다.",
@@ -908,6 +912,7 @@
             "cancel": "취소",
             "disclaimer": "",
             "editUserJson": "사용자 파일 편집...",
+            "exportToHTML": "",
             "keyboardShortcuts": "키보드 단축키",
             "list": {
                 "AddBookmarkWithLabel": {

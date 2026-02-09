@@ -1877,6 +1877,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                     : <></>
             }
             <Tabs.Root value={section} defaultValue={section} onValueChange={dockedMode ? null : setSection} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
+                <TabHeader />
                 {
                     dockedMode ? <></> :
                         <Tabs.List id="reader-settings-nav" ref={tabModeRef} className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
@@ -1886,32 +1887,27 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                 <div className={stylesSettings.settings_content}
                     style={{ marginTop: dockedMode && "0" }}>
                     <Tabs.Content value="tab-divina" tabIndex={-1} id="readerSettings_tabs-tab-divina" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             <DivinaSetReadingMode handleDivinaReadingMode={handleDivinaReadingMode} divinaReadingMode={divinaReadingMode} divinaReadingModeSupported={divinaReadingModeSupported} />
                         </div>
                     </Tabs.Content>
                     <Tabs.Content value="tab-pdfzoom" tabIndex={-1} id="readerSettings_tabs-tab-pdfzoom" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             <PdfZoom pdfScale={props.pdfPlayerZoom} /*pdfView={pdfView}*/ />
                         </div>
                     </Tabs.Content>
                     <Tabs.Content value="tab-text" tabIndex={-1} id="readerSettings_tabs-tab-text" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <TabHeader />
                         <div className={classNames(stylesSettings.settings_tab, stylesSettings.settings_reading_text, stylesSettings.section)}>
                             <FontSize />
                             <FontFamily />
                         </div>
                     </Tabs.Content>
                     <Tabs.Content value="tab-spacing" tabIndex={-1} id="readerSettings_tabs-tab-spacing" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             <ReadingSpacing />
                         </div>
                     </Tabs.Content>
                     <Tabs.Content value="tab-display" tabIndex={-1} id="readerSettings_tabs-tab-display" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <TabHeader />
                         <section className={stylesSettings.settings_tab}>
                             {isPdf ? <></> : <Theme dockedMode={dockedMode} />}
                             {isPdf ? <></> : <ReadingDisplayLayout isFXL={props.isFXL} />}
@@ -1921,7 +1917,6 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                         </section>
                     </Tabs.Content>
                     <Tabs.Content value="tab-preset" tabIndex={-1} id="readerSettings_tab-preset" className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <TabHeader />
                         <section className={stylesSettings.settings_tab}>
                             <SaveResetApplyPreset />
                         </section>

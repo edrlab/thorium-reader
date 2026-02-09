@@ -73,13 +73,13 @@ export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{ winId: 
                         <span>{originTitle ? __("dialog.annotations.origin", { title: originTitle, author: originCreator ? __("dialog.annotations.descAuthor", { author: originCreator }) : "" }) : ""}</span>
                         <span>{title ? `${__("dialog.annotations.descTitle")}'${title}'` : ""}</span>
                         <span>{annotationsList.length ? __("dialog.annotations.descList", {
-                            nb: annotationsList.length,
+                            count: annotationsList.length,
                             creator: creatorNameList.length ? `${__("dialog.annotations.descCreator")} '${creatorNameList.join(", ")}'` : "", // TODO i18n
                             title: convertMultiLangStringToString(publicationTitle, locale),
                             author: authorsLangString[0] ? __("dialog.annotations.descAuthor", { author: convertMultiLangStringToString(authorsLangString[0], locale) }) : "",
                         }) : <></>}</span>
-                        <span>{annotationsConflictListNewer.length ? __("dialog.annotations.descNewer", { nb: annotationsConflictListNewer.length }) : <></>}</span>
-                        <span>{annotationsConflictListOlder.length ? __("dialog.annotations.descOlder", { nb: annotationsConflictListOlder.length }) : <></>}</span>
+                        <span>{annotationsConflictListNewer.length ? __("dialog.annotations.descNewer", { count: annotationsConflictListNewer.length }) : <></>}</span>
+                        <span>{annotationsConflictListOlder.length ? __("dialog.annotations.descOlder", { count: annotationsConflictListOlder.length }) : <></>}</span>
                     </AlertDialog.Description>
                     <div className={stylesAlertModals.AlertDialogButtonContainer}>
                         <AlertDialog.Cancel asChild onClick={() => dispatch(annotationActions.importConfirmOrAbort.build("abort"))}>

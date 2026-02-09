@@ -29,4 +29,5 @@ export interface OpdsFeedDocument extends Identifiable, Timestampable {
     // customizationProfileFrom?: string[]; // array of customization profile id
 
     authenticationUrl?: string;
+    favorite?: boolean;
 }

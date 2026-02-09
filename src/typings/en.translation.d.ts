@@ -109,6 +109,7 @@ declare namespace typed_i18n {
   (_: "app.window", __?: {}): { readonly "showLibrary": string };
   (_: "app.window.showLibrary", __?: {}): string;
   (_: "catalog", __?: {}): {
+  readonly "AddToFavorites": string,
   readonly "about": { readonly "title": string },
   readonly "addBookToLib": string,
   readonly "addTags": string,
@@ -185,11 +186,13 @@ declare namespace typed_i18n {
   readonly "publisher": string,
   readonly "readBook": string,
   readonly "released": string,
+  readonly "removeFromFavorites": string,
   readonly "sort": string,
   readonly "tag": string,
   readonly "tags": string,
   readonly "update": string
 };
+  (_: "catalog.AddToFavorites", __?: {}): string;
   (_: "catalog.about", __?: {}): { readonly "title": string };
   (_: "catalog.about.title", __?: {}): string;
   (_: "catalog.addBookToLib", __?: {}): string;
@@ -336,6 +339,7 @@ declare namespace typed_i18n {
   (_: "catalog.publisher", __?: {}): string;
   (_: "catalog.readBook", __?: {}): string;
   (_: "catalog.released", __?: {}): string;
+  (_: "catalog.removeFromFavorites", __?: {}): string;
   (_: "catalog.sort", __?: {}): string; (_: "catalog.tag", __?: {}): string;
   (_: "catalog.tags", __?: {}): string;
   (_: "catalog.update", __?: {}): string;
@@ -471,10 +475,12 @@ declare namespace typed_i18n {
   (_: "header.viewMode", __?: {}): string;
   (_: "library", __?: {}): {
   readonly "lcp": {
+    readonly "hidePassphrase": string,
     readonly "hint": string,
     readonly "open": string,
     readonly "password": string,
     readonly "sentence": string,
+    readonly "showPassphrase": string,
     readonly "urlHint": string,
     readonly "whatIsLcp?": string,
     readonly "whatIsLcpInfoDetails": string,
@@ -482,19 +488,23 @@ declare namespace typed_i18n {
   }
 };
   (_: "library.lcp", __?: {}): {
+  readonly "hidePassphrase": string,
   readonly "hint": string,
   readonly "open": string,
   readonly "password": string,
   readonly "sentence": string,
+  readonly "showPassphrase": string,
   readonly "urlHint": string,
   readonly "whatIsLcp?": string,
   readonly "whatIsLcpInfoDetails": string,
   readonly "whatIsLcpInfoDetailsLink": string
 };
+  (_: "library.lcp.hidePassphrase", __?: {}): string;
   (_: "library.lcp.hint", __?: {}): string;
   (_: "library.lcp.open", __?: {}): string;
   (_: "library.lcp.password", __?: {}): string;
   (_: "library.lcp.sentence", __?: {}): string;
+  (_: "library.lcp.showPassphrase", __?: {}): string;
   (_: "library.lcp.urlHint", __?: {}): string;
   (_: "library.lcp.whatIsLcp?", __?: {}): string;
   (_: "library.lcp.whatIsLcpInfoDetails", __?: {}): string;
@@ -2387,6 +2397,7 @@ declare namespace typed_i18n {
     readonly "cancel": string,
     readonly "disclaimer": string,
     readonly "editUserJson": string,
+    readonly "exportToHTML": string,
     readonly "keyboardShortcuts": string,
     readonly "list": {
       readonly "AddBookmarkWithLabel": {
@@ -2683,6 +2694,7 @@ declare namespace typed_i18n {
   readonly "cancel": string,
   readonly "disclaimer": string,
   readonly "editUserJson": string,
+  readonly "exportToHTML": string,
   readonly "keyboardShortcuts": string,
   readonly "list": {
     readonly "AddBookmarkWithLabel": {
@@ -2916,6 +2928,7 @@ declare namespace typed_i18n {
   (_: "settings.keyboard.cancel", __?: {}): string;
   (_: "settings.keyboard.disclaimer", __?: {}): string;
   (_: "settings.keyboard.editUserJson", __?: {}): string;
+  (_: "settings.keyboard.exportToHTML", __?: {}): string;
   (_: "settings.keyboard.keyboardShortcuts", __?: {}): string;
   (_: "settings.keyboard.list", __?: {}): {
   readonly "AddBookmarkWithLabel": {

@@ -52,7 +52,7 @@
     // "moduleResolution": "node", // 100
     "moduleResolution": "bundler", // 100
     "lib": [
-      "es2020",
+      "es2022",
       "dom",
       "dom.iterable"
     ],

@@ -1550,7 +1550,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                             <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
                                 <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.deleteAnnotations")}</AlertDialog.Title>
                                 <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
-                                    {__("dialog.deleteAnnotationsText", { annotationListLength: annotationListFiltered.length })}
+                                    {__("dialog.deleteAnnotationsText", { count: annotationListFiltered.length })}
                                 </AlertDialog.Description>
                                 <div className={stylesAlertModals.AlertDialogButtonContainer}>
                                     <AlertDialog.Cancel asChild>
@@ -2267,7 +2267,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                             <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
                                 <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>{__("dialog.deleteBookmarks")}</AlertDialog.Title>
                                 <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
-                                    {__("dialog.deleteBookmarksText", { bookmarkListLength: bookmarkListFiltered.length })}
+                                    {__("dialog.deleteBookmarksText", { count: bookmarkListFiltered.length })}
                                 </AlertDialog.Description>
                                 <div className={stylesAlertModals.AlertDialogButtonContainer}>
                                     <AlertDialog.Cancel asChild>
@@ -3151,6 +3151,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     : <></>
             }
             <Tabs.Root value={section} onValueChange={(value) => dockedMode ? null : setSection(value)} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
+                <TabHeader />
                 {
                     dockedMode ? <></> :
                         <Tabs.List ref={tabModeRef} className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
@@ -3161,7 +3162,6 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     ref={popoverBoundary}
                     style={{ marginTop: dockedMode && "0" }}>
                     <Tabs.Content value="tab-toc" tabIndex={-1} id={"reader-menu-tab-toc"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             {(isPdf && pdfToc?.length && renderLinkTree_(__("reader.marks.toc"), pdfToc, 1, undefined)) ||
                                 (isPdf && !pdfToc?.length && <p>{__("reader.toc.publicationNoToc")}</p>) ||
@@ -3171,7 +3171,6 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     </Tabs.Content>
 
                     <Tabs.Content value="tab-landmark" tabIndex={-1} id={"reader-menu-tab-landmark"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             {r2Publication.Landmarks &&
                                 renderLinkList_(__("reader.marks.landmarks"), r2Publication.Landmarks)}
@@ -3179,14 +3178,12 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     </Tabs.Content>
 
                     <Tabs.Content value="tab-bookmark" tabIndex={-1} id={"reader-menu-tab-bookmark"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <TabHeader />
                         <div className={classNames(stylesSettings.settings_tab, stylesBookmarks.bookmarks_tab)}>
                             <BookmarkList  popoverBoundary={popoverBoundary.current} goToLocator={goToLocator} hideBookmarkOnChange={hideAnnotationOnChange} />
                         </div>
                     </Tabs.Content>
 
                     <Tabs.Content value="tab-annotation" tabIndex={-1} id={"reader-menu-tab-annotation"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <TabHeader />
                         <div className={classNames(stylesSettings.settings_tab, stylesAnnotations.annotations_tab)}>
                             <AnnotationList
                                 goToLocator={goToLocator}
@@ -3203,7 +3200,6 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     </Tabs.Content>
 
                     <Tabs.Content value="tab-search" tabIndex={-1} id={"reader-menu-tab-search"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <TabHeader />
                         <div className={classNames(stylesSettings.settings_tab, stylesPopoverDialog.search_container)}>
                             {searchEnable
                                 ? <ReaderMenuSearch
@@ -3215,7 +3211,6 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     </Tabs.Content>
 
                     <Tabs.Content value="tab-gotopage" tabIndex={-1} id={"reader-menu-tab-gotopage"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                        <TabHeader />
                         <div className={stylesSettings.settings_tab}>
                             <GoToPageSection totalPages={
                                 isPdf && pdfNumberOfPages

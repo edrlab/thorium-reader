@@ -2,18 +2,18 @@
     "accessibility": {
         "bookMenu": "Menu",
         "closeDialog": "Zamknij",
-        "importFile": "",
-        "leftSlideButton": "",
-        "mainContent": "",
-        "rightSlideButton": "",
-        "skipLink": "",
+        "importFile": "Importuj publikację",
+        "leftSlideButton": "Przesuń w lewo",
+        "mainContent": "główna treść",
+        "rightSlideButton": "Przesuń w prawo",
+        "skipLink": "Przejdź do treści",
         "toolbar": "pasek narzędzi"
     },
     "apiapp": {
-        "documentation": "",
-        "howItWorks": "",
-        "informations": "",
-        "noLibraryFound": ""
+        "documentation": "Dokumentacja Thorium",
+        "howItWorks": "Jak to działa?",
+        "informations": "We Francji wiele bibliotek publicznych udostępnia katalog do odczytu maszynowego (podobny do OPDS, ale nie identyczny), umożliwiający czytelnikom pobieranie publikacji cyfrowych z ich osobistej półki. Zintegrowanie tej technologii z Thorium Reader umożliwia pobranie e-booka lub audiobooka bezpośrednio do Thorium Reader w celu natychmiastowego przeczytania.\n\nJak połączyć konto francuskiej biblioteki publicznej z Thorium Reader? To proste. Wpisz francuskie miasto („Paryż”) lub część nazwy biblioteki w polu wyszukiwania i naciśnij przycisk Szukaj. Pojawi się lista bibliotek publicznych odpowiadających Twojemu wyszukiwaniu. Wybierz bibliotekę i naciśnij Dodaj. Na zaktualizowanej liście katalogów wybierz tę bibliotekę: wyświetli się formularz uwierzytelnienia. Wpisz swoją nazwę użytkownika/adres e-mail i hasło, a następnie naciśnij Zaloguj. Możesz teraz zobaczyć zawartość swojej osobistej półki, z której możesz pobrać i przeczytać wypożyczone wcześniej e-booki i audiobooki.",
+        "noLibraryFound": "Nie znaleziono biblioteki ({{- name}})"
     },
     "app": {
         "edit": {
@@ -22,12 +22,12 @@
             "paste": "Wklej",
             "print": "Drukuj",
             "redo": "Ponów",
-            "selectAll": "",
+            "selectAll": "Zaznacz wszystko",
             "title": "Edytuj",
             "undo": "Cofnij"
         },
-        "hide": "",
-        "quit": "",
+        "hide": "Ukryj {{- nazwa aplikacji}}",
+        "quit": "Zakończ {{- appName}}",
         "session": {
             "exit": {
                 "askBox": {
@@ -35,55 +35,56 @@
                         "no": "Nie",
                         "yes": "Tak"
                     },
-                    "help": "",
-                    "message": "",
-                    "title": ""
+                    "help": "Aktywuj tę opcję, jeśli chcesz, aby okna czytnika otwarte po zamknięciu aplikacji były automatycznie otwierane ponownie przy następnym uruchomieniu.",
+                    "message": "Zapisywanie i przywracanie sesji czytania",
+                    "title": "Zapisać sesję?"
                 }
             }
         },
         "update": {
-            "message": "",
-            "title": ""
+            "message": "Nowa wersja jest dostępna, kliknij aby dowiedzieć się więcej.",
+            "title": "{{- appName}} aktualizacja oprogramowania."
         },
         "window": {
-            "showLibrary": ""
+            "showLibrary": "Pokaż bibliotekę / półkę z książkami"
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
-            "title": ""
+            "title": "O {{- appName}} (online)"
         },
         "addBookToLib": "Importuj",
-        "addTags": "",
+        "addTags": "Dodaj etykietę",
         "addTagsButton": "Dodaj",
-        "allBooks": "",
-        "bookInfo": "",
+        "allBooks": "Wszystkie publikacje",
+        "bookInfo": "O publikacji",
         "column": {
             "ascending": "rosnąco",
             "descending": "malejąco",
-            "unsorted": ""
+            "unsorted": "nieposortowane"
         },
         "customization": {
             "fallback": {
-                "description": "",
-                "publications": "",
-                "screen": "",
-                "title": ""
+                "description": "Brak opisu profilu",
+                "publications": "Profile publikacji",
+                "screen": "Brak tytułu",
+                "title": "Tytuł profilu"
             }
         },
         "delete": "Usuń",
         "deleteBook": "Usuń",
-        "deleteTag": "",
+        "deleteTag": "Usuń etykietę",
         "description": "Opis",
-        "emptyTagList": "",
+        "emptyTagList": "Brak zaetykietowanych publikacji.",
         "entry": {
-            "continueReading": "",
-            "lastAdditions": ""
+            "continueReading": "Wznów czytanie",
+            "lastAdditions": "Niedawno dodane"
         },
-        "export": "",
-        "exportAnnotation": "",
+        "export": "Zapisz jako",
+        "exportAnnotation": "Eksportuj notatki",
         "format": "Format",
-        "importAnnotation": "",
+        "importAnnotation": "Importuj notatki",
         "lang": "Język",
         "lastRead": "",
         "login": "",
@@ -128,6 +129,7 @@
         "publisher": "",
         "readBook": "",
         "released": "",
+        "removeFromFavorites": "",
         "sort": "",
         "tag": "",
         "tags": "",
@@ -136,40 +138,55 @@
     "dialog": {
         "annotations": {
             "descAuthor": "",
-            "descCreator": "",
-            "descList": "",
-            "descNewer": "",
-            "descOlder": "",
-            "descTitle": "",
-            "importAll": "",
-            "importWithoutConflict": "",
-            "origin": "",
-            "title": ""
+            "descCreator": "stworzony przez",
+            "descList_few": "{{- nb}} notatki {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
+            "descList_many": "{{- nb}} notatki {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
+            "descList_one": "{{- nb}} notatki {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
+            "descList_other": "{{- nb}} notatki {{- creator}} zostaną zaimportowane do '{{- title}}' {{- author}}",
+            "descNewer_few": "Konflikt(y): {{- nb}} nowsze notatki",
+            "descNewer_many": "Konflikt(y): {{- nb}} nowsze notatki",
+            "descNewer_one": "Konflikt(y): {{- nb}} nowsze notatki",
+            "descNewer_other": "Konflikt(y): {{- nb}} nowsze notatki",
+            "descOlder_few": "Konflikt(y): {{- nb}} starsze notatki",
+            "descOlder_many": "Konflikt(y): {{- nb}} starsze notatki",
+            "descOlder_one": "Konflikt(y): {{- nb}} starsze notatki",
+            "descOlder_other": "Konflikt(y): {{- nb}} starsze notatki",
+            "descTitle": "Tytuł adnotacji: ",
+            "importAll": "Importuj wszystkie notatki",
+            "importWithoutConflict": "Importuj notatki tylko wolne od konfliktów",
+            "origin": "Publikacja oryginalna: '{{- title}}' {{- author}}",
+            "title": "Importować notatki?"
         },
-        "cancel": "",
+        "cancel": "Anuluj",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
-                "state": "",
-                "title": ""
+                "fallbackWelcomeScreen": "Brak ekranu powitalnego",
+                "state": "Stan: {{- state}}",
+                "title": "Udostępnianie, aktywowanie i dostosowywanie profilu"
             }
         },
-        "deleteAnnotations": "",
-        "deleteAnnotationsText": "",
-        "deleteBookmarks": "",
-        "deleteBookmarksText": "",
-        "deleteFeed": "",
-        "deletePublication": "",
-        "deletePublicationWithNotes": "",
-        "import": "",
-        "importError": "",
+        "deleteAnnotations": "Usunąć adnotacje?",
+        "deleteAnnotationsText_few": "Czy na pewno chcesz usunąć notatki ({{- annotationListLength}})?",
+        "deleteAnnotationsText_many": "Czy na pewno chcesz usunąć notatki ({{- annotationListLength}})?",
+        "deleteAnnotationsText_one": "Czy na pewno chcesz usunąć notatki ({{- annotationListLength}})?",
+        "deleteAnnotationsText_other": "Czy na pewno chcesz usunąć notatki ({{- annotationListLength}})?",
+        "deleteBookmarks": "Usunąć zakładki?",
+        "deleteBookmarksText_few": "Czy na pewno chcesz usunąć zakładki ({{- bookmarkListLength}})?",
+        "deleteBookmarksText_many": "Czy na pewno chcesz usunąć zakładki ({{- bookmarkListLength}})?",
+        "deleteBookmarksText_one": "Czy na pewno chcesz usunąć zakładki ({{- bookmarkListLength}})?",
+        "deleteBookmarksText_other": "Czy na pewno chcesz usunąć zakładki ({{- bookmarkListLength}})?",
+        "deleteFeed": "Usunąć katalog?",
+        "deletePublication": "Usunąć publikację?",
+        "deletePublicationWithNotes": "Uwaga: ta publikacja zawiera adnotacje i/lub zakładki, one również zostaną usunięte! (jeśli chcesz je zachować, pamiętaj o wyeksportowaniu notatek przed usunięciem publikacji)",
+        "import": "Potwierdź import:",
+        "importError": "Wystąpił błąd, sprawdź rozszerzenie pliku ({{acceptedExtension}})",
         "renew": "",
-        "return": "",
-        "yes": ""
+        "return": "Zwrócić publikację?",
+        "yes": "Tak"
     },
     "error": {
         "errorBox": {
-            "error": "",
+            "error": "Komunikat o błędzie:",
             "message": "",
             "title": ""
         }
@@ -193,10 +210,12 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "",
             "hint": "",
             "open": "",
             "password": "",
             "sentence": "",
+            "showPassphrase": "",
             "urlHint": "",
             "whatIsLcp?": "",
             "whatIsLcpInfoDetails": "",
@@ -766,7 +785,10 @@
         },
         "picker": {
             "search": {
-                "founds": "",
+                "founds_few": "",
+                "founds_many": "",
+                "founds_one": "",
+                "founds_other": "",
                 "input": "",
                 "next": "",
                 "notFound": "",
@@ -797,9 +819,9 @@
         "settings": {
             "column": {
                 "auto": "",
-                "one": "",
-                "title": "",
-                "two": ""
+                "one": "1 kol",
+                "title": "Kolumny",
+                "two": "2 kol"
             },
             "customFontSelected": "",
             "customizeReader": "",
@@ -908,6 +930,7 @@
             "cancel": "",
             "disclaimer": "",
             "editUserJson": "",
+            "exportToHTML": "",
             "keyboardShortcuts": "",
             "list": {
                 "AddBookmarkWithLabel": {

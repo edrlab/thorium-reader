@@ -2560,7 +2560,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
                             return (
                                 displayType === DisplayType.Grid ?
-                                    <tr key={index}>
+                                    <tr key={pubView.identifier}>
                                         <td><PublicationCard publicationViewMaybeOpds={pubView} isReading={pubView.lastReadingLocation ? true : false} /></td>
                                     </tr>
                                     :

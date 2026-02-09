@@ -115,6 +115,11 @@ select {
       height: 25px;
       margin-left: 30px;
       background-color: transparent;
+
+    }
+
+  & #passphrase {
+    margin-left: 15px;
   }
 
   & i {
@@ -155,10 +160,7 @@ select {
 
   svg {
     height: 14px;
-    position: absolute;
-    left: 20px;
-    transform: translate(-50%, -50%);
-    top: 50%;
+    width: 30px;
   }
 }
 

@@ -57,7 +57,7 @@
     //   "dom",
     //   "dom.iterable"
     // ],
-    "target": "es2020",
+    "target": "es2022",
     // "jsx": "react",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,

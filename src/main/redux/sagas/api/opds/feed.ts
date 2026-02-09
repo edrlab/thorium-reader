@@ -136,5 +136,7 @@ export function* findAllFeeds(): SagaGenerator<IOpdsFeedView[]> {
     for (const doc of docs) {
         res.push(yield* callTyped(() => opdsFeedViewConverter.convertDocumentToView(doc)));
     }
-    return res;
+
+    const sortedByFavorite = [...res.filter((res) => !!res.favorite), ...res.filter((res) => !(!!res.favorite))];
+    return sortedByFavorite;
 }
