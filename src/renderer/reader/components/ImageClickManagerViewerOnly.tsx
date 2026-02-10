@@ -99,26 +99,39 @@ export const ImageClickManagerImgViewerOnly: React.FC = () => {
         { label: __("reader.imgViewer.description.labelledby"), value: dom_labelledByText },
     ];
 
+    const [toggleAlt, setToggleAlt] = React.useState(false);
+
     const hasAlt = !!altAttributeOf_HTMLImg_SVGImage_SVGFragment;
     const activeDescriptions = descriptions.filter(d => !!d.value);
     const hasOtherDescriptions = activeDescriptions.length > 0;
 
-    const imageHasDescription = hasAlt || hasOtherDescriptions;
+    // const imageHasDescription = hasAlt || hasOtherDescriptions;
     const imageHasOnlyAltDescription = hasAlt && !hasOtherDescriptions;
 
+    // const DescriptionList = (
+    //     <details style={{ fontSize: "14px", cursor: "pointer" }}>
+    //         <summary>
+    //             {altAttributeOf_HTMLImg_SVGImage_SVGFragment || __("reader.imgViewer.description.about")}
+    //         </summary>
+    //         <ul style={{ marginTop: "10px", listStyleType: "none", paddingLeft: 0 }}>
+    //             {activeDescriptions.map(({ label, value }) => (
+    //                 <li key={label} style={{ marginBottom: "10px" }}>
+    //                     <strong>{label}: </strong> {value}
+    //                 </li>
+    //             ))}
+    //         </ul>
+    //     </details>
+    // );
+
     const DescriptionList = (
-        <details style={{ fontSize: "14px", cursor: "pointer" }}>
-            <summary>
-                {altAttributeOf_HTMLImg_SVGImage_SVGFragment || __("reader.imgViewer.description.about")}
-            </summary>
-            <ul style={{ marginTop: "10px", listStyleType: "none", paddingLeft: 0 }}>
-                {activeDescriptions.map(({ label, value }) => (
+        <ul style={{ marginTop: "10px", listStyleType: "none", paddingLeft: 0, fontSize: "14px" }}>
+            <li style={{ marginBottom: "10px" }}>{altAttributeOf_HTMLImg_SVGImage_SVGFragment || __("reader.imgViewer.description.about")}</li>
+             {activeDescriptions.map(({ label, value }) => (
                     <li key={label} style={{ marginBottom: "10px" }}>
                         <strong>{label}: </strong> {value}
                     </li>
                 ))}
-            </ul>
-        </details>
+        </ul>
     );
 
     const imageDescription = imageHasOnlyAltDescription 
@@ -130,27 +143,27 @@ export const ImageClickManagerImgViewerOnly: React.FC = () => {
         <Dialog.Root open={open} onOpenChange={(openState: boolean) => {
             if (openState == false) {
                 dispatch(readerLocalActionSetImageClick.build());
+                setToggleAlt(false);
             }
         }}
         >
             <Dialog.Portal>
-                <div className={stylesModals.modal_dialog_overlay}></div>
-                <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined} style={{ minWidth: "700px", minHeight: "400px", padding: "5px 10px", width: "unset", maxWidth: "calc(100% - 200px)", maxHeight: "calc(100% - 100px)" }} >
+                <div className={stylesModals.modal_dialog_overlay} style={{backgroundColor: toggleAlt ? "rgba(0, 0, 0, 0.7)" : "rgba(0, 0, 0, 0.5)"}}></div>
+                <Dialog.Content className={classNames(stylesModals.modal_dialog, stylesModals.imageViewerContent)} aria-describedby={undefined}>
                     <VisuallyHidden>
                         <Dialog.DialogTitle>{__("reader.imgViewer.title")}</Dialog.DialogTitle>
                     </VisuallyHidden>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "end" }}>
+                    <div className={stylesModals.close_button_bar}>
                         <Dialog.Close asChild>
                             <button style={{ zIndex: 105 }} className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
                                 <SVG ariaHidden={true} svg={QuitIcon} />
                             </button>
                         </Dialog.Close>
                     </div>
-                    <div style={{ display: "flex", flexDirection: "column", padding: "5px 10px", alignItems: "center", flex: 1 }}>
-                        <div className={stylesModals.imageViewerContent}>
-                            <div style={{transition: "600ms ease-in-out"}}>
+                    <div className={stylesModals.image_content_container}>
+                        <div style={{ position: "relative", display: "flex", gap: 10, width: "100%", height: "100%", paddingLeft: 5, flex: 1, flexDirection: "column"}}>
                             <TransformWrapper initialScale={scale} minScale={scale / 2} maxScale={4 * scale}>
-                                <TransformComponent wrapperStyle={{ display: "flex", margin: "auto", width: "90%", height: "90%", minHeight: "350px", flex: "1", position: "relative", transition: "600ms ease-in-out" }} >
+                                <TransformComponent wrapperStyle={{ display: "flex", width: "100%", height: "100%", minHeight: "350px", flex: "1", position: "relative", transition: "600ms ease-in-out"}} >
                                     <img
                                         style={{ height: "100%", width: "100%", maxHeight: "calc(100vh - 250px)", backgroundColor: "white", color: "black", fill: "currentcolor", stroke: "currentcolor" }}
                                         src={isSVGFragment ? ("data:image/svg+xml;base64," + Buffer.from(HTMLImgSrc_SVGImageHref_SVGFragmentMarkup).toString("base64")) : HTMLImgSrc_SVGImageHref_SVGFragmentMarkup}
@@ -160,15 +173,25 @@ export const ImageClickManagerImgViewerOnly: React.FC = () => {
                                         tabIndex={0}
                                     />
                                 </TransformComponent>
+                            {
+                                toggleAlt ?
+                                <div className={stylesModals.modal_dialog_overlay} style={{top: "40px"}}></div>
+                                : <></>
+                            }
                                 <Controls />
                             </TransformWrapper>
                             </div>
-                            {imageHasDescription && (
-                                <div style={{ width: "100%", marginTop: "10px" }}>
-                                    {imageDescription}
-                                </div>
-                            )}
-                        </div>
+                            <div className={stylesModals.image_description_container} style={{transform: toggleAlt ? "translateY(0)" : "translateY(1000px)"}}>
+                                <div className={stylesModals.image_description_content}>{imageDescription}</div>
+                            </div>
+                            {imageDescription ?
+                                <button className={stylesModals.image_description_toggle}
+                                onClick={() => setToggleAlt(!toggleAlt)}
+                                >
+                                    ALT
+                                </button>
+                                : <></>
+                            }
                     </div>
                 </Dialog.Content>
             </Dialog.Portal>
