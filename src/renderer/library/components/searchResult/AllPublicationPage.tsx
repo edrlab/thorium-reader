@@ -459,7 +459,10 @@ interface ITableCellProps_Filter {
     setSelectedTag: React.Dispatch<React.SetStateAction<string>>,
 }
 interface ITableCellProps_Column {
-    column: ColumnWithLooseAccessor<IColumns> & UseFiltersColumnProps<IColumns>,
+    column: ColumnWithLooseAccessor<IColumns> & UseFiltersColumnProps<IColumns> & {
+        setActiveFiltersArray?: React.Dispatch<React.SetStateAction<IActiveFilter[]>>;
+        setSelection: React.Dispatch<React.SetStateAction<string>>;
+    },
     // columnFilter: string,
     // {
     //     filterValue: string | undefined;
@@ -548,6 +551,8 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
             }
         }
     }, [props.showColumnFilters, setShowColumnFilters, props.column.id, props.accessibilitySupportEnabled, props.column, searchParamsFocus, searchParamsValue, searchParamsFocus_, searchParamsValue_, onInputChange]);
+    const setActiveFiltersArray = props.column.setActiveFiltersArray as React.Dispatch<React.SetStateAction<IActiveFilter[]>>;
+    const setSelection = props.column.setSelection as React.Dispatch<React.SetStateAction<string>>;
 
     return props.showColumnFilters ?
         <div className={stylesPublication.showColFilters_wrapper}>
@@ -585,6 +590,33 @@ const CellColumnFilter: React.FC<ITableCellProps_Filter & ITableCellProps_Column
                         if (props.column.id === "colTags") {
                             props.setSelectedTag(inputRef?.current?.value.trim());
                             // console.log(inputRef.current.value);
+                        }
+                    };
+                    const rawValue = inputRef?.current?.value || "";
+                    const trimmedValue = rawValue.trim();
+
+                    if (e.key === "Enter") {
+                        props.column.setFilter(trimmedValue || undefined);
+
+                        if (props.column.id === "colTags") {
+                            props.setSelectedTag(trimmedValue);
+                        }
+
+                        if (setActiveFiltersArray) {
+                            setSelection(trimmedValue);
+
+                            setActiveFiltersArray(prevArray => {
+                                const filtered = prevArray.filter(f => f.filterCol !== props.column.id);
+
+                                if (trimmedValue === "") {
+                                    return filtered;
+                                }
+                                return [...filtered, {
+                                    filterType: props.column.Header.toString(),
+                                    value: trimmedValue,
+                                    filterCol: props.column.id,
+                                }];
+                            });
                         }
                     }
                 }}
@@ -645,7 +677,16 @@ const CellCoverImage: React.FC<ITableCellProps_Column & ITableCellProps_GenericC
     </div>);
 };
 
+interface IActiveFilter {
+    filterType: string;
+    value: string;
+    filterCol: string;
+}
+
 const CellFormat: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_StringValue> = (props) => {
+
+    const setActiveFiltersArray = props.column.setActiveFiltersArray as React.Dispatch<React.SetStateAction<IActiveFilter[]>>;
+    const setSelection = props.column.setSelection as React.Dispatch<React.SetStateAction<string>>;
 
     const link = (t: string) => {
         return <a
@@ -663,7 +704,17 @@ const CellFormat: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell 
                 e.preventDefault();
                 // props.column.setFilter(t);
                 props.setShowColumnFilters(true, props.column.id, t);
-            }}
+                if (setActiveFiltersArray) {
+                    setSelection(t);
+                    setActiveFiltersArray(prevArray => {
+                    const filtered = prevArray.filter(f => f.filterCol !== "colFormat");
+                    return [...filtered, { 
+                        filterType: props.column.Header.toString(), 
+                        value: t, 
+                        filterCol: "colFormat",
+                    }];
+                });
+            }}}
             className={stylesButtons.button_nav_primary} style={{ padding: "2px" }}>{t}</a>;
     };
 
@@ -682,6 +733,9 @@ interface ITableCellProps_Value_Langs {
 }
 const CellLangs: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Langs> = (props) => {
 
+    const setActiveFiltersArray = props.column.setActiveFiltersArray as React.Dispatch<React.SetStateAction<IActiveFilter[]>>;
+    const setSelection = props.column.setSelection as React.Dispatch<React.SetStateAction<string>>;
+
     const link = (t: string) => {
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
@@ -698,6 +752,17 @@ const CellLangs: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell &
                 e.preventDefault();
                 // props.column.setFilter(t);
                 props.setShowColumnFilters(true, props.column.id, t);
+                if (setActiveFiltersArray) {
+                    setSelection(t);
+                    setActiveFiltersArray(prevArray => {
+                    const filtered = prevArray.filter(f => f.filterCol !== "colLanguages");
+                    return [...filtered, { 
+                        filterType: props.column.Header.toString(), 
+                        value: t, 
+                        filterCol: "colLanguages",
+                    }];
+                });
+            }   
             }}
             className={stylesPublication.cell_link}>{t}</a>;
     };
@@ -869,6 +934,9 @@ const CellTags: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
     // TagSearchResult.tsx
     // publication.ts findByTag()
 
+    const setActiveFiltersArray = props.column.setActiveFiltersArray as React.Dispatch<React.SetStateAction<IActiveFilter[]>>;
+    const setSelection = props.column.setSelection as React.Dispatch<React.SetStateAction<string>>;
+
     const link = (t: string) => {
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
@@ -887,7 +955,17 @@ const CellTags: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & 
                 // props.column.setFilter(t);
                 props.setShowColumnFilters(true, props.column.id, t);
                 props.setSelectedTag(t);
-            }}
+                if (setActiveFiltersArray) {
+                    setSelection(t);
+                    setActiveFiltersArray(prevArray => {
+                    const filtered = prevArray.filter(f => f.filterCol !== "colTags");
+                    return [...filtered, { 
+                        filterType: props.column.Header.toString(), 
+                        value: t, 
+                        filterCol: "colTags",
+                    }];
+                });
+            }}}
             className={stylesButtons.button_nav_primary} style={{ padding: "2px" }}>
             <p style={{ maxWidth: "100px", overflow: "hidden", textOverflow: "ellipsis", textWrap: "nowrap" }}>{t}</p>
         </a>;
@@ -1267,6 +1345,10 @@ const CellRemainingDays: React.FC<ITableCellProps_Column & ITableCellProps_Gener
 
 const CellReadingState: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Remaining> = (props) => {
 
+    const setActiveFiltersArray = props.column.setActiveFiltersArray as React.Dispatch<React.SetStateAction<IActiveFilter[]>>;
+    const setSelection = props.column.setSelection as React.Dispatch<React.SetStateAction<string>>;
+
+
     const link = (t: string) => {
         return <a
             title={`${t} (${props.__("header.searchPlaceholder")})`}
@@ -1283,6 +1365,17 @@ const CellReadingState: React.FC<ITableCellProps_Column & ITableCellProps_Generi
                 e.preventDefault();
                 // props.column.setFilter(t);
                 props.setShowColumnFilters(true, props.column.id, t);
+                if (setActiveFiltersArray) {
+                    setSelection(t);
+                    setActiveFiltersArray(prevArray => {
+                    const filtered = prevArray.filter(f => f.filterCol !== "colReadingState");
+                    return [...filtered, { 
+                        filterType: props.column.Header.toString(), 
+                        value: t, 
+                        filterCol: "colReadingState",
+                    }];
+                });
+            }   
             }}>{t}</a>;
     };
 
@@ -1436,7 +1529,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     const { openReader, displayPublicationInfo, displayType, __, focusInputRef, publicationViews, accessibilitySupportEnabled, tags } = props;
 
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
-    const [activeFiltersArray, setActiveFiltersArray] = React.useState([]);
+    const [activeFiltersArray, setActiveFiltersArray] = React.useState<IActiveFilter[]>([]);
     const [filterPopoverOpen, setFilterPopoverOpen] = React.useState(false);
     const [selectedTag, setSelectedTag] = React.useState("");
     const [selectedFormat, setSelectedFormat] = React.useState("");
@@ -1771,6 +1864,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     Cell: CellReadingState,
                     filter: "text", // because IColumnValue_BaseString instead of plain string
                     sortType: sortFunction,
+                    setActiveFiltersArray: setActiveFiltersArray,
+                    setSelection: setSelectedReadingState,
                 },
                 {
                     Header: __("publication.remainingTime"),
@@ -1789,6 +1884,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     Cell: CellLangs,
                     filter: "text", // because IColumnValue_BaseString instead of plain string
                     sortType: sortFunction,
+                    setActiveFiltersArray: setActiveFiltersArray,
+                    setSelection: setSelectedLanguage,
                 },
                 {
                     Header: __("catalog.tags"),
@@ -1798,6 +1895,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     Cell: CellTags,
                     filter: "text", // because IColumnValue_BaseString instead of plain string
                     sortType: sortFunction,
+                    setActiveFiltersArray: setActiveFiltersArray,
+                    setSelection: setSelectedTag,
                 },
                 {
                     Header: __("catalog.format"),
@@ -1806,6 +1905,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     // @ts-expect-error
                     Cell: CellFormat,
                     sortType: sortFunction,
+                    setActiveFiltersArray: setActiveFiltersArray,
+                    setSelection: setSelectedFormat,
                 },
                 {
                     Header: __("catalog.lastRead"),
@@ -2254,10 +2355,10 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                     </Popover.Trigger>
                                     <Popover.Portal>
                                         <Popover.Content avoidCollisions sideOffset={5} align="end" alignOffset={-10} className={stylesAnnotations.annotation_form} style={{paddingTop: "20px"}}>
-                                            <FilterComponent tableInstance={tableInstance}  target={"format"} targetColName={"colFormat"} targetList={formats} selection={selectedFormat} setSelection={setSelectedFormat} activeFiltersArray={activeFiltersArray} setActiveFiltersArray={setActiveFiltersArray}  />
-                                            <FilterComponent tableInstance={tableInstance}  target={"language"} targetColName={"colLanguages"} targetList={languages} selection={selectedLanguage} setSelection={setSelectedLanguage} activeFiltersArray={activeFiltersArray} setActiveFiltersArray={setActiveFiltersArray}  />
-                                            <FilterComponent tableInstance={tableInstance}  target={"reading state"} targetColName={"colReadingState"} targetList={readingStates} selection={selectedReadingState} setSelection={setSelectedReadingState} activeFiltersArray={activeFiltersArray} setActiveFiltersArray={setActiveFiltersArray}  />
-                                            <FilterComponent tableInstance={tableInstance} target={"tag"} targetColName={"colTags"} targetList={tagsOptions} selection={selectedTag} setSelection={setSelectedTag} activeFiltersArray={activeFiltersArray} setActiveFiltersArray={setActiveFiltersArray} />
+                                            <FilterComponent tableInstance={tableInstance}  target={__("catalog.format")} targetColName={"colFormat"} targetList={formats} selection={selectedFormat} setSelection={setSelectedFormat} activeFiltersArray={activeFiltersArray} setActiveFiltersArray={setActiveFiltersArray}  />
+                                            <FilterComponent tableInstance={tableInstance}  target={__("catalog.lang")} targetColName={"colLanguages"} targetList={languages} selection={selectedLanguage} setSelection={setSelectedLanguage} activeFiltersArray={activeFiltersArray} setActiveFiltersArray={setActiveFiltersArray}  />
+                                            <FilterComponent tableInstance={tableInstance}  target={__("publication.progression.title")} targetColName={"colReadingState"} targetList={readingStates} selection={selectedReadingState} setSelection={setSelectedReadingState} activeFiltersArray={activeFiltersArray} setActiveFiltersArray={setActiveFiltersArray}  />
+                                            <FilterComponent tableInstance={tableInstance} target={__("catalog.tags")} targetColName={"colTags"} targetList={tagsOptions} selection={selectedTag} setSelection={setSelectedTag} activeFiltersArray={activeFiltersArray} setActiveFiltersArray={setActiveFiltersArray} />
                                             <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
                                         </Popover.Content>
                                     </Popover.Portal>
