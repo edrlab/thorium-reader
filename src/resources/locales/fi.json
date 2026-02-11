@@ -696,6 +696,11 @@
             "mute": "mykistä",
             "unmute": "poista mykistys"
         },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
+        },
         "fxl": {
             "fit": "Sovita"
         },

@@ -716,6 +716,11 @@
             "mute": "كتم الصوت",
             "unmute": "إلغاء كتم الصوت"
         },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
+        },
         "fxl": {
             "fit": "ملاءمة"
         },

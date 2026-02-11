@@ -696,6 +696,11 @@
             "mute": "заглуши звука",
             "unmute": "включване на звука"
         },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
+        },
         "fxl": {
             "fit": ""
         },

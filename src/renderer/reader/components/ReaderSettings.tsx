@@ -1825,13 +1825,13 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                 <div key="modal-header" className={stylesSettings.close_button_div}>
                     <TabTitle value={section} />
                     <div>
-                        <button className={stylesButtons.button_transparency_icon} aria-label={__("reader.svg.left")} onClick={setDockingModeLeftSide}>
+                        <button className={stylesButtons.button_transparency_icon} aria-label={__("reader.dock.dockLeft")} onClick={setDockingModeLeftSide}>
                             <SVG ariaHidden={true} svg={DockLeftIcon} />
                         </button>
-                        <button className={stylesButtons.button_transparency_icon} aria-label={__("reader.svg.right")} onClick={setDockingModeRightSide}>
+                        <button className={stylesButtons.button_transparency_icon} aria-label={__("reader.dock.dockRight")} onClick={setDockingModeRightSide}>
                             <SVG ariaHidden={true} svg={DockRightIcon} />
                         </button>
-                        <button className={stylesButtons.button_transparency_icon} disabled aria-label={__("reader.settings.column.auto")} onClick={setDockingModeFull}>
+                        <button className={stylesButtons.button_transparency_icon} disabled aria-label={__("reader.dock.dockDefault")} onClick={setDockingModeFull}>
                             <SVG ariaHidden={true} svg={DockModalIcon} />
                         </button>
                         <Dialog.Close asChild>
@@ -1853,13 +1853,13 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                                 (dockedMode && isEpub) ? <AllowCustomContainer /> : <SelectRefComponent />
                             }
                             <div key="docked-header-btn" className={stylesPopoverDialog.docked_header_controls}>
-                                <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label={__("reader.svg.left")} onClick={setDockingModeLeftSide}>
+                                <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "left" ? true : false} aria-label={__("reader.dock.dockLeft")} onClick={setDockingModeLeftSide}>
                                     <SVG ariaHidden={true} svg={DockLeftIcon} />
                                 </button>
-                                <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label={__("reader.svg.right")} onClick={setDockingModeRightSide}>
+                                <button className={stylesButtons.button_transparency_icon} disabled={dockingMode === "right" ? true : false} aria-label={__("reader.dock.dockRight")} onClick={setDockingModeRightSide}>
                                     <SVG ariaHidden={true} svg={DockRightIcon} />
                                 </button>
-                                <button className={stylesButtons.button_transparency_icon} disabled={false} aria-label={__("reader.settings.column.auto")} onClick={setDockingModeFull}>
+                                <button className={stylesButtons.button_transparency_icon} disabled={false} aria-label={__("reader.dock.dockDefault")} onClick={setDockingModeFull}>
                                     <SVG ariaHidden={true} svg={DockModalIcon} />
                                 </button>
 

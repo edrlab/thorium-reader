@@ -696,6 +696,11 @@
             "mute": "stäng av ljud",
             "unmute": "slå på ljud"
         },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
+        },
         "fxl": {
             "fit": "Anpassa"
         },

@@ -706,6 +706,11 @@
             "mute": "išjungti garsą",
             "unmute": "įjungti garsą"
         },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
+        },
         "fxl": {
             "fit": "Talpinti"
         },

@@ -701,6 +701,11 @@
             "mute": "Désactiver le son",
             "unmute": "Activer le son"
         },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
+        },
         "fxl": {
             "fit": "Remplir"
         },

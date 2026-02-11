@@ -701,6 +701,11 @@
             "mute": "silenciar",
             "unmute": "dejar de silenciar"
         },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
+        },
         "fxl": {
             "fit": "Ajustar"
         },

@@ -696,6 +696,11 @@
             "mute": "demp geluid",
             "unmute": "geluid aan"
         },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
+        },
         "fxl": {
             "fit": "Pas"
         },

@@ -696,6 +696,11 @@
             "mute": "sesi kapat",
             "unmute": "sesi aç"
         },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
+        },
         "fxl": {
             "fit": "Sığdır"
         },

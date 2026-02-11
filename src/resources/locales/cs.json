@@ -706,6 +706,11 @@
             "mute": "ztlumit zvuk",
             "unmute": ""
         },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
+        },
         "fxl": {
             "fit": ""
         },

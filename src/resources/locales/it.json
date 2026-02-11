@@ -701,6 +701,11 @@
             "mute": "disattiva audio",
             "unmute": "riattiva audio"
         },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
+        },
         "fxl": {
             "fit": "Adattare"
         },

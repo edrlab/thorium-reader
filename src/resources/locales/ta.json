@@ -696,6 +696,11 @@
             "mute": "முடக்கு ஆடியோ",
             "unmute": "இயக்க ஆடியோ"
         },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
+        },
         "fxl": {
             "fit": "பொருத்தம்"
         },

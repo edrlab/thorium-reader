@@ -696,6 +696,11 @@
             "mute": "isildu",
             "unmute": "isiltzeari utzi"
         },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
+        },
         "fxl": {
             "fit": "Egokitu"
         },

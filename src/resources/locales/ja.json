@@ -691,6 +691,11 @@
             "mute": "音を鳴らさない",
             "unmute": "音を鳴らす"
         },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
+        },
         "fxl": {
             "fit": "合わせる"
         },

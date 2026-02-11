@@ -139,9 +139,6 @@
         "annotations": {
             "descAuthor": "",
             "descCreator": "",
-            "descList": "",
-            "descNewer": "",
-            "descOlder": "",
             "descTitle": "",
             "importAll": "",
             "importWithoutConflict": "",
@@ -157,9 +154,7 @@
             }
         },
         "deleteAnnotations": "",
-        "deleteAnnotationsText": "",
         "deleteBookmarks": "",
-        "deleteBookmarksText": "",
         "deleteFeed": "카탈로그를 제거하겠습니까?",
         "deletePublication": "출판물을 제거하겠습니까?",
         "deletePublicationWithNotes": "",
@@ -690,6 +685,11 @@
         "divina": {
             "mute": "오디오 음소거",
             "unmute": "오디오 음소거 해제"
+        },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
         },
         "fxl": {
             "fit": ""

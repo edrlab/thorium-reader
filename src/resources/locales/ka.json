@@ -696,6 +696,11 @@
             "mute": "გაჩუმება",
             "unmute": "ხმის ჩართვა"
         },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
+        },
         "fxl": {
             "fit": ""
         },

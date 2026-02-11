@@ -706,6 +706,11 @@
             "mute": "izklopi zvok",
             "unmute": "vklopi zvok"
         },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
+        },
         "fxl": {
             "fit": "Prilagajanje zaslonu"
         },

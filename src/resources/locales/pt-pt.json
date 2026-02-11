@@ -701,6 +701,11 @@
             "mute": "Silenciar áudio",
             "unmute": "Ativar áudio"
         },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
+        },
         "fxl": {
             "fit": "Ajustar"
         },
