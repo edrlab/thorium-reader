@@ -866,7 +866,7 @@
             "reduceMotion": "Reduzir movimento",
             "scrolled": "Rolável",
             "spacing": "Espaçamento",
-            "spreadModeEven": "",
+            "spreadModeEven": "Espelhamento de páginas: 'par' (a predefinição é 'ímpar')",
             "text": "Texto",
             "theme": {
                 "name": {
@@ -961,7 +961,7 @@
                 },
                 "AudioPreviousAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Segmento áudio anterior (escape)"
                 },
                 "AudioStop": {
                     "description": "",
@@ -972,44 +972,44 @@
                     "name": "Fechar leitor"
                 },
                 "FXLZoomIn": {
-                    "description": "",
-                    "name": ""
+                    "description": "Aproximar zoom para página única ou numa página dupla com disposição fixa.",
+                    "name": "Aumentar zoom em FXL"
                 },
                 "FXLZoomOut": {
-                    "description": "",
+                    "description": "Afastar zoom de página única ou numa página dupla com disposição fixa.",
                     "name": ""
                 },
                 "FXLZoomReset": {
-                    "description": "",
+                    "description": "Repor zoom numa página única ou numa página dupla com disposição fixa.",
                     "name": ""
                 },
                 "FocusMain": {
                     "description": "",
-                    "name": "Focar no conteúdo principal"
+                    "name": "Foco no conteúdo principal"
                 },
                 "FocusMainDeep": {
                     "description": "",
-                    "name": "Focar profundo no conteúdo principal"
+                    "name": "Foco profundo no conteúdo principal"
                 },
                 "FocusReaderGotoPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Foco em 'Ir para página'"
                 },
                 "FocusReaderNavigation": {
                     "description": "",
-                    "name": ""
+                    "name": "Foco no Painel de navegação"
                 },
                 "FocusReaderNavigationAnnotations": {
                     "description": "",
-                    "name": ""
+                    "name": "Foco em 'Anotações'"
                 },
                 "FocusReaderNavigationBookmarks": {
                     "description": "",
-                    "name": ""
+                    "name": "Foco em 'Marcadores'"
                 },
                 "FocusReaderNavigationSearch": {
                     "description": "",
-                    "name": ""
+                    "name": "Foco em 'Pesquisar'"
                 },
                 "FocusReaderNavigationTOC": {
                     "description": "",
