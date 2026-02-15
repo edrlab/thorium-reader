@@ -89,6 +89,7 @@
         "lastRead": "Senest læst",
         "login": "Log ind",
         "logout": "Log ud",
+        "missing": "",
         "moreInfo": "Bogdetaljer",
         "myBooks": "Mine bøger",
         "noPublicationHelpL1": "Træk en bog hertil",
@@ -139,10 +140,13 @@
         "annotations": {
             "descAuthor": "af {{- author}}",
             "descCreator": "lavet af",
+            "descList": "",
             "descList_one": "{{- count}} note(r) fra {{- creator}} vil blive associeret med {{- title}} {{- author}}",
             "descList_other": "{{- count}} note(r) fra {{- creator}} vil blive associeret med {{- title}} {{- author}}",
+            "descNewer": "",
             "descNewer_one": "{{- count}} nyere version af disse noter er allerede associeret med denne bog",
             "descNewer_other": "{{- count}} nyere version af disse noter er allerede associeret med denne bog",
+            "descOlder": "",
             "descOlder_one": "{{- count}} ældre version af disse noter er allerede associeret med denne bog",
             "descOlder_other": "{{- count}} ældre version af disse noter er allerede associeret med denne bog",
             "descTitle": "Navn på notesamling: ",
@@ -160,9 +164,11 @@
             }
         },
         "deleteAnnotations": "Slet alle noter?",
+        "deleteAnnotationsText": "",
         "deleteAnnotationsText_one": "Vil du slette {{- count}} note(r)?",
         "deleteAnnotationsText_other": "Vil du slette {{- count}} note(r)?",
         "deleteBookmarks": "Slet bogmærker?",
+        "deleteBookmarksText": "",
         "deleteBookmarksText_one": "Er du sikker på at du vil slette {{- count}} bogmærke(r)?",
         "deleteBookmarksText_other": "Er du sikker på at du vil slette {{- count}} bogmærke(r)?",
         "deleteFeed": "Er du sikker på at du vil slette dette katalog?",
@@ -775,6 +781,7 @@
         },
         "picker": {
             "search": {
+                "founds": "",
                 "founds_one": "{{- count}} resultat(er)",
                 "founds_other": "{{- count}} resultat(er)",
                 "input": "søgetekst",

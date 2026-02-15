@@ -89,6 +89,7 @@
         "lastRead": "Τελευταία ανάγνωση",
         "login": "Σύνδεση",
         "logout": "Αποσύνδεση",
+        "missing": "",
         "moreInfo": "Λεπτομέρειες βιβλίου",
         "myBooks": "Τα βιβλία μου",
         "noPublicationHelpL1": "Εναπόθεση αρχείων εδώ",
@@ -139,10 +140,13 @@
         "annotations": {
             "descAuthor": "από '{{- author}}'",
             "descCreator": "δημιουργήθηκε από",
+            "descList": "",
             "descList_one": "{{- count}} σημείωση {{- creator}} θα εισαγχθεί στον τίτλο '{{- title}}' {{- author}}",
             "descList_other": "{{- count}} σημειώσεις {{- creator}} θα εισαγχθούν στον τίτλο '{{- title}}' {{- author}}",
+            "descNewer": "",
             "descNewer_one": "Σύγκρουση: {{- count}} νεώτερη σημείωση",
             "descNewer_other": "Συγκρούσεις: {{- count}} νεώτερες σημειώσεις",
+            "descOlder": "",
             "descOlder_one": "Σύγκρουση: {{- count}} παλιότερη σημείωση",
             "descOlder_other": "Συγκρούσεις: {{- count}} παλιότερες σημειώσεις",
             "descTitle": "Τίτλος σχολιασμών: ",
@@ -160,9 +164,11 @@
             }
         },
         "deleteAnnotations": "Διαγραφή σχολίων;",
+        "deleteAnnotationsText": "",
         "deleteAnnotationsText_one": "Είστε σίγουροι για τη διαγραφή σημείωσης {{- count}};",
         "deleteAnnotationsText_other": "Είστε σίγουροι για τη διαγραφή σημειώσεων {{- count}};",
         "deleteBookmarks": "Διαγραφή σελιδοδεικτών;",
+        "deleteBookmarksText": "",
         "deleteBookmarksText_one": "Είστε σίγουροι ότι θέλετε να διαγράψετε {{- count}} σελιδοδείκτη;",
         "deleteBookmarksText_other": "Είστε σίγουροι ότι θέλετε να διαγράψετε {{- count}} σελιδοδείκτες;",
         "deleteFeed": "Διαγραφή καταλόγου;",
@@ -775,6 +781,7 @@
         },
         "picker": {
             "search": {
+                "founds": "",
                 "founds_one": "{{- count}} αποτέλεσμα",
                 "founds_other": "{{- count}} αποτελέσματα",
                 "input": "κείμενο προς ανάκτηση",

@@ -143,6 +143,9 @@ class Cover extends React.Component<IProps, IState> {
                 <div className={stylesPublications.corner}><SVG ariaHidden svg={ValidateIcon} /></div>
                 : <></>} */}
                 {
+                    publicationViewMaybeOpds.type === "missingOrDeleted" ? <span style={{position: "absolute"}}>{this.props.__("catalog.missing")}</span> : <></>
+                }
+                {
                 needsSpinner
                 ?
                 (<div className={stylesSpinner.spinner_container}><div className={stylesSpinner.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>)
@@ -207,7 +210,7 @@ const mapStateToProps = (state: IRendererCommonRootState) => ({
     lcp: state.lcp,
 });
 
-
+ 
 const CoverWithTranslator = connect(mapStateToProps)(withTranslator(Cover));
 export default CoverWithTranslator;
 

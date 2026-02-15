@@ -89,6 +89,7 @@
         "lastRead": "கடைசியாக படியுங்கள்",
         "login": "",
         "logout": "",
+        "missing": "",
         "moreInfo": "வெளியீட்டு விவரங்கள்",
         "myBooks": "எனது வெளியீடுகள்",
         "noPublicationHelpL1": "கோப்புகளை இங்கே விடுங்கள்",
@@ -139,10 +140,13 @@
         "annotations": {
             "descAuthor": "வழங்கியவர் '{{- author}}'",
             "descCreator": "உருவாக்கியது",
+            "descList": "",
             "descList_one": "{{- count}} குறிப்பு(கள்) {{- creator}} இல் இறக்குமதி செய்யப்படும் '{{- title}}' {{- author}}",
             "descList_other": "{{- count}} குறிப்பு(கள்) {{- creator}} இல் இறக்குமதி செய்யப்படும் '{{- title}}' {{- author}}",
+            "descNewer": "",
             "descNewer_one": "மோதல்(கள்): {{- count}} புதிய குறிப்புகள்",
             "descNewer_other": "மோதல்(கள்): {{- count}} புதிய குறிப்புகள்",
+            "descOlder": "",
             "descOlder_one": "மோதல்(கள்): {{- count}} பழைய குறிப்புகளில்",
             "descOlder_other": "மோதல்(கள்): {{- count}} பழைய குறிப்புகளில்",
             "descTitle": "சிறுகுறிப்பு தலைப்பு: ",
@@ -160,9 +164,11 @@
             }
         },
         "deleteAnnotations": "சிறுகுறிப்புகளை நீக்கவா?",
+        "deleteAnnotationsText": "",
         "deleteAnnotationsText_one": "நீங்கள் நிச்சயமாக {{- count}} குறிப்புகளை நீக்க விரும்புகிறீர்களா?",
         "deleteAnnotationsText_other": "நீங்கள் நிச்சயமாக {{- count}} குறிப்புகளை நீக்க விரும்புகிறீர்களா?",
         "deleteBookmarks": "புக்மார்க்குகளை நீக்கவா?",
+        "deleteBookmarksText": "",
         "deleteBookmarksText_one": "{{- count}} புக்மார்க்குகளை நீக்க விரும்புகிறீர்களா?",
         "deleteBookmarksText_other": "{{- count}} புக்மார்க்குகளை நீக்க விரும்புகிறீர்களா?",
         "deleteFeed": "பட்டியலை நீக்கவா?",
@@ -775,6 +781,7 @@
         },
         "picker": {
             "search": {
+                "founds": "",
                 "founds_one": "{{- count}} பொருந்துகிறது",
                 "founds_other": "{{- count}} பொருந்துகிறது",
                 "input": "பொருத்த உரை",

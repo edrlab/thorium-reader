@@ -146,6 +146,7 @@ declare namespace typed_i18n {
   readonly "lastRead": string,
   readonly "login": string,
   readonly "logout": string,
+  readonly "missing": string,
   readonly "moreInfo": string,
   readonly "myBooks": string,
   readonly "noPublicationHelpL1": string,
@@ -242,6 +243,7 @@ declare namespace typed_i18n {
   (_: "catalog.lastRead", __?: {}): string;
   (_: "catalog.login", __?: {}): string;
   (_: "catalog.logout", __?: {}): string;
+  (_: "catalog.missing", __?: {}): string;
   (_: "catalog.moreInfo", __?: {}): string;
   (_: "catalog.myBooks", __?: {}): string;
   (_: "catalog.noPublicationHelpL1", __?: {}): string;

@@ -89,6 +89,7 @@
         "lastRead": "Zuletzt gelesen",
         "login": "",
         "logout": "",
+        "missing": "",
         "moreInfo": "Mehr Informationen",
         "myBooks": "Meine Bücher",
         "noPublicationHelpL1": "Legen Sie Ihre Bücher hier ab",
@@ -139,10 +140,13 @@
         "annotations": {
             "descAuthor": "nach '{{- author}}'",
             "descCreator": "Erstellt von",
+            "descList": "",
             "descList_one": "{{- count}} Notiz(en) {{- creator}} werden nach '{{- title}}' {{- author}} importiert",
             "descList_other": "{{- count}} Notiz(en) {{- creator}} werden nach '{{- title}}' {{- author}} importiert",
+            "descNewer": "",
             "descNewer_one": "Konflikt: {{- count}} neuere Notiz(en)",
             "descNewer_other": "Konflikt: {{- count}} neuere Notiz(en)",
+            "descOlder": "",
             "descOlder_one": "Konflikt: {{- count}} ältere Notiz(en)",
             "descOlder_other": "Konflikt: {{- count}} ältere Notiz(en)",
             "descTitle": "Titel der Notiz: ",
@@ -160,11 +164,11 @@
             }
         },
         "deleteAnnotations": "Anmerkungen löschen?",
+        "deleteAnnotationsText": "",
         "deleteAnnotationsText_one": "Sind Sie sicher, dass Sie {{- count}} Notiz(en) löschen wollen?",
         "deleteAnnotationsText_other": "Sind Sie sicher, dass Sie {{- count}} Notiz(en) löschen wollen?",
         "deleteBookmarks": "",
-        "deleteBookmarksText_one": "",
-        "deleteBookmarksText_other": "",
+        "deleteBookmarksText": "",
         "deleteFeed": "Willst du diesen Katalog wirklich löschen?",
         "deletePublication": "Willst du diese Publikation wirklich löschen?",
         "deletePublicationWithNotes": "",
@@ -775,6 +779,7 @@
         },
         "picker": {
             "search": {
+                "founds": "",
                 "founds_one": "{{- count}} Fundstelle(n)",
                 "founds_other": "{{- count}} Fundstelle(n)",
                 "input": "Text suchen",
