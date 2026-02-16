@@ -237,7 +237,7 @@ export function* importFromFs(
                     const msg = error?.message;
                     yield put(
                         toastActions.openRequest.build(
-                            ToastType.Error, msg, title
+                            ToastType.Error, msg, title,
                         ),
                     );
                 }
