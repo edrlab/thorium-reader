@@ -25,6 +25,7 @@ import { isOpenUrl, setOpenUrl } from "./url";
 import { globSync } from "glob";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { isAcceptedExtension } from "readium-desktop/common/extension";
+import { USER_DATA_FOLDER } from "readium-desktop/common/constant";
 
 // Logger
 const debug = debug_("readium-desktop:cli:process");
@@ -48,7 +49,10 @@ if (gotTheLock) {
 //  The second-instance event is still received, but the argv is ignored for the CLI,
 //  as it has already been executed by the "second instance" itself (see Yargs handlers).
 
-const userDataPath = app.getPath("userData");
+// TODO: check electron app.getPath('logs') instead
+// From electron docs: https://www.electronjs.org/docs/latest/api/app#appgetpathname
+// if is called without called app.setAppLogsPath() being called first, a default log directory will be created equivalent to calling app.setAppLogsPath() without a path parameter.
+const userDataPath = USER_DATA_FOLDER;
 const folderPath = path.join(
     userDataPath,
     "app-logs",

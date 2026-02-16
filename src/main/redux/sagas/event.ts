@@ -33,17 +33,18 @@ import { EXT_THORIUM } from "readium-desktop/common/extension";
 import { getLibraryWindowFromDi } from "readium-desktop/main/di";
 import { getTranslator } from "readium-desktop/common/services/translator";
 
-import { app } from "electron";
 import * as path from "path";
 import * as fs from "fs";import { fileProvisionning } from "./customization";
 import { customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
+import { USER_DATA_FOLDER } from "readium-desktop/common/constant";
 
 // Logger
 const debug = debug_("readium-desktop:main:saga:event");
 
-const userDataPath = app.getPath("userData");
+// TODO: check electron app.getPath('logs') instead
+// same as main/cli/index
 const folderPath = path.join(
-    userDataPath,
+    USER_DATA_FOLDER,
     "app-logs",
 );
 const PROCESS_LOGS = "processLogs.txt";

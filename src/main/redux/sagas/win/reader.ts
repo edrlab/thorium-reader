@@ -150,8 +150,8 @@ function* winClose(action: winActions.reader.closed.TAction) {
 
             const reduxState = reader.reduxState;
 
-            const notes = yield* callTyped(() => sqliteTableSelectAllNotesWherePubId(publicationIdentifier));
-            reduxState.note = (notes && notes.length) ? notes : [];
+            // const notes = yield* callTyped(() => sqliteTableSelectAllNotesWherePubId(publicationIdentifier));
+            // reduxState.note = (notes && notes.length) ? notes : [];
 
             // It takes too mutch time on reader closing now
             yield put(winActions.session.setReduxState.build(winId, publicationIdentifier, reduxState));

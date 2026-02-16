@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { app, shell } from "electron";
+import { shell } from "electron";
 import * as fs from "fs";
 import * as path from "path";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
@@ -16,6 +16,7 @@ import {
     TKeyboardShortcutsMap,
 } from "../common/keyboard";
 import { JsonStringifySortedKeys } from "readium-desktop/common/utils/json";
+import { USER_DATA_FOLDER } from "readium-desktop/common/constant";
 
 // uncomment this to test webpack-loader-scope-checker.js (violation: MAIN calls RENDERER code => WebPack bundles source tree from different realm)
 // import { unregisterKeyboardListener } from "readium-desktop/renderer/common/keyboard";
@@ -54,9 +55,8 @@ function getDefault(id: TKeyboardShortcutId): TKeyboardShortcut {
     return defaultKeyboardShortcuts[id];
 }
 
-const userDataPath = app.getPath("userData");
 const folderPath = path.join(
-    userDataPath,
+    USER_DATA_FOLDER,
     "keyboardShortcuts",
 );
 const DEFAULTS_FILENAME = "defaults.json";
@@ -178,10 +178,6 @@ function saveUser(obj: TKeyboardShortcutsMap) {
 }
 
 function init() {
-    if (!fs.existsSync(userDataPath)) {
-        fs.mkdirSync(userDataPath);
-    }
-
     if (!fs.existsSync(folderPath)) {
         fs.mkdirSync(folderPath);
     }

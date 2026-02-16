@@ -16,12 +16,13 @@ import { commandLineMainEntry } from ".";
 import { getOpenFileFromCliChannel } from "../event";
 import { isOpenUrl, setOpenUrl } from "./url";
 import { _APP_NAME, _APP_VERSION, _PACK_NAME } from "readium-desktop/preprocessor-directives";
+import { USER_DATA_FOLDER } from "readium-desktop/common/constant";
 
 // Logger
 const filename = "readium-desktop:main:lock";
 const debug = debug_(filename);
 
-const userDataPath = app.getPath("userData");
+const userDataPath = USER_DATA_FOLDER;
 const folderPath = path.join(
     userDataPath,
     "app-logs",

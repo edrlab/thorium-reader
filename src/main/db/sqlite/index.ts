@@ -6,21 +6,20 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { app } from "electron";
 import sqlite from "node:sqlite";
 import path from "path";
 import * as fs from "fs";
 import url from "url";
+import { USER_DATA_FOLDER } from "readium-desktop/common/constant";
 
 const debug = debug_("readium-desktop:main:db:sqlite");
 
 const { DatabaseSync } = sqlite;
 let database: sqlite.DatabaseSync = undefined;
 
-const userDataPath = app.getPath("userData");
 
 const sqliteFolder = path.join(
-    userDataPath,
+    USER_DATA_FOLDER,
     __TH__IS_DEV__ ? "sqlite-database-dev" : "sqlite-database",
 );
 const sqlitePath = path.join(
