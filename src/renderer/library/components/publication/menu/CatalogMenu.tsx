@@ -35,7 +35,53 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
     const dispatch = useDispatch();
     const locale = useSelector((state: ILibraryRootState) => state.i18n.locale);
 
+    const isPublicationMissingOrDeleted = props.publicationView.type === "missingOrDeleted";
+
     return (
+        <>
+        { isPublicationMissingOrDeleted ? 
+            <>
+                <DeletePublicationConfirm
+                    trigger={(
+                        <button
+                            className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
+                        >
+                            <SVG ariaHidden svg={TrashIcon} />
+                            <p>{__("catalog.delete")}</p>
+                        </button>
+                    )}
+                    publicationView={props.publicationView}
+                />
+                <div style={{ borderBottom: "1px solid var(--color-brand-primary)" }}></div>
+                <button
+                    className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
+                    onClick={debounce(async () => {
+                        try {
+                            const notes = await (await fetch(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PUBNOTES}/${props.publicationView.identifier}`)).json();
+
+                            const annoSetTitle = convertMultiLangStringToString(props.publicationView.publicationTitle, locale) || "thorium-notes";
+
+                            // let label = title.slice(0, 200);
+                            // label = label.trim();
+                            // label = label.replace(/[^a-z0-9_-]/gi, "_");
+                            // label = label.replace(/^_+|_+$/g, ""); // leading and trailing underscore
+                            // label = label.replace(/^\./, ""); // remove dot start
+                            // label = label.toLowerCase();
+
+                            // Be careful Selector can be not settled on th3.0 / th3.1 publication, you need to open it first to generate selectors for each notes
+                            // TODO: add a dialog to warm user on incorrect notes
+
+                            await getSaga().run(exportAnnotationSet, notes, props.publicationView, annoSetTitle, "annotation").toPromise();
+                        } catch (e) {
+                            console.error("EXPORT NOTES:", e);
+                        }
+                    }, 1000, { immediate: true })}
+                >
+                <SVG ariaHidden svg={SaveIcon} />
+                {__("catalog.exportAnnotation")}
+            </button >
+            </>
+        :
         <>
             <PublicationInfoLibWithRadix
                 publicationView={props.publicationView}
@@ -120,6 +166,8 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
             <SVG ariaHidden svg={SaveIcon} />
             {__("catalog.exportAnnotation")}
         </button >
+        </>
+        }
         </>
     );
 };

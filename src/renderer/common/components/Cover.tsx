@@ -115,6 +115,8 @@ class Cover extends React.Component<IProps, IState> {
             needsSpinner = true;
         }
 
+        const isPublicationMissingOrDeleted = publicationViewMaybeOpds.type === "missingOrDeleted";
+
         // let tagString = "";
         // for (const tag of publicationViewMaybeOpds.tags) {
         //     if (typeof tag === "string") {
@@ -126,7 +128,13 @@ class Cover extends React.Component<IProps, IState> {
 
         if (this.state.imgUrl) {
             return (
-                <>
+                <div className={isPublicationMissingOrDeleted ? stylesPublications.publication_missing_wrapper : ""}>
+                    {isPublicationMissingOrDeleted ?
+                    <div className={stylesPublications.publication_missing_container}>
+                        <SVG ariaHidden svg={FileBroken} className={stylesPublications.publication_missing_icon} />
+                    </div>
+                    : <></>
+                    }
                 <img
                     tabIndex={(this.props.imgRadixProp || this.props.onKeyUp) ? 0 : -1}
                     className={stylesPublications.cover_img}
@@ -145,21 +153,13 @@ class Cover extends React.Component<IProps, IState> {
                 <div className={stylesPublications.corner}><SVG ariaHidden svg={ValidateIcon} /></div>
                 : <></>} */}
                 {
-                        publicationViewMaybeOpds.type === "missingOrDeleted"
-                            ? <div aria-label={this.props.__("catalog.missing")} style={{ position: "absolute", width: "inherit", height: "inherit", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                <div aria-hidden style={{ height: "70px", width: "70px", borderRadius: "50%", background: "var(--color-error-text)", padding: "10px" }}>
-                                    <SVG ariaHidden svg={FileBroken} className={stylesPublications.publication_missing_icon} />
-                                </div>
-                            </div> : <></>
-                }
-                {
                 needsSpinner
                 ?
                 (<div className={stylesSpinner.spinner_container}><div className={stylesSpinner.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>)
                 :
                 <div className={stylesPublications.gradient}></div>
                 }
-                </>
+                </div>
             );
         }
 
@@ -177,7 +177,13 @@ class Cover extends React.Component<IProps, IState> {
         const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
 
         return (
-            <>
+            <div className={isPublicationMissingOrDeleted ? stylesPublications.publication_missing_wrapper : ""} style={{width: "100%"}}>
+                {isPublicationMissingOrDeleted ?
+                    <div className={stylesPublications.publication_missing_container}>
+                        <SVG ariaHidden svg={FileBroken} className={stylesPublications.publication_missing_icon} />
+                    </div>
+                    : <></>
+                }
             <div style={backgroundStyle} className={stylesPublications.no_img_wrapper}>
                 <div className={stylesPublications.no_img}>
                     <p aria-hidden
@@ -197,7 +203,7 @@ class Cover extends React.Component<IProps, IState> {
             :
             <div className={stylesPublications.gradient}></div>
             }
-            </>
+            </div>
         );
 
     }

@@ -26,7 +26,7 @@
   overflow: hidden;
   position: relative;
   height: auto;
-  align-items: start;
+  // align-items: start;
 
   &:hover {
       img, .no_img_wrapper {
@@ -37,6 +37,10 @@
 				height: 90%;
 				opacity: 0.8;
 			}
+
+      .publication_missing_container {
+        opacity: 1;
+      }
   }
 
   &:has(.hasEnded) {
@@ -598,8 +602,28 @@
 }
 
 .publication_missing {
+  &_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+    width: 100%;
+  }
+
+  &_container {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    background: var(--color-error-text);
+    padding: 10px;
+    z-index: 1000;
+    position: absolute;
+    opacity: 0.7;
+  }
+
   &_icon {
     fill: var(--color-neutral-base);
+    opacity: 0.7;
   }
 }
 

@@ -73,6 +73,7 @@ class PublicationCard extends React.Component<IProps> {
         const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
 
         const publicationView = publicationViewMaybeOpds as PublicationView;
+        const isPublicationMissingOrDeleted = publicationView.type === "missingOrDeleted";
 
         let pubFormat = "EPUB";
         if (publicationView.isAudio) {
@@ -130,6 +131,7 @@ class PublicationCard extends React.Component<IProps> {
 
         // aria-haspopup="dialog"
         // aria-controls="dialog"
+
         return (
             <div className={stylesPublications.publication_wrapper}>
                 {
@@ -139,7 +141,10 @@ class PublicationCard extends React.Component<IProps> {
                         >
                             <PublicationInfoOpdsWithRadixTrigger asChild>
                                 <button
-                                    className={classNames(stylesPublications.publication_main_container, hasEnded ? stylesPublications.expired : "")}
+                                   className={classNames(
+                                        stylesPublications.publication_main_container, 
+                                        { [stylesPublications.expired]: hasEnded || isPublicationMissingOrDeleted },
+                                    )}
                                     title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
                                     tabIndex={0}
                                 >
@@ -165,7 +170,10 @@ class PublicationCard extends React.Component<IProps> {
                                     (e.key === "Enter") && this.handleLocalBookshelfBookClick(e)
                             }
                             title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
-                            className={classNames(stylesPublications.publication_main_container, hasEnded ? stylesPublications.expired : "")}
+                            className={classNames(
+                                        stylesPublications.publication_main_container, 
+                                        { [stylesPublications.expired]: hasEnded || isPublicationMissingOrDeleted },
+                                    )}
                             tabIndex={0}
                         >
                             <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} hasEnded={hasEnded} />
