@@ -28,6 +28,7 @@ import * as CloseIcon from "readium-desktop/renderer/assets/icons/close-icon.svg
 import * as FilterIcon from "readium-desktop/renderer/assets/icons/filter-icon.svg";
 // import * as DeleteFilter from "readium-desktop/renderer/assets/icons/deleteFilter-icon.svg";
 import * as SortIcon from "readium-desktop/renderer/assets/icons/sort-icon.svg";
+import * as EyeOpenIcon from "readium-desktop/renderer/assets/icons/eye-icon.svg";
 import { matchSorter } from "match-sorter";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
@@ -1535,6 +1536,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     const [selectedFormat, setSelectedFormat] = React.useState("");
     const [selectedLanguage, setSelectedLanguage] = React.useState("");
     const [selectedReadingState, setSelectedReadingState] = React.useState("");
+    const [selectedFilterHeaderOpen, setSelectedFilterHeaderOpen] = React.useState(false);
 
     const renderProps_Filter: ITableCellProps_Filter =
     {
@@ -2108,7 +2110,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     const initialState: UsePaginationState<IColumns> & TableState<IColumns> = {
         pageSize: PAGESIZE, // displayType === DisplayType.List ? 20 : 10;
         pageIndex: 0,
-        hiddenColumns: displayType === DisplayType.Grid ? ["colLanguages", "colPublishers", "colPublishedDate", "colLCP", "colDuration", "colDescription", "col_a11y_accessibilitySummary"] : [],
+        // hiddenColumns: displayType === DisplayType.Grid ? ["colLanguages", "colPublishers", "colPublishedDate", "colLCP", "colDuration", "colDescription", "col_a11y_accessibilitySummary"] : [],
     };
     const opts:
         TableOptions<IColumns> &
@@ -2313,6 +2315,159 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
         tableInstance.setFilter(filterCol, []);
     };
 
+    const setShowColumnFiltersFunc = (show: boolean) => {
+        const currentShow = showColumnFilters;
+        setShowColumnFilters(show);
+        setTimeout(() => {
+            if (currentShow && !show) {
+                for (const col of tableInstance.allColumns) {
+                    tableInstance.setFilter(col.id, "");
+                }
+            }
+        }, 200);
+    };
+
+    const FilterPopover = (
+        <Popover.Root>
+            <Popover.Trigger asChild className={stylesPublication.allBooks_header_filter_trigger}
+                title={__("library.filter.addFilters")}>
+                <button onClick={() => setFilterPopoverOpen(!filterPopoverOpen)}>
+                    <SVG ariaHidden={true} svg={FilterIcon} />
+                </button>
+            </Popover.Trigger>
+            <Popover.Portal>
+                <Popover.Content avoidCollisions sideOffset={5} align="end" alignOffset={-10} className={stylesAnnotations.annotation_form} style={{ paddingTop: "20px" }}>
+                    <FilterComponent tableInstance={tableInstance} target={__("catalog.format")} targetColName={"colFormat"} targetList={formats} selection={selectedFormat} setSelection={setSelectedFormat} activeFiltersArray={activeFiltersArray} setActiveFiltersArray={setActiveFiltersArray} />
+                    <FilterComponent tableInstance={tableInstance} target={__("catalog.lang")} targetColName={"colLanguages"} targetList={languages} selection={selectedLanguage} setSelection={setSelectedLanguage} activeFiltersArray={activeFiltersArray} setActiveFiltersArray={setActiveFiltersArray} />
+                    <FilterComponent tableInstance={tableInstance} target={__("publication.progression.title")} targetColName={"colReadingState"} targetList={readingStates} selection={selectedReadingState} setSelection={setSelectedReadingState} activeFiltersArray={activeFiltersArray} setActiveFiltersArray={setActiveFiltersArray} />
+                    <FilterComponent tableInstance={tableInstance} target={__("catalog.tags")} targetColName={"colTags"} targetList={tagsOptions} selection={selectedTag} setSelection={setSelectedTag} activeFiltersArray={activeFiltersArray} setActiveFiltersArray={setActiveFiltersArray} />
+                    <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                </Popover.Content>
+            </Popover.Portal>
+        </Popover.Root>
+    );
+
+    const SortingPopover = (
+        <Popover.Root>
+            <Popover.Trigger asChild className={stylesPublication.allBooks_header_filter_trigger}
+                title={__("library.sorting.addSorting")}>
+                <button onClick={() => setFilterPopoverOpen(!filterPopoverOpen)}>
+                    <SVG ariaHidden={true} svg={SortIcon} />
+                    {/* <span className={stylesPublication.notification_bubble}></span> */}
+                </button>
+            </Popover.Trigger>
+            <Popover.Portal>
+                <Popover.Content avoidCollisions sideOffset={5} align="end" alignOffset={-10} className={stylesAnnotations.annotation_form} style={{ width: "200px" }}>
+                    <SortComponent tableInstance={tableInstance} />
+                    <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                </Popover.Content>
+            </Popover.Portal>
+        </Popover.Root>
+    );
+
+    const LibraryNavigation = (
+        <div className={stylesPublication.allBooks_header_pagination}>
+            <label htmlFor="pageSelect" className={stylesPublication.allBooks_header_pagination_title}>{__("catalog.numberOfPages")}</label>
+            <div className={stylesPublication.allBooks_header_pagination_container}>
+                <button
+                    className={stylesPublication.allBooks_header_pagination_arrow}
+                    aria-label={`${__("opds.firstPage")}`}
+                    onClick={() => tableInstance.gotoPage(0)}
+                    disabled={!tableInstance.canPreviousPage}>
+                    <SVG ariaHidden={true} svg={ArrowFirstIcon} />
+                </button>
+                <button
+                    className={stylesPublication.allBooks_header_pagination_arrow}
+                    style={{
+                        transform: "rotate(180deg)",
+                    }}
+                    aria-label={`${__("opds.previous")}`}
+                    onClick={() => tableInstance.previousPage()}
+                    disabled={!tableInstance.canPreviousPage}>
+                    <SVG ariaHidden={true} svg={ChevronRight} />
+                </button>
+                <select
+                    id="pageSelect"
+                    aria-label={`${__("reader.navigation.currentPageTotal", { current: tableInstance.state.pageIndex + 1, total: tableInstance.pageOptions.length })}`}
+                    className={stylesPublication.allBooks_header_pagination_select}
+                    value={tableInstance.state.pageIndex}
+                    onChange={(e) => {
+                        const pageIndex = e.target.value ? Number(e.target.value) : 0;
+                        tableInstance.gotoPage(pageIndex);
+                    }}
+                >
+                    {
+                        ".".repeat(tableInstance.pageOptions.length).split("").map((_s, i) => (
+                            <option
+                                key={`page${i}`}
+                                value={i}>
+                                {i + 1} / {tableInstance.pageOptions.length}
+                            </option>
+                        ))
+                    }
+                </select>
+                <button
+                    className={stylesPublication.allBooks_header_pagination_arrow}
+                    aria-label={`${__("opds.next")}`}
+                    onClick={() => tableInstance.nextPage()}
+                    disabled={!tableInstance.canNextPage}>
+                    <SVG ariaHidden={true} svg={ChevronRight} />
+                </button>
+                <button
+                    className={stylesPublication.allBooks_header_pagination_arrow}
+                    aria-label={`${__("opds.lastPage")}`}
+                    onClick={() => tableInstance.gotoPage(tableInstance.pageCount - 1)}
+                    disabled={!tableInstance.canNextPage}>
+                    <SVG ariaHidden={true} svg={ArrowLastIcon} />
+                </button>
+            </div>
+        </div>
+    );
+
+    const resetFunctions: Record<string, (val: string) => void> = {
+        "colFormat": setSelectedFormat,
+        "colLanguages": setSelectedLanguage,
+        "colReadingState": setSelectedReadingState,
+        "colTags": setSelectedTag,
+    };
+
+    const nonEditableColumnIds = ["colCover", "colActions", "colAuthors", "colTitle"];
+
+    const editableColumnsArray = tableInstance.allColumns.filter(
+        (col) => !nonEditableColumnIds.includes(col.id),
+    );
+
+
+    const SelectTableHeaders = (
+        <Popover.Root open={selectedFilterHeaderOpen} onOpenChange={setSelectedFilterHeaderOpen}>
+            <Popover.Trigger asChild className={stylesPublication.allBooks_header_filter_trigger}
+                title={"Select Table Headers"}>
+                <button>
+                    <SVG ariaHidden={true} svg={EyeOpenIcon} />
+                </button>
+            </Popover.Trigger>
+            <Popover.Portal>
+                <Popover.Content avoidCollisions sideOffset={5} align="end" alignOffset={-10} className={stylesAnnotations.annotation_form} style={{ paddingTop: "20px" }}>
+                    {editableColumnsArray.map((col) => (
+                        <div key={col.id} style={{ marginBottom: "10px", display: "flex", alignItems: "center" }}>
+                            <input 
+                                type="checkbox" 
+                                id={col.id} 
+                                {...col.getToggleHiddenProps()} 
+                            />
+                            <label htmlFor={col.id} style={{ marginLeft: "8px", cursor: "pointer" }}>
+                                {typeof col.Header === "string" 
+                                    ? col.Header 
+                                    : col.id.replace("col", "")}
+                            </label>
+                        </div>
+                    ))}
+                    <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
+                </Popover.Content>
+            </Popover.Portal>
+        </Popover.Root>
+    );
+
     return (
         <>
             <div>
@@ -2329,115 +2484,22 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                             displayType={displayType}
                             focusInputRef={focusInputRef}
 
-                            setShowColumnFilters={(show: boolean) => {
-                                const currentShow = showColumnFilters;
-                                setShowColumnFilters(show);
-                                setTimeout(() => {
-                                    if (currentShow && !show) {
-                                        for (const col of tableInstance.allColumns) {
-                                            tableInstance.setFilter(col.id, "");
-
-                                        }
-                                    }
-                                }, 200);
-                            }}
+                            setShowColumnFilters={setShowColumnFiltersFunc}
                         />
                         {
                             displayType === DisplayType.Grid
                                 ?
                                 <>
-                                <Popover.Root>
-                                    <Popover.Trigger asChild className={stylesPublication.allBooks_header_filter_trigger}
-                                    title={__("library.filter.addFilters")}>
-                                        <button onClick={() => setFilterPopoverOpen(!filterPopoverOpen)}>
-                                            <SVG ariaHidden={true} svg={FilterIcon} />
-                                        </button>
-                                    </Popover.Trigger>
-                                    <Popover.Portal>
-                                        <Popover.Content avoidCollisions sideOffset={5} align="end" alignOffset={-10} className={stylesAnnotations.annotation_form} style={{paddingTop: "20px"}}>
-                                            <FilterComponent tableInstance={tableInstance}  target={__("catalog.format")} targetColName={"colFormat"} targetList={formats} selection={selectedFormat} setSelection={setSelectedFormat} activeFiltersArray={activeFiltersArray} setActiveFiltersArray={setActiveFiltersArray}  />
-                                            <FilterComponent tableInstance={tableInstance}  target={__("catalog.lang")} targetColName={"colLanguages"} targetList={languages} selection={selectedLanguage} setSelection={setSelectedLanguage} activeFiltersArray={activeFiltersArray} setActiveFiltersArray={setActiveFiltersArray}  />
-                                            <FilterComponent tableInstance={tableInstance}  target={__("publication.progression.title")} targetColName={"colReadingState"} targetList={readingStates} selection={selectedReadingState} setSelection={setSelectedReadingState} activeFiltersArray={activeFiltersArray} setActiveFiltersArray={setActiveFiltersArray}  />
-                                            <FilterComponent tableInstance={tableInstance} target={__("catalog.tags")} targetColName={"colTags"} targetList={tagsOptions} selection={selectedTag} setSelection={setSelectedTag} activeFiltersArray={activeFiltersArray} setActiveFiltersArray={setActiveFiltersArray} />
-                                            <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                                        </Popover.Content>
-                                    </Popover.Portal>
-                                </Popover.Root>
-                                <Popover.Root>
-                                    <Popover.Trigger asChild className={stylesPublication.allBooks_header_filter_trigger}
-                                    title={__("library.sorting.addSorting")}>
-                                        <button onClick={() => setFilterPopoverOpen(!filterPopoverOpen)}>
-                                            <SVG ariaHidden={true} svg={SortIcon} />
-                                            {/* <span className={stylesPublication.notification_bubble}></span> */}
-                                        </button>
-                                    </Popover.Trigger>
-                                    <Popover.Portal>
-                                        <Popover.Content avoidCollisions sideOffset={5} align="end" alignOffset={-10} className={stylesAnnotations.annotation_form} style={{width: "200px"}}>
-                                            <SortComponent tableInstance={tableInstance} />
-                                            <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
-                                        </Popover.Content>
-                                    </Popover.Portal>
-                                </Popover.Root>
+                                    {FilterPopover}
+                                    {SortingPopover}
                                 </>
-                                : <></>
+                                : 
+                                <>
+                                    {SelectTableHeaders}
+                                </>
                         }
                     </div>
-                    <div className={stylesPublication.allBooks_header_pagination}>
-                        <label htmlFor="pageSelect" className={stylesPublication.allBooks_header_pagination_title}>{__("catalog.numberOfPages")}</label>
-                        <div className={stylesPublication.allBooks_header_pagination_container}>
-                            <button
-                                className={stylesPublication.allBooks_header_pagination_arrow}
-                                aria-label={`${__("opds.firstPage")}`}
-                                onClick={() => tableInstance.gotoPage(0)}
-                                disabled={!tableInstance.canPreviousPage}>
-                                <SVG ariaHidden={true} svg={ArrowFirstIcon} />
-                            </button>
-                            <button
-                                className={stylesPublication.allBooks_header_pagination_arrow}
-                                style={{
-                                    transform: "rotate(180deg)",
-                                }}
-                                aria-label={`${__("opds.previous")}`}
-                                onClick={() => tableInstance.previousPage()}
-                                disabled={!tableInstance.canPreviousPage}>
-                                <SVG ariaHidden={true} svg={ChevronRight} />
-                            </button>
-                            <select
-                                id="pageSelect"
-                                aria-label={`${__("reader.navigation.currentPageTotal", { current: tableInstance.state.pageIndex + 1, total: tableInstance.pageOptions.length })}`}
-                                className={stylesPublication.allBooks_header_pagination_select}
-                                value={tableInstance.state.pageIndex}
-                                onChange={(e) => {
-                                    const pageIndex = e.target.value ? Number(e.target.value) : 0;
-                                    tableInstance.gotoPage(pageIndex);
-                                }}
-                            >
-                                {
-                                    ".".repeat(tableInstance.pageOptions.length).split("").map((_s, i) => (
-                                        <option
-                                            key={`page${i}`}
-                                            value={i}>
-                                            {i + 1} / {tableInstance.pageOptions.length}
-                                        </option>
-                                    ))
-                                }
-                            </select>
-                            <button
-                                className={stylesPublication.allBooks_header_pagination_arrow}
-                                aria-label={`${__("opds.next")}`}
-                                onClick={() => tableInstance.nextPage()}
-                                disabled={!tableInstance.canNextPage}>
-                                <SVG ariaHidden={true} svg={ChevronRight} />
-                            </button>
-                            <button
-                                className={stylesPublication.allBooks_header_pagination_arrow}
-                                aria-label={`${__("opds.lastPage")}`}
-                                onClick={() => tableInstance.gotoPage(tableInstance.pageCount - 1)}
-                                disabled={!tableInstance.canNextPage}>
-                                <SVG ariaHidden={true} svg={ArrowLastIcon} />
-                            </button>
-                        </div>
-                    </div>
+                    {LibraryNavigation}
                 </div>
                 <div className={stylesPublication.allBooks_header_filters}>
                 {activeFiltersArray.map((filter, index) => (
@@ -2445,14 +2507,6 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                         <span>{filter.filterType}: <strong>{filter.value}</strong></span>
                         <button onClick={() => {
                             removeFilter(filter.filterCol);
-
-                            const resetFunctions: Record<string, (val: string) => void> = {
-                                "colFormat": setSelectedFormat,
-                                "colLanguages": setSelectedLanguage,
-                                "colReadingState": setSelectedReadingState,
-                                "colTags": setSelectedTag,
-                            };
-
                             const resetAction = resetFunctions[filter.filterCol];
                             if (resetAction) {
                                 resetAction("");
@@ -2489,25 +2543,20 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
 
                                 const columnIsSortable = column.id !== "colCover";
 
-                                const W = column.id === "colCover" ?
-                                    "60px" :
-                                    column.id === "colPublishedDate" ?
-                                        "100px" :
-                                        column.id === "colProgression" ?
-                                            "100px" :
-                                            column.id === "colDuration" ?
-                                                "100px" :
-                                                column.id === "col_a11y_accessibilitySummary" ?
-                                                    "160px" :
-                                                    column.id === "colAuthors" ?
-                                                        "160px" :
-                                                        column.id === "colRemainingDays" ?
-                                                        "150px" :
-                                                        column.id === "colActions" ?
-                                                        "60px" :
-                                                        "100px";
+                                const columnWidths: Record<string, string> = {
+                                    colCover: "60px",
+                                    colActions: "60px",
+                                    colPublishedDate: "100px",
+                                    colProgression: "100px",
+                                    colDuration: "100px",
+                                    col_a11y_accessibilitySummary: "160px",
+                                    colAuthors: "160px",
+                                    colRemainingDays: "150px",
+                                };
+                                const W = columnWidths[column.id] || "100px";
 
-                                return (<th
+                                return (
+                                <th
                                     key={`headtrth_${i}`}
                                     {...column.getHeaderProps(columnIsSortable ? ({
                                         ...column.getSortByToggleProps(),
@@ -2526,13 +2575,11 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                 >
                                     {
                                         !column.canSort ?
-                                        <h4 style={{position: "absolute", top: "8px", left: "5px"}}>
-                                        {
-                                            column.render("Header")
-                                        }</h4>
+                                        <h4 style={{position: "absolute", top: "8px", left: "5px"}}>{column.render("Header")}</h4>
                                         :
                                         columnIsSortable ?
-                                            <><button
+                                            <>
+                                            <button
                                                 onClick={() => {
                                                     column.toggleSortBy();
                                                 }}
@@ -2549,11 +2596,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                                 {
                                                     column.render("Header")
                                                 }
-                                                <span>
-                                                    {
-                                                        (column.isSorted ? (column.isSortedDesc ? " ↓" : " ↑") : "")
-                                                    }
-                                                </span>
+                                                <span>{(column.isSorted ? (column.isSortedDesc ? " ↓" : " ↑") : "")}</span>
                                             </button>
                                                 {
                                                     column.canFilter ?
@@ -2565,15 +2608,8 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                                 }
                                             </>
                                             :
-                                            // <span
-                                            // aria-label={`${column.Header}`}
-                                            //     >
-                                            //     {
-                                            //     // displayType === DisplayType.List ? "" : column.render("Header")
-                                            //     // column.render("Header")
-                                            //     }
-                                            // </span>
-                                            <><input
+                                            <>
+                                            <input
                                                 aria-label={__("header.searchPlaceholder")}
                                                 id="setShowColumnFiltersCheckbox"
                                                 type="checkbox"
@@ -2594,34 +2630,18 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                                                     if (ev.key === "Enter") {
                                                         // (ev.target as HTMLInputElement).checked = showColumnFilters ? false : true;
                                                         (ev.target as HTMLElement).click();
-
-                                                        // const show = showColumnFilters;
-                                                        // setShowColumnFilters(!showColumnFilters);
-
-                                                        // setTimeout(() => {
-                                                        //     if (!show) {
-                                                        //         tableInstance.setGlobalFilter("");
-                                                        //     }
-                                                        //     if (show) {
-                                                        //         for (const col of tableInstance.allColumns) {
-                                                        //             tableInstance.setFilter(col.id, "");
-                                                        //         }
-                                                        //     }
-                                                        // }, 200);
                                                     }
                                                 }}
                                                 onChange={() => {
-                                                    const show = showColumnFilters;
                                                     setShowColumnFilters(!showColumnFilters);
 
                                                     setTimeout(() => {
-                                                        if (!show) {
+                                                        if (!showColumnFilters) {
                                                             tableInstance.setGlobalFilter("");
                                                         }
-                                                        if (show) {
-                                                            for (const col of tableInstance.allColumns) {
-                                                                tableInstance.setFilter(col.id, "");
-                                                            }
+                                                        if (showColumnFilters) {
+                                                            tableInstance.setAllFilters([]);
+                                                            setActiveFiltersArray([]);
                                                         }
                                                     }, 200);
                                                 }}
