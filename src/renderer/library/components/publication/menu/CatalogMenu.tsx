@@ -35,7 +35,24 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
     const dispatch = useDispatch();
     const locale = useSelector((state: ILibraryRootState) => state.i18n.locale);
 
+    const isPublicationMissingOrDeleted = props.publicationView.type === "missingOrDeleted";
+
+
     return (
+        <>
+        { isPublicationMissingOrDeleted ? 
+                    <DeletePublicationConfirm
+                trigger={(
+                    <button
+                        className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
+                    >
+                        <SVG ariaHidden svg={TrashIcon} />
+                        <p>{__("catalog.delete")}</p>
+                    </button>
+                )}
+                publicationView={props.publicationView}
+            />
+        :
         <>
             <PublicationInfoLibWithRadix
                 publicationView={props.publicationView}
@@ -120,6 +137,8 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
             <SVG ariaHidden svg={SaveIcon} />
             {__("catalog.exportAnnotation")}
         </button >
+        </>
+        }
         </>
     );
 };

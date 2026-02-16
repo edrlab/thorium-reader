@@ -28,6 +28,7 @@ export declare const publication_list_infos: string;
 export declare const publication_list_title_authors: string;
 export declare const publication_list_wrapper: string;
 export declare const publication_main_container: string;
+export declare const publication_missing_icon: string;
 export declare const publication_title: string;
 export declare const publication_title_wrapper: string;
 export declare const publication_wrapper: string;

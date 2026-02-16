@@ -26,6 +26,8 @@ import { useTranslator } from "../hooks/useTranslator";
 import { connect } from "react-redux";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { TranslatorProps, withTranslator } from "./hoc/translator";
+import SVG from "./SVG";
+import * as FileBroken from "readium-desktop/renderer/assets/icons/file-broken-icon.svg";
 // import * as ValidateIcon from "readium-desktop/renderer/assets/icons/validated-icon.svg";
 // import SVG from "./SVG";
 
@@ -105,6 +107,8 @@ class Cover extends React.Component<IProps, IState> {
     public render() {
         const { publicationViewMaybeOpds } = this.props;
 
+        const isPublicationMissingOrDeleted = publicationViewMaybeOpds.type === "missingOrDeleted";
+
         let needsSpinner = false;
 
         const { identifier } = this.props.publicationViewMaybeOpds;
@@ -121,6 +125,16 @@ class Cover extends React.Component<IProps, IState> {
         //         tagString = tag.name;
         //     }
         // };
+
+        if (isPublicationMissingOrDeleted) {
+            return (
+                <div style={{width: "188px", height: "345px", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--color-gray-100)"}}>
+                    <div style={{height: "100px", width: "100px", borderRadius: "50%", background: "var(--color-error-text)", padding: "10px"}}>
+                        <SVG ariaHidden svg={FileBroken} className={stylesPublications.publication_missing_icon} />
+                    </div>
+                </div>
+            );
+        }
 
         if (this.state.imgUrl) {
             return (
