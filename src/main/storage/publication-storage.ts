@@ -194,7 +194,8 @@ export class PublicationStorage {
             return pathDaisy;
         }
         // --
-        throw new Error(`getPublicationEpubPath() FAIL ${identifier} (cannot find book.epub|audiobook|etc.)`);
+        // throw new Error(`getPublicationEpubPath() FAIL ${identifier} (cannot find book.epub|audiobook|etc.)`);
+        throw new Error(`This publication is missing in the storage folder.`)
     }
 
     public getPublicationFilename(publicationView: PublicationView) {
