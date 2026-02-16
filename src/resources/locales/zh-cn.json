@@ -68,7 +68,7 @@
             "fallback": {
                 "description": "无配置文件描述",
                 "publications": "配置文件发行日期",
-                "screen": "",
+                "screen": "无标题",
                 "title": ""
             }
         },
@@ -87,8 +87,8 @@
         "importAnnotation": "导入笔记",
         "lang": "语言",
         "lastRead": "上次阅读",
-        "login": "",
-        "logout": "",
+        "login": "登入",
+        "logout": "登出",
         "moreInfo": "更多信息",
         "myBooks": "我的图书",
         "noPublicationHelpL1": "将文件拖放到此处",
