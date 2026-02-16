@@ -68,7 +68,7 @@
             "fallback": {
                 "description": "无配置文件描述",
                 "publications": "配置文件发行日期",
-                "screen": "",
+                "screen": "无标题",
                 "title": ""
             }
         },
@@ -87,8 +87,8 @@
         "importAnnotation": "导入笔记",
         "lang": "语言",
         "lastRead": "上次阅读",
-        "login": "",
-        "logout": "",
+        "login": "登录",
+        "logout": "登出",
         "missing": "",
         "moreInfo": "更多信息",
         "myBooks": "我的图书",
@@ -100,7 +100,7 @@
         "opds": {
             "auth": {
                 "cancel": "取消",
-                "external": "",
+                "external": "登录页面将会在您的网络浏览器中打开，请跟随引导操作。完成登录后，网络浏览器会使您回到该应用程序。",
                 "fallback": "",
                 "login": "登录",
                 "password": "密码",

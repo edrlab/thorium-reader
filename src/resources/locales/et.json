@@ -13,7 +13,7 @@
         "documentation": "Thoriumi juhend",
         "howItWorks": "Kuidas see toimib?",
         "informations": "",
-        "noLibraryFound": ""
+        "noLibraryFound": "Raamatukogu ei leidu ({{- name}})"
     },
     "app": {
         "edit": {
