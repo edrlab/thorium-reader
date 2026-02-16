@@ -75,7 +75,7 @@
     "i18n-sort": "node ./scripts/locales-sort.js",
     "i18n-scan_": "node ./scripts/translate-scan.js \"src/resources/locales/temp.json\" && sync-i18n --files 'src/resources/locales/*.json' --primary temp --languages ar bg ca cs da de el en es et eu fi fr gl hr it ja ka ko lt nl pl pt-br pt-pt ru sl sv ta tr zh-cn zh-tw --space \"    \" --finalnewline --newkeysempty && rimraf \"src/resources/locales/temp.json\"",
     "i18n-check_": "sync-i18n --files 'src/resources/locales/*.json' --primary en --languages ar bg ca cs da de el es et eu fi fr gl hr it ja ka ko lt nl pl pt-br pt-pt ru sl sv ta tr zh-cn zh-tw --space \"    \" --finalnewline --newkeysempty",
-    "i18n-scan": "node ./scripts/translate-scan.js \"src/resources/locales/und.json\" && i18next-locales-sync --compatibilityJSON v4 --localesFolder ./src/resources/locales/ --primaryLanguage und --secondaryLanguages ar bg ca cs da de el en es et eu fi fr gl hr it ja ka ko lt nl pl pt-br pt-pt ru sl sv ta tr zh-cn zh-tw --spaces 4 --useEmptyString true && rimraf \"src/resources/locales/und.json\"",
+    "i18n-scan": "node ./scripts/translate-scan.js \"src/resources/locales/und.json\" && i18next-locales-sync --compatibilityJSON v4 --localesFolder ./src/resources/locales/ --primaryLanguage und --secondaryLanguages en --spaces 4 --useEmptyString true && rimraf \"src/resources/locales/und.json\"",
     "posti18n-scan": "npm run i18n-sort",
     "i18n-check": "i18next-locales-sync --compatibilityJSON v4  --localesFolder ./src/resources/locales/ --primaryLanguage en --secondaryLanguages ar bg ca cs da de el es et eu fi fr gl hr it ja ka ko lt nl pl pt-br pt-pt ru sl sv ta tr zh-cn zh-tw --spaces 4 --useEmptyString true",
     "posti18n-check": "npm run i18n-sort",

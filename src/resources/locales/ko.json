@@ -89,6 +89,7 @@
         "lastRead": "최근 읽은 자료",
         "login": "",
         "logout": "",
+        "missing": "",
         "moreInfo": "상세정보",
         "myBooks": "내 도서",
         "noPublicationHelpL1": "출판물을 여기로 가져오십시오.",
@@ -139,9 +140,6 @@
         "annotations": {
             "descAuthor": "",
             "descCreator": "",
-            "descList": "",
-            "descNewer": "",
-            "descOlder": "",
             "descTitle": "",
             "importAll": "",
             "importWithoutConflict": "",
@@ -157,9 +155,7 @@
             }
         },
         "deleteAnnotations": "",
-        "deleteAnnotationsText": "",
         "deleteBookmarks": "",
-        "deleteBookmarksText": "",
         "deleteFeed": "카탈로그를 제거하겠습니까?",
         "deletePublication": "출판물을 제거하겠습니까?",
         "deletePublicationWithNotes": "",
