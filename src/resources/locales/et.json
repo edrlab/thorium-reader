@@ -89,7 +89,6 @@
         "lastRead": "",
         "login": "",
         "logout": "",
-        "missing": "",
         "moreInfo": "",
         "myBooks": "",
         "noPublicationHelpL1": "",
@@ -140,13 +139,10 @@
         "annotations": {
             "descAuthor": "",
             "descCreator": "",
-            "descList": "",
             "descList_one": "{{- count}} märge kasutajalt „{{- creator}}“ imporditakse teosesse „{{- title}}“, mille autor on „{{- author}}“",
             "descList_other": "{{- count}} märget kasutajalt „{{- creator}}“ imporditakse teosesse „{{- title}}“, mille autor on „{{- author}}“",
-            "descNewer": "",
             "descNewer_one": "Vastuolu: {{- count}} uuem märge",
             "descNewer_other": "Vastuolu: {{- count}} uuemat märget",
-            "descOlder": "",
             "descOlder_one": "Vastuolu: {{- count}} vanem märge",
             "descOlder_other": "Vastuolu: {{- count}} vanemat märget",
             "descTitle": "",
@@ -164,11 +160,9 @@
             }
         },
         "deleteAnnotations": "",
-        "deleteAnnotationsText": "",
         "deleteAnnotationsText_one": "Kas oled kindel, et soovid {{- count}} märke kustutada?",
         "deleteAnnotationsText_other": "Kas oled kindel, et soovid {{- count}} märget kustutada?",
         "deleteBookmarks": "",
-        "deleteBookmarksText": "",
         "deleteBookmarksText_one": "Kas oled kindel, et soovid {{- count}} järjehoidja kustutada?",
         "deleteBookmarksText_other": "Kas oled kindel, et soovid {{- count}} järjehoidjat kustutada?",
         "deleteFeed": "",
@@ -781,7 +775,6 @@
         },
         "picker": {
             "search": {
-                "founds": "",
                 "founds_one": "{{- count}} vaste",
                 "founds_other": "{{- count}} vastet",
                 "input": "",

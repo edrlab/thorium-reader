@@ -89,7 +89,6 @@
         "lastRead": "Son Okunan",
         "login": "Giriş yap",
         "logout": "Oturumu Kapat",
-        "missing": "",
         "moreInfo": "Eser Ayrıntıları",
         "myBooks": "Eserlerim",
         "noPublicationHelpL1": "Dosyaları buraya bırakın",
@@ -140,13 +139,10 @@
         "annotations": {
             "descAuthor": "'{{- author}}'a göre",
             "descCreator": "oluşturana göre",
-            "descList": "",
             "descList_one": "{{- count}} not(ları) {{- creator}}, '{{- title}}' {{- author}} içerisine aktarılacak",
             "descList_other": "{{- count}} not(ları) {{- creator}}, '{{- title}}' {{- author}} içerisine aktarılacak",
-            "descNewer": "",
             "descNewer_one": "Çakışma(lar): {{- count}} not(ları) daha yeni",
             "descNewer_other": "Çakışma(lar): {{- count}} not(ları) daha yeni",
-            "descOlder": "",
             "descOlder_one": "Çakışma(lar): {{- count}} not(ları) daha eski",
             "descOlder_other": "Çakışma(lar): {{- count}} not(ları) daha eski",
             "descTitle": "Açıklayıcı notların başlığı: ",
@@ -164,11 +160,9 @@
             }
         },
         "deleteAnnotations": "Açıklayıcı notları silmek istiyor musunuz?",
-        "deleteAnnotationsText": "",
         "deleteAnnotationsText_one": "{{- count}} Not(lar)ını silmek istediğinize emin misiniz?",
         "deleteAnnotationsText_other": "{{- count}} Not(lar)ını silmek istediğinize emin misiniz?",
         "deleteBookmarks": "Yer imlerini silmek istiyor musunuz?",
-        "deleteBookmarksText": "",
         "deleteBookmarksText_one": "{{- count}} yer im(ler)ini silmek istediğinize emin misiniz?",
         "deleteBookmarksText_other": "{{- count}} yer im(ler)ini silmek istediğinize emin misiniz?",
         "deleteFeed": "Katalogu silmek istiyor musunuz?",
@@ -781,7 +775,6 @@
         },
         "picker": {
             "search": {
-                "founds": "",
                 "founds_one": "{{- count}} eşleşme(ler)",
                 "founds_other": "{{- count}} eşleşme",
                 "input": "eşleşecek metin",

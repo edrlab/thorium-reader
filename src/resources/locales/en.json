@@ -89,7 +89,6 @@
         "lastRead": "Last Read",
         "login": "Login",
         "logout": "Logout",
-        "missing": "Missing",
         "moreInfo": "Publication Details",
         "myBooks": "My publications",
         "noPublicationHelpL1": "Drop files here",
@@ -140,13 +139,10 @@
         "annotations": {
             "descAuthor": "by '{{- author}}'",
             "descCreator": "created by",
-            "descList": "",
             "descList_one": "{{- count}} note {{- creator}} will be imported into '{{- title}}' {{- author}}",
             "descList_other": "{{- count}} notes {{- creator}} will be imported into '{{- title}}' {{- author}}",
-            "descNewer": "",
             "descNewer_one": "Conflict(s): {{- count}} newer note",
             "descNewer_other": "Conflict(s): {{- count}} newer notes",
-            "descOlder": "",
             "descOlder_one": "Conflict(s): {{- count}} older note",
             "descOlder_other": "Conflict(s): {{- count}} older notes",
             "descTitle": "Annotations title: ",
@@ -164,11 +160,9 @@
             }
         },
         "deleteAnnotations": "Delete annotations?",
-        "deleteAnnotationsText": "",
         "deleteAnnotationsText_one": "Are you sure you want to delete {{- count}} note?",
         "deleteAnnotationsText_other": "Are you sure you want to delete {{- count}} notes?",
         "deleteBookmarks": "Delete bookmarks?",
-        "deleteBookmarksText": "",
         "deleteBookmarksText_one": "Are you sure you want to delete {{- count}} bookmark?",
         "deleteBookmarksText_other": "Are you sure you want to delete {{- count}} bookmarks?",
         "deleteFeed": "Delete catalog?",
@@ -781,7 +775,6 @@
         },
         "picker": {
             "search": {
-                "founds": "",
                 "founds_one": "{{- count}} match",
                 "founds_other": "{{- count}} matches",
                 "input": "text to match",

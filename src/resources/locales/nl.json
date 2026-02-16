@@ -89,7 +89,6 @@
         "lastRead": "Laatst gelezen",
         "login": "",
         "logout": "Uitloggen",
-        "missing": "",
         "moreInfo": "Meer Informatie",
         "myBooks": "Mijn boeken",
         "noPublicationHelpL1": "Sleep een publicatie hier naar toe",
@@ -140,13 +139,10 @@
         "annotations": {
             "descAuthor": "door '{{- author}}'",
             "descCreator": "gemaakt door",
-            "descList": "",
             "descList_one": "{{- count}} aantekening(en) {{- creator}} worden geïmporteerd naar '{{- title}}' {{- author}}",
             "descList_other": "{{- count}} aantekening(en) {{- creator}} worden geïmporteerd naar '{{- title}}' {{- author}}",
-            "descNewer": "",
             "descNewer_one": "Conflict(en): {{- count}} nieuwere aantekening(en)",
             "descNewer_other": "Conflict(en): {{- count}} nieuwere aantekening(en)",
-            "descOlder": "",
             "descOlder_one": "Conflict(en): {{- count}} oudere aantekening(en)",
             "descOlder_other": "Conflict(en): {{- count}} oudere aantekening(en)",
             "descTitle": "Aantekeningen titel: ",
@@ -164,11 +160,9 @@
             }
         },
         "deleteAnnotations": "Verwijder aantekeningen?",
-        "deleteAnnotationsText": "",
         "deleteAnnotationsText_one": "Weet je zeker dat je {{- count}} aantekening(en) wil verwijderen?",
         "deleteAnnotationsText_other": "Weet je zeker dat je {{- count}} aantekening(en) wil verwijderen?",
         "deleteBookmarks": "Bladwijzers verwijderen?",
-        "deleteBookmarksText": "",
         "deleteBookmarksText_one": "Ben je zeker om {{- count}} bladwijzer(s) te verwijderen?",
         "deleteBookmarksText_other": "Ben je zeker om {{- count}} bladwijzer(s) te verwijderen?",
         "deleteFeed": "Wil je deze catalogus echt verwijderen ?",
@@ -781,7 +775,6 @@
         },
         "picker": {
             "search": {
-                "founds": "",
                 "founds_one": "{{- count}} overeenkomst(en)",
                 "founds_other": "{{- count}} overeenkomst(en)",
                 "input": "zoektekst",

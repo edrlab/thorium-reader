@@ -89,7 +89,6 @@
         "lastRead": "Senast läst",
         "login": "Logga in",
         "logout": "Logga ut",
-        "missing": "",
         "moreInfo": "Information om publikationen",
         "myBooks": "Mina böcker",
         "noPublicationHelpL1": "Släpp en publikation här",
@@ -140,13 +139,10 @@
         "annotations": {
             "descAuthor": "av {{- author}}",
             "descCreator": "skapad(e) av",
-            "descList": "",
             "descList_one": "{{- count}} anteckning {{- creator}} kommer att importeras till {{- title}} {{- author}}",
             "descList_other": "{{- count}} anteckningar {{- creator}} kommer att importeras till {{- title}} {{- author}}",
-            "descNewer": "",
             "descNewer_one": "Konflikter: {{- count}} nyare anteckning",
             "descNewer_other": "Konflikter: {{- count}} nyare anteckningar",
-            "descOlder": "",
             "descOlder_one": "Konflikter: {{- count}} äldre anteckning",
             "descOlder_other": "Konflikter: {{- count}} äldre anteckningar",
             "descTitle": "Anteckningarnas titel: ",
@@ -164,11 +160,9 @@
             }
         },
         "deleteAnnotations": "Radera anteckningar?",
-        "deleteAnnotationsText": "",
         "deleteAnnotationsText_one": "Vill du radera {{- count}} anteckning?",
         "deleteAnnotationsText_other": "Vill du radera {{- count}} anteckningar?",
         "deleteBookmarks": "Radera bokmärken?",
-        "deleteBookmarksText": "",
         "deleteBookmarksText_one": "Vill du radera {{- count}} bokmärke?",
         "deleteBookmarksText_other": "Vill du radera {{- count}} bokmärken?",
         "deleteFeed": "Vill du ta bort den här katalogen?",
@@ -781,7 +775,6 @@
         },
         "picker": {
             "search": {
-                "founds": "",
                 "founds_one": "{{- count}} träff",
                 "founds_other": "{{- count}} träffar",
                 "input": "text att söka på",

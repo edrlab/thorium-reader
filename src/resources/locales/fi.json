@@ -89,7 +89,6 @@
         "lastRead": "Luettu viimeksi",
         "login": "Kirjaudu sisään",
         "logout": "Kirjaudu ulos",
-        "missing": "",
         "moreInfo": "Tietoa julkaisusta",
         "myBooks": "Omat kirjat",
         "noPublicationHelpL1": "Pudota julkaisu tähän",
@@ -140,13 +139,10 @@
         "annotations": {
             "descAuthor": "{{- author}}",
             "descCreator": "tekijältä",
-            "descList": "",
             "descList_one": "Tuodaan {{- count}} muistiinpano {{- creator}} julkaisuun {{- author}}: {{- title}}",
             "descList_other": "Tuodaan {{- count}} muistiinpanoa {{- creator}} julkaisuun {{- author}}: {{- title}}",
-            "descNewer": "",
             "descNewer_one": "Ristiriita: {{- count}} uudempi muistiinpano",
             "descNewer_other": "Ristiriita: {{- count}} uudempaa muistiinpanoa",
-            "descOlder": "",
             "descOlder_one": "Ristiriita: {{- count}} vanhempi muistiinpano",
             "descOlder_other": "Ristiriita: {{- count}} vanhempaa muistiinpanoa",
             "descTitle": "Muistiinpanojen otsikko: ",
@@ -164,11 +160,9 @@
             }
         },
         "deleteAnnotations": "Poistetaanko muistiinpanot?",
-        "deleteAnnotationsText": "",
         "deleteAnnotationsText_one": "Haluatko varmasti poistaa {{- count}} muistiinpanon?",
         "deleteAnnotationsText_other": "Haluatko varmasti poistaa {{- count}} muistiinpanoa?",
         "deleteBookmarks": "Poistetaanko kirjanmerkit?",
-        "deleteBookmarksText": "",
         "deleteBookmarksText_one": "Haluatko varmasti poistaa {{- count}} kirjanmerkin?",
         "deleteBookmarksText_other": "Haluatko varmasti poistaa {{- count}} kirjanmerkkiä?",
         "deleteFeed": "Haluatko poistaa tämän luettelon?",
@@ -781,7 +775,6 @@
         },
         "picker": {
             "search": {
-                "founds": "",
                 "founds_one": "{{- count}} osuma",
                 "founds_other": "{{- count}} osumaa",
                 "input": "etsittävä teksti",
