@@ -12,7 +12,7 @@
     "apiapp": {
         "documentation": "Documentação Thorium",
         "howItWorks": "Como funciona?",
-        "informations": "Em França, muitas bibliotecas públicas disponibilizam um catálogo legível por máquina (semelhante ao OPDS, mas não idêntico), permitindo aos utilizadores descarregar publicações digitais da sua estante pessoal. A integração desta tecnologia no Thorium Reader permite-lhe descarregar um ebook ou audiolivro diretamente no Thorium Reader para leitura imediata.\nComo associar a sua conta de uma biblioteca pública francesa ao Thorium Reader? É simples. Digite uma cidade francesa ('Paris') ou parte do nome da biblioteca no campo Pesquisar e clique no botão Pesquisar. Aparecerá uma lista de bibliotecas públicas correspondente à sua pesquisa. Selecione uma biblioteca e clique em Adicionar. Na lista atualizada de catálogos, selecione esta biblioteca: um formulário de autenticação será exibido. Digite seu nome de utilizador/endereço de email e senha e clique em Autenticar. Agora já poderá ver o conteúdo da sua estante pessoal, da qual pode baixar e ler os ebooks e audiolivros que tenha feito o empréstimo anteriormente.",
+        "informations": "Em França, muitas bibliotecas públicas disponibilizam um catálogo legível por máquina (semelhante ao OPDS, mas não idêntico), permitindo aos utilizadores descarregar publicações digitais da sua estante pessoal. A integração desta tecnologia no Thorium Reader permite-lhe descarregar um ebook ou audiolivro diretamente no Thorium Reader para leitura imediata.\nComo associar a sua conta de uma biblioteca pública francesa ao Thorium Reader? É simples. Digite o nome de uma cidade francesa (\"Paris\") ou parte do nome da biblioteca no campo de pesquisa e clique no botão Pesquisar. Será apresentada uma lista de bibliotecas públicas correspondentes à sua pesquisa. Selecione uma biblioteca e clique em Adicionar. Na lista atualizada de catálogos, selecione essa biblioteca: será apresentado um formulário de autenticação. Digite seu nome de utilizador/endereço de email e senha e clique em Autenticar. Agora já poderá ver o conteúdo da sua estante pessoal, a partir da qual pode descarregar e ler os ebooks e audiolivros que tenha requisitado anteriormente.",
         "noLibraryFound": "Nenhuma biblioteca encontrada ({{- name}})"
     },
     "app": {
@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "Adicionar aos favoritos",
         "about": {
             "title": "Sobre {{- appName}} (em linha)"
         },
@@ -128,6 +129,7 @@
         "publisher": "Editora",
         "readBook": "Ler",
         "released": "Publicado em",
+        "removeFromFavorites": "Remover dos favoritos",
         "sort": "Ordenar por",
         "tag": "Etiquetar",
         "tags": "Etiquetas",
@@ -137,9 +139,15 @@
         "annotations": {
             "descAuthor": "por {{- author}}",
             "descCreator": "criado por",
-            "descList": "{{- nb}} anotações de {{- creator}} serão associadas a {{- title}} {{- author}}",
-            "descNewer": "Conflitos: {{- nb}} anotações mais recentes",
-            "descOlder": "Conflitos: {{- nb}} anotações mais antigas",
+            "descList_many": "{{- count}} anotações de {{- creator}} serão associadas a {{- title}} {{- author}}",
+            "descList_one": "{{- count}} anotação de {{- creator}} será associada a {{- title}} {{- author}}",
+            "descList_other": "{{- count}} anotações de {{- creator}} serão associadas a {{- title}} {{- author}}",
+            "descNewer_many": "Conflitos: {{- count}} anotações mais recentes",
+            "descNewer_one": "Conflito: {{- count}} anotação mais recente",
+            "descNewer_other": "Conflitos: {{- count}} anotações mais recentes",
+            "descOlder_many": "Conflitos: {{- count}} anotações mais antigas",
+            "descOlder_one": "Conflito: {{- count}} anotação mais antiga",
+            "descOlder_other": "Conflitos: {{- count}} anotações mais antigas",
             "descTitle": "Título das anotações: ",
             "importAll": "Importar todas as anotações",
             "importWithoutConflict": "Importar apenas anotações sem conflitos",
@@ -155,9 +163,13 @@
             }
         },
         "deleteAnnotations": "Eliminar anotações?",
-        "deleteAnnotationsText": "Quer mesmo eliminar {{- annotationListLength}} anotações?",
+        "deleteAnnotationsText_many": "Quer mesmo eliminar {{- count}} anotações?",
+        "deleteAnnotationsText_one": "Quer mesmo eliminar {{- count}} anotação?",
+        "deleteAnnotationsText_other": "Quer mesmo eliminar {{- count}} anotações?",
         "deleteBookmarks": "Eliminar marcadores?",
-        "deleteBookmarksText": "Tem a certeza que quer eliminar {{- bookmarkListLength}} marcadores?",
+        "deleteBookmarksText_many": "Tem a certeza que quer eliminar {{- count}} marcadores?",
+        "deleteBookmarksText_one": "Tem a certeza que quer eliminar {{- count}} marcador?",
+        "deleteBookmarksText_other": "Tem a certeza que quer eliminar {{- count}} marcadores?",
         "deleteFeed": "Eliminar catálogo?",
         "deletePublication": "Eliminar documento?",
         "deletePublicationWithNotes": "Aviso: este documento contém anotações e/ou marcadores, que também serão eliminados. (Se pretender mantê-los, exporte as notas antes de remover a publicação)",
@@ -193,10 +205,12 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "Ocultar senha",
             "hint": "Dica:",
             "open": "Abrir",
             "password": "Frase-passe",
             "sentence": "Este documento necessita de uma frase-passe PCL para ser aberto",
+            "showPassphrase": "Mostrar senha",
             "urlHint": "Esqueceu-se da sua frase-passe? Clique aqui para ajuda.",
             "whatIsLcp?": "O que é PCL?",
             "whatIsLcpInfoDetails": "PCL significa 'Proteção de Conteúdo Licenciado'.",
@@ -272,7 +286,7 @@
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": "Informacões de acessibilidade"
+            "accessibility-summary-title": "Informações de acessibilidade"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
@@ -435,39 +449,39 @@
             },
             "hazards-sound-none": {
                 "compact": "Sem sons",
-                "descriptive": ""
+                "descriptive": "A publicação não contém sons"
             },
             "hazards-sound-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "A presença de sons é desconhecida",
+                "descriptive": "A presença de sons é desconhecida"
             },
-            "hazards-title": "Pontos de atenção",
+            "hazards-title": "Perigos",
             "hazards-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "A presença de perigos é desconhecida",
+                "descriptive": "A existência de perigos é desconhecida"
             }
         },
         "navigation": {
             "navigation-index": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Índice",
+                "descriptive": "Índice com ligações às entradas referenciadas"
             },
             "navigation-no-metadata": {
-                "compact": "",
+                "compact": "Nenhuma informação disponível",
                 "descriptive": "Sem informações disponíveis"
             },
             "navigation-page-navigation": {
                 "compact": "Ir para página",
-                "descriptive": ""
+                "descriptive": "Lista de páginas a partir da versão impressa da fonte"
             },
             "navigation-structural": {
                 "compact": "Títulos",
-                "descriptive": ""
+                "descriptive": "Elementos como títulos, tabelas e outros para navegação estruturada"
             },
             "navigation-title": "Navegação",
             "navigation-toc": {
                 "compact": "Índice",
-                "descriptive": "Índice para todos os capítulos de texto através de hiperligações"
+                "descriptive": "Índice com ligações para todos os capítulos do texto"
             }
         },
         "rich-content": {
@@ -496,12 +510,12 @@
                 "descriptive": "Os vídeos incluídos nas publicações têm legendas ocultas"
             },
             "rich-content-extended": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Imagens com muita informação são acompanhadas por descrições detalhadas",
+                "descriptive": "Imagens com muita informação são acompanhadas por descrições detalhadas"
             },
             "rich-content-open-captions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Vídeos com legendas abertas",
+                "descriptive": "Vídeos incluídos nos documentos com legendas abertas"
             },
             "rich-content-title": "Conteúdo enriquecido",
             "rich-content-transcript": {
@@ -519,45 +533,45 @@
                 "descriptive": "Possui texto alternativo para descrição das imagens"
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sem informações disponíveis sobre leitura não visual",
+                "descriptive": "Sem informações disponíveis sobre leitura não visual"
             },
             "ways-of-reading-nonvisual-reading-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Não legível para leitura em voz alta ou em braille dinâmico",
+                "descriptive": "O conteúdo não é legível em voz alta ou braille dinâmico"
             },
             "ways-of-reading-nonvisual-reading-not-fully": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Não é totalmente legível em voz alta ou no braille dinâmico",
+                "descriptive": "Nem todo o conteúdo será legível em voz alta ou no braille dinâmico"
             },
             "ways-of-reading-nonvisual-reading-readable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Legível em voz alta ou no braille dinâmico",
+                "descriptive": "Todo o conteúdo pode ser lido em voz alta ou em braille dinâmico"
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Clipes de áudio pré-gravados",
+                "descriptive": "Clipes de áudio pré-gravados estão integrados no conteúdo"
             },
             "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sem informações disponíveis sobre áudio pré-gravado",
+                "descriptive": "Sem informações disponíveis sobre áudio pré-gravado"
             },
             "ways-of-reading-prerecorded-audio-only": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Apenas áudio pré-gravado",
+                "descriptive": "Audiolivro sem alternativa de texto"
             },
             "ways-of-reading-prerecorded-audio-synchronized": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Áudio pré-gravado sincronizado com texto",
+                "descriptive": "Todo o conteúdo está disponível como áudio pré-gravado sincronizado com texto"
             },
-            "ways-of-reading-title": "",
+            "ways-of-reading-title": "Formas de leitura",
             "ways-of-reading-visual-adjustments-modifiable": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "A aparência pode ser personalizada",
+                "descriptive": "A aparência do texto e o layout da página podem ser alterados de acordo com as capacidades do sistema de leitura (tipo e tamanho da fonte, espaços entre parágrafos, frases, palavras e letras, assim como cor do fundo e do texto)"
             },
             "ways-of-reading-visual-adjustments-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sem informações disponíveis sobre a personalização da aparência",
+                "descriptive": "Sem informações disponíveis sobre personalização da aparência"
             }
         }
     },
@@ -692,10 +706,10 @@
         },
         "goToContent": "Ir para o conteúdo",
         "imgViewer": {
-            "title": "",
-            "zoomIn": "",
-            "zoomOut": "",
-            "zoomReset": ""
+            "title": "Visualizador de imagens (zoom)",
+            "zoomIn": "Ampliar",
+            "zoomOut": "Diminuir",
+            "zoomReset": "Repor zoom"
         },
         "marks": {
             "annotations": "Anotações",
@@ -740,7 +754,7 @@
             "goToError": "A quebra de página não existe",
             "goToPlaceHolder": "Digitar n.º de página",
             "goToTitle": "Ir para a página",
-            "history": "",
+            "history": "Histórico de navegação",
             "historyNext": "Avançar no histórico de navegação",
             "historyPrevious": "Recuar no histórico de navegação",
             "infoTitle": "Informações",
@@ -748,8 +762,8 @@
             "openTableOfContentsTitle": "Navegação",
             "page": "Página",
             "pdfscalemode": "Ajustar à página ou largura",
-            "print": "",
-            "printDisabled": "",
+            "print": "Imprimir",
+            "printDisabled": "Imprimir proibido",
             "screenNext": "Avançar",
             "screenPrevious": "Recuar",
             "settingsTitle": "Configurações"
@@ -766,7 +780,9 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} correspondência(s)",
+                "founds_many": "{{- count}} correspondências",
+                "founds_one": "{{- count}} correspondência",
+                "founds_other": "{{- count}} correspondências",
                 "input": "texto a encontrar",
                 "next": "Seguinte",
                 "notFound": "sem correspondências",
@@ -777,22 +793,22 @@
             "searchTitle": "Pesquisar:"
         },
         "print": {
-            "descriptionLcpCount": "",
-            "descriptionLcpPrintable": "",
-            "howTo": "",
-            "lcpInfo": "",
-            "noPagesLcpLimitReached": "",
-            "noPrintablePages": "",
-            "pageHelpInfo": "",
-            "pageHelpInfo1": "",
-            "pageHelpInfo2": "",
-            "pageHelpInfo3": "",
-            "pageHelpInfo4": "",
-            "pages": "",
-            "preview": "",
-            "print": "",
-            "printablePages": "",
-            "title": ""
+            "descriptionLcpCount": "Limite de páginas restantes: {{- count}}",
+            "descriptionLcpPrintable": "Páginas impressas anteriormente: {{- printable}} {{- count}}",
+            "howTo": "Como selecionar quais páginas imprimir",
+            "lcpInfo": "O número de páginas deste documento que pode imprimir está limitado a {{- count}}. Escolha aqui as páginas que deseja.",
+            "noPagesLcpLimitReached": "Você atingiu o limite do PLC",
+            "noPrintablePages": "Sem páginas imprimíveis",
+            "pageHelpInfo": "Sintaxe do seletor de páginas:",
+            "pageHelpInfo1": "digite um número de página para referenciar uma única página (por exemplo, «6»)",
+            "pageHelpInfo2": "digite dois números de página separados por um travessão para referenciar um intervalo de páginas contíguas (por exemplo, «6–13»)",
+            "pageHelpInfo3": "use um ponto e vírgula para separar várias páginas ou intervalos de páginas (por exemplo, «5;14–20;37»)",
+            "pageHelpInfo4": "omita um lado de um intervalo de páginas para referenciar a primeira ou a última página do documento (por exemplo, «–16» é equivalente a «1–16» e «34–» é equivalente a «34–100», supondo um livro com 100 páginas no total)",
+            "pages": "Páginas",
+            "preview": "Pré-visualização",
+            "print": "Imprimir",
+            "printablePages": "Páginas imprimíveis (total)",
+            "title": "Seleção de páginas imprimíveis"
         },
         "settings": {
             "column": {
@@ -850,7 +866,7 @@
             "reduceMotion": "Reduzir movimento",
             "scrolled": "Rolável",
             "spacing": "Espaçamento",
-            "spreadModeEven": "",
+            "spreadModeEven": "Espelhamento de páginas: 'par' (a predefinição é 'ímpar')",
             "text": "Texto",
             "theme": {
                 "name": {
@@ -908,23 +924,24 @@
             "cancel": "Cancelar",
             "disclaimer": "Os padrões da aplicação foram definidos com base na disposição de um teclado QWERTY",
             "editUserJson": "Editar ficheiro de utilizador...",
+            "exportToHTML": "Exportar para HTML",
             "keyboardShortcuts": "Atalhos de teclado",
             "list": {
                 "AddBookmarkWithLabel": {
                     "description": "",
-                    "name": ""
+                    "name": "Criar marcador com etiqueta"
                 },
                 "AnnotationsCreate": {
                     "description": "",
-                    "name": ""
+                    "name": "Criar anotação"
                 },
                 "AnnotationsCreateQuick": {
                     "description": "",
-                    "name": ""
+                    "name": "Criar anotação rápida"
                 },
                 "AnnotationsToggleMargin": {
                     "description": "",
-                    "name": ""
+                    "name": "Ativar/desativar margem de anotações"
                 },
                 "AudioNext": {
                     "description": "",
@@ -932,7 +949,7 @@
                 },
                 "AudioNextAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Segmento áudio seguinte (escape)"
                 },
                 "AudioPlayPause": {
                     "description": "",
@@ -944,143 +961,143 @@
                 },
                 "AudioPreviousAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Segmento áudio anterior (escape)"
                 },
                 "AudioStop": {
                     "description": "",
                     "name": "Parar áudio"
                 },
                 "CloseReader": {
-                    "description": "",
+                    "description": "Fechar a janela do leitor e voltar à biblioteca",
                     "name": "Fechar leitor"
                 },
                 "FXLZoomIn": {
-                    "description": "",
-                    "name": ""
+                    "description": "Aproximar zoom para página única ou página dupla com disposição fixa.",
+                    "name": "Aumentar zoom FXL"
                 },
                 "FXLZoomOut": {
-                    "description": "",
-                    "name": ""
+                    "description": "Afastar zoom para página única ou página dupla com disposição fixa.",
+                    "name": "Diminuir zoom FXL"
                 },
                 "FXLZoomReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Repor zoom para página única ou página dupla com disposição fixa.",
+                    "name": "Repor zoom FXL"
                 },
                 "FocusMain": {
                     "description": "",
-                    "name": ""
+                    "name": "Foco no conteúdo principal"
                 },
                 "FocusMainDeep": {
                     "description": "",
-                    "name": ""
+                    "name": "Foco profundo no conteúdo principal"
                 },
                 "FocusReaderGotoPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Foco em 'Ir para página'"
                 },
                 "FocusReaderNavigation": {
                     "description": "",
-                    "name": ""
+                    "name": "Foco no Painel de navegação"
                 },
                 "FocusReaderNavigationAnnotations": {
                     "description": "",
-                    "name": ""
+                    "name": "Foco em 'Anotações'"
                 },
                 "FocusReaderNavigationBookmarks": {
                     "description": "",
-                    "name": ""
+                    "name": "Foco em 'Marcadores'"
                 },
                 "FocusReaderNavigationSearch": {
                     "description": "",
-                    "name": ""
+                    "name": "Foco em 'Pesquisar'"
                 },
                 "FocusReaderNavigationTOC": {
                     "description": "",
-                    "name": ""
+                    "name": "Foco no 'Índice'"
                 },
                 "FocusReaderSettings": {
                     "description": "",
-                    "name": ""
+                    "name": "Foco nas configurações do Leitor"
                 },
                 "FocusSearch": {
                     "description": "",
-                    "name": ""
+                    "name": "Comando de pesquisa"
                 },
                 "FocusToolbar": {
                     "description": "",
-                    "name": ""
+                    "name": "Foco na barra de ferramentas"
                 },
                 "NavigateNextChapter": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para o capítulo seguinte"
                 },
                 "NavigateNextChapterAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para o capítulo seguinte (Alternativo)"
                 },
                 "NavigateNextHistory": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para o histórico seguinte"
                 },
                 "NavigateNextLibraryPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para a página seguinte da biblioteca"
                 },
                 "NavigateNextLibraryPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para a página seguinte da biblioteca (alternativa)"
                 },
                 "NavigateNextOPDSPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para a página OPDS seguinte"
                 },
                 "NavigateNextOPDSPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para a página OPDS seguinte (alternativa)"
                 },
                 "NavigateNextPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para a página seguinte"
                 },
                 "NavigateNextPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para a página seguinte (alternativa)"
                 },
                 "NavigatePreviousChapter": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para o capítulo anterior"
                 },
                 "NavigatePreviousChapterAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para o capítulo anterior (alternativo)"
                 },
                 "NavigatePreviousHistory": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para o histórico anterior"
                 },
                 "NavigatePreviousLibraryPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para a página anterior da biblioteca"
                 },
                 "NavigatePreviousLibraryPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para a página anterior da biblioteca (alternativa)"
                 },
                 "NavigatePreviousOPDSPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para página OPDS anterior"
                 },
                 "NavigatePreviousOPDSPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para a página OPDS anterior (alternativa)"
                 },
                 "NavigatePreviousPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para a página anterior"
                 },
                 "NavigatePreviousPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para página anterior (alternativa)"
                 },
                 "NavigateToBegin": {
                     "description": "",
@@ -1157,12 +1174,12 @@
                 "description": "",
                 "title": ""
             },
-            "version": ""
+            "version": "Versão: {{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "message": "",
-            "title": ""
+            "help": "Quando a aplicação deteta a presença de tecnologia de apoio, a interface do utilizador funciona melhor com leitores de ecrã",
+            "message": "Suporte otimizado para leitores de ecrã",
+            "title": "Melhorar a experiência do leitor de ecrã"
         },
         "session": {
             "title": "Ativar guardar sessão"
@@ -1171,7 +1188,7 @@
             "appearance": "Visual",
             "general": "Geral",
             "keyboardShortcuts": "Atalhos de teclado",
-            "profiles": ""
+            "profiles": "Perfis"
         },
         "theme": {
             "auto": "Automático",

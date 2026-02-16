@@ -21,6 +21,7 @@ export interface IOpdsFeedView extends Identifiable {
     url: string;
     authentified: boolean;
     authenticationUrl?: string;
+    favorite?: boolean;
 }
 
 export interface IOpdsCoverView {

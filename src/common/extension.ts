@@ -47,3 +47,18 @@ export const isAcceptedExtension = (key: keyof typeof acceptedExtensionObject, e
     (new RegExp(`${acceptedExtensionObject[key]
         ? acceptedExtensionObject[key].replace(/\./g, "\\.")
         : acceptedExtensionObject[key]}$`, "i")).test(ext);
+
+
+
+export const publicationExtensionStoredOnDisk = [
+    acceptedExtensionObject.epub,
+    acceptedExtensionObject.webpub,
+    acceptedExtensionObject.audiobook,
+    acceptedExtensionObject.audiobookLcp,
+    acceptedExtensionObject.audiobookLcpAlt,
+    acceptedExtensionObject.divina,
+    acceptedExtensionObject.pdfLcp,
+    acceptedExtensionObject.epub3,
+    acceptedExtensionObject.pnld,
+    acceptedExtensionObject.daisy,
+];

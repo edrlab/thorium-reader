@@ -94,9 +94,9 @@ class Catalog extends React.Component<IProps, undefined> {
                                 <Slider
                                     resetSliderPosition={false}
                                     className={classNames(stylesSlider.slider)}
-                                    content={customizationProfileProvision.opdsPublicationView.map((pub, pubIndex) =>
+                                    content={customizationProfileProvision.opdsPublicationView.map((pub) =>
                                         <PublicationCard
-                                            key={`customization-publications-${pubIndex}`}
+                                            key={`customization-publications-${pub.workIdentifier}`}
                                             publicationViewMaybeOpds={pub}
                                             isOpds={true}
                                             isReading={false}

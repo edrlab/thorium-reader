@@ -11,13 +11,23 @@ import path from "path";
 // Logger
 const debug = debug_("readium-desktop:main#utils/customization/watcher");
 
+// const debug = (...arg: any[]) => { process.stderr.write(`readium-desktop:main#utils/customization/watcher: ${arg.map((v) => typeof v === "string" || typeof v === "number" ? v : JSON.stringify(v, null, 4))}\n`);};
+
+// import os from "node:os";
 import chokidar, { FSWatcher } from "chokidar";
 import * as fs from "fs";
 import { EXT_THORIUM } from "readium-desktop/common/extension";
 
+export let __chokidarWatcherInstance: FSWatcher = undefined;
+
 export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder: string, callback: (fileName: string, removed: boolean) => void): FSWatcher {
 
-    wellKnownFolder = path.join(wellKnownFolder, "/");
+/**
+* Polling is not necessary in win11, So let's disable it for the moment
+*/
+    const _isWindows = false; // true; // os.platform() === "win32";
+    
+    wellKnownFolder = path.join(wellKnownFolder, "/").replace(/\\/g, "/");
 
     if (!fs.existsSync(wellKnownFolder)) {
         return undefined;
@@ -25,12 +35,15 @@ export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder
 
     debug("START FILE WATCHING FROM ", wellKnownFolder);
 
-    const watcher = chokidar.watch(wellKnownFolder, {
+    const watcher  = __chokidarWatcherInstance = chokidar.watch(
+        wellKnownFolder
+        //`*${EXT_THORIUM}`
+        , {
+
+        // cwd: wellKnownFolder, // not working with the glob *.thorium, so let's filter it in ignored callback
         persistent: true, // default true
 
-        usePolling: false, // default false
-        alwaysStat: false, // default false
-
+        alwaysStat: false, // default false        
 
         // keep .thorium files
         ignored: (file, stats) => {
@@ -39,23 +52,24 @@ export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder
                 file === wellKnownFolder ||
                 (/*stats?.isFile() &&*/ file.endsWith(EXT_THORIUM))
             );
-            debug(`IGNORED TEST? \"${file}\", Directory=${stats?.isDirectory()}, file=${stats?.isFile()} =====> ${ignor ? "IGNORED" : "KEEPED"}`);
+            debug(`IGNORED TEST? "${file}", Directory=${stats?.isDirectory()}, file=${stats?.isFile()} =====> ${ignor ? "IGNORED" : "KEEPED"}`);
             return ignor;
             // return false;
         },
 
-        awaitWriteFinish: true, // emit single event when chunked writes are completed
-        atomic: true, // emit proper events when "atomic writes" (mv _tmp file) are used // default true
+        // awaitWriteFinish: true, // emit single event when chunked writes are completed
+        // atomic: true, // emit proper events when "atomic writes" (mv _tmp file) are used // default true
 
         // The options also allow specifying custom intervals in ms
-        // awaitWriteFinish: {
-        //   stabilityThreshold: 2000,
-        //   pollInterval: 100
-        // },
-        // atomic: 100,
+        usePolling: _isWindows ? true : false, // default false
+        awaitWriteFinish: _isWindows ? {
+          stabilityThreshold: 2000,
+          pollInterval: 1000,
+        } : true,
+        atomic: _isWindows ? 1000 : true,
 
-        //   interval: 100,
-        //   binaryInterval: 300,
+        interval: 1000,
+        binaryInterval: 1000,
 
         // cwd: '.',
         depth: 0, // only current directory
@@ -64,7 +78,6 @@ export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder
         ignoreInitial: false, // doesn't emit when instanciate // default false
         ignorePermissionErrors: !__TH__IS_DEV__, // If watching fails due to EPERM or EACCES with this set to true, the errors will be suppressed silently.
     });
-
 
     watcher
         .on("add", (absoluteFilePath) => {

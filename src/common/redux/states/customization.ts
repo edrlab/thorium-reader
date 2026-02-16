@@ -14,7 +14,7 @@ export interface ICustomizationProfileProvisioned {
     id: string; // identifier URI from manifest
     fileName: string; // relative file from well-known folder, not an absolute file path. Allow to move well-known folder without compromise internal redux state
     version: number; // unix epoch timestamp in Millisecond
-    logoUrl: string;
+    logoUrl?: string | undefined;
     title: string | IStringMap;
     description: string | IStringMap;
     opdsPublicationView: IOpdsPublicationView[];

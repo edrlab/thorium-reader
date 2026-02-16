@@ -213,16 +213,16 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                 position: relative;
             }
 
-            .publicationInfoA11y2-icon::after {
-                content: '';
-                width: 1.2em;
-                height: 1.2em;
-                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' stroke='%23007bff' stroke-width='2' fill='none'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='14' fill='%23007bff'%3E?%3C/text%3E%3C/svg%3E");
-                background-size: contain;
-                position: absolute;
-                right: -7px;
-                top: 2px;
-            }
+            // .publicationInfoA11y2-icon::after {
+            //     content: '';
+            //     width: 1.2em;
+            //     height: 1.2em;
+            //     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' stroke='%23007bff' stroke-width='2' fill='none'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='14' fill='%23007bff'%3E?%3C/text%3E%3C/svg%3E");
+            //     background-size: contain;
+            //     position: absolute;
+            //     right: -7px;
+            //     top: 2px;
+            // }
 
             .publicationInfoA11y2-title {
                 font-size: 1em;

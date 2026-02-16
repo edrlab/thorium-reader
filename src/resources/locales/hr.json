@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "O {{- appName}}"
         },
@@ -128,6 +129,7 @@
         "publisher": "Izdavač",
         "readBook": "Čitaj",
         "released": "Datum izdavanja",
+        "removeFromFavorites": "",
         "sort": "Sortiraj po",
         "tag": "",
         "tags": "Oznake",
@@ -137,9 +139,15 @@
         "annotations": {
             "descAuthor": "",
             "descCreator": "",
-            "descList": "",
-            "descNewer": "",
-            "descOlder": "",
+            "descList_few": "",
+            "descList_one": "",
+            "descList_other": "",
+            "descNewer_few": "",
+            "descNewer_one": "",
+            "descNewer_other": "",
+            "descOlder_few": "",
+            "descOlder_one": "",
+            "descOlder_other": "",
             "descTitle": "",
             "importAll": "",
             "importWithoutConflict": "",
@@ -155,9 +163,13 @@
             }
         },
         "deleteAnnotations": "",
-        "deleteAnnotationsText": "",
+        "deleteAnnotationsText_few": "",
+        "deleteAnnotationsText_one": "",
+        "deleteAnnotationsText_other": "",
         "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteBookmarksText_few": "",
+        "deleteBookmarksText_one": "",
+        "deleteBookmarksText_other": "",
         "deleteFeed": "Želiš li stvarno izbrisati ovaj katalog ?",
         "deletePublication": "Želiš li stvarno izbrisati ovu građu ?",
         "deletePublicationWithNotes": "",
@@ -193,10 +205,12 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "",
             "hint": "Podsjetnik: ",
             "open": "",
             "password": "Zaporka",
             "sentence": "Ova građa treba LCP zaporku za otvaranje:",
+            "showPassphrase": "",
             "urlHint": "Zaboravljena zaporka? Pomoć",
             "whatIsLcp?": "",
             "whatIsLcpInfoDetails": "",
@@ -766,7 +780,9 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} podudaranje(a)",
+                "founds_few": "{{- count}} podudaranje(a)",
+                "founds_one": "{{- count}} podudaranje(a)",
+                "founds_other": "{{- count}} podudaranje(a)",
                 "input": "tekst za pretragu",
                 "next": "Sljedeće",
                 "notFound": "bez podudaranja",
@@ -908,6 +924,7 @@
             "cancel": "Poništi",
             "disclaimer": "",
             "editUserJson": "Uredi dokument korisnika...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Prečaci na tipkovnici",
             "list": {
                 "AddBookmarkWithLabel": {

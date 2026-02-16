@@ -11,7 +11,7 @@ import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/br
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { opdsActions } from "readium-desktop/renderer/library/redux/actions";
 import {
-    browseRequest, headerLinksUpdate, search,
+    browseRequest, headerLinksUpdate, search, popBreadcrumb,
 } from "readium-desktop/renderer/library/redux/actions/opds";
 import {
     IOpdsHeaderState, IOpdsSearchState,
@@ -25,7 +25,7 @@ import { getTranslator } from "readium-desktop/common/services/translator";
 
 function opdsBreadcrumbReducer_(
     state: IBreadCrumbItem[] = [],
-    action: browseRequest.TAction,
+    action: browseRequest.TAction | popBreadcrumb.TAction,
 ): IBreadCrumbItem[] {
     switch (action.type) {
         case opdsActions.browseRequest.ID:
@@ -48,6 +48,10 @@ function opdsBreadcrumbReducer_(
                 ),
             });
             return stateNew;
+
+        case opdsActions.popBreadcrumb.ID: {
+            return state.length > 1 ? state.slice(0, -1) : state;
+        }
 
         default:
             return state;

@@ -3,20 +3,117 @@ const StatoscopeWebpackPlugin = require('@statoscope/webpack-plugin').default;
 
 const TerserPlugin = require("terser-webpack-plugin");
 
-var fs = require("fs");
 const path = require("path");
 const webpack = require("webpack");
 
+const preprocessorDirectives = require("./webpack.config-preprocessor-directives");
+
+const _src = path.resolve(__dirname, "src");
+const aliases = {
+    "readium-desktop": _src,
+
+    "@r2-utils-js": path.join(_src, "r2-xxx-js/r2-utils-js"),
+    "@r2-lcp-js": path.join(_src, "r2-xxx-js/r2-lcp-js"),
+    "@r2-opds-js": path.join(_src, "r2-xxx-js/r2-opds-js"),
+    "@r2-shared-js": path.join(_src, "r2-xxx-js/r2-shared-js"),
+    "@r2-streamer-js": path.join(_src, "r2-xxx-js/r2-streamer-js"),
+    "@r2-navigator-js": path.join(_src, "r2-xxx-js/r2-navigator-js"),
+};
+
 // Get node environment
 const nodeEnv = process.env.NODE_ENV || "development";
-console.log(`PRELOAD nodeEnv: ${nodeEnv}`);
+console.log(`preload nodeEnv: ${nodeEnv}`);
+
+// https://github.com/edrlab/thorium-reader/issues/1097#issuecomment-643406149
+const useLegacyTypeScriptLoader = process.env.USE_LEGACY_TYPESCRIPT_LOADER ? true : false;
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+ForkTsCheckerWebpackPlugin.prototype[require("util").inspect.custom] = (_depth, _options) => {
+    return "ForkTsCheckerWebpackPlugin";
+};
+const checkTypeScriptSkip =
+    nodeEnv !== "production" ? (process.env.SKIP_CHECK_TYPESCRIPT === "1" ? true : false) : false;
+let externals = {
+    bindings: "bindings",
+    "file-uri-to-path": "file-uri-to-path",
+    fsevents: "fsevents",
+    "electron-devtools-installer": "electron-devtools-installer",
+    "remote-redux-devtools": "remote-redux-devtools",
+    electron: "electron",
+    // yargs: "yargs",
+};
+const _externalsCache = new Set();
+if (nodeEnv !== "production") {
+    const nodeExternals = require("webpack-node-externals");
+    const neFunc = nodeExternals({
+        // allowlist: ["marked", "pdf.js", "readium-speech", "@github/paste-markdown", "yargs", "timeout-signal", "nanoid", "normalize-url", "node-fetch", "data-uri-to-buffer", /^fetch-blob/, /^formdata-polyfill/],
+        importType: function (moduleName) {
+            if (!_externalsCache.has(moduleName)) {
+                console.log(`WEBPACK EXTERNAL (preload): [${moduleName}]`);
+            }
+            _externalsCache.add(moduleName);
+            // if (moduleName === "normalize-url") {
+            //     return "module normalize-url";
+            // }
+            return "commonjs " + moduleName;
+        },
+    });
+    externals = [
+        externals,
+        function ({ context, request, contextInfo, getResolve }, callback) {
+            const isRDesk = request.indexOf("readium-desktop/") === 0;
+            if (isRDesk) {
+                if (!_externalsCache.has(request)) {
+                    console.log(`WEBPACK EXTERNAL (preload): READIUM-DESKTOP [${request}]`);
+                }
+                _externalsCache.add(request);
+
+                return callback();
+            }
+
+            const isRDeskR2 = request.indexOf("@r2-") === 0;
+            if (isRDeskR2) {
+                if (!_externalsCache.has(request)) {
+                    console.log(`WEBPACK EXTERNAL (MAIN): READIUM-DESKTOP @R2 [${request}]`);
+                }
+                _externalsCache.add(request);
+
+                return callback();
+            }
+
+            let request_ = request;
+            if (aliases) {
+                // const isR2 = /^r2-.+-js/.test(request);
+                // const isR2Alias = /^@r2-.+-js/.test(request);
+
+                const iSlash = request.indexOf("/");
+                const key = request.substr(0, iSlash >= 0 ? iSlash : request.length);
+                if (aliases[key]) {
+                    request_ = request.replace(key, aliases[key]);
+
+                    if (!_externalsCache.has(request)) {
+                        console.log(`WEBPACK EXTERNAL (preload): ALIAS [${request}] => [${request_}]`);
+                    }
+                    _externalsCache.add(request);
+
+                    return callback(null, "commonjs " + request_);
+                }
+            }
+
+            neFunc(context, request, callback);
+        },
+    ];
+}
+
+console.log("WEBPACK externals (preload):", "-".repeat(200));
+console.log(JSON.stringify(externals, null, "  "));
+////// EXTERNALS
+////// ================================
 
 let config = Object.assign(
     {},
     {
-        entry: "./node_modules/r2-navigator-js/dist/es8-es2017/src/electron/renderer/webview/preload.js",
+        entry: "./src/r2-xxx-js/r2-navigator-js/electron/renderer/webview/preload.ts",
         name: "renderer webview preload",
-        mode: nodeEnv,
         output: {
             filename: "preload.js",
             path: path.join(__dirname, "dist"),
@@ -25,41 +122,115 @@ let config = Object.assign(
         },
         target: "electron-renderer",
 
+        mode: nodeEnv,
+
         externalsPresets: { node: true },
+        // externals: externals,
+        // externalsType: "commonjs", // module, node-commonjs
+        experiments: {
+            outputModule: false, // module, node-commonjs
+        },
 
         resolve: {
-            extensions: [".js"],
+            extensions: [".ts", ".tsx", ".js", ".jsx"],
+            alias: aliases,
+        },
+        stats: {
+            // warningsFilter: /export .* was not found in/,
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.tsx$/,
+                    loader: useLegacyTypeScriptLoader ? "awesome-typescript-loader" : "ts-loader",
+                    options: {
+                        transpileOnly: true, // checkTypeScriptSkip
+                        // compiler: "@typescript/native-preview",
+                    },
+                },
+                {
+                    test: /\.ts$/,
+                    use: [
+                        {
+                            loader: "babel-loader",
+                            options: {
+                                presets: [],
+                                // sourceMaps: "inline",
+                                plugins: ["macros"],
+                            },
+                        },
+                        {
+                            loader: useLegacyTypeScriptLoader ? "awesome-typescript-loader" : "ts-loader",
+                            options: {
+                                transpileOnly: true, // checkTypeScriptSkip
+                                // compiler: "@typescript/native-preview",
+                            },
+                        },
+                    ],
+                },
+                {
+                    test: /\.(jsx?|tsx?)$/,
+                    use: [
+                        {
+                            loader: path.resolve("./scripts/webpack-loader-scope-checker.js"),
+                            options: {
+                                forbids: ["src/renderer/library", "src/main", "src/renderer/reader/components", "src/renderer/reader/redux", "src/common", "src/resources", "src/typings", "src/renderer/reader/common", "src/renderer/common"],
+                            },
+                        },
+                    ],
+                },
+            ],
         },
 
         plugins: [
+            preprocessorDirectives.definePlugin,
         ],
     },
 );
 
-config.optimization = {
-    ...(config.optimization || {}),
-    nodeEnv: false,
-    minimize: true,
-    minimizer: [
-        new TerserPlugin({
-            extractComments: false,
-            exclude: /MathJax/,
-            // parallel: 3,
-            terserOptions: {
-                // sourceMap: nodeEnv !== "production" ? true : false,
-                sourceMap: false,
-                compress: {defaults:false, dead_code:true, booleans: true, passes: 1},
-                mangle: false,
-                output: {
-                    comments: false,
-                },
-            },
+if (checkTypeScriptSkip) {
+    // const GoTsCheckerWebpackPlugin = require("./scripts/go-ts-checker-webpack-plugin");
+    // config.plugins.push(
+    //     new GoTsCheckerWebpackPlugin({name: "preload"}),
+    // );
+} else {
+    config.plugins.push(
+        new ForkTsCheckerWebpackPlugin({
+            // measureCompilationTime: true,
         }),
-    ],
-};
-// {
-//     minimize: false,
-// };
+    );
+}
+
+if (nodeEnv !== "production") {
+} else {
+    config.optimization = {
+        ...(config.optimization || {}),
+        nodeEnv: false,
+        minimize: true,
+        minimizer: [
+            new TerserPlugin({
+                extractComments: false,
+                exclude: /MathJax/,
+                // parallel: 3,
+                terserOptions: {
+                    // sourceMap: nodeEnv !== "production" ? true : false,
+                    sourceMap: false,
+                    compress: {defaults:false, dead_code:true, booleans: true, passes: 1},
+                    mangle: false,
+                    output: {
+                        comments: false,
+                    },
+                },
+            }),
+        ],
+    };
+    // {
+    //     minimize: false,
+    // };
+
+    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^devtron$/ }));
+    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^@axe-core\/react$/ }));
+}
 
 if (process.env.ENABLE_WEBPACK_BUNDLE_STATS)
 config.plugins.push(

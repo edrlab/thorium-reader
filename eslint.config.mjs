@@ -25,6 +25,7 @@
 //         //     "plugin:prettier/recommended",
 //         // ],
 //         // ignores: [
+//         //     "src/r2-xxx-js/r2-navigator-js/electron/common/colibrio-cfi/*",
 //         //     ".vscode/*",
 //         //     ".history/*",
 //         //     ".github/*",

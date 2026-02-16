@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "Προσθήκη στα αγαπημένα",
         "about": {
             "title": "Σχετικά {{- appName}}"
         },
@@ -128,6 +129,7 @@
         "publisher": "Εκδότης",
         "readBook": "Ανάγνωση",
         "released": "Δημοσιεύθηκε στις",
+        "removeFromFavorites": "Αφαίρεση από τα αγαπημένα",
         "sort": "Ταξινόμηση με",
         "tag": "Ετικέτα",
         "tags": "Ετικέτες",
@@ -137,9 +139,12 @@
         "annotations": {
             "descAuthor": "από '{{- author}}'",
             "descCreator": "δημιουργήθηκε από",
-            "descList": "{{- nb}} σημειώσεις {{- creator}} θα εισαγχθούν στον τίτλο '{{- title}}' {{- author}}",
-            "descNewer": "Συγκρούσεις: {{- nb}} νεώτερες σημειώσεις",
-            "descOlder": "Συγκρούσεις: {{- nb}} παλιότερες σημειώσεις",
+            "descList_one": "{{- count}} σημείωση {{- creator}} θα εισαγχθεί στον τίτλο '{{- title}}' {{- author}}",
+            "descList_other": "{{- count}} σημειώσεις {{- creator}} θα εισαγχθούν στον τίτλο '{{- title}}' {{- author}}",
+            "descNewer_one": "Σύγκρουση: {{- count}} νεώτερη σημείωση",
+            "descNewer_other": "Συγκρούσεις: {{- count}} νεώτερες σημειώσεις",
+            "descOlder_one": "Σύγκρουση: {{- count}} παλιότερη σημείωση",
+            "descOlder_other": "Συγκρούσεις: {{- count}} παλιότερες σημειώσεις",
             "descTitle": "Τίτλος σχολιασμών: ",
             "importAll": "Εισαγωγή όλων των σημειώσεων",
             "importWithoutConflict": "Εισαγωγή μόνο των σημειώσεων απαλλαγμένων από συγκρούσεις",
@@ -155,9 +160,11 @@
             }
         },
         "deleteAnnotations": "Διαγραφή σχολίων;",
-        "deleteAnnotationsText": "Είσαι σίγουρος/η για τη διαγραφή σημειώσεων {{- annotationListLength}};",
+        "deleteAnnotationsText_one": "Είστε σίγουροι για τη διαγραφή σημείωσης {{- count}};",
+        "deleteAnnotationsText_other": "Είστε σίγουροι για τη διαγραφή σημειώσεων {{- count}};",
         "deleteBookmarks": "Διαγραφή σελιδοδεικτών;",
-        "deleteBookmarksText": "Είστε σίγουροι ότι θέλετε να διαγράψετε {{- bookmarkListLength}} σελιδοδείκτες;",
+        "deleteBookmarksText_one": "Είστε σίγουροι ότι θέλετε να διαγράψετε {{- count}} σελιδοδείκτη;",
+        "deleteBookmarksText_other": "Είστε σίγουροι ότι θέλετε να διαγράψετε {{- count}} σελιδοδείκτες;",
         "deleteFeed": "Διαγραφή καταλόγου;",
         "deletePublication": "Διαγραφή βιβλίου;",
         "deletePublicationWithNotes": "Προειδοποίηση: αυτή η δημοσίευση έχει σχολιασμούς ή/και σελιδοδείκτες, θα διαγραφούν και αυτοί! (αν θέλετε να τους κρατήσετε, φροντίστε να εξάγετε τις σημειώσεις πριν τη διαγραφή της δημοσίευσης)",
@@ -193,10 +200,12 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "Απόκρυψη μυστικού κωδικού",
             "hint": "Συμβουλή:",
             "open": "Άνοιγμα",
             "password": "Συνθηματική φράση",
             "sentence": "Xρειάζεται μια συνθηματική φράση LCP για να ανοίξει το βιβλίο",
+            "showPassphrase": "Εμφάνιση μυστικού κωδικού",
             "urlHint": "Ξέχασες τα αναγνωριστικά σου; Κλίκαρε εδώ για βοήθεια.",
             "whatIsLcp?": "Τι είναι η προστασία LCP;",
             "whatIsLcpInfoDetails": "Το LCP σημαίνει 'Προστασία αδειοδοτημένου περιεχομένου'.",
@@ -356,12 +365,12 @@
                 "descriptive": "Η δημοσίευση αυτή ισχυρίζεται ότι ανταποκρίνεται"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "EPUB Accessibility 1.0",
-                "descriptive": "EPUB Accessibility 1.0"
+                "compact": "EPUB Προσβασιμότητα 1.0",
+                "descriptive": "EPUB Προσβασιμότητα 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "EPUB Accessibility 1.1",
-                "descriptive": "EPUB Accessibility 1.1"
+                "compact": "EPUB Προσβασιμότητα 1.1",
+                "descriptive": "EPUB Προσβασιμότητα 1.1"
             },
             "conformance-details-level-a": {
                 "compact": "Επίπεδο A",
@@ -380,11 +389,11 @@
             },
             "conformance-details-wcag-2-1": {
                 "compact": "WCAG 2.1",
-                "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.1"
+                "descriptive": "Οδηγίες προσβασιμότητας περιεχομένου Web (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
                 "compact": "WCAG 2.2",
-                "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.2"
+                "descriptive": "Οδηγίες προσβασιμότητας περιεχομένου Web (WCAG) 2.2"
             },
             "conformance-no": {
                 "compact": "Καμία διαθέσιμη πληροφορία",
@@ -766,7 +775,8 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} αποτελέσματα",
+                "founds_one": "{{- count}} αποτέλεσμα",
+                "founds_other": "{{- count}} αποτελέσματα",
                 "input": "κείμενο προς ανάκτηση",
                 "next": "Επόμενο",
                 "notFound": "καμία αντιστοιχία",
@@ -908,6 +918,7 @@
             "cancel": "Ακύρωση",
             "disclaimer": "Οι προεπιλογές της εφαρμογής σχεδιάστηκαν με βάση τη φυσική θέση των πλήκτρων σε μια διάταξη QWERTY",
             "editUserJson": "Επεξεργασία αρχείου χρήστη...",
+            "exportToHTML": "Εξαγωγή σε HTML",
             "keyboardShortcuts": "Συντομεύσεις πληκτρολογίου",
             "list": {
                 "AddBookmarkWithLabel": {

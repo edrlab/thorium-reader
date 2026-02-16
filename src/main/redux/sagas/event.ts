@@ -16,7 +16,7 @@ import {
 } from "readium-desktop/main/event";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, put, spawn } from "redux-saga/effects";
-import { call as callTyped, take as takeTyped, select as selectTyped, put as putTyped /*race as raceTyped, delay as delayTyped*/ } from "typed-redux-saga/macro";
+import { call as callTyped, take as takeTyped, /*select as selectTyped*/ put as putTyped /*race as raceTyped, delay as delayTyped*/ } from "typed-redux-saga/macro";
 import { opdsApi } from "./api";
 import { browse } from "./api/browser/browse";
 import { addFeed } from "./api/opds/feed";
@@ -25,17 +25,37 @@ import { importFromFs, importFromLink } from "./api/publication/import";
 import { search } from "./api/publication/search";
 import { appActivate } from "./win/library";
 import { getAndStartCustomizationWellKnownFileWatchingEventChannel } from "./getEventChannel";
-import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
-import { customizationPackageProvisioning, customizationPackageProvisioningCheckVersion, customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
-import * as path from "path";
-import { ICustomizationProfileError, ICustomizationProfileProvisioned, ICustomizationProfileProvisionedWithError } from "readium-desktop/common/redux/states/customization";
+// import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
+// import { customizationPackageProvisioning, customizationPackageProvisioningCheckVersion, customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
+// import { ICustomizationProfileError, ICustomizationProfileProvisioned, ICustomizationProfileProvisionedWithError } from "readium-desktop/common/redux/states/customization";
 import { URL_HOST_CUSTOMPROFILE, URL_HOST_OPDS_AUTH, URL_PROTOCOL_APP_HANDLER_THORIUM, URL_PROTOCOL_OPDS } from "readium-desktop/common/streamerProtocol";
 import { EXT_THORIUM } from "readium-desktop/common/extension";
 import { getLibraryWindowFromDi } from "readium-desktop/main/di";
 import { getTranslator } from "readium-desktop/common/services/translator";
 
+import * as path from "path";
+import * as fs from "fs";import { fileProvisionning } from "./customization";
+import { customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
+import { USER_DATA_FOLDER } from "readium-desktop/common/constant";
+
 // Logger
 const debug = debug_("readium-desktop:main:saga:event");
+
+// TODO: check electron app.getPath('logs') instead
+// same as main/cli/index
+const folderPath = path.join(
+    USER_DATA_FOLDER,
+    "app-logs",
+);
+const PROCESS_LOGS = "processLogs.txt";
+const appLogs = path.join(
+    folderPath,
+    PROCESS_LOGS,
+);
+
+if (!fs.existsSync(folderPath)) {
+    fs.mkdirSync(folderPath);
+};
 
 export function saga() {
     return all([
@@ -48,41 +68,7 @@ export function saga() {
                 try {
                     const [packageFileName, removed] = yield* takeTyped(chan);
 
-                    const customizationState = yield* selectTyped((state: ICommonRootState) => state.customization);
-                    let packagesProvisionedAndLatest = customizationState.provision;
-                    let packagesNotProvisionedOrOnError: ICustomizationProfileProvisionedWithError[] = [];
-
-                    if (removed) {
-                        const packageFound = packagesProvisionedAndLatest.find(({ fileName }) => fileName === packageFileName);
-                        if (packageFound && packageFound.id === customizationState.activate.id && packageFound.fileName === packageFileName) {
-                            debug("rollback to thorium vanilla profile");
-                            yield* putTyped(customizationActions.activating.build("")); // no profile
-                        }
-                        packagesProvisionedAndLatest = packagesProvisionedAndLatest.filter(({ fileName }) => fileName !== packageFileName);
-                    } else {
-
-                        debug("Found => ", packageFileName);
-                        const profileProvisionedOrOnError = yield* callTyped(() => customizationPackageProvisioning(packageFileName));
-                        if ((profileProvisionedOrOnError as ICustomizationProfileError).error) {
-                            debug("ERROR: Profile not provisioned, due to error :", (profileProvisionedOrOnError as ICustomizationProfileError).message);
-                            packagesNotProvisionedOrOnError.push((profileProvisionedOrOnError as ICustomizationProfileError));
-                        } else {
-
-                            [packagesProvisionedAndLatest, packagesNotProvisionedOrOnError] = yield* callTyped(() => customizationPackageProvisioningCheckVersion(
-                                packagesProvisionedAndLatest,
-                                packagesNotProvisionedOrOnError,
-                                profileProvisionedOrOnError as ICustomizationProfileProvisioned,
-                            ));
-                        }
-                    }
-
-                    debug("dispatch provisionning action with ", JSON.stringify(packagesProvisionedAndLatest)/*.slice(0, 100)+"..."*/);
-                    yield* putTyped(customizationActions.provisioning.build(packagesProvisionedAndLatest, packagesNotProvisionedOrOnError));
-
-                    // TODO: how to warn user of potentially a new version of the packages id, we have to put a diff between version for a same id !
-                    // And mostly a technical issue, how to update the view with the update. package streamer follow a package id
-
-
+                    yield* callTyped(fileProvisionning, packageFileName, removed);
                 } catch (e) {
 
                     debug("ERROR to importFromFs and to open the publication");
@@ -235,33 +221,56 @@ export function saga() {
                 try {
                     const url = yield* takeTyped(chan);
 
+
+                    let dump = "#############################################\n";
+                    dump += `take opds url from channel: URL="${url}"\n`;
+                    dump += `Date: ${(new Date()).toISOString()}\n`;
+                    // dump += 
+
                     if (url.startsWith(`${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`)) {
                         debug("OPDS AUTH: ", `${URL_PROTOCOL_OPDS}://${URL_HOST_OPDS_AUTH}/`);
+                        dump += "This is an authentication flow\n";
                         // ===> opdsAuthFlow
                         const libWin = getLibraryWindowFromDi();
                         const children = libWin.getChildWindows(); // TODO: make sure this is the OPDS AUTH BrowserWindow!!
                         if (children?.length) {
                             debug("OPDS AUTH: sub win?");
                             const win = children[0];
+                            dump += "child win from libwin\n";
                             if (win.title === getTranslator().translate("catalog.opds.auth.login")) {
                                 debug("OPDS AUTH: sub win OK, load...", url);
-                                yield* callTyped(() => win.loadURL(url));
+                                dump += "OPDS AUTH: sub win OK, load...\n";
+                                try {
+                                    yield* callTyped(() => win.loadURL(url));
+                                } catch (e) {
+                                    dump += `error to load '${url}' in auth child window => e=${JSON.stringify(e, null, 4)}\n`;
+                                    debug(`error to load '${url}' in auth child window => e=${JSON.stringify(e, null, 4)}`);
+                                }
+                            } else {
+                                debug("This is not an auth login window");
+                                dump += "This is not an auth login window\n";
                             }
+                        } else {
+                            debug("No child window on library window");
+                            dump += "No child window on library window\n";
                         }
 
-                        continue;
+                    } else {
+
+                        const feed = yield* callTyped(opdsApi.addFeed, { title: url, url });
+                        if (feed) {
+
+                            yield* callTyped(appActivate);
+
+                            debug("Feed added ", feed);
+                            dump += `feed added: ${feed}\n`;
+                            debug("Open in library catalogs");
+                            // open the feed in libraryWindow
+                            yield put(historyActions.pushFeed.build(feed));
+                        }
                     }
-
-                    const feed = yield* callTyped(opdsApi.addFeed, { title : url, url});
-                    if (feed) {
-
-                        yield* callTyped(appActivate);
-
-                        debug("Feed added ", feed);
-                        debug("Open in library catalogs");
-                        // open the feed in libraryWindow
-                        yield put(historyActions.pushFeed.build(feed));
-                    }
+                    dump += "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$44\n";
+                    fs.appendFileSync(appLogs, dump);
 
                 } catch (e) {
 

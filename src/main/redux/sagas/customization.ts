@@ -8,7 +8,7 @@
 import debug_ from "debug";
 import { authActions, customizationActions, toastActions } from "readium-desktop/common/redux/actions";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
-import { customizationPackageProvisioningManifest, customizationPackageProvisioningFromFolder, customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
+import { customizationPackageProvisioningManifest, customizationPackageProvisioningFromFolder, customizationWellKnownFolder, customizationPackageProvisioning, customizationPackageProvisioningCheckVersion } from "readium-desktop/main/customization/provisioning";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { error } from "readium-desktop/main/tools/error";
@@ -28,9 +28,50 @@ import isURL from "validator/lib/isURL";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { contentTypeisOpdsAuth, parseContentType } from "readium-desktop/utils/contentType";
 import { EXT_THORIUM } from "readium-desktop/common/extension";
+import constants from "node:constants";
 
 const filename_ = "readium-desktop:main:redux:sagas:customization";
 const debug = debug_(filename_);
+
+export function* fileProvisionning(packageFileName:string, removed = false): SagaGenerator<void> {
+
+    const customizationState = yield * selectTyped((state: ICommonRootState) => state.customization);
+    let packagesProvisionedAndLatest = customizationState.provision;
+    let packagesNotProvisionedOrOnError: ICustomizationProfileProvisionedWithError[] = [];
+
+    if (removed) {
+        const packageFound = packagesProvisionedAndLatest.find(({ fileName }) => fileName === packageFileName);
+        if (packageFound && packageFound.id === customizationState.activate.id && packageFound.fileName === packageFileName) {
+            debug("rollback to thorium vanilla profile");
+            yield * putTyped(customizationActions.activating.build("")); // no profile
+        }
+        packagesProvisionedAndLatest = packagesProvisionedAndLatest.filter(({ fileName }) => fileName !== packageFileName);
+    } else {
+
+        debug("Found => ", packageFileName);
+        const profileProvisionedOrOnError = yield * callTyped(() => customizationPackageProvisioning(packageFileName));
+        if ((profileProvisionedOrOnError as ICustomizationProfileError).error) {
+            debug("ERROR: Profile not provisioned, due to error :", (profileProvisionedOrOnError as ICustomizationProfileError).message);
+            packagesNotProvisionedOrOnError.push((profileProvisionedOrOnError as ICustomizationProfileError));
+        } else {
+
+            [packagesProvisionedAndLatest, packagesNotProvisionedOrOnError] = yield * callTyped(() => customizationPackageProvisioningCheckVersion(
+                packagesProvisionedAndLatest,
+                packagesNotProvisionedOrOnError,
+                profileProvisionedOrOnError as ICustomizationProfileProvisioned,
+            ));
+        }
+    }
+
+    debug("dispatch provisionning action with ", JSON.stringify(packagesProvisionedAndLatest)/*.slice(0, 100)+"..."*/);
+    yield * putTyped(customizationActions.provisioning.build(packagesProvisionedAndLatest, packagesNotProvisionedOrOnError));
+
+    // TODO: how to warn user of potentially a new version of the packages id, we have to put a diff between version for a same id !
+    // And mostly a technical issue, how to update the view with the update. package streamer follow a package id
+
+
+
+}
 
 const removePackageProfile = (packages: ICustomizationProfileProvisionedWithError[]) => {
     debug("remove old or error packages:", JSON.stringify(packages, null, 4));
@@ -406,6 +447,8 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
                 const fileNameProvisionedFound = provisioningAction.payload.provsionedPackages.find(({ fileName: fileName_ }) => fileName_ === fileName);
                 if (fileNameProvisionedFound) {
 
+                    debug("fileNameProvisionedFound", fileNameProvisionedFound);
+
                     const packageId = fileNameProvisionedFound.id;
                     lockInfo.id = packageId;
                     yield* putTyped(customizationActions.lock.build("ACTIVATING", lockInfo));
@@ -413,6 +456,8 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
 
                     return true;
                 } else {
+
+                    debug("fileNameProvisioned NOT Found");
 
                     const profileNotProvisioned = provisioningAction.payload.errorPackages.find(({ fileName: fileName_ }) => fileName_ === fileName);
                     if (!profileNotProvisioned) {
@@ -444,6 +489,29 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
             }
 
             return false; // never returned
+        }),
+        c: callTyped(function* () {
+
+
+            // The timeout to manual import is set to 10seconds
+            // should be suficient to copy large profile package to the wellKnown folder
+            // The risk is to trigger the manual import function and bypassing chokidar too early
+            // when the disk in not atomically/fully written to the disk (wellKnown folder),
+            // and therefore corrupt the import phase and raise an import error on the profile.
+            yield* delay(10000);
+
+            const isTheFileExists = yield* callTyped(async () => { try { await fs.promises.access(packagePath, constants.R_OK); return true; } catch { return false; }; });
+
+            debug(`file: ${packagePath} ${isTheFileExists ? "exists!" : "losted"} !`);
+            if (isTheFileExists) {
+                debug("start file provisionning");
+                yield* callTyped(fileProvisionning, fileName, false);
+            }
+
+            while (1) {
+                yield* takeTyped(0); // never finished
+            } 
+
         }),
     });
 

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<package version="2.0" xmlns="http://www.idpf.org/2007/opf" unique-identifier="primary-id">
+
+
+    <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+        <dc:title>Hello World</dc:title>
+        <dc:language>en</dc:language>
+        <dc:identifier id="primary-id">abc</dc:identifier>
+        <dc:description>A very unreal book</dc:description>
+    </metadata>
+
+
+    <manifest>
+        <item id="front-cover" href="cover.xhtml" media-type="application/xhtml+xml"/>
+        <item id="title-page" href="title-page.xhtml" media-type="application/xhtml+xml"/>
+        <item id="table-of-contents" href="toc.xhtml" media-type="application/xhtml+xml"/>
+        <item id="chapter-001" href="testChapter1.xhtml" media-type="application/xhtml+xml"/>
+        <item id="chapter-002" href="testChapter2.html" media-type="application/xhtml+xml"/>
+    </manifest>
+
+
+    <spine toc="ncx">
+        <itemref idref="front-cover" linear="no"/>
+        <itemref idref="title-page" linear="yes"/>
+        <itemref idref="table-of-contents" linear="yes"/>
+        <itemref idref="chapter-001" linear="yes"/>
+        <itemref idref="chapter-002" linear="yes"/>
+    </spine>
+
+
+    <guide>
+        <reference type="toc" title="Table of Contents" href="toc.xhtml"/>
+    </guide>
+
+
+</package>

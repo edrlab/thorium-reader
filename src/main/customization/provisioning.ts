@@ -15,7 +15,6 @@ import { extractCrc32OnZip } from "../tools/crc";
 import * as path from "path";
 import * as fs from "fs";
 import { ICustomizationProfileProvisioned, ICustomizationProfileError, ICustomizationProfileProvisionedWithError } from "readium-desktop/common/redux/states/customization";
-import { app } from "electron";
 import { _CUSTOMIZATION_PROFILE_PUB_KEY } from "readium-desktop/preprocessor-directives";
 import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_CUSTOMPROFILEZIP } from "readium-desktop/common/streamerProtocol";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
@@ -27,12 +26,15 @@ import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 import isURL from "validator/lib/isURL";
 import { EXT_THORIUM } from "readium-desktop/common/extension";
 import { customizationManifestJsonSchemaMinimal } from "readium-desktop/common/readium/customization/profile.schema";
+import { USER_DATA_FOLDER } from "readium-desktop/common/constant";
 
 // Logger
 const debug = debug_("readium-desktop:main#utils/customization/provisioning");
 
-export const customizationWellKnownFolder = path.join(app.getPath("userData"), "custom-profiles");
-
+export const customizationWellKnownFolder = path.join(
+    USER_DATA_FOLDER,
+    "custom-profiles",
+);
 try {
     if (!fs.existsSync(customizationWellKnownFolder)) {
         fs.mkdirSync(customizationWellKnownFolder);
@@ -99,7 +101,10 @@ async function checkIfProfilePackageSigned(manifest: ICustomizationManifest, pac
         return Promise.reject("no signature found");
     }
 
-    if (manifest.signature.key !== _CUSTOMIZATION_PROFILE_PUB_KEY) {
+    if ((manifest.signature.key || "").trim() !== _CUSTOMIZATION_PROFILE_PUB_KEY.trim()) {
+
+        debug("manifest.signature.key", manifest.signature.key);
+        debug("PUBLIC_KEY", _CUSTOMIZATION_PROFILE_PUB_KEY);
         return Promise.reject("manifest public key different from shipped public key");
 
     }
@@ -120,6 +125,8 @@ async function checkIfProfilePackageSigned(manifest: ICustomizationManifest, pac
     const packageAbsolutePath = path.join(customizationWellKnownFolder, packageFileName);
     const contentHash = await extractCrc32OnZip(packageAbsolutePath, "profile");
     if (manifest.contentHash !== contentHash) {
+        debug("manifest.contentHash=", manifest.contentHash);
+        debug("contentHash=", contentHash);
         return Promise.reject("manifest contentHash missmatch");
     }
 
@@ -189,7 +196,7 @@ export async function customizationPackageProvisioning(packageFileName: string):
     const logoObj = manifest.images?.find((ln) => ln?.rel === "logo");
     debug("find manifest for this profile", manifest.identifier, manifest.version, " LOGO Obj:", logoObj);
     const baseUrl = `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_CUSTOMPROFILEZIP}/${encodeURIComponent_RFC3986(Buffer.from(manifest.identifier).toString("base64"))}/`;
-    const logoUrl = baseUrl + encodeURIComponent_RFC3986(Buffer.from(logoObj.href).toString("base64"));
+    const logoUrl = logoObj ? baseUrl + encodeURIComponent_RFC3986(Buffer.from(logoObj.href).toString("base64")) : undefined;
 
     const selfLinkUrl = manifest.links?.find(({ rel }) => rel === "self")?.href;
 

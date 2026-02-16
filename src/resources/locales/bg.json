@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "Относно {{- appName}}"
         },
@@ -128,6 +129,7 @@
         "publisher": "Издател",
         "readBook": "Прочети",
         "released": "Публикувано на",
+        "removeFromFavorites": "",
         "sort": "Сортирай по",
         "tag": "",
         "tags": "Маркери",
@@ -137,9 +139,12 @@
         "annotations": {
             "descAuthor": "",
             "descCreator": "",
-            "descList": "",
-            "descNewer": "",
-            "descOlder": "",
+            "descList_one": "",
+            "descList_other": "",
+            "descNewer_one": "",
+            "descNewer_other": "",
+            "descOlder_one": "",
+            "descOlder_other": "",
             "descTitle": "",
             "importAll": "",
             "importWithoutConflict": "",
@@ -155,9 +160,11 @@
             }
         },
         "deleteAnnotations": "",
-        "deleteAnnotationsText": "",
+        "deleteAnnotationsText_one": "",
+        "deleteAnnotationsText_other": "",
         "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteBookmarksText_one": "",
+        "deleteBookmarksText_other": "",
         "deleteFeed": "Наистина ли искате да изтриете този каталог?",
         "deletePublication": "Наистина ли искате да изтриете тази книга?",
         "deletePublicationWithNotes": "",
@@ -193,10 +200,12 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "",
             "hint": "Подсказка:",
             "open": "Отвори",
             "password": "Парола",
             "sentence": "Тази публикация се нуждае от LCP парола, за да бъде отворена: ",
+            "showPassphrase": "",
             "urlHint": "Забравили сте паролата си? Намерете помощ тук.",
             "whatIsLcp?": "",
             "whatIsLcpInfoDetails": "",
@@ -766,7 +775,8 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} съвпадение(ия)",
+                "founds_one": "{{- count}} съвпадение(ия)",
+                "founds_other": "{{- count}} съвпадение(ия)",
                 "input": "текст за търсене",
                 "next": "Следващ",
                 "notFound": "няма съвпадения",
@@ -908,6 +918,7 @@
             "cancel": "Отказ",
             "disclaimer": "",
             "editUserJson": "Редактиране на потребителски файл...",
+            "exportToHTML": "",
             "keyboardShortcuts": "Бързи клавиши",
             "list": {
                 "AddBookmarkWithLabel": {

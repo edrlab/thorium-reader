@@ -251,8 +251,7 @@ export const ApiappAddFormDialog = () => {
                                 <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
                             </Dialog.Close>
                             <Dialog.Close asChild>
-                                <button type="submit" ref={submitButtonRef} className={stylesButtons.button_primary_blue} onClick={(e) => {
-                                    e.preventDefault();
+                                <button type="submit" ref={submitButtonRef} className={stylesButtons.button_primary_blue} onClick={() => {
                                     addFeedAction();
                                 }}>
                                     <SVG ariaHidden svg={AddIcon} />

@@ -57,12 +57,12 @@ export default class App extends React.Component<{}, undefined> {
                 if (__TH__IS_PACKAGED__) {
                     rcssPath = `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/` + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", RCSSP)).replace(/\\/g, "/").split("/").map((segment) => encodeURIComponent_RFC3986(segment)).join("/");
                 } else {
-                    rcssPath = "r2-navigator-js/dist/ReadiumCSS";
+                    rcssPath = "src/resources/ReadiumCSS";
 
                     if (_RENDERER_READER_BASE_URL === `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/`) {
 
                         // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
-                        rcssPath = `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/` + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", _NODE_MODULE_RELATIVE_URL, rcssPath)).replace(/\\/g, "/").split("/").map((segment) => encodeURIComponent_RFC3986(segment)).join("/");
+                        rcssPath = `${URL_PROTOCOL_FILEX}://${URL_HOST_COMMON}/` + path.normalize(path.join(window.location.pathname.replace(/^\/\//, "/"), "..", rcssPath)).replace(/\\/g, "/").split("/").map((segment) => encodeURIComponent_RFC3986(segment)).join("/");
 
                         // const debugStr = `[[APP.TSX ${rcssPath} >>> ${window.location.href} *** ${window.location.pathname} === ${process.cwd()} ^^^ ${(global as any).__dirname} --- ${_NODE_MODULE_RELATIVE_URL} @@@ ${rcssPath}]]`;
                         // if (document.body.firstElementChild) {
@@ -81,7 +81,7 @@ export default class App extends React.Component<{}, undefined> {
 
                         // static server (WebPack publicPath)
                         // rcssPath = "/dist/ReadiumCSS";
-                        rcssPath = "/node_modules/" + rcssPath;
+                        rcssPath = "/" + rcssPath;
                         rcssPath = rcssPath.replace(/\\/g, "/");
                     }
                 }

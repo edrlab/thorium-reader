@@ -5,16 +5,32 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import debug_ from "debug";
 import { call as callTyped } from "typed-redux-saga/macro";
 import { diMainGet } from "readium-desktop/main/di";
 import { aboutFiltered } from "readium-desktop/main/tools/filter";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 
+const filename_ = "readium-desktop:main:redux:sagas:api:publication:findAll";
+const debug = debug_(filename_);
+
 const convertDocs = async (docs: PublicationDocument[], publicationViewConverter: PublicationViewConverter) => {
     const pubs = [];
     for (const doc of docs) {
-        pubs.push(await publicationViewConverter.convertDocumentToView(doc));
+        try {
+            const pub = await publicationViewConverter.convertDocumentToView(doc);
+            pubs.push(pub);
+        } catch (e) {
+
+            debug("Error When convert document to view, the publication is not deleted, so let's mitigate the publication error for the next time");
+            debug(e);
+
+            const pub = await publicationViewConverter.convertDocumentMissingOrDeletedToMinimalPublicationView(doc);
+            pubs.push(pub);
+
+            // yield* callTyped(errorDeletePub, doc, e as Error);
+        }
     }
     return pubs;
 };

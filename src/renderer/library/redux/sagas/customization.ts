@@ -102,10 +102,6 @@ function* profileActivating(id: string): SagaGenerator<void> {
 
     yield* putTyped(customizationActions.welcomeScreen.build(welcomeScreenNeeded));
 
-    // const logoObj = manifestJson.images?.find((ln) => ln?.rel === "logo");
-    // debug("Manifest LOGO Obj:", logoObj);
-    // const logoUrl = baseUrl + encodeURIComponent_RFC3986(Buffer.from(logoObj.href).toString("base64"));
-
     const colorsDarkLight = manifestJson.theme.color;
 
     // yield* putTyped(themeActions.setTheme.build(undefined, { enable: true, logo: logoUrl, color: colorsDarkLight }));

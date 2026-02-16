@@ -145,6 +145,7 @@ export const AdvancedTrigger = () => {
 class KeyboardSettings extends React.Component<IProps, IState> {
 
     private selectRef: React.RefObject<HTMLSelectElement>;
+    private contentRef: React.RefObject<HTMLUListElement>;
     private _keyboardSinkIsActive: boolean;
 
     constructor(props: IProps) {
@@ -161,6 +162,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
         this.onKeyUp = this.onKeyUp.bind(this);
 
         this.selectRef = React.createRef<HTMLSelectElement>();
+        this.contentRef = React.createRef<HTMLUListElement>();
 
         this._keyboardSinkIsActive = false;
     }
@@ -485,6 +487,82 @@ class KeyboardSettings extends React.Component<IProps, IState> {
             cleanNames[key].description?.toLowerCase().includes(searchItem),
         );
 
+        const exportHtml = () => {
+            const element = this.contentRef?.current;
+
+            if (element) {
+                let htmlContent = element.outerHTML;
+
+                const replaceSvgWithSpanName = (html: string): string => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, "text/html");
+                    const spans = doc.querySelectorAll("span[title]");
+
+                    spans.forEach((span) => {
+                        const spanName = span.getAttribute("title") || "";
+                        span.innerHTML = `${spanName} + `;
+                    });
+
+                    return doc.body.innerHTML;
+                };
+
+                htmlContent = replaceSvgWithSpanName(htmlContent);
+
+
+                const getCssStyles = (): string => {
+                    let css = "";
+                    const styleSheets = document.styleSheets;
+
+                    for (let i = 0; i < styleSheets.length; i++) {
+                        const rules = styleSheets[i].cssRules;
+                        if (rules) {
+                            for (let j = 0; j < rules.length; j++) {
+                                css += rules[j].cssText;
+                            }
+                        }
+                    }
+                    return css;
+                };
+
+                const cssStyles = getCssStyles();
+
+                const completeHtml = `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>THORIUM DESKTOP Keyboard Shortcuts</title>
+          <style>
+            ${cssStyles}
+            h1, h2 {
+            text-align: center
+            }
+            .keyshortElement_container {
+                border-bottom: none
+            }
+          </style>
+        </head>
+        <body>
+            <h1>THORIUM DESKTOP</h1>
+            <h2>Keyboard Shortcuts</h2>
+          ${htmlContent}
+        </body>
+        </html>
+      `;
+
+                const blob = new Blob([completeHtml], { type: "text/html" });
+
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = "thorium_shortcuts.html";
+
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        };
+
         return (
             <>
                 <section onKeyDown={
@@ -514,17 +592,22 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                             <p>{__("settings.keyboard.disclaimer")}</p>
                         </div> */}
                     </div>
+                    
                         <div>
-                        <input
-                            dir={isRTL ? "rtl" : "ltr"}
-                            type="text"
-                            value={this.state.searchItem}
-                            onChange={(e) => this.setState({searchItem: e.target.value})}
-                            placeholder={__("settings.keyboard.searchPlaceholder")}
-                            style={{width: "200px", borderRadius: "4px"}}
-                        />
+
+                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                            <input
+                                dir={isRTL ? "rtl" : "ltr"}
+                                type="text"
+                                value={this.state.searchItem}
+                                onChange={(e) => this.setState({ searchItem: e.target.value })}
+                                placeholder={__("settings.keyboard.searchPlaceholder")}
+                                style={{ width: "200px", borderRadius: "4px" }}
+                            />
+                            <button onClick={exportHtml} className={stylesButtons.button_secondary_blue}>{__("settings.keyboard.exportToHTML")}</button>
+                        </div>
                         {filteredShortcuts.length ?
-                            <ul className={stylesGlobal.p_0}>
+                            <ul className={stylesGlobal.p_0} ref={this.contentRef}>
                             {this.props.keyboardShortcuts &&
                             filteredShortcuts.map((id) => {
                                 const def = this.props.keyboardShortcuts[id];

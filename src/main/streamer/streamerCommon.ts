@@ -31,7 +31,7 @@ export function computeReadiumCssJsonMessageInStreamer(
 
     let settings: ReaderConfig;
     if (winId) {
-        debug("winId:", winId);
+        debug("computeReadiumCssJsonMessageInStreamer winId:", winId);
 
         const store = diMainGet("store");
         const state = store.getState();
@@ -44,11 +44,10 @@ export function computeReadiumCssJsonMessageInStreamer(
         } catch (err) {
             settings = state.reader.defaultConfig;
 
-            debug("settings from default config");
+            debug("computeReadiumCssJsonMessageInStreamer settings from default config");
             debug("ERROR", err);
         }
     } else {
-
         const store = diMainGet("store");
         settings = store.getState().reader.defaultConfig;
     }
@@ -72,8 +71,11 @@ let rcssPath = "ReadiumCSS";
 if (__TH__IS_PACKAGED__) {
     rcssPath = path.normalize(path.join(__dirname, rcssPath));
 } else {
-    rcssPath = "r2-navigator-js/dist/ReadiumCSS";
-    rcssPath = path.normalize(path.join(__dirname, _NODE_MODULE_RELATIVE_URL, rcssPath));
+    // rcssPath = "r2-navigator-js/dist/ReadiumCSS";
+    // rcssPath = path.normalize(path.join(__dirname, _NODE_MODULE_RELATIVE_URL, rcssPath));
+
+    // rcssPath = "src/resources/ReadiumCSS";
+    rcssPath = path.normalize(path.join(__dirname, rcssPath));
 }
 
 rcssPath = rcssPath.replace(/\\/g, "/");
@@ -84,7 +86,30 @@ export const READIUMCSS_FILE_PATH = rcssPath;
 export function setupMathJaxTransformer(getUrl: () => string) {
 
     const transformerMathJax = (
-        _publication: R2Publication, _link: Link, _url: string | undefined, str: string): string => {
+        _publication: R2Publication, _link: Link, _url: string | undefined, str: string, sessionInfo: string | undefined): string => {
+
+        const winId = sessionInfo ? Buffer.from(sessionInfo, "base64").toString("utf-8") : "";
+
+        let settings: ReaderConfig;
+        if (winId) {
+            debug("setupMathJaxTransformer winId:", winId);
+
+            const store = diMainGet("store");
+            const state = store.getState();
+
+            try {
+                settings = state.win.session.reader[winId].reduxState.config;
+
+            } catch (err) {
+                settings = state.reader.defaultConfig;
+
+                debug("setupMathJaxTransformer settings from default config");
+                debug("ERROR", err);
+            }
+        } else {
+            const store = diMainGet("store");
+            settings = store.getState().reader.defaultConfig;
+        }
 
         // TODO: extract this drag logic somewhere else ...
         const cssElectronMouseDrag =
@@ -214,15 +239,11 @@ if (!window.navigator.epubReadingSystem
     `;
         str = str.replace(/<\/head>/, `${scriptTextDrag}</head>`);
 
-        const store = diMainGet("store");
-        // TODO
-        // Same comment that above
-        const settings = store.getState().reader.defaultConfig;
-
         // // &nbsp; &#X200B;
         str = str.replace(/<wbr\/>/g, "<r2-wbr></r2-wbr>");
         // str = str.replace(/<wbr><\/wbr>/g, "<r2-wbr></r2-wbr>");
 
+        debug("settings.enableMathJax:: " + settings.enableMathJax);
         if (settings.enableMathJax) {
             const thorium_mathJax_script = "thorium_mathJax_script";
 

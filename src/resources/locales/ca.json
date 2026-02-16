@@ -50,6 +50,7 @@
         }
     },
     "catalog": {
+        "AddToFavorites": "",
         "about": {
             "title": "Sobre {{appName}}"
         },
@@ -128,6 +129,7 @@
         "publisher": "Editor",
         "readBook": "Llegir",
         "released": "Publicat en",
+        "removeFromFavorites": "",
         "sort": "Ordenar per",
         "tag": "Etiqueta",
         "tags": "Etiquetes",
@@ -137,9 +139,15 @@
         "annotations": {
             "descAuthor": "",
             "descCreator": "",
-            "descList": "",
-            "descNewer": "",
-            "descOlder": "",
+            "descList_many": "",
+            "descList_one": "",
+            "descList_other": "",
+            "descNewer_many": "",
+            "descNewer_one": "",
+            "descNewer_other": "",
+            "descOlder_many": "",
+            "descOlder_one": "",
+            "descOlder_other": "",
             "descTitle": "",
             "importAll": "",
             "importWithoutConflict": "",
@@ -155,9 +163,13 @@
             }
         },
         "deleteAnnotations": "",
-        "deleteAnnotationsText": "",
+        "deleteAnnotationsText_many": "",
+        "deleteAnnotationsText_one": "",
+        "deleteAnnotationsText_other": "",
         "deleteBookmarks": "",
-        "deleteBookmarksText": "",
+        "deleteBookmarksText_many": "",
+        "deleteBookmarksText_one": "",
+        "deleteBookmarksText_other": "",
         "deleteFeed": "Segur que vols eliminar aquest catàleg?",
         "deletePublication": "Segur que vols eliminar aquesta publicació?",
         "deletePublicationWithNotes": "",
@@ -193,10 +205,12 @@
     },
     "library": {
         "lcp": {
+            "hidePassphrase": "",
             "hint": "Suggeriment : ",
             "open": "",
             "password": "Contrassenya",
             "sentence": "Aquesta publicació requereix una contrassenya LCP per obrir-se: ",
+            "showPassphrase": "",
             "urlHint": "Has olvidat la contrassenya? Clica si necessites ajuda",
             "whatIsLcp?": "Què és LCP?",
             "whatIsLcpInfoDetails": "LCP significa 'Protecció del contingut llicenciat'.",
@@ -766,7 +780,9 @@
         },
         "picker": {
             "search": {
-                "founds": "{{- nResults}} trobat/s",
+                "founds_many": "{{- count}} trobat/s",
+                "founds_one": "{{- count}} trobat/s",
+                "founds_other": "{{- count}} trobat/s",
                 "input": "text de cerca",
                 "next": "Següent",
                 "notFound": "no hi ha coincidències",
@@ -908,6 +924,7 @@
             "cancel": "Cancel·lar",
             "disclaimer": "Les dreceres es van definir a partir de la disposició de teclat QWERTY.",
             "editUserJson": "Editar arxiu d'usuari",
+            "exportToHTML": "",
             "keyboardShortcuts": "Dreceres de teclat",
             "list": {
                 "AddBookmarkWithLabel": {

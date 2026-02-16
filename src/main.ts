@@ -7,6 +7,7 @@
 
 import debug_ from "debug";
 import * as path from "path";
+import * as fs from "fs";
 import { commandLineMainEntry } from "readium-desktop/main/cli";
 
 import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
@@ -19,6 +20,8 @@ import { initSessions as initSessionsNoHTTP } from "./main/streamer/streamerNoHt
 import { createStoreFromDi } from "./main/di";
 import { appActions } from "./main/redux/actions";
 import { app } from "electron";
+import { _APP_NAME, _APP_VERSION, _PACK_NAME } from "readium-desktop/preprocessor-directives";
+import { USER_DATA_FOLDER } from "readium-desktop/common/constant";
 
 // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
 // import isURL from "validator/lib/isURL";
@@ -95,4 +98,43 @@ if (__TH__IS_VSCODE_LAUNCH__) {
     commandLineMainEntry(); // call main fct
 }
 
-debug("Process version:", process.versions);
+const userDataPath = USER_DATA_FOLDER;
+const processInfoStr = JSON.stringify({
+    node_version: process.version,
+    pid: process.pid,
+    platform: process.platform,
+    arch: process.arch,
+    uptime_seconds: process.uptime(),
+    memory_usage: process.memoryUsage(),
+    argv: process.argv,
+    MSWindowsStore: process.windowsStore,
+    thoriumAppName: _APP_NAME,
+    thoriumAppVersion: _APP_VERSION,
+    thoriumPackName: _PACK_NAME,
+    thoriumUserDataPath: userDataPath,
+}, null, 4);
+
+debug("Process info:", processInfoStr);
+
+const folderPath = path.join(
+    userDataPath,
+    "app-logs",
+);
+const PROCESS_LOGS = "processLogs.txt";
+const appLogs = path.join(
+    folderPath,
+    PROCESS_LOGS,
+);
+
+if (!fs.existsSync(folderPath)) {
+    fs.mkdirSync(folderPath);
+}
+
+let dump = "#############################################\n";
+dump += "MAIN-INSTANCE:\n";
+dump += `Date: ${(new Date()).toISOString()}\n`;
+// dump += 
+
+dump += `Process: ${processInfoStr}\n`;
+dump += "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$44\n";
+fs.appendFileSync(appLogs, dump);

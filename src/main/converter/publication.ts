@@ -166,7 +166,7 @@ export class PublicationViewConverter {
         } catch (err) {
             debug(err, " FALLBACK: parsing publication from filesystem ...");
 
-            const epubPath = this.publicationStorage.getPublicationEpubPath(
+            const epubPath = await this.publicationStorage.getPublicationEpubPath(
                 publicationDocument.identifier,
             );
 
@@ -184,6 +184,41 @@ export class PublicationViewConverter {
 
             return r2Publication;
         }
+    }
+
+    public async convertDocumentMissingOrDeletedToMinimalPublicationView(document: PublicationDocument): Promise<PublicationView> {
+
+        const store = diMainGet("store");
+        const state = store.getState();
+        const readingFinished = tryCatchSync(() => state.publication.readingFinishedQueue.findIndex(([, pubIndentifier]) => pubIndentifier === document.identifier) > -1, "") || false;
+        const readerStateLocator = tryCatchSync(() => state.win.registry.reader[document.identifier]?.reduxState.locator, "");
+
+        const title = document.title || "-"; // default title;
+        
+        let cover: CoverView | undefined;
+        if (document.coverFile) {
+            cover = {
+                thumbnailUrl : document.coverFile.url,
+                coverUrl: document.coverFile.url,
+            };
+        }
+
+        return {
+
+            type: "missingOrDeleted",
+            identifier: document.identifier, // preserve Identifiable identifier
+
+            readingFinished,
+            documentTitle: title,
+            publicationTitle: title,
+            publicationSubTitle: "",
+            authorsLangString: [],
+            cover,
+            customCover: document.customCover,
+            r2PublicationJson: undefined,
+            lastReadingLocation: readerStateLocator,
+        };
+
     }
 
     // Note: PublicationDocument and PublicationView are both Identifiable, with identical `identifier`

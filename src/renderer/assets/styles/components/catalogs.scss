@@ -53,13 +53,13 @@
             border-top: 1px solid var(--color-gray-300);
         }
 
-        svg {
-            width: 101%;
-            position: absolute;
-            top: 1px;
-            left: 1px;
-            padding: 0;
-        }
+        // svg {
+        //     width: 101%;
+        //     position: absolute;
+        //     top: 1px;
+        //     left: 1px;
+        //     padding: 0;
+        // }
 
         .catalog_title {
             position: absolute;
@@ -96,7 +96,7 @@
         }
     }
 
-    .button_edit, .button_delete, .button_login {
+    .button_edit, .button_delete, .button_login, .button_favorites {
         position: absolute;
         bottom: 10px;
         color: var(--color-brand-primary);
@@ -112,6 +112,11 @@
             border: 1px solid var(--color-brand-primary);
             background-color: var(--color-brand-secondary);
         }
+    }
+
+    .button_favorites {
+        top: 10px;
+        right: 10px;
     }
 
     .button_login {
@@ -236,9 +241,37 @@
     }
 }
 
+.catalog_favorite_icon_false, .catalog_favorite_icon_true {
+    stroke: var(--color-brand-primary);
+    width: 20px;
+    height: 20px;
+    right: 5px;
+    z-index: 1000;
+}
+
+.catalog_favorite_icon {
+    &_false {
+        color: transparent;
+    }
+
+    &_true  {
+        color: var(--color-brand-primary);
+    }
+}
+
+.modal_dialog_body {
+    .catalog_favorite_icon_false, .catalog_favorite_icon_true {
+        position: relative;
+        left: unset;
+        top: unset;
+        right: unset;
+    }
+}
+
 .catalog_breadcrumbSearch_Wrapper {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     background-color: var(--color-gray-50);
     padding: 15px;
     min-height: 40px;
@@ -318,6 +351,35 @@
 
     .loader {
         margin: 20%;
+    }
+}
+
+.opds_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+
+    &_actions {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        .button_secondary_blue {
+            text-decoration: none;
+            
+            svg {
+                width: 20px;
+                height: 20px;
+            }
+            
+            p {
+                margin: 0;
+                padding: 0 10px;
+                font-size: 14px;
+            }
+        }
     }
 }
 

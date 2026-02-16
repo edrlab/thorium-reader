@@ -7,15 +7,35 @@
 
 import debug_ from "debug";
 import { app } from "electron";
+import * as path from "path";
+import * as fs from "fs";
 import { getLibraryWindowFromDi } from "readium-desktop/main/di";
+// import os from "node:os";
 
 import { commandLineMainEntry } from ".";
 import { getOpenFileFromCliChannel } from "../event";
 import { isOpenUrl, setOpenUrl } from "./url";
+import { _APP_NAME, _APP_VERSION, _PACK_NAME } from "readium-desktop/preprocessor-directives";
+import { USER_DATA_FOLDER } from "readium-desktop/common/constant";
 
 // Logger
 const filename = "readium-desktop:main:lock";
 const debug = debug_(filename);
+
+const userDataPath = USER_DATA_FOLDER;
+const folderPath = path.join(
+    userDataPath,
+    "app-logs",
+);
+const PROCESS_LOGS = "processLogs.txt";
+const appLogs = path.join(
+    folderPath,
+    PROCESS_LOGS,
+);
+
+if (!fs.existsSync(folderPath)) {
+    fs.mkdirSync(folderPath);
+}
 
 export function lockInstance() {
     const gotTheLock = app.requestSingleInstanceLock();
@@ -74,14 +94,39 @@ export function lockInstance() {
         });
 
         // https://github.com/electron/electron/blob/master/docs/api/app.md#event-second-instance
-        app.on("second-instance", (_e, argv, _workingDir) => {
+        app.on("second-instance", (_e, argv, workingDir, additionalData) => {
 
             debug("#####");
             debug("Someone tried to run a second instance, we should focus our window", argv);
             debug("#####");
 
+            let dump = "#############################################\n";
+            dump += "SECOND-INSTANCE:\n"; 
+            dump += `Date: ${(new Date()).toISOString()}\n`;
+            // dump += 
+
+            dump += `Process: ${JSON.stringify({
+                node_version: process.version,
+                pid: process.pid,
+                platform: process.platform,
+                arch: process.arch,
+                uptime_seconds: process.uptime(),
+                memory_usage: process.memoryUsage(),
+                argv: process.argv,
+                MSWindowsStore: process.windowsStore,
+                thoriumAppName: _APP_NAME,
+                thoriumAppVersion: _APP_VERSION,
+                thoriumPackName: _PACK_NAME,
+                thoriumUserDataPath: userDataPath,
+            }, null, 4)}\n`;
+
             // Someone tried to run a second instance, we should focus our window.
-            debug("comandLine", argv, _workingDir);
+            let secMsg = "second-instance arguments:\n";
+            secMsg += `argv: ${JSON.stringify(argv, null, 4)}\n`;
+            secMsg += `workingDirectory: ${JSON.stringify(workingDir, null, 4)}\n`;
+            secMsg += `additionalData: ${JSON.stringify(additionalData, null, 4)}\n`;
+            debug(secMsg);
+            dump += secMsg;
 
             // https://github.com/edrlab/thorium-reader/pull/1573#issuecomment-1003042325
             try {
@@ -96,7 +141,16 @@ export function lockInstance() {
                 // ignore
             }
 
-            commandLineMainEntry(argv.filter((arg) => !arg.startsWith("--")));
+            const argvFormated = argv.filter((arg) => !arg.startsWith("--"));
+
+            const msg = "Start Command Line with: " + JSON.stringify(argvFormated, null, 4) + "\n";
+            debug(msg);
+            dump += msg;
+
+            commandLineMainEntry(argvFormated);
+
+            dump += "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$44\n";
+            fs.appendFileSync(appLogs, dump);
         });
     }
     return gotTheLock;

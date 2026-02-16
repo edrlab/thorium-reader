@@ -264,7 +264,7 @@ const Header = () => {
             {
                 customizationEnable ?
                     <div className="logo" style={{ height: "60px", width: "calc(100% - 20px)", margin: " 20px auto", display: "flex", justifyContent: "center" }}>
-                        <img src={customizationBaseUrl + encodeURIComponent_RFC3986(Buffer.from(logoObj.href).toString("base64"))} alt="" style={{ objectFit: "contain", maxHeight: "100px", maxWidth: "100%", width: "fit-content" }} />
+                        { logoObj ? <img src={customizationBaseUrl + encodeURIComponent_RFC3986(Buffer.from(logoObj.href).toString("base64"))} alt="" style={{ objectFit: "contain", maxHeight: "100px", maxWidth: "100%", width: "fit-content" }} />: <></> }
                     </div>
                     : <></>
             }

@@ -95,9 +95,14 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         rendererBaseUrl = rendererBaseUrl.replace(/\\/g, "/");
     }
 
-    if (true) { // __TH__IS_DEV__
+    if (!libWindow.isDestroyed() && !libWindow.webContents.isDestroyed()) { // __TH__IS_DEV__
 
         libWindow.webContents.on("did-finish-load", () => {
+
+            // if (libWindow.isDestroyed() || libWindow.webContents.isDestroyed()) {
+            //     debug("readerWindow or webcontents is destroyed !!");
+            //     return; // Is it really needed to early return here, and block library openSuccess 
+            // }
             // see app.whenReady() in src/main/redux/sagas/app.ts
             // // app.whenReady().then(() => {
             // // });
@@ -135,9 +140,25 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         // }
     }
 
-    yield* callTyped(() => libWindow.loadURL(rendererBaseUrl /*, {baseURLForDataURL, httpReferrer} */));
-    // the promise will resolve when the page has finished loading (see did-finish-load)
-    // and rejects if the page fails to load (see did-fail-load).
+    if (!libWindow.isDestroyed() && !libWindow.webContents.isDestroyed()) {
+        yield* callTyped(async () => {
+
+            if (!libWindow.isDestroyed()) {
+                try {
+                    await libWindow.loadURL(rendererBaseUrl /*, {baseURLForDataURL, httpReferrer} */);
+                } catch (e) {
+                    debug("Load url rejected", e);
+                }
+            } else {
+                debug("cannot load url window destroyed");
+            }
+        });
+        // the promise will resolve when the page has finished loading (see did-finish-load)
+        // and rejects if the page fails to load (see did-fail-load).
+    } else {
+        debug("window destroyed !!");
+    }
+
 
     // if (!__TH__IS_DEV__) {
     //     // see 'did-finish-load' otherwise
@@ -145,7 +166,13 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
     //     yield put(winActions.library.openSucess.build(libWindow, identifier));
     // }
 
-    setMenu(libWindow, false);
+    if (!libWindow.isDestroyed()) {
+        try {
+            setMenu(libWindow, false);
+        } catch (e) {
+            debug("Set menu error", e);
+        }
+    }
 
     const willNavigate = (navUrl: string | undefined | null) => {
 
@@ -168,27 +195,29 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         debug("willNavigate ==> noop: ", navUrl);
     };
 
-    libWindow.webContents.setWindowOpenHandler((details: HandlerDetails) => {
-        debug("BrowserWindow.webContents.setWindowOpenHandler (always DENY): ", libWindow.webContents.id, " --- ", details.url, " === ", libWindow.webContents.getURL());
 
-        // willNavigate(details.url);
+    if (!libWindow.isDestroyed() && !libWindow.webContents.isDestroyed()) {
+        libWindow.webContents.setWindowOpenHandler((details: HandlerDetails) => {
+            debug("BrowserWindow.webContents.setWindowOpenHandler (always DENY): ", libWindow.webContents.id, " --- ", details.url, " === ", libWindow.webContents.getURL());
 
-        return { action: "deny" };
-    });
+            // willNavigate(details.url);
 
-    libWindow.webContents.on("will-navigate", (details: ElectronEvent<WebContentsWillNavigateEventParams>, url: string) => {
-        debug("BrowserWindow.webContents.on('will-navigate') (always PREVENT): ", libWindow.webContents.id, " --- ", details.url, " *** ", url, " === ", libWindow.webContents.getURL());
+            return { action: "deny" };
+        });
 
-        // if (details.url === libWindow.webContents.getURL()) {
-        //     debug("will-navigate PASS", details.url);
-        //     return;
-        // }
+        libWindow.webContents.on("will-navigate", (details: ElectronEvent<WebContentsWillNavigateEventParams>, url: string) => {
+            debug("BrowserWindow.webContents.on('will-navigate') (always PREVENT): ", libWindow.webContents.id, " --- ", details.url, " *** ", url, " === ", libWindow.webContents.getURL());
 
-        details.preventDefault();
+            // if (details.url === libWindow.webContents.getURL()) {
+            //     debug("will-navigate PASS", details.url);
+            //     return;
+            // }
 
-        willNavigate(details.url);
-    });
+            details.preventDefault();
 
+            willNavigate(details.url);
+        });
+    }
     // Clear all cache to prevent weird behaviours
     // Fully handled in r2-navigator-js initSessions();
     // (including exit cleanup)
