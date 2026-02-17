@@ -17,6 +17,7 @@ import { IOpdsHeaderState, IOpdsSearchState } from "./opds";
 import { CatalogView } from "readium-desktop/common/views/catalog";
 import { IWizardState } from "../wizard";
 import { ISettingsState } from "../settings";
+import { IPublicationCheckerState } from "../publicationsChecker";
 
 export interface ILibraryRootState extends IRendererCommonRootState {
     opds: {
@@ -36,4 +37,7 @@ export interface ILibraryRootState extends IRendererCommonRootState {
     }
     wizard: IWizardState;
     settings: ISettingsState;
+    publicationIntegrityChecker: {
+        open: true;
+    } & IPublicationCheckerState | { open: false };
 }

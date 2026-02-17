@@ -5,14 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as opdsActions from "./opds";
-import * as routerActions from "./router";
-import * as winActions from "./win";
-import * as publicationActions from "./publication";
+import * as closePublicationChecker from "./close";
 
 export {
-    routerActions,
-    opdsActions,
-    winActions,
-    publicationActions,
+    closePublicationChecker,
 };

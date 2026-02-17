@@ -45,6 +45,7 @@ import { CustomizationProfileDialog } from "readium-desktop/renderer/common/comp
 // globalScssStyle.__LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__;
 
 import { shell } from "electron";
+import { PublicationCheckerModal } from "./PublicationCheckerModal";
 
 (window as any).__shell_openExternal = (url: string) => url && /^https?:\/\//.test(url) ? shell.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
 
@@ -230,6 +231,7 @@ export default class App extends React.Component<{}, undefined> {
                                     <LoaderMainLoad />
                                     <ToastManager />
                                     <WizardModal />
+                                    <PublicationCheckerModal />
                                     <CustomizationProfileDialog />
                                 </div>;
                             }}

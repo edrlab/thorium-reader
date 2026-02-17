@@ -6,20 +6,21 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { IPublicationCheckerState } from "../../states/publicationsChecker";
 
-export const ID = "PUBLICATION_CHECKER";
+export const ID = "PUBLICATION_CHECKER_CLOSE";
 
-export interface Payload extends IPublicationCheckerState {
-    open: boolean;
+export interface Payload {
+    open: false;
 }
 
-export function build(s: IPublicationCheckerState):
+export function build():
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
-        payload: { ...JSON.parse(JSON.stringify(s)), open: true },
+        payload: {
+            open: false,
+        },
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator
