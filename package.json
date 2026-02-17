@@ -307,7 +307,7 @@
     "@redux-saga/core": "^1.4.2",
     "@tanstack/react-virtual": "^3.13.18",
     "@xmldom/xmldom": "^0.9.8",
-    "ajv": "^8.17.1",
+    "ajv": "^8.18.0",
     "ajv-formats": "^3.0.1",
     "bindings": "^1.5.0",
     "classnames": "^2.5.1",
