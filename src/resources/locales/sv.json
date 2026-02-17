@@ -1016,7 +1016,7 @@
                 },
                 "FocusSearch": {
                     "description": "Flytta tangentbordsfokus till sökrutan i läsfönstret. I biblioteksfönstret påbörjas en sökning i bokhyllan eller i den aktiva katalogen.",
-                    "name": "Sök"
+                    "name": "Sökkommando"
                 },
                 "FocusToolbar": {
                     "description": "Flytta tangentbordsfokus till landmärket precis innan hoppa-över-länken (som flyttar fokus till huvudinnehållet i biblioteks- eller läsvyn)",
