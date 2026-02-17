@@ -79,7 +79,7 @@
         "emptyTagList": "Tunnisteita ei ole käytössä.",
         "entry": {
             "continueReading": "Jatka lukemista",
-            "lastAdditions": "Viimeksi lisätty"
+            "lastAdditions": "Äskettäin lisätty"
         },
         "export": "Tallenna nimellä",
         "exportAnnotation": "Vie muistiinpanot",
@@ -606,7 +606,7 @@
         "audio": {
             "tracks": "Osat"
         },
-        "author": "Tekijä",
+        "author": "Kirjailija",
         "cancelledLcp": "Tämän julkaisun LCP-käyttöoikeus on peruttu.",
         "certificateRevoked": "Varmenne on kumottu.",
         "certificateSignatureInvalid": "Varmenteen allekirjoitus ei kelpaa.",
