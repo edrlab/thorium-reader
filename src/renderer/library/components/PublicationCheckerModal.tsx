@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -17,13 +18,29 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { publicationActions } from "../redux/actions";
+import { IPublicationCheckerState } from "readium-desktop/common/redux/states/publicationsChecker";
+import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
 
 export const PublicationCheckerModal = () => {
     const [__] = useTranslator();
     const dispatch = useDispatch();
-    const opened = useSelector((state: ILibraryRootState) => state.publicationIntegrityChecker.open);
+    const publicationCheckerState = useSelector((state: ILibraryRootState) => state.publicationIntegrityChecker);
+    const [, deletePublication] = useApi(undefined, "publication/delete");
+    const [, openPublicationFolder] = useApi(undefined, "publication/openFolder");
+    
+    const { open } = publicationCheckerState;
 
-    return <Dialog.Root defaultOpen={!opened} onOpenChange={(openState: boolean) => {
+    const {
+        publicationDirectoryPath,
+        publicationIdentifierDataBase,
+        publicationIdentifierDisk,
+        dump,
+    } = open ? publicationCheckerState : {} as IPublicationCheckerState;
+
+    const publicationIdentifierNotFoundOnDiskButFoundOnDataBase: string[] = publicationIdentifierDataBase?.filter((id) => !publicationIdentifierDisk.includes(id)) || [];
+    const publicationIdentifierNotFoundOnDataBaseButFoundOnDisk: string[] = publicationIdentifierDisk?.filter((id) => !publicationIdentifierDataBase.includes(id)) || [];
+
+    return <Dialog.Root defaultOpen={open} onOpenChange={(openState: boolean) => {
         if (openState == false) {
             dispatch(publicationActions.closePublicationChecker.build());
         }
@@ -37,6 +54,96 @@ export const PublicationCheckerModal = () => {
         <Dialog.Portal>
             <div className={stylesModals.modal_dialog_overlay}></div>
             <Dialog.Content className={classNames(stylesModals.modal_dialog)} aria-describedby={undefined}>
+
+                <h1>Publication Integrity Checker</h1>
+
+                <h3>Publication vault folder Path:</h3>
+                <p><span>{publicationDirectoryPath}</span> <button onClick={() => openPublicationFolder()}>OPEN FOLDER</button></p>
+
+                <hr /><br />
+
+                <h3>Publication(s) Not Found On Disk But Found On DataBase:</h3>
+                {
+                    publicationIdentifierNotFoundOnDiskButFoundOnDataBase.length ?
+
+                        <>
+                            <table>
+                                <tr>
+                                    <th>PubID</th>
+                                    <th>Actions</th>
+                                </tr>
+                                {
+                                    publicationIdentifierNotFoundOnDiskButFoundOnDataBase.map((id) => {
+                                        return <>
+                                            <tr key={id}>
+                                                <td>{id}</td>
+                                                <td>
+                                                    <button onClick={() => {
+                                                        deletePublication(id);
+                                                    }}>DELETE</button>
+                                                    {/* TODO?: <button>EXPORT DATA PREFERENCE</button> */}
+                                                </td>
+                                            </tr>
+
+                                        </>;
+                                    })
+                                }
+                            </table>
+
+                        </> : <></>
+                }
+
+                <h3>Publication(s) Not Found On DataBase But Found On Disk:</h3>
+                {
+                    publicationIdentifierNotFoundOnDataBaseButFoundOnDisk.length ?
+
+                        <>
+                            <table>
+                                <tr>
+                                    <th>PubID</th>
+                                    <th>Actions</th>
+                                </tr>
+                                {
+                                    publicationIdentifierNotFoundOnDataBaseButFoundOnDisk.map((id) => {
+                                        return <>
+                                            <tr key={id}>
+                                                <td>{id}</td>
+                                                <td>
+                                                    <button onClick={() => {
+                                                        deletePublication(id);
+                                                    }}>DELETE</button>
+                                                    <button onClick={() => {
+                                                        openPublicationFolder(id);
+                                                    }}>OPEN FOLDER</button>
+                                                </td>
+                                            </tr>
+
+                                        </>;
+                                    })
+                                }
+                            </table>
+
+                        </> : <></>
+                }
+
+                <hr /><br />
+
+                <details>
+                    <summary>DUMP:</summary>
+                    <pre>{dump}</pre>
+                </details>
+
+                <div className={stylesModals.modal_dialog_footer}>
+                    <Dialog.Close asChild>
+                        <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
+                    </Dialog.Close>
+                    {/* <Dialog.Close asChild>
+                        <button type="submit" disabled={!title || !url} className={stylesButtons.button_primary_blue} onClick={() => addAction()}>
+                            <SVG ariaHidden svg={AddIcon} />
+                            {__("opds.addForm.addButton")}
+                        </button>
+                    </Dialog.Close> */}
+                </div>
                 
             </Dialog.Content>
         </Dialog.Portal>
