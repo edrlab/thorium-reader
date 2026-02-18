@@ -195,6 +195,12 @@
         "viewMode": "表示モード"
     },
     "library": {
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "reset": "",
+            "selectOption": ""
+        },
         "lcp": {
             "hidePassphrase": "",
             "hint": "ヒント：",
@@ -206,6 +212,14 @@
             "whatIsLcp?": "LCPとはなんですか？",
             "whatIsLcpInfoDetails": "LCPはLicensed Content Protectionの略です。",
             "whatIsLcpInfoDetailsLink": "詳しくは、EDRLabのWebサイトを参照してください。"
+        },
+        "sorting": {
+            "addSorting": "",
+            "author": "",
+            "language": "",
+            "readingState": "",
+            "sortBy": "",
+            "title": ""
         }
     },
     "message": {
@@ -691,6 +705,11 @@
         "divina": {
             "mute": "音を鳴らさない",
             "unmute": "音を鳴らす"
+        },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
         },
         "fxl": {
             "fit": "合わせる"

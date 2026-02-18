@@ -47,7 +47,8 @@ interface IAuthentication {
     ]
 }
 
-const userAgent = "ThoriumReader/windows-mac-linux/1.1";
+// TODO: "thorium-desktop"?
+const userAgent = "ThoriumDesktop/windows-mac-linux/1.1";
 const userAgentId = "296";
 const appVersion = "1.1";
 const applicationName = "Thorium";

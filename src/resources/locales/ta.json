@@ -200,6 +200,12 @@
         "viewMode": "பார்வை பயன்முறையை"
     },
     "library": {
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "reset": "",
+            "selectOption": ""
+        },
         "lcp": {
             "hidePassphrase": "",
             "hint": "குறிப்பு:",
@@ -211,6 +217,14 @@
             "whatIsLcp?": "எல்.சி.பி என்றால் என்ன?",
             "whatIsLcpInfoDetails": "எல்.சி.பி என்பது 'உரிமம் பெற்ற உள்ளடக்க பாதுகாப்பு' என்பதைக் குறிக்கிறது.",
             "whatIsLcpInfoDetailsLink": "மேலும் அறிய, எட்ர்லாப் வலைத்தளத்திற்கான இந்த இணைப்பைக் சொடுக்கு செய்க."
+        },
+        "sorting": {
+            "addSorting": "",
+            "author": "",
+            "language": "",
+            "readingState": "",
+            "sortBy": "",
+            "title": ""
         }
     },
     "message": {
@@ -696,6 +710,11 @@
         "divina": {
             "mute": "முடக்கு ஆடியோ",
             "unmute": "இயக்க ஆடியோ"
+        },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
         },
         "fxl": {
             "fit": "பொருத்தம்"

@@ -206,7 +206,7 @@ function* checkAppVersionUpdate() {
         const json = yield* callTyped(async (url: string) => {
 
             // const headers = new Headers();
-            // headers.append("user-agent", "readium-desktop");
+            // headers.append("user-agent", "thorium-desktop");
             // headers.append("accept-language", `${locale},en-US;q=0.7,en;q=0.5`);
 
             // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)

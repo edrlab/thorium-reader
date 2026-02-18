@@ -205,6 +205,12 @@
         "viewMode": "Modo de vista"
     },
     "library": {
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "reset": "",
+            "selectOption": ""
+        },
         "lcp": {
             "hidePassphrase": "",
             "hint": "Pista: ",
@@ -216,6 +222,14 @@
             "whatIsLcp?": "¿Qué es LCP?",
             "whatIsLcpInfoDetails": "LCP significa 'Licensed Content Protection' (\"protección de contenido con licencia\").",
             "whatIsLcpInfoDetailsLink": "Para más información, haz clic en este enlace al sitio web de EDRLab."
+        },
+        "sorting": {
+            "addSorting": "",
+            "author": "",
+            "language": "",
+            "readingState": "",
+            "sortBy": "",
+            "title": ""
         }
     },
     "message": {
@@ -701,6 +715,11 @@
         "divina": {
             "mute": "silenciar",
             "unmute": "dejar de silenciar"
+        },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
         },
         "fxl": {
             "fit": "Ajustar"

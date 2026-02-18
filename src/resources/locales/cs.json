@@ -210,6 +210,12 @@
         "viewMode": "Mód zobrazení"
     },
     "library": {
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "reset": "",
+            "selectOption": ""
+        },
         "lcp": {
             "hidePassphrase": "",
             "hint": "Nápověda:",
@@ -221,6 +227,14 @@
             "whatIsLcp?": "Co je LCP?",
             "whatIsLcpInfoDetails": "LCP znamená „Licensed Content Protection“.",
             "whatIsLcpInfoDetailsLink": "Pro více informací klikněte na tento odkaz na webovou stránku EDRLabu."
+        },
+        "sorting": {
+            "addSorting": "",
+            "author": "",
+            "language": "",
+            "readingState": "",
+            "sortBy": "",
+            "title": ""
         }
     },
     "message": {
@@ -706,6 +720,11 @@
         "divina": {
             "mute": "ztlumit zvuk",
             "unmute": ""
+        },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
         },
         "fxl": {
             "fit": ""

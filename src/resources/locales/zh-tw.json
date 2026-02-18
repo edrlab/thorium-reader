@@ -195,6 +195,12 @@
         "viewMode": "檢視模式"
     },
     "library": {
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "reset": "",
+            "selectOption": ""
+        },
         "lcp": {
             "hidePassphrase": "",
             "hint": "提示：",
@@ -206,6 +212,14 @@
             "whatIsLcp?": "什麼是 LCP？",
             "whatIsLcpInfoDetails": "LCP 代表「許可內容保護」。",
             "whatIsLcpInfoDetailsLink": "要了解更多訊息，請點擊連結前往 EDRLab。"
+        },
+        "sorting": {
+            "addSorting": "",
+            "author": "",
+            "language": "",
+            "readingState": "",
+            "sortBy": "",
+            "title": ""
         }
     },
     "message": {
@@ -691,6 +705,11 @@
         "divina": {
             "mute": "靜音",
             "unmute": "取消靜音"
+        },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
         },
         "fxl": {
             "fit": "Fit"

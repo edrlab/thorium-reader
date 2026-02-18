@@ -104,7 +104,7 @@ export function* publicationIntegrityChecker(): SagaGenerator<void> {
     yield* delayTyped(1);
     const approvedFileWithBookArchiveInPubDirDisk = approvedFileInPubDirDisk.filter((obj) => !!obj.unknownFileArray.length || !obj.identifiedFileArray.find((f) => f.name.startsWith("book."))); // TODO: make a reference to publication-storage
     const publicationIdentifierApprovedInDisk = approvedFileWithBookArchiveInPubDirDisk.map(({ id }) => id);
-    const publicationIdentifierNotFoundOnDiskArray: string[] = publicationIdentifierDataBase.filter((id) => !publicationIdentifierDisk.includes(id));
+    const publicationIdentifierNotFoundOnDiskButFoundOnDataBase: string[] = publicationIdentifierDataBase.filter((id) => !publicationIdentifierDisk.includes(id));
     const publicationIdentifierNotFoundOnDataBaseButFoundOnDisk: string[] = publicationIdentifierApprovedInDisk.filter((id) => !publicationIdentifierDataBase.includes(id));
     const publicationIdentifierMatchedDiskDataBaseArray = publicationIdentifierDataBase.filter((id) => publicationIdentifierDisk.includes(id));
 
@@ -116,18 +116,18 @@ export function* publicationIntegrityChecker(): SagaGenerator<void> {
     debug("--------");
 
     debug("==> publication identifier not found in publication directory:");
-    for (const id of publicationIdentifierNotFoundOnDiskArray) {
+    for (const id of publicationIdentifierNotFoundOnDiskButFoundOnDataBase) {
         debug(`pubId: ${id}`);
         dumpLogs = true;
     }
     debug("--------");
 
-    debug(`${publicationIdentifierDisk.length} uuid directory(ies) found on disk, of which ${publicationIdentifierApprovedInDisk.length} with a book found as approved publication archive`);
+    debug(`${publicationIdentifierDisk.length} UUID directories were found on disk, of which ${publicationIdentifierApprovedInDisk.length} contain an approved publication archive book.`);
     debug(`${publicationIdentifierDataBase.length} publication(s) found in database`);
-    debug(`${publicationIdentifierNotFoundOnDiskArray.length} publication(s) found in database but not found on the disk`);
+    debug(`${publicationIdentifierNotFoundOnDiskButFoundOnDataBase.length} publication(s) found in database but not found on the disk`);
     debug(`${publicationIdentifierNotFoundOnDataBaseButFoundOnDisk.length} publication(s) found in disk but not found on the database`);
     debug(`${publicationIdentifierMatchedDiskDataBaseArray.length} publication(s) matched between the database and the disk`);
-    if (!publicationIdentifierNotFoundOnDiskArray.length || approvedFileInPubDirDisk.length !== publicationIdentifierDataBase.length) {
+    if (publicationIdentifierNotFoundOnDiskButFoundOnDataBase.length || publicationIdentifierNotFoundOnDataBaseButFoundOnDisk.length) {
         dumpLogs = true;
     }
     yield* delayTyped(1);
@@ -156,6 +156,7 @@ export function* publicationIntegrityChecker(): SagaGenerator<void> {
 
     yield* delayTyped(1);
     const publicationCheckerState: IPublicationCheckerState = {
+        publicationDirectoryPath,
         publicationIdentifierDataBase,
         publicationIdentifierDisk,
         approvedFileInPubDir: approvedFileInPubDirDisk.map(({ identifiedFileArray, unknownFileArray, ...a }) => ({ ...a, identifiedFileArray: identifiedFileArray.map((a) => convertFSDirent(a)), unknownFileArray: unknownFileArray.map((a) => convertFSDirent(a)) })),

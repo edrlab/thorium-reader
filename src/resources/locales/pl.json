@@ -707,6 +707,11 @@
             "mute": "",
             "unmute": ""
         },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
+        },
         "fxl": {
             "fit": ""
         },

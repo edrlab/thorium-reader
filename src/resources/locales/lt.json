@@ -210,6 +210,12 @@
         "viewMode": "Peržiūros režimas"
     },
     "library": {
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "reset": "",
+            "selectOption": ""
+        },
         "lcp": {
             "hidePassphrase": "Slėpti slaptafrazę",
             "hint": "Užuomina:",
@@ -221,6 +227,14 @@
             "whatIsLcp?": "LCP - kas tai?",
             "whatIsLcpInfoDetails": "LCP yra termino „Licensed Content Protection“ (licencijuoto turinio apsauga) santrumpa.",
             "whatIsLcpInfoDetailsLink": "Jei norite sužinoti daugiau, paspauskite ant šios nuorodos į EDRLab svetainę."
+        },
+        "sorting": {
+            "addSorting": "",
+            "author": "",
+            "language": "",
+            "readingState": "",
+            "sortBy": "",
+            "title": ""
         }
     },
     "message": {
@@ -706,6 +720,11 @@
         "divina": {
             "mute": "išjungti garsą",
             "unmute": "įjungti garsą"
+        },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
         },
         "fxl": {
             "fit": "Talpinti"

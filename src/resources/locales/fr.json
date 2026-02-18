@@ -205,6 +205,12 @@
         "viewMode": "Mode d'affichage"
     },
     "library": {
+        "filter": {
+            "addFilters": "Ajouter des filtres",
+            "filterBy": "Filtrer par",
+            "reset": "Raffraichir",
+            "selectOption": "Selectionner un élement"
+        },
         "lcp": {
             "hidePassphrase": "Cacher la passphrase",
             "hint": "Indice : ",
@@ -216,6 +222,14 @@
             "whatIsLcp?": "Qu'est-ce que LCP ?",
             "whatIsLcpInfoDetails": "LCP signifie 'Licensed Content Protection'. Il s'agit d'une technologie de protection des libres numériques contre la copie pirate, souvent appelée DRM. Ouvrir un livre protégé par LCP nécessite une clé LCP, c'est à dire un ou plusieurs mots séparés par des espaces. LCP est un standard ouvert, qui équilibre facilité d'usage et demandes des éditeurs. ",
             "whatIsLcpInfoDetailsLink": "Pour en savoir plus, cliquez ce lien, qui renvoie vers le site web de EDRLab."
+        },
+        "sorting": {
+            "addSorting": "Ajouter un tri",
+            "author": "Auteur",
+            "language": "Langue",
+            "readingState": "État de lecture",
+            "sortBy": "Trier par : ",
+            "title": "Titre"
         }
     },
     "message": {
@@ -701,6 +715,11 @@
         "divina": {
             "mute": "Désactiver le son",
             "unmute": "Activer le son"
+        },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
         },
         "fxl": {
             "fit": "Remplir"

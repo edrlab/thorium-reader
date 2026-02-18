@@ -200,6 +200,12 @@
         "viewMode": "Visningstilstand"
     },
     "library": {
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "reset": "",
+            "selectOption": ""
+        },
         "lcp": {
             "hidePassphrase": "",
             "hint": "Hint til nøgleord:",
@@ -211,6 +217,14 @@
             "whatIsLcp?": "Hvad er LCP?",
             "whatIsLcpInfoDetails": "LCP står for 'Licensed Content Protection'.",
             "whatIsLcpInfoDetailsLink": "For at læse mere, følg dette link til EDRLab websitet."
+        },
+        "sorting": {
+            "addSorting": "",
+            "author": "",
+            "language": "",
+            "readingState": "",
+            "sortBy": "",
+            "title": ""
         }
     },
     "message": {
@@ -696,6 +710,11 @@
         "divina": {
             "mute": "slå lyd fra",
             "unmute": "slå lyd til"
+        },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
         },
         "fxl": {
             "fit": "Tilpas"

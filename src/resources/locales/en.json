@@ -200,6 +200,12 @@
         "viewMode": "View mode"
     },
     "library": {
+        "filter": {
+            "addFilters": "Add filters",
+            "filterBy": "Filter by",
+            "reset": "Reset",
+            "selectOption": "Select an item"
+        },
         "lcp": {
             "hidePassphrase": "Hide passphrase",
             "hint": "Hint:",
@@ -211,6 +217,14 @@
             "whatIsLcp?": "What is LCP?",
             "whatIsLcpInfoDetails": "LCP stands for 'Licensed Content Protection'.",
             "whatIsLcpInfoDetailsLink": "To learn more, click this link to the EDRLab website."
+        },
+        "sorting": {
+            "addSorting": "Add sorting",
+            "author": "Author",
+            "language": "Language",
+            "readingState": "Reading State",
+            "sortBy": "Sort by: ",
+            "title": "Title"
         }
     },
     "message": {
@@ -696,6 +710,11 @@
         "divina": {
             "mute": "mute audio",
             "unmute": "unmute audio"
+        },
+        "dock": {
+            "dockDefault": "Show panel as a modal popup",
+            "dockLeft": "Dock panel to the left",
+            "dockRight": "Dock panel to the right"
         },
         "fxl": {
             "fit": "Fit"

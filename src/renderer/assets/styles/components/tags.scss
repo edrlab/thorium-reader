@@ -153,14 +153,17 @@
 }
 
 .Popover_filter_container {
-  background-color: var(--color-neutral-base);
+  background-color: var(--color-gray-50);
+  border: 1px solid var(--color-gray-300);
   border-radius: 6px;
-  border: 1px solid var(--color-gray-400);
-  box-shadow: 0 3px 10px 5px var(--color-gray-400);
   padding: 20px 0 0;
   overflow: scroll;
   max-height: 50dvh;
   width: fit-content;
+
+  .my_combobox_container {
+    background-color: var(--color-neutral-base);
+  }
 
   > div {
     display: flex;
@@ -185,15 +188,15 @@
   }
 
   .resetFilter {
-    margin: auto;
+    width: fit-content;
+    color: var(--color-brand-primary);
 
     svg {
       width: 20px;
-      color: var(--color-brand-primary);
       fill: var(--color-brand-primary);
     }
 
-    &:hover svg {
+    &:hover {
       color: var(--color-error-text);
       fill: var(--color-error-text);
     }

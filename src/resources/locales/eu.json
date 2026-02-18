@@ -200,6 +200,12 @@
         "viewMode": "Ikusi modua"
     },
     "library": {
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "reset": "",
+            "selectOption": ""
+        },
         "lcp": {
             "hidePassphrase": "",
             "hint": "Adierazi : ",
@@ -211,6 +217,14 @@
             "whatIsLcp?": "Zer da LCP?",
             "whatIsLcpInfoDetails": "LCP \"Lizentziadun edukien babesa\" esan nahi du.",
             "whatIsLcpInfoDetailsLink": "Gehiago jakiteko, egin klik EDRLab webgunerako esteka honetan."
+        },
+        "sorting": {
+            "addSorting": "",
+            "author": "",
+            "language": "",
+            "readingState": "",
+            "sortBy": "",
+            "title": ""
         }
     },
     "message": {
@@ -696,6 +710,11 @@
         "divina": {
             "mute": "isildu",
             "unmute": "isiltzeari utzi"
+        },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
         },
         "fxl": {
             "fit": "Egokitu"

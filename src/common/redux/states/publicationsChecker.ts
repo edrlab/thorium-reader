@@ -13,6 +13,7 @@ export interface IPublicationCheckerDirent {
 }
 
 export interface IPublicationCheckerState {
+    publicationDirectoryPath: string;
     publicationIdentifierDataBase: string[],
     publicationIdentifierDisk: string[],
     approvedFileInPubDir: Array<{ id: string, title: string, identifiedFileArray: IPublicationCheckerDirent[], unknownFileArray: IPublicationCheckerDirent[] }>,

@@ -267,6 +267,10 @@ container.bind<PublicationStorage>(diSymbolTable["publication-storage"]).toConst
 // Bind services
 // container.bind<Server>(diSymbolTable.streamer).toConstantValue(streamer);
 
+// TODO: just like user-agent ("readium-desktop" to "thorium-desktop"),
+// should "Thorium" evolve to "Thorium Desktop"?
+// see package.json build.productName which is currently "Thorium"
+// see _APP_NAME and __TH__APP_NAME__
 const deviceIdManager = new DeviceIdManager(capitalizedAppName);
 container.bind<DeviceIdManager>(diSymbolTable["device-id-manager"]).toConstantValue(
     deviceIdManager,

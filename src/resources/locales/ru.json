@@ -210,17 +210,31 @@
         "viewMode": "Режим просмотра"
     },
     "library": {
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "reset": "",
+            "selectOption": ""
+        },
         "lcp": {
             "hidePassphrase": "Скрыть пароль",
             "hint": "Подсказка :",
             "open": "Открыть",
             "password": "Пароль",
             "sentence": "Для открытия этой книги требуется пароль LCP",
-            "showPassphrase": "Показать пароль",
+            "showPassphrase": "",
             "urlHint": "Забыли парольную фразу? Поддержка доступна:",
             "whatIsLcp?": "Что такое LCP?",
             "whatIsLcpInfoDetails": "LCP означает \"защита лицензионного контента\".",
             "whatIsLcpInfoDetailsLink": "Чтобы узнать больше, перейдите по этой ссылке на сайт EDRLab."
+        },
+        "sorting": {
+            "addSorting": "",
+            "author": "",
+            "language": "",
+            "readingState": "",
+            "sortBy": "",
+            "title": ""
         }
     },
     "message": {
@@ -706,6 +720,11 @@
         "divina": {
             "mute": "отключить звук",
             "unmute": "включить звук"
+        },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
         },
         "fxl": {
             "fit": "Размер"

@@ -200,17 +200,31 @@
         "viewMode": "Visningsläge"
     },
     "library": {
+        "filter": {
+            "addFilters": "",
+            "filterBy": "",
+            "reset": "",
+            "selectOption": ""
+        },
         "lcp": {
-            "hidePassphrase": "Dölj passfras",
+            "hidePassphrase": "",
             "hint": "Tips:",
             "open": "Öppna",
             "password": "Lösenord",
             "sentence": "Den här publikationen behöver ett LCP-lösenord för att kunna öppnas",
-            "showPassphrase": "Visa passfras",
+            "showPassphrase": "",
             "urlHint": "Har du glömt ditt lösenord? Här kan du få hjälp.",
             "whatIsLcp?": "Vad är LCP?",
             "whatIsLcpInfoDetails": "LCP står för \"Licensed Content Protection\".",
             "whatIsLcpInfoDetailsLink": "För mer information, klicka på denna länk till EDRLabs webbplats."
+        },
+        "sorting": {
+            "addSorting": "",
+            "author": "",
+            "language": "",
+            "readingState": "",
+            "sortBy": "",
+            "title": ""
         }
     },
     "message": {
@@ -697,6 +711,11 @@
             "mute": "stäng av ljud",
             "unmute": "slå på ljud"
         },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
+        },
         "fxl": {
             "fit": "Anpassa"
         },
@@ -1016,7 +1035,7 @@
                 },
                 "FocusSearch": {
                     "description": "Flytta tangentbordsfokus till sökrutan i läsfönstret. I biblioteksfönstret påbörjas en sökning i bokhyllan eller i den aktiva katalogen.",
-                    "name": "Sök"
+                    "name": "Sökkommando"
                 },
                 "FocusToolbar": {
                     "description": "Flytta tangentbordsfokus till landmärket precis innan hoppa-över-länken (som flyttar fokus till huvudinnehållet i biblioteks- eller läsvyn)",

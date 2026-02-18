@@ -597,6 +597,10 @@
   }
 }
 
+.publication_filter_select {
+  width: fit-content;
+}
+
 .publication_missing {
   &_icon {
     fill: var(--color-neutral-base);

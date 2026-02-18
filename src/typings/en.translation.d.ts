@@ -476,6 +476,12 @@ declare namespace typed_i18n {
   (_: "header.settings", __?: {}): string;
   (_: "header.viewMode", __?: {}): string;
   (_: "library", __?: {}): {
+  readonly "filter": {
+    readonly "addFilters": string,
+    readonly "filterBy": string,
+    readonly "reset": string,
+    readonly "selectOption": string
+  },
   readonly "lcp": {
     readonly "hidePassphrase": string,
     readonly "hint": string,
@@ -487,8 +493,26 @@ declare namespace typed_i18n {
     readonly "whatIsLcp?": string,
     readonly "whatIsLcpInfoDetails": string,
     readonly "whatIsLcpInfoDetailsLink": string
+  },
+  readonly "sorting": {
+    readonly "addSorting": string,
+    readonly "author": string,
+    readonly "language": string,
+    readonly "readingState": string,
+    readonly "sortBy": string,
+    readonly "title": string
   }
 };
+  (_: "library.filter", __?: {}): {
+  readonly "addFilters": string,
+  readonly "filterBy": string,
+  readonly "reset": string,
+  readonly "selectOption": string
+};
+  (_: "library.filter.addFilters", __?: {}): string;
+  (_: "library.filter.filterBy", __?: {}): string;
+  (_: "library.filter.reset", __?: {}): string;
+  (_: "library.filter.selectOption", __?: {}): string;
   (_: "library.lcp", __?: {}): {
   readonly "hidePassphrase": string,
   readonly "hint": string,
@@ -511,6 +535,20 @@ declare namespace typed_i18n {
   (_: "library.lcp.whatIsLcp?", __?: {}): string;
   (_: "library.lcp.whatIsLcpInfoDetails", __?: {}): string;
   (_: "library.lcp.whatIsLcpInfoDetailsLink", __?: {}): string;
+  (_: "library.sorting", __?: {}): {
+  readonly "addSorting": string,
+  readonly "author": string,
+  readonly "language": string,
+  readonly "readingState": string,
+  readonly "sortBy": string,
+  readonly "title": string
+};
+  (_: "library.sorting.addSorting", __?: {}): string;
+  (_: "library.sorting.author", __?: {}): string;
+  (_: "library.sorting.language", __?: {}): string;
+  (_: "library.sorting.readingState", __?: {}): string;
+  (_: "library.sorting.sortBy", __?: {}): string;
+  (_: "library.sorting.title", __?: {}): string;
   (_: "message", __?: {}): {
   readonly "annotations": {
     readonly "alreadyImported": string,
@@ -1660,6 +1698,11 @@ declare namespace typed_i18n {
   },
   readonly "bookmarks": { readonly "index": string },
   readonly "divina": { readonly "mute": string, readonly "unmute": string },
+  readonly "dock": {
+    readonly "dockDefault": string,
+    readonly "dockLeft": string,
+    readonly "dockRight": string
+  },
   readonly "fxl": { readonly "fit": string },
   readonly "goToContent": string,
   readonly "imgViewer": {
@@ -1950,6 +1993,14 @@ declare namespace typed_i18n {
   (_: "reader.divina", __?: {}): { readonly "mute": string, readonly "unmute": string };
   (_: "reader.divina.mute", __?: {}): string;
   (_: "reader.divina.unmute", __?: {}): string;
+  (_: "reader.dock", __?: {}): {
+  readonly "dockDefault": string,
+  readonly "dockLeft": string,
+  readonly "dockRight": string
+};
+  (_: "reader.dock.dockDefault", __?: {}): string;
+  (_: "reader.dock.dockLeft", __?: {}): string;
+  (_: "reader.dock.dockRight", __?: {}): string;
   (_: "reader.fxl", __?: {}): { readonly "fit": string };
   (_: "reader.fxl.fit", __?: {}): string;
   (_: "reader.goToContent", __?: {}): string;
