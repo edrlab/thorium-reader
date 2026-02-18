@@ -13,7 +13,6 @@ import { RootState } from "../states";
 import { version as osVersion } from "os";
 import * as fs from "fs";
 import * as path from "path";
-import { app } from "electron";
 import { httpPost } from "readium-desktop/main/network/http";
 
 // TypeScript GO:
@@ -30,6 +29,7 @@ import { Headers } from "node-fetch";
 import { createHmac } from "crypto";
 
 import isURL from "validator/lib/isURL";
+import { USER_DATA_FOLDER } from "readium-desktop/common/constant";
 
 interface ITelemetryInfo {
     os_version: string;
@@ -46,14 +46,10 @@ const filename_ = "readium-desktop:main:redux:sagas:telemetry";
 const debug = debug_(filename_);
 
 // set info to a file queue.
-const userDataPath = app.getPath("userData");
 const folderPath = path.join(
-    userDataPath,
+    USER_DATA_FOLDER,
     "telemetry",
 );
-if (!fs.existsSync(userDataPath)) {
-    fs.mkdirSync(userDataPath);
-}
 if (!fs.existsSync(folderPath)) {
     fs.mkdirSync(folderPath);
 }

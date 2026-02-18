@@ -89,6 +89,7 @@
         "lastRead": "Ultimi letti",
         "login": "Login",
         "logout": "Logout",
+        "missing": "",
         "moreInfo": "Più info",
         "myBooks": "I miei libri",
         "noPublicationHelpL1": "Rilascia una pubblicazione qui",
@@ -216,7 +217,7 @@
             "open": "Apri",
             "password": "Passphrase",
             "sentence": "Questa pubblicazione ha bisogno di una passphrase LCP per essere aperta: ",
-            "showPassphrase": "",
+            "showPassphrase": "Mostra la passphrase",
             "urlHint": "Hai dimenticato la tua passphrase? Ottieni un aiuto qui",
             "whatIsLcp?": "Cos'è LCP?",
             "whatIsLcpInfoDetails": "LCP sta per \"Licensed Content Protection\".",
@@ -251,7 +252,7 @@
         "open": {
             "error": "La pubblicazione non può essere aperta : {{- err}}"
         },
-        "wipeData": ""
+        "wipeData": "I dati per il login sono stati cancellati (token d'accesso e cookies)"
     },
     "opds": {
         "addForm": {
@@ -288,7 +289,7 @@
         },
         "next": "Prossimo",
         "previous": "Precedente",
-        "resumeBrowsing": "",
+        "resumeBrowsing": "Riprendi la navigazione",
         "shelf": "Mensola",
         "updateForm": {
             "name": "Nome:",
@@ -714,6 +715,11 @@
         "divina": {
             "mute": "disattiva audio",
             "unmute": "riattiva audio"
+        },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
         },
         "fxl": {
             "fit": "Adattare"

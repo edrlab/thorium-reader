@@ -89,6 +89,7 @@
         "lastRead": "",
         "login": "",
         "logout": "",
+        "missing": "",
         "moreInfo": "",
         "myBooks": "",
         "noPublicationHelpL1": "",
@@ -705,6 +706,11 @@
         "divina": {
             "mute": "",
             "unmute": ""
+        },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
         },
         "fxl": {
             "fit": ""

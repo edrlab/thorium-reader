@@ -89,6 +89,7 @@
         "lastRead": "Azken Irakurketa",
         "login": "",
         "logout": "",
+        "missing": "",
         "moreInfo": "Informazio gehiago",
         "myBooks": "Nire liburuak",
         "noPublicationHelpL1": "Lerratu argitalpen bat hemen",
@@ -709,6 +710,11 @@
         "divina": {
             "mute": "isildu",
             "unmute": "isiltzeari utzi"
+        },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
         },
         "fxl": {
             "fit": "Egokitu"

@@ -79,7 +79,7 @@
         "emptyTagList": "Tunnisteita ei ole käytössä.",
         "entry": {
             "continueReading": "Jatka lukemista",
-            "lastAdditions": "Viimeksi lisätty"
+            "lastAdditions": "Äskettäin lisätty"
         },
         "export": "Tallenna nimellä",
         "exportAnnotation": "Vie muistiinpanot",
@@ -89,6 +89,7 @@
         "lastRead": "Luettu viimeksi",
         "login": "Kirjaudu sisään",
         "logout": "Kirjaudu ulos",
+        "missing": "",
         "moreInfo": "Tietoa julkaisusta",
         "myBooks": "Omat kirjat",
         "noPublicationHelpL1": "Pudota julkaisu tähän",
@@ -619,7 +620,7 @@
         "audio": {
             "tracks": "Osat"
         },
-        "author": "Tekijä",
+        "author": "Kirjailija",
         "cancelledLcp": "Tämän julkaisun LCP-käyttöoikeus on peruttu.",
         "certificateRevoked": "Varmenne on kumottu.",
         "certificateSignatureInvalid": "Varmenteen allekirjoitus ei kelpaa.",
@@ -709,6 +710,11 @@
         "divina": {
             "mute": "mykistä",
             "unmute": "poista mykistys"
+        },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
         },
         "fxl": {
             "fit": "Sovita"

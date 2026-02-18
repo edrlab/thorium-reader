@@ -89,6 +89,7 @@
         "lastRead": "Senest læst",
         "login": "Log ind",
         "logout": "Log ud",
+        "missing": "",
         "moreInfo": "Bogdetaljer",
         "myBooks": "Mine bøger",
         "noPublicationHelpL1": "Træk en bog hertil",
@@ -709,6 +710,11 @@
         "divina": {
             "mute": "slå lyd fra",
             "unmute": "slå lyd til"
+        },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
         },
         "fxl": {
             "fit": "Tilpas"

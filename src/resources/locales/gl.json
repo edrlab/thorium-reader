@@ -89,6 +89,7 @@
         "lastRead": "Último Lido",
         "login": "",
         "logout": "",
+        "missing": "",
         "moreInfo": "Máis información",
         "myBooks": "Os meus libros",
         "noPublicationHelpL1": "Arrastra unha publicación aquí",
@@ -709,6 +710,11 @@
         "divina": {
             "mute": "silenciar",
             "unmute": "deixar de silenciar"
+        },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
         },
         "fxl": {
             "fit": "Axustar"

@@ -89,6 +89,7 @@
         "lastRead": "Dernière lecture",
         "login": "",
         "logout": "",
+        "missing": "",
         "moreInfo": "Plus d'informations",
         "myBooks": "Mes livres",
         "noPublicationHelpL1": "Déposez les fichiers ici",
@@ -714,6 +715,11 @@
         "divina": {
             "mute": "Désactiver le son",
             "unmute": "Activer le son"
+        },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
         },
         "fxl": {
             "fit": "Remplir"

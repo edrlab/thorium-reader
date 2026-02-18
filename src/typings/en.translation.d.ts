@@ -146,6 +146,7 @@ declare namespace typed_i18n {
   readonly "lastRead": string,
   readonly "login": string,
   readonly "logout": string,
+  readonly "missing": string,
   readonly "moreInfo": string,
   readonly "myBooks": string,
   readonly "noPublicationHelpL1": string,
@@ -242,6 +243,7 @@ declare namespace typed_i18n {
   (_: "catalog.lastRead", __?: {}): string;
   (_: "catalog.login", __?: {}): string;
   (_: "catalog.logout", __?: {}): string;
+  (_: "catalog.missing", __?: {}): string;
   (_: "catalog.moreInfo", __?: {}): string;
   (_: "catalog.myBooks", __?: {}): string;
   (_: "catalog.noPublicationHelpL1", __?: {}): string;
@@ -1696,6 +1698,11 @@ declare namespace typed_i18n {
   },
   readonly "bookmarks": { readonly "index": string },
   readonly "divina": { readonly "mute": string, readonly "unmute": string },
+  readonly "dock": {
+    readonly "dockDefault": string,
+    readonly "dockLeft": string,
+    readonly "dockRight": string
+  },
   readonly "fxl": { readonly "fit": string },
   readonly "goToContent": string,
   readonly "imgViewer": {
@@ -1986,6 +1993,14 @@ declare namespace typed_i18n {
   (_: "reader.divina", __?: {}): { readonly "mute": string, readonly "unmute": string };
   (_: "reader.divina.mute", __?: {}): string;
   (_: "reader.divina.unmute", __?: {}): string;
+  (_: "reader.dock", __?: {}): {
+  readonly "dockDefault": string,
+  readonly "dockLeft": string,
+  readonly "dockRight": string
+};
+  (_: "reader.dock.dockDefault", __?: {}): string;
+  (_: "reader.dock.dockLeft", __?: {}): string;
+  (_: "reader.dock.dockRight", __?: {}): string;
   (_: "reader.fxl", __?: {}): { readonly "fit": string };
   (_: "reader.fxl.fit", __?: {}): string;
   (_: "reader.goToContent", __?: {}): string;

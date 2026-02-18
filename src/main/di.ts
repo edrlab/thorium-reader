@@ -8,7 +8,7 @@
 import "reflect-metadata";
 
 import debug_ from "debug";
-import { app, BrowserWindow } from "electron";
+import { BrowserWindow } from "electron";
 import * as fs from "fs";
 import { Container } from "inversify";
 import * as path from "path";
@@ -37,6 +37,7 @@ import { OpdsService } from "./services/opds";
 import { LSDManager } from "./services/lsd";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { EOL } from "os";
+import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
 
 // import { streamer } from "readium-desktop/main/streamerHttp";
 // import { Server } from "@r2-streamer-js/http/server";
@@ -44,20 +45,17 @@ import { EOL } from "os";
 // Logger
 const debug = debug_("readium-desktop:main:di");
 
-const FORCE_PROD_DB_IN_DEV = false;
-
 export const CONFIGREPOSITORY_REDUX_PERSISTENCE = "CONFIGREPOSITORY_REDUX_PERSISTENCE";
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
-// Check that user data directory is created
-//
-const userDataPath = app.getPath("userData");
-if (!fs.existsSync(userDataPath)) {
-    fs.mkdirSync(userDataPath);
+
+// Normally not required as already initialized by electron
+if (!fs.existsSync(USER_DATA_FOLDER)) {
+    fs.mkdirSync(USER_DATA_FOLDER);
 }
 
 const configDataFolderPath = path.join(
-    userDataPath,
+    USER_DATA_FOLDER,
     `config-data-json${!FORCE_PROD_DB_IN_DEV && (__TH__IS_DEV__ || __TH__IS_CI__) ? "-dev" : ""}`,
 );
 if (!fs.existsSync(configDataFolderPath)) {
@@ -135,8 +133,10 @@ const publicationRepository = new PublicationRepository();
 const opdsFeedRepository = new OpdsFeedRepository();
 
 // Create filesystem storage for publications
+// TODO: let user change the publication folder as vault in runtime
+//      - need to persist this folder in redux-state and check integrity at start
 const publicationRepositoryPath = path.join(
-    userDataPath,
+    USER_DATA_FOLDER,
     !FORCE_PROD_DB_IN_DEV && (__TH__IS_DEV__ || __TH__IS_CI__) ? "publications-dev" : "publications",
 );
 
@@ -267,6 +267,10 @@ container.bind<PublicationStorage>(diSymbolTable["publication-storage"]).toConst
 // Bind services
 // container.bind<Server>(diSymbolTable.streamer).toConstantValue(streamer);
 
+// TODO: just like user-agent ("readium-desktop" to "thorium-desktop"),
+// should "Thorium" evolve to "Thorium Desktop"?
+// see package.json build.productName which is currently "Thorium"
+// see _APP_NAME and __TH__APP_NAME__
 const deviceIdManager = new DeviceIdManager(capitalizedAppName);
 container.bind<DeviceIdManager>(diSymbolTable["device-id-manager"]).toConstantValue(
     deviceIdManager,

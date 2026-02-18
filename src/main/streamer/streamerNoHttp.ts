@@ -903,15 +903,18 @@ const streamProtocolHandler = async (
             return;
         }
 
-        let pathBase64Str = Buffer.from(b64Path, "base64").toString("utf8");
-        debug("streamProtocolHandler pathBase64Str", pathBase64Str);
+        const pathBase64DecodedOrIdentifier = Buffer.from(b64Path, "base64").toString("utf8");
+        let publicationPath = "";
+        debug("streamProtocolHandler pathBase64Str", pathBase64DecodedOrIdentifier);
         if (
-            (!pathBase64Str.includes("/") && !pathBase64Str.includes("\\")) // not a path on the filesystem
-            || /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(pathBase64Str) // UUID v4 syntax ... though this is never reached because of the first predicate in the conditional if
+            (!pathBase64DecodedOrIdentifier.includes("/") && !pathBase64DecodedOrIdentifier.includes("\\")) // not a path on the filesystem
+            || /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(pathBase64DecodedOrIdentifier) // UUID v4 syntax ... though this is never reached because of the first predicate in the conditional if
             // || !fs.existsSync(pathBase64Str)
         ) {
             const pubStorage = diMainGet("publication-storage");
-            pathBase64Str = pubStorage.getPublicationEpubPath(pathBase64Str);
+            publicationPath = await pubStorage.getPublicationEpubPath(pathBase64DecodedOrIdentifier);
+        } else {
+            publicationPath = pathBase64DecodedOrIdentifier; // base64Decoded is the file path
         }
 
         // const fileName = path.basename(pathBase64Str);
@@ -919,7 +922,7 @@ const streamProtocolHandler = async (
 
         let publication: R2Publication;
         try {
-            publication = await streamerLoadOrGetCachedPublication(pathBase64Str);
+            publication = await streamerLoadOrGetCachedPublication(publicationPath);
         } catch (err) {
             debug(err);
             const buff = Buffer.from("<html><body><p>Internal Server Error</p><p>" + err + "</p></body></html>");

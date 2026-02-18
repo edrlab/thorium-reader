@@ -89,6 +89,7 @@
         "lastRead": "Zadnje čitano",
         "login": "",
         "logout": "",
+        "missing": "",
         "moreInfo": "Detalji građe",
         "myBooks": "Moje knjige",
         "noPublicationHelpL1": "Ispusti građu ovdje",
@@ -714,6 +715,11 @@
         "divina": {
             "mute": "isključi zvuk",
             "unmute": "uključi zvuk"
+        },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
         },
         "fxl": {
             "fit": ""

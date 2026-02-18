@@ -89,6 +89,7 @@
         "lastRead": "",
         "login": "",
         "logout": "",
+        "missing": "",
         "moreInfo": "მეტი ინფორმაცია",
         "myBooks": "ჩემი წიგნები",
         "noPublicationHelpL1": "ჩააგდე პუბლიკაცია აქ",
@@ -709,6 +710,11 @@
         "divina": {
             "mute": "გაჩუმება",
             "unmute": "ხმის ჩართვა"
+        },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
         },
         "fxl": {
             "fit": ""

@@ -89,6 +89,7 @@
         "lastRead": "Последно четено",
         "login": "",
         "logout": "",
+        "missing": "",
         "moreInfo": "Подробности за книгата",
         "myBooks": "Моите книги",
         "noPublicationHelpL1": "Пусни книгата тук",
@@ -709,6 +710,11 @@
         "divina": {
             "mute": "заглуши звука",
             "unmute": "включване на звука"
+        },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
         },
         "fxl": {
             "fit": ""

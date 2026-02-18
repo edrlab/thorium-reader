@@ -6,16 +6,13 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { catalogActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
+import { catalogActions, readerActions } from "readium-desktop/common/redux/actions";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { error } from "readium-desktop/main/tools/error";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all } from "redux-saga/effects";
 import { call as callTyped, put as putTyped, select as selectTyped, debounce as debounceTyped, SagaGenerator } from "typed-redux-saga/macro";
 import { RootState } from "../states";
-import { PublicationDocument } from "readium-desktop/main/db/document/publication";
-import { ToastType } from "readium-desktop/common/models/toast";
-import { publicationApi } from "./api";
 import { diMainGet } from "readium-desktop/main/di";
 // import { isPdfFn } from "readium-desktop/common/isManifestType";
 
@@ -29,6 +26,7 @@ import { publicationActions as publicationActionsFromCommonAction } from "readiu
 import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLatest";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import { PublicationView } from "src/common/views/publication";
 
 const filename_ = "readium-desktop:main:redux:sagas:catalog";
 const debug = debug_(filename_);
@@ -77,20 +75,20 @@ function* getReadingFinishedPublicationId() {
     return pubIdArray;
 }
 
-function* errorDeletePub(doc: PublicationDocument | undefined, e: Error) {
-    debug("Error in convertDocumentToView doc=", doc);
+// function* errorDeletePub(doc: PublicationDocument | undefined, e: Error) {
+//     debug("Error in convertDocumentToView doc=", doc);
 
-    yield* putTyped(toastActions.openRequest.build(ToastType.Error, doc?.title || ""));
+//     yield* putTyped(toastActions.openRequest.build(ToastType.Error, doc?.title || ""));
 
-    debug(`${doc?.identifier} => ${doc?.title} should be removed`);
-    const str = typeof e.toString === "function" ? e.toString() : (typeof e.message === "string" ? e.message : (typeof e === "string" ? e : JSON.stringify(e)));
-    try {
-        yield* callTyped(publicationApi.delete, doc.identifier, str);
-    } catch (e) {
-        // ignore
-        debug("publication not deleted", e);
-    }
-};
+//     debug(`${doc?.identifier} => ${doc?.title} should be removed`);
+//     const str = typeof e.toString === "function" ? e.toString() : (typeof e.message === "string" ? e.message : (typeof e === "string" ? e : JSON.stringify(e)));
+//     try {
+//         yield* callTyped(publicationApi.delete, doc.identifier, str);
+//     } catch (e) {
+//         // ignore
+//         debug("publication not deleted", e);
+//     }
+// };
 
 function* getPublicationView() {
 
@@ -124,23 +122,37 @@ function* getPublicationView() {
     //         )
     //         .filter((v) => !!v);
 
-    const lastAddedPublicationsView = [];
+    const lastAddedPublicationsView: PublicationView[] = [];
+    debug("Start converting the last added documents to publicationView ");
     for (const doc of lastAddedPublicationsDocument) {
         try {
-            lastAddedPublicationsView.push(yield* callTyped(() => publicationViewConverter.convertDocumentToView(doc)));
-        } catch (e: any) {
-            debug("lastadded publication view converter", e);
-            yield* callTyped(errorDeletePub, doc, e as Error);
+            const pub = yield* callTyped(() => publicationViewConverter.convertDocumentToView(doc));
+            lastAddedPublicationsView.push(pub);
+        } catch (e) {
+            debug("Error When convert document to view, the publication is not deleted, so let's mitigate the publication error for the next time");
+            debug(e);
+
+            const pub = yield* callTyped(() => publicationViewConverter.convertDocumentMissingOrDeletedToMinimalPublicationView(doc));
+            lastAddedPublicationsView.push(pub);
+
+            // yield* callTyped(errorDeletePub, doc, e as Error);
         }
     }
 
-    const lastReadedPublicationsView = [];
+    const lastReadPublicationsView: PublicationView[] = [];
+    debug("Start converting the last read documents to publicationView ");
     for (const doc of lastReadedPublicationDocument) {
         try {
-            lastReadedPublicationsView.push(yield* callTyped(() => publicationViewConverter.convertDocumentToView(doc)));
-        } catch (e: any) {
-            debug("lastreaded publication view converter", e);
-            yield* callTyped(errorDeletePub, doc, e as Error);
+            const pub = yield* callTyped(() => publicationViewConverter.convertDocumentToView(doc));
+            lastReadPublicationsView.push(pub);
+        } catch (e) {
+            debug("Error When convert document to view, the publication is not deleted, so let's mitigate the publication error for the next time");
+            debug(e);
+
+            const pub = yield* callTyped(() => publicationViewConverter.convertDocumentMissingOrDeletedToMinimalPublicationView(doc));
+            lastReadPublicationsView.push(pub);
+
+            // yield* callTyed(errorDeletePub, doc, e as Error);
         }
     }
 
@@ -177,7 +189,7 @@ function* getPublicationView() {
     // };
 
     const all = {
-        readed: lastReadedPublicationsView,
+        read: lastReadPublicationsView,
         added: lastAddedPublicationsView,
     };
 
@@ -210,16 +222,16 @@ export function* getCatalog(): SagaGenerator<ILibraryRootState["publication"]> {
         // },
         all: {
             added: allAdded,
-            readed: allReaded,
+            read: allRead,
         },
     } = yield* callTyped(getPublicationView);
 
     const _allAdded = aboutFiltered(allAdded);
-    const _allReaded = aboutFiltered(allReaded);
+    const _allRead = aboutFiltered(allRead);
     // const _epubReaded = aboutFiltered(epubReaded);
 
     const allAdded_ = _allAdded.slice(0, NB_PUB);
-    const allReaded_ = _allReaded.slice(0, NB_PUB);
+    const allRead_ = _allRead.slice(0, NB_PUB);
     // const epubReaded_ = _epubReaded.slice(0, NB_PUB);
     // const audiobookReaded_ = audiobookReaded.slice(0, NB_PUB);
     // const divinaReaded_ = divinaReaded.slice(0, NB_PUB);
@@ -229,8 +241,8 @@ export function* getCatalog(): SagaGenerator<ILibraryRootState["publication"]> {
     const entries: CatalogEntryView[] = [
         {
             id: "continueReading",
-            totalCount: allReaded.length,
-            publicationViews: allReaded_,
+            totalCount: allRead.length,
+            publicationViews: allRead_,
         },
         {
             id: "lastAdditions",

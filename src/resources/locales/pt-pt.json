@@ -89,6 +89,7 @@
         "lastRead": "Última leitura",
         "login": "Iniciar sessão",
         "logout": "Terminar sessão",
+        "missing": "",
         "moreInfo": "Detalhes do documento",
         "myBooks": "Meus documentos",
         "noPublicationHelpL1": "Soltar ficheiros aqui",
@@ -715,6 +716,11 @@
             "mute": "Silenciar áudio",
             "unmute": "Ativar áudio"
         },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
+        },
         "fxl": {
             "fit": "Ajustar"
         },
@@ -880,7 +886,7 @@
             "reduceMotion": "Reduzir movimento",
             "scrolled": "Rolável",
             "spacing": "Espaçamento",
-            "spreadModeEven": "",
+            "spreadModeEven": "Espelhamento de páginas: 'par' (a predefinição é 'ímpar')",
             "text": "Texto",
             "theme": {
                 "name": {
@@ -943,7 +949,7 @@
             "list": {
                 "AddBookmarkWithLabel": {
                     "description": "",
-                    "name": ""
+                    "name": "Criar marcador com etiqueta"
                 },
                 "AnnotationsCreate": {
                     "description": "",
@@ -955,7 +961,7 @@
                 },
                 "AnnotationsToggleMargin": {
                     "description": "",
-                    "name": ""
+                    "name": "Ativar/desativar margem de anotações"
                 },
                 "AudioNext": {
                     "description": "",
@@ -963,7 +969,7 @@
                 },
                 "AudioNextAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Segmento áudio seguinte (escape)"
                 },
                 "AudioPlayPause": {
                     "description": "",
@@ -975,143 +981,143 @@
                 },
                 "AudioPreviousAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Segmento áudio anterior (escape)"
                 },
                 "AudioStop": {
                     "description": "",
                     "name": "Parar áudio"
                 },
                 "CloseReader": {
-                    "description": "",
+                    "description": "Fechar a janela do leitor e voltar à biblioteca",
                     "name": "Fechar leitor"
                 },
                 "FXLZoomIn": {
-                    "description": "",
-                    "name": ""
+                    "description": "Aproximar zoom para página única ou página dupla com disposição fixa.",
+                    "name": "Aumentar zoom FXL"
                 },
                 "FXLZoomOut": {
-                    "description": "",
-                    "name": ""
+                    "description": "Afastar zoom para página única ou página dupla com disposição fixa.",
+                    "name": "Diminuir zoom FXL"
                 },
                 "FXLZoomReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Repor zoom para página única ou página dupla com disposição fixa.",
+                    "name": "Repor zoom FXL"
                 },
                 "FocusMain": {
                     "description": "",
-                    "name": ""
+                    "name": "Foco no conteúdo principal"
                 },
                 "FocusMainDeep": {
                     "description": "",
-                    "name": ""
+                    "name": "Foco profundo no conteúdo principal"
                 },
                 "FocusReaderGotoPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Foco em 'Ir para página'"
                 },
                 "FocusReaderNavigation": {
                     "description": "",
-                    "name": ""
+                    "name": "Foco no Painel de navegação"
                 },
                 "FocusReaderNavigationAnnotations": {
                     "description": "",
-                    "name": ""
+                    "name": "Foco em 'Anotações'"
                 },
                 "FocusReaderNavigationBookmarks": {
                     "description": "",
-                    "name": ""
+                    "name": "Foco em 'Marcadores'"
                 },
                 "FocusReaderNavigationSearch": {
                     "description": "",
-                    "name": ""
+                    "name": "Foco em 'Pesquisar'"
                 },
                 "FocusReaderNavigationTOC": {
                     "description": "",
-                    "name": ""
+                    "name": "Foco no 'Índice'"
                 },
                 "FocusReaderSettings": {
                     "description": "",
-                    "name": ""
+                    "name": "Foco nas configurações do Leitor"
                 },
                 "FocusSearch": {
                     "description": "",
-                    "name": ""
+                    "name": "Comando de pesquisa"
                 },
                 "FocusToolbar": {
                     "description": "",
-                    "name": ""
+                    "name": "Foco na barra de ferramentas"
                 },
                 "NavigateNextChapter": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para o capítulo seguinte"
                 },
                 "NavigateNextChapterAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para o capítulo seguinte (Alternativo)"
                 },
                 "NavigateNextHistory": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para o histórico seguinte"
                 },
                 "NavigateNextLibraryPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para a página seguinte da biblioteca"
                 },
                 "NavigateNextLibraryPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para a página seguinte da biblioteca (alternativa)"
                 },
                 "NavigateNextOPDSPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para a página OPDS seguinte"
                 },
                 "NavigateNextOPDSPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para a página OPDS seguinte (alternativa)"
                 },
                 "NavigateNextPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para a página seguinte"
                 },
                 "NavigateNextPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para a página seguinte (alternativa)"
                 },
                 "NavigatePreviousChapter": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para o capítulo anterior"
                 },
                 "NavigatePreviousChapterAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para o capítulo anterior (alternativo)"
                 },
                 "NavigatePreviousHistory": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para o histórico anterior"
                 },
                 "NavigatePreviousLibraryPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para a página anterior da biblioteca"
                 },
                 "NavigatePreviousLibraryPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para a página anterior da biblioteca (alternativa)"
                 },
                 "NavigatePreviousOPDSPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para página OPDS anterior"
                 },
                 "NavigatePreviousOPDSPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para a página OPDS anterior (alternativa)"
                 },
                 "NavigatePreviousPage": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para a página anterior"
                 },
                 "NavigatePreviousPageAlt": {
                     "description": "",
-                    "name": ""
+                    "name": "Ir para página anterior (alternativa)"
                 },
                 "NavigateToBegin": {
                     "description": "",
@@ -1188,12 +1194,12 @@
                 "description": "",
                 "title": ""
             },
-            "version": ""
+            "version": "Versão: {{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "message": "",
-            "title": ""
+            "help": "Quando a aplicação deteta a presença de tecnologia de apoio, a interface do utilizador funciona melhor com leitores de ecrã",
+            "message": "Suporte otimizado para leitores de ecrã",
+            "title": "Melhorar a experiência do leitor de ecrã"
         },
         "session": {
             "title": "Ativar guardar sessão"
@@ -1202,7 +1208,7 @@
             "appearance": "Visual",
             "general": "Geral",
             "keyboardShortcuts": "Atalhos de teclado",
-            "profiles": ""
+            "profiles": "Perfis"
         },
         "theme": {
             "auto": "Automático",

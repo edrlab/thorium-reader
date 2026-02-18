@@ -89,6 +89,7 @@
         "lastRead": "Nazadnje brano",
         "login": "",
         "logout": "",
+        "missing": "",
         "moreInfo": "Osnovni podatki",
         "myBooks": "Moje knjige",
         "noPublicationHelpL1": "Tukaj spusti datoteke",
@@ -719,6 +720,11 @@
         "divina": {
             "mute": "izklopi zvok",
             "unmute": "vklopi zvok"
+        },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
         },
         "fxl": {
             "fit": "Prilagajanje zaslonu"

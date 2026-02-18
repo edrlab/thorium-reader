@@ -18,13 +18,15 @@ import chokidar, { FSWatcher } from "chokidar";
 import * as fs from "fs";
 import { EXT_THORIUM } from "readium-desktop/common/extension";
 
-/**
- * Polling is not necessary in win11, So let's disable it for the moment
- */
-const _isWindows = false; // os.platform() === "win32";
+export let __chokidarWatcherInstance: FSWatcher = undefined;
 
 export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder: string, callback: (fileName: string, removed: boolean) => void): FSWatcher {
 
+/**
+* Polling is not necessary in win11, So let's disable it for the moment
+*/
+    const _isWindows = false; // true; // os.platform() === "win32";
+    
     wellKnownFolder = path.join(wellKnownFolder, "/").replace(/\\/g, "/");
 
     if (!fs.existsSync(wellKnownFolder)) {
@@ -33,7 +35,7 @@ export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder
 
     debug("START FILE WATCHING FROM ", wellKnownFolder);
 
-    const watcher = chokidar.watch(
+    const watcher  = __chokidarWatcherInstance = chokidar.watch(
         wellKnownFolder
         //`*${EXT_THORIUM}`
         , {
@@ -41,7 +43,6 @@ export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder
         // cwd: wellKnownFolder, // not working with the glob *.thorium, so let's filter it in ignored callback
         persistent: true, // default true
 
-        usePolling: _isWindows ? true : false, // default false
         alwaysStat: false, // default false        
 
         // keep .thorium files
@@ -60,6 +61,7 @@ export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder
         // atomic: true, // emit proper events when "atomic writes" (mv _tmp file) are used // default true
 
         // The options also allow specifying custom intervals in ms
+        usePolling: _isWindows ? true : false, // default false
         awaitWriteFinish: _isWindows ? {
           stabilityThreshold: 2000,
           pollInterval: 1000,
@@ -76,7 +78,6 @@ export function customizationStartFileWatcherFromWellKnownFolder(wellKnownFolder
         ignoreInitial: false, // doesn't emit when instanciate // default false
         ignorePermissionErrors: !__TH__IS_DEV__, // If watching fails due to EPERM or EACCES with this set to true, the errors will be suppressed silently.
     });
-
 
     watcher
         .on("add", (absoluteFilePath) => {

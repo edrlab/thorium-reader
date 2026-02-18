@@ -222,7 +222,7 @@ async function doRequest(u: string): Promise<Divinais | undefined> {
                 "Accept": "*/*,application/divina+json",
                 "Accept-Language": "en-UK,en-US;q=0.7,en;q=0.5",
                 "Host": url.host,
-                "User-Agent": "Readium2-Divinas",
+                "User-Agent": "thorium-desktop",
             },
             host: url.host,
             method: "GET",

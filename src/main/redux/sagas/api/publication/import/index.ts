@@ -22,17 +22,26 @@ import { importFromStringService } from "./importFromString";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { getTranslator } from "readium-desktop/common/services/translator";
+import { publicationApi } from "..";
 
 // Logger
 const debug = debug_("readium-desktop:main#saga/api/publication/import");
 
 const convertDoc = async (doc: PublicationDocument, publicationViewConverter: PublicationViewConverter) => {
+    try {
     return await publicationViewConverter.convertDocumentToView(doc);
+    } catch (e) {
+        debug("Error to convert document to publicationView", e);
+        const pub = await publicationViewConverter.convertDocumentMissingOrDeletedToMinimalPublicationView(doc);
+        debug("Convert to minimal view", pub);
+        return pub;
+    }
 };
 
 export function* importFromLink(
     link: IOpdsLinkView,
     pub?: IOpdsPublicationView,
+    deep: number = 0,
 ): SagaGenerator<PublicationView | undefined> {
 
     const translate = getTranslator().translate;
@@ -49,13 +58,40 @@ export function* importFromLink(
         const publicationView = yield* callTyped(() => convertDoc(publicationDocument, publicationViewConverter));
 
         if (alreadyImported) {
-            yield put(
-                toastActions.openRequest.build(
-                    ToastType.Success,
-                    translate("message.import.alreadyImport",
-                        { title: publicationView.documentTitle }),
-                ),
-            );
+
+            if (deep < 1) {
+                deep = 1;
+
+                if (publicationView.type === "missingOrDeleted") {
+    
+                    debug(`${publicationDocument?.identifier} => ${publicationDocument?.title} should be removed`);
+                    const str = `The publication is missing or deleted: ${publicationDocument?.identifier} => ${publicationDocument?.title}. The directory must be deleted.`;
+                    try {
+                        debug("delete publication", publicationDocument.identifier);
+                        yield* callTyped(publicationApi.delete, publicationDocument.identifier, str);
+                    } catch (e) {
+                        debug("publication not deleted", e);
+                    }
+                    try {
+                        debug("restart import process after publication was already imported, missing, but not deleted");
+                        yield* callTyped(importFromLink, link, pub, deep);
+                    } catch (e) {
+                        debug("Error during the second import of the publication", e);
+                    }
+                } else {
+
+                    yield put(
+                        toastActions.openRequest.build(
+                            ToastType.Success,
+                            translate("message.import.alreadyImport",
+                                { title: publicationView.documentTitle }),
+                        ),
+                    );
+                }
+            } else if (deep > 1) {
+                debug("importFromLink too many call stack -> STOP!");
+            }
+
 
         } else {
             yield put(
@@ -113,6 +149,7 @@ export function* importFromString(
 
 export function* importFromFs(
     filePath: string | string[],
+    deep: number = 0,
 ): SagaGenerator<PublicationView[] | undefined> {
 
     const filePathArray = Array.isArray(filePath) ? filePath : [filePath];
@@ -142,15 +179,41 @@ export function* importFromFs(
                     }
 
                     const publicationView = yield* callTyped(() => convertDoc(publicationDocument, publicationViewConverter));
-
+                    
                     if (alreadyImported) {
-                        yield put(
-                            toastActions.openRequest.build(
-                                ToastType.Success,
-                                translate("message.import.alreadyImport",
-                                    { title: publicationView.documentTitle }),
-                            ),
-                        );
+
+                        if (deep < 1) {
+                            deep = 1;
+
+                            if (publicationView.type === "missingOrDeleted") {
+
+                                debug(`${publicationDocument?.identifier} => ${publicationDocument?.title} should be removed`);
+                                const str = `The publication is missing or deleted: ${publicationDocument?.identifier} => ${publicationDocument?.title}. The directory must be deleted.`;
+                                try {
+                                    debug("delete publication", publicationDocument.identifier);
+                                    yield* callTyped(publicationApi.delete, publicationDocument.identifier, str);
+                                } catch (e) {
+                                    debug("publication not deleted", e);
+                                }
+                                try {
+                                    debug("restart import process after publication was already imported, missing, but not deleted");
+                                    yield* callTyped(importFromFs, fpath, deep);
+                                } catch (e) {
+                                    debug("Error during the second import of the publication", e);
+                                }
+                            } else {
+
+                                yield put(
+                                    toastActions.openRequest.build(
+                                        ToastType.Success,
+                                        translate("message.import.alreadyImport",
+                                            { title: publicationView.documentTitle }),
+                                    ),
+                                );
+                            }
+                        } else if (deep > 1) {
+                            debug("importFromFs too many call stack -> STOP!");
+                        }
 
                     } else {
                         yield put(

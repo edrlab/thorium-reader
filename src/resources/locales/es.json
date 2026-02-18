@@ -89,6 +89,7 @@
         "lastRead": "Último leído",
         "login": "",
         "logout": "",
+        "missing": "",
         "moreInfo": "Detalles del libro",
         "myBooks": "Mis libros",
         "noPublicationHelpL1": "Desliza una publicación aquí",
@@ -714,6 +715,11 @@
         "divina": {
             "mute": "silenciar",
             "unmute": "dejar de silenciar"
+        },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
         },
         "fxl": {
             "fit": "Ajustar"

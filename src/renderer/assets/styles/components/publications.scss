@@ -601,6 +601,12 @@
   width: fit-content;
 }
 
+.publication_missing {
+  &_icon {
+    fill: var(--color-neutral-base);
+  }
+}
+
 .CSS_END_components_publications {
   display: none;
 }

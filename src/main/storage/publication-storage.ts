@@ -9,11 +9,11 @@ import { dialog, shell } from "electron";
 import * as fs from "fs";
 import { injectable } from "inversify";
 import * as path from "path";
-import { acceptedExtensionObject } from "readium-desktop/common/extension";
+import { acceptedExtensionObject, publicationExtensionStoredOnDisk } from "readium-desktop/common/extension";
 import { File } from "readium-desktop/common/models/file";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { ContentType } from "readium-desktop/utils/contentType";
-import { getFileSize, rmDirSync } from "readium-desktop/utils/fs";
+import { getFileSize } from "readium-desktop/utils/fs";
 
 import { PublicationParsePromise } from "@r2-shared-js/parser/publication-parser";
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
@@ -74,7 +74,7 @@ export class PublicationStorage {
         return files;
     }
 
-    public removePublication(identifier: string, preservePublicationOnFileSystem?: string) {
+    public async removePublication(identifier: string, preservePublicationOnFileSystem?: string) {
         const p = this.buildPublicationPath(identifier);
         try {
             if (preservePublicationOnFileSystem) {
@@ -99,7 +99,7 @@ export class PublicationStorage {
                 return;
             }
 
-            rmDirSync(p);
+            await fs.promises.rm(p, { recursive: true, retryDelay: 100, maxRetries: 3, force: true });
         } catch (e) {
             debug(e);
             debug(preservePublicationOnFileSystem);
@@ -107,108 +107,44 @@ export class PublicationStorage {
         }
     }
 
-    // TODO: fs.existsSync() is really costly,
-    // TODO : A disaster ! :)
-    // and getPublicationEpubPath() is called many times!
-    public getPublicationEpubPath(identifier: string): string {
+    public async getPublicationEpubPath(identifier: string): Promise<string> {
 
+        // path.join(this.rootPath, identifier);
         const root = this.buildPublicationPath(identifier);
-        // --
-        const pathEpub = path.join(
-            root,
-            `book${acceptedExtensionObject.epub}`,
-        );
-        if (fs.existsSync(pathEpub)) {
-            return pathEpub;
-        }
-        // --
-        const pathWebpub = path.join(
-            root,
-            `book${acceptedExtensionObject.webpub}`,
-        );
-        if (fs.existsSync(pathWebpub)) {
-            return pathWebpub;
-        }
-        // --
-        const pathAudioBook = path.join(
-            root,
-            `book${acceptedExtensionObject.audiobook}`,
-        );
-        if (fs.existsSync(pathAudioBook)) {
-            return pathAudioBook;
-        }
-        // --
-        const pathAudioBookLcp = path.join(
-            root,
-            `book${acceptedExtensionObject.audiobookLcp}`,
-        );
-        if (fs.existsSync(pathAudioBookLcp)) {
-            return pathAudioBookLcp;
-        }
-        // --
-        const pathAudioBookLcpAlt = path.join(
-            root,
-            `book${acceptedExtensionObject.audiobookLcpAlt}`,
-        );
-        if (fs.existsSync(pathAudioBookLcpAlt)) {
-            return pathAudioBookLcpAlt;
-        }
-        // --
-        const pathDivina = path.join(
-            root,
-            `book${acceptedExtensionObject.divina}`,
-        );
-        if (fs.existsSync(pathDivina)) {
-            return pathDivina;
-        }
-        // --
-        const pathLcpPdf = path.join(
-            root,
-            `book${acceptedExtensionObject.pdfLcp}`,
-        );
-        if (fs.existsSync(pathLcpPdf)) {
-            return pathLcpPdf;
-        }
-        // --
-        const pathEpub3 = path.join(
-            root,
-            `book${acceptedExtensionObject.epub3}`,
-        );
-        if (fs.existsSync(pathEpub3)) {
-            return pathEpub3;
-        }
-        // --
-        const pathPnld = path.join(
-            root,
-            `book${acceptedExtensionObject.pnld}`,
-        );
-        if (fs.existsSync(pathPnld)) {
-            return pathPnld;
-        }
-        // --
-        const pathDaisy = path.join(
-            root,
-            `book${acceptedExtensionObject.daisy}`,
-        );
-        if (fs.existsSync(pathDaisy)) {
-            return pathDaisy;
-        }
-        // --
+
+        try {
+            const files = await fs.promises.readdir(root, {withFileTypes: true});
+            debug("getPublicationEpubPath: readdir", root);
+            for (const file of files) {
+                if (!file.isFile()) {
+                    continue;
+                }
+                debug(`${file.name} from ${file.parentPath}`);
+                const ext = path.extname(file.name);
+                if (publicationExtensionStoredOnDisk.includes(ext)) {
+                    return path.join(file.parentPath, file.name);
+                }
+            }
+        } catch (err) {
+            debug("readdir error", err);
+        } 
+
+        debug("Error GetPublicationEpubPath not found with", identifier, "Throw new Error");
         throw new Error(`getPublicationEpubPath() FAIL ${identifier} (cannot find book.epub|audiobook|etc.)`);
     }
 
-    public getPublicationFilename(publicationView: PublicationView) {
-        const publicationPath = this.getPublicationEpubPath(publicationView.identifier);
+    public async getPublicationFilename(publicationView: PublicationView) {
+        const publicationPath = await this.getPublicationEpubPath(publicationView.identifier);
         const extension = path.extname(publicationPath);
         const filename = sanitizeForFilename(publicationView.documentTitle + extension);
         return filename;
     }
 
-    public copyPublicationToPath(publicationView: PublicationView, filePath: string) {
+    public async copyPublicationToPath(publicationView: PublicationView, filePath: string) {
         if (!filePath) {
             throw new Error("no filePath !");
         }
-        const publicationPath = this.getPublicationEpubPath(publicationView.identifier);
+        const publicationPath = await this.getPublicationEpubPath(publicationView.identifier);
         fs.copyFile(publicationPath, filePath, async (err) => {
             if (err) {
                 await dialog.showMessageBox({
@@ -222,7 +158,10 @@ export class PublicationStorage {
     }
 
     public buildPublicationPath(identifier: string): string {
-        return path.join(this.rootPath, identifier);
+        if (/^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/.test(identifier.trim())) {
+            return path.join(this.rootPath, identifier.trim());
+        }
+        throw new Error("not an uuidv4 identifier !");
     }
 
     private async storePublicationBook(

@@ -88,7 +88,7 @@ function* publicationCloseRequest(action: streamerActions.publicationCloseReques
     if (!counter.hasOwnProperty(pubId) || counter[pubId] <= 1) {
         wasKilled = true;
 
-        const epubPath = pubStorage.getPublicationEpubPath(pubId);
+        const epubPath = yield* callTyped(() => pubStorage.getPublicationEpubPath(pubId));
         // const epubPath = path.join(
         //     pubStorage.getRootPath(),
         //     publicationDocument.files[0].url.substr(6),

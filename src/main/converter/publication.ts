@@ -134,6 +134,10 @@ export class PublicationViewConverter {
             return r2Publication;
         }
 
+        const epubPath = await this.publicationStorage.getPublicationEpubPath(
+            publicationDocument.identifier,
+        );
+
         try {
             const manifestPath = path.join(pubFolder, "manifest.json");
             const r2PublicationStr = fs.readFileSync(manifestPath, { encoding: "utf-8"});
@@ -166,10 +170,6 @@ export class PublicationViewConverter {
         } catch (err) {
             debug(err, " FALLBACK: parsing publication from filesystem ...");
 
-            const epubPath = this.publicationStorage.getPublicationEpubPath(
-                publicationDocument.identifier,
-            );
-
             const r2Publication = await PublicationParsePromise(epubPath);
             // just like when calling lsdLcpUpdateInject():
             // r2Publication.LCP.ZipPath is set to META-INF/license.lcpl
@@ -184,6 +184,41 @@ export class PublicationViewConverter {
 
             return r2Publication;
         }
+    }
+
+    public async convertDocumentMissingOrDeletedToMinimalPublicationView(document: PublicationDocument): Promise<PublicationView> {
+
+        const store = diMainGet("store");
+        const state = store.getState();
+        const readingFinished = tryCatchSync(() => state.publication.readingFinishedQueue.findIndex(([, pubIndentifier]) => pubIndentifier === document.identifier) > -1, "") || false;
+        const readerStateLocator = tryCatchSync(() => state.win.registry.reader[document.identifier]?.reduxState.locator, "");
+
+        const title = document.title || "-"; // default title;
+        
+        let cover: CoverView | undefined;
+        if (document.coverFile) {
+            cover = {
+                thumbnailUrl : document.coverFile.url,
+                coverUrl: document.coverFile.url,
+            };
+        }
+
+        return {
+
+            type: "missingOrDeleted",
+            identifier: document.identifier, // preserve Identifiable identifier
+
+            readingFinished,
+            documentTitle: title,
+            publicationTitle: title,
+            publicationSubTitle: "",
+            authorsLangString: [],
+            cover,
+            customCover: document.customCover,
+            r2PublicationJson: undefined,
+            lastReadingLocation: readerStateLocator,
+        };
+
     }
 
     // Note: PublicationDocument and PublicationView are both Identifiable, with identical `identifier`
@@ -267,6 +302,10 @@ export class PublicationViewConverter {
         const trimStrings = (texts: string | string[]): string[] => Array.isArray(texts) ? texts.filter((item) => item && typeof item === "string").map((item) => item.trim()) : texts && typeof texts === "string" ? [texts.trim()] : [];
 
         return {
+
+            // When a publication is found on disk but cannot be found in the database, we should mitigate the risk by setting a missingOrDeleted error.
+            type: document.doNotPresentInReduxStoreDataBaseButFoundOnDisk_dummyDocument ? "missingOrDeleted" : undefined,
+            
             isAudio,
             isDivina,
             isPDF,

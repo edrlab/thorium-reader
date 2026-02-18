@@ -89,6 +89,7 @@
         "lastRead": "Last Read",
         "login": "Login",
         "logout": "Logout",
+        "missing": "",
         "moreInfo": "Publication Details",
         "myBooks": "My publications",
         "noPublicationHelpL1": "Drop files here",
@@ -709,6 +710,11 @@
         "divina": {
             "mute": "mute audio",
             "unmute": "unmute audio"
+        },
+        "dock": {
+            "dockDefault": "Show panel as a modal popup",
+            "dockLeft": "Dock panel to the left",
+            "dockRight": "Dock panel to the right"
         },
         "fxl": {
             "fit": "Fit"

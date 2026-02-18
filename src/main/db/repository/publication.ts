@@ -111,9 +111,9 @@ export class PublicationRepository {
                 // (in other words, pub not successfully deleted)
             })));
 
-        const feedAction = publicationActions.deletePublication.build(identifier);
-        debug("Publication DELETE action: ", identifier, feedAction);
-        store.dispatch(feedAction);
+        const deletePublicationAction = publicationActions.deletePublication.build(identifier);
+        debug("Publication DELETE action: ", identifier, deletePublicationAction);
+        store.dispatch(deletePublicationAction);
 
         await p.finally(() => {
             debug("Publication DELETE finally unsub?: ", identifier, unsub ? "true" : "false");

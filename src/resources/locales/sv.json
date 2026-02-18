@@ -89,6 +89,7 @@
         "lastRead": "Senast läst",
         "login": "Logga in",
         "logout": "Logga ut",
+        "missing": "",
         "moreInfo": "Information om publikationen",
         "myBooks": "Mina böcker",
         "noPublicationHelpL1": "Släpp en publikation här",
@@ -710,6 +711,11 @@
             "mute": "stäng av ljud",
             "unmute": "slå på ljud"
         },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
+        },
         "fxl": {
             "fit": "Anpassa"
         },
@@ -1029,7 +1035,7 @@
                 },
                 "FocusSearch": {
                     "description": "Flytta tangentbordsfokus till sökrutan i läsfönstret. I biblioteksfönstret påbörjas en sökning i bokhyllan eller i den aktiva katalogen.",
-                    "name": "Sök"
+                    "name": "Sökkommando"
                 },
                 "FocusToolbar": {
                     "description": "Flytta tangentbordsfokus till landmärket precis innan hoppa-över-länken (som flyttar fokus till huvudinnehållet i biblioteks- eller läsvyn)",

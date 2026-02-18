@@ -89,6 +89,7 @@
         "lastRead": "Pask. kartą skaityta",
         "login": "Prisijungti",
         "logout": "Atsijungti",
+        "missing": "",
         "moreInfo": "Daugiau informacijos",
         "myBooks": "Mano leidiniai",
         "noPublicationHelpL1": "Nutempkite leidinį čia",
@@ -719,6 +720,11 @@
         "divina": {
             "mute": "išjungti garsą",
             "unmute": "įjungti garsą"
+        },
+        "dock": {
+            "dockDefault": "",
+            "dockLeft": "",
+            "dockRight": ""
         },
         "fxl": {
             "fit": "Talpinti"

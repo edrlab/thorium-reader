@@ -97,9 +97,14 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
         readerUrl = readerUrl.replace(/\\/g, "/");
     }
 
-    if (true) { // __TH__IS_DEV__
+    if (!readerWindow.isDestroyed() && !readerWindow.webContents.isDestroyed()) { // __TH__IS_DEV__
 
         readerWindow.webContents.on("did-finish-load", () => {
+
+            // if (readerWindow.isDestroyed() || readerWindow.webContents.isDestroyed()) {
+            //     debug("readerWindow or webcontents is destroyed !!");
+            //     return; // Is it really needed to early return here, and block reader openSuccess 
+            // }
             // see app.whenReady() in src/main/redux/sagas/app.ts
             // // app.whenReady().then(() => {
             // // });
@@ -126,7 +131,22 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
         });
     }
 
-    yield* callTyped(() => readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" }));
+    if (!readerWindow.isDestroyed() && !readerWindow.webContents.isDestroyed()) { // __TH__IS_DEV__
+        yield* callTyped(async () => {
+
+            if (!readerWindow.isDestroyed() && !readerWindow.webContents.isDestroyed()) {
+                try {
+                    await readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" });
+                } catch (e) {
+                    debug("Load url rejected", e);
+                };
+            } else {
+                debug("cannot load url windows destroyed");
+            }
+        });
+    } else {
+        debug("window destroyed !!");
+    }
 
     // // TODO shouldn't the call to reader.openSucess be fenced with if (!__TH__IS_DEV__) {}, just like in createlibraryWindow??
     // // (otherwise called a second time in did-finish-load event handler below)
@@ -170,24 +190,26 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
         debug("willNavigate ==> noop: ", navUrl);
     };
 
-    readerWindow.webContents.setWindowOpenHandler((details: HandlerDetails) => {
-        debug("BrowserWindow.webContents.setWindowOpenHandler (always DENY): ", readerWindow.webContents.id, " --- ", details.url, " === ", readerWindow.webContents.getURL());
+    if (!readerWindow.isDestroyed() && !readerWindow.webContents.isDestroyed()) {
 
-        // willNavigate(details.url);
-
-        return { action: "deny" };
-    });
-
-    readerWindow.webContents.on("will-navigate", (details: ElectronEvent<WebContentsWillNavigateEventParams>, url: string) => {
-        debug("BrowserWindow.webContents.on('will-navigate') (always PREVENT): ", readerWindow.webContents.id, " --- ", details.url, " *** ", url, " === ", readerWindow.webContents.getURL());
-
-        // if (details.url === readerWindow.webContents.getURL()) {
-        //     debug("will-navigate PASS", details.url);
-        //     return;
-        // }
-
-        details.preventDefault();
-
-        willNavigate(details.url);
-    });
+        readerWindow.webContents.setWindowOpenHandler((details: HandlerDetails) => {
+            debug("BrowserWindow.webContents.setWindowOpenHandler (always DENY): ", readerWindow.webContents.id, " --- ", details.url, " === ", readerWindow.webContents.getURL());
+    
+            // willNavigate(details.url);
+    
+            return { action: "deny" };
+        });
+        readerWindow.webContents.on("will-navigate", (details: ElectronEvent<WebContentsWillNavigateEventParams>, url: string) => {
+            debug("BrowserWindow.webContents.on('will-navigate') (always PREVENT): ", readerWindow.webContents.id, " --- ", details.url, " *** ", url, " === ", readerWindow.webContents.getURL());
+        
+            // if (details.url === readerWindow.webContents.getURL()) {
+            //     debug("will-navigate PASS", details.url);
+            //     return;
+            // }
+        
+            details.preventDefault();
+        
+            willNavigate(details.url);
+        });
+    }    
 }

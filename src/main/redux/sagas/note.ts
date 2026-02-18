@@ -157,23 +157,30 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
         // if at least one annotation in the list doesn't match with the current spine item, then reject the set importation
 
         const pubView = yield* callTyped(getPublication, publicationIdentifier);
-        const r2PublicationJson = pubView.r2PublicationJson;
-        const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
-        const spineItem = r2Publication.Spine;
-        const hrefFromSpineItem = spineItem.map((v) => v.Href);
-        debug("Current Publcation (", publicationIdentifier, ") SpineItems(hrefs):", hrefFromSpineItem);
-        const annotationsIncommingArraySourceHrefs = annotationsIncommingArray.map(({ target: { source } }) => source);
-        debug("Incomming Annotations target.source(hrefs):", annotationsIncommingArraySourceHrefs);
-        const annotationsIncommingMatchPublicationSpineItem = annotationsIncommingArraySourceHrefs.reduce((acc, source) => {
-            return acc && hrefFromSpineItem.includes(source);
-        }, true);
-
-        if (!annotationsIncommingMatchPublicationSpineItem) {
-
-            debug("ERROR: At least one annotation is rejected and not match with the current publication SpineItem, see above");
-            yield* putTyped(toastActions.openRequest.build(ToastType.Error, __("message.annotations.noBelongTo"), readerPublicationIdentifier));
+        if (pubView.r2PublicationJson) {
+            const r2PublicationJson = pubView.r2PublicationJson;
+            const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
+            const spineItem = r2Publication.Spine;
+            const hrefFromSpineItem = spineItem.map((v) => v.Href);
+            debug("Current Publcation (", publicationIdentifier, ") SpineItems(hrefs):", hrefFromSpineItem);
+            const annotationsIncommingArraySourceHrefs = annotationsIncommingArray.map(({ target: { source } }) => source);
+            debug("Incomming Annotations target.source(hrefs):", annotationsIncommingArraySourceHrefs);
+            const annotationsIncommingMatchPublicationSpineItem = annotationsIncommingArraySourceHrefs.reduce((acc, source) => {
+                return acc && hrefFromSpineItem.includes(source);
+            }, true);
+            
+            if (!annotationsIncommingMatchPublicationSpineItem) {
+    
+                debug("ERROR: At least one annotation is rejected and not match with the current publication SpineItem, see above");
+                yield* putTyped(toastActions.openRequest.build(ToastType.Error, __("message.annotations.noBelongTo"), readerPublicationIdentifier));
+                return;
+            }
+        } else {
+            debug("ERROR: the publication doesn't have an r2PublicationJson value !!");
+            yield* putTyped(toastActions.openRequest.build(ToastType.Error, "The publication is corrupted", readerPublicationIdentifier));
             return;
         }
+
 
         debug("GOOD ! spineItemHref matched : publication identified, let's continue the importation");
 
