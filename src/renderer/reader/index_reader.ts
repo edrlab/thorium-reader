@@ -55,6 +55,10 @@ ipcRenderer.on(readerIpc.CHANNEL,
                 // const r2PublicationStr = Buffer.from(data.payload.reader.info.publicationView.r2PublicationBase64, "base64").toString("utf-8");
                 // const r2PublicationJson = JSON.parse(r2PublicationStr);
                 const r2PublicationJson = data.payload.reader.info.publicationView.r2PublicationJson;
+                if (!r2PublicationJson) {
+                    alert("PANIC r2PublicationJSON not initialized");
+                    return ;
+                }
                 const r2Publication = TaJsonDeserialize(r2PublicationJson, R2Publication);
 
                 data.payload.reader.info.r2Publication = r2Publication;

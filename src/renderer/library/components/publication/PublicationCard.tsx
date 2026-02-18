@@ -93,6 +93,8 @@ class PublicationCard extends React.Component<IProps> {
         let hasEnded = false;
         const isLcp = publicationView.lcp?.rights ? true : false;
 
+        // const isPublicationMissingOrDeleted = publicationView.type === "missingOrDeleted";
+
         if (lcpRightsEndDate) {
             const momentEnd = moment(lcpRightsEndDate).locale([this.props.locale, "en"]);
             const timeEndDif = momentEnd.diff(now, "days");

@@ -6,7 +6,9 @@
 // ==LICENSE-END==
 
 import * as readingFinished from "./readingFinished";
+import * as checker from "./checker";
 
 export {
     readingFinished,
+    checker,
 };

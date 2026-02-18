@@ -11,7 +11,7 @@ import { keyboardActions, versionUpdateActions } from "readium-desktop/common/re
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
-import { select as selectTyped, call as callTyped  } from "typed-redux-saga/macro";
+import { select as selectTyped, call as callTyped, spawn as spawnTyped} from "typed-redux-saga/macro";
 import { RootState } from "../states";
 import { _APP_VERSION, _APP_NAME, _PACK_NAME } from "readium-desktop/preprocessor-directives";
 // import { THttpGetCallback } from "readium-desktop/common/utils/http";
@@ -40,6 +40,8 @@ import * as customization from "./customization";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { sagaCustomizationProfileProvisioning } from "./customization";
 import isURL from "validator/lib/isURL";
+import { publicationIntegrityChecker } from "./publication/checker";
+import { error } from "readium-desktop/main/tools/error";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -77,6 +79,15 @@ export function* rootSaga() {
 
         app.exit(code);
     }
+
+    // Integrity checker for publications between FS and DB
+    yield* spawnTyped(function* () {
+        try {
+            yield* callTyped(publicationIntegrityChecker);
+        } catch (e) {
+            error(filename_, e);
+        }
+    });
 
     // customization profile acquire, provisioned and activate
     yield customization.saga();

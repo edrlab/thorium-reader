@@ -103,6 +103,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     customizationActions.addHistory.ID,
 
     opdsActions.refresh.ID,
+
+    publicationActions.checker.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware

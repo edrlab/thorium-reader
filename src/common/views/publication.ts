@@ -25,6 +25,8 @@ export interface CustomCoverView {
 }
 
 export interface PublicationView extends Identifiable {
+
+    type?: "missingOrDeleted";
     isAudio?: boolean;
     isDivina?: boolean;
     isPDF?: boolean;
@@ -71,7 +73,7 @@ export interface PublicationView extends Identifiable {
     lcpRightsCopies?: number;
     lcpRightsPrints?: number[];
 
-    r2PublicationJson: JsonMap;
+    r2PublicationJson?: JsonMap;
     // Legacy Base64 data blobs
     // r2PublicationBase64: string;
 

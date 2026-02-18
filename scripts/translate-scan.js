@@ -70,9 +70,21 @@ const files = glob.globSync("src/**/*{.ts,.tsx}");
                 console.log(`prop?! ${prop}`);
                 continue;
             }
-            if (!jsonRoot[prop]) {
-                jsonRoot[prop] = {};
+
+            // plurals detection ... hacky! :(
+            if (prop !== "descList" && prop !== "descNewer" && prop !== "descOlder" && prop !== "deleteAnnotationsText" && prop !== "deleteBookmarksText" && prop !== "founds") {
+                if (!jsonRoot[prop]) {
+                    jsonRoot[prop] = {};
+                }
+            } else {
+                for (const suffix of ["one", "other"]) {
+                    const prop_ = `${prop}_${suffix}`;
+                    if (!jsonRoot[prop_]) {
+                        jsonRoot[prop_] = {};
+                    }
+                }
             }
+
             jsonRoot = jsonRoot[prop];
         }
     }

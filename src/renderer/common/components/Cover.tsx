@@ -26,6 +26,8 @@ import { useTranslator } from "../hooks/useTranslator";
 import { connect } from "react-redux";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { TranslatorProps, withTranslator } from "./hoc/translator";
+import SVG from "./SVG";
+import * as FileBroken from "readium-desktop/renderer/assets/icons/file-broken-icon.svg";
 // import * as ValidateIcon from "readium-desktop/renderer/assets/icons/validated-icon.svg";
 // import SVG from "./SVG";
 
@@ -143,6 +145,14 @@ class Cover extends React.Component<IProps, IState> {
                 <div className={stylesPublications.corner}><SVG ariaHidden svg={ValidateIcon} /></div>
                 : <></>} */}
                 {
+                        publicationViewMaybeOpds.type === "missingOrDeleted"
+                            ? <div aria-label={this.props.__("catalog.missing")} style={{ position: "absolute", width: "inherit", height: "inherit", display: "flex", alignItems: "center", justifyContent: "center", opacity: 0.7 }}>
+                                <div aria-hidden style={{ height: "70px", width: "70px", borderRadius: "50%", background: "var(--color-error-text)", padding: "10px" }}>
+                                    <SVG ariaHidden svg={FileBroken} className={stylesPublications.publication_missing_icon} />
+                                </div>
+                            </div> : <></>
+                }
+                {
                 needsSpinner
                 ?
                 (<div className={stylesSpinner.spinner_container}><div className={stylesSpinner.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>)
@@ -181,6 +191,14 @@ class Cover extends React.Component<IProps, IState> {
             <div className={stylesPublications.corner}></div>
             : <></>} */}
             {
+                    publicationViewMaybeOpds.type === "missingOrDeleted"
+                        ? <div aria-label={this.props.__("catalog.missing")} style={{ position: "absolute", width: "inherit", height: "inherit", display: "flex", alignItems: "center", justifyContent: "center", opacity: 0.7 }}>
+                            <div aria-hidden style={{ height: "70px", width: "70px", borderRadius: "50%", background: "var(--color-error-text)", padding: "10px" }}>
+                                <SVG ariaHidden svg={FileBroken} className={stylesPublications.publication_missing_icon} />
+                            </div>
+                        </div> : <></>
+            }
+            {
             needsSpinner
             ?
             (<div className={stylesSpinner.spinner_container}><div className={stylesSpinner.spinner}><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>)
@@ -207,7 +225,7 @@ const mapStateToProps = (state: IRendererCommonRootState) => ({
     lcp: state.lcp,
 });
 
-
+ 
 const CoverWithTranslator = connect(mapStateToProps)(withTranslator(Cover));
 export default CoverWithTranslator;
 

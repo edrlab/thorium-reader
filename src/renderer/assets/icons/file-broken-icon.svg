@@ -1,0 +1,33 @@
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:cc="http://creativecommons.org/ns#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:svg="http://www.w3.org/2000/svg"
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="128" height="128" version="1.1">
+    <title>Broken File Icon</title>
+    <desc>This is shape (source) for Clarity vector icon theme for gtk</desc>
+    <metadata>
+        <rdf:RDF>
+            <cc:Work rdf:about="">
+                <dc:title>Broken File Icon</dc:title>
+                <dc:description>This is shape (source) for Clarity vector icon theme for gtk</dc:description>
+                <dc:creator>
+                    <cc:Agent>
+                        <dc:title>Jakub Jankiewicz</dc:title>
+                    </cc:Agent>
+                </dc:creator>
+                <dc:rights>
+                    <cc:Agent>
+                        <dc:title>Jakub Jankiewicz</dc:title>
+                    </cc:Agent>
+                </dc:rights>
+                <dc:date>2010</dc:date>
+                <dc:format>image/svg+xml</dc:format>
+                <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+                <cc:license rdf:resource="http://creativecommons.org/licenses/by-sa/3.0/" />
+             </cc:Work>
+        </rdf:RDF>
+    </metadata>
+    <path d="m 28.5,11.254349 c -2.901871,0.29359 -5.125,2.765184 -5.125,5.75 l 0,66.562501 9.34375,-12.375 2.59375,-3.46875 1.6875,3.96875 6.437499,15 14.75,-19.84375 1.5,-2 2,1.5 22.21875,16.40625 8.09375,-23.375 1.125,-3.25 2.75,2.09375 8.750001,6.625 0,-24.46875 -21.031251,0 c -4.306108,0 -8.0625,-3.141109 -8.0625,-7.3125 l 0,-21.812501 -46.437499,0 c -0.198988,0 -0.400292,-0.01957 -0.59375,0 z m 51.031249,0 0,21.812501 c 0,1.714122 1.631968,3.3125 4.0625,3.3125 l 21.031251,0 -25.093751,-25.125001 z m 16.09375,53.03125 -8.125,23.3125 -1.09375,3.21875 -2.75,-2.03125 -22.90625,-16.9375 -15.90625,21.3125 -2.59375,3.46875 -1.6875,-3.96875 -6.437499,-15.03125 -10.75,14.25 0,19.125001 c 0,3.1838 2.534946,5.75 5.71875,5.75 l 69.812499,0 c 3.183801,0 5.718751,-2.5662 5.718751,-5.75 l 0,-39.90625 -9.000001,-6.8125 z"/>
+</svg>
