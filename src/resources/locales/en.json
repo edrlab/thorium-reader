@@ -698,7 +698,7 @@
             "unmute": "unmute audio"
         },
         "dock": {
-            "dockDefault": "Panel as a popup",
+            "dockDefault": "Show panel as a modal popup",
             "dockLeft": "Dock panel to the left",
             "dockRight": "Dock panel to the right"
         },
