@@ -259,7 +259,7 @@ container.bind<OpdsFeedViewConverter>(diSymbolTable["opds-feed-view-converter"])
     .to(OpdsFeedViewConverter).inSingletonScope();
 
 // Storage
-const publicationStorage = new PublicationStorage(publicationRepositoryPath);
+const publicationStorage = new PublicationStorage(publicationRepositoryPath, configDataFolderPath);
 container.bind<PublicationStorage>(diSymbolTable["publication-storage"]).toConstantValue(
     publicationStorage,
 );

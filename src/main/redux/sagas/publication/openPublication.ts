@@ -185,10 +185,6 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string): Sag
 
     const pubStorage = yield* callTyped(() => diMainGet("publication-storage"));
     const epubPath = yield* callTyped(() => pubStorage.getPublicationEpubPath(publicationDocument.identifier));
-    // const epubPath = path.join(
-    //     pubStorage.getRootPath(),
-    //     publicationDocument.files[0].url.substr(6),
-    // );
     debug("Open publication %s", epubPath);
 
     // Start streamer if it's not already started

@@ -263,7 +263,7 @@ export class LcpManager {
     // }
 
     // MUTATES publicationDocument
-    public updateDocumentLcp(
+    public async updateDocumentLcp(
         publicationDocument: PublicationDocumentWithoutTimestampable,
         r2LCP: LCP,
         skipFilesystemCache = false,
@@ -278,7 +278,7 @@ export class LcpManager {
             // const r2LCPJson = r2LCP.JsonSource ? JSON.parse(r2LCP.JsonSource) : TaJsonSerialize(r2LCP);
             // publicationDocument.resources.r2LCPJson = r2LCPJson;
             if (!skipFilesystemCache) {
-                this.publicationViewConverter.updateLcpCache(publicationDocument, r2LCP);
+                await this.publicationViewConverter.updateLcpCache(publicationDocument, r2LCP);
             }
 
             // if (r2LCP.LSD) {
@@ -439,7 +439,7 @@ export class LcpManager {
         );
 
         // MUTATES newPublicationDocument
-        this.updateDocumentLcp(newPublicationDocument, r2Publication.LCP);
+        await this.updateDocumentLcp(newPublicationDocument, r2Publication.LCP);
 
         const newPubDocument = await this.publicationRepository.save(newPublicationDocument);
         return Promise.resolve(newPubDocument);
@@ -546,7 +546,7 @@ export class LcpManager {
                     );
 
                     // MUTATES newPublicationDocument
-                    this.updateDocumentLcp(newPublicationDocument, r2Publication.LCP);
+                    await this.updateDocumentLcp(newPublicationDocument, r2Publication.LCP);
 
                     newPubDocument = await this.publicationRepository.save(newPublicationDocument);
                 } else {
@@ -654,7 +654,7 @@ export class LcpManager {
                     );
 
                     // MUTATES newPublicationDocument
-                    this.updateDocumentLcp(newPublicationDocument, r2Publication.LCP);
+                    await this.updateDocumentLcp(newPublicationDocument, r2Publication.LCP);
 
                     newPubDocument = await this.publicationRepository.save(newPublicationDocument);
                 } else {

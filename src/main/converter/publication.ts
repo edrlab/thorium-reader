@@ -56,9 +56,9 @@ export class PublicationViewConverter {
         }
     }
 
-    public updateLcpCache(publicationDocument: PublicationDocumentWithoutTimestampable, r2LCP: LCP) {
+    public async updateLcpCache(publicationDocument: PublicationDocumentWithoutTimestampable, r2LCP: LCP) {
 
-        const pubFolder = this.publicationStorage.buildPublicationPath(
+        const pubFolder = await this.publicationStorage.findPublicationPath(
             publicationDocument.identifier,
         );
 
@@ -74,10 +74,10 @@ export class PublicationViewConverter {
         fs.writeFileSync(lcpPath, r2LCPStr, { encoding: "utf-8"});
     }
 
-    public updatePublicationCache(publicationDocument: PublicationDocumentWithoutTimestampable, r2Publication: R2Publication) {
+    public async updatePublicationCache(publicationDocument: PublicationDocumentWithoutTimestampable, r2Publication: R2Publication) {
         _pubCache[publicationDocument.identifier] = {};
 
-        const pubFolder = this.publicationStorage.buildPublicationPath(
+        const pubFolder = await this.publicationStorage.findPublicationPath(
             publicationDocument.identifier,
         );
 
@@ -91,7 +91,7 @@ export class PublicationViewConverter {
         fs.writeFileSync(manifestPath, r2PublicationStr, { encoding: "utf-8"});
 
         if (r2Publication.LCP) {
-            this.updateLcpCache(publicationDocument, r2Publication.LCP);
+            await this.updateLcpCache(publicationDocument, r2Publication.LCP);
         }
     }
 
@@ -99,7 +99,7 @@ export class PublicationViewConverter {
         publicationDocument: PublicationDocument,
     ): Promise<R2Publication> {
 
-        const pubFolder = this.publicationStorage.buildPublicationPath(
+        const pubFolder = await this.publicationStorage.findPublicationPath(
             publicationDocument.identifier,
         );
 
@@ -164,7 +164,7 @@ export class PublicationViewConverter {
                 }
             } catch (_err) {}
 
-            this.updatePublicationCache(publicationDocument, r2Publication);
+            await this.updatePublicationCache(publicationDocument, r2Publication);
 
             return r2Publication;
         } catch (err) {
@@ -180,7 +180,7 @@ export class PublicationViewConverter {
             // (no need to fetch ZIP data beyond this point)
             r2Publication.freeDestroy();
 
-            this.updatePublicationCache(publicationDocument, r2Publication);
+            await this.updatePublicationCache(publicationDocument, r2Publication);
 
             return r2Publication;
         }

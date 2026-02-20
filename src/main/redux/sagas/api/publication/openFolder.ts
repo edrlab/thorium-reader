@@ -8,18 +8,15 @@
 import { diMainGet } from "readium-desktop/main/di";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call } from "redux-saga/effects";
-import { SagaGenerator } from "typed-redux-saga";
-import * as path from "path";
+import { SagaGenerator, call as callTyped } from "typed-redux-saga";
 import { shell } from "electron";
 
 export function* openPublicationFolder(identifier?: string): SagaGenerator<void> {
 
     const publicationStorage = diMainGet("publication-storage");
-    const rootPath = yield call(() => publicationStorage.getRootPath());
+    const vaultPath = yield* callTyped(() => publicationStorage.getVaultPath()); // userVault || defaultVault
     
-    let folderPath = rootPath;
-    if (/^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/.test(identifier)) {
-        folderPath = path.join(rootPath, identifier);
-    }
+    const folderPath = (yield* callTyped(() => publicationStorage.findPublicationPath(identifier))) || vaultPath;
+
     yield call(() => shell.openPath(folderPath));
 }

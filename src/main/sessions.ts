@@ -12,7 +12,7 @@ import debug_ from "debug";
 import { net, session } from "electron";
 import { tryDecodeURIComponent } from "readium-desktop/common/utils/uri";
 import { pathToFileURL } from "url";
-import path from "path";
+import * as path from "path";
 import { diMainGet } from "readium-desktop/main/di";
 
 const debug = debug_("readium-desktop:main#sessions");
@@ -211,9 +211,9 @@ export const initProtocols = () => {
   session.defaultSession.protocol.handle(URL_PROTOCOL_FILEX, protocolHandler_FILEX);
   // protocol.unhandle(URL_PROTOCOL_FILEX);
 
-  const protocolHandler_Store = (
+  const protocolHandler_Store = async (
     request: Request,
-  ): Response | Promise<Response> => {
+  ): Promise<Response> => {
     debug("---protocolHandler_Store");
     debug(request);
     const urlPath = request.url.substring(`${URL_PROTOCOL_STORE}://`.length);
@@ -221,9 +221,9 @@ export const initProtocols = () => {
     // const urlPathDecoded = tryDecodeURIComponent(urlPath);
     // debug(urlPathDecoded);
     const pubStorage = diMainGet("publication-storage");
-    const rootPath = pubStorage.getRootPath();
-    debug(rootPath);
-    const filePath = path.join(rootPath, urlPath);
+    const [pubId, fileName] = urlPath.trim().split("/");
+    const pubPath = await pubStorage.findPublicationPath(pubId);
+    const filePath = path.join(pubPath, fileName);
     debug(filePath);
     const filePathUrl = pathToFileURL(filePath).toString();
     debug(filePathUrl);

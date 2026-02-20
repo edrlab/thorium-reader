@@ -5,19 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export interface IPublicationCheckerDirent {
-    name: string,
-    isFile: boolean,
-    isDirectory: boolean,
-    parentPath: string;
-}
-
 export interface IPublicationCheckerState {
-    publicationDirectoryPath: string;
     publicationIdentifierDataBase: string[],
-    publicationIdentifierDisk: string[],
-    approvedFileInPubDir: Array<{ id: string, title: string, identifiedFileArray: IPublicationCheckerDirent[], unknownFileArray: IPublicationCheckerDirent[] }>,
-    rejectedFileInPubDir: IPublicationCheckerDirent[],
+    approvedPublicationIdentifierDisk: string[],
+    rejectedPublicationIdentifierDisk: string[],
     dump: string,
 }
 
