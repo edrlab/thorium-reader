@@ -3019,6 +3019,8 @@ class Reader extends React.Component<IProps, IState> {
             // this.setState({ previousReaderConfigAnnotationDefaultDrawView: this.props.readerConfig.annotation_defaultDrawView });
             this.setState({ previousReaderConfigAnnotationDefaultDrawView: undefined });
         }
+
+        this.props.setConfig({ noFootnotes: false });
     }
     private handleTTSStop() {
         ttsClickEnable(false);
