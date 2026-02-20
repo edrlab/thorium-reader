@@ -31,12 +31,13 @@ export const PublicationCheckerModal = () => {
     const { open } = publicationCheckerState;
 
     const {
-        publicationDirectoryPath,
         publicationIdentifierDataBase,
-        publicationIdentifierDisk,
+        approvedPublicationIdentifierDisk,
+        rejectedPublicationIdentifierDisk,
         dump,
     } = open ? publicationCheckerState : {} as IPublicationCheckerState;
 
+    const publicationIdentifierDisk = [...approvedPublicationIdentifierDisk, ...rejectedPublicationIdentifierDisk];
     const publicationIdentifierNotFoundOnDiskButFoundOnDataBase: string[] = publicationIdentifierDataBase?.filter((id) => !publicationIdentifierDisk.includes(id)) || [];
     const publicationIdentifierNotFoundOnDataBaseButFoundOnDisk: string[] = publicationIdentifierDisk?.filter((id) => !publicationIdentifierDataBase.includes(id)) || [];
 
@@ -58,7 +59,7 @@ export const PublicationCheckerModal = () => {
                 <h1>Publication Integrity Checker</h1>
 
                 <h3>Publication vault folder Path:</h3>
-                <p><span>{publicationDirectoryPath}</span> <button onClick={() => openPublicationFolder()}>OPEN FOLDER</button></p>
+                <button onClick={() => openPublicationFolder()}>OPEN FOLDER</button>
 
                 <hr /><br />
 
