@@ -3020,7 +3020,9 @@ class Reader extends React.Component<IProps, IState> {
             this.setState({ previousReaderConfigAnnotationDefaultDrawView: undefined });
         }
 
-        this.props.setConfig({ noFootnotes: false });
+        if (this.props.readerConfig.noFootnotes) {
+            this.props.setConfig({ noFootnotes: false });
+        }
     }
     private handleTTSStop() {
         ttsClickEnable(false);
