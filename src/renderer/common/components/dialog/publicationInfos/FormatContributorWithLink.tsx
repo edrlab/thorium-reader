@@ -62,10 +62,10 @@ export const FormatContributorWithLink: React.FC<IProps> = (props) => {
                 );
             } else if (typeof newContributor === "object" && newContributor.nameLangString) {
                 retElement.push(
-                    <h3
+                    <span
                         className={classNames(stylesBookDetailsDialog.allowUserSelect, className  ? stylesPublications.authors : "")}>
                         {translateContentFieldHelper(newContributor.nameLangString, locale)}
-                    </h3>,
+                    </span>,
                 );
             } else {
                 const strMap = newContributor as string | IStringMap;
@@ -76,11 +76,11 @@ export const FormatContributorWithLink: React.FC<IProps> = (props) => {
                 const textStr = textLangStr && textLangStr[1] ? textLangStr[1] : "";
 
                 retElement.push(
-                    <h3
+                    <span
                         dir={textIsRTL ? "rtl" : undefined}
                         className={classNames(stylesBookDetailsDialog.allowUserSelect, className  ? stylesPublications.authors : "")}>
                         {translateContentFieldHelper(textStr, locale)}
-                    </h3>,
+                    </span>,
                 );
             }
         }

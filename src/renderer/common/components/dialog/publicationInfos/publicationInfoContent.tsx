@@ -322,7 +322,7 @@ const Progression = (props: {
         return (
             <section className="publicationInfo-progressionWrapper">
                 <div className={stylePublication.publicationInfo_heading}>
-                    <h4 ref={focusRef} tabIndex={focusWhereAmI ? -1 : 0}>{`${__("publication.progression.title")} `}</h4>
+                    <h3 ref={focusRef} tabIndex={focusWhereAmI ? -1 : 0}>{`${__("publication.progression.title")} `}</h3>
                 </div>
                 <div className={stylePublication.publicationInfo_progressionContainer}>
                     <div style={{ display: "flex", gap: "10px" }}>
@@ -455,7 +455,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                     </section>
                     <section>
                         <div className={stylePublication.publicationInfo_heading}>
-                            <h4>{__("catalog.moreInfo")}</h4>
+                            <h3>{__("catalog.moreInfo")}</h3>
                         </div>
                         <div className={stylePublication.publicationInfo_moreInfo_content}>
                             <FormatPublisherDate publicationViewMaybeOpds={publicationViewMaybeOpds} __={__} locale={locale} />
@@ -510,7 +510,7 @@ export const PublicationInfoContent: React.FC<React.PropsWithChildren<IProps>> =
                     </section>
                     <section>
                         <div className={stylePublication.publicationInfo_heading}>
-                            <h4>{__("publication.accessibility.name")}</h4>
+                            <h3>{__("publication.accessibility.name")}</h3>
                         </div>
                         <div className={stylePublication.accessibility_infos}>
                             {/* <PublicationInfoA11y publicationViewMaybeOpds={publicationViewMaybeOpds}></PublicationInfoA11y> */}
