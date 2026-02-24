@@ -11,16 +11,16 @@ export const ID = "MAIN_WIN_READER_CLOSE_REQUEST";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Payload {
-    identifier: string;
+    winId: string;
 }
 
-export function build(identifier: string):
+export function build(winId: string):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
-            identifier,
+            winId: winId,
         },
     };
 }

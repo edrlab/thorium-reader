@@ -10,11 +10,10 @@ import { readerIpc } from "readium-desktop/common/ipc";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { normalizeRectangle } from "readium-desktop/common/rectangle/window";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { deleteReaderWindowInDi, diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
+import { deleteReaderWindowInDi, diMainGet, findReaderWindowFromPubIdDi, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
-import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, put } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
@@ -30,23 +29,25 @@ const filename_ = "readium-desktop:main:redux:sagas:win:reader";
 const debug = debug_(filename_);
 debug("_");
 
-const __readerWithSamePubIdGotTheLockMap = new Map<string, string>(); // K: publicationIdentifier V: windowIdentifier
+const __readerWithSamePubIdGotTheLockMap = new Map<string, string>(); // K: pubId V: windowIdentifier
 
 function* winOpen(action: winActions.reader.openSucess.TAction) {
 
-    const identifier = action.payload.identifier;
-    debug(`reader ${identifier} -> winOpen`);
+    const { /*win,*/ winId, pubId } = action.payload;
+    debug(`reader ${winId} -> winOpen`);
 
     const readerWin = action.payload.win;
     const webContents = readerWin.webContents;
     const screenReaderActivate = yield* selectTyped((_state: RootState) => _state.screenReader.activate);
     const locale = yield* selectTyped((_state: RootState) => _state.i18n.locale);
-    const reader = yield* selectTyped((_state: RootState) => _state.win.session.reader[identifier]);
+    // const reader = yield* selectTyped((_state: RootState) => _state.win.session.reader[identifier]);
+    // const reader = {}; // read from file directory
     const readerDefaultConfig = yield* selectTyped((_state: RootState) => _state.reader.defaultConfig);
     const keyboard = yield* selectTyped((_state: RootState) => _state.keyboard);
     const mode = yield* selectTyped((state: RootState) => state.mode);
     const theme = yield* selectTyped((state: RootState) => state.theme);
-    const config = reader?.reduxState?.config || readerConfigInitialState;
+    // const config = reader?.reduxState?.config || readerConfigInitialState;
+    const config = {}; // read from config.json
     const transientConfigMerge = {...readerConfigInitialState, ...config};
     const creator = yield* selectTyped((_state: RootState) => _state.creator);
     const lcp = yield* selectTyped((state: RootState) => state.lcp);
@@ -63,20 +64,18 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
 
 
     let gotTheLock = false;
-    const winIdGotTheLock = reader?.publicationIdentifier
-        ? __readerWithSamePubIdGotTheLockMap.get(reader.publicationIdentifier)
-        : true;
+    const winIdGotTheLock = pubId ? __readerWithSamePubIdGotTheLockMap.get(pubId) : true;
     if (winIdGotTheLock) {
         gotTheLock = false;
-        debug(`reader ${identifier} did not get the lock`);
+        debug(`reader ${winId} did not get the lock`);
     } else {
-        __readerWithSamePubIdGotTheLockMap.set(reader.publicationIdentifier, identifier);
+        __readerWithSamePubIdGotTheLockMap.set(pubId, winId);
         gotTheLock = true;
-        debug(`reader ${identifier} got the lock !!!`);
+        debug(`reader ${winId} got the lock !!!`);
     }
 
-    const notes = reader?.publicationIdentifier
-        ? yield* callTyped(() => sqliteTableSelectAllNotesWherePubId(reader.publicationIdentifier))
+    const notes = pubId
+        ? yield* callTyped(() => sqliteTableSelectAllNotesWherePubId(pubId))
         : [];
 
     webContents.send(readerIpc.CHANNEL, {
@@ -89,9 +88,10 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
                 locale,
             },
             win: {
-                identifier,
+                identifier: winId,
             },
             reader: {
+                // TODO
                 ...(reader?.reduxState || {}), // reader.reduxState is normally always defined but for security reason, I prefer to do not change this !!!
                 // see issue https://github.com/edrlab/thorium-reader/issues/2532
                 defaultConfig: {
@@ -114,6 +114,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
                 config,
                 lock: gotTheLock,
                 note: notes,
+                // disableRTLFlip: { disabled: false },
             },
             keyboard,
             mode,
@@ -131,100 +132,84 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
 
 function* winClose(action: winActions.reader.closed.TAction) {
 
-    const winId = action.payload.identifier;
-    let publicationIdentifier = "";
+    const winId = action.payload.winId;
     debug(`reader ${winId} -> winClose`);
+    const readerStateFromDi = getReaderWindowFromDi(winId);
+    if (!readerStateFromDi) {
+        debug("ERROR: WINID NOT FOUND !!!!!", winId);
+        debug("WIN CLOSE NOT FINISHED");
+        debug("ERROR!!!");
+        return ;
+    }
+    const { win: readerWindow, pubId } = getReaderWindowFromDi(winId);
     deleteReaderWindowInDi(winId);
 
-    {
-        const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
-        const reader = readers[winId];
-
-        if (reader) {
-
-            publicationIdentifier = reader.publicationIdentifier;
-            const winIdGotTheLock = __readerWithSamePubIdGotTheLockMap.get(publicationIdentifier);
-            if (winId === winIdGotTheLock) {
-                __readerWithSamePubIdGotTheLockMap.delete(publicationIdentifier);
-            }
-
-            const reduxState = reader.reduxState;
-
-            // const notes = yield* callTyped(() => sqliteTableSelectAllNotesWherePubId(publicationIdentifier));
-            // reduxState.note = (notes && notes.length) ? notes : [];
-
-            // It takes too mutch time on reader closing now
-            yield put(winActions.session.setReduxState.build(winId, publicationIdentifier, reduxState));
-
-            yield put(winActions.session.unregisterReader.build(winId));
-
-            yield put(winActions.registry.registerReaderPublication.build(
-                publicationIdentifier,
-                reader.windowBound,
-                reduxState),
-                );
-
-            yield put(streamerActions.publicationCloseRequest.build(publicationIdentifier));
-        }
+    const winIdGotTheLock = __readerWithSamePubIdGotTheLockMap.get(pubId);
+    if (winId === winIdGotTheLock) {
+        __readerWithSamePubIdGotTheLockMap.delete(pubId);
     }
 
-    {
-        // readers in session updated
-        const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
-        const readersArray = ObjectValues(readers);
+    // const reduxState = reader.reduxState;
 
-        const readersWithSamePubId = readersArray.filter(({publicationIdentifier: pubIdFromOtherReader}) => publicationIdentifier === pubIdFromOtherReader);
-        const readerSamePubIdFirstWinId = readersWithSamePubId[0]?.identifier;
-        if (readerSamePubIdFirstWinId) {
-            __readerWithSamePubIdGotTheLockMap.set(publicationIdentifier, readerSamePubIdFirstWinId);
-            yield put(readerActions.setTheLock.build(readerSamePubIdFirstWinId));
-            debug(`reader ${readerSamePubIdFirstWinId} got the lock !!!`);
-        }
+    // const notes = yield* callTyped(() => sqliteTableSelectAllNotesWherePubId(pubId));
+    // reduxState.note = (notes && notes.length) ? notes : [];
 
-        try {
-            const libraryWin = yield* callTyped(() => getLibraryWindowFromDi());
+    // TODO: persist data ?
 
-            debug("Nb of readers:", readersArray.length);
-            debug("readers: ", readersArray);
-            if (readersArray.length < 1) {
+    yield put(streamerActions.publicationCloseRequest.build(pubId));
 
-                const mode = yield* selectTyped((state: RootState) => state.mode);
-                if (mode === ReaderMode.Detached) {
 
-                    // disabled for the new UI refactoring by choice of the designer
-                    // yield put(readerActions.attachModeRequest.build());
+    const readersWithSamePubId = findReaderWindowFromPubIdDi(pubId);
 
-                } else {
-                    const readerWin = yield* callTyped(() => getReaderWindowFromDi(winId));
-                    if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
-                        try {
-                            const winBound = readerWin.getBounds();
-                            debug("_______3 readerWin.getBounds()", winBound);
-                            normalizeRectangle(winBound);
+    const readerSamePubIdFirstWinId = readersWithSamePubId[0]?.winId;
+    if (readerSamePubIdFirstWinId) {
+        __readerWithSamePubIdGotTheLockMap.set(pubId, readerSamePubIdFirstWinId);
+        yield put(readerActions.setTheLock.build(readerSamePubIdFirstWinId));
+        debug(`reader ${readerSamePubIdFirstWinId} got the lock !!!`);
+    }
 
-                            if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
-                                libraryWin.setBounds(winBound);
-                            }
-                        } catch (e) {
-                            debug("error libraryWindow.setBounds(readerWin.getBounds())", e);
+    try {
+        const libraryWin = yield* callTyped(() => getLibraryWindowFromDi());
+
+        debug("Nb of readers:", readersWithSamePubId.length);
+        debug("readers: ", readersWithSamePubId);
+        if (readersWithSamePubId.length < 1) {
+
+            const mode = yield* selectTyped((state: RootState) => state.mode);
+            if (mode === ReaderMode.Detached) {
+
+                // disabled for the new UI refactoring by choice of the designer
+                // yield put(readerActions.attachModeRequest.build());
+
+            } else {
+                if (readerWindow && !readerWindow.isDestroyed() && !readerWindow.webContents.isDestroyed()) {
+                    try {
+                        const winBound = readerWindow.getBounds();
+                        debug("_______3 readerWindow.getBounds()", winBound);
+                        normalizeRectangle(winBound);
+
+                        if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
+                            libraryWin.setBounds(winBound);
                         }
+                    } catch (e) {
+                        debug("error libraryWindow.setBounds(readerWindow.getBounds())", e);
                     }
                 }
             }
-
-            if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
-                if (libraryWin.isMinimized()) {
-                    libraryWin.restore();
-                } else if (!libraryWin.isVisible()) {
-                    libraryWin.close();
-                    return;
-                }
-                libraryWin.show(); // focuses as well
-            }
-
-        } catch (_err) {
-            debug("can't load libraryWin from di");
         }
+
+        if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
+            if (libraryWin.isMinimized()) {
+                libraryWin.restore();
+            } else if (!libraryWin.isVisible()) {
+                libraryWin.close();
+                return;
+            }
+            libraryWin.show(); // focuses as well
+        }
+
+    } catch (_err) {
+        debug("can't load libraryWin from di");
     }
 
 }

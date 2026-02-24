@@ -10,16 +10,14 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
 import * as path from "path";
 import { defaultRectangle, normalizeRectangle } from "readium-desktop/common/rectangle/window";
-import { diMainGet } from "readium-desktop/main/di";
+import { diMainGet, getAllReadersWindowFromDi } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import {
     _RENDERER_LIBRARY_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
-import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { put } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
 import { contextMenuSetup } from "@r2-navigator-js/electron/main/browser-window-tracker";
@@ -39,6 +37,7 @@ let libWindow: BrowserWindow = null;
 export function* createLibraryWindow(_action: winActions.library.openRequest.TAction) {
 
     // initial state apply in reducers
+    // TODO: !?
     let windowBound = yield* selectTyped(
         (state: RootState) => state.win.session.library.windowBound);
     windowBound = normalizeRectangle(windowBound);
@@ -70,12 +69,8 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         contextMenuSetup(wc, wc.id);
     }
 
-    yield put(winActions.session.registerLibrary.build(libWindow, windowBound));
 
-    const readers = yield* selectTyped(
-        (state: RootState) => state.win.session.reader,
-    );
-    const readersArray = ObjectValues(readers);
+    const readersArray = getAllReadersWindowFromDi();
     if (readersArray.length === 1) {
         libWindow.hide();
     }
@@ -123,10 +118,9 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
 
             // the dispatching of 'openSucess' action must be in the 'did-finish-load' event
             // because webpack-dev-server automaticaly refresh the window.
-            const store = diMainGet("store");
-            const identifier = store.getState().win.session.library.identifier;
             // const identifier = yield* selectTyped((state: RootState) => state.win.session.library.identifier);
-            store.dispatch(winActions.library.openSucess.build(libWindow, identifier));
+            const store = diMainGet("store");
+            store.dispatch(winActions.library.openSucess.build(libWindow));
 
         });
 

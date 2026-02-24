@@ -18,7 +18,6 @@ import * as lcpActions from "./lcp/";
 import * as loadActions from "./load";
 import * as readerActions from "./reader/";
 import * as toastActions from "./toast/";
-import * as sessionActions from "./session/";
 import * as screenReaderActions from "./screenReader/";
 import * as catalogActions from "./catalog";
 import * as publicationActions from "./publication";
@@ -46,7 +45,6 @@ export {
     downloadActions,
     keyboardActions,
     loadActions,
-    sessionActions,
     screenReaderActions,
     catalogActions,
     publicationActions,

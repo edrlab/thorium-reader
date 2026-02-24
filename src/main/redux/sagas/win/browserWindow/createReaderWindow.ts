@@ -9,7 +9,8 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import debug_ from "debug";
 import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
 import * as path from "path";
-import { call as callTyped, put as putTyped } from "typed-redux-saga/macro";
+import { call as callTyped, debounce as debounceTyped, fork as forkTyped, take as takeTyped, cancel as cancelTyped, put as putTyped  } from "typed-redux-saga/macro";
+import { buffers, eventChannel } from "redux-saga";
 import { diMainGet, saveReaderWindowInDi } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import { winActions } from "readium-desktop/main/redux/actions";
@@ -21,9 +22,9 @@ import {
     contextMenuSetup, trackBrowserWindow,
 } from "@r2-navigator-js/electron/main/browser-window-tracker";
 
-import { getPublication } from "../../api/publication/getPublication";
 import { WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/constant";
 import { URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
+import { normalizeRectangle } from "readium-desktop/common/rectangle/window";
 
 // Logger
 const debug = debug_("readium-desktop:createReaderWindow");
@@ -33,7 +34,7 @@ const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
 
 export function* createReaderWindow(action: winActions.reader.openRequest.TAction) {
 
-    const { winBound, publicationIdentifier, manifestUrl, identifier, reduxState } = action.payload;
+    const { winBound, pubId, winId } = action.payload;
 
     const readerWindow = new BrowserWindow({
         ...winBound,
@@ -65,23 +66,26 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
         contextMenuSetup(wc, wc.id);
     }
 
-    const pathBase64 = manifestUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
-    const pathDecoded = Buffer.from(decodeURIComponent(pathBase64), "base64").toString("utf8");
+    // const pathBase64 = manifestUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
+    // const pathDecoded = Buffer.from(decodeURIComponent(pathBase64), "base64").toString("utf8");
 
-    const publicationView = yield* getPublication(publicationIdentifier, false);
+    // const publicationView = yield* getPublication(publicationIdentifier, false);
 
-    const registerReaderAction = yield* putTyped(winActions.session.registerReader.build(
-        readerWindow,
-        publicationIdentifier,
-        publicationView,
-        manifestUrl,
-        pathDecoded,
-        winBound,
-        reduxState,
-        identifier,
-    ));
+    // const registerReaderAction = yield* putTyped(winActions.session.registerReader.build(
+    //     readerWindow,
+    //     publicationIdentifier,
+    //     publicationView,
+    //     manifestUrl,
+    //     pathDecoded,
+    //     winBound,
+    //     reduxState,
+    //     identifier,
+    // ));
 
-    yield* callTyped(() => saveReaderWindowInDi(readerWindow, registerReaderAction.payload.identifier));
+
+    yield* callTyped(readerClosureManagement, readerWindow, winId);
+
+    yield* callTyped(() => saveReaderWindowInDi(winId, readerWindow, pubId));
 
     // Track it
     trackBrowserWindow(readerWindow);
@@ -127,7 +131,7 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
             // because webpack-dev-server automaticaly refresh the window.
             const store = diMainGet("store");
 
-            store.dispatch(winActions.reader.openSucess.build(readerWindow, registerReaderAction.payload.identifier));
+            store.dispatch(winActions.reader.openSucess.build(readerWindow, winId, pubId));
         });
     }
 
@@ -152,7 +156,7 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
     // // (otherwise called a second time in did-finish-load event handler below)
     // if (!__TH__IS_DEV__) {
     //     // see 'did-finish-load' otherwise
-    //     yield* putTyped(winActions.reader.openSucess.build(readerWindow, registerReaderAction.payload.identifier));
+    //     yield* putTyped(winActions.reader.openSucess.build(readerWindow, winId));
     // }
 
     // if (__TH__IS_DEV__) {
@@ -212,4 +216,65 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
             willNavigate(details.url);
         });
     }    
+}
+
+function* readerClosureManagement(readerWindow: BrowserWindow, winId: string) {
+
+    const moveOrResizeTask = yield* forkTyped(readerMoveOrResizeObserver, readerWindow, winId);
+
+    const channel = eventChannel<boolean>(
+        (emit) => {
+
+            const handler = () => emit(true);
+            readerWindow.on("close", handler);
+
+            return () => {
+                readerWindow.removeListener("close", handler);
+            };
+        },
+        buffers.none(),
+    );
+
+    // waiting for reader window to close
+    yield* takeTyped(channel);
+
+    // cancel moveAndResizeObserver
+    yield* cancelTyped(moveOrResizeTask);
+
+    debug("event close requested -> emit unregisterReader and closed");
+    yield* putTyped(winActions.reader.closed.build(winId));
+}
+
+function* readerMoveOrResizeObserver(readerWindow: BrowserWindow, winId: string) {
+
+    const DEBOUNCE_TIME = 500;
+
+    const channel = eventChannel<boolean>(
+        (emit) => {
+
+            const handler = () => emit(true);
+
+            readerWindow.on("move", handler);
+            readerWindow.on("resize", handler);
+
+            return () => {
+                readerWindow.removeListener("move", handler);
+                readerWindow.removeListener("resize", handler);
+            };
+        },
+        buffers.none(), // sliding(0) ?
+    );
+
+    yield* debounceTyped(DEBOUNCE_TIME, channel, function*() {
+
+        try {
+            const winBound = readerWindow.getBounds();
+            debug("_______1 win.getBounds()", winBound);
+            normalizeRectangle(winBound);
+            // yield put(winActions.session.setBound.build(id, winBound)); // TODO
+            // TODO: write to a file 
+        } catch (e) {
+            debug("set reader win bound error", winId, e);
+        }
+    });
 }

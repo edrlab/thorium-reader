@@ -191,6 +191,7 @@ export class PublicationViewConverter {
         const store = diMainGet("store");
         const state = store.getState();
         const readingFinished = tryCatchSync(() => state.publication.readingFinishedQueue.findIndex(([, pubIndentifier]) => pubIndentifier === document.identifier) > -1, "") || false;
+        // TODO: !?
         const readerStateLocator = tryCatchSync(() => state.win.registry.reader[document.identifier]?.reduxState.locator, "");
 
         const title = document.title || "-"; // default title;
@@ -262,6 +263,7 @@ export class PublicationViewConverter {
         // could be refactored when the publications documents will be in the state
         const store = diMainGet("store");
         const state = store.getState();
+        // TODO: !?
         const readerStateLocator = tryCatchSync(() => state.win.registry.reader[document.identifier]?.reduxState.locator, "");
 
         const duration = typeof r2Publication.Metadata.Duration === "number" ? r2Publication.Metadata.Duration : undefined;

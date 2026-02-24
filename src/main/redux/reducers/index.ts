@@ -9,17 +9,13 @@ import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { keyboardReducer } from "readium-desktop/common/redux/reducers/keyboard";
 import { appReducer } from "readium-desktop/main/redux/reducers/app";
 import { streamerReducer } from "readium-desktop/main/redux/reducers/streamer";
-import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
 import { screenReaderReducer } from "readium-desktop/common/redux/reducers/screenReader";
 import { priorityQueueReducer } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 import { combineReducers } from "redux";
 
-import { publicationActions, winActions } from "../actions";
-import { customizationActions, publicationActions as publicationActionsFromCommonAction } from "readium-desktop/common/redux/actions";
+import { publicationActions } from "../actions";
+import { customizationActions, publicationActions as publicationActionsFromCommonAction, readerActions } from "readium-desktop/common/redux/actions";
 import { readerDefaultConfigReducer } from "../../../common/redux/reducers/reader/defaultConfig";
-import { winRegistryReaderReducer } from "./win/registry/reader";
-import { winSessionLibraryReducer } from "./win/session/library";
-import { winSessionReaderReducer } from "./win/session/reader";
 import { winModeReducer } from "../../../common/redux/reducers/winModeReducer";
 import { readerRTLFlipReducer } from "../../../common/redux/reducers/reader/rtlFlip";
 import { publicationDbReducers } from "./publication/db";
@@ -40,11 +36,15 @@ import { arrayReducer } from "readium-desktop/utils/redux-reducers/array.reducer
 import { ICustomizationProfileHistory } from "readium-desktop/common/redux/states/customization";
 import { customizationPackageWelcomeScreenReducer } from "readium-desktop/common/redux/reducers/customization/welcomeScreen";
 import { ICustomizationManifest } from "readium-desktop/common/readium/customization/manifest";
+import { EventPayload } from "readium-desktop/common/ipc/sync";
+import { SenderType } from "readium-desktop/common/models/sync";
+import { getReaderWindowFromDi } from "readium-desktop/main/di";
+
+const debug = (...a: any) => console.error(...a); // TODO !!!
 
 export const rootReducer = combineReducers({ // RootState
     versionUpdate: versionUpdateReducer,
     theme: themeReducer,
-    session: sessionReducer,
     screenReader: screenReaderReducer,
     streamer: streamerReducer,
     i18n: i18nReducer,
@@ -55,28 +55,31 @@ export const rootReducer = combineReducers({ // RootState
     // net: netReducer,
     // update: updateReducer,
     app: appReducer,
-    win: combineReducers({
-        session: combineReducers({
-            library: winSessionLibraryReducer,
-            reader: winSessionReaderReducer,
-        }),
-        registry: combineReducers({
-            reader: winRegistryReaderReducer,
-        }),
-    }),
     mode: winModeReducer,
     lcp: lcpReducer,
     publication: combineReducers({
         lastReadingQueue: priorityQueueReducer
             <
-                winActions.session.setReduxState.TAction,
+                readerActions.setLocator.TAction,
                 publicationActions.deletePublication.TAction | publicationActionsFromCommonAction.readingFinished.TAction
             >(
                 {
                     push: {
-                        type: winActions.session.setReduxState.ID,
-                        selector: (action) =>
-                            [(new Date()).getTime(), action.payload.publicationIdentifier],
+                        type: readerActions.setLocator.ID,
+                        selector: (action) => {
+
+                            const sender = action.sender as EventPayload["sender"];
+
+                            if (sender.type !== SenderType.Renderer) {
+                                debug("sender is not renderer !!!");
+                                return [0, undefined]; // nop
+                            } 
+
+                            const winId = sender.identifier;
+                            const { pubId } = getReaderWindowFromDi(winId);
+
+                            return [(new Date()).getTime(), pubId];
+                        },
                     },
                     pop: {
                         type: [publicationActions.deletePublication.ID, publicationActionsFromCommonAction.readingFinished.ID],
@@ -89,7 +92,7 @@ export const rootReducer = combineReducers({ // RootState
         readingFinishedQueue: priorityQueueReducer
             <
                 publicationActionsFromCommonAction.readingFinished.TAction,
-                publicationActions.deletePublication.TAction | winActions.session.setReduxState.TAction
+                publicationActions.deletePublication.TAction | readerActions.setLocator.TAction
             >(
                 {
                     push: {
@@ -98,8 +101,22 @@ export const rootReducer = combineReducers({ // RootState
                             [(new Date()).getTime(), action.payload.publicationIdentifier],
                     },
                     pop: {
-                        type: [publicationActions.deletePublication.ID, winActions.session.setReduxState.ID],
-                        selector: (action, queue) => queue.find(([_, publicationIdentifier]) => action.payload.publicationIdentifier === publicationIdentifier),
+                        type: [publicationActions.deletePublication.ID, readerActions.setLocator.ID],
+                        selector: (action, queue) => queue.find(([, _pubId]) => {
+
+                            const sender = action.sender as EventPayload["sender"];
+
+                            if (sender.type !== SenderType.Renderer) {
+                                debug("sender is not renderer !!!");
+                                return [0, undefined]; // nop
+                            } 
+
+                            const winId = sender.identifier;
+                            const { pubId } = getReaderWindowFromDi(winId);
+
+                            return _pubId === pubId;
+
+                        }),
                         // selector: (action) => [undefined, action.payload.publicationIdentifier],
                     },
                     sortFct: (a, b) => b[0] - a[0],

@@ -13,17 +13,15 @@ export const ID = "LIBRARY_OPEN_SUCCESS";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Payload {
     win: Electron.BrowserWindow;
-    identifier: string;
 }
 
-export function build(win: Electron.BrowserWindow, identifier: string):
+export function build(win: Electron.BrowserWindow):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
             win,
-            identifier,
         },
     };
 }

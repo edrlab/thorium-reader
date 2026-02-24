@@ -7,10 +7,8 @@
 
 import * as library from "./library";
 import * as reader from "./reader";
-import * as session from "./session";
 
 export {
     library,
     reader,
-    session,
 };

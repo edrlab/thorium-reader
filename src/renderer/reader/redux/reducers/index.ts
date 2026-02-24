@@ -30,7 +30,6 @@ import { searchReducer } from "./search";
 import { winModeReducer } from "readium-desktop/common/redux/reducers/winModeReducer";
 import { readerDivinaReducer } from "./divina";
 import { readerRTLFlipReducer } from "readium-desktop/common/redux/reducers/reader/rtlFlip";
-import { sessionReducer } from "readium-desktop/common/redux/reducers/session";
 import { screenReaderReducer } from "readium-desktop/common/redux/reducers/screenReader";
 import { readerDefaultConfigReducer } from "readium-desktop/common/redux/reducers/reader/defaultConfig";
 import { themeReducer } from "readium-desktop/common/redux/reducers/theme";
@@ -65,7 +64,6 @@ export const rootReducer = () => {
     return combineReducers({ // IReaderRootState
         versionUpdate: versionUpdateReducer,
         theme: themeReducer,
-        session: sessionReducer,
         screenReader: screenReaderReducer,
         api: apiReducer,
         i18n: i18nReducer,

@@ -110,12 +110,6 @@ export function* rootSaga() {
     yield win.library.saga();
     // yield spawnLeading(win.library.watchers, (e) => error("main:rootSaga:win:library", e));
 
-    yield win.session.reader.saga();
-    // yield spawnLeading(win.session.library.watchers, (e) => error("main:rootSaga:win:session:library", e));
-
-    yield win.session.library.saga();
-    // yield spawnLeading(win.session.reader.watchers, (e) => error("main:rootSaga:win:session:reader", e));
-
     yield ipc.saga();
     // yield spawnLeading(ipc.watchers, (e) => error("main:rootSaga:ipc", e));
 

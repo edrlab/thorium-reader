@@ -7,36 +7,29 @@
 
 import { Rectangle } from "electron";
 import { Action } from "readium-desktop/common/models/redux";
-import { IReaderStateReaderPersistence } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { v4 as uuidv4 } from "uuid";
 
 export const ID = "MAIN_WIN_READER_OPEN_REQUEST";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Payload {
-    publicationIdentifier: string;
-    identifier?: string;
+    pubId: string;
     winBound: Rectangle;
-    manifestUrl: string;
-    reduxState: Partial<IReaderStateReaderPersistence>;
+    winId: string;
 }
 
 export function build(
-    publicationIdentifier: string,
-    manifestUrl: string,
+    pubId: string,
     winBound: Rectangle | undefined,
-    reduxState: Partial<IReaderStateReaderPersistence>,
-    identifier?: string,
 ):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
-            publicationIdentifier,
+            pubId: pubId,
             winBound,
-            manifestUrl,
-            identifier,
-            reduxState,
+            winId: uuidv4(),
         },
     };
 }

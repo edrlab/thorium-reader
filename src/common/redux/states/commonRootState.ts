@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ISessionState } from "readium-desktop/common/redux/states/session";
 import { IVersionUpdateState } from "readium-desktop/common/redux/states/version";
 import { IRTLFlipState } from "readium-desktop/common/redux/states/renderer/rtlFlip";
 import { IKeyboardState } from "readium-desktop/common/redux/states/keyboard";
@@ -21,7 +20,6 @@ import { ICustomizationManifest } from "readium-desktop/common/readium/customiza
 
 export interface ICommonRootState {
     i18n: I18NState;
-    session: ISessionState;
     screenReader: IScreenReaderState;
     versionUpdate: IVersionUpdateState;
     keyboard: IKeyboardState;

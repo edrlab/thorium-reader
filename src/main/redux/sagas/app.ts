@@ -8,7 +8,7 @@
 import debug_ from "debug";
 import { app, ipcMain } from "electron";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { closeProcessLock, diMainGet, getLibraryWindowFromDi, getAllReaderWindowFromDi } from "readium-desktop/main/di";
+import { closeProcessLock, diMainGet, getLibraryWindowFromDi, getAllReadersWindowFromDi } from "readium-desktop/main/di";
 import { getOpdsNewCatalogsStringUrlChannel } from "readium-desktop/main/event";
 import {
     absorbDBToJson as absorbDBToJsonCookieJar, fetchCookieJarPersistence,
@@ -93,11 +93,11 @@ export function* init() {
             debug("getLibraryWindowFromDi ERROR?", e);
         }
         try {
-            const readerWins = getAllReaderWindowFromDi();
+            const readerWins = getAllReadersWindowFromDi();
             if (readerWins?.length) {
                 for (const readerWin of readerWins) {
-                    if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
-                        browserWindows.push(readerWin);
+                    if (readerWin && !readerWin.win.isDestroyed() && !readerWin.win.webContents.isDestroyed()) {
+                        browserWindows.push(readerWin.win);
                     }
                 }
             }

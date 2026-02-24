@@ -14,9 +14,6 @@ import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reduce
 import { AppState } from "./app";
 import { IDictPublicationState } from "./publication";
 import { StreamerState } from "./streamer";
-import { IDictWinRegistryReaderState } from "./win/registry/reader";
-import { IWinSessionLibraryState } from "./win/session/library";
-import { IDictWinSessionReaderState } from "./win/session/reader";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { IWizardState } from "readium-desktop/common/redux/states/wizard";
 import { ISettingsState } from "readium-desktop/common/redux/states/settings";
@@ -27,15 +24,6 @@ export interface RootState extends ICommonRootState {
     i18n: I18NState;
     streamer: StreamerState;
     // update: UpdateState;
-    win: {
-        session: {
-            library: IWinSessionLibraryState,
-            reader: IDictWinSessionReaderState,
-        },
-        registry: {
-            reader: IDictWinRegistryReaderState,
-        },
-    };
     mode: ReaderMode;
     publication: {
         lastReadingQueue: TPQueueState;
@@ -51,4 +39,4 @@ export interface RootState extends ICommonRootState {
     settings: ISettingsState;
 }
 
-export type PersistRootState = Pick<RootState, "win" | "publication" | "reader" | "session" | "screenReader" | "i18n" | "opds" | "version" | "theme" | "wizard" | "settings" | "creator" | "noteExport" | "customization">;
+export type PersistRootState = Pick<RootState, "publication" | "reader" | "screenReader" | "i18n" | "opds" | "version" | "theme" | "wizard" | "settings" | "creator" | "noteExport" | "customization">;

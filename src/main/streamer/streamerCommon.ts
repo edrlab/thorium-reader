@@ -37,6 +37,7 @@ export function computeReadiumCssJsonMessageInStreamer(
         const state = store.getState();
 
         try {
+            // TODO: !?
             settings = state.win.session.reader[winId].reduxState.config;
 
             debug("PAGED: ", settings.paged, "colCount:", settings.colCount);
@@ -98,6 +99,7 @@ export function setupMathJaxTransformer(getUrl: () => string) {
             const state = store.getState();
 
             try {
+                // TODO: !?
                 settings = state.win.session.reader[winId].reduxState.config;
 
             } catch (err) {

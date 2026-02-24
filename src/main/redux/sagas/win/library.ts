@@ -10,22 +10,20 @@ import { winIpc } from "readium-desktop/common/ipc";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import {
-    closeProcessLock, getLibraryWindowFromDi, getReaderWindowFromDi,
+    closeProcessLock, getAllReadersWindowFromDi, getLibraryWindowFromDi,
 } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
-import { ObjectKeys, ObjectValues } from "readium-desktop/utils/object-keys-values";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { all, call, delay, put, spawn, take } from "redux-saga/effects";
+import { all, call, delay, put, take } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
-import { IWinSessionReaderState } from "../../states/win/session/reader";
 import { getAppActivateEventChannel } from "../getEventChannel";
 import { createLibraryWindow } from "./browserWindow/createLibraryWindow";
-import { checkReaderWindowInSession } from "./session/checkReaderWindowInSession";
 import { getCatalog } from "../catalog";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import { LIB_WIN_IDENTIFIER } from "readium-desktop/common/constant";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:win:library";
@@ -41,14 +39,12 @@ export function* appActivate() {
         error(filename_ + "appActivate", new Error("closing process not completed"));
     } else {
 
-        const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
-        const readerWindows = ObjectValues(readers)
-            .map((reader) => getReaderWindowFromDi(reader.identifier))
-            .filter((w) => w && !w.isDestroyed() && !w.webContents.isDestroyed());
+        const readerWindows = getAllReadersWindowFromDi();
+
 
         // Prefer an existing reader window when the app is re-activated from the Dock
         // Prevents library window opening in front of the book window when clicking the Dock icon
-        const readerWindow = readerWindows[0];
+        const readerWindow = readerWindows[0]?.win;
         if (readerWindow) {
             if (readerWindow.isMinimized()) {
                 readerWindow.restore();
@@ -57,40 +53,28 @@ export function* appActivate() {
             return;
         }
 
-        const libWinState = yield* selectTyped((state: RootState) => state.win.session.library);
+        const libWin = yield* callTyped(() => getLibraryWindowFromDi());
 
-        // if there is no libWin, so must be recreated
-        if (
-            libWinState.browserWindowId &&
-            libWinState.identifier
-        ) {
+        if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed()) {
 
-            const libWin = yield* callTyped(() => getLibraryWindowFromDi());
+            if (libWin.isMinimized()) {
+                libWin.restore();
+                libWin.show();
+            } else if (libWin.isVisible()) {
+                libWin.show();
+            } else {
 
-            if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed()) {
+                // @todo useless ?
 
-                if (libWin.isMinimized()) {
-                    libWin.restore();
-                    libWin.show();
-                } else if (libWin.isVisible()) {
-                    libWin.show();
-                } else {
-
-                    // @todo useless ?
-
-                    const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
-                    const readersArray = ObjectKeys(readers);
-                    const readerWin = getReaderWindowFromDi(readersArray[0]);
-                    if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
-                        if (readerWin.isMinimized()) {
-                            readerWin.restore();
-                        }
-                        readerWin.show();
+                if (readerWindow && !readerWindow.isDestroyed() && !readerWindow.webContents.isDestroyed()) {
+                    if (readerWindow.isMinimized()) {
+                        readerWindow.restore();
                     }
+                    readerWindow.show();
                 }
-
-                return ;
             }
+
+            return;
         }
 
         yield put(winActions.library.openRequest.build());
@@ -103,8 +87,7 @@ export function* appActivate() {
 
 function* winOpen(action: winActions.library.openSucess.TAction) {
 
-    const identifier = action.payload.identifier;
-    debug(`library ${identifier} -> winOpen`);
+    debug(`library ${LIB_WIN_IDENTIFIER} -> winOpen`);
 
     const libWindow = action.payload.win;
     const webContents = libWindow.webContents;
@@ -116,17 +99,13 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
         theme: state.theme,
         wizard: state.wizard,
         win: {
-            identifier,
+            identifier: LIB_WIN_IDENTIFIER,
         },
         publication: {
             catalog: {
                 entries: [],
             },
             tag: [],
-        },
-        session: {
-            // state: state.session.state,
-            save: state.session.save,
         },
         screenReader: {
             activate: state.screenReader.activate,
@@ -213,80 +192,32 @@ function* winClose(_action: winActions.library.closed.TAction) {
     debug("library -> winClose");
 
     const libraryWin = getLibraryWindowFromDi();
-    let sessionSaving = false; // window.close() // not saved session by default
+    const readersArray = getAllReadersWindowFromDi();
 
-    {
+    if (readersArray.length) {
 
-        const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
-        const readersArray = ObjectValues(readers);
-        debug("reader:", readersArray);
+        yield all(
+            readersArray.map(
+                (reader, index) => {
+                    return call(function* () {
 
-        if (readersArray.length) {
-
-            // session always enabled by default
-            // const sessionIsEnabled = yield* selectTyped((state: RootState) => state.session.state);
-            // debug(sessionIsEnabled ? "session enabled destroy reader" : "session not enabled close reader");
-            // if (sessionIsEnabled) {
-
-
-                delay(100);
-                sessionSaving = (yield* selectTyped((state: RootState) => state.session.save)) || false;
-                // const messageValue = yield* callTyped(
-                //     async () => {
-
-                //         const translator = getTranslator();
-
-                //         return dialog.showMessageBox(
-                //             library,
-                //             {
-                //                 type: "question",
-                //                 buttons: [
-                //                     translator.translate("app.session.exit.askBox.button.no"),
-                //                     translator.translate("app.session.exit.askBox.button.yes"),
-                //                 ],
-                //                 defaultId: 1,
-                //                 title: translator.translate("app.session.exit.askBox.title"),
-                //                 message: translator.translate("app.session.exit.askBox.help"),
-                //             },
-                //         );
-                //     },
-                // );
-                // debug("result:", messageValue.response);
-                // value = messageValue.response;
-            // }
-
-            yield all(
-                readersArray.map(
-                    (reader, index) => {
-                        return call(function*() {
-
-                            if (!reader) {
-                                return;
+                        if (!reader) {
+                            return;
+                        }
+                        try {
+                            if (reader && reader.win && !reader.win.isDestroyed() && !reader.win.webContents.isDestroyed()) {
+                                debug("close reader", index);
+                                reader.win.close();
                             }
-                            try {
-                                const readerWin = yield* callTyped(() => getReaderWindowFromDi(reader.identifier));
-                                if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
-                                if (sessionSaving) {
-                                    // force quit the reader windows to keep session in next startup
-                                    debug("destroy reader", index);
-                                    readerWin.destroy();
-                                } else {
-                                    debug("close reader", index);
-                                    readerWin.close();
-                                }
-                                }
-                            } catch (_err) {
-                                // ignore
-                            }
+                        } catch (_err) {
+                            // ignore
+                        }
 
-                        });
-                    },
-                ),
-            );
-
-        }
+                    });
+                },
+            ),
+        );
     }
-
     if (libraryWin && libraryWin.getChildWindows()?.length) {
         debug("WIN CHILDREN ", libraryWin.getChildWindows()?.length, libraryWin.isDestroyed(), libraryWin.webContents.isDestroyed());
         for (const child of libraryWin.getChildWindows()) {
@@ -299,29 +230,12 @@ function* winClose(_action: winActions.library.closed.TAction) {
         yield delay(50);
     }
 
-    if (sessionSaving) {
-        if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
-            libraryWin.destroy();
-        }
-    } else {
 
-        yield spawn(function* () {
-
-            let readersArray: IWinSessionReaderState[];
-
-            do {
-                yield delay(50);
-                const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
-                readersArray = ObjectValues(readers);
-
-            } while (readersArray.length);
-
-            if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
-                libraryWin.destroy();
-            }
-        });
-
+    yield delay(50);
+    if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
+        libraryWin.destroy();
     }
+
 }
 
 export function saga() {
@@ -333,11 +247,6 @@ export function saga() {
             winActions.library.openRequest.ID,
             createLibraryWindow,
             (e) => error(filename_ + ":createLibraryWindow", e),
-        ),
-        takeSpawnLeading(
-            winActions.library.openRequest.ID,
-            checkReaderWindowInSession,
-            (e) => error(filename_ + ":checkReaderWindowInSession", e),
         ),
         takeSpawnLeading(
             winActions.library.openSucess.ID,

@@ -40,7 +40,7 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 // import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
 import { injectBufferInZip } from "../tools/zipInjector";
 
-import { lcpHashesFilePath } from "../di";
+import { findReaderWindowFromPubIdDi, lcpHashesFilePath } from "../di";
 import { extractCrc32OnZip } from "../tools/crc";
 import { LSDManager } from "./lsd";
 import { getTranslator } from "readium-desktop/common/services/translator";
@@ -1001,16 +1001,9 @@ export class LcpManager {
                 }
 
                 if (r2LCPStr) {
-                    let atLeastOneReaderIsOpen = false;
-                    const readers = this.store.getState().win.session.reader;
-                    if (readers) {
-                        for (const reader of Object.values(readers)) {
-                            if (reader.publicationIdentifier === publicationDocumentIdentifier) {
-                                atLeastOneReaderIsOpen = true;
-                                break;
-                            }
-                        }
-                    }
+                    const readersWithSamePubId = findReaderWindowFromPubIdDi(publicationDocumentIdentifier);
+                    const atLeastOneReaderIsOpen = !!readersWithSamePubId[0]?.winId;
+                    
                     if (atLeastOneReaderIsOpen) {
                         this.store.dispatch(readerActions.closeRequestFromPublication.build(
                             publicationDocumentIdentifier));

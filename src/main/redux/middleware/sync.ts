@@ -11,7 +11,7 @@ import { ActionWithDestination, ActionWithReaderPublicationIdentifierDestination
 import {
     apiActions, authActions, catalogActions, dialogActions, downloadActions, historyActions, i18nActions, keyboardActions, lcpActions,
     publicationActions, themeActions,
-    readerActions, sessionActions, toastActions, versionUpdateActions,
+    readerActions, toastActions, versionUpdateActions,
     creatorActions,
     annotationActions,
     noteExport,
@@ -20,10 +20,11 @@ import {
     opdsActions,
 } from "readium-desktop/common/redux/actions";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
-import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
+import { findReaderWindowFromPubIdDi, getAllReadersWindowFromDi, getLibraryWindowFromDi } from "readium-desktop/main/di";
 import { UnknownAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 
 import { RootState } from "../states";
+import { LIB_WIN_IDENTIFIER } from "readium-desktop/common/constant";
 
 const debug = debug_("readium-desktop:sync");
 
@@ -80,7 +81,6 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     readerActions.note.addUpdate.ID,
     readerActions.note.remove.ID,
 
-    sessionActions.save.ID,
     screenReaderActions.save.ID,
 
     creatorActions.set.ID,
@@ -108,76 +108,70 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 ];
 
 export const reduxSyncMiddleware: Middleware
-    = (store: MiddlewareAPI<Dispatch<UnknownAction>, RootState>) =>
+    = (_store: MiddlewareAPI<Dispatch<UnknownAction>, RootState>) =>
         (next: (action: unknown) => unknown) => // Dispatch<ActionWithSender>
             ((action: unknown) => { // ActionWithSender
 
-                debug("### action type", (action as ActionWithSender).type);
+            debug("### action type", (action as ActionWithSender).type);
 
-                if (SYNCHRONIZABLE_ACTIONS.indexOf((action as ActionWithSender).type) === -1) {
-                    // Do not send
-                    return next(action);
-                }
+            if (SYNCHRONIZABLE_ACTIONS.indexOf((action as ActionWithSender).type) === -1) {
+                // Do not send
+                return next(action);
+            }
 
-                // Send this action to all the registered renderer processes
+            // Send this action to all the registered renderer processes
 
-                // actually when a renderer process send an api action this middleware broadcast to all renderer
-                // It should rather keep the action and don't broadcast an api request between front and back
-                // this bug become a feature with a hack in publicationInfo in reader
-                // thanks to this broadcast we can listen on publication tag and make a live refresh
+            // actually when a renderer process send an api action this middleware broadcast to all renderer
+            // It should rather keep the action and don't broadcast an api request between front and back
+            // this bug become a feature with a hack in publicationInfo in reader
+            // thanks to this broadcast we can listen on publication tag and make a live refresh
 
-                const browserWin: Map<string, Electron.BrowserWindow> = new Map();
+            const browserWin: Map<string, Electron.BrowserWindow> = new Map();
 
-                const libId = store.getState().win.session.library.identifier;
-                if (libId) {
-                    try {
-                        const libWin = getLibraryWindowFromDi();
-                        if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed()) {
-                            browserWin.set(libId, libWin);
-                        }
-                    } catch (_err) {
-                        // ignore
-                        // library window may be not initialized in first
+            const libWin = getLibraryWindowFromDi();
+            if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed()) {
+                browserWin.set(LIB_WIN_IDENTIFIER, libWin);
+            }
+
+            const pubId = (action as ActionWithReaderPublicationIdentifierDestination)?.destination?.publicationIdentifier;
+            if (pubId) {
+                const readers = findReaderWindowFromPubIdDi(pubId);
+
+                for (const { win, winId } of readers) {
+                    if (win && !win.isDestroyed() && !win.webContents.isDestroyed()) {
+                        browserWin.set(winId, win);
                     }
                 }
+            } else {
+                const readers = getAllReadersWindowFromDi();
+                
+                for (const { win, winId } of readers) {
+                    if (win && !win.isDestroyed() && !win.webContents.isDestroyed()) {
+                        browserWin.set(winId, win);
+                    }
+                }
+            }
 
-                const readers = store.getState().win.session.reader;
-                for (const key in readers) {
-                    if (readers[key]) {
+            browserWin.forEach(
+                (win, id) => {
+
+                    if (
+                        !(
+                            (action as ActionWithSender).sender?.type === SenderType.Renderer
+                            && (action as ActionWithSender).sender?.identifier === id
+                        )
+                    ) {
+
+                        if ((action as ActionWithDestination)?.destination?.identifier && (action as ActionWithDestination)?.destination?.identifier !== id) {
+                            // if the action has a reader destination, do not send to other browserWin Instance
+                            return;
+                        }
+
+                        debug("send to", id);
+                        const a = ActionSerializer.serialize(action as ActionWithSender);
+                        // debug(a);
                         try {
-                            const readerWin = getReaderWindowFromDi(readers[key].identifier);
-                            if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed() &&
-                                ((!((action as ActionWithReaderPublicationIdentifierDestination)?.destination?.publicationIdentifier)) ||
-                                    (action as ActionWithReaderPublicationIdentifierDestination).destination.publicationIdentifier === readers[key].publicationIdentifier)) {
-                                browserWin.set(readers[key].identifier, readerWin);
-                            }
-                        } catch (_err) {
-                            // ignore
-                            debug("ERROR: Can't found ther reader win from di: ", readers[key].identifier);
-                        }
-                    }
-                }
-
-                browserWin.forEach(
-                    (win, id) => {
-
-                        if (
-                            !(
-                                (action as ActionWithSender).sender?.type === SenderType.Renderer
-                                && (action as ActionWithSender).sender?.identifier === id
-                            )
-                        ) {
-
-                            if ((action as ActionWithDestination)?.destination?.identifier && (action as ActionWithDestination)?.destination?.identifier !== id) {
-                                // if the action has a reader destination, do not send to other browserWin Instance
-                                return  ;
-                            }
-
-                            debug("send to", id);
-                            const a = ActionSerializer.serialize(action as ActionWithSender);
-                            // debug(a);
-                            try {
-                                if (!win.isDestroyed() && !win.webContents.isDestroyed()) {
+                            if (!win.isDestroyed() && !win.webContents.isDestroyed()) {
                                 win.webContents.send(syncIpc.CHANNEL, {
                                     type: syncIpc.EventType.MainAction,
                                     payload: {
@@ -187,40 +181,40 @@ export const reduxSyncMiddleware: Middleware
                                         type: SenderType.Main,
                                     },
                                 } as syncIpc.EventPayload);
-                                }
-                            } catch (error) {
-                                debug("ERROR in SYNC ACTION", error);
                             }
+                        } catch (error) {
+                            debug("ERROR in SYNC ACTION", error);
                         }
-                    });
+                    }
+                });
 
-                // for (const readerWindow of readerWindows) {
-                //     // Notifies renderer process
-                //     const winId = readerWindow.id;
+            // for (const readerWindow of readerWindows) {
+            //     // Notifies renderer process
+            //     const winId = readerWindow.id;
 
-                //     if (action.sender &&
-                //         action.sender.type === SenderType.Renderer &&
-                //         action.sender.identifier === identifier
-                //     ) {
-                //         // Do not send in loop an action already sent by this renderer process
-                //         continue;
-                //     }
+            //     if (action.sender &&
+            //         action.sender.type === SenderType.Renderer &&
+            //         action.sender.identifier === identifier
+            //     ) {
+            //         // Do not send in loop an action already sent by this renderer process
+            //         continue;
+            //     }
 
-                //     try {
-                //         !appWindow.isDestroyed() && !appWindow.webContents.isDestroyed() && appWindow.browserWindow.webContents.send(syncIpc.CHANNEL, {
-                //             type: syncIpc.EventType.MainAction,
-                //             payload: {
-                //                 action: actionSerializer.serialize(action),
-                //             },
-                //             sender: {
-                //                 type: SenderType.Main,
-                //             },
-                //         } as syncIpc.EventPayload);
-                //     } catch (error) {
-                //         console.error("Windows does not exist", winId);
-                //     }
-                // }
+            //     try {
+            //         !appWindow.isDestroyed() && !appWindow.webContents.isDestroyed() && appWindow.browserWindow.webContents.send(syncIpc.CHANNEL, {
+            //             type: syncIpc.EventType.MainAction,
+            //             payload: {
+            //                 action: actionSerializer.serialize(action),
+            //             },
+            //             sender: {
+            //                 type: SenderType.Main,
+            //             },
+            //         } as syncIpc.EventPayload);
+            //     } catch (error) {
+            //         console.error("Windows does not exist", winId);
+            //     }
+            // }
 
-                return next(action);
+            return next(action);
 
-            });
+        });

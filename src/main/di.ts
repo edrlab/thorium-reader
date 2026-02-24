@@ -311,28 +311,37 @@ const getLibraryWindowFromDi =
         return libraryWin; // we could filter out based on win.isDestroyed() && win.webContents.isDestroyed() but this would change the null/undefined contract of the return value in consumer code, so let's leave it for now (strictNullChecks and stricter typeof id)
     };
 
-const readerWinMap = new Map<string, BrowserWindow>();
+const readerWinMap = new Map<string, { win: BrowserWindow, pubId: string }>(); // K=winId V={readerWindow,pubId}
 
 
 const saveReaderWindowInDi =
-    (readerWin: BrowserWindow, id: string) => (readerWinMap.set(id, readerWin), readerWin);
+    (winId: string, readerWin: BrowserWindow, pubId: string) => (readerWinMap.set(winId, {
+        win: readerWin, pubId,
+    }), readerWin);
 
 const deleteReaderWindowInDi =
-    (id: string) => readerWinMap.delete(id);
+    (winId: string) => readerWinMap.delete(winId);
 
 const getReaderWindowFromDi =
-    (id: string) => readerWinMap.get(id); // we could filter out based on win.isDestroyed() && win.webContents.isDestroyed() but this would change the null/undefined contract of the return value in consumer code, so let's leave it for now (strictNullChecks and stricter typeof id)
+    (winId: string) => readerWinMap.get(winId) || { win: undefined, pubId: undefined }; // we could filter out based on win.isDestroyed() && win.webContents.isDestroyed() but this would change the null/undefined contract of the return value in consumer code, so let's leave it for now (strictNullChecks and stricter typeof id)
 
-const getAllReaderWindowFromDi =
-    () => {
-        // ERROR:
-        // No matching bindings found for serviceIdentifier: WIN_REGISTRY_READER
-        // return container.getAll<BrowserWindow>("WIN_REGISTRY_READER");
+const getAllReadersWindowFromDi = () => {
+    return [...readerWinMap].filter(([, { win }]) => win && !win.isDestroyed() && !win.webContents.isDestroyed()).map(([winId, { win, pubId }]) => ({ winId, win, pubId }));
+};
+const findReaderWindowFromPubIdDi = (pubId: string) => {
+    return [...readerWinMap].filter(([, { pubId: _pubId }]) => _pubId === pubId).map(([winId, v]) => ({ winId, win: v.win }));
+};
 
-        return Array.from(readerWinMap.values()).filter((w) => {
-            return !w.isDestroyed() && !w.webContents.isDestroyed();
-        });
-    };
+// const getAllReaderWindowFromDi =
+//     () => {
+//         // ERROR:
+//         // No matching bindings found for serviceIdentifier: WIN_REGISTRY_READER
+//         // return container.getAll<BrowserWindow>("WIN_REGISTRY_READER");
+
+//         return Array.from(readerWinMap.values()).filter((w) => {
+//             return !w.win.isDestroyed() && !w.win.webContents.isDestroyed();
+//         });
+//     };
 
 // local interface to force type return
 interface IGet {
@@ -366,9 +375,10 @@ export {
     diMainGet,
     getLibraryWindowFromDi,
     getReaderWindowFromDi,
+    findReaderWindowFromPubIdDi,
+    getAllReadersWindowFromDi,
     deleteReaderWindowInDi,
     saveLibraryWindowInDi,
     saveReaderWindowInDi,
-    getAllReaderWindowFromDi,
     createStoreFromDi,
 };

@@ -100,7 +100,7 @@ function* importAnnotationSet(action: annotationActions.importAnnotationSet.TAct
     const readerPublicationIdentifier = winId ? publicationIdentifier : undefined; // if undefined toast notification will be displayed in library win
     const currentTimestamp = (new Date()).getTime();
 
-    const win = winId ? getReaderWindowFromDi(winId) : getLibraryWindowFromDi();
+    const win = winId ? getReaderWindowFromDi(winId)?.win : getLibraryWindowFromDi();
 
     if (!win || win.isDestroyed() || win.webContents.isDestroyed()) {
         debug("ERROR!! No Browser window !!! exit");
