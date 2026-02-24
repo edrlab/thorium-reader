@@ -181,7 +181,7 @@ export function saga() {
                             debug("There are currently", locatorFileHandleMap.size, "open locator file(s)");
                             debug([...locatorFileHandleMap.keys()]);
                         }
-                    } catch (e) {
+                    } catch (e: any) {
                         debug(JSON.stringify(e, null, 4));
                         debug("Error to persist locator in reader config directory");
                         if (e.code === "ENOENT") {

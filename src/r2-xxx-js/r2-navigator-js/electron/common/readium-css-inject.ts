@@ -826,6 +826,10 @@ export function configureFixedLayout(
         documant.body.style.width = width + "px";
         documant.body.style.height = height + "px";
 
+        // consistency with body because transform applies correctly but scroll offset is incorrect in some cases (observed with RTL FXL docs, where only the X or Y axis is correctly zoomed ... can be checked by forcing overflow:scroll on HTML to observe the scroll bars)
+        documant.documentElement.style.width = width + "px";
+        documant.documentElement.style.height = height + "px";
+
         if (isDEBUG_VISUALS(documant)) {
             debug("FXL width: " + width);
             debug("FXL height: " + height);
@@ -856,12 +860,14 @@ export function configureFixedLayout(
             wh.tx = tx;
             wh.ty = ty;
         }
-        documant.documentElement.style.transformOrigin = "0 0";
-        // tslint:disable-next-line:max-line-length
-        // documant.documentElement.style.transform = `translateX(${tx}px) translateY(${ty}px) scale3d(${ratio}, ${ratio}, 0)`;
-        // documant.documentElement.style.transform = `translate(${tx}px, ${ty}px) scale(${ratio})`;
-        documant.documentElement.style.transform = `scale(${ratio})`;
-        // documant.documentElement.style.setProperty("--r2_fxl_scale", `${ratio}`);
+
+        documant.documentElement.style.zoom = `${ratio}`;
+        // documant.documentElement.style.transformOrigin = "0 0";
+        // // tslint:disable-next-line:max-line-length
+        // // documant.documentElement.style.transform = `translateX(${tx}px) translateY(${ty}px) scale3d(${ratio}, ${ratio}, 0)`;
+        // // documant.documentElement.style.transform = `translate(${tx}px, ${ty}px) scale(${ratio})`;
+        // documant.documentElement.style.transform = `scale(${ratio})`;
+        // // documant.documentElement.style.setProperty("--r2_fxl_scale", `${ratio}`);
     }
     return wh;
 }

@@ -823,7 +823,8 @@ function processMouseEvent(win: ReadiumElectronWebviewWindow, ev: MouseEvent) {
     const xOffset = paginated ? (-scrollElement.scrollLeft) : bodyRect.left;
     const yOffset = paginated ? (-scrollElement.scrollTop) : bodyRect.top;
 
-    const scale = 1 / ((win.READIUM2 && win.READIUM2.isFixedLayout) ? win.READIUM2.fxlViewportScale : 1);
+    // const scale = 1 / ((win.READIUM2 && win.READIUM2.isFixedLayout) ? win.READIUM2.fxlViewportScale : 1);
+    const scale = 1;
 
     let hit = false;
     let foundHighlight: IHighlight | undefined;
@@ -2275,8 +2276,8 @@ https://blackorwhite.lloydk.ca
     const xOffset = paginated ? (-scrollElement.scrollLeft) : bodyRect.left;
     const yOffset = paginated ? (-scrollElement.scrollTop) : bodyRect.top;
 
-    const scale = 1 / ((win.READIUM2 && win.READIUM2.isFixedLayout) ? win.READIUM2.fxlViewportScale : 1);
-    // const scale = 1;
+    // const scale = 1 / ((win.READIUM2 && win.READIUM2.isFixedLayout) ? win.READIUM2.fxlViewportScale : 1);
+    const scale = 1;
 
     // console.log("scrollElement.scrollLeft: " + scrollElement.scrollLeft);
     // console.log("scrollElement.scrollTop: " + scrollElement.scrollTop);
