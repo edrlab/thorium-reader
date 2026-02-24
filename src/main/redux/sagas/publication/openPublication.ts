@@ -8,7 +8,7 @@
 import debug_ from "debug";
 import { Action } from "readium-desktop/common/models/redux";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
-import { lcpActions } from "readium-desktop/common/redux/actions/";
+import { lcpActions, toastActions } from "readium-desktop/common/redux/actions/";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { streamerActions } from "readium-desktop/main/redux/actions";
@@ -18,7 +18,7 @@ import {
 } from "readium-desktop/main/streamer/streamerNoHttp";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { put, take } from "redux-saga/effects";
-import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
+import { call as callTyped, select as selectTyped, put as putTyped, SagaGenerator } from "typed-redux-saga/macro";
 
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
@@ -26,6 +26,7 @@ import { PublicationViewConverter } from "readium-desktop/main/converter/publica
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
 import { PublicationView } from "readium-desktop/common/views/publication";
+import { ToastType } from "readium-desktop/common/models/toast";
 
 // import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
@@ -66,16 +67,29 @@ const convertDoc = async (doc: PublicationDocument, publicationViewConverter: Pu
     return await publicationViewConverter.convertDocumentToView(doc);
 };
 
-export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
+export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string): SagaGenerator<string | undefined> {
 
     const publicationRepository = yield* callTyped(
         () => diMainGet("publication-repository"));
     const translator = getTranslator();
 
     // Get publication
-    let publicationDocument: PublicationDocument = null;
-    publicationDocument = yield* callTyped(
+    // let publicationDocument: PublicationDocument =
+    // {
+    //     createdAt: (new Date()).getTime(),
+    //     updatedAt: (new Date()).getTime(),
+    //     identifier: pubId,
+    //     hash: "",
+    //     title: pubId,
+    //     doNotPresentInReduxStoreDataBaseButFoundOnDisk_dummyDocument: true,
+    // }; // dummy publication if not found (publication found on disk but not in db, so need to be handled gracefully)
+    // not a const value because assign a copy of publicationDocument with LCP
+    let publicationDocument = yield* callTyped(
         () => publicationRepository.get(pubId));
+    if (!publicationDocument) {
+        yield* putTyped(toastActions.openRequest.build(ToastType.Error, translator.translate("message.open.error", {err: `not found in DataBase: ${pubId}`})));
+        return undefined;
+    }
 
     const publicationFileLocks = yield* selectTyped(
         (s: RootState) => s.lcp.publicationFileLocks);
@@ -97,7 +111,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
     const publicationViewConverter = yield* callTyped(
         () => diMainGet("publication-view-converter"));
 
-    if (publicationDocument.lcp) {
+    if (publicationDocument?.lcp) {
         try {
             publicationDocument = yield* callTyped(
                 // DOES NOT MUTATE publicationDocument (returns a modified copy)
@@ -171,10 +185,6 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
 
     const pubStorage = yield* callTyped(() => diMainGet("publication-storage"));
     const epubPath = yield* callTyped(() => pubStorage.getPublicationEpubPath(publicationDocument.identifier));
-    // const epubPath = path.join(
-    //     pubStorage.getRootPath(),
-    //     publicationDocument.files[0].url.substr(6),
-    // );
     debug("Open publication %s", epubPath);
 
     // Start streamer if it's not already started
@@ -210,7 +220,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
     let r2Publication: R2Publication;
     try {
         // if (_USE_HTTP_STREAMER) {
-        //     r2Publication = yield* callTyped(() => streamer.loadOrGetCachedPublication(epubPath));
+        //     r2Publica\tion = yield* callTyped(() => streamer.loadOrGetCachedPublication(epubPath));
         // } else {
         //     r2Publication = yield* callTyped(() => streamerLoadOrGetCachedPublication(epubPath));
         // }
@@ -240,7 +250,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(pubId: string) {
                 const message =
                     // unlockPublicationRes === 11 ?
                     // translator.translate("publication.expiredLcp") :
-                    lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes, publicationView.lcp?.issued || publicationDocument.lcp?.issued || "");
+                    lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes, publicationView.lcp?.issued || publicationDocument?.lcp?.issued || "");
                 debug(message);
 
                 try {

@@ -140,20 +140,28 @@ function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaG
         }
     }
 
-    if (isNotNil(payload.mediaOverlaysEnableCaptionsMode) || isNotNil(payload.mediaOverlaysEnableSkippability) || isNotNil(payload.mediaOverlaysPlaybackRate)) {
-
+    if (isNotNil(payload.noFootnotes) ||
+        isNotNil(payload.mediaOverlaysEnableCaptionsMode) ||
+        isNotNil(payload.mediaOverlaysEnableSkippability) ||
+        isNotNil(payload.mediaOverlaysPlaybackRate)
+    ) {
         const r2PublicationHasMediaOverlays = yield* selectTyped((state: IReaderRootState) => state.reader.info.navigator.r2PublicationHasMediaOverlays);
         const mediaOverlaysState = yield* selectTyped((state: IReaderRootState) => state.reader.mediaOverlay.state);
         const moWasPlaying = r2PublicationHasMediaOverlays && mediaOverlaysState === MediaOverlaysStateEnum.PLAYING;
         if (moWasPlaying) {
+            if (isNotNil(payload.noFootnotes)) {
+                return;
+            }
             mediaOverlaysPause();
-            setTimeout(() => {
-                mediaOverlaysResume();
-            }, 300);
+            if (true) { // !isNotNil(payload.noFootnotes)) {
+                setTimeout(() => {
+                    mediaOverlaysResume();
+                }, 500);
+            }
         }
     }
 
-    if (
+    if (isNotNil(payload.noFootnotes) ||
         // (isNotNil(payload.ttsVoices) && payload.ttsVoices.length) ||
         // isNotNil(payload.ttsPlaybackRate) ||
         isNotNil(payload.ttsEnableOverlayMode) ||
@@ -162,13 +170,17 @@ function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaG
         const ttsState = yield* selectTyped((state: IReaderRootState) => state.reader.tts.state);
         const ttsWasPlaying = ttsState !== TTSStateEnum.STOPPED;
         if (ttsWasPlaying) {
+            if (isNotNil(payload.noFootnotes)) {
+                return;
+            }
             ttsStop();
-            setTimeout(() => {
-                ttsPlay(parseFloat(readerConfig.ttsPlaybackRate), readerConfig.ttsVoices);
-            }, 300);
+            if (true) { // !isNotNil(payload.noFootnotes)) {
+                setTimeout(() => {
+                    ttsPlay(parseFloat(readerConfig.ttsPlaybackRate), readerConfig.ttsVoices);
+                }, 500);
+            }
         }
     }
-
 
     // this.props.setConfig(readerConfig, this.props.session);
     // const sessionEnabled = yield* select((state: IReaderRootState) => state.session.state);

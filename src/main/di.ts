@@ -37,15 +37,13 @@ import { OpdsService } from "./services/opds";
 import { LSDManager } from "./services/lsd";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { EOL } from "os";
-import { USER_DATA_FOLDER } from "readium-desktop/common/constant";
+import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
 
 // import { streamer } from "readium-desktop/main/streamerHttp";
 // import { Server } from "@r2-streamer-js/http/server";
 
 // Logger
 const debug = debug_("readium-desktop:main:di");
-
-const FORCE_PROD_DB_IN_DEV = false;
 
 export const CONFIGREPOSITORY_REDUX_PERSISTENCE = "CONFIGREPOSITORY_REDUX_PERSISTENCE";
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
@@ -117,6 +115,19 @@ export const memoryLoggerFilename = path.join(
     MEMORY_LOGGGER_FILENAME,
 );
 
+const USER_VAULT_FILENAME = "vault.json";
+export const userVaultConfigPath = path.join(
+    configDataFolderPath,
+    USER_VAULT_FILENAME,
+);
+const READER_CONFIG_DIRECTORY_NAME = "reader";
+export const readerConfigPath = path.join(
+    configDataFolderPath,
+    READER_CONFIG_DIRECTORY_NAME,
+);
+if (!fs.existsSync(readerConfigPath)) {
+    fs.mkdirSync(readerConfigPath);
+}
 //
 // Create databases
 //
@@ -261,7 +272,7 @@ container.bind<OpdsFeedViewConverter>(diSymbolTable["opds-feed-view-converter"])
     .to(OpdsFeedViewConverter).inSingletonScope();
 
 // Storage
-const publicationStorage = new PublicationStorage(publicationRepositoryPath);
+const publicationStorage = new PublicationStorage(publicationRepositoryPath, userVaultConfigPath, readerConfigPath);
 container.bind<PublicationStorage>(diSymbolTable["publication-storage"]).toConstantValue(
     publicationStorage,
 );
@@ -269,6 +280,10 @@ container.bind<PublicationStorage>(diSymbolTable["publication-storage"]).toConst
 // Bind services
 // container.bind<Server>(diSymbolTable.streamer).toConstantValue(streamer);
 
+// TODO: just like user-agent ("readium-desktop" to "thorium-desktop"),
+// should "Thorium" evolve to "Thorium Desktop"?
+// see package.json build.productName which is currently "Thorium"
+// see _APP_NAME and __TH__APP_NAME__
 const deviceIdManager = new DeviceIdManager(capitalizedAppName);
 container.bind<DeviceIdManager>(diSymbolTable["device-id-manager"]).toConstantValue(
     deviceIdManager,

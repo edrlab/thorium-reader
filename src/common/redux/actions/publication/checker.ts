@@ -5,23 +5,20 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-// import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
-import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
-
 import { Action } from "readium-desktop/common/models/redux";
+import { IPublicationCheckerState } from "../../states/publicationsChecker";
 
-export const ID = "READER_SET_LOCATOR_IN_RENDERER";
+export const ID = "PUBLICATION_CHECKER";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface Payload extends MiniLocatorExtended {
+export interface Payload extends IPublicationCheckerState {
 }
 
-export function build(miniLocatorExtended: MiniLocatorExtended):
+export function build(s: IPublicationCheckerState):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
-        payload: miniLocatorExtended,
+        payload: JSON.parse(JSON.stringify(s)),
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator

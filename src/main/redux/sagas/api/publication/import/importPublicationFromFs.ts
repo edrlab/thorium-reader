@@ -262,7 +262,7 @@ export async function importPublicationFromFS(
     }
 
     // MUST BE AFTER storePublication() and pubDocument.files.push(file) so that the filesystem cache can be set
-    publicationViewConverter.updatePublicationCache(pubDocument, r2Publication);
+    await publicationViewConverter.updatePublicationCache(pubDocument, r2Publication);
 
     // see below checkPublicationLicenseUpdate
     // if (r2Publication.LCP) {

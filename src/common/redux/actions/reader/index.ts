@@ -23,6 +23,7 @@ import * as disableRTLFlip from "./rtlFlip";
 import * as setTheLock from "./setTheLock";
 import * as note from "./note";
 import * as pdfConfig from "./pdfConfig";
+import * as setLocator from "./setLocator";
 
 export {
     openRequest,
@@ -43,4 +44,5 @@ export {
     setTheLock,
     print,
     pdfConfig,
+    setLocator,
 };

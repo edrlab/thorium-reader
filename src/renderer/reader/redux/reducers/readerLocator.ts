@@ -8,16 +8,15 @@
 import { type Reducer } from "redux";
 
 import { locatorInitialState, MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
-
-import { readerLocalActionSetLocator } from "../actions";
+import { readerActions } from "readium-desktop/common/redux/actions";
 
 function readerLocatorReducer_(
     state = locatorInitialState,
-    action: readerLocalActionSetLocator.TAction,
+    action: readerActions.setLocator.TAction,
 ): MiniLocatorExtended {
 
     switch (action.type) {
-        case readerLocalActionSetLocator.ID:
+        case readerActions.setLocator.ID:
 
             return {
                 ...action.payload,

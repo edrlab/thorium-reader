@@ -62,8 +62,9 @@ import { clearSessions, initPermissions, initProtocols } from "readium-desktop/m
 
 // import { _USE_HTTP_STREAMER } from "readium-desktop/preprocessor-directives";
 
-const debug = debug_("readium-desktop:main#streamerNoHttp");
-debug("_");
+const debug = (..._: any[]) => { };
+const debug__ = debug_("readium-desktop:main#streamerNoHttp");
+debug__("_");
 
 const USE_NEW_PROTOCOL_HANDLER = false;
 

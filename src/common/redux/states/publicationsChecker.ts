@@ -5,10 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as readingFinished from "./readingFinished";
-import * as checker from "./checker";
+export interface IPublicationCheckerState {
+    publicationIdentifierDataBase: string[],
+    approvedPublicationIdentifierDisk: string[],
+    rejectedPublicationIdentifierDisk: string[],
+    dump: string,
+}
 
-export {
-    readingFinished,
-    checker,
-};

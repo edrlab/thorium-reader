@@ -70,6 +70,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     customizationActions.acquire.ID,
     customizationActions.lock.ID,
     customizationActions.addHistory.ID,
+
+    readerActions.setLocator.ID,
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);

@@ -87,7 +87,9 @@ const makeNewSegmenter = (): Intl.Segmenter => {
 // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/hidden
 // https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/hidden
 const isHiddenUntilFound = (elt: Element) => {
-    // @ts-expect-error (TypeScript HTMLElement.hidden is incorrectly boolean)
+    // @___ts-expect-error (TypeScript HTMLElement.hidden is incorrectly boolean)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore GO TypeScript checks pass, unfortunately Javascript implementation fail!
     if ((elt as HTMLElement).hidden === "until-found") {
         return true;
     }

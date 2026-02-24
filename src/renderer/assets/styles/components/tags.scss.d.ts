@@ -1,6 +1,7 @@
 export declare const allPub_tagsTrigger: string;
 export declare const CSS_END_components_tags: string;
 export declare const CSS_START_components_tags: string;
+export declare const my_combobox_container: string;
 export declare const no_hover: string;
 export declare const Popover_delete_tag: string;
 export declare const Popover_filter_container: string;

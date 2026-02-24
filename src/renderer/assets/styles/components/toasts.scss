@@ -85,7 +85,7 @@
 }
 
 .leave {
-  transform: translateX(-100%);
+  transform: translateX(calc(-100% - 20px));
   transition: transform 0.5s;
 }
 
@@ -100,7 +100,7 @@
 
 @keyframes start {
   from {
-    transform: translateX(-100%);
+    transform: translateX(calc(-100% - 20px));
   }
 
   to {

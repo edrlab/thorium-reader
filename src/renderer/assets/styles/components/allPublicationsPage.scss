@@ -22,30 +22,27 @@
             align-items: center;
             justify-content: space-between;
             padding: 5px 20px 0;
-            margin: 10px 0;
+            margin: 10px 0 0;
             width: inherit;
 
-            @media screen and (width <= 1072px) {
-                height: 125px;
-            }
+            // @media screen and (width <= 1072px) {
+            //     height: 125px;
+            // }
 
             &_inputs {
                 display: flex;
                 align-items: end;
                 gap: 10px;
                 height: 56px;
-
-                @media screen and (width <= 1072px) {
-                    gap: 25px;
-                    flex-direction: column;
-                    align-items: start;
-                    height: unset;
-                }
             }
 
             .form_group {
                 width: 260px!important;
                 height: 30px!important;
+
+                @media screen and (width <= 860px) {
+                    width: 210px!important;
+                }
 
                 &:has(input:focus) {
                     outline: var(--color-brand-primary) solid 2px !important;
@@ -158,6 +155,76 @@
                 border: 1px solid gray;
                 border-radius: 4px;
                 height: 30px;
+            }
+        }
+
+        &_filter_trigger {
+            border-radius: 6px;
+            width: 30px;
+            transition: 200ms;
+            padding: 3px;
+            
+            svg {
+                fill: var(--color-text-primary);
+            }
+
+            &[data-state="open"] {
+                background-color: var(--color-brand-primary)!important;
+
+                svg {
+                    color: var(--color-neutral-base);
+                }
+            }
+        }
+
+        &_filters {
+            background-color: var(--color-gray-50);
+            border-radius: 6px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 5px 20px 0;
+            gap: 10px;
+
+            .addFilterButton {
+                border-radius: 6px;
+                color: var(--color-gray-300);
+                padding: 2px 5px;
+                transition: 200ms;
+
+                &:hover {
+                    background-color: var(--color-gray-200);
+                    color: var(--color-gray-600);
+                }
+            }
+
+            .filterSelected {
+                border-radius: 10px;
+                background-color: var(--color-brand-secondary);
+                color: var(--color-brand-primary);
+                border: 1px solid var(--color-brand-primary);
+                padding: 2px 5px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                transition: 200ms;
+                gap: 5px;
+
+                svg {
+                    height: 10px;
+                    color: var(--color-brand-primary);
+                }
+
+                &:hover {
+                    background-color: var(--color-brand-primary);
+                    color: var(--color-neutral-base);
+
+                    svg {
+                        color: var(--color-neutral-base);
+                        cursor: pointer;
+                    }
+
+                }
             }
         }
     }
@@ -403,6 +470,7 @@
 
         .react_aria_Input {
             width: inherit;
+            padding-left: 5px;
         }
 
         .my_combobox_container {
@@ -429,6 +497,34 @@
                 justify-content: center;
             }
         }
+    }
+}
+
+.sorting_container {
+    padding: 10px;
+    position: relative;
+
+    .notification_bubble {
+        position: absolute;
+        top: 8px;
+        right: 20px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: var(--color-brand-primary);
+    }
+
+    button {
+        width: 100%;
+        transition: 200ms;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    p {
+        font-weight: 600;
+        font-size: 14px;
     }
 }
 

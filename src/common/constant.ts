@@ -15,5 +15,7 @@ export const ABOUT_BOOK_TITLE_PREFIX = "EDRLAB.ThoriumReader-";
 export const WINDOW_MIN_WIDTH = 700;
 export const WINDOW_MIN_HEIGHT = 600;
 
+export const FORCE_PROD_DB_IN_DEV = false;
+
 export const USER_DATA_FOLDER = app.getPath("userData");
 debug("set userData folder to", USER_DATA_FOLDER);

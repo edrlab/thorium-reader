@@ -12,7 +12,7 @@ import debug_ from "debug";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { SagaGenerator } from "typed-redux-saga";
 import { select as selectTyped, take as takeTyped, race as raceTyped, put as putTyped, all as allTyped, call as callTyped, spawn as spawnTyped, delay as delayTyped} from "typed-redux-saga/macro";
-import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionLocatorHrefChanged, readerLocalActionReader, readerLocalActionSetConfig, readerLocalActionSetLocator } from "../actions";
+import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionLocatorHrefChanged, readerLocalActionReader, readerLocalActionSetConfig } from "../actions";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
@@ -376,7 +376,7 @@ function* annotationButtonTrigger(action: readerLocalActionAnnotations.trigger.T
 }
 
 const __selectionInfoGlobal: {locatorExtended: MiniLocatorExtended | undefined} = {locatorExtended: undefined};
-function* setLocator(action: readerLocalActionSetLocator.TAction) {
+function* setLocator(action: readerActions.setLocator.TAction) {
 
     const locatorExtended = action.payload;
     const { selectionInfo, selectionIsNew } = locatorExtended;
@@ -403,7 +403,7 @@ function* readerStart() {
     debug("iframe reader viewport waiting to start...");
 
     yield* allTyped([
-        takeTyped(readerLocalActionSetLocator.ID),
+        takeTyped(readerActions.setLocator.ID),
         takeTyped(winActions.initSuccess.ID),
     ]);
 
@@ -546,9 +546,9 @@ export const saga = () =>
             (e) => console.error("readerLocalActionNoteRemove", e),
         ),
         takeSpawnEvery(
-            readerLocalActionSetLocator.ID,
+            readerActions.setLocator.ID,
             setLocator,
-            (e) => console.error("readerLocalActionSetLocator", e),
+            (e) => console.error("readerActions.setLocator", e),
         ),
         takeSpawnEvery(
             readerLocalActionAnnotations.trigger.ID,

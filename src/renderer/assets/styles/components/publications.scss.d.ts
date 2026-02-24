@@ -22,6 +22,7 @@ export declare const menu: string;
 export declare const no_img: string;
 export declare const no_img_wrapper: string;
 export declare const publication_authors: string;
+export declare const publication_filter_select: string;
 export declare const publication_infos: string;
 export declare const publication_infos_wrapper: string;
 export declare const publication_list_infos: string;

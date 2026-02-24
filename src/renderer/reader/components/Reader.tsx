@@ -86,7 +86,6 @@ import { pdfMount } from "../pdf/driver";
 import {
     readerLocalActionAnnotations,
     readerLocalActionDivina, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig,
-    readerLocalActionSetLocator,
     readerLocalActionToggleMenu,
     readerLocalActionToggleSettings,
 } from "../redux/actions";
@@ -226,6 +225,7 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 
 interface IState {
     previousReaderConfigAnnotationDefaultDrawView: TDrawView | undefined;
+    previousReaderConfigNoFootnotes: boolean | undefined;
 
     accessibilitySupportEnabled: boolean;
 
@@ -332,6 +332,7 @@ class Reader extends React.Component<IProps, IState> {
             accessibilitySupportEnabled: false,
 
             previousReaderConfigAnnotationDefaultDrawView: undefined,
+            previousReaderConfigNoFootnotes: undefined,
 
             fxlZoomPercent: 0,
 
@@ -736,13 +737,20 @@ class Reader extends React.Component<IProps, IState> {
                     this._ttsOrMoStateTimeout = undefined;
                     if (this.props.ttsState === TTSStateEnum.STOPPED) {
                         ttsClickEnable(false);
+                        this.restorePopupFootnotesAfterTTSorMOStop();
                         this.restoreAnnotationStateAfterTTSorMOStop();
                     }
                 }, 1000); // end of document ==> potentially "resume" (from stopped) at next document's start
 
             } else if (oldProps.ttsState === TTSStateEnum.STOPPED && (this.props.ttsState === TTSStateEnum.PLAYING || this.props.ttsState === TTSStateEnum.PAUSED)) {
-                ttsClickEnable(true);
-                this.hideAnnotationsForTTSorMOPlay();
+                this._ttsOrMoStateTimeout = setTimeout(() => {
+                    this._ttsOrMoStateTimeout = undefined;
+                    if (oldProps.ttsState === TTSStateEnum.STOPPED && (this.props.ttsState === TTSStateEnum.PLAYING || this.props.ttsState === TTSStateEnum.PAUSED)) {
+                        ttsClickEnable(true);
+                        this.disablePopupFootnotesForTTSorMOPlay();
+                        this.hideAnnotationsForTTSorMOPlay();
+                    }
+                }, 100);
             }
         }
         if (oldProps.mediaOverlaysState !== this.props.mediaOverlaysState) {
@@ -754,12 +762,19 @@ class Reader extends React.Component<IProps, IState> {
                 this._ttsOrMoStateTimeout = setTimeout(() => {
                     this._ttsOrMoStateTimeout = undefined;
                     if (this.props.mediaOverlaysState === MediaOverlaysStateEnum.STOPPED) {
+                        this.restorePopupFootnotesAfterTTSorMOStop();
                         this.restoreAnnotationStateAfterTTSorMOStop();
                     }
                 }, 1000); // end of document ==> potentially "resume" (from stopped) at next document's start
 
             } else if (oldProps.mediaOverlaysState === MediaOverlaysStateEnum.STOPPED && (this.props.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING || this.props.mediaOverlaysState === MediaOverlaysStateEnum.PAUSED)) {
-                this.hideAnnotationsForTTSorMOPlay();
+                this._ttsOrMoStateTimeout = setTimeout(() => {
+                    this._ttsOrMoStateTimeout = undefined;
+                    if (oldProps.mediaOverlaysState === MediaOverlaysStateEnum.STOPPED && (this.props.mediaOverlaysState === MediaOverlaysStateEnum.PLAYING || this.props.mediaOverlaysState === MediaOverlaysStateEnum.PAUSED)) {
+                        this.disablePopupFootnotesForTTSorMOPlay();
+                        this.hideAnnotationsForTTSorMOPlay();
+                    }
+                }, 100);
             }
         }
         if (oldProps.pdfReaderConfig.scale !== this.props.pdfReaderConfig.scale && this.props.pdfReaderConfig.scale !== this.state.pdfPlayerZoom) {
@@ -2989,18 +3004,24 @@ class Reader extends React.Component<IProps, IState> {
             this.props.dispatchMarginAnnotations("hide", href1, href2); // see marginAnnotationsOnChange() in ReaderMenu.tsx
         }
     }
+    private disablePopupFootnotesForTTSorMOPlay() {
+        if (!this.props.readerConfig?.noFootnotes) {
+            this.setState({ previousReaderConfigNoFootnotes: false });
+            this.props.setConfig({ noFootnotes: true });
+            // TODO: skippability should be disabled when user explicitly "requests" a skippable item, such as when clicking on a note reference hyperlink, or even on a skippable element itself(?)
+        }
+    }
     private handleTTSPlay() {
         ttsClickEnable(true);
         let delay = 0;
         if (!this.props.readerConfig?.noFootnotes) {
             delay = 100;
-            // console.log("TTS PLAY ==> NO_FOOTNOTES MUST BE TRUE (POPUP DISABLED), SWITCHING...");
-            this.props.setConfig({ noFootnotes: true });
-            // TODO: skippability should be disabled when user explicitly "requests" a skippable item, such as when clicking on a note reference hyperlink, or even on a skippable element itself(?)
-        } else if (this.props.readerConfig.annotation_defaultDrawView !== "hide") { // "margin" or "annotation"
-            delay = 200;
-            this.hideAnnotationsForTTSorMOPlay();
         }
+        if (this.props.readerConfig.annotation_defaultDrawView !== "hide") { // "margin" or "annotation"
+            delay = 200;
+        }
+        this.disablePopupFootnotesForTTSorMOPlay();
+        this.hideAnnotationsForTTSorMOPlay();
 
         setTimeout(() => {
             ttsPlay(parseFloat(this.props.ttsPlaybackRate), this.props.ttsVoices);
@@ -3020,10 +3041,19 @@ class Reader extends React.Component<IProps, IState> {
             this.setState({ previousReaderConfigAnnotationDefaultDrawView: undefined });
         }
     }
+    private restorePopupFootnotesAfterTTSorMOStop() {
+        if (this.state.previousReaderConfigNoFootnotes === false && this.props.readerConfig?.noFootnotes === true) {
+            this.props.setConfig({ noFootnotes: false });
+            this.setState({ previousReaderConfigNoFootnotes: undefined });
+        }
+    }
     private handleTTSStop() {
         ttsClickEnable(false);
         ttsStop();
-        this.restoreAnnotationStateAfterTTSorMOStop();
+        setTimeout(() => {
+            this.restorePopupFootnotesAfterTTSorMOStop();
+            this.restoreAnnotationStateAfterTTSorMOStop();
+        }, 200);
     }
     private handleTTSResume() {
         ttsResume();
@@ -3085,13 +3115,12 @@ class Reader extends React.Component<IProps, IState> {
         mediaOverlaysClickEnable(true);
         if (!this.props.readerConfig?.noFootnotes) {
             delay = 100;
-            // console.log("MO PLAY ==> NO_FOOTNOTES MUST BE TRUE (POPUP DISABLED), SWITCHING...");
-            this.props.setConfig({ noFootnotes: true });
-            // TODO: skippability should be disabled when user explicitly "requests" a skippable item, such as when clicking on a note reference hyperlink, or even on a skippable element itself(?)
-        } else if (this.props.readerConfig.annotation_defaultDrawView !== "hide") { // "margin" or "annotation"
-            delay = 200;
-            this.hideAnnotationsForTTSorMOPlay();
         }
+        if (this.props.readerConfig.annotation_defaultDrawView !== "hide") { // "margin" or "annotation"
+            delay = 200;
+        }
+        this.disablePopupFootnotesForTTSorMOPlay();
+        this.hideAnnotationsForTTSorMOPlay();
 
         setTimeout(() => {
             mediaOverlaysPlay(parseFloat(this.props.mediaOverlaysPlaybackRate));
@@ -3103,7 +3132,10 @@ class Reader extends React.Component<IProps, IState> {
     private handleMediaOverlaysStop() {
         mediaOverlaysClickEnable(false);
         mediaOverlaysStop();
-        this.restoreAnnotationStateAfterTTSorMOStop();
+        setTimeout(() => {
+            this.restorePopupFootnotesAfterTTSorMOStop();
+            this.restoreAnnotationStateAfterTTSorMOStop();
+        }, 200);
     }
     private handleMediaOverlaysResume() {
         mediaOverlaysResume();
@@ -3356,7 +3388,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             dispatch(dialogActions.closeRequest.build());
         },
         setMiniLocatorExtended: (miniLocatorExtended: MiniLocatorExtended) => {
-            dispatch(readerLocalActionSetLocator.build(miniLocatorExtended));
+            dispatch(readerActions.setLocator.build(miniLocatorExtended));
 
             // just to refresh allPublicationPage.tsx
 

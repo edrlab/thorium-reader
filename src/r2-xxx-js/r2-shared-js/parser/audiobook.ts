@@ -220,7 +220,7 @@ async function doRequest(u: string): Promise<AudioBookis> {
                 "Accept": "*/*,application/audiobook+json",
                 "Accept-Language": "en-UK,en-US;q=0.7,en;q=0.5",
                 "Host": url.host,
-                "User-Agent": "Readium2-AudioBooks",
+                "User-Agent": "thorium-desktop",
             },
             host: url.host,
             method: "GET",

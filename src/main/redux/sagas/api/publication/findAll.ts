@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { call as callTyped } from "typed-redux-saga/macro";
+import { call as callTyped, delay as delayTyped } from "typed-redux-saga/macro";
 import { diMainGet } from "readium-desktop/main/di";
 import { aboutFiltered } from "readium-desktop/main/tools/filter";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
@@ -34,10 +34,47 @@ const convertDocs = async (docs: PublicationDocument[], publicationViewConverter
     }
     return pubs;
 };
+
 export function* findAll() {
+    
+    const dummyPubDocArray: PublicationDocument[] = [];
 
     const docs = yield* callTyped(() => diMainGet("publication-repository").findAll());
+    const publicationIdentifierDataBaseArray = docs.map(({ identifier }) => identifier);
+
+    try {
+        const publicationIdentifierDiskArray = yield* callTyped(() => diMainGet("publication-storage").listPublicationIdPath());
+        yield *delayTyped(1);
+        const publicationIdentifierFoundOnDiskButNotFoundOnDataBaseArray: string[] = publicationIdentifierDiskArray.filter((id) => !publicationIdentifierDataBaseArray.includes(id));
+        debug("pubId found on disk but not found on DataBase:", JSON.stringify(publicationIdentifierFoundOnDiskButNotFoundOnDataBaseArray));
+    
+        for (const pubIdNotFoundOnDataBase of publicationIdentifierFoundOnDiskButNotFoundOnDataBaseArray) {
+            dummyPubDocArray.push({
+                createdAt: (new Date()).getTime(),
+                updatedAt: (new Date()).getTime(),
+                identifier: pubIdNotFoundOnDataBase,
+                hash: "",
+                title: pubIdNotFoundOnDataBase,
+                doNotPresentInReduxStoreDataBaseButFoundOnDisk_dummyDocument: true,
+            });
+        }
+        if (dummyPubDocArray.length) {
+            debug(`Be careful there are ${dummyPubDocArray.length} folder(s) found in publication storage directory and not matched with the DataBase !!!`);
+            for (const p of dummyPubDocArray) {
+                debug(`\t${p.identifier}}`);
+            }
+            debug("--------");
+        }
+    } catch (e) {
+        debug("Error when trying to list uuid in publication folder directory");
+        debug(e);
+    }
+    const allDocs = [...docs, ...dummyPubDocArray];
+
     const publicationViewConverter = yield* callTyped(() => diMainGet("publication-view-converter"));
-    const publicationViews = yield* callTyped(() => convertDocs(docs, publicationViewConverter));
+
+    yield* delayTyped(1);
+    const publicationViews = yield* callTyped(() => convertDocs(allDocs, publicationViewConverter));
+
     return aboutFiltered(publicationViews);
 }

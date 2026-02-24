@@ -33,7 +33,7 @@ export function* getPublication(identifier: string, checkLcpLsd = false) {
     const lcpManager = diMainGet("lcp-manager");
 
     try {
-        if (checkLcpLsd && doc.lcp) {
+        if (checkLcpLsd && doc?.lcp) {
             // DOES NOT MUTATE doc (returns a modified copy)
             doc = yield* callTyped(() => lcpManager.checkPublicationLicenseUpdate(doc));
         }

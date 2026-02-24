@@ -89,10 +89,6 @@ function* publicationCloseRequest(action: streamerActions.publicationCloseReques
         wasKilled = true;
 
         const epubPath = yield* callTyped(() => pubStorage.getPublicationEpubPath(pubId));
-        // const epubPath = path.join(
-        //     pubStorage.getRootPath(),
-        //     publicationDocument.files[0].url.substr(6),
-        // );
         debug(`EPUB ZIP CLEANUP: ${epubPath}`);
         // if (_USE_HTTP_STREAMER) {
         //     streamer.removePublications([epubPath]);
