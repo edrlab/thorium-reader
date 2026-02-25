@@ -7,7 +7,7 @@
 
 import debug_ from "debug";
 import { IApiappSearchResultView } from "readium-desktop/common/api/interface/apiappApi.interface";
-import { call } from "typed-redux-saga/macro";
+import { call as callTyped } from "typed-redux-saga/macro";
 import { SagaGenerator } from "typed-redux-saga";
 import { librarySearch } from "../../apiapp";
 
@@ -18,7 +18,7 @@ export function* search(query: string): SagaGenerator<IApiappSearchResultView[]>
     debug(query); // FIXME DEBUG
 
     if (query) {
-        const res = yield* call(librarySearch, query);
+        const res = yield* callTyped(librarySearch, query);
         return res as IApiappSearchResultView[];
     }
 

@@ -152,7 +152,7 @@ function* getPublicationView() {
             const pub = yield* callTyped(() => publicationViewConverter.convertDocumentMissingOrDeletedToMinimalPublicationView(doc));
             lastReadPublicationsView.push(pub);
 
-            // yield* callTyed(errorDeletePub, doc, e as Error);
+            // yield* callTyped(errorDeletePub, doc, e as Error);
         }
     }
 

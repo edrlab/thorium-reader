@@ -14,7 +14,7 @@ import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLe
 import { error } from "readium-desktop/main/tools/error";
 import * as fs from "fs";
 import { nanoid } from "nanoid";
-import { fork as forkTyped, call as callTyped, select as selectTyped, put as putTyped, take as takeTyped, race as raceTyped, delay, SagaGenerator, all as allTyped } from "typed-redux-saga/macro";
+import { fork as forkTyped, call as callTyped, select as selectTyped, put as putTyped, take as takeTyped, race as raceTyped, delay as delayTyped, SagaGenerator, all as allTyped } from "typed-redux-saga/macro";
 import path from "node:path";
 import { ICustomizationLockInfo, ICustomizationProfileError, ICustomizationProfileProvisioned, ICustomizationProfileProvisionedWithError } from "readium-desktop/common/redux/states/customization";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -35,7 +35,7 @@ const debug = debug_(filename_);
 
 export function* fileProvisionning(packageFileName:string, removed = false): SagaGenerator<void> {
 
-    const customizationState = yield * selectTyped((state: ICommonRootState) => state.customization);
+    const customizationState = yield* selectTyped((state: ICommonRootState) => state.customization);
     let packagesProvisionedAndLatest = customizationState.provision;
     let packagesNotProvisionedOrOnError: ICustomizationProfileProvisionedWithError[] = [];
 
@@ -43,19 +43,19 @@ export function* fileProvisionning(packageFileName:string, removed = false): Sag
         const packageFound = packagesProvisionedAndLatest.find(({ fileName }) => fileName === packageFileName);
         if (packageFound && packageFound.id === customizationState.activate.id && packageFound.fileName === packageFileName) {
             debug("rollback to thorium vanilla profile");
-            yield * putTyped(customizationActions.activating.build("")); // no profile
+            yield* putTyped(customizationActions.activating.build("")); // no profile
         }
         packagesProvisionedAndLatest = packagesProvisionedAndLatest.filter(({ fileName }) => fileName !== packageFileName);
     } else {
 
         debug("Found => ", packageFileName);
-        const profileProvisionedOrOnError = yield * callTyped(() => customizationPackageProvisioning(packageFileName));
+        const profileProvisionedOrOnError = yield* callTyped(() => customizationPackageProvisioning(packageFileName));
         if ((profileProvisionedOrOnError as ICustomizationProfileError).error) {
             debug("ERROR: Profile not provisioned, due to error :", (profileProvisionedOrOnError as ICustomizationProfileError).message);
             packagesNotProvisionedOrOnError.push((profileProvisionedOrOnError as ICustomizationProfileError));
         } else {
 
-            [packagesProvisionedAndLatest, packagesNotProvisionedOrOnError] = yield * callTyped(() => customizationPackageProvisioningCheckVersion(
+            [packagesProvisionedAndLatest, packagesNotProvisionedOrOnError] = yield* callTyped(() => customizationPackageProvisioningCheckVersion(
                 packagesProvisionedAndLatest,
                 packagesNotProvisionedOrOnError,
                 profileProvisionedOrOnError as ICustomizationProfileProvisioned,
@@ -64,7 +64,7 @@ export function* fileProvisionning(packageFileName:string, removed = false): Sag
     }
 
     debug("dispatch provisionning action with ", JSON.stringify(packagesProvisionedAndLatest)/*.slice(0, 100)+"..."*/);
-    yield * putTyped(customizationActions.provisioning.build(packagesProvisionedAndLatest, packagesNotProvisionedOrOnError));
+    yield* putTyped(customizationActions.provisioning.build(packagesProvisionedAndLatest, packagesNotProvisionedOrOnError));
 
     // TODO: how to warn user of potentially a new version of the packages id, we have to put a diff between version for a same id !
     // And mostly a technical issue, how to update the view with the update. package streamer follow a package id
@@ -389,7 +389,7 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
 
         yield* forkTyped(function* () {
 
-            yield* delay(100);
+            yield* delayTyped(100);
             let error = false;
             debug(`COPY "${filePath}" to "${packagePath}"`);
             try {
@@ -432,7 +432,7 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
     }
 
     const { a: timeoutResult, b: fileNameProvisioned } = yield* raceTyped({
-        a: delay(20000),
+        a: delayTyped(20000),
         b: callTyped(function* (): SagaGenerator<boolean> {
             if (copyDownloadAndQuit) {
                 return undefined;
@@ -498,7 +498,7 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
             // The risk is to trigger the manual import function and bypassing chokidar too early
             // when the disk in not atomically/fully written to the disk (wellKnown folder),
             // and therefore corrupt the import phase and raise an import error on the profile.
-            yield* delay(10000);
+            yield* delayTyped(10000);
 
             const isTheFileExists = yield* callTyped(async () => { try { await fs.promises.access(packagePath, constants.R_OK); return true; } catch { return false; }; });
 
@@ -510,7 +510,7 @@ export function* acquireProvisionsActivates(action: customizationActions.acquire
 
             while (1) {
                 yield* takeTyped(0); // never finished
-            } 
+            }
 
         }),
     });

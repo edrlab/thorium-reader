@@ -36,7 +36,7 @@ const convertDocs = async (docs: PublicationDocument[], publicationViewConverter
 };
 
 export function* findAll() {
-    
+
     const dummyPubDocArray: PublicationDocument[] = [];
 
     const docs = yield* callTyped(() => diMainGet("publication-repository").findAll());
@@ -44,10 +44,10 @@ export function* findAll() {
 
     try {
         const publicationIdentifierDiskArray = yield* callTyped(() => diMainGet("publication-storage").listPublicationIdPath());
-        yield *delayTyped(1);
+        yield* delayTyped(1);
         const publicationIdentifierFoundOnDiskButNotFoundOnDataBaseArray: string[] = publicationIdentifierDiskArray.filter((id) => !publicationIdentifierDataBaseArray.includes(id));
         debug("pubId found on disk but not found on DataBase:", JSON.stringify(publicationIdentifierFoundOnDiskButNotFoundOnDataBaseArray));
-    
+
         for (const pubIdNotFoundOnDataBase of publicationIdentifierFoundOnDiskButNotFoundOnDataBaseArray) {
             dummyPubDocArray.push({
                 createdAt: (new Date()).getTime(),

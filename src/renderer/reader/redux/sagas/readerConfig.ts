@@ -183,12 +183,12 @@ function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaG
     }
 
     // this.props.setConfig(readerConfig, this.props.session);
-    // const sessionEnabled = yield* select((state: IReaderRootState) => state.session.state);
+    // const sessionEnabled = yield* selectTyped((state: IReaderRootState) => state.session.state);
 
     // session never enabled in reader but always in main/lib
     // if (!sessionEnabled) {
         // see issue https://github.com/edrlab/thorium-reader/issues/2532
-        // yield* put(readerActions.configSetDefault.build(readerConfig));
+        // yield* putTyped(readerActions.configSetDefault.build(readerConfig));
     // }
 
     if (

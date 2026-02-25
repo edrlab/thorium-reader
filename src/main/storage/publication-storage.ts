@@ -177,7 +177,7 @@ export class PublicationStorage {
         identifier: string,
         type: TFileType,
     ) {
-        
+
         assertUUIDv4(identifier);
 
         const fileName = this.assertAndGetFileName(type);
@@ -193,7 +193,7 @@ export class PublicationStorage {
             debug(e);
         }
     }
-    
+
     /**
      * Store a publication in a repository
      *
@@ -377,8 +377,6 @@ export class PublicationStorage {
                 }
             }
         };
-
-        identifier = identifier.trim();
 
         let publicationPath = "";
 

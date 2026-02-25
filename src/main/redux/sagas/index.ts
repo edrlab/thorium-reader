@@ -142,7 +142,7 @@ export function* rootSaga() {
     // OS.userInfo seems to works fine on windows
     // yield spawn(function* () {
 
-    //     const creator = yield* select((_state: ICommonRootState) => _state.creator);
+    //     const creator = yield* selectTyped((_state: ICommonRootState) => _state.creator);
     //     if (creator?.name) {
     //         return ;
     //     }
