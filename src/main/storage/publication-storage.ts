@@ -21,6 +21,7 @@ import { IZip } from "@r2-utils-js/_utils/zip/zip";
 import debug_ from "debug";
 import { sanitizeForFilename } from "readium-desktop/common/safe-filename";
 import { URL_PROTOCOL_STORE } from "readium-desktop/common/streamerProtocol";
+import { AnyJson } from "readium-desktop/typings/json";
 
 const debug = debug_("readium-desktop:main/storage/pub-storage");
 
@@ -36,6 +37,8 @@ const assertUUIDv4 = (uuid: string) => {
         throw new Error("not an uuidv4 identifier !");
     }
 };
+
+const jsonstr = (d: any) => (__TH__IS_DEV__ || __TH__IS_CI__) ? JSON.stringify(d, null, 4) : JSON.stringify(d);
 
 // Store pubs in a repository on filesystem
 // Each file of publication is stored in a directory whose name is the
@@ -144,7 +147,7 @@ export class PublicationStorage {
     public async writeData(
         identifier: string,
         type: TFileType,
-        data: string,
+        data: AnyJson,
     ) {
         assertUUIDv4(identifier);
 
@@ -165,9 +168,10 @@ export class PublicationStorage {
 
         await using dir = await fs.promises.mkdtempDisposable(pubPath); // same as defer and RAII: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/await_using
         const tmpFilePath = path.join(dir.path, "locator.json");
-        await fs.promises.writeFile(tmpFilePath, data, { encoding: "utf-8", flush: true, mode: 0o644}); // owner read/write group/all read
+        const dataStr = jsonstr(data);
+        await fs.promises.writeFile(tmpFilePath, dataStr, { encoding: "utf-8", flush: true, mode: 0o644}); // owner read/write group/all read
         const read = await fs.promises.readFile(tmpFilePath, { encoding: "utf-8" });
-        if (read === data) {
+        if (read === dataStr) {
             await fs.promises.rename(tmpFilePath, filePath);
             debug("LOCATOR written to", filePath);
         }
@@ -176,8 +180,8 @@ export class PublicationStorage {
         public async readData(
         identifier: string,
         type: TFileType,
-    ) {
-
+    ): Promise<AnyJson> {
+        
         assertUUIDv4(identifier);
 
         const fileName = this.assertAndGetFileName(type);
@@ -187,11 +191,17 @@ export class PublicationStorage {
 
         try {
             const readData = await fs.promises.readFile(filePath, { encoding: "utf-8" });
-            const data = JSON.parse(readData);
-            return data;
+            try {
+                const data = JSON.parse(readData);
+                return data;
+            } catch (e) {
+                debug(e);
+            }
         } catch (e) {
             debug(e);
         }
+
+        return undefined;
     }
 
     /**

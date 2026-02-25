@@ -10,12 +10,15 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import debug_ from "debug";
 import { __ulimit_file } from "../di";
+import { AnyJson } from "readium-desktop/typings/json";
 
 const debug = debug_("readium-desktop:main/storage/pub-data");
 
 const rmrf = async (dir: string) => {
     return await fs.promises.rm(dir, { recursive: true, retryDelay: 100, maxRetries: 3, force: true });
 };
+
+const jsonstr = (d: any) => (__TH__IS_DEV__ || __TH__IS_CI__) ? JSON.stringify(d, null, 4) : JSON.stringify(d);
 
 const isUUIDv4 = (uuid: string) => /^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/.test(uuid);
 const assertUUIDv4 = (uuid: string) => {
@@ -35,7 +38,7 @@ export class PublicationData {
      */
     private publicationConfigPath: string;
 
-    private files: Array<{pubId: string, type: TFileType, fileHandle: fs.promises.FileHandle, data: string, }>;
+    private files: Array<{pubId: string, type: TFileType, fileHandle: fs.promises.FileHandle, data: AnyJson, mutex: Promise<void>}>;
 
     private filterFilesByType = (t: TFileType) => this.files.filter(({type}) => type === t);
 
@@ -64,7 +67,17 @@ export class PublicationData {
         this.files = [];
         for (const file of files) {
             try {
-                await file.fileHandle.close();
+                await Promise.race([file.mutex, new Promise<void>((resolve) => setTimeout(resolve, 100))]);
+            } catch (e) {
+                debug(e);
+            }
+            try {
+                const p1 = (async () => {
+                    await file.fileHandle.sync();
+                    await file.fileHandle.close();
+                })();
+                const p2 = new Promise<void>((resolve) => setTimeout(resolve, 100));
+                await Promise.race([p1, p2]);
             } catch (e) {
                 debug(e);
             }
@@ -99,11 +112,20 @@ export class PublicationData {
                     type,
                     fileHandle,
                     data: "",
+                    mutex: Promise.resolve(),
                 };
                 this.files.push(file);
-                const data = await fileHandle.readFile({ encoding: "utf-8" });
-                file.data = data;
-                debug(`${type} file opened on ${pubId}`);
+
+                await file.mutex.then(async () => {
+                    try {
+                        const data = await fileHandle.readFile({ encoding: "utf-8" });
+                        file.data = data;
+                        debug("READ", data);
+                        debug(`${type} file opened on ${pubId}`);
+                    } catch (e) {
+                        debug(e);
+                    }
+                });
             } catch (e) {
                 debug(e);
                 if (e.code === "ENOENT") {
@@ -120,7 +142,7 @@ export class PublicationData {
         }
     }
 
-    public async write(pubId: string, type: TFileType, data: string) {
+    public async write(pubId: string, type: TFileType, data: AnyJson) {
         if (this.lock) return ;
         assertUUIDv4(pubId);
 
@@ -135,17 +157,23 @@ export class PublicationData {
                 return ;
             }
         }
-        
-        file.data = data;
 
-        try {
-            await fs.promises.writeFile(file.fileHandle, data, { encoding: "utf-8", flush: true });
-        } catch (e) {
-            debug(e);
-        }
+        return await file.mutex.then(async () => {
+            const dataStr = jsonstr(data);
+            const dataBuffer = Buffer.from(dataStr, "utf-8");
+            try {
+                await file.fileHandle.truncate(dataBuffer.byteLength);
+                await file.fileHandle.write(dataBuffer, 0, dataBuffer.length, 0);
+
+                file.data = data;
+            } catch (e) {
+                debug(e);
+            }
+
+        });
     }
 
-    public async read(pubId: string, type: TFileType): Promise<string | undefined> {
+    public async read(pubId: string, type: TFileType): Promise<AnyJson | undefined> {
         if (this.lock) return undefined;
         assertUUIDv4(pubId);
 
@@ -161,17 +189,35 @@ export class PublicationData {
             }
         }
 
-        try {
-            const data = await fs.promises.readFile(file.fileHandle, { encoding: "utf-8" });
-            if (data === file.data) {
-                return file.data;
+        return await file.mutex.then(async () => {
+            try {
+                // flush before read
+                await file.fileHandle.sync();
+            } catch (e) {
+                debug(e);
             }
-            file.data = data;
-        } catch (e) {
-            debug(e);
-        }
+            try {
+                const dataStr = await fs.promises.readFile(file.fileHandle, { encoding: "utf-8" });
+                try {
+                    const data = JSON.parse(dataStr);
+                    if (data === file.data) {
+                        return file.data;
+                    }
+                    file.data = data;
+                } catch (e) {
+                    debug(e);
+                    try {
+                        await this.write(pubId, type, file.data);
+                    } catch (e) {
+                        debug(e);
+                    }
+                }
 
-        return file.data;
+            } catch (e) {
+                debug(e);
+            }
+            return file.data;
+        });
     }
 
     public async close(pubId: string) {
@@ -186,6 +232,16 @@ export class PublicationData {
 
         for (const file of files) {
             try {
+                try {
+                    await file.mutex;
+                } catch (e) {
+                    debug(e);
+                }
+                try {
+                    await file.fileHandle.sync();
+                } catch (e) {
+                    debug(e);
+                }
                 await file.fileHandle.close();
             } catch (e) {
                 debug(e);

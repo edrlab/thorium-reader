@@ -20,6 +20,7 @@ import { readerActions } from "readium-desktop/common/redux/actions";
 import { EventPayload } from "readium-desktop/common/ipc/sync";
 import { SenderType } from "readium-desktop/common/models/sync";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { AnyJson } from "readium-desktop/typings/json";
 
 const DEBOUNCE_TIME = 3 * 60 * 1000; // 3 min
 const LOCATOR_DEBOUNCE_TIME = 10 * 1000; // 10 secs
@@ -129,7 +130,7 @@ export function saga() {
             readerActions.setLocator.ID,
             function* (action: readerActions.setLocator.TAction) {
 
-                const locator = action.payload;
+                const locator = action.payload as unknown as AnyJson;
                 const sender = action.sender as EventPayload["sender"];
 
                 if (sender.type !== SenderType.Renderer) {
@@ -139,8 +140,7 @@ export function saga() {
                 const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
                 const pubId = reader.publicationIdentifier;
 
-                const locatorSerialize = (__TH__IS_DEV__ || __TH__IS_CI__) ? JSON.stringify(locator, null, 4) : JSON.stringify(locator);
-                yield* callTyped(() => diMainGet("publication-storage").writeData(pubId, "locator", locatorSerialize));
+                yield* callTyped(() => diMainGet("publication-storage").writeData(pubId, "locator", locator));
             },
         ),
         // takeSpawnEvery(
