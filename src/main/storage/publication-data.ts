@@ -107,6 +107,15 @@ export class PublicationData {
         for (let step = 0; step < 2; step++) {
             try {
                 const fileHandle = await fs.promises.open(filePath, fs.constants.O_RDWR | fs.constants.O_CREAT, 0o644);
+                const file_ = this.filterFilesByType(type).find((a) => pubId === a.pubId);
+                if (file_) {
+                    try {
+                        await fileHandle.close();
+                    } catch (e) {
+                        debug(e);
+                    }
+                    return; // already open
+                }
                 const file = {
                     pubId,
                     type,
