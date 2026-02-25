@@ -38,6 +38,7 @@ import { LSDManager } from "./services/lsd";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { EOL } from "os";
 import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
+import { PublicationData } from "./storage/publication-data";
 
 // import { streamer } from "readium-desktop/main/streamerHttp";
 // import { Server } from "@r2-streamer-js/http/server";
@@ -48,6 +49,23 @@ const debug = debug_("readium-desktop:main:di");
 export const CONFIGREPOSITORY_REDUX_PERSISTENCE = "CONFIGREPOSITORY_REDUX_PERSISTENCE";
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
 
+import { exec } from "node:child_process";
+
+export let __ulimit_file: number;
+try {
+    if (__TH__IS_DEV__ && process.platform !== "win32") {
+        exec("ulimit -n", { shell: "/bin/sh" }, (err, stdout) => {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            debug("Open file limit:", stdout.trim());
+            __ulimit_file = parseInt(stdout.trim(), 10);
+        });
+    }
+} catch {
+    // nothing
+}
 
 // Normally not required as already initialized by electron
 if (!fs.existsSync(USER_DATA_FOLDER)) {
@@ -120,13 +138,13 @@ export const userVaultConfigPath = path.join(
     configDataFolderPath,
     USER_VAULT_FILENAME,
 );
-const READER_CONFIG_DIRECTORY_NAME = "reader";
-export const readerConfigPath = path.join(
+const PUBLICATION_CONFIG_DIRECTORY_NAME = "publication";
+export const publicationConfigPath = path.join(
     configDataFolderPath,
-    READER_CONFIG_DIRECTORY_NAME,
+    PUBLICATION_CONFIG_DIRECTORY_NAME,
 );
-if (!fs.existsSync(readerConfigPath)) {
-    fs.mkdirSync(readerConfigPath);
+if (!fs.existsSync(publicationConfigPath)) {
+    fs.mkdirSync(publicationConfigPath);
 }
 //
 // Create databases
@@ -272,9 +290,14 @@ container.bind<OpdsFeedViewConverter>(diSymbolTable["opds-feed-view-converter"])
     .to(OpdsFeedViewConverter).inSingletonScope();
 
 // Storage
-const publicationStorage = new PublicationStorage(publicationRepositoryPath, userVaultConfigPath, readerConfigPath);
+const publicationStorage = new PublicationStorage(publicationRepositoryPath, userVaultConfigPath);
 container.bind<PublicationStorage>(diSymbolTable["publication-storage"]).toConstantValue(
     publicationStorage,
+);
+
+const publicationData = new PublicationData(publicationConfigPath);
+container.bind<PublicationData>(diSymbolTable["publication-data"]).toConstantValue(
+    publicationData,
 );
 
 // Bind services
@@ -344,6 +367,7 @@ interface IGet {
     //    (s: "locator-view-converter"): LocatorViewConverter;
     (s: "opds-feed-view-converter"): OpdsFeedViewConverter;
     (s: "publication-storage"): PublicationStorage;
+    (s: "publication-data"): PublicationData;
     // (s: "streamer"): Server;
     (s: "device-id-manager"): DeviceIdManager;
     (s: "lcp-manager"): LcpManager;

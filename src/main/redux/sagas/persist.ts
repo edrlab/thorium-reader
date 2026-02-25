@@ -7,7 +7,7 @@
 
 import debug_ from "debug";
 import * as fs from "fs";
-import { diMainGet, patchFilePath, readerConfigPath, stateFilePath } from "readium-desktop/main/di";
+import { diMainGet, patchFilePath, stateFilePath } from "readium-desktop/main/di";
 import { PersistRootState, RootState } from "readium-desktop/main/redux/states";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call, debounce, all } from "redux-saga/effects";
@@ -19,13 +19,10 @@ import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLe
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { EventPayload } from "readium-desktop/common/ipc/sync";
 import { SenderType } from "readium-desktop/common/models/sync";
-import * as path from "path";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 
 const DEBOUNCE_TIME = 3 * 60 * 1000; // 3 min
 const LOCATOR_DEBOUNCE_TIME = 10 * 1000; // 10 secs
-
-const locatorFileHandleMap: Map<string, fs.promises.FileHandle> = new Map();
 
 // Logger
 const filename_ = "readium-desktop:main:saga:persist";
@@ -73,17 +70,6 @@ export function* needToPersistFinalState() {
     const nextState = yield* selectTyped((store: RootState) => store);
     yield call(() => persistStateToFs(nextState));
     yield call(() => needToPersistPatch());
-
-    yield* callTyped(async () => {
-        for (const fileHandle of locatorFileHandleMap.values()) {
-            try {
-                await fileHandle.close();
-            } catch (e) {
-                debug(e);
-            }
-        }
-        locatorFileHandleMap.clear(); // thorium is closing
-    });
 }
 
 export function* needToPersistPatch() {
@@ -113,28 +99,6 @@ export function* needToPersistPatch() {
 
 }
 
-function* persistLocatorInReaderConfigDirectory(action: readerActions.setLocator.TAction) {
-    const locator = action.payload;
-    const sender = action.sender as EventPayload["sender"];
-
-    if (sender.type !== SenderType.Renderer) {
-        debug("sender is not renderer !!!");
-        return ;
-    }
-
-    const locatorSerialize = JSON.stringify(locator, null, 4);
-
-    const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
-    const pubId = reader.publicationIdentifier;
-    const locatorDirPath = path.join(readerConfigPath, pubId);
-    const locatorFilePath = path.join(locatorDirPath, "locator.json");
-
-    yield* callTyped(() => locatorFileHandleMap.get(pubId).writeFile(locatorSerialize, { encoding: "utf-8" }));
-    yield* callTyped(() => locatorFileHandleMap.get(pubId).sync());
-    debug("LOCATOR written to", locatorFilePath);
-
-}
-
 export function saga() {
     return all([
         debounce(
@@ -144,7 +108,20 @@ export function saga() {
         ),
         takeSpawnLeading(
             readerActions.setLocator.ID,
-            persistLocatorInReaderConfigDirectory,
+            function* (action: readerActions.setLocator.TAction) {
+                const locator = action.payload;
+                const sender = action.sender as EventPayload["sender"];
+
+                if (sender.type !== SenderType.Renderer) {
+                    debug("sender is not renderer !!!");
+                    return;
+                }
+                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                const pubId = reader.publicationIdentifier;
+                
+                const locatorSerialize = (__TH__IS_DEV__ || __TH__IS_CI__) ? JSON.stringify(locator, null, 4) : JSON.stringify(locator);
+                yield* callTyped(() => diMainGet("publication-data").write(pubId, "locator", locatorSerialize));
+            },
             (e) => debug(e),
         ),
         debounce(
@@ -166,42 +143,18 @@ export function saga() {
                 yield* callTyped(() => diMainGet("publication-storage").writeData(pubId, "locator", locatorSerialize));
             },
         ),
-        takeSpawnEvery(
-            winActions.reader.openRequest.ID,
-            function* (action: winActions.reader.openRequest.TAction) {
-                const { publicationIdentifier: pubId } = action.payload;
+        // takeSpawnEvery(
+        //     winActions.reader.openRequest.ID,
+        //     function* (action: winActions.reader.openRequest.TAction) {
+        //         const { publicationIdentifier: pubId } = action.payload;
 
-                const locatorDirPath = path.join(readerConfigPath, pubId);
-                const locatorFilePath = path.join(locatorDirPath, "locator.json");
+        //         // not needed // read/write lazy open
+        //         // yield* callTyped(() => diMainGet("publication-data").open(pubId, "locator"));
 
-                while (1) {
-                    try {
-                        if (!locatorFileHandleMap.has(pubId)) {
-                            locatorFileHandleMap.set(pubId, yield* callTyped(() => fs.promises.open(locatorFilePath, "w+", 0o600)));
-                            debug("locator file open and ready to be written: ", locatorFilePath);
-
-                            debug("There are currently", locatorFileHandleMap.size, "open locator file(s)");
-                            debug([...locatorFileHandleMap.keys()]);
-                        }
-                    } catch (e: any) {
-                        debug(JSON.stringify(e, null, 4));
-                        debug("Error to persist locator in reader config directory");
-                        if (e.code === "ENOENT") {
-                            try {
-                                debug("create directory", locatorDirPath);
-                                yield* callTyped(() => fs.promises.mkdir(locatorDirPath, { recursive: false, mode: 0o600 }));
-                                continue;
-                            } catch (e) {
-                                debug(e);
-                            }
-                        }
-                    }
-                    break; // important
-                }
-            },
-            // (e) => error(filename_ + ":createReaderWindow", e),
-            (e) => debug(e),
-        ),
+        //     },
+        //     // (e) => error(filename_ + ":createReaderWindow", e),
+        //     (e) => debug(e),
+        // ),
         // takeSpawnEvery(
         //     winActions.reader.openSucess.ID,
         //     winOpen,
@@ -212,23 +165,24 @@ export function saga() {
             function* (action: winActions.reader.closed.TAction) {
                 const { identifier } = action.payload;
 
-                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[identifier]);
-                const pubId = reader.publicationIdentifier;
-
-                if (locatorFileHandleMap.has(pubId)) {
-                    const fd = locatorFileHandleMap.get(pubId);
-                    locatorFileHandleMap.delete(pubId);
-                    try {
-                        yield* callTyped(() => fd.close());
-                    } catch (e) {
-                        debug(e);
-                    }
-                    debug("locator file closed and deleted for", pubId);
+                const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+                if (!readers[identifier]) {
+                    debug("ERROR NO READER BUT CLOSE ACTION RECEIVED (race condition!?)");
+                    return ;
+                }
+                const pubId = readers[identifier].publicationIdentifier;
+                const readersPubId = Object.values(readers).filter((v) => v.publicationIdentifier === pubId);
+                if (readersPubId.length > 1) {
+                    return ;
                 }
 
-                const locator = reader.reduxState.locator;
-                const locatorSerialize = (__TH__IS_DEV__ || __TH__IS_CI__) ? JSON.stringify(locator, null, 4) : JSON.stringify(locator);
-                yield* callTyped(() => diMainGet("publication-storage").writeData(pubId, "locator", locatorSerialize));
+                const data = diMainGet("publication-data").getDataRead(pubId, "locator");
+                yield* callTyped(() => diMainGet("publication-data").close(pubId));
+
+                if (data) {
+                    // finally save locator next to publication storage vault
+                    yield* callTyped(() => diMainGet("publication-storage").writeData(pubId, "locator", data));
+                }
 
             },
             // (e) => error(filename_ + ":winClose", e),

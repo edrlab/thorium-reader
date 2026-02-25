@@ -24,6 +24,8 @@ import { URL_PROTOCOL_STORE } from "readium-desktop/common/streamerProtocol";
 
 const debug = debug_("readium-desktop:main/storage/pub-storage");
 
+export type TFileType = "locator" | "config" | "disableRTLFlip";
+
 const rmrf = async (dir: string) => {
     return await fs.promises.rm(dir, { recursive: true, retryDelay: 100, maxRetries: 3, force: true });
 };
@@ -53,12 +55,6 @@ export class PublicationStorage {
     // private configDataFolderPath: string;
 
     /**
-     * publication reader config directory from configDataFolderPath
-     * aka: %appData%\config-data-json{-dev}\reader\<uuid>\
-     */
-    private readerConfigPath: string; // %appData%\config-data
-
-    /**
      * appData/userData default publication storage directory path
      * aka: %appData%\publications{-dev}\<uuid>
      */
@@ -74,9 +70,16 @@ export class PublicationStorage {
      */
     private userVaultConfigPath: string;
 
-    public constructor(rootPath: string, userVaultConfigPath: string, readerConfigPath: string) {
+    private assertAndGetFileName = (type: TFileType) => {
+        const fileName = type === "locator" ? "locator.json" : type === "config" ? "config.json" : type === "disableRTLFlip" ? "disableRTLFlip.json" : "";
+        if (!fileName) {
+            throw new Error("fileType not found");
+        }
+        return fileName;
+    };
+
+    public constructor(rootPath: string, userVaultConfigPath: string) {
         this.userVaultConfigPath = userVaultConfigPath;
-        this.readerConfigPath = readerConfigPath;
         this.defaultVaultPath = rootPath;
         this.userVaultPath = this.readUserVault();
     }
@@ -140,14 +143,15 @@ export class PublicationStorage {
 
     public async writeData(
         identifier: string,
-        fileName: "locator",
+        type: TFileType,
         data: string,
     ) {
-
         assertUUIDv4(identifier);
 
+        const fileName = this.assertAndGetFileName(type);
+
         const pubPath = await this.findPublicationPath(identifier);
-        const filePath = fileName === "locator" ? path.join(pubPath, "locator.json") : "";
+        const filePath =path.join(pubPath, fileName);
 
         try {
             const readData = await fs.promises.readFile(filePath, { encoding: "utf-8" });
@@ -171,13 +175,15 @@ export class PublicationStorage {
 
         public async readData(
         identifier: string,
-        fileName: "locator",
+        type: TFileType,
     ) {
         
         assertUUIDv4(identifier);
 
+        const fileName = this.assertAndGetFileName(type);
+
         const pubPath = await this.findPublicationPath(identifier);
-        const filePath = fileName === "locator" ? path.join(pubPath, "locator.json") : "";
+        const filePath = path.join(pubPath, fileName);
 
         try {
             const readData = await fs.promises.readFile(filePath, { encoding: "utf-8" });
@@ -217,26 +223,6 @@ export class PublicationStorage {
                 try {
                     await rmrf(pubDirPath);
                     await fs.promises.mkdir(pubDirPath);
-                } catch (e) {
-                    debug(e);
-                }
-            }
-        }
-
-        const configPubDirPath = path.join(this.readerConfigPath, identifier);
-
-        try {
-            await fs.promises.mkdir(configPubDirPath);
-        } catch (e: any) {
-            debug(`mkdir ${configPubDirPath}: ${e}`);
-            if (e.code === "EEXIST") {
-                debug("Directory already exists");
-                debug("How to handle this error?");
-                debug("Do we have to clean the directory before using it?");
-                debug("For the moment let's remove the directory");
-                try {
-                    await rmrf(configPubDirPath);
-                    await fs.promises.mkdir(configPubDirPath);
                 } catch (e) {
                     debug(e);
                 }
