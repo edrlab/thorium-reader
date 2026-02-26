@@ -125,7 +125,7 @@ export class PublicationData {
                 };
                 this.files.push(file);
 
-                await file.mutex.then(async () => {
+                file.mutex = file.mutex.then(async () => {
                     try {
                         const dataStr = await fileHandle.readFile({ encoding: "utf-8" });
                         try {
@@ -139,6 +139,7 @@ export class PublicationData {
                         debug(e);
                     }
                 });
+                await file.mutex;
             } catch (e) {
                 debug(e);
                 if (e.code === "ENOENT") {
@@ -171,7 +172,7 @@ export class PublicationData {
             }
         }
 
-        return await file.mutex.then(async () => {
+        file.mutex = file.mutex.then(async () => {
             const dataStr = jsonstr(data);
             try {
                 await file.fileHandle.truncate(dataStr.length);
@@ -184,6 +185,7 @@ export class PublicationData {
             }
 
         });
+        await file.mutex;
     }
 
     public async read(pubId: string, type: TFileType): Promise<object | undefined> {
@@ -202,7 +204,7 @@ export class PublicationData {
             }
         }
 
-        return await file.mutex.then(async () => {
+        file.mutex = file.mutex.then(async () => {
             try {
                 // flush before read
                 await file.fileHandle.sync();
@@ -213,9 +215,6 @@ export class PublicationData {
                 const dataStr = await fs.promises.readFile(file.fileHandle, { encoding: "utf-8" });
                 try {
                     const data = JSON.parse(dataStr);
-                    if (data === file.data) {
-                        return file.data;
-                    }
                     file.data = data;
                 } catch (e) {
                     debug(e);
@@ -229,8 +228,9 @@ export class PublicationData {
             } catch (e) {
                 debug(e);
             }
-            return file.data;
         });
+        await file.mutex;
+        return file.data;
     }
 
     public async close(pubId: string) {
