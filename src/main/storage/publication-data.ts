@@ -144,7 +144,7 @@ export class PublicationData {
                 if (e.code === "ENOENT") {
                     try {
                         debug("create directory", publicationPath);
-                        await fs.promises.mkdir(publicationPath, { recursive: false, mode: 0o666 });
+                        await fs.promises.mkdir(publicationPath, { recursive: false, mode: 0o777 });
                         continue;
                     } catch (e) {
                         debug(e);
