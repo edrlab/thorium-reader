@@ -136,9 +136,11 @@ export function saga() {
                     return;
                 }
                 const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
-                const pubId = reader.publicationIdentifier;
+                if (reader) {
+                    const pubId = reader.publicationIdentifier;
+                    yield* callTyped(() => diMainGet("publication-storage").writeData(pubId, "locator", locator));
+                }
 
-                yield* callTyped(() => diMainGet("publication-storage").writeData(pubId, "locator", locator));
             },
         ),
         // takeSpawnEvery(
