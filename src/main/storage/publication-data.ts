@@ -37,7 +37,7 @@ export class PublicationData {
      */
     private publicationConfigPath: string;
 
-    private files: Array<{pubId: string, type: TFileType, fileHandle: fs.promises.FileHandle, data: object, mutex: Promise<void>}>;
+    private files: Array<{pubId: string, type: TFileType, fileHandle: fs.promises.FileHandle, data: object | undefined, mutex: Promise<void>}>;
 
     private filterFilesByType = (t: TFileType) => this.files.filter(({type}) => type === t);
 
@@ -115,20 +115,25 @@ export class PublicationData {
                     }
                     return; // already open
                 }
+                const data: object | undefined = undefined;
                 const file = {
                     pubId,
                     type,
                     fileHandle,
-                    data: "",
+                    data,
                     mutex: Promise.resolve(),
                 };
                 this.files.push(file);
 
                 await file.mutex.then(async () => {
                     try {
-                        const data = await fileHandle.readFile({ encoding: "utf-8" });
-                        file.data = data;
-                        debug("READ", data);
+                        const dataStr = await fileHandle.readFile({ encoding: "utf-8" });
+                        try {
+                            const data = JSON.parse(dataStr);
+                            file.data = data;
+                        } catch (e) {
+                            debug(e);
+                        }
                         debug(`${type} file opened on ${pubId}`);
                     } catch (e) {
                         debug(e);
@@ -172,6 +177,7 @@ export class PublicationData {
                 await file.fileHandle.truncate(dataStr.length);
                 await file.fileHandle.write(dataStr, 0, "utf-8");
 
+                // Wait the end of the write to set it as local reference
                 file.data = data;
             } catch (e) {
                 debug(e);

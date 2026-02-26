@@ -138,7 +138,7 @@ export function saga() {
                 const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
                 if (reader) {
                     const pubId = reader.publicationIdentifier;
-                    yield* callTyped(() => diMainGet("publication-storage").writeData(pubId, "locator", locator));
+                    yield* callTyped(() => diMainGet("publication-storage").write(pubId, "locator", locator));
                 }
 
             },
@@ -181,7 +181,7 @@ export function saga() {
 
                 if (data) {
                     // finally save locator next to publication storage vault
-                    yield* callTyped(() => diMainGet("publication-storage").writeData(pubId, "locator", data));
+                    yield* callTyped(() => diMainGet("publication-storage").write(pubId, "locator", data));
                 }
 
             },

@@ -143,7 +143,7 @@ export class PublicationStorage {
         return (await this.userVaultPath) || this.defaultVaultPath;
     }
 
-    public async writeData(
+    public async write(
         identifier: string,
         type: TFileType,
         data: object,
@@ -171,14 +171,14 @@ export class PublicationStorage {
         const tmpFilePath = path.join(dir.path, "locator.json");
         const dataStr = jsonstr(data);
         await fs.promises.writeFile(tmpFilePath, dataStr, { encoding: "utf-8", flush: true, mode: 0o666}); // owner read/write group/all read
-        const read = await fs.promises.readFile(tmpFilePath, { encoding: "utf-8" });
-        if (read === dataStr) {
+        const readStr = await fs.promises.readFile(tmpFilePath, { encoding: "utf-8" });
+        if (readStr === dataStr) {
             await fs.promises.rename(tmpFilePath, filePath);
             debug("LOCATOR written to", filePath);
         }
     }
 
-        public async readData(
+        public async read(
         identifier: string,
         type: TFileType,
     ): Promise<object> {

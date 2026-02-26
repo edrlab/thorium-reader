@@ -487,7 +487,7 @@ export async function initStore()
                         debug(e);
                     }
                     try {
-                        await publicationStorage.writeData(pubId, "locator", data);
+                        await publicationStorage.write(pubId, "locator", data);
                     } catch (e) {
                         debug(e);
                     }
@@ -501,7 +501,7 @@ export async function initStore()
                         debug(e);
                     }
                     try {
-                        await publicationStorage.writeData(pubId, "config", data);
+                        await publicationStorage.write(pubId, "config", data);
                     } catch (e) {
                         debug(e);
                     }
@@ -515,7 +515,7 @@ export async function initStore()
                         debug(e);
                     }
                     try {
-                        await publicationStorage.writeData(pubId, "disableRTLFlip", data);
+                        await publicationStorage.write(pubId, "disableRTLFlip", data);
                     } catch (e) {
                         debug(e);
                     }
