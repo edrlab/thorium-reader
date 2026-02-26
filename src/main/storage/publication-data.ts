@@ -10,7 +10,6 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import debug_ from "debug";
 import { __ulimit_file } from "../di";
-import { AnyJson } from "readium-desktop/typings/json";
 
 const debug = debug_("readium-desktop:main/storage/pub-data");
 
@@ -38,7 +37,7 @@ export class PublicationData {
      */
     private publicationConfigPath: string;
 
-    private files: Array<{pubId: string, type: TFileType, fileHandle: fs.promises.FileHandle, data: AnyJson, mutex: Promise<void>}>;
+    private files: Array<{pubId: string, type: TFileType, fileHandle: fs.promises.FileHandle, data: object, mutex: Promise<void>}>;
 
     private filterFilesByType = (t: TFileType) => this.files.filter(({type}) => type === t);
 
@@ -106,7 +105,7 @@ export class PublicationData {
 
         for (let step = 0; step < 2; step++) {
             try {
-                const fileHandle = await fs.promises.open(filePath, fs.constants.O_RDWR | fs.constants.O_CREAT, 0o644);
+                const fileHandle = await fs.promises.open(filePath, fs.constants.O_RDWR | fs.constants.O_CREAT, 0o666);
                 const file_ = this.filterFilesByType(type).find((a) => pubId === a.pubId);
                 if (file_) {
                     try {
@@ -140,7 +139,7 @@ export class PublicationData {
                 if (e.code === "ENOENT") {
                     try {
                         debug("create directory", publicationPath);
-                        await fs.promises.mkdir(publicationPath, { recursive: false, mode: 0o644 });
+                        await fs.promises.mkdir(publicationPath, { recursive: false, mode: 0o666 });
                         continue;
                     } catch (e) {
                         debug(e);
@@ -151,7 +150,7 @@ export class PublicationData {
         }
     }
 
-    public async write(pubId: string, type: TFileType, data: AnyJson) {
+    public async write(pubId: string, type: TFileType, data: object) {
         if (this.lock) return ;
         assertUUIDv4(pubId);
 
@@ -169,10 +168,9 @@ export class PublicationData {
 
         return await file.mutex.then(async () => {
             const dataStr = jsonstr(data);
-            const dataBuffer = Buffer.from(dataStr, "utf-8");
             try {
-                await file.fileHandle.truncate(dataBuffer.byteLength);
-                await file.fileHandle.write(dataBuffer, 0, dataBuffer.length, 0);
+                await file.fileHandle.truncate(dataStr.length);
+                await file.fileHandle.write(dataStr, 0, "utf-8");
 
                 file.data = data;
             } catch (e) {
@@ -182,7 +180,7 @@ export class PublicationData {
         });
     }
 
-    public async read(pubId: string, type: TFileType): Promise<AnyJson | undefined> {
+    public async read(pubId: string, type: TFileType): Promise<object | undefined> {
         if (this.lock) return undefined;
         assertUUIDv4(pubId);
 

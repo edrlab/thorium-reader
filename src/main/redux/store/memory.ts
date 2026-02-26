@@ -30,7 +30,6 @@ import { TAnnotationState } from "readium-desktop/common/redux/states/renderer/a
 import { sqliteInitTableNote, sqliteTableNoteDeleteWherePubId, sqliteTableNoteInsert, sqliteTableSelectLastModifiedDateWherePubId } from "readium-desktop/main/db/sqlite/note";
 import { sqliteInitialisation } from "readium-desktop/main/db/sqlite";
 import { IReaderStateReaderSession } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { AnyJson } from "readium-desktop/typings/json";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -481,7 +480,7 @@ export async function initStore()
                 const publicationStorage = diMainGet("publication-storage");
                 if (state?.reduxState?.locator) {
                     debug("\t => locator");
-                    const data = state.reduxState.locator as unknown as AnyJson;
+                    const data = state.reduxState.locator as unknown as object;
                     try {
                         await publicationData.write(pubId, "locator", data);
                     } catch (e) {
@@ -495,7 +494,7 @@ export async function initStore()
                 }
                 if (state?.reduxState?.config) {
                     debug("\t => config");
-                    const data = state.reduxState.config as unknown as AnyJson;
+                    const data = state.reduxState.config as unknown as object;
                     try {
                         await publicationData.write(pubId, "config", data);
                     } catch (e) {
@@ -509,7 +508,7 @@ export async function initStore()
                 }
                 if (state?.reduxState?.disableRTLFlip) {
                     debug("\t => disableRTLFlip");
-                    const data = state.reduxState.disableRTLFlip as unknown as AnyJson;
+                    const data = state.reduxState.disableRTLFlip as unknown as object;
                     try {
                         await publicationData.write(pubId, "disableRTLFlip", data);
                     } catch (e) {
@@ -523,7 +522,7 @@ export async function initStore()
                 }
                 if (state?.windowBound) {
                     debug("\t => bound");
-                    const data = state.windowBound as unknown as AnyJson;
+                    const data = state.windowBound as unknown as object;
                     try {
                         await publicationData.write(pubId, "bound", data);
                     } catch (e) {

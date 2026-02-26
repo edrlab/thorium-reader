@@ -21,7 +21,6 @@ import { IZip } from "@r2-utils-js/_utils/zip/zip";
 import debug_ from "debug";
 import { sanitizeForFilename } from "readium-desktop/common/safe-filename";
 import { URL_PROTOCOL_STORE } from "readium-desktop/common/streamerProtocol";
-import { AnyJson } from "readium-desktop/typings/json";
 
 const debug = debug_("readium-desktop:main/storage/pub-storage");
 
@@ -147,7 +146,7 @@ export class PublicationStorage {
     public async writeData(
         identifier: string,
         type: TFileType,
-        data: AnyJson,
+        data: object,
     ) {
         assertUUIDv4(identifier);
 
@@ -158,7 +157,9 @@ export class PublicationStorage {
 
         try {
             const readData = await fs.promises.readFile(filePath, { encoding: "utf-8" });
-            if (readData === data) {
+            const dataStr = JSON.stringify(data);
+            const readDataStr = JSON.stringify(JSON.parse(readData));
+            if (readDataStr === dataStr) {
                 debug("LOCATOR Storage same as LOCATOR Serialized, already persisted");
                 return;
             }
@@ -169,7 +170,7 @@ export class PublicationStorage {
         await using dir = await fs.promises.mkdtempDisposable(pubPath); // same as defer and RAII: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/await_using
         const tmpFilePath = path.join(dir.path, "locator.json");
         const dataStr = jsonstr(data);
-        await fs.promises.writeFile(tmpFilePath, dataStr, { encoding: "utf-8", flush: true, mode: 0o644}); // owner read/write group/all read
+        await fs.promises.writeFile(tmpFilePath, dataStr, { encoding: "utf-8", flush: true, mode: 0o666}); // owner read/write group/all read
         const read = await fs.promises.readFile(tmpFilePath, { encoding: "utf-8" });
         if (read === dataStr) {
             await fs.promises.rename(tmpFilePath, filePath);
@@ -180,7 +181,7 @@ export class PublicationStorage {
         public async readData(
         identifier: string,
         type: TFileType,
-    ): Promise<AnyJson> {
+    ): Promise<object> {
         
         assertUUIDv4(identifier);
 
