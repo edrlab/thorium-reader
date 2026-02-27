@@ -201,30 +201,30 @@
     },
     "library": {
         "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "reset": "",
-            "selectOption": ""
+            "addFilters": "Lisää suodatin",
+            "filterBy": "Suodata",
+            "reset": "Nollaa",
+            "selectOption": "Valitse"
         },
         "lcp": {
-            "hidePassphrase": "",
+            "hidePassphrase": "Piilota salasana",
             "hint": "Vihje:",
             "open": "Avaa",
             "password": "Salasana",
             "sentence": "Julkaisun avaamiseen tarvitaan LCP-salasana",
-            "showPassphrase": "",
+            "showPassphrase": "Näytä salasana",
             "urlHint": "Unohtuiko salasana? Lisätietoja:",
             "whatIsLcp?": "Mikä on LCP?",
             "whatIsLcpInfoDetails": "LCP (Licensed Content Protection) on sisällön suojaustapa.",
             "whatIsLcpInfoDetailsLink": "Lisätietoja on EDRLabin sivustolla."
         },
         "sorting": {
-            "addSorting": "",
-            "author": "",
-            "language": "",
-            "readingState": "",
-            "sortBy": "",
-            "title": ""
+            "addSorting": "Lajittele",
+            "author": "Tekijä",
+            "language": "Kieli",
+            "readingState": "Lukemisen tila",
+            "sortBy": "Lajittele: ",
+            "title": "Teoksen nimi"
         }
     },
     "message": {
@@ -620,7 +620,7 @@
         "audio": {
             "tracks": "Osat"
         },
-        "author": "Kirjailija",
+        "author": "Tekijä",
         "cancelledLcp": "Tämän julkaisun LCP-käyttöoikeus on peruttu.",
         "certificateRevoked": "Varmenne on kumottu.",
         "certificateSignatureInvalid": "Varmenteen allekirjoitus ei kelpaa.",
@@ -712,9 +712,9 @@
             "unmute": "poista mykistys"
         },
         "dock": {
-            "dockDefault": "",
-            "dockLeft": "",
-            "dockRight": ""
+            "dockDefault": "Näytä paneeli pop up -ikkunana",
+            "dockLeft": "Kiinnitä paneeli vasemmalle",
+            "dockRight": "Kiinnitä paneeli oikealle"
         },
         "fxl": {
             "fit": "Sovita"
