@@ -29,7 +29,7 @@ export const reduxPersistMiddleware: Middleware
                 const persistPrevState: PersistRootState = {
                     // versionUpdate: prevState.versionUpdate,
                     theme: prevState.theme,
-                    win: prevState.win,
+                    // win: prevState.win,
                     reader: prevState.reader,
                     i18n: prevState.i18n,
                     session: prevState.session,
@@ -58,7 +58,7 @@ export const reduxPersistMiddleware: Middleware
                 const persistNextState: PersistRootState = {
                     // versionUpdate: nextState.versionUpdate,
                     theme: nextState.theme,
-                    win: nextState.win,
+                    // win: nextState.win,
                     reader: nextState.reader,
                     i18n: nextState.i18n,
                     session: nextState.session,

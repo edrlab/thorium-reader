@@ -42,7 +42,7 @@ const persistStateToFs = async (nextState: RootState) => {
 
     const value: PersistRootState = {
         theme: nextState.theme,
-        win: nextState.win,
+        // win: nextState.win,
         publication: nextState.publication,
         reader: nextState.reader,
         session: nextState.session,
