@@ -23,7 +23,6 @@ import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/red
 import { hexToRgb, rgbToHex } from "readium-desktop/common/rgb";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { readerLocalActionSetConfig } from "../redux/actions";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
@@ -38,6 +37,7 @@ import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/componen
 // e__slint-disable-next-line @typescript-eslint/ban-ts-comment
 // @__ts-ignore TS1479
 import {subscribe} from "@github/paste-markdown";
+import { readerActions } from "readium-desktop/common/redux/actions";
 
 interface IProps {
     save: (name: string, color: IColor, tag: string | undefined) => void,
@@ -73,7 +73,7 @@ export const BookmarkEdit: React.FC<IProps> = (props) => {
     const saveConfig = React.useCallback(() => {
 
         if (previousColorSelected.current !== colorSelected) {
-            dispatch(readerLocalActionSetConfig.build({ annotation_defaultColor: hexToRgb(colorSelected) }));
+            dispatch(readerActions.setConfig.build({ annotation_defaultColor: hexToRgb(colorSelected) }));
         }
         previousColorSelected.current = colorSelected;
     }, [dispatch, colorSelected]);

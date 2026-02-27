@@ -256,6 +256,13 @@ function* closeProcess() {
                     } catch (e) {
                         debug("ERROR to persistState", e);
                     }
+
+                    try {
+                        yield call(() => diMainGet("publication-data").destroy());
+                        debug("Success to destroy publication-data");
+                    } catch (e) {
+                        debug("ERROR to destroy publication-data", e);
+                    }
                 }),
                 call(function*() {
 

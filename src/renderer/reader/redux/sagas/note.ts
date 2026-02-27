@@ -12,7 +12,7 @@ import debug_ from "debug";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { SagaGenerator } from "typed-redux-saga";
 import { select as selectTyped, take as takeTyped, race as raceTyped, put as putTyped, all as allTyped, call as callTyped, spawn as spawnTyped, delay as delayTyped} from "typed-redux-saga/macro";
-import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionLocatorHrefChanged, readerLocalActionReader, readerLocalActionSetConfig } from "../actions";
+import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionLocatorHrefChanged, readerLocalActionReader } from "../actions";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
@@ -233,7 +233,7 @@ function* noteAddUpdate(action: readerActions.note.addUpdate.TAction) {
             // ttsState === TTSStateEnum.STOPPED &&
             // mediaOverlaysState === MediaOverlaysStateEnum.STOPPED
         ) { // NOT "margin" or "annotation"
-            yield* putTyped(readerLocalActionSetConfig.build({ annotation_defaultDrawView: "annotation" }));
+            yield* putTyped(readerActions.setConfig.build({ annotation_defaultDrawView: "annotation" }));
 
             const currentLocation = yield* selectTyped((state: IReaderRootState) => state.reader.locator);
             const href1 = currentLocation?.locator?.href;
@@ -349,7 +349,7 @@ function* annotationButtonTrigger(action: readerLocalActionAnnotations.trigger.T
         // ttsState === TTSStateEnum.STOPPED &&
         // mediaOverlaysState === MediaOverlaysStateEnum.STOPPED
     ) { // NOT "margin" or "annotation"
-        yield* putTyped(readerLocalActionSetConfig.build({ annotation_defaultDrawView: "annotation" }));
+        yield* putTyped(readerActions.setConfig.build({ annotation_defaultDrawView: "annotation" }));
 
         const currentLocation = yield* selectTyped((state: IReaderRootState) => state.reader.locator);
         const href1 = currentLocation?.locator?.href;
@@ -503,7 +503,7 @@ function* readerStart() {
     debug(`${notesHighlighted.length} note(s) drawn`);
 }
 
-function* captureHightlightDrawMargin(action: readerLocalActionSetConfig.TAction) {
+function* captureHightlightDrawMargin(action: readerActions.setConfig.TAction) {
 
     const { annotation_defaultDrawView } = action.payload;
     if (!annotation_defaultDrawView) return ;
@@ -531,7 +531,7 @@ function* captureHightlightDrawMargin(action: readerLocalActionSetConfig.TAction
 export const saga = () =>
     allTyped([
         takeSpawnEvery(
-            readerLocalActionSetConfig.ID,
+            readerActions.setConfig.ID,
             captureHightlightDrawMargin,
             (e) => console.error("readerLocalActionSetConfig", e),
         ),

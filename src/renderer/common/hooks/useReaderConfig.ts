@@ -10,10 +10,11 @@ import { useSelector } from "./useSelector";
 import { ReaderConfig, ReaderConfigPublisher } from "readium-desktop/common/models/reader";
 import { useDispatch } from "./useDispatch";
 import * as React from "react";
-import { readerLocalActionSetConfig, readerLocalActionSetTransientConfig } from "readium-desktop/renderer/reader/redux/actions";
+import { readerLocalActionSetTransientConfig } from "readium-desktop/renderer/reader/redux/actions";
 import debounce from "debounce";
 import { equals } from "ramda";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
+import { readerActions } from "readium-desktop/common/redux/actions";
 
 export const useReaderConfigAll = () => {
     const config = useSelector((state: IReaderRootState) => state.reader.config);
@@ -37,7 +38,7 @@ export const useSaveReaderConfig = () => {
     const cb = React.useCallback(
         (state: Partial<ReaderConfig>) => {
 
-            dispatch(readerLocalActionSetConfig.build(state));
+            dispatch(readerActions.setConfig.build(state));
         }, [dispatch]);
 
     return cb;

@@ -9,7 +9,7 @@ import debug_ from "debug";
 import * as fs from "fs";
 import { deepStrictEqual, ok } from "readium-desktop/common/utils/assert";
 import {
-    backupStateFilePathFn, memoryLoggerFilename, patchFilePath, runtimeStateFilePath, stateFilePath,
+    backupStateFilePathFn, diMainGet, memoryLoggerFilename, patchFilePath, runtimeStateFilePath, stateFilePath,
 } from "readium-desktop/main/di";
 import { reduxSyncMiddleware } from "readium-desktop/main/redux/middleware/sync";
 import { rootReducer } from "readium-desktop/main/redux/reducers";
@@ -23,18 +23,22 @@ import { applyPatch } from "rfc6902";
 import { reduxPersistMiddleware } from "../middleware/persistence";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
-import { minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 import { EDrawType, INoteState, NOTE_DEFAULT_COLOR_OBJ, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 import { TBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { TAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 import { sqliteInitTableNote, sqliteTableNoteDeleteWherePubId, sqliteTableNoteInsert, sqliteTableSelectLastModifiedDateWherePubId } from "readium-desktop/main/db/sqlite/note";
 import { sqliteInitialisation } from "readium-desktop/main/db/sqlite";
 import { IReaderStateReaderSession } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { IWinRegistryReaderState } from "readium-desktop/main/redux/states/win/registry/reader";
+import { ReaderConfig } from "readium-desktop/common/models/reader";
+import { IRTLFlipState } from "readium-desktop/common/redux/states/renderer/rtlFlip";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
 
-const debugStdout = debug_("readium-desktop:main:store:memory");
+const _dbgn = "readium-desktop:main:store:memory";
+const debugStdout = debug_(_dbgn);
 // Logger
 const debug = (...a: Parameters<debug_.Debugger>) => {
     debugStdout(...a);
@@ -251,8 +255,14 @@ export async function initStore()
     sqliteInitTableNote();
 
     if (preloadedState.win?.registry?.reader) {
-        for (const id in preloadedState.win.registry.reader) {
-            const state = preloadedState.win.registry.reader[id];
+
+        let pubIds: string[];
+        if (preloadedState?.publication?.db) {
+            pubIds = Object.keys(preloadedState.publication.db);
+        }
+
+        for (const pubId in preloadedState.win.registry.reader) {
+            const state = preloadedState.win.registry.reader[pubId];
 
             if (state?.reduxState?.locator) {
                 const locatorExtended = state.reduxState.locator as LocatorExtended;
@@ -359,7 +369,7 @@ export async function initStore()
                 } else if ((state.reduxState as Partial<IReaderStateReaderSession>).note?.length) {
 
 
-                    debug("We are checking notes (", (state.reduxState as Partial<IReaderStateReaderSession>).note?.length, "); json to sqlite migration for pubicationId=", id);
+                    debug("We are checking notes (", (state.reduxState as Partial<IReaderStateReaderSession>).note?.length, "); json to sqlite migration for pubicationId=", pubId);
 
                     const lastNoteModifiedEpochFromJson = (state.reduxState as Partial<IReaderStateReaderSession>).note.reduce((acc, cv) => {
 
@@ -371,7 +381,7 @@ export async function initStore()
 
                     }, 0);
 
-                    const lastNotesModifiedEpochFromSqlite = sqliteTableSelectLastModifiedDateWherePubId(id);
+                    const lastNotesModifiedEpochFromSqlite = sqliteTableSelectLastModifiedDateWherePubId(pubId);
 
 
                     debug("lastNoteModifiedEpochFromJson=", lastNoteModifiedEpochFromJson, "lastNotesModifiedEpochFromSqlite=", lastNotesModifiedEpochFromSqlite);
@@ -380,14 +390,14 @@ export async function initStore()
                         debug("SQLITE WON, no migration");
                     } else {
                         debug("JSON WON, migration needed!!");
-                        if (sqliteTableNoteDeleteWherePubId(id)) {
-                            if (sqliteTableNoteInsert(id, (state.reduxState as any).note)) {
-                                debug("SQLITE NOTE MIGRATION DONE for this publicationId=", id);
+                        if (sqliteTableNoteDeleteWherePubId(pubId)) {
+                            if (sqliteTableNoteInsert(pubId, (state.reduxState as any).note)) {
+                                debug("SQLITE NOTE MIGRATION DONE for this publicationId=", pubId);
                             } else {
-                                debug("ERROR on SQLITE NOTE MIGRATION, publicationId=", id);
+                                debug("ERROR on SQLITE NOTE MIGRATION, publicationId=", pubId);
                             }
                         } else {
-                            debug("ERROR cannot delete note attached to pubId=", id);
+                            debug("ERROR cannot delete note attached to pubId=", pubId);
                         }
                     }
                 }
@@ -422,7 +432,7 @@ export async function initStore()
                         group: "bookmark",
                     };
 
-                    sqliteTableNoteInsert(id, [ note ]);
+                    sqliteTableNoteInsert(pubId, [ note ]);
                 }
                 (state.reduxState as any).bookmark = undefined;
 
@@ -453,7 +463,7 @@ export async function initStore()
                         group: "annotation",
                     };
 
-                    sqliteTableNoteInsert(id, [ note ]);
+                    sqliteTableNoteInsert(pubId, [ note ]);
                 }
                 (state.reduxState as any).annotation = undefined;
 
@@ -465,7 +475,121 @@ export async function initStore()
                 state.reduxState.noteTotalCount.state = noteTotalCount;
             }
 
+            if (pubIds.includes(pubId)) {
+                debug("MIGRATION TO Publication-data file storage ->", pubId);
 
+                // TODO: parallel !? libuv = 4 threads
+                const publicationData = diMainGet("publication-data");
+                const publicationStorage = diMainGet("publication-storage");
+                if (state?.reduxState?.locator) {
+                    debug("\t => locator");
+                    const jsonObj = state.reduxState.locator as unknown as object;
+                    try {
+                        await publicationData.writeJsonObj(pubId, "locator", jsonObj);
+                    } catch (e) {
+                        debug(e);
+                    }
+                    try {
+                        await publicationStorage.writeJsonObj(pubId, "locator", jsonObj);
+                    } catch (e) {
+                        debug(e);
+                    }
+                }
+                if (state?.reduxState?.config) {
+                    debug("\t => config");
+                    const jsonObj = state.reduxState.config as unknown as object;
+                    try {
+                        await publicationData.writeJsonObj(pubId, "config", jsonObj);
+                    } catch (e) {
+                        debug(e);
+                    }
+                    try {
+                        await publicationStorage.writeJsonObj(pubId, "config", jsonObj);
+                    } catch (e) {
+                        debug(e);
+                    }
+                }
+                if (state?.reduxState?.disableRTLFlip) {
+                    debug("\t => disableRTLFlip");
+                    const jsonObj = state.reduxState.disableRTLFlip as unknown as object;
+                    try {
+                        await publicationData.writeJsonObj(pubId, "disableRTLFlip", jsonObj);
+                    } catch (e) {
+                        debug(e);
+                    }
+                    try {
+                        await publicationStorage.writeJsonObj(pubId, "disableRTLFlip", jsonObj);
+                    } catch (e) {
+                        debug(e);
+                    }
+                }
+                if (state?.windowBound) {
+                    debug("\t => bound");
+                    const jsonObj = state.windowBound as unknown as object;
+                    try {
+                        await publicationData.writeJsonObj(pubId, "bound", jsonObj);
+                    } catch (e) {
+                        debug(e);
+                    }
+                }
+
+                try {
+                    await publicationData.close(pubId);
+                } catch (e) {
+                    debug(e);
+                }
+            } else {
+                debug("MIGRATION TO Publication-data file storage ->", pubId, "IMPOSSIBLE BECAUSE PUBID NOT FOUND IN publication.db !!!");
+            }
+        }
+    } else {
+
+        if (!preloadedState.win) {
+            preloadedState.win = {} as any;
+        }
+        if (!preloadedState.win.registry) {
+            preloadedState.win.registry = {} as any;
+        }
+        if (!preloadedState.win.registry.reader) {
+            preloadedState.win.registry.reader = {};
+        }
+
+        debug("redux state hydration from publication-data (state.js) migrated and win.registry.reader not saved");
+
+        // list publication db
+        // read publication-data files and hydrate redux state
+        const publicationData = diMainGet("publication-data");
+        const pubIds = await publicationData.listPublication();
+        for (const pubId of pubIds) {
+            debug("PubID", pubId);
+            preloadedState.win.registry.reader[pubId] = {} as IWinRegistryReaderState;
+
+            // can be undefined!
+            const locator = await tryCatch(async () => await publicationData.readJsonObj(pubId, "locator"), _dbgn) as unknown as MiniLocatorExtended;
+
+            // can be undefined!
+            const config = await tryCatch(async () => await publicationData.readJsonObj(pubId, "config"), _dbgn) as unknown as ReaderConfig;
+
+            // can be undefined!
+            const disableRTLFlip = await tryCatch(async () => await publicationData.readJsonObj(pubId, "disableRTLFlip"), _dbgn) as unknown as IRTLFlipState;
+
+            preloadedState.win.registry.reader[pubId].reduxState = {
+                locator,
+                config,
+                disableRTLFlip,
+            };
+
+            // can be undefined!
+            const bound = await tryCatch(async () => await publicationData.readJsonObj(pubId, "bound"), _dbgn);
+
+            preloadedState.win.registry.reader[pubId].windowBound = bound as unknown as Electron.Rectangle;
+
+            debug(`\t => reduxState loaded with ${!!locator}, ${!!config}, ${!disableRTLFlip}, ${!!bound}`);
+            try {
+                await publicationData.close(pubId);
+            } catch (e) {
+                debug(e);
+            }
         }
     }
 

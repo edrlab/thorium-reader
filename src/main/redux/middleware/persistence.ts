@@ -12,7 +12,7 @@ import { createPatch } from "rfc6902";
 import { winActions } from "../actions";
 import { patchChannel } from "../sagas/patch";
 
-import { PersistRootState, RootState } from "../states";
+import { PersistRootStatePatch, RootState } from "../states";
 
 // We do not persist ICommonRootState.versionUpdate ({newVersionURL, newVersion} state always starts at undefined)
 export const reduxPersistMiddleware: Middleware
@@ -26,7 +26,7 @@ export const reduxPersistMiddleware: Middleware
 
                 const nextState = store.getState();
 
-                const persistPrevState: PersistRootState = {
+                const persistPrevState: PersistRootStatePatch = {
                     // versionUpdate: prevState.versionUpdate,
                     theme: prevState.theme,
                     // win: prevState.win,
@@ -55,7 +55,7 @@ export const reduxPersistMiddleware: Middleware
                     },
                 };
 
-                const persistNextState: PersistRootState = {
+                const persistNextState: PersistRootStatePatch = {
                     // versionUpdate: nextState.versionUpdate,
                     theme: nextState.theme,
                     // win: nextState.win,

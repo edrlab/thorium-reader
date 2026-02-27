@@ -9,15 +9,15 @@ import { type Reducer } from "redux";
 
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
-import { readerLocalActionSetConfig } from "../actions";
+import { readerActions } from "readium-desktop/common/redux/actions";
 
 function readerConfigReducer_(
     state: ReaderConfig = readerConfigInitialState,
-    action: readerLocalActionSetConfig.TAction,
+    action: readerActions.setConfig.TAction,
 ): ReaderConfig {
 
     switch (action.type) {
-        case readerLocalActionSetConfig.ID:
+        case readerActions.setConfig.ID:
 
             return {
                 ...state,

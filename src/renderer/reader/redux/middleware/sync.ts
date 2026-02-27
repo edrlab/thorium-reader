@@ -72,6 +72,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     customizationActions.addHistory.ID,
 
     readerActions.setLocator.ID,
+    readerActions.setConfig.ID,
+    readerActions.disableRTLFlip.ID,
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);

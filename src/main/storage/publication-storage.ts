@@ -24,6 +24,8 @@ import { URL_PROTOCOL_STORE } from "readium-desktop/common/streamerProtocol";
 
 const debug = debug_("readium-desktop:main/storage/pub-storage");
 
+export type TFileTypePubStorage = "locator" | "config" | "disableRTLFlip";
+
 const rmrf = async (dir: string) => {
     return await fs.promises.rm(dir, { recursive: true, retryDelay: 100, maxRetries: 3, force: true });
 };
@@ -34,6 +36,8 @@ const assertUUIDv4 = (uuid: string) => {
         throw new Error("not an uuidv4 identifier !");
     }
 };
+
+const jsonStringify = (d: any) => (__TH__IS_DEV__ || __TH__IS_CI__) ? JSON.stringify(d, null, 4) : JSON.stringify(d);
 
 // Store pubs in a repository on filesystem
 // Each file of publication is stored in a directory whose name is the
@@ -53,12 +57,6 @@ export class PublicationStorage {
     // private configDataFolderPath: string;
 
     /**
-     * publication reader config directory from configDataFolderPath
-     * aka: %appData%\config-data-json{-dev}\reader\<uuid>\
-     */
-    private readerConfigPath: string; // %appData%\config-data
-
-    /**
      * appData/userData default publication storage directory path
      * aka: %appData%\publications{-dev}\<uuid>
      */
@@ -74,9 +72,16 @@ export class PublicationStorage {
      */
     private userVaultConfigPath: string;
 
-    public constructor(rootPath: string, userVaultConfigPath: string, readerConfigPath: string) {
+    private assertAndGetFileName = (type: TFileTypePubStorage) => {
+        const fileName = type === "locator" ? "locator.json" : type === "config" ? "config.json" : type === "disableRTLFlip" ? "disableRTLFlip.json" : "";
+        if (!fileName) {
+            throw new Error("fileType not found");
+        }
+        return fileName;
+    };
+
+    public constructor(rootPath: string, userVaultConfigPath: string) {
         this.userVaultConfigPath = userVaultConfigPath;
-        this.readerConfigPath = readerConfigPath;
         this.defaultVaultPath = rootPath;
         this.userVaultPath = this.readUserVault();
     }
@@ -84,9 +89,9 @@ export class PublicationStorage {
     private async readUserVault(): Promise<string> {
         let userVaultPath = "";
         try {
-            const strData = await fs.promises.readFile(this.userVaultConfigPath, { encoding: "utf-8" });
-            const jsonData = JSON.parse(strData);
-            userVaultPath = Array.isArray(jsonData.vault) ? jsonData.vault[0] : "";
+            const jsonStr = await fs.promises.readFile(this.userVaultConfigPath, { encoding: "utf-8" });
+            const jsonObj = JSON.parse(jsonStr);
+            userVaultPath = Array.isArray(jsonObj.vault) ? jsonObj.vault[0] : "";
         } catch {
             // ignore
         }
@@ -125,9 +130,9 @@ export class PublicationStorage {
             return;
         }
 
-        const jsonData = { vault: [directoryPath] };
-        const strData = JSON.stringify(jsonData, null, 4);
-        fs.promises.writeFile(this.userVaultConfigPath, strData, { encoding: "utf-8" });
+        const jsonObj = { vault: [directoryPath] };
+        const jsonStr = JSON.stringify(jsonObj, null, 4);
+        await fs.promises.writeFile(this.userVaultConfigPath, jsonStr, { encoding: "utf-8" });
     }
 
     // private only
@@ -138,21 +143,24 @@ export class PublicationStorage {
         return (await this.userVaultPath) || this.defaultVaultPath;
     }
 
-    public async writeData(
+    public async writeJsonObj(
         identifier: string,
-        fileName: "locator",
-        data: string,
+        type: TFileTypePubStorage,
+        jsonObj: object,
     ) {
-
         assertUUIDv4(identifier);
 
+        const fileName = this.assertAndGetFileName(type);
+
         const pubPath = await this.findPublicationPath(identifier);
-        const filePath = fileName === "locator" ? path.join(pubPath, "locator.json") : "";
+        const filePath = path.join(pubPath, fileName);
 
         try {
-            const readData = await fs.promises.readFile(filePath, { encoding: "utf-8" });
-            if (readData === data) {
-                debug("LOCATOR Storage same as LOCATOR Serialized, already persisted");
+            const jsonStrExisting_ = await fs.promises.readFile(filePath, { encoding: "utf-8" });
+            const jsonStrExisting = JSON.stringify(JSON.parse(jsonStrExisting_));
+            const jsonStr = JSON.stringify(jsonObj);
+            if (jsonStrExisting === jsonStr) {
+                debug("JSONObj Storage same as JSONObj Serialized, already persisted");
                 return;
             }
         } catch {
@@ -161,31 +169,42 @@ export class PublicationStorage {
 
         await using dir = await fs.promises.mkdtempDisposable(pubPath); // same as defer and RAII: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/await_using
         const tmpFilePath = path.join(dir.path, "locator.json");
-        await fs.promises.writeFile(tmpFilePath, data, { encoding: "utf-8", flush: true, mode: 0o644}); // owner read/write group/all read
-        const read = await fs.promises.readFile(tmpFilePath, { encoding: "utf-8" });
-        if (read === data) {
+        const jsonStr = jsonStringify(jsonObj);
+        await fs.promises.writeFile(tmpFilePath, jsonStr, { encoding: "utf-8", flush: true, mode: 0o666}); // owner read/write group/all read
+        const jsonStrCheck = await fs.promises.readFile(tmpFilePath, { encoding: "utf-8" });
+        if (jsonStrCheck === jsonStr) {
             await fs.promises.rename(tmpFilePath, filePath);
-            debug("LOCATOR written to", filePath);
+            debug("JSONObj written to", filePath);
+        } else {
+            debug("JSONObj diff, NOT written to", filePath, " --- ", jsonStrCheck, " !== ", jsonStr);
         }
     }
 
-        public async readData(
+    public async readJsonObj(
         identifier: string,
-        fileName: "locator",
-    ) {
+        type: TFileTypePubStorage,
+    ): Promise<object | undefined> {
 
         assertUUIDv4(identifier);
 
+        const fileName = this.assertAndGetFileName(type);
+
         const pubPath = await this.findPublicationPath(identifier);
-        const filePath = fileName === "locator" ? path.join(pubPath, "locator.json") : "";
+        const filePath = path.join(pubPath, fileName);
 
         try {
-            const readData = await fs.promises.readFile(filePath, { encoding: "utf-8" });
-            const data = JSON.parse(readData);
-            return data;
+            const jsonStr = await fs.promises.readFile(filePath, { encoding: "utf-8" });
+            try {
+                const jsonObj = JSON.parse(jsonStr);
+                return jsonObj;
+            } catch (e) {
+                debug(e);
+            }
         } catch (e) {
             debug(e);
         }
+
+        return undefined;
     }
 
     /**
@@ -217,26 +236,6 @@ export class PublicationStorage {
                 try {
                     await rmrf(pubDirPath);
                     await fs.promises.mkdir(pubDirPath);
-                } catch (e) {
-                    debug(e);
-                }
-            }
-        }
-
-        const configPubDirPath = path.join(this.readerConfigPath, identifier);
-
-        try {
-            await fs.promises.mkdir(configPubDirPath);
-        } catch (e: any) {
-            debug(`mkdir ${configPubDirPath}: ${e}`);
-            if (e.code === "EEXIST") {
-                debug("Directory already exists");
-                debug("How to handle this error?");
-                debug("Do we have to clean the directory before using it?");
-                debug("For the moment let's remove the directory");
-                try {
-                    await rmrf(configPubDirPath);
-                    await fs.promises.mkdir(configPubDirPath);
                 } catch (e) {
                     debug(e);
                 }
@@ -319,6 +318,7 @@ export class PublicationStorage {
 
         assertUUIDv4(identifier);
 
+        // TODO: if map.get() is as expensive as map.has() then simply: const val = map.get(key); if (!!val) return val;
         if (this.__publicationEpubPathMap.has(identifier)) {
             return this.__publicationEpubPathMap.get(identifier);
         }

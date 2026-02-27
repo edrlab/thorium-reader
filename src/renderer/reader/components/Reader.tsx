@@ -85,7 +85,7 @@ import { IPdfPlayerScale, TToc } from "../pdf/common/pdfReader.type";
 import { pdfMount } from "../pdf/driver";
 import {
     readerLocalActionAnnotations,
-    readerLocalActionDivina, readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig,
+    readerLocalActionDivina, readerLocalActionLocatorHrefChanged,
     readerLocalActionToggleMenu,
     readerLocalActionToggleSettings,
 } from "../redux/actions";
@@ -3349,7 +3349,7 @@ let __READING_FINISHED_CALL_COUNTER = 0;
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         dispatchMarginAnnotations: (t: TDrawView, href1: string | undefined, href2: string | undefined) => {
-            dispatch(readerLocalActionSetConfig.build({ annotation_defaultDrawView: t }));
+            dispatch(readerActions.setConfig.build({ annotation_defaultDrawView: t }));
 
             if (!!href1) {
                 dispatch(readerLocalActionLocatorHrefChanged.build(href1, href1, href2, href2));
@@ -3415,7 +3415,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             }
         },
         setConfig: (config: Partial<ReaderConfig>) => {
-            dispatch(readerLocalActionSetConfig.build(config));
+            dispatch(readerActions.setConfig.build(config));
 
             // session never enabled in reader but always in main/lib
             // if (!sessionEnabled) {

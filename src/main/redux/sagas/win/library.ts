@@ -126,7 +126,8 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
         },
         session: {
             // state: state.session.state,
-            save: state.session.save,
+            // save: state.session.save,
+            save: false, // disabled
         },
         screenReader: {
             activate: state.screenReader.activate,

@@ -26,7 +26,7 @@ import { publicationActions as publicationActionsFromCommonAction } from "readiu
 import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLatest";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
-import { PublicationView } from "src/common/views/publication";
+import { PublicationView } from "readium-desktop/common/views/publication";
 
 const filename_ = "readium-desktop:main:redux:sagas:catalog";
 const debug = debug_(filename_);

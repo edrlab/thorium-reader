@@ -33,6 +33,10 @@ export function* deletePublication(identifier: string/*, preservePublicationOnFi
         // Remove from storage
         yield call(() => publicationStorage.removePublication(identifier /*, preservePublicationOnFileSystem*/));
 
+        const publicationData = diMainGet("publication-data");
+        // Remove from data storage
+        yield call(() => publicationData.removePublication(identifier));
+
         const publicationViewConverter = diMainGet("publication-view-converter");
         // Remove from memory cache
         yield call(() => publicationViewConverter.removeFromMemoryCache(identifier));

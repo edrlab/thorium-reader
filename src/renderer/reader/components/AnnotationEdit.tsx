@@ -24,7 +24,6 @@ import * as TextStrikeThroughtIcon from "readium-desktop/renderer/assets/icons/T
 import * as TextOutlineIcon from "readium-desktop/renderer/assets/icons/TextOutline-icon.svg";
 import * as TagIcon from "readium-desktop/renderer/assets/icons/tag-icon.svg";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { readerLocalActionSetConfig } from "../redux/actions";
 import classNames from "classnames";
 // import { TextArea } from "react-aria-components";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
@@ -43,6 +42,7 @@ import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locator
 // e__slint-disable-next-line @typescript-eslint/ban-ts-comment
 // @__ts-ignore TS1479
 import {subscribe} from "@github/paste-markdown";
+import { readerActions } from "readium-desktop/common/redux/actions";
 
 // import { readiumCSSDefaults } from "@r2-navigator-js/electron/common/readium-css-settings";
 
@@ -110,7 +110,7 @@ export const AnnotationEdit: React.FC<IProps> = (props) => {
         if (flag) {
             const annotation_defaultColor = hexToRgb(colorSelected);
             const annotation_defaultDrawType = drawTypeSelected;
-            dispatch(readerLocalActionSetConfig.build({ annotation_defaultColor, annotation_defaultDrawType }));
+            dispatch(readerActions.setConfig.build({ annotation_defaultColor, annotation_defaultDrawType }));
         }
 
         previousColorSelected.current = colorSelected;

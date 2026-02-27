@@ -12,7 +12,7 @@ import * as ChevronRight from "readium-desktop/renderer/assets/icons/chevron-rig
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { Link } from "react-router-dom";
 import { DisplayType } from "readium-desktop/renderer/library/routing";
-import { IBreadCrumbItem } from "src/common/redux/states/renderer/breadcrumbItem";
+import { IBreadCrumbItem } from "readium-desktop/common/redux/states/renderer/breadcrumbItem";
 
 export const CatalogHeader: React.FC<React.PropsWithChildren<{ currentLocation: IBreadCrumbItem, previousLocation: IBreadCrumbItem}>> = (props) => {
 

@@ -7,8 +7,8 @@
 
 import debug_ from "debug";
 import * as fs from "fs";
-import { diMainGet, patchFilePath, readerConfigPath, stateFilePath } from "readium-desktop/main/di";
-import { PersistRootState, PersistRootStateStateJSON, RootState } from "readium-desktop/main/redux/states";
+import { diMainGet, patchFilePath, stateFilePath } from "readium-desktop/main/di";
+import { RootState, PersistRootState } from "readium-desktop/main/redux/states";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call, debounce, all } from "redux-saga/effects";
 import { flush as flushTyped, select as selectTyped, call as callTyped } from "typed-redux-saga/macro";
@@ -19,13 +19,11 @@ import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLe
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { EventPayload } from "readium-desktop/common/ipc/sync";
 import { SenderType } from "readium-desktop/common/models/sync";
-import * as path from "path";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { ReaderConfig } from "readium-desktop/common/models/reader";
 
 const DEBOUNCE_TIME = 3 * 60 * 1000; // 3 min
-const LOCATOR_DEBOUNCE_TIME = 10 * 1000; // 10 secs
-
-const locatorFileHandleMap: Map<string, fs.promises.FileHandle> = new Map();
+const PUBLICATION_STORAGE_DEBOUNCE_TIME = 10 * 1000; // 10 secs
 
 // Logger
 const filename_ = "readium-desktop:main:saga:persist";
@@ -40,7 +38,7 @@ const persistStateToFs = async (nextState: RootState) => {
 
     debug("start of persist reduxState in disk");
 
-    const value: PersistRootStateStateJSON = {
+    const value: PersistRootState = {
         theme: nextState.theme,
         win: {
             session: {
@@ -79,18 +77,6 @@ export function* needToPersistFinalState() {
     const nextState = yield* selectTyped((store: RootState) => store);
     yield call(() => persistStateToFs(nextState));
     yield call(() => needToPersistPatch());
-
-    yield* callTyped(async () => {
-        const values = Array.from(locatorFileHandleMap.values());
-        locatorFileHandleMap.clear(); // thorium is closing, but just for logical correctness we make sure no consumer code can pass the locatorFileHandleMap.has(id) condition and reach locatorFileHandleMap.get(id)
-        for (const fileHandle of values) {
-            try {
-                await fileHandle.close();
-            } catch (e) {
-                debug(e);
-            }
-        }
-    });
 }
 
 export function* needToPersistPatch() {
@@ -120,44 +106,6 @@ export function* needToPersistPatch() {
 
 }
 
-function* persistLocatorInReaderConfigDirectory(action: readerActions.setLocator.TAction) {
-    const locator = action.payload;
-    const sender = action.sender as EventPayload["sender"];
-
-    if (sender.type !== SenderType.Renderer) {
-        debug("sender is not renderer !!!");
-        return ;
-    }
-
-    const locatorSerialize = JSON.stringify(locator, null, 4);
-
-    const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
-    const pubId = reader.publicationIdentifier;
-
-    const locatorDirPath = path.join(readerConfigPath, pubId);
-    const locatorFilePath = path.join(locatorDirPath, "locator.json");
-
-    yield call(() => {
-        const fileHandle = locatorFileHandleMap.get(pubId);
-        if (!fileHandle) {
-            debug("locatorFileHandleMap WRITE NIL fileHandle for pub id " + pubId);
-            return;
-        }
-        fileHandle.writeFile(locatorSerialize, { encoding: "utf-8" });
-    });
-
-    yield call(() => {
-        const fileHandle = locatorFileHandleMap.get(pubId);
-        if (!fileHandle) {
-            debug("locatorFileHandleMap SYNC NIL fileHandle for pub id " + pubId);
-            return;
-        }
-        fileHandle.sync();
-    });
-
-    debug("LOCATOR written to", locatorFilePath);
-}
-
 export function saga() {
     return all([
         debounce(
@@ -166,16 +114,27 @@ export function saga() {
             needToPersistPatch,
         ),
         takeSpawnLeading(
-            readerActions.setLocator.ID,
-            persistLocatorInReaderConfigDirectory,
+            winActions.session.setBound.ID,
+            function* (action: winActions.session.setBound.TAction) {
+                const payload = action.payload;
+                const identifier = payload.identifier;
+                const boundJsonObj = payload.bound;
+
+                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[identifier]);
+                if (!reader) {
+                    debug("no reader sender found in session !!!");
+                    return;
+                }
+                const pubId = reader.publicationIdentifier;
+
+                yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "bound", boundJsonObj));
+            },
             (e) => debug(e),
         ),
-        debounce(
-            LOCATOR_DEBOUNCE_TIME,
-            readerActions.setLocator.ID,
-            function* (action: readerActions.setLocator.TAction) {
-
-                const locator = action.payload;
+        takeSpawnLeading(
+            readerActions.disableRTLFlip.ID,
+            function* (action: readerActions.disableRTLFlip.TAction) {
+                const rtlFlipJsonObj = action.payload as unknown as object;
                 const sender = action.sender as EventPayload["sender"];
 
                 if (sender.type !== SenderType.Renderer) {
@@ -183,48 +142,129 @@ export function saga() {
                     return;
                 }
                 const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                if (!reader) {
+                    debug("no reader sender found in session !!!");
+                    return;
+                }
                 const pubId = reader.publicationIdentifier;
 
-                const locatorSerialize = (__TH__IS_DEV__ || __TH__IS_CI__) ? JSON.stringify(locator, null, 4) : JSON.stringify(locator);
-                yield* callTyped(() => diMainGet("publication-storage").writeData(pubId, "locator", locatorSerialize));
+                yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "disableRTLFlip", rtlFlipJsonObj));
             },
-        ),
-        takeSpawnEvery(
-            winActions.reader.openRequest.ID,
-            function* (action: winActions.reader.openRequest.TAction) {
-                const { publicationIdentifier: pubId } = action.payload;
-
-                const locatorDirPath = path.join(readerConfigPath, pubId);
-                const locatorFilePath = path.join(locatorDirPath, "locator.json");
-
-                while (1) {
-                    try {
-                        if (!locatorFileHandleMap.has(pubId)) {
-                            locatorFileHandleMap.set(pubId, yield* callTyped(() => fs.promises.open(locatorFilePath, "w+", 0o600)));
-                            debug("locator file open and ready to be written: ", locatorFilePath);
-
-                            debug("There are currently", locatorFileHandleMap.size, "open locator file(s)");
-                            debug([...locatorFileHandleMap.keys()]);
-                        }
-                    } catch (e: any) {
-                        debug(JSON.stringify(e, null, 4));
-                        debug("Error to persist locator in reader config directory");
-                        if (e.code === "ENOENT") {
-                            try {
-                                debug("create directory", locatorDirPath);
-                                yield* callTyped(() => fs.promises.mkdir(locatorDirPath, { recursive: false, mode: 0o600 }));
-                                continue;
-                            } catch (e) {
-                                debug(e);
-                            }
-                        }
-                    }
-                    break; // important
-                }
-            },
-            // (e) => error(filename_ + ":createReaderWindow", e),
             (e) => debug(e),
         ),
+        takeSpawnLeading(
+            readerActions.setLocator.ID,
+            function* (action: readerActions.setLocator.TAction) {
+                const locatorJsonObj = action.payload as unknown as object;
+                const sender = action.sender as EventPayload["sender"];
+
+                if (sender.type !== SenderType.Renderer) {
+                    debug("sender is not renderer !!!");
+                    return;
+                }
+                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                if (!reader) {
+                    debug("no reader sender found in session !!!");
+                    return;
+                }
+                const pubId = reader.publicationIdentifier;
+
+                yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "locator", locatorJsonObj));
+            },
+            (e) => debug(e),
+        ),
+        takeSpawnLeading(
+            readerActions.setConfig.ID,
+            function* (action: readerActions.setConfig.TAction) {
+                const configJsonObj = action.payload as unknown as object;
+                const sender = action.sender as EventPayload["sender"];
+
+                if (sender.type !== SenderType.Renderer) {
+                    debug("sender is not renderer !!!");
+                    return;
+                }
+                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                if (!reader) {
+                    debug("no reader sender found in session !!!");
+                    return;
+                }
+                const pubId = reader.publicationIdentifier;
+
+                const config: Partial<ReaderConfig> = (yield* callTyped(() => diMainGet("publication-data").getJsonObj(pubId, "config"))) || {};
+                const configUnion = { ...config, ...configJsonObj };
+                yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "config", configUnion));
+            },
+            (e) => debug(e),
+        ),
+        debounce(
+            PUBLICATION_STORAGE_DEBOUNCE_TIME,
+            readerActions.setLocator.ID,
+            function* (action: readerActions.setLocator.TAction) {
+                const jsonObj = action.payload as unknown as object;
+                const sender = action.sender as EventPayload["sender"];
+
+                if (sender.type !== SenderType.Renderer) {
+                    debug("sender is not renderer !!!");
+                    return;
+                }
+                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                if (reader) {
+                    const pubId = reader.publicationIdentifier;
+                    yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "locator", jsonObj));
+                }
+
+            },
+        ),
+        debounce(
+            PUBLICATION_STORAGE_DEBOUNCE_TIME,
+            readerActions.setConfig.ID,
+            function* (action: readerActions.setConfig.TAction) {
+                const configJsonObj = action.payload as unknown as object;
+                const sender = action.sender as EventPayload["sender"];
+
+                if (sender.type !== SenderType.Renderer) {
+                    debug("sender is not renderer !!!");
+                    return;
+                }
+                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                if (reader) {
+                    const pubId = reader.publicationIdentifier;
+                    const config: Partial<ReaderConfig> = (yield* callTyped(() => diMainGet("publication-data").getJsonObj(pubId, "config"))) || {};
+                    const configUnion = { ...config, ...configJsonObj };
+                    yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "config", configUnion));
+                }
+            },
+        ),
+        debounce(
+            PUBLICATION_STORAGE_DEBOUNCE_TIME,
+            readerActions.disableRTLFlip.ID,
+            function* (action: readerActions.disableRTLFlip.TAction) {
+                const rtlFlipJsonObj = action.payload as unknown as object;
+                const sender = action.sender as EventPayload["sender"];
+
+                if (sender.type !== SenderType.Renderer) {
+                    debug("sender is not renderer !!!");
+                    return;
+                }
+                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                if (reader) {
+                    const pubId = reader.publicationIdentifier;
+                    yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "disableRTLFlip", rtlFlipJsonObj));
+                }
+            },
+        ),
+        // takeSpawnEvery(
+        //     winActions.reader.openRequest.ID,
+        //     function* (action: winActions.reader.openRequest.TAction) {
+        //         const { publicationIdentifier: pubId } = action.payload;
+
+        //         // not needed // read/write lazy open
+        //         // yield* callTyped(() => diMainGet("publication-data").open(pubId, "locator"));
+
+        //     },
+        //     // (e) => error(filename_ + ":createReaderWindow", e),
+        //     (e) => debug(e),
+        // ),
         // takeSpawnEvery(
         //     winActions.reader.openSucess.ID,
         //     winOpen,
@@ -235,27 +275,45 @@ export function saga() {
             function* (action: winActions.reader.closed.TAction) {
                 const { identifier } = action.payload;
 
-                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[identifier]);
-                const pubId = reader.publicationIdentifier;
-
-                // TODO: this incorrectly deletes the map entry and closes the file handle ... because there can be several reader windows opened for the same publication ID!
-                if (locatorFileHandleMap.has(pubId)) {
-                    const fd = locatorFileHandleMap.get(pubId);
-                    locatorFileHandleMap.delete(pubId);
-                    try {
-                        yield* callTyped(() => fd.close());
-                    } catch (e) {
-                        debug(e);
-                    }
-                    debug("locator file closed and deleted for", pubId);
+                const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+                if (!readers[identifier]) {
+                    debug("ERROR NO READER BUT CLOSE ACTION RECEIVED (race condition!?)");
+                    return;
+                }
+                const pubId = readers[identifier].publicationIdentifier;
+                const readersPubId = Object.values(readers).filter((v) => v.publicationIdentifier === pubId);
+                if (readersPubId.length > 1) {
+                    return;
                 }
 
-                const locator = reader.reduxState.locator;
-                const locatorSerialize = (__TH__IS_DEV__ || __TH__IS_CI__) ? JSON.stringify(locator, null, 4) : JSON.stringify(locator);
-                yield* callTyped(() => diMainGet("publication-storage").writeData(pubId, "locator", locatorSerialize));
+                // TODO: parallelize with Promise.allSettled
+                yield* callTyped(() => diMainGet("publication-data").close(pubId));
 
+                {
+                    const jsonObj = diMainGet("publication-data").getJsonObj(pubId, "locator");
+                    if (jsonObj) {
+                        // finally save locator next to publication storage vault
+                        yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "locator", jsonObj));
+                    }
+                }
+
+                {
+                    const jsonObj = diMainGet("publication-data").getJsonObj(pubId, "config");
+                    if (jsonObj) {
+                        // finally save config next to publication storage vault
+                        yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "config", jsonObj));
+                    }
+                }
+
+                {
+                    const jsonObj = diMainGet("publication-data").getJsonObj(pubId, "disableRTLFlip");
+                    if (jsonObj) {
+                        // finally save disableRTLFlip next to publication storage vault
+                        yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "disableRTLFlip", jsonObj));
+                    }
+                }
             },
-            // (e) => error(filename_ + ":winClose", e),
+// (e) => error(filename_ + ":winClose", e),
             (e) => debug(e),
         ),
     ]);
