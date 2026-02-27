@@ -21,6 +21,7 @@ import { EventPayload } from "readium-desktop/common/ipc/sync";
 import { SenderType } from "readium-desktop/common/models/sync";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
+import { IDictWinRegistryReaderState } from "../states/win/registry/reader";
 
 const DEBOUNCE_TIME = 3 * 60 * 1000; // 3 min
 const PUBLICATION_STORAGE_DEBOUNCE_TIME = 10 * 1000; // 10 secs
@@ -38,6 +39,36 @@ const persistStateToFs = async (nextState: RootState) => {
 
     debug("start of persist reduxState in disk");
 
+    let reader: IDictWinRegistryReaderState | undefined = undefined;
+    // if (nextState.win?.registry?.reader) {
+    //     reader = JSON.parse(JSON.stringify(nextState.win.registry)); // savage clone :) // should be the reverse
+    //     for (const pubId in nextState.win.registry.reader) {
+    //         // remove keys that must not be persisted !
+    //         delete (reader[pubId]?.reduxState as any)?.info;
+    //         delete (reader[pubId]?.reduxState as any)?.lock;
+    //         delete (reader[pubId]?.reduxState as any)?.note;
+    //     }
+    // }
+    if (nextState?.win?.registry?.reader) {
+        reader = {};
+        for (const pubId in nextState.win.registry.reader) {
+            const _reader = nextState.win.registry.reader[pubId];
+            const _readerReduxState = _reader.reduxState;
+            reader[pubId] = {
+                reduxState: {
+                    // "config" | "locator" | "divina" | "disableRTLFlip" | "allowCustomConfig" | "noteTotalCount" | "pdfConfig"
+                    config: _readerReduxState?.config,
+                    locator: _readerReduxState?.locator,
+                    divina: _readerReduxState?.divina,
+                    disableRTLFlip: _readerReduxState?.disableRTLFlip,
+                    noteTotalCount: _readerReduxState?.noteTotalCount,
+                    pdfConfig: _readerReduxState?.pdfConfig,
+                },
+                windowBound: _reader.windowBound,
+            };
+        }
+    }
+
     const value: PersistRootState = {
         theme: nextState.theme,
         win: {
@@ -45,7 +76,9 @@ const persistStateToFs = async (nextState: RootState) => {
                 library: undefined,
                 reader: undefined,
             },
-            registry: nextState.win?.registry || undefined,
+            registry: {
+                reader,
+            },
         },
         publication: nextState.publication,
         reader: nextState.reader,
