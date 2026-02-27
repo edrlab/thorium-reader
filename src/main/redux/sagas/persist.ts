@@ -109,7 +109,7 @@ export function saga() {
         takeSpawnLeading(
             readerActions.setLocator.ID,
             function* (action: readerActions.setLocator.TAction) {
-                const locator = action.payload;
+                const jsonObj = action.payload as unknown as object;
                 const sender = action.sender as EventPayload["sender"];
 
                 if (sender.type !== SenderType.Renderer) {
@@ -118,8 +118,8 @@ export function saga() {
                 }
                 const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
                 const pubId = reader.publicationIdentifier;
-                
-                yield* callTyped(() => diMainGet("publication-data").write(pubId, "locator", locator));
+
+                yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "locator", jsonObj));
             },
             (e) => debug(e),
         ),
@@ -128,7 +128,7 @@ export function saga() {
             readerActions.setLocator.ID,
             function* (action: readerActions.setLocator.TAction) {
 
-                const locator = action.payload as unknown as object;
+                const jsonObj = action.payload as unknown as object;
                 const sender = action.sender as EventPayload["sender"];
 
                 if (sender.type !== SenderType.Renderer) {
@@ -138,7 +138,7 @@ export function saga() {
                 const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
                 if (reader) {
                     const pubId = reader.publicationIdentifier;
-                    yield* callTyped(() => diMainGet("publication-storage").write(pubId, "locator", locator));
+                    yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "locator", jsonObj));
                 }
 
             },
@@ -176,12 +176,12 @@ export function saga() {
                     return ;
                 }
 
-                const data = diMainGet("publication-data").getDataRead(pubId, "locator");
+                const jsonObj = diMainGet("publication-data").getJsonObj(pubId, "locator");
                 yield* callTyped(() => diMainGet("publication-data").close(pubId));
 
-                if (data) {
+                if (jsonObj) {
                     // finally save locator next to publication storage vault
-                    yield* callTyped(() => diMainGet("publication-storage").write(pubId, "locator", data));
+                    yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "locator", jsonObj));
                 }
 
             },

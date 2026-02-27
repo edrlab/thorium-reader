@@ -23,7 +23,7 @@ import { ContentType } from "readium-desktop/utils/contentType";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call, delay, put, take } from "redux-saga/effects";
 import { race as raceTyped, select as selectTyped } from "typed-redux-saga/macro";
-import { IOpdsHeaderState } from "src/common/redux/states/renderer/opds";
+import { IOpdsHeaderState } from "readium-desktop/common/redux/states/renderer/opds";
 
 export const BROWSE_OPDS_API_REQUEST_ID = "browseOpdsApiResult";
 export const SEARCH_OPDS_API_REQUEST_ID = "searchOpdsApiResult";

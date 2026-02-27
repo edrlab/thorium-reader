@@ -24,7 +24,7 @@ import { URL_PROTOCOL_STORE } from "readium-desktop/common/streamerProtocol";
 
 const debug = debug_("readium-desktop:main/storage/pub-storage");
 
-export type TFileType = "locator" | "config" | "disableRTLFlip";
+export type TFileTypePubStorage = "locator" | "config" | "disableRTLFlip";
 
 const rmrf = async (dir: string) => {
     return await fs.promises.rm(dir, { recursive: true, retryDelay: 100, maxRetries: 3, force: true });
@@ -37,7 +37,7 @@ const assertUUIDv4 = (uuid: string) => {
     }
 };
 
-const jsonstr = (d: any) => (__TH__IS_DEV__ || __TH__IS_CI__) ? JSON.stringify(d, null, 4) : JSON.stringify(d);
+const jsonStringify = (d: any) => (__TH__IS_DEV__ || __TH__IS_CI__) ? JSON.stringify(d, null, 4) : JSON.stringify(d);
 
 // Store pubs in a repository on filesystem
 // Each file of publication is stored in a directory whose name is the
@@ -72,7 +72,7 @@ export class PublicationStorage {
      */
     private userVaultConfigPath: string;
 
-    private assertAndGetFileName = (type: TFileType) => {
+    private assertAndGetFileName = (type: TFileTypePubStorage) => {
         const fileName = type === "locator" ? "locator.json" : type === "config" ? "config.json" : type === "disableRTLFlip" ? "disableRTLFlip.json" : "";
         if (!fileName) {
             throw new Error("fileType not found");
@@ -89,9 +89,9 @@ export class PublicationStorage {
     private async readUserVault(): Promise<string> {
         let userVaultPath = "";
         try {
-            const strData = await fs.promises.readFile(this.userVaultConfigPath, { encoding: "utf-8" });
-            const jsonData = JSON.parse(strData);
-            userVaultPath = Array.isArray(jsonData.vault) ? jsonData.vault[0] : "";
+            const jsonStr = await fs.promises.readFile(this.userVaultConfigPath, { encoding: "utf-8" });
+            const jsonObj = JSON.parse(jsonStr);
+            userVaultPath = Array.isArray(jsonObj.vault) ? jsonObj.vault[0] : "";
         } catch {
             // ignore
         }
@@ -130,9 +130,9 @@ export class PublicationStorage {
             return;
         }
 
-        const jsonData = { vault: [directoryPath] };
-        const strData = JSON.stringify(jsonData, null, 4);
-        fs.promises.writeFile(this.userVaultConfigPath, strData, { encoding: "utf-8" });
+        const jsonObj = { vault: [directoryPath] };
+        const jsonStr = JSON.stringify(jsonObj, null, 4);
+        await fs.promises.writeFile(this.userVaultConfigPath, jsonStr, { encoding: "utf-8" });
     }
 
     // private only
@@ -143,23 +143,23 @@ export class PublicationStorage {
         return (await this.userVaultPath) || this.defaultVaultPath;
     }
 
-    public async write(
+    public async writeJsonObj(
         identifier: string,
-        type: TFileType,
-        data: object,
+        type: TFileTypePubStorage,
+        jsonObj: object,
     ) {
         assertUUIDv4(identifier);
 
         const fileName = this.assertAndGetFileName(type);
 
         const pubPath = await this.findPublicationPath(identifier);
-        const filePath =path.join(pubPath, fileName);
+        const filePath = path.join(pubPath, fileName);
 
         try {
-            const readData = await fs.promises.readFile(filePath, { encoding: "utf-8" });
-            const dataStr = JSON.stringify(data);
-            const readDataStr = JSON.stringify(JSON.parse(readData));
-            if (readDataStr === dataStr) {
+            const jsonStrExisting_ = await fs.promises.readFile(filePath, { encoding: "utf-8" });
+            const jsonStrExisting = JSON.stringify(JSON.parse(jsonStrExisting_));
+            const jsonStr = JSON.stringify(jsonObj);
+            if (jsonStrExisting === jsonStr) {
                 debug("LOCATOR Storage same as LOCATOR Serialized, already persisted");
                 return;
             }
@@ -169,20 +169,22 @@ export class PublicationStorage {
 
         await using dir = await fs.promises.mkdtempDisposable(pubPath); // same as defer and RAII: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/await_using
         const tmpFilePath = path.join(dir.path, "locator.json");
-        const dataStr = jsonstr(data);
-        await fs.promises.writeFile(tmpFilePath, dataStr, { encoding: "utf-8", flush: true, mode: 0o666}); // owner read/write group/all read
-        const readStr = await fs.promises.readFile(tmpFilePath, { encoding: "utf-8" });
-        if (readStr === dataStr) {
+        const jsonStr = jsonStringify(jsonObj);
+        await fs.promises.writeFile(tmpFilePath, jsonStr, { encoding: "utf-8", flush: true, mode: 0o666}); // owner read/write group/all read
+        const jsonStrCheck = await fs.promises.readFile(tmpFilePath, { encoding: "utf-8" });
+        if (jsonStrCheck === jsonStr) {
             await fs.promises.rename(tmpFilePath, filePath);
             debug("LOCATOR written to", filePath);
+        } else {
+            debug("LOCATOR diff, NOT written to", filePath, " --- ", jsonStrCheck, " !== ", jsonStr);
         }
     }
 
-        public async read(
+    public async readJsonObj(
         identifier: string,
-        type: TFileType,
-    ): Promise<object> {
-        
+        type: TFileTypePubStorage,
+    ): Promise<object | undefined> {
+
         assertUUIDv4(identifier);
 
         const fileName = this.assertAndGetFileName(type);
@@ -191,10 +193,10 @@ export class PublicationStorage {
         const filePath = path.join(pubPath, fileName);
 
         try {
-            const readData = await fs.promises.readFile(filePath, { encoding: "utf-8" });
+            const jsonStr = await fs.promises.readFile(filePath, { encoding: "utf-8" });
             try {
-                const data = JSON.parse(readData);
-                return data;
+                const jsonObj = JSON.parse(jsonStr);
+                return jsonObj;
             } catch (e) {
                 debug(e);
             }
@@ -316,6 +318,7 @@ export class PublicationStorage {
 
         assertUUIDv4(identifier);
 
+        // TODO: if map.get() is as expensive as map.has() then simply: const val = map.get(key); if (!!val) return val;
         if (this.__publicationEpubPathMap.has(identifier)) {
             return this.__publicationEpubPathMap.get(identifier);
         }

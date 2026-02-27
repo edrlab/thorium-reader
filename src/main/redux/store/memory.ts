@@ -23,13 +23,16 @@ import { applyPatch } from "rfc6902";
 import { reduxPersistMiddleware } from "../middleware/persistence";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer";
-import { minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
+import { MiniLocatorExtended, minimizeLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 import { EDrawType, INoteState, NOTE_DEFAULT_COLOR_OBJ, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 import { TBookmarkState } from "readium-desktop/common/redux/states/bookmark";
 import { TAnnotationState } from "readium-desktop/common/redux/states/renderer/annotation";
 import { sqliteInitTableNote, sqliteTableNoteDeleteWherePubId, sqliteTableNoteInsert, sqliteTableSelectLastModifiedDateWherePubId } from "readium-desktop/main/db/sqlite/note";
 import { sqliteInitialisation } from "readium-desktop/main/db/sqlite";
 import { IReaderStateReaderSession } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { IWinRegistryReaderState } from "readium-desktop/main/redux/states/win/registry/reader";
+import { ReaderConfig } from "readium-desktop/common/models/reader";
+import { IRTLFlipState } from "readium-desktop/common/redux/states/renderer/rtlFlip";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -255,7 +258,7 @@ export async function initStore()
 
         let pubIds: string[];
         if (preloadedState?.publication?.db) {
-            pubIds = Object.keys(preloadedState.publication.db); 
+            pubIds = Object.keys(preloadedState.publication.db);
         }
 
         for (const pubId in preloadedState.win.registry.reader) {
@@ -480,56 +483,56 @@ export async function initStore()
                 const publicationStorage = diMainGet("publication-storage");
                 if (state?.reduxState?.locator) {
                     debug("\t => locator");
-                    const data = state.reduxState.locator as unknown as object;
+                    const jsonObj = state.reduxState.locator as unknown as object;
                     try {
-                        await publicationData.write(pubId, "locator", data);
+                        await publicationData.writeJsonObj(pubId, "locator", jsonObj);
                     } catch (e) {
                         debug(e);
                     }
                     try {
-                        await publicationStorage.write(pubId, "locator", data);
+                        await publicationStorage.writeJsonObj(pubId, "locator", jsonObj);
                     } catch (e) {
                         debug(e);
                     }
                 }
                 if (state?.reduxState?.config) {
                     debug("\t => config");
-                    const data = state.reduxState.config as unknown as object;
+                    const jsonObj = state.reduxState.config as unknown as object;
                     try {
-                        await publicationData.write(pubId, "config", data);
+                        await publicationData.writeJsonObj(pubId, "config", jsonObj);
                     } catch (e) {
                         debug(e);
                     }
                     try {
-                        await publicationStorage.write(pubId, "config", data);
+                        await publicationStorage.writeJsonObj(pubId, "config", jsonObj);
                     } catch (e) {
                         debug(e);
                     }
                 }
                 if (state?.reduxState?.disableRTLFlip) {
                     debug("\t => disableRTLFlip");
-                    const data = state.reduxState.disableRTLFlip as unknown as object;
+                    const jsonObj = state.reduxState.disableRTLFlip as unknown as object;
                     try {
-                        await publicationData.write(pubId, "disableRTLFlip", data);
+                        await publicationData.writeJsonObj(pubId, "disableRTLFlip", jsonObj);
                     } catch (e) {
                         debug(e);
                     }
                     try {
-                        await publicationStorage.write(pubId, "disableRTLFlip", data);
+                        await publicationStorage.writeJsonObj(pubId, "disableRTLFlip", jsonObj);
                     } catch (e) {
                         debug(e);
                     }
                 }
                 if (state?.windowBound) {
                     debug("\t => bound");
-                    const data = state.windowBound as unknown as object;
+                    const jsonObj = state.windowBound as unknown as object;
                     try {
-                        await publicationData.write(pubId, "bound", data);
+                        await publicationData.writeJsonObj(pubId, "bound", jsonObj);
                     } catch (e) {
                         debug(e);
                     }
                 }
-    
+
                 try {
                     await publicationData.close(pubId);
                 } catch (e) {
@@ -540,8 +543,8 @@ export async function initStore()
             }
         }
     } else {
-        
-        if (!preloadedState.win) { 
+
+        if (!preloadedState.win) {
             preloadedState.win = {} as any;
         }
         if (!preloadedState.win.registry) {
@@ -559,11 +562,16 @@ export async function initStore()
         const pubIds = await publicationData.listPublication();
         for (const pubId of pubIds) {
             debug("PubID", pubId);
-            preloadedState.win.registry.reader[pubId] = {} as any;
+            preloadedState.win.registry.reader[pubId] = {} as IWinRegistryReaderState;
 
-            const locator = await tryCatch(async () => await publicationData.read(pubId, "locator"), _dbgn) as unknown as any;
-            const config = await tryCatch(async () => await publicationData.read(pubId, "config"), _dbgn) as unknown as any;
-            const disableRTLFlip = await tryCatch(async () => await publicationData.read(pubId, "disableRTLFlip"), _dbgn) as unknown as any;
+            // can be undefined!
+            const locator = await tryCatch(async () => await publicationData.readJsonObj(pubId, "locator"), _dbgn) as unknown as MiniLocatorExtended;
+
+            // can be undefined!
+            const config = await tryCatch(async () => await publicationData.readJsonObj(pubId, "config"), _dbgn) as unknown as ReaderConfig;
+
+            // can be undefined!
+            const disableRTLFlip = await tryCatch(async () => await publicationData.readJsonObj(pubId, "disableRTLFlip"), _dbgn) as unknown as IRTLFlipState;
 
             preloadedState.win.registry.reader[pubId].reduxState = {
                 locator,
@@ -571,7 +579,8 @@ export async function initStore()
                 disableRTLFlip,
             };
 
-            const bound = await tryCatch(async () => await publicationData.read(pubId, "bound"), _dbgn);
+            // can be undefined!
+            const bound = await tryCatch(async () => await publicationData.readJsonObj(pubId, "bound"), _dbgn);
 
             preloadedState.win.registry.reader[pubId].windowBound = bound as unknown as Electron.Rectangle;
 

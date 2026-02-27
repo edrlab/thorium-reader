@@ -17,7 +17,7 @@ const rmrf = async (dir: string) => {
     return await fs.promises.rm(dir, { recursive: true, retryDelay: 100, maxRetries: 3, force: true });
 };
 
-const jsonstr = (d: any) => (__TH__IS_DEV__ || __TH__IS_CI__) ? JSON.stringify(d, null, 4) : JSON.stringify(d);
+const jsonStringify = (d: any) => (__TH__IS_DEV__ || __TH__IS_CI__) ? JSON.stringify(d, null, 4) : JSON.stringify(d);
 
 const isUUIDv4 = (uuid: string) => /^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/.test(uuid);
 const assertUUIDv4 = (uuid: string) => {
@@ -26,7 +26,14 @@ const assertUUIDv4 = (uuid: string) => {
     }
 };
 
-export type TFileType = "locator" | "config" | "disableRTLFlip" | "bound";
+export type TFileTypePubData = "locator" | "config" | "disableRTLFlip" | "bound";
+type TFileStructPubData = {
+    pubId: string,
+    type: TFileTypePubData,
+    fileHandle: fs.promises.FileHandle,
+    jsonObj: object | undefined,
+    mutex: Promise<void>,
+};
 
 @injectable()
 export class PublicationData {
@@ -37,11 +44,11 @@ export class PublicationData {
      */
     private publicationConfigPath: string;
 
-    private files: Array<{pubId: string, type: TFileType, fileHandle: fs.promises.FileHandle, data: object | undefined, mutex: Promise<void>}>;
+    private files: Array<TFileStructPubData>;
 
-    private filterFilesByType = (t: TFileType) => this.files.filter(({type}) => type === t);
+    private filterFilesByType = (t: TFileTypePubData) => this.files!.filter(({type}) => type === t);
 
-    private assertAndGetFileName = (type: TFileType) => {
+    private assertAndGetFileName = (type: TFileTypePubData) => {
         const fileName = type === "locator" ? "locator.json" : type === "config" ? "config.json" : type === "disableRTLFlip" ? "disableRTLFlip.json" : type === "bound" ? "bound.json" : "";
         if (!fileName) {
             throw new Error("fileType not found");
@@ -54,10 +61,10 @@ export class PublicationData {
         this.files = [];
     }
 
-    public getDataRead(pubId: string, type: TFileType) {
+    public getJsonObj(pubId: string, type: TFileTypePubData): object | undefined {
         assertUUIDv4(pubId);
         const file = this.filterFilesByType(type).find((a) => a.pubId === pubId);
-        return file?.data;
+        return file?.jsonObj;
     }
 
     public async destroy() {
@@ -83,7 +90,7 @@ export class PublicationData {
         }
     }
 
-    public async open(pubId: string, type: TFileType) {
+    public async open(pubId: string, type: TFileTypePubData) {
         if (this.lock) return ;
         assertUUIDv4(pubId);
 
@@ -115,22 +122,23 @@ export class PublicationData {
                     }
                     return; // already open
                 }
-                const data: object | undefined = undefined;
+
                 const file = {
                     pubId,
                     type,
                     fileHandle,
-                    data,
+                    jsonObj: undefined as TFileStructPubData["jsonObj"],
                     mutex: Promise.resolve(),
-                };
+                } satisfies TFileStructPubData;
+
                 this.files.push(file);
 
                 file.mutex = file.mutex.then(async () => {
                     try {
-                        const dataStr = await fileHandle.readFile({ encoding: "utf-8" });
+                        const jsonStr = await fileHandle.readFile({ encoding: "utf-8" });
                         try {
-                            const data = JSON.parse(dataStr);
-                            file.data = data;
+                            const jsonObj = JSON.parse(jsonStr);
+                            file.jsonObj = jsonObj;
                         } catch (e) {
                             debug(e);
                         }
@@ -145,7 +153,7 @@ export class PublicationData {
                 if (e.code === "ENOENT") {
                     try {
                         debug("create directory", publicationPath);
-                        await fs.promises.mkdir(publicationPath, { recursive: false, mode: 0o777 });
+                        await fs.promises.mkdir(publicationPath /* DEFAULTS: , { recursive: false, mode: 0o777 } */);
                         continue;
                     } catch (e) {
                         debug(e);
@@ -156,7 +164,7 @@ export class PublicationData {
         }
     }
 
-    public async write(pubId: string, type: TFileType, data: object) {
+    public async writeJsonObj(pubId: string, type: TFileTypePubData, jsonObj: object) {
         if (this.lock) return ;
         assertUUIDv4(pubId);
 
@@ -173,13 +181,13 @@ export class PublicationData {
         }
 
         file.mutex = file.mutex.then(async () => {
-            const dataStr = jsonstr(data);
+            const jsonStr = jsonStringify(jsonObj);
             try {
-                await file.fileHandle.truncate(dataStr.length);
-                await file.fileHandle.write(dataStr, 0, "utf-8");
+                await file.fileHandle.truncate(jsonStr.length);
+                await file.fileHandle.write(jsonStr, 0, "utf-8");
 
                 // Wait the end of the write to set it as local reference
-                file.data = data;
+                file.jsonObj = jsonObj;
             } catch (e) {
                 debug(e);
             }
@@ -188,7 +196,7 @@ export class PublicationData {
         await file.mutex;
     }
 
-    public async read(pubId: string, type: TFileType): Promise<object | undefined> {
+    public async readJsonObj(pubId: string, type: TFileTypePubData): Promise<object | undefined> {
         if (this.lock) return undefined;
         assertUUIDv4(pubId);
 
@@ -212,14 +220,14 @@ export class PublicationData {
                 debug(e);
             }
             try {
-                const dataStr = await fs.promises.readFile(file.fileHandle, { encoding: "utf-8" });
+                const jsonStr = await fs.promises.readFile(file.fileHandle, { encoding: "utf-8" });
                 try {
-                    const data = JSON.parse(dataStr);
-                    file.data = data;
+                    const jsonObj = JSON.parse(jsonStr);
+                    file.jsonObj = jsonObj;
                 } catch (e) {
                     debug(e);
                     try {
-                        await this.write(pubId, type, file.data);
+                        await this.writeJsonObj(pubId, type, file.jsonObj);
                     } catch (e) {
                         debug(e);
                     }
@@ -230,11 +238,11 @@ export class PublicationData {
             }
         });
         await file.mutex;
-        return file.data;
+        return file.jsonObj;
     }
 
     public async close(pubId: string) {
-        if (this.lock) return ;
+        if (this.lock) return;
 
         debug(`${this.files.length} file(s) currently opened before closing ${pubId}`);
 
