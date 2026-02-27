@@ -8,7 +8,7 @@
 import debug_ from "debug";
 import * as fs from "fs";
 import { diMainGet, patchFilePath, readerConfigPath, stateFilePath } from "readium-desktop/main/di";
-import { PersistRootState, RootState } from "readium-desktop/main/redux/states";
+import { PersistRootState, PersistRootStateStateJSON, RootState } from "readium-desktop/main/redux/states";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call, debounce, all } from "redux-saga/effects";
 import { flush as flushTyped, select as selectTyped, call as callTyped } from "typed-redux-saga/macro";
@@ -40,9 +40,15 @@ const persistStateToFs = async (nextState: RootState) => {
 
     debug("start of persist reduxState in disk");
 
-    const value: PersistRootState = {
+    const value: PersistRootStateStateJSON = {
         theme: nextState.theme,
-        // win: nextState.win,
+        win: {
+            session: {
+                library: undefined,
+                reader: undefined,
+            },
+            registry: nextState.win?.registry || undefined,
+        },
         publication: nextState.publication,
         reader: nextState.reader,
         session: nextState.session,
