@@ -71,7 +71,7 @@ import { ReaderSettings, ReadingAudio } from "./ReaderSettings";
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
-import { readerLocalActionAnnotations, readerLocalActionSetConfig, readerLocalActionToggleMenu, readerLocalActionToggleSettings } from "../redux/actions";
+import { readerLocalActionAnnotations, readerLocalActionToggleMenu, readerLocalActionToggleSettings } from "../redux/actions";
 import { AnnotationEdit } from "./AnnotationEdit";
 import { isAudiobookFn } from "readium-desktop/common/isManifestType";
 import { VoiceSelection } from "./header/voiceSelection";
@@ -96,6 +96,7 @@ import { TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 import { PrintContainer } from "./Print";
 import * as PrinterIcon from "readium-desktop/renderer/assets/icons/printer-icon.svg";
 import { PublicationView } from "readium-desktop/common/views/publication";
+import { readerActions } from "readium-desktop/common/redux/actions";
 
 const debug = debug_("readium-desktop:renderer:reader:components:ReaderHeader");
 
@@ -1502,7 +1503,7 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         setConfig: (state: Partial<ReaderConfig>) => {
-            dispatch(readerLocalActionSetConfig.build(state));
+            dispatch(readerActions.setConfig.build(state));
         },
         triggerAnnotationBtn: (fromKeyboard: boolean) => {
             dispatch(readerLocalActionAnnotations.trigger.build(fromKeyboard));

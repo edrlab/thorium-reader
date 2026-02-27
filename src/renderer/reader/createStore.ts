@@ -12,11 +12,11 @@ import { initStore } from "readium-desktop/renderer/reader/redux/store/memory";
 
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 // import { diReaderSymbolTable } from "./diSymbolTable";
-import { readerLocalActionSetConfig } from "./redux/actions";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import { Store } from "redux";
 import { isDivinaFn, isPdfFn } from "readium-desktop/common/isManifestType";
 import { SagaMiddleware } from "redux-saga";
+import { readerActions } from "readium-desktop/common/redux/actions";
 
 // Create container used for dependency injection
 // const container = new Container();
@@ -127,7 +127,7 @@ export const createStoreFromDi = (preloadedState: Partial<IReaderRootState>): St
 
     if (flag) {
         console.log(`MIGRATION : There are a data need to be migrated from defaultConfig to config OLD=${JSON.stringify(store.getState().reader.config, null, 4)} NEW=${JSON.stringify(newConfig, null, 4)}`);
-        store.dispatch(readerLocalActionSetConfig.build(newConfig));
+        store.dispatch(readerActions.setConfig.build(newConfig));
         console.log(`MIGRATION : Data migrated after the dispatch so this is the new data : ${JSON.stringify(store.getState().reader.config, null, 4)}`);
     }
     return store;

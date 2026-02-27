@@ -20,6 +20,7 @@ import { readerActions } from "readium-desktop/common/redux/actions";
 import { EventPayload } from "readium-desktop/common/ipc/sync";
 import { SenderType } from "readium-desktop/common/models/sync";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { ReaderConfig } from "readium-desktop/common/models/reader";
 
 const DEBOUNCE_TIME = 3 * 60 * 1000; // 3 min
 const LOCATOR_DEBOUNCE_TIME = 10 * 1000; // 10 secs
@@ -109,7 +110,7 @@ export function saga() {
         takeSpawnLeading(
             readerActions.setLocator.ID,
             function* (action: readerActions.setLocator.TAction) {
-                const jsonObj = action.payload as unknown as object;
+                const locatorJsonObj = action.payload as unknown as object;
                 const sender = action.sender as EventPayload["sender"];
 
                 if (sender.type !== SenderType.Renderer) {
@@ -117,9 +118,38 @@ export function saga() {
                     return;
                 }
                 const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                if (!reader) {
+                    debug("no reader sender found in session !!!");
+                    return ;
+                }
                 const pubId = reader.publicationIdentifier;
 
-                yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "locator", jsonObj));
+                yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "locator", locatorJsonObj));
+            },
+            (e) => debug(e),
+        ),
+        takeSpawnLeading(
+            readerActions.setConfig.ID,
+            function* (action: readerActions.setConfig.TAction) {
+                const configJsonObj = action.payload as unknown as object;
+                const sender = action.sender as EventPayload["sender"];
+
+                debug("SET CONFIG RECEIVED WITH", configJsonObj);
+
+                if (sender.type !== SenderType.Renderer) {
+                    debug("sender is not renderer !!!");
+                    return;
+                }
+                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                if (!reader) {
+                    debug("no reader sender found in session !!!");
+                    return;
+                }
+                const pubId = reader.publicationIdentifier;
+
+                const config: Partial<ReaderConfig> = (yield* callTyped(() => diMainGet("publication-data").getJsonObj(pubId, "config"))) || {};
+                const configUnion = { ...config, ...configJsonObj };
+                yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "config", configUnion));
             },
             (e) => debug(e),
         ),

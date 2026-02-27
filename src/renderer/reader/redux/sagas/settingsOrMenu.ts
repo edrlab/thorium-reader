@@ -8,10 +8,10 @@
 import debug_ from "debug";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { all, put as putTyped, SagaGenerator, select as selectTyped } from "typed-redux-saga";
-import { readerLocalActionSetConfig, readerLocalActionToggleMenu, readerLocalActionToggleSettings } from "../actions";
+import { readerLocalActionToggleMenu, readerLocalActionToggleSettings } from "../actions";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
-import { dialogActions, dockActions } from "readium-desktop/common/redux/actions";
+import { dialogActions, dockActions, readerActions } from "readium-desktop/common/redux/actions";
 import { IReaderDialogOrDockSettingsMenuState, ReaderConfig } from "readium-desktop/common/models/reader";
 import { DockTypeName } from "readium-desktop/common/models/dock";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
@@ -143,7 +143,7 @@ function* toggleSettingsOrMenu(action: readerLocalActionToggleMenu.TAction | rea
     }
 
     if (ObjectKeys(newReaderConfig).length) {
-        yield* putTyped(readerLocalActionSetConfig.build(newReaderConfig));
+        yield* putTyped(readerActions.setConfig.build(newReaderConfig));
     }
 
     if (readerDockingMode === "full") {

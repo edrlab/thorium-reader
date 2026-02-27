@@ -24,6 +24,7 @@ import * as setTheLock from "./setTheLock";
 import * as note from "./note";
 import * as pdfConfig from "./pdfConfig";
 import * as setLocator from "./setLocator";
+import * as setConfig from "./setConfig";
 
 export {
     openRequest,
@@ -45,4 +46,5 @@ export {
     print,
     pdfConfig,
     setLocator,
+    setConfig,
 };

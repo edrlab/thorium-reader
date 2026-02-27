@@ -15,7 +15,7 @@ import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysEnableCaptionsMode, 
     mediaOverlaysStop,
 } from "@r2-navigator-js/electron/renderer";
 
-import { readerLocalActionReader, readerLocalActionSetConfig } from "../actions";
+import { readerLocalActionReader } from "../actions";
 import { SagaGenerator } from "typed-redux-saga";
 import { all as allTyped, put as putTyped, select as selectTyped, spawn as spawnTyped, take as takeTyped } from "typed-redux-saga/macro";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
@@ -23,10 +23,10 @@ import { readerConfigInitialState, readerConfigInitialStateDefaultPublisher } fr
 import { isNotNil } from "readium-desktop/utils/nil";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { DockTypeName } from "readium-desktop/common/models/dock";
-import { dialogActions, dockActions } from "readium-desktop/common/redux/actions";
+import { dialogActions, dockActions, readerActions } from "readium-desktop/common/redux/actions";
 import { IReaderDialogOrDockSettingsMenuState } from "readium-desktop/common/models/reader";
 
-function* readerConfigChanged(action: readerLocalActionSetConfig.TAction): SagaGenerator<void> {
+function* readerConfigChanged(action: readerActions.setConfig.TAction): SagaGenerator<void> {
 
     const { payload } = action;
     // payload must contain readerConfig keys that need to be updated
@@ -225,17 +225,17 @@ function* alowCustomTriggered(action: readerLocalActionReader.allowCustom.TActio
     if (checked) {
 
         const transientConfig = yield* selectTyped((state: IReaderRootState) => state.reader.transientConfig);
-        yield* putTyped(readerLocalActionSetConfig.build(transientConfig));
+        yield* putTyped(readerActions.setConfig.build(transientConfig));
 
     } else {
-        yield* putTyped(readerLocalActionSetConfig.build(readerConfigInitialStateDefaultPublisher));
+        yield* putTyped(readerActions.setConfig.build(readerConfigInitialStateDefaultPublisher));
     }
 }
 
 export function saga() {
     return allTyped([
         takeSpawnEvery(
-            readerLocalActionSetConfig.ID,
+            readerActions.setConfig.ID,
             readerConfigChanged,
         ),
         takeSpawnEvery(
@@ -245,7 +245,7 @@ export function saga() {
         spawnTyped(function* () {
             while (true) {
                 const oldEnableMathJax = yield* selectTyped((state: IReaderRootState) => state.reader.config.enableMathJax);
-                yield* takeTyped(readerLocalActionSetConfig.ID);
+                yield* takeTyped(readerActions.setConfig.ID);
                 const newEnableMathJax = yield* selectTyped((state: IReaderRootState) => state.reader.config.enableMathJax);
                 const shouldReload = oldEnableMathJax !== newEnableMathJax;
                 if (shouldReload) {

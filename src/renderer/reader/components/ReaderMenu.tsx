@@ -83,7 +83,7 @@ import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslat
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { Locator } from "@r2-shared-js/models/locator";
 import { dialogActions, dockActions, readerActions } from "readium-desktop/common/redux/actions";
-import { readerLocalActionLocatorHrefChanged, readerLocalActionSetConfig } from "../redux/actions";
+import { readerLocalActionLocatorHrefChanged } from "../redux/actions";
 import { useReaderConfig, useSaveReaderConfig } from "readium-desktop/renderer/common/hooks/useReaderConfig";
 import { IReaderDialogOrDockSettingsMenuState, ReaderConfig } from "readium-desktop/common/models/reader";
 import { rgbToHex } from "readium-desktop/common/rgb";
@@ -3068,13 +3068,13 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
         setSerialAnnotatorMode(!serialAnnotator);
     };
     const quickAnnotationsOnChange = () => {
-        dispatch(readerLocalActionSetConfig.build({ annotation_popoverNotOpenOnNoteTaking: !readerConfig.annotation_popoverNotOpenOnNoteTaking }));
+        dispatch(readerActions.setConfig.build({ annotation_popoverNotOpenOnNoteTaking: !readerConfig.annotation_popoverNotOpenOnNoteTaking }));
     };
     const marginAnnotationsOnChange = () => {
         const annotation_defaultDrawView = readerConfig.annotation_defaultDrawView === "margin" ? "annotation" : "margin";
 
         console.log(`marginAnnotationsToggleSwitch : highlight=${annotation_defaultDrawView}`);
-        dispatch(readerLocalActionSetConfig.build({ annotation_defaultDrawView }));
+        dispatch(readerActions.setConfig.build({ annotation_defaultDrawView }));
 
         const href1 = currentLocation?.locator?.href;
         const href2 = currentLocation?.secondWebViewHref;
@@ -3084,7 +3084,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
         const annotation_defaultDrawView = readerConfig.annotation_defaultDrawView === "hide" ? "annotation" : "hide";
 
         console.log(`hideAnnotationsToggleSwitch : highlight=${annotation_defaultDrawView}`);
-        dispatch(readerLocalActionSetConfig.build({ annotation_defaultDrawView }));
+        dispatch(readerActions.setConfig.build({ annotation_defaultDrawView }));
 
         const href1 = currentLocation?.locator?.href;
         const href2 = currentLocation?.secondWebViewHref;
