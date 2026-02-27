@@ -71,22 +71,32 @@ export class PublicationData {
         this.lock = true;
         const files = [...this.files];
         this.files = [];
+        const filePromises = [];
         for (const file of files) {
-            try {
-                await Promise.race([file.mutex, new Promise<void>((resolve) => setTimeout(resolve, 100))]);
-            } catch (e) {
-                debug(e);
-            }
-            try {
-                const p1 = (async () => {
-                    await file.fileHandle.sync();
-                    await file.fileHandle.close();
-                })();
-                const p2 = new Promise<void>((resolve) => setTimeout(resolve, 100));
-                await Promise.race([p1, p2]);
-            } catch (e) {
-                debug(e);
-            }
+            filePromises.push(async () => {
+                try {
+                    await Promise.race([file.mutex, new Promise<void>((_resolve, reject) => setTimeout(() => reject("TIMEOUT"), 100))]);
+                } catch (e) {
+                    debug(e);
+                }
+                try {
+                    const p1 = (async () => {
+                        await file.fileHandle.sync();
+                        await file.fileHandle.close();
+                    })();
+                    const p2 = new Promise<void>((_resolve, reject) => setTimeout(() => reject("TIMEOUT"), 100));
+                    await Promise.race([p1, p2]);
+                } catch (e) {
+                    debug(e);
+                }
+            });
+        }
+        try {
+            const res = await Promise.allSettled(filePromises);
+            debug("Publication-data destroy() done");
+            debug(res);
+        } catch (e) {
+            debug(e);
         }
     }
 
