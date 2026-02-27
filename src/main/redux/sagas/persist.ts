@@ -23,7 +23,7 @@ import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEver
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 
 const DEBOUNCE_TIME = 3 * 60 * 1000; // 3 min
-const LOCATOR_DEBOUNCE_TIME = 10 * 1000; // 10 secs
+const PUBLICATION_STORAGE_DEBOUNCE_TIME = 10 * 1000; // 10 secs
 
 // Logger
 const filename_ = "readium-desktop:main:saga:persist";
@@ -108,6 +108,45 @@ export function saga() {
             needToPersistPatch,
         ),
         takeSpawnLeading(
+            winActions.session.setBound.ID,
+            function* (action: winActions.session.setBound.TAction) {
+                const payload = action.payload;
+                const identifier = payload.identifier;
+                const boundJsonObj = payload.bound;
+
+                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[identifier]);
+                if (!reader) {
+                    debug("no reader sender found in session !!!");
+                    return;
+                }
+                const pubId = reader.publicationIdentifier;
+
+                yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "bound", boundJsonObj));
+            },
+            (e) => debug(e),
+        ),
+        takeSpawnLeading(
+            readerActions.disableRTLFlip.ID,
+            function* (action: readerActions.disableRTLFlip.TAction) {
+                const rtlFlipJsonObj = action.payload as unknown as object;
+                const sender = action.sender as EventPayload["sender"];
+
+                if (sender.type !== SenderType.Renderer) {
+                    debug("sender is not renderer !!!");
+                    return;
+                }
+                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                if (!reader) {
+                    debug("no reader sender found in session !!!");
+                    return;
+                }
+                const pubId = reader.publicationIdentifier;
+
+                yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "disableRTLFlip", rtlFlipJsonObj));
+            },
+            (e) => debug(e),
+        ),
+        takeSpawnLeading(
             readerActions.setLocator.ID,
             function* (action: readerActions.setLocator.TAction) {
                 const locatorJsonObj = action.payload as unknown as object;
@@ -120,7 +159,7 @@ export function saga() {
                 const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
                 if (!reader) {
                     debug("no reader sender found in session !!!");
-                    return ;
+                    return;
                 }
                 const pubId = reader.publicationIdentifier;
 
@@ -133,8 +172,6 @@ export function saga() {
             function* (action: readerActions.setConfig.TAction) {
                 const configJsonObj = action.payload as unknown as object;
                 const sender = action.sender as EventPayload["sender"];
-
-                debug("SET CONFIG RECEIVED WITH", configJsonObj);
 
                 if (sender.type !== SenderType.Renderer) {
                     debug("sender is not renderer !!!");
@@ -154,10 +191,9 @@ export function saga() {
             (e) => debug(e),
         ),
         debounce(
-            LOCATOR_DEBOUNCE_TIME,
+            PUBLICATION_STORAGE_DEBOUNCE_TIME,
             readerActions.setLocator.ID,
             function* (action: readerActions.setLocator.TAction) {
-
                 const jsonObj = action.payload as unknown as object;
                 const sender = action.sender as EventPayload["sender"];
 
@@ -171,6 +207,44 @@ export function saga() {
                     yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "locator", jsonObj));
                 }
 
+            },
+        ),
+        debounce(
+            PUBLICATION_STORAGE_DEBOUNCE_TIME,
+            readerActions.setConfig.ID,
+            function* (action: readerActions.setConfig.TAction) {
+                const configJsonObj = action.payload as unknown as object;
+                const sender = action.sender as EventPayload["sender"];
+
+                if (sender.type !== SenderType.Renderer) {
+                    debug("sender is not renderer !!!");
+                    return;
+                }
+                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                if (reader) {
+                    const pubId = reader.publicationIdentifier;
+                    const config: Partial<ReaderConfig> = (yield* callTyped(() => diMainGet("publication-data").getJsonObj(pubId, "config"))) || {};
+                    const configUnion = { ...config, ...configJsonObj };
+                    yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "config", configUnion));
+                }
+            },
+        ),
+        debounce(
+            PUBLICATION_STORAGE_DEBOUNCE_TIME,
+            readerActions.disableRTLFlip.ID,
+            function* (action: readerActions.disableRTLFlip.TAction) {
+                const rtlFlipJsonObj = action.payload as unknown as object;
+                const sender = action.sender as EventPayload["sender"];
+
+                if (sender.type !== SenderType.Renderer) {
+                    debug("sender is not renderer !!!");
+                    return;
+                }
+                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                if (reader) {
+                    const pubId = reader.publicationIdentifier;
+                    yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "disableRTLFlip", rtlFlipJsonObj));
+                }
             },
         ),
         // takeSpawnEvery(
@@ -198,24 +272,42 @@ export function saga() {
                 const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
                 if (!readers[identifier]) {
                     debug("ERROR NO READER BUT CLOSE ACTION RECEIVED (race condition!?)");
-                    return ;
+                    return;
                 }
                 const pubId = readers[identifier].publicationIdentifier;
                 const readersPubId = Object.values(readers).filter((v) => v.publicationIdentifier === pubId);
                 if (readersPubId.length > 1) {
-                    return ;
+                    return;
                 }
 
-                const jsonObj = diMainGet("publication-data").getJsonObj(pubId, "locator");
+                // TODO: parallelize with Promise.allSettled
                 yield* callTyped(() => diMainGet("publication-data").close(pubId));
 
-                if (jsonObj) {
-                    // finally save locator next to publication storage vault
-                    yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "locator", jsonObj));
+                {
+                    const jsonObj = diMainGet("publication-data").getJsonObj(pubId, "locator");
+                    if (jsonObj) {
+                        // finally save locator next to publication storage vault
+                        yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "locator", jsonObj));
+                    }
                 }
 
+                {
+                    const jsonObj = diMainGet("publication-data").getJsonObj(pubId, "config");
+                    if (jsonObj) {
+                        // finally save config next to publication storage vault
+                        yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "config", jsonObj));
+                    }
+                }
+
+                {
+                    const jsonObj = diMainGet("publication-data").getJsonObj(pubId, "disableRTLFlip");
+                    if (jsonObj) {
+                        // finally save disableRTLFlip next to publication storage vault
+                        yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "disableRTLFlip", jsonObj));
+                    }
+                }
             },
-            // (e) => error(filename_ + ":winClose", e),
+// (e) => error(filename_ + ":winClose", e),
             (e) => debug(e),
         ),
     ]);
