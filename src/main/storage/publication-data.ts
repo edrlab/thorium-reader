@@ -73,7 +73,7 @@ export class PublicationData {
         this.files = [];
         const filePromises = [];
         for (const file of files) {
-            filePromises.push(async () => {
+            filePromises.push((async () => {
                 try {
                     await Promise.race([file.mutex, new Promise<void>((_resolve, reject) => setTimeout(() => reject("TIMEOUT"), 100))]);
                 } catch (e) {
@@ -89,7 +89,7 @@ export class PublicationData {
                 } catch (e) {
                     debug(e);
                 }
-            });
+            })());
         }
         try {
             const res = await Promise.allSettled(filePromises);
