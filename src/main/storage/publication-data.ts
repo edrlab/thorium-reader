@@ -96,7 +96,7 @@ export class PublicationData {
             debug("Publication-data destroy() done");
             debug(res);
         } catch (e) {
-            debug(e);
+            debug(`${e}`);
         }
     }
 
@@ -128,7 +128,7 @@ export class PublicationData {
                     try {
                         await fileHandle.close();
                     } catch (e) {
-                        debug(e);
+                        debug(`${e}`);
                     }
                     return; // already open
                 }
@@ -147,26 +147,28 @@ export class PublicationData {
                     try {
                         const jsonStr = await fileHandle.readFile({ encoding: "utf-8" });
                         try {
-                            const jsonObj = JSON.parse(jsonStr);
-                            file.jsonObj = jsonObj;
+                            if (jsonStr) {
+                                const jsonObj = JSON.parse(jsonStr);
+                                file.jsonObj = jsonObj;
+                            }
                         } catch (e) {
-                            debug(e);
+                            debug(`${e}`);
                         }
                         debug(`${type} file opened on ${pubId}`);
                     } catch (e) {
-                        debug(e);
+                        debug(`${e}`);
                     }
                 });
                 await file.mutex;
             } catch (e) {
-                debug(e);
+                debug(`${e}`);
                 if (e.code === "ENOENT") {
                     try {
                         debug("create directory", publicationPath);
                         await fs.promises.mkdir(publicationPath /* DEFAULTS: , { recursive: false, mode: 0o777 } */);
                         continue;
                     } catch (e) {
-                        debug(e);
+                        debug(`${e}`);
                     }
                 }
             }
@@ -227,15 +229,17 @@ export class PublicationData {
                 // flush before read
                 await file.fileHandle.sync();
             } catch (e) {
-                debug(e);
+                debug(`${e}`);
             }
             try {
                 const jsonStr = await fs.promises.readFile(file.fileHandle, { encoding: "utf-8" });
                 try {
-                    const jsonObj = JSON.parse(jsonStr);
-                    file.jsonObj = jsonObj;
+                    if (jsonStr) {
+                        const jsonObj = JSON.parse(jsonStr);
+                        file.jsonObj = jsonObj;
+                    }
                 } catch (e) {
-                    debug(e);
+                    debug(`${e}`);
                     try {
                         await this.writeJsonObj(pubId, type, file.jsonObj);
                     } catch (e) {
@@ -244,7 +248,7 @@ export class PublicationData {
                 }
 
             } catch (e) {
-                debug(e);
+                debug(`${e}`);
             }
         });
         await file.mutex;
@@ -275,7 +279,7 @@ export class PublicationData {
                 }
                 await file.fileHandle.close();
             } catch (e) {
-                debug(e);
+                debug(`${e}`);
             }
         }
 

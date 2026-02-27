@@ -160,7 +160,7 @@ export class PublicationStorage {
             const jsonStrExisting = JSON.stringify(JSON.parse(jsonStrExisting_));
             const jsonStr = JSON.stringify(jsonObj);
             if (jsonStrExisting === jsonStr) {
-                debug("LOCATOR Storage same as LOCATOR Serialized, already persisted");
+                debug("JSONObj Storage same as JSONObj Serialized, already persisted");
                 return;
             }
         } catch {
@@ -174,9 +174,9 @@ export class PublicationStorage {
         const jsonStrCheck = await fs.promises.readFile(tmpFilePath, { encoding: "utf-8" });
         if (jsonStrCheck === jsonStr) {
             await fs.promises.rename(tmpFilePath, filePath);
-            debug("LOCATOR written to", filePath);
+            debug("JSONObj written to", filePath);
         } else {
-            debug("LOCATOR diff, NOT written to", filePath, " --- ", jsonStrCheck, " !== ", jsonStr);
+            debug("JSONObj diff, NOT written to", filePath, " --- ", jsonStrCheck, " !== ", jsonStr);
         }
     }
 
