@@ -38,7 +38,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     lcpActions.unlockPublicationWithPassphrase.ID,
 
     themeActions.setTheme.ID,
-    readerActions.disableRTLFlip.ID,
+    // readerActions.disableRTLFlip.ID,
 
     publicationActions.readingFinished.ID,
 
@@ -74,6 +74,10 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     readerActions.setLocator.ID,
     readerActions.setConfig.ID,
     readerActions.disableRTLFlip.ID,
+    readerActions.divina.setReadingMode.ID,
+    readerActions.allowCustom.ID,
+    readerActions.bookmarkTotalCount.ID,
+    readerActions.pdfConfig.ID,
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);

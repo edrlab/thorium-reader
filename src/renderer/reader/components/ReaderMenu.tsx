@@ -515,7 +515,7 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
             annotation,
         ));
         triggerEdition(false);
-        // dispatch(readerLocalActionReader.bookmarkTotalCount.build(noteTotalCount + 1));
+        // dispatch(readerActions.bookmarkTotalCount.build(noteTotalCount + 1));
     }, [dispatch, annotation, triggerEdition, pubId]);
 
     const date = new Date(annotation.modified || annotation.created);
@@ -829,7 +829,7 @@ const BookmarkCard: React.FC<{ bookmark: INoteState, isEdited: boolean, triggerE
             bookmark,
         ));
         triggerEdition(false);
-        // dispatch(readerLocalActionReader.bookmarkTotalCount.build(noteTotalCount + 1));
+        // dispatch(readerActions.bookmarkTotalCount.build(noteTotalCount + 1));
     }, [dispatch, bookmark, triggerEdition, pubId]);
 
     const date = new Date(bookmark.modified || bookmark.created);

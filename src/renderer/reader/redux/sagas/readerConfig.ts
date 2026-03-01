@@ -15,7 +15,6 @@ import { MediaOverlaysStateEnum, TTSStateEnum, mediaOverlaysEnableCaptionsMode, 
     mediaOverlaysStop,
 } from "@r2-navigator-js/electron/renderer";
 
-import { readerLocalActionReader } from "../actions";
 import { SagaGenerator } from "typed-redux-saga";
 import { all as allTyped, put as putTyped, select as selectTyped, spawn as spawnTyped, take as takeTyped } from "typed-redux-saga/macro";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
@@ -218,7 +217,7 @@ function* readerConfigChanged(action: readerActions.setConfig.TAction): SagaGene
     }
 }
 
-function* alowCustomTriggered(action: readerLocalActionReader.allowCustom.TAction): SagaGenerator<void> {
+function* alowCustomTriggered(action: readerActions.allowCustom.TAction): SagaGenerator<void> {
 
     const { payload: { state: checked }} = action;
 
@@ -239,7 +238,7 @@ export function saga() {
             readerConfigChanged,
         ),
         takeSpawnEvery(
-            readerLocalActionReader.allowCustom.ID,
+            readerActions.allowCustom.ID,
             alowCustomTriggered,
         ),
         spawnTyped(function* () {

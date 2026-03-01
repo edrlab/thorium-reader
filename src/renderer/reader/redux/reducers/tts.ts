@@ -7,7 +7,7 @@
 
 import { type Reducer } from "redux";
 
-import { ITTSState, defaultTTSState } from "../state/tts";
+import { ITTSState, defaultTTSState } from "../../../../common/redux/states/renderer/tts";
 import { setTTSState } from "../actions/reader";
 
 export const initialState: ITTSState = {

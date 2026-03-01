@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as readerLocalActionDivina from "./divina";
 import * as readerLocalActionHighlights from "./highlights";
 import * as readerLocalActionAnnotations from "./annotations";
 import * as readerLocalActionLocatorHrefChanged from "./locatorHrefChanged";
@@ -24,7 +23,6 @@ export {
     readerLocalActionHighlights,
     readerLocalActionLocatorHrefChanged,
     readerLocalActionSearch,
-    readerLocalActionDivina,
     readerLocalActionReader,
     readerLocalActionSetImageClick,
 };

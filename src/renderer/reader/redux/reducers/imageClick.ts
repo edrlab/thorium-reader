@@ -8,7 +8,7 @@
 import { type Reducer } from "redux";
 
 import { readerLocalActionSetImageClick } from "../actions";
-import { defaultImageClickState, IImageClickState } from "../state/imageClick";
+import { defaultImageClickState, IImageClickState } from "../../../../common/redux/states/renderer/imageClick";
 
 function imageClickReducer_(
     state = defaultImageClickState,

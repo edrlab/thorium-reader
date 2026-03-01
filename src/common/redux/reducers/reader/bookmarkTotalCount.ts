@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { bookmarkTotalCount } from "readium-desktop/renderer/reader/redux/actions/reader";
-import { defaultBookmarkTotalCountConfig, IBookmarkTotalCountState } from "readium-desktop/renderer/reader/redux/state/bookmarkTotalCount";
+import { defaultBookmarkTotalCountConfig, IBookmarkTotalCountState } from "readium-desktop/common/redux/states/renderer/bookmarkTotalCount";
 import { type Reducer } from "redux";
+import { readerActions } from "../../actions";
 
 
 export const initialState: IBookmarkTotalCountState = {
@@ -16,10 +16,10 @@ export const initialState: IBookmarkTotalCountState = {
 
 function readerBookmarkTotalCountReducer_(
     state: IBookmarkTotalCountState = initialState, // (preloaded state?) see registerReader
-    action: bookmarkTotalCount.TAction,
+    action: readerActions.bookmarkTotalCount.TAction,
 ): IBookmarkTotalCountState {
     switch (action.type) {
-        case bookmarkTotalCount.ID:
+        case readerActions.bookmarkTotalCount.ID:
             return {
                 state: action.payload.state,
             };

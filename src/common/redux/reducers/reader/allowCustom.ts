@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { allowCustom } from "readium-desktop/renderer/reader/redux/actions/reader";
-import { IAllowCustomConfigState, defaultAllowCustomConfig } from "readium-desktop/renderer/reader/redux/state/allowCustom";
+import { IAllowCustomConfigState, defaultAllowCustomConfig } from "readium-desktop/common/redux/states/renderer/allowCustom";
 import { type Reducer } from "redux";
+import { readerActions } from "../../actions";
 
 
 export const initialState: IAllowCustomConfigState = {
@@ -16,10 +16,10 @@ export const initialState: IAllowCustomConfigState = {
 
 function readerAllowCustomConfigReducer_(
     state: IAllowCustomConfigState = initialState, // (preloaded state?) see registerReader
-    action: allowCustom.TAction,
+    action: readerActions.allowCustom.TAction,
 ): IAllowCustomConfigState {
     switch (action.type) {
-        case allowCustom.ID:
+        case readerActions.allowCustom.ID:
             return {
                 state: action.payload.state,
             };

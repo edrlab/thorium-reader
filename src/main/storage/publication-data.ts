@@ -10,6 +10,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import debug_ from "debug";
 import { __ulimit_file } from "../di";
+import { IReaderStateReaderPersistence } from "src/common/redux/states/renderer/readerRootState";
 
 const debug = debug_("readium-desktop:main/storage/pub-data");
 
@@ -26,7 +27,7 @@ const assertUUIDv4 = (uuid: string) => {
     }
 };
 
-export type TFileTypePubData = "locator" | "config" | "disableRTLFlip" | "bound";
+export type TFileTypePubData = Extract<keyof IReaderStateReaderPersistence, "locator" | "config" | "disableRTLFlip" | "divina" | "allowCustomConfig" | "noteTotalCount" | "pdfConfig"> | "bound";
 type TFileStructPubData = {
     pubId: string,
     type: TFileTypePubData,
@@ -49,7 +50,7 @@ export class PublicationData {
     private filterFilesByType = (t: TFileTypePubData) => this.files!.filter(({type}) => type === t);
 
     private assertAndGetFileName = (type: TFileTypePubData) => {
-        const fileName = type === "locator" ? "locator.json" : type === "config" ? "config.json" : type === "disableRTLFlip" ? "disableRTLFlip.json" : type === "bound" ? "bound.json" : "";
+        const fileName = type === "locator" ? "locator.json" : type === "config" ? "config.json" : type === "disableRTLFlip" ? "disableRTLFlip.json" : type === "divina" ? "divina.json" : type === "allowCustomConfig" ? "allowCustomConfig.json" : type === "noteTotalCount" ? "noteTotalCount.json" : type === "pdfConfig" ? "pdfConfig.json" : type === "bound" ? "bound.json" : "";
         if (!fileName) {
             throw new Error("fileType not found");
         }

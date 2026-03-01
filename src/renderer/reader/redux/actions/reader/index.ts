@@ -7,12 +7,8 @@
 
 import * as setMediaOverlayState from "./mediaOverlay";
 import * as setTTSState from "./tts";
-import * as allowCustom from "./allowCustom";
-import * as bookmarkTotalCount from "./bookmarkTotalCount";
 
 export {
-    bookmarkTotalCount,
     setMediaOverlayState,
     setTTSState,
-    allowCustom,
 };

@@ -19,12 +19,12 @@ import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locator
 // import { TBookmarkState } from "../bookmark";
 import { IRTLFlipState } from "./rtlFlip";
 import { IAnnotationModeState /*TAnnotationState,*/ } from "./annotation";
-import { ITTSState } from "readium-desktop/renderer/reader/redux/state/tts";
-import { IMediaOverlayState } from "readium-desktop/renderer/reader/redux/state/mediaOverlay";
-import { IAllowCustomConfigState } from "readium-desktop/renderer/reader/redux/state/allowCustom";
-import { IImageClickState } from "readium-desktop/renderer/reader/redux/state/imageClick";
+import { ITTSState } from "readium-desktop/common/redux/states/renderer/tts";
+import { IMediaOverlayState } from "readium-desktop/common/redux/states/renderer/mediaOverlay";
+import { IAllowCustomConfigState } from "readium-desktop/common/redux/states/renderer/allowCustom";
+import { IImageClickState } from "readium-desktop/common/redux/states/renderer/imageClick";
+import { IBookmarkTotalCountState } from "readium-desktop/common/redux/states/renderer/bookmarkTotalCount";
 import { DockState } from "../dock";
-import { IBookmarkTotalCountState } from "readium-desktop/renderer/reader/redux/state/bookmarkTotalCount";
 import { INoteState } from "./note";
 
 export interface IReaderPdfConfig{

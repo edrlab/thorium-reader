@@ -21,10 +21,12 @@ import { IZip } from "@r2-utils-js/_utils/zip/zip";
 import debug_ from "debug";
 import { sanitizeForFilename } from "readium-desktop/common/safe-filename";
 import { URL_PROTOCOL_STORE } from "readium-desktop/common/streamerProtocol";
+import { IReaderStateReaderPersistence } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
 const debug = debug_("readium-desktop:main/storage/pub-storage");
 
-export type TFileTypePubStorage = "locator" | "config" | "disableRTLFlip";
+export type TFileTypePubStorage = Extract<keyof IReaderStateReaderPersistence, "locator" | "config" | "disableRTLFlip" | "divina" | "allowCustomConfig" | "noteTotalCount" | "pdfConfig">;
+// "bound" is not included, saved only in publication-data
 
 const rmrf = async (dir: string) => {
     return await fs.promises.rm(dir, { recursive: true, retryDelay: 100, maxRetries: 3, force: true });
@@ -73,7 +75,7 @@ export class PublicationStorage {
     private userVaultConfigPath: string;
 
     private assertAndGetFileName = (type: TFileTypePubStorage) => {
-        const fileName = type === "locator" ? "locator.json" : type === "config" ? "config.json" : type === "disableRTLFlip" ? "disableRTLFlip.json" : "";
+        const fileName = type === "locator" ? "locator.json" : type === "config" ? "config.json" : type === "disableRTLFlip" ? "disableRTLFlip.json" : type === "divina" ? "divina.json" : type === "allowCustomConfig" ? "allowCustomConfig.json" : type === "noteTotalCount" ? "noteTotalCount.json" : type === "pdfConfig" ? "pdfConfig.json" : "";
         if (!fileName) {
             throw new Error("fileType not found");
         }

@@ -51,7 +51,6 @@ import { ReaderConfig, TTheme } from "readium-desktop/common/models/reader";
 import { FONT_LIST, FONT_LIST_WITH_JA } from "readium-desktop/utils/fontList";
 import { createOrGetPdfEventBus } from "../pdf/driver";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { readerLocalActionReader } from "../redux/actions";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
@@ -1429,7 +1428,7 @@ const AllowCustom = () => {
     const overridePublisherDefault = useSelector((state: IReaderRootState) => state.reader.allowCustomConfig.state);
     const dispatch = useDispatch();
     const set = React.useCallback(() => {
-        dispatch(readerLocalActionReader.allowCustom.build(!overridePublisherDefault));
+        dispatch(readerActions.allowCustom.build(!overridePublisherDefault));
     }, [dispatch, overridePublisherDefault]);
 
     return (
@@ -1493,12 +1492,12 @@ const SaveResetApplyPreset = () => {
             if (publisherConfigOverrided) {
                 setPublisherConfig(readerDefaultConfigWithoutSomeDefaultKeys);
             } else {
-                dispatch(readerLocalActionReader.allowCustom.build(false));
+                dispatch(readerActions.allowCustom.build(false));
             }
         } else {
             if (publisherConfigOverrided) {
                 setPublisherConfig(readerDefaultConfigWithoutSomeDefaultKeys);
-                dispatch(readerLocalActionReader.allowCustom.build(true));
+                dispatch(readerActions.allowCustom.build(true));
             } else {
                 // nothing to do
             }

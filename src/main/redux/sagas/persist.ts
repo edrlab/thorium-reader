@@ -165,6 +165,91 @@ export function saga() {
             (e) => debug(e),
         ),
         takeSpawnLeading(
+            readerActions.pdfConfig.ID,
+            function* (action: readerActions.pdfConfig.TAction) {
+                const jsonObj = action.payload as unknown as object;
+                const sender = action.sender as EventPayload["sender"];
+
+                if (sender.type !== SenderType.Renderer) {
+                    debug("sender is not renderer !!!");
+                    return;
+                }
+                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                if (!reader) {
+                    debug("no reader sender found in session !!!");
+                    return;
+                }
+                const pubId = reader.publicationIdentifier;
+
+                yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "pdfConfig", jsonObj));
+            },
+            (e) => debug(e),
+        ),
+        takeSpawnLeading(
+            readerActions.bookmarkTotalCount.ID,
+            function* (action: readerActions.bookmarkTotalCount.TAction) {
+                const jsonObj = action.payload as unknown as object;
+                const sender = action.sender as EventPayload["sender"];
+
+                if (sender.type !== SenderType.Renderer) {
+                    debug("sender is not renderer !!!");
+                    return;
+                }
+                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                if (!reader) {
+                    debug("no reader sender found in session !!!");
+                    return;
+                }
+                const pubId = reader.publicationIdentifier;
+
+                // note and not bookmark !
+                yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "noteTotalCount", jsonObj));
+            },
+            (e) => debug(e),
+        ),
+        takeSpawnLeading(
+            readerActions.allowCustom.ID,
+            function* (action: readerActions.allowCustom.TAction) {
+                const jsonObj = action.payload as unknown as object;
+                const sender = action.sender as EventPayload["sender"];
+
+                if (sender.type !== SenderType.Renderer) {
+                    debug("sender is not renderer !!!");
+                    return;
+                }
+                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                if (!reader) {
+                    debug("no reader sender found in session !!!");
+                    return;
+                }
+                const pubId = reader.publicationIdentifier;
+
+                yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "allowCustomConfig", jsonObj));
+            },
+            (e) => debug(e),
+        ),
+        takeSpawnLeading(
+            readerActions.divina.setReadingMode.ID,
+            function* (action: readerActions.divina.setReadingMode.TAction) {
+                const divinaReadingMode = action.payload as unknown as object;
+                const sender = action.sender as EventPayload["sender"];
+
+                if (sender.type !== SenderType.Renderer) {
+                    debug("sender is not renderer !!!");
+                    return;
+                }
+                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                if (!reader) {
+                    debug("no reader sender found in session !!!");
+                    return;
+                }
+                const pubId = reader.publicationIdentifier;
+
+                yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "divina", divinaReadingMode));
+            },
+            (e) => debug(e),
+        ),
+        takeSpawnLeading(
             readerActions.disableRTLFlip.ID,
             function* (action: readerActions.disableRTLFlip.TAction) {
                 const rtlFlipJsonObj = action.payload as unknown as object;
@@ -228,6 +313,82 @@ export function saga() {
                 yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "config", configUnion));
             },
             (e) => debug(e),
+        ),
+        debounce(
+            PUBLICATION_STORAGE_DEBOUNCE_TIME,
+            readerActions.pdfConfig.ID,
+            function* (action: readerActions.pdfConfig.TAction) {
+                const jsonObj = action.payload as unknown as object;
+                const sender = action.sender as EventPayload["sender"];
+
+                if (sender.type !== SenderType.Renderer) {
+                    debug("sender is not renderer !!!");
+                    return;
+                }
+                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                if (reader) {
+                    const pubId = reader.publicationIdentifier;
+                    yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "pdfConfig", jsonObj));
+                }
+
+            },
+        ),
+        debounce(
+            PUBLICATION_STORAGE_DEBOUNCE_TIME,
+            readerActions.bookmarkTotalCount.ID,
+            function* (action: readerActions.bookmarkTotalCount.TAction) {
+                const jsonObj = action.payload as unknown as object;
+                const sender = action.sender as EventPayload["sender"];
+
+                if (sender.type !== SenderType.Renderer) {
+                    debug("sender is not renderer !!!");
+                    return;
+                }
+                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                if (reader) {
+                    const pubId = reader.publicationIdentifier;
+                    yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "noteTotalCount", jsonObj));
+                }
+
+            },
+        ),
+        debounce(
+            PUBLICATION_STORAGE_DEBOUNCE_TIME,
+            readerActions.allowCustom.ID,
+            function* (action: readerActions.allowCustom.TAction) {
+                const jsonObj = action.payload as unknown as object;
+                const sender = action.sender as EventPayload["sender"];
+
+                if (sender.type !== SenderType.Renderer) {
+                    debug("sender is not renderer !!!");
+                    return;
+                }
+                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                if (reader) {
+                    const pubId = reader.publicationIdentifier;
+                    yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "allowCustomConfig", jsonObj));
+                }
+
+            },
+        ),
+        debounce(
+            PUBLICATION_STORAGE_DEBOUNCE_TIME,
+            readerActions.divina.setReadingMode.ID,
+            function* (action: readerActions.divina.setReadingMode.TAction) {
+                const jsonObj = action.payload as unknown as object;
+                const sender = action.sender as EventPayload["sender"];
+
+                if (sender.type !== SenderType.Renderer) {
+                    debug("sender is not renderer !!!");
+                    return;
+                }
+                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                if (reader) {
+                    const pubId = reader.publicationIdentifier;
+                    yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "divina", jsonObj));
+                }
+
+            },
         ),
         debounce(
             PUBLICATION_STORAGE_DEBOUNCE_TIME,

@@ -511,6 +511,7 @@ export async function initStore()
                         debug(e);
                     }
                 }
+                // TODO: factorize to reader config
                 if (state?.reduxState?.disableRTLFlip) {
                     debug("\t => disableRTLFlip");
                     const jsonObj = state.reduxState.disableRTLFlip as unknown as object;
@@ -521,6 +522,66 @@ export async function initStore()
                     }
                     try {
                         await publicationStorage.writeJsonObj(pubId, "disableRTLFlip", jsonObj);
+                    } catch (e) {
+                        debug(e);
+                    }
+                }
+                // TODO: factorize to reader config
+                if (state?.reduxState?.divina) {
+                    debug("\t => disableRTLFlip");
+                    const jsonObj = state.reduxState.divina as unknown as object;
+                    try {
+                        await publicationData.writeJsonObj(pubId, "divina", jsonObj);
+                    } catch (e) {
+                        debug(e);
+                    }
+                    try {
+                        await publicationStorage.writeJsonObj(pubId, "divina", jsonObj);
+                    } catch (e) {
+                        debug(e);
+                    }
+                }
+                // TODO: factorize to reader config
+                if (state?.reduxState?.allowCustomConfig) {
+                    debug("\t => disableRTLFlip");
+                    const jsonObj = state.reduxState.allowCustomConfig as unknown as object;
+                    try {
+                        await publicationData.writeJsonObj(pubId, "allowCustomConfig", jsonObj);
+                    } catch (e) {
+                        debug(e);
+                    }
+                    try {
+                        await publicationStorage.writeJsonObj(pubId, "allowCustomConfig", jsonObj);
+                    } catch (e) {
+                        debug(e);
+                    }
+                }
+                // TODO: remove this unused state in the future
+                if (state?.reduxState?.noteTotalCount) {
+                    debug("\t => disableRTLFlip");
+                    const jsonObj = state.reduxState.noteTotalCount as unknown as object;
+                    try {
+                        await publicationData.writeJsonObj(pubId, "noteTotalCount", jsonObj);
+                    } catch (e) {
+                        debug(e);
+                    }
+                    try {
+                        await publicationStorage.writeJsonObj(pubId, "noteTotalCount", jsonObj);
+                    } catch (e) {
+                        debug(e);
+                    }
+                }
+                // TODO: factorize to reader config
+                if (state?.reduxState?.pdfConfig) {
+                    debug("\t => disableRTLFlip");
+                    const jsonObj = state.reduxState.pdfConfig as unknown as object;
+                    try {
+                        await publicationData.writeJsonObj(pubId, "pdfConfig", jsonObj);
+                    } catch (e) {
+                        debug(e);
+                    }
+                    try {
+                        await publicationStorage.writeJsonObj(pubId, "pdfConfig", jsonObj);
                     } catch (e) {
                         debug(e);
                     }

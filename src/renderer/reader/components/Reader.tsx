@@ -85,7 +85,7 @@ import { IPdfPlayerScale, TToc } from "../pdf/common/pdfReader.type";
 import { pdfMount } from "../pdf/driver";
 import {
     readerLocalActionAnnotations,
-    readerLocalActionDivina, readerLocalActionLocatorHrefChanged,
+    readerLocalActionLocatorHrefChanged,
     readerLocalActionToggleMenu,
     readerLocalActionToggleSettings,
 } from "../redux/actions";
@@ -3427,9 +3427,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             dispatch(readerActions.disableRTLFlip.build(disable));
         },
         setReadingMode: (readingMode: TdivinaReadingMode) => {
-
-            console.log("Persist the reading mode", readingMode);
-            dispatch(readerLocalActionDivina.setReadingMode.build({ readingMode }));
+            dispatch(readerActions.divina.setReadingMode.build({ readingMode }));
         },
         clipboardCopy: (publicationIdentifier: string, clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => {
             dispatch(readerActions.clipboardCopy.build(publicationIdentifier, clipboardData));

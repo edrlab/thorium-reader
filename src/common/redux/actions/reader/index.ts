@@ -22,9 +22,12 @@ import * as setReduxState from "./setReduxState";
 import * as disableRTLFlip from "./rtlFlip";
 import * as setTheLock from "./setTheLock";
 import * as note from "./note";
+import * as divina from "./divina";
 import * as pdfConfig from "./pdfConfig";
 import * as setLocator from "./setLocator";
 import * as setConfig from "./setConfig";
+import * as allowCustom from "./allowCustom";
+import * as bookmarkTotalCount from "./bookmarkTotalCount";
 
 export {
     openRequest,
@@ -42,9 +45,12 @@ export {
     clipboardCopy,
     disableRTLFlip,
     note,
+    divina,
     setTheLock,
     print,
     pdfConfig,
     setLocator,
     setConfig,
+    allowCustom,
+    bookmarkTotalCount,
 };

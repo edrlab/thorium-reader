@@ -7,7 +7,7 @@
 
 import { type Reducer } from "redux";
 
-import { IMediaOverlayState, defaultMediaOverlayState } from "../state/mediaOverlay";
+import { IMediaOverlayState, defaultMediaOverlayState } from "../../../../common/redux/states/renderer/mediaOverlay";
 import { setMediaOverlayState } from "../actions/reader";
 
 export const initialState: IMediaOverlayState = {

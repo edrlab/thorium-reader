@@ -7,8 +7,8 @@
 
 import { type Reducer } from "redux";
 
-import { readerLocalActionDivina } from "../actions";
 import { defaultReadingMode, IDivinaState } from "readium-desktop/common/redux/states/renderer/divina";
+import { readerActions } from "readium-desktop/common/redux/actions";
 
 const defaultState: IDivinaState = {
     readingMode: defaultReadingMode,
@@ -16,12 +16,12 @@ const defaultState: IDivinaState = {
 
 function readerDivinaReducer_(
     state: IDivinaState = defaultState,
-    action: readerLocalActionDivina.setReadingMode.TAction,
+    action: readerActions.divina.setReadingMode.TAction,
 ): IDivinaState {
 
     switch (action.type) {
 
-        case readerLocalActionDivina.setReadingMode.ID: {
+        case readerActions.divina.setReadingMode.ID: {
 
             return {
                 ...state,

@@ -12,7 +12,7 @@ import debug_ from "debug";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { SagaGenerator } from "typed-redux-saga";
 import { select as selectTyped, take as takeTyped, race as raceTyped, put as putTyped, all as allTyped, call as callTyped, spawn as spawnTyped, delay as delayTyped} from "typed-redux-saga/macro";
-import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionLocatorHrefChanged, readerLocalActionReader } from "../actions";
+import { readerLocalActionAnnotations, readerLocalActionHighlights, readerLocalActionLocatorHrefChanged } from "../actions";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
@@ -121,7 +121,7 @@ function* noteAddUpdate(action: readerActions.note.addUpdate.TAction) {
 
     const currentBookmarkTotalCount = yield* selectTyped((state: IReaderRootState) => state.reader.noteTotalCount.state);
     if (!previousNote && note) {
-        yield* putTyped(readerLocalActionReader.bookmarkTotalCount.build(currentBookmarkTotalCount + 1));
+        yield* putTyped(readerActions.bookmarkTotalCount.build(currentBookmarkTotalCount + 1));
     }
 
     yield* spawnTyped(function* () {
@@ -274,7 +274,7 @@ function* createAnnotation(locatorExtended: MiniLocatorExtended, color: IColor, 
         group: "annotation",
     }));
 
-    yield* putTyped(readerLocalActionReader.bookmarkTotalCount.build(noteTotalCount + 1));
+    yield* putTyped(readerActions.bookmarkTotalCount.build(noteTotalCount + 1));
 
     // sure! close the popover
     yield* putTyped(readerLocalActionAnnotations.enableMode.build(false, undefined, undefined));

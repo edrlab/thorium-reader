@@ -27,7 +27,7 @@ import { ToastType } from "readium-desktop/common/models/toast";
 import { registerKeyboardListener, unregisterKeyboardListener } from "readium-desktop/renderer/common/keyboard";
 import { DEBUG_KEYBOARD } from "readium-desktop/common/keyboard";
 import { ReadiumElectronBrowserWindow } from "@r2-navigator-js/electron/renderer/webview/state";
-import { readerLocalActionHighlights, readerLocalActionReader } from "../../redux/actions";
+import { readerLocalActionHighlights } from "../../redux/actions";
 import { BookmarkEdit } from "../BookmarkEdit";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { EDrawType, INoteState } from "readium-desktop/common/redux/states/renderer/note";
@@ -192,7 +192,7 @@ export const BookmarkButton: React.FC<IProps> = ({shortcutEnable, isOnSearch}) =
         }
 
         dispatch(readerActions.note.addUpdate.build(pubId, bookmark));
-        dispatch(readerLocalActionReader.bookmarkTotalCount.build(noteTotalCount + 1));
+        dispatch(readerActions.bookmarkTotalCount.build(noteTotalCount + 1));
     }, [dispatch, ttsState, mediaOverlaysState, __, toasty, noteTotalCount, pubId]);
 
     const creatorMyself = useSelector((state: IReaderRootState) => state.creator);
