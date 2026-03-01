@@ -482,7 +482,6 @@ export async function initStore()
                 const publicationData = diMainGet("publication-data");
                 const publicationStorage = diMainGet("publication-storage");
 
-                // TODO: fix: "config" | "locator" | "divina" | "disableRTLFlip" | "allowCustomConfig" | "noteTotalCount" | "pdfConfig"
                 if (state?.reduxState?.locator) {
                     debug("\t => locator");
                     const jsonObj = state.reduxState.locator as unknown as object;
