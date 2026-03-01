@@ -42,6 +42,8 @@ import { sagaCustomizationProfileProvisioning } from "./customization";
 import isURL from "validator/lib/isURL";
 import { publicationIntegrityChecker } from "./publication/checker";
 import { error } from "readium-desktop/main/tools/error";
+import { watchdog } from "./watchdog";
+import { diMainGet } from "readium-desktop/main/di";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -64,6 +66,11 @@ export function* rootSaga() {
             call(appSaga.init),
             call(keyboardShortcuts.init),
             call(sagaCustomizationProfileProvisioning),
+            call(function*() {
+
+                const state = diMainGet("store").getState();
+                debug("__TIME__", (state as any).__t, new Date((state as any).__t));
+            }),
         ]);
 
     } catch (e) {
@@ -84,6 +91,14 @@ export function* rootSaga() {
     yield* spawnTyped(function* () {
         try {
             yield* callTyped(publicationIntegrityChecker);
+        } catch (e) {
+            error(filename_, e);
+        }
+    });
+
+    yield* spawnTyped(function* () {
+        try {
+            yield* callTyped(watchdog);
         } catch (e) {
             error(filename_, e);
         }

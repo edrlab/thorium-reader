@@ -23,6 +23,7 @@ import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEver
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { IDictWinRegistryReaderState } from "../states/win/registry/reader";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
+import { resetWatchdog } from "./watchdog";
 
 const DEBOUNCE_TIME = 3 * 60 * 1000; // 3 min
 const PUBLICATION_STORAGE_DEBOUNCE_TIME = 10 * 1000; // 10 secs
@@ -102,6 +103,8 @@ export function* needToPersistFinalState() {
     const nextState = yield* selectTyped((store: RootState) => store);
     yield call(() => persistStateToFs(nextState));
     yield call(() => needToPersistPatch());
+
+    yield call(() => resetWatchdog());
 }
 
 export function* needToPersistPatch() {

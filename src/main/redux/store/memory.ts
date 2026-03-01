@@ -33,6 +33,8 @@ import { IReaderStateReaderSession } from "readium-desktop/common/redux/states/r
 import { IWinRegistryReaderState } from "readium-desktop/main/redux/states/win/registry/reader";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { IRTLFlipState } from "readium-desktop/common/redux/states/renderer/rtlFlip";
+import { readWatchdog } from "../sagas/watchdog";
+import { dialog } from "electron";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -113,8 +115,35 @@ export async function initStore()
 
         const jsonStr = await fs.promises.readFile(stateFilePath, { encoding: "utf8" });
         const json = JSON.parse(jsonStr);
-        if (test(json))
+        if (test(json)) {
             reduxState = json;
+        }
+
+        try {
+            const timestr = (reduxState as any).__t;
+            const version = (reduxState as any).__v;
+            debug(`Last state.json saved time: ${timestr} from v=${version}`);
+            delete (reduxState as any).__t;
+            delete (reduxState as any).__v;
+
+            const wdTime = await readWatchdog();
+            debug(`Watchdog time: ${wdTime.toUTCString()}`);
+
+            if (wdTime) {
+                debug("A crash occurred. The watchdog file must be removed when Thorium closes.");
+                const p = dialog.showMessageBox(undefined, { message: "A crash occurred", type: "error", buttons: ["OK"] });
+
+                p.then((response) => {
+                    debug("RES:", response);
+                }).catch((e) => {
+                    debug("dialog.showMessageBox CRASHED", e);
+
+                });
+            }
+            
+        } catch {
+            // ignore
+        }
 
         debug("STATE LOADED FROM FS");
         debug("😍😍😍😍😍😍😍😍");

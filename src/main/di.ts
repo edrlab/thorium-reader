@@ -80,6 +80,14 @@ if (!fs.existsSync(configDataFolderPath)) {
     fs.mkdirSync(configDataFolderPath);
 }
 
+const WATCHDOG_FILENAME = "watchdog.json";
+export const watchdogFilePath = path.join(
+    configDataFolderPath,
+    WATCHDOG_FILENAME,
+);
+
+
+
 const STATE_FILENAME = "state.json";
 export const stateFilePath = path.join(
     configDataFolderPath,
