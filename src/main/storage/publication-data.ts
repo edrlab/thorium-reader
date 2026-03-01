@@ -10,7 +10,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import debug_ from "debug";
 import { __ulimit_file } from "../di";
-import { IReaderStateReaderPersistence } from "src/common/redux/states/renderer/readerRootState";
+import { IReaderStateReaderPersistence } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
 const debug = debug_("readium-desktop:main/storage/pub-data");
 

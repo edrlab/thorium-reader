@@ -22,6 +22,7 @@ import { SenderType } from "readium-desktop/common/models/sync";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { IDictWinRegistryReaderState } from "../states/win/registry/reader";
+import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 
 const DEBOUNCE_TIME = 3 * 60 * 1000; // 3 min
 const PUBLICATION_STORAGE_DEBOUNCE_TIME = 10 * 1000; // 10 secs
@@ -33,22 +34,9 @@ debug("_");
 
 const persistStateToFs = async (nextState: RootState) => {
 
-    // currently saved in one json file.
-    // may be consuming a lot of I/O
-    // rather need to save by chunck of data in many json file
-
     debug("start of persist reduxState in disk");
 
     let reader: IDictWinRegistryReaderState | undefined = undefined;
-    // if (nextState.win?.registry?.reader) {
-    //     reader = JSON.parse(JSON.stringify(nextState.win.registry)); // savage clone :) // should be the reverse
-    //     for (const pubId in nextState.win.registry.reader) {
-    //         // remove keys that must not be persisted !
-    //         delete (reader[pubId]?.reduxState as any)?.info;
-    //         delete (reader[pubId]?.reduxState as any)?.lock;
-    //         delete (reader[pubId]?.reduxState as any)?.note;
-    //     }
-    // }
     if (nextState?.win?.registry?.reader) {
         reader = {};
         for (const pubId in nextState.win.registry.reader) {
@@ -61,6 +49,7 @@ const persistStateToFs = async (nextState: RootState) => {
                     locator: _readerReduxState?.locator,
                     divina: _readerReduxState?.divina,
                     disableRTLFlip: _readerReduxState?.disableRTLFlip,
+                    allowCustomConfig: _readerReduxState?.allowCustomConfig,
                     noteTotalCount: _readerReduxState?.noteTotalCount,
                     pdfConfig: _readerReduxState?.pdfConfig,
                 },
@@ -69,9 +58,10 @@ const persistStateToFs = async (nextState: RootState) => {
         }
     }
 
-    const value: PersistRootState = {
+    const value: PersistRootState & { __t: string, __v: string } = {
         theme: nextState.theme,
         win: {
+            // disable session saving
             session: {
                 library: undefined,
                 reader: undefined,
@@ -99,6 +89,8 @@ const persistStateToFs = async (nextState: RootState) => {
             welcomeScreen: undefined,
             manifest: undefined,
         },
+        __t: (new Date()).toUTCString(),
+        __v: _APP_VERSION,
     };
 
     await fs.promises.writeFile(stateFilePath, JSON.stringify(value), {encoding: "utf8"});
