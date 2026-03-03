@@ -458,7 +458,7 @@
                 "descriptive": "A publicação não contém perigos conhecidos"
             },
             "hazards-sound": {
-                "compact": "Sons sensíveis",
+                "compact": "Sons",
                 "descriptive": "O documento contém sons que podem causar desconforto"
             },
             "hazards-sound-none": {
