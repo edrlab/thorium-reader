@@ -18,7 +18,7 @@ import classNames from "classnames";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/home-icon.svg";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
-import HomeImage from "readium-desktop/renderer/assets/images/thorium_guided_1.png";
+{/* import HomeImage from "readium-desktop/renderer/assets/images/thorium_guided_1.png";*/}
 import BooksImage from "readium-desktop/renderer/assets/images/thorium_guided_2.png";
 import CatalogsImage from "readium-desktop/renderer/assets/images/thorium_guided_3.png";
 import ReadingImage from "readium-desktop/renderer/assets/images/thorium_guided_4.png";
@@ -154,7 +154,7 @@ export const WizardModal = () => {
                             <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
                                 <h3>{__("wizard.title.welcome")}</h3>
                                 <p>{__("wizard.description.home")}</p>
-                                <img src={HomeImage} aria-hidden="true" />
+                               {/*  <img src={HomeImage} aria-hidden="true" /> */}
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Dialog.Close className={stylesButtons.button_nav_primary}>
                                         <SVG ariaHidden svg={ShelfIcon} />
