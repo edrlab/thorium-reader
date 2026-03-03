@@ -143,15 +143,12 @@
             "descList_few": "{{- count}} примечание(я/ий) {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
             "descList_many": "{{- count}} примечание(я/ий) {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
             "descList_one": "{{- count}} примечание(я/ий) {{- creator}} будет импортировано в '{{- title}}' {{- author}}",
-            "descList_other": "",
             "descNewer_few": "Конфликт(ы): более новых заметок - {{- count}}",
             "descNewer_many": "Конфликт(ы): более новых заметок - {{- count}}",
             "descNewer_one": "Конфликт(ы): более новых заметок - {{- count}}",
-            "descNewer_other": "",
             "descOlder_few": "Конфликт(ы): более старых заметок - {{- count}}",
             "descOlder_many": "Конфликт(ы): более старых заметок - {{- count}}",
             "descOlder_one": "Конфликт(ы): более старых заметок - {{- count}}",
-            "descOlder_other": "",
             "descTitle": "Название аннотации: ",
             "importAll": "Импортировать все заметки",
             "importWithoutConflict": "Импортировать только заметки без конфликтов",
@@ -170,12 +167,10 @@
         "deleteAnnotationsText_few": "Вы уверены, что хотите удалить {{- count}} заметку(и/ок)?",
         "deleteAnnotationsText_many": "Вы уверены, что хотите удалить {{- count}} заметку(и/ок)?",
         "deleteAnnotationsText_one": "Вы уверены, что хотите удалить {{- count}} заметку(и/ок)?",
-        "deleteAnnotationsText_other": "",
         "deleteBookmarks": "Удалить закладки?",
         "deleteBookmarksText_few": "Вы уверены, что хотите удалить {{- count}} закладку(и/ок)?",
         "deleteBookmarksText_many": "Вы уверены, что хотите удалить {{- count}} закладку(и/ок)?",
         "deleteBookmarksText_one": "Вы уверены, что хотите удалить {{- count}} закладку(и/ок)?",
-        "deleteBookmarksText_other": "",
         "deleteFeed": "Вы действительно хотите удалить этот каталог ?",
         "deletePublication": "Вы действительно хотите удалить эту книгу ?",
         "deletePublicationWithNotes": "Внимание: эта книга содержит аннотации и/или закладки, они также будут удалены! (Если вы хотите их сохранить, обязательно экспортируйте заметки перед удалением книги)",
@@ -211,9 +206,9 @@
     },
     "library": {
         "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "selectOption": ""
+            "addFilters": "Добавить фильтры",
+            "filterBy": "Фильтровать по",
+            "selectOption": "Выбрать элемент"
         },
         "lcp": {
             "hidePassphrase": "Скрыть пароль",
@@ -221,19 +216,19 @@
             "open": "Открыть",
             "password": "Пароль",
             "sentence": "Для открытия этой книги требуется пароль LCP",
-            "showPassphrase": "",
+            "showPassphrase": "Показать парольную фразу",
             "urlHint": "Забыли парольную фразу? Поддержка доступна:",
             "whatIsLcp?": "Что такое LCP?",
             "whatIsLcpInfoDetails": "LCP означает \"защита лицензионного контента\".",
             "whatIsLcpInfoDetailsLink": "Чтобы узнать больше, перейдите по этой ссылке на сайт EDRLab."
         },
         "sorting": {
-            "addSorting": "",
-            "author": "",
-            "language": "",
-            "readingState": "",
-            "sortBy": "",
-            "title": ""
+            "addSorting": "Добавить сортировку",
+            "author": "Автор",
+            "language": "Язык",
+            "readingState": "Состояние чтения",
+            "sortBy": "Сортировать по: ",
+            "title": "Название"
         }
     },
     "message": {
@@ -721,9 +716,9 @@
             "unmute": "включить звук"
         },
         "dock": {
-            "dockDefault": "",
-            "dockLeft": "",
-            "dockRight": ""
+            "dockDefault": "Показывать панель в виде модального всплывающего окна",
+            "dockLeft": "Док-панель слева",
+            "dockRight": "Док-панель справа"
         },
         "fxl": {
             "fit": "Размер"
@@ -807,7 +802,6 @@
                 "founds_few": "{{- count}} найдено",
                 "founds_many": "{{- count}} найдено",
                 "founds_one": "{{- count}} найдено",
-                "founds_other": "",
                 "input": "подходящий текст",
                 "next": "Далее",
                 "notFound": "нет совпадений",
