@@ -28,6 +28,7 @@ import * as CatalogsIcon from "readium-desktop/renderer/assets/icons/catalogs-ic
 import * as OpenBookIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
 import * as AnnotationsIcon from "readium-desktop/renderer/assets/icons/annotation-icon.svg";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
+import * as LinkIcon from "readium-desktop/renderer/assets/icons/link-icon.svg";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { wizardActions } from "readium-desktop/common/redux/actions";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
@@ -88,6 +89,10 @@ export const WizardModal = () => {
                             <SVG ariaHidden svg={HomeIcon} />
                             <h4>{__("wizard.tab.home")}</h4>
                         </Tabs.Trigger>
+                         <Tabs.Trigger value="tab6">
+                            <SVG ariaHidden svg={LinkIcon} />
+                            <h4>{__("wizard.tab.resources")}</h4>
+                        </Tabs.Trigger>
                         <Tabs.Trigger value="tab2">
                             <SVG ariaHidden svg={ShelfIcon} />
                             <h4>{__("wizard.tab.yourBooks")}</h4>
@@ -104,6 +109,7 @@ export const WizardModal = () => {
                             <SVG ariaHidden svg={AnnotationsIcon} />
                             <h4>{__("wizard.tab.annotations")}</h4>
                         </Tabs.Trigger>
+
                         <div style={{display: "flex", alignItems: "center", gap: "10px", position: "absolute", bottom: "30px", left: "30px"}}>
                             <input type="checkbox" checked={checked} onChange={() => { setChecked(!checked); }} id="wizardCheckbox" name="wizardCheckbox" className={stylesGlobal.checkbox_custom_input} />
                             {/* label htmlFor clicked with mouse cursor causes onChange() of input (which is display:none), but keyboard interaction (tab stop and space bar toggle) occurs with the div role="checkbox" below! (onChange is not called, only onKeyUp) */}
@@ -220,6 +226,28 @@ export const WizardModal = () => {
                                 <p>
                                     {__("wizard.description.annotations")}</p>
                                 <img src={AnnotationsImage} aria-hidden="true" />
+                                <div className={stylesModals.guidedTour_buttons}>
+                                    <Tabs.List>
+                                        <Tabs.Trigger value="tab6" className={stylesButtons.button_primary_blue} onFocus={(e) => e.preventDefault()}>
+                                            <SVG ariaHidden svg={ArrowRightIcon} />
+                                            {__("wizard.buttons.next")}
+                                        </Tabs.Trigger>
+                                    </Tabs.List>
+                                </div>
+                            </div>
+                        </Tabs.Content>
+                        <Tabs.Content value="tab6" tabIndex={-1} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
+                            <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
+                                <h3>{__("wizard.title.resources")}</h3>
+                                <p style={{ marginBottom: "20px" }}>{__("wizard.description.resources")}</p>
+                                <div style={{ display: "flex", flexDirection: "column", gap: "15px", marginBottom: "30px" }}>
+                                    <a href="https://www.thoriumreader.com" target="_blank" rel="noopener noreferrer" style={{ color: "var(--color-brand-primary)", textDecoration: "none", fontSize: "16px", fontWeight: "500" }}>
+                                        🌐 {__("wizard.resources.website")}
+                                    </a>
+                                    <a href="https://discord.gg/2GnubQbE" target="_blank" rel="noopener noreferrer" style={{ color: "var(--color-brand-primary)", textDecoration: "none", fontSize: "16px", fontWeight: "500" }}>
+                                        💬 {__("wizard.resources.discord")}
+                                    </a>
+                                </div>
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Dialog.Close className={stylesButtons.button_primary_blue}>
                                         <SVG ariaHidden svg={ShelfIcon} />
