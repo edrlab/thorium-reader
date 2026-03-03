@@ -1236,29 +1236,36 @@
     },
     "wizard": {
         "buttons": {
-            "discover": "Discover what's new",
+            "discover": "Discover Thorium Desktop",
             "goToBooks": "Go to my publications",
             "next": "Next"
         },
         "description": {
-            "annotations": "Highlight document text, choose style and color, attach personal notes. Create annotations in 'quick' mode to bypass the editor (you can enter text and customize styles later). For extra speed, use the 'instant' mode which creates notes immediately after highlighting document text!",
+            "annotations": "Bookmark reading locations, highlight & annotate text in EPUB, and select annotation styles and modes. Create annotations in 'quick' mode to bypass the editor (you can enter text and customize styles later). For extra speed, use the 'instant' mode which creates notes immediately after highlighting document text! You can export/import your annotations to safeguard them. Important: If you plan to downgrade to an earlier version of Thorium, please export your annotations first—they may not be compatible with older versions.",
             "catalogs": "Borrow publications from your local library or discover publications via OPDS feeds. Access a variety of publications from multiple sources thanks to online catalogs.",
-            "home": "Thorium looks different! Let's discover what's new...",
+            "home": "Warning: Thorium 3.4 comes with a breaking change, you will not be able to exchange annotations with previous versions of Thorium. To avoid seeing this message again, click the 'Don't show again' button below.",
             "readingView1": "Customize your reading and listening preferences: Thorium now offers multiple color themes for both the user interface and publication documents. It is now also easier to configure 'readaloud' ebooks with synthetic speech and synchronized text/audio narration.",
-            "readingView2": "Thorium's improved user interface makes it easier to find text in publications, explore search results, go to specific pages, browse the table of contents, create bookmarks, etc. thanks to the new 'docked' panels. The fullscreen reading mode continues to offer a distraction-free environment.",
-            "yourBooks": "Welcome to your redesigned personal bookshelf! In the 'grid' view, easily filter by tags or find publications by keywords. In the advanced 'table' view, select and sort publications by specific authors, title, date, format, etc."
+            "readingView2": "Thorium's user interface makes it easier to find text in publications, explore search results, go to specific pages, browse the table of contents, create bookmarks, etc. thanks to the new 'docked' panels. The fullscreen reading mode continues to offer a distraction-free environment.",
+            "yourBooks": "In the 'grid' view, easily filter by tags or find publications by keywords. In the advanced 'table' view, select and sort publications by specific authors, title, date, format, etc.",
+            "resources": "Connect with us and learn more about Thorium:"
         },
         "dontShow": "Don't show again",
+        "resources": {
+            "discord": "Discord: https://discord.gg/2GnubQbE",
+            "website": "Website: https://www.thoriumreader.com"
+        },
         "tab": {
             "annotations": "Annotations",
             "catalogs": "Catalogs",
             "home": "Home",
             "readingView": "Reading view",
+            "resources": "Resources",
             "yourBooks": "Your publications"
         },
         "title": {
             "allBooks": "All my publications",
             "newFeature": "New feature: Annotations",
+            "resources": "Resources & Community",
             "welcome": "Welcome to Thorium 3"
         }
     }
