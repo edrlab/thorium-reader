@@ -89,10 +89,6 @@ export const WizardModal = () => {
                             <SVG ariaHidden svg={HomeIcon} />
                             <h4>{__("wizard.tab.home")}</h4>
                         </Tabs.Trigger>
-                         <Tabs.Trigger value="tab6">
-                            <SVG ariaHidden svg={LinkIcon} />
-                            <h4>{__("wizard.tab.resources")}</h4>
-                        </Tabs.Trigger>
                         <Tabs.Trigger value="tab2">
                             <SVG ariaHidden svg={ShelfIcon} />
                             <h4>{__("wizard.tab.yourBooks")}</h4>
@@ -108,6 +104,10 @@ export const WizardModal = () => {
                         <Tabs.Trigger value="tab5">
                             <SVG ariaHidden svg={AnnotationsIcon} />
                             <h4>{__("wizard.tab.annotations")}</h4>
+                        </Tabs.Trigger>
+                        <Tabs.Trigger value="tab6">
+                            <SVG ariaHidden svg={LinkIcon} />
+                            <h4>{__("wizard.tab.resources")}</h4>
                         </Tabs.Trigger>
 
                         <div style={{display: "flex", alignItems: "center", gap: "10px", position: "absolute", bottom: "30px", left: "30px"}}>
