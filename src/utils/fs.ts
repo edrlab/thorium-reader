@@ -6,31 +6,36 @@
 // ==LICENSE-END==
 
 import * as fs from "fs";
-import * as path from "path";
+// import * as path from "path";
 
-export function rmDirSync(dirPath: string): void {
-    let filenames = [];
+// export function rmDirSync(dirPath: string): void {
+//     let filenames = [];
 
-    try {
-        filenames = fs.readdirSync(dirPath);
-    } catch (_err) {
-        return;
-    }
+//     try {
+//         filenames = fs.readdirSync(dirPath);
+//     } catch (_err) {
+//         return;
+//     }
 
-    for (const filename of filenames) {
-        const filePath = path.join(dirPath, filename);
+//     for (const filename of filenames) {
+//         const filePath = path.join(dirPath, filename);
 
-        if (fs.statSync(filePath).isFile()) {
-            fs.unlinkSync(filePath);
-        } else {
-            rmDirSync(filePath);
-        }
-    }
+//         if (fs.statSync(filePath).isFile()) {
+//             fs.unlinkSync(filePath);
+//         } else {
+//             rmDirSync(filePath);
+//         }
+//     }
 
-    fs.rmdirSync(dirPath);
-}
+//     fs.rmdirSync(dirPath);
+// }
 
 export function getFileSize(filePath: string): number {
     const stats = fs.statSync(filePath);
     return stats.size;
 }
+
+
+export const rmrf = async (dir: string) => {
+    return await fs.promises.rm(dir, { recursive: true, retryDelay: 100, maxRetries: 3, force: true });
+};

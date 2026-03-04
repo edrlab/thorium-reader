@@ -13,7 +13,7 @@ import { acceptedExtensionObject, publicationExtensionStoredOnDisk } from "readi
 import { File } from "readium-desktop/common/models/file";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { ContentType } from "readium-desktop/utils/contentType";
-import { getFileSize } from "readium-desktop/utils/fs";
+import { getFileSize, rmrf } from "readium-desktop/utils/fs";
 
 import { PublicationParsePromise } from "@r2-shared-js/parser/publication-parser";
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
@@ -27,10 +27,6 @@ const debug = debug_("readium-desktop:main/storage/pub-storage");
 
 export type TFileTypePubStorage = Extract<keyof IReaderStateReaderPersistence, "locator" | "config" | "disableRTLFlip" | "divina" | "allowCustomConfig" | "noteTotalCount" | "pdfConfig">;
 // "bound" is not included, saved only in publication-data
-
-const rmrf = async (dir: string) => {
-    return await fs.promises.rm(dir, { recursive: true, retryDelay: 100, maxRetries: 3, force: true });
-};
 
 const isUUIDv4 = (uuid: string) => /^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/.test(uuid);
 const assertUUIDv4 = (uuid: string) => {

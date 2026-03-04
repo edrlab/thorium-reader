@@ -25,6 +25,7 @@ import { IDictWinRegistryReaderState } from "../states/win/registry/reader";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { IWinSessionLibraryState } from "../states/win/session/library";
 import { JsonStringifySortedKeys } from "readium-desktop/common/utils/json";
+import { rmrf } from "readium-desktop/utils/fs";
 
 const DEBOUNCE_TIME = 3 * 60 * 1000; // 3 min
 const PUBLICATION_STORAGE_DEBOUNCE_TIME = 10 * 1000; // 10 secs
@@ -34,9 +35,7 @@ const filename_ = "readium-desktop:main:saga:persist";
 const debug = debug_(filename_);
 debug("_");
  
-const rmrf = async (dir: string) => {
-    return await fs.promises.rm(dir, { recursive: true, retryDelay: 100, maxRetries: 3, force: true });
-};
+
 
 export const persistStateToFs = async (nextState: Partial<PersistRootState>) => {
 

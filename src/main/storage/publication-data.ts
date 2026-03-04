@@ -11,12 +11,9 @@ import * as path from "node:path";
 import debug_ from "debug";
 import { __ulimit_file } from "../di";
 import { IReaderStateReaderPersistence } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { rmrf } from "readium-desktop/utils/fs";
 
 const debug = debug_("readium-desktop:main/storage/pub-data");
-
-const rmrf = async (dir: string) => {
-    return await fs.promises.rm(dir, { recursive: true, retryDelay: 100, maxRetries: 3, force: true });
-};
 
 const jsonStringify = (d: any) => (__TH__IS_DEV__ || __TH__IS_CI__) ? JSON.stringify(d, null, 4) : JSON.stringify(d);
 

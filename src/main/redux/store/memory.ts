@@ -223,7 +223,7 @@ export async function initStore()
             // let's comment the backup state option, not used and valid anymore, to progressively ditch the diff patch recovery option
             // If not commented every start of 3.4.0 lead to the copy of the current state, due to an un equality between the final state.json and state.runtime.json+patch
             // On the other hand, we can use this backup to find lost publication db state, from previous corrupted state.
-            // This allows to match publication-storage and publication db from a losted state.
+            // This allows to match publication-storage and publication db from a lost state.
             // We need for the next release to do an automatic integrity check and cleaning
 
             // const p = backupStateFilePathFn();
