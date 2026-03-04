@@ -1241,24 +1241,20 @@
             "next": ""
         },
         "description": {
-            "annotations": "",
-            "catalogs": "",
             "home": "",
-            "readingView1": "Kohenda oma lugemis- ja kuulamiseelistusi. Thoriumil on nüüd mitu kujundusvarianti nii kasutajaliidese, kui dokumentide jaoks. Lihtsam on ka seadistada e-raamatute ettelugemist ja teksti+heli sünkroonis esitamist.",
-            "readingView2": "",
-            "yourBooks": ""
+            "resources": ""
         },
         "dontShow": "",
+        "resources": {
+            "discord": "",
+            "website": ""
+        },
         "tab": {
-            "annotations": "",
-            "catalogs": "",
             "home": "",
-            "readingView": "",
-            "yourBooks": ""
+            "resources": ""
         },
         "title": {
-            "allBooks": "",
-            "newFeature": "",
+            "resources": "",
             "welcome": ""
         }
     }

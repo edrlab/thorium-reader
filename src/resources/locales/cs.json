@@ -1253,24 +1253,20 @@
             "next": "Další"
         },
         "description": {
-            "annotations": "Zvýrazněte text dokumentu, zvolte styl a barvu, připojte osobní poznámky. Vytvořte anotace v „rychlém“ režimu, abyste obešli editor (později můžete zadat text a upravit styly). Pro extra rychlost použijte „okamžitý“ režim, který vytváří poznámky bezprostředně po zvýraznění textu!",
-            "catalogs": "",
             "home": "Thorium vypadá jinak! Objevte, co je nového...",
-            "readingView1": "Přizpůsobte si nastavení čtení a poslechu: Thorium nyní nabízí více barevných motivů jak pro uživatelské rozhraní, tak pro dokumenty. Nyní je také snazší nastavit „čtení nahlas“ e-knihy se syntetickou řečí a synchronizovaným textem/zvukovým vyprávěním.",
-            "readingView2": "Vylepšené uživatelské rozhraní aplikace Thorium usnadňuje hledání textu v publikacích, zkoumání výsledků vyhledávání, procházení konkrétních stránek, procházení obsahu, vytváření záložek atd. díky novým „ukotveným“ panelům. Režim čtení přes celou obrazovku nadále nabízí prostředí bez rušivých vlivů.",
-            "yourBooks": "Vítejte ve své přepracované osobní knihovničce! V zobrazení „mřížka“ jednoduše filtrujte podle štítků nebo vyhledejte publikace podle klíčových slov. V rozšířeném zobrazení „tabulka“ vyberte a seřaďte publikace podle konkrétních autorů, názvu, data, formátu atd."
+            "resources": ""
         },
         "dontShow": "Znovu nezobrazovat",
+        "resources": {
+            "discord": "",
+            "website": ""
+        },
         "tab": {
-            "annotations": "Anotace",
-            "catalogs": "Katalogy",
             "home": "Domů",
-            "readingView": "Režim čtení",
-            "yourBooks": "Vaše publikace"
+            "resources": ""
         },
         "title": {
-            "allBooks": "Všechny mé publikace",
-            "newFeature": "Nová funkce: Anotace",
+            "resources": "",
             "welcome": "Vítejte v aplikaci Thorium 3"
         }
     }

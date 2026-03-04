@@ -1253,24 +1253,20 @@
             "next": "Kitas"
         },
         "description": {
-            "annotations": "Pažymėkite dokumento tekstą, pasirinkite stilių ir spalvą, pridėkite asmeninių pastabų. Kurkite pastabas „greitajame“ režime, praleisdami rengyklę (įvesti tekstą ir tinkinti stilių galėsite vėliau). Jei vis dar trūksta greičio, naudokitės „momentiniu“ režimu, kuriame pastabos sukuriamos iškart pažymėjus tekstą!",
-            "catalogs": "Pasiskolinkite leidinius iš savo vietinės bibliotekos bei atraskite leidinius OPDS sklaidos kanaluose. Internetinių katalogų dėka gaukite prieigą prie gausybės leidinių iš skirtingų šaltinių.",
             "home": "Thorium atrodo kitaip! Sužinokite, kas naujo...",
-            "readingView1": "Tinkinkite savo skaitymo ir klausymosi nuostatas: nuo šiol Thorium siūlo keletą spalvų temų naudotojo sąsajai bei leidinių dokumentams. Dabar taip pat tapo lengviau konfigūruoti „readaloud“ el. knygas su sintetinio balso ir sinchronizuoto teksto/garso skaitymu.",
-            "readingView2": "Patobulinta Thorium naudotojo sąsaja leidžia lengviau rasti tekstą leidiniuose, peržvelgti paieškos rezultatus, atversti tam tikrą puslapį, naršyti turinyje, kurti skirtukus ir t.t. naujų „pritvirtintų“ skydelių dėka, o viso ekrano skaitymo režimas ir toliau suteikia aplinką be dėmesio išblaškymo.",
-            "yourBooks": "Su jumis sveikinasi iš naujo suprojektuota asmeninė knygų lentyna! „Tinklelio“ peržiūros režime be vargo galėsite filtruoti pagal žymes arba rasti leidinius pagal raktinius žodžius. „Sąrašo“ režime galėsite peržiurėti, pažymėti ir rikiuoti leidinius pagal konkretų autorių, pavadinimą, datą, formatą ir t.t."
+            "resources": ""
         },
         "dontShow": "Daugiau neberodyti",
+        "resources": {
+            "discord": "",
+            "website": ""
+        },
         "tab": {
-            "annotations": "Pastabos",
-            "catalogs": "Katalogai",
             "home": "Pradžia",
-            "readingView": "Skaitymo rodinys",
-            "yourBooks": "Jūsų leidiniai"
+            "resources": ""
         },
         "title": {
-            "allBooks": "Visi mano leidiniai",
-            "newFeature": "Nauja funkcija: Pastabos",
+            "resources": "",
             "welcome": "Su jumis sveikinasi Thorium 3"
         }
     }

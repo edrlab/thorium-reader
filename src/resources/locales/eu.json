@@ -1241,24 +1241,20 @@
             "next": "Hurrengoa"
         },
         "description": {
-            "annotations": "Nabarmendu dokumentuaren testua, aukeratu estiloa eta kolorea, erantsi ohar pertsonalak. Sortu oharrak \"bizkorra\" moduan editorea saihesteko (geroago testua sar dezakezu eta estiloak pertsonaliza ditzakezu). Abiadura gehigarria lortzeko, erabili dokumentuaren testua nabarmendu ondoren oharrak sortzen dituen \"berehalako\" modua!",
-            "catalogs": "Hartu argitalpenak zure tokiko liburutegitik edo aurkitu argitalpenak OPDS iturrien bidez. Sar zaitez hainbat iturritako argitalpenetara lineako katalogoei esker.",
             "home": "Thorium itxura ezberdina du! Ezagutu dezagun zer berri...",
-            "readingView1": "Pertsonalizatu irakurketa- eta entzute-hobespenak: Thorium-ek kolore-gai ugari eskaintzen ditu orain bai erabiltzaile-interfazerako bai argitalpen dokumentuetarako. Orain errazagoa da 'irakurtzeko' liburu elektronikoak hizkera sintetikoa eta testu/audio narrazio sinkronizatuarekin konfiguratzea.",
-            "readingView2": "Thorium-en erabiltzaile-interfaze hobetuari esker, errazagoa da testua aurkitzea argitalpenetan, bilaketa-emaitzak arakatzea, orri zehatzetara jotzea, aurkibidea arakatzea, laster-markak sortzea, etab. «Akokatuta» panel berriei esker. Pantaila osoko irakurketa moduak distrakziorik gabeko ingurunea eskaintzen jarraitzen du.",
-            "yourBooks": "Ongi etorri birmoldatutako apalategi pertsonalera! 'Sareta' ikuspegian, iragazi erraz etiketen arabera edo aurkitu argitalpenak gako-hitzen arabera. 'Taula' ikuspegi aurreratuan, hautatu eta ordenatu argitalpenak autore, izenburu, data, formatu eta abarren arabera."
+            "resources": ""
         },
         "dontShow": "Ez erakutsi berriro",
+        "resources": {
+            "discord": "",
+            "website": ""
+        },
         "tab": {
-            "annotations": "Oharpenak",
-            "catalogs": "Katalogoak",
             "home": "Hasiera",
-            "readingView": "Irakurketa ikuspegia",
-            "yourBooks": "Zure argitalpenak"
+            "resources": ""
         },
         "title": {
-            "allBooks": "Nire argitalpen guztiak",
-            "newFeature": "Ezaugarri berria: oharrak",
+            "resources": "",
             "welcome": "Ongi etorri Thorium 3ra"
         }
     }

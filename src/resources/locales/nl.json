@@ -1241,24 +1241,20 @@
             "next": "Volgende"
         },
         "description": {
-            "annotations": "Markeer document tekst, kies stijl en kleur, voeg persoonlijke notities toe. Maak annotaties in de 'snelle' modus om de editor te omzeilen (je kunt later tekst invoeren en stijlen aanpassen). Gebruik voor extra snelheid de 'directe' modus die annotaties maakt onmiddellijk na het markeren van document tekst!",
-            "catalogs": "Leen publicaties uit je lokale bibliotheek of ontdek publicaties via de OPDS laadpagina. Krijg toegang tot een variatie aan publicaties uit meerdere bronnen dankzij online catalogi.",
             "home": "Thorium ziet er anders uit! Ontdek wat er nieuw is...",
-            "readingView1": "Pas je lees- en luistervoorkeuren aan: Thorium biedt nu meerdere kleurthema's voor zowel de gebruikersinterface en de gepubliceerde documenten. Het is nu ook gemakkelijker om 'hardop voorlezende' e-books te configureren met synthetische spraak en gesynchroniseerde tekst/audio-weergave.",
-            "readingView2": "Thorium's verbeterde gebruikersinterface maakt het gemakkelijker om tekst in publicaties te vinden, zoekresultaten te verkennen, naar specifieke pagina's te gaan, door de inhoudsopgave te bladeren, bladwijzers te maken, enz. dankzij de nieuwe 'gekoppelde' panelen. De leesmodus op volledig scherm blijft een afleidingsvrije omgeving bieden.",
-            "yourBooks": "Welkom bij je herontworpen persoonlijke boekenplank! In de 'raster'-weergave, filter je makkelijk op tags of vind je publicaties met trefwoorden. In de geavanceerde 'tabel'-weergave selecteert en sorteert je publicaties op specifieke auteurs, titel, datum, formaat, enz."
+            "resources": ""
         },
         "dontShow": "Niet meer laten zien, verberg",
+        "resources": {
+            "discord": "",
+            "website": ""
+        },
         "tab": {
-            "annotations": "Annotaties",
-            "catalogs": "Catalogi",
             "home": "Startpagina",
-            "readingView": "Leesweergave",
-            "yourBooks": "Jouw publicaties"
+            "resources": ""
         },
         "title": {
-            "allBooks": "Al mijn publicaties",
-            "newFeature": "Nieuwe functie: Annotaties",
+            "resources": "",
             "welcome": "Welkom bij Thorium 3"
         }
     }

@@ -1253,24 +1253,20 @@
             "next": "Naslednja"
         },
         "description": {
-            "annotations": "Označi besedilo dokumenta, izberi slog in barvo, priloži osebne opombe. Ustvari opombe v 'hitrem' načinu, da se izogneš urejevalniku (besedilo lahko vneseš in prilagodiš sloge pozneje). Za dodatno hitrost uporabi 'takojšnji' način, ki ustvari opombe takoj po označevanju besedila dokumenta.",
-            "catalogs": "Izposodi si publikacije iz lokalne knjižnice ali jih odkrij prek virov OPDS. S spletnimi katalogi lahko dostopaš do različnih publikacij iz različnih virov.",
             "home": "Thorium izgleda drugače! Poglejmo kaj je novega...",
-            "readingView1": "Prilagodi svoje nastavitve branja in poslušanja: Thorium sedaj ponuja več barvnih tem za uporabniško aplikacijo in dokumente za objavo. Zdaj je lažje konfigurirati tudi e-knjige za glasno branje s sintetičnim govorom in sinhronizirano besedilno/zvočno pripovedjo.",
-            "readingView2": "Izboljšani uporabniški vmesnik programa Thorium omogoča lažje iskanje besedila v publikacijah, raziskovanje rezultatov iskanja, prehod na določene strani, brskanje po kazalu vsebine, ustvarjanje zaznamkov itd., saj so na voljo nove „priklopljene“ plošče. Celozaslonski način branja še naprej zagotavlja okolje brez motenj.",
-            "yourBooks": "Dobrodošli v svoji prenovljeni osebni knjižni polici! V mrežnem pogledu    preprosto filtriraj po oznakah ali poišči publikacije po ključnih besedah. V naprednem pogledu „tabele“ izberi in razvrsti publikacije po določenih avtorjih, naslovu, datumu, formatu itd."
+            "resources": ""
         },
         "dontShow": "Ne prikaži več",
+        "resources": {
+            "discord": "",
+            "website": ""
+        },
         "tab": {
-            "annotations": "Opombe",
-            "catalogs": "Katalogi",
             "home": "Domov",
-            "readingView": "Bralni pogled",
-            "yourBooks": "Tvoje publikacije"
+            "resources": ""
         },
         "title": {
-            "allBooks": "Vse publikacije",
-            "newFeature": "Nova funkcija: opombe",
+            "resources": "",
             "welcome": "Dobrodošli v Thorium 3"
         }
     }
