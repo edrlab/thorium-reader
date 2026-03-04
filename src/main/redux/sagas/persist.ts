@@ -7,7 +7,7 @@
 
 import debug_ from "debug";
 import * as fs from "fs";
-import { diMainGet, patchFilePath, stateFilePath } from "readium-desktop/main/di";
+import { diMainGet, patchFilePath, runtimeStateFilePath, state_V340_FilePath, stateFilePath } from "readium-desktop/main/di";
 import { RootState, PersistRootState } from "readium-desktop/main/redux/states";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call, debounce, all } from "redux-saga/effects";
@@ -24,6 +24,7 @@ import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { IDictWinRegistryReaderState } from "../states/win/registry/reader";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { IWinSessionLibraryState } from "../states/win/session/library";
+import { JsonStringifySortedKeys } from "readium-desktop/common/utils/json";
 
 const DEBOUNCE_TIME = 3 * 60 * 1000; // 3 min
 const PUBLICATION_STORAGE_DEBOUNCE_TIME = 10 * 1000; // 10 secs
@@ -32,8 +33,12 @@ const PUBLICATION_STORAGE_DEBOUNCE_TIME = 10 * 1000; // 10 secs
 const filename_ = "readium-desktop:main:saga:persist";
 const debug = debug_(filename_);
 debug("_");
+ 
+const rmrf = async (dir: string) => {
+    return await fs.promises.rm(dir, { recursive: true, retryDelay: 100, maxRetries: 3, force: true });
+};
 
-const persistStateToFs = async (nextState: RootState) => {
+export const persistStateToFs = async (nextState: Partial<PersistRootState>) => {
 
     debug("start of persist reduxState in disk");
 
@@ -96,15 +101,77 @@ const persistStateToFs = async (nextState: RootState) => {
         __v: _APP_VERSION,
     };
 
-    await fs.promises.writeFile(stateFilePath, JSON.stringify(value), {encoding: "utf8"});
+    const oldStateDataStringified = JsonStringifySortedKeys(value);
+
+    // remove the registry.reader key
+    // in case of crash, the N-1 state_v340.json will not contain any publication reader data, hydration will come from publication-data json chunk file.
+    // This is part of the migration from an unique central json state with WAL as diff patch TO multiple chunks of json data on filesystem colocalised to the publication itself
+    delete value.win.registry;
+    const newStateDataV340Stringified = JsonStringifySortedKeys(value);
+    let stateDataWriteCrashNOTWRITTEN = false;
+    try {
+        await fs.promises.writeFile(state_V340_FilePath, newStateDataV340Stringified, {encoding: "utf8"});
+    } catch (e) {
+        stateDataWriteCrashNOTWRITTEN = true;
+        debug("ERROR to write state_v340.json to disk !!!", `${e}`);
+    }
+
+    // let's write state.json after state_v340.json in case of disk full error
+    try {
+        await fs.promises.writeFile(stateFilePath, oldStateDataStringified, {encoding: "utf8"});
+    } catch (e) {
+        stateDataWriteCrashNOTWRITTEN = true;
+        debug("ERROR to write state.json to disk !!!", e);
+    }
+
+    if (stateDataWriteCrashNOTWRITTEN) {
+        debug("data not saved due to CRASH so do not remove state.runtime.json and state.patch.json, just exit and try to recover on the next start");
+    } else {
+        const oldStateDataRead = await fs.promises.readFile(stateFilePath, { encoding: "utf-8" });
+        const oldDataWriteIsOldDataRead = oldStateDataRead === oldStateDataStringified;
+        const newStateDataRead = await fs.promises.readFile(state_V340_FilePath, { encoding: "utf-8" });
+        const newDataWriteIsNewDataRead = newStateDataRead === newStateDataV340Stringified;
+        if (oldDataWriteIsOldDataRead && newDataWriteIsNewDataRead) {
+            debug("state.json and state_v340.json successfuly written to disk");
+
+            // temporary hack for the 3.4.0 backward compatibility before removing diff patch
+
+            // remove state.json (replace by state_v340.json)
+            // remove every state.runtime.json
+            // remove state.patch.json
+            try {
+                debug("remove state.patch.json");
+                await rmrf(patchFilePath);
+            } catch (e) {
+                debug("cannot remove state.patch.json", e);
+            }
+            try {
+                debug("remove state.runtime.json");
+                await rmrf(runtimeStateFilePath);
+            } catch (e) {
+                debug("cannot remove state.runtime.json", e);
+            }
+
+        } else {
+            debug("oldDataWriteIsOldDataRead", oldDataWriteIsOldDataRead);
+            debug("newDataWriteIsNewDataRead", newDataWriteIsNewDataRead);
+            debug("ERROR to write state.json and/or state_v340.json to disk, \"data write is date read\" not true, so this is probably a file corruption !!!");
+            debug("state.patch.json and state.runtime.json are not removed, so let's recover the state in the next start");
+        }
+    }
+
     debug("end of persist reduxState in disk");
 };
 
 export function* needToPersistFinalState() {
 
     const nextState = yield* selectTyped((store: RootState) => store);
-    yield call(() => persistStateToFs(nextState));
     yield call(() => needToPersistPatch());
+
+    // final step because the patch and runtime state is remove if the final state.json is successfuly written to disk
+    // Just a temporary hack for the 3.4.0 release, before removing diff patch
+    yield call(() => persistStateToFs(nextState));
+
 }
 
 export function* needToPersistPatch() {

@@ -9,7 +9,7 @@ import debug_ from "debug";
 import * as fs from "fs";
 import { deepStrictEqual, ok } from "readium-desktop/common/utils/assert";
 import {
-    backupStateFilePathFn, diMainGet, memoryLoggerFilename, patchFilePath, runtimeStateFilePath, stateFilePath,
+    diMainGet, memoryLoggerFilename, patchFilePath, runtimeStateFilePath, state_V340_FilePath, stateFilePath,
 } from "readium-desktop/main/di";
 import { reduxSyncMiddleware } from "readium-desktop/main/redux/middleware/sync";
 import { rootReducer } from "readium-desktop/main/redux/reducers";
@@ -36,6 +36,7 @@ import { IRTLFlipState } from "readium-desktop/common/redux/states/renderer/rtlF
 import { IAllowCustomConfigState } from "src/common/redux/states/renderer/allowCustom";
 import { IDivinaState } from "src/common/redux/states/renderer/divina";
 import { IBookmarkTotalCountState } from "src/common/redux/states/renderer/bookmarkTotalCount";
+import { persistStateToFs } from "../sagas/persist";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -107,14 +108,38 @@ const test = (stateRaw: any): stateRaw is PersistRootState => {
 export async function initStore()
     : Promise<[Store<RootState>, SagaMiddleware<object>]> {
 
-    let reduxState: PersistRootState | undefined;
+    let reduxState: PersistRootState | undefined = undefined;
 
     debug("");
     debug("MEMORY INIT STORE");
 
     try {
 
-        const jsonStr = await fs.promises.readFile(stateFilePath, { encoding: "utf8" });
+        let jsonStr = "";
+        let getNewStateFromV340 = false;
+        try {
+            jsonStr = await fs.promises.readFile(stateFilePath, { encoding: "utf8" });
+            const json = JSON.parse(jsonStr);
+            if (json.__t && json.__v) {
+                debug("The old one: \"state.json\" was written with the v3.4.0 last release and not from an old one (like v3.3.0), so let's recover the json redux state from \"state_v340.json\"");
+                getNewStateFromV340 = true;
+            } else {
+                // the old state.json has been updated from an older thorium version (3.3.0?) so let's migrate from it.
+                getNewStateFromV340 = false;
+            }
+        } catch (e) {
+            debug("read/parse old state crash so let's read new state v340", `${e}`);
+            getNewStateFromV340 = true;
+        }
+
+        if (getNewStateFromV340) {
+            try {
+                jsonStr = await fs.promises.readFile(state_V340_FilePath, { encoding: "utf8" });
+            } catch (e) {
+                debug("NEW state_v340.json not created so fallback on state.json", `${e}`);
+            }
+        }
+
         const json = JSON.parse(jsonStr);
         if (test(json))
             reduxState = json;
@@ -164,6 +189,8 @@ export async function initStore()
                 test(stateRaw);
                 reduxState = stateRaw;
 
+                // From the 3.4.0 and backward to 3.3.0: this leads to potentially a lost of data
+
                 debug("RECOVERY : the state is provided from the state - 1 + patch");
                 debug("There should be no data loss");
                 debug("REVOVERY WORKS lvl 3/4");
@@ -191,13 +218,19 @@ export async function initStore()
             }
         } finally {
 
-            const p = backupStateFilePathFn();
-            await tryCatch(() =>
-                fs.promises.writeFile(p, JSON.stringify(reduxState), { encoding: "utf8" }),
-                "");
+            // let's comment the backup state option, not used and valid anymore, to progressively ditch the diff patch recovery option
+            // If not commented every start of 3.4.0 lead to the copy of the current state, due to an un equality between the final state.json and state.runtime.json+patch
+            // On the other hand, we can use this backup to find lost publication db state, from previous corrupted state.
+            // This allows to match publication-storage and publication db from a losted state.
+            // We need for the next release to do an automatic integrity check and cleaning
 
-            debug("RECOVERY : a state backup file is copied in " + p);
-            debug("keep it safe, you may restore a corrupted state with it");
+            // const p = backupStateFilePathFn();
+            // await tryCatch(() =>
+            //     fs.promises.writeFile(p, JSON.stringify(reduxState), { encoding: "utf8" }),
+            //     "");
+
+            // debug("RECOVERY : a state backup file is copied in " + p);
+            // debug("keep it safe, you may restore a corrupted state with it");
         }
 
     } finally {
@@ -258,6 +291,8 @@ export async function initStore()
     sqliteInitTableNote();
 
     if (preloadedState.win?.registry?.reader) {
+
+        debug("START reader registry migration");
 
         let pubIds: string[];
         if (preloadedState?.publication?.db) {
@@ -612,8 +647,19 @@ export async function initStore()
                 debug("MIGRATION TO Publication-data file storage ->", pubId, "IMPOSSIBLE BECAUSE PUBID NOT FOUND IN publication.db !!!");
             }
         }
+
+        try {
+            await persistStateToFs(preloadedState);
+            debug("state.json and state_v340.json written with the new migration final state");
+        } catch (e) {
+            debug(e);
+            debug("ERROR to write state.json and state_v340.json on disk after migration !!!");
+        }
+
+        debug("END reader registry migration, let's create the redux store");
     } else {
 
+        debug("START reader registry hydration from publication-data (win.registry.reader is empty from the json state \"state_v340.json\" or from an empty new \"state.json\")");
         if (!preloadedState.win) {
             preloadedState.win = {} as any;
         }
@@ -623,8 +669,6 @@ export async function initStore()
         if (!preloadedState.win.registry.reader) {
             preloadedState.win.registry.reader = {};
         }
-
-        debug("redux state hydration from publication-data (state.js) migrated and win.registry.reader not saved");
 
         // list publication db
         // read publication-data files and hydrate redux state
@@ -679,6 +723,8 @@ export async function initStore()
                 debug(e);
             }
         }
+
+        debug("END reader registry hydration from publication-data, let's create the redux store");
     }
 
     // defaultConfig state initialization from older database thorium version 2.x, 3.0

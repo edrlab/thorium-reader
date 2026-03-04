@@ -86,6 +86,12 @@ export const stateFilePath = path.join(
     STATE_FILENAME,
 );
 
+const STATE_V340_FILENAME = "state_v340.json";
+export const state_V340_FilePath = path.join(
+    configDataFolderPath,
+    STATE_V340_FILENAME,
+);
+
 const PATCH_FILENAME = "state.patch.json";
 export const patchFilePath = path.join(
     configDataFolderPath,
@@ -98,10 +104,11 @@ export const runtimeStateFilePath = path.join(
     RUN_FILENAME,
 );
 
-export const backupStateFilePathFn = () => path.join(
-    configDataFolderPath,
-    `state.${+new Date()}.json`,
-);
+// TODO: remove it for the next iteration
+// export const backupStateFilePathFn = () => path.join(
+//     configDataFolderPath,
+//     `state.${+new Date()}.json`,
+// );
 
 const COOKIE_JAR_FILENAME = "cookie_jar.json";
 export const cookiejarFilePath = path.join(
