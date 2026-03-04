@@ -138,6 +138,8 @@ export async function initStore()
             } catch (e) {
                 debug("NEW state_v340.json not created so fallback on state.json", `${e}`);
             }
+        } else {
+            debug("state is loaded from \"state.json\" and not \"state_v340.json\"");
         }
 
         const json = JSON.parse(jsonStr);
