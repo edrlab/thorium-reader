@@ -391,7 +391,7 @@
                 "descriptive": "Taso A"
             },
             "conformance-details-level-aa": {
-                "compact": "Taso AAA",
+                "compact": "Taso AA",
                 "descriptive": "Taso AA"
             },
             "conformance-details-level-aaa": {
@@ -1242,19 +1242,19 @@
         },
         "description": {
             "home": "Thorium näyttää erilaiselta! Katso mikä on muuttunut...",
-            "resources": ""
+            "resources": "Ota yhteyttä ja opi lisää Thoriumista:"
         },
         "dontShow": "Älä näytä uudestaan",
         "resources": {
-            "discord": "",
-            "website": ""
+            "discord": "Discord: https://discord.gg/2GnubQbE",
+            "website": "Verkkosivu: https://www.thoriumreader.com"
         },
         "tab": {
             "home": "Koti",
-            "resources": ""
+            "resources": "Resurssit"
         },
         "title": {
-            "resources": "",
+            "resources": "Resurssit ja yhteisö",
             "welcome": "Tervetuloa Thorium 3 -sovellukseen"
         }
     }
