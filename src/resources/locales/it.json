@@ -36,7 +36,7 @@
                         "yes": "Sì"
                     },
                     "help": "Attivare questa opzione se si desidera che le finestre di lettura che sono aperte quando si chiude l'applicazione si riaprano automaticamente al successivo avvio.",
-                    "message": "Risparmio e ripristino della sessione di lettura",
+                    "message": "Salva e ripristina la sessione di lettura",
                     "title": "Salvare la sessione?"
                 }
             }
@@ -81,8 +81,8 @@
             "continueReading": "Continua a leggere",
             "lastAdditions": "Aggiunti di recente"
         },
-        "export": "Esporta",
-        "exportAnnotation": "Esportare le note...",
+        "export": "Salva come",
+        "exportAnnotation": "Esportare le note",
         "format": "Formato",
         "importAnnotation": "Importa note",
         "lang": "Lingua",
@@ -90,7 +90,7 @@
         "login": "Login",
         "logout": "Logout",
         "missing": "",
-        "moreInfo": "Più info",
+        "moreInfo": "Maggiori informazioni",
         "myBooks": "I miei libri",
         "noPublicationHelpL1": "Rilascia una pubblicazione qui",
         "noPublicationHelpL2": "o utilizza il bottone \"{{- importTitle }}\" sopra.",
@@ -206,9 +206,9 @@
     },
     "library": {
         "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "selectOption": ""
+            "addFilters": "Aggiungi filtri",
+            "filterBy": "Filtra per",
+            "selectOption": "Seleziona un elemento"
         },
         "lcp": {
             "hidePassphrase": "Nascondi la password",
@@ -223,12 +223,12 @@
             "whatIsLcpInfoDetailsLink": "Per saperne di più, fare clic su questo link al sito web di EDRLab."
         },
         "sorting": {
-            "addSorting": "",
-            "author": "",
-            "language": "",
-            "readingState": "",
-            "sortBy": "",
-            "title": ""
+            "addSorting": "Aggiungi un filtro",
+            "author": "Autore",
+            "language": "Lingua",
+            "readingState": "Stato di lettura",
+            "sortBy": "Filtra per: ",
+            "title": "Titolo"
         }
     },
     "message": {
@@ -601,7 +601,7 @@
                 "printPageNumbers": "Riferimento alla paginazione della versione stampata del libro",
                 "readingOrder": "Contiene un ordine di lettura",
                 "synchronizedAudioText": "Testo & audio sincronizzato",
-                "tableOfContents": "Contiene una tabella di navigazione"
+                "tableOfContents": "Contiene un indice dei contenuti"
             },
             "accessibilityHazard": {
                 "flashing": "Flashing",
@@ -682,7 +682,7 @@
             "filter": {
                 "all": "Tutte",
                 "filterByColor": "Filtra per colore",
-                "filterByCreator": "Filtra per creatore",
+                "filterByCreator": "Filtra per autore",
                 "filterByDrawtype": "Filtra per tipo di disegno",
                 "filterByTag": "Filtra per tag",
                 "filterOptions": "Opzioni di filtraggio",
@@ -740,7 +740,7 @@
             "saveMark": "Salva",
             "search": "Ricerca",
             "searchResult": "Cerca [{{- searchText}}]",
-            "toc": "Tabella dei contenuti"
+            "toc": "Indice dei contenuti"
         },
         "media-overlays": {
             "activate": "Attiva la lettura ad alta voce",
@@ -907,7 +907,7 @@
             "right": "Destra"
         },
         "toc": {
-            "publicationNoToc": "Questa pubblicazione non ha una tabella di navigazione"
+            "publicationNoToc": "Questa pubblicazione non ha un indice dei contenuti"
         },
         "tts": {
             "activate": "Attiva Testo a Voce",
@@ -943,7 +943,7 @@
             "cancel": "Annulla",
             "disclaimer": "Le impostazioni predefinite dell'applicazione sono state progettate in base alla posizione fisica dei tasti in una tastiera QWERTY",
             "editUserJson": "Modifica il file utente...",
-            "exportToHTML": "",
+            "exportToHTML": "Esporta in HTML",
             "keyboardShortcuts": "Scorciatoie da tastiera",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1193,21 +1193,21 @@
                 "description": "",
                 "title": ""
             },
-            "version": ""
+            "version": "Versione: {{- version}}"
         },
         "screenReaderActivate": {
             "help": "",
-            "message": "",
-            "title": ""
+            "message": "Supporto migliorato per screen reader",
+            "title": "Migliora l’esperienza con lo screen reader"
         },
         "session": {
-            "title": "Salva sessione"
+            "title": "Attiva il salvataggio della sessione di lettura"
         },
         "tabs": {
             "appearance": "Aspetto",
             "general": "Generale",
             "keyboardShortcuts": "Scorciatoie da tastiera",
-            "profiles": ""
+            "profiles": "Profili"
         },
         "theme": {
             "auto": "Automatico",
@@ -1252,15 +1252,15 @@
         },
         "dontShow": "Non mostrare più",
         "resources": {
-            "discord": "",
-            "website": ""
+            "discord": "Discord: https://discord.gg/2GnubQbE",
+            "website": "Sito Web: https://www.thoriumreader.com"
         },
         "tab": {
             "home": "Home",
-            "resources": ""
+            "resources": "Risorse"
         },
         "title": {
-            "resources": "",
+            "resources": "Risorse e Community",
             "welcome": "Benvenuti in Thorium 3"
         }
     }
