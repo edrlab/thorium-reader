@@ -113,6 +113,10 @@ export async function initStore()
     debug("");
     debug("MEMORY INIT STORE");
 
+
+    // See PR for the forward and backward migration v3.3 <-> v3.4
+    // https://github.com/edrlab/thorium-reader/pull/3423
+
     try {
 
         let jsonStr = "";
@@ -125,6 +129,7 @@ export async function initStore()
                 getNewStateFromV340 = true;
             } else {
                 // the old state.json has been updated from an older thorium version (3.3.0?) so let's migrate from it.
+                debug("If there is a crash from v330 and a forward migration to v340, publications data will not be imported, state.json will not be updated with new publications state");
                 getNewStateFromV340 = false;
             }
         } catch (e) {
