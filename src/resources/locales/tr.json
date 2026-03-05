@@ -201,29 +201,29 @@
     },
     "library": {
         "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "selectOption": ""
+            "addFilters": "Filtreler ekle",
+            "filterBy": "Filtrele:",
+            "selectOption": "Bir öğe seç"
         },
         "lcp": {
-            "hidePassphrase": "",
+            "hidePassphrase": "Parolayı gizle",
             "hint": "İpucu:",
             "open": "Aç",
             "password": "Parola",
             "sentence": "Bu eserin açılabilmesi için bir LCP parolası gerekir",
-            "showPassphrase": "",
+            "showPassphrase": "Parolayı göster",
             "urlHint": "Parolanızı mı unuttunuz? Destek almak için buraya tıklayın.",
             "whatIsLcp?": "LCP nedir?",
             "whatIsLcpInfoDetails": "LCP, 'Licensed Content Protection', Lisanslı İçerik Koruması anlamına gelir.",
             "whatIsLcpInfoDetailsLink": "EDRLab web sitesinde daha fazlasını öğrenmek için bu bağlantıyı tıklayın."
         },
         "sorting": {
-            "addSorting": "",
-            "author": "",
-            "language": "",
-            "readingState": "",
-            "sortBy": "",
-            "title": ""
+            "addSorting": "Sıralama ekle",
+            "author": "Yazar",
+            "language": "Dil",
+            "readingState": "Okuma Durumu",
+            "sortBy": "Sırala: ",
+            "title": "Başlık"
         }
     },
     "message": {
@@ -711,9 +711,9 @@
             "unmute": "sesi aç"
         },
         "dock": {
-            "dockDefault": "",
-            "dockLeft": "",
-            "dockRight": ""
+            "dockDefault": "Paneli kalıcı açılır pencere olarak göster",
+            "dockLeft": "Paneli sola sabitle",
+            "dockRight": "Paneli sağa sabitle"
         },
         "fxl": {
             "fit": "Sığdır"
@@ -1242,20 +1242,20 @@
         },
         "description": {
             "home": "Toryum artık farklı görünüyor! Haydi yenilikleri keşfedelim...",
-            "resources": ""
+            "resources": "Bizimle iletişime geçin ve Thorium hakkında daha fazla bilgi edinin:"
         },
         "dontShow": "Bir daha gösterme",
         "resources": {
-            "discord": "",
-            "website": ""
+            "discord": "Discord: https://discord.gg/2GnubQbE",
+            "website": "Web sitesi: https://www.thoriumreader.com"
         },
         "tab": {
             "home": "Anasayfa",
-            "resources": ""
+            "resources": "Kaynaklar"
         },
         "title": {
-            "resources": "",
-            "welcome": "Thorium 3 Uygulamasına Hoşgeldiniz"
+            "resources": "Kaynaklar & Topluluk",
+            "welcome": "Thorium 3.4 Uygulamasına Hoşgeldiniz"
         }
     }
 }
