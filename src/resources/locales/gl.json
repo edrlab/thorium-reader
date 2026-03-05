@@ -1241,24 +1241,20 @@
             "next": "Seguinte"
         },
         "description": {
-            "annotations": "Resalta texto do documento, elixe estilo e cor, adxunta notas persoais. Crea anotacións en modo \"rápido\" para omitir o editor (podes introducir texto e personalizar estilos posteriormente). Para maior velocidade, utiliza o \"modo 'instantáneo\", que crea anotacións inmediatamente despois de resaltar texto do documento.",
-            "catalogs": "Pide prestadas publicacións da túa biblioteca local ou descobre publicacións mediante canles OPDS. Accede a unha variedade de publicacións de múltiples fontes grazas aos catálogos en liña.",
             "home": "Thorium vese diferente! Descubramos as novidades...",
-            "readingView1": "Personaliza as túas preferencias de lectura e reprodución: Thorium agora ofrece múltiples deseños de cor, tanto para a interface de usuario como para os documentos de publicacións. Agora tamén é máis fácil configurar libros electrónicos para lectura en voz alta con síntese de voz e narración mediante texto/audio sincronizados.",
-            "readingView2": "A interface de usuario mellorada de Thorium fai que sexa máis fácil atopar texto en publicacións, explorar resultados de procura, ir a páxinas específicas, explorar a táboa de contido, crear marcadores etc., grazas aos novos paneis \"axustados\". O modo de lectura en pantalla completa segue ofrecendo unha contorna libre de distraccións.",
-            "yourBooks": "Bienvenido á túa biblioteca persoal redeseñada! Na vista de \"cuadrícula\", filtra facilmente por etiquetas ou busca publicacións por palabras chave. Na vista avanzada de 'táboa', selecciona e ordena publicacións por autores, título, data, formato etc."
+            "resources": ""
         },
         "dontShow": "Non volver mostrar",
+        "resources": {
+            "discord": "",
+            "website": ""
+        },
         "tab": {
-            "annotations": "Anotacións",
-            "catalogs": "Catálogos",
             "home": "Inicio",
-            "readingView": "Vista de lectura",
-            "yourBooks": "As túas publicacións"
+            "resources": ""
         },
         "title": {
-            "allBooks": "Todas as miñas publicacións",
-            "newFeature": "Nova función: Anotacións",
+            "resources": "",
             "welcome": "Bienvenido a Thorium 3"
         }
     }

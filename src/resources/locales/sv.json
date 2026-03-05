@@ -1241,24 +1241,20 @@
             "next": "Nästa"
         },
         "description": {
-            "annotations": "Markera text i dokumentet, välj stil och färg, bifoga egna anteckningar. Skapa anteckningar i snabbläge för att kringgå redigeraren (du kan ange text och markeringsstil senare). Du kan också använda omedelbart-läget som skapar en anteckning direkt efter att du markerat texten i dokumentet.",
-            "catalogs": "Låna böcker från ditt lokala bibliotek eller upptäck böcker via OPDS-flöden. Få tillgång till en mängd olika böcker från flera källor tack vare onlinekataloger.",
             "home": "Thorium ser annorlunda ut! Upptäck vad som är nytt ...",
-            "readingView1": "Du kan välja färgtema för både programmet och böckerna du läser. Du kan också ställa in hur e-böcker ska läsas upp – med syntetiskt tal eller med text och ljud som är synkroniserade.",
-            "readingView2": "Thoriums förbättrade användargränssnitt gör det lättare att hitta text i böcker, utforska sökresultat, gå till specifika sidor, bläddra i innehållsförteckningen och skapa bokmärken tack vare de nya dockade panelerna. Om du vill läsa utan störningar kan du välja helskärmsläge.",
-            "yourBooks": "Välkommen till din omdesignade personliga bokhylla! I gallerivyn kan du enkelt filtrera efter taggar eller hitta böcker med nyckelord. I den avancerade tabellvyn kan du välja och sortera böcker efter författare, titel, datum, format med mera."
+            "resources": ""
         },
         "dontShow": "Visa inte igen",
+        "resources": {
+            "discord": "",
+            "website": ""
+        },
         "tab": {
-            "annotations": "Anteckningar",
-            "catalogs": "Kataloger",
             "home": "Hem",
-            "readingView": "Läsvy",
-            "yourBooks": "Dina böcker"
+            "resources": ""
         },
         "title": {
-            "allBooks": "Alla mina böcker",
-            "newFeature": "Ny funktion: Anteckningar",
+            "resources": "",
             "welcome": "Välkommen till Thorium 3"
         }
     }

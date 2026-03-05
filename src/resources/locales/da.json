@@ -1241,24 +1241,20 @@
             "next": "Næste"
         },
         "description": {
-            "annotations": "Overstreg tekst i bøger, vælg udseende og farve, tilføj personlige noter. Lav noter med 'hurtig-oprettelse' (du kan skrive tekst og ændre udseende bagefter). For endnu hurtigere noter, brug \"Øjeblikkelige noter\", der med det samme opretter noter, i det du markerer tekst!",
-            "catalogs": "Lån bøger fra dit lokale bibliotek eller opdag nye bøger via OPDS feeds. Tilgå bunker af bøger fra et hav af kilder, takket være online-kataloger.",
             "home": "Thorium ser anderledes ud! Lad os se nærmere på hvad der er ændret...",
-            "readingView1": "Indstil dine læse- og lytte præferencer: Thorium tilbyder nu flere farvetemaer for både brugerfladen og selve visningen af bøger. Det er nu også nemmere at opsætte 'oplæsning' af e-bøger med syntetisk tale og synkroniseret tekst og lyd.",
-            "readingView2": "Thoriums forbedrede brugerflade gør det nemmere at finde bøger, udforske søgeresultater, gå til specifikke sider, vælge i indholdsfortegnelsen, oprette bogmærker, osv. takket være de nye flyvende paneler. Fuldskærms-læsetilstand tilbyder fortsat en læseoplevelse fri for forstyrrelser.",
-            "yourBooks": "Velkommen til din nydesignede personlige boghylde! I 'gitter'-visningen kan du nemt filtrere efter tags eller finde bøger efter nøgleord. I den avancerede 'tabel'-visning, kan du vælge og sortere bøger efter specifikke forfattere, titel, dato, format osv."
+            "resources": ""
         },
         "dontShow": "Vis ikke igen",
+        "resources": {
+            "discord": "",
+            "website": ""
+        },
         "tab": {
-            "annotations": "Noter",
-            "catalogs": "Kataloger",
             "home": "Hjem",
-            "readingView": "Læsetilstand",
-            "yourBooks": "Dine bøger"
+            "resources": ""
         },
         "title": {
-            "allBooks": "Alle bøger",
-            "newFeature": "Ny feature: Noter",
+            "resources": "",
             "welcome": "Velkommen til Thorium 3"
         }
     }

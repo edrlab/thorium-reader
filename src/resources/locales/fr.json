@@ -1242,30 +1242,26 @@
     },
     "wizard": {
         "buttons": {
-            "discover": "Découvrir les nouveautés",
+            "discover": "Découvrir Thorium Desktop",
             "goToBooks": "Accéder à mes livres",
             "next": "Suivant"
         },
         "description": {
-            "annotations": "Surlignez le texte du document, choisissez le style et la couleur, joignez des notes personnelles. Créez des annotations en mode \"rapide\" pour éviter d'activer l'éditeur (vous pouvez saisir le texte et personnaliser les styles ultérieurement). Pour plus de rapidité, utilisez le mode \"instantané\" qui crée des annotations immédiatement après avoir surligné le texte du document !",
-            "catalogs": "Empruntez des publications auprès de votre bibliothèque locale ou découvrez des publications via les catalogues OPDS. Accédez à une variété de publications provenant de sources multiples grâce aux catalogues en ligne.",
-            "home": "Thorium fait peau neuve, découvrons ensemble les nouveautés !",
-            "readingView1": "Personnalisez vos préférences de lecture et d'écoute : Thorium propose désormais plusieurs thèmes de couleur. Les réglages de lecture audio ont également été simplifiés.",
-            "readingView2": "L'interface utilisateur améliorée de Thorium facilite la recherche de texte, l'exploration des résultats de recherche, l'accès à des pages spécifiques, la consultation de la table des matières, etc. Les nouveaux panneaux \"ancrés\" et le mode de lecture plein écran offrent un environnement de lecture sans distraction.",
-            "yourBooks": "Bienvenue dans votre bibliothèque personnelle remaniée ! Dans la vue \"grille\", filtrez facilement par étiquettes ou trouvez des publications par mots-clés. Dans la vue \"tableau\" avancée, sélectionnez et triez les publications par auteur, titre, date, format, etc."
+            "home": "Thorium 3.4 apporte une série d'améliorations à l'expérience utilisateur et corrige un ensemble de problèmes. Si vous décidez ultérieurement de revenir à une version antérieure de l'application, il est fortement recommandé de sauvegarder vos annotations et signets dans vos livres électroniques en les exportant vers un fichier externe. Vous pourrez ensuite les réimporter dans la version antérieure après l'avoir installée. En effet, l'application stocke les annotations et les signets dans un format interne légèrement différent dans la version 3.4. Cela résout un problème de performances, mais rompt la compatibilité ascendante pour les annotations.",
+            "resources": "Rejoignez-nous et découvrez-en davantage sur Thorium :"
         },
         "dontShow": "Ne plus afficher",
+        "resources": {
+            "discord": "Discord: https://discord.gg/2GnubQbE",
+            "website": "Website: https://www.thoriumreader.com"
+        },
         "tab": {
-            "annotations": "Annotations",
-            "catalogs": "Catalogues",
             "home": "Accueil",
-            "readingView": "Vue lecture",
-            "yourBooks": "Vos livres"
+            "resources": "Ressources"
         },
         "title": {
-            "allBooks": "Mes livres",
-            "newFeature": "Nouveauté : les annotations",
-            "welcome": "Bienvenue dans Thorium 3"
+            "resources": "Ressources et Communauté",
+            "welcome": "Bienvenue dans Thorium 3.4"
         }
     }
 }

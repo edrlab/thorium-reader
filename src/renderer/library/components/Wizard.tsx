@@ -18,21 +18,21 @@ import classNames from "classnames";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/home-icon.svg";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
-import HomeImage from "readium-desktop/renderer/assets/images/thorium_guided_1.png";
-import BooksImage from "readium-desktop/renderer/assets/images/thorium_guided_2.png";
-import CatalogsImage from "readium-desktop/renderer/assets/images/thorium_guided_3.png";
-import ReadingImage from "readium-desktop/renderer/assets/images/thorium_guided_4.png";
-import AnnotationsImage from "readium-desktop/renderer/assets/images/thorium_guided_5.png";
+// import BooksImage from "readium-desktop/renderer/assets/images/thorium_guided_2.png";
+// import CatalogsImage from "readium-desktop/renderer/assets/images/thorium_guided_3.png";
+// import ReadingImage from "readium-desktop/renderer/assets/images/thorium_guided_4.png";
+// import AnnotationsImage from "readium-desktop/renderer/assets/images/thorium_guided_5.png";
 import * as ShelfIcon from "readium-desktop/renderer/assets/icons/shelf-icon.svg";
-import * as CatalogsIcon from "readium-desktop/renderer/assets/icons/catalogs-icon.svg";
-import * as OpenBookIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
-import * as AnnotationsIcon from "readium-desktop/renderer/assets/icons/annotation-icon.svg";
+// import * as CatalogsIcon from "readium-desktop/renderer/assets/icons/catalogs-icon.svg";
+// import * as OpenBookIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
+// import * as AnnotationsIcon from "readium-desktop/renderer/assets/icons/annotation-icon.svg";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import { wizardActions } from "readium-desktop/common/redux/actions";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
+import * as LinkIcon from "readium-desktop/renderer/assets/icons/link-icon.svg";
 
 
 const TabTitle = (props: React.PropsWithChildren<{ title: string }>) => {
@@ -89,20 +89,8 @@ export const WizardModal = () => {
                             <h4>{__("wizard.tab.home")}</h4>
                         </Tabs.Trigger>
                         <Tabs.Trigger value="tab2">
-                            <SVG ariaHidden svg={ShelfIcon} />
-                            <h4>{__("wizard.tab.yourBooks")}</h4>
-                        </Tabs.Trigger>
-                        <Tabs.Trigger value="tab3">
-                            <SVG ariaHidden svg={CatalogsIcon} />
-                            <h4>{__("wizard.tab.catalogs")}</h4>
-                        </Tabs.Trigger>
-                        <Tabs.Trigger value="tab4">
-                            <SVG ariaHidden svg={OpenBookIcon} />
-                            <h4>{__("wizard.tab.readingView")}</h4>
-                        </Tabs.Trigger>
-                        <Tabs.Trigger value="tab5">
-                            <SVG ariaHidden svg={AnnotationsIcon} />
-                            <h4>{__("wizard.tab.annotations")}</h4>
+                            <SVG ariaHidden svg={LinkIcon} />
+                            <h4>{__("wizard.tab.resources")}</h4>
                         </Tabs.Trigger>
                         <div style={{display: "flex", alignItems: "center", gap: "10px", position: "absolute", bottom: "30px", left: "30px"}}>
                             <input type="checkbox" checked={checked} onChange={() => { setChecked(!checked); }} id="wizardCheckbox" name="wizardCheckbox" className={stylesGlobal.checkbox_custom_input} />
@@ -144,11 +132,12 @@ export const WizardModal = () => {
                         </div>
                     </Tabs.List>
                     <div className={classNames(stylesSettings.settings_content, stylesModals.guidedTour_content)} style={{ marginTop: "70px" }}>
-                        <Tabs.Content value="tab1" tabIndex={-1} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                            <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
-                                <h3>{__("wizard.title.welcome")}</h3>
-                                <p>{__("wizard.description.home")}</p>
-                                <img src={HomeImage} aria-hidden="true" />
+                        <Tabs.Content value="tab1" tabIndex={-1} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" style={{height: "100%"}}>
+                            <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)} style={{height: "inherit", display: "flex", flexDirection: "column", justifyContent: "space-between"}}>
+                                <div>
+                                    <h3 style={{marginBottom: "40px"}}>{__("wizard.title.welcome")}</h3>
+                                    <p>{__("wizard.description.home")}</p>
+                                </div>
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Dialog.Close className={stylesButtons.button_nav_primary}>
                                         <SVG ariaHidden svg={ShelfIcon} />
@@ -164,62 +153,22 @@ export const WizardModal = () => {
                                 </div>
                             </div>
                         </Tabs.Content>
-                        <Tabs.Content value="tab2" tabIndex={-1} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                            <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
-                                <h3>{__("wizard.title.allBooks")}</h3>
-                                <p>
-                                    {__("wizard.description.yourBooks")}
-                                </p>
-                                <img src={BooksImage} aria-hidden="true" />
-                                <div className={stylesModals.guidedTour_buttons}>
-                                    <Tabs.List>
-                                        <Tabs.Trigger value="tab3" className={stylesButtons.button_primary_blue} onFocus={(e) => e.preventDefault()}>
-                                            <SVG ariaHidden svg={ArrowRightIcon} />
-                                            {__("wizard.buttons.next")}
-                                        </Tabs.Trigger>
-                                    </Tabs.List>
+                        <Tabs.Content value="tab2" tabIndex={-1} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" style={{height: "100%"}}>
+                            <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)} style={{height: "inherit", display: "flex", flexDirection: "column", justifyContent: "space-between"}}>
+                                <div>
+                                    <h3 style={{marginBottom: "40px"}}>{__("wizard.title.resources")}</h3>
+                                    <div>
+                                        <p style={{ marginBottom: "20px" }}>{__("wizard.description.resources")}</p>
+                                        <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+                                            <a href="https://www.thoriumreader.com" target="_blank" rel="noopener noreferrer" style={{ color: "var(--color-brand-primary)", textDecoration: "none", fontSize: "16px", fontWeight: "500" }}>
+                                                🌐 {__("wizard.resources.website")}
+                                            </a>
+                                            <a href="https://discord.gg/2GnubQbE" target="_blank" rel="noopener noreferrer" style={{ color: "var(--color-brand-primary)", textDecoration: "none", fontSize: "16px", fontWeight: "500" }}>
+                                                💬 {__("wizard.resources.discord")}
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </Tabs.Content>
-                        <Tabs.Content value="tab3" tabIndex={-1} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                            <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
-                                <h3>{__("wizard.tab.catalogs")}</h3>
-                                <p>
-                                    {__("wizard.description.catalogs")}
-                                </p>
-                                <img src={CatalogsImage} aria-hidden="true" />
-                                <div className={stylesModals.guidedTour_buttons}>
-                                    <Tabs.List>
-                                        <Tabs.Trigger value="tab4" className={stylesButtons.button_primary_blue} onFocus={(e) => e.preventDefault()}>
-                                            <SVG ariaHidden svg={ArrowRightIcon} />
-                                            {__("wizard.buttons.next")}
-                                        </Tabs.Trigger>
-                                    </Tabs.List>
-                                </div>
-                            </div>
-                        </Tabs.Content>
-                        <Tabs.Content value="tab4" tabIndex={-1} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                            <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
-                                <h3>{__("wizard.tab.readingView")}</h3>
-                                <p>{__("wizard.description.readingView1")}</p>
-                                <p>{__("wizard.description.readingView2")}</p>
-                                <img src={ReadingImage} aria-hidden="true" />
-                                <div className={stylesModals.guidedTour_buttons}>
-                                    <Tabs.List>
-                                        <Tabs.Trigger value="tab5" className={stylesButtons.button_primary_blue} onFocus={(e) => e.preventDefault()}>
-                                            <SVG ariaHidden svg={ArrowRightIcon} />
-                                            {__("wizard.buttons.next")}
-                                        </Tabs.Trigger>
-                                    </Tabs.List>
-                                </div>
-                            </div>
-                        </Tabs.Content>
-                        <Tabs.Content value="tab5" tabIndex={-1} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
-                            <div className={classNames(stylesSettings.settings_tab, stylesModals.guidedTour_tab)}>
-                                <h3>{__("wizard.title.newFeature")}</h3>
-                                <p>
-                                    {__("wizard.description.annotations")}</p>
-                                <img src={AnnotationsImage} aria-hidden="true" />
                                 <div className={stylesModals.guidedTour_buttons}>
                                     <Dialog.Close className={stylesButtons.button_primary_blue}>
                                         <SVG ariaHidden svg={ShelfIcon} />

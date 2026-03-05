@@ -1230,24 +1230,20 @@
             "next": ""
         },
         "description": {
-            "annotations": "",
-            "catalogs": "",
             "home": "",
-            "readingView1": "",
-            "readingView2": "",
-            "yourBooks": ""
+            "resources": ""
         },
         "dontShow": "",
+        "resources": {
+            "discord": "",
+            "website": ""
+        },
         "tab": {
-            "annotations": "",
-            "catalogs": "",
             "home": "",
-            "readingView": "",
-            "yourBooks": ""
+            "resources": ""
         },
         "title": {
-            "allBooks": "",
-            "newFeature": "",
+            "resources": "",
             "welcome": ""
         }
     }

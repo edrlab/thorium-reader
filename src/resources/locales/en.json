@@ -1236,30 +1236,26 @@
     },
     "wizard": {
         "buttons": {
-            "discover": "Discover what's new",
+            "discover": "Discover Thorium Desktop",
             "goToBooks": "Go to my publications",
             "next": "Next"
         },
         "description": {
-            "annotations": "Highlight document text, choose style and color, attach personal notes. Create annotations in 'quick' mode to bypass the editor (you can enter text and customize styles later). For extra speed, use the 'instant' mode which creates notes immediately after highlighting document text!",
-            "catalogs": "Borrow publications from your local library or discover publications via OPDS feeds. Access a variety of publications from multiple sources thanks to online catalogs.",
-            "home": "Thorium looks different! Let's discover what's new...",
-            "readingView1": "Customize your reading and listening preferences: Thorium now offers multiple color themes for both the user interface and publication documents. It is now also easier to configure 'readaloud' ebooks with synthetic speech and synchronized text/audio narration.",
-            "readingView2": "Thorium's improved user interface makes it easier to find text in publications, explore search results, go to specific pages, browse the table of contents, create bookmarks, etc. thanks to the new 'docked' panels. The fullscreen reading mode continues to offer a distraction-free environment.",
-            "yourBooks": "Welcome to your redesigned personal bookshelf! In the 'grid' view, easily filter by tags or find publications by keywords. In the advanced 'table' view, select and sort publications by specific authors, title, date, format, etc."
+            "home": "Thorium 3.4 brings a series of improvements to the user experience and fixes a set of issues. If you decide later to move back to an older version of the application, it is strongly recommended that you back up your ebook annotations and bookmarks by exporting them to an external file. You'll then import them back into the older version after it is installed. This is because the application stores annotations and bookmarks in a slightly different internal format in version 3.4. This resolves a performance issue, but breaks backward compatibility for annotations.",
+            "resources": "Connect with us and learn more about Thorium:"
         },
         "dontShow": "Don't show again",
+        "resources": {
+            "discord": "Discord: https://discord.gg/2GnubQbE",
+            "website": "Website: https://www.thoriumreader.com"
+        },
         "tab": {
-            "annotations": "Annotations",
-            "catalogs": "Catalogs",
             "home": "Home",
-            "readingView": "Reading view",
-            "yourBooks": "Your publications"
+            "resources": "Resources"
         },
         "title": {
-            "allBooks": "All my publications",
-            "newFeature": "New feature: Annotations",
-            "welcome": "Welcome to Thorium 3"
+            "resources": "Resources & Community",
+            "welcome": "Welcome to Thorium 3.4"
         }
     }
 }
