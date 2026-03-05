@@ -36,6 +36,6 @@ export function getFileSize(filePath: string): number {
 }
 
 
-export const rmrf = async (dir: string) => {
-    return await fs.promises.rm(dir, { recursive: true, retryDelay: 100, maxRetries: 3, force: true });
+export const rmrf = async (dirOrFile: string) => {
+    return await fs.promises.rm(dirOrFile, { recursive: true, retryDelay: 100, maxRetries: 3, force: true });
 };
