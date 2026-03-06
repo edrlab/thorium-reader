@@ -33,6 +33,8 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 import * as LinkIcon from "readium-desktop/renderer/assets/icons/link-icon.svg";
+import { shell } from "electron";
+import { ICommonRootState } from "src/common/redux/states/commonRootState";
 
 
 const TabTitle = (props: React.PropsWithChildren<{ title: string }>) => {
@@ -64,6 +66,8 @@ export const WizardModal = () => {
     const [__] = useTranslator();
     const dispatch = useDispatch();
     const opened = useSelector((state: ILibraryRootState) => state.wizard.opened_v340);
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+        const isRTL = locale === "ar";
 
     const [checked, setChecked] = React.useState(false);
 
@@ -160,10 +164,27 @@ export const WizardModal = () => {
                                     <div>
                                         <p style={{ marginBottom: "20px" }}>{__("wizard.description.resources")}</p>
                                         <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-                                            <a href="https://www.thoriumreader.com" target="_blank" rel="noopener noreferrer" style={{ color: "var(--color-brand-primary)", textDecoration: "none", fontSize: "16px", fontWeight: "500" }}>
+                                            <a dir={isRTL ? "rtl" : "ltr"}
+                                                style={{ color: "var(--color-brand-primary)", textDecoration: "none", fontSize: "16px", fontWeight: "500" }}
+                                                href=""
+                                                onClick={async (ev) => {
+                                                    ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
+                                                    const href = "https://www.thoriumreader.com";
+                                                    if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
+                                                        await shell.openExternal(href);
+                                                    }
+                                                }}>
                                                 🌐 {__("wizard.resources.website")}
                                             </a>
-                                            <a href="https://discord.gg/2GnubQbE" target="_blank" rel="noopener noreferrer" style={{ color: "var(--color-brand-primary)", textDecoration: "none", fontSize: "16px", fontWeight: "500" }}>
+                                            <a dir={isRTL ? "rtl" : "ltr"} href=""
+                                                style={{ color: "var(--color-brand-primary)", textDecoration: "none", fontSize: "16px", fontWeight: "500" }}
+                                                onClick={async (ev) => {
+                                                    ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
+                                                    const href = "https://discord.gg/2GnubQbE";
+                                                    if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
+                                                        await shell.openExternal(href);
+                                                    }
+                                                }}>
                                                 💬 {__("wizard.resources.discord")}
                                             </a>
                                         </div>
