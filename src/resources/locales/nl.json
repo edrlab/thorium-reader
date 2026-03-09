@@ -50,7 +50,7 @@
         }
     },
     "catalog": {
-        "AddToFavorites": "",
+        "AddToFavorites": "Voeg toe als favoriet",
         "about": {
             "title": "Over {{- appName}}"
         },
@@ -87,7 +87,7 @@
         "importAnnotation": "Importeer aantekeningen",
         "lang": "Taal",
         "lastRead": "Laatst gelezen",
-        "login": "",
+        "login": "Inloggen",
         "logout": "Uitloggen",
         "missing": "",
         "moreInfo": "Meer Informatie",
@@ -100,12 +100,12 @@
         "opds": {
             "auth": {
                 "cancel": "Annuleer",
-                "external": "",
-                "fallback": "",
+                "external": "Deze inlogpagina zal geopend worden in jouw webbrowser, volg alsjeblieft de instructies. Wanneer je ingelogd bent zal de webbrowser je terug sturen naar deze applicatie.",
+                "fallback": "Opmerking: in het geval van login problemen met de default webbrowser methode, probeer opnieuw met alternatieve inlogmanieren in deze applicatie.",
                 "login": "Login",
                 "password": "Wachtwoord",
                 "register": "Registreer",
-                "retry": "",
+                "retry": "Probeer opnieuw",
                 "username": "Gebruikersnaam / e-mailadres"
             },
             "info": {
@@ -130,7 +130,7 @@
         "publisher": "Uitgever",
         "readBook": "Gelezen",
         "released": "Uitgegeven op",
-        "removeFromFavorites": "",
+        "removeFromFavorites": "Verwijder van favorieten",
         "sort": "Sorteer op",
         "tag": "Label",
         "tags": "Labels",
@@ -201,29 +201,29 @@
     },
     "library": {
         "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "selectOption": ""
+            "addFilters": "Voeg filters toe",
+            "filterBy": "Filter bij",
+            "selectOption": "Selecteer een item/element"
         },
         "lcp": {
-            "hidePassphrase": "",
+            "hidePassphrase": "Verberg de wachtwoordzin",
             "hint": "Hint:",
             "open": "Open",
             "password": "Wachtwoordzin",
             "sentence": "Deze publicatie vereist een LCP wachtwoordzin om te openen",
-            "showPassphrase": "",
+            "showPassphrase": "Geef wachtwoordzin weer",
             "urlHint": "Wachtwoordzin vergeten? Vind hulp hier.",
             "whatIsLcp?": "Wat is LCP?",
             "whatIsLcpInfoDetails": "LCP staat voor 'Licensed Content Protection'.",
             "whatIsLcpInfoDetailsLink": "Klik voor meer informatie op deze link naar de EDRLab-website."
         },
         "sorting": {
-            "addSorting": "",
-            "author": "",
-            "language": "",
-            "readingState": "",
-            "sortBy": "",
-            "title": ""
+            "addSorting": "Voeg sortering toe",
+            "author": "Auteur",
+            "language": "Taal",
+            "readingState": "Leesstatus",
+            "sortBy": "Sorteer bij : ",
+            "title": "Titel"
         }
     },
     "message": {
@@ -246,7 +246,7 @@
         "open": {
             "error": "De publicatie kan niet worden geopend: {{- err}}"
         },
-        "wipeData": ""
+        "wipeData": "Login data is verwijderd (toegang tot logintekens en cookies)"
     },
     "opds": {
         "addForm": {
@@ -711,9 +711,9 @@
             "unmute": "geluid aan"
         },
         "dock": {
-            "dockDefault": "",
-            "dockLeft": "",
-            "dockRight": ""
+            "dockDefault": "Laat paneel zien als een modale pop-up",
+            "dockLeft": "Dokpaneel naar links",
+            "dockRight": "Dokpaneel naar rechts"
         },
         "fxl": {
             "fit": "Pas"
@@ -879,7 +879,7 @@
             "reduceMotion": "Beperk beweging",
             "scrolled": "Doorlopend",
             "spacing": "Afstand",
-            "spreadModeEven": "",
+            "spreadModeEven": "Page spread 'even' (standaard is 'oneven')",
             "text": "Tekst",
             "theme": {
                 "name": {
@@ -937,7 +937,7 @@
             "cancel": "Annuleer",
             "disclaimer": "Snelkoppelingen zijn gedefinieerd op basis van de QWERTY-toetsenbordindeling",
             "editUserJson": "Wijzig gebruikersbestand...",
-            "exportToHTML": "",
+            "exportToHTML": "Exporteer naar HTML",
             "keyboardShortcuts": "Toetsenbord shortcuts",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1182,7 +1182,7 @@
             }
         },
         "profiles": {
-            "info": "",
+            "info": "Wissel profielen om de app aan te passen met de merkidentiteit en kleuren van een partner leverancier. Elk profiel biedt een op maat gemaakte ervaring.",
             "thorium": {
                 "description": "Het Thorium Vanille profiel is de originele, ontworpen door EDRLab.",
                 "title": "Thorium Vanille"
@@ -1201,7 +1201,7 @@
             "appearance": "Verschijning",
             "general": "Algemeen",
             "keyboardShortcuts": "Toetsenbord sneltoetsen",
-            "profiles": ""
+            "profiles": "Profielen"
         },
         "theme": {
             "auto": "Automatisch",
@@ -1236,26 +1236,26 @@
     },
     "wizard": {
         "buttons": {
-            "discover": "Ontdek wat er nieuw is",
+            "discover": "Ontdek Thorium Bureaublad",
             "goToBooks": "Ga naar mijn publicaties",
             "next": "Volgende"
         },
         "description": {
-            "home": "Thorium ziet er anders uit! Ontdek wat er nieuw is...",
-            "resources": ""
+            "home": "Thorium 3.4 brengt een serie van verbeteringen aan de gebruikerservaring en lost een paar problemen op. Als je ervoor kiest terug te schakelen naar een oudere versie van de applicatie, dan is het zwaar aanbevolen om een back-up van je e-boek annotaties en boekenleggers door deze te exporteren naar een extern bestand. Je kunt deze dan terug importeren in de oudere versie nadat deze geïnstalleerd is. Dit is omdat de applicatie annotaties en boekenleggers op een lichtelijk andere innerlijk formaat in de versie 3.4 opslaat. Dit lost een presteer probleem op, maar breekt helaas de terugwerking compatibiliteit van de annotaties.",
+            "resources": "Verbind met ons en leer meer over Thorium :"
         },
         "dontShow": "Niet meer laten zien, verberg",
         "resources": {
-            "discord": "",
-            "website": ""
+            "discord": "Discord: https://discord.gg/2GnubQbE",
+            "website": "Website: https://www.thoriumreader.com"
         },
         "tab": {
             "home": "Startpagina",
-            "resources": ""
+            "resources": "Bronnen"
         },
         "title": {
-            "resources": "",
-            "welcome": "Welkom bij Thorium 3"
+            "resources": "Bronnen & Gemeenschap",
+            "welcome": "Welkom bij Thorium 3.4"
         }
     }
 }
