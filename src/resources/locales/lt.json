@@ -206,9 +206,9 @@
     },
     "library": {
         "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "selectOption": ""
+            "addFilters": "Pridėti filtrus",
+            "filterBy": "Filtruoti pagal",
+            "selectOption": "Pasirinkite"
         },
         "lcp": {
             "hidePassphrase": "Slėpti slaptafrazę",
@@ -223,10 +223,10 @@
             "whatIsLcpInfoDetailsLink": "Jei norite sužinoti daugiau, paspauskite ant šios nuorodos į EDRLab svetainę."
         },
         "sorting": {
-            "addSorting": "",
-            "author": "",
-            "language": "",
-            "readingState": "",
+            "addSorting": "Pridėti rikiavimą",
+            "author": "Autorius",
+            "language": "Kalba",
+            "readingState": "Skaitymo būsena",
             "sortBy": "Rikiuoti pagal: ",
             "title": "Pavadinimas"
         }
@@ -716,9 +716,9 @@
             "unmute": "įjungti garsą"
         },
         "dock": {
-            "dockDefault": "",
-            "dockLeft": "",
-            "dockRight": ""
+            "dockDefault": "Rodyti skydelį kaip modalinį langą",
+            "dockLeft": "Pritvirtinti skydelį kairėje",
+            "dockRight": "Pritvirtinti skydelį dešinėje"
         },
         "fxl": {
             "fit": "Talpinti"
@@ -1242,26 +1242,26 @@
     },
     "wizard": {
         "buttons": {
-            "discover": "Sužinoti, kas naujo",
+            "discover": "Atraskite „Thorium“",
             "goToBooks": "Eiti į mano leidinius",
             "next": "Kitas"
         },
         "description": {
             "home": "Thorium atrodo kitaip! Sužinokite, kas naujo...",
-            "resources": ""
+            "resources": "Susisiekite su mumis ir sužinokite daugiau apie „Thorium“:"
         },
         "dontShow": "Daugiau neberodyti",
         "resources": {
-            "discord": "",
-            "website": ""
+            "discord": "Discord: https://discord.gg/2GnubQbE",
+            "website": "Svetainė: https://www.thoriumreader.com"
         },
         "tab": {
             "home": "Pradžia",
-            "resources": ""
+            "resources": "Ištekliai"
         },
         "title": {
-            "resources": "",
-            "welcome": "Su jumis sveikinasi Thorium 3"
+            "resources": "Ištekliai ir bendruomenė",
+            "welcome": "Su jumis sveikinasi Thorium 3.4"
         }
     }
 }
