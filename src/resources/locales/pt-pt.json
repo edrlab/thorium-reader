@@ -1242,7 +1242,7 @@
     },
     "wizard": {
         "buttons": {
-            "discover": "Descubra o que há de novo",
+            "discover": "Descubra o Thorium Desktop",
             "goToBooks": "Ir para os meus documentos",
             "next": "Seguinte"
         },
@@ -1253,15 +1253,15 @@
         "dontShow": "Não voltar a exibir",
         "resources": {
             "discord": "",
-            "website": ""
+            "website": "Sítio: https://www.thoriumreader.com"
         },
         "tab": {
             "home": "Entrada",
-            "resources": ""
+            "resources": "Recursos"
         },
         "title": {
-            "resources": "",
-            "welcome": "Bem-vindo ao Thorium 3"
+            "resources": "Recursos e Comunidade",
+            "welcome": "Bem-vindo ao Thorium 3.4"
         }
     }
 }
