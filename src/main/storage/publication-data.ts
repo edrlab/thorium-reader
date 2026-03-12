@@ -221,11 +221,11 @@ export class PublicationData {
                 return undefined;
             }
         }
-        if (file.jsonObj) {
-            return file.jsonObj;
-        }
 
         file.mutex = file.mutex.then(async () => {
+            if (file.jsonObj) {
+                return;
+            }
             try {
                 // flush before read
                 await file.fileHandle.sync();
