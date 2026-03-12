@@ -21,23 +21,23 @@ import { TransformerSVG } from "./transformer-svg";
 
 const debug = debug_("readium-desktop:main#streamerCommon");
 
-export function computeReadiumCssJsonMessageInStreamer(
+export async function computeReadiumCssJsonMessageInStreamer(
     _r2Publication: R2Publication,
     _link: Link | undefined,
     sessionInfo: string | undefined,
-): IEventPayload_R2_EVENT_READIUMCSS {
+): Promise<IEventPayload_R2_EVENT_READIUMCSS> {
 
     const winId = sessionInfo ? Buffer.from(sessionInfo, "base64").toString("utf-8") : "";
+    const store = diMainGet("store");
+    const state = store.getState();
+    const pubId = state.win.session.reader[winId]?.publicationIdentifier;
 
     let settings: ReaderConfig;
-    if (winId) {
+    if (winId && pubId) {
         debug("computeReadiumCssJsonMessageInStreamer winId:", winId);
 
-        const store = diMainGet("store");
-        const state = store.getState();
-
         try {
-            settings = state.win.session.reader[winId].reduxState.config;
+            settings = { ...state.reader.defaultConfig, ...(await diMainGet("publication-data").readJsonObj(pubId, "config") || {}) };
 
             debug("PAGED: ", settings.paged, "colCount:", settings.colCount);
 
@@ -85,20 +85,23 @@ export const READIUMCSS_FILE_PATH = rcssPath;
 
 export function setupMathJaxTransformer(getUrl: () => string) {
 
-    const transformerMathJax = (
-        _publication: R2Publication, _link: Link, _url: string | undefined, str: string, sessionInfo: string | undefined): string => {
+    const transformerMathJax = async (
+        _publication: R2Publication, _link: Link, _url: string | undefined, str: string, sessionInfo: string | undefined): Promise<string> => {
 
         const winId = sessionInfo ? Buffer.from(sessionInfo, "base64").toString("utf-8") : "";
+        const store = diMainGet("store");
+        const state = store.getState();
+        const pubId = state.win.session.reader[winId]?.publicationIdentifier;
 
         let settings: ReaderConfig;
-        if (winId) {
+        if (winId && pubId) {
             debug("setupMathJaxTransformer winId:", winId);
 
             const store = diMainGet("store");
             const state = store.getState();
 
             try {
-                settings = state.win.session.reader[winId].reduxState.config;
+                settings = { ...state.reader.defaultConfig, ...(await diMainGet("publication-data").readJsonObj(pubId, "config") || {}) };
 
             } catch (err) {
                 settings = state.reader.defaultConfig;

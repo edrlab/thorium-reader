@@ -23,7 +23,7 @@ export type TTransformFunction = (
     url: string | undefined,
     data: string,
     sessionInfo: string | undefined,
-) => string;
+) => Promise<string> | string;
 
 export class TransformerHTML implements ITransformer {
 
@@ -106,7 +106,7 @@ export class TransformerHTML implements ITransformer {
 
         try {
             const str = data.toString("utf8");
-            const str_ = this.transformString(publication, link, url, str, sessionInfo);
+            const str_ = await Promise.resolve(this.transformString(publication, link, url, str, sessionInfo));
             return Promise.resolve(Buffer.from(str_));
         } catch (err) {
             debug("TransformerHTML fail => no change");

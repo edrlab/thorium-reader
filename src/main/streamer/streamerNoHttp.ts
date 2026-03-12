@@ -149,13 +149,13 @@ if (true) { // !_USE_HTTP_STREAMER) {
         return false;
     }
 
-    const transformerReadiumCss: TTransformFunction = (
+    const transformerReadiumCss: TTransformFunction = async (
         publication: R2Publication,
         link: Link,
         url: string | undefined,
         str: string,
         sessionInfo: string | undefined,
-    ): string => {
+    ): Promise<string> => {
 
         let isIframe = false;
         if (url) {
@@ -169,7 +169,7 @@ if (true) { // !_USE_HTTP_STREAMER) {
             return str;
         }
 
-        let readiumcssJson = computeReadiumCssJsonMessageInStreamer(publication, link, sessionInfo);
+        let readiumcssJson = await computeReadiumCssJsonMessageInStreamer(publication, link, sessionInfo);
         if (isFixedLayout(publication, link)) {
             const readiumcssJson_ = { setCSS: undefined, isFixedLayout: true } as IEventPayload_R2_EVENT_READIUMCSS;
             if (readiumcssJson.setCSS) {
@@ -1598,13 +1598,13 @@ const streamProtocolHandler = async (
     }
 };
 
-const transformerIFrames: TTransformFunction = (
+const transformerIFrames: TTransformFunction = async (
     _publication: R2Publication,
     link: Link,
     url: string | undefined,
     htmlStr: string,
     _sessionInfo: string | undefined,
-): string => {
+): Promise<string> => {
     // super hacky! (guarantees that convertCustomSchemeToHttpUrl() is necessary,
     // unlike this `url` function parameter which is always HTTP as it originates
     // from the streamer/server)

@@ -21,7 +21,7 @@ import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro
 
 import { createReaderWindow } from "./browserWindow/createReaderWindow";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
-import { comparePublisherReaderConfig } from "readium-desktop/common/publisherConfig";
+// import { comparePublisherReaderConfig } from "readium-desktop/common/publisherConfig";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
 
@@ -42,11 +42,13 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const screenReaderActivate = yield* selectTyped((_state: RootState) => _state.screenReader.activate);
     const locale = yield* selectTyped((_state: RootState) => _state.i18n.locale);
     const reader = yield* selectTyped((_state: RootState) => _state.win.session.reader[identifier]);
+    const pubId = reader?.publicationIdentifier; // can be undefined
     const readerDefaultConfig = yield* selectTyped((_state: RootState) => _state.reader.defaultConfig);
+    const config = { ...readerDefaultConfig, ...(pubId ? yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "config")) : {}) };
+    const allowCustomConfig = pubId ? yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "allowCustomConfig")) : undefined;
     const keyboard = yield* selectTyped((_state: RootState) => _state.keyboard);
     const mode = yield* selectTyped((state: RootState) => state.mode);
     const theme = yield* selectTyped((state: RootState) => state.theme);
-    const config = reader?.reduxState?.config || readerConfigInitialState;
     const transientConfigMerge = {...readerConfigInitialState, ...config};
     const creator = yield* selectTyped((_state: RootState) => _state.creator);
     const lcp = yield* selectTyped((state: RootState) => state.lcp);
@@ -63,20 +65,20 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
 
 
     let gotTheLock = false;
-    const winIdGotTheLock = reader?.publicationIdentifier
-        ? __readerWithSamePubIdGotTheLockMap.get(reader.publicationIdentifier)
+    const winIdGotTheLock = pubId
+        ? __readerWithSamePubIdGotTheLockMap.get(pubId)
         : true;
     if (winIdGotTheLock) {
         gotTheLock = false;
         debug(`reader ${identifier} did not get the lock`);
     } else {
-        __readerWithSamePubIdGotTheLockMap.set(reader.publicationIdentifier, identifier);
+        __readerWithSamePubIdGotTheLockMap.set(pubId, identifier);
         gotTheLock = true;
         debug(`reader ${identifier} got the lock !!!`);
     }
 
-    const notes = reader?.publicationIdentifier
-        ? yield* callTyped(() => sqliteTableSelectAllNotesWherePubId(reader.publicationIdentifier))
+    const notes = pubId
+        ? yield* callTyped(() => sqliteTableSelectAllNotesWherePubId(pubId))
         : [];
 
     webContents.send(readerIpc.CHANNEL, {
@@ -108,9 +110,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
                     paraSpacing: transientConfigMerge.paraSpacing,
                     lineHeight: transientConfigMerge.lineHeight,
                 },
-                allowCustomConfig: {
-                    state: !comparePublisherReaderConfig(config, readerConfigInitialState),
-                },
+                allowCustomConfig,
                 config,
                 lock: gotTheLock,
                 note: notes,
