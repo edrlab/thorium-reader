@@ -221,6 +221,9 @@ export class PublicationData {
                 return undefined;
             }
         }
+        if (file.jsonObj) {
+            return file.jsonObj;
+        }
 
         file.mutex = file.mutex.then(async () => {
             try {

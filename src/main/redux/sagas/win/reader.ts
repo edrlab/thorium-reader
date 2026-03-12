@@ -45,7 +45,10 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const pubId = reader?.publicationIdentifier; // can be undefined
     const readerDefaultConfig = yield* selectTyped((_state: RootState) => _state.reader.defaultConfig);
     const config = { ...readerDefaultConfig, ...(pubId ? yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "config")) : {}) };
+    
+    // not used by default, no need to persist 
     const allowCustomConfig = pubId ? yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "allowCustomConfig")) : undefined;
+
     const keyboard = yield* selectTyped((_state: RootState) => _state.keyboard);
     const mode = yield* selectTyped((state: RootState) => state.mode);
     const theme = yield* selectTyped((state: RootState) => state.theme);
@@ -111,6 +114,9 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
                     lineHeight: transientConfigMerge.lineHeight,
                 },
                 allowCustomConfig,
+                // allowCustomConfig: {
+                //     state: !comparePublisherReaderConfig(config, readerConfigInitialState),
+                // },
                 config,
                 lock: gotTheLock,
                 note: notes,
