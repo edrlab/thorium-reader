@@ -207,8 +207,8 @@
     "library": {
         "filter": {
             "addFilters": "",
-            "filterBy": "",
-            "selectOption": ""
+            "filterBy": "Filtrar por",
+            "selectOption": "Selecione um item"
         },
         "lcp": {
             "hidePassphrase": "Ocultar senha",
@@ -224,11 +224,11 @@
         },
         "sorting": {
             "addSorting": "",
-            "author": "",
-            "language": "",
-            "readingState": "",
-            "sortBy": "",
-            "title": ""
+            "author": "Autor",
+            "language": "Idioma",
+            "readingState": "Estado de leitura",
+            "sortBy": "Ordenar por: ",
+            "title": "Título"
         }
     },
     "message": {
@@ -716,9 +716,9 @@
             "unmute": "Ativar áudio"
         },
         "dock": {
-            "dockDefault": "",
-            "dockLeft": "",
-            "dockRight": ""
+            "dockDefault": "Exibir painel numa janela modal",
+            "dockLeft": "Encaixar painel à esquerda",
+            "dockRight": "Encaixar painel à direita"
         },
         "fxl": {
             "fit": "Ajustar"
@@ -1171,7 +1171,7 @@
             "noShortcutFound": "",
             "resetDefaults": "Redefinir (carregar predefinições)",
             "save": "Guardar",
-            "searchPlaceholder": ""
+            "searchPlaceholder": "Digite para procurar um atalho"
         },
         "language": {
             "languageChoice": "Idioma"
@@ -1188,9 +1188,9 @@
             }
         },
         "profiles": {
-            "info": "",
+            "info": "Alterne entre perfis para personalizar a aplicação com a marca e cores de um fornecedor parceiro. Cada perfil oferece uma experiência personalizada.",
             "thorium": {
-                "description": "",
+                "description": "O perfil Thorium Vanilla é o original, criado por EDRLab.",
                 "title": ""
             },
             "version": "Versão: {{- version}}"
@@ -1247,8 +1247,8 @@
             "next": "Seguinte"
         },
         "description": {
-            "home": "O Thorium está diferente! Venha descobrir o que há de novo...",
-            "resources": ""
+            "home": "O Thorium 3.4 traz uma série de melhorias na experiência do utilizador e corrige vários problemas. Caso, mais tarde, decida regressar a uma versão antiga da aplicação, é altamente recomendável que faça uma cópia de segurança das suas notas e marcadores do ebook, exportando-os para um ficheiro externo. Poderá importá-los de volta para a versão antiga após a instalação. Isto porque a aplicação, na versão 3.4, armazena anotações e marcadores num formato interno ligeiramente diferente. Esta alteração resolve um problema de desempenho, mas impede a compatibilidade com versões anteriores nas anotações.",
+            "resources": "Ligue-se a nós e saiba mais sobre o Thorium:"
         },
         "dontShow": "Não voltar a exibir",
         "resources": {
