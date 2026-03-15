@@ -1252,16 +1252,16 @@
         },
         "dontShow": "Больше не показывать",
         "resources": {
-            "discord": "",
-            "website": ""
+            "discord": "Discord: https://discord.gg/2GnubQbE",
+            "website": "Веб-сайт: https://www.thoriumreader.com"
         },
         "tab": {
             "home": "Главная",
-            "resources": ""
+            "resources": "Ресурсы"
         },
         "title": {
-            "resources": "",
-            "welcome": "Добро пожаловать в Thorium 3"
+            "resources": "Ресурсы и сообщество",
+            "welcome": "Добро пожаловать в Thorium 3.4"
         }
     }
 }
