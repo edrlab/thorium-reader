@@ -9,7 +9,6 @@ import * as stylesToasts from "readium-desktop/renderer/assets/styles/components
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { ToastType } from "readium-desktop/common/models/toast";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { ToastState } from "readium-desktop/common/redux/states/toast";
@@ -51,56 +50,46 @@ export class ToastManager extends React.Component<IProps, IState> {
         const { toast } = this.props;
         if (toast !== oldProps.toast) {
             const id = uuidv4();
-            const toastList = this.state.toastList;
-            toastList[id] = toast;
-            this.setState({toastList});
+            this.setState((prevState) => ({
+                toastList: {
+                    ...prevState.toastList,
+                    [id]: toast,
+                },
+            }));
         }
     }
 
     public render(): React.ReactElement<{}> {
         const { toastList } = this.state;
-        return <div className={stylesToasts.toasts_wrapper}>
-            { Object.keys(toastList).map((id: string) => {
-                const toast = toastList[id];
-                if (toast && (!toast?.publicationIdentifier || toast.publicationIdentifier === this.props.pubId)) {
-                    switch (toast.type) {
-                        case ToastType.Success:
-                            return <Toast
-                                message={toast.data}
+        const { pubId } = this.props;
+
+        return (
+            <div className={stylesToasts.toasts_wrapper}>
+                {Object.keys(toastList).map((id) => {
+                    const toast = toastList[id];
+                    if (toast && (!toast.publicationIdentifier || toast.publicationIdentifier === pubId)) {
+                        return (
+                            <Toast
                                 key={id}
-                                close={ () => this.close(id) }
-                                type={toast.type}
-                                displaySystemNotification={false}
-                            />;
-                        case ToastType.Default:
-                            return <Toast
+                                id={id}
                                 message={toast.data}
-                                key={id}
-                                close={ () => this.close(id) }
                                 type={toast.type}
+                                close={this.close}
                                 displaySystemNotification={false}
-                            />;
-                        case ToastType.Error:
-                            return <Toast
-                                message={toast.data}
-                                key={id}
-                                close={ () => this.close(id) }
-                                type={toast.type}
-                                displaySystemNotification={false}
-                            />;
-                        default:
-                            return (<></>);
+                            />
+                        );
                     }
-                }
-                return undefined;
-            })}
-        </div>;
+                    return null;
+                })}
+            </div>
+        );
     }
 
     private close(id: string) {
-        const { toastList } = this.state;
-        toastList[id] = undefined;
-        this.setState({ toastList });
+        this.setState((prevState) => {
+            const { [id]: _, ...rest } = prevState.toastList;
+            return { toastList: rest };
+        });
     }
 }
 

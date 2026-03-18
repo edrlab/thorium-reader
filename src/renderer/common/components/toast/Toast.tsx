@@ -91,10 +91,6 @@ export class Toast extends React.Component<IProps, IState> {
     public componentDidMount() {
         this.triggerTimer(false);
 
-        if (this.ref?.current) {
-            this.ref?.current.addEventListener("transitionend", this.handleTransitionEnd, false);
-        }
-
         // https://www.electronjs.org/docs/latest/tutorial/notifications
         if (this.props.displaySystemNotification) {
             new Notification(capitalizedAppName, {
@@ -105,9 +101,6 @@ export class Toast extends React.Component<IProps, IState> {
 
     public componentWillUnmount() {
         this.cancelTimer(false);
-        if (this.ref?.current) {
-            this.ref.current.removeEventListener("transitionend", this.handleTransitionEnd, false);
-        }
     }
 
     public render(): React.ReactElement<{}> {
@@ -133,6 +126,7 @@ export class Toast extends React.Component<IProps, IState> {
 
         return (
             <div
+                onTransitionEnd={this.handleTransitionEnd}
                 ref={this.ref}
                 onMouseMove={() => {
                     this.cancelTimer(false);
