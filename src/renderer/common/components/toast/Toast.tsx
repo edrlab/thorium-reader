@@ -103,9 +103,10 @@ export class Toast extends React.Component<IProps, IState> {
         }
     }
 
-    public componentWillRemove() {
+    public componentWillUnmount() {
+        this.cancelTimer(false);
         if (this.ref?.current) {
-            this.ref?.current.removeEventListener("transitionend", this.handleTransitionEnd, false);
+            this.ref.current.removeEventListener("transitionend", this.handleTransitionEnd, false);
         }
     }
 
