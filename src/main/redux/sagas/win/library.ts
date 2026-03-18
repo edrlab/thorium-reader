@@ -17,8 +17,8 @@ import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { ObjectKeys, ObjectValues } from "readium-desktop/utils/object-keys-values";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { all, call, delay, put, spawn, take } from "redux-saga/effects";
-import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
+import { all, call, delay, put, spawn } from "redux-saga/effects";
+import { call as callTyped, select as selectTyped, take as takeTyped, delay as delayTyped, race as raceTyped } from "typed-redux-saga/macro";
 
 import { IWinSessionReaderState } from "../../states/win/session/reader";
 import { getAppActivateEventChannel } from "../getEventChannel";
@@ -96,9 +96,12 @@ export function* appActivate() {
         yield put(winActions.library.openRequest.build());
 
         // wait
-        yield take(winActions.library.openSucess.ID);
+        const raceResult = yield* raceTyped([
+            takeTyped(winActions.library.openSucess.ID),
+            delayTyped(5000),
+        ]);
+        debug("AppActivate openSuccess with 5seconds timeout, result:", raceResult);
     }
-
 }
 
 function* winOpen(action: winActions.library.openSucess.TAction) {

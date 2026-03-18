@@ -6,7 +6,7 @@
 // ==LICENSE-END=
 
 import debug_ from "debug";
-import { customizationActions, historyActions, readerActions } from "readium-desktop/common/redux/actions";
+import { customizationActions, historyActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import {
@@ -37,6 +37,7 @@ import * as path from "path";
 import * as fs from "fs";import { fileProvisionning } from "./customization";
 import { customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
 import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
+import { ToastType } from "readium-desktop/common/models/toast";
 
 // Logger
 const debug = debug_("readium-desktop:main:saga:event");
@@ -117,6 +118,7 @@ export function saga() {
 
                     debug("ERROR to importFromFs and to open the publication");
                     debug(e);
+                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, `CLI open file ${e}`));
                 }
             }
 
@@ -206,6 +208,7 @@ export function saga() {
 
                     debug("ERROR to importFromLink and to open the publication");
                     debug(e);
+                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, `THORIUM Deep link ${e}`));
                 }
             }
 
@@ -215,11 +218,12 @@ export function saga() {
 
             while (true) {
 
+                let dump = "";
                 try {
                     const url = yield* takeTyped(chan);
 
 
-                    let dump = "#############################################\n";
+                    dump = "#############################################\n";
                     dump += `take opds url from channel: URL="${url}"\n`;
                     dump += `Date: ${(new Date()).toISOString()}\n`;
                     // dump +=
@@ -267,12 +271,13 @@ export function saga() {
                         }
                     }
                     dump += "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$44\n";
-                    fs.appendFileSync(appLogs, dump);
-
+                    
                 } catch (e) {
-
-                    debug("ERROR to importFromLink and to open the publication");
+                    debug("OPDS Deep link error");
                     debug(e);
+                    yield* putTyped(toastActions.openRequest.build(ToastType.Error, `OPDS Deep link ${e}`));
+                } finally {
+                    try { fs.appendFileSync(appLogs, dump); } catch { }
                 }
             }
 
