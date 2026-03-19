@@ -18,8 +18,7 @@ function winSessionReaderReducer_(
     state: IDictWinSessionReaderState = initialState,
     action: winActions.session.registerReader.TAction |
         winActions.session.unregisterReader.TAction |
-        winActions.session.setBound.TAction |
-        winActions.session.setReduxState.TAction,
+        winActions.session.setBound.TAction,
 ): IDictWinSessionReaderState {
     switch (action.type) {
 
@@ -79,33 +78,6 @@ function winSessionReaderReducer_(
                 };
             }
             break;
-        }
-
-        case winActions.session.setReduxState.ID: {
-
-            const id = action.payload.identifier;
-
-            if (state[id]) {
-
-                const reduxState = { ...state[id].reduxState };
-                Object.entries(action.payload.reduxState).forEach(([key, value]) => {
-                    if (value) {
-                        (reduxState as any)[key] = value;
-                    }
-                });
-
-                return {
-                    ...state,
-                    ...{
-                        [id]: {
-                            ...state[id],
-                            ...{
-                                reduxState,
-                            },
-                        },
-                    },
-                };
-            }
         }
     }
 

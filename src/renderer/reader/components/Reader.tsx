@@ -2324,9 +2324,7 @@ class Reader extends React.Component<IProps, IState> {
                 publicationViewport.setAttribute("style", "display: block; position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: 0; padding: 0; box-sizing: border-box; background: white; overflow: hidden;");
             }
 
-            // @----ts-ignore TS2578
-            // @ts-expect-error TS2872
-            const readingModeFromPersistence = "test" || this.props.divinaReadingMode;
+            const readingModeFromPersistence = this.props.divinaReadingMode;
             console.log("Reading mode from persistence : ", readingModeFromPersistence);
             const locale = this.props.locale;
 

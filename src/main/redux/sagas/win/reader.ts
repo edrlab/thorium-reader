@@ -7,7 +7,7 @@
 
 import debug_ from "debug";
 import { readerIpc } from "readium-desktop/common/ipc";
-import { ReaderMode } from "readium-desktop/common/models/reader";
+import { ReaderInfo, ReaderMode } from "readium-desktop/common/models/reader";
 import { normalizeRectangle } from "readium-desktop/common/rectangle/window";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { deleteReaderWindowInDi, diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
@@ -24,6 +24,7 @@ import { readerConfigInitialState } from "readium-desktop/common/redux/states/re
 // import { comparePublisherReaderConfig } from "readium-desktop/common/publisherConfig";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { sqliteTableSelectAllNotesWherePubId } from "readium-desktop/main/db/sqlite/note";
+import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:win:reader";
@@ -41,13 +42,19 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const webContents = readerWin.webContents;
     const screenReaderActivate = yield* selectTyped((_state: RootState) => _state.screenReader.activate);
     const locale = yield* selectTyped((_state: RootState) => _state.i18n.locale);
-    const reader = yield* selectTyped((_state: RootState) => _state.win.session.reader[identifier]);
-    const pubId = reader?.publicationIdentifier; // can be undefined
+    const readerSession = yield* selectTyped((_state: RootState) => _state.win.session.reader[identifier]);
+    // const readerRegistry = yield* selectTyped((_state: RootState) => _state.win.registry.reader[identifier])
+    const pubId = readerSession?.publicationIdentifier; // can be undefined
     const readerDefaultConfig = yield* selectTyped((_state: RootState) => _state.reader.defaultConfig);
     const config = { ...readerDefaultConfig, ...(pubId ? yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "config")) : {}) };
+    const locator = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "locator"))) || undefined; // TODO: type object and not locator
+    const disableRTLFlip = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "disableRTLFlip"))) || undefined; // TODO: type object and not disableRTLFlip
+    const divina = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "divina"))) || undefined; // TODO: type object and note IDivinaState
+    const noteTotalCount = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "noteTotalCount"))) || undefined; // TODO: type object
+    const pdfConfig = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "pdfConfig"))) || undefined; // TODO: type object
     
     // not used by default, no need to persist 
-    const allowCustomConfig = pubId ? yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "allowCustomConfig")) : undefined;
+    const allowCustomConfig = pubId ? yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "allowCustomConfig")) : undefined; // TODO: type object
 
     const keyboard = yield* selectTyped((_state: RootState) => _state.keyboard);
     const mode = yield* selectTyped((state: RootState) => state.mode);
@@ -97,7 +104,9 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
                 identifier,
             },
             reader: {
-                ...(reader?.reduxState || {}), // reader.reduxState is normally always defined but for security reason, I prefer to do not change this !!!
+                // hydration from reader session disabled
+                // ...(reader?.reduxState || {}), // reader.reduxState is normally always defined but for security reason, I prefer to do not change this !!!
+                locator,
                 // see issue https://github.com/edrlab/thorium-reader/issues/2532
                 defaultConfig: {
                     ...readerDefaultConfig,
@@ -120,7 +129,23 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
                 config,
                 lock: gotTheLock,
                 note: notes,
-            },
+                disableRTLFlip: disableRTLFlip,
+                info: {
+                    filesystemPath: readerSession.reduxState.info.filesystemPath,
+                    manifestUrlHttp: readerSession.reduxState.info.manifestUrlHttp,
+                    manifestUrlR2Protocol: readerSession.reduxState.info.manifestUrlR2Protocol,
+                    publicationIdentifier: readerSession.publicationIdentifier,
+                    r2Publication: undefined, // see registerReader.ts and index_reader.ts hydration
+                    publicationView: readerSession.reduxState.info.publicationView,
+                    navigator: undefined, // see registerReader.ts and index_reader.ts
+                } as ReaderInfo,
+                highlight: undefined, // reader runtime state 
+                divina: divina,
+                tts: undefined, // reader runtime state
+                mediaOverlay: undefined, // reader runtime state
+                noteTotalCount: noteTotalCount,
+                pdfConfig: pdfConfig,
+            } as IReaderStateReader,
             keyboard,
             mode,
             theme,
@@ -160,7 +185,10 @@ function* winClose(action: winActions.reader.closed.TAction) {
             // reduxState.note = (notes && notes.length) ? notes : [];
 
             // It takes too mutch time on reader closing now
-            yield put(winActions.session.setReduxState.build(winId, publicationIdentifier, reduxState));
+            // TODO: remove the session logic
+            // currently reader session is initialized but never updated with the last reader.reduxState
+            // session persistence disabled, reduxState is initially loaded for the reader.info properties and then never updated
+            // yield put(winActions.session.setReduxState.build(winId, publicationIdentifier, reduxState));
 
             yield put(winActions.session.unregisterReader.build(winId));
 

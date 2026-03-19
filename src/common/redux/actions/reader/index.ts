@@ -18,7 +18,6 @@ import * as detachModeSuccess from "./detachModeSuccess";
 import * as fullScreenRequest from "./fullScreenRequest";
 import * as openError from "./openError";
 import * as openRequest from "./openRequest";
-import * as setReduxState from "./setReduxState";
 import * as disableRTLFlip from "./rtlFlip";
 import * as setTheLock from "./setTheLock";
 import * as note from "./note";
@@ -39,7 +38,6 @@ export {
     detachModeRequest,
     detachModeSuccess,
     configSetDefault,
-    setReduxState,
     closeRequestFromPublication,
     fullScreenRequest,
     clipboardCopy,

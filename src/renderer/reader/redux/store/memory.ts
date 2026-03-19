@@ -14,7 +14,6 @@ import { composeWithDevTools } from "@redux-devtools/extension";
 import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
 
 import { locatorHrefWatcherMiddleware } from "../middleware/locatorHrefWatcher";
-import { reduxPersistMiddleware } from "../middleware/persistence";
 
 export function initStore(preloadedState: Partial<IReaderRootState>): [Store<IReaderRootState>, SagaMiddleware] {
     const sagaMiddleware = createSagaMiddleware();
@@ -25,7 +24,6 @@ export function initStore(preloadedState: Partial<IReaderRootState>): [Store<IRe
             applyMiddleware(
                 locatorHrefWatcherMiddleware,
                 reduxSyncMiddleware,
-                reduxPersistMiddleware,
                 sagaMiddleware,
             ),
         ),

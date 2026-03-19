@@ -11,6 +11,7 @@ import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { UnknownAction, Dispatch, MiddlewareAPI } from "redux";
+import { IReaderRootState } from "src/common/redux/states/renderer/readerRootState";
 
 export function syncFactory(SYNCHRONIZABLE_ACTIONS: string[]) {
 
@@ -38,6 +39,7 @@ export function syncFactory(SYNCHRONIZABLE_ACTIONS: string[]) {
                     sender: {
                         type: SenderType.Renderer,
                         identifier: store.getState().win.identifier,
+                        reader_pubId: (store.getState() as unknown as IReaderRootState)?.reader.info?.publicationIdentifier,
                     },
                 } as syncIpc.EventPayload);
 

@@ -38,9 +38,6 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     readerActions.detachModeSuccess.ID,
 
-    // readerActions.configSetDefault.ID, ALREADY AT THE BOTTOM??
-
-    readerActions.setReduxState.ID, // used only to update the catalog when dispatched from reader
 
     readerActions.fullScreenRequest.ID,
 

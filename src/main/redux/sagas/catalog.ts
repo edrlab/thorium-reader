@@ -13,7 +13,7 @@ import { error } from "readium-desktop/main/tools/error";
 import { all } from "redux-saga/effects";
 import { call as callTyped, put as putTyped, select as selectTyped, debounce as debounceTyped, SagaGenerator } from "typed-redux-saga/macro";
 import { RootState } from "../states";
-import { diMainGet } from "readium-desktop/main/di";
+import { diMainGet, getReaderWindowFromDi } from "readium-desktop/main/di";
 // import { isPdfFn } from "readium-desktop/common/isManifestType";
 
 // import { PublicationView } from "readium-desktop/common/views/publication";
@@ -21,12 +21,14 @@ import { diMainGet } from "readium-desktop/main/di";
 // import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 import { aboutFiltered } from "readium-desktop/main/tools/filter";
-import { publicationActions as publicationActionsFromMainAction } from "../actions";
+import { publicationActions as publicationActionsFromMainAction, winActions } from "../actions";
 import { publicationActions as publicationActionsFromCommonAction } from "readium-desktop/common/redux/actions";
 import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLatest";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { PublicationView } from "readium-desktop/common/views/publication";
+import { EventPayload } from "readium-desktop/common/ipc/sync";
+import { SenderType } from "readium-desktop/common/models/sync";
 
 const filename_ = "readium-desktop:main:redux:sagas:catalog";
 const debug = debug_(filename_);
@@ -277,14 +279,14 @@ function* updateResumePosition() {
         }
         return true;
     };
-
     let prevState = yield* selectTyped((state: RootState) => state.publication.lastReadingQueue);
-    yield* debounceTyped(500, [readerActions.setReduxState.ID, publicationActionsFromCommonAction.readingFinished.ID], function* worker() {
+    yield* debounceTyped(500, [readerActions.setLocator.ID, publicationActionsFromCommonAction.readingFinished.ID], function* worker() {
         const nextState = yield* selectTyped((state: RootState) => state.publication.lastReadingQueue);
 
         const prevId = prevState.map(([_,v]) => v);
         const nextId = nextState.map(([_,v]) => v);
         if (!eq(prevId, nextId)) {
+            debug("dispatch new catalog");
             yield* callTyped(getCatalogAndDispatchIt);
         }
         prevState = yield* selectTyped((state: RootState) => state.publication.lastReadingQueue);
@@ -303,6 +305,28 @@ export function saga() {
         spawnLeading(
             updateResumePosition,
             (e) => error(filename_ + ":updateResumePosition", e),
+        ),
+        takeSpawnLatest(
+            publicationActionsFromCommonAction.readingFinished.ID,
+            function* (action: publicationActionsFromCommonAction.readingFinished.TAction) {
+                const sender = action.sender as EventPayload["sender"];
+
+                if (sender.type !== SenderType.Renderer) {
+                    debug("sender is not renderer !!!");
+                    return;
+                }
+                const pubId = sender.reader_pubId; // see syncFactory
+                const winId = sender.identifier;
+
+                const reader = getReaderWindowFromDi(winId);
+                if (!reader?.isDestroyed() && !reader?.webContents?.isDestroyed()) {
+                    debug(`CLOSE ${pubId} reader with ${winId}`);
+                    reader.close();
+                } else {
+                    debug(`READER ${winId} with pubId=${pubId} not found or destroyed`);
+                }
+            },
+            (e) => error(filename_ + ":closeReaderAfterReadingFinished", e),
         ),
     ]);
 }

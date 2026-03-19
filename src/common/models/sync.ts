@@ -15,6 +15,7 @@ export enum SenderType {
 export interface WindowSender {
     type: SenderType;
     identifier: string;
+    reader_pubId: string | undefined; // undefined in the library only from the reader
 }
 
 export interface WithSender {

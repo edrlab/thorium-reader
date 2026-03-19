@@ -322,29 +322,31 @@ function* readerCloseRequest(identifier?: string) {
 
 }
 
-function* readerSetReduxState(action: readerActions.setReduxState.TAction) {
+// TODO: remove it
+//  reader session is initialized for reader.info properties and then never updated 
+// function* readerSetReduxState(action: readerActions.setReduxState.TAction) {
 
-    const { winId, reduxState } = action.payload;
+//     const { winId, reduxState } = action.payload;
 
-    // const pubId = yield* selectTyped(
-        // (state: RootState) => state?.win?.session?.reader[winId]?.reduxState?.info?.publicationIdentifier);
-    // yield put(winActions.session.setReduxState.build(winId, pubId, reduxState));
+//     // const pubId = yield* selectTyped(
+//         // (state: RootState) => state?.win?.session?.reader[winId]?.reduxState?.info?.publicationIdentifier);
+//     // yield put(winActions.session.setReduxState.build(winId, pubId, reduxState));
 
-    const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
-    const reader = readers[winId];
+//     const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+//     const reader = readers[winId];
 
-    if (reader) {
+//     if (reader) {
 
-        yield put(winActions.session.setReduxState.build(winId, reader.publicationIdentifier, reduxState));
+//         yield put(winActions.session.setReduxState.build(winId, reader.publicationIdentifier, reduxState));
 
-        yield put(winActions.registry.registerReaderPublication.build(
-            reader.publicationIdentifier,
-            reader.windowBound,
-            reduxState));
-    } else {
-        debug("!!! Error no reader window found, why ??", winId);
-    }
-}
+//         yield put(winActions.registry.registerReaderPublication.build(
+//             reader.publicationIdentifier,
+//             reader.windowBound,
+//             reduxState));
+//     } else {
+//         debug("!!! Error no reader window found, why ??", winId);
+//     }
+// }
 
 function* readerPrint(action: readerActions.print.TAction) {
 
@@ -486,11 +488,12 @@ export function saga() {
             readerFullscreenRequest,
             (e) => error(filename_ + ":readerFullscreenRequest", e),
         ),
-        takeSpawnEvery(
-            readerActions.setReduxState.ID,
-            readerSetReduxState,
-            (e) => error(filename_ + ":readerSetReduxState", e),
-        ),
+        // TODO: remove it
+        // takeSpawnEvery(
+        //     readerActions.setReduxState.ID,
+        //     readerSetReduxState,
+        //     (e) => error(filename_ + ":readerSetReduxState", e),
+        // ),
         takeSpawnEvery(
             readerActions.clipboardCopy.ID,
             readerClipboardCopy,

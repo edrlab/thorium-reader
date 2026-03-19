@@ -93,7 +93,7 @@ export function priorityQueueReducer
                     return newQueue;
                 }
 
-                // array used by the readingFinishedQueue to pop pubId from deletePublication and setReduxState action
+                // array used by the readingFinishedQueue to pop pubId from deletePublication and setLocator action
             } else if ((Array.isArray(data.pop.type) && data.pop.type.includes(action.type)) || action.type === data.pop.type) {
 
                 // console.log("$$$$");

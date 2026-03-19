@@ -235,12 +235,13 @@ export function saga() {
                     debug("sender is not renderer !!!");
                     return;
                 }
-                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
-                if (!reader) {
-                    debug("no reader sender found in session !!!");
-                    return;
-                }
-                const pubId = reader.publicationIdentifier;
+                const pubId = sender.reader_pubId; // see syncFactory
+                // const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                // if (!reader) {
+                //     debug("no reader sender found in session !!!");
+                //     return;
+                // }
+                // const pubId = reader.publicationIdentifier;
 
                 yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "pdfConfig", jsonObj));
             },
@@ -256,12 +257,13 @@ export function saga() {
                     debug("sender is not renderer !!!");
                     return;
                 }
-                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
-                if (!reader) {
-                    debug("no reader sender found in session !!!");
-                    return;
-                }
-                const pubId = reader.publicationIdentifier;
+                const pubId = sender.reader_pubId; // see syncFactory
+                // const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                // if (!reader) {
+                //     debug("no reader sender found in session !!!");
+                //     return;
+                // }
+                // const pubId = reader.publicationIdentifier;
 
                 // note and not bookmark !
                 yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "noteTotalCount", jsonObj));
@@ -278,12 +280,13 @@ export function saga() {
                     debug("sender is not renderer !!!");
                     return;
                 }
-                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
-                if (!reader) {
-                    debug("no reader sender found in session !!!");
-                    return;
-                }
-                const pubId = reader.publicationIdentifier;
+                const pubId = sender.reader_pubId; // see syncFactory
+                // const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                // if (!reader) {
+                //     debug("no reader sender found in session !!!");
+                //     return;
+                // }
+                // const pubId = reader.publicationIdentifier;
 
                 yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "allowCustomConfig", jsonObj));
             },
@@ -299,12 +302,13 @@ export function saga() {
                     debug("sender is not renderer !!!");
                     return;
                 }
-                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
-                if (!reader) {
-                    debug("no reader sender found in session !!!");
-                    return;
-                }
-                const pubId = reader.publicationIdentifier;
+                const pubId = sender.reader_pubId; // see syncFactory
+                // const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                // if (!reader) {
+                //     debug("no reader sender found in session !!!");
+                //     return;
+                // }
+                // const pubId = reader.publicationIdentifier;
 
                 yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "divina", divinaReadingMode));
             },
@@ -320,12 +324,13 @@ export function saga() {
                     debug("sender is not renderer !!!");
                     return;
                 }
-                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
-                if (!reader) {
-                    debug("no reader sender found in session !!!");
-                    return;
-                }
-                const pubId = reader.publicationIdentifier;
+                const pubId = sender.reader_pubId; // see syncFactory
+                // const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                // if (!reader) {
+                //     debug("no reader sender found in session !!!");
+                //     return;
+                // }
+                // const pubId = reader.publicationIdentifier;
 
                 yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "disableRTLFlip", rtlFlipJsonObj));
             },
@@ -341,12 +346,13 @@ export function saga() {
                     debug("sender is not renderer !!!");
                     return;
                 }
-                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
-                if (!reader) {
-                    debug("no reader sender found in session !!!");
-                    return;
-                }
-                const pubId = reader.publicationIdentifier;
+                const pubId = sender.reader_pubId; // see syncFactory
+                // const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                // if (!reader) {
+                //     debug("no reader sender found in session !!!");
+                //     return;
+                // }
+                // const pubId = reader.publicationIdentifier;
 
                 yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "locator", locatorJsonObj));
             },
@@ -362,12 +368,13 @@ export function saga() {
                     debug("sender is not renderer !!!");
                     return;
                 }
-                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
-                if (!reader) {
-                    debug("no reader sender found in session !!!");
-                    return;
-                }
-                const pubId = reader.publicationIdentifier;
+                const pubId = sender.reader_pubId; // see syncFactory
+                // const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
+                // if (!reader) {
+                //     debug("no reader sender found in session !!!");
+                //     return;
+                // }
+                // const pubId = reader.publicationIdentifier;
 
                 const config: Partial<ReaderConfig> = (yield* callTyped(() => diMainGet("publication-data").getJsonObj(pubId, "config"))) || {};
                 const configUnion = { ...config, ...configJsonObj };
@@ -386,12 +393,8 @@ export function saga() {
                     debug("sender is not renderer !!!");
                     return;
                 }
-                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[sender.identifier]);
-                if (reader) {
-                    const pubId = reader.publicationIdentifier;
-                    yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "locator", jsonObj));
-                }
-
+                const pubId = sender.reader_pubId; // see syncFactory
+                yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "locator", jsonObj));
             },
         ),
 
