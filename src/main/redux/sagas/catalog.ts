@@ -21,7 +21,7 @@ import { diMainGet, getReaderWindowFromDi } from "readium-desktop/main/di";
 // import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 import { aboutFiltered } from "readium-desktop/main/tools/filter";
-import { publicationActions as publicationActionsFromMainAction, winActions } from "../actions";
+import { publicationActions as publicationActionsFromMainAction } from "../actions";
 import { publicationActions as publicationActionsFromCommonAction } from "readium-desktop/common/redux/actions";
 import { takeSpawnLatest } from "readium-desktop/common/redux/sagas/takeSpawnLatest";
 import { spawnLeading } from "readium-desktop/common/redux/sagas/spawnLeading";
