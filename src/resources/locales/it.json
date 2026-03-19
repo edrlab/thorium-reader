@@ -494,7 +494,7 @@
             },
             "navigation-title": "Navigazione",
             "navigation-toc": {
-                "compact": "Indice interattivo",
+                "compact": "Indice dei contenuti",
                 "descriptive": "L’indice permette l’accesso diretto a tutti i capitoli tramite link"
             }
         },
@@ -685,7 +685,7 @@
                 "filterByCreator": "Filtra per autore",
                 "filterByDrawtype": "Filtra per tipo di disegno",
                 "filterByTag": "Filtra per tag",
-                "filterOptions": "Opzioni di filtraggio",
+                "filterOptions": "Opzioni di filtro",
                 "none": "Nessuno"
             },
             "hide": "Non mostrare",
@@ -698,7 +698,7 @@
                 "lastcreated": "Ultima creata",
                 "lastmodified": "Ultima modificata",
                 "progression": "Progressione",
-                "sortingOptions": "Opzioni di ordinamento"
+                "sortingOptions": "Opzioni di  ordinamento"
             },
             "toggleMarginMarks": "Visualizzazione ai margini",
             "type": {
@@ -1032,7 +1032,7 @@
                 },
                 "FocusReaderNavigationTOC": {
                     "description": "Sposta il focus della tastiera sulla sezione \"Indice\" del pannello di navigazione della finestra del lettore",
-                    "name": "Focus su \"Indice\""
+                    "name": "Focus su \"Indice dei contenuti\""
                 },
                 "FocusReaderSettings": {
                     "description": "Sposta il focus della tastiera sul pannello delle impostazioni della finestra del lettore (preferenze di visualizzazione, ecc.)",
