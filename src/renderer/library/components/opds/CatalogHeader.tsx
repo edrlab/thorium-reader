@@ -20,7 +20,7 @@ export const CatalogHeader: React.FC<React.PropsWithChildren<{ currentLocation: 
     const dispatch = useDispatch();
 
     return (
-        <div style={{display: "flex", alignItems: "center", gap: "20px", width: "100%"}}>
+        <div style={{display: "flex", alignItems: "center", gap: "20px"}}>
             {previousLocation ?
             <Link
                 style={{width: "20px", height: "20px", transform: "rotate(180deg)"}}
