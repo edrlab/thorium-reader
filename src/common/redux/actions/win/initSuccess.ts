@@ -6,21 +6,16 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
+import { WithSender } from "readium-desktop/common/models/sync";
 
-export const ID = "READER_FROM_PUBLICATION_CLOSE_REQUEST";
+export const ID = "WIN_INIT_SUCCESS";
 
-export interface Payload {
-    publicationIdentifier: string;
-}
-
-export function build(publicationIdentifier: string):
-    Action<typeof ID, Payload> {
+export function build():
+    Action<typeof ID> & Partial<WithSender> {
 
     return {
         type: ID,
-        payload: {
-            publicationIdentifier,
-        },
+        payload: {},
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator

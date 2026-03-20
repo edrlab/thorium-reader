@@ -17,7 +17,7 @@ import { combineReducers } from "redux";
 import { publicationActions } from "../actions";
 import { customizationActions, publicationActions as publicationActionsFromCommonAction, readerActions } from "readium-desktop/common/redux/actions";
 import { readerDefaultConfigReducer } from "../../../common/redux/reducers/reader/defaultConfig";
-import { winRegistryReaderReducer } from "./win/registry/reader";
+// import { winRegistryReaderReducer } from "./win/registry/reader";
 import { winSessionLibraryReducer } from "./win/session/library";
 import { winSessionReaderReducer } from "./win/session/reader";
 import { winModeReducer } from "../../../common/redux/reducers/winModeReducer";
@@ -68,7 +68,7 @@ export const rootReducer = combineReducers({ // RootState
             reader: winSessionReaderReducer,
         }),
         registry: combineReducers({
-            reader: winRegistryReaderReducer,
+            reader: (state: any = null) => state, // winRegistryReaderReducer,
         }),
     }),
     mode: winModeReducer,
@@ -88,11 +88,11 @@ export const rootReducer = combineReducers({ // RootState
                             if (action.type ==="READER_SET_LOCATOR") {
                                 // const locatorJsonObj = action.payload as unknown as object;
                                 const sender = action.sender as EventPayload["sender"];
-                                if (sender.type !== SenderType.Renderer) {
+                                if (sender?.type !== SenderType.Renderer) {
                                     debug("sender is not renderer !!!");
                                     return [undefined, undefined];
                                 }
-                                pubId = sender.reader_pubId; // see syncFactory
+                                pubId = sender?.reader_pubId; // see syncFactory
                                 debug("lastReadingQueue SET LOCATOR", pubId);
                             } else {
                                 debug("error not setLocator action !!");
@@ -128,11 +128,11 @@ export const rootReducer = combineReducers({ // RootState
                             if (action.type === "READER_SET_LOCATOR") {
                                 // const locatorJsonObj = action.payload as unknown as object;
                                 const sender = action.sender as EventPayload["sender"];
-                                if (sender.type !== SenderType.Renderer) {
+                                if (sender?.type !== SenderType.Renderer) {
                                     debug("sender is not renderer !!!");
                                     return [undefined, undefined];
                                 }
-                                pubId = sender.reader_pubId; // see syncFactory
+                                pubId = sender?.reader_pubId; // see syncFactory
                                 debug("readingFinishedQueue SET LOCATOR  ", pubId);
                             } else {
                                 pubId = action.payload.publicationIdentifier;

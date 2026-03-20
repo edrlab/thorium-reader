@@ -666,72 +666,75 @@ export async function initStore()
         debug("END reader registry migration, let's create the redux store");
     } else {
 
-        debug("START reader registry hydration from publication-data (win.registry.reader is empty from the json state \"state_v340.json\" or from an empty new \"state.json\")");
-        if (!preloadedState.win) {
-            preloadedState.win = {} as any;
-        }
-        if (!preloadedState.win.registry) {
-            preloadedState.win.registry = {} as any;
-        }
-        if (!preloadedState.win.registry.reader) {
-            preloadedState.win.registry.reader = {};
-        }
-
-        // list publication db
-        // read publication-data files and hydrate redux state
-        const publicationData = diMainGet("publication-data");
-        const pubIds = await publicationData.listPublication();
-        for (const pubId of pubIds) {
-            debug("PubID", pubId);
-            preloadedState.win.registry.reader[pubId] = {} as IWinRegistryReaderState;
-
-            // "config" | "locator" | "divina" | "disableRTLFlip" | "allowCustomConfig" | "noteTotalCount" | "pdfConfig"
-
-            // can be undefined!
-            const locator = await tryCatch(async () => await publicationData.readJsonObj(pubId, "locator"), _dbgn) as unknown as MiniLocatorExtended;
-
-            // can be undefined!
-            const config = await tryCatch(async () => await publicationData.readJsonObj(pubId, "config"), _dbgn) as unknown as ReaderConfig;
-
-            // can be undefined!
-            const disableRTLFlip = await tryCatch(async () => await publicationData.readJsonObj(pubId, "disableRTLFlip"), _dbgn) as unknown as IRTLFlipState;
-
-            // can be undefined!
-            const allowCustomConfig = await tryCatch(async () => await publicationData.readJsonObj(pubId, "allowCustomConfig"), _dbgn) as unknown as IAllowCustomConfigState;
-
-            // can be undefined!
-            const noteTotalCount = await tryCatch(async () => await publicationData.readJsonObj(pubId, "noteTotalCount"), _dbgn) as unknown as IBookmarkTotalCountState;
-
-            // can be undefined!
-            const divina = await tryCatch(async () => await publicationData.readJsonObj(pubId, "divina"), _dbgn) as unknown as IDivinaState;
-
-            // can be undefined!
-            const pdfConfig = await tryCatch(async () => await publicationData.readJsonObj(pubId, "pdfConfig"), _dbgn) as unknown as IReaderPdfConfig;
-
-            preloadedState.win.registry.reader[pubId].reduxState = {
-                locator,
-                config,
-                disableRTLFlip,
-                allowCustomConfig,
-                noteTotalCount,
-                divina,
-                pdfConfig,
-            };
-
-            // can be undefined!
-            const bound = await tryCatch(async () => await publicationData.readJsonObj(pubId, "bound"), _dbgn);
-
-            preloadedState.win.registry.reader[pubId].windowBound = bound as unknown as Electron.Rectangle;
-
-            debug(`\t => reduxState loaded with ${!!locator}, ${!!config}, ${!disableRTLFlip}, ${!!bound}`);
-            try {
-                await publicationData.close(pubId);
-            } catch (e) {
-                debug(e);
+        const winRegistryEnabled = false; // win.registry hydration is disabled replace by publication-data storage in disk
+        if (winRegistryEnabled) {
+            debug("START reader registry hydration from publication-data (win.registry.reader is empty from the json state \"state_v340.json\" or from an empty new \"state.json\")");
+            if (!preloadedState.win) {
+                preloadedState.win = {} as any;
             }
-        }
-
-        debug("END reader registry hydration from publication-data, let's create the redux store");
+            if (!preloadedState.win.registry) {
+                preloadedState.win.registry = {} as any;
+            }
+            if (!preloadedState.win.registry.reader) {
+                preloadedState.win.registry.reader = {};
+            }
+    
+            // list publication db
+            // read publication-data files and hydrate redux state
+            const publicationData = diMainGet("publication-data");
+            const pubIds = await publicationData.listPublication();
+            for (const pubId of pubIds) {
+                debug("PubID", pubId);
+                preloadedState.win.registry.reader[pubId] = {} as IWinRegistryReaderState;
+    
+                // "config" | "locator" | "divina" | "disableRTLFlip" | "allowCustomConfig" | "noteTotalCount" | "pdfConfig"
+    
+                // can be undefined!
+                const locator = await tryCatch(async () => await publicationData.readJsonObj(pubId, "locator"), _dbgn) as unknown as MiniLocatorExtended;
+    
+                // can be undefined!
+                const config = await tryCatch(async () => await publicationData.readJsonObj(pubId, "config"), _dbgn) as unknown as ReaderConfig;
+    
+                // can be undefined!
+                const disableRTLFlip = await tryCatch(async () => await publicationData.readJsonObj(pubId, "disableRTLFlip"), _dbgn) as unknown as IRTLFlipState;
+    
+                // can be undefined!
+                const allowCustomConfig = await tryCatch(async () => await publicationData.readJsonObj(pubId, "allowCustomConfig"), _dbgn) as unknown as IAllowCustomConfigState;
+    
+                // can be undefined!
+                const noteTotalCount = await tryCatch(async () => await publicationData.readJsonObj(pubId, "noteTotalCount"), _dbgn) as unknown as IBookmarkTotalCountState;
+    
+                // can be undefined!
+                const divina = await tryCatch(async () => await publicationData.readJsonObj(pubId, "divina"), _dbgn) as unknown as IDivinaState;
+    
+                // can be undefined!
+                const pdfConfig = await tryCatch(async () => await publicationData.readJsonObj(pubId, "pdfConfig"), _dbgn) as unknown as IReaderPdfConfig;
+    
+                preloadedState.win.registry.reader[pubId].reduxState = {
+                    locator,
+                    config,
+                    disableRTLFlip,
+                    allowCustomConfig,
+                    noteTotalCount,
+                    divina,
+                    pdfConfig,
+                };
+    
+                // can be undefined!
+                const bound = await tryCatch(async () => await publicationData.readJsonObj(pubId, "bound"), _dbgn);
+    
+                preloadedState.win.registry.reader[pubId].windowBound = bound as unknown as Electron.Rectangle;
+    
+                debug(`\t => reduxState loaded with ${!!locator}, ${!!config}, ${!disableRTLFlip}, ${!!bound}`);
+                try {
+                    await publicationData.close(pubId);
+                } catch (e) {
+                    debug(e);
+                }
+            }
+    
+            debug("END reader registry hydration from publication-data, let's create the redux store");
+        } // win registry hydration disabled
     }
 
     // defaultConfig state initialization from older database thorium version 2.x, 3.0

@@ -12,18 +12,20 @@ export const ID = "MAIN_WIN_READER_OPEN_SUCCESS";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Payload {
-    win: Electron.BrowserWindow;
-    identifier: string;
+    readerWindow: Electron.BrowserWindow;
+    windowIdentifier: string;
+    publicationIdentifier: string;
 }
 
-export function build(win: Electron.BrowserWindow, identifier: string):
+export function build(readerWindow: Electron.BrowserWindow, windowIdentifier: string, publicationIdentifier: string):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
-            win,
-            identifier,
+            readerWindow,
+            windowIdentifier,
+            publicationIdentifier,
         },
     };
 }

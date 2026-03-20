@@ -9,7 +9,7 @@ import { ipcRenderer } from "electron";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { readerIpc } from "readium-desktop/common/ipc";
-import { winActions } from "readium-desktop/renderer/common/redux/actions";
+import { winCommonActions } from "readium-desktop/common/redux/actions";
 import { createStoreFromDi } from "readium-desktop/renderer/reader/createStore";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
@@ -96,7 +96,7 @@ ipcRenderer.on(readerIpc.CHANNEL,
                 /*const localeUsedByMoment = */moment.locale([locale, "en"]);
                 // console.log("MOMENT SET LOCALE START", localeUsedByMoment);
 
-                store.dispatch(winActions.initRequest.build(data.payload.win.identifier));
+                store.dispatch(winCommonActions.initRequest.build(data.payload.win.identifier));
 
                 break;
         }

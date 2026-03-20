@@ -20,7 +20,6 @@ import { createStoreFromDi } from "../di";
 import { needToPersistFinalState } from "../redux/sagas/persist";
 import { appActions } from "../redux/actions";
 import { getOpenFileFromCliChannel, getOpenTitleFromCliChannel } from "../event";
-import { flushSession } from "../tools/flushSession";
 import { isOpenUrl, setOpenUrl } from "./url";
 import { globSync } from "glob";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -218,8 +217,6 @@ const yargsInit = () =>
                     app.whenReady(),
                 ]);
 
-                await flushSession();
-
                 if (argv.title) {
                     const openTitleFromCliChannel = getOpenTitleFromCliChannel();
                     openTitleFromCliChannel.put(argv.title);
@@ -263,9 +260,6 @@ const yargsInit = () =>
 
                     debug("open arg requested", pathArgv);
                     dump += `pathArgv found: ${JSON.stringify(pathArgv)}\n`;
-
-                    // flush session because user ask to read a publication
-                    flushSession();
 
                     // pathArgv can be an url with deepLinkInvocation in windows
                     // https://github.com/oikonomopo/electron-deep-linking-mac-win

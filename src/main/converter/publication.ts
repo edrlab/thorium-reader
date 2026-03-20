@@ -26,6 +26,7 @@ import { PublicationParsePromise } from "@r2-shared-js/parser/publication-parser
 import { diMainGet } from "../di";
 import { lcpLicenseIsNotWellFormed } from "readium-desktop/common/lcp";
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
+import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 // import { type Store } from "redux";
 // import { RootState } from "../redux/states";
 
@@ -191,7 +192,7 @@ export class PublicationViewConverter {
         const store = diMainGet("store");
         const state = store.getState();
         const readingFinished = tryCatchSync(() => state.publication.readingFinishedQueue.findIndex(([, pubIndentifier]) => pubIndentifier === document.identifier) > -1, "") || false;
-        const readerStateLocator = tryCatchSync(() => state.win.registry.reader[document.identifier]?.reduxState.locator, "");
+        const readerStateLocator = await diMainGet("publication-data").readJsonObj(document.identifier, "locator") as MiniLocatorExtended | undefined; // TODO: type object
 
         const title = document.title || "-"; // default title;
         
@@ -262,15 +263,18 @@ export class PublicationViewConverter {
         // could be refactored when the publications documents will be in the state
         const store = diMainGet("store");
         const state = store.getState();
-        const readerStateLocator = tryCatchSync(() => state.win.registry.reader[document.identifier]?.reduxState.locator, "");
+        const readerStateLocator = await diMainGet("publication-data").readJsonObj(document.identifier, "locator") as MiniLocatorExtended | undefined; // TODO: type object
 
         const duration = typeof r2Publication.Metadata.Duration === "number" ? r2Publication.Metadata.Duration : undefined;
         const nbOfTracks = typeof r2Publication.Metadata.AdditionalJSON?.tracks === "number" ? r2Publication.Metadata.AdditionalJSON?.tracks : undefined;
 
-        const isAudio = r2Publication.Metadata.RDFType?.toLowerCase().includes("audio") || isAudiobookFn(r2Publication.Metadata) || (
-            readerStateLocator?.audioPlaybackInfo
+        let isAudio = false;
+        try {
+            isAudio = r2Publication.Metadata.RDFType?.toLowerCase().includes("audio") || isAudiobookFn(r2Publication.Metadata) || (
+                readerStateLocator?.audioPlaybackInfo
                 && readerStateLocator?.audioPlaybackInfo.globalDuration
                 && typeof readerStateLocator?.locator.locations.position === "number");
+        } catch (e) { debug(e); }
 
         const isDivina = isDivinaFn(r2Publication);
         const isPDF = isPdfFn(r2Publication);

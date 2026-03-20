@@ -309,21 +309,30 @@ export function saga() {
         takeSpawnLatest(
             publicationActionsFromCommonAction.readingFinished.ID,
             function* (action: publicationActionsFromCommonAction.readingFinished.TAction) {
+                const { publicationIdentifier: pubId } = action.payload;
                 const sender = action.sender as EventPayload["sender"];
 
-                if (sender.type !== SenderType.Renderer) {
+                if (sender?.type !== SenderType.Renderer) {
                     debug("sender is not renderer !!!");
                     return;
                 }
-                const pubId = sender.reader_pubId; // see syncFactory
-                const winId = sender.identifier;
+                let winId = sender.reader_pubId /* see syncFactory */ ? sender.identifier : undefined; // action dispatched from library;
+                if (!winId) {
+                    const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+                    const reader = Object.values(readers).find((v) => v.publicationIdentifier === pubId);
+                    if (!reader) {
+                        debug("ERROR!!! no reader sender found in session !!!");
+                        return;
+                    }
+                    winId = reader.identifier;
+                }
 
                 const reader = getReaderWindowFromDi(winId);
-                if (!reader?.isDestroyed() && !reader?.webContents?.isDestroyed()) {
-                    debug(`CLOSE ${pubId} reader with ${winId}`);
-                    reader.close();
+                if (reader && !reader?.isDestroyed() && !reader?.webContents?.isDestroyed()) {
+                    debug(`CLOSE reader winId=${winId} pubId=${pubId}`);
+                    yield* putTyped(readerActions.closeRequest.build(winId, pubId));
                 } else {
-                    debug(`READER ${winId} with pubId=${pubId} not found or destroyed`);
+                    debug(`READER winId=${winId} with pubId=${pubId} not found or destroyed from action=${JSON.stringify(action)}`);
                 }
             },
             (e) => error(filename_ + ":closeReaderAfterReadingFinished", e),

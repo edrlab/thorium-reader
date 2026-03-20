@@ -10,16 +10,16 @@ import { Action } from "readium-desktop/common/models/redux";
 export const ID = "WIN_SESSION_UNREGISTER_READER";
 
 export interface Payload {
-    identifier: string;
+    windowIdentifier: string;
 }
 
-export function build(identifier: string):
+export function build(windowIdentifier: string):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
-            identifier,
+            windowIdentifier,
         },
     };
 }

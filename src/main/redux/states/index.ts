@@ -33,7 +33,7 @@ export interface RootState extends ICommonRootState {
             reader: IDictWinSessionReaderState,
         },
         registry: {
-            reader: IDictWinRegistryReaderState,
+            reader: unknown, // IDictWinRegistryReaderState,
         },
     };
     mode: ReaderMode;
@@ -51,5 +51,16 @@ export interface RootState extends ICommonRootState {
     settings: ISettingsState;
 }
 
-export type PersistRootState = Pick<RootState, "win" | "publication" | "reader" | "session" | "screenReader" | "i18n" | "opds" | "version" | "theme" | "wizard" | "settings" | "creator" | "noteExport" | "customization">;
+export type PersistRootState_ = Pick<RootState, "win" | "publication" | "reader" | "session" | "screenReader" | "i18n" | "opds" | "version" | "theme" | "wizard" | "settings" | "creator" | "noteExport" | "customization">;
+export type PersistRootState = Omit<PersistRootState_, "win"> & {
+    win: {
+        session: {
+            library: IWinSessionLibraryState,
+            reader: IDictWinSessionReaderState,
+        },
+        registry: {
+            reader: IDictWinRegistryReaderState,
+        },
+    };
+}
 export type PersistRootStatePatch = Pick<RootState, "publication" | "reader" | "session" | "screenReader" | "i18n" | "opds" | "version" | "theme" | "wizard" | "settings" | "creator" | "noteExport" | "customization">;

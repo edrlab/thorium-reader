@@ -12,37 +12,45 @@ import { ReaderMode } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
 import { ActionWithDestination, ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { normalizeRectangle } from "readium-desktop/common/rectangle/window";
+import { defaultRectangle, normalizeRectangle } from "readium-desktop/common/rectangle/window";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
-import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
+import { streamerActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
-import { call as callTyped, select as selectTyped, put as putTyped } from "typed-redux-saga/macro";
+import { call as callTyped, select as selectTyped, put as putTyped, SagaGenerator } from "typed-redux-saga/macro";
 import { types } from "util";
+import { v4 as uuidv4 } from "uuid";
 
 import {
     ERROR_MESSAGE_ON_USERKEYCHECKREQUEST, ERROR_MESSAGE_ENCRYPTED_NO_LICENSE, streamerOpenPublicationAndReturnManifestUrl,
 } from "./publication/openPublication";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { getTranslator } from "readium-desktop/common/services/translator";
-import { IReaderStateReaderPersistence } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { createReaderWindow } from "./win/browserWindow/createReaderWindow";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:reader";
 const debug = debug_(filename_);
 debug("_");
 
+const isUUIDv4 = (uuid: string) => /^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/.test(uuid);
+const assertUUIDv4 = (uuid: string) => {
+    if (!isUUIDv4(uuid)) {
+        throw new Error("not an uuidv4 identifier !");
+    }
+};
+
 function* readerFullscreenRequest(action: readerActions.fullScreenRequest.TAction) {
 
     const sender = action.sender;
 
-    if (sender.identifier && sender.type === SenderType.Renderer) {
+    if (sender?.identifier && sender?.type === SenderType.Renderer) {
 
         const readerWin = yield* callTyped(() => getReaderWindowFromDi(sender.identifier));
 
@@ -94,24 +102,28 @@ function* readerDetachRequest(action: readerActions.detachModeRequest.TAction) {
     yield put(readerActions.detachModeSuccess.build());
 }
 
-function* getWinBound(publicationIdentifier: string | undefined) {
+export function* getWinBound(publicationIdentifier: string | undefined): SagaGenerator<Electron.Rectangle> {
 
     const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
     const library = yield* selectTyped((state: RootState) => state.win.session.library);
     const readerArray = ObjectValues(readers);
 
     debug("library.windowBound", library.windowBound);
-    normalizeRectangle(library.windowBound);
+    // normalizeRectangle(library.windowBound);
 
-    if (readerArray.length === 0) {
-        return library.windowBound;
+    // if (readerArray.length === 0) {
+    //     return library.windowBound;
+    // }
+
+    // let winBound = (yield* selectTyped(
+    //     (state: RootState) => state.win.registry.reader[publicationIdentifier]?.windowBound,
+    // )) as Electron.Rectangle | undefined;
+    let winBound: Electron.Rectangle | undefined = yield* callTyped(() => diMainGet("publication-data").readJsonObj(publicationIdentifier, "bound")) as any; // TODO: type object
+    try {
+        winBound = normalizeRectangle(winBound);
+    } catch {
+        winBound = defaultRectangle();
     }
-
-    let winBound = (yield* selectTyped(
-        (state: RootState) => state.win.registry.reader[publicationIdentifier]?.windowBound,
-    )) as Electron.Rectangle | undefined;
-
-    winBound = normalizeRectangle(winBound);
     debug(`reader[${publicationIdentifier}]?.winBound}`, winBound);
 
     const winBoundArray = readerArray.map((reader) => reader.windowBound);
@@ -122,7 +134,7 @@ function* getWinBound(publicationIdentifier: string | undefined) {
         !winBound
         || winBoundAlreadyTaken
     ) {
-        if (readerArray.length) {
+        // if (readerArray.length) {
 
             const displayArea = yield* callTyped(() => screen.getPrimaryDisplay().workAreaSize);
             debug("displayArea", displayArea);
@@ -132,7 +144,7 @@ function* getWinBound(publicationIdentifier: string | undefined) {
                     if (!rect.x) { // NaN, undefined, null, zero (positive and negative numbers are truthy)
                         rect.x = 0;
                     }
-                    rect.x += 100;
+                    rect.x += 20;
                     const wDiff = Math.abs(displayArea.width - rect.width);
                     if (wDiff) {
                         rect.x %= wDiff;
@@ -141,7 +153,7 @@ function* getWinBound(publicationIdentifier: string | undefined) {
                     if (!rect.y) { // NaN, undefined, null, zero (positive and negative numbers are truthy)
                         rect.y = 0;
                     }
-                    rect.y += 100;
+                    rect.y += 20;
                     const hDiff = Math.abs(displayArea.height - rect.height);
                     if (hDiff) {
                         rect.y %= hDiff;
@@ -157,9 +169,9 @@ function* getWinBound(publicationIdentifier: string | undefined) {
             debug("winBound", winBound);
             winBound = normalizeRectangle(winBound);
 
-        } else {
-            winBound = normalizeRectangle(library.windowBound);
-        }
+        // } else {
+        //     winBound = normalizeRectangle(library.windowBound);
+        // }
     }
 
     return winBound;
@@ -167,9 +179,10 @@ function* getWinBound(publicationIdentifier: string | undefined) {
 
 function* readerOpenRequest(action: readerActions.openRequest.TAction) {
 
-    debug(`readerOpenRequest:action:${JSON.stringify(action)}`);
-
     const publicationIdentifier = action.payload.publicationIdentifier;
+    debug(`START REQUEST to open a reader with pubId=${publicationIdentifier}, action=${JSON.stringify(action)}`);
+
+    assertUUIDv4(publicationIdentifier);
 
     let manifestUrl: string;
     try {
@@ -204,10 +217,10 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
 
     if (manifestUrl) {
 
-        const reduxState: Partial<IReaderStateReaderPersistence> = yield* selectTyped(
-            (state: RootState) =>
-                state.win.registry.reader[publicationIdentifier]?.reduxState || {},
-        );
+        // const reduxState: Partial<IReaderStateReaderPersistence> = yield* selectTyped(
+        //     (state: RootState) =>
+        //         state.win.registry.reader[publicationIdentifier]?.reduxState || {},
+        // );
 
         // session always enabled
         // const sessionIsEnabled = yield* selectTyped(
@@ -220,7 +233,7 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
         //     reduxState.config = reduxDefaultConfig;
         // }
 
-        const winBound = yield* callTyped(getWinBound, publicationIdentifier);
+        // const winBound = yield* callTyped(getWinBound, publicationIdentifier);
 
         // const readers = yield* selectTyped(
         //     (state: RootState) => state.win.session.reader,
@@ -239,30 +252,42 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
             }
         }
 
-        yield put(winActions.reader.openRequest.build(
+        const windowIdentifier = uuidv4();
+        yield* callTyped(createReaderWindow,
             publicationIdentifier,
             manifestUrl,
-            winBound,
-            reduxState,
-        ));
+            windowIdentifier,
+            // winBound,
+            // reduxState,
+        );
 
     }
 }
 
-function* readerCloseRequestFromPublication(action: readerActions.closeRequestFromPublication.TAction) {
+// use to close readers with the same publication identifier from main process
+export function* RequesetToCloseAllReadersWithTheSamePubId(publicationIdentifier: string) {
+
+    assertUUIDv4(publicationIdentifier);
 
     const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
 
-    for (const key in readers) {
-        if (readers[key]?.publicationIdentifier === action.payload.publicationIdentifier) {
-            yield call(readerCloseRequest, readers[key].identifier);
+    for (const windowIdentifier in readers) {
+        if (readers[windowIdentifier]?.publicationIdentifier === publicationIdentifier) {
+            yield* putTyped(readerActions.closeRequest.build(windowIdentifier, publicationIdentifier));
         }
     }
 }
 
 function* readerCLoseRequestFromIdentifier(action: readerActions.closeRequest.TAction) {
 
-    yield call(readerCloseRequest, action.sender.identifier);
+    const pubId = action.sender?.reader_pubId || action.payload.publicationIdentifier;
+    const winId = action.sender?.identifier || action.payload.windowIdentifier;
+    debug(`START REQUEST to close reader winId=${winId} with pubId=${pubId}`);
+
+    assertUUIDv4(winId);
+    assertUUIDv4(pubId);
+    
+    yield call(readerCloseRequest, winId, pubId);
 
     const libWin = yield* callTyped(() => getLibraryWindowFromDi());
     if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed()) {
@@ -287,19 +312,24 @@ function* readerCLoseRequestFromIdentifier(action: readerActions.closeRequest.TA
     }
 }
 
-function* readerCloseRequest(identifier?: string) {
+function* readerCloseRequest(windowIdentifier: string, publicationIdentifier: string) {
 
-    const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+    // const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
 
-    for (const key in readers) {
-        if (identifier && readers[key]?.identifier === identifier) {
-            // Notify the streamer that a publication has been closed
-            yield put(
-                streamerActions.publicationCloseRequest.build(
-                    readers[key].publicationIdentifier,
-                ));
-        }
-    }
+    // for (const key in readers) {
+    //     if (windowIdentifier && readers[key]?.identifier === windowIdentifier) {
+    //         // Notify the streamer that a publication has been closed
+    //         yield put(
+    //             streamerActions.publicationCloseRequest.build(
+    //                 readers[key].publicationIdentifier,
+    //             ));
+    //     }
+    // }
+    // Notify the streamer that a publication has been closed
+    yield put(
+        streamerActions.publicationCloseRequest.build(
+            publicationIdentifier,
+        ));
 
     const streamerAction: Action<any> = yield take([
         streamerActions.publicationCloseSuccess.ID,
@@ -311,11 +341,11 @@ function* readerCloseRequest(identifier?: string) {
 
     if (typedAction.error) {
         // Failed to close publication
-        yield put(readerActions.closeError.build(identifier));
+        yield put(readerActions.closeError.build(windowIdentifier));
         return;
     }
 
-    const readerWindow = getReaderWindowFromDi(identifier);
+    const readerWindow = getReaderWindowFromDi(windowIdentifier);
     if (readerWindow && !readerWindow.isDestroyed() && !readerWindow.webContents.isDestroyed()) {
         readerWindow.close();
     }
@@ -463,11 +493,6 @@ function* readerClipboardCopy(action: readerActions.clipboardCopy.TAction) {
 
 export function saga() {
     return all([
-        takeSpawnEvery(
-            readerActions.closeRequestFromPublication.ID,
-            readerCloseRequestFromPublication,
-            (e) => error(filename_ + ":readerCloseRequestFromPublication", e),
-        ),
         takeSpawnEvery(
             readerActions.closeRequest.ID,
             readerCLoseRequestFromIdentifier,

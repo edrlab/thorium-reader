@@ -5,12 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as closed from "./closed";
-import * as openRequest from "./openRequest";
 import * as openSucess from "./openSucess";
+import * as openError from "./openError";
 
 export {
-    closed,
     openSucess,
-    openRequest,
+    openError,
 };

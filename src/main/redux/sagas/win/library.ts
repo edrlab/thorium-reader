@@ -23,7 +23,6 @@ import { call as callTyped, select as selectTyped, take as takeTyped, delay as d
 import { IWinSessionReaderState } from "../../states/win/session/reader";
 import { getAppActivateEventChannel } from "../getEventChannel";
 import { createLibraryWindow } from "./browserWindow/createLibraryWindow";
-import { checkReaderWindowInSession } from "./session/checkReaderWindowInSession";
 import { getCatalog } from "../catalog";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
@@ -338,11 +337,11 @@ export function saga() {
             createLibraryWindow,
             (e) => error(filename_ + ":createLibraryWindow", e),
         ),
-        takeSpawnLeading(
-            winActions.library.openRequest.ID,
-            checkReaderWindowInSession,
-            (e) => error(filename_ + ":checkReaderWindowInSession", e),
-        ),
+        // takeSpawnLeading(
+        //     winActions.library.openRequest.ID,
+        //     checkReaderWindowInSession,
+        //     (e) => error(filename_ + ":checkReaderWindowInSession", e),
+        // ),
         takeSpawnLeading(
             winActions.library.openSucess.ID,
             winOpen,

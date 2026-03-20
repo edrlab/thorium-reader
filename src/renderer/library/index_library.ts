@@ -11,7 +11,7 @@ import * as ReactDOM from "react-dom";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { type ActionWithSender } from "readium-desktop/common/models/sync";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
-import { winActions } from "readium-desktop/renderer/common/redux/actions";
+import { winCommonActions } from "readium-desktop/common/redux/actions";
 
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
@@ -91,7 +91,7 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
             /*const localeUsedByMoment = */moment.locale([locale, "en"]);
             // console.log("MOMENT SET LOCALE START", localeUsedByMoment);
 
-            store.dispatch(winActions.initRequest.build(data.payload.win.identifier));
+            store.dispatch(winCommonActions.initRequest.build(data.payload.win.identifier));
 
             break;
     }

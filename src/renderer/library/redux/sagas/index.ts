@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { winActions } from "readium-desktop/renderer/common/redux/actions";
+import { winCommonActions } from "readium-desktop/common/redux/actions";
 import * as publicationInfoSyncTags from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
@@ -31,9 +31,7 @@ export function* rootSaga() {
 
     yield i18n.saga();
 
-    yield take(winActions.initRequest.ID);
-
-    yield put(winActions.initSuccess.build());
+    yield take(winCommonActions.initRequest.ID);
 
     yield call(winInit.render);
 
@@ -54,4 +52,6 @@ export function* rootSaga() {
 
         customization.saga(),
     ]);
+    
+    yield put(winCommonActions.initSuccess.build());
 }

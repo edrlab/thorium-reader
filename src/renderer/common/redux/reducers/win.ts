@@ -7,7 +7,7 @@
 
 import { type Reducer } from "redux";
 
-import { winActions } from "readium-desktop/renderer/common/redux/actions";
+import { winCommonActions } from "readium-desktop/common/redux/actions";
 import { WinState } from "readium-desktop/common/redux/states/win";
 
 const initialState: WinState = {
@@ -16,10 +16,10 @@ const initialState: WinState = {
 
 function winReducer_(
     state: WinState = initialState,
-    action: winActions.initRequest.TAction,
+    action: winCommonActions.initRequest.TAction,
     ): WinState {
     switch (action.type) {
-        case winActions.initRequest.ID:
+        case winCommonActions.initRequest.ID:
             return {
                 ...{
                     identifier: action.payload.identifier,
