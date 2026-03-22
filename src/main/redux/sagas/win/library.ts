@@ -64,8 +64,10 @@ export function* appActivate() {
             libWinState.identifier
         ) {
 
+            // TODO: review libWin reference getter and setter on macos
             const libWin = yield* callTyped(() => getLibraryWindowFromDi());
 
+            // TODO: if libwin destroyed but found in session, should it be re-created?
             if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed()) {
 
                 if (libWin.isMinimized()) {
@@ -92,123 +94,17 @@ export function* appActivate() {
             }
         }
 
-        yield put(winActions.library.openRequest.build());
+        // yield put(winActions.library.openRequest.build());
+        yield* callTyped(createLibraryWindow);
+        // TODO
 
-        // wait
-        const raceResult = yield* raceTyped([
-            takeTyped(winActions.library.openSucess.ID),
-            delayTyped(5000),
-        ]);
-        debug("AppActivate openSuccess with 5seconds timeout, result:", raceResult);
+        // // wait
+        // const raceResult = yield* raceTyped([
+        //     takeTyped(winActions.library.openSucess.ID),
+        //     delayTyped(5000),
+        // ]);
+        // debug("AppActivate openSuccess with 5seconds timeout, result:", raceResult);
     }
-}
-
-function* winOpen(action: winActions.library.openSucess.TAction) {
-
-    const identifier = action.payload.identifier;
-    debug(`library ${identifier} -> winOpen`);
-
-    const libWindow = action.payload.win;
-    const webContents = libWindow.webContents;
-    const state = yield* selectTyped((_state: RootState) => _state);
-
-    const payload: Partial<ILibraryRootState> = {
-        i18n: state.i18n,
-        keyboard: state.keyboard,
-        theme: state.theme,
-        wizard: state.wizard,
-        win: {
-            identifier,
-        },
-        publication: {
-            catalog: {
-                entries: [],
-            },
-            tag: [],
-        },
-        session: {
-            // state: state.session.state,
-            // save: state.session.save,
-            save: false, // disabled
-        },
-        screenReader: {
-            activate: state.screenReader.activate,
-        },
-        creator: state.creator,
-        settings: state.settings,
-        lcp: state.lcp,
-        noteExport: state.noteExport,
-        customization: state.customization,
-    };
-    try {
-        const publication = yield* callTyped(getCatalog);
-        payload.publication = publication;
-    } catch (e) {
-        error(filename_, e);
-    }
-    // Send the id to the new window
-    webContents.send(winIpc.CHANNEL, {
-        type: winIpc.EventType.IdResponse,
-        payload,
-    } as winIpc.EventPayload);
-
-    // send on redux library
-    // TODO
-    // will be replaced with preloaded state injection in Redux createStore.
-
-    // // Send locale
-    // webContents.send(syncIpc.CHANNEL, {
-    //     type: syncIpc.EventType.MainAction,
-    //     payload: {
-    //         action: i18nActions.setLocale.build(state.i18n.locale),
-    //         // useful ?
-    //         // need ot at least pass it in payload instead
-    //     },
-    // } as syncIpc.EventPayload);
-
-    // // Send keyboard shortcuts
-    // webContents.send(syncIpc.CHANNEL, {
-    //     type: syncIpc.EventType.MainAction,
-    //     payload: {
-    //         action: keyboardActions.setShortcuts.build(state.keyboard.shortcuts, false),
-    //     },
-    // } as syncIpc.EventPayload);
-
-    // // Init network on window
-    // let actionNet = null;
-
-    // switch (state.net.status) {
-    //     case NetStatus.Online:
-    //         actionNet = netActions.online.build();
-    //         break;
-    //     case NetStatus.Offline:
-    //     default:
-    //         actionNet = netActions.offline.build();
-    //         break;
-    // }
-
-    // // Send network status
-    // webContents.send(syncIpc.CHANNEL, {
-    //     type: syncIpc.EventType.MainAction,
-    //     payload: {
-    //         action: actionNet,
-    //     },
-    // } as syncIpc.EventPayload);
-
-    // // Send update info
-    // webContents.send(syncIpc.CHANNEL, {
-    //     type: syncIpc.EventType.MainAction,
-    //     payload: {
-    //         action: {
-    //             type: updateActions.latestVersion.ID,
-    //             payload: updateActions.latestVersion.build(
-    //                 state.update.status,
-    //                 state.update.latestVersion,
-    //                 state.update.latestVersionUrl),
-    //         },
-    //     },
-    // } as syncIpc.EventPayload);
-
 }
 
 function* winClose(_action: winActions.library.closed.TAction) {
@@ -332,21 +228,21 @@ export function saga() {
     const appActivateChannel = getAppActivateEventChannel();
 
     return all([
-        takeSpawnLeading(
-            winActions.library.openRequest.ID,
-            createLibraryWindow,
-            (e) => error(filename_ + ":createLibraryWindow", e),
-        ),
+        // takeSpawnLeading(
+        //     winActions.library.openRequest.ID,
+        //     createLibraryWindow,
+        //     (e) => error(filename_ + ":createLibraryWindow", e),
+        // ),
         // takeSpawnLeading(
         //     winActions.library.openRequest.ID,
         //     checkReaderWindowInSession,
         //     (e) => error(filename_ + ":checkReaderWindowInSession", e),
         // ),
-        takeSpawnLeading(
-            winActions.library.openSucess.ID,
-            winOpen,
-            (e) => error(filename_ + ":winOpen", e),
-        ),
+        // takeSpawnLeading(
+        //     winActions.library.openSucess.ID,
+        //     winOpen,
+        //     (e) => error(filename_ + ":winOpen", e),
+        // ),
         takeSpawnEveryChannel(
             appActivateChannel,
             appActivate,

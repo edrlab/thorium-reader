@@ -10,6 +10,8 @@ import { type Reducer } from "redux";
 import { appActions } from "readium-desktop/main/redux/actions";
 import { AppState, AppStatus } from "readium-desktop/main/redux/states/app";
 
+// TODO: not used, can be safely removed
+
 const initialState: AppState = {
     status: AppStatus.Unknown,
 };

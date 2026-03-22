@@ -28,8 +28,8 @@ function winSessionLibraryReducer_(
             return {
                 ...state,
                 ...{
-                    browserWindowId: action.payload.win.id,
-                    identifier: action.payload.identifier,
+                    browserWindowId: action.payload.libraryWindow.id,
+                    identifier: action.payload.windowIdentifier,
                     windowBound: action.payload.winBound,
                 },
             };

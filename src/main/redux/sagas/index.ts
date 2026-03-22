@@ -42,6 +42,7 @@ import { sagaCustomizationProfileProvisioning } from "./customization";
 import isURL from "validator/lib/isURL";
 import { publicationIntegrityChecker } from "./publication/checker";
 import { error } from "readium-desktop/main/tools/error";
+import { createLibraryWindow } from "./win/browserWindow/createLibraryWindow";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -162,17 +163,17 @@ export function* rootSaga() {
     yield put(keyboardActions.setShortcuts.build(keyboardShortcuts.getAll(), false));
 
     // enjoy the app !
-    yield put(winActions.library.openRequest.build());
+    // yield put(winActions.library.openRequest.build());
+
+    const createLibraryWindowTask = yield* callTyped(createLibraryWindow);
 
     // spawn telemetry after library window ready and initialized
     // but with the hydrated reduxState version before his update from the appActions.initSuccess action with _APP_VERSION
     const versionFromHydratedGlobalState = yield* selectTyped((state: RootState) => state.version);
 
     // app initialized
+    // TODO: not used anymore
     yield put(appActions.initSuccess.build());
-
-    // wait library window fully opened before to throw events
-    yield take(winActions.library.openSucess.ID);
 
     // open reader from CLI or open-file event on MACOS
     yield events.saga();

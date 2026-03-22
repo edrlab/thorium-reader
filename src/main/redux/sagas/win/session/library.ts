@@ -23,7 +23,7 @@ function* libraryClosureManagement(action: winActions.session.registerLibrary.TA
 
     const moveOrResizeTask: Task = yield fork(libraryMoveOrResizeObserver, action);
 
-    const library = action.payload.win;
+    const library = action.payload.libraryWindow;
     const channel = eventChannel<boolean>(
         (emit) => {
 
@@ -53,8 +53,8 @@ function* libraryClosureManagement(action: winActions.session.registerLibrary.TA
 
 function* libraryMoveOrResizeObserver(action: winActions.session.registerLibrary.TAction) {
 
-    const library = action.payload.win;
-    const id = action.payload.identifier;
+    const library = action.payload.libraryWindow;
+    const id = action.payload.windowIdentifier;
     const DEBOUNCE_TIME = 500;
 
     const channel = eventChannel<boolean>(

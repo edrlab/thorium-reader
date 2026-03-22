@@ -10,17 +10,16 @@ import { BrowserWindow } from "electron";
 import { Action } from "readium-desktop/common/models/redux";
 import { ok } from "readium-desktop/common/utils/assert";
 import { saveLibraryWindowInDi } from "readium-desktop/main/di";
-import { v4 as uuidv4 } from "uuid";
 
 export const ID = "WIN_SESSION_REGISTER_LIBRARY";
 
 export interface Payload {
-    win: BrowserWindow;
-    identifier: string;
+    libraryWindow: BrowserWindow;
+    windowIdentifier: string;
     winBound: Electron.Rectangle;
 }
 
-export function build(win: BrowserWindow, winBound: Electron.Rectangle):
+export function build(win: BrowserWindow, winBound: Electron.Rectangle, windowIdentifier: string):
     Action<typeof ID, Payload> {
 
     ok(win, "lib win not defined");
@@ -29,9 +28,9 @@ export function build(win: BrowserWindow, winBound: Electron.Rectangle):
     return {
         type: ID,
         payload: {
-            win,
+            libraryWindow: win,
             winBound,
-            identifier: uuidv4(),
+            windowIdentifier,
         },
     };
 }

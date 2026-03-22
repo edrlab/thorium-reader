@@ -126,12 +126,12 @@ export function* publicationIntegrityChecker(): SagaGenerator<void> {
     }
     yield* delayTyped(1);
 
-    const publicationCheckerState: IPublicationCheckerState = {
-        publicationIdentifierDataBase,
-        // publicationIdentifierDisk = [...approvedPublicationIdentifierDisk, ...rejectedPublicationIdentifierDisk];
-        approvedPublicationIdentifierDisk, rejectedPublicationIdentifierDisk,
-        dump,
-    };
+    // const publicationCheckerState: IPublicationCheckerState = {
+    //     publicationIdentifierDataBase,
+    //     // publicationIdentifierDisk = [...approvedPublicationIdentifierDisk, ...rejectedPublicationIdentifierDisk];
+    //     approvedPublicationIdentifierDisk, rejectedPublicationIdentifierDisk,
+    //     dump,
+    // };
 
     yield* delayTyped(1);
     dump += `Process: ${JSON.stringify({
@@ -149,9 +149,10 @@ export function* publicationIntegrityChecker(): SagaGenerator<void> {
     if (dumpLogs) {
         yield* callTyped(() => fs.promises.appendFile(appLogs, dump));
 
-        yield* takeTyped(winActions.library.openSucess.ID);
-        yield* delayTyped(1000); // 1s
-        yield* putTyped(publicationActions.checker.build(publicationCheckerState));
+        // TODO: not a valid way to wait libraryWindow, if libWin is ready before this event, publicationChecker will be never send
+        // yield* takeTyped(winActions.library.openSucess.ID);
+        // yield* delayTyped(1000); // 1s
+        // yield* putTyped(publicationActions.checker.build(publicationCheckerState));
     }
 
 }

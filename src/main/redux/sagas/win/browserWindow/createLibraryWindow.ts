@@ -10,9 +10,9 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
 import * as path from "path";
 import { defaultRectangle, normalizeRectangle } from "readium-desktop/common/rectangle/window";
-import { diMainGet } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import { winActions } from "readium-desktop/main/redux/actions";
+import { winCommonActions } from "readium-desktop/common/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import {
     _RENDERER_LIBRARY_BASE_URL,
@@ -20,11 +20,16 @@ import {
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { put } from "redux-saga/effects";
-import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
+import { select as selectTyped, call as callTyped, put as putTyped, race as raceTyped, take as takeTyped, delay as delayTyped, spawn as spawnTyped, SagaGenerator } from "typed-redux-saga/macro";
+import { buffers, END, eventChannel } from "redux-saga";
 
 import { contextMenuSetup } from "@r2-navigator-js/electron/main/browser-window-tracker";
-import { WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/constant";
+import { TIMEOUT_BROWSER_WINDOW_INITIALISATION, WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH } from "readium-desktop/common/constant";
 import { URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
+import { v4 as uuidv4 } from "uuid";
+import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
+import { getCatalog } from "../../catalog";
+import { winIpc } from "readium-desktop/common/ipc";
 
 // Logger
 const debug = debug_("readium-desktop:createLibraryWindow");
@@ -36,8 +41,9 @@ const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
 let libWindow: BrowserWindow = null;
 
 // Opens the main window, with a native menu bar.
-export function* createLibraryWindow(_action: winActions.library.openRequest.TAction) {
+export function* createLibraryWindow() {
 
+    // TODO: winBound from disk
     // initial state apply in reducers
     let windowBound = yield* selectTyped(
         (state: RootState) => state.win.session.library.windowBound);
@@ -70,7 +76,8 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         contextMenuSetup(wc, wc.id);
     }
 
-    yield put(winActions.session.registerLibrary.build(libWindow, windowBound));
+    const windowIdentifier = uuidv4();
+    yield put(winActions.session.registerLibrary.build(libWindow, windowBound, windowIdentifier));
 
     const readers = yield* selectTyped(
         (state: RootState) => state.win.session.reader,
@@ -95,50 +102,168 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         rendererBaseUrl = rendererBaseUrl.replace(/\\/g, "/");
     }
 
-    if (!libWindow.isDestroyed() && !libWindow.webContents.isDestroyed()) { // __TH__IS_DEV__
+    const didFinishLoadEventChannel = eventChannel<true>(
+        (emit) => {
 
-        libWindow.webContents.on("did-finish-load", () => {
+            const handler = () => {
+                emit(true);
+                emit(END);
+            };
 
-            // if (libWindow.isDestroyed() || libWindow.webContents.isDestroyed()) {
-            //     debug("readerWindow or webcontents is destroyed !!");
-            //     return; // Is it really needed to early return here, and block library openSuccess 
-            // }
-            // see app.whenReady() in src/main/redux/sagas/app.ts
-            // // app.whenReady().then(() => {
-            // // });
-            // setTimeout(() => {
-            //     const {
-            //         default: installExtension,
-            //         REACT_DEVELOPER_TOOLS,
-            //         REDUX_DEVTOOLS,
-            //     // eslint-disable-next-line @typescript-eslint/no-var-requires
-            //     } = require("electron-devtools-installer");
+            if (!libWindow.isDestroyed() && !libWindow.webContents.isDestroyed()) { // __TH__IS_DEV__
+                libWindow.webContents.once("did-finish-load", handler);
+            }
 
-            //     [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
-            //         installExtension(extension)
-            //             .then((name: string) => debug("electron-devtools-installer OK (library window): ", name))
-            //             .catch((err: Error) => debug("electron-devtools-installer ERROR (library window): ", err));
-            //     });
-            // }, 1000);
+            return () => {
+            };
+        },
+        buffers.none(),
+    );
+    const didFailLoadEventChannel = eventChannel<true>(
+        (emit) => {
 
-            // the dispatching of 'openSucess' action must be in the 'did-finish-load' event
-            // because webpack-dev-server automaticaly refresh the window.
-            const store = diMainGet("store");
-            const identifier = store.getState().win.session.library.identifier;
-            // const identifier = yield* selectTyped((state: RootState) => state.win.session.library.identifier);
-            store.dispatch(winActions.library.openSucess.build(libWindow, identifier));
+            const handler = () => {
+                emit(true);
+                emit(END);
+            };
 
+            if (!libWindow.isDestroyed() && !libWindow.webContents.isDestroyed()) { // __TH__IS_DEV__
+                libWindow.webContents.once("did-fail-load", handler);
+            }
+
+            return () => {
+            };
+        },
+        buffers.none(),
+    );
+
+    // detached background execution
+    const initializationTask = yield* spawnTyped(function* () {
+        const { success, error, timeout, closeLibrary } = yield* raceTyped({
+            success: callTyped(function* (): SagaGenerator<true> {
+                yield* takeTyped(didFinishLoadEventChannel);
+                
+                const webContents = libWindow.webContents;
+                const state = yield* selectTyped((_state: RootState) => _state);
+
+                const payload: Partial<ILibraryRootState> = {
+                    i18n: state.i18n,
+                    keyboard: state.keyboard,
+                    theme: state.theme,
+                    wizard: state.wizard,
+                    win: {
+                        identifier: windowIdentifier,
+                    },
+                    publication: {
+                        catalog: {
+                            entries: [],
+                        },
+                        tag: [],
+                    },
+                    session: {
+                        // state: state.session.state,
+                        // save: state.session.save,
+                        save: false, // disabled
+                    },
+                    screenReader: {
+                        activate: state.screenReader.activate,
+                    },
+                    creator: state.creator,
+                    settings: state.settings,
+                    lcp: state.lcp,
+                    noteExport: state.noteExport,
+                    customization: state.customization,
+                };
+                try {
+                    const publication = yield* callTyped(getCatalog);
+                    payload.publication = publication;
+                } catch (e) {
+                    // error(filename_, e);
+                }
+                // Send the id to the new window
+                webContents.send(winIpc.CHANNEL, {
+                    type: winIpc.EventType.IdResponse,
+                    payload,
+                } as winIpc.EventPayload);
+
+                // yield* putTyped(winActions.library.openSucess.build(libWindow, windowIdentifier));
+                yield* callTyped(function* () {
+                    while (true) {
+                        const action = yield* takeTyped(winCommonActions.initSuccess.build);
+                        const winIdReceived = action.sender?.identifier;
+                        if (winIdReceived === windowIdentifier) {
+                            return true;
+                        }
+                    }
+                });
+                return true;
+            }),
+            error: takeTyped(didFailLoadEventChannel),
+            timeout: delayTyped(TIMEOUT_BROWSER_WINDOW_INITIALISATION),
+            closeLibrary: callTyped(function* (): SagaGenerator<true> {
+                yield* takeTyped(winActions.session.unregisterLibrary.build);
+                return true;
+            }),
         });
 
-        // if (!__TH__IS_VSCODE_LAUNCH__ && OPEN_DEV_TOOLS) {
-        //     setTimeout(() => {
-        //         if (!libWindow.isDestroyed() && !libWindow.webContents.isDestroyed()) {
-        //             debug("opening dev tools (library) ...");
-        //             libWindow.webContents.openDevTools({ activate: true, mode: "detach" });
-        //         }
-        //     }, 2000);
-        // }
-    }
+        if (success) {
+            debug(`Library Window Initialized and Ready - winId=${windowIdentifier}`);
+        } else if (error) {
+            debug(`Library Window Failed 'did-fail-load' event received - winId=${windowIdentifier}`);
+            // yield* putTyped(winActions.library.openError.build(libWindow, windowIdentifier, "did-fail-load"));
+        } else if (timeout) {
+            debug("ERROR!!! CreatelibWindow TIMEOUT!!!");
+            // yield* putTyped(winActions.library.openError.build(libWindow, windowIdentifier, "timeout"));
+        } else if (closeLibrary) {
+            debug(`Closing Library Window Requested before the end of the initialization - winId=${windowIdentifier}`);
+        } else {
+            debug("ASSERT ERROR UNREACHABLE");
+        }
+
+        return true;
+    });
+
+    // libWindow.webContents.on("did-finish-load", () => {
+
+    //     // if (libWindow.isDestroyed() || libWindow.webContents.isDestroyed()) {
+    //     //     debug("readerWindow or webcontents is destroyed !!");
+    //     //     return; // Is it really needed to early return here, and block library openSuccess 
+    //     // }
+    //     // see app.whenReady() in src/main/redux/sagas/app.ts
+    //     // // app.whenReady().then(() => {
+    //     // // });
+    //     // setTimeout(() => {
+    //     //     const {
+    //     //         default: installExtension,
+    //     //         REACT_DEVELOPER_TOOLS,
+    //     //         REDUX_DEVTOOLS,
+    //     //     // eslint-disable-next-line @typescript-eslint/no-var-requires
+    //     //     } = require("electron-devtools-installer");
+
+    //     //     [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
+    //     //         installExtension(extension)
+    //     //             .then((name: string) => debug("electron-devtools-installer OK (library window): ", name))
+    //     //             .catch((err: Error) => debug("electron-devtools-installer ERROR (library window): ", err));
+    //     //     });
+    //     // }, 1000);
+
+    //     // the dispatching of 'openSucess' action must be in the 'did-finish-load' event
+    //     // because webpack-dev-server automaticaly refresh the window.
+    //     const store = diMainGet("store");
+    //     const identifier = store.getState().win.session.library.identifier;
+    //     // const identifier = yield* selectTyped((state: RootState) => state.win.session.library.identifier);
+    //     store.dispatch(winActions.library.openSucess.build(libWindow, identifier));
+
+    // });
+
+    // if (!__TH__IS_VSCODE_LAUNCH__ && OPEN_DEV_TOOLS) {
+    //     setTimeout(() => {
+    //         if (!libWindow.isDestroyed() && !libWindow.webContents.isDestroyed()) {
+    //             debug("opening dev tools (library) ...");
+    //             libWindow.webContents.openDevTools({ activate: true, mode: "detach" });
+    //         }
+    //     }, 2000);
+    // }
 
     if (!libWindow.isDestroyed() && !libWindow.webContents.isDestroyed()) {
         yield* callTyped(async () => {
@@ -222,4 +347,6 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
     // Fully handled in r2-navigator-js initSessions();
     // (including exit cleanup)
     // libWindow.webContents.session.clearStorageData();
+
+    return initializationTask;
 }
