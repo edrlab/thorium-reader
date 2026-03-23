@@ -174,7 +174,7 @@ export class PublicationStorage {
         await using dir = await fs.promises.mkdtempDisposable(pubPath); // same as defer and RAII: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/await_using
         const tmpFilePath = path.join(dir.path, "locator.json");
         const jsonStr = jsonStringify(jsonObj);
-        await fs.promises.writeFile(tmpFilePath, jsonStr, { encoding: "utf-8", flush: true, mode: 0o666}); // owner read/write group/all read
+        await fs.promises.writeFile(tmpFilePath, jsonStr, { encoding: "utf-8", flush: true});
         const jsonStrCheck = await fs.promises.readFile(tmpFilePath, { encoding: "utf-8" });
         if (jsonStrCheck === jsonStr) {
             await fs.promises.rename(tmpFilePath, filePath);

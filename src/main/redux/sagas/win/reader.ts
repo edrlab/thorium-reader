@@ -260,13 +260,13 @@ export function* winClose(windowIdentifier: string, publicationIdentifier: strin
         }
 
         // TODO: parallelize with Promise.allSettled
-        {
-            const jsonObj = diMainGet("publication-data").getJsonObj(publicationIdentifier, "locator");
-            if (jsonObj) {
-                // finally save locator next to publication storage vault
-                yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(publicationIdentifier, "locator", jsonObj));
-            }
-        }
+        // {
+        //     const jsonObj = diMainGet("publication-data").getJsonObj(publicationIdentifier, "locator");
+        //     if (jsonObj) {
+        //         // finally save locator next to publication storage vault
+        //         yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(publicationIdentifier, "locator", jsonObj));
+        //     }
+        // }
 
         // TODO: enable publication-storage config saving
         // {
