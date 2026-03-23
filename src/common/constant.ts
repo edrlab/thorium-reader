@@ -20,4 +20,4 @@ export const FORCE_PROD_DB_IN_DEV = false;
 export const USER_DATA_FOLDER = app.getPath("userData");
 debug("set userData folder to", USER_DATA_FOLDER);
 
-export const TIMEOUT_BROWSER_WINDOW_INITIALISATION = 10000;
+export const TIMEOUT_BROWSER_WINDOW_INITIALISATION = 20000;

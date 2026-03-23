@@ -39,6 +39,10 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const { readerWindow, publicationIdentifier: pubId, windowIdentifier: winId } = action.payload;
     debug(`reader winId=${winId} -> winOpen pubId=${pubId}`);
 
+    if (readerWindow.isDestroyed()) {
+        debug("readerWindow distroyed -> exit on winId=${winId} -> pubId=${pubId}");
+        return ;
+    }
     const webContents = readerWindow.webContents;
     const screenReaderActivate = yield* selectTyped((_state: RootState) => _state.screenReader.activate);
     const locale = yield* selectTyped((_state: RootState) => _state.i18n.locale);
@@ -93,6 +97,10 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
         ? yield* callTyped(() => sqliteTableSelectAllNotesWherePubId(pubId))
         : [];
 
+    if (readerWindow.isDestroyed() || readerWindow.webContents.isDestroyed()) {
+        debug("readerWindow or webcontents distroyed -> exit on winId=${winId} -> pubId=${pubId}");
+        return ;
+    }
     webContents.send(readerIpc.CHANNEL, {
         type: readerIpc.EventType.request,
         payload: {

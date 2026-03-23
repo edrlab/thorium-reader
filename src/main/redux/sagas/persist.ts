@@ -33,8 +33,6 @@ const PUBLICATION_STORAGE_DEBOUNCE_TIME = 10 * 1000; // 10 secs
 const filename_ = "readium-desktop:main:saga:persist";
 const debug = debug_(filename_);
 debug("_");
- 
-
 
 export const persistStateToFs = async (nextState: Partial<PersistRootState>) => {
 
@@ -84,7 +82,9 @@ export const persistStateToFs = async (nextState: Partial<PersistRootState>) => 
         },
         publication: nextState.publication,
         reader: nextState.reader,
-        session: nextState.session,
+        session: {
+            save: false,
+        },
         screenReader: nextState.screenReader,
         i18n: nextState.i18n,
         opds: nextState.opds,
