@@ -265,17 +265,21 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
 }
 
 // use to close readers with the same publication identifier from main process
-export function* RequesetToCloseAllReadersWithTheSamePubId(publicationIdentifier: string) {
+export function* RequesetToCloseAllReadersWithTheSamePubId(publicationIdentifier: string): SagaGenerator<boolean> {
 
     assertUUIDv4(publicationIdentifier);
 
     const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
 
+    let atLeastOneReaderIsOpen = false;
     for (const windowIdentifier in readers) {
         if (readers[windowIdentifier]?.publicationIdentifier === publicationIdentifier) {
+            atLeastOneReaderIsOpen = true;
             yield* putTyped(readerActions.closeRequest.build(windowIdentifier, publicationIdentifier));
         }
     }
+
+    return atLeastOneReaderIsOpen;
 }
 
 function* readerCLoseRequestFromIdentifier(action: readerActions.closeRequest.TAction) {
