@@ -717,8 +717,8 @@
         },
         "dock": {
             "dockDefault": "",
-            "dockLeft": "",
-            "dockRight": ""
+            "dockLeft": "Visualizza la finestra a sinistra",
+            "dockRight": "Visualizza la finestra a destra"
         },
         "fxl": {
             "fit": "Adattare"
@@ -1191,7 +1191,7 @@
             "info": "",
             "thorium": {
                 "description": "",
-                "title": ""
+                "title": "Thorium vanilla"
             },
             "version": "Versione: {{- version}}"
         },
