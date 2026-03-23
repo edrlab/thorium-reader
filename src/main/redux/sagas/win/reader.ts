@@ -167,7 +167,9 @@ function* winOpenError(action: winActions.reader.openError.TAction) {
     debug(`ERRROR!!! reader winId=${winId} -> pubId=${pubId} failed to open`);
 
     try {
-        yield* callTyped(() => dialog.showMessageBox(readerWindow, { type: "error", title: "Failed to initialize the reader", message: `CRITICAL ERRROR!!! winId=${winId}; pubId=${pubId}; Failed to initialize the reader; it will now close. [${reason}]`}));
+        if (!readerWindow.isDestroyed() && !readerWindow.webContents.isDestroyed()) {
+            yield* callTyped(() => dialog.showMessageBox(readerWindow, { type: "error", title: "Failed to initialize the reader", message: `CRITICAL ERRROR!!! winId=${winId}; pubId=${pubId}; Failed to initialize the reader; it will now close. [${reason}]`}));
+        }
     } catch (e) {
         debug(e);
     }
