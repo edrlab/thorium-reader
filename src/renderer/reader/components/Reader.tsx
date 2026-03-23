@@ -2239,7 +2239,7 @@ class Reader extends React.Component<IProps, IState> {
 
             const page = this.props.locator.locator.href || "1";
             const position = this.props.locator.locator.locations.position || undefined;
-            const zoom = "page-fit"; // scale
+            const zoom = this.props.pdfReaderConfig.scale || "page-fit"; // scale
             // const column = ""; // TODO: !?
 
             console.log("pdf url", pdfUrl, "with page", page);

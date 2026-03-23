@@ -164,9 +164,9 @@ export function* rootSaga() {
     // enjoy the app !
     yield put(winActions.library.openRequest.build());
 
-    // call telemetry before app init state
-    // need to track the previous state version before update in initSuccess.build
-    yield call(telemetry.collectSaveAndSend);
+    // spawn telemetry after library window ready and initialized
+    // but with the hydrated reduxState version before his update from the appActions.initSuccess action with _APP_VERSION
+    const versionFromHydratedGlobalState = yield* selectTyped((state: RootState) => state.version);
 
     // app initialized
     yield put(appActions.initSuccess.build());
@@ -174,12 +174,16 @@ export function* rootSaga() {
     // wait library window fully opened before to throw events
     yield take(winActions.library.openSucess.ID);
 
-    if (!process.windowsStore && _APP_NAME === "Thorium" && _PACK_NAME === "EDRLab.ThoriumReader") {
-        yield call(checkAppVersionUpdate);
-    }
-
     // open reader from CLI or open-file event on MACOS
     yield events.saga();
+
+    // spawn appVersion update checker in background
+    if (!process.windowsStore && _APP_NAME === "Thorium" && _PACK_NAME === "EDRLab.ThoriumReader") {
+        yield* spawnTyped(checkAppVersionUpdate);
+    }
+
+    // spawn telemetry in background
+    yield* spawnTyped(telemetry.collectSaveAndSend, versionFromHydratedGlobalState);
 }
 
 function* checkAppVersionUpdate() {

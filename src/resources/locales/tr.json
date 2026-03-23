@@ -1237,8 +1237,7 @@
     "wizard": {
         "buttons": {
             "discover": "Yenilikleri keşfet",
-            "goToBooks": "Eserlerime git",
-            "next": "İleri"
+            "goToBooks": "Eserlerime git"
         },
         "description": {
             "home": "Toryum artık farklı görünüyor! Haydi yenilikleri keşfedelim...",

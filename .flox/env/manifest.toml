@@ -1,3 +1,5 @@
+schema-version = "1.10.0"
+
 # flox config --set-bool set_prompt false
 # ==> .zshrc
 # Warp-ify Flox subshell prompt:
@@ -29,11 +31,10 @@
 # PROMPT="${PROMPT}"$'\n'
 # printf '\eP$f{"hook": "SourcedRcFileForWarp", "value": { "shell": "zsh" }}\x9c'
 
-version = 1
-
 [install]
 nodejs_24.pkg-path = "nodejs_24"
 jq.pkg-path = "jq"
+jq.outputs = "all"
 
 [vars]
 FLOX_DISABLE_METRICS="true"
@@ -156,7 +157,10 @@ export PATH="$NPM_CONFIG_PREFIX/bin:$PATH";
 #sfw npm install -g npm-check-updates --foreground-scripts 1>/dev/null
 ## sfw npm install -g @electron/asar --foreground-scripts 1>/dev/null
 #fi
-sfw npm install --ignore-scripts --foreground-scripts -g npm
+
+# https://github.com/npm/cli/issues/9133
+sfw npm install --ignore-scripts --foreground-scripts -g npm@'<11.12.0'
+
 sfw npm install --ignore-scripts --foreground-scripts -g npm-check-updates
 # sfw npm install --ignore-scripts --foreground-scripts -g @electron/asar
 

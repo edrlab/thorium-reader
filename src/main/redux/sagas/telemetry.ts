@@ -71,9 +71,7 @@ try {
     // ignore
 }
 
-function* collectAndSave() {
-
-    const version = yield* selectTyped((state: RootState) => state.version);
+function* collectAndSave(versionFromGlobalState: string) {
 
     // fresh install is equal to en language ?
     const locale = yield* selectTyped((state: RootState) => state.i18n.locale);
@@ -84,8 +82,8 @@ function* collectAndSave() {
     // version variable is updated after execution of this function in saga root event
     // so _APP_VERSION is N and version is N-1
     let fresh = false;
-    if (_APP_VERSION !== version) {
-        debug("VERSION MISMATCH: ", _APP_VERSION, " !== ", version);
+    if (_APP_VERSION !== versionFromGlobalState) {
+        debug("VERSION MISMATCH: ", _APP_VERSION, " !== ", versionFromGlobalState);
         fresh = true;
     }
 
@@ -96,7 +94,7 @@ function* collectAndSave() {
         fresh,
         type: "poll", // 'poll' or 'error' enumeration values
         current_version: _APP_VERSION,
-        prev_version: `${version}`,
+        prev_version: `${versionFromGlobalState}`,
     };
 
     let queue: Array<ITelemetryInfo> = JSON.parse(dataFromFileQueue);
@@ -166,7 +164,7 @@ const telemetryHmac = (body: string) => {
     return hmac.digest("hex"); // length always 40
 };
 
-export function* collectSaveAndSend() {
+export function* collectSaveAndSend(versionFromGlobalState: string) {
 
     // bail out on empty string
     if (!_TELEMETRY_URL || !_TELEMETRY_SECRET) {
@@ -175,7 +173,7 @@ export function* collectSaveAndSend() {
     }
 
     try {
-        const queue = yield* callTyped(collectAndSave);
+        const queue = yield* callTyped(collectAndSave, versionFromGlobalState);
 
         // try to send the queue to the server
         // if sucessfull 200 OK : clear the file queue

@@ -1249,8 +1249,7 @@
     "wizard": {
         "buttons": {
             "discover": "Odkrij novosti",
-            "goToBooks": "Pojdi na moje publikacije",
-            "next": "Naslednja"
+            "goToBooks": "Pojdi na moje publikacije"
         },
         "description": {
             "home": "Thorium izgleda drugače! Poglejmo kaj je novega...",

@@ -36,7 +36,8 @@ RUN echo $CONTAINER_TIMEZONE && arch && uname &&\
     ruby-dev && gem i fpm -f && fpm --version &&\
     curl -fsSL https://deb.nodesource.com/setup_24.x | bash &&\
     apt-get install -y nodejs &&\
-    npm install -g npm@11.x
+    npm install -g npm@'<11.12.0'
+# https://github.com/npm/cli/issues/9133
 
 # wget libreadline-dev
 # libc6 xdg-utils libatspi2.0-0 libuuid1 libsecret-1-0 libappindicator3-1
@@ -108,7 +109,10 @@ USER notroot
 
 ARG BUST_CACHE
 RUN cd /THORIUM/ &&\
-    npm i
+    npm install --ignore-scripts --foreground-scripts &&\
+    cd node_modules/electron &&\
+    npm run postinstall &&\
+    cd -
 
 ARG BUST_CACHE
 RUN cd /THORIUM/ &&\

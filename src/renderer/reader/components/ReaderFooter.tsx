@@ -729,14 +729,19 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     };
 };
 
+const finishReadingDebounce = debounce((dispatch: TDispatch, pubId: string) => {
+    dispatch(publicationActions.readingFinished.build(pubId));
+
+    // just to refresh allPublicationPage.tsx
+    apiDispatch(dispatch)()("publication/readingFinishedRefresh")();
+
+    setTimeout(() => dispatch(readerActions.closeRequest.build()), 1000);
+}, 1000);
+
 const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
         finishReading: (pubId: string) => {
-            dispatch(publicationActions.readingFinished.build(pubId));
-            dispatch(readerActions.closeRequest.build());
-
-            // just to refresh allPublicationPage.tsx
-            apiDispatch(dispatch)()("publication/readingFinishedRefresh")();
+            finishReadingDebounce(dispatch, pubId);
         },
     };
 };

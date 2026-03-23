@@ -82,7 +82,7 @@ export function pdfMount(
     publicationViewport: HTMLDivElement,
     data: {
         page: string,
-        zoom: string,
+        zoom: number | string,
         // scrollLeft: number,
         scrollTop: number,
         // rotation: number,

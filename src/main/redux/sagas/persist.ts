@@ -228,7 +228,7 @@ export function saga() {
         takeSpawnLeading(
             readerActions.pdfConfig.ID,
             function* (action: readerActions.pdfConfig.TAction) {
-                const jsonObj = action.payload as unknown as object;
+                const jsonObj = action.payload.config as unknown as object;
                 const sender = action.sender as EventPayload["sender"];
 
                 if (sender.type !== SenderType.Renderer) {
