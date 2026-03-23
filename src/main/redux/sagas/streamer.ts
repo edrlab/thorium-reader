@@ -78,6 +78,12 @@ function* publicationCloseRequest(action: streamerActions.publicationCloseReques
 
     const pubId = action.payload.publicationIdentifier;
     // will decrement on streamerActions.publicationCloseSuccess.build (see below)
+
+
+    // TODO: Why is an external counter needed here when we already control
+    // the opened reader with the same pubId?
+    // The streamer start/shutdown should instead be managed by
+    // the reader open/close logic.
     const counter = yield* selectTyped((s: RootState) => s.streamer.openPublicationCounter);
 
     // const streamer = _USE_HTTP_STREAMER ? yield* callTyped(() => diMainGet("streamer")) : undefined;
@@ -112,6 +118,7 @@ function* publicationCloseRequest(action: streamerActions.publicationCloseReques
     yield put(streamerActions.publicationCloseSuccess.build(pubId));
 }
 
+// TODO: No need for specific streamer actions to control this; manage it via the reader open/close logic instead.
 export function saga() {
     return all([
         takeSpawnEvery(
