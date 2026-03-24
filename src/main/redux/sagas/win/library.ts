@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { winIpc } from "readium-desktop/common/ipc";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import {
@@ -18,13 +17,11 @@ import { RootState } from "readium-desktop/main/redux/states";
 import { ObjectKeys, ObjectValues } from "readium-desktop/utils/object-keys-values";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, delay, put, spawn } from "redux-saga/effects";
-import { call as callTyped, select as selectTyped, take as takeTyped, delay as delayTyped, race as raceTyped } from "typed-redux-saga/macro";
+import { call as callTyped, select as selectTyped } from "typed-redux-saga/macro";
 
 import { IWinSessionReaderState } from "../../states/win/session/reader";
 import { getAppActivateEventChannel } from "../getEventChannel";
 import { createLibraryWindow } from "./browserWindow/createLibraryWindow";
-import { getCatalog } from "../catalog";
-import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:win:library";

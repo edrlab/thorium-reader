@@ -11,7 +11,7 @@ import { keyboardActions, versionUpdateActions } from "readium-desktop/common/re
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
-import { select as selectTyped, call as callTyped, spawn as spawnTyped} from "typed-redux-saga/macro";
+import { select as selectTyped, call as callTyped, spawn as spawnTyped, join as joinTyped } from "typed-redux-saga/macro";
 import { RootState } from "../states";
 import { _APP_VERSION, _APP_NAME, _PACK_NAME } from "readium-desktop/preprocessor-directives";
 // import { THttpGetCallback } from "readium-desktop/common/utils/http";
@@ -19,7 +19,7 @@ import { _APP_VERSION, _APP_NAME, _PACK_NAME } from "readium-desktop/preprocesso
 import { httpGet } from "readium-desktop/main/network/http";
 import * as semver from "semver";
 import { ContentType, parseContentType } from "readium-desktop/utils/contentType";
-import { appActions, winActions } from "../actions";
+import { appActions } from "../actions";
 import * as api from "./api";
 import * as appSaga from "./app";
 import * as auth from "./auth";
@@ -165,18 +165,12 @@ export function* rootSaga() {
     // enjoy the app !
     // yield put(winActions.library.openRequest.build());
 
+    // TODO
     const createLibraryWindowTask = yield* callTyped(createLibraryWindow);
 
     // spawn telemetry after library window ready and initialized
     // but with the hydrated reduxState version before his update from the appActions.initSuccess action with _APP_VERSION
     const versionFromHydratedGlobalState = yield* selectTyped((state: RootState) => state.version);
-
-    // app initialized
-    // TODO: not used anymore
-    yield put(appActions.initSuccess.build());
-
-    // open reader from CLI or open-file event on MACOS
-    yield events.saga();
 
     // spawn appVersion update checker in background
     if (!process.windowsStore && _APP_NAME === "Thorium" && _PACK_NAME === "EDRLab.ThoriumReader") {
@@ -185,6 +179,15 @@ export function* rootSaga() {
 
     // spawn telemetry in background
     yield* spawnTyped(telemetry.collectSaveAndSend, versionFromHydratedGlobalState);
+
+    yield* joinTyped(createLibraryWindowTask);
+
+    // app initialized
+    // TODO: not used anymore
+    yield put(appActions.initSuccess.build());
+
+    // open reader from CLI or open-file event on MACOS
+    yield events.saga();
 }
 
 function* checkAppVersionUpdate() {

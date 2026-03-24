@@ -20,7 +20,7 @@ import {
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { put } from "redux-saga/effects";
-import { select as selectTyped, call as callTyped, put as putTyped, race as raceTyped, take as takeTyped, delay as delayTyped, spawn as spawnTyped, SagaGenerator } from "typed-redux-saga/macro";
+import { select as selectTyped, call as callTyped, race as raceTyped, take as takeTyped, delay as delayTyped, spawn as spawnTyped, SagaGenerator } from "typed-redux-saga/macro";
 import { buffers, END, eventChannel } from "redux-saga";
 
 import { contextMenuSetup } from "@r2-navigator-js/electron/main/browser-window-tracker";

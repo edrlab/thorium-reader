@@ -6,15 +6,14 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { SagaGenerator, call as callTyped, delay as delayTyped, put as putTyped, take as takeTyped } from "typed-redux-saga/macro";
+import { SagaGenerator, call as callTyped, delay as delayTyped } from "typed-redux-saga/macro";
 import { diMainGet } from "readium-desktop/main/di";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { _APP_NAME, _APP_VERSION, _PACK_NAME } from "readium-desktop/preprocessor-directives";
 import { USER_DATA_FOLDER, FORCE_PROD_DB_IN_DEV } from "readium-desktop/common/constant";
-import { IPublicationCheckerState } from "readium-desktop/common/redux/states/publicationsChecker";
-import { publicationActions } from "readium-desktop/common/redux/actions";
-import { winActions } from "../../actions";
+// import { IPublicationCheckerState } from "readium-desktop/common/redux/states/publicationsChecker";
+// import { publicationActions } from "readium-desktop/common/redux/actions";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
 
 // TODO: use app.getPath("logs"); instead
