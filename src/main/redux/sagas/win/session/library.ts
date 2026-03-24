@@ -76,9 +76,9 @@ function* libraryMoveOrResizeObserver(action: winActions.session.registerLibrary
     yield debounce(DEBOUNCE_TIME, channel, function*() {
 
         try {
-            const winBound = library.getBounds();
+            let winBound = library.getBounds();
             debug("_______2 library.getBounds()", winBound);
-            normalizeRectangle(winBound);
+            winBound = normalizeRectangle(winBound);
             yield put(winActions.session.setBound.build(id, winBound));
         } catch (e) {
             debug("set library bound error", e);

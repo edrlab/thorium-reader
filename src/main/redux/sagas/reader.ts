@@ -105,6 +105,9 @@ function* readerDetachRequest(action: readerActions.detachModeRequest.TAction) {
 export function* getWinBound(publicationIdentifier: string | undefined): SagaGenerator<Electron.Rectangle> {
 
     const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+
+    debug("LIST OF READERS: ", JSON.stringify(readers, null, 4));
+
     const library = yield* selectTyped((state: RootState) => state.win.session.library);
     const readerArray = ObjectValues(readers);
 
@@ -126,52 +129,49 @@ export function* getWinBound(publicationIdentifier: string | undefined): SagaGen
     }
     debug(`reader[${publicationIdentifier}]?.winBound}`, winBound);
 
-    const winBoundArray = readerArray.map((reader) => reader.windowBound);
-    winBoundArray.push(library.windowBound);
+    const winBoundArray = readerArray.map((reader) => reader.windowBound ? normalizeRectangle(reader.windowBound) : undefined).filter((v) => !!v);
+
+    debug("WIN BOUND ARRAY:", JSON.stringify(winBoundArray, null, 4));
+    if (library.windowBound) {
+        winBoundArray.push(normalizeRectangle(library.windowBound));
+    }
     const winBoundAlreadyTaken = !winBound || !!winBoundArray.find((bound) => ramda.equals(winBound, bound));
 
-    if (
-        !winBound
-        || winBoundAlreadyTaken
-    ) {
-        // if (readerArray.length) {
+    if (winBoundAlreadyTaken) {
+        const displayArea = yield* callTyped(() => screen.getPrimaryDisplay().workAreaSize);
+        debug("displayArea", displayArea);
 
-            const displayArea = yield* callTyped(() => screen.getPrimaryDisplay().workAreaSize);
-            debug("displayArea", displayArea);
+        const winBoundWithOffset = winBoundArray.map(
+            (rect) => {
+                if (!rect.x) { // NaN, undefined, null, zero (positive and negative numbers are truthy)
+                    rect.x = 0;
+                }
+                rect.x += 20;
+                const wDiff = Math.abs(displayArea.width - rect.width);
+                if (wDiff) {
+                    rect.x %= wDiff;
+                }
 
-            const winBoundWithOffset = winBoundArray.map(
-                (rect) => {
-                    if (!rect.x) { // NaN, undefined, null, zero (positive and negative numbers are truthy)
-                        rect.x = 0;
-                    }
-                    rect.x += 20;
-                    const wDiff = Math.abs(displayArea.width - rect.width);
-                    if (wDiff) {
-                        rect.x %= wDiff;
-                    }
+                if (!rect.y) { // NaN, undefined, null, zero (positive and negative numbers are truthy)
+                    rect.y = 0;
+                }
+                rect.y += 20;
+                const hDiff = Math.abs(displayArea.height - rect.height);
+                if (hDiff) {
+                    rect.y %= hDiff;
+                }
 
-                    if (!rect.y) { // NaN, undefined, null, zero (positive and negative numbers are truthy)
-                        rect.y = 0;
-                    }
-                    rect.y += 20;
-                    const hDiff = Math.abs(displayArea.height - rect.height);
-                    if (hDiff) {
-                        rect.y %= hDiff;
-                    }
+                debug("rect", rect);
+                return rect;
+            },
+        );
+        debug("winBoundWithOffset", winBoundWithOffset);
 
-                    debug("rect", rect);
-                    return rect;
-                },
-            );
-            debug("winBoundWithOffset", winBoundWithOffset);
+        [winBound] = ramda.uniq(winBoundWithOffset);
+        debug("winBound", winBound);
+        winBound = normalizeRectangle(winBound);
 
-            [winBound] = ramda.uniq(winBoundWithOffset);
-            debug("winBound", winBound);
-            winBound = normalizeRectangle(winBound);
 
-        // } else {
-        //     winBound = normalizeRectangle(library.windowBound);
-        // }
     }
 
     return winBound;

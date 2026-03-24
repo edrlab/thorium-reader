@@ -215,8 +215,8 @@ export function saga() {
             winActions.session.setBound.ID,
             function* (action: winActions.session.setBound.TAction) {
                 const payload = action.payload;
-                const identifier = payload.identifier;
-                const boundJsonObj = payload.bound;
+                const identifier = payload.windowIdentifier;
+                const boundJsonObj = payload.winBound;
 
                 const reader = yield* selectTyped((state: RootState) => state.win.session.reader[identifier]);
                 if (!reader) {

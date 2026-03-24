@@ -231,9 +231,9 @@ export function* winClose(windowIdentifier: string, publicationIdentifier: strin
                     const readerWin = yield* callTyped(() => getReaderWindowFromDi(windowIdentifier));
                     if (readerWin && !readerWin.isDestroyed() && !readerWin.webContents.isDestroyed()) {
                         try {
-                            const winBound = readerWin.getBounds();
+                            let winBound = readerWin.getBounds();
                             debug("_______3 readerWin.getBounds()", winBound);
-                            normalizeRectangle(winBound);
+                            winBound = normalizeRectangle(winBound);
 
                             if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
                                 libraryWin.setBounds(winBound);

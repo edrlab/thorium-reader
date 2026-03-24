@@ -13,18 +13,16 @@ import { /*BrowserWindow,*/ Rectangle, screen } from "electron";
 
 export const defaultRectangle = (): Rectangle => (
     {
-        height: 600,
-        width: 800,
-        x: Math.round(screen.getPrimaryDisplay().workAreaSize.width / 3),
-        y: Math.round(screen.getPrimaryDisplay().workAreaSize.height / 3),
+        height: 768,
+        width: 1024,
+        x: Math.max(0, Math.round(screen.getPrimaryDisplay().workAreaSize.width / 2 - 1024 / 2)),
+        y: Math.max(0, Math.round(screen.getPrimaryDisplay().workAreaSize.height / 2 - 768 / 2)),
     });
 
-export const normalizeRectangle = (winBound: Rectangle): Rectangle | undefined => {
+export const normalizeRectangle = (winBound: Rectangle): Rectangle => {
 
-    // TS strictNullChecks would flag this incoherent check ...
-    // ... but the "window bounds" code has been brittle so let's err on the side of caution
     if (!winBound) {
-        return undefined;
+        return defaultRectangle();
     }
 
     const normalizeBound = { ...winBound };

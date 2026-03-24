@@ -30,7 +30,7 @@ function winSessionReaderReducer_(
                 ...{
                     [id]: {
                         ...{
-                            windowBound: action.payload.winBound,
+                            windowBound: {...action.payload.winBound},
                             reduxState: action.payload.reduxStateReader,
                         },
                         ...state[id],
@@ -62,7 +62,7 @@ function winSessionReaderReducer_(
 
         case winActions.session.setBound.ID: {
 
-            const id = action.payload.identifier;
+            const id = action.payload.windowIdentifier;
 
             if (state[id]) {
                 return {
@@ -71,7 +71,7 @@ function winSessionReaderReducer_(
                         [id]: {
                             ...state[id],
                             ...{
-                                windowBound: action.payload.bound,
+                                windowBound: {...action.payload.winBound},
                             },
                         },
                     },

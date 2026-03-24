@@ -30,7 +30,7 @@ function winSessionLibraryReducer_(
                 ...{
                     browserWindowId: action.payload.win.id,
                     identifier: action.payload.identifier,
-                    windowBound: action.payload.winBound,
+                    windowBound: {...action.payload.winBound},
                 },
             };
 
@@ -44,11 +44,11 @@ function winSessionLibraryReducer_(
             };
 
         case winActions.session.setBound.ID:
-            if (state.identifier === action.payload.identifier) {
+            if (state.identifier === action.payload.windowIdentifier) {
                 return {
                     ...state,
                     ...{
-                        windowBound: action.payload.bound,
+                        windowBound: {...action.payload.winBound},
                     },
                 };
             }

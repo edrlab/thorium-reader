@@ -12,7 +12,7 @@ import { error } from "readium-desktop/main/tools/error";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { eventChannel, Task, buffers } from "redux-saga";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { cancel, debounce, fork, put, take, call } from "redux-saga/effects";
+import { cancel, debounce, fork, put, take, call  } from "redux-saga/effects";
 import { diMainGet } from "readium-desktop/main/di";
 import { winClose } from "../reader";
 
@@ -77,15 +77,15 @@ function* readerMoveOrResizeObserver(action: winActions.session.registerReader.T
     yield debounce(DEBOUNCE_TIME, channel, function*() {
 
         try {
-            const winBound = reader.getBounds();
+            let winBound = reader.getBounds();
             debug("_______1 reader.getBounds()", winBound);
-            normalizeRectangle(winBound);
+            winBound = normalizeRectangle(winBound);
             yield put(winActions.session.setBound.build(id, winBound));
             yield call(() => diMainGet("publication-data").writeJsonObj(pubId, "bound", winBound));
         } catch (e) {
             debug("set reader bound error", id, e);
         }
-    });
+    }); 
 }
 
 export function saga() {
