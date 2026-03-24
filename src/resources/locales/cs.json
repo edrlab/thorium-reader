@@ -141,12 +141,15 @@
             "descAuthor": "autor: {{- author}}",
             "descCreator": "vytvořil(a)",
             "descList_few": "{{- count}} poznámek od {{- creator}} bude importováno do „{{- title}}“, {{- author}}",
+            "descList_many": "",
             "descList_one": "{{- count}} poznámek od {{- creator}} bude importováno do „{{- title}}“, {{- author}}",
             "descList_other": "{{- count}} poznámek od {{- creator}} bude importováno do „{{- title}}“, {{- author}}",
             "descNewer_few": "Konflikt(y): {{- count}} novější poznámka (novější poznámky)",
+            "descNewer_many": "",
             "descNewer_one": "Konflikt(y): {{- count}} novější poznámka (novější poznámky)",
             "descNewer_other": "Konflikt(y): {{- count}} novější poznámka (novější poznámky)",
             "descOlder_few": "Konflikt(y): {{- count}} starší poznámka (starší poznámky)",
+            "descOlder_many": "",
             "descOlder_one": "Konflikt(y): {{- count}} starší poznámka (starší poznámky)",
             "descOlder_other": "Konflikt(y): {{- count}} starší poznámka (starší poznámky)",
             "descTitle": "Anotace titulu: ",
@@ -165,10 +168,12 @@
         },
         "deleteAnnotations": "Odstranit anotace?",
         "deleteAnnotationsText_few": "Opravdu chcete odstranit {{- count}} poznámek?",
+        "deleteAnnotationsText_many": "",
         "deleteAnnotationsText_one": "Opravdu chcete odstranit {{- count}} poznámek?",
         "deleteAnnotationsText_other": "Opravdu chcete odstranit {{- count}} poznámek?",
         "deleteBookmarks": "Odstranit záložky?",
         "deleteBookmarksText_few": "Jste si jisti, že chcete odstranit {{- count}} záložek?",
+        "deleteBookmarksText_many": "",
         "deleteBookmarksText_one": "Jste si jisti, že chcete odstranit {{- count}} záložek?",
         "deleteBookmarksText_other": "Jste si jisti, že chcete odstranit {{- count}} záložek?",
         "deleteFeed": "Odstranit katalog?",
@@ -800,6 +805,7 @@
         "picker": {
             "search": {
                 "founds_few": "{{- count}} shod",
+                "founds_many": "",
                 "founds_one": "{{- count}} shod",
                 "founds_other": "{{- count}} shod",
                 "input": "přesná shoda",
@@ -1243,8 +1249,7 @@
     "wizard": {
         "buttons": {
             "discover": "Objevte, co je nového",
-            "goToBooks": "Přejít na mé publikace",
-            "next": "Další"
+            "goToBooks": "Přejít na mé publikace"
         },
         "description": {
             "home": "Thorium vypadá jinak! Objevte, co je nového...",

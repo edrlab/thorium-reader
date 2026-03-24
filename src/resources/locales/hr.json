@@ -1243,8 +1243,7 @@
     "wizard": {
         "buttons": {
             "discover": "",
-            "goToBooks": "",
-            "next": ""
+            "goToBooks": ""
         },
         "description": {
             "home": "",

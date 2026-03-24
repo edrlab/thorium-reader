@@ -1237,8 +1237,7 @@
     "wizard": {
         "buttons": {
             "discover": "Upptäck vad som är nytt",
-            "goToBooks": "Gå till mina böcker",
-            "next": "Nästa"
+            "goToBooks": "Gå till mina böcker"
         },
         "description": {
             "home": "Thorium ser annorlunda ut! Upptäck vad som är nytt ...",

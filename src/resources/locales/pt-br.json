@@ -1243,8 +1243,7 @@
     "wizard": {
         "buttons": {
             "discover": "Descubra o que há de novo",
-            "goToBooks": "Ir para minhas publicações",
-            "next": "Próximo"
+            "goToBooks": "Ir para minhas publicações"
         },
         "description": {
             "home": "Thorium parece diferente! Vamos descobrir o que há de novo...",

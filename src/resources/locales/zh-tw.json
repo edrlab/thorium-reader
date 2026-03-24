@@ -1231,8 +1231,7 @@
     "wizard": {
         "buttons": {
             "discover": "查看新動態",
-            "goToBooks": "前往我的出版物",
-            "next": "下一個"
+            "goToBooks": "前往我的出版物"
         },
         "description": {
             "home": "Thorium 看起來不一樣！讓我們來發現什麼新鮮事...",

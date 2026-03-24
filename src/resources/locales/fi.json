@@ -1237,8 +1237,7 @@
     "wizard": {
         "buttons": {
             "discover": "Mikä on muuttunut",
-            "goToBooks": "Siirry omiin julkaisuihin",
-            "next": "Seuraava"
+            "goToBooks": "Siirry omiin julkaisuihin"
         },
         "description": {
             "home": "Thorium näyttää erilaiselta! Katso mikä on muuttunut...",

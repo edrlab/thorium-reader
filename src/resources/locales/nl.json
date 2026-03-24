@@ -1237,8 +1237,7 @@
     "wizard": {
         "buttons": {
             "discover": "Ontdek Thorium Bureaublad",
-            "goToBooks": "Ga naar mijn publicaties",
-            "next": "Volgende"
+            "goToBooks": "Ga naar mijn publicaties"
         },
         "description": {
             "home": "Thorium 3.4 brengt een serie van verbeteringen aan de gebruikerservaring en lost een paar problemen op. Als je ervoor kiest terug te schakelen naar een oudere versie van de applicatie, dan is het zwaar aanbevolen om een back-up van je e-boek annotaties en boekenleggers door deze te exporteren naar een extern bestand. Je kunt deze dan terug importeren in de oudere versie nadat deze geïnstalleerd is. Dit is omdat de applicatie annotaties en boekenleggers op een lichtelijk andere innerlijk formaat in de versie 3.4 opslaat. Dit lost een presteer probleem op, maar breekt helaas de terugwerking compatibiliteit van de annotaties.",

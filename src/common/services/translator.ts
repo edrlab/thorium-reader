@@ -47,7 +47,7 @@ import zhTwCatalog from "readium-desktop/resources/locales/zh-tw.json";
 import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-keys";
 
 
-import i18next, { TOptions } from "i18next";
+import i18next from "i18next";
 
 const i18nextInstance = i18next.createInstance();
 
@@ -257,10 +257,14 @@ export const setLocale = async (newLocale: keyof typeof availableLanguages) => {
     return ;
 };
 
-export const translate = (message: string, options: TOptions = {}): string => {
-    const label = i18nextInstance.t(message, options);
+// type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never;
+// type TParams = ArgumentTypes<typeof i18next.t>;
+// type TParams = Parameters<typeof i18next.t>;
+export const translate = (...args: Parameters<typeof i18next.t>): ReturnType<typeof i18next.t> => {
+    const label = i18nextInstance.t(...args);
     if (!label || !label.length) {
-        return i18nextInstanceEN.t(message, options);
+        // fallbackLng: "en" does not take into account empty string (which we output to normalise JSON locales)
+        return i18nextInstanceEN.t(...args);
     }
     return label;
 };
