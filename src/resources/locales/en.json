@@ -1237,8 +1237,7 @@
     "wizard": {
         "buttons": {
             "discover": "Discover Thorium Desktop",
-            "goToBooks": "Go to my publications",
-            "next": "Next"
+            "goToBooks": "Go to my publications"
         },
         "description": {
             "home": "Thorium 3.4 brings a series of improvements to the user experience and fixes a set of issues. If you decide later to move back to an older version of the application, it is strongly recommended that you back up your ebook annotations and bookmarks by exporting them to an external file. You'll then import them back into the older version after it is installed. This is because the application stores annotations and bookmarks in a slightly different internal format in version 3.4. This resolves a performance issue, but breaks backward compatibility for annotations.",

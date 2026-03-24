@@ -33,23 +33,23 @@ const PUBLICATION_STORAGE_DEBOUNCE_TIME = 10 * 1000; // 10 secs
 const filename_ = "readium-desktop:main:saga:persist";
 const debug = debug_(filename_);
 debug("_");
- 
-
 
 export const persistStateToFs = async (nextState: Partial<PersistRootState>) => {
 
     debug("start of persist reduxState in disk");
 
+    // Part of code to reconstruct the entire state.json for 3.3 and earlier, not needed for the 3.4 and beyond
     let reader: IDictWinRegistryReaderState | undefined = undefined;
     if (nextState?.win?.registry?.reader) {
         reader = {};
         const pubData = diMainGet("publication-data");
         const readers = await pubData.listPublication();
 
-        // TODO: // promises
+        // TODO: need to parallelize with Promise.allSettled
         for (const pubId of readers) {
             // const _reader = nextState.win.registry.reader[pubId];
             // const _readerReduxState = _reader.reduxState;
+
             reader[pubId] = {
                 reduxState: {
                     // "config" | "locator" | "divina" | "disableRTLFlip" | "allowCustomConfig" | "noteTotalCount" | "pdfConfig"
@@ -82,7 +82,9 @@ export const persistStateToFs = async (nextState: Partial<PersistRootState>) => 
         },
         publication: nextState.publication,
         reader: nextState.reader,
-        session: nextState.session,
+        session: {
+            save: false,
+        },
         screenReader: nextState.screenReader,
         i18n: nextState.i18n,
         opds: nextState.opds,

@@ -1011,9 +1011,9 @@ export class LcpManager {
 
                 if (r2LCPStr) {
 
-                    await diMainGet("saga-middleware").run(RequesetToCloseAllReadersWithTheSamePubId, publicationIdentifier).toPromise()
-                        .then(() => { debug("RequesetToCloseAllReadersWithTheSamePubId fulfilled"); })
+                    const atLeastOneReaderIsOpen = await diMainGet("saga-middleware").run(RequesetToCloseAllReadersWithTheSamePubId, publicationIdentifier).toPromise<boolean>() // NOTE: no type inference with Task .toPromise
                         .catch((e) => { debug("RequesetToCloseAllReadersWithTheSamePubId", e); });
+                    debug("RequesetToCloseAllReadersWithTheSamePubId fulfilled");
                     // let atLeastOneReaderIsOpen = false;
                     // const readers = this.store.getState().win.session.reader;
                     // if (readers) {
@@ -1028,11 +1028,13 @@ export class LcpManager {
                     //     // this.store.dispatch(readerActions.closeRequestFromPublication.build(
                     //     //     publicationDocumentIdentifier));
                     // }
-                    await new Promise<void>((res, _rej) => {
-                        setTimeout(() => {
-                            res();
-                        }, 500); // allow extra completion time to ensure the filesystem ZIP streams are closed
-                    });
+                    if (atLeastOneReaderIsOpen) {
+                        await new Promise<void>((res, _rej) => {
+                            setTimeout(() => {
+                                res();
+                            }, 500); // allow extra completion time to ensure the filesystem ZIP streams are closed
+                        });
+                    }
 
                     try {
                         // --------- This LSD was set in launchStatusDocumentProcessing() so it is up to date in the context of r2Publication.LCP,

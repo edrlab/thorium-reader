@@ -1237,8 +1237,7 @@
     "wizard": {
         "buttons": {
             "discover": "Descobre as novidades",
-            "goToBooks": "Ir aos meus libros",
-            "next": "Seguinte"
+            "goToBooks": "Ir aos meus libros"
         },
         "description": {
             "home": "Thorium vese diferente! Descubramos as novidades...",

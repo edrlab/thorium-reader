@@ -3503,88 +3503,37 @@ declare namespace typed_i18n {
   (_: "wizard", __?: {}): {
   readonly "buttons": {
     readonly "discover": string,
-    readonly "goToBooks": string,
-    readonly "next": string
+    readonly "goToBooks": string
   },
   readonly "description": {
-    readonly "annotations": string,
-    readonly "catalogs": string,
     readonly "home": string,
-    readonly "readingView1": string,
-    readonly "readingView2": string,
-    readonly "resources": string,
-    readonly "yourBooks": string
+    readonly "resources": string
   },
   readonly "dontShow": string,
   readonly "resources": {
     readonly "discord": string,
     readonly "website": string
   },
-  readonly "tab": {
-    readonly "annotations": string,
-    readonly "catalogs": string,
-    readonly "home": string,
-    readonly "readingView": string,
-    readonly "resources": string,
-    readonly "yourBooks": string
-  },
+  readonly "tab": { readonly "home": string, readonly "resources": string },
   readonly "title": {
-    readonly "allBooks": string,
-    readonly "newFeature": string,
     readonly "resources": string,
     readonly "welcome": string
   }
 };
-  (_: "wizard.buttons", __?: {}): {
-  readonly "discover": string,
-  readonly "goToBooks": string,
-  readonly "next": string
-};
+  (_: "wizard.buttons", __?: {}): { readonly "discover": string, readonly "goToBooks": string };
   (_: "wizard.buttons.discover", __?: {}): string;
   (_: "wizard.buttons.goToBooks", __?: {}): string;
-  (_: "wizard.buttons.next", __?: {}): string;
-  (_: "wizard.description", __?: {}): {
-  readonly "annotations": string,
-  readonly "catalogs": string,
-  readonly "home": string,
-  readonly "readingView1": string,
-  readonly "readingView2": string,
-  readonly "resources": string,
-  readonly "yourBooks": string
-};
-  (_: "wizard.description.annotations", __?: {}): string;
-  (_: "wizard.description.catalogs", __?: {}): string;
+  (_: "wizard.description", __?: {}): { readonly "home": string, readonly "resources": string };
   (_: "wizard.description.home", __?: {}): string;
-  (_: "wizard.description.readingView1", __?: {}): string;
-  (_: "wizard.description.readingView2", __?: {}): string;
   (_: "wizard.description.resources", __?: {}): string;
-  (_: "wizard.description.yourBooks", __?: {}): string;
   (_: "wizard.dontShow", __?: {}): string;
   (_: "wizard.resources", __?: {}): { readonly "discord": string, readonly "website": string };
   (_: "wizard.resources.discord", __?: {}): string;
   (_: "wizard.resources.website", __?: {}): string;
-  (_: "wizard.tab", __?: {}): {
-  readonly "annotations": string,
-  readonly "catalogs": string,
-  readonly "home": string,
-  readonly "readingView": string,
-  readonly "resources": string,
-  readonly "yourBooks": string
-};
-  (_: "wizard.tab.annotations", __?: {}): string;
-  (_: "wizard.tab.catalogs", __?: {}): string;
+  (_: "wizard.tab", __?: {}): { readonly "home": string, readonly "resources": string };
   (_: "wizard.tab.home", __?: {}): string;
-  (_: "wizard.tab.readingView", __?: {}): string;
   (_: "wizard.tab.resources", __?: {}): string;
-  (_: "wizard.tab.yourBooks", __?: {}): string;
-  (_: "wizard.title", __?: {}): {
-  readonly "allBooks": string,
-  readonly "newFeature": string,
-  readonly "resources": string,
-  readonly "welcome": string
-};
-  (_: "wizard.title.allBooks", __?: {}): string;
-  (_: "wizard.title.newFeature", __?: {}): string;
+  (_: "wizard.title", __?: {}): { readonly "resources": string, readonly "welcome": string };
   (_: "wizard.title.resources", __?: {}): string;
   (_: "wizard.title.welcome", __?: {}): string
 }

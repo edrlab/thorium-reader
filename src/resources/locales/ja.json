@@ -1231,8 +1231,7 @@
     "wizard": {
         "buttons": {
             "discover": "新しい情報を見る",
-            "goToBooks": "わたしの本を一覧する",
-            "next": "次へ"
+            "goToBooks": "わたしの本を一覧する"
         },
         "description": {
             "home": "Thoriumの見た目が違います！ 何が新しいのか見てみましょう...",

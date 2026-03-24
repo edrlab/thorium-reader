@@ -666,7 +666,7 @@ export async function initStore()
         debug("END reader registry migration, let's create the redux store");
     } else {
 
-        const winRegistryEnabled = false; // win.registry hydration is disabled replace by publication-data storage in disk
+        const winRegistryEnabled = false; // win.registry is removed and replaced by publication data stored on disk and redux win.session to keep references on reader/library windows
         if (winRegistryEnabled) {
             debug("START reader registry hydration from publication-data (win.registry.reader is empty from the json state \"state_v340.json\" or from an empty new \"state.json\")");
             if (!preloadedState.win) {

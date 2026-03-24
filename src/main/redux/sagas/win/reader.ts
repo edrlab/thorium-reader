@@ -39,6 +39,10 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const { readerWindow, publicationIdentifier: pubId, windowIdentifier: winId } = action.payload;
     debug(`reader winId=${winId} -> winOpen pubId=${pubId}`);
 
+    if (readerWindow.isDestroyed()) {
+        debug("readerWindow distroyed -> exit on winId=${winId} -> pubId=${pubId}");
+        return ;
+    }
     const webContents = readerWindow.webContents;
     const screenReaderActivate = yield* selectTyped((_state: RootState) => _state.screenReader.activate);
     const locale = yield* selectTyped((_state: RootState) => _state.i18n.locale);
@@ -93,6 +97,10 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
         ? yield* callTyped(() => sqliteTableSelectAllNotesWherePubId(pubId))
         : [];
 
+    if (readerWindow.isDestroyed() || readerWindow.webContents.isDestroyed()) {
+        debug("readerWindow or webcontents distroyed -> exit on winId=${winId} -> pubId=${pubId}");
+        return ;
+    }
     webContents.send(readerIpc.CHANNEL, {
         type: readerIpc.EventType.request,
         payload: {
@@ -167,7 +175,9 @@ function* winOpenError(action: winActions.reader.openError.TAction) {
     debug(`ERRROR!!! reader winId=${winId} -> pubId=${pubId} failed to open`);
 
     try {
-        yield* callTyped(() => dialog.showMessageBox(readerWindow, { type: "error", title: "Failed to initialize the reader", message: `CRITICAL ERRROR!!! winId=${winId}; pubId=${pubId}; Failed to initialize the reader; it will now close. [${reason}]`}));
+        if (!readerWindow.isDestroyed() && !readerWindow.webContents.isDestroyed()) {
+            yield* callTyped(() => dialog.showMessageBox(readerWindow, { type: "error", title: "Failed to initialize the reader", message: `CRITICAL ERRROR!!! winId=${winId}; pubId=${pubId}; Failed to initialize the reader; it will now close. [${reason}]`}));
+        }
     } catch (e) {
         debug(e);
     }
@@ -258,13 +268,13 @@ export function* winClose(windowIdentifier: string, publicationIdentifier: strin
         }
 
         // TODO: parallelize with Promise.allSettled
-        {
-            const jsonObj = diMainGet("publication-data").getJsonObj(publicationIdentifier, "locator");
-            if (jsonObj) {
-                // finally save locator next to publication storage vault
-                yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(publicationIdentifier, "locator", jsonObj));
-            }
-        }
+        // {
+        //     const jsonObj = diMainGet("publication-data").getJsonObj(publicationIdentifier, "locator");
+        //     if (jsonObj) {
+        //         // finally save locator next to publication storage vault
+        //         yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(publicationIdentifier, "locator", jsonObj));
+        //     }
+        // }
 
         // TODO: enable publication-storage config saving
         // {
