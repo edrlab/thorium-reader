@@ -82,9 +82,9 @@
             "lastAdditions": "Aggiunti di recente"
         },
         "export": "Salva come",
-        "exportAnnotation": "Esportare le note",
+        "exportAnnotation": "Esporta le note",
         "format": "Formato",
-        "importAnnotation": "Importa note",
+        "importAnnotation": "Importa le note",
         "lang": "Lingua",
         "lastRead": "Ultimi letti",
         "login": "Login",
@@ -153,7 +153,7 @@
             "importAll": "Importa tutte le note",
             "importWithoutConflict": "Importa le note senza conflitti",
             "origin": "Pubblicazione originale: \"{{- title}}\" {{- author}}",
-            "title": "Vuoi importare queste note?"
+            "title": "Vuoi importare tutte queste note?"
         },
         "cancel": "Annulla",
         "customization": {
@@ -167,7 +167,7 @@
         "deleteAnnotationsText_many": "Si desidera eliminare {{- count}} note?",
         "deleteAnnotationsText_one": "Si desidera eliminare {{- count}} note?",
         "deleteAnnotationsText_other": "Si desidera eliminare {{- count}} note?",
-        "deleteBookmarks": "Cancellare i segnalibri?",
+        "deleteBookmarks": "Eliminare i segnalibri?",
         "deleteBookmarksText_many": "Sei sicuro di voler eliminare {{- count}} segnalibri?",
         "deleteBookmarksText_one": "Sei sicuro di voler eliminare {{- count}} segnalibri?",
         "deleteBookmarksText_other": "Sei sicuro di voler eliminare {{- count}} segnalibri?",
@@ -233,12 +233,12 @@
     },
     "message": {
         "annotations": {
-            "alreadyImported": "Tutte le note sono già importate, l'importazione viene interrotta",
+            "alreadyImported": "Tutte le note sono già state importate",
             "emptyFile": "Nessuna nota disponibile nel file",
             "errorParsing": "Errore durante l'analisi del file: ",
             "noBelongTo": "Impossibile importare le note, almeno una nota non appartiene alla pubblicazione",
-            "nothing": "Non c'è nessuna nota pronta per essere importata; l'importazione viene interrotta",
-            "success": "Importazione conclusa"
+            "nothing": "Non c'è nessuna nota pronta per essere importata; l'importazione sarà interrotta",
+            "success": "Importazione completata"
         },
         "download": {
             "error": "Il download di {{- title}} è fallito: [{{- err}}]"
@@ -695,8 +695,8 @@
             "quickAnnotations": "Creazione rapida (salta editor)",
             "saveNote": "Salva",
             "sorting": {
-                "lastcreated": "Ultima creata",
-                "lastmodified": "Ultima modificata",
+                "lastcreated": "Ultimo creato",
+                "lastmodified": "Ultimo modificato",
                 "progression": "Progressione",
                 "sortingOptions": "Opzioni di  ordinamento"
             },
