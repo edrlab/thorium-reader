@@ -7,20 +7,18 @@
 
 import debug_ from "debug";
 import { clipboard, screen } from "electron";
-import * as ramda from "ramda";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
 import { ActionWithDestination, ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { defaultRectangle, normalizeRectangle } from "readium-desktop/common/rectangle/window";
+import { compareWindowBound, defaultRectangle, normalizeWinBoundRectangle, windowIsFullyVisible } from "readium-desktop/common/rectangle/window";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
-import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
+import { diMainGet, getAllReaderWindowFromDi, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
 import { streamerActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
-import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped, put as putTyped, SagaGenerator } from "typed-redux-saga/macro";
@@ -69,7 +67,7 @@ function* readerDetachRequest(action: readerActions.detachModeRequest.TAction) {
         let libBound: Electron.Rectangle;
         try {
             // get an bound with offset
-            libBound = yield* callTyped(getWinBound, undefined);
+            libBound = yield* callTyped(readerNewWindowBound, undefined);
             debug("getWinBound(undefined)", libBound);
             if (libBound) {
                 libWin.setBounds(libBound);
@@ -102,79 +100,69 @@ function* readerDetachRequest(action: readerActions.detachModeRequest.TAction) {
     yield put(readerActions.detachModeSuccess.build());
 }
 
-export function* getWinBound(publicationIdentifier: string | undefined): SagaGenerator<Electron.Rectangle> {
+export function* readerNewWindowBound(publicationIdentifier: string | undefined): SagaGenerator<Electron.Rectangle> {
 
-    const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
-
-    debug("LIST OF READERS: ", JSON.stringify(readers, null, 4));
-
-    const library = yield* selectTyped((state: RootState) => state.win.session.library);
-    const readerArray = ObjectValues(readers);
-
-    debug("library.windowBound", library.windowBound);
-    // normalizeRectangle(library.windowBound);
-
-    // if (readerArray.length === 0) {
-    //     return library.windowBound;
-    // }
-
-    // let winBound = (yield* selectTyped(
-    //     (state: RootState) => state.win.registry.reader[publicationIdentifier]?.windowBound,
-    // )) as Electron.Rectangle | undefined;
-    let winBound: Electron.Rectangle | undefined = yield* callTyped(() => diMainGet("publication-data").readJsonObj(publicationIdentifier, "bound")) as any; // TODO: type object
-    try {
-        winBound = normalizeRectangle(winBound);
-    } catch {
-        winBound = defaultRectangle();
-    }
-    debug(`reader[${publicationIdentifier}]?.winBound}`, winBound);
-
-    const winBoundArray = readerArray.map((reader) => reader.windowBound ? normalizeRectangle(reader.windowBound) : undefined).filter((v) => !!v);
-
-    debug("WIN BOUND ARRAY:", JSON.stringify(winBoundArray, null, 4));
-    if (library.windowBound) {
-        winBoundArray.push(normalizeRectangle(library.windowBound));
-    }
-    const winBoundAlreadyTaken = !winBound || !!winBoundArray.find((bound) => ramda.equals(winBound, bound));
-
-    if (winBoundAlreadyTaken) {
-        const displayArea = yield* callTyped(() => screen.getPrimaryDisplay().workAreaSize);
-        debug("displayArea", displayArea);
-
-        const winBoundWithOffset = winBoundArray.map(
-            (rect) => {
-                if (!rect.x) { // NaN, undefined, null, zero (positive and negative numbers are truthy)
-                    rect.x = 0;
-                }
-                rect.x += 20;
-                const wDiff = Math.abs(displayArea.width - rect.width);
-                if (wDiff) {
-                    rect.x %= wDiff;
-                }
-
-                if (!rect.y) { // NaN, undefined, null, zero (positive and negative numbers are truthy)
-                    rect.y = 0;
-                }
-                rect.y += 20;
-                const hDiff = Math.abs(displayArea.height - rect.height);
-                if (hDiff) {
-                    rect.y %= hDiff;
-                }
-
-                debug("rect", rect);
-                return rect;
-            },
-        );
-        debug("winBoundWithOffset", winBoundWithOffset);
-
-        [winBound] = ramda.uniq(winBoundWithOffset);
-        debug("winBound", winBound);
-        winBound = normalizeRectangle(winBound);
-
-
+    const libraryBrowserWindows = getLibraryWindowFromDi();
+    const browserWindowBoundList: Electron.Rectangle[] = [];
+    if (libraryBrowserWindows && !libraryBrowserWindows.isDestroyed()) {
+        const winBound = libraryBrowserWindows.getNormalBounds(); // get normal state not fullscreen/maximized/minimized
+        if (windowIsFullyVisible(winBound)) {
+            browserWindowBoundList.push(winBound);
+        }
     }
 
-    return winBound;
+    const savedWindowBound = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(publicationIdentifier, "bound"))) as any; // TODO: type object
+    let windowBound: Electron.Rectangle = savedWindowBound;
+    if (savedWindowBound) {
+        try {
+            windowBound = normalizeWinBoundRectangle(windowBound);
+        } catch (e) {
+            debug(`${e}`);
+            windowBound = defaultRectangle();
+        }
+
+        const readerBrowserWindows = getAllReaderWindowFromDi();
+        for (const reader of readerBrowserWindows) {
+            if (reader && !reader.isDestroyed()) {
+                const winBound = reader.getNormalBounds(); // get normal state not fullscreen/maximized/minimized
+                if (windowIsFullyVisible(winBound)) {
+                    browserWindowBoundList.push(winBound);
+                }
+            }
+        }
+    } else {
+        windowBound = browserWindowBoundList[0] || defaultRectangle(); // track library window
+    }
+    debug(`pubId=${publicationIdentifier} winBound=${JSON.stringify(windowBound, null, 4)}`);
+
+    const displayArea = screen.getPrimaryDisplay().workAreaSize;
+    const windowBoundCopy = { ...windowBound };
+    let numberOfBrowserWindows = browserWindowBoundList.length;
+    do {
+        const windowBoundHided = browserWindowBoundList.some((browserWindowBound) => compareWindowBound(windowBoundCopy, browserWindowBound));
+        if (!windowBoundHided) {
+            if (windowIsFullyVisible(windowBoundCopy)) {
+                windowBound = windowBoundCopy;
+                break;
+            }
+        }
+        windowBoundCopy.x += 20;
+        const wDiff = Math.abs(displayArea.width - windowBoundCopy.width);
+        if (wDiff) {
+            windowBoundCopy.x %= wDiff;
+        }
+        windowBoundCopy.y += 20;
+        const hDiff = Math.abs(displayArea.height - windowBoundCopy.height);
+        if (hDiff) {
+            windowBoundCopy.y %= hDiff;
+        }
+        numberOfBrowserWindows--;
+    } while (numberOfBrowserWindows >= 0);
+
+
+    windowBound = normalizeWinBoundRectangle(windowBound);
+    debug(`pubId=${publicationIdentifier} winBound=${JSON.stringify(windowBound, null, 4)}`);
+    return windowBound;
 }
 
 function* readerOpenRequest(action: readerActions.openRequest.TAction) {

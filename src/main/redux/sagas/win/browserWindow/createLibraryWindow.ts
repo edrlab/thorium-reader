@@ -9,7 +9,7 @@ import debug_ from "debug";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
 import * as path from "path";
-import { defaultRectangle, normalizeRectangle } from "readium-desktop/common/rectangle/window";
+import { defaultRectangle, normalizeWinBoundRectangle } from "readium-desktop/common/rectangle/window";
 import { diMainGet } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import { winActions } from "readium-desktop/main/redux/actions";
@@ -41,7 +41,7 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
     // initial state apply in reducers
     let windowBound = yield* selectTyped(
         (state: RootState) => state.win.session.library.windowBound);
-    windowBound = normalizeRectangle(windowBound);
+    windowBound = normalizeWinBoundRectangle(windowBound);
     if (!windowBound) {
         windowBound = defaultRectangle();
     }

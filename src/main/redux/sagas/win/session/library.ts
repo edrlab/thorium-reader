@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { normalizeRectangle } from "readium-desktop/common/rectangle/window";
+import { normalizeWinBoundRectangle } from "readium-desktop/common/rectangle/window";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { error } from "readium-desktop/main/tools/error";
 import { winActions } from "readium-desktop/main/redux/actions";
@@ -78,7 +78,7 @@ function* libraryMoveOrResizeObserver(action: winActions.session.registerLibrary
         try {
             let winBound = library.getBounds();
             debug("_______2 library.getBounds()", winBound);
-            winBound = normalizeRectangle(winBound);
+            winBound = normalizeWinBoundRectangle(winBound);
             yield put(winActions.session.setBound.build(id, winBound));
         } catch (e) {
             debug("set library bound error", e);

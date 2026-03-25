@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { normalizeRectangle } from "readium-desktop/common/rectangle/window";
+import { normalizeWinBoundRectangle } from "readium-desktop/common/rectangle/window";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { error } from "readium-desktop/main/tools/error";
 import { winActions } from "readium-desktop/main/redux/actions";
@@ -79,7 +79,7 @@ function* readerMoveOrResizeObserver(action: winActions.session.registerReader.T
         try {
             let winBound = reader.getBounds();
             debug("_______1 reader.getBounds()", winBound);
-            winBound = normalizeRectangle(winBound);
+            winBound = normalizeWinBoundRectangle(winBound);
             yield put(winActions.session.setBound.build(id, winBound));
             yield call(() => diMainGet("publication-data").writeJsonObj(pubId, "bound", winBound));
         } catch (e) {

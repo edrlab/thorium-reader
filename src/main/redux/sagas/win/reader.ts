@@ -8,7 +8,7 @@
 import debug_ from "debug";
 import { readerIpc } from "readium-desktop/common/ipc";
 import { ReaderInfo, ReaderMode } from "readium-desktop/common/models/reader";
-import { normalizeRectangle } from "readium-desktop/common/rectangle/window";
+import { normalizeWinBoundRectangle } from "readium-desktop/common/rectangle/window";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { deleteReaderWindowInDi, diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
@@ -233,7 +233,7 @@ export function* winClose(windowIdentifier: string, publicationIdentifier: strin
                         try {
                             let winBound = readerWin.getBounds();
                             debug("_______3 readerWin.getBounds()", winBound);
-                            winBound = normalizeRectangle(winBound);
+                            winBound = normalizeWinBoundRectangle(winBound);
 
                             if (libraryWin && !libraryWin.isDestroyed() && !libraryWin.webContents.isDestroyed()) {
                                 libraryWin.setBounds(winBound);

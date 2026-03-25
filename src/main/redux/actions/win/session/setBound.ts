@@ -21,7 +21,7 @@ export function build(windowIdentifier: string, winBound: Rectangle):
     return {
         type: ID,
         payload: {
-            windowIdentifier: windowIdentifier,
+            windowIdentifier,
             winBound,
         },
     };
