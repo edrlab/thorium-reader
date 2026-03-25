@@ -79,7 +79,7 @@ function* readerMoveOrResizeObserver(action: winActions.session.registerReader.T
         try {
             let winBound = reader.getBounds();
             debug("_______1 reader.getBounds()", winBound);
-            winBound = normalizeWinBoundRectangle(winBound);
+            // winBound = normalizeWinBoundRectangle(winBound);
             yield put(winActions.session.setBound.build(id, winBound));
             yield call(() => diMainGet("publication-data").writeJsonObj(pubId, "bound", winBound));
         } catch (e) {
