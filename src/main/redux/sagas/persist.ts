@@ -211,24 +211,35 @@ export function saga() {
             winActions.persistRequest.ID,
             needToPersistPatch,
         ),
-        takeSpawnLeading(
-            winActions.session.setBound.ID,
-            function* (action: winActions.session.setBound.TAction) {
-                const payload = action.payload;
-                const identifier = payload.windowIdentifier;
-                const boundJsonObj = payload.winBound;
+        // takeSpawnLeading(
+        //     winActions.session.registerReader.ID,
+        //     function* (action: winActions.session.registerReader.TAction) {
+        //         const payload = action.payload;
+        //         const boundJsonObj = payload.winBound;
+        //         const pubId = action.payload.publicationIdentifier;
 
-                const reader = yield* selectTyped((state: RootState) => state.win.session.reader[identifier]);
-                if (!reader) {
-                    debug("ERROR!!! no reader sender found in session !!!");
-                    return;
-                }
-                const pubId = reader.publicationIdentifier;
+        //         yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "bound", boundJsonObj));
+        //     },
+        //     (e) => debug(e),
+        // ),
+        // takeSpawnLeading(
+        //     winActions.session.setBound.ID,
+        //     function* (action: winActions.session.setBound.TAction) {
+        //         const payload = action.payload;
+        //         const identifier = payload.windowIdentifier;
+        //         const boundJsonObj = payload.winBound;
 
-                yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "bound", boundJsonObj));
-            },
-            (e) => debug(e),
-        ),
+        //         const reader = yield* selectTyped((state: RootState) => state.win.session.reader[identifier]);
+        //         if (!reader) {
+        //             debug("ERROR!!! no reader sender found in session !!!");
+        //             return;
+        //         }
+        //         const pubId = reader.publicationIdentifier;
+
+        //         yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "bound", boundJsonObj));
+        //     },
+        //     (e) => debug(e),
+        // ),
         takeSpawnLeading(
             readerActions.pdfConfig.ID,
             function* (action: readerActions.pdfConfig.TAction) {

@@ -9,9 +9,9 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import debug_ from "debug";
 import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
 import * as path from "path";
-import { call as callTyped, put as putTyped, race as raceTyped, take as takeTyped, delay as delayTyped, spawn as spawnTyped, SagaGenerator } from "typed-redux-saga/macro";
+import { call as callTyped, put as putTyped, race as raceTyped, take as takeTyped, delay as delayTyped, spawn as spawnTyped, fork as forkTyped, SagaGenerator } from "typed-redux-saga/macro";
 import { buffers, END, eventChannel } from "redux-saga";
-import { saveReaderWindowInDi } from "readium-desktop/main/di";
+import { diMainGet, saveReaderWindowInDi } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import { winActions } from "readium-desktop/main/redux/actions";
 import {
@@ -91,6 +91,7 @@ export function* createReaderWindow(publicationIdentifier: string, manifestUrl: 
         // reduxState,
         windowIdentifier,
     ));
+    yield* forkTyped(() => diMainGet("publication-data").writeJsonObj(publicationIdentifier, "bound", winBound));
 
     saveReaderWindowInDi(readerWindow, windowIdentifier);
 

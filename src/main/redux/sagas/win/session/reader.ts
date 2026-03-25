@@ -77,7 +77,7 @@ function* readerMoveOrResizeObserver(action: winActions.session.registerReader.T
     yield debounce(DEBOUNCE_TIME, channel, function*() {
 
         try {
-            let winBound = reader.getBounds(); // current bounds of the window maximized/fullscreen/minimized (not on windows11, specific events)
+            let winBound = reader.getBounds();
             debug("_______1 reader.getBounds()", winBound);
             winBound = normalizeWinBoundRectangle(winBound);
             yield put(winActions.session.setBound.build(id, winBound));

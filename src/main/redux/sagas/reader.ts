@@ -6,12 +6,12 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { clipboard, screen } from "electron";
+import { clipboard } from "electron";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
 import { ActionWithDestination, ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { compareWindowBound, defaultRectangle, normalizeWinBoundRectangle, windowIsFullyVisible } from "readium-desktop/common/rectangle/window";
+import { normalizeWinBoundRectangle } from "readium-desktop/common/rectangle/window";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
@@ -103,64 +103,28 @@ function* readerDetachRequest(action: readerActions.detachModeRequest.TAction) {
 export function* readerNewWindowBound(publicationIdentifier: string | undefined): SagaGenerator<Electron.Rectangle> {
 
     const libraryBrowserWindows = getLibraryWindowFromDi();
-    const browserWindowBoundList: Electron.Rectangle[] = [];
+    const existingWindowBounds: Electron.Rectangle[] = [];
     if (libraryBrowserWindows && !libraryBrowserWindows.isDestroyed()) {
-        const winBound = libraryBrowserWindows.getNormalBounds(); // get normal state not fullscreen/maximized/minimized window’s before it was maximized or fullscreened
-        if (windowIsFullyVisible(winBound)) {
-            browserWindowBoundList.push(winBound);
-        }
+        existingWindowBounds.push(getLibraryWindowFromDi().getBounds());
     }
 
     const savedWindowBound = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(publicationIdentifier, "bound"))) as any; // TODO: type object
-    let windowBound: Electron.Rectangle = savedWindowBound;
+    const windowBound = normalizeWinBoundRectangle(savedWindowBound || existingWindowBounds[0]);
     if (savedWindowBound) {
-        try {
-            windowBound = normalizeWinBoundRectangle(windowBound);
-        } catch (e) {
-            debug(`${e}`);
-            windowBound = defaultRectangle();
-        }
 
         const readerBrowserWindows = getAllReaderWindowFromDi();
-        for (const reader of readerBrowserWindows) {
-            if (reader && !reader.isDestroyed()) {
-                const winBound = reader.getNormalBounds(); // get normal state not fullscreen/maximized/minimized window’s before it was maximized or fullscreened
-                if (windowIsFullyVisible(winBound)) {
-                    browserWindowBoundList.push(winBound);
-                }
+        for (const readerBrowserWindow of readerBrowserWindows) {
+            if (readerBrowserWindow && !readerBrowserWindow.isDestroyed()) {
+                existingWindowBounds.push(readerBrowserWindow.getBounds());
             }
         }
-    } else {
-        windowBound = browserWindowBoundList[0] || defaultRectangle(); // track library window
     }
-    debug(`pubId=${publicationIdentifier} winBound=${JSON.stringify(windowBound, null, 4)}`);
 
-    const displayArea = screen.getPrimaryDisplay().workAreaSize;
-    const windowBoundCopy = { ...windowBound };
-    let numberOfBrowserWindows = browserWindowBoundList.length;
-    do {
-        const windowBoundHided = browserWindowBoundList.some((browserWindowBound) => compareWindowBound(windowBoundCopy, browserWindowBound));
-        if (!windowBoundHided) {
-            if (windowIsFullyVisible(windowBoundCopy)) {
-                windowBound = windowBoundCopy;
-                break;
-            }
-        }
-        windowBoundCopy.x += 20;
-        const wDiff = Math.abs(displayArea.width - windowBoundCopy.width);
-        if (wDiff) {
-            windowBoundCopy.x %= wDiff;
-        }
-        windowBoundCopy.y += 20;
-        const hDiff = Math.abs(displayArea.height - windowBoundCopy.height);
-        if (hDiff) {
-            windowBoundCopy.y %= hDiff;
-        }
-        numberOfBrowserWindows--;
-    } while (numberOfBrowserWindows >= 0);
+    while (existingWindowBounds.some((existingBounds) => existingBounds.x === windowBound.x && existingBounds.y === existingBounds.y)) {
+        windowBound.x += 30;
+        windowBound.y += 30;
+    }
 
-
-    windowBound = normalizeWinBoundRectangle(windowBound);
     debug(`pubId=${publicationIdentifier} winBound=${JSON.stringify(windowBound, null, 4)}`);
     return windowBound;
 }
