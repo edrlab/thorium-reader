@@ -76,7 +76,7 @@ function* libraryMoveOrResizeObserver(action: winActions.session.registerLibrary
     yield debounce(DEBOUNCE_TIME, channel, function*() {
 
         try {
-            let winBound = library.getBounds();
+            let winBound = library.getBounds(); // current bounds of the window maximized/fullscreen/minimized (not on windows11, specific events)
             debug("_______2 library.getBounds()", winBound);
             winBound = normalizeWinBoundRectangle(winBound);
             yield put(winActions.session.setBound.build(id, winBound));

@@ -105,7 +105,7 @@ export function* readerNewWindowBound(publicationIdentifier: string | undefined)
     const libraryBrowserWindows = getLibraryWindowFromDi();
     const browserWindowBoundList: Electron.Rectangle[] = [];
     if (libraryBrowserWindows && !libraryBrowserWindows.isDestroyed()) {
-        const winBound = libraryBrowserWindows.getNormalBounds(); // get normal state not fullscreen/maximized/minimized
+        const winBound = libraryBrowserWindows.getNormalBounds(); // get normal state not fullscreen/maximized/minimized window’s before it was maximized or fullscreened
         if (windowIsFullyVisible(winBound)) {
             browserWindowBoundList.push(winBound);
         }
@@ -124,7 +124,7 @@ export function* readerNewWindowBound(publicationIdentifier: string | undefined)
         const readerBrowserWindows = getAllReaderWindowFromDi();
         for (const reader of readerBrowserWindows) {
             if (reader && !reader.isDestroyed()) {
-                const winBound = reader.getNormalBounds(); // get normal state not fullscreen/maximized/minimized
+                const winBound = reader.getNormalBounds(); // get normal state not fullscreen/maximized/minimized window’s before it was maximized or fullscreened
                 if (windowIsFullyVisible(winBound)) {
                     browserWindowBoundList.push(winBound);
                 }
