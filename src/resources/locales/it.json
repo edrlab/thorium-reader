@@ -910,18 +910,18 @@
             "publicationNoToc": "Questa pubblicazione non ha un indice dei contenuti"
         },
         "tts": {
-            "activate": "Attiva Testo a Voce",
+            "activate": "Attiva Lettura ad alta voce",
             "language": "Lingua sintesi vocale",
-            "next": "Prossimo Testo a Voce",
+            "next": "Traccia successiva",
             "options": "Opzioni sintesi vocale",
-            "pause": "Metti in pausa Testo a Voce",
-            "play": "Riproduci Testo a Voce",
-            "previous": "Precedente Testo a Voce",
+            "pause": "Metti in pausa Lettura ad alta voce",
+            "play": "Riproduci Lettura ad alta voce",
+            "previous": "Traccia precedente",
             "sentenceDetect": "Separa testo",
             "sentenceDetectDescription": "Suddividi i paragrafi lunghi in frasi.",
-            "speed": "Velocità di riproduzione Testo a Voce",
-            "stop": "Interrompi Testo a Voce",
-            "voice": "Voce del Testo a voce"
+            "speed": "Velocità di riproduzione Lettura ad alta voce",
+            "stop": "Interrompi Lettura ad alta voce",
+            "voice": "Voce della Lettura ad alta voce"
         }
     },
     "settings": {
