@@ -9,6 +9,7 @@ import debug_ from "debug";
 import * as fs from "fs";
 import { deepStrictEqual, ok } from "readium-desktop/common/utils/assert";
 import {
+    splashScreen,
     diMainGet, memoryLoggerFilename, patchFilePath, runtimeStateFilePath, state_V340_FilePath, stateFilePath,
 } from "readium-desktop/main/di";
 import { reduxSyncMiddleware } from "readium-desktop/main/redux/middleware/sync";
@@ -37,6 +38,7 @@ import { IAllowCustomConfigState } from "readium-desktop/common/redux/states/ren
 import { IDivinaState } from "readium-desktop/common/redux/states/renderer/divina";
 import { IBookmarkTotalCountState } from "readium-desktop/common/redux/states/renderer/bookmarkTotalCount";
 import { persistStateToFs } from "../sagas/persist";
+import { app, BrowserWindow } from "electron";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -100,7 +102,7 @@ const test = (stateRaw: any): stateRaw is PersistRootState => {
     ok(stateRaw.win);
     ok(stateRaw.publication);
     ok(stateRaw.reader);
-    ok(stateRaw.session);
+    // ok(stateRaw.session);
 
     return stateRaw;
 };
@@ -109,6 +111,8 @@ export async function initStore()
     : Promise<[Store<RootState>, SagaMiddleware<object>]> {
 
     let reduxState: PersistRootState | undefined = undefined;
+
+    let reduxStateFromState330: PersistRootState | undefined = undefined;
 
     debug("");
     debug("MEMORY INIT STORE");
@@ -123,11 +127,13 @@ export async function initStore()
         let getNewStateFromV340 = false;
         try {
             jsonStr = await fs.promises.readFile(stateFilePath, { encoding: "utf8" });
-            const json = JSON.parse(jsonStr);
-            if (json.__t && json.__v) {
+            reduxStateFromState330 = JSON.parse(jsonStr);
+            //  __t and __v are the hacky keys inserted when persisted by 340
+            if (test(reduxStateFromState330) && (reduxStateFromState330 as any).__t && (reduxStateFromState330 as any).__v) {
                 debug("The old one: \"state.json\" was written with the v3.4.0 last release and not from an old one (like v3.3.0), so let's recover the json redux state from \"state_v340.json\"");
                 getNewStateFromV340 = true;
             } else {
+                reduxStateFromState330 = undefined;
                 // the old state.json has been updated from an older thorium version (3.3.0?) so let's migrate from it.
                 debug("If there is a crash from v330 and a forward migration to v340, publications data will not be imported, state.json will not be updated with new publications state");
                 getNewStateFromV340 = false;
@@ -301,9 +307,54 @@ export async function initStore()
 
         debug("START reader registry migration");
 
-        let pubIds: string[];
+        let pubIds: string[] = [];
         if (preloadedState?.publication?.db) {
             pubIds = Object.keys(preloadedState.publication.db);
+        }
+        const readerRegistryPubIds = Object.keys(preloadedState.win.registry.reader);
+        const numberOfPublicationNeededToDisplayTheSplashScreen = 20; // between 20 and 50 seems to me a good compromise, 500ms to 1s minimum before showing the splash-screen
+        if (readerRegistryPubIds.length > numberOfPublicationNeededToDisplayTheSplashScreen) {
+            // Create splash window
+            app.whenReady().then(() => {
+
+                try {
+                    splashScreen.browserWindow = new BrowserWindow({
+                        width: 400,
+                        height: 300,
+                        frame: false,
+                        alwaysOnTop: true,
+                        transparent: true,
+                    });
+
+                    const splashHTML = `
+<!DOCTYPE html>
+<html>
+<body style="margin:0;display:flex;align-items:center;justify-content:center;height:100vh;background:#ffffff;color:#000000;">
+  <div style="text-align:center">
+    <div style="
+      width:40px;
+      height:40px;
+      border:4px solid #ccc;
+      border-top:4px solid #09f;
+      border-radius:50%;
+      animation:spin 1s linear infinite;
+      margin:auto;
+    "></div>
+    <p>The migration of Thorium-Reader Desktop to version 3.4 is in progress. Please wait...</p>
+  </div>
+
+  <style>
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</body>
+</html>
+`;
+                    const splashDataURL = `data:text/html;charset=utf-8,${encodeURIComponent(splashHTML)}`;
+                    splashScreen.browserWindow.loadURL(splashDataURL);
+                } catch { }
+            });
         }
 
         for (const pubId in preloadedState.win.registry.reader) {
@@ -520,35 +571,33 @@ export async function initStore()
                 state.reduxState.noteTotalCount.state = noteTotalCount;
             }
 
+            const publicationData = diMainGet("publication-data");
             if (pubIds.includes(pubId)) {
                 debug("MIGRATION TO Publication-data file storage ->", pubId);
 
-                // TODO: parallel !? libuv = 4 threads
-                const publicationData = diMainGet("publication-data");
-                const publicationStorage = diMainGet("publication-storage");
+                // For test purpose only
+                // await new Promise((resolve) => setTimeout(resolve, 10000));
+
+                
+                // publicationStorage is not used for the 340 for the moment, wait 350 to add this evolution
+                // const publicationStorage = diMainGet("publication-storage");
+
+                const promiseArray: Promise<void>[] = [];
 
                 if (state?.reduxState?.locator) {
                     debug("\t => locator");
                     const jsonObj = state.reduxState.locator as unknown as object;
-                    try {
-                        await publicationData.writeJsonObj(pubId, "locator", jsonObj);
-                    } catch (e) {
-                        debug(e);
-                    }
-                    try {
-                        await publicationStorage.writeJsonObj(pubId, "locator", jsonObj);
-                    } catch (e) {
-                        debug(e);
-                    }
+                    promiseArray.push(publicationData.writeJsonObj(pubId, "locator", jsonObj));
+                    // try {
+                    //     await publicationStorage.writeJsonObj(pubId, "locator", jsonObj);
+                    // } catch (e) {
+                    //     debug(e);
+                    // }
                 }
                 if (state?.reduxState?.config) {
                     debug("\t => config");
                     const jsonObj = state.reduxState.config as unknown as object;
-                    try {
-                        await publicationData.writeJsonObj(pubId, "config", jsonObj);
-                    } catch (e) {
-                        debug(e);
-                    }
+                    promiseArray.push(publicationData.writeJsonObj(pubId, "config", jsonObj));
                     // try {
                     //     await publicationStorage.writeJsonObj(pubId, "config", jsonObj);
                     // } catch (e) {
@@ -560,11 +609,7 @@ export async function initStore()
                 if (state?.reduxState?.disableRTLFlip) {
                     debug("\t => disableRTLFlip");
                     const jsonObj = state.reduxState.disableRTLFlip as unknown as object;
-                    try {
-                        await publicationData.writeJsonObj(pubId, "disableRTLFlip", jsonObj);
-                    } catch (e) {
-                        debug(e);
-                    }
+                    promiseArray.push(publicationData.writeJsonObj(pubId, "disableRTLFlip", jsonObj));
                     // try {
                     //     await publicationStorage.writeJsonObj(pubId, "disableRTLFlip", jsonObj);
                     // } catch (e) {
@@ -576,11 +621,7 @@ export async function initStore()
                 if (state?.reduxState?.divina) {
                     debug("\t => disableRTLFlip");
                     const jsonObj = state.reduxState.divina as unknown as object;
-                    try {
-                        await publicationData.writeJsonObj(pubId, "divina", jsonObj);
-                    } catch (e) {
-                        debug(e);
-                    }
+                    promiseArray.push(publicationData.writeJsonObj(pubId, "divina", jsonObj));
                     // try {
                     //     await publicationStorage.writeJsonObj(pubId, "divina", jsonObj);
                     // } catch (e) {
@@ -592,11 +633,7 @@ export async function initStore()
                 if (state?.reduxState?.allowCustomConfig) {
                     debug("\t => disableRTLFlip");
                     const jsonObj = state.reduxState.allowCustomConfig as unknown as object;
-                    try {
-                        await publicationData.writeJsonObj(pubId, "allowCustomConfig", jsonObj);
-                    } catch (e) {
-                        debug(e);
-                    }
+                    promiseArray.push(publicationData.writeJsonObj(pubId, "allowCustomConfig", jsonObj));
                     // try {
                     //     await publicationStorage.writeJsonObj(pubId, "allowCustomConfig", jsonObj);
                     // } catch (e) {
@@ -608,11 +645,7 @@ export async function initStore()
                 if (state?.reduxState?.noteTotalCount) {
                     debug("\t => disableRTLFlip");
                     const jsonObj = state.reduxState.noteTotalCount as unknown as object;
-                    try {
-                        await publicationData.writeJsonObj(pubId, "noteTotalCount", jsonObj);
-                    } catch (e) {
-                        debug(e);
-                    }
+                    promiseArray.push(publicationData.writeJsonObj(pubId, "noteTotalCount", jsonObj));
                     // try {
                     //     await publicationStorage.writeJsonObj(pubId, "noteTotalCount", jsonObj);
                     // } catch (e) {
@@ -624,11 +657,7 @@ export async function initStore()
                 if (state?.reduxState?.pdfConfig) {
                     debug("\t => disableRTLFlip");
                     const jsonObj = state.reduxState.pdfConfig as unknown as object;
-                    try {
-                        await publicationData.writeJsonObj(pubId, "pdfConfig", jsonObj);
-                    } catch (e) {
-                        debug(e);
-                    }
+                    promiseArray.push(publicationData.writeJsonObj(pubId, "pdfConfig", jsonObj));
                     // try {
                     //     await publicationStorage.writeJsonObj(pubId, "pdfConfig", jsonObj);
                     // } catch (e) {
@@ -638,10 +667,16 @@ export async function initStore()
                 if (state?.windowBound) {
                     debug("\t => bound");
                     const jsonObj = state.windowBound as unknown as object;
-                    try {
-                        await publicationData.writeJsonObj(pubId, "bound", jsonObj);
-                    } catch (e) {
-                        debug(e);
+                    promiseArray.push(publicationData.writeJsonObj(pubId, "bound", jsonObj));
+                }
+
+                const promisesSettledResult = await Promise.allSettled(promiseArray);
+
+                for (const p of promisesSettledResult) {
+                    if (p.status === "fulfilled") {
+                        debug("\t\tok!");
+                    } else {
+                        debug(p.reason);
                     }
                 }
 
@@ -651,8 +686,11 @@ export async function initStore()
                     debug(e);
                 }
             } else {
-                debug("MIGRATION TO Publication-data file storage ->", pubId, "IMPOSSIBLE BECAUSE PUBID NOT FOUND IN publication.db !!!");
+                debug("MIGRATION TO Publication-data file storage ->", pubId, "NOT POSSIBLE BECAUSE PUBID NOT FOUND IN publication.db !!!");
             }
+
+            // reset the publication set visited to not save them again on persistence
+            publicationData.clearVisitedPublicationSet();
         }
 
         try {
@@ -665,6 +703,8 @@ export async function initStore()
 
         debug("END reader registry migration, let's create the redux store");
     } else {
+
+        // no state registry reader found
 
         const winRegistryEnabled = false; // win.registry is removed and replaced by publication data stored on disk and redux win.session to keep references on reader/library windows
         if (winRegistryEnabled) {
@@ -735,6 +775,20 @@ export async function initStore()
     
             debug("END reader registry hydration from publication-data, let's create the redux store");
         } // win registry hydration disabled
+        else {
+            if (!preloadedState.win) {
+                preloadedState.win = {} as any;
+            }
+            if (!preloadedState.win.registry) {
+                preloadedState.win.registry = {} as any;
+            }
+            if (!preloadedState.win.registry.reader) {
+                preloadedState.win.registry.reader = {};
+            }
+
+            // apply to the win registry reader state the previous persisted state for the 330 backward compatibility (from state.json and not state_v340.json)
+            preloadedState.win.registry.reader = reduxStateFromState330?.win?.registry?.reader || {};
+        }
     }
 
     // defaultConfig state initialization from older database thorium version 2.x, 3.0

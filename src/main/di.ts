@@ -392,6 +392,16 @@ interface IGet {
 // the type any for container.get is overloaded by IGet
 const diMainGet: IGet = (symbol: keyof typeof diSymbolTable) => container.get<any>(diSymbolTable[symbol], { autobind: true });
 
+let __splashScreenBrowserWindow: BrowserWindow | undefined;
+const splashScreen = {
+  get browserWindow() {
+    return __splashScreenBrowserWindow;
+  },
+  set browserWindow(v) {
+    __splashScreenBrowserWindow = v;
+  },
+};
+
 export {
     closeProcessLock,
     diMainGet,
@@ -402,4 +412,5 @@ export {
     saveReaderWindowInDi,
     getAllReaderWindowFromDi,
     createStoreFromDi,
+    splashScreen,
 };

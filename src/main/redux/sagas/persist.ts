@@ -36,34 +36,65 @@ debug("_");
 
 export const persistStateToFs = async (nextState: Partial<PersistRootState>) => {
 
-    debug("start of persist reduxState in disk");
+    debug("START of persist reduxState in disk");
 
     // Part of code to reconstruct the entire state.json for 3.3 and earlier, not needed for the 3.4 and beyond
     let reader: IDictWinRegistryReaderState | undefined = undefined;
     if (nextState?.win?.registry?.reader) {
+
+        debug("START reconstruction of the registry reader state for backward compatibilty with 3.3");
         reader = {};
-        const pubData = diMainGet("publication-data");
-        const readers = await pubData.listPublication();
+        const publicationData = diMainGet("publication-data");
+        const publicationIdentifierFromPublicationDataBase = Object.keys(nextState?.publication?.db || {});
 
-        // TODO: need to parallelize with Promise.allSettled
-        for (const pubId of readers) {
-            // const _reader = nextState.win.registry.reader[pubId];
-            // const _readerReduxState = _reader.reduxState;
+        for (const pubId of publicationIdentifierFromPublicationDataBase) {
+            if (publicationData.visited.has(pubId)) {
 
-            reader[pubId] = {
-                reduxState: {
-                    // "config" | "locator" | "divina" | "disableRTLFlip" | "allowCustomConfig" | "noteTotalCount" | "pdfConfig"
-                    config: await pubData.readJsonObj(pubId, "config") as any, // TODO: type object
-                    locator: await pubData.readJsonObj(pubId, "locator") as any, // TODO: type object
-                    divina: await pubData.readJsonObj(pubId, "divina") as any, // TODO: type object
-                    disableRTLFlip: await pubData.readJsonObj(pubId, "disableRTLFlip") as any, // TODO: type object
-                    allowCustomConfig: await pubData.readJsonObj(pubId, "allowCustomConfig") as any, // TODO: type object
-                    noteTotalCount: await pubData.readJsonObj(pubId, "noteTotalCount") as any, // TODO: type object
-                    pdfConfig: await pubData.readJsonObj(pubId, "pdfConfig") as any, // TODO: type object
-                },
-                windowBound: await pubData.readJsonObj(pubId, "bound") as any, // TODO: type object
-            };
+                debug(`${pubId} has been visited`);
+
+                const promisesSettledResult = await Promise.allSettled([
+                    publicationData.readJsonObj(pubId, "config") as any, // TODO: type object
+                    publicationData.readJsonObj(pubId, "locator") as any, // TODO: type object
+                    publicationData.readJsonObj(pubId, "divina") as any, // TODO: type object
+                    publicationData.readJsonObj(pubId, "disableRTLFlip") as any, // TODO: type object
+                    publicationData.readJsonObj(pubId, "allowCustomConfig") as any, // TODO: type object
+                    publicationData.readJsonObj(pubId, "noteTotalCount") as any, // TODO: type object
+                    publicationData.readJsonObj(pubId, "pdfConfig") as any, // TODO: type object
+                    publicationData.readJsonObj(pubId, "bound") as any, // TODO: type object
+                ]);
+                await publicationData.close(pubId);
+
+                reader[pubId] = {
+                    reduxState: {
+                        config: promisesSettledResult[0].status === "fulfilled" ? promisesSettledResult[0].value : undefined,
+                        locator: promisesSettledResult[1].status === "fulfilled" ? promisesSettledResult[1].value : undefined,
+                        divina: promisesSettledResult[2].status === "fulfilled" ? promisesSettledResult[2].value : undefined,
+                        disableRTLFlip: promisesSettledResult[3].status === "fulfilled" ? promisesSettledResult[3].value : undefined,
+                        allowCustomConfig: promisesSettledResult[4].status === "fulfilled" ? promisesSettledResult[4].value : undefined,
+                        noteTotalCount: promisesSettledResult[5].status === "fulfilled" ? promisesSettledResult[5].value : undefined,
+                        pdfConfig: promisesSettledResult[6].status === "fulfilled" ? promisesSettledResult[6].value : undefined,
+                    },
+                    windowBound: promisesSettledResult[7].status === "fulfilled" ? promisesSettledResult[7].value : undefined,
+                };
+
+                debug(`SAVED reader[${pubId}]: ${JSON.stringify({
+                    reduxState: {
+                        config: typeof reader[pubId].reduxState.config,
+                        locator: typeof reader[pubId].reduxState.locator,
+                        divina: typeof reader[pubId].reduxState.divina,
+                        disableRTLFlip: typeof reader[pubId].reduxState.disableRTLFlip,
+                        allowCustomConfig: typeof reader[pubId].reduxState.allowCustomConfig,
+                        noteTotalCount: typeof reader[pubId].reduxState.noteTotalCount,
+                        pdfConfig: typeof reader[pubId].reduxState.pdfConfig,
+                    },
+                    windowBound: typeof reader[pubId].windowBound,
+                }, null, 4)}`);
+            } else {
+                reader[pubId] = nextState.win.registry.reader[pubId];
+            }
         }
+
+        debug("END of the reconstruction of the registry reader state for backward compatibilty");
     }
 
     const value: PersistRootState & { __t: string, __v: string } = {

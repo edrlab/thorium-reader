@@ -46,6 +46,8 @@ export class PublicationData {
 
     private filterFilesByType = (t: TFileTypePubData) => this.files!.filter(({type}) => type === t);
 
+    private visitedPubIdSet: Set<string> = new Set();
+
     private assertAndGetFileName = (type: TFileTypePubData) => {
         const fileName = type === "locator" ? "locator.json" : type === "config" ? "config.json" : type === "disableRTLFlip" ? "disableRTLFlip.json" : type === "divina" ? "divina.json" : type === "allowCustomConfig" ? "allowCustomConfig.json" : type === "noteTotalCount" ? "noteTotalCount.json" : type === "pdfConfig" ? "pdfConfig.json" : type === "bound" ? "bound.json" : "";
         if (!fileName) {
@@ -58,6 +60,14 @@ export class PublicationData {
         this.publicationConfigPath = publicationConfigPath;
         this.files = [];
     }
+    
+    public get visited() {
+        return this.visitedPubIdSet;
+    }
+
+    public clearVisitedPublicationSet() {
+        this.visitedPubIdSet = new Set();
+    }
 
     public getJsonObj(pubId: string, type: TFileTypePubData): object | undefined {
         assertUUIDv4(pubId);
@@ -68,6 +78,7 @@ export class PublicationData {
     public async destroy() {
         this.lock = true;
         const files = [...this.files];
+        this.visitedPubIdSet = new Set();
         this.files = [];
         const filePromises = [];
         for (const file of files) {
@@ -90,9 +101,16 @@ export class PublicationData {
             })());
         }
         try {
-            const res = await Promise.allSettled(filePromises);
+            const promisesSettledResult = await Promise.allSettled(filePromises);
             debug("Publication-data destroy() done");
-            debug(res);
+
+            for (const p of promisesSettledResult) {
+                if (p.status === "fulfilled") {
+                    debug("ok!");
+                } else {
+                    debug(p.reason);
+                }
+            }
         } catch (e) {
             debug(`${e}`);
         }
@@ -177,6 +195,8 @@ export class PublicationData {
     public async writeJsonObj(pubId: string, type: TFileTypePubData, jsonObj: object) {
         if (this.lock) return ;
         assertUUIDv4(pubId);
+
+        this.visitedPubIdSet.add(pubId);
 
         this.assertAndGetFileName(type);
 
