@@ -288,16 +288,16 @@ export class PublicationData {
 
         for (const file of files) {
             try {
-                try {
-                    await file.mutex;
-                } catch (e) {
-                    debug(e);
-                }
-                try {
-                    await file.fileHandle.sync();
-                } catch (e) {
-                    debug(e);
-                }
+                await file.mutex;
+            } catch (e) {
+                debug(e);
+            }
+            try {
+                await file.fileHandle.sync();
+            } catch (e) {
+                debug(e);
+            }
+            try {
                 await file.fileHandle.close();
             } catch (e) {
                 debug(`${e}`);
