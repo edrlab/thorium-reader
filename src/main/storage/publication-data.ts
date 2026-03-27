@@ -120,6 +120,8 @@ export class PublicationData {
         if (this.lock) return ;
         assertUUIDv4(pubId);
 
+        debug(`Open ${type} to ${pubId}`);
+
         const fileName = this.assertAndGetFileName(type);
 
         if (__ulimit_file && this.files.length > __ulimit_file - 50) {
@@ -143,7 +145,7 @@ export class PublicationData {
 
         for (let step = 0; step < 2; step++) {
             try {
-                const fileHandle = await fs.promises.open(filePath, fs.constants.O_RDWR | fs.constants.O_CREAT, 0o666);
+                const fileHandle = await fs.promises.open(filePath, fs.constants.O_RDWR | fs.constants.O_CREAT);
                 const file_ = this.filterFilesByType(type).find((a) => pubId === a.pubId);
                 if (file_) {
                     try {
@@ -201,12 +203,15 @@ export class PublicationData {
         if (this.lock) return ;
         assertUUIDv4(pubId);
 
+        debug(`Write ${type} to ${pubId}`);
+
         this.visitedPubIdSet.add(pubId);
 
         this.assertAndGetFileName(type);
 
         let file = this.filterFilesByType(type).find((a) => pubId === a.pubId);
         if (!file) {
+            // TODO: concurrent opening issue, there is no lock/mutex on it
             await this.open(pubId, type);
             file = this.filterFilesByType(type).find((a) => pubId === a.pubId);
             if (!file) {
@@ -235,10 +240,13 @@ export class PublicationData {
         if (this.lock) return undefined;
         assertUUIDv4(pubId);
 
+        debug(`Read ${type} to ${pubId}`);
+
         this.assertAndGetFileName(type);
 
         let file = this.filterFilesByType(type).find((a) => pubId === a.pubId);
         if (!file) {
+            // TODO: concurrent opening issue, there is no lock/mutex on it
             await this.open(pubId, type);
             file = this.filterFilesByType(type).find((a) => pubId === a.pubId);
             if (!file) {
