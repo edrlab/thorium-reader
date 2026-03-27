@@ -263,6 +263,16 @@ export class PublicationViewConverter {
         // could be refactored when the publications documents will be in the state
         const store = diMainGet("store");
         const state = store.getState();
+
+
+        // Reads locators from disk.
+        // When batching `convertDocumentToView` across the full publication DB list:
+        //
+        // - Worst case: a spinning disk handles ~128 open/read ops per second (~1KB chunks).
+        // - A library with ~1000 publications may take ~8 seconds to load via `getPublicationView`
+        //   when initializing the catalog in the library window.
+        // - This introduces a startup penalty (blocking delay) before the UI becomes responsive.
+        //   This delay blocks sending the Redux state hydration to libraryWindow.
         const readerStateLocator = await diMainGet("publication-data").readJsonObj(document.identifier, "locator") as MiniLocatorExtended | undefined; // TODO: type object
 
         const duration = typeof r2Publication.Metadata.Duration === "number" ? r2Publication.Metadata.Duration : undefined;

@@ -128,6 +128,10 @@ function* getPublicationView() {
     debug("Start converting the last added documents to publicationView ");
     for (const doc of lastAddedPublicationsDocument) {
         try {
+            // for test delay purpose, DO NOT FORGET TO COMMENT IT
+            // yield* delayTyped(100);
+            //////
+
             const pub = yield* callTyped(() => publicationViewConverter.convertDocumentToView(doc));
             lastAddedPublicationsView.push(pub);
         } catch (e) {
@@ -145,6 +149,10 @@ function* getPublicationView() {
     debug("Start converting the last read documents to publicationView ");
     for (const doc of lastReadedPublicationDocument) {
         try {
+            // for test delay purpose, DO NOT FORGET TO COMMENT IT
+            // yield* delayTyped(100);
+            //////
+
             const pub = yield* callTyped(() => publicationViewConverter.convertDocumentToView(doc));
             lastReadPublicationsView.push(pub);
         } catch (e) {

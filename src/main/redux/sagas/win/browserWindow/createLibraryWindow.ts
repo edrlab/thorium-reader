@@ -61,6 +61,7 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         },
         icon: path.join(__dirname, "assets/icons/icon.png"),
     });
+    debug("LibraryWindow new BrowserWindow instancied");
 
     if (ENABLE_DEV_TOOLS) {
         const wc = libWindow.webContents;
@@ -142,6 +143,8 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
 
             if (!libWindow.isDestroyed()) {
                 try {
+
+                    debug("LibraryWindow load url to the webview");
                     await libWindow.loadURL(rendererBaseUrl /*, {baseURLForDataURL, httpReferrer} */);
                 } catch (e) {
                     debug("Load url rejected", e);

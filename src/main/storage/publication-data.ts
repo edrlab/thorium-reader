@@ -124,6 +124,11 @@ export class PublicationData {
 
         if (__ulimit_file && this.files.length > __ulimit_file - 50) {
             debug(`BE CAREFUL, ULIMIT is soon reached, currently: ${this.files.length} files opened and ulimit is set to ${__ulimit_file}`);
+        } else if (__ulimit_file && this.files.length > __ulimit_file - 10) {
+            // start closing opened file
+            // not enable for the moment in the case of ulimit is a wrong number
+            // macos/linux ulimit soft open limit to 1024 (256 for older MacOS which I think Thorium is not compatible)
+            // windows: no open limit
         }
 
         debug(`${this.files.length} file(s) currently opened`);

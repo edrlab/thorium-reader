@@ -141,8 +141,10 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
         customization: state.customization,
     };
     try {
+        debug("START REQUEST CATALOG FROM DATABASE");
         const publication = yield* callTyped(getCatalog);
         payload.publication = publication;
+        debug("END REQUEST CATALOG FROM DATABASE; DONE");
     } catch (e) {
         error(filename_, e);
     }
