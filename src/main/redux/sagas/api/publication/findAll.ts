@@ -19,6 +19,18 @@ const convertDocs = async (docs: PublicationDocument[], publicationViewConverter
     const pubs = [];
     for (const doc of docs) {
         try {
+
+            // TODO: Optimize publication view conversion during imports.
+            //
+            // Current behavior:
+            // - Each new publication import triggers a full reload of all converted publication views.
+            // - During batch imports, this repeats until the entire catalog is processed (no memoization).
+            // - After every import, the full catalog is rebuilt and sent to the libraryWindow.
+            //
+            // Impact:
+            // - Significant performance overhead during batch imports.
+            // - Repeated disk I/O (reading locators, scanning directories for publication paths).
+            // - Unnecessary recomputation and redundant UI updates.
             const pub = await publicationViewConverter.convertDocumentToView(doc);
             pubs.push(pub);
         } catch (e) {

@@ -7,7 +7,7 @@
 
 import debug_ from "debug";
 import * as fs from "fs";
-import { deepStrictEqual, ok } from "readium-desktop/common/utils/assert";
+import { ok } from "readium-desktop/common/utils/assert";
 import {
     splashScreen,
     diMainGet, memoryLoggerFilename, patchFilePath, runtimeStateFilePath, state_V340_FilePath, stateFilePath,
@@ -39,6 +39,7 @@ import { IDivinaState } from "readium-desktop/common/redux/states/renderer/divin
 import { IBookmarkTotalCountState } from "readium-desktop/common/redux/states/renderer/bookmarkTotalCount";
 import { persistStateToFs } from "../sagas/persist";
 import { app, BrowserWindow } from "electron";
+import { error } from "readium-desktop/main/tools/error";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -54,14 +55,14 @@ const debug = (...a: Parameters<debug_.Debugger>) => {
     );
 };
 
-const checkReduxState = async (runtimeState: object, reduxState: PersistRootState) => {
+// const checkReduxState = async (runtimeState: object, reduxState: PersistRootState) => {
 
-    deepStrictEqual(runtimeState, reduxState);
+//     deepStrictEqual(runtimeState, reduxState);
 
-    debug("hydration state is certified compliant");
+//     debug("hydration state is certified compliant");
 
-    return reduxState;
-};
+//     return reduxState;
+// };
 
 const runtimeState = async (): Promise<object> => {
     const runtimeStateStr = await tryCatch(() => fs.promises.readFile(runtimeStateFilePath, { encoding: "utf8" }), "");
@@ -154,82 +155,82 @@ export async function initStore()
         }
 
         const json = JSON.parse(jsonStr);
-        if (test(json))
+        if (test(json)) {
+            debug("REDUX STATE Assigned to the final persisted state");
             reduxState = json;
+        }
 
         debug("STATE LOADED FROM FS");
         debug("😍😍😍😍😍😍😍😍");
 
     } catch {
         reduxState = undefined;
+        debug("REDUX STATE is UNDEFINED could be the first start or missing/broken state");
     }
 
     try {
 
-        debug("BE CAREFUL");
-        debug("State initialisation on the first and second launch of Thorium");
-        debug("On the first launch runtimeStatePath failed it's an empty file (not created)");
-        debug("On the second launch runtimeStatePath is equal to an empty object {}");
-        debug("and failed on checkReduxState, reduxState has not be preloaded in runtimeStateFilePath");
-        debug("So the Third launch is good!, Thorium State is stabilize");
-        const state = await recoveryReduxState(await runtimeState());
-        reduxState = await checkReduxState(state, reduxState);
-
-        debug("RECOVERY WORKS lvl 1/4");
-    } catch (e) {
-
-        debug("N-1 STATE + PATCH != STATE");
-        debug("Your state is probably corrupted");
-        debug("If it is a fresh thorium installation do not worry");
-        debug("If it is a migration from Thorium 1.6 to Thorium 1.7 do not worry too, migrtion process will start");
-        debug(e);
-
         try {
-
             test(reduxState);
-
-            debug("RECOVERY : the state is provided from potentially corrupted state.json file");
-            debug("the last state.json seems good after a quick test on it !");
-            debug("state - 1 + patch is not used");
-            debug("recovery state come from state.json");
-            debug("REVOVERY WORKS lvl 2/4");
-        } catch {
-            try {
-
-                const stateRawFirst = await runtimeState();
-                test(stateRawFirst);
-                const stateRaw: any = await recoveryReduxState(stateRawFirst);
-                test(stateRaw);
-                reduxState = stateRaw;
-
-                // From the 3.4.0 and backward to 3.3.0: this leads to potentially a lost of data
-
-                debug("RECOVERY : the state is provided from the state - 1 + patch");
-                debug("There should be no data loss");
-                debug("REVOVERY WORKS lvl 3/4");
-
-            } catch {
-                try {
-
-                    const stateRawFirst: any = await runtimeState();
-                    test(stateRawFirst);
-                    reduxState = stateRawFirst;
-
-                    debug("RECOVERY : the state is the previous runtime snapshot");
-                    debug("There should be data loss !");
-                    debug("RECOVERY WORKS 4/4");
-                } catch {
-
-                    // do not erase reduxState for security purpose
-                    // reduxState = undefined;
-                    debug("REDUX STATE IS CORRUPTED THE TEST FAILED");
-                    debug("For security purpose the state is not erase");
-                    debug("Be carefull, an unexpected behaviour may occur");
-                    debug("RECOVERY FAILED none of the 4 recoveries mode worked");
-                }
-
+            const reduxRecoveredState = await recoveryReduxState(reduxState);
+            if (test(reduxRecoveredState)) {
+                debug("REDUX STATE Assigned to the final persisted state AND with the diff patch reconstruction");
+                reduxState = reduxRecoveredState;
             }
         } finally {
+            test(reduxState);
+            debug("REDUX STATE tested as a valid object; Let's start the application with this state");
+        }
+        // reduxState = await checkReduxState(state, reduxState);
+
+    } catch {
+
+        try {
+            try {
+                const reduxRuntimeState = await runtimeState();
+                if (test(reduxRuntimeState)) {
+                    debug("REDUX STATE Assigned to the runtime fist previous launch state");
+                    reduxState = reduxRuntimeState;
+                }
+                const reduxRecoveredState = await recoveryReduxState(reduxState);
+                if (test(reduxRecoveredState)) {
+                    debug("REDUX STATE Assigned to the runtime fist previous launch state AND with the diff patch reconstruction");
+                    reduxState = reduxRecoveredState;
+                }
+            } finally {
+                test(reduxState);
+                debug("REDUX STATE tested as a valid object; Let's start the application with this state");
+            }
+            // reduxState = await checkReduxState(state, reduxState);
+
+            // From the 3.4.0 and backward to 3.3.0: this leads to potentially a lost of data
+
+
+        } catch {
+
+            debug("REDUX STATE CORRUPTED OR EMPTY");
+
+            // try {
+
+            //     const stateRawFirst: any = await runtimeState();
+            //     test(stateRawFirst);
+            //     reduxState = stateRawFirst;
+
+            //     debug("RECOVERY : the state is the previous runtime snapshot");
+            //     debug("There should be data loss !");
+            //     debug("RECOVERY WORKS 4/4");
+            // } catch {
+
+            //     // do not erase reduxState for security purpose
+            //     // reduxState = undefined;
+            //     debug("REDUX STATE IS CORRUPTED THE TEST FAILED");
+            //     debug("For security purpose the state is not erase");
+            //     debug("Be carefull, an unexpected behaviour may occur");
+            //     debug("RECOVERY FAILED none of the 4 recoveries mode worked");
+            // }
+
+        }
+        // finally {
 
             // let's comment the backup state option, not used and valid anymore, to progressively ditch the diff patch recovery option
             // If not commented every start of 3.4.0 lead to the copy of the current state, due to an un equality between the final state.json and state.runtime.json+patch
@@ -244,7 +245,7 @@ export async function initStore()
 
             // debug("RECOVERY : a state backup file is copied in " + p);
             // debug("keep it safe, you may restore a corrupted state with it");
-        }
+        // }
 
     } finally {
 
@@ -295,6 +296,7 @@ export async function initStore()
     // } : {
     //     ...forceDisableReaderDefaultConfigAndSessionForTheNewUI,
     // };
+    const reduxStateIsUndefined = !reduxState;
     const preloadedState: Partial<PersistRootState> = reduxState ? {
         ...reduxState,
     } : {};
@@ -844,7 +846,29 @@ export async function initStore()
         middleware,
     );
 
-    sagaMiddleware.run(rootSaga);
+
+    // If this is the first application start (runtime state does not match persisted Redux state),
+    // initialize the final redux persisted state using the default values from the Redux reducers.
+    // same as app closing persistence
+    if (reduxStateIsUndefined) {
+        debug("First start of the app or corrupted/missing state; persist/write the default redux state from the Redux reducers to initialize it");
+        try {
+            await persistStateToFs(store.getState());
+        } catch (e) {
+            debug("Failed to persist the first Redux State to Disk before starting the application");
+            debug(e);
+        }
+    } else {
+        debug("Starting the app with the persisted state");
+    }
+
+    // Redux Saga main entry point
+    // Starting the Application
+    sagaMiddleware.run(rootSaga).toPromise()
+        .then(() => {
+            debug("Application started!");
+        })
+        .catch((e) => error("main/memory", e));
 
     return [store, sagaMiddleware];
 }

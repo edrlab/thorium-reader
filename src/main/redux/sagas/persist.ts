@@ -26,8 +26,13 @@ import { IWinSessionLibraryState } from "../states/win/session/library";
 import { JsonStringifySortedKeys } from "readium-desktop/common/utils/json";
 import { rmrf } from "readium-desktop/utils/fs";
 
-const DEBOUNCE_TIME = 3 * 60 * 1000; // 3 min
-const PUBLICATION_STORAGE_DEBOUNCE_TIME = 10 * 1000; // 10 secs
+// Persist state diffs regularly now that win.registry is disabled.
+// Only publication.db and opds remain unbounded (arrays with N elements).
+const PATCH_DEBOUNCE_TIME = 1000; // 1 second before dumping to disk
+// const PATCH_DEBOUNCE_TIME = 3 * 60 * 1000; // 3 min
+
+// not used for the 340 for the moment, let's wait the 350
+// const PUBLICATION_STORAGE_DEBOUNCE_TIME = 10 * 1000; // 10 secs
 
 // Logger
 const filename_ = "readium-desktop:main:saga:persist";
@@ -238,7 +243,7 @@ export function* needToPersistPatch() {
 export function saga() {
     return all([
         debounce(
-            DEBOUNCE_TIME,
+            PATCH_DEBOUNCE_TIME,
             winActions.persistRequest.ID,
             needToPersistPatch,
         ),
@@ -428,21 +433,22 @@ export function saga() {
             },
             (e) => debug(e),
         ),
-        debounce(
-            PUBLICATION_STORAGE_DEBOUNCE_TIME,
-            readerActions.setLocator.ID,
-            function* (action: readerActions.setLocator.TAction) {
-                const jsonObj = action.payload as unknown as object;
-                const sender = action.sender as EventPayload["sender"];
+        // disabled for the 340 release, let's wait 350
+        // debounce(
+        //     PUBLICATION_STORAGE_DEBOUNCE_TIME,
+        //     readerActions.setLocator.ID,
+        //     function* (action: readerActions.setLocator.TAction) {
+        //         const jsonObj = action.payload as unknown as object;
+        //         const sender = action.sender as EventPayload["sender"];
 
-                if (sender?.type !== SenderType.Renderer) {
-                    debug("sender is not renderer !!!");
-                    return;
-                }
-                const pubId = sender.reader_pubId; // see syncFactory
-                yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "locator", jsonObj));
-            },
-        ),
+        //         if (sender?.type !== SenderType.Renderer) {
+        //             debug("sender is not renderer !!!");
+        //             return;
+        //         }
+        //         const pubId = sender.reader_pubId; // see syncFactory
+        //         yield* callTyped(() => diMainGet("publication-storage").writeJsonObj(pubId, "locator", jsonObj));
+        //     },
+        // ),
 
         // TODO: enable publication-storage debounce persistence
         // debounce(
