@@ -267,38 +267,38 @@ const getStorePromiseFn = async () => {
     // createStoreProcessLock.lock();
 
     debug("initStore");
-    const [store, sagaMiddleware] = await initStore();
-
-    // to test concurrent launch (one interactive app with lock, the other CLI)
-    // npm run start:dev (then close app, this is just to compile main.js)
-    // .. then launch 2 instances concurrently:
-    // npm run start:dev:main:electron -- opds Gallica "http://gallica.bnf.fr/opds" &
-    // npm run start:dev:main:electron &
-    // ...or the other way around:
-    // npm run start:dev:main:electron &
-    // npm run start:dev:main:electron -- opds Gallica "http://gallica.bnf.fr/opds" &
-    //
-    // to test long-running store initialisation:
-    // await new Promise((res) => setTimeout(() => res(undefined), 3*1000));
-
-    debug("store loaded");
-
-    container.bind<Store<RootState>>(diSymbolTable.store).toConstantValue(store);
-    container.bind<SagaMiddleware>(diSymbolTable["saga-middleware"]).toConstantValue(sagaMiddleware);
-    debug("container store and saga binded");
-
-    // createStoreProcessLock.release();
-
     try {
+        const [store, sagaMiddleware] = await initStore();
+
+        // to test concurrent launch (one interactive app with lock, the other CLI)
+        // npm run start:dev (then close app, this is just to compile main.js)
+        // .. then launch 2 instances concurrently:
+        // npm run start:dev:main:electron -- opds Gallica "http://gallica.bnf.fr/opds" &
+        // npm run start:dev:main:electron &
+        // ...or the other way around:
+        // npm run start:dev:main:electron &
+        // npm run start:dev:main:electron -- opds Gallica "http://gallica.bnf.fr/opds" &
+        //
+        // to test long-running store initialisation:
+        // await new Promise((res) => setTimeout(() => res(undefined), 3*1000));
+
+        debug("store loaded");
+
+        container.bind<Store<RootState>>(diSymbolTable.store).toConstantValue(store);
+        container.bind<SagaMiddleware>(diSymbolTable["saga-middleware"]).toConstantValue(sagaMiddleware);
+        debug("container store and saga binded");
+
+        // createStoreProcessLock.release();
+
         const state = diMainGet("store").getState();
         if (!state || typeof state !== "object") {
             throw new Error("state not defined : " + typeof state);
         }
+        return store;
     } catch (err) {
         const message = `REDUX STATE MANAGER CAN NOT BE INITIALIZED [${err}]${EOL}You should remove your 'AppData' folder${EOL}Thorium Exit code 1`;
         throw new Error(message);
     }
-    return store;
 };
 let getStorePromise: ReturnType<typeof getStorePromiseFn>;
 
