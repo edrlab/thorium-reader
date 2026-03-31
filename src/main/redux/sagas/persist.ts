@@ -96,31 +96,42 @@ export const convertPublicationToRegistryReaderState = async (pubIds: string[]):
     const readerRegistry: IDictWinRegistryReaderState | undefined = {};
     for (const pubId of pubIds) {
 
-        const promisesSettledResult = await Promise.allSettled([
-            publicationData.readJsonObj(pubId, "config") as any, // TODO: type object
-            publicationData.readJsonObj(pubId, "locator") as any, // TODO: type object
-            publicationData.readJsonObj(pubId, "divina") as any, // TODO: type object
-            publicationData.readJsonObj(pubId, "disableRTLFlip") as any, // TODO: type object
-            publicationData.readJsonObj(pubId, "allowCustomConfig") as any, // TODO: type object
-            publicationData.readJsonObj(pubId, "noteTotalCount") as any, // TODO: type object
-            publicationData.readJsonObj(pubId, "pdfConfig") as any, // TODO: type object
-            publicationData.readJsonObj(pubId, "bound") as any, // TODO: type object
-        ]);
+        const keys = [
+            "config",
+            "locator",
+            "divina",
+            "disableRTLFlip",
+            "allowCustomConfig",
+            "noteTotalCount",
+            "pdfConfig",
+            "bound",
+        ] as const;
+
+        const results = await Promise.allSettled(keys.map(key => publicationData.readJsonObj(pubId, key)));
         await publicationData.close(pubId);
 
         const readerState: IWinRegistryReaderState = {
-            reduxState: {
-                config: promisesSettledResult[0].status === "fulfilled" ? promisesSettledResult[0].value : undefined,
-                locator: promisesSettledResult[1].status === "fulfilled" ? promisesSettledResult[1].value : undefined,
-                divina: promisesSettledResult[2].status === "fulfilled" ? promisesSettledResult[2].value : undefined,
-                disableRTLFlip: promisesSettledResult[3].status === "fulfilled" ? promisesSettledResult[3].value : undefined,
-                allowCustomConfig: promisesSettledResult[4].status === "fulfilled" ? promisesSettledResult[4].value : undefined,
-                noteTotalCount: promisesSettledResult[5].status === "fulfilled" ? promisesSettledResult[5].value : undefined,
-                pdfConfig: promisesSettledResult[6].status === "fulfilled" ? promisesSettledResult[6].value : undefined,
-            },
-            windowBound: promisesSettledResult[7].status === "fulfilled" ? promisesSettledResult[7].value : undefined,
+            reduxState: {},
+            windowBound: undefined,
         };
-        if (Object.values(readerState.reduxState).length || readerState.windowBound) {
+
+        results.forEach((result, index) => {
+            const key = keys[index];
+            if (result.status === "fulfilled") {
+                if (key === "bound") {
+                    readerState.windowBound = result.value as any // TODO: object;
+                } else {
+                    readerState.reduxState[key] = result.value as any; // TODO: object
+                }
+            } else {
+                debug(`Failed to load ${key}:`, result.reason);
+            }
+        });
+
+        const hasData =
+            Object.values(readerState.reduxState).some(v => v !== undefined) ||
+            readerState.windowBound !== undefined;
+        if (hasData) {
             readerRegistry[pubId] = readerState;
 
             debug(`SAVED reader[${pubId}]: ${JSON.stringify({
@@ -163,7 +174,7 @@ const persistReaderRegistry = async (nextState: Partial<PersistRootState>): Prom
 };
 
 export const persistStateToFs = async (nextState: Partial<PersistRootState>, filePath: string): Promise<void> => {
-    debug("START persisting Redux state to disk");
+    debug("START persisting Redux state to", filePath);
 
     const persistedReduxState = convertPersistedReduxState(nextState);
 
