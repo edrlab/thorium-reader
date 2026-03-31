@@ -118,7 +118,7 @@ const recoveryReduxState = async (runtimeState: object): Promise<object | undefi
 
     const patchFileStrRaw = await tryCatch(() => fs.promises.readFile(patchFilePath, { encoding: "utf8" }), "") || ""; // default empty string list
     const patchFileStr = "[" + patchFileStrRaw.slice(0, -2) + "]"; // remove the last comma
-    const patch = await tryCatchSync(() => JSON.parse(patchFileStr), "") || [];
+    const patch = await tryCatch(() => JSON.parse(patchFileStr), "") || [];
 
     if (!Array.isArray(patch)) {
         return undefined;
