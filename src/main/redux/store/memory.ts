@@ -1002,10 +1002,9 @@ export async function initStore()
             const readerRegistryPubIds = Object.keys(preloadedState.win.registry.reader);
 
             const diskPubIds = await diMainGet("publication-data").listOfAllPublications();
-            const bijectiveArray = diskPubIds.length === readerRegistryPubIds.length &&
-                diskPubIds.every((pubId) => readerRegistryPubIds.includes(pubId)) &&
-                readerRegistryPubIds.every((pubId) => diskPubIds.includes(pubId));
-            if (bijectiveArray) {
+            const isBijective = diskPubIds.length === readerRegistryPubIds.length &&
+                diskPubIds.every((pubId) => readerRegistryPubIds.includes(pubId));
+            if (isBijective) {
                 debug("OK! Consistency check passed: win.registry.reader matches the publication identifiers on disk");
             } else {
                 debug("Failed! Consistency check failed: win.registry.reader does not match publication identifiers on disk. Rewriting Redux state");
