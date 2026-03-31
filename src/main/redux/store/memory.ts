@@ -7,7 +7,6 @@
 
 import debug_ from "debug";
 import * as fs from "fs";
-import { ok } from "readium-desktop/common/utils/assert";
 import {
     splashScreen,
     diMainGet, memoryLoggerFilename, patchFilePath, runtimeStateFilePath, stateFilePath,
@@ -83,60 +82,6 @@ const deepDiff = (obj1: any, obj2: any) => {
     return { before: obj1, after: obj2 };
 };
 
-// const checkReduxState = async (runtimeState: object, reduxState: PersistRootState) => {
-
-//     deepStrictEqual(runtimeState, reduxState);
-
-//     debug("hydration state is certified compliant");
-
-//     return reduxState;
-// };
-
-// const runtimeState = async (): Promise<object> => {
-//     const runtimeStateStr = await fs.promises.readFile(runtimeStateFilePath, { encoding: "utf8" });
-//     const runtimeState = JSON.parse(runtimeStateStr);
-
-//     ok(typeof runtimeState === "object");
-
-//     return runtimeState;
-// };
-
-const recoveryReduxState = async (runtimeState: object): Promise<object> => {
-
-    const patchFileStrRaw = await fs.promises.readFile(patchFilePath, { encoding: "utf8" });
-    const patchFileStr = "[" + patchFileStrRaw.slice(0, -2) + "]"; // remove the last comma
-    const patch = await JSON.parse(patchFileStr);
-
-    ok(Array.isArray(patch));
-
-    // RangeError: Maximum call stack size exceeded
-    // diffAny
-    // node_modules/rfc6902/diff.js:262:17
-    // dist
-    // node_modules/rfc6902/diff.js:135:36
-    const errors = applyPatch(runtimeState, patch);
-    ok(errors.reduce((pv, cv) => pv && !cv, true));
-
-    ok(typeof runtimeState === "object", "state not defined after patch");
-
-    return runtimeState;
-};
-
-// const testThrowError = (stateRaw: any): stateRaw is PersistRootState => {
-//     ok(typeof stateRaw === "object");
-
-//     // Only check the `publication` key to avoid exceptions
-//     // when legitimate publication database arrays are missing `win` or `reader` keys.
-//     // The state may remain inconsistent, but we must not remove the publications DB.
-//     ok(typeof stateRaw.publication === "object");
-//     // ok(stateRaw.win);
-//     // ok(stateRaw.reader);
-//     // ok(stateRaw.session);
-
-//     return stateRaw;
-// };
-
-
 const test = (stateRaw: any): stateRaw is PersistRootState => {
     if (typeof stateRaw === "object" && 
 
@@ -168,6 +113,31 @@ const testV340 = (stateRaw: any): stateRaw is PersistRootState => {
     }
     return false;
 };
+
+const recoveryReduxState = async (runtimeState: object): Promise<object | undefined> => {
+
+    const patchFileStrRaw = await tryCatch(() => fs.promises.readFile(patchFilePath, { encoding: "utf8" }), "") || ""; // default empty string list
+    const patchFileStr = "[" + patchFileStrRaw.slice(0, -2) + "]"; // remove the last comma
+    const patch = await tryCatchSync(() => JSON.parse(patchFileStr), "") || [];
+
+    if (!Array.isArray(patch)) {
+        return undefined;
+    }
+
+    // RangeError: Maximum call stack size exceeded
+    // diffAny
+    // node_modules/rfc6902/diff.js:262:17
+    // dist
+    // node_modules/rfc6902/diff.js:135:36
+    const errors = applyPatch(runtimeState, patch);
+    if (errors.reduce((pv, cv) => pv && !cv, true)) {
+        debug("recoveryReduxState ERRORS:", errors);
+        return undefined;
+    }
+
+    return runtimeState;
+};
+
 
 type TReduxStateParsed = Partial<{
     reduxStateWinRegistryReader: IDictWinRegistryReaderState
@@ -313,9 +283,7 @@ const loadRuntimeReduxState = async (): Promise<TReduxStateParsed> => {
 
 
 
-const loadReduxState = async (runtimeStateParsedPromise: Promise<TReduxStateParsed>): Promise<TReduxStateParsed> => {
-    debug("[loadReduxState] Start loading redux state");
-
+const loadReduxState = async (): Promise<TReduxStateParsed> => {
     let reduxStateParsed: TReduxStateParsed = {};
     try {
         debug("Parse and validate final state");
@@ -332,53 +300,68 @@ const loadReduxState = async (runtimeStateParsedPromise: Promise<TReduxStatePars
             debug("FINAL state checksum is valid");
         } else {
             debug("FINAL checksum invalid → fallback to RUNTIME");
-
-            const runtimeStateParsed = await runtimeStateParsedPromise;
-            if (runtimeStateParsed.version === 340) {
-
-                if (reduxStateParsed.timestamp > runtimeStateParsed.timestamp) {
-                    debug("FINAL state is more recent than RUNTIME state → keep FINAL");
-                } else {
-                    debug("RUNTIME state is newer → attempt recovery");
-    
-                    // Duplicate the current Redux state to safely apply recovery patches without mutating the original runtime state.
-                    debug("RUNTIME redux state duplicated for recovery processing");
-                    const duplicatedReduxState = JSON.parse(JSON.stringify(runtimeStateParsed.reduxState));
-                    const reduxRecoveredState = await recoveryReduxState(duplicatedReduxState);
-    
-                    if (validateRecoveredReduxState(reduxRecoveredState, reduxStateParsed.reduxState)) {
-                        debug("Recovery successful → using recovered state");
-
-                        return {
-                            version: 340,
-                            reduxState: reduxRecoveredState,
-                        };
-                    } else {
-                        debug("Recovery failed → keep RUNTIME");
-                        return runtimeStateParsed;
-                    }
-                }
-            } else {
-                debug("RUNTIME state is invalid → keep FINAL");
-            }
+            // do not return state
+            return {}
         }
 
     } else if (reduxStateParsed.version === 330) {
         debug("FINAL state is legacy (not 340) → returning as-is");
     } else {
         debug("FINAL state not found → fallback to RUNTIME");
+    }
 
-        const runtimeStateParsed = await runtimeStateParsedPromise;
+    return reduxStateParsed;
+};
+
+const loadResolvedReduxState = async (): Promise<TReduxStateParsed> => {
+
+    // TODO: Load the runtime state in parallel. 
+    // Note: In the normal working mode, this runtime state is not used,
+    // but it can provide useful debugging/logging information.
+    const reduxStateParsed = await loadReduxState();
+    const runtimeStateParsed = await loadRuntimeReduxState();
+
+    if (reduxStateParsed.version === 340) {
+        if (runtimeStateParsed.version === 340) {
+
+            if (reduxStateParsed.timestamp > runtimeStateParsed.timestamp) {
+                debug("FINAL state is more recent than RUNTIME state → keep FINAL");
+            } else {
+                debug("RUNTIME state is newer → attempt recovery");
+
+                // Duplicate the current Redux state to safely apply recovery patches without mutating the original runtime state.
+                debug("RUNTIME redux state duplicated for recovery processing");
+                const duplicatedReduxState = JSON.parse(JSON.stringify(runtimeStateParsed.reduxState));
+                const reduxRecoveredState = await recoveryReduxState(duplicatedReduxState);
+
+                if (validateRecoveredReduxState(reduxRecoveredState, reduxStateParsed.reduxState)) {
+                    debug("Recovery successful → using recovered state");
+
+                    return {
+                        version: 340,
+                        reduxState: reduxRecoveredState,
+                    };
+                } else {
+                    debug("Recovery failed → keep RUNTIME");
+                    return runtimeStateParsed;
+                }
+            }
+        } else {
+            debug("RUNTIME state is invalid → keep FINAL");
+        }
+    } else if (reduxStateParsed.version === 330) {
+        debug("FINAL state is legacy (not 340) → returning as-is");
+    } else {
         if (runtimeStateParsed.version === 340) {
 
             // Duplicate the current Redux state to safely apply recovery patches without mutating the original runtime state.
             debug("RUNTIME redux state duplicated for recovery processing");
             const duplicatedReduxState = JSON.parse(JSON.stringify(runtimeStateParsed.reduxState));
             const reduxRecoveredState = await recoveryReduxState(duplicatedReduxState);
-    
+
             if (test(reduxRecoveredState)) {
                 debug("Recovery successful → using recovered state");
-    
+
                 return {
                     version: 340,
                     reduxState: reduxRecoveredState,
@@ -395,19 +378,7 @@ const loadReduxState = async (runtimeStateParsedPromise: Promise<TReduxStatePars
         }
     }
 
-    debug("[loadReduxState] resolved state:", reduxStateParsed);
-    return reduxStateParsed;
-};
-
-const loadFinalReduxState = async (): Promise<TReduxStateParsed> => {
-
-    // Load the runtime state in parallel. 
-    // Note: In the normal working mode, this runtime state is not used,
-    // but it can provide useful debugging/logging information.
-    const runtimeStateParsedPromise: Promise<TReduxStateParsed> = loadRuntimeReduxState();
-    const reduxStateParsed = await loadReduxState(runtimeStateParsedPromise);
-
-    debug("[loadFinalReduxState] Redux state loaded:", typeof reduxStateParsed);
+    debug("[loadResolvedReduxState] Redux state resolved:", reduxStateParsed);
     return reduxStateParsed;
 };
 
@@ -459,7 +430,7 @@ export async function initStore()
     
     */
 
-    const { reduxState, version, reduxStateWinRegistryReader, filePath }: TReduxStateParsed = await loadFinalReduxState();
+    const { reduxState, version, reduxStateWinRegistryReader, filePath }: TReduxStateParsed = await loadResolvedReduxState();
 
     const showErrorElectronDialog = false;
     if (!reduxState) {
