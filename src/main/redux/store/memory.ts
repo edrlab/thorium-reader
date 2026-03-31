@@ -1071,10 +1071,17 @@ export async function initStore()
         middleware,
     );
 
+    // Detached promise
     Promise.resolve()
-        .then(() => persistStateToFs(store.getState(), runtimeStateFilePath).catch(e => debug("Failed to persist state.runtime.json", e)))
-        .then(() => fs.promises.copyFile(runtimeStateFilePath, stateFilePath).catch(e => debug("Copy failed", e)))
-        .then(() => rmrf(patchFilePath).catch(e => debug("Failed to remove state.patch.json", e)));
+        .then(async () => {
+            await persistStateToFs(store.getState(), runtimeStateFilePath);
+            debug("COPY", runtimeStateFilePath, "TO", stateFilePath);
+            await fs.promises.copyFile(runtimeStateFilePath, stateFilePath);
+            debug("rm -rf", patchFilePath);
+            await rmrf(patchFilePath);
+        }).catch(e => {
+            debug(`Failed: ${e}`);
+        });
 
     // Redux Saga main entry point
     // Starting the Application
