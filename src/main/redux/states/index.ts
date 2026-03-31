@@ -63,4 +63,14 @@ export type PersistRootState = Omit<PersistRootState_, "win"> & {
         },
     };
 }
-export type PersistRootStatePatch = Pick<RootState, "publication" | "reader" | "session" | "screenReader" | "i18n" | "opds" | "version" | "theme" | "wizard" | "settings" | "creator" | "noteExport" | "customization">;
+// export type PersistRootStatePatch = Pick<RootState, "publication" | "reader" | "session" | "screenReader" | "i18n" | "opds" | "version" | "theme" | "wizard" | "settings" | "creator" | "noteExport" | "customization"> & {
+//     win: {
+//         session: {
+//             library: IWinSessionLibraryState,
+//             // reader: IDictWinSessionReaderState,
+//         },
+//         registry: {
+//             // reader: // IDictWinRegistryReaderState,
+//         },
+//     };
+// }

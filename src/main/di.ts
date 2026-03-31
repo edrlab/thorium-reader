@@ -39,6 +39,8 @@ import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { EOL } from "os";
 import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
 import { PublicationData } from "./storage/publication-data";
+import { exec } from "node:child_process";
+import { getFileSize } from "readium-desktop/utils/fs";
 
 // import { streamer } from "readium-desktop/main/streamerHttp";
 // import { Server } from "@r2-streamer-js/http/server";
@@ -48,8 +50,6 @@ const debug = debug_("readium-desktop:main:di");
 
 export const CONFIGREPOSITORY_REDUX_PERSISTENCE = "CONFIGREPOSITORY_REDUX_PERSISTENCE";
 const capitalizedAppName = _APP_NAME.charAt(0).toUpperCase() + _APP_NAME.substring(1);
-
-import { exec } from "node:child_process";
 
 export let __ulimit_file: number;
 try {
@@ -86,11 +86,15 @@ export const stateFilePath = path.join(
     STATE_FILENAME,
 );
 
-const STATE_V340_FILENAME = "state_v340.json";
-export const state_V340_FilePath = path.join(
-    configDataFolderPath,
-    STATE_V340_FILENAME,
-);
+try {
+    const stateFileSize = getFileSize(stateFilePath);
+    debug("INFO: state.json size is equal to", stateFileSize, "Octets");
+    if (stateFileSize < 1024) {
+        debug("\tIt seems to be a corrupted state, state.json size cannot be lower than 1kb");
+    }
+} catch {
+    debug("INFO: state.json not found");
+}
 
 const PATCH_FILENAME = "state.patch.json";
 export const patchFilePath = path.join(
@@ -98,10 +102,39 @@ export const patchFilePath = path.join(
     PATCH_FILENAME,
 );
 
+try {
+    const patchFileSize = getFileSize(patchFilePath);
+    debug("INFO: state.patch.json size is equal to", patchFileSize, "Octets");
+} catch {
+    debug("INFO: state.patch.json not found");
+}
+
 const RUN_FILENAME = "state.runtime.json";
 export const runtimeStateFilePath = path.join(
     configDataFolderPath,
     RUN_FILENAME,
+);
+
+try {
+    const runtimeFileSize = getFileSize(runtimeStateFilePath);
+    debug("INFO: state.runtime.json size is equal to", runtimeFileSize, "Octets");
+    if (runtimeFileSize < 1024) {
+        debug("\tIt seems to be a corrupted state, state.runtime.json size cannot be lower than 1kb");
+    }
+} catch {
+    debug("INFO: state.runtime.json not found");
+}
+
+const RUN_DIFF_FILENAME = "state.runtime_patch.diff.json";
+export const runtimeDiffStateFilePath = path.join(
+    configDataFolderPath,
+    RUN_DIFF_FILENAME,
+);
+
+const STATE_DIFF_FILENAME = "state.diff.json";
+export const stateDiffFilePath = path.join(
+    configDataFolderPath,
+    STATE_DIFF_FILENAME,
 );
 
 // TODO: remove it for the next iteration
@@ -194,6 +227,19 @@ const closeProcessLock = (() => {
         },
         lock: () => lock = true,
         release: () => lock = false,
+    };
+})();
+
+const reduxStatePersistedReference = (() => {
+    let __reduxState: Partial<RootState> | undefined;
+
+    return {
+        get reduxState() {
+            return __reduxState;
+        },
+        set reduxState(value) {
+            __reduxState = value;
+        },
     };
 })();
 
@@ -404,6 +450,7 @@ const splashScreen = {
 
 export {
     closeProcessLock,
+    reduxStatePersistedReference,
     diMainGet,
     getLibraryWindowFromDi,
     getReaderWindowFromDi,

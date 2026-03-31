@@ -12,7 +12,9 @@ import { createPatch } from "rfc6902";
 import { winActions } from "../actions";
 import { patchChannel } from "../sagas/patch";
 
-import { PersistRootStatePatch, RootState } from "../states";
+import { PersistRootState, RootState } from "../states";
+import { closeProcessLock } from "readium-desktop/main/di";
+import { convertDiffableReduxState } from "../sagas/persist";
 
 // We do not persist ICommonRootState.versionUpdate ({newVersionURL, newVersion} state always starts at undefined)
 export const reduxPersistMiddleware: Middleware
@@ -26,63 +28,13 @@ export const reduxPersistMiddleware: Middleware
 
                 const nextState = store.getState();
 
-                const persistPrevState: PersistRootStatePatch = {
-                    // versionUpdate: prevState.versionUpdate,
-                    theme: prevState.theme,
-                    // win: prevState.win,
-                    reader: prevState.reader,
-                    i18n: prevState.i18n,
-                    session: prevState.session,
-                    screenReader: prevState.screenReader,
-                    publication: {
-                        db: prevState.publication.db,
-                        lastReadingQueue: prevState.publication.lastReadingQueue,
-                        readingFinishedQueue: prevState.publication.readingFinishedQueue,
-                    },
-                    opds: prevState.opds,
-                    version: prevState.version,
-                    wizard: prevState.wizard,
-                    settings: prevState.settings,
-                    creator: prevState.creator,
-                    noteExport: prevState.noteExport,
-                    customization: {
-                        provision: [],
-                        history: prevState.customization.history,
-                        activate: prevState.customization.activate,
-                        lock: undefined,
-                        welcomeScreen: undefined,
-                        manifest: undefined,
-                    },
-                };
+                if (closeProcessLock.isLock) {
+                    // do not continue to patch state when closing
+                    return returnValue;
+                }
 
-                const persistNextState: PersistRootStatePatch = {
-                    // versionUpdate: nextState.versionUpdate,
-                    theme: nextState.theme,
-                    // win: nextState.win,
-                    reader: nextState.reader,
-                    i18n: nextState.i18n,
-                    session: nextState.session,
-                    screenReader: nextState.screenReader,
-                    publication: {
-                        db: nextState.publication.db,
-                        lastReadingQueue: nextState.publication.lastReadingQueue,
-                        readingFinishedQueue: nextState.publication.readingFinishedQueue,
-                    },
-                    opds: nextState.opds,
-                    version: nextState.version,
-                    wizard: nextState.wizard,
-                    settings: nextState.settings,
-                    creator: nextState.creator,
-                    noteExport: nextState.noteExport,
-                    customization: {
-                        provision: [],
-                        history: nextState.customization.history,
-                        activate: nextState.customization.activate,
-                        lock: undefined,
-                        welcomeScreen: undefined,
-                        manifest: undefined,
-                    },
-                };
+                const persistPrevState = convertDiffableReduxState(prevState as Partial<PersistRootState>);
+                const persistNextState = convertDiffableReduxState(nextState as Partial<PersistRootState>);
 
                 // RangeError: Maximum call stack size exceeded
                 // diffAny

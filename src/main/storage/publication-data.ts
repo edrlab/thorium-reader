@@ -116,7 +116,7 @@ export class PublicationData {
         }
     }
 
-    public async open(pubId: string, type: TFileTypePubData) {
+    private async open(op: "read" | "write", pubId: string, type: TFileTypePubData) {
         if (this.lock) return ;
         assertUUIDv4(pubId);
 
@@ -185,7 +185,9 @@ export class PublicationData {
                 await file.mutex;
             } catch (e: any) {
                 debug(`${e}`);
-                if (e.code === "ENOENT") {
+                
+                // create publication directory only on write operation not read
+                if (op === "write" && e.code === "ENOENT") {
                     try {
                         debug("create directory", publicationPath);
                         await fs.promises.mkdir(publicationPath /* DEFAULTS: , { recursive: false, mode: 0o777 } */);
@@ -212,10 +214,10 @@ export class PublicationData {
         let file = this.filterFilesByType(type).find((a) => pubId === a.pubId);
         if (!file) {
             // TODO: concurrent opening issue, there is no lock/mutex on it
-            await this.open(pubId, type);
+            await this.open("write", pubId, type);
             file = this.filterFilesByType(type).find((a) => pubId === a.pubId);
             if (!file) {
-                debug("Error to write data to", type, "on", pubId);
+                debug("Cannot write data to", type, "on", pubId);
                 return ;
             }
         }
@@ -247,10 +249,10 @@ export class PublicationData {
         let file = this.filterFilesByType(type).find((a) => pubId === a.pubId);
         if (!file) {
             // TODO: concurrent opening issue, there is no lock/mutex on it
-            await this.open(pubId, type);
+            await this.open("read", pubId, type);
             file = this.filterFilesByType(type).find((a) => pubId === a.pubId);
             if (!file) {
-                debug("Error to write data to", type, "on", pubId);
+                debug("Cannot read data to", type, "on", pubId);
                 return undefined;
             }
         }
@@ -328,7 +330,7 @@ export class PublicationData {
         await rmrf(publicationPath);
     }
 
-    public async listPublication() {
+    public async listOfAllPublications() {
 
         const files = await fs.promises.readdir(this.publicationConfigPath, { withFileTypes: true} );
         debug("List publications from:", this.publicationConfigPath);

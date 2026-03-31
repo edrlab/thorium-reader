@@ -14,6 +14,7 @@ import { eventChannel, Task, buffers } from "redux-saga";
 import { cancel, debounce, fork, put, take, call  } from "redux-saga/effects";
 import { diMainGet } from "readium-desktop/main/di";
 import { winClose } from "../reader";
+import { closeProcessLock } from "readium-desktop/main/di";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:win:session:reader";
@@ -74,6 +75,11 @@ function* readerMoveOrResizeObserver(action: winActions.session.registerReader.T
     );
 
     yield debounce(DEBOUNCE_TIME, channel, function*() {
+
+        if (closeProcessLock.isLock) {
+            debug("CLOSE process reader bound not persisted");
+            return ;
+        }
 
         try {
             const winBound = reader.getBounds();

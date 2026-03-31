@@ -7,11 +7,11 @@
 
 import debug_ from "debug";
 import * as fs from "fs";
-import { diMainGet, patchFilePath, runtimeStateFilePath, state_V340_FilePath, stateFilePath } from "readium-desktop/main/di";
-import { RootState, PersistRootState } from "readium-desktop/main/redux/states";
+import { diMainGet, stateFilePath, patchFilePath, reduxStatePersistedReference, closeProcessLock } from "readium-desktop/main/di";
+import { PersistRootState } from "readium-desktop/main/redux/states";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call, debounce, all } from "redux-saga/effects";
-import { flush as flushTyped, select as selectTyped, call as callTyped } from "typed-redux-saga/macro";
+import { flush as flushTyped, call as callTyped } from "typed-redux-saga/macro";
 import { winActions } from "../actions";
 
 import { patchChannel } from "./patch";
@@ -20,11 +20,12 @@ import { readerActions } from "readium-desktop/common/redux/actions";
 import { EventPayload } from "readium-desktop/common/ipc/sync";
 import { SenderType } from "readium-desktop/common/models/sync";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
-import { IDictWinRegistryReaderState } from "../states/win/registry/reader";
+import { IDictWinRegistryReaderState, IWinRegistryReaderState } from "../states/win/registry/reader";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import { IWinSessionLibraryState } from "../states/win/session/library";
 import { JsonStringifySortedKeys } from "readium-desktop/common/utils/json";
-import { rmrf } from "readium-desktop/utils/fs";
+import crypto from "node:crypto";
+// import { rmrf } from "readium-desktop/utils/fs";
 
 // Persist state diffs regularly now that win.registry is disabled.
 // Only publication.db and opds remain unbounded (arrays with N elements).
@@ -39,70 +40,8 @@ const filename_ = "readium-desktop:main:saga:persist";
 const debug = debug_(filename_);
 debug("_");
 
-export const persistStateToFs = async (nextState: Partial<PersistRootState>) => {
-
-    debug("START of persist reduxState in disk");
-
-    // Part of code to reconstruct the entire state.json for 3.3 and earlier, not needed for the 3.4 and beyond
-    let reader: IDictWinRegistryReaderState | undefined = undefined;
-    if (nextState?.win?.registry?.reader) {
-
-        debug("START reconstruction of the registry reader state for backward compatibilty with 3.3");
-        reader = {};
-        const publicationData = diMainGet("publication-data");
-        const publicationIdentifierFromPublicationDataBase = Object.keys(nextState?.publication?.db || {});
-
-        for (const pubId of publicationIdentifierFromPublicationDataBase) {
-            if (publicationData.visited.has(pubId)) {
-
-                debug(`${pubId} has been visited`);
-
-                const promisesSettledResult = await Promise.allSettled([
-                    publicationData.readJsonObj(pubId, "config") as any, // TODO: type object
-                    publicationData.readJsonObj(pubId, "locator") as any, // TODO: type object
-                    publicationData.readJsonObj(pubId, "divina") as any, // TODO: type object
-                    publicationData.readJsonObj(pubId, "disableRTLFlip") as any, // TODO: type object
-                    publicationData.readJsonObj(pubId, "allowCustomConfig") as any, // TODO: type object
-                    publicationData.readJsonObj(pubId, "noteTotalCount") as any, // TODO: type object
-                    publicationData.readJsonObj(pubId, "pdfConfig") as any, // TODO: type object
-                    publicationData.readJsonObj(pubId, "bound") as any, // TODO: type object
-                ]);
-                await publicationData.close(pubId);
-
-                reader[pubId] = {
-                    reduxState: {
-                        config: promisesSettledResult[0].status === "fulfilled" ? promisesSettledResult[0].value : undefined,
-                        locator: promisesSettledResult[1].status === "fulfilled" ? promisesSettledResult[1].value : undefined,
-                        divina: promisesSettledResult[2].status === "fulfilled" ? promisesSettledResult[2].value : undefined,
-                        disableRTLFlip: promisesSettledResult[3].status === "fulfilled" ? promisesSettledResult[3].value : undefined,
-                        allowCustomConfig: promisesSettledResult[4].status === "fulfilled" ? promisesSettledResult[4].value : undefined,
-                        noteTotalCount: promisesSettledResult[5].status === "fulfilled" ? promisesSettledResult[5].value : undefined,
-                        pdfConfig: promisesSettledResult[6].status === "fulfilled" ? promisesSettledResult[6].value : undefined,
-                    },
-                    windowBound: promisesSettledResult[7].status === "fulfilled" ? promisesSettledResult[7].value : undefined,
-                };
-
-                debug(`SAVED reader[${pubId}]: ${JSON.stringify({
-                    reduxState: {
-                        config: typeof reader[pubId].reduxState.config,
-                        locator: typeof reader[pubId].reduxState.locator,
-                        divina: typeof reader[pubId].reduxState.divina,
-                        disableRTLFlip: typeof reader[pubId].reduxState.disableRTLFlip,
-                        allowCustomConfig: typeof reader[pubId].reduxState.allowCustomConfig,
-                        noteTotalCount: typeof reader[pubId].reduxState.noteTotalCount,
-                        pdfConfig: typeof reader[pubId].reduxState.pdfConfig,
-                    },
-                    windowBound: typeof reader[pubId].windowBound,
-                }, null, 4)}`);
-            } else {
-                reader[pubId] = nextState.win.registry.reader[pubId];
-            }
-        }
-
-        debug("END of the reconstruction of the registry reader state for backward compatibilty");
-    }
-
-    const value: PersistRootState & { __t: string, __v: string } = {
+export const convertDiffableReduxState = (nextState: Partial<PersistRootState>): PersistRootState => {
+    return {
         theme: nextState.theme,
         win: {
             // disable session saving
@@ -113,7 +52,7 @@ export const persistStateToFs = async (nextState: Partial<PersistRootState>) => 
                 reader: undefined,
             },
             registry: {
-                reader,
+                reader: undefined,
             },
         },
         publication: nextState.publication,
@@ -137,83 +76,148 @@ export const persistStateToFs = async (nextState: Partial<PersistRootState>) => 
             welcomeScreen: undefined,
             manifest: undefined,
         },
-        __t: (new Date()).toUTCString(),
-        __v: _APP_VERSION,
     };
+};
 
-    const oldStateDataStringified = JsonStringifySortedKeys(value);
+export const convertPersistedReduxState = (nextState: Partial<PersistRootState>): PersistRootState & { __t: number, __v: string, __state_version: 340 } => {
 
-    // remove the registry.reader key
-    // in case of crash, the N-1 state_v340.json will not contain any publication reader data, hydration will come from publication-data json chunk file.
-    // This is part of the migration from an unique central json state with WAL as diff patch TO multiple chunks of json data on filesystem colocalised to the publication itself
-    delete value.win.registry;
-    const newStateDataV340Stringified = JsonStringifySortedKeys(value);
-    let stateDataWriteCrashNOTWRITTEN = false;
-    try {
-        await fs.promises.writeFile(state_V340_FilePath, newStateDataV340Stringified, {encoding: "utf8"});
-    } catch (e) {
-        stateDataWriteCrashNOTWRITTEN = true;
-        debug("ERROR to write state_v340.json to disk !!!", `${e}`);
+    return {
+        ...convertDiffableReduxState(nextState),
+        __t: (new Date()).getTime(),
+        __v: _APP_VERSION,
+        __state_version: 340,
+    };
+};
+
+
+export const convertPublicationToRegistryReaderState = async (pubIds: string[]): Promise<IDictWinRegistryReaderState> => {
+    const publicationData = diMainGet("publication-data");
+
+    const readerRegistry: IDictWinRegistryReaderState | undefined = {};
+    for (const pubId of pubIds) {
+
+        const promisesSettledResult = await Promise.allSettled([
+            publicationData.readJsonObj(pubId, "config") as any, // TODO: type object
+            publicationData.readJsonObj(pubId, "locator") as any, // TODO: type object
+            publicationData.readJsonObj(pubId, "divina") as any, // TODO: type object
+            publicationData.readJsonObj(pubId, "disableRTLFlip") as any, // TODO: type object
+            publicationData.readJsonObj(pubId, "allowCustomConfig") as any, // TODO: type object
+            publicationData.readJsonObj(pubId, "noteTotalCount") as any, // TODO: type object
+            publicationData.readJsonObj(pubId, "pdfConfig") as any, // TODO: type object
+            publicationData.readJsonObj(pubId, "bound") as any, // TODO: type object
+        ]);
+        await publicationData.close(pubId);
+
+        const readerState: IWinRegistryReaderState = {
+            reduxState: {
+                config: promisesSettledResult[0].status === "fulfilled" ? promisesSettledResult[0].value : undefined,
+                locator: promisesSettledResult[1].status === "fulfilled" ? promisesSettledResult[1].value : undefined,
+                divina: promisesSettledResult[2].status === "fulfilled" ? promisesSettledResult[2].value : undefined,
+                disableRTLFlip: promisesSettledResult[3].status === "fulfilled" ? promisesSettledResult[3].value : undefined,
+                allowCustomConfig: promisesSettledResult[4].status === "fulfilled" ? promisesSettledResult[4].value : undefined,
+                noteTotalCount: promisesSettledResult[5].status === "fulfilled" ? promisesSettledResult[5].value : undefined,
+                pdfConfig: promisesSettledResult[6].status === "fulfilled" ? promisesSettledResult[6].value : undefined,
+            },
+            windowBound: promisesSettledResult[7].status === "fulfilled" ? promisesSettledResult[7].value : undefined,
+        };
+        if (Object.values(readerState.reduxState).length || readerState.windowBound) {
+            readerRegistry[pubId] = readerState;
+
+            debug(`SAVED reader[${pubId}]: ${JSON.stringify({
+                reduxState: {
+                    config: typeof readerRegistry[pubId]?.reduxState.config,
+                    locator: typeof readerRegistry[pubId]?.reduxState.locator,
+                    divina: typeof readerRegistry[pubId]?.reduxState.divina,
+                    disableRTLFlip: typeof readerRegistry[pubId]?.reduxState.disableRTLFlip,
+                    allowCustomConfig: typeof readerRegistry[pubId]?.reduxState.allowCustomConfig,
+                    noteTotalCount: typeof readerRegistry[pubId]?.reduxState.noteTotalCount,
+                    pdfConfig: typeof readerRegistry[pubId]?.reduxState.pdfConfig,
+                },
+                windowBound: typeof readerRegistry[pubId]?.windowBound,
+            }, null, 4)}`);
+        }
+
     }
+    return readerRegistry;
+};
 
-    // let's write state.json after state_v340.json in case of disk full error
-    try {
-        await fs.promises.writeFile(stateFilePath, oldStateDataStringified, {encoding: "utf8"});
-    } catch (e) {
-        stateDataWriteCrashNOTWRITTEN = true;
-        debug("ERROR to write state.json to disk !!!", e);
-    }
+const persistReaderRegistry = async (nextState: Partial<PersistRootState>): Promise<IDictWinRegistryReaderState> => {
 
-    if (stateDataWriteCrashNOTWRITTEN) {
-        debug("data not saved due to CRASH so do not remove state.runtime.json and state.patch.json, just exit and try to recover on the next start");
-    } else {
-        const oldStateDataRead = await fs.promises.readFile(stateFilePath, { encoding: "utf-8" });
-        const oldDataWriteIsOldDataRead = oldStateDataRead === oldStateDataStringified;
-        const newStateDataRead = await fs.promises.readFile(state_V340_FilePath, { encoding: "utf-8" });
-        const newDataWriteIsNewDataRead = newStateDataRead === newStateDataV340Stringified;
-        if (oldDataWriteIsOldDataRead && newDataWriteIsNewDataRead) {
-            debug("state.json and state_v340.json successfuly written to disk");
+    debug("START persisting win.registry.reader state from visited publications on disk");
+    const publicationData = diMainGet("publication-data");
+    const publicationIdentifierFromPublicationDataBase = Object.keys(nextState?.publication?.db || {});
 
-            // temporary hack for the 3.4.0 backward compatibility before removing diff patch
+    // Separate publication IDs into visited and not visited
+    const pubIdVisistedSet = publicationIdentifierFromPublicationDataBase.filter((pubId) => publicationData.visited.has(pubId));
+    const pubIdNotVisitedSet = publicationIdentifierFromPublicationDataBase.filter((pubId) => !publicationData.visited.has(pubId));
+    const registryReaderState = await convertPublicationToRegistryReaderState(pubIdVisistedSet);
 
-            // remove state.json (replace by state_v340.json)
-            // remove every state.runtime.json
-            // remove state.patch.json
-            try {
-                debug("remove state.patch.json");
-                await rmrf(patchFilePath);
-            } catch (e) {
-                debug("cannot remove state.patch.json", e);
-            }
-            try {
-                debug("remove state.runtime.json");
-                await rmrf(runtimeStateFilePath);
-            } catch (e) {
-                debug("cannot remove state.runtime.json", e);
-            }
-
-        } else {
-            debug("oldDataWriteIsOldDataRead", oldDataWriteIsOldDataRead);
-            debug("newDataWriteIsNewDataRead", newDataWriteIsNewDataRead);
-            debug("ERROR to write state.json and/or state_v340.json to disk, \"data write is date read\" not true, so this is probably a file corruption !!!");
-            debug("state.patch.json and state.runtime.json are not removed, so let's recover the state in the next start");
+    // Preserve registry reader state for not-visited publications (backward compatibility)
+    for (const pubId of pubIdNotVisitedSet) {
+        if (nextState?.win?.registry?.reader[pubId]) {
+            registryReaderState[pubId] = nextState.win.registry.reader[pubId];
         }
     }
+    debug("END persisting registry reader state (backward compatibility applied)");
+    return registryReaderState;
+};
 
-    debug("end of persist reduxState in disk");
+export const persistStateToFs = async (nextState: Partial<PersistRootState>, filePath: string): Promise<void> => {
+    debug("START persisting Redux state to disk");
+
+    const persistedReduxState = convertPersistedReduxState(nextState);
+
+    let stateDataStringified = JsonStringifySortedKeys(persistedReduxState);
+    const checksum = crypto.createHash("sha1").update(stateDataStringified).digest("hex");
+
+    if (filePath === stateFilePath) {
+        // Add registry.reader for backward compatibility with older state.json versions 330
+        persistedReduxState.win.registry.reader = await persistReaderRegistry(nextState);
+        stateDataStringified = JsonStringifySortedKeys(persistedReduxState);
+    }
+
+    // Prepend checksum at the beginning of the JSON
+    stateDataStringified = stateDataStringified.replace(/^{/, `\{\"__checksum\": \"${checksum}\"\,`); // add checksum on the beginning of the file
+    debug("Checksum inserted at the beginning of the JSON file (preview):", stateDataStringified.slice(0, 60), "...");
+
+
+    try {
+        debug(`Persist the ${filePath} to disk`);
+        await fs.promises.writeFile(filePath, stateDataStringified, { encoding: "utf-8" });
+    } catch (e) {
+        debug("ERROR writing state.json to disk!", e);
+    }
+
+    try {
+        const data = await fs.promises.readFile(filePath, { encoding: "utf-8"});
+        const reduxState = JSON.parse(data);
+        delete (reduxState as any).__checksum;
+        delete reduxState.win.registry.reader;
+        const reduxStateChecksum = JsonStringifySortedKeys(reduxState);
+        const checksumGenerated = crypto.createHash("sha1").update(reduxStateChecksum).digest("hex");
+        if (checksumGenerated === checksum) {
+            debug("Checksum verified and valid after the final state was written");
+        } else {
+            debug("Checksum mismatch detected!");
+        }
+    } catch (e) {
+        debug(`CRITICAL ERROR: ${filePath} not verified and valid; ${e}`);
+    }
+
+    debug("END persisting Redux state to disk");
 };
 
 export function* needToPersistFinalState() {
 
-    const nextState = yield* selectTyped((store: RootState) => store);
-    yield call(() => needToPersistPatch());
-
-    // final step because the patch and runtime state is remove if the final state.json is successfuly written to disk
-    // Just a temporary hack for the 3.4.0 release, before removing diff patch
-    yield call(() => persistStateToFs(nextState as Partial<PersistRootState>));
+    yield call(() => needToPersistPatch()); // before final state
+    yield call(() => persistStateToFs(reduxStatePersistedReference.reduxState as Partial<PersistRootState>, stateFilePath));
 }
 
 export function* needToPersistPatch() {
+
+    if (closeProcessLock.isLock) {
+        return ;
+    }
 
     try {
 

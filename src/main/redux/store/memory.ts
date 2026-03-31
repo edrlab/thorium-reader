@@ -10,7 +10,9 @@ import * as fs from "fs";
 import { ok } from "readium-desktop/common/utils/assert";
 import {
     splashScreen,
-    diMainGet, memoryLoggerFilename, patchFilePath, runtimeStateFilePath, state_V340_FilePath, stateFilePath,
+    diMainGet, memoryLoggerFilename, patchFilePath, runtimeStateFilePath, stateFilePath,
+    stateDiffFilePath,
+    runtimeDiffStateFilePath,
 } from "readium-desktop/main/di";
 import { reduxSyncMiddleware } from "readium-desktop/main/redux/middleware/sync";
 import { rootReducer } from "readium-desktop/main/redux/reducers";
@@ -31,15 +33,20 @@ import { TAnnotationState } from "readium-desktop/common/redux/states/renderer/a
 import { sqliteInitTableNote, sqliteTableNoteDeleteWherePubId, sqliteTableNoteInsert, sqliteTableSelectLastModifiedDateWherePubId } from "readium-desktop/main/db/sqlite/note";
 import { sqliteInitialisation } from "readium-desktop/main/db/sqlite";
 import { IReaderPdfConfig, IReaderStateReaderSession } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { IWinRegistryReaderState } from "readium-desktop/main/redux/states/win/registry/reader";
+import { IDictWinRegistryReaderState, IWinRegistryReaderState } from "readium-desktop/main/redux/states/win/registry/reader";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { IRTLFlipState } from "readium-desktop/common/redux/states/renderer/rtlFlip";
 import { IAllowCustomConfigState } from "readium-desktop/common/redux/states/renderer/allowCustom";
 import { IDivinaState } from "readium-desktop/common/redux/states/renderer/divina";
 import { IBookmarkTotalCountState } from "readium-desktop/common/redux/states/renderer/bookmarkTotalCount";
-import { persistStateToFs } from "../sagas/persist";
-import { app, BrowserWindow } from "electron";
+import { convertPublicationToRegistryReaderState, persistStateToFs } from "../sagas/persist";
+import { app, BrowserWindow, dialog } from "electron";
 import { error } from "readium-desktop/main/tools/error";
+import { getFileSize, rmrf } from "readium-desktop/utils/fs";
+import crypto from "node:crypto";
+import { JsonStringifySortedKeys } from "readium-desktop/common/utils/json";
+import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
+import * as ramda from "ramda";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -55,6 +62,27 @@ const debug = (...a: Parameters<debug_.Debugger>) => {
     );
 };
 
+/**
+ * Deep diff of two objects
+ * Returns an object with keys where values differ
+ */
+const deepDiff = (obj1: any, obj2: any) => {
+    if (ramda.equals(obj1, obj2)) return undefined; // no diff
+
+    if (ramda.is(Object, obj1) && ramda.is(Object, obj2)) {
+        const allKeys = ramda.union(ramda.keys(obj1), ramda.keys(obj2));
+        const diffObj = ramda.reduce((acc, key) => {
+            const diff = deepDiff(obj1[key], obj2[key]);
+            if (diff !== undefined) (acc as any)[key] = diff;
+            return acc;
+        }, {}, allKeys);
+        return ramda.isEmpty(diffObj) ? undefined : diffObj;
+    }
+
+    // primitive values differ
+    return { before: obj1, after: obj2 };
+};
+
 // const checkReduxState = async (runtimeState: object, reduxState: PersistRootState) => {
 
 //     deepStrictEqual(runtimeState, reduxState);
@@ -64,20 +92,20 @@ const debug = (...a: Parameters<debug_.Debugger>) => {
 //     return reduxState;
 // };
 
-const runtimeState = async (): Promise<object> => {
-    const runtimeStateStr = await tryCatch(() => fs.promises.readFile(runtimeStateFilePath, { encoding: "utf8" }), "");
-    const runtimeState = await tryCatch(() => JSON.parse(runtimeStateStr), "");
+// const runtimeState = async (): Promise<object> => {
+//     const runtimeStateStr = await fs.promises.readFile(runtimeStateFilePath, { encoding: "utf8" });
+//     const runtimeState = JSON.parse(runtimeStateStr);
 
-    ok(typeof runtimeState === "object");
+//     ok(typeof runtimeState === "object");
 
-    return runtimeState;
-};
+//     return runtimeState;
+// };
 
 const recoveryReduxState = async (runtimeState: object): Promise<object> => {
 
-    const patchFileStrRaw = await tryCatch(() => fs.promises.readFile(patchFilePath, { encoding: "utf8" }), "");
+    const patchFileStrRaw = await fs.promises.readFile(patchFilePath, { encoding: "utf8" });
     const patchFileStr = "[" + patchFileStrRaw.slice(0, -2) + "]"; // remove the last comma
-    const patch = await tryCatch(() => JSON.parse(patchFileStr), "");
+    const patch = await JSON.parse(patchFileStr);
 
     ok(Array.isArray(patch));
 
@@ -86,190 +114,397 @@ const recoveryReduxState = async (runtimeState: object): Promise<object> => {
     // node_modules/rfc6902/diff.js:262:17
     // dist
     // node_modules/rfc6902/diff.js:135:36
-    try {
-        const errors = applyPatch(runtimeState, patch);
-        ok(errors.reduce((pv, cv) => pv && !cv, true));
-    } catch (err) {
-        console.log(err);
-    }
+    const errors = applyPatch(runtimeState, patch);
+    ok(errors.reduce((pv, cv) => pv && !cv, true));
 
     ok(typeof runtimeState === "object", "state not defined after patch");
 
     return runtimeState;
 };
 
-const test = (stateRaw: any): stateRaw is PersistRootState => {
-    ok(typeof stateRaw === "object");
-    ok(stateRaw.win);
-    ok(stateRaw.publication);
-    ok(stateRaw.reader);
-    // ok(stateRaw.session);
+// const testThrowError = (stateRaw: any): stateRaw is PersistRootState => {
+//     ok(typeof stateRaw === "object");
 
-    return stateRaw;
+//     // Only check the `publication` key to avoid exceptions
+//     // when legitimate publication database arrays are missing `win` or `reader` keys.
+//     // The state may remain inconsistent, but we must not remove the publications DB.
+//     ok(typeof stateRaw.publication === "object");
+//     // ok(stateRaw.win);
+//     // ok(stateRaw.reader);
+//     // ok(stateRaw.session);
+
+//     return stateRaw;
+// };
+
+
+const test = (stateRaw: any): stateRaw is PersistRootState => {
+    if (typeof stateRaw === "object" && 
+
+    // Only check the `publication` key to avoid exceptions
+    // when legitimate publication database arrays are missing `win` or `reader` keys.
+    // The state may remain inconsistent, but we must not remove the publications DB.
+    typeof stateRaw.publication === "object")
+    // ok(stateRaw.win);
+    // ok(stateRaw.reader);
+    // ok(stateRaw.session);
+    {
+        return true;
+    }
+    return false;
+};
+
+const testV340 = (stateRaw: any): stateRaw is PersistRootState => {
+    // __t, __v, __state_version, and __checksum are internal keys added during persistence (v340)
+    if (
+        test(stateRaw) &&
+        // Skip checking DateTime fields (__t) because they vary on each persistence
+        // (stateRaw as any).__t &&
+        (stateRaw as any).__v &&
+        (stateRaw as any).__state_version === 340 // &&
+        // do not check checksum type because not always required
+        // typeof (stateRaw as any).__checksum === "string"
+    ) {
+        return true;
+    }
+    return false;
+};
+
+type TReduxStateParsed = Partial<{
+    reduxStateWinRegistryReader: IDictWinRegistryReaderState
+    version: 330 | 340,
+    appVersion: string,
+    checksum: boolean,
+    timestamp: number,
+    reduxState: PersistRootState,
+    filePath: string,
+}>;
+
+const validateReduxState = (reduxState: any): TReduxStateParsed => {
+
+    let reduxStateWinRegistryReader: IDictWinRegistryReaderState | undefined;
+    if (testV340(reduxState)) {
+        debug("State detected: version 340");
+        debug("State Timestamp:", (reduxState as any).__t);
+        debug("State Version:", (reduxState as any).__v);
+        debug("State Checksum:", (reduxState as any).__checksum || "undefined");
+
+        // delete checksum value to compute it
+        const stateChecksum = (reduxState as any).__checksum as string;
+        delete (reduxState as any).__checksum;
+
+        // delete win.registry.reader backward compatible state
+        if (reduxState?.win?.registry?.reader) {
+            reduxStateWinRegistryReader = JSON.parse(JSON.stringify(reduxState.win.registry.reader));
+            delete reduxState.win.registry.reader;
+            debug("Removed key: win.registry.reader");
+        } else {
+            debug("Key not found: win.registry.reader");
+        }
+
+        // compute checksum
+        const reduxStateChecksum = JsonStringifySortedKeys(reduxState);
+        const checksumGenerated = crypto.createHash("sha1").update(reduxStateChecksum).digest("hex");
+
+        // delete DateTime/Version after checksum comparaison
+        const timestamp = (reduxState as any).__t;
+        delete (reduxState as any).__t;
+        const appVersion = (reduxState as any).__v;
+        delete (reduxState as any).__v;
+        delete (reduxState as any).__state_version;
+
+        debug(`Checksum comparison → generated:${checksumGenerated}, received:${stateChecksum || "undefined"}`);
+        let checksumValid = false;
+        if (stateChecksum && stateChecksum === checksumGenerated) {
+            debug("Checksum valid");
+            checksumValid = true;
+        } else {
+            debug("Checksum mismatch → starting recovery process");
+        }
+
+        return {
+            reduxStateWinRegistryReader,
+            version: 340,
+            appVersion,
+            checksum: checksumValid,
+            timestamp,
+            reduxState,
+        };
+    } else if (test(reduxState)) {
+        debug("State detected: version 330 (legacy format)");
+        return {
+            version: 330,
+            reduxState,
+        };
+    } else {
+        debug("The state is a json file but not a valid Thorium 3.x version");
+    }
+
+    return {};
+};
+
+const parseAndValidateReduxState = async (filePath: string) => {
+
+    debug("State filePath=", filePath);
+    const reduxStateStr = await fs.promises.readFile(filePath, { encoding: "utf-8" });
+    const reduxState = JSON.parse(reduxStateStr);
+    const reduxStateParsed = validateReduxState(reduxState);
+    reduxStateParsed.filePath = filePath;
+    return reduxStateParsed;
+};
+
+const validateRecoveredReduxState = (reduxRecoveredState: object, reduxState: PersistRootState): reduxRecoveredState is PersistRootState => {
+
+    if (test(reduxRecoveredState)) {
+        debug("Recovered state is valid (runtime + patch)");
+    } else {
+        debug("Recovered state not valid (why?)");
+        debug(reduxRecoveredState);
+        return false;
+    }
+    if (ramda.equals(reduxRecoveredState, reduxState)) {
+        debug("State consistency check passed (file === runtime+patch)");
+    } else {
+        debug("State mismatch detected (file !== runtime+patch)");
+        debug("Overriding state with recovered runtime+patch version");
+
+        debug("State runtime+patch written to ", runtimeDiffStateFilePath);
+        Promise.resolve().then(() => fs.promises.writeFile(runtimeDiffStateFilePath, JsonStringifySortedKeys(reduxRecoveredState), { encoding: "utf-8" })).catch(() => {});
+
+        debug("State reduxState written to ", stateDiffFilePath);
+        Promise.resolve().then(() => fs.promises.writeFile(stateDiffFilePath, JsonStringifySortedKeys(reduxState), { encoding: "utf-8" })).catch(() => {});
+
+        debug("Diff:");
+        try { debug(JSON.stringify(deepDiff(reduxRecoveredState, reduxState), null, 4)); } catch { }
+
+        // TODO: implement reconciliation between persisted state and runtime+patch
+        // Current behavior: runtime+patch takes precedence if checksum mismatch
+    }
+    return true; // to overide final redux state even if the runtime+patch did not match with the current final state
+};
+
+const loadRuntimeReduxState = async (): Promise<TReduxStateParsed> => {
+    let runtimeStateParsed: TReduxStateParsed = {};
+    try {
+        debug("Parse and validate runtime state");
+        runtimeStateParsed = await parseAndValidateReduxState(runtimeStateFilePath);
+        debug("RUNTIME state loaded:", runtimeStateParsed);
+    } catch (e) {
+        debug("Error loading RUNTIME state:", `${e}`);
+    }
+
+    if (runtimeStateParsed.version === 340) {
+        debug("RUNTIME state version is 340");
+
+        if (runtimeStateParsed.checksum) {
+            debug("RUNTIME checksum is valid");
+        } else {
+            debug("Invalid RUNTIME checksum → skipping RUNTIME");
+            // do not return runtime state
+            return {};
+        }
+    } else if (runtimeStateParsed.version === 330) {
+        debug("Legacy RUNTIME state (3.3)");
+    } else {
+        debug("RUNTIME state not found");
+    }
+
+    return runtimeStateParsed;
+};
+
+
+
+const loadReduxState = async (runtimeStateParsedPromise: Promise<TReduxStateParsed>): Promise<TReduxStateParsed> => {
+    debug("[loadReduxState] Start loading redux state");
+
+    let reduxStateParsed: TReduxStateParsed = {};
+    try {
+        debug("Parse and validate final state");
+        reduxStateParsed = await parseAndValidateReduxState(stateFilePath);
+        debug("FINAL state loaded:", reduxStateParsed);
+    } catch (e) {
+        debug("Error loading FINAL state:", `${e}`);
+    }
+
+    if (reduxStateParsed.version === 340) {
+        debug("FINAL state version is 340");
+
+        if (reduxStateParsed.checksum) {
+            debug("FINAL state checksum is valid");
+        } else {
+            debug("FINAL checksum invalid → fallback to RUNTIME");
+
+            const runtimeStateParsed = await runtimeStateParsedPromise;
+            if (runtimeStateParsed.version === 340) {
+
+                if (reduxStateParsed.timestamp > runtimeStateParsed.timestamp) {
+                    debug("FINAL state is more recent than RUNTIME state → keep FINAL");
+                } else {
+                    debug("RUNTIME state is newer → attempt recovery");
+    
+                    // Duplicate the current Redux state to safely apply recovery patches without mutating the original runtime state.
+                    debug("RUNTIME redux state duplicated for recovery processing");
+                    const duplicatedReduxState = JSON.parse(JSON.stringify(runtimeStateParsed.reduxState));
+                    const reduxRecoveredState = await recoveryReduxState(duplicatedReduxState);
+    
+                    if (validateRecoveredReduxState(reduxRecoveredState, reduxStateParsed.reduxState)) {
+                        debug("Recovery successful → using recovered state");
+
+                        return {
+                            version: 340,
+                            reduxState: reduxRecoveredState,
+                        };
+                    } else {
+                        debug("Recovery failed → keep RUNTIME");
+                        return runtimeStateParsed;
+                    }
+                }
+            } else {
+                debug("RUNTIME state is invalid → keep FINAL");
+            }
+        }
+
+    } else if (reduxStateParsed.version === 330) {
+        debug("FINAL state is legacy (not 340) → returning as-is");
+    } else {
+        debug("FINAL state not found → fallback to RUNTIME");
+
+        const runtimeStateParsed = await runtimeStateParsedPromise;
+        if (runtimeStateParsed.version === 340) {
+
+            // Duplicate the current Redux state to safely apply recovery patches without mutating the original runtime state.
+            debug("RUNTIME redux state duplicated for recovery processing");
+            const duplicatedReduxState = JSON.parse(JSON.stringify(runtimeStateParsed.reduxState));
+            const reduxRecoveredState = await recoveryReduxState(duplicatedReduxState);
+    
+            if (test(reduxRecoveredState)) {
+                debug("Recovery successful → using recovered state");
+    
+                return {
+                    version: 340,
+                    reduxState: reduxRecoveredState,
+                };
+            } else {
+                debug("Recovery failed → keep RUNTIME");
+                return runtimeStateParsed;
+            }
+        } else if (runtimeStateParsed.reduxState) {
+            debug("RUNTIME state is legacy (not 340) → returning as-is");
+            return runtimeStateParsed;
+        } else {
+            debug("RUNTIME state is invalid → keep EMPTY");
+        }
+    }
+
+    debug("[loadReduxState] resolved state:", reduxStateParsed);
+    return reduxStateParsed;
+};
+
+const loadFinalReduxState = async (): Promise<TReduxStateParsed> => {
+
+    // Load the runtime state in parallel. 
+    // Note: In the normal working mode, this runtime state is not used,
+    // but it can provide useful debugging/logging information.
+    const runtimeStateParsedPromise: Promise<TReduxStateParsed> = loadRuntimeReduxState();
+    const reduxStateParsed = await loadReduxState(runtimeStateParsedPromise);
+
+    debug("[loadFinalReduxState] Redux state loaded:", typeof reduxStateParsed);
+    return reduxStateParsed;
 };
 
 export async function initStore()
     : Promise<[Store<RootState>, SagaMiddleware<object>]> {
 
-    let reduxState: PersistRootState | undefined = undefined;
+    debug("START MEMORY INIT STORE");
 
-    let reduxStateFromState330: PersistRootState | undefined = undefined;
-
-    debug("");
-    debug("MEMORY INIT STORE");
-
-
+    /*
     // See PR for the forward and backward migration v3.3 <-> v3.4
     // https://github.com/edrlab/thorium-reader/pull/3423
+    // AND
+    // https://github.com/edrlab/thorium-reader/pull/3471
+    
+    This logic implements a safe and resilient Redux state loading strategy
+    designed to protect user data against corruption and unexpected shutdowns.
+    
+    At startup, the application attempts to load the persisted state from disk (`state.json`).
+    If the state is in the modern format (v340), its integrity is verified using a checksum.
+    If the checksum is valid, the state is considered reliable. Otherwise, it is treated as corrupted.
+    
+    In parallel, the application also checks the runtime file (`state.runtime.json`), which represents the state at startup.
+    This runtime state is combined with a JSON diff patch (the list of changes applied during the application lifetime)
+    to reconstruct the runtime+patch state, i.e. the most up-to-date in-memory state prior to shutdown.
+    
+    If this runtime+patch state is valid and more recent than the main state, or if the main state is corrupted, it is used instead.
+    A recovery process is applied to ensure the reconstructed state is consistent.
+    
+    The final state is selected using the following priority:
+    * Valid main state (state.json)
+    * Valid recovered runtime+patch state
+    * Valid runtime state
+    * Legacy state (v330, without checksum)
+    * Empty state (fallback in case of failure)
+    
+    Once the application is initialized, the resolved state is immediately persisted back to disk:
+    * First written to the runtime file
+    * Then copied to the main state file
+    
+    The state is also persisted again on application shutdown.
+    
+    This ensures that:
+    * The application can recover from crashes or incomplete writes
+    * Corrupted states are automatically detected and bypassed
+    * The most recent valid state is always preferred
+    
+    Note: In recovery scenarios, the system intentionally favors availability over strict consistency.
+    A recovered state may override the previous one even if differences are detected.
+    
+    */
 
-    try {
+    const { reduxState, version, reduxStateWinRegistryReader, filePath }: TReduxStateParsed = await loadFinalReduxState();
 
-        let jsonStr = "";
-        let getNewStateFromV340 = false;
-        try {
-            jsonStr = await fs.promises.readFile(stateFilePath, { encoding: "utf8" });
-            reduxStateFromState330 = JSON.parse(jsonStr);
-            //  __t and __v are the hacky keys inserted when persisted by 340
-            if (test(reduxStateFromState330) && (reduxStateFromState330 as any).__t && (reduxStateFromState330 as any).__v) {
-                debug("The old one: \"state.json\" was written with the v3.4.0 last release and not from an old one (like v3.3.0), so let's recover the json redux state from \"state_v340.json\"");
-                getNewStateFromV340 = true;
-            } else {
-                reduxStateFromState330 = undefined;
-                // the old state.json has been updated from an older thorium version (3.3.0?) so let's migrate from it.
-                debug("If there is a crash from v330 and a forward migration to v340, publications data will not be imported, state.json will not be updated with new publications state");
-                getNewStateFromV340 = false;
-            }
-        } catch (e) {
-            debug("read/parse old state crash so let's read new state v340", `${e}`);
-            getNewStateFromV340 = true;
-        }
-
-        if (getNewStateFromV340) {
-            try {
-                jsonStr = await fs.promises.readFile(state_V340_FilePath, { encoding: "utf8" });
-            } catch (e) {
-                debug("NEW state_v340.json not created so fallback on state.json", `${e}`);
-            }
-        } else {
-            debug("state is loaded from \"state.json\" and not \"state_v340.json\"");
-        }
-
-        const json = JSON.parse(jsonStr);
-        if (test(json)) {
-            debug("REDUX STATE Assigned to the final persisted state");
-            reduxState = json;
-        }
-
-        debug("STATE LOADED FROM FS");
-        debug("😍😍😍😍😍😍😍😍");
-
-    } catch {
-        reduxState = undefined;
-        debug("REDUX STATE is UNDEFINED could be the first start or missing/broken state");
-    }
-
-    try {
-
-        try {
-            test(reduxState);
-            const reduxRecoveredState = await recoveryReduxState(reduxState);
-            if (test(reduxRecoveredState)) {
-                debug("REDUX STATE Assigned to the final persisted state AND with the diff patch reconstruction");
-                reduxState = reduxRecoveredState;
-            }
-        } finally {
-            test(reduxState);
-            debug("REDUX STATE tested as a valid object; Let's start the application with this state");
-        }
-        // reduxState = await checkReduxState(state, reduxState);
-
-    } catch {
-
-        try {
-            try {
-                const reduxRuntimeState = await runtimeState();
-                if (test(reduxRuntimeState)) {
-                    debug("REDUX STATE Assigned to the runtime fist previous launch state");
-                    reduxState = reduxRuntimeState;
-                }
-                const reduxRecoveredState = await recoveryReduxState(reduxState);
-                if (test(reduxRecoveredState)) {
-                    debug("REDUX STATE Assigned to the runtime fist previous launch state AND with the diff patch reconstruction");
-                    reduxState = reduxRecoveredState;
-                }
-            } finally {
-                test(reduxState);
-                debug("REDUX STATE tested as a valid object; Let's start the application with this state");
-            }
-            // reduxState = await checkReduxState(state, reduxState);
-
-            // From the 3.4.0 and backward to 3.3.0: this leads to potentially a lost of data
-
-
-        } catch {
-
-            debug("REDUX STATE CORRUPTED OR EMPTY");
-
-            // try {
-
-            //     const stateRawFirst: any = await runtimeState();
-            //     test(stateRawFirst);
-            //     reduxState = stateRawFirst;
-
-            //     debug("RECOVERY : the state is the previous runtime snapshot");
-            //     debug("There should be data loss !");
-            //     debug("RECOVERY WORKS 4/4");
-            // } catch {
-
-            //     // do not erase reduxState for security purpose
-            //     // reduxState = undefined;
-            //     debug("REDUX STATE IS CORRUPTED THE TEST FAILED");
-            //     debug("For security purpose the state is not erase");
-            //     debug("Be carefull, an unexpected behaviour may occur");
-            //     debug("RECOVERY FAILED none of the 4 recoveries mode worked");
-            // }
-
-        }
-        // finally {
-
-            // let's comment the backup state option, not used and valid anymore, to progressively ditch the diff patch recovery option
-            // If not commented every start of 3.4.0 lead to the copy of the current state, due to an un equality between the final state.json and state.runtime.json+patch
-            // On the other hand, we can use this backup to find lost publication db state, from previous corrupted state.
-            // This allows to match publication-storage and publication db from a lost state.
-            // We need for the next release to do an automatic integrity check and cleaning
-
-            // const p = backupStateFilePathFn();
-            // await tryCatch(() =>
-            //     fs.promises.writeFile(p, JSON.stringify(reduxState), { encoding: "utf8" }),
-            //     "");
-
-            // debug("RECOVERY : a state backup file is copied in " + p);
-            // debug("keep it safe, you may restore a corrupted state with it");
-        // }
-
-    } finally {
-
-        await tryCatch(() =>
-            fs.promises.writeFile(
-                runtimeStateFilePath,
-                reduxState ? JSON.stringify(reduxState) : "{}",
-                { encoding: "utf8" },
-            )
-            , "");
-
-        // the file doen't have a top array [...]
-        // we need to add it before the parsing
-        await tryCatch(() => fs.promises.writeFile(patchFilePath, "", { encoding: "utf8" }), "");
-    }
-
+    const showErrorElectronDialog = false;
     if (!reduxState) {
+        debug("No existing state.json found. This may indicate:");
+        if (!tryCatchSync(() => getFileSize(stateFilePath), "")) {
+            debug("- First application launch (initial state will be written to disk)");
+        } else {
+            debug("- Corrupted state previously stored on disk, now reset to a fresh state");
+            if (showErrorElectronDialog) {
+                dialog.showErrorBox(
+                    "Data reset required",
+                    "The application detected that its saved data was corrupted and could not be recovered.\n\n" +
+                    "A new clean state has been created to allow the application to start normally.\n\n" +
+                    "Previous data and settings have been lost.",
+                );
+            }
+        }
+
         debug("####### WARNING ######");
-        debug("Thorium starts with a fresh new session");
-        debug("There are no DATABASE on the filesystem");
+        debug("Thorium starts with an undefined global state");
+        debug("The publication database will be lost!");
         debug("####### WARNING ######");
+    } else {
+        if (filePath === runtimeStateFilePath && showErrorElectronDialog) {
+            dialog.showErrorBox(
+                "Unexpected shutdown detected",
+                "The application did not shut down properly last time, which caused an issue with its saved data.\n\n" +
+                "A recovery process has been performed automatically.\n\n" +
+                "Some recent data or settings may have been lost.",
+            );
+        }
+        if (version === 330 && showErrorElectronDialog) {
+            app.whenReady().then(() => {
+                dialog.showMessageBox({
+                    type: "info",
+                    title: "Update complete",
+                    message: "Your data has been successfully updated to the latest version. " + _APP_VERSION,
+                });
+            });
+        }
+        debug("State successfully loaded from filesystem");
+        debug("Initialization complete");
     }
 
-    debug("REDUX STATE VALUE :: ", typeof reduxState, reduxState ? Object.keys(reduxState) : "nil");
+    debug("START redux hydration state with VALUE →", typeof reduxState, reduxState ? Object.keys(reduxState) : "nil");
     // debug(reduxState);
 
     // const forceDisableReaderDefaultConfigAndSessionForTheNewUI: Partial<PersistRootState> = {
@@ -296,7 +531,6 @@ export async function initStore()
     // } : {
     //     ...forceDisableReaderDefaultConfigAndSessionForTheNewUI,
     // };
-    const reduxStateIsUndefined = !reduxState;
     const preloadedState: Partial<PersistRootState> = reduxState ? {
         ...reduxState,
     } : {};
@@ -305,13 +539,13 @@ export async function initStore()
     sqliteInitialisation();
     sqliteInitTableNote();
 
-    if (preloadedState.win?.registry?.reader) {
+    if (version === 330) {
 
-        debug("START reader registry migration");
+        debug("START reader registry migration from the 330 version");
 
-        let pubIds: string[] = [];
+        let pubIdFromDatabase: string[] = [];
         if (preloadedState?.publication?.db) {
-            pubIds = Object.keys(preloadedState.publication.db);
+            pubIdFromDatabase = Object.keys(preloadedState.publication.db);
         }
         const readerRegistryPubIds = Object.keys(preloadedState.win.registry.reader);
         const numberOfPublicationNeededToDisplayTheSplashScreen = 20; // between 20 and 50 seems to me a good compromise, 500ms to 1s minimum before showing the splash-screen
@@ -360,6 +594,7 @@ export async function initStore()
         }
 
         for (const pubId in preloadedState.win.registry.reader) {
+            debug(`reader[${pubId}] need to be migrated`);
             const state = preloadedState.win.registry.reader[pubId];
 
             if (state?.reduxState?.locator) {
@@ -574,7 +809,7 @@ export async function initStore()
             }
 
             const publicationData = diMainGet("publication-data");
-            if (pubIds.includes(pubId)) {
+            if (pubIdFromDatabase.includes(pubId)) {
                 debug("MIGRATION TO Publication-data file storage ->", pubId);
 
                 // For test purpose only
@@ -688,25 +923,28 @@ export async function initStore()
                     debug(e);
                 }
             } else {
-                debug("MIGRATION TO Publication-data file storage ->", pubId, "NOT POSSIBLE BECAUSE PUBID NOT FOUND IN publication.db !!!");
+                debug("Migration to publication-data storage skipped: pubID not found in publication.db", pubId);
             }
 
             // reset the publication set visited to not save them again on persistence
             publicationData.clearVisitedPublicationSet();
         }
 
-        try {
-            await persistStateToFs(preloadedState);
-            debug("state.json and state_v340.json written with the new migration final state");
-        } catch (e) {
-            debug(e);
-            debug("ERROR to write state.json and state_v340.json on disk after migration !!!");
+        // remove publication data folder not linked with preloaded.publication.db after migration
+        const pubIdFromDisk = await diMainGet("publication-data").listOfAllPublications();
+        const publicationIdNotInDatabase = pubIdFromDisk.filter((pubId) => !pubIdFromDatabase.includes(pubId));
+        for (const pubId of publicationIdNotInDatabase) {
+            const publicationData = diMainGet("publication-data");
+            try {
+                debug(`delete data folder=${pubId} on disk because not linked from publications database`);
+                await publicationData.removePublication(pubId);
+            } catch (e) {
+                debug(`${e}`);
+            }
         }
 
         debug("END reader registry migration, let's create the redux store");
     } else {
-
-        // no state registry reader found
 
         const winRegistryEnabled = false; // win.registry is removed and replaced by publication data stored on disk and redux win.session to keep references on reader/library windows
         if (winRegistryEnabled) {
@@ -724,7 +962,7 @@ export async function initStore()
             // list publication db
             // read publication-data files and hydrate redux state
             const publicationData = diMainGet("publication-data");
-            const pubIds = await publicationData.listPublication();
+            const pubIds = await publicationData.listOfAllPublications();
             for (const pubId of pubIds) {
                 debug("PubID", pubId);
                 preloadedState.win.registry.reader[pubId] = {} as IWinRegistryReaderState;
@@ -789,7 +1027,20 @@ export async function initStore()
             }
 
             // apply to the win registry reader state the previous persisted state for the 330 backward compatibility (from state.json and not state_v340.json)
-            preloadedState.win.registry.reader = reduxStateFromState330?.win?.registry?.reader || {};
+            preloadedState.win.registry.reader = reduxStateWinRegistryReader || {};
+            const readerRegistryPubIds = Object.keys(preloadedState.win.registry.reader);
+
+            const diskPubIds = await diMainGet("publication-data").listOfAllPublications();
+            const bijectiveArray = diskPubIds.length === readerRegistryPubIds.length &&
+                diskPubIds.every((pubId) => readerRegistryPubIds.includes(pubId)) &&
+                readerRegistryPubIds.every((pubId) => diskPubIds.includes(pubId));
+            if (bijectiveArray) {
+                debug("OK! Consistency check passed: win.registry.reader matches the publication identifiers on disk");
+            } else {
+                debug("Failed! Consistency check failed: win.registry.reader does not match publication identifiers on disk. Rewriting Redux state");
+                preloadedState.win.registry.reader = await convertPublicationToRegistryReaderState(diskPubIds);
+            }
+
         }
     }
 
@@ -846,21 +1097,21 @@ export async function initStore()
         middleware,
     );
 
+    Promise.resolve().then(async () => {
+        await persistStateToFs(store.getState(), runtimeStateFilePath);
+        debug("COPY", runtimeStateFilePath, "TO", stateFilePath);
+        await fs.promises.copyFile(runtimeStateFilePath, stateFilePath);
+    }).catch((e) => {
+        debug("Failed to persist state.runtime.json and copy it to state.json");
+        debug(`${e}`);
+    });
 
-    // If this is the first application start (runtime state does not match persisted Redux state),
-    // initialize the final redux persisted state using the default values from the Redux reducers.
-    // same as app closing persistence
-    if (reduxStateIsUndefined) {
-        debug("First start of the app or corrupted/missing state; persist/write the default redux state from the Redux reducers to initialize it");
-        try {
-            await persistStateToFs(store.getState());
-        } catch (e) {
-            debug("Failed to persist the first Redux State to Disk before starting the application");
-            debug(e);
-        }
-    } else {
-        debug("Starting the app with the persisted state");
-    }
+    Promise.resolve().then(async() => {
+        debug("rm -rf state.patch.json");
+        await rmrf(patchFilePath);
+    }).catch((e) => {
+        debug("Failed to remove state.patch.json", e);
+    });
 
     // Redux Saga main entry point
     // Starting the Application
