@@ -119,7 +119,7 @@ export const convertPublicationToRegistryReaderState = async (pubIds: string[]):
             const key = keys[index];
             if (result.status === "fulfilled") {
                 if (key === "bound") {
-                    readerState.windowBound = result.value as any // TODO: object;
+                    readerState.windowBound = result.value as any; // TODO: object;
                 } else {
                     readerState.reduxState[key] = result.value as any; // TODO: object
                 }

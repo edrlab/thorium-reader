@@ -301,7 +301,7 @@ const loadReduxState = async (): Promise<TReduxStateParsed> => {
         } else {
             debug("FINAL checksum invalid → fallback to RUNTIME");
             // do not return state
-            return {}
+            return {};
         }
 
     } else if (reduxStateParsed.version === 330) {
