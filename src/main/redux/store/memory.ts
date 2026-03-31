@@ -129,10 +129,14 @@ const recoveryReduxState = async (runtimeState: object): Promise<object | undefi
     // node_modules/rfc6902/diff.js:262:17
     // dist
     // node_modules/rfc6902/diff.js:135:36
-    const errors = applyPatch(runtimeState, patch);
-    if (errors.reduce((pv, cv) => pv && !cv, true)) {
-        debug("recoveryReduxState ERRORS:", errors);
-        return undefined;
+    try {
+        const errors = applyPatch(runtimeState, patch);
+        if (errors.reduce((pv, cv) => pv && !cv, true)) {
+            debug("recoveryReduxState ERRORS:", errors);
+            return undefined;
+        }
+    } catch (e) {
+        debug("recoveryReduxState", e);
     }
 
     return runtimeState;
