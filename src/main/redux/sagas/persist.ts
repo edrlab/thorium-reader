@@ -7,7 +7,7 @@
 
 import debug_ from "debug";
 import * as fs from "fs";
-import { diMainGet, stateFilePath, patchFilePath, reduxStatePersistedReference, closeProcessLock } from "readium-desktop/main/di";
+import { diMainGet, stateFilePath, patchFilePath, closeProcessLock } from "readium-desktop/main/di";
 import { PersistRootState } from "readium-desktop/main/redux/states";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { call, debounce, all } from "redux-saga/effects";
@@ -218,10 +218,10 @@ export const persistStateToFs = async (nextState: Partial<PersistRootState>, fil
     debug("END persisting Redux state to disk");
 };
 
-export function* needToPersistFinalState() {
+export function* needToPersistFinalState(reduxState: Partial<PersistRootState>) {
 
     yield call(() => needToPersistPatch()); // before final state
-    yield call(() => persistStateToFs(reduxStatePersistedReference.reduxState as Partial<PersistRootState>, stateFilePath));
+    yield call(() => persistStateToFs(reduxState, stateFilePath));
 }
 
 export function* needToPersistPatch() {
