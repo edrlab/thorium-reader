@@ -25,6 +25,7 @@ import { globSync } from "glob";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { isAcceptedExtension } from "readium-desktop/common/extension";
 import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
+import { PersistRootState } from "../redux/states";
 
 // Logger
 const debug = debug_("readium-desktop:cli:process");
@@ -93,7 +94,7 @@ const yargsInit = () =>
 
                 debug("CLI opds import", argv);
 
-                await createStoreFromDi();
+                const store = await createStoreFromDi();
                 const sagaMiddleware = diMainGet("saga-middleware");
                 __pendingCmd++;
 
@@ -122,7 +123,7 @@ const yargsInit = () =>
 
                 if (!__appStarted && __pendingCmd <= 0 && !closeProcessLock.isLock) {
 
-                    await sagaMiddleware.run(needToPersistFinalState).toPromise();
+                    await sagaMiddleware.run(needToPersistFinalState, store.getState() as Partial<PersistRootState>).toPromise();
                     app.exit(__returnCode);
                     return ;
                 }
@@ -144,7 +145,7 @@ const yargsInit = () =>
 
                 debug("CLI import publication", argv);
 
-                await createStoreFromDi();
+                const store = await createStoreFromDi();
                 const sagaMiddleware = diMainGet("saga-middleware");
                 __pendingCmd++;
 
@@ -194,7 +195,7 @@ const yargsInit = () =>
 
                 if (!__appStarted && __pendingCmd <= 0 && !closeProcessLock.isLock) {
 
-                    await sagaMiddleware.run(needToPersistFinalState).toPromise();
+                    await sagaMiddleware.run(needToPersistFinalState, store.getState() as Partial<PersistRootState>).toPromise();
                     app.exit(__returnCode);
                     return ;
                 }

@@ -8,7 +8,7 @@
 import debug_ from "debug";
 import { app, ipcMain } from "electron";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
-import { closeProcessLock, diMainGet, getLibraryWindowFromDi, getAllReaderWindowFromDi, reduxStatePersistedReference } from "readium-desktop/main/di";
+import { closeProcessLock, diMainGet, getLibraryWindowFromDi, getAllReaderWindowFromDi } from "readium-desktop/main/di";
 import { getOpdsNewCatalogsStringUrlChannel } from "readium-desktop/main/event";
 import {
     absorbDBToJson as absorbDBToJsonCookieJar, fetchCookieJarPersistence,
@@ -32,7 +32,7 @@ import {
 import { availableLanguages } from "readium-desktop/common/services/translator";
 import { i18nActions } from "readium-desktop/common/redux/actions";
 import { URL_PROTOCOL_APP_HANDLER_OPDS, URL_PROTOCOL_APP_HANDLER_THORIUM } from "readium-desktop/common/streamerProtocol";
-import { RootState } from "../states";
+import { PersistRootState, RootState } from "../states";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -231,8 +231,7 @@ function* closeProcess() {
 
     closeProcessLock.lock();
 
-    const reduxStateReference = yield* selectTyped((store: RootState) => store);
-    reduxStatePersistedReference.reduxState = reduxStateReference;
+    const reduxState = yield* selectTyped((store: RootState) => store);
 
     try {
         const [done] = yield* raceTyped([
@@ -256,7 +255,7 @@ function* closeProcess() {
                     }
 
                     try {
-                        yield call(needToPersistFinalState);
+                        yield call(needToPersistFinalState, reduxState as Partial<PersistRootState>);
                         debug("Success to persistState");
                     } catch (e) {
                         debug("ERROR to persistState", e);

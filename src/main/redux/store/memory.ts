@@ -8,9 +8,7 @@
 import debug_ from "debug";
 import * as fs from "fs";
 import {
-    diMainGet, memoryLoggerFilename, patchFilePath, runtimeStateFilePath, stateFilePath,
-    stateDiffFilePath,
-    runtimeDiffStateFilePath,
+    diMainGet, memoryLoggerFilename, patchFilePath, runtimeDiffStateFilePath, runtimeStateFilePath, stateDiffFilePath, stateFilePath,
 } from "readium-desktop/main/di";
 import { reduxSyncMiddleware } from "readium-desktop/main/redux/middleware/sync";
 import { rootReducer } from "readium-desktop/main/redux/reducers";

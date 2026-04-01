@@ -230,19 +230,6 @@ const closeProcessLock = (() => {
     };
 })();
 
-const reduxStatePersistedReference = (() => {
-    let __reduxState: Partial<RootState> | undefined;
-
-    return {
-        get reduxState() {
-            return __reduxState;
-        },
-        set reduxState(value) {
-            __reduxState = value;
-        },
-    };
-})();
-
 // const createStoreProcessLock = (() => {
 //     let lock = false;
 
@@ -440,7 +427,6 @@ const diMainGet: IGet = (symbol: keyof typeof diSymbolTable) => container.get<an
 
 export {
     closeProcessLock,
-    reduxStatePersistedReference,
     diMainGet,
     getLibraryWindowFromDi,
     getReaderWindowFromDi,
