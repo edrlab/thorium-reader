@@ -54,7 +54,7 @@
     // "moduleResolution": "nodenext", // 99
     // "moduleResolution": "node", // 100
     "moduleResolution": "bundler", // 100
-    "lib": ["es2022", "dom", "dom.iterable"],
+    "lib": ["es2022", "dom"],
     "target": "es2025",
     "jsx": "react",
     "experimentalDecorators": true,

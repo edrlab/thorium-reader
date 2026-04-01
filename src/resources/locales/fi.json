@@ -201,7 +201,7 @@
     },
     "library": {
         "filter": {
-            "addFilters": "Lisää suodatin",
+            "addFilters": "Lisää suodattimia",
             "filterBy": "Suodata",
             "selectOption": "Valitse"
         },
@@ -218,7 +218,7 @@
             "whatIsLcpInfoDetailsLink": "Lisätietoja on EDRLabin sivustolla."
         },
         "sorting": {
-            "addSorting": "Lajittele",
+            "addSorting": "Valitse lajitteluperuste",
             "author": "Tekijä",
             "language": "Kieli",
             "readingState": "Lukemisen tila",
@@ -1236,11 +1236,11 @@
     },
     "wizard": {
         "buttons": {
-            "discover": "Mikä on muuttunut",
+            "discover": "Tutustu Thorium Desktopiin",
             "goToBooks": "Siirry omiin julkaisuihin"
         },
         "description": {
-            "home": "Thorium näyttää erilaiselta! Katso mikä on muuttunut...",
+            "home": "Thorium 3.4 tuo joukon parannuksia käyttökokemukseen ja korjaa useita ongelmia. Jos päätät myöhemmin palata vanhempaan versioon sovelluksesta, on erittäin suositeltavaa varmuuskopioida e-kirjan merkintäsi ja kirjanmerkkisi viemällä ne ulkoiseen tiedostoon. Tuo tiedosto sitten takaisin vanhempaan versioon asennuksen jälkeen. Sovellus tallentaa merkinnät ja kirjanmerkit hieman eri sisäisessä muodossa versiossa 3.4; tämä ratkaisee suorituskykyongelman, mutta rikkoo taaksepäin yhteensopivuuden merkintöjen osalta.",
             "resources": "Ota yhteyttä ja opi lisää Thoriumista:"
         },
         "dontShow": "Älä näytä uudestaan",
@@ -1254,7 +1254,7 @@
         },
         "title": {
             "resources": "Resurssit ja yhteisö",
-            "welcome": "Tervetuloa Thorium 3 -sovellukseen"
+            "welcome": "Tervetuloa Thorium 3.4 -sovellukseen"
         }
     }
 }

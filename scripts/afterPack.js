@@ -90,16 +90,29 @@ module.exports = async function afterPack(context) {
 
         // GrantFileProtocolExtraPrivileges = 7,
         [FuseV1Options.GrantFileProtocolExtraPrivileges]: false,
-    };
 
-    // Electron Builder v26
+        // WasmTrapHandlers = 8,
+        // https://www.electronjs.org/docs/latest/tutorial/fuses#wasmtraphandlers
+        [FuseV1Options.WasmTrapHandlers]: true,
+    };
+    console.log("ElectronFuses: ", JSON.stringify(fuseConfig, null, 4));
+
+    // Electron Builder v26+
     // https://github.com/electron-userland/electron-builder/pull/8588
-    if (context.packager.addElectronFuses) {
+    // https://github.com/electron-userland/electron-builder/issues/6365
+    // ...unfortunately:
+    // https://github.com/electron-userland/electron-builder/issues/9662
+    if (false && context.packager.addElectronFuses) {
+        // https://github.com/electron-userland/electron-builder/blob/ed422f36540a93e9bd2a19bc7a5e729bf2b033ea/packages/app-builder-lib/src/platformPackager.ts#L413-L428
+        console.log("ElectronFuses via ElectronBuilder Platform Packager...");
+
         await context.packager.addElectronFuses(context, fuseConfig);
     } else {
+        console.log("ElectronFuses via direct flipFuses() call...");
 
         const ext = {
             darwin: ".app",
+            // mas: ".app",
             win32: ".exe",
             linux: [""],
         }[context.electronPlatformName];

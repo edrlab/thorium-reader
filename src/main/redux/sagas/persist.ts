@@ -32,7 +32,7 @@ import crypto from "node:crypto";
 const PATCH_DEBOUNCE_TIME = 1000; // 1 second before dumping to disk
 // const PATCH_DEBOUNCE_TIME = 3 * 60 * 1000; // 3 min
 
-// not used for the 340 for the moment, let's wait the 350
+// disabled for the 3.4 release
 // const PUBLICATION_STORAGE_DEBOUNCE_TIME = 10 * 1000; // 10 secs
 
 // Logger
@@ -442,13 +442,13 @@ export function saga() {
                 // }
                 // const pubId = reader.publicationIdentifier;
 
-                const config: Partial<ReaderConfig> = (yield* callTyped(() => diMainGet("publication-data").getJsonObj(pubId, "config"))) || {};
+                const config: Partial<ReaderConfig> = (yield* callTyped(() => diMainGet("publication-data").readJsonObj(pubId, "config"))) || {};
                 const configUnion = { ...config, ...configJsonObj };
                 yield* callTyped(() => diMainGet("publication-data").writeJsonObj(pubId, "config", configUnion));
             },
             (e) => debug(e),
         ),
-        // disabled for the 340 release, let's wait 350
+        // disabled for the 3.4 release
         // debounce(
         //     PUBLICATION_STORAGE_DEBOUNCE_TIME,
         //     readerActions.setLocator.ID,

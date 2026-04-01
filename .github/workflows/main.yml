@@ -160,7 +160,7 @@ jobs:
         #check-latest: true
     - run: node --version && npm --version
 # https://github.com/npm/cli/issues/9133
-    - run: npm --global install npm@'<11.12.0'
+    - run: npm --global install npm
     - run: npm --version
     - run: python --version || echo ok || true
     - run: python3 --version || echo ok || true

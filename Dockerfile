@@ -36,7 +36,7 @@ RUN echo $CONTAINER_TIMEZONE && arch && uname &&\
     ruby-dev && gem i fpm -f && fpm --version &&\
     curl -fsSL https://deb.nodesource.com/setup_24.x | bash &&\
     apt-get install -y nodejs &&\
-    npm install -g npm@'<11.12.0'
+    npm install -g npm
 # https://github.com/npm/cli/issues/9133
 
 # wget libreadline-dev

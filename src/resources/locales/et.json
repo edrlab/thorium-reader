@@ -72,10 +72,10 @@
                 "title": ""
             }
         },
-        "delete": "",
-        "deleteBook": "",
+        "delete": "Kustuta",
+        "deleteBook": "Kustuta",
         "deleteTag": "",
-        "description": "",
+        "description": "Kirjeldus",
         "emptyTagList": "",
         "entry": {
             "continueReading": "",
@@ -83,12 +83,12 @@
         },
         "export": "",
         "exportAnnotation": "",
-        "format": "",
+        "format": "Vorming",
         "importAnnotation": "",
-        "lang": "",
+        "lang": "Keel",
         "lastRead": "",
-        "login": "",
-        "logout": "",
+        "login": "Logi sisse",
+        "logout": "Logi välja",
         "missing": "",
         "moreInfo": "",
         "myBooks": "",
@@ -99,42 +99,42 @@
         "numberOfPages": "",
         "opds": {
             "auth": {
-                "cancel": "",
+                "cancel": "Katkesta",
                 "external": "",
                 "fallback": "",
-                "login": "",
-                "password": "",
-                "register": "",
+                "login": "Logi sisse",
+                "password": "Salasõna",
+                "register": "Registreeru",
                 "retry": "",
                 "username": ""
             },
             "info": {
-                "availableSince": "",
+                "availableSince": "Alates",
                 "availableState": {
-                    "available": "",
-                    "ready": "",
-                    "reserved": "",
-                    "unavailable": "",
-                    "unknown": ""
+                    "available": "Saadaval",
+                    "ready": "Valmis",
+                    "reserved": "Reserveeritud",
+                    "unavailable": "Pole saadaval",
+                    "unknown": "Tundmatu"
                 },
-                "availableUntil": "",
-                "copyAvalaible": "",
-                "copyTotal": "",
+                "availableUntil": "Kuni",
+                "copyAvalaible": "Saadaval",
+                "copyTotal": "Koopiaid",
                 "holdPosition": "",
-                "holdTotal": "",
+                "holdTotal": "Broneeritud",
                 "numberOfItems": "",
-                "priveValue": "",
-                "state": ""
+                "priveValue": "Hind",
+                "state": "Olek"
             }
         },
-        "publisher": "",
+        "publisher": "Kirjastus",
         "readBook": "",
         "released": "",
         "removeFromFavorites": "",
         "sort": "",
-        "tag": "",
-        "tags": "",
-        "update": ""
+        "tag": "Silt",
+        "tags": "Sildid",
+        "update": "Muuda"
     },
     "dialog": {
         "annotations": {
@@ -152,7 +152,7 @@
             "origin": "",
             "title": ""
         },
-        "cancel": "",
+        "cancel": "Katkesta",
         "customization": {
             "splashscreen": {
                 "fallbackWelcomeScreen": "",
@@ -173,7 +173,7 @@
         "importError": "",
         "renew": "",
         "return": "",
-        "yes": ""
+        "yes": "Jah"
     },
     "error": {
         "errorBox": {
@@ -184,19 +184,19 @@
     },
     "header": {
         "allBooks": "",
-        "catalogs": "",
-        "downloads": "",
+        "catalogs": "Kataloogid",
+        "downloads": "Allalaadimised",
         "fitlerTagTitle": "",
-        "gridTitle": "",
+        "gridTitle": "Ruudustik",
         "home": "",
-        "homeTitle": "",
+        "homeTitle": "Avaleht",
         "importTitle": "",
-        "listTitle": "",
+        "listTitle": "Tabel",
         "myCatalogs": "",
-        "refreshTitle": "",
-        "searchPlaceholder": "",
-        "searchTitle": "",
-        "settings": "",
+        "refreshTitle": "laadi uuesti",
+        "searchPlaceholder": "Otsi",
+        "searchTitle": "Otsi",
+        "settings": "Seadistused",
         "viewMode": ""
     },
     "library": {
@@ -207,9 +207,9 @@
         },
         "lcp": {
             "hidePassphrase": "",
-            "hint": "",
-            "open": "",
-            "password": "",
+            "hint": "Vihje:",
+            "open": "Ava",
+            "password": "Salasõna",
             "sentence": "",
             "showPassphrase": "",
             "urlHint": "",
@@ -250,29 +250,29 @@
     },
     "opds": {
         "addForm": {
-            "addButton": "",
-            "name": "",
-            "namePlaceholder": "",
-            "url": "",
-            "urlPlaceholder": ""
+            "addButton": "Lisa",
+            "name": "Nimi:",
+            "namePlaceholder": "Nimi",
+            "url": "Link:",
+            "urlPlaceholder": "Link"
         },
         "addFormApiapp": {
             "title": ""
         },
         "addMenu": "",
-        "breadcrumbRoot": "",
+        "breadcrumbRoot": "Minu kataloogid",
         "documentation": "",
         "empty": "",
-        "firstPage": "",
+        "firstPage": "Esimene",
         "informations": "",
-        "lastPage": "",
+        "lastPage": "Viimane",
         "menu": {
             "aboutBook": "",
             "addExtract": "",
             "goBuyBook": "",
             "goLoanBook": "",
             "goRevokeLoanBook": "",
-            "goSubBook": ""
+            "goSubBook": "Telli"
         },
         "network": {
             "error": "",
@@ -281,8 +281,8 @@
             "reject": "",
             "timeout": ""
         },
-        "next": "",
-        "previous": "",
+        "next": "Järgmine",
+        "previous": "Eelmine",
         "resumeBrowsing": "",
         "shelf": "",
         "updateForm": {

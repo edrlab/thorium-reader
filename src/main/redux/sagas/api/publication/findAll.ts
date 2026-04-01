@@ -54,33 +54,39 @@ export function* findAll() {
     const docs = yield* callTyped(() => diMainGet("publication-repository").findAll());
     const publicationIdentifierDataBaseArray = docs.map(({ identifier }) => identifier);
 
-    try {
-        const publicationIdentifierDiskArray = yield* callTyped(() => diMainGet("publication-storage").listPublicationIdPath());
-        yield* delayTyped(1);
-        const publicationIdentifierFoundOnDiskButNotFoundOnDataBaseArray: string[] = publicationIdentifierDiskArray.filter((id) => !publicationIdentifierDataBaseArray.includes(id));
-        debug("pubId found on disk but not found on DataBase:", JSON.stringify(publicationIdentifierFoundOnDiskButNotFoundOnDataBaseArray));
-
-        for (const pubIdNotFoundOnDataBase of publicationIdentifierFoundOnDiskButNotFoundOnDataBaseArray) {
-            dummyPubDocArray.push({
-                createdAt: (new Date()).getTime(),
-                updatedAt: (new Date()).getTime(),
-                identifier: pubIdNotFoundOnDataBase,
-                hash: "",
-                title: pubIdNotFoundOnDataBase,
-                doNotPresentInReduxStoreDataBaseButFoundOnDisk_dummyDocument: true,
-            });
-        }
-        if (dummyPubDocArray.length) {
-            debug(`Be careful there are ${dummyPubDocArray.length} folder(s) found in publication storage directory and not matched with the DataBase !!!`);
-            for (const p of dummyPubDocArray) {
-                debug(`\t${p.identifier}}`);
+    // Not enabled for the 3.4 release
+    // Too early to expose potential inconsistencies between disk and database to the user.
+    const publicationStorageListPublicationEnabled = false;
+    if (publicationStorageListPublicationEnabled) {
+        try {
+            const publicationIdentifierDiskArray = yield* callTyped(() => diMainGet("publication-storage").listPublicationIdPath());
+            yield* delayTyped(1);
+            const publicationIdentifierFoundOnDiskButNotFoundOnDataBaseArray: string[] = publicationIdentifierDiskArray.filter((id) => !publicationIdentifierDataBaseArray.includes(id));
+            debug("pubId found on disk but not found on DataBase:", JSON.stringify(publicationIdentifierFoundOnDiskButNotFoundOnDataBaseArray));
+    
+            for (const pubIdNotFoundOnDataBase of publicationIdentifierFoundOnDiskButNotFoundOnDataBaseArray) {
+                dummyPubDocArray.push({
+                    createdAt: (new Date()).getTime(),
+                    updatedAt: (new Date()).getTime(),
+                    identifier: pubIdNotFoundOnDataBase,
+                    hash: "",
+                    title: pubIdNotFoundOnDataBase,
+                    doNotPresentInReduxStoreDataBaseButFoundOnDisk_dummyDocument: true,
+                });
             }
-            debug("--------");
+            if (dummyPubDocArray.length) {
+                debug(`Be careful there are ${dummyPubDocArray.length} folder(s) found in publication storage directory and not matched with the DataBase !!!`);
+                for (const p of dummyPubDocArray) {
+                    debug(`\t${p.identifier}}`);
+                }
+                debug("--------");
+            }
+        } catch (e) {
+            debug("Error when trying to list uuid in publication folder directory");
+            debug(e);
         }
-    } catch (e) {
-        debug("Error when trying to list uuid in publication folder directory");
-        debug(e);
-    }
+    } // disabled
+
     const allDocs = [...docs, ...dummyPubDocArray];
 
     const publicationViewConverter = yield* callTyped(() => diMainGet("publication-view-converter"));

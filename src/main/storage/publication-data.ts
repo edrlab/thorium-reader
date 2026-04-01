@@ -23,31 +23,46 @@ const assertUUIDv4 = (uuid: string) => {
         throw new Error("not an uuidv4 identifier !");
     }
 };
+const timeout = (ms: number) => new Promise<never>((_, reject) => setTimeout(() => reject("TIMEOUT"), ms));
 
 export type TFileTypePubData = Extract<keyof IReaderStateReaderPersistence, "locator" | "config" | "disableRTLFlip" | "divina" | "allowCustomConfig" | "noteTotalCount" | "pdfConfig"> | "bound";
 type TFileStructPubData = {
     pubId: string,
     type: TFileTypePubData,
-    fileHandle: fs.promises.FileHandle,
+    fileHandle: fs.promises.FileHandle | undefined,
+    filePath: string,
     jsonObj: object | undefined,
     mutex: Promise<void>,
+    written: boolean,
 };
 
 @injectable()
 export class PublicationData {
-    private lock: boolean = false;
+
+
+    // For the 3.4 release, this feature remains disabled.
+    // Higher-level file handling (read/write) is already stable and sufficient.
+    // When true, all reader registry publication folders are created at once.
+    // When false, folders are only created when a publication is written for the first time.
+    private _readWriteFileHandleEnabled = false;
+
+    // Prevents further operations once the destroy phase has started
+    private _lock: boolean = false;
+
     /**
      * publication reader config directory from configDataFolderPath
      * aka: %appData%\config-data-json{-dev}/publication/<uuid>/
      */
-    private publicationConfigPath: string;
+    private _publicationConfigPath: string;
 
-    private files: Array<TFileStructPubData>;
+    // List of file metadata associated with the publication
+    private _files: Array<TFileStructPubData> = [];
+    
+    // Tracks visited publication IDs to prevent duplicate final disk persistence
+    private _visitedPubIdSet: Set<string> = new Set();
 
-    private filterFilesByType = (t: TFileTypePubData) => this.files!.filter(({type}) => type === t);
-
-    private visitedPubIdSet: Set<string> = new Set();
-
+    private filterFilesByType = (t: TFileTypePubData) => this._files!.filter(({type}) => type === t);
+    
     private assertAndGetFileName = (type: TFileTypePubData) => {
         const fileName = type === "locator" ? "locator.json" : type === "config" ? "config.json" : type === "disableRTLFlip" ? "disableRTLFlip.json" : type === "divina" ? "divina.json" : type === "allowCustomConfig" ? "allowCustomConfig.json" : type === "noteTotalCount" ? "noteTotalCount.json" : type === "pdfConfig" ? "pdfConfig.json" : type === "bound" ? "bound.json" : "";
         if (!fileName) {
@@ -57,114 +72,138 @@ export class PublicationData {
     };
 
     public constructor(publicationConfigPath: string) {
-        this.publicationConfigPath = publicationConfigPath;
-        this.files = [];
+        this._publicationConfigPath = publicationConfigPath;
     }
     
     public get visited() {
-        return this.visitedPubIdSet;
+        return this._visitedPubIdSet;
     }
 
     public clearVisitedPublicationSet() {
-        this.visitedPubIdSet = new Set();
+        this._visitedPubIdSet = new Set();
     }
 
-    public getJsonObj(pubId: string, type: TFileTypePubData): object | undefined {
-        assertUUIDv4(pubId);
-        const file = this.filterFilesByType(type).find((a) => a.pubId === pubId);
-        return file?.jsonObj;
-    }
+    // prefer using readJsonObj instead
+    // public getJsonObj(pubId: string, type: TFileTypePubData): object | undefined {
+    //     assertUUIDv4(pubId);
+    //     const file = this.filterFilesByType(type).find((a) => a.pubId === pubId);
+    //     return file?.jsonObj;
+    // }
 
     public async destroy() {
-        this.lock = true;
-        const files = [...this.files];
-        this.visitedPubIdSet = new Set();
-        this.files = [];
-        const filePromises = [];
-        for (const file of files) {
-            filePromises.push((async () => {
-                try {
-                    await Promise.race([file.mutex, new Promise<void>((_resolve, reject) => setTimeout(() => reject("TIMEOUT"), 100))]);
-                } catch (e) {
-                    debug(e);
-                }
-                try {
-                    const p1 = (async () => {
-                        await file.fileHandle.sync();
-                        await file.fileHandle.close();
-                    })();
-                    const p2 = new Promise<void>((_resolve, reject) => setTimeout(() => reject("TIMEOUT"), 100));
-                    await Promise.race([p1, p2]);
-                } catch (e) {
-                    debug(e);
-                }
-            })());
-        }
-        try {
-            const promisesSettledResult = await Promise.allSettled(filePromises);
-            debug("Publication-data destroy() done");
+        this._lock = true;
+        const tasks = this._files.map(async (file) => {
+            await Promise.race([
+                file.mutex,
+                timeout(100),
+            ]).catch(debug);
 
-            for (const p of promisesSettledResult) {
-                if (p.status === "fulfilled") {
-                    debug("ok!");
-                } else {
-                    debug(p.reason);
-                }
+            if (this._readWriteFileHandleEnabled && file.fileHandle) {
+                const syncAndClose = async () => {
+                    await file.fileHandle.sync().catch(() => { });
+                    await file.fileHandle.close();
+                };
+                await Promise.race([
+                    syncAndClose(),
+                    timeout(100),
+                ]).catch(debug);
             }
-        } catch (e) {
-            debug(`${e}`);
+        });
+        const results = await Promise.allSettled(tasks);
+        debug("Publication-data destroy() done");
+        for (const r of results) {
+            if (r.status === "rejected") {
+                debug("ko!", r.reason);
+            } else {
+                debug("ok!");
+            }
         }
     }
 
     private async open(op: "read" | "write", pubId: string, type: TFileTypePubData) {
-        if (this.lock) return ;
+        if (this._lock) return undefined;
         assertUUIDv4(pubId);
 
         debug(`Open ${type} to ${pubId}`);
 
         const fileName = this.assertAndGetFileName(type);
 
-        if (__ulimit_file && this.files.length > __ulimit_file - 50) {
-            debug(`BE CAREFUL, ULIMIT is soon reached, currently: ${this.files.length} files opened and ulimit is set to ${__ulimit_file}`);
-        } else if (__ulimit_file && this.files.length > __ulimit_file - 10) {
-            // start closing opened file
-            // not enable for the moment in the case of ulimit is a wrong number
-            // macos/linux ulimit soft open limit to 1024 (256 for older MacOS which I think Thorium is not compatible)
-            // windows: no open limit
+        if (this._readWriteFileHandleEnabled) {
+            if (__ulimit_file && this._files.length > __ulimit_file - 50) {
+                debug(`BE CAREFUL, ULIMIT is soon reached, currently: ${this._files.length} files opened and ulimit is set to ${__ulimit_file}`);
+            } else if (__ulimit_file && this._files.length > __ulimit_file - 10) {
+                // start closing opened file
+                // not enable for the moment in the case of ulimit is a wrong number
+                // macos/linux ulimit soft open limit to 1024 (256 for older MacOS which I think Thorium is not compatible)
+                // windows: no open limit
+            }
         }
 
-        debug(`${this.files.length} file(s) currently opened`);
+        debug(`${this._files.length} file(s) currently opened`);
 
-        const file = this.filterFilesByType(type).find((a) => pubId === a.pubId);
-        if (file) {
-            return ; // already open
-        }
-
-        const publicationPath = path.join(this.publicationConfigPath, pubId);
+        let file = this.filterFilesByType(type).find((a) => pubId === a.pubId);
+        const publicationPath = path.join(this._publicationConfigPath, pubId);
         const filePath = path.join(publicationPath, fileName);
+
+        if (this._readWriteFileHandleEnabled) {
+            if (file) {
+                file.written = op === "write";
+                return file;
+            }
+        } else {
+            if (!file) {
+                file = {
+                    pubId,
+                    type,
+                    fileHandle: undefined,
+                    filePath,
+                    jsonObj: undefined,
+                    mutex: Promise.resolve(),
+                    written: false,
+                };
+                this._files.push(file);
+            }
+            if (op === "write" && !file.written) {
+                await fs.promises.access(publicationPath, fs.constants.O_DIRECTORY | fs.constants.O_RDWR)
+                    .then(() => {
+                        file.written = true;
+                    })
+                    .catch(async (e) => {
+                        if (e?.code === "ENOENT") {
+                            debug("create directory", publicationPath);
+                            await fs.promises.mkdir(publicationPath /* DEFAULTS: , { recursive: false, mode: 0o777 } */)
+                                .catch((e) => debug(`${e}`));
+                        }
+                    });
+            }
+            return file;
+        }
+
 
         for (let step = 0; step < 2; step++) {
             try {
                 const fileHandle = await fs.promises.open(filePath, fs.constants.O_RDWR | fs.constants.O_CREAT);
-                const file_ = this.filterFilesByType(type).find((a) => pubId === a.pubId);
-                if (file_) {
+                file = this.filterFilesByType(type).find((a) => pubId === a.pubId);
+                if (file) {
                     try {
                         await fileHandle.close();
                     } catch (e) {
                         debug(`${e}`);
                     }
-                    return; // already open
+                    return file; // already open
                 }
 
-                const file = {
+                file = {
                     pubId,
                     type,
                     fileHandle,
+                    filePath,
                     jsonObj: undefined as TFileStructPubData["jsonObj"],
                     mutex: Promise.resolve(),
+                    written: op === "write",
                 } satisfies TFileStructPubData;
 
-                this.files.push(file);
+                this._files.push(file);
 
                 file.mutex = file.mutex.then(async () => {
                     try {
@@ -199,34 +238,35 @@ export class PublicationData {
             }
             break;
         }
+        return file;
     }
 
     public async writeJsonObj(pubId: string, type: TFileTypePubData, jsonObj: object) {
-        if (this.lock) return ;
+        if (this._lock) return ;
         assertUUIDv4(pubId);
 
         debug(`Write ${type} to ${pubId}`);
 
-        this.visitedPubIdSet.add(pubId);
+        this._visitedPubIdSet.add(pubId);
 
         this.assertAndGetFileName(type);
 
-        let file = this.filterFilesByType(type).find((a) => pubId === a.pubId);
+        const file = await this.open("write", pubId, type);
         if (!file) {
-            // TODO: concurrent opening issue, there is no lock/mutex on it
-            await this.open("write", pubId, type);
-            file = this.filterFilesByType(type).find((a) => pubId === a.pubId);
-            if (!file) {
-                debug("Cannot write data to", type, "on", pubId);
-                return ;
-            }
+
+            debug("Cannot write data to", type, "on", pubId);
+            return;
         }
 
         file.mutex = file.mutex.then(async () => {
             const jsonStr = jsonStringify(jsonObj);
             try {
-                await file.fileHandle.truncate(jsonStr.length);
-                await file.fileHandle.write(jsonStr, 0, "utf-8");
+                if (this._readWriteFileHandleEnabled && file.fileHandle) {
+                    await file.fileHandle.truncate(jsonStr.length);
+                    await file.fileHandle.write(jsonStr, 0, "utf-8");
+                } else {
+                    await fs.promises.writeFile(file.filePath, jsonStr, { encoding: "utf-8", flush: true });
+                }
 
                 // Wait the end of the write to set it as local reference
                 file.jsonObj = jsonObj;
@@ -239,22 +279,17 @@ export class PublicationData {
     }
 
     public async readJsonObj(pubId: string, type: TFileTypePubData): Promise<object | undefined> {
-        if (this.lock) return undefined;
+        if (this._lock) return undefined;
         assertUUIDv4(pubId);
 
         debug(`Read ${type} to ${pubId}`);
 
         this.assertAndGetFileName(type);
 
-        let file = this.filterFilesByType(type).find((a) => pubId === a.pubId);
+        const file = await this.open("read", pubId, type);
         if (!file) {
-            // TODO: concurrent opening issue, there is no lock/mutex on it
-            await this.open("read", pubId, type);
-            file = this.filterFilesByType(type).find((a) => pubId === a.pubId);
-            if (!file) {
-                debug("Cannot read data to", type, "on", pubId);
-                return undefined;
-            }
+            debug("Cannot read data to", type, "on", pubId);
+            return undefined;
         }
 
         file.mutex = file.mutex.then(async () => {
@@ -262,13 +297,20 @@ export class PublicationData {
                 return;
             }
             try {
-                // flush before read
-                await file.fileHandle.sync();
+                if (this._readWriteFileHandleEnabled && file.fileHandle) {
+                    // flush before read
+                    await file.fileHandle.sync();
+                }
             } catch (e) {
                 debug(`${e}`);
             }
             try {
-                const jsonStr = await fs.promises.readFile(file.fileHandle, { encoding: "utf-8" });
+                let jsonStr: string;
+                if (this._readWriteFileHandleEnabled && file.fileHandle) {
+                    jsonStr = await fs.promises.readFile(file.fileHandle, { encoding: "utf-8" });
+                } else {
+                    jsonStr = await fs.promises.readFile(file.filePath, { encoding: "utf-8" });
+                }
                 try {
                     if (jsonStr) {
                         const jsonObj = JSON.parse(jsonStr);
@@ -283,21 +325,25 @@ export class PublicationData {
                     }
                 }
 
-            } catch (e) {
-                debug(`${e}`);
+            } catch {
+                // too loud
+                // debug(`${e}`);
             }
         });
         await file.mutex;
+        if (!file.jsonObj) {
+            debug(`Empty ${type} read on ${pubId}`);
+        }
         return file.jsonObj;
     }
 
     public async close(pubId: string) {
-        if (this.lock) return;
+        if (this._lock) return;
 
-        debug(`${this.files.length} file(s) currently opened before closing ${pubId}`);
+        debug(`${this._files.length} file(s) currently opened before closing ${pubId}`);
 
-        const files = this.files.filter((a) => a.pubId === pubId);
-        this.files = this.files.filter((a) => a.pubId !== pubId);
+        const files = this._files.filter((a) => a.pubId === pubId);
+        this._files = this._files.filter((a) => a.pubId !== pubId);
 
         debug(`${files.length} file(s) will be closed because attached to ${pubId}`);
 
@@ -307,38 +353,40 @@ export class PublicationData {
             } catch (e) {
                 debug(e);
             }
-            try {
-                await file.fileHandle.sync();
-            } catch (e) {
-                debug(e);
-            }
-            try {
-                await file.fileHandle.close();
-            } catch (e) {
-                debug(`${e}`);
+            if (this._readWriteFileHandleEnabled && file.fileHandle) {
+                try {
+                    await file.fileHandle.sync();
+                } catch (e) {
+                    debug(e);
+                }
+                try {
+                    await file.fileHandle.close();
+                } catch (e) {
+                    debug(`${e}`);
+                }
             }
         }
 
-        debug(`${this.files.length} file(s) currently opened now`);
+        debug(`${this._files.length} file(s) currently opened now`);
     }
 
     public async removePublication(pubId: string) {
         assertUUIDv4(pubId);
 
         await this.close(pubId);
-        const publicationPath = path.join(this.publicationConfigPath, pubId);
+        const publicationPath = path.join(this._publicationConfigPath, pubId);
         await rmrf(publicationPath);
     }
 
     public async listOfAllPublications() {
 
-        const files = await fs.promises.readdir(this.publicationConfigPath, { withFileTypes: true} );
-        debug("List publications from:", this.publicationConfigPath);
-        const pubIds = [];
+        const files = await fs.promises.readdir(this._publicationConfigPath, { withFileTypes: true} );
+        debug("List publications from:", this._publicationConfigPath);
+        const pubIds: string[] = [];
         for (const file of files) {
             try {
                 debug(`\t${file.name} isDirectory=${file.isDirectory()} isFile=${file.isFile()}`);
-                if (isUUIDv4(file.name) && file.isDirectory()) {
+                if (isUUIDv4(file.name) && file.isDirectory() && !pubIds.includes(file.name)) {
                     pubIds.push(file.name);
                 }
             } catch {
