@@ -8,7 +8,6 @@
 import debug_ from "debug";
 import * as fs from "fs";
 import {
-    splashScreen,
     diMainGet, memoryLoggerFilename, patchFilePath, runtimeStateFilePath, stateFilePath,
     stateDiffFilePath,
     runtimeDiffStateFilePath,
@@ -39,7 +38,7 @@ import { IAllowCustomConfigState } from "readium-desktop/common/redux/states/ren
 import { IDivinaState } from "readium-desktop/common/redux/states/renderer/divina";
 import { IBookmarkTotalCountState } from "readium-desktop/common/redux/states/renderer/bookmarkTotalCount";
 import { convertPublicationToRegistryReaderState, persistStateToFs } from "../sagas/persist";
-import { app, BrowserWindow, dialog } from "electron";
+import { app, dialog } from "electron";
 import { error } from "readium-desktop/main/tools/error";
 import { getFileSize, rmrf } from "readium-desktop/utils/fs";
 import crypto from "node:crypto";
@@ -521,51 +520,6 @@ export async function initStore()
         let pubIdFromDatabase: string[] = [];
         if (preloadedState?.publication?.db) {
             pubIdFromDatabase = Object.keys(preloadedState.publication.db);
-        }
-        const readerRegistryPubIds = Object.keys(preloadedState.win.registry.reader);
-        const numberOfPublicationNeededToDisplayTheSplashScreen = 20; // between 20 and 50 seems to me a good compromise, 500ms to 1s minimum before showing the splash-screen
-        if (readerRegistryPubIds.length > numberOfPublicationNeededToDisplayTheSplashScreen) {
-            // Create splash window
-            app.whenReady().then(() => {
-
-                try {
-                    splashScreen.browserWindow = new BrowserWindow({
-                        width: 400,
-                        height: 300,
-                        frame: false,
-                        alwaysOnTop: true,
-                        transparent: true,
-                    });
-
-                    const splashHTML = `
-<!DOCTYPE html>
-<html>
-<body style="margin:0;display:flex;align-items:center;justify-content:center;height:100vh;background:#ffffff;color:#000000;">
-  <div style="text-align:center">
-    <div style="
-      width:40px;
-      height:40px;
-      border:4px solid #ccc;
-      border-top:4px solid #09f;
-      border-radius:50%;
-      animation:spin 1s linear infinite;
-      margin:auto;
-    "></div>
-    <p>The migration of Thorium-Reader Desktop to version 3.4 is in progress. Please wait...</p>
-  </div>
-
-  <style>
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-  </style>
-</body>
-</html>
-`;
-                    const splashDataURL = `data:text/html;charset=utf-8,${encodeURIComponent(splashHTML)}`;
-                    splashScreen.browserWindow.loadURL(splashDataURL);
-                } catch { }
-            });
         }
 
         for (const pubId in preloadedState.win.registry.reader) {

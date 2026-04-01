@@ -42,7 +42,6 @@ import { sagaCustomizationProfileProvisioning } from "./customization";
 import isURL from "validator/lib/isURL";
 import { publicationIntegrityChecker } from "./publication/checker";
 import { error } from "readium-desktop/main/tools/error";
-import { splashScreen } from "readium-desktop/main/di";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:app";
@@ -171,10 +170,6 @@ export function* rootSaga() {
 
     // app initialized
     yield put(appActions.initSuccess.build());
-
-    if (splashScreen.browserWindow && !splashScreen.browserWindow.isDestroyed()) {
-        splashScreen.browserWindow.destroy();
-    }
 
     // wait library window fully opened before to throw events
     yield take(winActions.library.openSucess.ID);
