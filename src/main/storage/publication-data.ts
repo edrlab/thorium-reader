@@ -224,9 +224,7 @@ export class PublicationData {
                 await file.mutex;
             } catch (e: any) {
                 debug(`${e}`);
-                
-                // create publication directory only on write operation not read
-                if (op === "write" && e.code === "ENOENT") {
+                if (e.code === "ENOENT") {
                     try {
                         debug("create directory", publicationPath);
                         await fs.promises.mkdir(publicationPath /* DEFAULTS: , { recursive: false, mode: 0o777 } */);
@@ -378,7 +376,7 @@ export class PublicationData {
         await rmrf(publicationPath);
     }
 
-    public async listOfAllPublications() {
+    public async listPublication() {
 
         const files = await fs.promises.readdir(this._publicationConfigPath, { withFileTypes: true} );
         debug("List publications from:", this._publicationConfigPath);

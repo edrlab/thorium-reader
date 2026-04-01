@@ -860,7 +860,7 @@ export async function initStore()
         }
 
         // remove publication data folder not linked with preloaded.publication.db after migration
-        const pubIdFromDisk = await diMainGet("publication-data").listOfAllPublications();
+        const pubIdFromDisk = await diMainGet("publication-data").listPublication();
         const publicationIdNotInDatabase = pubIdFromDisk.filter((pubId) => !pubIdFromDatabase.includes(pubId));
         for (const pubId of publicationIdNotInDatabase) {
             const publicationData = diMainGet("publication-data");
@@ -891,7 +891,7 @@ export async function initStore()
             // list publication db
             // read publication-data files and hydrate redux state
             const publicationData = diMainGet("publication-data");
-            const pubIds = await publicationData.listOfAllPublications();
+            const pubIds = await publicationData.listPublication();
             for (const pubId of pubIds) {
                 debug("PubID", pubId);
                 preloadedState.win.registry.reader[pubId] = {} as IWinRegistryReaderState;
@@ -959,7 +959,7 @@ export async function initStore()
             preloadedState.win.registry.reader = reduxStateWinRegistryReader || {};
             const readerRegistryPubIds = Object.keys(preloadedState.win.registry.reader);
 
-            const diskPubIds = await diMainGet("publication-data").listOfAllPublications();
+            const diskPubIds = await diMainGet("publication-data").listPublication();
             const isBijective = diskPubIds.length === readerRegistryPubIds.length &&
                 diskPubIds.every((pubId) => readerRegistryPubIds.includes(pubId));
             if (isBijective) {
