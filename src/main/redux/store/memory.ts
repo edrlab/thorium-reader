@@ -119,34 +119,35 @@ export async function initStore()
 
     try {
 
-        let jsonStr = "";
-        let getNewStateFromV340 = false;
-        try {
-            jsonStr = await fs.promises.readFile(stateFilePath, { encoding: "utf8" });
-            const json = JSON.parse(jsonStr);
-            if (json.__t && json.__v) {
-                debug("The old one: \"state.json\" was written with the v3.4.0 last release and not from an old one (like v3.3.0), so let's recover the json redux state from \"state_v340.json\"");
-                getNewStateFromV340 = true;
-            } else {
-                // the old state.json has been updated from an older thorium version (3.3.0?) so let's migrate from it.
-                debug("If there is a crash from v330 and a forward migration to v340, publications data will not be imported, state.json will not be updated with new publications state");
-                getNewStateFromV340 = false;
-            }
-        } catch (e) {
-            debug("read/parse old state crash so let's read new state v340", `${e}`);
-            getNewStateFromV340 = true;
-        }
+        // let jsonStr = "";
+        // let getNewStateFromV340 = false;
+        // try {
+        //     jsonStr = await fs.promises.readFile(stateFilePath, { encoding: "utf8" });
+        //     const json = JSON.parse(jsonStr);
+        //     if (json.__t && json.__v) {
+        //         debug("The old one: \"state.json\" was written with the v3.4.0 last release and not from an old one (like v3.3.0), so let's recover the json redux state from \"state_v340.json\"");
+        //         getNewStateFromV340 = true;
+        //     } else {
+        //         // the old state.json has been updated from an older thorium version (3.3.0?) so let's migrate from it.
+        //         debug("If there is a crash from v330 and a forward migration to v340, publications data will not be imported, state.json will not be updated with new publications state");
+        //         getNewStateFromV340 = false;
+        //     }
+        // } catch (e) {
+        //     debug("read/parse old state crash so let's read new state v340", `${e}`);
+        //     getNewStateFromV340 = true;
+        // }
 
-        if (getNewStateFromV340) {
-            try {
-                jsonStr = await fs.promises.readFile(state_V340_FilePath, { encoding: "utf8" });
-            } catch (e) {
-                debug("NEW state_v340.json not created so fallback on state.json", `${e}`);
-            }
-        } else {
-            debug("state is loaded from \"state.json\" and not \"state_v340.json\"");
-        }
+        // if (getNewStateFromV340) {
+        //     try {
+        //         jsonStr = await fs.promises.readFile(state_V340_FilePath, { encoding: "utf8" });
+        //     } catch (e) {
+        //         debug("NEW state_v340.json not created so fallback on state.json", `${e}`);
+        //     }
+        // } else {
+        //     debug("state is loaded from \"state.json\" and not \"state_v340.json\"");
+        // }
 
+        const jsonStr = await fs.promises.readFile(stateFilePath, { encoding: "utf8" });
         const json = JSON.parse(jsonStr);
         if (test(json))
             reduxState = json;
@@ -656,11 +657,10 @@ export async function initStore()
         }
 
         try {
-            await persistStateToFs(preloadedState);
-            debug("state.json and state_v340.json written with the new migration final state");
+            await persistStateToFs(preloadedState, stateFilePath);
         } catch (e) {
             debug(e);
-            debug("ERROR to write state.json and state_v340.json on disk after migration !!!");
+            debug("ERROR to write state.json on disk after migration !!!");
         }
 
         debug("END reader registry migration, let's create the redux store");

@@ -12,6 +12,7 @@ import { winActions } from "readium-desktop/main/redux/actions";
 import { eventChannel, Task, buffers } from "redux-saga";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { cancel, debounce, fork, put, take } from "redux-saga/effects";
+import { closeProcessLock } from "readium-desktop/main/di";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:win:session:library";
@@ -73,6 +74,11 @@ function* libraryMoveOrResizeObserver(action: winActions.session.registerLibrary
     );
 
     yield debounce(DEBOUNCE_TIME, channel, function*() {
+
+        if (closeProcessLock.isLock) {
+            debug("CLOSE process library bound not persisted");
+            return ;
+        }
 
         try {
             const winBound = library.getBounds(); // current bounds of the window maximized/fullscreen/minimized (not on windows11, specific events)

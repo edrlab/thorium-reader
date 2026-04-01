@@ -209,6 +209,19 @@ const closeProcessLock = (() => {
 //     };
 // })();
 
+const reduxStatePersistedReference = (() => {
+    let __reduxState: Partial<RootState> | undefined;
+
+    return {
+        get reduxState() {
+            return __reduxState;
+        },
+        set reduxState(value) {
+            __reduxState = value;
+        },
+    };
+})();
+
 //
 // Depedency Injection
 //
@@ -394,6 +407,7 @@ const diMainGet: IGet = (symbol: keyof typeof diSymbolTable) => container.get<an
 
 export {
     closeProcessLock,
+    reduxStatePersistedReference,
     diMainGet,
     getLibraryWindowFromDi,
     getReaderWindowFromDi,
