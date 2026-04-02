@@ -1843,7 +1843,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
             UseGlobalFiltersColumnOptions<IColumns> &
             UseFiltersColumnOptions<IColumns>)[] = [
                 {
-                    Header: __("publication.cover.img"),
+                    Header: () => __("publication.cover.img"),
                     accessor: "colCover",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1852,7 +1852,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     sortType: sortFunction,
                 },
                 {
-                    Header: __("publication.title"),
+                    Header: () => __("publication.title"),
                     accessor: "colTitle",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1861,7 +1861,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     sortType: sortFunction,
                 },
                 {
-                    Header: __("publication.author"),
+                    Header: () => __("publication.author"),
                     accessor: "colAuthors",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1870,7 +1870,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     sortType: sortFunction,
                 },
                 {
-                    Header: __("publication.progression.title"),
+                    Header: () => __("publication.progression.title"),
                     accessor: "colReadingState",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1881,7 +1881,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     setSelection: setSelectedReadingState,
                 },
                 {
-                    Header: __("publication.remainingTime"),
+                    Header: () => __("publication.remainingTime"),
                     accessor: "colRemainingDays",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1890,7 +1890,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     sortType: sortFunction,
                 },
                 {
-                    Header: __("catalog.lang"),
+                    Header: () => __("catalog.lang"),
                     accessor: "colLanguages",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1901,7 +1901,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     setSelection: setSelectedLanguage,
                 },
                 {
-                    Header: __("catalog.tags"),
+                    Header: () => __("catalog.tags"),
                     accessor: "colTags",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1912,7 +1912,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     setSelection: setSelectedTag,
                 },
                 {
-                    Header: __("catalog.format"),
+                    Header: () => __("catalog.format"),
                     accessor: "colFormat",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1922,7 +1922,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     setSelection: setSelectedFormat,
                 },
                 {
-                    Header: __("catalog.lastRead"),
+                    Header: () => __("catalog.lastRead"),
                     accessor: "colLastReadTimestamp",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1931,7 +1931,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     sortType: sortFunction,
                 },
                 {
-                    Header: __("catalog.publisher"),
+                    Header: () => __("catalog.publisher"),
                     accessor: "colPublishers",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1940,7 +1940,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     sortType: sortFunction,
                 },
                 {
-                    Header: __("catalog.released"),
+                    Header: () => __("catalog.released"),
                     accessor: "colPublishedDate",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1954,12 +1954,12 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     sortType: sortFunction,
                 },
                 {
-                    Header: __("publication.duration.title"),
+                    Header: () => __("publication.duration.title"),
                     accessor: "colDuration",
                     sortType: sortFunction,
                 },
                 {
-                    Header: __("catalog.description"),
+                    Header: () => __("catalog.description"),
                     accessor: "colDescription",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1968,7 +1968,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                 },
 
                 {
-                    Header: __("publication.accessibility.name"),
+                    Header: () => __("publication.accessibility.name"),
                     accessor: "col_a11y_accessibilitySummary",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
@@ -1976,7 +1976,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     sortType: sortFunction,
                 },
                 {
-                    Header: __("publication.actions"),
+                    Header: () => __("publication.actions"),
                     accessor: "colActions",
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-expect-error
