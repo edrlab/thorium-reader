@@ -662,7 +662,7 @@ interface ITableCellProps_Value_Cover {
 const CellCoverImage: React.FC<ITableCellProps_Column & ITableCellProps_GenericCell & ITableCellProps_Value_Cover> = (props) => {
     return (<div className={stylesPublication.cell_coverImg}>
         <a
-            title={`${props.value.title} (${props.__("catalog.bookInfo")})`}
+            title={props.value.title}
             onClick={() => props.openReader(props.value.publicationViewIdentifier)}
         >
             {
