@@ -227,8 +227,11 @@ export function* init() {
     });
 }
 
-function* closeProcess() {
+export function* closeProcess() {
 
+    if (closeProcessLock.isLock) {
+        return ;
+    }
     closeProcessLock.lock();
 
     const reduxState = yield* selectTyped((store: RootState) => store);

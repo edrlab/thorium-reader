@@ -9,7 +9,7 @@ import debug_ from "debug";
 import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { error } from "readium-desktop/main/tools/error";
 import { winActions } from "readium-desktop/main/redux/actions";
-import { eventChannel, Task, buffers } from "redux-saga";
+import { eventChannel, Task, buffers, END } from "redux-saga";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { cancel, debounce, fork, put, take, call  } from "redux-saga/effects";
 import { diMainGet } from "readium-desktop/main/di";
@@ -29,11 +29,26 @@ function* readerClosureManagement(action: winActions.session.registerReader.TAct
     const channel = eventChannel<boolean>(
         (emit) => {
 
-            const handler = () => emit(true);
+            const handler = (event: Electron.Event) => {
+                debug(event);
+                emit(true);
+                emit(END);
+            };
+            const handlerWin = (/*event: Electron.Event*/) => {
+                if (!readerWindow.isDestroyed()) {
+                    readerWindow.destroy();
+                }
+                emit(true);
+                emit(END);
+            };
             readerWindow.on("close", handler);
+            readerWindow.on("query-session-end", handlerWin);
+            readerWindow.on("session-end", handlerWin);
 
             return () => {
                 readerWindow.removeListener("close", handler);
+                readerWindow.removeListener("query-session-end", handlerWin);
+                readerWindow.removeListener("session-end", handlerWin);
             };
         },
         buffers.none(),

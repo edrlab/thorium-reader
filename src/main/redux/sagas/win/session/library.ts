@@ -9,10 +9,12 @@ import debug_ from "debug";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { error } from "readium-desktop/main/tools/error";
 import { winActions } from "readium-desktop/main/redux/actions";
-import { eventChannel, Task, buffers } from "redux-saga";
+import { eventChannel, Task, buffers, END } from "redux-saga";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { cancel, debounce, fork, put, take } from "redux-saga/effects";
-import { closeProcessLock } from "readium-desktop/main/di";
+import { closeProcessLock, diMainGet } from "readium-desktop/main/di";
+import { closeProcess } from "../../app";
+import { app } from "electron";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:win:session:library";
@@ -27,14 +29,44 @@ function* libraryClosureManagement(action: winActions.session.registerLibrary.TA
     const channel = eventChannel<boolean>(
         (emit) => {
 
-            const handler = (event: Electron.Event) => {
-                event.preventDefault();
+            const closeHandler = () => {
                 emit(true);
+                emit(END);
             };
-            library.on("close", handler);
+            library.once("close", closeHandler);
+
+            // Windows11 shutdown/reboot only firing this closing request event
+            const queryHandler = (event: Electron.Event) => {
+                // delay the system shutdown
+                event.preventDefault();
+                debug("WINDOWS11 query-session-end event", event);
+                diMainGet("saga-middleware").run(closeProcess)
+                    .toPromise()
+                    .then(() => {
+                        if (!library.isDestroyed()) {
+                            library.destroy();
+                        }
+                    }).then(() => {
+                        app.exit(0);
+                    }).catch(() => {
+                        // nothing
+                    });
+
+            };
+            library.once("query-session-end", queryHandler);
+
+            const endHandler = (event: Electron.Event) => {
+                debug("WINDOWS11 session-end event", event);
+                if (!library.isDestroyed()) {
+                    library.destroy();
+                }
+                emit(true);
+                emit(END);
+            };
+            library.once("session-end", endHandler);
 
             return () => {
-                library.removeListener("close", handler);
+                library.removeAllListeners();
             };
         },
         buffers.none(),
