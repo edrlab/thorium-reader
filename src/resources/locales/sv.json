@@ -201,29 +201,29 @@
     },
     "library": {
         "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "selectOption": ""
+            "addFilters": "Lägg till filter",
+            "filterBy": "Filtrera efter",
+            "selectOption": "Välj ett objekt"
         },
         "lcp": {
-            "hidePassphrase": "",
+            "hidePassphrase": "Dölj lösenordsfras",
             "hint": "Tips:",
             "open": "Öppna",
             "password": "Lösenord",
             "sentence": "Den här publikationen behöver ett LCP-lösenord för att kunna öppnas",
-            "showPassphrase": "",
+            "showPassphrase": "Visa lösenordsfras",
             "urlHint": "Har du glömt ditt lösenord? Här kan du få hjälp.",
             "whatIsLcp?": "Vad är LCP?",
             "whatIsLcpInfoDetails": "LCP står för \"Licensed Content Protection\".",
             "whatIsLcpInfoDetailsLink": "För mer information, klicka på denna länk till EDRLabs webbplats."
         },
         "sorting": {
-            "addSorting": "",
-            "author": "",
-            "language": "",
-            "readingState": "",
-            "sortBy": "",
-            "title": ""
+            "addSorting": "Lägg till sortering",
+            "author": "Författare",
+            "language": "Språk",
+            "readingState": "Läsläge",
+            "sortBy": "Sortera efter: ",
+            "title": "Titel"
         }
     },
     "message": {
@@ -711,9 +711,9 @@
             "unmute": "slå på ljud"
         },
         "dock": {
-            "dockDefault": "",
-            "dockLeft": "",
-            "dockRight": ""
+            "dockDefault": "Visa panel som dialogruta",
+            "dockLeft": "Docka panelen till vänster",
+            "dockRight": "Docka panelen till höger"
         },
         "fxl": {
             "fit": "Anpassa"
@@ -1236,25 +1236,25 @@
     },
     "wizard": {
         "buttons": {
-            "discover": "Upptäck vad som är nytt",
+            "discover": "Upptäck Thorium Desktop",
             "goToBooks": "Gå till mina böcker"
         },
         "description": {
-            "home": "Thorium ser annorlunda ut! Upptäck vad som är nytt ...",
-            "resources": ""
+            "home": "Thorium 3.4 ger en rad förbättringar av användarupplevelsen och fixar en rad problem. Om du senare bestämmer dig för att flytta tillbaka till en äldre version av programmet, rekommenderas det starkt att du säkerhetskopierar dina e-bokanteckningar och bokmärken genom att exportera dem till en extern fil. Du importerar dem sedan tillbaka till den äldre versionen efter att den är installerad. Detta beror på att programmet lagrar anteckningar och bokmärken i ett lite annorlunda internt format i version 3.4. Detta löser ett prestationsproblem, men bryter bakåtkompatibilitet för anteckningar.",
+            "resources": "Få kontakt med oss och lär dig mer om Thorium:"
         },
         "dontShow": "Visa inte igen",
         "resources": {
-            "discord": "",
-            "website": ""
+            "discord": "Discord: https://discord.gg/2GnubQbE",
+            "website": "Webbsida: https://www.thoriumreader.com"
         },
         "tab": {
             "home": "Hem",
-            "resources": ""
+            "resources": "Resurser"
         },
         "title": {
-            "resources": "",
-            "welcome": "Välkommen till Thorium 3"
+            "resources": "Resurser och gemenskap",
+            "welcome": "Välkommen till Thorium 3.4"
         }
     }
 }
