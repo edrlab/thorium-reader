@@ -46,7 +46,7 @@
             "title": "Aggiornamento del software {{- appName}}."
         },
         "window": {
-            "showLibrary": "Mostra libreria"
+            "showLibrary": "Visualizza la libreria"
         }
     },
     "catalog": {
@@ -57,7 +57,7 @@
         "addBookToLib": "Importa",
         "addTags": "Aggiungi un tag",
         "addTagsButton": "Aggiungi",
-        "allBooks": "Tutti i libri",
+        "allBooks": "Libreria",
         "bookInfo": "Informazioni su questo libro",
         "column": {
             "ascending": "ascendente",
@@ -188,12 +188,12 @@
         }
     },
     "header": {
-        "allBooks": "Tutti i libri",
+        "allBooks": "Libreria",
         "catalogs": "Cataloghi",
         "downloads": "Downloads",
         "fitlerTagTitle": "Filtra per tag",
         "gridTitle": "Vista a griglia",
-        "home": "Menu libreria",
+        "home": "Menu principale",
         "homeTitle": "Home",
         "importTitle": "Importa una pubblicazione",
         "listTitle": "Vista a lista",
@@ -682,7 +682,7 @@
             "filter": {
                 "all": "Tutte",
                 "filterByColor": "Filtra per colore",
-                "filterByCreator": "Filtra per autore",
+                "filterByCreator": "Filtra per creatore",
                 "filterByDrawtype": "Filtra per tipo di disegno",
                 "filterByTag": "Filtra per tag",
                 "filterOptions": "Opzioni di filtro",
@@ -764,11 +764,11 @@
             "ZenModeExit": "Uscire dalla modalità Zen",
             "ZenModeTitle": "Modalità Zen",
             "annotationTitle": "Annotazione",
-            "backHomeTitle": "ritorna alla libreria",
+            "backHomeTitle": "Ritorna alla libreria",
             "bookmarkTitle": "Segnalibro",
             "currentPage": "Pagina attuale: {{- current}}",
             "currentPageTotal": "Pagina attuale: {{- current}}/{{- total}}",
-            "detachWindowTitle": "Mostra finestra libreria / scaffale",
+            "detachWindowTitle": "Visualizza la libreria",
             "goTo": "Vai a",
             "goToError": "Questa interruzione di pagina non esiste",
             "goToPlaceHolder": "Inserisci il numero della pagina",
@@ -1242,11 +1242,11 @@
     },
     "wizard": {
         "buttons": {
-            "discover": "Scopri le novità",
+            "discover": "Scopri Thorium Desktop",
             "goToBooks": "Vai alle mie pubblicazioni"
         },
         "description": {
-            "home": "Thorium sembra diverso! Scopriamo le novità...",
+            "home": "Thorium 3.4 apporta una serie di miglioramenti all'esperienza utente e corregge una serie di bug. Se decidi di tornare a utilizzare una versione precedente dell'applicazione ti raccomandiamo di salvare le evidenziature e i segnalibri esportandoli in un file esterno. Li potrai importare in seguito una volta che la versione meno recente sarà installata. La ragione è che questa versione 3.4 salva in un formato leggermente diverso le evidenziature e i segnalibri. Questo risolve alcuni problemi di prestazione ma incide sulla retrocompatibilità di evidenziature e segnalibri.",
             "resources": "Seguiteci per essere sempre aggiornati su Thorium:"
         },
         "dontShow": "Non mostrare più",
@@ -1260,7 +1260,7 @@
         },
         "title": {
             "resources": "Risorse e Community",
-            "welcome": "Benvenuti in Thorium 3"
+            "welcome": "Benvenuti in Thorium 3.4"
         }
     }
 }
