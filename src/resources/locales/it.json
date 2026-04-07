@@ -955,7 +955,7 @@
                     "name": "Crea annotazione"
                 },
                 "AnnotationsCreateQuick": {
-                    "description": "Crea rapidamente un'annotazione per il testo selezionato, con l'ultimo colore e tipo di evidenziazione utilizzati (la nota e il tag saranno vuoti)",
+                    "description": "Crea rapidamente una nota per il testo selezionato, con l'ultimo colore e tipo di evidenziazione utilizzati (la nota e il tag saranno vuoti)",
                     "name": "Creare un'annotazione rapida"
                 },
                 "AnnotationsToggleMargin": {
@@ -1190,7 +1190,7 @@
         "profiles": {
             "info": "",
             "thorium": {
-                "description": "",
+                "description": "Il profilo originale è Thorium Vanilla, creato da EDRLab.",
                 "title": "Thorium vanilla"
             },
             "version": "Versione: {{- version}}"
@@ -1247,7 +1247,7 @@
         },
         "description": {
             "home": "Thorium sembra diverso! Scopriamo le novità...",
-            "resources": ""
+            "resources": "Seguiteci per essere sempre aggiornati su Thorium:"
         },
         "dontShow": "Non mostrare più",
         "resources": {
