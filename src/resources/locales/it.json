@@ -82,7 +82,7 @@
             "lastAdditions": "Aggiunti di recente"
         },
         "export": "Salva come",
-        "exportAnnotation": "Esporta le note",
+        "exportAnnotation": "Esporta le evidenziature",
         "format": "Formato",
         "importAnnotation": "Importa le note",
         "lang": "Lingua",
@@ -163,17 +163,17 @@
                 "title": "Personalizzazione del profilo fornita e attivata"
             }
         },
-        "deleteAnnotations": "Eliminare la nota?",
-        "deleteAnnotationsText_many": "Si desidera eliminare {{- count}} note?",
-        "deleteAnnotationsText_one": "Si desidera eliminare {{- count}} note?",
-        "deleteAnnotationsText_other": "Si desidera eliminare {{- count}} note?",
+        "deleteAnnotations": "Eliminare le evidenziature?",
+        "deleteAnnotationsText_many": "Si desidera eliminare {{- count}} evidenziature?",
+        "deleteAnnotationsText_one": "Si desidera eliminare {{- count}} evidenziatura?",
+        "deleteAnnotationsText_other": "Si desidera eliminare {{- count}} evidenziature?",
         "deleteBookmarks": "Eliminare i segnalibri?",
         "deleteBookmarksText_many": "Sei sicuro di voler eliminare {{- count}} segnalibri?",
-        "deleteBookmarksText_one": "Sei sicuro di voler eliminare {{- count}} segnalibri?",
+        "deleteBookmarksText_one": "Sei sicuro di voler eliminare {{- count}} segnalibro?",
         "deleteBookmarksText_other": "Sei sicuro di voler eliminare {{- count}} segnalibri?",
         "deleteFeed": "Vuoi davvero eliminare questo catalogo ?",
         "deletePublication": "Vuoi davvero eliminare questa pubblicazione ?",
-        "deletePublicationWithNotes": "Attenzione: questa pubblicazione contiene note e/o segnalibri, che verranno eliminati anch'essi! (se desideri conservarli, assicurati di esportare le note prima di rimuovere la pubblicazione)",
+        "deletePublicationWithNotes": "Attenzione: questa pubblicazione contiene evidenziature e/o segnalibri, che verranno eliminati anch'esse! (se desideri conservarli, assicurati di esportare le note prima di rimuovere la pubblicazione)",
         "import": "Vuoi davvero importare questi files:",
         "importError": "si è verificato un errore, verifica l'estensione del file ({{acceptedExtension}})",
         "renew": "Vuoi davvero rinnovare la licenza per questa pubblicazione?",
@@ -678,7 +678,7 @@
             },
             "annotationsOptions": "Opzioni",
             "date": "Data di modifica",
-            "export": "Salva le note come",
+            "export": "Salva le evidenziature in",
             "filter": {
                 "all": "Tutte",
                 "filterByColor": "Filtra per colore",
@@ -686,7 +686,7 @@
                 "filterByDrawtype": "Filtra per tipo di disegno",
                 "filterByTag": "Filtra per tag",
                 "filterOptions": "Opzioni di filtro",
-                "none": "Nessuno"
+                "none": "Nessuna"
             },
             "hide": "Non mostrare",
             "highlight": "Evidenziare",
@@ -927,7 +927,7 @@
     "settings": {
         "annotationCreator": {
             "creator": "Creatore",
-            "help": "Se specificato, questo nome verrà incluso nei metadati delle note esportate.",
+            "help": "Se specificato, questo nome verrà incluso nei metadati delle evidenziature esportate.",
             "name": "Nome",
             "organization": "Organizzazione",
             "person": "Persona",
@@ -1184,7 +1184,7 @@
             "export": {
                 "applyDefaultTemplate": "Carica modello predefinito",
                 "enableCheckbox": "Personalizza il modello HTML",
-                "overrideHTMLTemplate": "Esportazione delle note (note e segnalibri)"
+                "overrideHTMLTemplate": "Esportazione delle evidenziature (note e segnalibri)"
             }
         },
         "profiles": {
