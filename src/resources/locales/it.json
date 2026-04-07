@@ -173,7 +173,7 @@
         "deleteBookmarksText_other": "Sei sicuro di voler eliminare {{- count}} segnalibri?",
         "deleteFeed": "Vuoi davvero eliminare questo catalogo ?",
         "deletePublication": "Vuoi davvero eliminare questa pubblicazione ?",
-        "deletePublicationWithNotes": "Attenzione: questa pubblicazione contiene annotazioni e/o segnalibri, che verranno eliminati anch'essi! (se desideri conservarli, assicurati di esportare le note prima di rimuovere la pubblicazione)",
+        "deletePublicationWithNotes": "Attenzione: questa pubblicazione contiene note e/o segnalibri, che verranno eliminati anch'essi! (se desideri conservarli, assicurati di esportare le note prima di rimuovere la pubblicazione)",
         "import": "Vuoi davvero importare questi files:",
         "importError": "si è verificato un errore, verifica l'estensione del file ({{acceptedExtension}})",
         "renew": "Vuoi davvero rinnovare la licenza per questa pubblicazione?",
@@ -959,7 +959,7 @@
                     "name": "Creare un'annotazione rapida"
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "Alternare gli indicatori visivi delle annotazioni e dei segnalibri, nel margine del documento o nel testo",
+                    "description": "Alternare gli indicatori visivi delle note e dei segnalibri, nel margine del documento o nel testo",
                     "name": "Attiva/disattiva l'annotazione a margine"
                 },
                 "AudioNext": {
@@ -1184,7 +1184,7 @@
             "export": {
                 "applyDefaultTemplate": "Carica modello predefinito",
                 "enableCheckbox": "Personalizza il modello HTML",
-                "overrideHTMLTemplate": "Esportazione delle note (annotazioni e segnalibri)"
+                "overrideHTMLTemplate": "Esportazione delle note (note e segnalibri)"
             }
         },
         "profiles": {
