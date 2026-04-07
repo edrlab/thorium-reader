@@ -15,7 +15,7 @@ import FeedList from "./FeedList";
 import OpdsAddForm from "./OpdsAddForm";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { connect } from "react-redux";
-import { IOpdsFeedView } from "src/common/views/opds";
+import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
