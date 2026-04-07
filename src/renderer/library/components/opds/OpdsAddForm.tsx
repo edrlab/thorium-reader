@@ -20,7 +20,7 @@ import { NavigationHeader } from "../layout/LibraryHeader";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
-import { IOpdsFeedView } from "src/common/views/opds";
+import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 
 interface IProps {
     feedsResult: IOpdsFeedView[] | undefined;
