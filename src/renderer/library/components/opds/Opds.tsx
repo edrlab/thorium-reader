@@ -41,7 +41,7 @@ class Opds extends React.Component<IProps, IState> {
         };
     }
 
-    setFeedsResult = (feedsResult: any) => {
+    setFeedsResult = (feedsResult: IOpdsFeedView[] | undefined) => {
         this.setState({ feedsResult });
     };
 
