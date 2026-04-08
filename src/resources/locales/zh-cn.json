@@ -69,7 +69,7 @@
                 "description": "无配置文件描述",
                 "publications": "配置文件发行日期",
                 "screen": "无标题",
-                "title": ""
+                "title": "配置文件标题"
             }
         },
         "delete": "删除",
@@ -101,11 +101,11 @@
             "auth": {
                 "cancel": "取消",
                 "external": "登录页面将会在您的网络浏览器中打开，请跟随引导操作。完成登录后，网络浏览器会使您回到该应用程序。",
-                "fallback": "",
+                "fallback": "注意：若遇到默认浏览器登录问题，请尝试使用备选的应用内登录方式。",
                 "login": "登录",
                 "password": "密码",
                 "register": "注册",
-                "retry": "",
+                "retry": "再试一次",
                 "username": "用户名/电子邮件地址"
             },
             "info": {
@@ -130,7 +130,7 @@
         "publisher": "出版社",
         "readBook": "阅读",
         "released": "出版日期",
-        "removeFromFavorites": "",
+        "removeFromFavorites": "从收藏中移除",
         "sort": "排序方式",
         "tag": "标签",
         "tags": "标签",
@@ -152,8 +152,8 @@
         "cancel": "取消",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
-                "state": "",
+                "fallbackWelcomeScreen": "未提供欢自定义迎屏幕",
+                "state": "状态: {{- state}}",
                 "title": "提供并激活自定义配置文件"
             }
         },
@@ -196,29 +196,29 @@
     },
     "library": {
         "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "selectOption": ""
+            "addFilters": "添加筛选器",
+            "filterBy": "筛选方式",
+            "selectOption": "请选择一项"
         },
         "lcp": {
-            "hidePassphrase": "",
+            "hidePassphrase": "隐藏密码",
             "hint": "提示：",
             "open": "打开",
             "password": "密码",
             "sentence": "此出版物需要 LCP 密码才能打开：",
-            "showPassphrase": "",
+            "showPassphrase": "显示密码",
             "urlHint": "忘记密码？点击此处获取帮助。",
             "whatIsLcp?": "什么是LCP？",
             "whatIsLcpInfoDetails": "LCP 表示“许可内容保护”。",
             "whatIsLcpInfoDetailsLink": "要了解更多信息，请单击此链接前往 EDRLab 网站。"
         },
         "sorting": {
-            "addSorting": "",
-            "author": "",
-            "language": "",
-            "readingState": "",
-            "sortBy": "",
-            "title": ""
+            "addSorting": "添加分类",
+            "author": "作者",
+            "language": "语言",
+            "readingState": "阅读状态",
+            "sortBy": "分类方式: ",
+            "title": "标题"
         }
     },
     "message": {
@@ -241,7 +241,7 @@
         "open": {
             "error": "无法打开出版物: {{- err}}"
         },
-        "wipeData": ""
+        "wipeData": "登录数据已清空(包括访问令牌及本地身份文件)"
     },
     "opds": {
         "addForm": {
@@ -278,7 +278,7 @@
         },
         "next": "下一个",
         "previous": "上一个",
-        "resumeBrowsing": "",
+        "resumeBrowsing": "继续浏览",
         "shelf": "书架",
         "updateForm": {
             "name": "名称：",
@@ -706,9 +706,9 @@
             "unmute": "取消静音"
         },
         "dock": {
-            "dockDefault": "",
-            "dockLeft": "",
-            "dockRight": ""
+            "dockDefault": "将面板显示为模态弹框",
+            "dockLeft": "将面板停靠在左侧",
+            "dockRight": "将面板停靠在右侧"
         },
         "fxl": {
             "fit": "自适应"
@@ -873,7 +873,7 @@
             "reduceMotion": "减少动态效果",
             "scrolled": "滚屏",
             "spacing": "间距",
-            "spreadModeEven": "",
+            "spreadModeEven": "展开偶数页(默认为奇数)",
             "text": "文字",
             "theme": {
                 "name": {
@@ -931,7 +931,7 @@
             "cancel": "取消",
             "disclaimer": "应用程序的默认设置是根据 QWERTY 键盘布局上按键的物理位置设计的",
             "editUserJson": "编辑用户文件...",
-            "exportToHTML": "",
+            "exportToHTML": "导出为HTML",
             "keyboardShortcuts": "键盘快捷键",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1075,12 +1075,12 @@
                     "name": "转到上一章"
                 },
                 "NavigatePreviousChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "在阅读器窗口中，导航到书籍阅读顺序中的前一个文档（例如，书脊中的章节）。请注意，还有一个替代的键盘快捷键可以使用",
+                    "name": "转到前一章节（备选）"
                 },
                 "NavigatePreviousHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "在阅读器窗口中，跳转到前一条浏览历史记录",
+                    "name": "转到上一条历史记录"
                 },
                 "NavigatePreviousLibraryPage": {
                     "description": "",
