@@ -20,7 +20,7 @@
             "copy": "Copiar",
             "cut": "Cortar",
             "paste": "Pegar",
-            "print": "",
+            "print": "Imprimir",
             "redo": "Rehacer",
             "selectAll": "Seleccionar todo",
             "title": "Editar",
@@ -50,7 +50,7 @@
         }
     },
     "catalog": {
-        "AddToFavorites": "",
+        "AddToFavorites": "Añadir a favoritos",
         "about": {
             "title": "Acerca de {{appName}}"
         },
@@ -66,10 +66,10 @@
         },
         "customization": {
             "fallback": {
-                "description": "",
+                "description": "No hay descripción del perfil",
                 "publications": "",
                 "screen": "",
-                "title": ""
+                "title": "Título del perfil"
             }
         },
         "delete": "Eliminar",
@@ -87,8 +87,8 @@
         "importAnnotation": "Importar anotación",
         "lang": "Idioma",
         "lastRead": "Último leído",
-        "login": "",
-        "logout": "",
+        "login": "Iniciar sesión",
+        "logout": "Cerrar sesión",
         "missing": "",
         "moreInfo": "Detalles del libro",
         "myBooks": "Mis libros",
@@ -100,12 +100,12 @@
         "opds": {
             "auth": {
                 "cancel": "Cancelar",
-                "external": "",
-                "fallback": "",
+                "external": "Se abrirá la página de inicio de sesión en su navegador web; siga las instrucciones. Una vez que haya iniciado sesión, el navegador web volverá a la aplicación.",
+                "fallback": "Nota: si tienes problemas para iniciar sesión con el navegador web predeterminado, vuelve a intentarlo con el método alternativo integrado en la aplicación.",
                 "login": "Iniciar sesión",
                 "password": "Contraseña",
                 "register": "Registrar",
-                "retry": "",
+                "retry": "Inténtalo de nuevo",
                 "username": "Nombre de usuario/dirección de correo electrónico"
             },
             "info": {
@@ -130,7 +130,7 @@
         "publisher": "Editor",
         "readBook": "Leer",
         "released": "Publicado en",
-        "removeFromFavorites": "",
+        "removeFromFavorites": "Eliminar de favoritos",
         "sort": "Ordenar por",
         "tag": "Etiqueta",
         "tags": "Etiquetas",
@@ -158,8 +158,8 @@
         "cancel": "Cancelar",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
-                "state": "",
+                "fallbackWelcomeScreen": "No se muestra ninguna pantalla de bienvenida",
+                "state": "Estado: {{- state}}",
                 "title": ""
             }
         },
@@ -173,7 +173,7 @@
         "deleteBookmarksText_other": "¿Seguro que quieres borrar {{- count}} marcador/es?",
         "deleteFeed": "¿Seguro que quieres eliminar este catálogo?",
         "deletePublication": "¿Seguro que quieres eliminar esta publicación?",
-        "deletePublicationWithNotes": "",
+        "deletePublicationWithNotes": "Atención: esta publicación contiene anotaciones y/o marcadores; ¡estos también se eliminarán! (Si quieres conservarlos, asegúrate de haber guardado las notas antes de eliminar la publicación)",
         "import": "¿Seguro que quieres importar estos ficheros?",
         "importError": "Se ha producido un error, comprueba la extensión de tu fichero ({{acceptedExtension}})",
         "renew": "¿Seguro que quieres renovar la licencia para esta publicación?",
@@ -206,29 +206,29 @@
     },
     "library": {
         "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "selectOption": ""
+            "addFilters": "Añadir filtros",
+            "filterBy": "Filtrar por",
+            "selectOption": "Seleccionar un elemento"
         },
         "lcp": {
-            "hidePassphrase": "",
+            "hidePassphrase": "Ocultar contraseña",
             "hint": "Pista: ",
             "open": "Abrir",
             "password": "Contraseña",
             "sentence": "Esta publicación requiere una contraseña LCP para abrirse: ",
-            "showPassphrase": "",
+            "showPassphrase": "Mostrar contraseña",
             "urlHint": "¿Olvidaste tu contraseña? Encuentra ayuda aquí",
             "whatIsLcp?": "¿Qué es LCP?",
             "whatIsLcpInfoDetails": "LCP significa 'Licensed Content Protection' (\"protección de contenido con licencia\").",
             "whatIsLcpInfoDetailsLink": "Para más información, haz clic en este enlace al sitio web de EDRLab."
         },
         "sorting": {
-            "addSorting": "",
-            "author": "",
-            "language": "",
-            "readingState": "",
-            "sortBy": "",
-            "title": ""
+            "addSorting": "Añadir ordenación",
+            "author": "Autor",
+            "language": "Idioma",
+            "readingState": "Estado de lectura",
+            "sortBy": "Ordenar por: ",
+            "title": "Título"
         }
     },
     "message": {
@@ -251,7 +251,7 @@
         "open": {
             "error": "No se puede abrir la publicación: {{- err}}"
         },
-        "wipeData": ""
+        "wipeData": "Se han borrado los datos de inicio de sesión"
     },
     "opds": {
         "addForm": {
@@ -288,7 +288,7 @@
         },
         "next": "Siguiente",
         "previous": "Anterior",
-        "resumeBrowsing": "",
+        "resumeBrowsing": "Retomar el recorrido",
         "shelf": "Estante",
         "updateForm": {
             "name": "Nombre:",
@@ -716,19 +716,19 @@
             "unmute": "dejar de silenciar"
         },
         "dock": {
-            "dockDefault": "",
-            "dockLeft": "",
-            "dockRight": ""
+            "dockDefault": "Mostrar el panel como una ventana emergente",
+            "dockLeft": "Fijar el panel a la izquierda",
+            "dockRight": "Fijar el panel a la derecha"
         },
         "fxl": {
             "fit": "Ajustar"
         },
         "goToContent": "Ir al contenido",
         "imgViewer": {
-            "title": "",
-            "zoomIn": "",
-            "zoomOut": "",
-            "zoomReset": ""
+            "title": "Visor de imágenes",
+            "zoomIn": "Acercar",
+            "zoomOut": "Alejar",
+            "zoomReset": "Restablecer la visualización original"
         },
         "marks": {
             "annotations": "Anotaciones",
@@ -737,7 +737,7 @@
             "edit": "Editar",
             "goTo": "ir a página",
             "landmarks": "Puntos de referencia",
-            "saveMark": "Guardar marcador",
+            "saveMark": "Guardar",
             "search": "Buscar",
             "searchResult": "Buscar [{{- searchText}}]",
             "toc": "Tabla de contenido"
@@ -763,28 +763,28 @@
         "navigation": {
             "ZenModeExit": "Salir de modo Zen",
             "ZenModeTitle": "Modo Zen",
-            "annotationTitle": "anotación",
+            "annotationTitle": "Anotación",
             "backHomeTitle": "Volver a la biblioteca",
             "bookmarkTitle": "Marcador",
             "currentPage": "Página actual: {{- current}}",
             "currentPageTotal": "Página actual: {{- current}}/{{- total}}",
-            "detachWindowTitle": "mostrar ventana de biblioteca",
+            "detachWindowTitle": "Mostrar ventana de biblioteca",
             "goTo": "Ir a",
             "goToError": "Este salto de página no existe",
             "goToPlaceHolder": "Introduce un número de página",
             "goToTitle": "Ir a página",
-            "history": "",
-            "historyNext": "Avanzar",
-            "historyPrevious": "Retroceder",
+            "history": "Historial",
+            "historyNext": "Avanzar en el historial",
+            "historyPrevious": "Retroceder en el historial",
             "infoTitle": "Información",
-            "magnifyingGlassButton": "buscar en la publicación",
-            "openTableOfContentsTitle": "navegación",
+            "magnifyingGlassButton": "Buscar en la publicación",
+            "openTableOfContentsTitle": "Navegación",
             "page": "Página",
             "pdfscalemode": "Ajuste o ancho de página",
-            "print": "",
-            "printDisabled": "",
-            "screenNext": "",
-            "screenPrevious": "",
+            "print": "Imprimir",
+            "printDisabled": "No se permite imprimir",
+            "screenNext": "Adelante",
+            "screenPrevious": "Atrás",
             "settingsTitle": "Opciones de configuración"
         },
         "notes": {
@@ -812,22 +812,22 @@
             "searchTitle": "Buscar:"
         },
         "print": {
-            "descriptionLcpCount": "",
-            "descriptionLcpPrintable": "",
-            "howTo": "",
-            "lcpInfo": "",
-            "noPagesLcpLimitReached": "",
-            "noPrintablePages": "",
-            "pageHelpInfo": "",
-            "pageHelpInfo1": "",
-            "pageHelpInfo2": "",
-            "pageHelpInfo3": "",
-            "pageHelpInfo4": "",
-            "pages": "",
-            "preview": "",
-            "print": "",
-            "printablePages": "",
-            "title": ""
+            "descriptionLcpCount": "Número de páginas restantes: {{- count}}",
+            "descriptionLcpPrintable": "Páginas impresas: {{- printable}} ({{- count}})",
+            "howTo": "Cómo seleccionar un intervalo de páginas para imprimir",
+            "lcpInfo": "El número de páginas que puede imprimir de esta publicación está limitado a {{- count}}. Seleccione aquí las páginas que desee.",
+            "noPagesLcpLimitReached": "Ha alcanzado el límite permitido por la licencia LCP",
+            "noPrintablePages": "No hay páginas imprimibles",
+            "pageHelpInfo": "Selector de página:",
+            "pageHelpInfo1": "Introduce un número de página para hacer referencia a una página concreta (por ejemplo, «6»)",
+            "pageHelpInfo2": "Introduzca dos números de página separados por un guión para hacer referencia a un intervalo de páginas contiguas (por ejemplo, «6-13»)",
+            "pageHelpInfo3": "Utilice el punto y coma para separar varias páginas o rangos de páginas (por ejemplo, «5;14-20;37»)",
+            "pageHelpInfo4": "Omita la primera o la última página de un intervalo para hacer referencia a la primera o la última página de la publicación (por ejemplo, «-16» equivale a «1-16», y «34-» equivale a «34-100», suponiendo que el libro tenga un total de 100 páginas).",
+            "pages": "Páginas",
+            "preview": "Vista previa",
+            "print": "Imprimir",
+            "printablePages": "Páginas imprimibles (total):",
+            "title": "Selección de páginas imprimibles"
         },
         "settings": {
             "column": {
@@ -851,7 +851,7 @@
             "letterSpacing": "Espaciado de letras",
             "lineSpacing": "Interlineado",
             "margin": "Margen",
-            "mathjax": "",
+            "mathjax": "Habilitar MathJax",
             "noFootnotes": "Desactivar notas al pie",
             "noRTLFlip": "Deshabilitar la interfaz de usuario de derecha a izquierda",
             "noRuby": "Ocultar Ruby japonés",
@@ -885,7 +885,7 @@
             "reduceMotion": "Disminuir movimiento",
             "scrolled": "Desplazable",
             "spacing": "Espaciado",
-            "spreadModeEven": "",
+            "spreadModeEven": "Las páginas se distribuyen «pares» (el valor predeterminado es «impares»)",
             "text": "Texto",
             "theme": {
                 "name": {
@@ -911,7 +911,7 @@
         },
         "tts": {
             "activate": "Activar texto a voz (TTS)",
-            "language": "Idioma",
+            "language": "Idioma de la voz sintética",
             "next": "Siguiente (Texto a voz)",
             "options": "Opciones de texto a voz (TTS)",
             "pause": "Pausar texto a voz",
@@ -943,235 +943,235 @@
             "cancel": "Cancelar",
             "disclaimer": "Los atajos se definieron a partir de la distribución del teclado QWERTY.",
             "editUserJson": "Editar archivo de usuario...",
-            "exportToHTML": "",
+            "exportToHTML": "Exportar a HTML",
             "keyboardShortcuts": "Atajos de teclado",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "",
-                    "name": ""
+                    "description": "Abre el cuadro de diálogo de creación de marcadores y edita el texto (nota), el color y la etiqueta",
+                    "name": "Crear marcador con etiqueta"
                 },
                 "AnnotationsCreate": {
-                    "description": "",
-                    "name": ""
+                    "description": "Cuando se seleccione un texto, se marcará como anotación y se abrirá el cuadro de diálogo de anotación para permitir añadir texto adicional y seleccionar un color y un tipo de trazo",
+                    "name": "Crear resaltado"
                 },
                 "AnnotationsCreateQuick": {
-                    "description": "",
-                    "name": ""
+                    "description": "Crea rápidamente un resaltado para el texto seleccionado, utilizando el último color y tipo de resaltado utilizados (la nota y la etiqueta quedarán vacías)",
+                    "name": "Crear resaltado rápido"
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "",
-                    "name": ""
+                    "description": "Alternar los indicadores visuales de texto resaltado y marcadores, ya sea en el margen del documento o en el texto",
+                    "name": "Alternar entre los indicadores visuales"
                 },
                 "AudioNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "Pasa al siguiente fragmento de audio de la narración (superposiciones multimedia EPUB3, síntesis de voz o audiolibro pregrabado)",
+                    "name": "Siguiente fragmento de audio"
                 },
                 "AudioNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Pasa al siguiente fragmento de audio de la narración (superposiciones multimedia EPUB3, lectura en voz alta con la función «Texto a voz» o audiolibro pregrabado). Esto omite cualquier estructura de la que se pueda salir en ese momento",
+                    "name": "Siguiente fragmento de audio (alternativo)"
                 },
                 "AudioPlayPause": {
-                    "description": "",
-                    "name": ""
+                    "description": "Activar/desactivar la reproducción o pausa de la narración actual (superposiciones multimedia EPUB3, lectura en voz alta con la función «Texto a voz» o audiolibro pregrabado)",
+                    "name": "Reproducir/Pausar audio"
                 },
                 "AudioPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "Volver al segmento de audio anterior de la narración (superposiciones multimedia EPUB3, lectura en voz alta con la función «Texto a voz» o audiolibro pregrabado)",
+                    "name": "Segmento de audio anterior"
                 },
                 "AudioPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Volver al segmento de audio anterior de la narración (superposiciones multimedia EPUB3, lectura en voz alta con la función «Texto a voz» o audiolibro pregrabado). Esto omite cualquier estructura de la que se pueda salir en ese momento",
+                    "name": "Segmento de audio anterior (alternativo)"
                 },
                 "AudioStop": {
-                    "description": "",
-                    "name": ""
+                    "description": "Detener audio (superposiciones multimedia EPUB3, lectura en voz alta con la función «Texto a voz» o audiolibro pregrabado)",
+                    "name": "Detener el audio"
                 },
                 "CloseReader": {
-                    "description": "",
-                    "name": ""
+                    "description": "Cierra la ventana de lectura y vuelve a la biblioteca",
+                    "name": "Cierra la ventana"
                 },
                 "FXLZoomIn": {
-                    "description": "",
-                    "name": ""
+                    "description": "Amplía una página individual o una doble página con diseño fijo.",
+                    "name": "Acercar"
                 },
                 "FXLZoomOut": {
-                    "description": "",
-                    "name": ""
+                    "description": "Alejar",
+                    "name": "Alejar"
                 },
                 "FXLZoomReset": {
-                    "description": "",
-                    "name": ""
+                    "description": "Restablecer la visualización original",
+                    "name": "Restablecer la visualización original"
                 },
                 "FocusMain": {
-                    "description": "",
-                    "name": ""
+                    "description": "Desplaza el foco del teclado al elemento de referencia «principal» de la interfaz gráfica de usuario. En la ventana del lector, esto te lleva al contenido de la publicación",
+                    "name": "Mover a contenido principal"
                 },
                 "FocusMainDeep": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, esto desplaza el foco del teclado al contenido de la publicación utilizando una técnica más fiable para los lectores de pantalla",
+                    "name": "Mover a contenido principal"
                 },
                 "FocusReaderGotoPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "Desplaza el foco del teclado a la sección «Ir a la página» del panel de navegación de la ventana del lector",
+                    "name": "Mover a «Ir a la página»"
                 },
                 "FocusReaderNavigation": {
-                    "description": "",
-                    "name": ""
+                    "description": "Desplaza el foco del teclado al panel de navegación de la ventana del lector",
+                    "name": "Mover al panel de navegación"
                 },
                 "FocusReaderNavigationAnnotations": {
-                    "description": "",
-                    "name": ""
+                    "description": "Desplaza el foco del teclado a la sección «anotaciones» del panel de navegación de la ventana del lector",
+                    "name": "Mover a « resaltados»"
                 },
                 "FocusReaderNavigationBookmarks": {
-                    "description": "",
-                    "name": ""
+                    "description": "Desplaza el foco del teclado a la sección «Marcadores» del panel de navegación de la ventana del lector",
+                    "name": "Mover a «Marcadores»"
                 },
                 "FocusReaderNavigationSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Desplaza el foco del teclado a la sección «Buscar» del panel de navegación de la ventana del lector",
+                    "name": "Mover a «Buscar»"
                 },
                 "FocusReaderNavigationTOC": {
-                    "description": "",
-                    "name": ""
+                    "description": "Desplaza el foco del teclado a la sección «Índice» del panel de navegación de la ventana del lector",
+                    "name": "Mover a «tabla de contenidos»"
                 },
                 "FocusReaderSettings": {
-                    "description": "",
-                    "name": ""
+                    "description": "Desplaza el foco del teclado al panel de configuración de la ventana del lector (preferencias de visualización, etc.)",
+                    "name": "Mover a Configuración de lectura"
                 },
                 "FocusSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Mueve el cursor del teclado al campo de búsqueda de texto de la ventana del reproductor; en la ventana de la biblioteca, esto realiza una búsqueda en la biblioteca o en el catálogo activo",
+                    "name": "Búsqueda"
                 },
                 "FocusToolbar": {
-                    "description": "",
-                    "name": ""
+                    "description": "Desplaza el foco del teclado al área de referencia de la interfaz gráfica de usuario situada justo antes del «enlace de salto» (que, a su vez, desplaza el foco al área de contenido principal de la biblioteca o la ventana del lector)",
+                    "name": "Mover a la barra de herramientas"
                 },
                 "NavigateNextChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, pasa al siguiente documento según el orden de lectura de la publicación (por ejemplo, el capítulo que aparece en el lomo del libro). Ten en cuenta que existe un atajo de teclado alternativo a este predeterminado",
+                    "name": "Ir al siguiente capítulo"
                 },
                 "NavigateNextChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, pasa al siguiente documento según el orden de lectura de la publicación (por ejemplo, el siguiente capítulo del libro). Este es un atajo de teclado alternativo al predeterminado",
+                    "name": "Ir al siguiente capítulo (alternativa)"
                 },
                 "NavigateNextHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, avanza un paso en el historial de navegación",
+                    "name": "Ir a la siguiente entrada del historial"
                 },
                 "NavigateNextLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana de la biblioteca, muestra la página siguiente de una lista paginada de publicaciones. Ten en cuenta que existe un atajo de teclado alternativo al predeterminado",
+                    "name": "Ve a la siguiente estantería de la biblioteca"
                 },
                 "NavigateNextLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana de la biblioteca, muestra la página siguiente de una lista paginada de publicaciones. Este es un atajo de teclado alternativo al predeterminado",
+                    "name": "Ve a la siguiente estantería de la biblioteca (alternativa)"
                 },
                 "NavigateNextOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana de la biblioteca correspondiente a los catálogos, haz clic en el enlace de la página siguiente. Ten en cuenta que existe un atajo de teclado alternativo al predeterminado",
+                    "name": "Ir a la página siguiente del catálogo"
                 },
                 "NavigateNextOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana de la biblioteca correspondiente a catálogos/fuentes OPDS, haz clic en el siguiente enlace de paginación. Este es un atajo de teclado alternativo al predeterminado",
+                    "name": "Ir a la página siguiente del catálogo (Alternativa)"
                 },
                 "NavigateNextPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, pasa a la siguiente «página» de la publicación. Ten en cuenta que existe un atajo de teclado alternativo al predeterminado",
+                    "name": "Ir a la página siguiente"
                 },
                 "NavigateNextPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, pasa a la siguiente «página» de la publicación. Este es un atajo de teclado alternativo al predeterminado",
+                    "name": "Ir a la página siguiente (alternativa)"
                 },
                 "NavigatePreviousChapter": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, ve al documento anterior según el orden de lectura de la publicación (por ejemplo, el capítulo siguiente en el índice del libro). Ten en cuenta que existe un atajo de teclado alternativo a este predeterminado",
+                    "name": "Ir al capítulo anterior"
                 },
                 "NavigatePreviousChapterAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, ve al documento anterior según el orden de lectura de la publicación (por ejemplo, el capítulo siguiente en el índice del libro). Este es un atajo de teclado alternativo al predeterminado",
+                    "name": "Ir al capítulo anterior (Alternativa)"
                 },
                 "NavigatePreviousHistory": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, retrocede un paso en el historial de navegación",
+                    "name": "Ir al historial anterior"
                 },
                 "NavigatePreviousLibraryPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana de la biblioteca, muestra la página anterior de una lista paginada de publicaciones. Ten en cuenta que existe un atajo de teclado alternativo al predeterminado",
+                    "name": "Ve a la estantería anterior de la biblioteca"
                 },
                 "NavigatePreviousLibraryPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana de la biblioteca, muestra la página anterior de una lista paginada de publicaciones. Este es un atajo de teclado alternativo al predeterminado",
+                    "name": "Ve a la estantería anterior de la biblioteca (Alternativa)"
                 },
                 "NavigatePreviousOPDSPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana de la biblioteca correspondiente a catálogos y fuentes OPDS, sigue el enlace de paginación anterior. Ten en cuenta que existe un atajo de teclado alternativo al predeterminado",
+                    "name": "Ir a la página anterior del catálogo"
                 },
                 "NavigatePreviousOPDSPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana de la biblioteca correspondiente a los catálogos y fuentes OPDS, sigue el enlace de paginación anterior. Este es un atajo de teclado alternativo al predeterminado",
+                    "name": "Ir a la página anterior del catálogo (Alternativa)"
                 },
                 "NavigatePreviousPage": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, pasa a la «página» anterior de la publicación. Ten en cuenta que existe un atajo de teclado alternativo a este predeterminado",
+                    "name": "Ir a la página anterior"
                 },
                 "NavigatePreviousPageAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, pasa a la «página» anterior de la publicación. Este es un atajo de teclado alternativo al predeterminado",
+                    "name": "Ir a la página anterior (Alternativa)"
                 },
                 "NavigateToBegin": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, ve al principio de la publicación",
+                    "name": "Ir al inicio"
                 },
                 "NavigateToEnd": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana de lectura, ve al final de la publicación",
+                    "name": "Ir al final"
                 },
                 "OpenReaderInfo": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana de lectura abre el cuadro de diálogo de información de la publicación",
+                    "name": "Información de la publicación"
                 },
                 "OpenReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, abre el cuadro de diálogo emergente que muestra información sobre la publicación y desplaza el cursor del teclado hasta la sección que indica el contexto de la posición de lectura actual",
+                    "name": "Ubicación de lectura (Información de la publicación)"
                 },
                 "Print": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, abre el cuadro de diálogo de impresión",
+                    "name": "Imprimir"
                 },
                 "SearchNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la herramienta de búsqueda de la ventana del lector, pasa al siguiente resultado de búsqueda. Ten en cuenta que existe un atajo de teclado alternativo a este predeterminado",
+                    "name": "Siguiente resultado de la búsqueda"
                 },
                 "SearchNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la herramienta de búsqueda de la ventana de lectura, pasa al siguiente resultado de búsqueda. Este es un atajo de teclado alternativo al predeterminado",
+                    "name": "Siguiente resultado de la búsqueda (alternativa)"
                 },
                 "SearchPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la herramienta de búsqueda de la ventana del lector, ve al resultado de búsqueda anterior. Ten en cuenta que existe un atajo de teclado alternativo a este predeterminado",
+                    "name": "Anterior resultado de la búsqueda"
                 },
                 "SearchPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la herramienta de búsqueda de la ventana del lector, ve al resultado anterior. Este es un atajo de teclado alternativo al predeterminado",
+                    "name": "Anterior resultado de la búsqueda (aletrnativa)"
                 },
                 "SpeakReaderInfoWhereAmI": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, describe el contexto de la posición actual de lectura utilizando texto de voz compatible con los lectores de pantalla",
+                    "name": "Ubicación de lectura"
                 },
                 "ToggleBookmark": {
-                    "description": "",
-                    "name": ""
+                    "description": "Añade un nuevo marcador o elimina uno ya existente si está seleccionado actualmente",
+                    "name": "Mostrar/ocultar marcadores"
                 },
                 "ToggleReaderFullscreen": {
-                    "description": "",
-                    "name": ""
+                    "description": "En la ventana del lector, activa el modo de pantalla completa del sistema o vuelve al modo de ventana normal. Ten en cuenta que esto es diferente del «modo zen», que simplifica la interfaz de usuario",
+                    "name": "Pantalla completa"
                 }
             },
             "loadUserJson": "Cargar desde archivo de usuario",
-            "noShortcutFound": "",
+            "noShortcutFound": "No se ha encontrado ningún acceso directo con esta etiqueta",
             "resetDefaults": "Restablecer valores predeterminados",
             "save": "Guardar",
-            "searchPlaceholder": ""
+            "searchPlaceholder": "Escribe para buscar un atajo"
         },
         "language": {
             "languageChoice": "Selección de idioma"
@@ -1183,22 +1183,22 @@
         "note": {
             "export": {
                 "applyDefaultTemplate": "Aplicar plantilla predeterminada",
-                "enableCheckbox": "Habilitar/deshabilitar anulación de plantilla mustache cuando se exporten notas HTML",
-                "overrideHTMLTemplate": "Anular la plantilla mustache cuando se exporte la nota a HTML"
+                "enableCheckbox": "Personalizar las plantillas HTML",
+                "overrideHTMLTemplate": "Exportación de notas (anotaciones y marcadores)"
             }
         },
         "profiles": {
-            "info": "",
+            "info": "Cambia de perfil para personalizar la aplicación con la imagen de marca y los colores de un proveedor asociado. Cada perfil ofrece una experiencia a medida.",
             "thorium": {
-                "description": "",
-                "title": ""
+                "description": "El perfil Thorium Vanilla es el original, diseñado por EDRLab.",
+                "title": "Thorium vanilla"
             },
-            "version": ""
+            "version": "Versión: {{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "message": "",
-            "title": ""
+            "help": "Cuando la aplicación detecta la presencia de tecnología de apoyo, la interfaz de usuario funciona mejor con los lectores de pantalla",
+            "message": "Mejora de la compatibilidad con lectores de pantalla",
+            "title": "Mejorar la experiencia con los lectores de pantalla"
         },
         "session": {
             "title": "Guardar sesión"
@@ -1207,7 +1207,7 @@
             "appearance": "Aspecto visual",
             "general": "General",
             "keyboardShortcuts": "Atajos de teclado",
-            "profiles": ""
+            "profiles": "Perfiles"
         },
         "theme": {
             "auto": "Automático",
@@ -1242,24 +1242,24 @@
     },
     "wizard": {
         "buttons": {
-            "discover": "Descubre las novedades",
+            "discover": "Descubre Thorium Desktop",
             "goToBooks": "Ir a mis libros"
         },
         "description": {
-            "home": "¡Thorium se ve diferente! Descubramos las novedades...",
-            "resources": ""
+            "home": "Thorium 3.4 aporta una serie de mejoras a la experiencia del usuario y corrige una serie de problemas. Si más adelante decides volver a una versión anterior de la aplicación, te recomendamos encarecidamente que hagas una copia de seguridad de tus anotaciones y marcadores del libro electrónico exportándolos a un archivo externo. Así podrás importarlos de nuevo a la versión anterior una vez que la hayas instalado. Esto se debe a que, en la versión 3.4, la aplicación almacena las anotaciones y los marcadores en un formato interno ligeramente diferente. Esto resuelve un problema de rendimiento, pero rompe la compatibilidad con versiones anteriores en lo que respecta a las anotaciones.",
+            "resources": "Ponte en contacto con nosotros y descubre más sobre Thorium:"
         },
         "dontShow": "No volver a mostrar",
         "resources": {
-            "discord": "",
-            "website": ""
+            "discord": "Discord: https://discord.gg/2GnubQbE",
+            "website": "Sitio web: https://www.thoriumreader.com"
         },
         "tab": {
             "home": "Inicio",
-            "resources": ""
+            "resources": "Recursos"
         },
         "title": {
-            "resources": "",
+            "resources": "Recursos y comunidad",
             "welcome": "Bienvenido a Thorium 3"
         }
     }
