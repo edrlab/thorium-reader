@@ -201,9 +201,9 @@
     },
     "library": {
         "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "selectOption": ""
+            "addFilters": "Προσθήκη φίλτρων",
+            "filterBy": "Φιλτράρισμα κατά",
+            "selectOption": "Επιλογή στοιχείου"
         },
         "lcp": {
             "hidePassphrase": "Απόκρυψη μυστικού κωδικού",
@@ -218,9 +218,9 @@
             "whatIsLcpInfoDetailsLink": "Για περισσότερα, κάντε κλικ σε αυτόν τον σύνδεσμο προς τον ιστότοπο του EDRLab."
         },
         "sorting": {
-            "addSorting": "",
-            "author": "",
-            "language": "",
+            "addSorting": "Προσθήκη ταξινόμησης",
+            "author": "Συγγραφέας",
+            "language": "Γλώσσα",
             "readingState": "",
             "sortBy": "",
             "title": ""
@@ -1245,8 +1245,8 @@
         },
         "dontShow": "Μην το δείξεις ξανά",
         "resources": {
-            "discord": "",
-            "website": ""
+            "discord": "Μετάβασηστο Discord: https://discord.gg/2GnubQbE",
+            "website": "Ιστότοπος: https://www.thoriumreader.com"
         },
         "tab": {
             "home": "Αρχική",
