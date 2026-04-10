@@ -650,8 +650,8 @@
         "progression": {
             "title": "Läsförlopp"
         },
-        "read": "Färdigläst",
-        "remainingTime": "Lån (tid kvar)",
+        "read": "Läst",
+        "remainingTime": "Lån (återstående tid)",
         "renewButton": "Låna om",
         "returnButton": "Lämna tillbaka",
         "returnedLcp": "Den här LCP-skyddade publikationen är återlämnad.",
