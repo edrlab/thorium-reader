@@ -199,7 +199,7 @@
         "listTitle": "Vista a lista",
         "myCatalogs": "I miei cataloghi",
         "refreshTitle": "Ricarica",
-        "searchPlaceholder": "Cerca",
+        "searchPlaceholder": "Ricerca",
         "searchTitle": "Inizia una ricerca",
         "settings": "Impostazioni",
         "viewMode": "Modalità di visualizzazione"
@@ -777,7 +777,7 @@
             "historyNext": "Vai avanti nella cronologia della sessione di lettura",
             "historyPrevious": "Vai indietro nella cronologia della sessione di lettura",
             "infoTitle": "Informazioni",
-            "magnifyingGlassButton": "Cerca pubblicazione",
+            "magnifyingGlassButton": "Cerca nella pubblicazione",
             "openTableOfContentsTitle": "Navigazione",
             "page": "Pagina",
             "pdfscalemode": "Dimensioni della pagina o larghezza",
@@ -802,7 +802,7 @@
                 "founds_many": "{{- count}} risultato/i",
                 "founds_one": "{{- count}} risultato/i",
                 "founds_other": "{{- count}} risultato/i",
-                "input": "testo ta cercare",
+                "input": "Testo da cercare",
                 "next": "Prossimo",
                 "notFound": "Nessun risultato",
                 "previous": "Precedente",
@@ -1027,7 +1027,7 @@
                     "name": "Focus su \"Segnalibri\""
                 },
                 "FocusReaderNavigationSearch": {
-                    "description": "Sposta il focus della tastiera sulla sezione \"Cerca\" del pannello di navigazione della finestra del lettore",
+                    "description": "Sposta il focus della tastiera sulla sezione \"Cerca\" del pannello di navigazione della finestra di navigazione",
                     "name": "Focus su \"Cerca\""
                 },
                 "FocusReaderNavigationTOC": {
