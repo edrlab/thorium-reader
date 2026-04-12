@@ -898,7 +898,7 @@
                     "Paper": "Papel",
                     "Sepia": "Sepia"
                 },
-                "title": "Diseño"
+                "title": "Tema de lectura"
             },
             "wordSpacing": "Espaciado de palabras"
         },
@@ -1214,7 +1214,7 @@
             "dark": "Oscuro",
             "description": "El diseño de la aplicación coincide con el sistema operativo.",
             "light": "Claro",
-            "title": "Diseño de la aplicación"
+            "title": "Tema de la aplicación"
         }
     },
     "tts": {
