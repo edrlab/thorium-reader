@@ -206,7 +206,7 @@
     },
     "library": {
         "filter": {
-            "addFilters": "",
+            "addFilters": "Adicionar filtros",
             "filterBy": "Filtrar por",
             "selectOption": "Selecione um item"
         },
@@ -223,7 +223,7 @@
             "whatIsLcpInfoDetailsLink": "Para saber mais, visite esta página do sítio EDRLab."
         },
         "sorting": {
-            "addSorting": "",
+            "addSorting": "Adicionar ordenação",
             "author": "Autor",
             "language": "Idioma",
             "readingState": "Estado de leitura",
@@ -1173,7 +1173,7 @@
             "noShortcutFound": "",
             "resetDefaults": "Redefinir (carregar predefinições)",
             "save": "Guardar",
-            "searchPlaceholder": "Digite para procurar um atalho"
+            "searchPlaceholder": "Digite para filtrar atalhos"
         },
         "language": {
             "languageChoice": "Idioma"
