@@ -264,7 +264,8 @@ export const FontSize = () => {
         <section>
             <h4>{__("reader.settings.fontSize")} ({fontSize})</h4>
             <div className={stylesSettings.size_range}>
-                <button onClick={() => {
+                <button 
+                onClick={() => {
                     const newValue = "100%";
                     setCurrentSliderValue(newValue.replace(/%/g, ""));
                     set({ fontSize: newValue });
@@ -272,7 +273,11 @@ export const FontSize = () => {
                 } className={stylesSettings.reset_button} title="default value">
                     <SVG ariaHidden svg={ResetIcon} />
                 </button>
-                <button onClick={() => click("out")} className={stylesSettings.scale_button}><SVG ariaHidden svg={MinusIcon} /></button>
+                <button 
+                onClick={() => click("out")} 
+                className={stylesSettings.scale_button}
+                aria-label={__("reader.settings.reduceFontSize")}
+                ><SVG ariaHidden svg={MinusIcon} /></button>
                 <input
                     type="range"
                     aria-labelledby="label_fontSize"
@@ -289,7 +294,11 @@ export const FontSize = () => {
                     }
                     className={currentSliderValue === "100" ? stylesSettings.range_inactive : ""}
                 />
-                <button onClick={() => click("in")} className={stylesSettings.scale_button}><SVG ariaHidden svg={PlusIcon} /></button>
+                <button 
+                onClick={() => click("in")} 
+                className={stylesSettings.scale_button}
+                aria-label={__("reader.settings.increaseFontSize")}
+                ><SVG ariaHidden svg={PlusIcon} /></button>
             </div>
         </section>
     );

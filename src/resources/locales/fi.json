@@ -841,6 +841,7 @@
             },
             "font": "Fontti",
             "fontSize": "Fonttikoko",
+            "increaseFontSize": "",
             "infoCustomFont": "Valitse fontti käyttöjärjestelmästä kirjoittamalla sen nimi.",
             "justification": "Tasaus",
             "justify": "Tasareunainen",
@@ -878,6 +879,7 @@
                 "title": "Omat asetukset"
             },
             "preview": "Esikatselu",
+            "reduceFontSize": "",
             "reduceMotion": "Vähennä liikettä",
             "scrolled": "Vieritettävä",
             "spacing": "Välit",

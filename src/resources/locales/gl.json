@@ -841,6 +841,7 @@
             },
             "font": "Fonte",
             "fontSize": "Tamaño de fonte",
+            "increaseFontSize": "",
             "infoCustomFont": "Selecciona unha fonte personalizada do sistema operativo escribindo o seu nome\n",
             "justification": "Aliñación",
             "justify": "Xustificar",
@@ -878,6 +879,7 @@
                 "title": ""
             },
             "preview": "Previsualizar",
+            "reduceFontSize": "",
             "reduceMotion": "Diminuír movemento",
             "scrolled": "Desplazable",
             "spacing": "Espazado",

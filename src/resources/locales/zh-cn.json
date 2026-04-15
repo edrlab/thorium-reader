@@ -835,6 +835,7 @@
             },
             "font": "字体",
             "fontSize": "字体大小",
+            "increaseFontSize": "",
             "infoCustomFont": "通过输入名称从操作系统中选择自定义字体",
             "justification": "排版",
             "justify": "两端对齐",
@@ -872,6 +873,7 @@
                 "title": "偏好设置"
             },
             "preview": "预览",
+            "reduceFontSize": "",
             "reduceMotion": "减少动态效果",
             "scrolled": "滚屏",
             "spacing": "间距",

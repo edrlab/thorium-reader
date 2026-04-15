@@ -847,6 +847,7 @@
             },
             "font": "Police de caractères",
             "fontSize": "Taille du texte",
+            "increaseFontSize": "Augmenter la taille du texte",
             "infoCustomFont": "Vous pouvez sélectionner une police système ou personnelle en entrant son nom.",
             "justification": "Alignement",
             "justify": "Justifié",
@@ -884,6 +885,7 @@
                 "title": "Préférences"
             },
             "preview": "Aperçu",
+            "reduceFontSize": "Réduire la taille du texte",
             "reduceMotion": "Réduire les animations visuelles",
             "scrolled": "Défilement vertical",
             "spacing": "Espacement",

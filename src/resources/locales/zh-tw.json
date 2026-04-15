@@ -835,6 +835,7 @@
             },
             "font": "字體",
             "fontSize": "字體大小",
+            "increaseFontSize": "",
             "infoCustomFont": "透過輸入字體名稱從作業系統中選擇自訂字體",
             "justification": "排版",
             "justify": "左右對齊",
@@ -872,6 +873,7 @@
                 "title": "偏好設定"
             },
             "preview": "預覽",
+            "reduceFontSize": "",
             "reduceMotion": "減少動態效果",
             "scrolled": "捲動",
             "spacing": "間距",

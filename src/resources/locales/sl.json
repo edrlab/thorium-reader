@@ -853,6 +853,7 @@
             },
             "font": "Font",
             "fontSize": "Velikost fonta",
+            "increaseFontSize": "",
             "infoCustomFont": "Izberi pisavo po meri iz operacijskega sistema z vnosom njenega imena.",
             "justification": "Poravnava",
             "justify": "Razmik",
@@ -890,6 +891,7 @@
                 "title": "Nastavitve"
             },
             "preview": "Predogled",
+            "reduceFontSize": "",
             "reduceMotion": "Zmanjšaj gibanje",
             "scrolled": "Pomikanje",
             "spacing": "Razmik",

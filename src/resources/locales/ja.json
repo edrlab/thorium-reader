@@ -835,6 +835,7 @@
             },
             "font": "書体",
             "fontSize": "文字の大きさ",
+            "increaseFontSize": "",
             "infoCustomFont": "OSにインストールされているフォント名を入力することで、そのフォントへの変更もできます",
             "justification": "位置揃え",
             "justify": "両端揃え",
@@ -872,6 +873,7 @@
                 "title": "カスタマイズ"
             },
             "preview": "プレビュー",
+            "reduceFontSize": "",
             "reduceMotion": "視差効果を減らす",
             "scrolled": "スクロール型",
             "spacing": "余白・間隔",

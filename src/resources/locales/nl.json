@@ -841,6 +841,7 @@
             },
             "font": "Lettertype",
             "fontSize": "Letter grootte",
+            "increaseFontSize": "",
             "infoCustomFont": "Selecteer een aangepast lettertype van het besturingssysteem door de naam ervan te typen",
             "justification": "Uitlijning",
             "justify": "Uitvullen",
@@ -878,6 +879,7 @@
                 "title": "Voorkeuren"
             },
             "preview": "Voorbeeld",
+            "reduceFontSize": "",
             "reduceMotion": "Beperk beweging",
             "scrolled": "Doorlopend",
             "spacing": "Afstand",

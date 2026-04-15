@@ -841,6 +841,7 @@
             },
             "font": "Schriftart",
             "fontSize": "Schriftgröße",
+            "increaseFontSize": "",
             "infoCustomFont": "Wählen Sie eine benutzerdefinierte Schriftart aus dem Betriebssystem aus, indem Sie ihren Namen eingeben",
             "justification": "Textausrichtung",
             "justify": "Blocksatz",
@@ -878,6 +879,7 @@
                 "title": "Einstellungen"
             },
             "preview": "Vorschau",
+            "reduceFontSize": "",
             "reduceMotion": "Bewegung reduzieren",
             "scrolled": "Fortlaufend",
             "spacing": "Abstand",

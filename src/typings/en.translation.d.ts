@@ -1821,6 +1821,7 @@ declare namespace typed_i18n {
     readonly "disposition": { readonly "title": string },
     readonly "font": string,
     readonly "fontSize": string,
+    readonly "increaseFontSize": string,
     readonly "infoCustomFont": string,
     readonly "justification": string,
     readonly "justify": string,
@@ -1858,6 +1859,7 @@ declare namespace typed_i18n {
       readonly "title": string
     },
     readonly "preview": string,
+    readonly "reduceFontSize": string,
     readonly "reduceMotion": string,
     readonly "scrolled": string,
     readonly "spacing": string,
@@ -2226,6 +2228,7 @@ declare namespace typed_i18n {
   readonly "disposition": { readonly "title": string },
   readonly "font": string,
   readonly "fontSize": string,
+  readonly "increaseFontSize": string,
   readonly "infoCustomFont": string,
   readonly "justification": string,
   readonly "justify": string,
@@ -2263,6 +2266,7 @@ declare namespace typed_i18n {
     readonly "title": string
   },
   readonly "preview": string,
+  readonly "reduceFontSize": string,
   readonly "reduceMotion": string,
   readonly "scrolled": string,
   readonly "spacing": string,
@@ -2301,6 +2305,7 @@ declare namespace typed_i18n {
   (_: "reader.settings.disposition.title", __?: {}): string;
   (_: "reader.settings.font", __?: {}): string;
   (_: "reader.settings.fontSize", __?: {}): string;
+  (_: "reader.settings.increaseFontSize", __?: {}): string;
   (_: "reader.settings.infoCustomFont", __?: {}): string;
   (_: "reader.settings.justification", __?: {}): string;
   (_: "reader.settings.justify", __?: {}): string;
@@ -2365,6 +2370,7 @@ declare namespace typed_i18n {
   (_: "reader.settings.preset.saveDetails", __?: {}): string;
   (_: "reader.settings.preset.title", __?: {}): string;
   (_: "reader.settings.preview", __?: {}): string;
+  (_: "reader.settings.reduceFontSize", __?: {}): string;
   (_: "reader.settings.reduceMotion", __?: {}): string;
   (_: "reader.settings.scrolled", __?: {}): string;
   (_: "reader.settings.spacing", __?: {}): string;

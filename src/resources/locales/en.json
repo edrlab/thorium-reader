@@ -841,6 +841,7 @@
             },
             "font": "Font",
             "fontSize": "Font size",
+            "increaseFontSize": "Increase font size",
             "infoCustomFont": "Select custom font from operating system by typing its name",
             "justification": "Alignment",
             "justify": "Justify",
@@ -878,6 +879,7 @@
                 "title": "Preferences"
             },
             "preview": "Preview",
+            "reduceFontSize": "Reduce font size",
             "reduceMotion": "Reduce motion",
             "scrolled": "Scrollable",
             "spacing": "Spacing",

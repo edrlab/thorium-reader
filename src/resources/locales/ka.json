@@ -841,6 +841,7 @@
             },
             "font": "ფონტი",
             "fontSize": "ფონტის ზომა",
+            "increaseFontSize": "",
             "infoCustomFont": "",
             "justification": "გასწორება",
             "justify": "გამართვა",
@@ -878,6 +879,7 @@
                 "title": ""
             },
             "preview": "",
+            "reduceFontSize": "",
             "reduceMotion": "მოძრაობის შემცირება",
             "scrolled": "ბრუნვადი",
             "spacing": "დაშორება",

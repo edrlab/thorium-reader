@@ -847,6 +847,7 @@
             },
             "font": "Font",
             "fontSize": "Dimensioni del font",
+            "increaseFontSize": "",
             "infoCustomFont": "Seleziona il carattere personalizzato dal sistema operativo digitandone il nome",
             "justification": "Allineamento",
             "justify": "Giustifica",
@@ -884,6 +885,7 @@
                 "title": "Preferenze"
             },
             "preview": "Anteprima",
+            "reduceFontSize": "",
             "reduceMotion": "Riduci movimento",
             "scrolled": "Scrollabile",
             "spacing": "Spaziatura",

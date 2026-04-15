@@ -841,6 +841,7 @@
             },
             "font": "Шрифт",
             "fontSize": "Размер на шрифта",
+            "increaseFontSize": "",
             "infoCustomFont": "",
             "justification": "Подравняване",
             "justify": "Двустранно",
@@ -878,6 +879,7 @@
                 "title": ""
             },
             "preview": "",
+            "reduceFontSize": "",
             "reduceMotion": "Намали движението",
             "scrolled": "Скролируем",
             "spacing": "Интервал",
