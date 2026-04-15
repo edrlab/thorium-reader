@@ -188,6 +188,7 @@ declare namespace typed_i18n {
   readonly "readBook": string,
   readonly "released": string,
   readonly "removeFromFavorites": string,
+  readonly "selectTableHeaders": string,
   readonly "sort": string,
   readonly "tag": string,
   readonly "tags": string,
@@ -342,6 +343,7 @@ declare namespace typed_i18n {
   (_: "catalog.readBook", __?: {}): string;
   (_: "catalog.released", __?: {}): string;
   (_: "catalog.removeFromFavorites", __?: {}): string;
+  (_: "catalog.selectTableHeaders", __?: {}): string;
   (_: "catalog.sort", __?: {}): string; (_: "catalog.tag", __?: {}): string;
   (_: "catalog.tags", __?: {}): string;
   (_: "catalog.update", __?: {}): string;

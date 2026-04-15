@@ -131,6 +131,7 @@
         "readBook": "Read",
         "released": "Published on",
         "removeFromFavorites": "Remove from favorites",
+        "selectTableHeaders": "Select columns to display",
         "sort": "Sort by",
         "tag": "Tag",
         "tags": "Tags",

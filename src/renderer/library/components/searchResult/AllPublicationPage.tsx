@@ -2453,7 +2453,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
     const SelectTableHeaders = (
         <Popover.Root open={selectedFilterHeaderOpen} onOpenChange={setSelectedFilterHeaderOpen}>
             <Popover.Trigger asChild className={stylesPublication.allBooks_header_filter_trigger}
-                title={"Select Table Headers"}>
+                title={__("catalog.selectTableHeaders")}>
                 <button>
                     <SVG ariaHidden={true} svg={EyeOpenIcon} />
                 </button>
