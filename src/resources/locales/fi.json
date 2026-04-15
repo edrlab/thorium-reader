@@ -754,8 +754,8 @@
             "speed": "Luennan nopeus",
             "stop": "Lopeta luenta",
             "title": "Luenta",
-            "useTTSHighlightsForMO": "",
-            "useTTSHighlightsForMODescription": ""
+            "useTTSHighlightsForMO": "Mukautettu korostus",
+            "useTTSHighlightsForMODescription": "Poista kustantajan tyylit käytöstä"
         },
         "navigation": {
             "ZenModeExit": "Poistu kokoruudun tilasta",
