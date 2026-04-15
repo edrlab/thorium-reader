@@ -842,6 +842,7 @@
             },
             "font": "Typsnitt",
             "fontSize": "Textstorlek",
+            "increaseFontSize": "",
             "infoCustomFont": "Välj ett typsnitt från operativsystemet genom att skriva dess namn",
             "justification": "Justering",
             "justify": "Justerad",
@@ -879,6 +880,7 @@
                 "title": "Förinställning"
             },
             "preview": "Förhandsvisning",
+            "reduceFontSize": "",
             "reduceMotion": "Minska rörelser",
             "scrolled": "Rullningsbar",
             "spacing": "Avstånd",

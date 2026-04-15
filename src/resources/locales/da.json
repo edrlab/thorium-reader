@@ -842,6 +842,7 @@
             },
             "font": "Skrifttype",
             "fontSize": "Skriftstørrelse",
+            "increaseFontSize": "",
             "infoCustomFont": "Vælg en anden skrifttype fra operativsystemet ved at skrive dens navn",
             "justification": "Tekstjustering",
             "justify": "Lige margener",
@@ -879,6 +880,7 @@
                 "title": "Læsetema"
             },
             "preview": "Forhåndsvisning",
+            "reduceFontSize": "",
             "reduceMotion": "Reducér bevægelser",
             "scrolled": "Scrollbart",
             "spacing": "Mellemrum",

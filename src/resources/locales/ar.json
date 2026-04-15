@@ -866,6 +866,7 @@
             },
             "font": "الخط",
             "fontSize": "حجم الخط",
+            "increaseFontSize": "",
             "infoCustomFont": "اختر خطاً مخصصاً من نظام التشغيل بكتابة إسمه",
             "justification": "المحاذاة",
             "justify": "ضبط",
@@ -903,6 +904,7 @@
                 "title": "التفضيلات"
             },
             "preview": "معاينة",
+            "reduceFontSize": "",
             "reduceMotion": "تقليل الحركة",
             "scrolled": "قابل للتمرير",
             "spacing": "التباعد",

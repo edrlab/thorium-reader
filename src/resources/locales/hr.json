@@ -848,6 +848,7 @@
             },
             "font": "Font",
             "fontSize": "Veličina fonta",
+            "increaseFontSize": "",
             "infoCustomFont": "",
             "justification": "Poravnanje",
             "justify": "Obostrano poravnanje",
@@ -885,6 +886,7 @@
                 "title": ""
             },
             "preview": "",
+            "reduceFontSize": "",
             "reduceMotion": "Smanji kretanje",
             "scrolled": "Mogućnost klizanja",
             "spacing": "Razmak",

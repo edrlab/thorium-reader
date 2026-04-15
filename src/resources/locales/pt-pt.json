@@ -207,7 +207,7 @@
     },
     "library": {
         "filter": {
-            "addFilters": "",
+            "addFilters": "Adicionar filtros",
             "filterBy": "Filtrar por",
             "selectOption": "Selecione um item"
         },
@@ -224,7 +224,7 @@
             "whatIsLcpInfoDetailsLink": "Para saber mais, visite esta página do sítio EDRLab."
         },
         "sorting": {
-            "addSorting": "",
+            "addSorting": "Adicionar ordenação",
             "author": "Autor",
             "language": "Idioma",
             "readingState": "Estado de leitura",
@@ -848,6 +848,7 @@
             },
             "font": "Tipo de letra",
             "fontSize": "Tamanho da letra",
+            "increaseFontSize": "",
             "infoCustomFont": "Selecionar fonte personalizada, a partir do sistema operacional, digitando o seu nome",
             "justification": "Alinhamento",
             "justify": "Justificar",
@@ -885,6 +886,7 @@
                 "title": "Preferências"
             },
             "preview": "Pré-visualização",
+            "reduceFontSize": "",
             "reduceMotion": "Reduzir movimento",
             "scrolled": "Rolável",
             "spacing": "Espaçamento",
@@ -1174,7 +1176,7 @@
             "noShortcutFound": "",
             "resetDefaults": "Redefinir (carregar predefinições)",
             "save": "Guardar",
-            "searchPlaceholder": "Digite para procurar um atalho"
+            "searchPlaceholder": "Digite para filtrar atalhos"
         },
         "language": {
             "languageChoice": "Idioma"

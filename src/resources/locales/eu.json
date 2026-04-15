@@ -842,6 +842,7 @@
             },
             "font": "Iturria",
             "fontSize": "Letra-tamaina",
+            "increaseFontSize": "",
             "infoCustomFont": "Hautatu sistema eragileko letra-tipo pertsonalizatua bere izena idatziz",
             "justification": "Lerrokadura",
             "justify": "Justifikatu",
@@ -879,6 +880,7 @@
                 "title": ""
             },
             "preview": "Aurrebista",
+            "reduceFontSize": "",
             "reduceMotion": "Mugimendua gutxitu",
             "scrolled": "Desplazagarria",
             "spacing": "Tartea",

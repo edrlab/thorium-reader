@@ -854,6 +854,7 @@
             },
             "font": "Písmo",
             "fontSize": "Velikost písma",
+            "increaseFontSize": "",
             "infoCustomFont": "Vyberte vlastní písmo z operačního systému zadáním jeho názvu",
             "justification": "Zarovnání",
             "justify": "Do bloku",
@@ -891,6 +892,7 @@
                 "title": "Preference"
             },
             "preview": "Náhled",
+            "reduceFontSize": "",
             "reduceMotion": "",
             "scrolled": "",
             "spacing": "",

@@ -842,6 +842,7 @@
             },
             "font": "",
             "fontSize": "",
+            "increaseFontSize": "",
             "infoCustomFont": "",
             "justification": "",
             "justify": "",
@@ -879,6 +880,7 @@
                 "title": ""
             },
             "preview": "",
+            "reduceFontSize": "",
             "reduceMotion": "",
             "scrolled": "",
             "spacing": "",

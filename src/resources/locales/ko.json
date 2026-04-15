@@ -831,6 +831,7 @@
             },
             "font": "폰트",
             "fontSize": "폰트 크기",
+            "increaseFontSize": "",
             "infoCustomFont": "",
             "justification": "정렬",
             "justify": "양쪽 정렬",
@@ -868,6 +869,7 @@
                 "title": ""
             },
             "preview": "",
+            "reduceFontSize": "",
             "reduceMotion": "모션 줄이기",
             "scrolled": "스크롤",
             "spacing": "간격",

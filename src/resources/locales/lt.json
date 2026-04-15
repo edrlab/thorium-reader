@@ -854,6 +854,7 @@
             },
             "font": "Šriftas",
             "fontSize": "Šrifto dydis",
+            "increaseFontSize": "",
             "infoCustomFont": "Pasirinkite tinkintą operacinės sistemos šriftą įvedę jo pavadinimą",
             "justification": "Lygiavimas",
             "justify": "Lygiuoti abi puses",
@@ -891,6 +892,7 @@
                 "title": "Nuostatos"
             },
             "preview": "Peržiūrėti",
+            "reduceFontSize": "",
             "reduceMotion": "Mažinti judesių kiekį",
             "scrolled": "Slenkantis",
             "spacing": "Išretinimas",

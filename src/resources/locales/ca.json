@@ -848,6 +848,7 @@
             },
             "font": "Font",
             "fontSize": "Grandària de font",
+            "increaseFontSize": "",
             "infoCustomFont": "Seleccioneu el tipus de lletra personalitzat del sistema operatiu escrivint el seu nom",
             "justification": "Alineació",
             "justify": "Justificar",
@@ -885,6 +886,7 @@
                 "title": ""
             },
             "preview": "Previsualització",
+            "reduceFontSize": "",
             "reduceMotion": "Disminuir moviment",
             "scrolled": "Desplaçable",
             "spacing": "Espaiat",

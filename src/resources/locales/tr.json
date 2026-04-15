@@ -842,6 +842,7 @@
             },
             "font": "Yazı tipi",
             "fontSize": "Yazı tipi boyutu",
+            "increaseFontSize": "",
             "infoCustomFont": "Adını yazarak işletim sisteminden özel yazı tipini seçin",
             "justification": "Hizalama",
             "justify": "İki yana yaslama",
@@ -879,6 +880,7 @@
                 "title": "Tercihler"
             },
             "preview": "Önizleme",
+            "reduceFontSize": "",
             "reduceMotion": "Hareketi azalt",
             "scrolled": "Kaydırılabilir",
             "spacing": "Aralık ayarları",

@@ -302,7 +302,7 @@ const SaveCreatorSettings: React.FC<{}> = () => {
                 <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.annotationCreator.help")}</p>
             </div>
             <div className={stylesInput.form_group} style={{ marginTop: "20px", width: "360px"}}>
-                <input dir={isRTL ? "rtl" : "ltr"} type="text" name="creator-name" style={{ width: "100%", marginLeft: "10px" }} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={name} value={name} onChange={(e) => {
+                <input dir={isRTL ? "rtl" : "ltr"} type="text" id='creator-name' aria-label={__("settings.annotationCreator.name")} name="creator-name" style={{ width: "100%", marginLeft: "10px" }} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE" title={name} value={name} onChange={(e) => {
                     const v = e.target.value;
                     setName(v);
                 }} />
