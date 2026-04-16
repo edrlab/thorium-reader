@@ -693,7 +693,7 @@
             "highlight": "Surligner",
             "noSelectionToast": "Aucun texte sélectionné",
             "note": "Note {{- color}}",
-            "quickAnnotations": "Annotation rapide (sans édition)",
+            "quickAnnotations": "Création rapide (sans édition)",
             "saveNote": "Sauvegarder",
             "sorting": {
                 "lastcreated": "Dernier créé",
