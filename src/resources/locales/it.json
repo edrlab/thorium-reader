@@ -696,7 +696,7 @@
             "quickAnnotations": "Creazione rapida (salta editor)",
             "saveNote": "Salva",
             "sorting": {
-                "lastcreated": "Ultimo creato",
+                "lastcreated": "Ultima creata",
                 "lastmodified": "Ultimo modificato",
                 "progression": "Progressione",
                 "sortingOptions": "Opzioni di  ordinamento"
@@ -805,7 +805,7 @@
                 "founds_many": "{{- count}} risultato/i",
                 "founds_one": "{{- count}} risultato/i",
                 "founds_other": "{{- count}} risultato/i",
-                "input": "testo ta cercare",
+                "input": "testo da cercare",
                 "next": "Prossimo",
                 "notFound": "Nessun risultato",
                 "previous": "Precedente",
