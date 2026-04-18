@@ -2,7 +2,7 @@
     "accessibility": {
         "bookMenu": "Menú",
         "closeDialog": "Cerrar",
-        "importFile": "Importar publicación",
+        "importFile": "Añadir un libro",
         "leftSlideButton": "Desplazar lista a la izquierda",
         "mainContent": "Contenido principal",
         "rightSlideButton": "Desplazar lista a la derecha",
@@ -13,7 +13,7 @@
         "documentation": "Documentación de Thorium",
         "howItWorks": "¿Cómo funciona?",
         "informations": "En Francia, muchas bibliotecas públicas ofrecen un catálogo legible por máquina (similar a OPDS pero no idéntico), que permite a los usuarios descargar publicaciones digitales desde su biblioteca personal. La integración de esta tecnología en Thorium Reader te permite descargar un libro electrónico o audiolibro directamente en Thorium Reader para leerlo al instante.\n¿Cómo conectas tu cuenta de la biblioteca pública francesa a Thorium Reader? Es sencillo. Introduce una ciudad francesa (\"París\") o parte del nombre de la biblioteca en el campo de búsqueda y pulsa el botón Buscar. Aparecerá una lista de bibliotecas públicas correspondientes a tu búsqueda. Selecciona una biblioteca y pulsa Añadir. En la lista actualizada de catálogos, selecciona esta biblioteca: se mostrará un formulario de autenticación. Introduce tu nombre de usuario/dirección de correo electrónico y contraseña, y pulsa Iniciar sesión. Ahora podrás ver el contenido de tu biblioteca personal, desde la cual puedes descargar y leer los libros electrónicos y audiolibros que pediste prestados anteriormente.",
-        "noLibraryFound": "Biblioteca no encontrada ({{- name}})"
+        "noLibraryFound": "Biblioteca ({{- name}}) no encontrada"
     },
     "app": {
         "edit": {
@@ -67,8 +67,8 @@
         "customization": {
             "fallback": {
                 "description": "No hay descripción del perfil",
-                "publications": "",
-                "screen": "",
+                "publications": "Publicaciones de perfil",
+                "screen": "Sin título",
                 "title": "Título del perfil"
             }
         },
@@ -82,14 +82,14 @@
             "lastAdditions": "Añadidos recientemente"
         },
         "export": "Exportar",
-        "exportAnnotation": "Exportar anotación",
+        "exportAnnotation": "Exportar anotaciones",
         "format": "Formato",
         "importAnnotation": "Importar anotación",
         "lang": "Idioma",
         "lastRead": "Último leído",
         "login": "Iniciar sesión",
         "logout": "Cerrar sesión",
-        "missing": "",
+        "missing": " ",
         "moreInfo": "Detalles del libro",
         "myBooks": "Mis libros",
         "noPublicationHelpL1": "Desliza una publicación aquí",
@@ -131,7 +131,7 @@
         "readBook": "Leer",
         "released": "Publicado en",
         "removeFromFavorites": "Eliminar de favoritos",
-        "selectTableHeaders": "",
+        "selectTableHeaders": "Seleccione las columnas que desea mostrar",
         "sort": "Ordenar por",
         "tag": "Etiqueta",
         "tags": "Etiquetas",
@@ -141,16 +141,16 @@
         "annotations": {
             "descAuthor": "de {{- author}}",
             "descCreator": "creado por",
-            "descList_many": "{{- count}} la nota o notas de {{- creator}} se asociarán a {{- title}} {{- author}}",
+            "descList_many": "{{- count}} nota(s) de {{- creator}} se asociará(n) a {{- title}} {{- author}}",
             "descList_one": "{{- count}} la nota o notas de {{- creator}} se asociarán a {{- title}} {{- author}}",
-            "descList_other": "{{- count}} la nota o notas de {{- creator}} se asociarán a {{- title}} {{- author}}",
-            "descNewer_many": "{{- count}} las versiones más recientes de estas notas ya están asociadas a la publicación.",
-            "descNewer_one": "{{- count}} las versiones más recientes de estas notas ya están asociadas a la publicación.",
-            "descNewer_other": "{{- count}} las versiones más recientes de estas notas ya están asociadas a la publicación.",
-            "descOlder_many": "{{- count}} las versiones más antiguas de estas notas ya están asociadas a la publicación.",
-            "descOlder_one": "{{- count}} las versiones más antiguas de estas notas ya están asociadas a la publicación.",
-            "descOlder_other": "{{- count}} las versiones más antiguas de estas notas ya están asociadas a la publicación.",
-            "descTitle": "Establecer título de anotación",
+            "descList_other": "{{- count}} notas de {{- creator}} se asociarán a {{- title}} {{- author}}",
+            "descNewer_many": "{{- count}} en conflictos: ciertas notas asociadas a la publicación son más recientes",
+            "descNewer_one": "{{- count}} en conflicto: una nota asociada a la publicación es más reciente",
+            "descNewer_other": "{{- count}} en conflictos: ciertas notas asociadas a la publicación son más recientes",
+            "descOlder_many": "{{- count}} en conflicto(s): las versiones más antiguas de esta(s) nota(s) ya están asociadas a la publicación",
+            "descOlder_one": "{{- count}} en conflicto: las versiones más antiguas de estas notas ya están asociadas a la publicación",
+            "descOlder_other": "{{- count}} en conflictos: las versiones más antiguas de estas notas ya están asociadas a la publicación",
+            "descTitle": "Establecer título de anotación: ",
             "importAll": "Importar todas las notas",
             "importWithoutConflict": "Importar notas sin conflictos",
             "origin": "Publicación de origen: '{{- title}}' {{- author}}",
@@ -161,29 +161,29 @@
             "splashscreen": {
                 "fallbackWelcomeScreen": "No se muestra ninguna pantalla de bienvenida",
                 "state": "Estado: {{- state}}",
-                "title": ""
+                "title": "Perfil de personalización de aprovisionamiento y activación"
             }
         },
         "deleteAnnotations": "¿Eliminar anotaciones?",
         "deleteAnnotationsText_many": "¿Quieres eliminar {{- count}} anotación/es?",
-        "deleteAnnotationsText_one": "¿Quieres eliminar {{- count}} anotación/es?",
-        "deleteAnnotationsText_other": "¿Quieres eliminar {{- count}} anotación/es?",
-        "deleteBookmarks": "Borrar marcadores",
+        "deleteAnnotationsText_one": "¿Quieres eliminar {{- count}} anotación?",
+        "deleteAnnotationsText_other": "¿Quieres eliminar {{- count}} anotaciones?",
+        "deleteBookmarks": "¿Eliminar marcadores?",
         "deleteBookmarksText_many": "¿Seguro que quieres borrar {{- count}} marcador/es?",
-        "deleteBookmarksText_one": "¿Seguro que quieres borrar {{- count}} marcador/es?",
-        "deleteBookmarksText_other": "¿Seguro que quieres borrar {{- count}} marcador/es?",
+        "deleteBookmarksText_one": "¿Seguro que quieres borrar {{- count}} marcador?",
+        "deleteBookmarksText_other": "¿Seguro que quieres borrar {{- count}} marcadores?",
         "deleteFeed": "¿Seguro que quieres eliminar este catálogo?",
         "deletePublication": "¿Seguro que quieres eliminar esta publicación?",
         "deletePublicationWithNotes": "Atención: esta publicación contiene anotaciones y/o marcadores; ¡estos también se eliminarán! (Si quieres conservarlos, asegúrate de haber guardado las notas antes de eliminar la publicación)",
-        "import": "¿Seguro que quieres importar estos ficheros?",
-        "importError": "Se ha producido un error, comprueba la extensión de tu fichero ({{acceptedExtension}})",
+        "import": "Confirmar adición :",
+        "importError": "Se ha producido un error, comprueba la extensión de tu archivo ({{acceptedExtension}})",
         "renew": "¿Seguro que quieres renovar la licencia para esta publicación?",
         "return": "¿Seguro que quieres devolver la licencia para esta publicación?",
         "yes": "Sí"
     },
     "error": {
         "errorBox": {
-            "error": "Mensaje de error",
+            "error": "Mensaje de error:",
             "message": "Se ha producido un error en {{- filename}}",
             "title": "Error interno de {{- appName}}"
         }
@@ -213,11 +213,11 @@
         },
         "lcp": {
             "hidePassphrase": "Ocultar contraseña",
-            "hint": "Pista: ",
+            "hint": "Pista :",
             "open": "Abrir",
-            "password": "Contraseña",
+            "password": "Santo y seña",
             "sentence": "Esta publicación requiere una contraseña LCP para abrirse: ",
-            "showPassphrase": "Mostrar contraseña",
+            "showPassphrase": "Muestra la contraseña",
             "urlHint": "¿Olvidaste tu contraseña? Encuentra ayuda aquí",
             "whatIsLcp?": "¿Qué es LCP?",
             "whatIsLcpInfoDetails": "LCP significa 'Licensed Content Protection' (\"protección de contenido con licencia\").",
@@ -281,10 +281,10 @@
             "goSubBook": "Suscribirse"
         },
         "network": {
-            "error": "No se puede acceder al catálogo OPDS",
+            "error": "Se ha producido un error",
             "noInternet": "No hay internet",
             "noInternetMessage": "Intenta comprobar el cable de red, módem, router o wifi",
-            "reject": "Lo sentimos, se ha producido un error inesperado al intentar procesar el catálogo OPDS",
+            "reject": "Lo sentimos, se produjo un error al intentar procesar el flujo OPDS.",
             "timeout": "Finalizó el tiempo de espera de la red; por favor, vuelve a intentarlo más tarde"
         },
         "next": "Siguiente",
@@ -593,7 +593,7 @@
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": "TTS y lector de pantalla amigables"
+                "textual": "Texto e imágenes disponibles en voz sintetizada y braille."
             },
             "accessibilityFeature": {
                 "alternativeText": "Contiene texto alternativo",
@@ -760,8 +760,8 @@
             "speed": "Velocidad de reproducción para lectura en voz alta",
             "stop": "Detener lectura en voz alta",
             "title": "Lectura en voz alta",
-            "useTTSHighlightsForMO": "",
-            "useTTSHighlightsForMODescription": ""
+            "useTTSHighlightsForMO": "Resaltado personalizado",
+            "useTTSHighlightsForMODescription": "Deshabilitar estilos de editor"
         },
         "navigation": {
             "ZenModeExit": "Salir de modo Zen",
@@ -779,7 +779,7 @@
             "history": "Historial",
             "historyNext": "Avanzar en el historial",
             "historyPrevious": "Retroceder en el historial",
-            "infoTitle": "Información",
+            "infoTitle": "Informaciones",
             "magnifyingGlassButton": "Buscar en la publicación",
             "openTableOfContentsTitle": "Navegación",
             "page": "Página",
@@ -788,7 +788,7 @@
             "printDisabled": "No se permite imprimir",
             "screenNext": "Adelante",
             "screenPrevious": "Atrás",
-            "settingsTitle": "Opciones de configuración"
+            "settingsTitle": "Ajustes"
         },
         "notes": {
             "colors": {
@@ -802,9 +802,9 @@
         },
         "picker": {
             "search": {
-                "founds_many": "{{- count}} encontrado/s",
-                "founds_one": "{{- count}} encontrado/s",
-                "founds_other": "{{- count}} encontrado/s",
+                "founds_many": "{{- count}} encontrado(s)",
+                "founds_one": "{{- count}} encontrado",
+                "founds_other": "{{- count}} encontrados",
                 "input": "texto de búsqueda",
                 "next": "Siguiente",
                 "notFound": "no hay coincidencias",
@@ -848,7 +848,7 @@
             },
             "font": "Fuente",
             "fontSize": "Tamaño de fuente",
-            "increaseFontSize": "",
+            "increaseFontSize": "Aumentar el tamaño del texto",
             "infoCustomFont": "Selecciona una fuente personalizada del sistema operativo escribiendo su nombre",
             "justification": "Alineación",
             "justify": "Justificar",
@@ -856,7 +856,7 @@
             "lineSpacing": "Interlineado",
             "margin": "Margen",
             "mathjax": "Habilitar MathJax",
-            "noFootnotes": "Desactivar notas al pie",
+            "noFootnotes": "Desactivar notas al pie emergentes",
             "noRTLFlip": "Deshabilitar la interfaz de usuario de derecha a izquierda",
             "noRuby": "Ocultar Ruby japonés",
             "noTemporaryNavTargetOutline": "Desactivar los indicadores visuales de navegación",
@@ -886,7 +886,7 @@
                 "title": "Establecer opciones predeterminadas"
             },
             "preview": "Previsualizar",
-            "reduceFontSize": "",
+            "reduceFontSize": "Reducir el tamaño del texto",
             "reduceMotion": "Disminuir movimiento",
             "scrolled": "Desplazable",
             "spacing": "Espaciado",
@@ -946,7 +946,7 @@
         "keyboard": {
             "advancedMenu": "Menú",
             "cancel": "Cancelar",
-            "disclaimer": "Los atajos se definieron a partir de la distribución del teclado QWERTY.",
+            "disclaimer": "Los predeterminados de la aplicación se diseñó en función de la ubicación física de las teclas en un teclado QWERTY.",
             "editUserJson": "Editar archivo de usuario...",
             "exportToHTML": "Exportar a HTML",
             "keyboardShortcuts": "Atajos de teclado",
@@ -1187,7 +1187,7 @@
         },
         "note": {
             "export": {
-                "applyDefaultTemplate": "Aplicar plantilla predeterminada",
+                "applyDefaultTemplate": "Cargar la plantilla predeterminada",
                 "enableCheckbox": "Personalizar las plantillas HTML",
                 "overrideHTMLTemplate": "Exportación de notas (anotaciones y marcadores)"
             }
@@ -1265,7 +1265,7 @@
         },
         "title": {
             "resources": "Recursos y comunidad",
-            "welcome": "Bienvenido a Thorium 3"
+            "welcome": "Bienvenido a Thorium 3.4"
         }
     }
 }
