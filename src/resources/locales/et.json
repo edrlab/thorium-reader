@@ -67,16 +67,16 @@
         "customization": {
             "fallback": {
                 "description": "Profiili kirjeldus puudub",
-                "publications": "",
-                "screen": "",
-                "title": ""
+                "publications": "Profiili väljaanded/teosed",
+                "screen": "Pealkirja pole",
+                "title": "Profiili pealkiri"
             }
         },
         "delete": "Kustuta",
         "deleteBook": "Kustuta",
         "deleteTag": "Kustuta silt",
         "description": "Kirjeldus",
-        "emptyTagList": "",
+        "emptyTagList": "Siltidega väljaandeid/teoseid ei leidu.",
         "entry": {
             "continueReading": "Jätka lugemist",
             "lastAdditions": "Hiljuti lisatud"
@@ -89,19 +89,19 @@
         "lastRead": "Viimatiloetud",
         "login": "Logi sisse",
         "logout": "Logi välja",
-        "missing": "",
+        "missing": " ",
         "moreInfo": "Väljaande üksiksasjad",
         "myBooks": "Minu raamatud",
         "noPublicationHelpL1": "Lohista failid siia",
-        "noPublicationHelpL2": "",
+        "noPublicationHelpL2": "Või kasuta „{{- importTitle }}“ nuppu ülalt.",
         "noPublicationHelpL3": "LCP-kaitsega väljaanded on toetatud.",
         "noPublicationHelpL4": "Toetatud laiendused:",
         "numberOfPages": "Lehtede arv",
         "opds": {
             "auth": {
                 "cancel": "Katkesta",
-                "external": "",
-                "fallback": "",
+                "external": "Sisselogimisleht avaneb sinu veebibrauseris, palun järgi sealseid juhiseid. Pärast sisselogimist suunab veebibrauser sind tagasi sellesse rakendusse.",
+                "fallback": "Märkus: kui sisselogimisel tekib probleeme vaikimisi meetodiga veebibrauseri kaudu, proovi uuesti rakenduse siseselt.",
                 "login": "Logi sisse",
                 "password": "Salasõna",
                 "register": "Registreeru",
@@ -120,16 +120,16 @@
                 "availableUntil": "Kuni",
                 "copyAvalaible": "Saadaval",
                 "copyTotal": "Koopiaid",
-                "holdPosition": "",
+                "holdPosition": "Broneeringu olek",
                 "holdTotal": "Broneeritud",
-                "numberOfItems": "",
+                "numberOfItems": "Kirjete arv",
                 "priveValue": "Hind",
                 "state": "Olek"
             }
         },
         "publisher": "Kirjastus",
         "readBook": "Loe",
-        "released": "",
+        "released": "Avaldamise kuupäev",
         "removeFromFavorites": "Eemalda lemmikute seast",
         "selectTableHeaders": "Vali kuvatavad veerud",
         "sort": "Järjestus",
@@ -178,76 +178,76 @@
     },
     "error": {
         "errorBox": {
-            "error": "",
-            "message": "",
-            "title": ""
+            "error": "Veateade:",
+            "message": "Viga failis: {{- filename}}",
+            "title": "{{- appName}} - sisemine viga"
         }
     },
     "header": {
-        "allBooks": "",
+        "allBooks": "Kõik väljaanded",
         "catalogs": "Kataloogid",
         "downloads": "Allalaadimised",
-        "fitlerTagTitle": "",
+        "fitlerTagTitle": "Filtreeri sildi alusel",
         "gridTitle": "Ruudustik",
-        "home": "",
+        "home": "Raamaturiiuli menüü",
         "homeTitle": "Avaleht",
-        "importTitle": "",
+        "importTitle": "Impordi väljaanne/teos",
         "listTitle": "Tabel",
-        "myCatalogs": "",
+        "myCatalogs": "Minu kataloogid",
         "refreshTitle": "laadi uuesti",
         "searchPlaceholder": "Otsi",
         "searchTitle": "Otsi",
         "settings": "Seadistused",
-        "viewMode": ""
+        "viewMode": "Vaaterežiim"
     },
     "library": {
         "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "selectOption": ""
+            "addFilters": "Lisa filtreid",
+            "filterBy": "Filtreeri",
+            "selectOption": "Vali objekt"
         },
         "lcp": {
-            "hidePassphrase": "",
+            "hidePassphrase": "Peida salafraas",
             "hint": "Vihje:",
             "open": "Ava",
             "password": "Salasõna",
-            "sentence": "",
-            "showPassphrase": "",
-            "urlHint": "",
-            "whatIsLcp?": "",
-            "whatIsLcpInfoDetails": "",
-            "whatIsLcpInfoDetailsLink": ""
+            "sentence": "See väljaanne vaja avamiseks LCP salafraasi/salasõna",
+            "showPassphrase": "Näita salafraasi",
+            "urlHint": "Kas unustasid salafraasi/salasõna? Kasutatajatugi on siin.",
+            "whatIsLcp?": "Mis on LCP?",
+            "whatIsLcpInfoDetails": "LCP tähendab „Licensed Content Protection“ (litsentseeritud sisu kaitse). Tegemist on digitaalse sisu piraatkopeerimise vastu kaitsva tehnoloogiaga, mida nimetatakse sageli DRM-iks. LCP-ga kaitstud raamatu avamiseks on vaja LCP-võtit, st ühte või mitut tühikutega eraldatud sõna. LCP on avatud standard, mis loob tasakaalu kasutusmugavuse ja kirjastajate nõudmiste vahel.",
+            "whatIsLcpInfoDetailsLink": "Lisateavet leiad siit EDRLabi veebisaidi lingist."
         },
         "sorting": {
-            "addSorting": "",
-            "author": "",
-            "language": "",
-            "readingState": "",
-            "sortBy": "",
-            "title": ""
+            "addSorting": "Lisa järjestus",
+            "author": "Autor",
+            "language": "Keel",
+            "readingState": "Lugemise olek",
+            "sortBy": "Järjestus: ",
+            "title": "Pealkiri"
         }
     },
     "message": {
         "annotations": {
-            "alreadyImported": "",
-            "emptyFile": "",
-            "errorParsing": "",
-            "noBelongTo": "",
-            "nothing": "",
-            "success": ""
+            "alreadyImported": "Kõik märkmed on juba imporditud.",
+            "emptyFile": "Failis pole märkmeid.",
+            "errorParsing": "Viga faili töötlemisel: ",
+            "noBelongTo": "Märkmete importimine ei õnnestu - vähemalt üks märge pole väljaandega seotud.",
+            "nothing": "Pole ühtegi imporditavat märget, katkestan impordi",
+            "success": "Importimine õnnestus kenasti."
         },
         "download": {
-            "error": ""
+            "error": "„{{- title}}“ väljaande allalaadimine ei õnnestunud: {{- err}}"
         },
         "import": {
-            "alreadyImport": "",
-            "fail": "",
-            "success": ""
+            "alreadyImport": "„{{- title}}“ on juba imporditud.",
+            "fail": "„{{- path}}“ objekti importimine ei õnnestunud: {{- err}}",
+            "success": "„{{- title}}“ väljaande importimine sai kenasti tehtud."
         },
         "open": {
-            "error": ""
+            "error": "Väljaande/teise laadimine ei õnnestunud: {{- err}}"
         },
-        "wipeData": ""
+        "wipeData": "Sisselogimisandmed on eemaldatud (tunnusload ja küpsised)"
     },
     "opds": {
         "addForm": {
@@ -258,49 +258,49 @@
             "urlPlaceholder": "Link"
         },
         "addFormApiapp": {
-            "title": ""
+            "title": "Lisa raamatukogu kasutajakonto"
         },
-        "addMenu": "",
+        "addMenu": "Lisa OPDS-voog",
         "breadcrumbRoot": "Minu kataloogid",
-        "documentation": "",
-        "empty": "",
+        "documentation": "OPDS-i ametlik veebisait",
+        "empty": "Väljaannet/teost/raamatut ei leidu",
         "firstPage": "Esimene",
-        "informations": "",
+        "informations": "Kujuta ette maailma, kus saad vaid paari klõpsuga avalikest raamatukogudest ja digitaalsetest raamatupoodidest avastada ja alla laadida digitaalseid väljaandeid. Just seda pakubki kataloogivorming Open Publication Distribution System (OPDS). OPDS-i abil saad sirvida erinevate e-raamatute pakkujate katalooge, registreeruda, laenata või osta väljaandeid või külastada oma isiklikku raamaturiiulit. Võid isegi laadida e-raamatu või heliraamatu otse Thorium Readerisse, et seda kohe lugeda või kuulata.\nKuidas leida OPDS-kataloogi? See on lihtne. Otsi teenusepakkuja saidist kataloogile viivat hüperlinki (võrguaadressi). Kopeeri see aadress ülalolevale lingiväljale. Pea meeles, et kõiki aktiivseid OPDS-katalooge ei ole ühte kohta koondatud. Pead võtma ühendust oma eelistatud raamatukogu või raamatumüüjaga ja küsima nende OPDS-kataloogi võrguaadresso. Kui sa ei tea, kust alustada, on Vikipedias mõned OPDS-kataloogide registrid erinevates keeltes, mis võivad abiks olla.\nVälji „Nimi“ on lisatud vaid mugavuse pärast ja võib jääda tühjaks; see lihtsalt võimaldab Thorium Readeris andmevoogu hõlpsasti tuvastada.",
         "lastPage": "Viimane",
         "menu": {
-            "aboutBook": "",
-            "addExtract": "",
-            "goBuyBook": "",
-            "goLoanBook": "",
-            "goRevokeLoanBook": "",
+            "aboutBook": "Väljaande teave",
+            "addExtract": "Impordi näide",
+            "goBuyBook": "Osta väljaanne",
+            "goLoanBook": "Laenuta väljaanne",
+            "goRevokeLoanBook": "Tühista laenutus",
             "goSubBook": "Telli"
         },
         "network": {
-            "error": "",
-            "noInternet": "",
-            "noInternetMessage": "",
-            "reject": "",
-            "timeout": ""
+            "error": "Viga ligipääsul andmevoole",
+            "noInternet": "Internetiühendust pole",
+            "noInternetMessage": "Proovi kontrollida võrgukaabli olekut, modemi, ruuteri ja WiFi toimimist",
+            "reject": "Vabandame, OPDS-andmevoo töötlemisel tekkis viga!",
+            "timeout": "Võrguühenduse aegumine, palun proovi hiljem uuesti"
         },
         "next": "Järgmine",
         "previous": "Eelmine",
-        "resumeBrowsing": "",
+        "resumeBrowsing": "Jätka sirvimist",
         "shelf": "Raamaturiiul",
         "updateForm": {
             "name": "Nimi:",
-            "title": "",
+            "title": "Muuda OPDS-andmevoogu",
             "updateButton": "Muuda",
             "url": "Link:"
         },
-        "whatIsOpds": ""
+        "whatIsOpds": "Mis on OPDS-andmevoog?"
     },
     "publ-a11y-display-guide": {
         "accessibility-summary": {
-            "accessibility-summary-title": ""
+            "accessibility-summary-title": "Kokkuvõte hõlbustusest ja ligipääsetavusest"
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "",
+                "compact": "ARIA-rollid on kaasatud",
                 "descriptive": ""
             },
             "additional-accessibility-information-audio-descriptions": {
@@ -534,7 +534,7 @@
             },
             "rich-content-unknown": {
                 "compact": "",
-                "descriptive": ""
+                "descriptive": "Teavet pole saadaval"
             }
         },
         "ways-of-reading": {
@@ -612,56 +612,56 @@
             },
             "certifierReport": "",
             "conformsTo": "",
-            "moreInformation": "",
+            "moreInformation": "Lisateave",
             "name": "Hõlbustus",
-            "noA11y": ""
+            "noA11y": "Hõlbustuse ja ligipääsetavuse teavet pole saadaval"
         },
         "actions": "Tegevused",
         "audio": {
             "tracks": "Heliribad"
         },
         "author": "Autor",
-        "cancelledLcp": "",
-        "certificateRevoked": "",
-        "certificateSignatureInvalid": "",
+        "cancelledLcp": "Selle väljaande LCP-litsents on tühistatud.",
+        "certificateRevoked": "LCP-litsentsi sertifikaat on tühistatud.",
+        "certificateSignatureInvalid": "Vigane LCP-litsentsi sertifikaadi allkiri.",
         "cover": {
-            "img": ""
+            "img": "kaanepilt"
         },
         "day": "päev",
         "days": "päeva",
         "duration": {
             "title": "Kestus"
         },
-        "encryptedNoLicense": "",
-        "expired": "",
-        "expiredLcp": "",
-        "incorrectPassphrase": "",
+        "encryptedNoLicense": "Väljaanne on krüptitud, kuid LCP-litsents on puudu!",
+        "expired": "Laenutus on aegunud",
+        "expiredLcp": "Selle väljaande LCP-litsents on aegunud.",
+        "incorrectPassphrase": "Mitte ükski salvestatud salasõna/salafraas ei sobi selle väljaandega või on sisestus vigane.",
         "lcpEnd": "Lõpp",
-        "lcpRightsCopy": "",
-        "lcpRightsPrint": "",
+        "lcpRightsCopy": "Kopeeritud tähemärke",
+        "lcpRightsPrint": "Trükitud lehti",
         "lcpStart": "Algus",
-        "licenceLCP": "",
-        "licenseCertificateDateInvalid": "",
-        "licenseOutOfDate": "",
-        "licenseSignatureInvalid": "",
+        "licenceLCP": "LCP-litsents",
+        "licenseCertificateDateInvalid": "LCP-teenusepakkuja sertifikaat aegus enne LCP-litsentsi väljaandmise kuupäeva ({{- dateTime}}).",
+        "licenseOutOfDate": "Aegunud LCP-litsents.",
+        "licenseSignatureInvalid": "LCP-litsentsi vigane allkiri.",
         "licensed": "Litsentseeritud",
-        "markAsRead": "",
-        "notStarted": "",
-        "onGoing": "",
+        "markAsRead": "Märgi loetuks",
+        "notStarted": "Pole alustatud",
+        "onGoing": "Pooleli",
         "progression": {
             "title": "Edenemine"
         },
         "read": "Lõpetatud",
-        "remainingTime": "",
+        "remainingTime": "Laenutus (jäänud aeg)",
         "renewButton": "Pikenda laenutust",
         "returnButton": "Tagasta",
-        "returnedLcp": "",
-        "revokedLcp": "",
-        "seeLess": "",
-        "seeMore": "",
-        "timeLeft": "",
+        "returnedLcp": "See LCP-litsentsiga kaitsutud väljaanne on tagastatud.",
+        "revokedLcp": "Selle väljaande LCP-litsents on tühistatud.",
+        "seeLess": "Kuva vähem",
+        "seeMore": "Kuva rohkem",
+        "timeLeft": "Allesjäänud aeg",
         "title": "Pealkiri",
-        "userKeyCheckInvalid": ""
+        "userKeyCheckInvalid": "Vigane salasfraas/saalsõna."
     },
     "reader": {
         "annotations": {
@@ -708,38 +708,38 @@
             "index": ""
         },
         "divina": {
-            "mute": "",
-            "unmute": ""
+            "mute": "summuta heli",
+            "unmute": "lõpeta heli summutamine"
         },
         "dock": {
-            "dockDefault": "",
-            "dockLeft": "",
-            "dockRight": ""
+            "dockDefault": "Näita riba modaalse hüpikaknana",
+            "dockLeft": "Kinnita riba vasakule",
+            "dockRight": "Kinnita riba paremal"
         },
         "fxl": {
             "fit": "Sobita"
         },
-        "goToContent": "",
+        "goToContent": "Suundu sisu juurde",
         "imgViewer": {
-            "title": "",
-            "zoomIn": "",
-            "zoomOut": "",
-            "zoomReset": ""
+            "title": "Pildivaataja (suum)",
+            "zoomIn": "Suumi sisse/suurenda",
+            "zoomOut": "Suumi välja/vähenda",
+            "zoomReset": "Lähtesta suum"
         },
         "marks": {
             "annotations": "Märkmed",
             "bookmarks": "Järjehoidjad",
             "delete": "Kustuta",
             "edit": "Muuda",
-            "goTo": "",
+            "goTo": "Ava leht",
             "landmarks": "",
             "saveMark": "Salvesta",
             "search": "Otsi",
-            "searchResult": "",
-            "toc": ""
+            "searchResult": "Otsi: {{- searchText}}",
+            "toc": "Sisukord"
         },
         "media-overlays": {
-            "activate": "",
+            "activate": "Käivita ettelugemine",
             "captions": "",
             "captionsDescription": "",
             "disableContinuousPlay": "",
@@ -815,7 +815,7 @@
             "lcpInfo": "",
             "noPagesLcpLimitReached": "",
             "noPrintablePages": "",
-            "pageHelpInfo": "",
+            "pageHelpInfo": "Lehevalija süntaks:",
             "pageHelpInfo1": "",
             "pageHelpInfo2": "",
             "pageHelpInfo3": "",
@@ -823,17 +823,17 @@
             "pages": "Lehed",
             "preview": "Eelvaade",
             "print": "Prindi",
-            "printablePages": "",
-            "title": ""
+            "printablePages": "Prinditavaid lehti (kokku)",
+            "title": "Prinditavate lehtede valik"
         },
         "settings": {
             "column": {
                 "auto": "Vaikimisi",
-                "one": "",
+                "one": "1 veerg",
                 "title": "Veerud",
-                "two": ""
+                "two": "2 veergu"
             },
-            "customFontSelected": "",
+            "customFontSelected": "sa oled eelistanud kasutada isiklikku kirjatüüpi",
             "customizeReader": "",
             "disabled": "pole kasutusel",
             "display": "Ekraanivaade",
@@ -927,10 +927,10 @@
         "annotationCreator": {
             "creator": "",
             "help": "",
-            "name": "",
-            "organization": "",
-            "person": "",
-            "type": ""
+            "name": "Nimi",
+            "organization": "Organisatsioon",
+            "person": "Isik",
+            "type": "Tüüp:"
         },
         "auth": {
             "help": "",
