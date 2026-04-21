@@ -35,8 +35,8 @@
                         "no": "Ei",
                         "yes": "Jah"
                     },
-                    "help": "",
-                    "message": "",
+                    "help": "Selle eelistusega saad määrata, et rakenduse sulgemisel avatud lugemisaknad avataks järgmisel käivitamisel automaatselt uuesti.",
+                    "message": "Lugemisessiooni salvestamine ja taastamine",
                     "title": "Kas salvestad sessiooni?"
                 }
             }
@@ -52,7 +52,7 @@
     "catalog": {
         "AddToFavorites": "Lisa lemmikuks",
         "about": {
-            "title": ""
+            "title": "Rakenduse teave võrgus: {{- appName}}"
         },
         "addBookToLib": "Impordi",
         "addTags": "Lisa silt",
@@ -139,18 +139,18 @@
     },
     "dialog": {
         "annotations": {
-            "descAuthor": "",
-            "descCreator": "",
+            "descAuthor": "autorilt {{- author}}",
+            "descCreator": "loojalt",
             "descList_one": "{{- count}} märge kasutajalt „{{- creator}}“ imporditakse teosesse „{{- title}}“, mille autor on „{{- author}}“",
             "descList_other": "{{- count}} märget kasutajalt „{{- creator}}“ imporditakse teosesse „{{- title}}“, mille autor on „{{- author}}“",
             "descNewer_one": "Vastuolu: {{- count}} uuem märge",
             "descNewer_other": "Vastuolu: {{- count}} uuemat märget",
             "descOlder_one": "Vastuolu: {{- count}} vanem märge",
             "descOlder_other": "Vastuolu: {{- count}} vanemat märget",
-            "descTitle": "",
-            "importAll": "",
+            "descTitle": "Märkmete pealkiri: ",
+            "importAll": "Impordi kõik märkmed",
             "importWithoutConflict": "Impordi vaid konfliktideta märkmed",
-            "origin": "",
+            "origin": "Algne väljaanne: '{{- title}}' {{- author}}",
             "title": "Kas impordid märkmed?"
         },
         "cancel": "Katkesta",
@@ -161,19 +161,19 @@
                 "title": ""
             }
         },
-        "deleteAnnotations": "",
+        "deleteAnnotations": "Kas kustutad märlmed?",
         "deleteAnnotationsText_one": "Kas oled kindel, et soovid {{- count}} märke kustutada?",
         "deleteAnnotationsText_other": "Kas oled kindel, et soovid {{- count}} märget kustutada?",
-        "deleteBookmarks": "",
+        "deleteBookmarks": "Kas kustutad järjehoidjad?",
         "deleteBookmarksText_one": "Kas oled kindel, et soovid {{- count}} järjehoidja kustutada?",
         "deleteBookmarksText_other": "Kas oled kindel, et soovid {{- count}} järjehoidjat kustutada?",
         "deleteFeed": "Kas kustutad kataloogi?",
         "deletePublication": "Kas kustutad raamatu?",
-        "deletePublicationWithNotes": "",
-        "import": "",
-        "importError": "",
-        "renew": "",
-        "return": "",
+        "deletePublicationWithNotes": "Hoiatus: sellel väljaandel leidub märkmeid ja/või järjehoidjaid ning need kustutatakse samuti! (kui soovid neid säilitada, ekspordi märkmed enne väljaande eemaldamist)",
+        "import": "Kinnita importimine:",
+        "importError": "Tekkis viga, kontrolli {{acceptedExtension}} laiendust",
+        "renew": "Kas pikendad laenutust?",
+        "return": "Kas tagastad raamatu?",
         "yes": "Jah"
     },
     "error": {
@@ -667,39 +667,39 @@
         "annotations": {
             "Color": "Värv",
             "addNote": "Lisa märge",
-            "advancedMode": "",
+            "advancedMode": "Kiirlisamine (automaatne lisamine peale valimist)",
             "annotationsExport": {
                 "description": "Eksporditud märkmete nimi:",
                 "title": "Pealkiri"
             },
             "annotationsOptions": "Märkmete valikud",
             "date": "Muutmise kuupäev",
-            "export": "",
+            "export": "Salvesta märkmed kui…",
             "filter": {
                 "all": "Kõik",
-                "filterByColor": "",
-                "filterByCreator": "",
-                "filterByDrawtype": "",
-                "filterByTag": "",
-                "filterOptions": "",
+                "filterByColor": "Filtreeri värvi alusel",
+                "filterByCreator": "Filtreeri looja alusel",
+                "filterByDrawtype": "Filtreeri tüübi alusel",
+                "filterByTag": "Filtreeri sildi alusel",
+                "filterOptions": "Filtri valikud",
                 "none": "Puudub"
             },
-            "hide": "",
+            "hide": "Ära kuva",
             "highlight": "Tõsta esile",
-            "noSelectionToast": "",
-            "note": "",
-            "quickAnnotations": "",
+            "noSelectionToast": "Valikut pole",
+            "note": "{{- color}} märge",
+            "quickAnnotations": "Kiirlisamine (muutmisvaateta)",
             "saveNote": "Salvesta",
             "sorting": {
                 "lastcreated": "Viimati loodud",
-                "lastmodified": "",
+                "lastmodified": "Viimati muudetud",
                 "progression": "Edenemine",
-                "sortingOptions": ""
+                "sortingOptions": "Järjestuse valikud"
             },
-            "toggleMarginMarks": "",
+            "toggleMarginMarks": "Näita veeristel",
             "type": {
-                "outline": "",
-                "solid": "",
+                "outline": "Äärejoon",
+                "solid": "Ühevärviline taust",
                 "strikethrough": "Läbukriipsutus",
                 "underline": "Allajoonimine"
             }
@@ -987,7 +987,7 @@
                 },
                 "CloseReader": {
                     "description": "",
-                    "name": ""
+                    "name": "Sulge lugemisvaade"
                 },
                 "FXLZoomIn": {
                     "description": "",
@@ -1026,12 +1026,12 @@
                     "name": ""
                 },
                 "FocusReaderNavigationSearch": {
-                    "description": "",
-                    "name": ""
+                    "description": "Säti klahvistiku fookus üldotsingule lugemsivaates tegevuste ribal",
+                    "name": "Säti fookus üldotsingule"
                 },
                 "FocusReaderNavigationTOC": {
-                    "description": "",
-                    "name": ""
+                    "description": "Säti klahvistiku fookus sisukorrale lugemisvaates tegevuste ribal",
+                    "name": "Säti fookus sisukorrale"
                 },
                 "FocusReaderSettings": {
                     "description": "",
