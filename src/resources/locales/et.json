@@ -12,7 +12,7 @@
     "apiapp": {
         "documentation": "Thoriumi juhend",
         "howItWorks": "Kuidas see toimib?",
-        "informations": "",
+        "informations": "Prantsusmaal pakuvad paljud avalikud raamatukogud masinloetavat kataloogi (sarnane OPDS-iga, kuid mitte identne), mis võimaldab lugejatel alla laadida digitaalseid väljaandeid oma isiklikust raamaturiiulist. Selle tehnoloogia lõimimine Thorium Readerisse võimaldab sul e-raamatu või heliraamatu otse Thorium Readerisse alla laadida ja kohe lugema/kuulama hakata.\nKuidas ühendada oma prantsuse avaliku raamatukogu konto Thorium Readeriga? See on lihtne. Sisesta otsinguväljale Prantsuse linn („Paris“) või osa raamatukogu nimest ja vajuta nuppu „Otsi“. Ilmub sinu otsingule vastavate avalike raamatukogude loend. Vali raamatukogu ja vajuta nuppu „Lisa“. Uuendatud kataloogide nimekirjas vali see raamatukogu: kuvatakse autentimisvorm. Sisesta oma kasutajanimi/e-posti aadress ja salasõna ning vajuta nuppu „Logi sisse“. Nüüd näed oma isikliku raamaturiiuli sisu, kust saad alla laadida ja lugeda varem laenatud e-raamatuid ja heliraamatuid.",
         "noLibraryFound": "Raamatukogu ei leidu ({{- name}})"
     },
     "app": {
@@ -37,20 +37,20 @@
                     },
                     "help": "",
                     "message": "",
-                    "title": ""
+                    "title": "Kas salvestad sessiooni?"
                 }
             }
         },
         "update": {
-            "message": "",
-            "title": ""
+            "message": "Uus versioon on saadaval, klõpsa lisateabe lugemiseks.",
+            "title": "{{- appName}} - tarkvarauuendus."
         },
         "window": {
-            "showLibrary": ""
+            "showLibrary": "Näita oma kogu / raamaturiiulit"
         }
     },
     "catalog": {
-        "AddToFavorites": "",
+        "AddToFavorites": "Lisa lemmikuks",
         "about": {
             "title": ""
         },
@@ -74,29 +74,29 @@
         },
         "delete": "Kustuta",
         "deleteBook": "Kustuta",
-        "deleteTag": "",
+        "deleteTag": "Kustuta silt",
         "description": "Kirjeldus",
         "emptyTagList": "",
         "entry": {
-            "continueReading": "",
-            "lastAdditions": ""
+            "continueReading": "Jätka lugemist",
+            "lastAdditions": "Hiljuti lisatud"
         },
-        "export": "",
-        "exportAnnotation": "",
+        "export": "Salvesta kui",
+        "exportAnnotation": "Ekspordi märkmed",
         "format": "Vorming",
-        "importAnnotation": "",
+        "importAnnotation": "Impordi märkmed",
         "lang": "Keel",
-        "lastRead": "",
+        "lastRead": "Viimatiloetud",
         "login": "Logi sisse",
         "logout": "Logi välja",
         "missing": "",
-        "moreInfo": "",
-        "myBooks": "",
-        "noPublicationHelpL1": "",
+        "moreInfo": "Väljaande üksiksasjad",
+        "myBooks": "Minu raamatud",
+        "noPublicationHelpL1": "Lohista failid siia",
         "noPublicationHelpL2": "",
-        "noPublicationHelpL3": "",
-        "noPublicationHelpL4": "",
-        "numberOfPages": "",
+        "noPublicationHelpL3": "LCP-kaitsega väljaanded on toetatud.",
+        "noPublicationHelpL4": "Toetatud laiendused:",
+        "numberOfPages": "Lehtede arv",
         "opds": {
             "auth": {
                 "cancel": "Katkesta",
@@ -105,8 +105,8 @@
                 "login": "Logi sisse",
                 "password": "Salasõna",
                 "register": "Registreeru",
-                "retry": "",
-                "username": ""
+                "retry": "Proovi uuesti",
+                "username": "Kasutajanimi / e-posti aadress"
             },
             "info": {
                 "availableSince": "Alates",
@@ -128,11 +128,11 @@
             }
         },
         "publisher": "Kirjastus",
-        "readBook": "",
+        "readBook": "Loe",
         "released": "",
-        "removeFromFavorites": "",
-        "selectTableHeaders": "",
-        "sort": "",
+        "removeFromFavorites": "Eemalda lemmikute seast",
+        "selectTableHeaders": "Vali kuvatavad veerud",
+        "sort": "Järjestus",
         "tag": "Silt",
         "tags": "Sildid",
         "update": "Muuda"
@@ -149,15 +149,15 @@
             "descOlder_other": "Vastuolu: {{- count}} vanemat märget",
             "descTitle": "",
             "importAll": "",
-            "importWithoutConflict": "",
+            "importWithoutConflict": "Impordi vaid konfliktideta märkmed",
             "origin": "",
-            "title": ""
+            "title": "Kas impordid märkmed?"
         },
         "cancel": "Katkesta",
         "customization": {
             "splashscreen": {
                 "fallbackWelcomeScreen": "",
-                "state": "",
+                "state": "Olek: {{- state}}",
                 "title": ""
             }
         },
@@ -167,8 +167,8 @@
         "deleteBookmarks": "",
         "deleteBookmarksText_one": "Kas oled kindel, et soovid {{- count}} järjehoidja kustutada?",
         "deleteBookmarksText_other": "Kas oled kindel, et soovid {{- count}} järjehoidjat kustutada?",
-        "deleteFeed": "",
-        "deletePublication": "",
+        "deleteFeed": "Kas kustutad kataloogi?",
+        "deletePublication": "Kas kustutad raamatu?",
         "deletePublicationWithNotes": "",
         "import": "",
         "importError": "",
@@ -285,12 +285,12 @@
         "next": "Järgmine",
         "previous": "Eelmine",
         "resumeBrowsing": "",
-        "shelf": "",
+        "shelf": "Raamaturiiul",
         "updateForm": {
-            "name": "",
+            "name": "Nimi:",
             "title": "",
-            "updateButton": "",
-            "url": ""
+            "updateButton": "Muuda",
+            "url": "Link:"
         },
         "whatIsOpds": ""
     },
@@ -308,8 +308,8 @@
                 "descriptive": ""
             },
             "additional-accessibility-information-braille": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Braille-kiri",
+                "descriptive": "Braille-kiri"
             },
             "additional-accessibility-information-full-ruby-annotations": {
                 "compact": "",
@@ -414,7 +414,7 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "conformance-title": "",
+            "conformance-title": "Hõlbustusreeglite täitmine",
             "conformance-unknown-standard": {
                 "compact": "",
                 "descriptive": ""
@@ -454,7 +454,7 @@
                 "descriptive": ""
             },
             "hazards-sound": {
-                "compact": "",
+                "compact": "Helid",
                 "descriptive": ""
             },
             "hazards-sound-none": {
@@ -465,7 +465,7 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "hazards-title": "",
+            "hazards-title": "Ohud",
             "hazards-unknown": {
                 "compact": "",
                 "descriptive": ""
@@ -473,7 +473,7 @@
         },
         "navigation": {
             "navigation-index": {
-                "compact": "",
+                "compact": "Indeks",
                 "descriptive": ""
             },
             "navigation-no-metadata": {
@@ -485,10 +485,10 @@
                 "descriptive": ""
             },
             "navigation-structural": {
-                "compact": "",
+                "compact": "Pealkirjad",
                 "descriptive": ""
             },
-            "navigation-title": "",
+            "navigation-title": "Liikumine rakenduses",
             "navigation-toc": {
                 "compact": "",
                 "descriptive": ""
@@ -600,108 +600,108 @@
                 "tableOfContents": ""
             },
             "accessibilityHazard": {
-                "flashing": "",
+                "flashing": "Vilkumine",
                 "motionSimulation": "",
-                "name": "",
+                "name": "Oht:",
                 "noFlashing": "",
                 "noMotionSimulation": "",
                 "noSound": "",
-                "none": "",
-                "sound": "",
-                "unknown": ""
+                "none": "Puudub",
+                "sound": "Heli",
+                "unknown": "Pole teada"
             },
             "certifierReport": "",
             "conformsTo": "",
             "moreInformation": "",
-            "name": "",
+            "name": "Hõlbustus",
             "noA11y": ""
         },
-        "actions": "",
+        "actions": "Tegevused",
         "audio": {
-            "tracks": ""
+            "tracks": "Heliribad"
         },
-        "author": "",
+        "author": "Autor",
         "cancelledLcp": "",
         "certificateRevoked": "",
         "certificateSignatureInvalid": "",
         "cover": {
             "img": ""
         },
-        "day": "",
-        "days": "",
+        "day": "päev",
+        "days": "päeva",
         "duration": {
-            "title": ""
+            "title": "Kestus"
         },
         "encryptedNoLicense": "",
         "expired": "",
         "expiredLcp": "",
         "incorrectPassphrase": "",
-        "lcpEnd": "",
+        "lcpEnd": "Lõpp",
         "lcpRightsCopy": "",
         "lcpRightsPrint": "",
-        "lcpStart": "",
+        "lcpStart": "Algus",
         "licenceLCP": "",
         "licenseCertificateDateInvalid": "",
         "licenseOutOfDate": "",
         "licenseSignatureInvalid": "",
-        "licensed": "",
+        "licensed": "Litsentseeritud",
         "markAsRead": "",
         "notStarted": "",
         "onGoing": "",
         "progression": {
-            "title": ""
+            "title": "Edenemine"
         },
-        "read": "",
+        "read": "Lõpetatud",
         "remainingTime": "",
-        "renewButton": "",
-        "returnButton": "",
+        "renewButton": "Pikenda laenutust",
+        "returnButton": "Tagasta",
         "returnedLcp": "",
         "revokedLcp": "",
         "seeLess": "",
         "seeMore": "",
         "timeLeft": "",
-        "title": "",
+        "title": "Pealkiri",
         "userKeyCheckInvalid": ""
     },
     "reader": {
         "annotations": {
-            "Color": "",
-            "addNote": "",
+            "Color": "Värv",
+            "addNote": "Lisa märge",
             "advancedMode": "",
             "annotationsExport": {
-                "description": "",
-                "title": ""
+                "description": "Eksporditud märkmete nimi:",
+                "title": "Pealkiri"
             },
-            "annotationsOptions": "",
-            "date": "",
+            "annotationsOptions": "Märkmete valikud",
+            "date": "Muutmise kuupäev",
             "export": "",
             "filter": {
-                "all": "",
+                "all": "Kõik",
                 "filterByColor": "",
                 "filterByCreator": "",
                 "filterByDrawtype": "",
                 "filterByTag": "",
                 "filterOptions": "",
-                "none": ""
+                "none": "Puudub"
             },
             "hide": "",
-            "highlight": "",
+            "highlight": "Tõsta esile",
             "noSelectionToast": "",
             "note": "",
             "quickAnnotations": "",
-            "saveNote": "",
+            "saveNote": "Salvesta",
             "sorting": {
-                "lastcreated": "",
+                "lastcreated": "Viimati loodud",
                 "lastmodified": "",
-                "progression": "",
+                "progression": "Edenemine",
                 "sortingOptions": ""
             },
             "toggleMarginMarks": "",
             "type": {
                 "outline": "",
                 "solid": "",
-                "strikethrough": "",
-                "underline": ""
+                "strikethrough": "Läbukriipsutus",
+                "underline": "Allajoonimine"
             }
         },
         "bookmarks": {
@@ -717,7 +717,7 @@
             "dockRight": ""
         },
         "fxl": {
-            "fit": ""
+            "fit": "Sobita"
         },
         "goToContent": "",
         "imgViewer": {
@@ -727,14 +727,14 @@
             "zoomReset": ""
         },
         "marks": {
-            "annotations": "",
-            "bookmarks": "",
-            "delete": "",
-            "edit": "",
+            "annotations": "Märkmed",
+            "bookmarks": "Järjehoidjad",
+            "delete": "Kustuta",
+            "edit": "Muuda",
             "goTo": "",
             "landmarks": "",
-            "saveMark": "",
-            "search": "",
+            "saveMark": "Salvesta",
+            "search": "Otsi",
             "searchResult": "",
             "toc": ""
         },
@@ -750,20 +750,20 @@
             "pause": "",
             "play": "",
             "previous": "",
-            "skip": "",
+            "skip": "Vahelejätmise võimalus",
             "skipDescription": "",
             "speed": "",
             "stop": "",
-            "title": "",
+            "title": "Valjult ettelugemine",
             "useTTSHighlightsForMO": "",
             "useTTSHighlightsForMODescription": ""
         },
         "navigation": {
             "ZenModeExit": "",
             "ZenModeTitle": "",
-            "annotationTitle": "",
+            "annotationTitle": "Märge",
             "backHomeTitle": "",
-            "bookmarkTitle": "",
+            "bookmarkTitle": "Järjehoidja",
             "currentPage": "",
             "currentPageTotal": "",
             "detachWindowTitle": "",
@@ -774,25 +774,25 @@
             "history": "",
             "historyNext": "",
             "historyPrevious": "",
-            "infoTitle": "",
+            "infoTitle": "Teave",
             "magnifyingGlassButton": "",
-            "openTableOfContentsTitle": "",
-            "page": "",
+            "openTableOfContentsTitle": "Rakenduses liikumine",
+            "page": "Leht",
             "pdfscalemode": "",
-            "print": "",
+            "print": "Trüki",
             "printDisabled": "",
             "screenNext": "",
             "screenPrevious": "",
-            "settingsTitle": ""
+            "settingsTitle": "Seadistused"
         },
         "notes": {
             "colors": {
-                "cyan": "",
-                "green": "",
-                "orange": "",
-                "purple": "",
-                "red": "",
-                "yellow": ""
+                "cyan": "Rohekassinine",
+                "green": "Roheline",
+                "orange": "Oranž",
+                "purple": "Purpurpunane",
+                "red": "Punane",
+                "yellow": "Kollane"
             }
         },
         "picker": {
@@ -800,13 +800,13 @@
                 "founds_one": "{{- count}} vaste",
                 "founds_other": "{{- count}} vastet",
                 "input": "",
-                "next": "",
+                "next": "Järgmine",
                 "notFound": "",
-                "previous": "",
-                "results": "",
-                "submit": ""
+                "previous": "Eelmine",
+                "results": "Tulemused",
+                "submit": "Otsi"
             },
-            "searchTitle": ""
+            "searchTitle": "Otsi:"
         },
         "print": {
             "descriptionLcpCount": "",
@@ -820,69 +820,69 @@
             "pageHelpInfo2": "",
             "pageHelpInfo3": "",
             "pageHelpInfo4": "",
-            "pages": "",
-            "preview": "",
-            "print": "",
+            "pages": "Lehed",
+            "preview": "Eelvaade",
+            "print": "Prindi",
             "printablePages": "",
             "title": ""
         },
         "settings": {
             "column": {
-                "auto": "",
+                "auto": "Vaikimisi",
                 "one": "",
-                "title": "",
+                "title": "Veerud",
                 "two": ""
             },
             "customFontSelected": "",
             "customizeReader": "",
-            "disabled": "",
-            "display": "",
+            "disabled": "pole kasutusel",
+            "display": "Ekraanivaade",
             "disposition": {
-                "title": ""
+                "title": "Paigutus"
             },
-            "font": "",
+            "font": "Kirjatüüp",
             "fontSize": "",
             "increaseFontSize": "",
             "infoCustomFont": "",
-            "justification": "",
-            "justify": "",
+            "justification": "Joondumine",
+            "justify": "Joonda rööpselt",
             "letterSpacing": "",
             "lineSpacing": "",
-            "margin": "",
+            "margin": "Veeris",
             "mathjax": "",
             "noFootnotes": "",
             "noRTLFlip": "",
             "noRuby": "",
             "noTemporaryNavTargetOutline": "",
-            "paginated": "",
+            "paginated": "Jagatud lehtedeks",
             "paraSpacing": "",
             "pdfZoom": {
                 "name": {
-                    "100pct": "",
-                    "150pct": "",
-                    "200pct": "",
-                    "300pct": "",
-                    "500pct": "",
-                    "50pct": "",
+                    "100pct": "100%",
+                    "150pct": "150%",
+                    "200pct": "200%",
+                    "300pct": "300%",
+                    "500pct": "500%",
+                    "50pct": "50%",
                     "fit": "",
                     "width": ""
                 },
-                "title": ""
+                "title": "Suumimine"
             },
             "preset": {
-                "apply": "",
+                "apply": "Rakenda",
                 "applyDetails": "",
                 "detail": "",
-                "reset": "",
+                "reset": "Lähtesta",
                 "resetDetails": "",
-                "save": "",
+                "save": "Salvesta",
                 "saveDetails": "",
-                "title": ""
+                "title": "Eelistused"
             },
-            "preview": "",
+            "preview": "Eelvaade",
             "reduceFontSize": "",
             "reduceMotion": "",
-            "scrolled": "",
+            "scrolled": "Keritav",
             "spacing": "",
             "spreadModeEven": "",
             "text": "",
