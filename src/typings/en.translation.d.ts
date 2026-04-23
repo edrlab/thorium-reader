@@ -460,6 +460,7 @@ declare namespace typed_i18n {
   readonly "searchPlaceholder": string,
   readonly "searchTitle": string,
   readonly "settings": string,
+  readonly "settingsLabel": string,
   readonly "viewMode": string
 };
   (_: "header.allBooks", __?: {}): string;
@@ -476,6 +477,7 @@ declare namespace typed_i18n {
   (_: "header.searchPlaceholder", __?: {}): string;
   (_: "header.searchTitle", __?: {}): string;
   (_: "header.settings", __?: {}): string;
+  (_: "header.settingsLabel", __?: {}): string;
   (_: "header.viewMode", __?: {}): string;
   (_: "library", __?: {}): {
   readonly "filter": {

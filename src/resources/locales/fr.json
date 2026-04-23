@@ -203,6 +203,7 @@
         "searchPlaceholder": "Rechercher",
         "searchTitle": "Titre, auteur, format ou mot-clé",
         "settings": "Préférences",
+        "settingsLabel": "Préférences de l'application",
         "viewMode": "Mode d'affichage"
     },
     "library": {
@@ -788,7 +789,7 @@
             "printDisabled": "Impression non autorisée",
             "screenNext": "Avancer",
             "screenPrevious": "Reculer",
-            "settingsTitle": "Préférences"
+            "settingsTitle": "Préférences du lecteur"
         },
         "notes": {
             "colors": {

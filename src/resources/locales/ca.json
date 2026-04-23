@@ -203,6 +203,7 @@
         "searchPlaceholder": "Cercar",
         "searchTitle": "Iniciar cerca",
         "settings": "Opcions de configuració",
+        "settingsLabel": "",
         "viewMode": "Mode de visualització"
     },
     "library": {

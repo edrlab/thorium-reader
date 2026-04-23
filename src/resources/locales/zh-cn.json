@@ -193,6 +193,7 @@
         "searchPlaceholder": "搜索",
         "searchTitle": "开始搜索",
         "settings": "设置",
+        "settingsLabel": "",
         "viewMode": "查看模式"
     },
     "library": {

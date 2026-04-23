@@ -198,6 +198,7 @@
         "searchPlaceholder": "Search",
         "searchTitle": "Search",
         "settings": "Settings",
+        "settingsLabel": "Application Settings",
         "viewMode": "View mode"
     },
     "library": {
@@ -783,7 +784,7 @@
             "printDisabled": "Print forbidden",
             "screenNext": "Go forward",
             "screenPrevious": "Go backward",
-            "settingsTitle": "Settings"
+            "settingsTitle": "Reader settings"
         },
         "notes": {
             "colors": {

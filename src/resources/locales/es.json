@@ -203,6 +203,7 @@
         "searchPlaceholder": "Buscar",
         "searchTitle": "Iniciar búsqueda",
         "settings": "Opciones de configuración",
+        "settingsLabel": "",
         "viewMode": "Modo de vista"
     },
     "library": {

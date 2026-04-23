@@ -193,6 +193,7 @@
         "searchPlaceholder": "検索",
         "searchTitle": "検索する",
         "settings": "設定",
+        "settingsLabel": "",
         "viewMode": "表示モード"
     },
     "library": {

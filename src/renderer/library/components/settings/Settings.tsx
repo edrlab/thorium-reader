@@ -683,7 +683,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
         <Dialog.Trigger asChild>
             <button title={__("header.settings")} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                 <SVG ariaHidden svg={GearIcon} />
-                <h3 dir={isRTL ? "rtl" : "ltr"}>{__("header.settings")}</h3>
+                <h3 dir={isRTL ? "rtl" : "ltr"} aria-label={__("header.settingsLabel")}>{__("header.settings")}</h3>
             </button>
         </Dialog.Trigger>
         <Dialog.Portal>
