@@ -285,7 +285,8 @@ function* checkAppVersionUpdate() {
                             });
                             if (res.response === 0) {
                                 if (json.url && /^https?:\/\//.test(json.url)) { // ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc.
-                                    await shell.openExternal(json.url);
+                                    // await shell.openExternal(json.url);
+                                    await shell.openExternal("https://thorium.edrlab.org/en/");
                                 }
                             }
                         });
