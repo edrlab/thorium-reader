@@ -3,11 +3,11 @@
         "bookMenu": "Meny",
         "closeDialog": "Stäng",
         "importFile": "Importera bok",
-        "leftSlideButton": "Dra åt vänster",
+        "leftSlideButton": "Gå till vänster",
         "mainContent": "huvudinnehåll",
-        "rightSlideButton": "Dra åt höger",
+        "rightSlideButton": "Gå till höger",
         "skipLink": "Hoppa till innehåll",
-        "toolbar": "vektygsfält"
+        "toolbar": "verktygsfält"
     },
     "apiapp": {
         "documentation": "Thorium-dokumentation",
@@ -131,7 +131,7 @@
         "readBook": "Läs",
         "released": "Publicerad den",
         "removeFromFavorites": "Ta bort från favoriter",
-        "selectTableHeaders": "",
+        "selectTableHeaders": "Välj kolumner att visa",
         "sort": "Sortera efter",
         "tag": "Tagg",
         "tags": "Taggar",
@@ -842,7 +842,7 @@
             },
             "font": "Typsnitt",
             "fontSize": "Textstorlek",
-            "increaseFontSize": "",
+            "increaseFontSize": "Öka textstorlek",
             "infoCustomFont": "Välj ett typsnitt från operativsystemet genom att skriva dess namn",
             "justification": "Justering",
             "justify": "Justerad",
@@ -880,7 +880,7 @@
                 "title": "Förinställning"
             },
             "preview": "Förhandsvisning",
-            "reduceFontSize": "",
+            "reduceFontSize": "Minska textstorlek",
             "reduceMotion": "Minska rörelser",
             "scrolled": "Rullningsbar",
             "spacing": "Avstånd",
