@@ -341,7 +341,11 @@ export function saga() {
                 try {
                     let nextUserDirectory = userDirectory;
 
-                    if (!userDirectory && !currentUserDirectory) {
+                    // - userDirectory + currentUserDirectory => reopen the picker at userDirectory and store the new selection in nextUserDirectory
+                    // - userDirectory + no currentUserDirectory => open the picker at userDirectory and store the new selection in nextUserDirectory
+                    // - no userDirectory + no currentUserDirectory => force an initial directory choice and store it in nextUserDirectory
+                    // - no userDirectory + currentUserDirectory => keep nextUserDirectory empty to remove the current directory
+                    if (userDirectory || !currentUserDirectory) {
                         const win = getLibraryWindowFromDi();
                         if (!win || win.isDestroyed() || win.webContents.isDestroyed()) {
                             debug("ERROR!! No library Browser window !!! exit");
@@ -349,26 +353,7 @@ export function saga() {
                         }
 
                         const res = yield* callTyped(() => dialog.showOpenDialog(win, {
-                            properties: ["openDirectory", "createDirectory"],
-                        }));
-
-                        if (res.canceled) {
-                            return;
-                        }
-
-                        nextUserDirectory = res.filePaths[0] || "";
-                        if (!nextUserDirectory) {
-                            return;
-                        }
-                    } else if (userDirectory) {
-                        const win = getLibraryWindowFromDi();
-                        if (!win || win.isDestroyed() || win.webContents.isDestroyed()) {
-                            debug("ERROR!! No library Browser window !!! exit");
-                            return;
-                        }
-
-                        const res = yield* callTyped(() => dialog.showOpenDialog(win, {
-                            defaultPath: userDirectory,
+                            ...(userDirectory ? { defaultPath: userDirectory } : {}),
                             properties: ["openDirectory", "createDirectory"],
                         }));
 
@@ -383,7 +368,9 @@ export function saga() {
                     }
 
                     yield* callTyped(() => publicationDirectory.setUserDirectory(nextUserDirectory));
-                    if (nextUserDirectory && currentUserDirectory && nextUserDirectory !== currentUserDirectory) {
+                    
+                    // Open the previous user directory so the user can find and move existing files if needed.
+                    if (currentUserDirectory && nextUserDirectory !== currentUserDirectory) {
                         yield* callTyped(() => shell.openPath(currentUserDirectory));
                         // yield* callTyped(() => shell.openPath(nextUserDirectory));
                     }

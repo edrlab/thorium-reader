@@ -13,6 +13,21 @@ import { rmrf } from "readium-desktop/utils/fs";
 
 const debug = debug_("readium-desktop:main/storage/publication-directory");
 
+type UserDirectoryConfig = {
+    directory: [string, ...string[]];
+};
+
+function isUserDirectoryConfig(value: unknown): value is UserDirectoryConfig {
+    if (!value || typeof value !== "object") {
+        return false;
+    }
+
+    const directory = (value as { directory?: unknown }).directory;
+    return Array.isArray(directory)
+        && typeof directory[0] === "string"
+        && directory[0].length > 0;
+}
+
 @injectable()
 export class PublicationDirectory {
     public readonly defaultDirectory: string;
@@ -22,31 +37,22 @@ export class PublicationDirectory {
         this.defaultDirectory = defaultDirectory;
         // Best-effort async initialization: startup must keep working with the
         // default directory even if the persisted user directory is missing or invalid.
-        this.readUserDirectory().catch(() => {
-            // Ignore invalid or missing config.
-        });
+        void this.readUserDirectory();
     }
 
-    /**
-     * Loads the persisted user directory in the background.
-     * If the path is valid, it becomes the preferred storage directory.
-     */
+    // Load the persisted directory in the background and keep it only if it still exists.
     private async readUserDirectory(): Promise<void> {
         try {
             const jsonStr = await fs.promises.readFile(userPublicationDirectoryConfigPath, "utf-8");
-            const jsonObj = JSON.parse(jsonStr);
-            const directoryPath = Array.isArray(jsonObj.directory)
-                ? jsonObj.directory[0]
-                : undefined;
-
-            if (!directoryPath) {
+            const json = JSON.parse(jsonStr) as unknown;
+            if (!isUserDirectoryConfig(json)) {
                 return;
             }
-
-            if (!(await this.isDirectory(directoryPath))) {
+            const directoryPath = json.directory[0];
+            const isDirectory = await this.isDirectory(directoryPath);
+            if (!isDirectory) {
                 return;
             }
-
             this.userDirectory = directoryPath;
             debug("Set publication storage directory to", directoryPath);
         } catch (e) {
@@ -54,9 +60,6 @@ export class PublicationDirectory {
         }
     }
 
-    /**
-     * Persists a new user directory if the provided path is a valid directory.
-     */
     public async setUserDirectory(directoryPath: string): Promise<void> {
         if (!directoryPath) {
             this.userDirectory = undefined;
@@ -64,33 +67,23 @@ export class PublicationDirectory {
             return;
         }
 
-        if (!(await this.isDirectory(directoryPath))) {
+        const isDirectory = await this.isDirectory(directoryPath);
+        if (!isDirectory) {
             return;
         }
-
         this.userDirectory = directoryPath;
-
-        const jsonStr = JSON.stringify(
-            { directory: [directoryPath] },
-            null,
-            4,
-        );
-
-        await fs.promises.writeFile(
-            userPublicationDirectoryConfigPath,
-            jsonStr,
-            "utf-8",
-        );
+        const jsonStr = JSON.stringify({ directory: [directoryPath] }, null, 4);
+        await fs.promises.writeFile(userPublicationDirectoryConfigPath, jsonStr, "utf-8");
     }
 
     public async getDirectoryPath(): Promise<string> {
         const userDirectory = this.userDirectory;
 
-        if (userDirectory && (await this.isDirectory(userDirectory))) {
-            return userDirectory;
+        if (!userDirectory) {
+            return this.defaultDirectory;
         }
-
-        return this.defaultDirectory;
+        const isDirectory = await this.isDirectory(userDirectory);
+        return isDirectory ? userDirectory : this.defaultDirectory;
     }
 
     private async isDirectory(path: string): Promise<boolean> {
