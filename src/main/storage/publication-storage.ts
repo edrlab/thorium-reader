@@ -215,9 +215,7 @@ export class PublicationStorage {
 
         assertUUIDv4(identifier);
 
-        if (this.__publicationEpubPathMap.has(identifier)) {
-            this.__publicationEpubPathMap.delete(identifier);
-        }
+        this.__publicationEpubPathMap.delete(identifier);
 
 
         // try {
@@ -249,22 +247,29 @@ export class PublicationStorage {
         // }
 
         const publicationDirectory = diMainGet("publication-directory");
-        const p = await this.findPublicationPath(identifier);
-        const p1 = publicationDirectory.userDirectory ?  path.join(publicationDirectory.userDirectory, identifier) : undefined;
-        const p2 = path.join(publicationDirectory.defaultDirectory, identifier);
+        const defaultPublicationDirectoryPath = path.join(publicationDirectory.defaultDirectory, identifier);
         try {
-            if (p1) {
-                await rmrf(p1);
+            const stat = await fs.promises.stat(defaultPublicationDirectoryPath);
+            if (stat.isDirectory()) {
+                await rmrf(defaultPublicationDirectoryPath);
             }
-        } catch (e) {
-            debug(p1 === p ? e : "ok");
-        }
-        try {
-            await rmrf(p2);
-        } catch (e) {
-            debug(p2 === p ? e : "ok");
+        } catch {
+            // ignore
         }
 
+
+        // TODO: rm or unlink?
+        if (publicationDirectory.userDirectory) {
+            const userPublicationDirectoryPath = path.join(publicationDirectory.userDirectory, identifier);
+            try {
+                const stat = await fs.promises.stat(userPublicationDirectoryPath);
+                if (stat.isDirectory()) {
+                    await rmrf(userPublicationDirectoryPath);
+                }
+            } catch {
+                // ignore
+            }
+        }
     }
 
     public async getPublicationEpubPath(identifier: string): Promise<string> {
