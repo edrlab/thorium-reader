@@ -1263,8 +1263,8 @@
         },
         "dontShow": "Больше не показывать",
         "resources": {
-            "discord": "Discord: https://discord.gg/2GnubQbE",
-            "website": "Веб-сайт: https://www.thoriumreader.com"
+            "discord": "Discord: {{- url}}",
+            "website": "Веб-сайт: {{- url}}"
         },
         "tab": {
             "home": "Главная",

@@ -1251,8 +1251,8 @@
         },
         "dontShow": "Μην το δείξεις ξανά",
         "resources": {
-            "discord": "Μετάβασηστο Discord: https://discord.gg/2GnubQbE",
-            "website": "Ιστότοπος: https://www.thoriumreader.com"
+            "discord": "Μετάβασηστο Discord: {{- url}}",
+            "website": "Ιστότοπος: {{- url}}"
         },
         "tab": {
             "home": "Αρχική",

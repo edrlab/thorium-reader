@@ -1251,8 +1251,8 @@
         },
         "dontShow": "Bir daha gösterme",
         "resources": {
-            "discord": "Discord: https://discord.gg/2GnubQbE",
-            "website": "Web sitesi: https://www.thoriumreader.com"
+            "discord": "Discord: {{- url}}",
+            "website": "Web sitesi: {{- url}}"
         },
         "tab": {
             "home": "Anasayfa",

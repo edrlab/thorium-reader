@@ -1251,8 +1251,8 @@
         },
         "dontShow": "Älä näytä uudestaan",
         "resources": {
-            "discord": "Discord: https://discord.gg/2GnubQbE",
-            "website": "Verkkosivu: https://www.thoriumreader.com"
+            "discord": "Discord: {{- url}}",
+            "website": "Verkkosivu: {{- url}}"
         },
         "tab": {
             "home": "Koti",

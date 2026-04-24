@@ -1257,8 +1257,8 @@
         },
         "dontShow": "No volver a mostrar",
         "resources": {
-            "discord": "Discord: https://discord.gg/2GnubQbE",
-            "website": "Sitio web: https://www.thoriumreader.com"
+            "discord": "Discord: {{- url}}",
+            "website": "Sitio web: {{- url}}"
         },
         "tab": {
             "home": "Inicio",

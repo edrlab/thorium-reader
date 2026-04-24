@@ -174,7 +174,7 @@ export const WizardModal = () => {
                                                         await shell.openExternal(href);
                                                     }
                                                 }}>
-                                                🌐 {__("wizard.resources.website")}
+                                                🌐 {__("wizard.resources.website", { url: "https://www.thoriumreader.com" })}
                                             </a>
                                             <a dir={isRTL ? "rtl" : "ltr"} href=""
                                                 style={{ color: "var(--color-brand-primary)", textDecoration: "none", fontSize: "16px", fontWeight: "500" }}
@@ -185,7 +185,7 @@ export const WizardModal = () => {
                                                         await shell.openExternal(href);
                                                     }
                                                 }}>
-                                                💬 {__("wizard.resources.discord")}
+                                                💬 {__("wizard.resources.discord", { url: "https://discord.gg/2GnubQbE" })}
                                             </a>
                                         </div>
                                     </div>

@@ -1263,8 +1263,8 @@
         },
         "dontShow": "Daugiau neberodyti",
         "resources": {
-            "discord": "Discord: https://discord.gg/2GnubQbE",
-            "website": "Svetainė: https://www.thoriumreader.com"
+            "discord": "Discord: {{- url}}",
+            "website": "Svetainė: {{- url}}"
         },
         "tab": {
             "home": "Pradžia",
