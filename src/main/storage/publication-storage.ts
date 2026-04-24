@@ -135,40 +135,74 @@ export class PublicationStorage {
 
         assertUUIDv4(identifier);
 
-        // Create a directory whose name is equals to publication identifier
-        const pubDirPath = path.join(await diMainGet("publication-directory").getDirectoryPath(), identifier);
+        const publicationDirectory = diMainGet("publication-directory");
+        const directoryPath = await publicationDirectory.getDirectoryPath();
+        const defaultDirectoryPath = publicationDirectory.defaultDirectory;
+        // New imports should use the user directory when available.
+        const publicationDirectoryPath = path.join(directoryPath, identifier);
+        debug(`storePublication in directory ${publicationDirectoryPath}`);
 
         try {
-            await fs.promises.mkdir(pubDirPath);
+            return await this.storePublicationInDirectory(identifier, srcPath, publicationDirectoryPath);
+        } catch (e) {
+            if (directoryPath === defaultDirectoryPath) {
+                throw e;
+            }
+            // If writing to the configured external directory fails, retry in default storage.
+            debug(`storePublication failed in configured directory ${publicationDirectoryPath}, retry in default directory`, e);
+            try {
+                await rmrf(publicationDirectoryPath);
+            } catch (err) {
+                debug("storePublication cleanup before retry failed", err);
+            }
+            const defaultPublicationDirectoryPath = path.join(defaultDirectoryPath, identifier);
+            debug(`storePublication fallback to default directory ${defaultPublicationDirectoryPath} for ${identifier}`);
+            return this.storePublicationInDirectory(
+                identifier,
+                srcPath,
+                defaultPublicationDirectoryPath,
+            );
+        }
+    }
+
+    private async storePublicationInDirectory(
+        identifier: string,
+        srcPath: string,
+        publicationDirectoryPath: string,
+    ): Promise<File[]> {
+        debug(`storePublication write into ${publicationDirectoryPath} for ${identifier}`);
+
+        try {
+            await fs.promises.mkdir(publicationDirectoryPath);
         } catch (e: any) {
-            debug(`mkdir ${pubDirPath}: ${e}`);
+            debug(`mkdir ${publicationDirectoryPath}: ${e}`);
             if (e.code === "EEXIST") {
                 debug("Directory already exists");
                 debug("How to handle this error?");
                 debug("Do we have to clean the directory before using it?");
                 debug("For the moment let's remove the directory");
                 try {
-                    await rmrf(pubDirPath);
-                    await fs.promises.mkdir(pubDirPath);
-                } catch (e) {
-                    debug(e);
+                    await rmrf(publicationDirectoryPath);
+                    await fs.promises.mkdir(publicationDirectoryPath);
+                } catch (err) {
+                    debug(err);
                 }
             }
         }
 
-        const dirStat = await fs.promises.stat(pubDirPath);
+        const dirStat = await fs.promises.stat(publicationDirectoryPath);
         if (!dirStat.isDirectory()) {
-            throw new Error(`Directory: (${pubDirPath}) not created`);
+            throw new Error(`Directory: (${publicationDirectoryPath}) not created`);
         }
 
         const files: File[] = [];
 
         const bookFile = await this.storePublicationBook(
-            identifier, srcPath, pubDirPath);
+            identifier, srcPath, publicationDirectoryPath);
         files.push(bookFile);
 
         const coverFile = await this.storePublicationCover(
-            identifier, srcPath, pubDirPath);
+            identifier, srcPath, publicationDirectoryPath);
         if (coverFile) {
             files.push(coverFile);
         }
