@@ -19,9 +19,6 @@ export interface IPublicationApi {
         identifier: string,
         preservePublicationOnFileSystem?: string,
     ) => SagaGenerator<void>;
-    openFolder: (
-        Identifier?: string,
-    ) => SagaGenerator<void>;
     findAll: (
     ) => SagaGenerator<PublicationView[]>;
     findByTag: (
@@ -61,7 +58,6 @@ export interface IPublicationApi {
 export interface IPublicationModuleApi {
     "publication/get": IPublicationApi["get"];
     "publication/delete": IPublicationApi["delete"];
-    "publication/openFolder": IPublicationApi["openFolder"];
     "publication/findAll": IPublicationApi["findAll"];
     "publication/findByTag": IPublicationApi["findByTag"];
     "publication/updateTags": IPublicationApi["updateTags"];

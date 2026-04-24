@@ -11,6 +11,7 @@ import * as stylesSettings from "readium-desktop/renderer/assets/styles/componen
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 import * as stylesAnnotations from "readium-desktop/renderer/assets/styles/components/annotations.scss";
 import * as stylesInput from "readium-desktop/renderer/assets/styles/components/inputs.scss";
+import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
 import * as stylesDropDown from "readium-desktop/renderer/assets/styles/components/dropdown.scss";
 import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/components/popoverDialog.scss";
 
@@ -18,6 +19,7 @@ import * as stylesPopoverDialog from "readium-desktop/renderer/assets/styles/com
 // import {I18nProvider} from 'react-aria';
 
 import * as React from "react";
+import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as Tabs from "@radix-ui/react-tabs";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/close-icon.svg";
@@ -25,6 +27,7 @@ import * as CogIcon from "readium-desktop/renderer/assets/icons/cog-icon.svg";
 import * as PaletteIcon from "readium-desktop/renderer/assets/icons/palette-icon.svg";
 import * as KeyReturnIcon from "readium-desktop/renderer/assets/icons/keyreturn-icon.svg";
 import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar-icon.svg";
+import * as LibraryIcon from "readium-desktop/renderer/assets/icons/library-icon.svg";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import SVG, { ISVGProps } from "readium-desktop/renderer/common/components/SVG";
 import classNames from "classnames";
@@ -35,7 +38,7 @@ import { availableLanguages } from "readium-desktop/common/services/translator";
 // import * as ChevronDown from "readium-desktop/renderer/assets/icons/chevron-down.svg";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
-import { authActions, creatorActions, customizationActions, i18nActions, noteExport, screenReaderActions, settingsActions, themeActions } from "readium-desktop/common/redux/actions";
+import { authActions, catalogActions, creatorActions, customizationActions, i18nActions, noteExport, screenReaderActions, settingsActions, themeActions } from "readium-desktop/common/redux/actions";
 import * as BinIcon from "readium-desktop/renderer/assets/icons/trash-icon.svg";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 import { TTheme } from "readium-desktop/common/redux/states/theme";
@@ -63,6 +66,46 @@ import moment from "moment";
 // import { TagGroup, TagList, Tag, Label } from "react-aria-components";
 
 interface ISettingsProps {};
+
+const StorageConfirmDialog = (props: {
+    open: boolean;
+    title: string;
+    description: string;
+    confirmLabel: string;
+    onConfirm: () => void;
+    onOpenChange: (open: boolean) => void;
+}) => {
+    return (
+        <AlertDialog.Root open={props.open} onOpenChange={props.onOpenChange}>
+            <AlertDialog.Portal>
+                <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay} />
+                <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
+                    <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>
+                        {props.title}
+                    </AlertDialog.Title>
+                    <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
+                        {props.description}
+                    </AlertDialog.Description>
+                    <div className={stylesAlertModals.AlertDialogButtonContainer}>
+                        <AlertDialog.Cancel asChild>
+                            <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.abort)}>
+                                Cancel
+                            </button>
+                        </AlertDialog.Cancel>
+                        <AlertDialog.Action asChild>
+                            <button
+                                className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.yes)}
+                                onClick={props.onConfirm}
+                            >
+                                {props.confirmLabel}
+                            </button>
+                        </AlertDialog.Action>
+                    </div>
+                </AlertDialog.Content>
+            </AlertDialog.Portal>
+        </AlertDialog.Root>
+    );
+};
 
 const TabTitle = (props: React.PropsWithChildren<{title: string}>) => {
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
@@ -644,6 +687,226 @@ const Profiles = () => {
     );
 };
 
+const StorageSettings: React.FC<{}> = () => {
+    const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const isRTL = locale === "ar";
+    const dispatch = useDispatch();
+    const directoryState = useSelector((state: ILibraryRootState) => state.publication.directory);
+    const defaultDirectory = directoryState?.defaultDirectory || "";
+    const userDirectory = directoryState?.userDirectory || "";
+
+    const [isEditing, setIsEditing] = React.useState(false);
+    const [confirmAddOpen, setConfirmAddOpen] = React.useState(false);
+    const [confirmEditOpen, setConfirmEditOpen] = React.useState(false);
+    const [confirmDeleteOpen, setConfirmDeleteOpen] = React.useState(false);
+
+    const submitDirectory = React.useCallback((nextDirectory: string) => {
+        dispatch(catalogActions.setUserDirectory.build(nextDirectory));
+        setIsEditing(false);
+    }, [dispatch]);
+
+    const openFolderPicker = React.useCallback(() => {
+        dispatch(catalogActions.setUserDirectory.build(userDirectory));
+        setIsEditing(false);
+    }, [dispatch, userDirectory]);
+
+    if (!defaultDirectory) {
+        return <></>;
+    }
+
+    return (
+        <>
+            <StorageConfirmDialog
+                open={confirmAddOpen}
+                onOpenChange={setConfirmAddOpen}
+                title="Enable external publication storage"
+                description="This feature is currently in beta. Do you want to continue and configure an external publication storage directory?"
+                confirmLabel="Continue"
+                onConfirm={() => {
+                    setConfirmAddOpen(false);
+                    setIsEditing(true);
+                }}
+            />
+            <StorageConfirmDialog
+                open={confirmEditOpen}
+                onOpenChange={setConfirmEditOpen}
+                title="Edit external publication storage"
+                description="Changing the external publication storage directory requires manual care. Thorium will not migrate existing publications for you. Do you want to continue?"
+                confirmLabel="Edit directory"
+                onConfirm={() => {
+                    setConfirmEditOpen(false);
+                    setIsEditing(true);
+                }}
+            />
+            <StorageConfirmDialog
+                open={confirmDeleteOpen}
+                onOpenChange={setConfirmDeleteOpen}
+                title="Remove external publication storage"
+                description="Removing the configured external publication storage directory does not migrate publications back automatically. Do you want to remove this directory from Thorium configuration?"
+                confirmLabel="Remove directory"
+                onConfirm={() => {
+                    setConfirmDeleteOpen(false);
+                    submitDirectory("");
+                }}
+            />
+
+            <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}>
+                <h4 dir={isRTL ? "rtl" : "ltr"}>Storage</h4>
+                <div className={stylesSettings.session_text} style={{ alignItems: "flex-start" }}>
+                    <SVG ariaHidden svg={InfoIcon} />
+                    <div dir={isRTL ? "rtl" : "ltr"} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                        <p>This external publication storage feature is currently in beta testing.</p>
+                        <p>No migration will be performed by Thorium. If you change storage location, moving publications is entirely your responsibility.</p>
+                        <p>You are responsible for the integrity and availability of this directory. Be careful with deletion, remote access, slow devices or network paths, and filesystem permissions.</p>
+                        <p>Publications stored by Thorium in this directory are immutable application data and reflect Thorium&apos;s internal storage structure. Editing, renaming, moving, or deleting files inside it can break publication reading and may crash the reader for affected items.</p>
+                        <p>You can consider this directory a vault managed by Thorium.</p>
+                    </div>
+                </div>
+
+                <div dir={isRTL ? "rtl" : "ltr"} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+                    <div style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "12px",
+                        padding: "14px 16px",
+                        border: "1px solid var(--color-button-border)",
+                        borderRadius: "8px",
+                        background: "var(--color-gray-50)",
+                    }}>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                            <p style={{ margin: 0, fontWeight: 600 }}>Locations</p>
+                            <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                                <p style={{ margin: 0 }}><strong>Default internal storage</strong></p>
+                                <button
+                                    className={stylesButtons.button_transparency}
+                                    style={{
+                                        justifyContent: "flex-start",
+                                        width: "100%",
+                                        height: "auto",
+                                        minHeight: "unset",
+                                        textAlign: "left",
+                                        whiteSpace: "normal",
+                                        overflowWrap: "anywhere",
+                                        wordBreak: "break-word",
+                                        lineHeight: 1.4,
+                                    }}
+                                    onClick={() => dispatch(catalogActions.openDefaultDirectory.build())}
+                                >
+                                    {defaultDirectory}
+                                </button>
+                            </div>
+                            {userDirectory ?
+
+                                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                                    <p style={{ margin: 0 }}><strong>External storage</strong></p>
+                                    <button
+                                        className={stylesButtons.button_transparency}
+                                        style={{
+                                            justifyContent: "flex-start",
+                                            width: "100%",
+                                            height: "auto",
+                                            minHeight: "unset",
+                                            textAlign: "left",
+                                            whiteSpace: "normal",
+                                            overflowWrap: "anywhere",
+                                            wordBreak: "break-word",
+                                            lineHeight: 1.4,
+                                        }}
+                                        onClick={() => dispatch(catalogActions.openUserDirectory.build())}
+                                    >
+                                        {userDirectory}
+                                    </button>
+                                </div> : <></>
+                            }
+                        </div>
+                    </div>
+
+                    <div style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "12px",
+                        padding: "16px",
+                        border: "1px solid var(--color-button-border)",
+                        borderRadius: "8px",
+                        background: "var(--color-neutral-base)",
+                        boxShadow: "0 1px 0 var(--color-gray-100)",
+                    }}>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                            <p style={{ margin: 0, fontWeight: 600 }}>Configuration</p>
+                            {!userDirectory && !isEditing ? (
+                                <div className={stylesSettings.session_text} style={{ margin: 0, alignItems: "flex-start" }}>
+                                    <SVG ariaHidden svg={InfoIcon} />
+                                    <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                                        <p style={{ margin: 0, fontWeight: 600 }}>Not configured for the moment.</p>
+                                        <p style={{ margin: 0 }}>
+                                            Configure an external storage directory to store new publications outside of Thorium&apos;s default internal location.
+                                        </p>
+                                    </div>
+                                </div>
+                            ) : null}
+                            {userDirectory && !isEditing ? (
+                                <p style={{ margin: 0 }}>
+                                    The external storage directory is configured and ready to use for newly stored publications.
+                                </p>
+                            ) : null}
+                            {isEditing ? (
+                                <p style={{ margin: 0 }}>
+                                    Choose the folder that Thorium should use as external publication storage.
+                                </p>
+                            ) : null}
+                        </div>
+
+                        {!userDirectory && !isEditing ? (
+                            <button
+                                className={stylesSettings.btn_primary}
+                                onClick={() => setConfirmAddOpen(true)}
+                            >
+                                Add external storage directory
+                            </button>
+                        ) : null}
+
+                        {userDirectory && !isEditing ? (
+                            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                                <button
+                                    className={stylesSettings.btn_primary}
+                                    onClick={() => setConfirmEditOpen(true)}
+                                >
+                                    Change external storage directory
+                                </button>
+                                <button
+                                    className={stylesButtons.button_secondary_blue}
+                                    onClick={() => setConfirmDeleteOpen(true)}
+                                >
+                                    Remove external storage directory
+                                </button>
+                            </div>
+                        ) : null}
+
+                        {isEditing ? (
+                            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
+                                <button
+                                    className={stylesSettings.btn_primary}
+                                    onClick={openFolderPicker}
+                                >
+                                    Choose folder
+                                </button>
+                                <button
+                                    className={stylesButtons.button_transparency}
+                                    onClick={() => {
+                                        setIsEditing(false);
+                                    }}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        ) : null}
+                    </div>
+                </div>
+            </section>
+        </>
+    );
+};
+
 const TabHeader = (props: React.PropsWithChildren<{title: string, advancedTrigger: boolean}>) => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
@@ -715,6 +978,10 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             <SVG ariaHidden svg={AvatarIcon} />
                             <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.profiles")}</h3>
                         </Tabs.Trigger>
+                        <Tabs.Trigger value="tab6" onFocus={() => setTabTitle("Storage")}>
+                            <SVG ariaHidden svg={LibraryIcon} />
+                            <h3 dir={isRTL ? "rtl" : "ltr"}>Storage</h3>
+                        </Tabs.Trigger>
                     </Tabs.List>
                     <div className={stylesSettings.settings_content} style={{ marginTop: "70px" }}>
                         <Tabs.Content value="tab1" tabIndex={-1}>
@@ -741,6 +1008,11 @@ export const Settings: React.FC<ISettingsProps> = () => {
                         <Tabs.Content value="tab5" tabIndex={-1}>
                             <div className={stylesSettings.settings_tab}>
                                 <Profiles />
+                            </div>
+                        </Tabs.Content>
+                        <Tabs.Content value="tab6" tabIndex={-1}>
+                            <div className={stylesSettings.settings_tab}>
+                                <StorageSettings />
                             </div>
                         </Tabs.Content>
                     </div>

@@ -16,13 +16,11 @@ import { importFromFs, importFromLink, importFromString } from "./import";
 import { search, searchEqTitle } from "./search";
 import { updateTags } from "./updateTags";
 import { SagaGenerator } from "typed-redux-saga";
-import { openPublicationFolder } from "./openFolder";
 
 export const publicationApi: IPublicationApi = {
     findAll,
     get: getPublication,
     delete: deletePublication,
-    openFolder: openPublicationFolder,
     findByTag,
     search,
     exportPublication,

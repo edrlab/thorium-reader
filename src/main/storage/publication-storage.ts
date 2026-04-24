@@ -22,6 +22,7 @@ import debug_ from "debug";
 import { sanitizeForFilename } from "readium-desktop/common/safe-filename";
 import { URL_PROTOCOL_STORE } from "readium-desktop/common/streamerProtocol";
 import { IReaderStateReaderPersistence } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { diMainGet } from "../di";
 
 const debug = debug_("readium-desktop:main/storage/pub-storage");
 
@@ -48,28 +49,6 @@ const jsonStringify = (d: any) => (__TH__IS_DEV__ || __TH__IS_CI__) ? JSON.strin
 @injectable()
 export class PublicationStorage {
 
-    /**
-     * from di.ts
-     * %appData%\config-data-json{-dev}\
-     */
-    // private configDataFolderPath: string;
-
-    /**
-     * appData/userData default publication storage directory path
-     * aka: %appData%\publications{-dev}\<uuid>
-     */
-    private defaultVaultPath: string;
-
-    /**
-     * publication storage directory path choose by user
-     */
-    private userVaultPath: Promise<string>;
-
-    /**
-     * json config path of the user choosen vault
-     */
-    private userVaultConfigPath: string;
-
     private assertAndGetFileName = (type: TFileTypePubStorage) => {
         const fileName = type === "locator" ? "locator.json" : type === "config" ? "config.json" : type === "disableRTLFlip" ? "disableRTLFlip.json" : type === "divina" ? "divina.json" : type === "allowCustomConfig" ? "allowCustomConfig.json" : type === "noteTotalCount" ? "noteTotalCount.json" : type === "pdfConfig" ? "pdfConfig.json" : "";
         if (!fileName) {
@@ -77,75 +56,6 @@ export class PublicationStorage {
         }
         return fileName;
     };
-
-    public constructor(rootPath: string, userVaultConfigPath: string) {
-        this.userVaultConfigPath = userVaultConfigPath;
-        this.defaultVaultPath = rootPath;
-        this.userVaultPath = this.readUserVault().then((userVaultPath) => {
-            debug("USER_VAULT_PATH=", userVaultPath);
-            return userVaultPath;
-        }).catch((e: any): undefined => {
-            debug(`${e}`);
-            return undefined;
-        }); // promise not resolved
-    }
-
-    private async readUserVault(): Promise<string> {
-        let userVaultPath = "";
-        try {
-            const jsonStr = await fs.promises.readFile(this.userVaultConfigPath, { encoding: "utf-8" });
-            const jsonObj = JSON.parse(jsonStr);
-            userVaultPath = Array.isArray(jsonObj.vault) ? jsonObj.vault[0] : "";
-        } catch {
-            // ignore
-        }
-
-        if (!userVaultPath) {
-            return undefined;
-        }
-        try {
-            // fs.promises.access(userVaultPath, fs.constants.W_OK | fs.constants.R_OK);
-            const dirStat = await fs.promises.stat(userVaultPath);
-            if (!dirStat.isDirectory()) {
-                throw new Error(`Directory: (${userVaultPath}) not created`);
-            }
-        } catch {
-            return undefined;
-        }
-
-        debug("Set publication storage vault to", userVaultPath);
-
-        return userVaultPath;
-    }
-
-    public async setUserVault(directoryPath: string) {
-
-        if (!directoryPath) {
-            return ;
-        }
-
-        try {
-            // fs.promises.access(directoryPath, fs.constants.W_OK | fs.constants.R_OK);
-            const dirStat = await fs.promises.stat(directoryPath);
-            if (!dirStat.isDirectory()) {
-                throw new Error(`Directory: (${directoryPath}) not created`);
-            }
-        } catch {
-            return;
-        }
-
-        const jsonObj = { vault: [directoryPath] };
-        const jsonStr = JSON.stringify(jsonObj, null, 4);
-        await fs.promises.writeFile(this.userVaultConfigPath, jsonStr, { encoding: "utf-8" });
-    }
-
-    // private only
-    // public getRootPath() {
-    //     return this.defaultRootPath;
-    // }
-    public async getVaultPath() {
-        return (await this.userVaultPath) || this.defaultVaultPath;
-    }
 
     public async writeJsonObj(
         identifier: string,
@@ -226,7 +136,7 @@ export class PublicationStorage {
         assertUUIDv4(identifier);
 
         // Create a directory whose name is equals to publication identifier
-        const pubDirPath = path.join(await this.getVaultPath(), identifier);
+        const pubDirPath = path.join(await diMainGet("publication-directory").getDirectoryPath(), identifier);
 
         try {
             await fs.promises.mkdir(pubDirPath);
@@ -304,10 +214,10 @@ export class PublicationStorage {
         //     debug(`removePublication error (ignore) ${identifier} ${p}`);
         // }
 
+        const publicationDirectory = diMainGet("publication-directory");
         const p = await this.findPublicationPath(identifier);
-        const userVaultPath = await this.userVaultPath; // can be undefined;
-        const p1 = userVaultPath ? path.join(userVaultPath, identifier) : undefined;
-        const p2 = path.join(this.defaultVaultPath, identifier);
+        const p1 = publicationDirectory.userDirectory ?  path.join(publicationDirectory.userDirectory, identifier) : undefined;
+        const p2 = path.join(publicationDirectory.defaultDirectory, identifier);
         try {
             if (p1) {
                 await rmrf(p1);
@@ -401,13 +311,22 @@ export class PublicationStorage {
             }
         };
 
-        let publicationPath = "";
+        const publicationDirectory = diMainGet("publication-directory");
+        let publicationPath = path.join(publicationDirectory.defaultDirectory, identifier);
+        try {
+            // await fs.promises.access(publicationPath, fs.constants.R_OK | fs.constants.W_OK);
+            const stats = await fs.promises.stat(publicationPath);
+            if (stats.isDirectory()) {
+                defer(publicationPath);
+                return publicationPath;
+            }
+        } catch (e) {
+            debug(e);
+            // ignore
+        }
 
-        const userVaultPath = await this.userVaultPath; // can be undefined
-        if (userVaultPath) {
-
-            publicationPath = path.join(userVaultPath, identifier);
-
+        publicationPath = path.join(publicationDirectory.userDirectory, identifier);
+        if (publicationPath) {
             try {
                 // await fs.promises.access(publicationPath, fs.constants.R_OK | fs.constants.W_OK);
                 const stats = await fs.promises.stat(publicationPath);
@@ -421,18 +340,6 @@ export class PublicationStorage {
             }
         }
 
-        publicationPath = path.join(this.defaultVaultPath, identifier);
-        try {
-            // await fs.promises.access(publicationPath, fs.constants.R_OK | fs.constants.W_OK);
-            const stats = await fs.promises.stat(publicationPath);
-            if (stats.isDirectory()) {
-                defer(publicationPath);
-                return publicationPath;
-            }
-        } catch (e) {
-            debug(e);
-            // ignore
-        }
         throw new Error("publication folder path not found");
     }
 
@@ -452,11 +359,12 @@ export class PublicationStorage {
 
         const pubIdSet = new Set<string>();
 
-        const userVaultPath = await this.userVaultPath; // can be undefined
+        const publicationDirectory = diMainGet("publication-directory");
+        const userVaultPath = publicationDirectory.userDirectory; // can be undefined
         if (userVaultPath) {
             await this._loopOnDirectory(userVaultPath, pubIdSet);
         }
-        await this._loopOnDirectory(this.defaultVaultPath, pubIdSet);
+        await this._loopOnDirectory(publicationDirectory.defaultDirectory, pubIdSet);
         return [...pubIdSet.values()];
     }
 

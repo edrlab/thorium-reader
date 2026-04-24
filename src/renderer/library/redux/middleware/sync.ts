@@ -52,6 +52,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     readerActions.configSetDefault.ID, // readerConfig
 
     publicationActions.readingFinished.ID,
+    publicationActions.openFolder.ID,
     themeActions.setTheme.ID,
 
     // readerActions.bookmark.pop.ID,
@@ -84,6 +85,10 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     opdsActions.refresh.ID,
 
     winCommonActions.initSuccess.ID,
+    
+    catalogActions.setUserDirectory.ID,
+    catalogActions.openDefaultDirectory.ID,
+    catalogActions.openUserDirectory.ID,
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);

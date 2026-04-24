@@ -10,7 +10,7 @@ import { winIpc } from "readium-desktop/common/ipc";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import {
-    closeProcessLock, getLibraryWindowFromDi, getReaderWindowFromDi,
+    closeProcessLock, diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi,
 } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
 import { winActions } from "readium-desktop/main/redux/actions";
@@ -125,6 +125,10 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
                 entries: [],
             },
             tag: [],
+            directory: {
+                defaultDirectory: diMainGet("publication-directory").defaultDirectory,
+                userDirectory: diMainGet("publication-directory").userDirectory,
+            },
         },
         session: {
             // state: state.session.state,

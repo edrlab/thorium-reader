@@ -23,6 +23,7 @@ import { initStore } from "readium-desktop/main/redux/store/memory";
 import { DeviceIdManager } from "readium-desktop/main/services/device";
 import { LcpManager } from "readium-desktop/main/services/lcp";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
+import { PublicationDirectory } from "readium-desktop/main/storage/publication-directory";
 import {
     _APP_NAME,
 } from "readium-desktop/preprocessor-directives";
@@ -173,10 +174,10 @@ export const memoryLoggerFilename = path.join(
     MEMORY_LOGGGER_FILENAME,
 );
 
-const USER_VAULT_FILENAME = "vault.json";
-export const userVaultConfigPath = path.join(
+const USER_PUBLICATION_DIRECTORY_FILENAME = "user_publication_directory.json";
+export const userPublicationDirectoryConfigPath = path.join(
     configDataFolderPath,
-    USER_VAULT_FILENAME,
+    USER_PUBLICATION_DIRECTORY_FILENAME,
 );
 const PUBLICATION_CONFIG_DIRECTORY_NAME = "publication";
 export const publicationConfigPath = path.join(
@@ -204,9 +205,7 @@ const publicationRepository = new PublicationRepository();
 const opdsFeedRepository = new OpdsFeedRepository();
 
 // Create filesystem storage for publications
-// TODO: let user change the publication folder as vault in runtime
-//      - need to persist this folder in redux-state and check integrity at start
-const publicationRepositoryPath = path.join(
+export const publicationRepositoryPath = path.join(
     USER_DATA_FOLDER,
     !FORCE_PROD_DB_IN_DEV && (__TH__IS_DEV__ || __TH__IS_CI__) ? "publications-dev" : "publications",
 );
@@ -330,7 +329,11 @@ container.bind<OpdsFeedViewConverter>(diSymbolTable["opds-feed-view-converter"])
     .to(OpdsFeedViewConverter).inSingletonScope();
 
 // Storage
-const publicationStorage = new PublicationStorage(publicationRepositoryPath, userVaultConfigPath);
+const publicationDirectory = new PublicationDirectory(publicationRepositoryPath);
+container.bind<PublicationDirectory>(diSymbolTable["publication-directory"]).toConstantValue(
+    publicationDirectory,
+);
+const publicationStorage = new PublicationStorage();
 container.bind<PublicationStorage>(diSymbolTable["publication-storage"]).toConstantValue(
     publicationStorage,
 );
@@ -407,6 +410,7 @@ interface IGet {
     //    (s: "locator-view-converter"): LocatorViewConverter;
     (s: "opds-feed-view-converter"): OpdsFeedViewConverter;
     (s: "publication-storage"): PublicationStorage;
+    (s: "publication-directory"): PublicationDirectory;
     (s: "publication-data"): PublicationData;
     // (s: "streamer"): Server;
     (s: "device-id-manager"): DeviceIdManager;

@@ -102,6 +102,11 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     opdsActions.refresh.ID,
 
     publicationActions.checker.ID,
+    publicationActions.openFolder.ID,
+
+    catalogActions.setUserDirectory.ID,
+    catalogActions.openDefaultDirectory.ID,
+    catalogActions.openUserDirectory.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware

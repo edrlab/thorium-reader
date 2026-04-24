@@ -144,7 +144,7 @@ export function* publicationIntegrityChecker(): SagaGenerator<void> {
         thoriumAppVersion: _APP_VERSION,
         thoriumPackName: _PACK_NAME,
         thoriumUserDataPath: USER_DATA_FOLDER,
-        thoriumPublicationPath: yield* callTyped(() => diMainGet("publication-storage").getVaultPath()),
+        thoriumPublicationPath: yield* callTyped(() => diMainGet("publication-directory").getDirectoryPath()),
     }, null, 4)}\n`;
     if (dumpLogs) {
         yield* callTyped(() => fs.promises.appendFile(appLogs, dump));

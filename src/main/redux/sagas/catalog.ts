@@ -6,14 +6,16 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { catalogActions, readerActions } from "readium-desktop/common/redux/actions";
+import { dialog, shell } from "electron";
+import { catalogActions, readerActions, toastActions } from "readium-desktop/common/redux/actions";
+import { ToastType } from "readium-desktop/common/models/toast";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { error } from "readium-desktop/main/tools/error";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all } from "redux-saga/effects";
 import { call as callTyped, put as putTyped, select as selectTyped, debounce as debounceTyped, SagaGenerator } from "typed-redux-saga/macro";
 import { RootState } from "../states";
-import { diMainGet, getReaderWindowFromDi } from "readium-desktop/main/di";
+import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 // import { isPdfFn } from "readium-desktop/common/isManifestType";
 
 // import { PublicationView } from "readium-desktop/common/views/publication";
@@ -29,6 +31,7 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { EventPayload } from "readium-desktop/common/ipc/sync";
 import { SenderType } from "readium-desktop/common/models/sync";
+import { openPublicationFolder } from "./publication/openFolder";
 
 const filename_ = "readium-desktop:main:redux:sagas:catalog";
 const debug = debug_(filename_);
@@ -261,9 +264,17 @@ export function* getCatalog(): SagaGenerator<ILibraryRootState["publication"]> {
         },
     ];
     const publicationRepository = diMainGet("publication-repository");
+    const publicationDirectory = diMainGet("publication-directory");
     const allTags = yield* callTyped(() => publicationRepository.getAllTags());
 
-    return {catalog: {entries}, tag: allTags};
+    return {
+        catalog: {entries},
+        tag: allTags,
+        directory: {
+            defaultDirectory: publicationDirectory.defaultDirectory,
+            userDirectory: publicationDirectory.userDirectory,
+        },
+    };
 }
 
 function* getCatalogAndDispatchIt() {
@@ -272,6 +283,7 @@ function* getCatalogAndDispatchIt() {
 
     yield* putTyped(catalogActions.setCatalog.build(catalog));
     yield* putTyped(catalogActions.setTagView.build(tag));
+    yield* putTyped(catalogActions.setUserDirectory.build(diMainGet("publication-directory").userDirectory || ""));
 }
 
 function* updateResumePosition() {
@@ -313,6 +325,108 @@ export function saga() {
         spawnLeading(
             updateResumePosition,
             (e) => error(filename_ + ":updateResumePosition", e),
+        ),
+        takeSpawnLatest(
+            catalogActions.setUserDirectory.ID,
+            function* (action: catalogActions.setUserDirectory.TAction) {
+
+                const publicationDirectory = diMainGet("publication-directory");
+                const { userDirectory } = action.payload;
+                const currentUserDirectory = publicationDirectory.userDirectory || "";
+                const sender = action.sender as EventPayload["sender"];
+                if (sender?.type !== SenderType.Renderer) {
+                    debug("sender is not renderer !!!");
+                    return;
+                }
+                try {
+                    let nextUserDirectory = userDirectory;
+
+                    if (!userDirectory && !currentUserDirectory) {
+                        const win = getLibraryWindowFromDi();
+                        if (!win || win.isDestroyed() || win.webContents.isDestroyed()) {
+                            debug("ERROR!! No library Browser window !!! exit");
+                            return;
+                        }
+
+                        const res = yield* callTyped(() => dialog.showOpenDialog(win, {
+                            properties: ["openDirectory", "createDirectory"],
+                        }));
+
+                        if (res.canceled) {
+                            return;
+                        }
+
+                        nextUserDirectory = res.filePaths[0] || "";
+                        if (!nextUserDirectory) {
+                            return;
+                        }
+                    } else if (userDirectory) {
+                        const win = getLibraryWindowFromDi();
+                        if (!win || win.isDestroyed() || win.webContents.isDestroyed()) {
+                            debug("ERROR!! No library Browser window !!! exit");
+                            return;
+                        }
+
+                        const res = yield* callTyped(() => dialog.showOpenDialog(win, {
+                            defaultPath: userDirectory,
+                            properties: ["openDirectory", "createDirectory"],
+                        }));
+
+                        if (res.canceled) {
+                            return;
+                        }
+
+                        nextUserDirectory = res.filePaths[0] || "";
+                        if (!nextUserDirectory) {
+                            return;
+                        }
+                    }
+
+                    yield* callTyped(() => publicationDirectory.setUserDirectory(nextUserDirectory));
+                    if (nextUserDirectory && currentUserDirectory && nextUserDirectory !== currentUserDirectory) {
+                        yield* callTyped(() => shell.openPath(currentUserDirectory));
+                        // yield* callTyped(() => shell.openPath(nextUserDirectory));
+                    }
+                    yield* putTyped(toastActions.openRequest.build(
+                        ToastType.Success,
+                        nextUserDirectory ? "Publication directory updated." : "Publication directory removed.",
+                    ));
+                    yield* callTyped(getCatalogAndDispatchIt);
+                } catch (e) {
+                    const message = e instanceof Error ? e.message : `${e}`;
+                    yield* putTyped(toastActions.openRequest.build(
+                        ToastType.Error,
+                        `Failed to update publication directory: ${message}`,
+                    ));
+                }
+            },
+            (e) => error(filename_ + ":setUserDirectory", e),
+        ),
+        takeSpawnLatest(
+            catalogActions.openDefaultDirectory.ID,
+            function* () {
+                const publicationDirectory = diMainGet("publication-directory");
+                yield* callTyped(() => shell.openPath(publicationDirectory.defaultDirectory));
+            },
+            (e) => error(filename_ + ":openDefaultDirectory", e),
+        ),
+        takeSpawnLatest(
+            catalogActions.openUserDirectory.ID,
+            function* () {
+                const publicationDirectory = diMainGet("publication-directory");
+                if (!publicationDirectory.userDirectory) {
+                    return;
+                }
+                yield* callTyped(() => shell.openPath(publicationDirectory.userDirectory));
+            },
+            (e) => error(filename_ + ":openUserDirectory", e),
+        ),
+        takeSpawnLatest(
+            publicationActionsFromCommonAction.openFolder.ID,
+            function* (action: publicationActionsFromCommonAction.openFolder.TAction) {
+                yield* callTyped(openPublicationFolder, action.payload.identifier);
+            },
+            (e) => error(filename_ + ":openPublicationFolder", e),
         ),
         takeSpawnLatest(
             publicationActionsFromCommonAction.readingFinished.ID,

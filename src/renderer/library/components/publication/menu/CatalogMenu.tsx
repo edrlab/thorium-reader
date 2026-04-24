@@ -29,7 +29,6 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { getSaga } from "readium-desktop/renderer/library/createStore";
-import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
 
 function useShiftKey() {
   const [isShiftPressed, setIsShiftPressed] = React.useState(false);
@@ -62,7 +61,6 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
     const [__] = useTranslator();
     const dispatch = useDispatch();
     const locale = useSelector((state: ILibraryRootState) => state.i18n.locale);
-    const [, openPublicationFolder] = useApi(undefined, "publication/openFolder");
     const isShiftKeyPressed = useShiftKey();
 
     const isPublicationMissingOrDeleted = props.publicationView.type === "missingOrDeleted";
@@ -100,7 +98,7 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
         <button
             className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
             onClick={debounce(() => {
-                openPublicationFolder(props.publicationView.identifier);
+                dispatch(publicationActions.openFolder.build(props.publicationView.identifier));
             }, 1000, { immediate: true })}
         >OPEN Folder</button >
     </>;
