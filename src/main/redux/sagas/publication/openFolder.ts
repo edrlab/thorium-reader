@@ -11,7 +11,17 @@ import { SagaGenerator, call as callTyped } from "typed-redux-saga";
 
 export function* openPublicationFolder(identifier?: string): SagaGenerator<void> {
 
-    const folderPath = (yield* callTyped(() => diMainGet("publication-storage").findPublicationPath(identifier)))
-        || (yield* callTyped(() => diMainGet("publication-directory").getDirectoryPath()));
+    let folderPath: string;
+
+    if (!identifier) {
+        folderPath = yield* callTyped(() => diMainGet("publication-directory").getDirectoryPath());
+    } else {
+        try {
+            folderPath = yield* callTyped(() => diMainGet("publication-storage").findPublicationPath(identifier));
+        } catch {
+            folderPath = yield* callTyped(() => diMainGet("publication-directory").getDirectoryPath());
+        }
+    }
+
     yield* callTyped(() => shell.openPath(folderPath));
 }

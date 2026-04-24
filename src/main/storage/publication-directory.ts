@@ -20,6 +20,8 @@ export class PublicationDirectory {
 
     public constructor(defaultDirectory: string) {
         this.defaultDirectory = defaultDirectory;
+        // Best-effort async initialization: startup must keep working with the
+        // default directory even if the persisted user directory is missing or invalid.
         this.readUserDirectory().catch(() => {
             // Ignore invalid or missing config.
         });

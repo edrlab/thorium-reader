@@ -325,18 +325,20 @@ export class PublicationStorage {
             // ignore
         }
 
-        publicationPath = path.join(publicationDirectory.userDirectory, identifier);
-        if (publicationPath) {
-            try {
-                // await fs.promises.access(publicationPath, fs.constants.R_OK | fs.constants.W_OK);
-                const stats = await fs.promises.stat(publicationPath);
-                if (stats.isDirectory()) {
-                    defer(publicationPath);
-                    return publicationPath;
+        if (publicationDirectory.userDirectory) {
+            publicationPath = path.join(publicationDirectory.userDirectory, identifier);
+            if (publicationPath) {
+                try {
+                    // await fs.promises.access(publicationPath, fs.constants.R_OK | fs.constants.W_OK);
+                    const stats = await fs.promises.stat(publicationPath);
+                    if (stats.isDirectory()) {
+                        defer(publicationPath);
+                        return publicationPath;
+                    }
+                } catch (e) {
+                    debug(e);
+                    // ignore
                 }
-            } catch (e) {
-                debug(e);
-                // ignore
             }
         }
 
