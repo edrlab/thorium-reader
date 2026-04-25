@@ -42,6 +42,23 @@ interface ICache {
 }
 const _pubCache: Record<string, ICache> = {};
 
+const getPublicationStorageState = async (identifier: string): Promise<{
+    publicationDirectory: string;
+    isOpenable: boolean;
+}> => {
+    let publicationDirectory = "";
+    try {
+        publicationDirectory = await diMainGet("publication-storage").findPublicationPath(identifier);
+    } catch {
+        debug("publication not found on disk");
+    }
+
+    return {
+        publicationDirectory,
+        isOpenable: Boolean(publicationDirectory),
+    };
+};
+
 @injectable()
 export class PublicationViewConverter {
 
@@ -187,7 +204,7 @@ export class PublicationViewConverter {
         }
     }
 
-    public async convertDocumentMissingOrDeletedToMinimalPublicationView(document: PublicationDocument): Promise<PublicationView> {
+    public async convertUnavailableDocumentToMinimalPublicationView(document: PublicationDocument): Promise<PublicationView> {
 
         const store = diMainGet("store");
         const state = store.getState();
@@ -204,9 +221,16 @@ export class PublicationViewConverter {
             };
         }
 
+        const {
+            publicationDirectory,
+            isOpenable,
+        } = await getPublicationStorageState(document.identifier);
+
         return {
 
-            type: "missingOrDeleted",
+            status: "error",
+            publicationDirectory,
+            isOpenable,
             identifier: document.identifier, // preserve Identifiable identifier
 
             readingFinished,
@@ -315,11 +339,16 @@ export class PublicationViewConverter {
 
         const trimStrings = (texts: string | string[]): string[] => Array.isArray(texts) ? texts.filter((item) => item && typeof item === "string").map((item) => item.trim()) : texts && typeof texts === "string" ? [texts.trim()] : [];
 
+        const {
+            publicationDirectory,
+            isOpenable,
+        } = await getPublicationStorageState(document.identifier);
+
         return {
 
-            // When a publication is found on disk but cannot be found in the database, we should mitigate the risk by setting a missingOrDeleted error.
-            type: document.doNotPresentInReduxStoreDataBaseButFoundOnDisk_dummyDocument ? "missingOrDeleted" : undefined,
-            
+            status: "success",
+            publicationDirectory,
+            isOpenable,
             isAudio,
             isDivina,
             isPDF,

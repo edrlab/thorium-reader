@@ -7,7 +7,7 @@
 
 
 import * as React from "react";
-import { PublicationView } from "readium-desktop/common/views/publication";
+import { PublicationView, canOpenPublication } from "readium-desktop/common/views/publication";
 import PublicationExportButton from "./PublicationExportButton";
 import DeletePublicationConfirm from "../../dialog/DeletePublicationConfirm";
 import { PublicationInfoLibWithRadix, PublicationInfoLibWithRadixContent, PublicationInfoLibWithRadixTrigger } from "../../dialog/publicationInfos/PublicationInfo";
@@ -63,7 +63,7 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
     const locale = useSelector((state: ILibraryRootState) => state.i18n.locale);
     const isShiftKeyPressed = useShiftKey();
 
-    const isPublicationMissingOrDeleted = props.publicationView.type === "missingOrDeleted";
+    const canOpen = canOpenPublication(props.publicationView);
 
     const noteExport = <button
         className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE"
@@ -105,7 +105,7 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
 
     return (
         <>
-        { isPublicationMissingOrDeleted ? 
+        { !canOpen ?
             <>
                 <DeletePublicationConfirm
                     trigger={(

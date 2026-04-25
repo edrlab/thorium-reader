@@ -70,7 +70,7 @@ import moment from "moment";
 import { availableLanguages, I18nFunction } from "readium-desktop/common/services/translator";
 import * as React from "react";
 import { connect } from "react-redux";
-import { PublicationView } from "readium-desktop/common/views/publication";
+import { PublicationView, canOpenPublication } from "readium-desktop/common/views/publication";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -654,7 +654,7 @@ interface IColumnValue_Cover extends IColumnValue_BaseString {
 
     title: string,
     publicationViewIdentifier: string,
-    missingOrDeleted?: boolean;
+    isOpenable?: boolean;
 };
 interface ITableCellProps_Value_Cover {
     value: IColumnValue_Cover;
@@ -666,7 +666,7 @@ const CellCoverImage: React.FC<ITableCellProps_Column & ITableCellProps_GenericC
             onClick={() => props.openReader(props.value.publicationViewIdentifier)}
         >
             {
-                props.value.missingOrDeleted
+                props.value.isOpenable === false
                     ? <div aria-label={props.__("catalog.missing")} style={{ position: "absolute", width: "78px", height: "100px", display: "flex", alignItems: "center", justifyContent: "center", opacity: 0.7 }}>
                         <div aria-hidden style={{ height: "40px", width: "40px", borderRadius: "50%", background: "var(--color-error-text)", padding: "10px" }}>
                             <SVG aria-hidden svg={FileBroken} className={stylesPublications.publication_missing_icon} />
@@ -1690,7 +1690,7 @@ export const TableView: React.FC<ITableCellProps_TableView & ITableCellProps_Com
                     label: publicationView.cover?.thumbnailUrl ?? publicationView.cover?.coverUrl ?? "",
                     publicationViewIdentifier: publicationView.identifier,
                     title: publicationView.documentTitle,
-                    missingOrDeleted: publicationView.type === "missingOrDeleted",
+                    isOpenable: canOpenPublication(publicationView),
                 },
                 colTitle: { // IColumnValue_Title
                     label: publicationView.documentTitle,

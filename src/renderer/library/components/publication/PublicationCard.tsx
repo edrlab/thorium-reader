@@ -7,14 +7,16 @@
 
 import * as stylesPublications from "readium-desktop/renderer/assets/styles/components/publications.scss";
 import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
 
 import * as React from "react";
+import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
-import { PublicationView } from "readium-desktop/common/views/publication";
+import { PublicationView, canOpenPublication } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 
 import Cover from "readium-desktop/renderer/common/components/Cover";
@@ -73,7 +75,11 @@ class PublicationCard extends React.Component<IProps> {
         const pubTitleStr = pubTitleLangStr && pubTitleLangStr[1] ? pubTitleLangStr[1] : "";
 
         const publicationView = publicationViewMaybeOpds as PublicationView;
-        const isPublicationMissingOrDeleted = publicationView.type === "missingOrDeleted";
+        const isLocalPublication = !isOpds;
+        const canOpenLocalPublication = isLocalPublication &&
+            canOpenPublication(publicationView);
+        const showUnavailablePublicationState = isLocalPublication &&
+            !canOpenLocalPublication;
 
         let pubFormat = "EPUB";
         if (publicationView.isAudio) {
@@ -93,8 +99,6 @@ class PublicationCard extends React.Component<IProps> {
         const now = moment().locale([this.props.locale, "en"]);
         let hasEnded = false;
         const isLcp = publicationView.lcp?.rights ? true : false;
-
-        // const isPublicationMissingOrDeleted = publicationView.type === "missingOrDeleted";
 
         if (lcpRightsEndDate) {
             const momentEnd = moment(lcpRightsEndDate).locale([this.props.locale, "en"]);
@@ -142,13 +146,12 @@ class PublicationCard extends React.Component<IProps> {
                             <PublicationInfoOpdsWithRadixTrigger asChild>
                                 <button
                                    className={classNames(
-                                        stylesPublications.publication_main_container, 
-                                        { [stylesPublications.expired]: hasEnded || isPublicationMissingOrDeleted },
+                                        stylesPublications.publication_main_container,
                                     )}
                                     title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
                                     tabIndex={0}
                                 >
-                                    <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} hasEnded={hasEnded} />
+                                    <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} />
                                     <div className={stylesPublications.publication_title_wrapper}>
                                         <p aria-hidden className={stylesPublications.publication_title}
                                             dir={pubTitleIsRTL ? "rtl" : undefined}>
@@ -163,30 +166,94 @@ class PublicationCard extends React.Component<IProps> {
                             <PublicationInfoOpdsWithRadixContent />
                         </PublicationInfoOpdsWithRadix>
                         :
-                        <a
-                            onClick={(e) => this.handleLocalBookshelfBookClick(e)}
-                            onKeyUp={
-                                (e) =>
-                                    (e.key === "Enter") && this.handleLocalBookshelfBookClick(e)
-                            }
-                            title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
-                            className={classNames(
-                                        stylesPublications.publication_main_container, 
-                                        { [stylesPublications.expired]: hasEnded || isPublicationMissingOrDeleted },
-                                    )}
-                            tabIndex={0}
-                        >
-                            <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} hasEnded={hasEnded} />
-                            <div className={stylesPublications.publication_title_wrapper}>
-                                <p aria-hidden className={stylesPublications.publication_title}
-                                    dir={pubTitleIsRTL ? "rtl" : undefined}>
-                                    {pubTitleStr}
-                                </p>
-                                <p aria-hidden className={stylesPublications.publication_authors}>
-                                    {this.truncateAuthors(authors)}
-                                </p>
-                            </div>
-                        </a>
+                        canOpenLocalPublication ?
+                            <a
+                                onClick={(e) => this.handleLocalBookshelfBookClick(e)}
+                                onKeyUp={
+                                    (e) =>
+                                        (e.key === "Enter") && this.handleLocalBookshelfBookClick(e)
+                                }
+                                title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
+                                className={classNames(
+                                            stylesPublications.publication_main_container,
+                                            { [stylesPublications.expired]: hasEnded || showUnavailablePublicationState },
+                                        )}
+                                tabIndex={0}
+                            >
+                                <Cover
+                                    publicationViewMaybeOpds={publicationViewMaybeOpds}
+                                    isPublicationUnavailable={showUnavailablePublicationState}
+                                />
+                                <div className={stylesPublications.publication_title_wrapper}>
+                                    <p aria-hidden className={stylesPublications.publication_title}
+                                        dir={pubTitleIsRTL ? "rtl" : undefined}>
+                                        {pubTitleStr}
+                                    </p>
+                                    <p aria-hidden className={stylesPublications.publication_authors}>
+                                        {this.truncateAuthors(authors)}
+                                    </p>
+                                </div>
+                            </a>
+                        :
+                            <AlertDialog.Root>
+                                <AlertDialog.Trigger asChild>
+                                    <a
+                                        title={`${publicationViewMaybeOpds.documentTitle} - ${authors}`}
+                                        className={classNames(
+                                                    stylesPublications.publication_main_container,
+                                                    { [stylesPublications.expired]: hasEnded || showUnavailablePublicationState },
+                                                )}
+                                        role="button"
+                                        tabIndex={0}
+                                        onKeyDown={(e) => {
+                                            if (e.key === " " || e.altKey || e.ctrlKey) {
+                                                e.preventDefault();
+                                            }
+                                        }}
+                                        onKeyUp={(e) => {
+                                            if (e.key === " ") {
+                                                e.preventDefault();
+                                                e.currentTarget.click();
+                                            }
+                                        }}
+                                    >
+                                        <Cover
+                                            publicationViewMaybeOpds={publicationViewMaybeOpds}
+                                            isPublicationUnavailable={showUnavailablePublicationState}
+                                        />
+                                        <div className={stylesPublications.publication_title_wrapper}>
+                                            <p aria-hidden className={stylesPublications.publication_title}
+                                                dir={pubTitleIsRTL ? "rtl" : undefined}>
+                                                {pubTitleStr}
+                                            </p>
+                                            <p aria-hidden className={stylesPublications.publication_authors}>
+                                                {this.truncateAuthors(authors)}
+                                            </p>
+                                        </div>
+                                    </a>
+                                </AlertDialog.Trigger>
+                                <AlertDialog.Portal>
+                                    <AlertDialog.Overlay className={stylesAlertModals.AlertDialogOverlay}/>
+                                    <AlertDialog.Content className={stylesAlertModals.AlertDialogContent}>
+                                        <AlertDialog.Title className={stylesAlertModals.AlertDialogTitle}>
+                                            {__("catalog.missing")}
+                                        </AlertDialog.Title>
+                                        <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
+                                            {publicationView.documentTitle}
+                                            <br />
+                                            This publication cannot be opened because its stored files are unavailable.
+                                            Re-import it, or go to Settings and then Storage to add or change the external publication folder.
+                                        </AlertDialog.Description>
+                                        <div className={stylesAlertModals.AlertDialogButtonContainer}>
+                                            <AlertDialog.Cancel asChild>
+                                                <button className={stylesButtons.button_secondary_blue} type="button">
+                                                    {__("dialog.cancel")}
+                                                </button>
+                                            </AlertDialog.Cancel>
+                                        </div>
+                                    </AlertDialog.Content>
+                                </AlertDialog.Portal>
+                            </AlertDialog.Root>
                 }
                 <div className={stylesPublications.publication_infos_wrapper}>
                     <div className={stylesPublications.publication_infos}>
@@ -236,8 +303,7 @@ class PublicationCard extends React.Component<IProps> {
 
     private handleLocalBookshelfBookClick(e: React.SyntheticEvent) {
         e.preventDefault();
-        const { publicationViewMaybeOpds } = this.props;
-        this.props.openReader(publicationViewMaybeOpds as PublicationView);
+        this.props.openReader(this.props.publicationViewMaybeOpds as PublicationView);
     }
 
     /* function Truncate very long titles at 60 characters */

@@ -9,7 +9,7 @@ import debug_ from "debug";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
 import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
-import { PublicationView } from "readium-desktop/common/views/publication";
+import { PublicationView, canOpenPublication } from "readium-desktop/common/views/publication";
 import { diMainGet } from "readium-desktop/main/di";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { put } from "redux-saga/effects";
@@ -35,7 +35,7 @@ const convertDoc = async (doc: PublicationDocument, publicationViewConverter: Pu
     return await publicationViewConverter.convertDocumentToView(doc);
     } catch (e) {
         debug("Error to convert document to publicationView", e);
-        const pub = await publicationViewConverter.convertDocumentMissingOrDeletedToMinimalPublicationView(doc);
+        const pub = await publicationViewConverter.convertUnavailableDocumentToMinimalPublicationView(doc);
         debug("Convert to minimal view", pub);
         return pub;
     }
@@ -66,7 +66,7 @@ export function* importFromLink(
             if (deep < 1) {
                 deep = 1;
 
-                if (publicationView.type === "missingOrDeleted") {
+                if (!canOpenPublication(publicationView)) {
 
                     debug(`${publicationDocument?.identifier} => ${publicationDocument?.title} should be removed`);
                     const str = `The publication is missing or deleted: ${publicationDocument?.identifier} => ${publicationDocument?.title}. The directory must be deleted.`;
@@ -191,7 +191,7 @@ export function* importFromFs(
                         if (deep < 1) {
                             deep = 1;
 
-                            if (publicationView.type === "missingOrDeleted") {
+                            if (!canOpenPublication(publicationView)) {
 
                                 debug(`${publicationDocument?.identifier} => ${publicationDocument?.title} should be removed`);
                                 const str = `The publication is missing or deleted: ${publicationDocument?.identifier} => ${publicationDocument?.title}. The directory must be deleted.`;

@@ -141,7 +141,7 @@ function* getPublicationView() {
             debug("Error When convert document to view, the publication is not deleted, so let's mitigate the publication error for the next time");
             debug(e);
 
-            const pub = yield* callTyped(() => publicationViewConverter.convertDocumentMissingOrDeletedToMinimalPublicationView(doc));
+                    const pub = yield* callTyped(() => publicationViewConverter.convertUnavailableDocumentToMinimalPublicationView(doc));
             lastAddedPublicationsView.push(pub);
 
             // yield* callTyped(errorDeletePub, doc, e as Error);
@@ -162,7 +162,7 @@ function* getPublicationView() {
             debug("Error When convert document to view, the publication is not deleted, so let's mitigate the publication error for the next time");
             debug(e);
 
-            const pub = yield* callTyped(() => publicationViewConverter.convertDocumentMissingOrDeletedToMinimalPublicationView(doc));
+                    const pub = yield* callTyped(() => publicationViewConverter.convertUnavailableDocumentToMinimalPublicationView(doc));
             lastReadPublicationsView.push(pub);
 
             // yield* callTyped(errorDeletePub, doc, e as Error);
