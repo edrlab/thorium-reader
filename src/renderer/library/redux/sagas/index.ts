@@ -61,17 +61,6 @@ export function* rootSaga() {
                 publicationActions.readingFinished.ID,
             ],
             () => {
-
-
-                console.log("REFRESHHHHH !!!!");
-                console.log("REFRESHHHHH !!!!");
-                console.log("REFRESHHHHH !!!!");
-                console.log("REFRESHHHHH !!!!");
-                console.log("REFRESHHHHH !!!!");
-                console.log("REFRESHHHHH !!!!");
-                console.log("REFRESHHHHH !!!!");
-                console.log("REFRESHHHHH !!!!");
-                console.log("REFRESHHHHH !!!!");
                 // just to refresh allPublicationPage.tsx
                 const dispatch = getStore().dispatch;
                 apiDispatch(dispatch)()("publication/findAllRefresh")();
