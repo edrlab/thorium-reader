@@ -31,6 +31,7 @@ import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { EventPayload } from "readium-desktop/common/ipc/sync";
 import { SenderType } from "readium-desktop/common/models/sync";
+import { getTranslator } from "readium-desktop/common/services/translator";
 import { openPublicationFolder } from "./publication/openFolder";
 
 const filename_ = "readium-desktop:main:redux:sagas:catalog";
@@ -376,14 +377,14 @@ export function saga() {
                     }
                     yield* putTyped(toastActions.openRequest.build(
                         ToastType.Success,
-                        nextUserDirectory ? "Publication directory updated." : "Publication directory removed.",
+                        getTranslator().translate(nextUserDirectory ? "message.storage.updated" : "message.storage.removed"),
                     ));
                     yield* callTyped(getCatalogAndDispatchIt);
                 } catch (e) {
                     const message = e instanceof Error ? e.message : `${e}`;
                     yield* putTyped(toastActions.openRequest.build(
                         ToastType.Error,
-                        `Failed to update publication directory: ${message}`,
+                        getTranslator().translate("message.storage.updateFailed", { message }),
                     ));
                 }
             },

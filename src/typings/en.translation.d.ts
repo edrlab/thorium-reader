@@ -163,6 +163,8 @@ declare namespace typed_i18n {
       readonly "password": string,
       readonly "register": string,
       readonly "retry": string,
+      readonly "unauthorized": string,
+      readonly "unauthorizedUnsupportedType": string,
       readonly "username": string
     },
     readonly "info": {
@@ -184,6 +186,7 @@ declare namespace typed_i18n {
       readonly "state": string
     }
   },
+  readonly "openFolder": string,
   readonly "publisher": string,
   readonly "readBook": string,
   readonly "released": string,
@@ -261,6 +264,8 @@ declare namespace typed_i18n {
     readonly "password": string,
     readonly "register": string,
     readonly "retry": string,
+    readonly "unauthorized": string,
+    readonly "unauthorizedUnsupportedType": string,
     readonly "username": string
   },
   readonly "info": {
@@ -290,6 +295,8 @@ declare namespace typed_i18n {
   readonly "password": string,
   readonly "register": string,
   readonly "retry": string,
+  readonly "unauthorized": string,
+  readonly "unauthorizedUnsupportedType": string,
   readonly "username": string
 };
   (_: "catalog.opds.auth.cancel", __?: {}): string;
@@ -299,6 +306,8 @@ declare namespace typed_i18n {
   (_: "catalog.opds.auth.password", __?: {}): string;
   (_: "catalog.opds.auth.register", __?: {}): string;
   (_: "catalog.opds.auth.retry", __?: {}): string;
+  (_: "catalog.opds.auth.unauthorized", __?: {}): string;
+  (_: "catalog.opds.auth.unauthorizedUnsupportedType", __?: {}): string;
   (_: "catalog.opds.auth.username", __?: {}): string;
   (_: "catalog.opds.info", __?: {}): {
   readonly "availableSince": string,
@@ -339,6 +348,7 @@ declare namespace typed_i18n {
   (_: "catalog.opds.info.numberOfItems", __?: {}): string;
   (_: "catalog.opds.info.priveValue", __?: {}): string;
   (_: "catalog.opds.info.state", __?: {}): string;
+  (_: "catalog.openFolder", __?: {}): string;
   (_: "catalog.publisher", __?: {}): string;
   (_: "catalog.readBook", __?: {}): string;
   (_: "catalog.released", __?: {}): string;
@@ -361,6 +371,7 @@ declare namespace typed_i18n {
     readonly "title": string
   },
   readonly "cancel": string,
+  readonly "continue": string,
   readonly "customization": {
     readonly "splashscreen": {
       readonly "fallbackWelcomeScreen": string,
@@ -404,6 +415,7 @@ declare namespace typed_i18n {
   (_: "dialog.annotations.origin", __?: {}): string;
   (_: "dialog.annotations.title", __?: {}): string;
   (_: "dialog.cancel", __?: {}): string;
+  (_: "dialog.continue", __?: {}): string;
   (_: "dialog.customization", __?: {}): {
   readonly "splashscreen": {
     readonly "fallbackWelcomeScreen": string,
@@ -566,6 +578,11 @@ declare namespace typed_i18n {
     readonly "success": string
   },
   readonly "open": { readonly "error": string },
+  readonly "storage": {
+    readonly "removed": string,
+    readonly "updateFailed": string,
+    readonly "updated": string
+  },
   readonly "wipeData": string
 };
   (_: "message.annotations", __?: {}): {
@@ -594,6 +611,14 @@ declare namespace typed_i18n {
   (_: "message.import.success", __?: {}): string;
   (_: "message.open", __?: {}): { readonly "error": string };
   (_: "message.open.error", __?: {}): string;
+  (_: "message.storage", __?: {}): {
+  readonly "removed": string,
+  readonly "updateFailed": string,
+  readonly "updated": string
+};
+  (_: "message.storage.removed", __?: {}): string;
+  (_: "message.storage.updateFailed", __?: {}): string;
+  (_: "message.storage.updated", __?: {}): string;
   (_: "message.wipeData", __?: {}): string;
   (_: "opds", __?: {}): {
   readonly "addForm": {
@@ -1774,6 +1799,8 @@ declare namespace typed_i18n {
   readonly "notes": {
     readonly "colors": {
       readonly "cyan": string,
+      readonly "darkorange": string,
+      readonly "darkyellow": string,
       readonly "green": string,
       readonly "orange": string,
       readonly "purple": string,
@@ -1820,6 +1847,7 @@ declare namespace typed_i18n {
     },
     readonly "customFontSelected": string,
     readonly "customizeReader": string,
+    readonly "defaultValue": string,
     readonly "disabled": string,
     readonly "display": string,
     readonly "disposition": { readonly "title": string },
@@ -1833,6 +1861,7 @@ declare namespace typed_i18n {
     readonly "lineSpacing": string,
     readonly "margin": string,
     readonly "mathjax": string,
+    readonly "mathjaxDescription": string,
     readonly "noFootnotes": string,
     readonly "noRTLFlip": string,
     readonly "noRuby": string,
@@ -1863,6 +1892,16 @@ declare namespace typed_i18n {
       readonly "title": string
     },
     readonly "preview": string,
+    readonly "previewText": {
+      readonly "highlight": {
+        readonly "after": string,
+        readonly "before": string,
+        readonly "sentence": string,
+        readonly "word": string
+      },
+      readonly "prefix": string,
+      readonly "suffix": string
+    },
     readonly "reduceFontSize": string,
     readonly "reduceMotion": string,
     readonly "scrolled": string,
@@ -2134,6 +2173,8 @@ declare namespace typed_i18n {
   (_: "reader.notes", __?: {}): {
   readonly "colors": {
     readonly "cyan": string,
+    readonly "darkorange": string,
+    readonly "darkyellow": string,
     readonly "green": string,
     readonly "orange": string,
     readonly "purple": string,
@@ -2143,6 +2184,8 @@ declare namespace typed_i18n {
 };
   (_: "reader.notes.colors", __?: {}): {
   readonly "cyan": string,
+  readonly "darkorange": string,
+  readonly "darkyellow": string,
   readonly "green": string,
   readonly "orange": string,
   readonly "purple": string,
@@ -2150,6 +2193,8 @@ declare namespace typed_i18n {
   readonly "yellow": string
 };
   (_: "reader.notes.colors.cyan", __?: {}): string;
+  (_: "reader.notes.colors.darkorange", __?: {}): string;
+  (_: "reader.notes.colors.darkyellow", __?: {}): string;
   (_: "reader.notes.colors.green", __?: {}): string;
   (_: "reader.notes.colors.orange", __?: {}): string;
   (_: "reader.notes.colors.purple", __?: {}): string;
@@ -2227,6 +2272,7 @@ declare namespace typed_i18n {
   },
   readonly "customFontSelected": string,
   readonly "customizeReader": string,
+  readonly "defaultValue": string,
   readonly "disabled": string,
   readonly "display": string,
   readonly "disposition": { readonly "title": string },
@@ -2240,6 +2286,7 @@ declare namespace typed_i18n {
   readonly "lineSpacing": string,
   readonly "margin": string,
   readonly "mathjax": string,
+  readonly "mathjaxDescription": string,
   readonly "noFootnotes": string,
   readonly "noRTLFlip": string,
   readonly "noRuby": string,
@@ -2270,6 +2317,16 @@ declare namespace typed_i18n {
     readonly "title": string
   },
   readonly "preview": string,
+  readonly "previewText": {
+    readonly "highlight": {
+      readonly "after": string,
+      readonly "before": string,
+      readonly "sentence": string,
+      readonly "word": string
+    },
+    readonly "prefix": string,
+    readonly "suffix": string
+  },
   readonly "reduceFontSize": string,
   readonly "reduceMotion": string,
   readonly "scrolled": string,
@@ -2303,6 +2360,7 @@ declare namespace typed_i18n {
   (_: "reader.settings.column.two", __?: {}): string;
   (_: "reader.settings.customFontSelected", __?: {}): string;
   (_: "reader.settings.customizeReader", __?: {}): string;
+  (_: "reader.settings.defaultValue", __?: {}): string;
   (_: "reader.settings.disabled", __?: {}): string;
   (_: "reader.settings.display", __?: {}): string;
   (_: "reader.settings.disposition", __?: {}): { readonly "title": string };
@@ -2317,6 +2375,7 @@ declare namespace typed_i18n {
   (_: "reader.settings.lineSpacing", __?: {}): string;
   (_: "reader.settings.margin", __?: {}): string;
   (_: "reader.settings.mathjax", __?: {}): string;
+  (_: "reader.settings.mathjaxDescription", __?: {}): string;
   (_: "reader.settings.noFootnotes", __?: {}): string;
   (_: "reader.settings.noRTLFlip", __?: {}): string;
   (_: "reader.settings.noRuby", __?: {}): string;
@@ -2374,6 +2433,28 @@ declare namespace typed_i18n {
   (_: "reader.settings.preset.saveDetails", __?: {}): string;
   (_: "reader.settings.preset.title", __?: {}): string;
   (_: "reader.settings.preview", __?: {}): string;
+  (_: "reader.settings.previewText", __?: {}): {
+  readonly "highlight": {
+    readonly "after": string,
+    readonly "before": string,
+    readonly "sentence": string,
+    readonly "word": string
+  },
+  readonly "prefix": string,
+  readonly "suffix": string
+};
+  (_: "reader.settings.previewText.highlight", __?: {}): {
+  readonly "after": string,
+  readonly "before": string,
+  readonly "sentence": string,
+  readonly "word": string
+};
+  (_: "reader.settings.previewText.highlight.after", __?: {}): string;
+  (_: "reader.settings.previewText.highlight.before", __?: {}): string;
+  (_: "reader.settings.previewText.highlight.sentence", __?: {}): string;
+  (_: "reader.settings.previewText.highlight.word", __?: {}): string;
+  (_: "reader.settings.previewText.prefix", __?: {}): string;
+  (_: "reader.settings.previewText.suffix", __?: {}): string;
   (_: "reader.settings.reduceFontSize", __?: {}): string;
   (_: "reader.settings.reduceMotion", __?: {}): string;
   (_: "reader.settings.scrolled", __?: {}): string;
@@ -2719,11 +2800,60 @@ declare namespace typed_i18n {
     readonly "title": string
   },
   readonly "session": { readonly "title": string },
+  readonly "storage": {
+    readonly "actions": {
+      readonly "addDirectory": string,
+      readonly "changeDirectory": string,
+      readonly "chooseFolder": string,
+      readonly "editDirectory": string,
+      readonly "removeDirectory": string,
+      readonly "removeStorageDirectory": string
+    },
+    readonly "beta": {
+      readonly "availability": string,
+      readonly "integrity": string,
+      readonly "intro": string,
+      readonly "migration": string,
+      readonly "vault": string,
+      readonly "warning": string
+    },
+    readonly "configuration": {
+      readonly "chooseFolderDescription": string,
+      readonly "configuredDescription": string,
+      readonly "notConfiguredDescription": string,
+      readonly "notConfiguredTitle": string,
+      readonly "title": string
+    },
+    readonly "dialogs": {
+      readonly "add": {
+        readonly "confirm": string,
+        readonly "description": string,
+        readonly "title": string
+      },
+      readonly "edit": {
+        readonly "confirm": string,
+        readonly "description": string,
+        readonly "title": string
+      },
+      readonly "remove": {
+        readonly "confirm": string,
+        readonly "description": string,
+        readonly "title": string
+      }
+    },
+    readonly "info": string,
+    readonly "locations": {
+      readonly "defaultInternal": string,
+      readonly "external": string,
+      readonly "title": string
+    }
+  },
   readonly "tabs": {
     readonly "appearance": string,
     readonly "general": string,
     readonly "keyboardShortcuts": string,
-    readonly "profiles": string
+    readonly "profiles": string,
+    readonly "storage": string
   },
   readonly "theme": {
     readonly "auto": string,
@@ -3431,16 +3561,156 @@ declare namespace typed_i18n {
   (_: "settings.screenReaderActivate.title", __?: {}): string;
   (_: "settings.session", __?: {}): { readonly "title": string };
   (_: "settings.session.title", __?: {}): string;
+  (_: "settings.storage", __?: {}): {
+  readonly "actions": {
+    readonly "addDirectory": string,
+    readonly "changeDirectory": string,
+    readonly "chooseFolder": string,
+    readonly "editDirectory": string,
+    readonly "removeDirectory": string,
+    readonly "removeStorageDirectory": string
+  },
+  readonly "beta": {
+    readonly "availability": string,
+    readonly "integrity": string,
+    readonly "intro": string,
+    readonly "migration": string,
+    readonly "vault": string,
+    readonly "warning": string
+  },
+  readonly "configuration": {
+    readonly "chooseFolderDescription": string,
+    readonly "configuredDescription": string,
+    readonly "notConfiguredDescription": string,
+    readonly "notConfiguredTitle": string,
+    readonly "title": string
+  },
+  readonly "dialogs": {
+    readonly "add": {
+      readonly "confirm": string,
+      readonly "description": string,
+      readonly "title": string
+    },
+    readonly "edit": {
+      readonly "confirm": string,
+      readonly "description": string,
+      readonly "title": string
+    },
+    readonly "remove": {
+      readonly "confirm": string,
+      readonly "description": string,
+      readonly "title": string
+    }
+  },
+  readonly "info": string,
+  readonly "locations": {
+    readonly "defaultInternal": string,
+    readonly "external": string,
+    readonly "title": string
+  }
+};
+  (_: "settings.storage.actions", __?: {}): {
+  readonly "addDirectory": string,
+  readonly "changeDirectory": string,
+  readonly "chooseFolder": string,
+  readonly "editDirectory": string,
+  readonly "removeDirectory": string,
+  readonly "removeStorageDirectory": string
+};
+  (_: "settings.storage.actions.addDirectory", __?: {}): string;
+  (_: "settings.storage.actions.changeDirectory", __?: {}): string;
+  (_: "settings.storage.actions.chooseFolder", __?: {}): string;
+  (_: "settings.storage.actions.editDirectory", __?: {}): string;
+  (_: "settings.storage.actions.removeDirectory", __?: {}): string;
+  (_: "settings.storage.actions.removeStorageDirectory", __?: {}): string;
+  (_: "settings.storage.beta", __?: {}): {
+  readonly "availability": string,
+  readonly "integrity": string,
+  readonly "intro": string,
+  readonly "migration": string,
+  readonly "vault": string,
+  readonly "warning": string
+};
+  (_: "settings.storage.beta.availability", __?: {}): string;
+  (_: "settings.storage.beta.integrity", __?: {}): string;
+  (_: "settings.storage.beta.intro", __?: {}): string;
+  (_: "settings.storage.beta.migration", __?: {}): string;
+  (_: "settings.storage.beta.vault", __?: {}): string;
+  (_: "settings.storage.beta.warning", __?: {}): string;
+  (_: "settings.storage.configuration", __?: {}): {
+  readonly "chooseFolderDescription": string,
+  readonly "configuredDescription": string,
+  readonly "notConfiguredDescription": string,
+  readonly "notConfiguredTitle": string,
+  readonly "title": string
+};
+  (_: "settings.storage.configuration.chooseFolderDescription", __?: {}): string;
+  (_: "settings.storage.configuration.configuredDescription", __?: {}): string;
+  (_: "settings.storage.configuration.notConfiguredDescription", __?: {}): string;
+  (_: "settings.storage.configuration.notConfiguredTitle", __?: {}): string;
+  (_: "settings.storage.configuration.title", __?: {}): string;
+  (_: "settings.storage.dialogs", __?: {}): {
+  readonly "add": {
+    readonly "confirm": string,
+    readonly "description": string,
+    readonly "title": string
+  },
+  readonly "edit": {
+    readonly "confirm": string,
+    readonly "description": string,
+    readonly "title": string
+  },
+  readonly "remove": {
+    readonly "confirm": string,
+    readonly "description": string,
+    readonly "title": string
+  }
+};
+  (_: "settings.storage.dialogs.add", __?: {}): {
+  readonly "confirm": string,
+  readonly "description": string,
+  readonly "title": string
+};
+  (_: "settings.storage.dialogs.add.confirm", __?: {}): string;
+  (_: "settings.storage.dialogs.add.description", __?: {}): string;
+  (_: "settings.storage.dialogs.add.title", __?: {}): string;
+  (_: "settings.storage.dialogs.edit", __?: {}): {
+  readonly "confirm": string,
+  readonly "description": string,
+  readonly "title": string
+};
+  (_: "settings.storage.dialogs.edit.confirm", __?: {}): string;
+  (_: "settings.storage.dialogs.edit.description", __?: {}): string;
+  (_: "settings.storage.dialogs.edit.title", __?: {}): string;
+  (_: "settings.storage.dialogs.remove", __?: {}): {
+  readonly "confirm": string,
+  readonly "description": string,
+  readonly "title": string
+};
+  (_: "settings.storage.dialogs.remove.confirm", __?: {}): string;
+  (_: "settings.storage.dialogs.remove.description", __?: {}): string;
+  (_: "settings.storage.dialogs.remove.title", __?: {}): string;
+  (_: "settings.storage.info", __?: {}): string;
+  (_: "settings.storage.locations", __?: {}): {
+  readonly "defaultInternal": string,
+  readonly "external": string,
+  readonly "title": string
+};
+  (_: "settings.storage.locations.defaultInternal", __?: {}): string;
+  (_: "settings.storage.locations.external", __?: {}): string;
+  (_: "settings.storage.locations.title", __?: {}): string;
   (_: "settings.tabs", __?: {}): {
   readonly "appearance": string,
   readonly "general": string,
   readonly "keyboardShortcuts": string,
-  readonly "profiles": string
+  readonly "profiles": string,
+  readonly "storage": string
 };
   (_: "settings.tabs.appearance", __?: {}): string;
   (_: "settings.tabs.general", __?: {}): string;
   (_: "settings.tabs.keyboardShortcuts", __?: {}): string;
   (_: "settings.tabs.profiles", __?: {}): string;
+  (_: "settings.tabs.storage", __?: {}): string;
   (_: "settings.theme", __?: {}): {
   readonly "auto": string,
   readonly "dark": string,

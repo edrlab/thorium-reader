@@ -68,8 +68,8 @@ import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/strin
 
 const noteColorCodeToColorTranslatorKeySet_ = {
     ["#000000"]: "publication.accessibility.accessibilityHazard.none" as TTranslatorKeyParameter,
-    [rgbToHex(readerConfigInitialState.ttsHighlightColor)]: "Dark Yellow" as TTranslatorKeyParameter,
-    [rgbToHex(readerConfigInitialState.ttsHighlightColor_WORD)]: "Dark Orange" as TTranslatorKeyParameter,
+    [rgbToHex(readerConfigInitialState.ttsHighlightColor)]: "reader.notes.colors.darkyellow" as TTranslatorKeyParameter,
+    [rgbToHex(readerConfigInitialState.ttsHighlightColor_WORD)]: "reader.notes.colors.darkorange" as TTranslatorKeyParameter,
     ...noteColorCodeToColorTranslatorKeySet,
 };
 
@@ -270,7 +270,7 @@ export const FontSize = () => {
                     setCurrentSliderValue(newValue.replace(/%/g, ""));
                     set({ fontSize: newValue });
                 }
-                } className={stylesSettings.reset_button} title="default value">
+                } className={stylesSettings.reset_button} title={__("reader.settings.defaultValue")}>
                     <SVG ariaHidden svg={ResetIcon} />
                 </button>
                 <button 
@@ -428,6 +428,7 @@ interface ITable {
 const Slider = ({ value, option, set }: { value: string, option: ITable, set: (a: Pick<ReaderConfig, "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight">) => void }) => {
     const [currentSliderValue, setCurrentSliderValue] = React.useState(option.defaultValue);
     const [currentIndex, setCurrentIndex] = React.useState(() => (optionsValues[option.parameter] ||  [] ).findIndex((el) => el === option.defaultValue) || 0);
+    const [__] = useTranslator()
 
     React.useEffect(() => {
         setCurrentSliderValue(value);
@@ -464,7 +465,7 @@ const Slider = ({ value, option, set }: { value: string, option: ITable, set: (a
                 <button
                     onClick={() => updateValue(0)}
                     className={stylesSettings.reset_button}
-                    title="default value"
+                    title={__("reader.settings.defaultValue")}
                 >
                     <SVG ariaHidden svg={ResetIcon} />
                 </button>
@@ -1151,19 +1152,19 @@ fontSize: "1.5em",
 {
 color: "silver",
 }
-}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nec purus sodales, rhoncus nisl ac,</span><br/>
+}>{__("reader.settings.previewText.prefix")}</span><br/>
 <div style={
 {
 border: "2px solid black",
 borderRadius: "8px",
 padding: "4px",
 }
-}><span>fringilla metus.</span> <span style={styleSentence}>Sed eu dignissim dui. <span style={styleWord}>Curabitur</span> venenatis sollicitudin ultrices. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</span> <span>Aenean laoreet justo vitae</span><br/></div>
+}><span>{__("reader.settings.previewText.highlight.before")}</span> <span style={styleSentence}>{__("reader.settings.previewText.highlight.sentence")} <span style={styleWord}>{__("reader.settings.previewText.highlight.word")}</span> venenatis sollicitudin ultrices. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</span> <span>{__("reader.settings.previewText.highlight.after")}</span><br/></div>
 <span style={
 {
 color: "silver",
 }
-}>mauris fermentum, eget ultrices augue placerat. Proin massa est, gravida feugiat ipsum feugiat, dapibus porttitor felis.</span>
+}>{__("reader.settings.previewText.suffix")}</span>
 </p>
 </div>
 )
@@ -1192,14 +1193,14 @@ ttsHighlightStyle_ === HighlightDrawTypeOpacityMask ?
 "silver" :
 undefined,
 }
-}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nec purus sodales, rhoncus nisl ac, fringilla metus.</span> <span style={styleSentence}>Sed eu dignissim dui. <span style={styleWord}>Curabitur</span> venenatis sollicitudin ultrices. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</span> <span style={
+}>{`${__("reader.settings.previewText.prefix")} ${__("reader.settings.previewText.highlight.before")}`}</span> <span style={styleSentence}>{__("reader.settings.previewText.highlight.sentence")} <span style={styleWord}>{__("reader.settings.previewText.highlight.word")}</span> venenatis sollicitudin ultrices. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</span> <span style={
 {
 color:
 ttsHighlightStyle_ === HighlightDrawTypeOpacityMask ?
 "silver" :
 undefined,
 }
-}>Aenean laoreet justo vitae mauris fermentum, eget ultrices augue placerat. Proin massa est, gravida feugiat ipsum feugiat, dapibus porttitor felis.</span>
+}>{`${__("reader.settings.previewText.highlight.after")} ${__("reader.settings.previewText.suffix")}`}</span>
 </p>
 </div>
 )
@@ -1232,7 +1233,7 @@ const ReadingDisplayCheckboxSettings = ({
             id: "mathjax",
             name: "mathjax",
             label: __("reader.settings.mathjax"),
-            description: "MathJax",
+            description: __("reader.settings.mathjaxDescription"),
             checked: enableMathJax,
             onChange: () => {
                 if (enableMathJax === false) {

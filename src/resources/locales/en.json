@@ -106,6 +106,8 @@
                 "password": "Password",
                 "register": "Register",
                 "retry": "Try again",
+                "unauthorized": "Unauthorized",
+                "unauthorizedUnsupportedType": "Unauthorized (unsupported WWWAuthenticate type '{{- type}}')",
                 "username": "Username / Email Address"
             },
             "info": {
@@ -135,6 +137,7 @@
         "sort": "Sort by",
         "tag": "Tag",
         "tags": "Tags",
+        "openFolder": "Open folder",
         "update": "Edit"
     },
     "dialog": {
@@ -154,6 +157,7 @@
             "title": "Import notes?"
         },
         "cancel": "Cancel",
+        "continue": "Continue",
         "customization": {
             "splashscreen": {
                 "fallbackWelcomeScreen": "No welcome-screen provided",
@@ -247,6 +251,11 @@
         },
         "open": {
             "error": "Loading publication failed: [{{- err}}]"
+        },
+        "storage": {
+            "removed": "Publication directory removed.",
+            "updateFailed": "Failed to update publication directory: {{- message}}",
+            "updated": "Publication directory updated."
         },
         "wipeData": "Login data was cleared (access tokens and cookies)"
     },
@@ -789,6 +798,8 @@
         "notes": {
             "colors": {
                 "cyan": "Cyan",
+                "darkorange": "Dark Orange",
+                "darkyellow": "Dark Yellow",
                 "green": "Green",
                 "orange": "Orange",
                 "purple": "Purple",
@@ -836,6 +847,7 @@
             },
             "customFontSelected": "You have chosen a personal font",
             "customizeReader": "Customize text formatting",
+            "defaultValue": "default value",
             "disabled": "disabled",
             "display": "Display",
             "disposition": {
@@ -851,6 +863,7 @@
             "lineSpacing": "Line spacing",
             "margin": "Margin",
             "mathjax": "Enable MathJax",
+            "mathjaxDescription": "MathJax",
             "noFootnotes": "Disable popup footnotes",
             "noRTLFlip": "Disable Right-To-Left UI",
             "noRuby": "Hide Japanese Ruby",
@@ -881,6 +894,16 @@
                 "title": "Preferences"
             },
             "preview": "Preview",
+            "previewText": {
+                "highlight": {
+                    "after": "Aenean laoreet justo vitae",
+                    "before": "fringilla metus.",
+                    "sentence": "Sed eu dignissim dui.",
+                    "word": "Curabitur"
+                },
+                "prefix": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nec purus sodales, rhoncus nisl ac,",
+                "suffix": "mauris fermentum, eget ultrices augue placerat. Proin massa est, gravida feugiat ipsum feugiat, dapibus porttitor felis."
+            },
             "reduceFontSize": "Reduce font size",
             "reduceMotion": "Reduce motion",
             "scrolled": "Scrollable",
@@ -1203,11 +1226,60 @@
         "session": {
             "title": "Enable session saving"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "Add external storage directory",
+                "changeDirectory": "Change external storage directory",
+                "chooseFolder": "Choose folder",
+                "editDirectory": "Edit directory",
+                "removeDirectory": "Remove directory",
+                "removeStorageDirectory": "Remove external storage directory"
+            },
+            "beta": {
+                "availability": "This feature only works with newer versions of Thorium. Publications added to the external storage folder will not appear in Thorium 3.4 or below.",
+                "integrity": "You are responsible for the integrity and availability of this directory. Be careful with deletion, remote access, slow devices or network paths, and filesystem permissions.",
+                "intro": "This external publication storage feature is currently in beta testing.",
+                "migration": "No migration will be performed by Thorium. If you change storage location, moving publications is entirely your responsibility.",
+                "vault": "You can consider this directory a vault managed by Thorium.",
+                "warning": "Publications stored by Thorium in this directory are immutable application data and reflect Thorium's internal storage structure. Editing, renaming, moving, or deleting files inside it can break publication reading and may crash the reader for affected items."
+            },
+            "configuration": {
+                "chooseFolderDescription": "Choose the folder that Thorium should use as external publication storage.",
+                "configuredDescription": "The external storage directory is configured and ready to use for newly stored publications.",
+                "notConfiguredDescription": "Configure an external storage directory to store new publications outside of Thorium's default internal location.",
+                "notConfiguredTitle": "Not configured for the moment.",
+                "title": "Configuration"
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "Continue",
+                    "description": "This feature is currently in beta. Do you want to continue and configure an external publication storage directory?",
+                    "title": "Enable external publication storage"
+                },
+                "edit": {
+                    "confirm": "Edit directory",
+                    "description": "Changing the external publication storage directory requires manual care. Thorium will not migrate existing publications for you. Do you want to continue?",
+                    "title": "Edit external publication storage"
+                },
+                "remove": {
+                    "confirm": "Remove directory",
+                    "description": "Removing the configured external publication storage directory does not migrate publications back automatically. Do you want to remove this directory from Thorium configuration?",
+                    "title": "Remove external publication storage"
+                }
+            },
+            "locations": {
+                "defaultInternal": "Default internal storage",
+                "external": "External storage",
+                "title": "Locations"
+            },
+            "info": "Storage"
+        },
         "tabs": {
             "appearance": "Appearance",
             "general": "General",
             "keyboardShortcuts": "Keyboard shortcuts",
-            "profiles": "Profiles"
+            "profiles": "Profiles",
+            "storage": "Storage"
         },
         "theme": {
             "auto": "Automatic",
