@@ -51,7 +51,7 @@ export interface IPublicationApi {
     exportPublication: (
         publicationView: PublicationView,
     ) => SagaGenerator<void>;
-    readingFinishedRefresh: (
+    findAllRefresh: (
     ) => SagaGenerator<void>;
 }
 
@@ -67,5 +67,5 @@ export interface IPublicationModuleApi {
     "publication/search": IPublicationApi["search"];
     "publication/searchEqTitle": IPublicationApi["searchEqTitle"];
     "publication/exportPublication": IPublicationApi["exportPublication"];
-    "publication/readingFinishedRefresh": IPublicationApi["readingFinishedRefresh"];
+    "publication/findAllRefresh": IPublicationApi["findAllRefresh"];
 }

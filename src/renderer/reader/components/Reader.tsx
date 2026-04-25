@@ -3401,23 +3401,23 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             // TODO: quick fix to refresh AllPublication component grid view
             // when a book is set as finished and then open / readed
             //
-            // dispatch a stub api endpoint "readingFinishedRefresh" just to trigger
+            // dispatch a stub api endpoint "findAllRefresh" just to trigger
             // AllPublication grid view, this is a legacy usage of the ReduxApi
             // originaly developped. Now we should use the react/redux data update mechanism
             // instead to call a fake IPC API
             //
-            // So call readingFinishedRefresh API at each call of setLocator function
+            // So call findAllRefresh API at each call of setLocator function
             // trigger too often the refresh, needed only at start or when the book is
             // check as set as finished in library/AllPublication compoment during the reading
             // setLocator is heavealy called with tts enabled or in an audiobook
-            // so we just called readingFinishedRefresh 2 times at start
+            // so we just called findAllRefresh 2 times at start
             // (first time is not handled by the library, second time is it)
             //
             // It's not a good practice to do that, but it works!
             //
             if (__READING_FINISHED_CALL_COUNTER < 2) {
                 __READING_FINISHED_CALL_COUNTER++;
-                apiDispatch(dispatch)()("publication/readingFinishedRefresh")();
+                apiDispatch(dispatch)()("publication/findAllRefresh")();
             }
         },
         setConfig: (config: Partial<ReaderConfig>) => {

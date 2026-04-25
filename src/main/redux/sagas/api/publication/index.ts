@@ -30,6 +30,6 @@ export const publicationApi: IPublicationApi = {
     searchEqTitle,
     updateTags,
 
-    // see readingFinished action : just used to refresh AllPublicationPage.tsx when set as finished
-    readingFinishedRefresh: function* (): SagaGenerator<void> { },
+    // used as a fake refresh signal for components subscribing around publication/findAll
+    findAllRefresh: function* (): SagaGenerator<void> { },
 };

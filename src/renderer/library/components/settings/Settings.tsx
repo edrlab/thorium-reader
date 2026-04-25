@@ -700,12 +700,13 @@ const StorageSettings: React.FC<{}> = () => {
     const [confirmEditOpen, setConfirmEditOpen] = React.useState(false);
     const [confirmDeleteOpen, setConfirmDeleteOpen] = React.useState(false);
 
-    const submitDirectory = React.useCallback((nextDirectory: string) => {
-        dispatch(catalogActions.setUserDirectory.build(nextDirectory));
+    const removeUserDirectory = React.useCallback(() => {
+        dispatch(catalogActions.setUserDirectory.build(""));
         setIsEditing(false);
     }, [dispatch]);
 
     const openFolderPicker = React.useCallback(() => {
+        // trigger the file picker on the last userDirectory if available
         dispatch(catalogActions.setUserDirectory.build(userDirectory));
         setIsEditing(false);
     }, [dispatch, userDirectory]);
@@ -746,7 +747,7 @@ const StorageSettings: React.FC<{}> = () => {
                 confirmLabel="Remove directory"
                 onConfirm={() => {
                     setConfirmDeleteOpen(false);
-                    submitDirectory("");
+                    removeUserDirectory();
                 }}
             />
 
