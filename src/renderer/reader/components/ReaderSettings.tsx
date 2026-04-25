@@ -428,7 +428,7 @@ interface ITable {
 const Slider = ({ value, option, set }: { value: string, option: ITable, set: (a: Pick<ReaderConfig, "pageMargins" | "wordSpacing" | "letterSpacing" | "paraSpacing" | "lineHeight">) => void }) => {
     const [currentSliderValue, setCurrentSliderValue] = React.useState(option.defaultValue);
     const [currentIndex, setCurrentIndex] = React.useState(() => (optionsValues[option.parameter] ||  [] ).findIndex((el) => el === option.defaultValue) || 0);
-    const [__] = useTranslator()
+    const [__] = useTranslator();
 
     React.useEffect(() => {
         setCurrentSliderValue(value);
