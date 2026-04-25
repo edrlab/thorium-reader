@@ -757,6 +757,7 @@ const StorageSettings: React.FC<{}> = () => {
                     <div dir={isRTL ? "rtl" : "ltr"} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                         <p>This external publication storage feature is currently in beta testing.</p>
                         <p>No migration will be performed by Thorium. If you change storage location, moving publications is entirely your responsibility.</p>
+                        <p>This feature only works with newer versions of Thorium. Publications added to the external storage folder will not appear in Thorium 3.4 or below.</p>
                         <p>You are responsible for the integrity and availability of this directory. Be careful with deletion, remote access, slow devices or network paths, and filesystem permissions.</p>
                         <p>Publications stored by Thorium in this directory are immutable application data and reflect Thorium&apos;s internal storage structure. Editing, renaming, moving, or deleting files inside it can break publication reading and may crash the reader for affected items.</p>
                         <p>You can consider this directory a vault managed by Thorium.</p>
