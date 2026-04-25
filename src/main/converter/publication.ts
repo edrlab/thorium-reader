@@ -222,14 +222,12 @@ export class PublicationViewConverter {
         }
 
         const {
-            publicationDirectory,
+            // publicationDirectory,
             isOpenable,
         } = await getPublicationStorageState(document.identifier);
 
         return {
 
-            status: "error",
-            publicationDirectory,
             isOpenable,
             identifier: document.identifier, // preserve Identifiable identifier
 
@@ -340,14 +338,12 @@ export class PublicationViewConverter {
         const trimStrings = (texts: string | string[]): string[] => Array.isArray(texts) ? texts.filter((item) => item && typeof item === "string").map((item) => item.trim()) : texts && typeof texts === "string" ? [texts.trim()] : [];
 
         const {
-            publicationDirectory,
+            // publicationDirectory,
             isOpenable,
         } = await getPublicationStorageState(document.identifier);
 
         return {
 
-            status: "success",
-            publicationDirectory,
             isOpenable,
             isAudio,
             isDivina,

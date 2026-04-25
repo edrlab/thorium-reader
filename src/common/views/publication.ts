@@ -24,8 +24,6 @@ export interface CustomCoverView {
     bottomColor: string;
 }
 
-export type PublicationViewStatus = "success" | "error";
-
 export interface PublicationView extends Identifiable {
 
     // Post-check that the publication storage is valid for opening
