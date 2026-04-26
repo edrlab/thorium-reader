@@ -43,6 +43,7 @@ import crypto from "node:crypto";
 import { JsonStringifySortedKeys } from "readium-desktop/common/utils/json";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import * as ramda from "ramda";
+import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
 
 // import { composeWithDevTools } from "remote-redux-devtools";
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
@@ -53,7 +54,7 @@ const debugStdout = debug_(_dbgn);
 const debug = (...a: Parameters<debug_.Debugger>) => {
     debugStdout(...a);
     tryCatchSync(() =>
-        fs.appendFileSync(memoryLoggerFilename, a.map((v) => `${+new Date()} ${JSON.stringify(v)}`).join("\n") + "\n"),
+        appendFileSyncWithRotation(memoryLoggerFilename, a.map((v) => `${+new Date()} ${JSON.stringify(v)}`).join("\n") + "\n"),
         "",
     );
 };

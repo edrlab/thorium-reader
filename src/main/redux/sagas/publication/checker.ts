@@ -16,6 +16,7 @@ import { IPublicationCheckerState } from "readium-desktop/common/redux/states/pu
 import { publicationActions } from "readium-desktop/common/redux/actions";
 import { winActions } from "../../actions";
 import { tryCatch } from "readium-desktop/utils/tryCatch";
+import { appendFileWithRotation } from "readium-desktop/utils/log";
 
 // TODO: use app.getPath("logs"); instead
 const folderPath = path.join(
@@ -147,7 +148,7 @@ export function* publicationIntegrityChecker(): SagaGenerator<void> {
         thoriumPublicationPath: yield* callTyped(() => diMainGet("publication-directory").getDirectoryPath()),
     }, null, 4)}\n`;
     if (dumpLogs) {
-        yield* callTyped(() => fs.promises.appendFile(appLogs, dump));
+        yield* callTyped(() => appendFileWithRotation(appLogs, dump));
 
         yield* takeTyped(winActions.library.openSucess.ID);
         yield* delayTyped(1000); // 1s

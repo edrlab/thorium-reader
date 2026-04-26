@@ -38,6 +38,7 @@ import * as fs from "fs";import { fileProvisionning } from "./customization";
 import { customizationWellKnownFolder } from "readium-desktop/main/customization/provisioning";
 import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
 import { ToastType } from "readium-desktop/common/models/toast";
+import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
 
 // Logger
 const debug = debug_("readium-desktop:main:saga:event");
@@ -277,7 +278,7 @@ export function saga() {
                     debug(e);
                     yield* putTyped(toastActions.openRequest.build(ToastType.Error, `OPDS Deep link ${e}`));
                 } finally {
-                    try { fs.appendFileSync(appLogs, dump); } catch { }
+                    try { appendFileSyncWithRotation(appLogs, dump); } catch { }
                 }
             }
 
