@@ -156,9 +156,9 @@
         "cancel": "Katkesta",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "",
+                "fallbackWelcomeScreen": "Tervitusvaade pole lisatud",
                 "state": "Olek: {{- state}}",
-                "title": ""
+                "title": "Kohandatud profiili ettevalmistamine ja aktiveerimine"
             }
         },
         "deleteAnnotations": "Kas kustutad märlmed?",
@@ -198,7 +198,7 @@
         "searchPlaceholder": "Otsi",
         "searchTitle": "Otsi",
         "settings": "Seadistused",
-        "settingsLabel": "",
+        "settingsLabel": "Rakenduse seadistused",
         "viewMode": "Vaaterežiim"
     },
     "library": {
