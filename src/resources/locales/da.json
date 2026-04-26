@@ -583,6 +583,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Ingen information om bogens udseende kan ændres",
                 "descriptive": "Ingen information angiver om bogens udseende kan ændres"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },

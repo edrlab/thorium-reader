@@ -583,6 +583,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Ei tietoa siitä, voiko ulkoasua mukauttaa",
                 "descriptive": "Ei tietoa siitä, voiko ulkoasua mukauttaa"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },

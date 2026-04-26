@@ -578,6 +578,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "关于外观可修改性的信息不可用",
                 "descriptive": "关于外观可修改性的信息不可用"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },

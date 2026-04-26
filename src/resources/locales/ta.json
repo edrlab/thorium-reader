@@ -583,6 +583,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "தோற்றம் மாற்றியமைத்தல் பற்றிய எந்த தகவலும் கிடைக்கவில்லை",
                 "descriptive": "தோற்றம் மாற்றியமைத்தல் பற்றிய எந்த தகவலும் கிடைக்கவில்லை"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },

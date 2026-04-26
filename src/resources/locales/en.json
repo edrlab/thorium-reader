@@ -583,6 +583,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "No information about appearance modifiability is available",
                 "descriptive": "No information about appearance modifiability is available"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "Appearance cannot be modified",
+                "descriptive": "Appearance of the text and page layout cannot be modified because the publication is in a fixed layout format"
             }
         }
     },

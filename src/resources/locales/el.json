@@ -583,6 +583,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Δεν υπάρχουν διαθέσιμες πληροφορίες σχετικά με τη δυνατότητα τροποποίησης της εμφάνισης",
                 "descriptive": "Δεν υπάρχουν διαθέσιμες πληροφορίες σχετικά με τη δυνατότητα τροποποίησης της εμφάνισης"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },

@@ -588,6 +588,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "",
                 "descriptive": ""
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },

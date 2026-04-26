@@ -265,12 +265,12 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                     <li className="publicationInfoA11y2-icon" title={all_textual_content_can_be_modified
                         ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-modifiable.descriptive")
                         : is_fixed_layout
-                            ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-modifiable.descriptive")
+                            ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-unmodifiable.descriptive")
                             : __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-unknown.descriptive")}>
                         {all_textual_content_can_be_modified
                             ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-modifiable.compact")
                             : is_fixed_layout
-                                ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-modifiable.compact")
+                                ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-unmodifiable.compact")
                                 : __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-unknown.compact")}
                     </li>
                     <li className="publicationInfoA11y2-icon" title={all_necessary_content_textual

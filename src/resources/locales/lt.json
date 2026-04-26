@@ -593,6 +593,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Informacijos apie išvaizdos keitimo galimybes nėra",
                 "descriptive": "Informacijos apie išvaizdos keitimo galimybes nėra"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },

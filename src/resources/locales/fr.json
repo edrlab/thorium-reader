@@ -588,6 +588,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Aucune information sur les possibilités d'adaptation de l'affichage",
                 "descriptive": "Il n'est pas possible de savoir si l'apparence du texte et la mise en page peuvent être modifiées"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },

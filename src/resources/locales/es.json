@@ -588,6 +588,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "No hay información disponible sobre la posibilidad de modificar el aspecto visual",
                 "descriptive": "No hay información disponible sobre la posibilidad de modificar el aspecto visual"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },

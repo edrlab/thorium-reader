@@ -588,6 +588,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Non sono disponibili informazioni sulla possibilità di formattare il testo",
                 "descriptive": "Non sono disponibili informazioni sulla possibilità di formattare il testo"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },
