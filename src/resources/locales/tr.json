@@ -198,7 +198,7 @@
         "searchPlaceholder": "Ara",
         "searchTitle": "Ara",
         "settings": "Ayarlar",
-        "settingsLabel": "",
+        "settingsLabel": "Uygulama Ayarları",
         "viewMode": "Görünüm biçimi"
     },
     "library": {
@@ -784,7 +784,7 @@
             "printDisabled": "Yazdırma engellendi",
             "screenNext": "İleri git",
             "screenPrevious": "Geri git",
-            "settingsTitle": "Ayarlar"
+            "settingsTitle": "Okuyucu ayarları"
         },
         "notes": {
             "colors": {
