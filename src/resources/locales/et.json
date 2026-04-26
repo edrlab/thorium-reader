@@ -302,11 +302,11 @@
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
                 "compact": "ARIA-rollid on kaasatud",
-                "descriptive": ""
+                "descriptive": "Sisu on täiendatud ARIA-rollidega, et optimeerida selle ülesehitust ja hõlbustada selles liikumist"
             },
             "additional-accessibility-information-audio-descriptions": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Häälkirjeldused",
+                "descriptive": "Häälkirjeldused"
             },
             "additional-accessibility-information-braille": {
                 "compact": "Braille-kiri",
@@ -317,28 +317,28 @@
                 "descriptive": ""
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Suur kontrast esiplaanil oleva ja taustahelide vahel",
+                "descriptive": "Suur kontrast esiplaanil oleva ja taustahelide vahel"
             },
             "additional-accessibility-information-high-contrast-between-text-and-background": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Suur kontrast esiplaanil oleva ja taustateksti vahel",
+                "descriptive": "Suur kontrast esiplaanil oleva ja taustateksti vahel"
             },
             "additional-accessibility-information-large-print": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Suur kirjatüüp",
+                "descriptive": "Suur kirjatüüp"
             },
             "additional-accessibility-information-page-breaks": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Leheküljevahetuse on olemas",
+                "descriptive": "Lehevahetused on üle võetud originaaltrükisest"
             },
             "additional-accessibility-information-ruby-annotations": {
                 "compact": "",
                 "descriptive": ""
             },
             "additional-accessibility-information-sign-language": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Viipekeel",
+                "descriptive": "Viipekeel"
             },
             "additional-accessibility-information-tactile-graphics": {
                 "compact": "",
@@ -356,8 +356,8 @@
         },
         "conformance": {
             "conformance-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Käesolev väljaanne vastab hõlbustuse ja juurdepääsetavuse miinimumnõuetele",
+                "descriptive": "Väljaanne sisaldab vastavusdeklaratsiooni, mille kohaselt vastab see EPUB-i hõlbustuse ja juurdepääsetavuse standardile ning WCAG 2. taseme A-nõuetele"
             },
             "conformance-aa": {
                 "compact": "",
@@ -368,7 +368,7 @@
                 "descriptive": ""
             },
             "conformance-certifier": {
-                "compact": ""
+                "compact": "Selle väljaande on sertifitseerinud "
             },
             "conformance-certifier-credentials": {
                 "compact": ""
