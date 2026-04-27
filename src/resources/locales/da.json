@@ -141,12 +141,12 @@
         "annotations": {
             "descAuthor": "af {{- author}}",
             "descCreator": "lavet af",
-            "descList_one": "{{- count}} note(r) fra {{- creator}} vil blive associeret med {{- title}} {{- author}}",
-            "descList_other": "{{- count}} note(r) fra {{- creator}} vil blive associeret med {{- title}} {{- author}}",
-            "descNewer_one": "{{- count}} nyere version af disse noter er allerede associeret med denne bog",
-            "descNewer_other": "{{- count}} nyere version af disse noter er allerede associeret med denne bog",
-            "descOlder_one": "{{- count}} ældre version af disse noter er allerede associeret med denne bog",
-            "descOlder_other": "{{- count}} ældre version af disse noter er allerede associeret med denne bog",
+            "descList_one": "{{- count}} note fra {{- creator}} vil blive knyttet til {{- title}} {{- author}}",
+            "descList_other": "{{- count}} noter fra {{- creator}} vil blive knyttet til {{- title}} {{- author}}",
+            "descNewer_one": "Konflikt: {{- count}} note knyttet til bogen er nyere",
+            "descNewer_other": "Konflikt: {{- count}} noter knyttet til bogen er nyere",
+            "descOlder_one": "Konflikt: {{- count}} note knyttet til bogen er ældre",
+            "descOlder_other": "Konflikt: {{- count}} noter knyttet til bogen er ældre",
             "descTitle": "Navn på notesamling: ",
             "importAll": "Importér alle noter",
             "importWithoutConflict": "Importér noter uden sammenfald",
@@ -162,11 +162,11 @@
             }
         },
         "deleteAnnotations": "Slet alle noter?",
-        "deleteAnnotationsText_one": "Vil du slette {{- count}} note(r)?",
-        "deleteAnnotationsText_other": "Vil du slette {{- count}} note(r)?",
+        "deleteAnnotationsText_one": "Vil du slette {{- count}} note?",
+        "deleteAnnotationsText_other": "Vil du slette {{- count}} noter?",
         "deleteBookmarks": "Slet bogmærker?",
-        "deleteBookmarksText_one": "Er du sikker på at du vil slette {{- count}} bogmærke(r)?",
-        "deleteBookmarksText_other": "Er du sikker på at du vil slette {{- count}} bogmærke(r)?",
+        "deleteBookmarksText_one": "Er du sikker på at du vil slette {{- count}} bogmærke?",
+        "deleteBookmarksText_other": "Er du sikker på at du vil slette {{- count}} bogmærker?",
         "deleteFeed": "Er du sikker på at du vil slette dette katalog?",
         "deletePublication": "Er du sikker på at du vil fjerne bogen?",
         "deletePublicationWithNotes": "Advarsel: denne bog har noter og/eller bogmærker, som også vil blive slettet! (hvis du vil beholde dem, så eksporter dem venligst inden du sletter bogen)",
@@ -349,8 +349,8 @@
                 "descriptive": "Taktile 3D objekter"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "Indeholder hints til tekst-til-tale (TTS)",
-                "descriptive": "Indeholder hints til tekst-til-tale (TTS)"
+                "compact": "Indeholder hjælp til udtale",
+                "descriptive": "Indeholder hjælp til udtale for tekst-til-tale (TTS)"
             },
             "additional-accessibility-information-title": "Yderligere tilgængelighedsinformation"
         },
@@ -685,8 +685,8 @@
                 "filterOptions": "Filtreringsvalg",
                 "none": "Ingen"
             },
-            "hide": "Skjul",
-            "highlight": "Fremhævning",
+            "hide": "Vis ikke",
+            "highlight": "Overstregning",
             "noSelectionToast": "Intet markeret",
             "note": "{{- color}} Note",
             "quickAnnotations": "Hurtig-oprettelse (spring redigering over)",
@@ -756,8 +756,8 @@
             "speed": "Oplæsningshastighed",
             "stop": "Stop oplæsning",
             "title": "Oplæsning",
-            "useTTSHighlightsForMO": "Brugerdefineret fremhævning",
-            "useTTSHighlightsForMODescription": "Slå bogens egne visningsindstillinger fra"
+            "useTTSHighlightsForMO": "Brugerdefineret overstregning",
+            "useTTSHighlightsForMODescription": "Slå bogens indbyggede formatering fra"
         },
         "navigation": {
             "ZenModeExit": "Forlad fokuseret læsetilstand",
@@ -774,7 +774,7 @@
             "goToTitle": "Gå til side",
             "history": "Navigationshistorik",
             "historyNext": "Hop frem",
-            "historyPrevious": "Hop tilbage",
+            "historyPrevious": "Hop tilbage i navigationshistorikken",
             "infoTitle": "Information",
             "magnifyingGlassButton": "Søg i bogen",
             "openTableOfContentsTitle": "Indholdsfortegnelse",
@@ -798,8 +798,8 @@
         },
         "picker": {
             "search": {
-                "founds_one": "{{- count}} resultat(er)",
-                "founds_other": "{{- count}} resultat(er)",
+                "founds_one": "{{- count}} resultat",
+                "founds_other": "{{- count}} resultater",
                 "input": "søgetekst",
                 "next": "Næste",
                 "notFound": "ingen resultater",
@@ -911,7 +911,7 @@
         },
         "tts": {
             "activate": "Aktiver syntetisk tale",
-            "language": "Sprog",
+            "language": "Sprog for tekst-til-tale (TTS)",
             "next": "Næste",
             "options": "Indstillinger for syntetisk tale",
             "pause": "Pause",
@@ -919,7 +919,7 @@
             "previous": "Forrige",
             "sentenceDetect": "Opdel oplæsning i sætninger",
             "sentenceDetectDescription": "Bryd lange afsnit op i sætninger.",
-            "speed": "Afspilningshastighed",
+            "speed": "Oplæsningshastighed (TTS)",
             "stop": "Stop syntetisk tale",
             "voice": "Syntetisk stemme"
         }
