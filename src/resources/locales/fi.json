@@ -198,7 +198,7 @@
         "searchPlaceholder": "Hae",
         "searchTitle": "Hae",
         "settings": "Asetukset",
-        "settingsLabel": "",
+        "settingsLabel": "Sovelluksen asetukset",
         "viewMode": "Näkymätila"
     },
     "library": {
@@ -784,7 +784,7 @@
             "printDisabled": "Tulostus kielletty",
             "screenNext": "Siirry eteenpäin",
             "screenPrevious": "Siirry taaksepäin",
-            "settingsTitle": "Asetukset"
+            "settingsTitle": "Lukuasetukset"
         },
         "notes": {
             "colors": {
