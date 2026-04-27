@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as fs from "fs";
-// import * as path from "path";
+import * as path from "path";
 
 // export function rmDirSync(dirPath: string): void {
 //     let filenames = [];
@@ -35,6 +35,10 @@ export function getFileSize(filePath: string): number {
     return stats.size;
 }
 
+export function getFilePathNormalize(filePath: string): string {
+    const resolved = path.resolve(filePath);
+    return process.platform === "win32" ? resolved.toLowerCase() : resolved;
+}
 
 export const rmrf = async (dirOrFile: string) => {
     return await fs.promises.rm(dirOrFile, { recursive: true, retryDelay: 100, maxRetries: 3, force: true });

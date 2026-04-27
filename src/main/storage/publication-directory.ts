@@ -32,12 +32,13 @@ function isUserDirectoryConfig(value: unknown): value is UserDirectoryConfig {
 export class PublicationDirectory {
     public readonly defaultDirectory: string;
     public userDirectory?: string;
+    private readonly readyPromise: Promise<void>;
 
     public constructor(defaultDirectory: string) {
         this.defaultDirectory = defaultDirectory;
         // Best-effort async initialization: startup must keep working with the
         // default directory even if the persisted user directory is missing or invalid.
-        void this.readUserDirectory();
+        this.readyPromise = this.readUserDirectory();
     }
 
     // Load the persisted directory in the background and keep it only if it still exists.
@@ -60,7 +61,13 @@ export class PublicationDirectory {
         }
     }
 
+    public async ready(): Promise<void> {
+        await this.readyPromise;
+    }
+
     public async setUserDirectory(directoryPath: string): Promise<void> {
+        await this.ready();
+
         if (!directoryPath) {
             this.userDirectory = undefined;
             await rmrf(userPublicationDirectoryConfigPath);
@@ -77,6 +84,8 @@ export class PublicationDirectory {
     }
 
     public async getDirectoryPath(): Promise<string> {
+        await this.ready();
+
         const userDirectory = this.userDirectory;
 
         if (!userDirectory) {

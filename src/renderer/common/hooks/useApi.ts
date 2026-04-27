@@ -30,12 +30,12 @@ export function useApi<T extends TApiMethodName>(_requestId: string | undefined,
             store.dispatch(apiActions.clean.build(requestId));
         };
     }, [requestId, store]);
-    const apiAction = (...requestData: Parameters<TApiMethod[T]>) => {
+    const apiAction = React.useCallback((...requestData: Parameters<TApiMethod[T]>) => {
         const splitPath = apiPath.split("/");
         const moduleId = splitPath[0] as TModuleApi;
         const methodId = splitPath[1] as TMethodApi;
         store.dispatch(apiActions.request.build(requestId, moduleId, methodId, requestData));
-    };
+    }, [apiPath, requestId, store]);
 
     const apiResult = useSyncExternalStore(store.subscribe, () => store.getState().api[requestId]);
     return [apiResult, apiAction];

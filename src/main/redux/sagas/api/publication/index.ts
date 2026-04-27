@@ -13,6 +13,7 @@ import { findAll } from "./findAll";
 import { findByTag } from "./findByTag";
 import { getPublication } from "./getPublication";
 import { importFromFs, importFromLink, importFromString } from "./import";
+import { findAllRecoverable, recover } from "./recovery";
 import { search, searchEqTitle } from "./search";
 import { updateTags } from "./updateTags";
 import { SagaGenerator } from "typed-redux-saga";
@@ -32,4 +33,6 @@ export const publicationApi: IPublicationApi = {
 
     // used as a fake refresh signal for components subscribing around publication/findAll
     findAllRefresh: function* (): SagaGenerator<void> { },
+    findAllRecoverable,
+    recover,
 };

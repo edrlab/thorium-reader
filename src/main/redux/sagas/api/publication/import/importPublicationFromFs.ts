@@ -49,6 +49,7 @@ export async function importPublicationFromFS(
     willBeImmediatelyFollowedByOpen: boolean,
     hash?: string,
     lcpHashedPassphrase?: string,
+    preservedIdentifier?: string,
 ): Promise<PublicationDocument> {
 
     debug("importPublicationFromFS", filePath);
@@ -203,7 +204,7 @@ export async function importPublicationFromFS(
     const locale = store.getState().i18n.locale;
 
     const pubDocument: PublicationDocumentWithoutTimestampable = {
-        identifier: uuidv4(),
+        identifier: preservedIdentifier || uuidv4(),
         // resources: {
         //     // Legacy Base64 data blobs
 
@@ -238,9 +239,11 @@ export async function importPublicationFromFS(
 
     // Store publication on filesystem
     debug("[START] Store publication on filesystem", filePath);
-    const files = await publicationStorage.storePublication(
-        pubDocument.identifier, filePath,
-    );
+    const files = preservedIdentifier ?
+        await publicationStorage.getStoredPublicationFiles(pubDocument.identifier) :
+        await publicationStorage.storePublication(
+            pubDocument.identifier, filePath,
+        );
     debug("[END] Store publication on filesystem - END", filePath);
 
     // Add extracted files to document

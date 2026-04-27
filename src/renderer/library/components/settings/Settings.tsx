@@ -53,6 +53,7 @@ import debounce from "debounce";
 import { INoteCreator } from "readium-desktop/common/redux/states/creator";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { ApiappHowDoesItWorkInfoBox } from "../dialog/ApiappAddForm";
+import SettingsRecovery from "./SettingsRecovery";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import { TextArea } from "react-aria-components";
 import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/annotation/htmlTemplate";
@@ -903,6 +904,11 @@ const StorageSettings: React.FC<{}> = () => {
                             </div>
                         ) : null}
                     </div>
+
+                    <SettingsRecovery
+                        defaultDirectory={defaultDirectory}
+                        userDirectory={userDirectory}
+                    />
                 </div>
             </section>
         </>

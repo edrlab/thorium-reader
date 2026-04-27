@@ -9,11 +9,12 @@ import { dialog } from "electron";
 import * as fs from "fs";
 import { injectable } from "inversify";
 import * as path from "path";
-import { acceptedExtensionObject, publicationExtensionStoredOnDisk } from "readium-desktop/common/extension";
+import { acceptedExtensionObject, isAcceptedExtension, publicationExtensionStoredOnDisk } from "readium-desktop/common/extension";
 import { File } from "readium-desktop/common/models/file";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { ContentType } from "readium-desktop/utils/contentType";
-import { getFileSize, rmrf } from "readium-desktop/utils/fs";
+import { getFilePathNormalize, getFileSize, rmrf } from "readium-desktop/utils/fs";
+import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
 
 import { PublicationParsePromise } from "@r2-shared-js/parser/publication-parser";
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
@@ -23,11 +24,49 @@ import { sanitizeForFilename } from "readium-desktop/common/safe-filename";
 import { URL_PROTOCOL_STORE } from "readium-desktop/common/streamerProtocol";
 import { IReaderStateReaderPersistence } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { diMainGet } from "../di";
+import { PublicationDocument } from "../db/document/publication";
+import { computeFileHash, extractCrc32OnZip } from "../tools/crc";
 
 const debug = debug_("readium-desktop:main/storage/pub-storage");
 
 export type TFileTypePubStorage = Extract<keyof IReaderStateReaderPersistence, "locator" | "config" | "disableRTLFlip" | "divina" | "allowCustomConfig" | "noteTotalCount" | "pdfConfig">;
 // "bound" is not included, saved only in publication-data
+
+interface IPublicationStoragePathEntry {
+    identifier: string;
+    directoryPath: string;
+}
+
+export type TPublicationStorageIntegrityIssueType =
+    "duplicate-directory"
+    | "duplicate-database-hash"
+    | "disk-hash-already-in-database"
+    | "missing-directory"
+    | "missing-archive"
+    | "missing-document-file"
+    | "invalid-document-file-url";
+
+export interface IPublicationStorageIntegrityIssue {
+    type: TPublicationStorageIntegrityIssueType;
+    identifier: string;
+    message: string;
+    directoryPath?: string[];
+    filePath?: string;
+    fileUrl?: string;
+    hash?: string;
+    matchingIdentifier?: string[];
+}
+
+export interface IPublicationStorageIntegrityResult {
+    good: string[];
+    bad: string[];
+    issues: IPublicationStorageIntegrityIssue[];
+}
+
+export interface IPublicationStorageRecoverablePublication {
+    identifier: string;
+    filePath: string;
+}
 
 const isUUIDv4 = (uuid: string) => /^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/.test(uuid);
 const assertUUIDv4 = (uuid: string) => {
@@ -35,6 +74,8 @@ const assertUUIDv4 = (uuid: string) => {
         throw new Error("not an uuidv4 identifier !");
     }
 };
+
+const toFilePathArray = (filePath: string | undefined): string[] | undefined => filePath ? [filePath] : undefined;
 
 const jsonStringify = (d: any) => (__TH__IS_DEV__ || __TH__IS_CI__) ? JSON.stringify(d, null, 4) : JSON.stringify(d);
 
@@ -136,6 +177,7 @@ export class PublicationStorage {
         assertUUIDv4(identifier);
 
         const publicationDirectory = diMainGet("publication-directory");
+        await publicationDirectory.ready();
         const directoryPath = await publicationDirectory.getDirectoryPath();
         const defaultDirectoryPath = publicationDirectory.defaultDirectory;
         // New imports should use the user directory when available.
@@ -247,6 +289,7 @@ export class PublicationStorage {
         // }
 
         const publicationDirectory = diMainGet("publication-directory");
+        await publicationDirectory.ready();
         const defaultPublicationDirectoryPath = path.join(publicationDirectory.defaultDirectory, identifier);
         try {
             const stat = await fs.promises.stat(defaultPublicationDirectoryPath);
@@ -341,97 +384,424 @@ export class PublicationStorage {
 
         debug("FindPublicationPath", identifier);
 
-        const defer = (pubPath: string) => {
+        const entries = await this.getPublicationPathEntries(identifier);
+        const firstEntry = entries[0];
+        if (firstEntry) {
             if (this.__publicationEpubPathMap.has(identifier)) {
-                if (path.dirname(this.__publicationEpubPathMap.get(identifier)) !== pubPath) {
+                if (path.dirname(this.__publicationEpubPathMap.get(identifier)) !== firstEntry.directoryPath) {
                     debug("publicationEpubPath cache invalidation for", identifier);
                     this.__publicationEpubPathMap.delete(identifier);
                 }
             }
-        };
-
-        const publicationDirectory = diMainGet("publication-directory");
-        let publicationPath = path.join(publicationDirectory.defaultDirectory, identifier);
-        try {
-            // await fs.promises.access(publicationPath, fs.constants.R_OK | fs.constants.W_OK);
-            const stats = await fs.promises.stat(publicationPath);
-            if (stats.isDirectory()) {
-                defer(publicationPath);
-                return publicationPath;
-            }
-        } catch (e) {
-            debug(e);
-            // ignore
-        }
-
-        if (publicationDirectory.userDirectory) {
-            publicationPath = path.join(publicationDirectory.userDirectory, identifier);
-            if (publicationPath) {
-                try {
-                    // await fs.promises.access(publicationPath, fs.constants.R_OK | fs.constants.W_OK);
-                    const stats = await fs.promises.stat(publicationPath);
-                    if (stats.isDirectory()) {
-                        defer(publicationPath);
-                        return publicationPath;
-                    }
-                } catch (e) {
-                    debug(e);
-                    // ignore
-                }
-            }
+            return firstEntry.directoryPath;
         }
 
         throw new Error("publication folder path not found");
     }
 
-    private _loopOnDirectory = async (dir: string, pubs: Set<string>) => {
-        const files = await fs.promises.readdir(dir, { withFileTypes: true });
+    private async getPublicationRoots(): Promise<string[]> {
 
-        for (const file of files) {
-            if (
-                isUUIDv4(file.name) &&
-                file.isDirectory()
-            ) {
-                pubs.add(file.name);
+        const publicationDirectory = diMainGet("publication-directory");
+        await publicationDirectory.ready();
+
+        const roots = [
+            publicationDirectory.defaultDirectory,
+        ];
+        if (
+            publicationDirectory.userDirectory
+            && getFilePathNormalize(publicationDirectory.userDirectory) !== getFilePathNormalize(publicationDirectory.defaultDirectory)
+        ) {
+            roots.push(publicationDirectory.userDirectory);
+        }
+        return roots;
+    }
+
+    private async getPublicationPathEntries(identifier: string): Promise<IPublicationStoragePathEntry[]> {
+
+        assertUUIDv4(identifier);
+
+        const entries: IPublicationStoragePathEntry[] = [];
+        const roots = await this.getPublicationRoots();
+        for (const rootPath of roots) {
+            const publicationPath = path.join(rootPath, identifier);
+            try {
+                const stats = await fs.promises.stat(publicationPath);
+                if (stats.isDirectory()) {
+                    entries.push({
+                        identifier,
+                        directoryPath: publicationPath,
+                    });
+                }
+            } catch (e) {
+                debug(e);
             }
         }
-    };
+        return entries;
+    }
+
+    private async listPublicationIdPathEntries(): Promise<IPublicationStoragePathEntry[]> {
+
+        const roots = await this.getPublicationRoots();
+        const entries: IPublicationStoragePathEntry[] = [];
+        for (const rootPath of roots) {
+            let files: fs.Dirent[];
+            try {
+                files = await fs.promises.readdir(rootPath, { withFileTypes: true });
+            } catch (e) {
+                debug(`Cannot read publication storage directory ${rootPath}`, e);
+                continue;
+            }
+
+            for (const file of files) {
+                if (
+                    isUUIDv4(file.name) &&
+                    file.isDirectory()
+                ) {
+                    entries.push({
+                        identifier: file.name,
+                        directoryPath: path.join(rootPath, file.name),
+                    });
+                }
+            }
+        }
+        return entries;
+    }
+
     public async listPublicationIdPath(): Promise<string[]> {
 
         const pubIdSet = new Set<string>();
-
-        const publicationDirectory = diMainGet("publication-directory");
-        const userVaultPath = publicationDirectory.userDirectory; // can be undefined
-        if (userVaultPath) {
-            await this._loopOnDirectory(userVaultPath, pubIdSet);
+        const entries = await this.listPublicationIdPathEntries();
+        for (const entry of entries) {
+            pubIdSet.add(entry.identifier);
         }
-        await this._loopOnDirectory(publicationDirectory.defaultDirectory, pubIdSet);
         return [...pubIdSet.values()];
     }
 
-    public async checkPublicationsIntegrity(): Promise<{ good: string[], bad: string[] }> {
+    private getFileNameFromDocumentFileUrl(identifier: string, fileUrl: string): string | undefined {
 
-        const pubsId = await this.listPublicationIdPath();
+        if (!fileUrl) {
+            return undefined;
+        }
+
+        let parsedUrl: URL;
+        try {
+            parsedUrl = new URL(fileUrl);
+        } catch {
+            return undefined;
+        }
+
+        if (parsedUrl.protocol !== `${URL_PROTOCOL_STORE}:`) {
+            return undefined;
+        }
+
+        if (parsedUrl.hostname.toLowerCase() !== identifier.toLowerCase()) {
+            return undefined;
+        }
+
+        try {
+            const fileName = decodeURIComponent(parsedUrl.pathname).replace(/^\/+/, "");
+            if (!fileName || fileName === "." || fileName === ".." || fileName !== path.basename(fileName)) {
+                return undefined;
+            }
+            return fileName;
+        } catch {
+            return undefined;
+        }
+    }
+
+    private async checkDocumentFilesIntegrity(
+        document: PublicationDocument,
+        publicationPath: string,
+    ): Promise<IPublicationStorageIntegrityIssue[]> {
+
+        const issues: IPublicationStorageIntegrityIssue[] = [];
+        const files: File[] = [
+            ...(document.files || []),
+            ...(document.coverFile ? [document.coverFile] : []),
+        ];
+
+        if (!files.length) {
+            issues.push({
+                type: "missing-document-file",
+                identifier: document.identifier,
+                directoryPath: toFilePathArray(publicationPath),
+                message: `Publication ${document.identifier} has no file metadata in the database.`,
+            });
+            return issues;
+        }
+
+        for (const file of files) {
+            const fileName = this.getFileNameFromDocumentFileUrl(document.identifier, file.url);
+            if (!fileName) {
+                issues.push({
+                    type: "invalid-document-file-url",
+                    identifier: document.identifier,
+                    fileUrl: file.url,
+                    directoryPath: toFilePathArray(publicationPath),
+                    message: `Publication ${document.identifier} contains an invalid stored file URL: ${file.url}`,
+                });
+                continue;
+            }
+
+            const filePath = path.join(publicationPath, fileName);
+            try {
+                const stat = await fs.promises.stat(filePath);
+                if (!stat.isFile() || stat.size <= 0) {
+                    issues.push({
+                        type: "missing-document-file",
+                        identifier: document.identifier,
+                        fileUrl: file.url,
+                        filePath,
+                        directoryPath: toFilePathArray(publicationPath),
+                        message: `Publication ${document.identifier} database file reference is not a readable file: ${filePath}`,
+                    });
+                }
+            } catch {
+                issues.push({
+                    type: "missing-document-file",
+                    identifier: document.identifier,
+                    fileUrl: file.url,
+                    filePath,
+                    directoryPath: toFilePathArray(publicationPath),
+                    message: `Publication ${document.identifier} database file reference is missing on disk: ${filePath}`,
+                });
+            }
+        }
+
+        return issues;
+    }
+
+    public async getStoredPublicationHash(
+        filePath: string,
+    ): Promise<string | undefined> {
+        const ext = path.extname(filePath);
+        const isLCPLicense = isAcceptedExtension("lcpLicence", ext);
+        const isPDF = isAcceptedExtension("pdf", ext);
+        const isOPF = isAcceptedExtension("opf", ext);
+        const isNccHTML = filePath.replace(/\\/g, "/").toLowerCase().endsWith("/" + acceptedExtensionObject.nccHtml);
+
+        if (isLCPLicense || isOPF || isNccHTML) {
+            return undefined;
+        }
+
+        try {
+            return isPDF ?
+                await computeFileHash(filePath) :
+                await extractCrc32OnZip(filePath);
+        } catch (e) {
+            debug("Cannot compute stored publication hash", filePath, e);
+            return undefined;
+        }
+    }
+
+    public async checkPublicationsIntegrity(
+        publicationDocuments: PublicationDocument[] = [],
+    ): Promise<IPublicationStorageIntegrityResult> {
+
+        const entries = await this.listPublicationIdPathEntries();
+        const entriesByIdentifier = new Map<string, IPublicationStoragePathEntry[]>();
+        for (const entry of entries) {
+            const entriesForIdentifier = entriesByIdentifier.get(entry.identifier) || [];
+            entriesForIdentifier.push(entry);
+            entriesByIdentifier.set(entry.identifier, entriesForIdentifier);
+        }
+
+        const documentsByIdentifier = new Map<string, PublicationDocument>();
+        const documentsByHash = new Map<string, PublicationDocument[]>();
+        for (const document of publicationDocuments) {
+            documentsByIdentifier.set(document.identifier, document);
+            if (document.hash) {
+                const docs = documentsByHash.get(document.hash) || [];
+                docs.push(document);
+                documentsByHash.set(document.hash, docs);
+            }
+        }
 
         const good: string[] = [];
         const bad: string[] = [];
-        for (const pubId of pubsId) {
+        const issues: IPublicationStorageIntegrityIssue[] = [];
+        const duplicateHashPublicationIdentifierSet = new Set<string>();
+        for (const [hash, documents] of documentsByHash) {
+            if (documents.length < 2) {
+                continue;
+            }
+            for (const document of documents) {
+                duplicateHashPublicationIdentifierSet.add(document.identifier);
+                issues.push({
+                    type: "duplicate-database-hash",
+                    identifier: document.identifier,
+                    hash,
+                    matchingIdentifier: documents
+                        .map(({ identifier }) => identifier)
+                        .filter((identifier) => identifier !== document.identifier),
+                    message: `Publication ${document.identifier} has database hash ${hash}, which is also used by another publication.`,
+                });
+            }
+        }
+
+        for (const [pubId, pathEntries] of entriesByIdentifier) {
+            let publicationIsGood = true;
+            const publicationPath = pathEntries[0]?.directoryPath;
+            let publicationArchivePath: string | undefined;
+
+            if (pathEntries.length > 1) {
+                publicationIsGood = false;
+                issues.push({
+                    type: "duplicate-directory",
+                    identifier: pubId,
+                    directoryPath: pathEntries.map((entry) => entry.directoryPath),
+                    message: `Publication ${pubId} is present in multiple storage directories.`,
+                });
+            }
+
             try {
-                if (await this.getPublicationEpubPath(pubId)) {
-                    good.push(pubId);
-                    continue;
+                publicationArchivePath = await this.getPublicationEpubPath(pubId);
+                if (publicationArchivePath) {
+                    // archive exists
                 }
             } catch {
-                // ignore
+                publicationIsGood = false;
+                issues.push({
+                    type: "missing-archive",
+                    identifier: pubId,
+                    directoryPath: toFilePathArray(publicationPath),
+                    message: `Publication ${pubId} storage directory does not contain a readable publication archive.`,
+                });
             }
-            bad.push(pubId);
+
+            const document = documentsByIdentifier.get(pubId);
+            if (duplicateHashPublicationIdentifierSet.has(pubId)) {
+                publicationIsGood = false;
+            }
+            if (document && publicationPath) {
+                const documentIssues = await this.checkDocumentFilesIntegrity(document, publicationPath);
+                if (documentIssues.length) {
+                    publicationIsGood = false;
+                    issues.push(...documentIssues);
+                }
+            }
+            if (!document && publicationArchivePath) {
+                const hash = await this.getStoredPublicationHash(publicationArchivePath);
+                const matchingDocument = documentsByHash.get(hash) || [];
+                if (matchingDocument.length) {
+                    publicationIsGood = false;
+                    issues.push({
+                        type: "disk-hash-already-in-database",
+                        identifier: pubId,
+                        directoryPath: toFilePathArray(publicationPath),
+                        filePath: publicationArchivePath,
+                        hash,
+                        matchingIdentifier: matchingDocument.map(({ identifier }) => identifier),
+                        message: `Publication ${pubId} is missing from the database, but its hash ${hash} already exists on publication(s) ${matchingDocument.map(({ identifier }) => identifier).join(" | ")}.`,
+                    });
+                }
+            }
+
+            if (publicationIsGood) {
+                good.push(pubId);
+            } else {
+                bad.push(pubId);
+            }
+        }
+
+        for (const document of publicationDocuments) {
+            if (!entriesByIdentifier.has(document.identifier)) {
+                issues.push({
+                    type: "missing-directory",
+                    identifier: document.identifier,
+                    message: `Publication ${document.identifier} is present in the database but missing from publication storage.`,
+                });
+            }
         }
 
         return {
             good,
             bad,
+            issues,
         };
 
+    }
+
+    public async listRecoverablePublications(
+        publicationDocuments: PublicationDocument[],
+    ): Promise<IPublicationStorageRecoverablePublication[]> {
+
+        const publicationIdentifierDataBase = new Set(publicationDocuments.map(({ identifier }) => identifier));
+        const integrity = await this.checkPublicationsIntegrity(publicationDocuments);
+        const recoverablePublicationIdentifierDisk = integrity.good.filter((id) => !publicationIdentifierDataBase.has(id));
+        const recoverablePublications: IPublicationStorageRecoverablePublication[] = [];
+
+        for (const identifier of recoverablePublicationIdentifierDisk) {
+            try {
+                const filePath = await this.getPublicationEpubPath(identifier);
+                recoverablePublications.push({
+                    identifier,
+                    filePath,
+                });
+            } catch (e) {
+                debug(e);
+            }
+        }
+
+        return recoverablePublications;
+    }
+
+    private getStoredPublicationContentType(ext: string): string {
+        const normalizedExt = ext.startsWith(".") ? ext : `.${ext}`;
+        if (normalizedExt === acceptedExtensionObject.audiobook) {
+            return ContentType.AudioBookPacked;
+        }
+        if (normalizedExt === acceptedExtensionObject.audiobookLcp || normalizedExt === acceptedExtensionObject.audiobookLcpAlt) {
+            return ContentType.AudioBookPackedLcp;
+        }
+        if (normalizedExt === acceptedExtensionObject.divina) {
+            return ContentType.DivinaPacked;
+        }
+        if (normalizedExt === acceptedExtensionObject.webpub) {
+            return ContentType.webpubPacked;
+        }
+        if (normalizedExt === acceptedExtensionObject.pdfLcp) {
+            return ContentType.lcppdf;
+        }
+        if (normalizedExt === acceptedExtensionObject.daisy) {
+            return ContentType.Zip;
+        }
+
+        return findMimeTypeWithExtension(normalizedExt) || ContentType.Epub;
+    }
+
+    public async getStoredPublicationFiles(identifier: string): Promise<File[]> {
+
+        assertUUIDv4(identifier);
+
+        const publicationDirectoryPath = await this.findPublicationPath(identifier);
+        const files = await fs.promises.readdir(publicationDirectoryPath, { withFileTypes: true });
+        const publicationFiles: File[] = [];
+
+        for (const file of files) {
+            if (!file.isFile()) {
+                continue;
+            }
+
+            const extWithDot = path.extname(file.name).toLowerCase();
+            if (
+                !publicationExtensionStoredOnDisk.includes(extWithDot)
+                && !file.name.toLowerCase().startsWith("cover.")
+            ) {
+                continue;
+            }
+
+            const ext = extWithDot.slice(1);
+            const filePath = path.join(publicationDirectoryPath, file.name);
+            publicationFiles.push({
+                url: `${URL_PROTOCOL_STORE}://${identifier}/${file.name}`,
+                ext,
+                contentType: this.getStoredPublicationContentType(extWithDot),
+                size: getFileSize(filePath),
+            });
+        }
+
+        return publicationFiles;
     }
 
     private async storePublicationBook(

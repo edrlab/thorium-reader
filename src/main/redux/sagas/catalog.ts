@@ -265,6 +265,7 @@ export function* getCatalog(): SagaGenerator<ILibraryRootState["publication"]> {
     ];
     const publicationRepository = diMainGet("publication-repository");
     const publicationDirectory = diMainGet("publication-directory");
+    yield* callTyped(() => publicationDirectory.ready());
     const allTags = yield* callTyped(() => publicationRepository.getAllTags());
 
     return {
