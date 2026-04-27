@@ -1308,15 +1308,11 @@ export class ReaderHeader extends React.Component<IProps, IState> {
     }
 
     private isSameReadiumSpeechVoice(a: ReadiumSpeechVoice, b: ReadiumSpeechVoice) {
-        const aVoiceURI = a.voiceURI || "";
-        const bVoiceURI = b.voiceURI || "";
-        const sameVoiceURI = !!aVoiceURI && !!bVoiceURI && aVoiceURI === bVoiceURI;
-        const sameName = a.name === b.name || a.originalName === b.originalName || a.name === b.originalName || a.originalName === b.name;
-
         return (
-            (sameVoiceURI || sameName) &&
+            a.offlineAvailability === b.offlineAvailability &&
             a.language === b.language &&
-            a.offlineAvailability === b.offlineAvailability
+            a.name === b.name &&
+            a.voiceURI === b.voiceURI
         );
     }
 
