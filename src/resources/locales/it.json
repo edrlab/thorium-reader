@@ -89,7 +89,7 @@
         "lastRead": "Ultima lettura",
         "login": "Login",
         "logout": "Logout",
-        "missing": "",
+        "missing": "Inglese",
         "moreInfo": "Maggiori informazioni",
         "myBooks": "I miei libri",
         "noPublicationHelpL1": "Aggiungi qui una pubblicazione",
@@ -131,7 +131,7 @@
         "readBook": "Leggi",
         "released": "Pubblicato il",
         "removeFromFavorites": "Elimina dai favoriti",
-        "selectTableHeaders": "",
+        "selectTableHeaders": "Selezionare le colonne da visualizzare",
         "sort": "Ordina per",
         "tag": "Tag",
         "tags": "Tags",
@@ -203,7 +203,7 @@
         "searchPlaceholder": "Cerca",
         "searchTitle": "Inizia una ricerca",
         "settings": "Impostazioni",
-        "settingsLabel": "",
+        "settingsLabel": "Impostazioni dell'applicazione",
         "viewMode": "Modalità di visualizzazione"
     },
     "library": {
@@ -761,8 +761,8 @@
             "speed": "Velocità di riproduzione per la lettura ad alta voce",
             "stop": "Interrompi la lettura ad alta voce",
             "title": "lettura ad alta voce",
-            "useTTSHighlightsForMO": "",
-            "useTTSHighlightsForMODescription": ""
+            "useTTSHighlightsForMO": "Evidenziatura personalizzata",
+            "useTTSHighlightsForMODescription": "Disattivare lo stile dell'editore"
         },
         "navigation": {
             "ZenModeExit": "Uscire dalla modalità Zen",
@@ -789,7 +789,7 @@
             "printDisabled": "Non è permesso stampare",
             "screenNext": "Vai avanti",
             "screenPrevious": "Vai indietro",
-            "settingsTitle": "Impostazioni"
+            "settingsTitle": "Impostazioni di lettura"
         },
         "notes": {
             "colors": {
@@ -849,7 +849,7 @@
             },
             "font": "Font",
             "fontSize": "Dimensioni del font",
-            "increaseFontSize": "",
+            "increaseFontSize": "Aumentare la dimensione del testo",
             "infoCustomFont": "Seleziona il carattere personalizzato dal sistema operativo digitandone il nome",
             "justification": "Allineamento",
             "justify": "Giustifica",
@@ -887,7 +887,7 @@
                 "title": "Preferenze"
             },
             "preview": "Anteprima",
-            "reduceFontSize": "",
+            "reduceFontSize": "Ridurre la dimensione del testo",
             "reduceMotion": "Riduci movimento",
             "scrolled": "Scrollabile",
             "spacing": "Spaziatura",
