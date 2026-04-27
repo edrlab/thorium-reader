@@ -50,7 +50,7 @@
         }
     },
     "catalog": {
-        "AddToFavorites": "",
+        "AddToFavorites": "Føj til favoritter",
         "about": {
             "title": "Om {{- appName}}"
         },
@@ -130,8 +130,8 @@
         "publisher": "Udgiver",
         "readBook": "Læs bog",
         "released": "Udgivelsesdato",
-        "removeFromFavorites": "",
-        "selectTableHeaders": "",
+        "removeFromFavorites": "Fjern fra favoritter",
+        "selectTableHeaders": "Vælg kolonner der skal vises",
         "sort": "Sortér efter",
         "tag": "Tag",
         "tags": "Tags",
@@ -198,34 +198,34 @@
         "searchPlaceholder": "Søg",
         "searchTitle": "Søg",
         "settings": "Indstillinger",
-        "settingsLabel": "",
+        "settingsLabel": "Programindstillinger",
         "viewMode": "Visningstilstand"
     },
     "library": {
         "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "selectOption": ""
+            "addFilters": "Tilføj filtre",
+            "filterBy": "Filtrer efter",
+            "selectOption": "Vælg et element"
         },
         "lcp": {
-            "hidePassphrase": "",
+            "hidePassphrase": "Skjul nøgleord",
             "hint": "Hint til nøgleord:",
             "open": "Åben",
             "password": "Nøgleord",
             "sentence": "Denne bog kræver et LCP-nøgleord for at åbnes",
-            "showPassphrase": "",
+            "showPassphrase": "Vis nøgleord",
             "urlHint": "Har du glemt dit nøgleord? Få hjælp her.",
             "whatIsLcp?": "Hvad er LCP?",
             "whatIsLcpInfoDetails": "LCP står for 'Licensed Content Protection'.",
             "whatIsLcpInfoDetailsLink": "For at læse mere, følg dette link til EDRLab websitet."
         },
         "sorting": {
-            "addSorting": "",
-            "author": "",
-            "language": "",
-            "readingState": "",
-            "sortBy": "",
-            "title": ""
+            "addSorting": "Tilføj sortering",
+            "author": "Forfatter",
+            "language": "Sprog",
+            "readingState": "Læsestatus",
+            "sortBy": "Sorter efter ",
+            "title": "Titel"
         }
     },
     "message": {
@@ -248,7 +248,7 @@
         "open": {
             "error": "Bogen kan ikke åbnes: {{- err}}"
         },
-        "wipeData": ""
+        "wipeData": "Login data blev slettet (adgangsnøgler og cookies)"
     },
     "opds": {
         "addForm": {
@@ -713,9 +713,9 @@
             "unmute": "slå lyd til"
         },
         "dock": {
-            "dockDefault": "",
-            "dockLeft": "",
-            "dockRight": ""
+            "dockDefault": "Vis panelet som en popup dialog",
+            "dockLeft": "Fastgør panelet til venstre",
+            "dockRight": "Fastgør panelet til højre"
         },
         "fxl": {
             "fit": "Tilpas"
@@ -756,8 +756,8 @@
             "speed": "Oplæsningshastighed",
             "stop": "Stop oplæsning",
             "title": "Oplæsning",
-            "useTTSHighlightsForMO": "",
-            "useTTSHighlightsForMODescription": ""
+            "useTTSHighlightsForMO": "Brugerdefineret fremhævning",
+            "useTTSHighlightsForMODescription": "Slå bogens egne visningsindstillinger fra"
         },
         "navigation": {
             "ZenModeExit": "Forlad fokuseret læsetilstand",
@@ -784,7 +784,7 @@
             "printDisabled": "Print ikke tilladt",
             "screenNext": "Gå frem",
             "screenPrevious": "Gå tilbage",
-            "settingsTitle": "Indstillinger"
+            "settingsTitle": "Læserindstillinger"
         },
         "notes": {
             "colors": {
@@ -843,7 +843,7 @@
             },
             "font": "Skrifttype",
             "fontSize": "Skriftstørrelse",
-            "increaseFontSize": "",
+            "increaseFontSize": "Forstør skriftstørrelsen",
             "infoCustomFont": "Vælg en anden skrifttype fra operativsystemet ved at skrive dens navn",
             "justification": "Tekstjustering",
             "justify": "Lige margener",
@@ -881,7 +881,7 @@
                 "title": "Læsetema"
             },
             "preview": "Forhåndsvisning",
-            "reduceFontSize": "",
+            "reduceFontSize": "Formindsk skriftstørrelsen",
             "reduceMotion": "Reducér bevægelser",
             "scrolled": "Scrollbart",
             "spacing": "Mellemrum",
@@ -943,7 +943,7 @@
             "cancel": "Annullér",
             "disclaimer": "Standard tastaturgenveje er designet ud fra et QWERTY tastaturlayout",
             "editUserJson": "Rediger brugerfilen...",
-            "exportToHTML": "",
+            "exportToHTML": "Eksporter til HTML",
             "keyboardShortcuts": "Tastaturgenveje",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1207,7 +1207,7 @@
             "appearance": "Udseende",
             "general": "Generelt",
             "keyboardShortcuts": "Tastaturgenveje",
-            "profiles": ""
+            "profiles": "Profiler"
         },
         "theme": {
             "auto": "Automatisk",
@@ -1242,25 +1242,25 @@
     },
     "wizard": {
         "buttons": {
-            "discover": "Læs hvad der er nyt",
+            "discover": "Gå på opdagelse i Thorium Desktop",
             "goToBooks": "Gå til dine bøger"
         },
         "description": {
-            "home": "Thorium ser anderledes ud! Lad os se nærmere på hvad der er ændret...",
-            "resources": ""
+            "home": "Thorium 3.4 bringer en række forbedringer af brugeroplevelsen og retter en række problemer. Hvis du senere beslutter dig for at vende tilbage til en ældre version af applikationen, anbefales det kraftigt, at du sikkerhedskopierer dine e-bogsannotationer og bogmærker ved at eksportere dem til en ekstern fil. Du importerer dem derefter tilbage til den ældre version, når den er installeret. Dette skyldes, at applikationen gemmer noter og bogmærker i et lidt anderledes internt format i version 3.4. Dette løser et ydeevneproblem, men afbryder bagudkompatibiliteten for noter.",
+            "resources": "Få kontakt med os og lær mere om Thorium:"
         },
         "dontShow": "Vis ikke igen",
         "resources": {
-            "discord": "",
-            "website": ""
+            "discord": "Discord: {{- url}}",
+            "website": "Website: {{- url}}"
         },
         "tab": {
             "home": "Hjem",
-            "resources": ""
+            "resources": "Ressourcer"
         },
         "title": {
-            "resources": "",
-            "welcome": "Velkommen til Thorium 3"
+            "resources": "Ressourcer & Fællesskab",
+            "welcome": "Velkommen til Thorium 3.4"
         }
     }
 }
