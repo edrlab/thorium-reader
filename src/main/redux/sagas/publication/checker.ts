@@ -15,7 +15,6 @@ import { USER_DATA_FOLDER, FORCE_PROD_DB_IN_DEV } from "readium-desktop/common/c
 import { IPublicationCheckerState } from "readium-desktop/common/redux/states/publicationsChecker";
 import { publicationActions } from "readium-desktop/common/redux/actions";
 import { winActions } from "../../actions";
-import { tryCatch } from "readium-desktop/utils/tryCatch";
 import { appendFileWithRotation } from "readium-desktop/utils/log";
 
 // TODO: use app.getPath("logs"); instead
@@ -65,33 +64,6 @@ export function* publicationIntegrityChecker(): SagaGenerator<void> {
     const publicationIdentifierApprovedMatchedDiskDataBaseArray = publicationIdentifierDataBase.filter((id) => approvedPublicationIdentifierDisk.includes(id));
     const recoverablePublicationIdentifierDisk = approvedPublicationIdentifierDisk.filter((id) => !publicationIdentifierDataBase.includes(id));
 
-    // debug("==> Publication Id rejected in Disk:");
-    // for (const id of rejectedPublicationIdentifierDisk) {
-    //     debug(`pubId: ${id}`);
-    //     try {
-    //         const filePath = yield* callTyped(() => diMainGet("publication-storage").findPublicationPath(id));
-    //         debug(`filePath: ${filePath}`);
-    //         debug("file in directory:");
-    //         const files = yield* callTyped(() => fs.promises.readdir(filePath));
-    //         for (const file of files) {
-    //             const stat = yield* callTyped(() => tryCatch(() => fs.promises.stat(path.join(filePath, file)), ""));
-    //             debug(`\t${file} size=${stat?.size} isFile=${stat?.isFile()}`);
-    //         }
-
-    //     } catch {
-    //         debug(`pubId: ${id} throw an error when reading the directory !`);
-    //     }
-
-    //     try {
-    //         const publicationDocument = yield* callTyped(() => diMainGet("publication-repository").findByPublicationIdentifier(id));
-    //         debug(`publicationDocument: ${JSON.stringify(publicationDocument, null, 4)}`);
-    //     } catch {
-    //         debug("Not found on DataBase");
-    //     }
-    //     dumpLogs = true;
-    // }
-    // debug("--------");
-
     debug("==> publication storage integrity issues:");
     for (const issue of issues) {
         debug(`type: ${issue.type}`);
@@ -124,26 +96,6 @@ export function* publicationIntegrityChecker(): SagaGenerator<void> {
         dumpLogs = true;
     }
     debug("--------");
-
-    // debug("==> publication identifier found on disk but NOT found on database:");
-    // for (const id of publicationIdentifierNotFoundOnDataBaseButFoundOnDisk) {
-    //     debug(`pubId: ${id}`);
-    //     try {
-    //         const filePath = yield* callTyped(() => diMainGet("publication-storage").findPublicationPath(id));
-    //         debug(`filePath: ${filePath}`);
-    //         debug("file in directory:");
-    //         const files = yield* callTyped(() => fs.promises.readdir(filePath));
-    //         for (const file of files) {
-    //             const stat = yield* callTyped(() => tryCatch(() => fs.promises.stat(path.join(filePath, file)), ""));
-    //             debug(`\t${file} size=${stat?.size} isFile=${stat?.isFile()}`);
-    //         }
-
-    //     } catch {
-    //         debug(`pubId: ${id} throw an error when reading the directory !`);
-    //     }
-    //     dumpLogs = true;
-    // }
-    // debug("--------");
 
     debug(`${publicationIdentifierDisk.length} UUID directories were found on disk, of which ${approvedPublicationIdentifierDisk.length} contain an approved publication archive book.`);
     debug(`${publicationIdentifierDataBase.length} publication(s) found in database`);

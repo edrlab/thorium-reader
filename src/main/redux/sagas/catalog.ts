@@ -280,11 +280,11 @@ export function* getCatalog(): SagaGenerator<ILibraryRootState["publication"]> {
 
 function* getCatalogAndDispatchIt() {
 
-    const {catalog, tag} = yield* callTyped(getCatalog);
+    const { catalog, tag, directory: { userDirectory } } = yield* callTyped(getCatalog);
 
     yield* putTyped(catalogActions.setCatalog.build(catalog));
     yield* putTyped(catalogActions.setTagView.build(tag));
-    yield* putTyped(catalogActions.setUserDirectory.build(diMainGet("publication-directory").userDirectory || ""));
+    yield* putTyped(catalogActions.setUserDirectory.build(userDirectory || ""));
 }
 
 function* updateResumePosition() {

@@ -179,6 +179,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
             // "catalog/addEntry",
             "publication/updateTags",
             "publication/findAllRefresh",
+            "publication/recover",
         ], () => {
             apiAction("publication/findAll")
                 .then((publicationViews) => {
