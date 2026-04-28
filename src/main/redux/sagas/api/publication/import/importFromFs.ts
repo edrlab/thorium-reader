@@ -8,6 +8,7 @@
 import debug_ from "debug";
 import * as path from "path";
 import { acceptedExtensionObject, isAcceptedExtension } from "readium-desktop/common/extension";
+import { computeFileHash, extractCrc32OnZip } from "readium-desktop/main/tools/crc";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { pdfPackager } from "readium-desktop/main/pdf/packager";
@@ -58,8 +59,13 @@ export function* importFromFsService(
         }));
     }
 
-    const publicationStorage = diMainGet("publication-storage");
-    const hash = yield* callTyped(() => publicationStorage.getStoredPublicationHash(filePath));
+    const hash =
+        isLCPLicense ?
+            undefined :
+            (isPDF ?
+                yield* callTyped(() => computeFileHash(filePath)) :
+                ((isOPF || isNccHTML) ? undefined : yield* callTyped(() => extractCrc32OnZip(filePath)))
+            );
 
     const publicationRepository = diMainGet("publication-repository");
 

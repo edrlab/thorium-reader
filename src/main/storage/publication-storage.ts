@@ -571,18 +571,11 @@ export class PublicationStorage {
         return issues;
     }
 
-    public async getStoredPublicationHash(
+    private async getStoredPublicationHash(
         filePath: string,
     ): Promise<string | undefined> {
         const ext = path.extname(filePath);
-        const isLCPLicense = isAcceptedExtension("lcpLicence", ext);
         const isPDF = isAcceptedExtension("pdf", ext);
-        const isOPF = isAcceptedExtension("opf", ext);
-        const isNccHTML = filePath.replace(/\\/g, "/").toLowerCase().endsWith("/" + acceptedExtensionObject.nccHtml);
-
-        if (isLCPLicense || isOPF || isNccHTML) {
-            return undefined;
-        }
 
         try {
             return isPDF ?
