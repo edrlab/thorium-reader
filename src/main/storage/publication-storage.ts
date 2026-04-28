@@ -399,21 +399,21 @@ export class PublicationStorage {
         throw new Error("publication folder path not found");
     }
 
-    private async getPublicationRoots(): Promise<string[]> {
+    private async getPublicationDirectories(): Promise<string[]> {
 
         const publicationDirectory = diMainGet("publication-directory");
         await publicationDirectory.ready();
 
-        const roots = [
+        const directories = [
             publicationDirectory.defaultDirectory,
         ];
         if (
             publicationDirectory.userDirectory
             && getFilePathNormalize(publicationDirectory.userDirectory) !== getFilePathNormalize(publicationDirectory.defaultDirectory)
         ) {
-            roots.push(publicationDirectory.userDirectory);
+            directories.push(publicationDirectory.userDirectory);
         }
-        return roots;
+        return directories;
     }
 
     private async getPublicationPathEntries(identifier: string): Promise<IPublicationStoragePathEntry[]> {
@@ -421,9 +421,9 @@ export class PublicationStorage {
         assertUUIDv4(identifier);
 
         const entries: IPublicationStoragePathEntry[] = [];
-        const roots = await this.getPublicationRoots();
-        for (const rootPath of roots) {
-            const publicationPath = path.join(rootPath, identifier);
+        const directories = await this.getPublicationDirectories();
+        for (const directoryPath of directories) {
+            const publicationPath = path.join(directoryPath, identifier);
             try {
                 const stats = await fs.promises.stat(publicationPath);
                 if (stats.isDirectory()) {
@@ -441,14 +441,14 @@ export class PublicationStorage {
 
     private async listPublicationIdPathEntries(): Promise<IPublicationStoragePathEntry[]> {
 
-        const roots = await this.getPublicationRoots();
+        const directories = await this.getPublicationDirectories();
         const entries: IPublicationStoragePathEntry[] = [];
-        for (const rootPath of roots) {
+        for (const directoryPath of directories) {
             let files: fs.Dirent[];
             try {
-                files = await fs.promises.readdir(rootPath, { withFileTypes: true });
+                files = await fs.promises.readdir(directoryPath, { withFileTypes: true });
             } catch (e) {
-                debug(`Cannot read publication storage directory ${rootPath}`, e);
+                debug(`Cannot read publication storage directory ${directoryPath}`, e);
                 continue;
             }
 
@@ -459,7 +459,7 @@ export class PublicationStorage {
                 ) {
                     entries.push({
                         identifier: file.name,
-                        directoryPath: path.join(rootPath, file.name),
+                        directoryPath: path.join(directoryPath, file.name),
                     });
                 }
             }
