@@ -23,7 +23,6 @@ import { initStore } from "readium-desktop/main/redux/store/memory";
 import { DeviceIdManager } from "readium-desktop/main/services/device";
 import { LcpManager } from "readium-desktop/main/services/lcp";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-import { PublicationDirectory } from "readium-desktop/main/storage/publication-directory";
 import {
     _APP_NAME,
 } from "readium-desktop/preprocessor-directives";
@@ -329,11 +328,7 @@ container.bind<OpdsFeedViewConverter>(diSymbolTable["opds-feed-view-converter"])
     .to(OpdsFeedViewConverter).inSingletonScope();
 
 // Storage
-const publicationDirectory = new PublicationDirectory(publicationRepositoryPath);
-container.bind<PublicationDirectory>(diSymbolTable["publication-directory"]).toConstantValue(
-    publicationDirectory,
-);
-const publicationStorage = new PublicationStorage();
+const publicationStorage = new PublicationStorage(publicationRepositoryPath);
 container.bind<PublicationStorage>(diSymbolTable["publication-storage"]).toConstantValue(
     publicationStorage,
 );
@@ -410,7 +405,6 @@ interface IGet {
     //    (s: "locator-view-converter"): LocatorViewConverter;
     (s: "opds-feed-view-converter"): OpdsFeedViewConverter;
     (s: "publication-storage"): PublicationStorage;
-    (s: "publication-directory"): PublicationDirectory;
     (s: "publication-data"): PublicationData;
     // (s: "streamer"): Server;
     (s: "device-id-manager"): DeviceIdManager;

@@ -126,8 +126,8 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
             },
             tag: [],
             directory: {
-                defaultDirectory: diMainGet("publication-directory").defaultDirectory,
-                userDirectory: diMainGet("publication-directory").userDirectory,
+                defaultDirectory: diMainGet("publication-storage").defaultDirectory,
+                userDirectory: diMainGet("publication-storage").userDirectory,
             },
         },
         session: {
