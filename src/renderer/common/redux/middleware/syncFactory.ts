@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ipcRenderer } from "electron";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
@@ -31,7 +30,7 @@ export function syncFactory(SYNCHRONIZABLE_ACTIONS: string[]) {
                 }
 
                 // Send this action to the main process
-                ipcRenderer.send(syncIpc.CHANNEL, {
+                window.electronApi.ipcSend(syncIpc.CHANNEL, {
                     type: syncIpc.EventType.RendererAction,
                     payload: {
                         action: ActionSerializer.serialize(action as ActionWithSender),

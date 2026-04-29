@@ -9,7 +9,6 @@
 // import * as stylesBookDetailsDialog from "readium-desktop/renderer/assets/styles/bookDetailsDialog.scss";
 // import * as stylePublication from "readium-desktop/renderer/assets/styles/publicationInfos.scss";
 
-// import { shell } from "electron";
 // import classNames from "classnames";
 // import debug_ from "debug";
 // import DOMPurify from "dompurify";
@@ -213,7 +212,7 @@
 //                             onClick={async (ev) => {
 //                                 ev.preventDefault(); // necessary because href, see comment above
 //                                 if (value && /^https?:\/\//.test(value)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-//                                     await shell.openExternal(value);
+//                                     await window.electronApi.openExternal(value);
 //                                 }
 //                             }}
 //                             href={value} title={value} aria-label={__("publication.accessibility.certifierReport")}>{__("publication.accessibility.certifierReport")}</a></li>;

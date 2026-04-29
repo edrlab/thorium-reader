@@ -7,7 +7,6 @@
 
 import * as stylesToasts from "readium-desktop/renderer/assets/styles/components/toasts.scss";
 
-import { clipboard } from "electron";
 import classNames from "classnames";
 import * as React from "react";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -172,7 +171,7 @@ export class Toast extends React.Component<IProps, IState> {
                     onClick={() => {
                         const clipBoardType = "clipboard";
                         try {
-                            clipboard.writeText(this.props.message, clipBoardType);
+                            window.electronApi.clipboardWriteText(this.props.message, clipBoardType);
 
                             // https://www.electronjs.org/docs/latest/tutorial/notifications
                             new Notification(capitalizedAppName, {

@@ -33,7 +33,6 @@ import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-icon.svg";
 import * as LinkIcon from "readium-desktop/renderer/assets/icons/link-icon.svg";
-import { shell } from "electron";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 
 
@@ -171,7 +170,7 @@ export const WizardModal = () => {
                                                     ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                                                     const href = "https://www.thoriumreader.com";
                                                     if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                                        await shell.openExternal(href);
+                                                        await window.electronApi.openExternal(href);
                                                     }
                                                 }}>
                                                 🌐 {__("wizard.resources.website", { url: "https://www.thoriumreader.com" })}
@@ -182,7 +181,7 @@ export const WizardModal = () => {
                                                     ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                                                     const href = "https://discord.gg/2GnubQbE";
                                                     if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                                        await shell.openExternal(href);
+                                                        await window.electronApi.openExternal(href);
                                                     }
                                                 }}>
                                                 💬 {__("wizard.resources.discord", { url: "https://discord.gg/2GnubQbE" })}

@@ -11,8 +11,6 @@ import {
     DEBUG_KEYBOARD, IKeyboardEvent, keyboardShortcutMatch, TKeyboardShortcut,
 } from "readium-desktop/common/keyboard";
 
-import { ipcRenderer } from "electron";
-
 type TDocument = typeof document;
 export interface TKeyboardDocument extends TDocument {
     _keyModifierShift: boolean;
@@ -182,7 +180,7 @@ export function ensureKeyboardListenerIsInstalled() {
     doc._keyModifierMeta = false;
     doc._keyModifierAlt = false;
 
-    ipcRenderer.on("window-focus", () => {
+    window.electronApi.ipcOn("window-focus", () => {
         if (DEBUG_KEYBOARD) {
             console.log("electron window FOCUS");
         }
@@ -191,7 +189,7 @@ export function ensureKeyboardListenerIsInstalled() {
         doc._keyModifierMeta = false;
         doc._keyModifierAlt = false;
     });
-    ipcRenderer.on("window-blur", () => {
+    window.electronApi.ipcOn("window-blur", () => {
         if (DEBUG_KEYBOARD) {
             console.log("electron window BLUR");
         }

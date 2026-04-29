@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ipcRenderer } from "electron";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
@@ -67,7 +66,7 @@ initGlobalConverters_GENERIC();
 //     }, 5000);
 // }
 
-ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
+window.electronApi.ipcOn(winIpc.CHANNEL, (_0: undefined, data: winIpc.EventPayload) => {
     switch (data.type) {
         case winIpc.EventType.IdResponse:
             // Initialize window
@@ -99,7 +98,7 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
 });
 
 // Request main process for a new id
-ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: syncIpc.EventPayload) => {
+window.electronApi.ipcOn(syncIpc.CHANNEL, (_0: undefined, data: syncIpc.EventPayload) => {
 
     switch (data.type) {
         case syncIpc.EventType.MainAction:
@@ -131,7 +130,7 @@ if (__TH__IS_DEV__) {
     //     throw new Error("Test exception 1 ...");
     // }, 1000);
 
-    ipcRenderer.once("AXE_A11Y", () => {
+    window.electronApi.ipcOnce("AXE_A11Y", () => {
         // https://github.com/dequelabs/axe-core/blob/master/doc/API.md#api-name-axeconfigure
         const config = {
             // rules: [

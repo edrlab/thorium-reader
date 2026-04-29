@@ -40,6 +40,7 @@ export function* createReaderWindow(publicationIdentifier: string, manifestUrl: 
     assertUUIDv4(publicationIdentifier);
     
     const winBound = yield* callTyped(readerNewWindowBound, publicationIdentifier);
+    const preloadPath = path.normalize(path.join(__dirname, "preload_library.js")).replace(/\\/g, "/");
     const readerWindow = new BrowserWindow({
         ...winBound,
         minWidth: WINDOW_MIN_WIDTH,
@@ -50,6 +51,7 @@ export function* createReaderWindow(publicationIdentifier: string, manifestUrl: 
             backgroundThrottling: false,
             devTools: ENABLE_DEV_TOOLS, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
             nodeIntegration: true, // ==> disables sandbox https://www.electronjs.org/docs/latest/tutorial/sandbox
+            preload: preloadPath,
             sandbox: false,
             contextIsolation: false, // must be false because nodeIntegration, see https://github.com/electron/electron/issues/23506
             nodeIntegrationInWorker: false,

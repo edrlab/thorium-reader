@@ -10,7 +10,6 @@ import * as stylesInputs from "readium-desktop/renderer/assets/styles/components
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
 
-import { shell } from "electron";
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
@@ -117,7 +116,7 @@ export const ApiappHowDoesItWorkInfoBox = () => {
                             ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                             const href = "https://thorium.edrlab.org/";
                             if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                await shell.openExternal(href);
+                                await window.electronApi.openExternal(href);
                             }
                         }}>
                         {__("apiapp.documentation")}

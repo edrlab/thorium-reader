@@ -10,7 +10,6 @@ import * as stylesInputs from "readium-desktop/renderer/assets/styles/components
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 
-import { shell } from "electron";
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import SVG from "readium-desktop/renderer/common/components/SVG";
@@ -50,7 +49,7 @@ export const OpdsFeedHowDoesItWorksInfoBox = () => {
                         ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                         const href = "https://opds.io/";
                         if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                            await shell.openExternal(href);
+                            await window.electronApi.openExternal(href);
                         }
                     }}>
                     {__("opds.documentation")}

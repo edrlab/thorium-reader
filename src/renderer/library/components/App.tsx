@@ -12,7 +12,6 @@ import "reflect-metadata";
 import "readium-desktop/renderer/assets/styles/global.scss";
 import * as stylesInputs from "readium-desktop/renderer/assets/styles/components/inputs.scss";
 
-import { webUtils } from "electron";
 import classNames from "classnames";
 import { HistoryRouter } from "redux-first-history/rr6";
 import * as path from "path";
@@ -24,6 +23,7 @@ import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import ToastManager from "readium-desktop/renderer/common/components/toast/ToastManager";
 import { ensureKeyboardListenerIsInstalled } from "readium-desktop/renderer/common/keyboard";
+import { getFilePath } from "readium-desktop/renderer/common/logics/filePath";
 import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import DialogManager from "readium-desktop/renderer/library/components/dialog/DialogManager";
@@ -44,9 +44,7 @@ import { CustomizationProfileDialog } from "readium-desktop/renderer/common/comp
 // eslintxx-disable-next-line @typescript-eslint/no-unused-expressions
 // globalScssStyle.__LOAD_FILE_SELECTOR_NOT_USED_JUST_TO_TRIGGER_WEBPACK_SCSS_FILE__;
 
-import { shell } from "electron";
-
-(window as any).__shell_openExternal = (url: string) => url && /^https?:\/\//.test(url) ? shell.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
+(window as any).__shell_openExternal = (url: string) => url && /^https?:\/\//.test(url) ? window.electronApi.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
 
 export default class App extends React.Component<{}, undefined> {
 
@@ -63,7 +61,7 @@ export default class App extends React.Component<{}, undefined> {
         const files = Array.from((event as React.DragEvent<HTMLElement>).dataTransfer.files);
         // console.log("getFiles: " + files.length);
         // console.log("getFile: " + files[0]);
-        // const absolutePath = webUtils.getPathForFile(files[0]);
+        // const absolutePath = getFilePath(files[0]);
         // console.log("absolutePath zz: " + absolutePath);
         return files;
     };
@@ -78,8 +76,8 @@ export default class App extends React.Component<{}, undefined> {
             .filter(
                 (file) => {
                     // with drag-and-drop (unlike input@type=file) the File `path` property is equal to `name`!
-                    // const absolutePath = file.path ? file.path : webUtils.getPathForFile(file);
-                    const absolutePath = webUtils.getPathForFile(file);
+                    // const absolutePath = file.path ? file.path : getFilePath(file);
+                    const absolutePath = getFilePath(file);
                     // console.log("absolutePath 1: " + absolutePath);
                     return absolutePath.replace(/\\/g, "/").toLowerCase().endsWith("/" + acceptedExtensionObject.nccHtml) || acceptedExtension(path.extname(absolutePath));
                 },
@@ -87,8 +85,8 @@ export default class App extends React.Component<{}, undefined> {
             .map(
                 (file) => {
                     // with drag-and-drop (unlike input@type=file) the File `path` property is equal to `name`!
-                    // const absolutePath = file.path ? file.path : webUtils.getPathForFile(file);
-                    const absolutePath = webUtils.getPathForFile(file);
+                    // const absolutePath = file.path ? file.path : getFilePath(file);
+                    const absolutePath = getFilePath(file);
                     // console.log("absolutePath 2: " + absolutePath);
                     return {
                         name: file.name,
@@ -100,8 +98,8 @@ export default class App extends React.Component<{}, undefined> {
         if (filez.length === 0) {
             const file = acceptedFiles[0];
             // with drag-and-drop (unlike input@type=file) the File `path` property is equal to `name`!
-            // const absolutePath = file.path ? file.path : webUtils.getPathForFile(file);
-            const absolutePath = webUtils.getPathForFile(file);
+            // const absolutePath = file.path ? file.path : getFilePath(file);
+            const absolutePath = getFilePath(file);
             // console.log("absolutePath 3: " + absolutePath);
 
 
@@ -187,7 +185,7 @@ export default class App extends React.Component<{}, undefined> {
             //       console.log(ev.dataTransfer.files[0]);
             //       console.log(ev.dataTransfer.files[0].name);
             //       console.log(ev.dataTransfer.files[0].path);
-            //       console.log(require("electron").webUtils.getPathForFile(ev.dataTransfer.files[0]));
+            //       console.log(getFilePath(ev.dataTransfer.files[0]));
             //   });`;
             //   if (!document.getElementById("jsdrop")) {
             //   const eljs = document.createElement("script");

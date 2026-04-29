@@ -49,6 +49,18 @@ declare const __TH__IS_CI__: boolean;
 declare const __TH__CUSTOMIZATION_PROFILE_PRIVATE_KEY__: string;
 // declare const __TH__CUSTOMIZATION_PROFILE_PUB_KEY__: string;
 
+interface Window {
+    electronApi: {
+        clipboardWriteText: (text: string, type?: "selection" | "clipboard") => void;
+        getPathForFile: (file: File) => string;
+        ipcOff: (channel: string, listener: (_event: undefined, ...args: any[]) => void) => void;
+        ipcOn: (channel: string, listener: (_event: undefined, ...args: any[]) => void) => void;
+        ipcOnce: (channel: string, listener: (_event: undefined, ...args: any[]) => void) => void;
+        ipcSend: (channel: string, ...args: any[]) => void;
+        openExternal: (url: string) => Promise<void>;
+    };
+}
+
 declare module "bindings";
 declare module "debug/src/node";
 declare module "debug/src/browser";

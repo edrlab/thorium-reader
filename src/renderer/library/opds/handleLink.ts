@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { shell } from "electron";
 import { dialogActions } from "readium-desktop/common/redux/actions";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { decodeB64 } from "readium-desktop/renderer/common/logics/base64";
@@ -55,7 +54,7 @@ export const dispatchOpdsLink =
                 }, location.state as IRouterLocationState);
             } else {
                 if (ln.url && /^https?:\/\//.test(ln.url)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                    await shell.openExternal(ln.url);
+                    await window.electronApi.openExternal(ln.url);
                 }
             }
         };

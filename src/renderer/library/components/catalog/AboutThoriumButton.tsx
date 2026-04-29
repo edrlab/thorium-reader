@@ -8,7 +8,6 @@
 import * as stylesFooter from "readium-desktop/renderer/assets/styles/components/aboutFooter.scss";
 import * as stylesGlobal from "readium-desktop/renderer/assets/styles/global.scss";
 
-import { shell } from "electron";
 // import * as path from "path";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -87,13 +86,13 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                                 ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                                 this.setState({ versionInfo : false });
                                 if (this.props.newVersionURL && /^https?:\/\//.test(this.props.newVersionURL)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                    await shell.openExternal(this.props.newVersionURL);
+                                    await window.electronApi.openExternal(this.props.newVersionURL);
                                 }
                             }}>{`${this.props.__("app.update.message")}`}</a> <span>(v{this.props.newVersion})</span></p>
                         </div>
                         {/* <button onClick={async () => {
                             this.setState({ versionInfo : false });
-                            await shell.openExternal(this.props.newVersionURL);
+                            await window.electronApi.openExternal(this.props.newVersionURL);
                         }}>
                             {this.props.__("app.session.exit.askBox.button.yes")}
                         </button>
@@ -123,7 +122,7 @@ class AboutThoriumButton extends React.Component<IProps, IState> {
                                 ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                                 const href = `https://thorium.edrlab.org/?lang=${locale}&v=${app_version}`;
                                 if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                    await shell.openExternal(href);
+                                    await window.electronApi.openExternal(href);
                                 }
                             }}
                         tabIndex={0}>{__("catalog.about.title", { appName: capitalizedAppName })}</a>

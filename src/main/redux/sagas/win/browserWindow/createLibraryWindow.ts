@@ -35,6 +35,19 @@ const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
 // so the garbage collector doesn't close it.
 let libWindow: BrowserWindow = null;
 
+const logLibraryWindowError = (eventName: string, payload: unknown) => {
+    let payloadStr = "";
+    try {
+        payloadStr = JSON.stringify(payload, null, 2);
+    } catch {
+        payloadStr = String(payload);
+    }
+
+    const message = `[LibraryWindow:${eventName}] ${payloadStr}`;
+    debug(message);
+    console.error(message);
+};
+
 // Opens the main window, with a native menu bar.
 export function* createLibraryWindow(_action: winActions.library.openRequest.TAction) {
 
@@ -42,6 +55,11 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
     let windowBound = yield* selectTyped(
         (state: RootState) => state.win.session.library.windowBound);
     windowBound = normalizeWinBoundRectangle(windowBound);
+
+    // see: src\main\pdf\extract.ts
+    const preloadPath = path.normalize(path.join(__dirname, "preload_library.js")).replace(/\\/g, "/");
+
+    debug("SHOW preload PATH", preloadPath);
 
     libWindow = new BrowserWindow({
         ...windowBound,
@@ -51,8 +69,9 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
             // enableRemoteModule: false,
             allowRunningInsecureContent: false,
             backgroundThrottling: true,
-            devTools: ENABLE_DEV_TOOLS, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
+            devTools: true, // ENABLE_DEV_TOOLS, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
             nodeIntegration: true, // ==> disables sandbox https://www.electronjs.org/docs/latest/tutorial/sandbox
+            preload: preloadPath,
             sandbox: false,
             contextIsolation: false, // must be false because nodeIntegration, see https://github.com/electron/electron/issues/23506
             nodeIntegrationInWorker: false,
@@ -62,6 +81,40 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         icon: path.join(__dirname, "assets/icons/icon.png"),
     });
     debug("LibraryWindow new BrowserWindow instancied");
+
+    libWindow.webContents.on("console-message", (_event, level, message, line, sourceId) => {
+        logLibraryWindowError("console-message", {
+            level,
+            message,
+            line,
+            sourceId,
+        });
+    });
+
+    libWindow.webContents.on("preload-error", (_event, preloadPath_, error) => {
+        logLibraryWindowError("preload-error", {
+            preloadPath: preloadPath_,
+            message: error.message,
+            stack: error.stack,
+        });
+    });
+
+    libWindow.webContents.on("did-fail-load", (_event, errorCode, errorDescription, validatedURL, isMainFrame) => {
+        logLibraryWindowError("did-fail-load", {
+            errorCode,
+            errorDescription,
+            validatedURL,
+            isMainFrame,
+        });
+    });
+
+    libWindow.webContents.on("render-process-gone", (_event, details) => {
+        logLibraryWindowError("render-process-gone", details);
+    });
+
+    libWindow.on("unresponsive", () => {
+        logLibraryWindowError("unresponsive", {});
+    });
 
     if (ENABLE_DEV_TOOLS) {
         const wc = libWindow.webContents;

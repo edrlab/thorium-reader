@@ -10,7 +10,6 @@ import * as stylesButtons from "readium-desktop/renderer/assets/styles/component
 import * as stylesModals from "readium-desktop/renderer/assets/styles/components/modals.scss";
 import * as stylesCatalogs from "readium-desktop/renderer/assets/styles/components/catalogs.scss";
 
-import { shell } from "electron";
 import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { connect } from "react-redux";
@@ -147,7 +146,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                     onClick={async (ev) => {
                                         ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                                         if (this.props.urlHint.href && /^https?:\/\//.test(this.props.urlHint.href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                            await shell.openExternal(this.props.urlHint.href);
+                                            await window.electronApi.openExternal(this.props.urlHint.href);
                                         }
                                     }} className={stylesModals.urlHint}>
                                     {this.props.urlHint.title || __("library.lcp.urlHint")}
@@ -169,7 +168,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                         ev.preventDefault(); // necessary because href="", CSS must also ensure hyperlink visited style
                                         const href = "https://www.edrlab.org/readium-lcp/";
                                         if (href && /^https?:\/\//.test(href)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-                                            await shell.openExternal(href);
+                                            await window.electronApi.openExternal(href);
                                         }
                                     }}>
                                     {__("library.lcp.whatIsLcpInfoDetailsLink")}

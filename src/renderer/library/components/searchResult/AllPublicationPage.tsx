@@ -87,7 +87,6 @@ import { keyboardShortcutsMatch } from "readium-desktop/common/keyboard";
 import {
     ensureKeyboardListenerIsInstalled, registerKeyboardListener, unregisterKeyboardListener,
 } from "readium-desktop/renderer/common/keyboard";
-import { ipcRenderer } from "electron";
 import PublicationCard from "../publication/PublicationCard";
 import classNames from "classnames";
 import * as Popover from "@radix-ui/react-popover";
@@ -161,13 +160,13 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
 
     public componentDidMount() {
 
-        ipcRenderer.on("accessibility-support-changed", this.accessibilitySupportChanged);
+        window.electronApi.ipcOn("accessibility-support-changed", this.accessibilitySupportChanged);
 
         // note that "@r2-navigator-js/electron/main/browser-window-tracker"
         // uses "accessibility-support-changed" instead of "accessibility-support-query",
         // so there is no duplicate event handler.
-        console.log("componentDidMount() ipcRenderer.send - accessibility-support-query");
-        ipcRenderer.send("accessibility-support-query");
+        console.log("componentDidMount() electronApi.ipcSend - accessibility-support-query");
+        window.electronApi.ipcSend("accessibility-support-query");
 
         ensureKeyboardListenerIsInstalled();
         this.registerAllKeyboardListeners();
@@ -200,7 +199,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
     }
 
     public componentWillUnmount() {
-        ipcRenderer.off("accessibility-support-changed", this.accessibilitySupportChanged);
+        window.electronApi.ipcOff("accessibility-support-changed", this.accessibilitySupportChanged);
 
         this.unregisterAllKeyboardListeners();
 
@@ -214,8 +213,8 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
         // note that "@r2-navigator-js/electron/main/browser-window-tracker"
         // uses "accessibility-support-changed" instead of "accessibility-support-query",
         // so there is no duplicate event handler.
-        console.log("componentDidUpdate() ipcRenderer.send - accessibility-support-query");
-        ipcRenderer.send("accessibility-support-query");
+        console.log("componentDidUpdate() electronApi.ipcSend - accessibility-support-query");
+        window.electronApi.ipcSend("accessibility-support-query");
 
         if (!keyboardShortcutsMatch(oldProps.keyboardShortcuts, this.props.keyboardShortcuts)) {
             this.unregisterAllKeyboardListeners();
@@ -260,8 +259,8 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
         );
     }
 
-    private accessibilitySupportChanged = (_e: Electron.IpcRendererEvent, accessibilitySupportEnabled: boolean) => {
-        console.log("ALLPUBPAGES.tsx ipcRenderer.on - accessibility-support-changed: ", accessibilitySupportEnabled);
+    private accessibilitySupportChanged = (_e: undefined, accessibilitySupportEnabled: boolean) => {
+        console.log("ALLPUBPAGES.tsx electronApi.ipcOn - accessibility-support-changed: ", accessibilitySupportEnabled);
 
         // prevents infinite loop via componentDidUpdate()
         if (accessibilitySupportEnabled !== this.state.accessibilitySupportEnabled) {
