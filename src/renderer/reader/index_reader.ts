@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ipcRenderer } from "electron";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { readerIpc } from "readium-desktop/common/ipc";
@@ -46,8 +45,8 @@ initGlobalConverters_GENERIC();
 //     }, 5000);
 // }
 
-ipcRenderer.on(readerIpc.CHANNEL,
-    (_0: any, data: readerIpc.EventPayload) => {
+window.electronApi.ipcOn(readerIpc.CHANNEL,
+    (_0: undefined, data: readerIpc.EventPayload) => {
         switch (data.type) {
             case readerIpc.EventType.request:
                 // Initialize window
@@ -104,7 +103,7 @@ ipcRenderer.on(readerIpc.CHANNEL,
     });
 
 if (__TH__IS_DEV__) {
-    ipcRenderer.once("AXE_A11Y", () => {
+    window.electronApi.ipcOnce("AXE_A11Y", () => {
         const publicationViewport = document.getElementById("publication_viewport");
         let parent: Element | undefined;
         if (publicationViewport) {

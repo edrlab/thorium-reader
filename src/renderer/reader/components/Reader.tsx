@@ -12,7 +12,6 @@ import debug_ from "debug";
 import * as stylesReader from "readium-desktop/renderer/assets/styles/reader-app.scss";
 import * as stylesReaderFooter from "readium-desktop/renderer/assets/styles/components/readerFooter.scss";
 import { fixedLayoutZoomPercent } from "@r2-navigator-js/electron/renderer/dom";
-import { ipcRenderer } from "electron";
 import classNames from "classnames";
 import divinaPlayer from "divina-player-js";
 import * as path from "path";
@@ -135,10 +134,9 @@ interface IWindowHistory extends History {
 const windowHistory = window.history as IWindowHistory;
 
 // see r2-navigator-js src/electron/renderer/location.ts
-ipcRenderer.on(R2_EVENT_LINK, (event: Electron.IpcRendererEvent, payload: IEventPayload_R2_EVENT_LINK) => {
-    console.log("R2_EVENT_LINK (ipcRenderer.on READER.TSX)");
-    // see ipcRenderer.emit(R2_EVENT_LINK...) special case!
-    const pay = (!payload && (event as unknown as IEventPayload_R2_EVENT_LINK).url) ? event as unknown as IEventPayload_R2_EVENT_LINK : payload;
+window.electronApi.ipcOn(R2_EVENT_LINK, (_event: undefined, payload: IEventPayload_R2_EVENT_LINK) => {
+    console.log("R2_EVENT_LINK (electronApi.ipcOn READER.TSX)");
+    const pay = payload;
     console.log(pay.url);
     handleLinkUrl_UpdateHistoryState(pay.url);
 });
@@ -445,13 +443,13 @@ class Reader extends React.Component<IProps, IState> {
     public async componentDidMount() {
         // navigatorTTSVoicesSetter(this.props.ttsVoices);
 
-        ipcRenderer.on("accessibility-support-changed", this.accessibilitySupportChanged);
+        window.electronApi.ipcOn("accessibility-support-changed", this.accessibilitySupportChanged);
 
         // note that "@r2-navigator-js/electron/main/browser-window-tracker"
         // uses "accessibility-support-changed" instead of "accessibility-support-query",
         // so there is no duplicate event handler.
-        console.log("componentDidMount() ipcRenderer.send - accessibility-support-query");
-        ipcRenderer.send("accessibility-support-query");
+        console.log("componentDidMount() electronApi.ipcSend - accessibility-support-query");
+        window.electronApi.ipcSend("accessibility-support-query");
 
         // if (this.mainElRef?.current) {
         //     this.resizeObserver.observe(this.mainElRef.current);
@@ -793,7 +791,7 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     public componentWillUnmount() {
-        ipcRenderer.off("accessibility-support-changed", this.accessibilitySupportChanged);
+        window.electronApi.ipcOff("accessibility-support-changed", this.accessibilitySupportChanged);
 
         // if (this.mainElRef?.current) {
         //     this.resizeObserver.unobserve(this.mainElRef.current); // publication_viewport
@@ -1517,8 +1515,8 @@ class Reader extends React.Component<IProps, IState> {
         r2HandleLinkUrl(url);
     };
 
-    private accessibilitySupportChanged = (_e: Electron.IpcRendererEvent, accessibilitySupportEnabled: boolean) => {
-        console.log("READER.tsx ipcRenderer.on - accessibility-support-changed: ", accessibilitySupportEnabled);
+    private accessibilitySupportChanged = (_e: undefined, accessibilitySupportEnabled: boolean) => {
+        console.log("READER.tsx electronApi.ipcOn - accessibility-support-changed: ", accessibilitySupportEnabled);
 
         // prevents infinite loop via componentDidUpdate()
         if (accessibilitySupportEnabled !== this.state.accessibilitySupportEnabled) {
@@ -2613,7 +2611,7 @@ class Reader extends React.Component<IProps, IState> {
                 } else {
                     // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
                     // preloadPath = "file://" + path.normalize(path.join(process.cwd(), "node_modules", preloadPath)).replace(/\\/g, "/");
-                    preloadPath = "file://" + path.normalize(path.join(process.cwd(), "dist", "preload.js")).replace(/\\/g, "/");
+                    preloadPath = "file://" + path.normalize(path.join(window.electronApi.cwd(), "dist", "preload.js")).replace(/\\/g, "/");
                 }
             }
 
@@ -3299,9 +3297,9 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     // const manifestUrlR2Protocol = state.reader.info.manifestUrlR2Protocol; // httpsr2:// "CustomScheme"
     const manifestUrlHttp = state.reader.info.manifestUrlHttp.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ? convertCustomSchemeToHttpUrl(state.reader.info.manifestUrlHttp) : state.reader.info.manifestUrlHttp;
     const pubPathBase64 = decodeURIComponent(manifestUrlHttp.replace(/\/manifest.json$/, "").replace(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PUB}/`, ""));
-    const pubPath = Buffer.from(pubPathBase64, "base64").toString();
+    const pubPath = window.electronApi.base64Decode(pubPathBase64);
 
-    const manifestUrlR2Protocol_pub_id_not_path = convertHttpUrlToCustomScheme(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PUB}/${encodeURIComponent_RFC3986(Buffer.from(state.reader.info.publicationIdentifier || state.reader.info.publicationView.identifier, "utf8").toString("base64"))}/manifest.json`);
+    const manifestUrlR2Protocol_pub_id_not_path = convertHttpUrlToCustomScheme(`${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_PUB}/${encodeURIComponent_RFC3986(window.electronApi.base64Encode(state.reader.info.publicationIdentifier || state.reader.info.publicationView.identifier))}/manifest.json`);
 
     debug("manifestUrlR2Protocol_pub_id_not_path", manifestUrlR2Protocol_pub_id_not_path);
     debug("state.reader.info.manifestUrlR2Protocol", state.reader.info.manifestUrlR2Protocol);

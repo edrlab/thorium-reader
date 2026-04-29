@@ -61,8 +61,8 @@ function* profileActivating(id: string): SagaGenerator<void> {
         return ;
     }
 
-    const baseUrl = `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_CUSTOMPROFILEZIP}/${encodeURIComponent_RFC3986(Buffer.from(id).toString("base64"))}/`;
-    const manifestURL = baseUrl + encodeURIComponent_RFC3986(Buffer.from("manifest.json").toString("base64"));
+    const baseUrl = `${URL_PROTOCOL_THORIUMHTTPS}://${URL_HOST_COMMON}/${URL_PATH_PREFIX_CUSTOMPROFILEZIP}/${encodeURIComponent_RFC3986(window.electronApi.base64Encode(id))}/`;
+    const manifestURL = baseUrl + encodeURIComponent_RFC3986(window.electronApi.base64Encode("manifest.json"));
     const response = yield* callTyped(() => fetch(manifestURL));
     if (response.status !== 200) {
         debug("ERORR in manifest request", response);

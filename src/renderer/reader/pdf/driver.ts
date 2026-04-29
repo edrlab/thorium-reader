@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END
 
-import { ipcRenderer } from "electron";
 import * as path from "path";
 import {
     _DIST_RELATIVE_URL, _RENDERER_PDF_WEBVIEW_BASE_URL,
@@ -100,7 +99,7 @@ export function pdfMount(
 
     const pdfData = data;
     const pdfDataString = JSON.stringify(pdfData);
-    const b64EncodedPdfData = Buffer.from(pdfDataString, "utf8").toString("base64");
+    const b64EncodedPdfData = window.electronApi.base64Encode(pdfDataString);
 
     const webview = document.createElement("webview");
 
@@ -111,7 +110,7 @@ export function pdfMount(
 
     //     console.log("will-navigate event:", event.type, event.url);
     //     if (event.url && /^https?:\/\//.test(event.url)) { /* ignores file: mailto: data: thoriumhttps: httpsr2: thorium: opds: etc. */
-    //         await shell.openExternal(event.url);
+    //         await window.electronApi.openExternal(event.url);
     //     }
     // };
     // webview.addEventListener("will-navigate", handleRedirect);
@@ -152,7 +151,7 @@ export function pdfMount(
             // }
         } else {
             // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
-            preloadPath = "file://" + path.normalize(path.join(process.cwd(), "dist", PDFPATH));
+            preloadPath = "file://" + path.normalize(path.join(window.electronApi.cwd(), "dist", PDFPATH));
             preloadPath = preloadPath.replace(/\\/g, "/");
         }
     }
@@ -180,6 +179,6 @@ const webviewDomReadyDebugger = (ev: DOMEvent) => {
     webview.clearHistory();
 
     if (__TH__IS_DEV__) {
-        ipcRenderer.send(CONTEXT_MENU_SETUP, webview.getWebContentsId());
+        window.electronApi.ipcSend(CONTEXT_MENU_SETUP, webview.getWebContentsId());
     }
 };

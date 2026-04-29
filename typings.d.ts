@@ -51,13 +51,17 @@ declare const __TH__CUSTOMIZATION_PROFILE_PRIVATE_KEY__: string;
 
 interface Window {
     electronApi: {
+        base64Decode: (value: string) => string;
+        base64Encode: (value: string) => string;
         clipboardWriteText: (text: string, type?: "selection" | "clipboard") => void;
+        cwd: () => string;
         getPathForFile: (file: File) => string;
         ipcOff: (channel: string, listener: (_event: undefined, ...args: any[]) => void) => void;
         ipcOn: (channel: string, listener: (_event: undefined, ...args: any[]) => void) => void;
         ipcOnce: (channel: string, listener: (_event: undefined, ...args: any[]) => void) => void;
         ipcSend: (channel: string, ...args: any[]) => void;
         openExternal: (url: string) => Promise<void>;
+        requireExternal: (moduleName: string) => unknown;
     };
 }
 

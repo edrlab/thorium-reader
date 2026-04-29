@@ -35,12 +35,28 @@ debug("_");
 
 const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
 
+const logReaderWindowError = (eventName: string, payload: unknown) => {
+    let payloadStr = "";
+    try {
+        payloadStr = JSON.stringify(payload, null, 2);
+    } catch {
+        payloadStr = String(payload);
+    }
+
+    const message = `[ReaderWindow:${eventName}] ${payloadStr}`;
+    debug(message);
+    console.error(message);
+};
+
 export function* createReaderWindow(publicationIdentifier: string, manifestUrl: string,  windowIdentifier: string /* winBound, reduxState*/) {
     assertUUIDv4(windowIdentifier);
     assertUUIDv4(publicationIdentifier);
     
     const winBound = yield* callTyped(readerNewWindowBound, publicationIdentifier);
     const preloadPath = path.normalize(path.join(__dirname, "preload_library.js")).replace(/\\/g, "/");
+
+    debug("SHOW preload PATH", preloadPath);
+
     const readerWindow = new BrowserWindow({
         ...winBound,
         minWidth: WINDOW_MIN_WIDTH,
@@ -50,16 +66,66 @@ export function* createReaderWindow(publicationIdentifier: string, manifestUrl: 
             allowRunningInsecureContent: false,
             backgroundThrottling: false,
             devTools: ENABLE_DEV_TOOLS, // this does not automatically open devtools, just enables them (see Electron API openDevTools())
-            nodeIntegration: true, // ==> disables sandbox https://www.electronjs.org/docs/latest/tutorial/sandbox
+            // set nodeIntegration to true for now because the Reader bundle still loads @r2-navigator-js/electron renderer modules.
+            nodeIntegration: true,
             preload: preloadPath,
             sandbox: false,
-            contextIsolation: false, // must be false because nodeIntegration, see https://github.com/electron/electron/issues/23506
+            contextIsolation: true,
             nodeIntegrationInWorker: false,
             webSecurity: true,
             webviewTag: true,
         },
         icon: path.join(__dirname, "assets/icons/icon.png"),
     });
+    debug("ReaderWindow new BrowserWindow instancied");
+
+    readerWindow.webContents.on("console-message", (_event, level, message, line, sourceId) => {
+        logReaderWindowError("console-message", {
+            windowIdentifier,
+            publicationIdentifier,
+            level,
+            message,
+            line,
+            sourceId,
+        });
+    });
+
+    readerWindow.webContents.on("preload-error", (_event, preloadPath_, error) => {
+        logReaderWindowError("preload-error", {
+            windowIdentifier,
+            publicationIdentifier,
+            preloadPath: preloadPath_,
+            message: error.message,
+            stack: error.stack,
+        });
+    });
+
+    readerWindow.webContents.on("did-fail-load", (_event, errorCode, errorDescription, validatedURL, isMainFrame) => {
+        logReaderWindowError("did-fail-load", {
+            windowIdentifier,
+            publicationIdentifier,
+            errorCode,
+            errorDescription,
+            validatedURL,
+            isMainFrame,
+        });
+    });
+
+    readerWindow.webContents.on("render-process-gone", (_event, details) => {
+        logReaderWindowError("render-process-gone", {
+            windowIdentifier,
+            publicationIdentifier,
+            details,
+        });
+    });
+
+    readerWindow.on("unresponsive", () => {
+        logReaderWindowError("unresponsive", {
+            windowIdentifier,
+            publicationIdentifier,
+        });
+    });
+
     readerWindow.on("focus", () => {
         readerWindow.webContents?.send("window-focus");
     });
@@ -215,6 +281,7 @@ export function* createReaderWindow(publicationIdentifier: string, manifestUrl: 
 
             if (!readerWindow.isDestroyed() && !readerWindow.webContents.isDestroyed()) {
                 try {
+                    debug("ReaderWindow load url to the webview");
                     await readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" });
                 } catch (e) {
                     debug("Load url rejected", e);

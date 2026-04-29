@@ -48,7 +48,7 @@ if (nodeEnv !== "production") {
         // allowlist: ["marked", "pdf.js", "readium-speech", "@github/paste-markdown", "yargs", "timeout-signal", "nanoid", "normalize-url", "node-fetch", "data-uri-to-buffer", /^fetch-blob/, /^formdata-polyfill/],
         importType: function (moduleName) {
             if (!_externalsCache.has(moduleName)) {
-                console.log(`WEBPACK EXTERNAL (PDF EXTRACT): [${moduleName}]`);
+                console.log(`WEBPACK EXTERNAL (PRELOAD-LIBRARY): [${moduleName}]`);
             }
             _externalsCache.add(moduleName);
             // if (moduleName === "normalize-url") {
@@ -63,7 +63,7 @@ if (nodeEnv !== "production") {
             const isRDesk = request.indexOf("readium-desktop/") === 0;
             if (isRDesk) {
                 if (!_externalsCache.has(request)) {
-                    console.log(`WEBPACK EXTERNAL (PDF EXTRACT): READIUM-DESKTOP [${request}]`);
+                    console.log(`WEBPACK EXTERNAL (PRELOAD-LIBRARY): READIUM-DESKTOP [${request}]`);
                 }
                 _externalsCache.add(request);
 

@@ -119,7 +119,7 @@ export const ImageClickManagerImgViewerOnly: React.FC = () => {
                                 <TransformComponent wrapperStyle={{ display: "flex", width: "100%", height: "100%", minHeight: "350px", flex: "1", position: "relative" }} >
                                     <img
                                         style={{ height: "100%", width: "100%", maxHeight: "calc(100vh - 250px)", backgroundColor: "white", color: "black", fill: "currentcolor", stroke: "currentcolor" }}
-                                        src={isSVGFragment ? ("data:image/svg+xml;base64," + Buffer.from(HTMLImgSrc_SVGImageHref_SVGFragmentMarkup).toString("base64")) : HTMLImgSrc_SVGImageHref_SVGFragmentMarkup}
+                                        src={isSVGFragment ? ("data:image/svg+xml;base64," + window.electronApi.base64Encode(HTMLImgSrc_SVGImageHref_SVGFragmentMarkup)) : HTMLImgSrc_SVGImageHref_SVGFragmentMarkup}
                                         alt={altAttributeOf_HTMLImg_SVGImage_SVGFragment}
                                         title={titleAttributeOf_HTMLImg_SVGImage_SVGFragment}
                                         aria-label={ariaLabelAttributeOf_HTMLImg_SVGImage_SVGFragment}

@@ -98,7 +98,6 @@ import { EDrawType, INoteState, noteColorCodeToColorTranslatorKeySet, TDrawType 
 
 import DOMPurify from "dompurify";
 
-import { shell } from "electron";
 import { exportAnnotationSet } from "readium-desktop/renderer/common/redux/sagas/readiumAnnotation/export";
 import { getSaga } from "../createStore";
 import { clone } from "ramda";
@@ -106,7 +105,7 @@ import { marked } from "readium-desktop/renderer/common/marked/marked";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
 import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
 
-(window as any).__shell_openExternal = (url: string) => url && /^https?:\/\//.test(url) ? shell.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
+(window as any).__shell_openExternal = (url: string) => url && /^https?:\/\//.test(url) ? window.electronApi.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
 
 // console.log(window);
 

@@ -6,7 +6,6 @@
 // ==LICENSE-END=
 
 import debug_ from "debug";
-import { ipcRenderer } from "electron";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { takeSpawnEveryChannel } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
@@ -25,17 +24,17 @@ function getIpcSyncChannel() {
     const channel = eventChannel<syncIpc.EventPayload>(
         (emit) => {
 
-            const handler = (_0: any, data: syncIpc.EventPayload) => {
+            const handler = (_0: undefined, data: syncIpc.EventPayload) => {
 
                 if (data.type === syncIpc.EventType.MainAction) {
                     emit(data);
                 }
             };
 
-            ipcRenderer.on(syncIpc.CHANNEL, handler);
+            window.electronApi.ipcOn(syncIpc.CHANNEL, handler);
 
             return () => {
-                ipcRenderer.removeListener(syncIpc.CHANNEL, handler);
+                window.electronApi.ipcOff(syncIpc.CHANNEL, handler);
             };
         },
         buffers.fixed(10),
