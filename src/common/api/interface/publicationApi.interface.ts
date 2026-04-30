@@ -48,6 +48,8 @@ export interface IPublicationApi {
         filePathArray: string | string[],
         willBeImmediatelyFollowedByOpen: boolean,
     ) => SagaGenerator<PublicationView[]>;
+    selectFiles: (
+    ) => SagaGenerator<string[]>;
     search: (
         title: string,
     ) => SagaGenerator<PublicationView[]>;
@@ -74,6 +76,7 @@ export interface IPublicationModuleApi {
     "publication/updateTags": IPublicationApi["updateTags"];
     "publication/importFromLink": IPublicationApi["importFromLink"];
     "publication/importFromFs": IPublicationApi["importFromFs"];
+    "publication/selectFiles": IPublicationApi["selectFiles"];
     "publication/importFromString": IPublicationApi["importFromString"];
     "publication/search": IPublicationApi["search"];
     "publication/searchEqTitle": IPublicationApi["searchEqTitle"];

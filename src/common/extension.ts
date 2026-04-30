@@ -62,3 +62,9 @@ export const publicationExtensionStoredOnDisk = [
     acceptedExtensionObject.pnld,
     acceptedExtensionObject.daisy,
 ];
+
+export const publicationFileExtensionsForDialog = acceptedExtensionArray.map((extension) =>
+    extension === acceptedExtensionObject.nccHtml ?
+        "html" :
+        extension.replace(/^\./, ""),
+);

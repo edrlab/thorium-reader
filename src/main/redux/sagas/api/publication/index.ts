@@ -15,6 +15,7 @@ import { getPublication } from "./getPublication";
 import { importFromFs, importFromLink, importFromString } from "./import";
 import { findAllRecoverable, recover } from "./recovery";
 import { search, searchEqTitle } from "./search";
+import { selectFiles } from "./selectFiles";
 import { updateTags } from "./updateTags";
 import { SagaGenerator } from "typed-redux-saga";
 
@@ -26,6 +27,7 @@ export const publicationApi: IPublicationApi = {
     search,
     exportPublication,
     importFromFs,
+    selectFiles,
     importFromLink,
     importFromString,
     searchEqTitle,
