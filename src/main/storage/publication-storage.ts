@@ -187,6 +187,10 @@ export class PublicationStorage {
     public async getPublicationDirectories(): Promise<string[]> {
         await this.ready();
 
+        return this.getPublicationDirectoriesFromCurrentState();
+    }
+
+    private getPublicationDirectoriesFromCurrentState(): string[] {
         const directories = [
             this.defaultDirectory,
         ];
@@ -227,13 +231,11 @@ export class PublicationStorage {
     private setUserDirectoryPath(directoryPath: string | undefined): void {
         const currentDirectory = this.userDirectory ? getFilePathNormalize(this.userDirectory) : undefined;
         const nextDirectory = directoryPath ? getFilePathNormalize(directoryPath) : undefined;
-        if (currentDirectory === nextDirectory) {
-            this._userDirectory = directoryPath;
-            return;
+        // Same normalized path can still update display/persisted casing without invalidating lookups.
+        if (currentDirectory !== nextDirectory) {
+            this.incrementPublicationDirectoriesRevision();
         }
-
         this._userDirectory = directoryPath;
-        this.incrementPublicationDirectoriesRevision();
     }
 
     private incrementPublicationDirectoriesRevision(): void {
@@ -643,10 +645,14 @@ export class PublicationStorage {
     }
 
     private async getPublicationDirectoryCacheSnapshot(): Promise<IPublicationStorageDirectoryCacheSnapshot> {
-        const directories = await this.getPublicationDirectories();
+        await this.ready();
+        // Capture both values without an async delay so cache entries are tagged with
+        // the revision that actually matches the directory list they found.
+        const revision = this.getPublicationDirectoriesRevision();
+        const directories = this.getPublicationDirectoriesFromCurrentState();
         return {
             directories,
-            revision: this.getPublicationDirectoriesRevision(),
+            revision,
         };
     }
 
