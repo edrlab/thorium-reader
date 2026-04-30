@@ -1926,7 +1926,6 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                     : <></>
             }
             <Tabs.Root value={section} defaultValue={section} onValueChange={dockedMode ? null : setSection} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
-                <TabHeader />
                 {
                     dockedMode ? <></> :
                         <Tabs.List id="reader-settings-nav" ref={tabModeRef} className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
@@ -1971,6 +1970,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                         </section>
                     </Tabs.Content>
                 </div>
+                <TabHeader />
             </Tabs.Root>
         </div>
     );

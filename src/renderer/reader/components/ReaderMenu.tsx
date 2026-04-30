@@ -3161,7 +3161,6 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                     : <></>
             }
             <Tabs.Root value={section} onValueChange={(value) => dockedMode ? null : setSection(value)} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
-                <TabHeader />
                 {
                     dockedMode ? <></> :
                         <Tabs.List ref={tabModeRef} className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
@@ -3229,6 +3228,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </div>
                     </Tabs.Content>
                 </div>
+                <TabHeader />
             </Tabs.Root>
         </div>
     );

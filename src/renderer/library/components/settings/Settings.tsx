@@ -968,7 +968,6 @@ export const Settings: React.FC<ISettingsProps> = () => {
                     </VisuallyHidden.Root>
                 }
                 <Tabs.Root defaultValue="tab1" data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
-                    <TabHeader title={tabTitle} advancedTrigger={tabTitle === __("settings.tabs.keyboardShortcuts") ? true : false} />
                     <Tabs.List className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
                         <Tabs.Trigger value="tab1" onFocus={() => setTabTitle(__("settings.tabs.general"))}>
                             <SVG ariaHidden svg={CogIcon} />
@@ -1024,6 +1023,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             </div>
                         </Tabs.Content>
                     </div>
+                    <TabHeader title={tabTitle} advancedTrigger={tabTitle === __("settings.tabs.keyboardShortcuts") ? true : false} />
                 </Tabs.Root>
 
                 {/* <div className={stylesSettings.close_button_div}>
