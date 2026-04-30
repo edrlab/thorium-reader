@@ -130,6 +130,8 @@ export class PublicationStorage {
     // immediately.
     private publicationDirectoriesRevision = 0;
     private publicationLocationCache = new Map<string, IPublicationStorageLocationCacheEntry>();
+    private getPublicationPathCallCountByIdentifier = new Map<string, number>();
+    private getPublicationEpubPathCallCountByIdentifier = new Map<string, number>();
 
     public constructor(defaultDirectory: string) {
         this._defaultDirectory = defaultDirectory;
@@ -534,32 +536,56 @@ export class PublicationStorage {
         this.publicationLocationCache.delete(identifier);
     }
 
+    private incrementCallCountByIdentifier(callCountByIdentifier: Map<string, number>, identifier: string): number {
+        const callCount = (callCountByIdentifier.get(identifier) || 0) + 1;
+        callCountByIdentifier.set(identifier, callCount);
+        return callCount;
+    }
+
     public async getPublicationPath(identifier: string): Promise<string> {
 
         assertUUIDv4(identifier);
 
-        debug("GetPublicationPath", identifier);
+        const callCount = this.incrementCallCountByIdentifier(this.getPublicationPathCallCountByIdentifier, identifier);
 
         const { directories, revision } = await this.getPublicationDirectoryCacheSnapshot();
         const cached = this.getPublicationLocationCache(identifier, revision);
         if (cached?.directoryPath) {
+            debug("getPublicationPath cache hit", { callCount, identifier, revision, directoryPath: cached.directoryPath });
             return cached.directoryPath;
         }
 
-        return this.getPublicationPathFromDirectories(identifier, directories, revision);
+        debug("getPublicationPath cache miss", { callCount, identifier, revision, directories });
+        const directoryPath = await this.getPublicationPathFromDirectories(identifier, directories, revision);
+        debug("getPublicationPath cache fill", { callCount, identifier, revision, directoryPath });
+        return directoryPath;
     }
 
     public async getPublicationEpubPath(identifier: string): Promise<string> {
 
         assertUUIDv4(identifier);
 
+        const callCount = this.incrementCallCountByIdentifier(this.getPublicationEpubPathCallCountByIdentifier, identifier);
+
         const { directories, revision } = await this.getPublicationDirectoryCacheSnapshot();
         const cached = this.getPublicationLocationCache(identifier, revision);
         if (cached?.epubPath && cached.directoryPath && path.dirname(cached.epubPath) === cached.directoryPath) {
+            debug("getPublicationEpubPath epub cache hit", callCount, identifier, revision, cached.directoryPath, cached.epubPath);
             return cached.epubPath;
         }
 
-        const root = cached?.directoryPath || await this.getPublicationPathFromDirectories(identifier, directories, revision);
+        if (cached?.epubPath) {
+            debug("getPublicationEpubPath cache ignored", callCount, identifier, revision, cached.directoryPath, cached.epubPath);
+        }
+
+        let root: string;
+        if (cached?.directoryPath) {
+            debug("getPublicationEpubPath directory cache hit", callCount, identifier, revision, cached.directoryPath);
+            root = cached.directoryPath;
+        } else {
+            debug("getPublicationEpubPath cache miss", { callCount, identifier, revision, directories });
+            root = await this.getPublicationPathFromDirectories(identifier, directories, revision);
+        }
 
         try {
             const files = await fs.promises.readdir(root, {withFileTypes: true});
@@ -578,6 +604,7 @@ export class PublicationStorage {
                             directoryPath: root,
                             epubPath: filePath,
                         }, revision);
+                        debug("getPublicationEpubPath epub cache fill", callCount, identifier, revision, root, filePath);
                         return filePath;
                     }
                     // await fs.promises.access(filePath, fs.constants.R_OK | fs.constants.W_OK);
