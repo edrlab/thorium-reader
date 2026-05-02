@@ -17,7 +17,7 @@ import { IStreamAndLength } from "@r2-utils-js/_utils/zip/zip";
 
 // import * as forge from "node-forge";
 // import { CounterPassThroughStream } from "@r2-utils-js/_utils/stream/CounterPassThroughStream";
-// import { Transform } from "stream";
+import { Transform } from "stream";
 
 const debug = debug_("r2:lcp#transform/transformer-lcp");
 
@@ -125,6 +125,102 @@ export function supports(
     return true;
 }
 
+class CryptoStream extends Transform { // Readable
+    public readonly lcp: LCP;
+    public readonly linkHref: string;
+    public readonly linkPropertiesEncrypted: Encrypted;
+    public readonly stream: IStreamAndLength;
+    public readonly isPartialByteRangeRequest: boolean;
+    public readonly partialByteBegin: number;
+    public readonly partialByteEnd: number;
+
+    private bytesReceived: number;
+    private finished: boolean;
+    private isClosed: boolean;
+    private bufferAccu: Array<Buffer>;
+    private bufferAccuLength: number;
+
+    constructor(
+        lcp: LCP,
+        linkHref: string,
+        linkPropertiesEncrypted: Encrypted,
+        stream: IStreamAndLength,
+        isPartialByteRangeRequest: boolean,
+        partialByteBegin: number,
+        partialByteEnd: number) {
+
+        super();
+
+        this.lcp = lcp;
+        this.linkHref = linkHref;
+        this.linkPropertiesEncrypted = linkPropertiesEncrypted;
+        this.stream = stream;
+        this.isPartialByteRangeRequest = isPartialByteRangeRequest;
+        this.partialByteBegin = partialByteBegin;
+        this.partialByteEnd = partialByteEnd;
+
+        this.bytesReceived = 0;
+        this.finished = false;
+        this.isClosed = false;
+        this.bufferAccu = [];
+        this.bufferAccuLength = 0;
+    }
+
+    public _flush(callback: () => void): void {
+        debug("FLUSH");
+        callback();
+    }
+
+    public _transform(chunk: Buffer, _encoding: string, callback: () => void): void {
+        this.bytesReceived += chunk.length;
+        // debug(`_transform bytesReceived ${this.bytesReceived} (+ ${chunk.length})`);
+        this.bufferAccuLength += chunk.length;
+        this.bufferAccu.push(chunk);
+
+        // debug("stream.length: " + this.stream.length);
+        // debug("readableHighWaterMark: " + this.readableHighWaterMark);
+        // debug("writableHighWaterMark: " + this.writableHighWaterMark);
+
+        if (this.finished) {
+            if (!this.isClosed) {
+                debug("???? CLOSING...");
+                this.isClosed = true;
+                this.push(null);
+            } else {
+                debug("???? STILL PIPE CALLING _transform ??!");
+                this.end();
+            }
+            callback();
+        } else {
+            if (this.bytesReceived >= this.stream.length) {
+                this.finished = true;
+                this.isClosed = true;
+                this.push(null);
+                this.end();
+                callback();
+            }
+
+            this.lcp.decrypt(Buffer.concat(this.bufferAccu) /*, this.linkHref, isCompressionDeflate */).then((res) => {
+                let nativelyDecryptedBuffer = res.buffer;
+                const padding = nativelyDecryptedBuffer[nativelyDecryptedBuffer.length - 1];
+                debug("padding: " + padding);
+                // const buff = Buffer.from(
+                //     nativelyDecryptedBuffer,
+                //     0,
+                //     nativelyDecryptedBuffer.length - padding);
+                nativelyDecryptedBuffer = nativelyDecryptedBuffer.slice(0, nativelyDecryptedBuffer.length - padding);
+                this.push(nativelyDecryptedBuffer);
+
+                this.push(null);
+                this.end();
+                callback();
+            }).catch((err) => { debug(err); });
+        }
+    }
+}
+
+const USE_LAZY_LCP_READ_STREAM = true;
+
 export async function transformStream(
     lcp: LCP,
     linkHref: string,
@@ -134,7 +230,7 @@ export async function transformStream(
     partialByteBegin: number,
     partialByteEnd: number): Promise<IStreamAndLength> {
 
-    const isCompressionNone = linkPropertiesEncrypted.Compression === "none";
+    const isCompressionNone = linkPropertiesEncrypted.Compression === "none" || !linkPropertiesEncrypted.Compression;
     const isCompressionDeflate = linkPropertiesEncrypted.Compression === "deflate";
 
     let plainTextSize = -1;
@@ -147,6 +243,52 @@ export async function transformStream(
             debug("LCP DECRYPT NATIVE: " + linkHref);
         }
 
+        if (USE_LAZY_LCP_READ_STREAM) {
+            nativelyInflated = false;
+            if (linkPropertiesEncrypted.DecryptedLengthBeforeInflate > 0) {
+                plainTextSize = linkPropertiesEncrypted.DecryptedLengthBeforeInflate;
+            } else {
+                if (linkPropertiesEncrypted.OriginalLength > 0) {
+                    plainTextSize = linkPropertiesEncrypted.OriginalLength;
+                } else {
+                    debug("NEED PADDING LOOKUP...");
+                    plainTextSize = stream.length - AES_BLOCK_SIZE; // minus padding! [0,AES_BLOCK_SIZE]
+
+                    const rangePadding = new RangeStream(stream.length - 2 * AES_BLOCK_SIZE, stream.length - 1, stream.length);
+                    stream.stream.pipe(rangePadding);
+
+                    try {
+                        const buf = await readStream(rangePadding, 2 * AES_BLOCK_SIZE);
+                        if (!buf) {
+                            debug("!buf (end?)");
+                        } else {
+                            if (buf.length !== 2 * AES_BLOCK_SIZE) {
+                                debug("buf.length !== TWO_AES_BLOCK_SIZE");
+                            } else {
+                                try {
+                                    const res = await lcp.decrypt(buf /*, this.linkHref, isCompressionDeflate */);
+                                    const nativelyDecryptedBuffer = res.buffer;
+                                    const padding = nativelyDecryptedBuffer[nativelyDecryptedBuffer.length - 1];
+                                    debug("padding ok: " + padding);
+                                    plainTextSize = stream.length - AES_BLOCK_SIZE - padding;
+                                } catch (err) {
+                                    debug(err);
+                                }
+
+                            }
+                        }
+                    } catch (err) {
+                        debug(err);
+                    }
+
+                    stream = await stream.reset();
+                }
+                linkPropertiesEncrypted.DecryptedLengthBeforeInflate = plainTextSize;
+            }
+            const cryptoStream = new CryptoStream(lcp, linkHref, linkPropertiesEncrypted, stream, isPartialByteRangeRequest, partialByteBegin, partialByteEnd);
+            stream.stream.pipe(cryptoStream);
+            nativelyDecryptedStream = cryptoStream;
+        } else {
         let fullEncryptedBuffer: Buffer;
         try {
             fullEncryptedBuffer = await streamToBufferPromise(stream.stream);
@@ -156,7 +298,8 @@ export async function transformStream(
             return Promise.reject("OUCH!");
         }
 
-        // debug(fullEncryptedBuffer.length);
+        debug("stream.length: " + stream.length);
+        debug("fullEncryptedBuffer.length: " + fullEncryptedBuffer.length);
 
         // debug(fullEncryptedBuffer.slice(0, 32));
 
@@ -164,20 +307,34 @@ export async function transformStream(
 
         let res: IDecryptedBuffer;
         try {
-            res = await lcp.decrypt(fullEncryptedBuffer, linkHref, isCompressionDeflate);
+            res = await lcp.decrypt(fullEncryptedBuffer /*, linkHref, isCompressionDeflate */);
         } catch (err) {
             debug(err);
             // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
             return Promise.reject("OUCH!");
         }
 
-        const nativelyDecryptedBuffer = res.buffer;
-        nativelyInflated = res.inflated;
+        let nativelyDecryptedBuffer = res.buffer;
+        const padding = nativelyDecryptedBuffer[nativelyDecryptedBuffer.length - 1];
+        debug("padding: " + padding);
+        // const buff = Buffer.from(
+        //     nativelyDecryptedBuffer,
+        //     0,
+        //     nativelyDecryptedBuffer.length - padding);
+        nativelyDecryptedBuffer = nativelyDecryptedBuffer.slice(0, nativelyDecryptedBuffer.length - padding);
+
+        nativelyInflated = res.inflated; // always false
+        debug("nativelyInflated: " + nativelyInflated);
 
         // debug(nativelyDecryptedBuffer.length);
 
         plainTextSize = nativelyDecryptedBuffer.length;
         linkPropertiesEncrypted.DecryptedLengthBeforeInflate = plainTextSize;
+
+        debug("nativelyDecryptedBuffer.length: " + nativelyDecryptedBuffer.length);
+        debug("linkPropertiesEncrypted.OriginalLength: " + linkPropertiesEncrypted.OriginalLength);
+        debug("linkPropertiesEncrypted.Compression : " + linkPropertiesEncrypted.Compression );
+
 
         if (!nativelyInflated && // necessary, even if isCompressionNone! (LCP inflation byte variance)
             linkPropertiesEncrypted.OriginalLength &&
@@ -189,6 +346,7 @@ export async function transformStream(
         }
 
         nativelyDecryptedStream = bufferToStream(nativelyDecryptedBuffer);
+        }
     } else {
         let cryptoInfo: ICryptoInfo | undefined;
         let cypherBlockPadding = -1;
