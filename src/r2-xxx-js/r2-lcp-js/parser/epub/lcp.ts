@@ -191,7 +191,7 @@ export class LCP {
                         reject(er);
                         return;
                     }
-                    let buff = decryptedContent;
+                    const buff = decryptedContent;
                     // if (!inflated) { // inflated is always undefined
                     //     const padding = decryptedContent[decryptedContent.length - 1];
                     //     // debug(padding);
