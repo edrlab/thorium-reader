@@ -1,1 +1,7 @@
-{}
+{
+    "accessibility": {
+        "bookMenu": "תפריט",
+        "closeDialog": "סגור",
+        "importFile": "ייבוא כותר"
+    }
+}
