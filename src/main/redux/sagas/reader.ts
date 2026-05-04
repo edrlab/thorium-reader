@@ -7,7 +7,6 @@
 
 import debug_ from "debug";
 import { clipboard } from "electron";
-import { ReaderMode } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
 import { ActionWithDestination, ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -185,8 +184,8 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
         // );
         // const readersArray = ObjectValues(readers);
 
-        const mode = yield* selectTyped((state: RootState) => state.mode);
-        if (mode === ReaderMode.Attached) {
+        //const mode = yield* selectTyped((state: RootState) => state.mode);
+        //if (mode === ReaderMode.Attached) {
             try {
                 const libWin = getLibraryWindowFromDi();
                 if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed()) {
@@ -195,7 +194,7 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
             } catch (_err) {
                 debug("library can't be loaded from di");
             }
-        }
+        //}
 
         const windowIdentifier = uuidv4();
         yield* callTyped(createReaderWindow,
