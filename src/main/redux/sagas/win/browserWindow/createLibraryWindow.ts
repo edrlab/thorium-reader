@@ -7,7 +7,7 @@
 
 import debug_ from "debug";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
+import { BrowserWindow, Event as ElectronEvent, HandlerDetails, Menu, shell, Tray, WebContentsWillNavigateEventParams } from "electron";
 import * as path from "path";
 import { normalizeWinBoundRectangle } from "readium-desktop/common/rectangle/window";
 import { diMainGet } from "readium-desktop/main/di";
@@ -43,6 +43,8 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
         (state: RootState) => state.win.session.library.windowBound);
     windowBound = normalizeWinBoundRectangle(windowBound);
 
+    const icon_path = path.join(__dirname, "assets/icons/icon.png");
+
     libWindow = new BrowserWindow({
         ...windowBound,
         minWidth: WINDOW_MIN_WIDTH,
@@ -59,9 +61,27 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
             webSecurity: true,
             webviewTag: false,
         },
-        icon: path.join(__dirname, "assets/icons/icon.png"),
+        icon: icon_path,
     });
     debug("LibraryWindow new BrowserWindow instancied");
+
+      // Initialize Tray with an icon
+    const tray = new Tray(icon_path);
+    const contextMenu = Menu.buildFromTemplate([
+        { label: 'Show Library', click: () => libWindow.show() },
+        { label: 'Quit', click: () => /*??*/null }
+    ]);
+  
+    //tray.setToolTip('My Redux App');
+    tray.setContextMenu(contextMenu);
+
+    libWindow.on('minimize', () => {
+        libWindow.hide();
+    })
+
+    tray.on('click', () => {
+        libWindow.isVisible() ? libWindow.hide() : libWindow.show()
+    })
 
     if (ENABLE_DEV_TOOLS) {
         const wc = libWindow.webContents;
