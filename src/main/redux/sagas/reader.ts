@@ -17,6 +17,7 @@ import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEver
 import { takeSpawnLeading } from "readium-desktop/common/redux/sagas/takeSpawnLeading";
 import { diMainGet, getAllReaderWindowFromDi, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { error } from "readium-desktop/main/tools/error";
+import { enableSystemTrayIntegration } from "readium-desktop/main/tools/platform";
 import { streamerActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
@@ -186,7 +187,7 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
         // const readersArray = ObjectValues(readers);
 
         const mode = yield* selectTyped((state: RootState) => state.mode);
-        if (mode === ReaderMode.Attached) {
+        if (enableSystemTrayIntegration || mode === ReaderMode.Attached) {
             try {
                 const libWin = getLibraryWindowFromDi();
                 if (libWin && !libWin.isDestroyed() && !libWin.webContents.isDestroyed()) {

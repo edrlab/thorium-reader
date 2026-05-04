@@ -7,8 +7,11 @@
 
 import debug_ from "debug";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-import { BrowserWindow, Event as ElectronEvent, HandlerDetails, shell, WebContentsWillNavigateEventParams } from "electron";
+import { app, BrowserWindow, Event as ElectronEvent, HandlerDetails, Menu, shell, Tray, WebContentsWillNavigateEventParams } from "electron";
 import * as path from "path";
+import { getTranslator } from "readium-desktop/common/services/translator";
+import { enableSystemTrayIntegration } from "readium-desktop/main/tools/platform";
+import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 import { normalizeWinBoundRectangle } from "readium-desktop/common/rectangle/window";
 import { diMainGet } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
@@ -34,6 +37,7 @@ const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
 // Global reference to the main window,
 // so the garbage collector doesn't close it.
 let libWindow: BrowserWindow = null;
+let tray: Tray | null = null;
 
 // Opens the main window, with a native menu bar.
 export function* createLibraryWindow(_action: winActions.library.openRequest.TAction) {
@@ -42,6 +46,8 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
     let windowBound = yield* selectTyped(
         (state: RootState) => state.win.session.library.windowBound);
     windowBound = normalizeWinBoundRectangle(windowBound);
+
+    const icon_path = path.join(__dirname, "assets/icons/icon.png");
 
     libWindow = new BrowserWindow({
         ...windowBound,
@@ -59,9 +65,26 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
             webSecurity: true,
             webviewTag: false,
         },
-        icon: path.join(__dirname, "assets/icons/icon.png"),
+        icon: icon_path,
     });
     debug("LibraryWindow new BrowserWindow instancied");
+
+    if (enableSystemTrayIntegration) {
+        const translator = getTranslator();
+        tray = new Tray(icon_path);
+        const contextMenu = Menu.buildFromTemplate([
+            { label: translator.translate("app.window.showLibrary"), click: () => libWindow.show() },
+            { label: translator.translate("app.quit", { appName: _APP_NAME }), click: () => app.quit() },
+        ]);
+        tray.setToolTip(_APP_NAME);
+        tray.setContextMenu(contextMenu);
+
+        libWindow.on("minimize", () => libWindow.hide());
+
+        tray.on("click", () => {
+            libWindow.isVisible() ? libWindow.hide() : libWindow.show();
+        });
+    }
 
     if (ENABLE_DEV_TOOLS) {
         const wc = libWindow.webContents;
