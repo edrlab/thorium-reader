@@ -751,34 +751,28 @@ const StorageSettings: React.FC<{}> = () => {
                     removeUserDirectory();
                 }}
             />
-
-            <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}>
-                <h4 dir={isRTL ? "rtl" : "ltr"}>Storage</h4>
-                <div className={stylesSettings.session_text} style={{ alignItems: "flex-start" }}>
-                    <SVG ariaHidden svg={InfoIcon} />
-                    <div dir={isRTL ? "rtl" : "ltr"} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                        <p>This external publication storage feature is currently in beta testing.</p>
+            {/* <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}> */}
+                {/* <h4 dir={isRTL ? "rtl" : "ltr"}>Storage</h4> */}
+                <details className={stylesSettings.session_text}>
+                    <summary dir={isRTL ? "rtl" : "ltr"}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "10px"}}>
+                            <SVG ariaHidden svg={InfoIcon} />
+                            <p>This feature is currently in beta testing.</p>
+                        </div>
+                    </summary>
+                    <div dir={isRTL ? "rtl" : "ltr"} style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%" }}>
                         <p>No migration will be performed by Thorium. If you change storage location, moving publications is entirely your responsibility.</p>
                         <p>This feature only works with newer versions of Thorium. Publications added to the external storage folder will not appear in Thorium 3.4 or below.</p>
                         <p>You are responsible for the integrity and availability of this directory. Be careful with deletion, remote access, slow devices or network paths, and filesystem permissions.</p>
                         <p>Publications stored by Thorium in this directory are immutable application data and reflect Thorium&apos;s internal storage structure. Editing, renaming, moving, or deleting files inside it can break publication reading and may crash the reader for affected items.</p>
                         <p>You can consider this directory a vault managed by Thorium.</p>
                     </div>
-                </div>
-
-                <div dir={isRTL ? "rtl" : "ltr"} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-                    <div style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "12px",
-                        padding: "14px 16px",
-                        border: "1px solid var(--color-button-border)",
-                        borderRadius: "8px",
-                        background: "var(--color-gray-50)",
-                    }}>
+                </details>
+                
+                <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}>
                         <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                             <p style={{ margin: 0, fontWeight: 600 }}>Locations</p>
-                            <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                            <div className={stylesSettings.storage_location} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                                 <p style={{ margin: 0 }}><strong>Default internal storage</strong></p>
                                 <button
                                     className={stylesButtons.button_transparency}
@@ -792,6 +786,7 @@ const StorageSettings: React.FC<{}> = () => {
                                         overflowWrap: "anywhere",
                                         wordBreak: "break-word",
                                         lineHeight: 1.4,
+                                        fontSize: "14px",
                                     }}
                                     onClick={() => dispatch(catalogActions.openDefaultDirectory.build())}
                                 >
@@ -800,7 +795,7 @@ const StorageSettings: React.FC<{}> = () => {
                             </div>
                             {userDirectory ?
 
-                                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                                <div className={stylesSettings.storage_location} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                                     <p style={{ margin: 0 }}><strong>External storage</strong></p>
                                     <button
                                         className={stylesButtons.button_transparency}
@@ -814,6 +809,7 @@ const StorageSettings: React.FC<{}> = () => {
                                             overflowWrap: "anywhere",
                                             wordBreak: "break-word",
                                             lineHeight: 1.4,
+                                            fontSize: "14px",
                                         }}
                                         onClick={() => dispatch(catalogActions.openUserDirectory.build())}
                                     >
@@ -821,19 +817,10 @@ const StorageSettings: React.FC<{}> = () => {
                                     </button>
                                 </div> : <></>
                             }
-                        </div>
                     </div>
+                    </section>
 
-                    <div style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "12px",
-                        padding: "16px",
-                        border: "1px solid var(--color-button-border)",
-                        borderRadius: "8px",
-                        background: "var(--color-neutral-base)",
-                        boxShadow: "0 1px 0 var(--color-gray-100)",
-                    }}>
+                    <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}>
                         <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                             <p style={{ margin: 0, fontWeight: 600 }}>Configuration</p>
                             {!userDirectory && !isEditing ? (
@@ -903,14 +890,12 @@ const StorageSettings: React.FC<{}> = () => {
                                 </button>
                             </div>
                         ) : null}
-                    </div>
+                    </section>
 
                     <SettingsRecovery
                         defaultDirectory={defaultDirectory}
                         userDirectory={userDirectory}
                     />
-                </div>
-            </section>
         </>
     );
 };
@@ -991,7 +976,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             <h3 dir={isRTL ? "rtl" : "ltr"}>Storage</h3>
                         </Tabs.Trigger>
                     </Tabs.List>
-                    <div className={stylesSettings.settings_content} style={{ marginTop: "70px" }}>
+                    <div className={stylesSettings.settings_content}>
                         <Tabs.Content value="tab1" tabIndex={-1}>
                             <div className={stylesSettings.settings_tab}>
                                 <LanguageSettings />

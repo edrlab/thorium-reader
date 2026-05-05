@@ -56,5 +56,6 @@ export declare const settings_theme_container: string;
 export declare const size_range: string;
 export declare const spacing_heading: string;
 export declare const state: string;
+export declare const storage_location: string;
 export declare const tablist_reading: string;
 export declare const toggleCustom: string;
