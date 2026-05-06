@@ -590,9 +590,9 @@
                 "descriptive": "No hay información disponible sobre la posibilidad de modificar el aspecto visual"
             },
             "ways-of-reading-visual-adjustments-unmodifiable": {
-                "compact": "",
-                "descriptive": ""
-            }
+                "compact": "La apariencia no se puede modificar",
+                "descriptive": "El diseño del texto y de la página no se pueden modificar ya que la experiencia de lectura es similar a la de una versión impresa, pero los sistemas de lectura aún pueden ofrecer opciones de zoom"
+           }
         }
     },
     "publication": {

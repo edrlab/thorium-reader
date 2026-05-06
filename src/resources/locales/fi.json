@@ -585,9 +585,9 @@
                 "descriptive": "Ei tietoa siitä, voiko ulkoasua mukauttaa"
             },
             "ways-of-reading-visual-adjustments-unmodifiable": {
-                "compact": "",
-                "descriptive": ""
-            }
+                "compact": "Ulkoasua ei voi mukauttaa",
+                "descriptive": "Tekstin ja sivujen ulkoasu mukailee painettua versiota eikä ulkoasua voi mukauttaa. Lukuohjelmassa voi kuitenkin olla mahdollista zoomata."
+        }
         }
     },
     "publication": {
