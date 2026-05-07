@@ -915,21 +915,13 @@ const StorageSettings: React.FC<{}> = () => {
     );
 };
 
-const TabHeader = (props: React.PropsWithChildren<{title: string, advancedTrigger: boolean}>) => {
+const ModalControlButton = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
     const isRTL = locale === "ar";
     return (
         <div key="modal-header" className={stylesSettings.close_button_div} style={{justifyContent: isRTL ? "end" : undefined}}>
-            <TabTitle title={props.title}>
-            {props.children}
-            {
-                props.advancedTrigger ? 
-                <AdvancedTrigger/>
-                : <></>
-            }
-            </TabTitle>
             <Dialog.Close asChild>
                 <button dir={isRTL ? "rtl" : "ltr"} data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
                     <SVG ariaHidden={true} svg={QuitIcon} />
@@ -964,7 +956,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                     // FALSE this to test sourcemaps:
                     true &&
                     <VisuallyHidden.Root>
-                        <Dialog.Title>{__("header.settings")}</Dialog.Title>
+                        <Dialog.Title asChild><h1>{__("header.settings")}</h1></Dialog.Title>
                     </VisuallyHidden.Root>
                 }
                 <Tabs.Root defaultValue="tab1" data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
@@ -990,6 +982,13 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             <h3 dir={isRTL ? "rtl" : "ltr"}>Storage</h3>
                         </Tabs.Trigger>
                     </Tabs.List>
+                    <TabTitle title={tabTitle}>
+                        {
+                            tabTitle === __("settings.tabs.keyboardShortcuts") ?
+                                <AdvancedTrigger />
+                                : <></>
+                        }
+                    </TabTitle>
                     <div className={stylesSettings.settings_content} style={{ marginTop: "70px" }}>
                         <Tabs.Content value="tab1" tabIndex={-1}>
                             <div className={stylesSettings.settings_tab}>
@@ -1023,7 +1022,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             </div>
                         </Tabs.Content>
                     </div>
-                    <TabHeader title={tabTitle} advancedTrigger={tabTitle === __("settings.tabs.keyboardShortcuts") ? true : false} />
+                    <ModalControlButton />
                 </Tabs.Root>
 
                 {/* <div className={stylesSettings.close_button_div}>

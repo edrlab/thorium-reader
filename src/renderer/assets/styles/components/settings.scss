@@ -294,7 +294,7 @@ $setting_color: var(--color-brand-primary);
     justify-content: space-between;
     gap: 10px;
     background-color: transparent;
-    width: 63%;
+    // width: 63%;
     z-index: 10;
     padding: 0 0 10px 10px;
 
@@ -456,6 +456,9 @@ $setting_color: var(--color-brand-primary);
         margin: 0 25px 20px;
         font-size: 16px;
         gap: 10px;
+        position: absolute;
+        top: 10px;
+        left: 33%;
 
         h2 {
             margin-top: 0;

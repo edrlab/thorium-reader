@@ -2934,7 +2934,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                 (!r2Publication.Spine || r2Publication.Spine.length === 0)
             }>
             <SVG ariaHidden svg={TocIcon} />
-            <h3>{__("reader.marks.toc")}</h3>
+            <p>{__("reader.marks.toc")}</p>
         </Tabs.Trigger>;
     const optionTocItem = {
         id: 0, value: "tab-toc", name: __("reader.marks.toc"), disabled:
@@ -2946,7 +2946,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const LandMarksTrigger =
         <Tabs.Trigger id="reader-menu-tab-landmark-trigger" value="tab-landmark" key={"tab-landmark"} data-value={"tab-landmark"} title={__("reader.marks.landmarks")} disabled={!r2Publication.Landmarks || r2Publication.Landmarks.length === 0}>
             <SVG ariaHidden svg={LandmarkIcon} />
-            <h3>{__("reader.marks.landmarks")}</h3>
+            <p>{__("reader.marks.landmarks")}</p>
         </Tabs.Trigger>;
     const optionLandmarkItem = {
         id: 1, value: "tab-landmark", name: __("reader.marks.landmarks"), disabled:
@@ -2958,7 +2958,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
         // <Tabs.Trigger value="tab-bookmark" key={"tab-bookmark"} data-value={"tab-bookmark"} title={__("reader.marks.bookmarks")} disabled={!bookmarks || bookmarks.length === 0}>
         <Tabs.Trigger id="reader-menu-tab-bookmark-trigger" value="tab-bookmark" key={"tab-bookmark"} data-value={"tab-bookmark"} title={__("reader.marks.bookmarks")}>
             <SVG ariaHidden svg={BookmarkIcon} />
-            <h3>{__("reader.marks.bookmarks")}</h3>
+            <p>{__("reader.marks.bookmarks")}</p>
         </Tabs.Trigger>;
     const optionBookmarkItem = {
         id: 2, value: "tab-bookmark", name: __("reader.marks.bookmarks"), disabled: false, // !bookmarks || bookmarks.length === 0,
@@ -2968,7 +2968,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const SearchTrigger =
         <Tabs.Trigger id="reader-menu-tab-search-trigger" value="tab-search" key={"tab-search"} data-value={"tab-search"} title={__("reader.marks.search")} disabled={/*!searchEnable ||*/ isPdf}>
             <SVG ariaHidden svg={SearchIcon} />
-            <h3>{__("reader.marks.search")}</h3>
+            <p>{__("reader.marks.search")}</p>
         </Tabs.Trigger>;
     const optionSearchItem = {
         id: 3, value: "tab-search", name: __("reader.marks.search"), disabled: /*!searchEnable ||*/ isPdf,
@@ -2985,7 +2985,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
             disabled={!(isFixedLayoutNoPageList || r2Publication.PageList || isDivina || isPdf) /* !r2Publication.Metadata.NumberOfPages */}>
 
             <SVG ariaHidden svg={TargetIcon} />
-            <h3>{__("reader.marks.goTo")}</h3>
+            <p>{__("reader.marks.goTo")}</p>
         </Tabs.Trigger>;
     const optionGoToPageItem = {
         id: 4, value: "tab-gotopage", name: __("reader.marks.goTo"), disabled: !(isFixedLayoutNoPageList || r2Publication.PageList || isDivina || isPdf), // !r2Publication.Metadata.NumberOfPages
@@ -2996,7 +2996,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const AnnotationTrigger =
         <Tabs.Trigger id="reader-menu-tab-annotation-trigger" value="tab-annotation" key={"tab-annotation"} data-value={"tab-annotation"} title={__("reader.marks.annotations")} >
             <SVG ariaHidden svg={AnnotationIcon} />
-            <h3>{__("reader.marks.annotations")}</h3>
+            <p>{__("reader.marks.annotations")}</p>
         </Tabs.Trigger>;
     const optionAnnotationItem = {
         id: 5, value: "tab-annotation", name: __("reader.marks.annotations"), disabled: false,// !bookmarks || bookmarks.length === 0,
@@ -3039,11 +3039,10 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
     SelectRef.displayName = "Select";
 
-    const TabHeader = () => {
+    const ModalControlButtons = () => {
         return (
             dockedMode ? <></> :
                 <div key="modal-header" className={stylesSettings.close_button_div}>
-                    <TabTitle value={section} />
                     <div>
                         <button className={stylesButtons.button_transparency_icon} aria-label={__("reader.dock.dockLeft")} onClick={setDockingModeLeftSide}>
                             <SVG ariaHidden={true} svg={DockLeftIcon} />
@@ -3064,40 +3063,11 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
         );
     };
 
-    const advancedAnnotationsOnChange = () => {
-        setSerialAnnotatorMode(!serialAnnotator);
-    };
-    const quickAnnotationsOnChange = () => {
-        dispatch(readerActions.setConfig.build({ annotation_popoverNotOpenOnNoteTaking: !readerConfig.annotation_popoverNotOpenOnNoteTaking }));
-    };
-    const marginAnnotationsOnChange = () => {
-        const annotation_defaultDrawView = readerConfig.annotation_defaultDrawView === "margin" ? "annotation" : "margin";
-
-        console.log(`marginAnnotationsToggleSwitch : highlight=${annotation_defaultDrawView}`);
-        dispatch(readerActions.setConfig.build({ annotation_defaultDrawView }));
-
-        const href1 = currentLocation?.locator?.href;
-        const href2 = currentLocation?.secondWebViewHref;
-        dispatch(readerLocalActionLocatorHrefChanged.build(href1, href1, href2, href2));
-    };
-    const hideAnnotationOnChange = () => {
-        const annotation_defaultDrawView = readerConfig.annotation_defaultDrawView === "hide" ? "annotation" : "hide";
-
-        console.log(`hideAnnotationsToggleSwitch : highlight=${annotation_defaultDrawView}`);
-        dispatch(readerActions.setConfig.build({ annotation_defaultDrawView }));
-
-        const href1 = currentLocation?.locator?.href;
-        const href2 = currentLocation?.secondWebViewHref;
-        dispatch(readerLocalActionLocatorHrefChanged.build(href1, href1, href2, href2));
-    };
-
-    return (
-        <div style={{minHeight: "inherit"}}>
-            {
-                dockedMode ?
-                    <>
+    const DockedHeader = () => {
+        return (
+            <>
                         <div key="docked-header" className={stylesPopoverDialog.docked_header}>
-                                                    <SelectRef
+                            <SelectRef
                             items={options}
                             selectedKey={optionSelected}
                             svg={options.find(({ value }) => value === section)?.svg}
@@ -3158,18 +3128,68 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                             </div>
                         </div>
                     </>
-                    : <></>
-            }
+        );
+    };
+
+    const advancedAnnotationsOnChange = () => {
+        setSerialAnnotatorMode(!serialAnnotator);
+    };
+    const quickAnnotationsOnChange = () => {
+        dispatch(readerActions.setConfig.build({ annotation_popoverNotOpenOnNoteTaking: !readerConfig.annotation_popoverNotOpenOnNoteTaking }));
+    };
+    const marginAnnotationsOnChange = () => {
+        const annotation_defaultDrawView = readerConfig.annotation_defaultDrawView === "margin" ? "annotation" : "margin";
+
+        console.log(`marginAnnotationsToggleSwitch : highlight=${annotation_defaultDrawView}`);
+        dispatch(readerActions.setConfig.build({ annotation_defaultDrawView }));
+
+        const href1 = currentLocation?.locator?.href;
+        const href2 = currentLocation?.secondWebViewHref;
+        dispatch(readerLocalActionLocatorHrefChanged.build(href1, href1, href2, href2));
+    };
+    const hideAnnotationOnChange = () => {
+        const annotation_defaultDrawView = readerConfig.annotation_defaultDrawView === "hide" ? "annotation" : "hide";
+
+        console.log(`hideAnnotationsToggleSwitch : highlight=${annotation_defaultDrawView}`);
+        dispatch(readerActions.setConfig.build({ annotation_defaultDrawView }));
+
+        const href1 = currentLocation?.locator?.href;
+        const href2 = currentLocation?.secondWebViewHref;
+        dispatch(readerLocalActionLocatorHrefChanged.build(href1, href1, href2, href2));
+    };
+
+    return (
+        <div style={{minHeight: "inherit"}}>
+            <h1 style={{
+            position: "absolute",
+            width: "1px",
+            height: "1px",
+            padding: "0",
+            margin: "-1px",
+            overflow: "hidden",
+            clip: "rect(0, 0, 0, 0)",
+            whiteSpace: "nowrap",
+            borderWidth: "0",
+        }}>
+            {__("reader.navigation.openTableOfContentsTitle")}
+            </h1>
+            {dockedMode ? <DockedHeader /> : <></>}
             <Tabs.Root value={section} onValueChange={(value) => dockedMode ? null : setSection(value)} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
                 {
                     dockedMode ? <></> :
+                    <>
                         <Tabs.List ref={tabModeRef} className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
                             {sectionsArray}
                         </Tabs.List>
+                        <TabTitle value={section} />
+                    </>
                 }
                 <div className={stylesSettings.settings_content}
                     ref={popoverBoundary}
-                    style={{ marginTop: dockedMode && "0" }}>
+                    style={{ marginTop: dockedMode && "0" }}
+                    role="region"
+                    aria-live="polite"
+                    >
                     <Tabs.Content value="tab-toc" tabIndex={-1} id={"reader-menu-tab-toc"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={stylesSettings.settings_tab}>
                             {(isPdf && pdfToc?.length && renderLinkTree_(__("reader.marks.toc"), pdfToc, 1, undefined)) ||
@@ -3214,7 +3234,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 ? <ReaderMenuSearch
                                     focusMainAreaLandmarkAndCloseMenu={focusMainAreaLandmarkAndCloseMenu}
                                     dockedMode={dockedMode}
-                                ></ReaderMenuSearch>
+                                />
                                 : <></>}
                         </div>
                     </Tabs.Content>
@@ -3228,7 +3248,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </div>
                     </Tabs.Content>
                 </div>
-                <TabHeader />
+                <ModalControlButtons />
             </Tabs.Root>
         </div>
     );
