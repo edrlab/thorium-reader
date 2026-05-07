@@ -45,11 +45,11 @@
             "title": "{{- appName}}-programuppdatering."
         },
         "window": {
-            "showLibrary": "Visa bibliotek/bokhylla"
+            "showLibrary": "Visa bokhylla"
         }
     },
     "catalog": {
-        "AddToFavorites": "Lägg till favoriter",
+        "AddToFavorites": "Lägg till i favoriter",
         "about": {
             "title": "Om {{- appName}}"
         },
