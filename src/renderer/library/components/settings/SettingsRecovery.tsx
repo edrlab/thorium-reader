@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
-// import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
+import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 
 import * as React from "react";
@@ -15,7 +15,6 @@ import classNames from "classnames";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
-import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
 
 const SettingsRecoveryConfirmDialog = (props: {
     open: boolean;
@@ -61,7 +60,6 @@ const SettingsRecovery = (props: {
     defaultDirectory: string;
     userDirectory: string;
 }) => {
-    const [__] = useTranslator();
     const [confirmRecoveryOpen, setConfirmRecoveryOpen] = React.useState(false);
     const [isRecoveryLoading, setIsRecoveryLoading] = React.useState(false);
     const [isRecoveryChecked, setIsRecoveryChecked] = React.useState(false);
@@ -121,30 +119,30 @@ const SettingsRecovery = (props: {
 
             <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}>
                 <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                    <p style={{ margin: 0, fontWeight: 600 }}>{__("settings.storage.recovery.title")}</p>
+                    <p style={{ margin: 0, fontWeight: 600 }}>Recovery</p>
                     {!isRecoveryChecked && !isRecoveryLoading ? (
                         <p style={{ margin: 0 }}>
-                            {__("settings.storage.recovery.description")}
+                            Check publication storage to find publications that can be safely recovered.
                         </p>
                     ) : null}
                     {isRecoveryLoading ? (
-                        <p style={{ margin: 0 }}>{__("settings.storage.recovery.loading")}</p>
+                        <p style={{ margin: 0 }}>Checking publication storage...</p>
                     ) : null}
                     {isRecoveryChecked && !isRecoveryLoading && recoverablePublications.length ? (
                         <div className={stylesSettings.session_text} style={{ margin: 0, alignItems: "flex-start" }}>
                             <SVG ariaHidden svg={InfoIcon} />
                             <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                                 <p style={{ margin: 0, fontWeight: 600 }}>
-                                    {__("settings.storage.recovery.foundOnDisk")}
+                                    One or more publications were found on disk but are missing from the database. Recovery is possible.
                                 </p>
                                 <p style={{ margin: 0 }}>
-                                    {__("settings.storage.recovery.canBeRecovered", { n: recoverablePublications.length })}
+                                    {recoverablePublications.length} publication{recoverablePublications.length > 1 ? "s" : ""} can be recovered with the original storage identifier.
                                 </p>
                             </div>
                         </div>
                     ) : null}
                     {isRecoveryChecked && !isRecoveryLoading && !recoverablePublications.length ? (
-                        <p style={{ margin: 0 }}>{__("settings.storage.recovery.cannotBeRecovered")}</p>
+                        <p style={{ margin: 0 }}>No recoverable publications were found.</p>
                     ) : null}
                 </div>
 
@@ -159,11 +157,11 @@ const SettingsRecovery = (props: {
                         </button>
                     ) : null}
                     <button
-                        className={stylesSettings.btn_primary}
+                        className={isRecoveryChecked ? stylesButtons.button_transparency : stylesSettings.btn_primary}
                         disabled={isRecoveryLoading || isRecovering}
                         onClick={checkRecoverablePublications}
                     >
-                        {isRecoveryChecked ? __("settings.storage.recovery.checkAgain") : __("settings.storage.recovery.checkForRecovery")}
+                        {isRecoveryChecked ? "Check again" : "Check for recoverable publications"}
                     </button>
                 </div>
             </section>

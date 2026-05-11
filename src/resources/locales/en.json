@@ -1203,55 +1203,6 @@
         "session": {
             "title": "Enable session saving"
         },
-        "storage": {
-            "warning": {
-                "title": "This additional storage feature is in beta test.",
-                "1": "If you update or remove the location of the additional storage, moving publications is entirely your responsibility.",
-                "2": "You are responsible for the integrity and availability of this directory. Be careful with disk removal, directory deletion, slow devices, and access permissions.",
-                "3": "The publications stored by Thorium Reader in this directory are considered application data and reflect Thorium's internal storage structure. Modifying, renaming, moving, or deleting files may disrupt your experience and cause the reader to crash.",
-                "4": "You should consider that this directory is a vault, managed by Thorium Reader."
-            },
-            "dialog": {
-                "continue": "Continue",
-                "removeDirectory": "Remove directory",
-                "editDirectory": "Edit directory",
-                "enable": {
-                    "title": "Select an additional storage",
-                    "description": "This feature is currently in beta. Do you want to continue and configure an additional storage by selecting a directory?"
-                },
-                "update": {
-                    "title": "Update the additional storage",
-                    "description": "Updating the additional storage requires care. Thorium will not migrate existing publications for you; you'll have to do it manually. Do you want to continue?"
-                },
-                "remove": {
-                    "title": "Remove additional storage",
-                    "description": "Removing the additional storage requires care. Thorium will not migrate existing publications for you; you'll have to do it manually. Do you want to continue?"
-                }
-            },
-            "configuration": "Configuration",
-            "locations": "Locations",
-            "systemStorage": "System Storage",
-            "additionalStorage": "Additional Storage",
-            "directoryInfo": "Publications imported into Thorium Reader will be stored in the selected directory. Publications previously imported will stay in the original system storage.",
-            "storageConfigured": "The additional storage is configured and ready to use for newly stored publications.",
-            "chooseDirectoryInfo": "Choose the directory that Thorium should use as additional storage.",
-            "chooseDirectory": "Choose directory",
-            "selectDirectory": "Select additional storage",
-            "updateDirectory": "Update additional storage",
-            "removeDirectory": "Remove additional storage",
-            "cancel": "Cancel",
-            "storage": "Storage",
-            "recovery": {
-                "title": "Recovery",
-                "description": "Check publication storage to find publications that can be safely recovered.",
-                "loading": "Checking publications storage...",
-                "foundOnDisk": "One or more publications were found on disk but are missing from the database. Recovery is possible.",
-                "canBeRecovered": "{{- n}} publication{{- n > 1 ? 's' : ''}} can be recovered with the original storage identifier.",
-                "cannotBeRecovered": "No recoverable publications were found.",
-                "checkAgain": "Check again",
-                "checkForRecovery": "Check for recoverable publications"
-            }
-        },
         "tabs": {
             "appearance": "Appearance",
             "general": "General",
