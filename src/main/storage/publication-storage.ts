@@ -500,7 +500,7 @@ export class PublicationStorage {
         let removedAtLeastOne = false;
         let accessError: Error | undefined;
 
-        // Safe cleanup: once the publications has been removed, failed publication access to another directory will not block the deletion.
+        // Safe cleanup: once the publication has been removed, failed publication access to another directory
         for (const directoryPath of this.getPublicationDirectoriesFromCurrentState()) {
             const publicationPath = path.join(directoryPath, identifier);
 
