@@ -89,6 +89,7 @@
         "login": "",
         "logout": "",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Informazio gehiago",
         "myBooks": "Nire liburuak",
         "noPublicationHelpL1": "Lerratu argitalpen bat hemen",
@@ -105,6 +106,8 @@
                 "password": "Pasahitza",
                 "register": "Izena eman",
                 "retry": "",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Erabiltzaile izena / Helbide elektronikoa"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "Egoera"
             }
         },
+        "openFolder": "",
         "publisher": "Editorea",
         "readBook": "Irakurri",
         "released": "Hemen argitaratua",
@@ -245,7 +249,11 @@
             "success": "{- title}}-ren inportazioa amaitu da."
         },
         "open": {
-            "error": "Ezin da argitalpena ireki: {{- err}}"
+            "error": "Ezin da argitalpena ireki: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "updateFailed": ""
         },
         "wipeData": ""
     },
@@ -562,10 +570,6 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "",
                 "descriptive": ""
@@ -839,6 +843,7 @@
             },
             "customFontSelected": "",
             "customizeReader": "Pertsonalizatu testuaren formatua",
+            "defaultValue": "",
             "disabled": "desgaituta",
             "display": "Bistaratzea",
             "disposition": {
@@ -854,6 +859,7 @@
             "lineSpacing": "Lerroartea",
             "margin": "Marjina",
             "mathjax": "",
+            "mathjaxDescription": "",
             "noFootnotes": "Oin-oharrak desaktibatu",
             "noRTLFlip": "Desgaitu eskuinetik ezkerrera UI",
             "noRuby": "Ezkutatu Japoniako Ruby",
@@ -884,6 +890,16 @@
                 "title": ""
             },
             "preview": "Aurrebista",
+            "previewText": {
+                "highlight": {
+                    "after": "",
+                    "before": "",
+                    "sentence": "",
+                    "word": ""
+                },
+                "prefix": "",
+                "suffix": ""
+            },
             "reduceFontSize": "",
             "reduceMotion": "Mugimendua gutxitu",
             "scrolled": "Desplazagarria",
@@ -1206,11 +1222,56 @@
         "session": {
             "title": "Gorde saioa"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "chooseFolder": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": "",
+                "title": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "info": "",
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Itxura",
             "general": "Orokorra",
             "keyboardShortcuts": "Teklatuko lasterbideak",
-            "profiles": ""
+            "profiles": "",
+            "storage": ""
         },
         "theme": {
             "auto": "Automatikoa",

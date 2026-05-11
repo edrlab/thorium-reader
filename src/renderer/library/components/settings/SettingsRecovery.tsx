@@ -117,16 +117,7 @@ const SettingsRecovery = (props: {
                 onConfirm={recoverPublications}
             />
 
-            <div style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "12px",
-                padding: "16px",
-                border: "1px solid var(--color-button-border)",
-                borderRadius: "8px",
-                background: "var(--color-neutral-base)",
-                boxShadow: "0 1px 0 var(--color-gray-100)",
-            }}>
+            <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}>
                 <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                     <p style={{ margin: 0, fontWeight: 600 }}>Recovery</p>
                     {!isRecoveryChecked && !isRecoveryLoading ? (
@@ -173,7 +164,7 @@ const SettingsRecovery = (props: {
                         {isRecoveryChecked ? "Check again" : "Check for recoverable publications"}
                     </button>
                 </div>
-            </div>
+            </section>
         </>
     );
 };

@@ -241,8 +241,7 @@ class PublicationCard extends React.Component<IProps> {
                                         <AlertDialog.Description className={stylesAlertModals.AlertDialogDescription}>
                                             {publicationView.documentTitle}
                                             <br />
-                                            This publication cannot be opened because its stored files are unavailable.
-                                            Re-import it, or go to Settings and then Storage to add or change the external publication folder.
+                                            {__("catalog.missingUnavailableDescription")}
                                         </AlertDialog.Description>
                                         <div className={stylesAlertModals.AlertDialogButtonContainer}>
                                             <AlertDialog.Cancel asChild>

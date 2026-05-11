@@ -89,6 +89,7 @@
         "login": "تسجيل الدخول",
         "logout": "تسجيل الخروج",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "تفاصيل المنشور",
         "myBooks": "منشوراتي",
         "noPublicationHelpL1": "أفلت الملفات هنا",
@@ -105,6 +106,8 @@
                 "password": "كلمة المرور",
                 "register": "تسجيل",
                 "retry": "حاول مرة أخرى",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "اسم المستخدم / البريد الإلكتروني"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "الحالة"
             }
         },
+        "openFolder": "",
         "publisher": "الناشر",
         "readBook": "اقرأ",
         "released": "نُشر في",
@@ -265,7 +269,11 @@
             "success": "اكتمل استيراد [{{- title}}]."
         },
         "open": {
-            "error": "فشل تحميل المنشور: [{{- err}}]"
+            "error": "فشل تحميل المنشور: [{{- err}}]",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "updateFailed": ""
         },
         "wipeData": "تم مسح بيانات تسجيل الدخول (رموز الوصول وملفات تعريف الارتباط)"
     },
@@ -582,10 +590,6 @@
                 "compact": "مقاطع الصوت المسجّلة مسبقًا",
                 "descriptive": "مقاطع الصوت المسجّلة مسبقًا مدمجة في المحتوى"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "لا توجد معلومات عن الصوت المسجّل مسبقًا",
-                "descriptive": "لا توجد معلومات عن الصوت المسجّل مسبقًا"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "الصوت المسجّل مسبقًا فقط",
                 "descriptive": "كتاب صوتي بدون بديل نصي"
@@ -863,6 +867,7 @@
             },
             "customFontSelected": "لقد اخترت خطاً شخصياً",
             "customizeReader": "تخصيص تنسيق النص",
+            "defaultValue": "",
             "disabled": "تم تعطيله",
             "display": "العرض",
             "disposition": {
@@ -878,6 +883,7 @@
             "lineSpacing": "تباعد الأسطر",
             "margin": "الهامش",
             "mathjax": "تفعيل MathJax",
+            "mathjaxDescription": "",
             "noFootnotes": "تعطيل الحواشي السفلية المنبثقة",
             "noRTLFlip": "تعطيل واجهة اليمين إلى اليسار",
             "noRuby": "إخفاء علامات روبي اليابانية",
@@ -908,6 +914,16 @@
                 "title": "التفضيلات"
             },
             "preview": "معاينة",
+            "previewText": {
+                "highlight": {
+                    "after": "",
+                    "before": "",
+                    "sentence": "",
+                    "word": ""
+                },
+                "prefix": "",
+                "suffix": ""
+            },
             "reduceFontSize": "",
             "reduceMotion": "تقليل الحركة",
             "scrolled": "قابل للتمرير",
@@ -1230,11 +1246,56 @@
         "session": {
             "title": "تفعيل حفظ الجلسة"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "chooseFolder": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": "",
+                "title": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "info": "",
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "المظهر",
             "general": "عام",
             "keyboardShortcuts": "اختصارات لوحة المفاتيح",
-            "profiles": "الملفات الشخصية"
+            "profiles": "الملفات الشخصية",
+            "storage": ""
         },
         "theme": {
             "auto": "تلقائي",

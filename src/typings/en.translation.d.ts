@@ -145,6 +145,7 @@ declare namespace typed_i18n {
   readonly "login": string,
   readonly "logout": string,
   readonly "missing": string,
+  readonly "missingUnavailableDescription": string,
   readonly "moreInfo": string,
   readonly "myBooks": string,
   readonly "noPublicationHelpL1": string,
@@ -246,6 +247,7 @@ declare namespace typed_i18n {
   (_: "catalog.login", __?: {}): string;
   (_: "catalog.logout", __?: {}): string;
   (_: "catalog.missing", __?: {}): string;
+  (_: "catalog.missingUnavailableDescription", __?: {}): string;
   (_: "catalog.moreInfo", __?: {}): string;
   (_: "catalog.myBooks", __?: {}): string;
   (_: "catalog.noPublicationHelpL1", __?: {}): string;
@@ -369,7 +371,6 @@ declare namespace typed_i18n {
     readonly "title": string
   },
   readonly "cancel": string,
-  readonly "continue": string,
   readonly "customization": {
     readonly "splashscreen": {
       readonly "fallbackWelcomeScreen": string,
@@ -413,7 +414,6 @@ declare namespace typed_i18n {
   (_: "dialog.annotations.origin", __?: {}): string;
   (_: "dialog.annotations.title", __?: {}): string;
   (_: "dialog.cancel", __?: {}): string;
-  (_: "dialog.continue", __?: {}): string;
   (_: "dialog.customization", __?: {}): {
   readonly "splashscreen": {
     readonly "fallbackWelcomeScreen": string,
@@ -575,12 +575,11 @@ declare namespace typed_i18n {
     readonly "fail": string,
     readonly "success": string
   },
-  readonly "open": { readonly "error": string },
-  readonly "storage": {
-    readonly "removed": string,
-    readonly "updateFailed": string,
-    readonly "updated": string
+  readonly "open": {
+    readonly "error": string,
+    readonly "folderNotFound": string
   },
+  readonly "storage": { readonly "updateFailed": string },
   readonly "wipeData": string
 };
   (_: "message.annotations", __?: {}): {
@@ -607,16 +606,11 @@ declare namespace typed_i18n {
   (_: "message.import.alreadyImport", __?: {}): string;
   (_: "message.import.fail", __?: {}): string;
   (_: "message.import.success", __?: {}): string;
-  (_: "message.open", __?: {}): { readonly "error": string };
+  (_: "message.open", __?: {}): { readonly "error": string, readonly "folderNotFound": string };
   (_: "message.open.error", __?: {}): string;
-  (_: "message.storage", __?: {}): {
-  readonly "removed": string,
-  readonly "updateFailed": string,
-  readonly "updated": string
-};
-  (_: "message.storage.removed", __?: {}): string;
+  (_: "message.open.folderNotFound", __?: {}): string;
+  (_: "message.storage", __?: {}): { readonly "updateFailed": string };
   (_: "message.storage.updateFailed", __?: {}): string;
-  (_: "message.storage.updated", __?: {}): string;
   (_: "message.wipeData", __?: {}): string;
   (_: "opds", __?: {}): {
   readonly "addForm": {
@@ -982,10 +976,6 @@ declare namespace typed_i18n {
       readonly "descriptive": string
     },
     readonly "ways-of-reading-prerecorded-audio-complementary": {
-      readonly "compact": string,
-      readonly "descriptive": string
-    },
-    readonly "ways-of-reading-prerecorded-audio-no-metadata": {
       readonly "compact": string,
       readonly "descriptive": string
     },
@@ -1446,10 +1436,6 @@ declare namespace typed_i18n {
     readonly "compact": string,
     readonly "descriptive": string
   },
-  readonly "ways-of-reading-prerecorded-audio-no-metadata": {
-    readonly "compact": string,
-    readonly "descriptive": string
-  },
   readonly "ways-of-reading-prerecorded-audio-only": {
     readonly "compact": string,
     readonly "descriptive": string
@@ -1490,9 +1476,6 @@ declare namespace typed_i18n {
   (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-complementary", __?: {}): { readonly "compact": string, readonly "descriptive": string };
   (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-complementary.compact", __?: {}): string;
   (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-complementary.descriptive", __?: {}): string;
-  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-no-metadata", __?: {}): { readonly "compact": string, readonly "descriptive": string };
-  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-no-metadata.compact", __?: {}): string;
-  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-no-metadata.descriptive", __?: {}): string;
   (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-only", __?: {}): { readonly "compact": string, readonly "descriptive": string };
   (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-only.compact", __?: {}): string;
   (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-only.descriptive", __?: {}): string;
@@ -1808,8 +1791,6 @@ declare namespace typed_i18n {
   readonly "notes": {
     readonly "colors": {
       readonly "cyan": string,
-      readonly "darkorange": string,
-      readonly "darkyellow": string,
       readonly "green": string,
       readonly "orange": string,
       readonly "purple": string,
@@ -2182,8 +2163,6 @@ declare namespace typed_i18n {
   (_: "reader.notes", __?: {}): {
   readonly "colors": {
     readonly "cyan": string,
-    readonly "darkorange": string,
-    readonly "darkyellow": string,
     readonly "green": string,
     readonly "orange": string,
     readonly "purple": string,
@@ -2193,8 +2172,6 @@ declare namespace typed_i18n {
 };
   (_: "reader.notes.colors", __?: {}): {
   readonly "cyan": string,
-  readonly "darkorange": string,
-  readonly "darkyellow": string,
   readonly "green": string,
   readonly "orange": string,
   readonly "purple": string,
@@ -2202,8 +2179,6 @@ declare namespace typed_i18n {
   readonly "yellow": string
 };
   (_: "reader.notes.colors.cyan", __?: {}): string;
-  (_: "reader.notes.colors.darkorange", __?: {}): string;
-  (_: "reader.notes.colors.darkyellow", __?: {}): string;
   (_: "reader.notes.colors.green", __?: {}): string;
   (_: "reader.notes.colors.orange", __?: {}): string;
   (_: "reader.notes.colors.purple", __?: {}): string;
@@ -2814,23 +2789,19 @@ declare namespace typed_i18n {
       readonly "addDirectory": string,
       readonly "changeDirectory": string,
       readonly "chooseFolder": string,
-      readonly "editDirectory": string,
-      readonly "removeDirectory": string,
       readonly "removeStorageDirectory": string
     },
     readonly "beta": {
       readonly "availability": string,
       readonly "integrity": string,
-      readonly "intro": string,
       readonly "migration": string,
-      readonly "vault": string,
+      readonly "summary": string,
       readonly "warning": string
     },
     readonly "configuration": {
       readonly "chooseFolderDescription": string,
       readonly "configuredDescription": string,
       readonly "notConfiguredDescription": string,
-      readonly "notConfiguredTitle": string,
       readonly "title": string
     },
     readonly "dialogs": {
@@ -2850,10 +2821,9 @@ declare namespace typed_i18n {
         readonly "title": string
       }
     },
-    readonly "info": string,
     readonly "locations": {
+      readonly "defaultDescription": string,
       readonly "defaultInternal": string,
-      readonly "external": string,
       readonly "title": string
     }
   },
@@ -3575,23 +3545,19 @@ declare namespace typed_i18n {
     readonly "addDirectory": string,
     readonly "changeDirectory": string,
     readonly "chooseFolder": string,
-    readonly "editDirectory": string,
-    readonly "removeDirectory": string,
     readonly "removeStorageDirectory": string
   },
   readonly "beta": {
     readonly "availability": string,
     readonly "integrity": string,
-    readonly "intro": string,
     readonly "migration": string,
-    readonly "vault": string,
+    readonly "summary": string,
     readonly "warning": string
   },
   readonly "configuration": {
     readonly "chooseFolderDescription": string,
     readonly "configuredDescription": string,
     readonly "notConfiguredDescription": string,
-    readonly "notConfiguredTitle": string,
     readonly "title": string
   },
   readonly "dialogs": {
@@ -3611,10 +3577,9 @@ declare namespace typed_i18n {
       readonly "title": string
     }
   },
-  readonly "info": string,
   readonly "locations": {
+    readonly "defaultDescription": string,
     readonly "defaultInternal": string,
-    readonly "external": string,
     readonly "title": string
   }
 };
@@ -3622,41 +3587,33 @@ declare namespace typed_i18n {
   readonly "addDirectory": string,
   readonly "changeDirectory": string,
   readonly "chooseFolder": string,
-  readonly "editDirectory": string,
-  readonly "removeDirectory": string,
   readonly "removeStorageDirectory": string
 };
   (_: "settings.storage.actions.addDirectory", __?: {}): string;
   (_: "settings.storage.actions.changeDirectory", __?: {}): string;
   (_: "settings.storage.actions.chooseFolder", __?: {}): string;
-  (_: "settings.storage.actions.editDirectory", __?: {}): string;
-  (_: "settings.storage.actions.removeDirectory", __?: {}): string;
   (_: "settings.storage.actions.removeStorageDirectory", __?: {}): string;
   (_: "settings.storage.beta", __?: {}): {
   readonly "availability": string,
   readonly "integrity": string,
-  readonly "intro": string,
   readonly "migration": string,
-  readonly "vault": string,
+  readonly "summary": string,
   readonly "warning": string
 };
   (_: "settings.storage.beta.availability", __?: {}): string;
   (_: "settings.storage.beta.integrity", __?: {}): string;
-  (_: "settings.storage.beta.intro", __?: {}): string;
   (_: "settings.storage.beta.migration", __?: {}): string;
-  (_: "settings.storage.beta.vault", __?: {}): string;
+  (_: "settings.storage.beta.summary", __?: {}): string;
   (_: "settings.storage.beta.warning", __?: {}): string;
   (_: "settings.storage.configuration", __?: {}): {
   readonly "chooseFolderDescription": string,
   readonly "configuredDescription": string,
   readonly "notConfiguredDescription": string,
-  readonly "notConfiguredTitle": string,
   readonly "title": string
 };
   (_: "settings.storage.configuration.chooseFolderDescription", __?: {}): string;
   (_: "settings.storage.configuration.configuredDescription", __?: {}): string;
   (_: "settings.storage.configuration.notConfiguredDescription", __?: {}): string;
-  (_: "settings.storage.configuration.notConfiguredTitle", __?: {}): string;
   (_: "settings.storage.configuration.title", __?: {}): string;
   (_: "settings.storage.dialogs", __?: {}): {
   readonly "add": {
@@ -3699,14 +3656,13 @@ declare namespace typed_i18n {
   (_: "settings.storage.dialogs.remove.confirm", __?: {}): string;
   (_: "settings.storage.dialogs.remove.description", __?: {}): string;
   (_: "settings.storage.dialogs.remove.title", __?: {}): string;
-  (_: "settings.storage.info", __?: {}): string;
   (_: "settings.storage.locations", __?: {}): {
+  readonly "defaultDescription": string,
   readonly "defaultInternal": string,
-  readonly "external": string,
   readonly "title": string
 };
+  (_: "settings.storage.locations.defaultDescription", __?: {}): string;
   (_: "settings.storage.locations.defaultInternal", __?: {}): string;
-  (_: "settings.storage.locations.external", __?: {}): string;
   (_: "settings.storage.locations.title", __?: {}): string;
   (_: "settings.tabs", __?: {}): {
   readonly "appearance": string,

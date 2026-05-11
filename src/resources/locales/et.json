@@ -89,6 +89,7 @@
         "login": "Logi sisse",
         "logout": "Logi välja",
         "missing": " ",
+        "missingUnavailableDescription": "",
         "moreInfo": "Väljaande üksiksasjad",
         "myBooks": "Minu raamatud",
         "noPublicationHelpL1": "Lohista failid siia",
@@ -105,6 +106,8 @@
                 "password": "Salasõna",
                 "register": "Registreeru",
                 "retry": "Proovi uuesti",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Kasutajanimi / e-posti aadress"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "Olek"
             }
         },
+        "openFolder": "",
         "publisher": "Kirjastus",
         "readBook": "Loe",
         "released": "Avaldamise kuupäev",
@@ -245,7 +249,11 @@
             "success": "„{{- title}}“ väljaande importimine sai kenasti tehtud."
         },
         "open": {
-            "error": "Väljaande/teise laadimine ei õnnestunud: {{- err}}"
+            "error": "Väljaande/teise laadimine ei õnnestunud: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "updateFailed": ""
         },
         "wipeData": "Sisselogimisandmed on eemaldatud (tunnusload ja küpsised)"
     },
@@ -562,10 +570,6 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "",
                 "descriptive": ""
@@ -839,6 +843,7 @@
             },
             "customFontSelected": "sa oled eelistanud kasutada isiklikku kirjatüüpi",
             "customizeReader": "",
+            "defaultValue": "",
             "disabled": "pole kasutusel",
             "display": "Ekraanivaade",
             "disposition": {
@@ -854,6 +859,7 @@
             "lineSpacing": "",
             "margin": "Veeris",
             "mathjax": "",
+            "mathjaxDescription": "",
             "noFootnotes": "",
             "noRTLFlip": "",
             "noRuby": "",
@@ -884,6 +890,16 @@
                 "title": "Eelistused"
             },
             "preview": "Eelvaade",
+            "previewText": {
+                "highlight": {
+                    "after": "",
+                    "before": "",
+                    "sentence": "",
+                    "word": ""
+                },
+                "prefix": "",
+                "suffix": ""
+            },
             "reduceFontSize": "",
             "reduceMotion": "",
             "scrolled": "Keritav",
@@ -1206,11 +1222,56 @@
         "session": {
             "title": ""
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "chooseFolder": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": "",
+                "title": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "info": "",
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "",
             "general": "",
             "keyboardShortcuts": "",
-            "profiles": ""
+            "profiles": "",
+            "storage": ""
         },
         "theme": {
             "auto": "Automaatne",

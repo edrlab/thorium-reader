@@ -89,6 +89,7 @@
         "login": "Giriş yap",
         "logout": "Oturumu Kapat",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Eser Ayrıntıları",
         "myBooks": "Eserlerim",
         "noPublicationHelpL1": "Dosyaları buraya bırakın",
@@ -105,6 +106,8 @@
                 "password": "Şifre",
                 "register": "Kaydol",
                 "retry": "Yeniden dene",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Kullanıcı adı / E-posta adresi"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "Durum"
             }
         },
+        "openFolder": "",
         "publisher": "Yayımcı",
         "readBook": "Oku",
         "released": "Yayın tarihi:",
@@ -245,7 +249,11 @@
             "success": "[{{- title}}]: İçe aktarımı tamamlandı."
         },
         "open": {
-            "error": "Eser yüklemesi başarısız: [{{- err}}]"
+            "error": "Eser yüklemesi başarısız: [{{- err}}]",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "updateFailed": ""
         },
         "wipeData": "Giriş verileri başarıyla temizlendi (erişim dizgecikleri ve çerezler)"
     },
@@ -562,10 +570,6 @@
                 "compact": "Önceden kaydedilmiş ses klipleri",
                 "descriptive": "Önceden kaydedilmiş ses klipleri içeriğe gömülüdür"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "Önceden kaydedilmiş ses klipleri hakkında bilgi mevcut değil",
-                "descriptive": "Önceden kaydedilmiş ses klipleri hakkında bilgi mevcut değil"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Sadece önceden kaydedilmiş ses klipleri",
                 "descriptive": "Sesli kitapta metin alternatifi bulunmuyor"
@@ -839,6 +843,7 @@
             },
             "customFontSelected": "Kişisel bir yazı tipi seçtiniz",
             "customizeReader": "Metin biçimlendirmesini özelleştir",
+            "defaultValue": "",
             "disabled": "geçersiz",
             "display": "Görüntüleme",
             "disposition": {
@@ -854,6 +859,7 @@
             "lineSpacing": "Satır aralığı",
             "margin": "Kenar boşluğu",
             "mathjax": "MathJax'i etkinleştir",
+            "mathjaxDescription": "",
             "noFootnotes": "Dipnot açılır pencerelerini devredışı bırak",
             "noRTLFlip": "Sağdan Sola Kullanıcı Arayüzü'nü devredışı bırak",
             "noRuby": "Japonca Okutucuları gizle",
@@ -884,6 +890,16 @@
                 "title": "Tercihler"
             },
             "preview": "Önizleme",
+            "previewText": {
+                "highlight": {
+                    "after": "",
+                    "before": "",
+                    "sentence": "",
+                    "word": ""
+                },
+                "prefix": "",
+                "suffix": ""
+            },
             "reduceFontSize": "",
             "reduceMotion": "Hareketi azalt",
             "scrolled": "Kaydırılabilir",
@@ -1206,11 +1222,56 @@
         "session": {
             "title": "Oturum kaydetmeyi etkinleştir"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "chooseFolder": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": "",
+                "title": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "info": "",
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Görünüm",
             "general": "Genel",
             "keyboardShortcuts": "Klavye kısayolları",
-            "profiles": "Profiller"
+            "profiles": "Profiller",
+            "storage": ""
         },
         "theme": {
             "auto": "Otomatik",

@@ -89,6 +89,7 @@
         "login": "Σύνδεση",
         "logout": "Αποσύνδεση",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Λεπτομέρειες βιβλίου",
         "myBooks": "Τα βιβλία μου",
         "noPublicationHelpL1": "Εναπόθεση αρχείων εδώ",
@@ -105,6 +106,8 @@
                 "password": "Κωδικός πρόσβασης",
                 "register": "Εγγραφή",
                 "retry": "Ξαναπροσπαθήστε",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Όνομα χρήστη / διεύθυνση ηλεκτρονικού ταχυδρομείου"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "Κατάσταση"
             }
         },
+        "openFolder": "",
         "publisher": "Εκδότης",
         "readBook": "Ανάγνωση",
         "released": "Δημοσιεύθηκε στις",
@@ -245,7 +249,11 @@
             "success": "Η εισαγωγή του {{- title}} έχει ολοκληρωθεί."
         },
         "open": {
-            "error": "Το βιβλίο δεν μπορεί να ανοίξει: {{- err}}"
+            "error": "Το βιβλίο δεν μπορεί να ανοίξει: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "updateFailed": ""
         },
         "wipeData": "Τα στοιχεία σύνδεσης διαγράφηκαν (διακριτικά πρόσβασης και cookies)"
     },
@@ -562,10 +570,6 @@
                 "compact": "Προηχογραφημένα ηχητικά αποσπάσματα",
                 "descriptive": "Προηχογραφημένα ηχητικά αποσπάσματα είναι ενσωματωμένα στο περιεχόμενο"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "Δεν υπάρχουν διαθέσιμες πληροφορίες σχετικά με τον προηχογραφημένο ηχητικό περιεχόμενο",
-                "descriptive": "Δεν υπάρχουν διαθέσιμες πληροφορίες σχετικά με τον προηχογραφημένο ηχητικό περιεχόμενο"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Μόνο προηχογραφημένος ήχος",
                 "descriptive": "Ακουστικό βιβλίο χωρίς εναλλακτικό κείμενο"
@@ -839,6 +843,7 @@
             },
             "customFontSelected": "Έχεις επιλέξει μια προσωπική γραμματοσειρά",
             "customizeReader": "Προσαρμογή μορφοποίησης κειμένου",
+            "defaultValue": "",
             "disabled": "απενεργοποιημένο",
             "display": "Εμφάνιση",
             "disposition": {
@@ -854,6 +859,7 @@
             "lineSpacing": "Διάστημα μεταξύ γραμμών",
             "margin": "Περιθώριο",
             "mathjax": "Ενεργοποίηση MathJax",
+            "mathjaxDescription": "",
             "noFootnotes": "Απενεργοποίηση αναδυόμενων υποσημειώσεων",
             "noRTLFlip": "Απενεργοποίηση Right-To-Left UI",
             "noRuby": "Κρύψιμο Japanese Ruby",
@@ -884,6 +890,16 @@
                 "title": "Προτιμήσεις"
             },
             "preview": "Προεπισκόπηση",
+            "previewText": {
+                "highlight": {
+                    "after": "",
+                    "before": "",
+                    "sentence": "",
+                    "word": ""
+                },
+                "prefix": "",
+                "suffix": ""
+            },
             "reduceFontSize": "",
             "reduceMotion": "Μείωση κίνησης",
             "scrolled": "Μετακυλίσιμο",
@@ -1206,11 +1222,56 @@
         "session": {
             "title": "Αποθήκευση συνεδρίας"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "chooseFolder": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": "",
+                "title": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "info": "",
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Εμφάνιση",
             "general": "Γενικά",
             "keyboardShortcuts": "Συντομεύσεις πληκτρολογίου",
-            "profiles": "Προφίλ"
+            "profiles": "Προφίλ",
+            "storage": ""
         },
         "theme": {
             "auto": "Αυτόματο",

@@ -89,6 +89,7 @@
         "login": "",
         "logout": "",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Osnovni podatki",
         "myBooks": "Moje knjige",
         "noPublicationHelpL1": "Tukaj spusti datoteke",
@@ -105,6 +106,8 @@
                 "password": "Geslo",
                 "register": "Register",
                 "retry": "",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Uporabniško ime / elektronski naslov"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "Stanje"
             }
         },
+        "openFolder": "",
         "publisher": "Založba",
         "readBook": "Začni brati",
         "released": "Objavljeno na",
@@ -255,7 +259,11 @@
             "success": "Uvoz {{- title}} je končan."
         },
         "open": {
-            "error": "Publikacije ni mogoče odpreti: {{- err}}"
+            "error": "Publikacije ni mogoče odpreti: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "updateFailed": ""
         },
         "wipeData": ""
     },
@@ -572,10 +580,6 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "",
                 "descriptive": ""
@@ -851,6 +855,7 @@
             },
             "customFontSelected": "Izbrana je pisava po meri",
             "customizeReader": "Prilagodi oblikovanje besedila",
+            "defaultValue": "",
             "disabled": "onemogočeno",
             "display": "Zaslon",
             "disposition": {
@@ -866,6 +871,7 @@
             "lineSpacing": "Razmik med vrsticami",
             "margin": "Obroba",
             "mathjax": "",
+            "mathjaxDescription": "",
             "noFootnotes": "Onemogoči opombe",
             "noRTLFlip": "Onemogoči uporabniški vmesnik od desne proti levi",
             "noRuby": "Skrij japonski Ruby",
@@ -896,6 +902,16 @@
                 "title": "Nastavitve"
             },
             "preview": "Predogled",
+            "previewText": {
+                "highlight": {
+                    "after": "",
+                    "before": "",
+                    "sentence": "",
+                    "word": ""
+                },
+                "prefix": "",
+                "suffix": ""
+            },
             "reduceFontSize": "",
             "reduceMotion": "Zmanjšaj gibanje",
             "scrolled": "Pomikanje",
@@ -1218,11 +1234,56 @@
         "session": {
             "title": "Shrani sejo"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "chooseFolder": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": "",
+                "title": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "info": "",
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Izgled",
             "general": "Splošno",
             "keyboardShortcuts": "Bližnjice tipkovnice",
-            "profiles": ""
+            "profiles": "",
+            "storage": ""
         },
         "theme": {
             "auto": "Samodejno",

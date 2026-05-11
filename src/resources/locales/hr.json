@@ -89,6 +89,7 @@
         "login": "",
         "logout": "",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Detalji građe",
         "myBooks": "Moje knjige",
         "noPublicationHelpL1": "Ispusti građu ovdje",
@@ -105,6 +106,8 @@
                 "password": "",
                 "register": "",
                 "retry": "",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": ""
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "Status"
             }
         },
+        "openFolder": "",
         "publisher": "Izdavač",
         "readBook": "Čitaj",
         "released": "Datum izdavanja",
@@ -250,7 +254,11 @@
             "success": "Uvoz {{- title}} je završen."
         },
         "open": {
-            "error": "Građa se ne može otvoriti: {{- err}}"
+            "error": "Građa se ne može otvoriti: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "updateFailed": ""
         },
         "wipeData": ""
     },
@@ -567,10 +575,6 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "",
                 "descriptive": ""
@@ -845,6 +849,7 @@
             },
             "customFontSelected": "",
             "customizeReader": "",
+            "defaultValue": "",
             "disabled": "",
             "display": "Prikaz",
             "disposition": {
@@ -860,6 +865,7 @@
             "lineSpacing": "Razmak između redova",
             "margin": "Margina",
             "mathjax": "",
+            "mathjaxDescription": "",
             "noFootnotes": "Isključi fusnote",
             "noRTLFlip": "",
             "noRuby": "",
@@ -890,6 +896,16 @@
                 "title": ""
             },
             "preview": "",
+            "previewText": {
+                "highlight": {
+                    "after": "",
+                    "before": "",
+                    "sentence": "",
+                    "word": ""
+                },
+                "prefix": "",
+                "suffix": ""
+            },
             "reduceFontSize": "",
             "reduceMotion": "Smanji kretanje",
             "scrolled": "Mogućnost klizanja",
@@ -1212,11 +1228,56 @@
         "session": {
             "title": "Spremi sesiju"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "chooseFolder": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": "",
+                "title": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "info": "",
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "",
             "general": "",
             "keyboardShortcuts": "",
-            "profiles": ""
+            "profiles": "",
+            "storage": ""
         },
         "theme": {
             "auto": "",

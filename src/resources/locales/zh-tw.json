@@ -89,6 +89,7 @@
         "login": "登入",
         "logout": "登出",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "更多訊息",
         "myBooks": "我的書籍",
         "noPublicationHelpL1": "將文件拖放到此處",
@@ -105,6 +106,8 @@
                 "password": "密碼",
                 "register": "註冊",
                 "retry": "在試一次",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "使用者名稱/電子郵件地址"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "狀態"
             }
         },
+        "openFolder": "",
         "publisher": "出版社",
         "readBook": "閱讀",
         "released": "出版日期",
@@ -240,7 +244,11 @@
             "success": "匯入 [{{- title}}] 完成。"
         },
         "open": {
-            "error": "無法打開出版物：[{{- err}}]"
+            "error": "無法打開出版物：[{{- err}}]",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "updateFailed": ""
         },
         "wipeData": "登入資料已清除（帳號token和 cookies）"
     },
@@ -557,10 +565,6 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "",
                 "descriptive": ""
@@ -833,6 +837,7 @@
             },
             "customFontSelected": "您已選擇個人字體",
             "customizeReader": "自訂文字格式",
+            "defaultValue": "",
             "disabled": "停用",
             "display": "顯示",
             "disposition": {
@@ -848,6 +853,7 @@
             "lineSpacing": "行間距",
             "margin": "頁邊距",
             "mathjax": "",
+            "mathjaxDescription": "",
             "noFootnotes": "沒有附註",
             "noRTLFlip": "禁用從右到左的 UI",
             "noRuby": "隱藏日文漢字注音",
@@ -878,6 +884,16 @@
                 "title": "偏好設定"
             },
             "preview": "預覽",
+            "previewText": {
+                "highlight": {
+                    "after": "",
+                    "before": "",
+                    "sentence": "",
+                    "word": ""
+                },
+                "prefix": "",
+                "suffix": ""
+            },
             "reduceFontSize": "",
             "reduceMotion": "減少動態效果",
             "scrolled": "捲動",
@@ -1200,11 +1216,56 @@
         "session": {
             "title": "保存登入狀態"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "chooseFolder": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": "",
+                "title": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "info": "",
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "外觀",
             "general": "一般",
             "keyboardShortcuts": "鍵盤快捷鍵",
-            "profiles": ""
+            "profiles": "",
+            "storage": ""
         },
         "theme": {
             "auto": "自動的",

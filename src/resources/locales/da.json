@@ -89,6 +89,7 @@
         "login": "Log ind",
         "logout": "Log ud",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Bogdetaljer",
         "myBooks": "Mine bøger",
         "noPublicationHelpL1": "Træk en bog hertil",
@@ -105,6 +106,8 @@
                 "password": "Adgangskode",
                 "register": "Registrér",
                 "retry": "Prøv igen",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Brugernavn / email-adresse"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "Tilstand"
             }
         },
+        "openFolder": "",
         "publisher": "Udgiver",
         "readBook": "Læs bog",
         "released": "Udgivelsesdato",
@@ -245,7 +249,11 @@
             "success": "{{- title}} er nu importeret."
         },
         "open": {
-            "error": "Bogen kan ikke åbnes: {{- err}}"
+            "error": "Bogen kan ikke åbnes: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "updateFailed": ""
         },
         "wipeData": "Login data blev slettet (adgangsnøgler og cookies)"
     },
@@ -562,10 +570,6 @@
                 "compact": "Forudindspillede lydklip",
                 "descriptive": "Bogen har indhold med forudindspillede lydklip i"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "Ingen information omkring forudindspillede lydklip",
-                "descriptive": "Ingen information omkring forudindspillede lydklip"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Indeholder kun lyd",
                 "descriptive": "Lydbog uden et tekstalternativ"
@@ -839,6 +843,7 @@
             },
             "customFontSelected": "Du har valgt en personlig skrifttype",
             "customizeReader": "Tilpas tekstformatering",
+            "defaultValue": "",
             "disabled": "slået fra",
             "display": "Visning",
             "disposition": {
@@ -854,6 +859,7 @@
             "lineSpacing": "Linje-mellemrum",
             "margin": "Margen",
             "mathjax": "Slå MathJax til",
+            "mathjaxDescription": "",
             "noFootnotes": "Slå popup med fodnoter fra",
             "noRTLFlip": "Slå højre-til-venstre UI fra",
             "noRuby": "Skjul japansk læsehjælp (Ruby)",
@@ -884,6 +890,16 @@
                 "title": "Læsetema"
             },
             "preview": "Forhåndsvisning",
+            "previewText": {
+                "highlight": {
+                    "after": "",
+                    "before": "",
+                    "sentence": "",
+                    "word": ""
+                },
+                "prefix": "",
+                "suffix": ""
+            },
             "reduceFontSize": "Formindsk skriftstørrelsen",
             "reduceMotion": "Reducér bevægelser",
             "scrolled": "Scrollbart",
@@ -1206,11 +1222,56 @@
         "session": {
             "title": "Gem session"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "chooseFolder": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": "",
+                "title": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "info": "",
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Udseende",
             "general": "Generelt",
             "keyboardShortcuts": "Tastaturgenveje",
-            "profiles": "Profiler"
+            "profiles": "Profiler",
+            "storage": ""
         },
         "theme": {
             "auto": "Automatisk",

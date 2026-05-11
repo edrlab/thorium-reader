@@ -89,6 +89,7 @@
         "login": "Login",
         "logout": "Logout",
         "missing": "",
+        "missingUnavailableDescription": "This publication cannot be opened because its stored files are unavailable. Re-import it, or go to Settings and then Storage to add or change the additional storage.",
         "moreInfo": "Publication Details",
         "myBooks": "My publications",
         "noPublicationHelpL1": "Drop files here",
@@ -128,6 +129,7 @@
                 "state": "State"
             }
         },
+        "openFolder": "Open directory",
         "publisher": "Publisher",
         "readBook": "Read",
         "released": "Published on",
@@ -136,7 +138,6 @@
         "sort": "Sort by",
         "tag": "Tag",
         "tags": "Tags",
-        "openFolder": "Open folder",
         "update": "Edit"
     },
     "dialog": {
@@ -156,7 +157,6 @@
             "title": "Import notes?"
         },
         "cancel": "Cancel",
-        "continue": "Continue",
         "customization": {
             "splashscreen": {
                 "fallbackWelcomeScreen": "No welcome-screen provided",
@@ -249,12 +249,11 @@
             "success": "Importing [{{- title}}] completed."
         },
         "open": {
-            "error": "Loading publication failed: [{{- err}}]"
+            "error": "Loading publication failed: [{{- err}}]",
+            "folderNotFound": "The publication folder cannot be found. Re-import it, or configure the additional storage in Settings > Storage."
         },
         "storage": {
-            "removed": "Publication directory removed.",
-            "updateFailed": "Failed to update publication directory: {{- message}}",
-            "updated": "Publication directory updated."
+            "updateFailed": "Failed to update publication directory: {{- message}}"
         },
         "wipeData": "Login data was cleared (access tokens and cookies)"
     },
@@ -571,10 +570,6 @@
                 "compact": "Prerecorded audio clips",
                 "descriptive": "Prerecorded audio clips are embedded in the content"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "No information about prerecorded audio is available",
-                "descriptive": "No information about prerecorded audio is available"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Prerecorded audio only",
                 "descriptive": "Audiobook with no text alternative"
@@ -801,8 +796,6 @@
         "notes": {
             "colors": {
                 "cyan": "Cyan",
-                "darkorange": "Dark Orange",
-                "darkyellow": "Dark Yellow",
                 "green": "Green",
                 "orange": "Orange",
                 "purple": "Purple",
@@ -1231,51 +1224,46 @@
         },
         "storage": {
             "actions": {
-                "addDirectory": "Add external storage directory",
-                "changeDirectory": "Change external storage directory",
-                "chooseFolder": "Choose folder",
-                "editDirectory": "Edit directory",
-                "removeDirectory": "Remove directory",
-                "removeStorageDirectory": "Remove external storage directory"
+                "addDirectory": "Select an additional storage",
+                "changeDirectory": "Update additional storage",
+                "chooseFolder": "Choose directory",
+                "removeStorageDirectory": "Remove additional storage"
             },
             "beta": {
-                "availability": "This feature only works with newer versions of Thorium. Publications added to the external storage folder will not appear in Thorium 3.4 or below.",
-                "integrity": "You are responsible for the integrity and availability of this directory. Be careful with deletion, remote access, slow devices or network paths, and filesystem permissions.",
-                "intro": "This external publication storage feature is currently in beta testing.",
-                "migration": "No migration will be performed by Thorium. If you change storage location, moving publications is entirely your responsibility.",
-                "vault": "You can consider this directory a vault managed by Thorium.",
-                "warning": "Publications stored by Thorium in this directory are immutable application data and reflect Thorium's internal storage structure. Editing, renaming, moving, or deleting files inside it can break publication reading and may crash the reader for affected items."
+                "availability": "This feature works only with recent versions of Thorium; external folder books will not appear in Thorium 3.4 or earlier.",
+                "integrity": "You must keep this directory safe and accessible. Avoid deleting it, restricting access to it, or using slow or unstable storage, such as network drives.",
+                "migration": "Thorium does not automatically transfer your books: if you update the additional storage, you must manually move your publications to the new location. If you remove it, you must manually move your publications to the original storage.",
+                "summary": "Learn more about this feature, currently in beta",
+                "warning": "Do not manually alter the files in this folder, as this may cause issues with your books or the reader. Think of this folder as a secure library managed by Thorium."
             },
             "configuration": {
-                "chooseFolderDescription": "Choose the folder that Thorium should use as external publication storage.",
-                "configuredDescription": "The external storage directory is configured and ready to use for newly stored publications.",
-                "notConfiguredDescription": "Configure an external storage directory to store new publications outside of Thorium's default internal location.",
-                "notConfiguredTitle": "Not configured for the moment.",
-                "title": "Configuration"
+                "chooseFolderDescription": "Choose the directory that Thorium should use as additional storage.",
+                "configuredDescription": "The additional storage is configured and ready to use for newly stored publications.",
+                "notConfiguredDescription": "Publications imported into Thorium Reader will be stored in the selected directory. Publications previously imported will stay in the original system storage.",
+                "title": "Additional Storage"
             },
             "dialogs": {
                 "add": {
                     "confirm": "Continue",
-                    "description": "This feature is currently in beta. Do you want to continue and configure an external publication storage directory?",
-                    "title": "Enable external publication storage"
+                    "description": "This feature is currently in beta. Do you want to continue and configure an additional storage by selecting a directory?",
+                    "title": "Select an additional storage"
                 },
                 "edit": {
                     "confirm": "Edit directory",
-                    "description": "Changing the external publication storage directory requires manual care. Thorium will not migrate existing publications for you. Do you want to continue?",
-                    "title": "Edit external publication storage"
+                    "description": "Updating the additional storage requires care. Thorium will not migrate existing publications for you; you'll have to do it manually. Do you want to continue?",
+                    "title": "Update the additional storage"
                 },
                 "remove": {
                     "confirm": "Remove directory",
-                    "description": "Removing the configured external publication storage directory does not migrate publications back automatically. Do you want to remove this directory from Thorium configuration?",
-                    "title": "Remove external publication storage"
+                    "description": "Removing the additional storage requires care. Thorium will not migrate existing publications for you; you'll have to do it manually. Do you want to continue?",
+                    "title": "Remove additional storage"
                 }
             },
             "locations": {
-                "defaultInternal": "Default internal storage",
-                "external": "External storage",
+                "defaultDescription": "Publications managed by the application are by default stored in:",
+                "defaultInternal": "System Storage",
                 "title": "Locations"
-            },
-            "info": "Storage"
+            }
         },
         "tabs": {
             "appearance": "Appearance",

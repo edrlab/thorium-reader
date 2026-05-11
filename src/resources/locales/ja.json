@@ -89,6 +89,7 @@
         "login": "",
         "logout": "",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "詳細情報",
         "myBooks": "わたしの本",
         "noPublicationHelpL1": "ファイルをここにおいてください",
@@ -105,6 +106,8 @@
                 "password": "パスワード",
                 "register": "登録",
                 "retry": "",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "ユーザー名 / メールアドレス"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "状態"
             }
         },
+        "openFolder": "",
         "publisher": "出版社",
         "readBook": "本を読む",
         "released": "出版日",
@@ -240,7 +244,11 @@
             "success": "『{{- title}}』の追加が完了しました。"
         },
         "open": {
-            "error": "本を開けません：{{- err}}"
+            "error": "本を開けません：{{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "updateFailed": ""
         },
         "wipeData": ""
     },
@@ -557,10 +565,6 @@
                 "compact": "録音済みの音声クリップ",
                 "descriptive": "録音済みの音声クリップがコンテンツに埋め込まれています"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "録音済みの音声についての情報はありません",
-                "descriptive": "録音済みの音声についての情報はありません"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "録音済み音声のみ",
                 "descriptive": "代替テキストのないオーディオブック"
@@ -833,6 +837,7 @@
             },
             "customFontSelected": "利用するフォントを選択しました",
             "customizeReader": "本文のスタイル",
+            "defaultValue": "",
             "disabled": "無効",
             "display": "画面表示",
             "disposition": {
@@ -848,6 +853,7 @@
             "lineSpacing": "行の間隔",
             "margin": "ページの余白",
             "mathjax": "",
+            "mathjaxDescription": "",
             "noFootnotes": "ポップアップ脚注を表示しない",
             "noRTLFlip": "右から左へ進むUIを無効にする",
             "noRuby": "ルビを表示しない",
@@ -878,6 +884,16 @@
                 "title": "カスタマイズ"
             },
             "preview": "プレビュー",
+            "previewText": {
+                "highlight": {
+                    "after": "",
+                    "before": "",
+                    "sentence": "",
+                    "word": ""
+                },
+                "prefix": "",
+                "suffix": ""
+            },
             "reduceFontSize": "",
             "reduceMotion": "視差効果を減らす",
             "scrolled": "スクロール型",
@@ -1200,11 +1216,56 @@
         "session": {
             "title": "セッションを保存"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "chooseFolder": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": "",
+                "title": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "info": "",
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "外観",
             "general": "一般",
             "keyboardShortcuts": "キーボード ショートカット",
-            "profiles": ""
+            "profiles": "",
+            "storage": ""
         },
         "theme": {
             "auto": "自動",

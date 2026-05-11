@@ -89,6 +89,7 @@
         "login": "Iniciar sessão",
         "logout": "Terminar sessão",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Detalhes do documento",
         "myBooks": "Meus documentos",
         "noPublicationHelpL1": "Soltar ficheiros aqui",
@@ -105,6 +106,8 @@
                 "password": "Senha",
                 "register": "Registar",
                 "retry": "Tentar novamente",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Nome de utilizador / Endereço de email"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "Situação"
             }
         },
+        "openFolder": "",
         "publisher": "Editora",
         "readBook": "Ler",
         "released": "Publicado em",
@@ -250,7 +254,11 @@
             "success": "Foi concluída a importação de {{- title}}."
         },
         "open": {
-            "error": "Não foi possível carregar o documento: {{- err}}"
+            "error": "Não foi possível carregar o documento: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "updateFailed": ""
         },
         "wipeData": "Os dados de autenticação foram limpos (tokens de acesso e cookies)"
     },
@@ -567,10 +575,6 @@
                 "compact": "Clipes de áudio pré-gravados",
                 "descriptive": "Clipes de áudio pré-gravados estão integrados no conteúdo"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "Sem informações disponíveis sobre áudio pré-gravado",
-                "descriptive": "Sem informações disponíveis sobre áudio pré-gravado"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Apenas áudio pré-gravado",
                 "descriptive": "Audiolivro sem alternativa de texto"
@@ -845,6 +849,7 @@
             },
             "customFontSelected": "Escolheu um tipo de letra pessoal",
             "customizeReader": "Personalizar formatação do texto",
+            "defaultValue": "",
             "disabled": "desativado",
             "display": "Visualização",
             "disposition": {
@@ -860,6 +865,7 @@
             "lineSpacing": "Espaçamento de linhas",
             "margin": "Margem",
             "mathjax": "Ativar MathJax",
+            "mathjaxDescription": "",
             "noFootnotes": "Desativar janelas de notas de rodapé",
             "noRTLFlip": "Desativar interface Direita-para-esquerda",
             "noRuby": "Ocultar Ruby Japonês",
@@ -890,6 +896,16 @@
                 "title": "Preferências"
             },
             "preview": "Pré-visualização",
+            "previewText": {
+                "highlight": {
+                    "after": "",
+                    "before": "",
+                    "sentence": "",
+                    "word": ""
+                },
+                "prefix": "",
+                "suffix": ""
+            },
             "reduceFontSize": "",
             "reduceMotion": "Reduzir movimento",
             "scrolled": "Rolável",
@@ -1212,11 +1228,56 @@
         "session": {
             "title": "Ativar guardar sessão"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "chooseFolder": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": "",
+                "title": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "info": "",
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Visual",
             "general": "Geral",
             "keyboardShortcuts": "Atalhos de teclado",
-            "profiles": "Perfis"
+            "profiles": "Perfis",
+            "storage": ""
         },
         "theme": {
             "auto": "Automático",

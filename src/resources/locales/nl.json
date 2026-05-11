@@ -89,6 +89,7 @@
         "login": "Inloggen",
         "logout": "Uitloggen",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Meer Informatie",
         "myBooks": "Mijn boeken",
         "noPublicationHelpL1": "Sleep een publicatie hier naar toe",
@@ -105,6 +106,8 @@
                 "password": "Wachtwoord",
                 "register": "Registreer",
                 "retry": "Probeer opnieuw",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Gebruikersnaam / e-mailadres"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "Status"
             }
         },
+        "openFolder": "",
         "publisher": "Uitgever",
         "readBook": "Gelezen",
         "released": "Uitgegeven op",
@@ -245,7 +249,11 @@
             "success": "Het toevoegen van {{- title}} is gelukt."
         },
         "open": {
-            "error": "De publicatie kan niet worden geopend: {{- err}}"
+            "error": "De publicatie kan niet worden geopend: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "updateFailed": ""
         },
         "wipeData": "Login data is verwijderd (toegang tot logintekens en cookies)"
     },
@@ -562,10 +570,6 @@
                 "compact": "Vooraf opgenomen audio fragmenten",
                 "descriptive": "Vooraf opgenomen audio fragmenten zijn opgenomen in de inhoud"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "Geen informatie over vooraf opgenomen audio beschikbaar",
-                "descriptive": "Geen informatie over vooraf opgenomen audio beschikbaar"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Alleen vooraf opgenomen audio",
                 "descriptive": "Luisterboek zonder tekst alternatief"
@@ -839,6 +843,7 @@
             },
             "customFontSelected": "Je hebt een eigen lettertype gekozen",
             "customizeReader": "Pas de tekstopmaak aan",
+            "defaultValue": "",
             "disabled": "uitgeschakeld",
             "display": "Weergave",
             "disposition": {
@@ -854,6 +859,7 @@
             "lineSpacing": "Regelafstand",
             "margin": "Marge",
             "mathjax": "Schakel MathJax in",
+            "mathjaxDescription": "",
             "noFootnotes": "Verberg pop-up voetnoten",
             "noRTLFlip": "Schakel de rechts-naar-links-UI uit",
             "noRuby": "Verberg Japanse Ruby",
@@ -884,6 +890,16 @@
                 "title": "Voorkeuren"
             },
             "preview": "Voorbeeld",
+            "previewText": {
+                "highlight": {
+                    "after": "",
+                    "before": "",
+                    "sentence": "",
+                    "word": ""
+                },
+                "prefix": "",
+                "suffix": ""
+            },
             "reduceFontSize": "",
             "reduceMotion": "Beperk beweging",
             "scrolled": "Doorlopend",
@@ -1206,11 +1222,56 @@
         "session": {
             "title": "Stel sessie bewaring in"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "chooseFolder": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": "",
+                "title": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "info": "",
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Verschijning",
             "general": "Algemeen",
             "keyboardShortcuts": "Toetsenbord sneltoetsen",
-            "profiles": "Profielen"
+            "profiles": "Profielen",
+            "storage": ""
         },
         "theme": {
             "auto": "Automatisch",

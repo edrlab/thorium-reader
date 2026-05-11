@@ -89,6 +89,7 @@
         "login": "Iniciar sesión",
         "logout": "Cerrar sesión",
         "missing": " ",
+        "missingUnavailableDescription": "",
         "moreInfo": "Detalles del libro",
         "myBooks": "Mis libros",
         "noPublicationHelpL1": "Desliza una publicación aquí",
@@ -105,6 +106,8 @@
                 "password": "Contraseña",
                 "register": "Registrar",
                 "retry": "Inténtalo de nuevo",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Nombre de usuario/dirección de correo electrónico"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "Estado"
             }
         },
+        "openFolder": "",
         "publisher": "Editor",
         "readBook": "Leer",
         "released": "Publicado en",
@@ -250,7 +254,11 @@
             "success": "La importación de {{- title}} ha finalizado."
         },
         "open": {
-            "error": "No se puede abrir la publicación: {{- err}}"
+            "error": "No se puede abrir la publicación: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "updateFailed": ""
         },
         "wipeData": "Se han borrado los datos de inicio de sesión"
     },
@@ -567,10 +575,6 @@
                 "compact": "Clips de audio pregrabados",
                 "descriptive": "En el contenido se integran clips de audio pregrabados"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "No hay información disponible sobre audio pregrabado",
-                "descriptive": "No hay información disponible sobre audio pregrabado"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Solo audio pregrabado",
                 "descriptive": "Audiolibro sin texto alternativo"
@@ -591,7 +595,7 @@
             "ways-of-reading-visual-adjustments-unmodifiable": {
                 "compact": "La apariencia no se puede modificar",
                 "descriptive": "El diseño del texto y de la página no se pueden modificar ya que la experiencia de lectura es similar a la de una versión impresa, pero los sistemas de lectura aún pueden ofrecer opciones de zoom"
-           }
+            }
         }
     },
     "publication": {
@@ -845,6 +849,7 @@
             },
             "customFontSelected": "Has elegido una fuente personalizada",
             "customizeReader": "Personalizar el estilo del texto",
+            "defaultValue": "",
             "disabled": "desactivado",
             "display": "Visualización",
             "disposition": {
@@ -860,6 +865,7 @@
             "lineSpacing": "Interlineado",
             "margin": "Margen",
             "mathjax": "Habilitar MathJax",
+            "mathjaxDescription": "",
             "noFootnotes": "Desactivar notas al pie emergentes",
             "noRTLFlip": "Deshabilitar la interfaz de usuario de derecha a izquierda",
             "noRuby": "Ocultar Ruby japonés",
@@ -890,6 +896,16 @@
                 "title": "Establecer opciones predeterminadas"
             },
             "preview": "Previsualizar",
+            "previewText": {
+                "highlight": {
+                    "after": "",
+                    "before": "",
+                    "sentence": "",
+                    "word": ""
+                },
+                "prefix": "",
+                "suffix": ""
+            },
             "reduceFontSize": "Reducir el tamaño del texto",
             "reduceMotion": "Disminuir movimiento",
             "scrolled": "Desplazable",
@@ -1212,11 +1228,56 @@
         "session": {
             "title": "Guardar sesión"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "chooseFolder": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": "",
+                "title": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "info": "",
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Aspecto visual",
             "general": "General",
             "keyboardShortcuts": "Atajos de teclado",
-            "profiles": "Perfiles"
+            "profiles": "Perfiles",
+            "storage": ""
         },
         "theme": {
             "auto": "Automático",

@@ -76,6 +76,8 @@ const StorageConfirmDialog = (props: {
     onConfirm: () => void;
     onOpenChange: (open: boolean) => void;
 }) => {
+    const [__] = useTranslator();
+
     return (
         <AlertDialog.Root open={props.open} onOpenChange={props.onOpenChange}>
             <AlertDialog.Portal>
@@ -90,7 +92,7 @@ const StorageConfirmDialog = (props: {
                     <div className={stylesAlertModals.AlertDialogButtonContainer}>
                         <AlertDialog.Cancel asChild>
                             <button className={classNames(stylesAlertModals.AlertDialogButton, stylesAlertModals.abort)}>
-                                Cancel
+                                {__("dialog.cancel")}
                             </button>
                         </AlertDialog.Cancel>
                         <AlertDialog.Action asChild>
@@ -752,35 +754,27 @@ const StorageSettings: React.FC<{}> = () => {
                     removeUserDirectory();
                 }}
             />
-
-            <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}>
-                <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.storage.info")}</h4>
-                <div className={stylesSettings.session_text} style={{ alignItems: "flex-start" }}>
-                    <SVG ariaHidden svg={InfoIcon} />
-                    <div dir={isRTL ? "rtl" : "ltr"} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                        <p>{__("settings.storage.beta.intro")}</p>
+                <details className={stylesSettings.session_text}>
+                    <summary dir={isRTL ? "rtl" : "ltr"}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "10px"}}>
+                            <SVG ariaHidden svg={InfoIcon} />
+                            <p>{__("settings.storage.beta.summary")}</p>
+                        </div>
+                    </summary>
+                    <div dir={isRTL ? "rtl" : "ltr"} style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%" }}>
                         <p>{__("settings.storage.beta.migration")}</p>
-                        <p>{__("settings.storage.beta.availability")}</p>
                         <p>{__("settings.storage.beta.integrity")}</p>
                         <p>{__("settings.storage.beta.warning")}</p>
-                        <p>{__("settings.storage.beta.vault")}</p>
+                        <p>{__("settings.storage.beta.availability")}</p>
                     </div>
-                </div>
-
-                <div dir={isRTL ? "rtl" : "ltr"} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-                    <div style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "12px",
-                        padding: "14px 16px",
-                        border: "1px solid var(--color-button-border)",
-                        borderRadius: "8px",
-                        background: "var(--color-gray-50)",
-                    }}>
+                </details>
+                
+                <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}>
                         <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                             <p style={{ margin: 0, fontWeight: 600 }}>{__("settings.storage.locations.title")}</p>
-                            <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                            <div className={stylesSettings.storage_location} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                                 <p style={{ margin: 0 }}><strong>{__("settings.storage.locations.defaultInternal")}</strong></p>
+                                <p style={{ margin: 0 }}>{__("settings.storage.locations.defaultDescription")}</p>
                                 <button
                                     className={stylesButtons.button_transparency}
                                     style={{
@@ -793,6 +787,7 @@ const StorageSettings: React.FC<{}> = () => {
                                         overflowWrap: "anywhere",
                                         wordBreak: "break-word",
                                         lineHeight: 1.4,
+                                        fontSize: "14px",
                                     }}
                                     onClick={() => dispatch(catalogActions.openDefaultDirectory.build())}
                                 >
@@ -801,8 +796,7 @@ const StorageSettings: React.FC<{}> = () => {
                             </div>
                             {userDirectory ?
 
-                                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                                    <p style={{ margin: 0 }}><strong>{__("settings.storage.locations.external")}</strong></p>
+                                <div className={stylesSettings.storage_location} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                                     <button
                                         className={stylesButtons.button_transparency}
                                         style={{
@@ -815,6 +809,7 @@ const StorageSettings: React.FC<{}> = () => {
                                             overflowWrap: "anywhere",
                                             wordBreak: "break-word",
                                             lineHeight: 1.4,
+                                            fontSize: "14px",
                                         }}
                                         onClick={() => dispatch(catalogActions.openUserDirectory.build())}
                                     >
@@ -822,26 +817,16 @@ const StorageSettings: React.FC<{}> = () => {
                                     </button>
                                 </div> : <></>
                             }
-                        </div>
                     </div>
+                    </section>
 
-                    <div style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "12px",
-                        padding: "16px",
-                        border: "1px solid var(--color-button-border)",
-                        borderRadius: "8px",
-                        background: "var(--color-neutral-base)",
-                        boxShadow: "0 1px 0 var(--color-gray-100)",
-                    }}>
+                    <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}>
                         <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                             <p style={{ margin: 0, fontWeight: 600 }}>{__("settings.storage.configuration.title")}</p>
                             {!userDirectory && !isEditing ? (
                                 <div className={stylesSettings.session_text} style={{ margin: 0, alignItems: "flex-start" }}>
                                     <SVG ariaHidden svg={InfoIcon} />
                                     <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                                        <p style={{ margin: 0, fontWeight: 600 }}>{__("settings.storage.configuration.notConfiguredTitle")}</p>
                                         <p style={{ margin: 0 }}>
                                             {__("settings.storage.configuration.notConfiguredDescription")}
                                         </p>
@@ -900,18 +885,16 @@ const StorageSettings: React.FC<{}> = () => {
                                         setIsEditing(false);
                                     }}
                                 >
-                                    Cancel
+                                    {__("dialog.cancel")}
                                 </button>
                             </div>
                         ) : null}
-                    </div>
+                    </section>
 
                     <SettingsRecovery
                         defaultDirectory={defaultDirectory}
                         userDirectory={userDirectory}
                     />
-                </div>
-            </section>
         </>
     );
 };
@@ -992,7 +975,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.tabs.storage")}</h3>
                         </Tabs.Trigger>
                     </Tabs.List>
-                    <div className={stylesSettings.settings_content} style={{ marginTop: "70px" }}>
+                    <div className={stylesSettings.settings_content}>
                         <Tabs.Content value="tab1" tabIndex={-1}>
                             <div className={stylesSettings.settings_tab}>
                                 <LanguageSettings />

@@ -8,6 +8,7 @@
 import { shell } from "electron";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions";
+import { getTranslator } from "readium-desktop/common/services/translator";
 import { diMainGet } from "readium-desktop/main/di";
 import { SagaGenerator, call as callTyped, put as putTyped } from "typed-redux-saga";
 
@@ -23,7 +24,7 @@ export function* openPublicationFolder(identifier?: string): SagaGenerator<void>
         } catch {
             yield* putTyped(toastActions.openRequest.build(
                 ToastType.Error,
-                "The publication folder cannot be found. Re-import it, or configure the external publication folder in Settings > Storage.",
+                getTranslator().translate("message.open.folderNotFound"),
             ));
             return;
         }

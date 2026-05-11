@@ -89,6 +89,7 @@
         "login": "",
         "logout": "",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "வெளியீட்டு விவரங்கள்",
         "myBooks": "எனது வெளியீடுகள்",
         "noPublicationHelpL1": "கோப்புகளை இங்கே விடுங்கள்",
@@ -105,6 +106,8 @@
                 "password": "கடவுச்சொல்",
                 "register": "பதிவு செய்யுங்கள்",
                 "retry": "",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "பயனர்பெயர் / மின்னஞ்சல் முகவரி"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "மாநிலம்"
             }
         },
+        "openFolder": "",
         "publisher": "வெளியீட்டாளர்",
         "readBook": "படிக்க",
         "released": "வெளியிடப்பட்டது",
@@ -245,7 +249,11 @@
             "success": "இறக்குமதி [{{- title}}] நிறைவு செய்யப்பட்டது."
         },
         "open": {
-            "error": "வெளியீட்டை ஏற்றுவது தோல்வியுற்றது: [{{- err}}]"
+            "error": "வெளியீட்டை ஏற்றுவது தோல்வியுற்றது: [{{- err}}]",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "updateFailed": ""
         },
         "wipeData": ""
     },
@@ -562,10 +570,6 @@
                 "compact": "முன்பதிவு செய்யப்பட்ட ஆடியோ கிளிப்புகள்",
                 "descriptive": "முன்பதிவு செய்யப்பட்ட ஆடியோ கிளிப்புகள் உள்ளடக்கத்தில் உட்பொதிக்கப்பட்டுள்ளன"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "முன்கூட்டியே பதிவுசெய்யப்பட்ட ஆடியோ பற்றிய தகவல்கள் எதுவும் கிடைக்கவில்லை",
-                "descriptive": "முன்கூட்டியே பதிவுசெய்யப்பட்ட ஆடியோ பற்றிய தகவல்கள் எதுவும் கிடைக்கவில்லை"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "முன்பதிவு செய்யப்பட்ட ஆடியோ மட்டுமே",
                 "descriptive": "உரை மாற்று இல்லாத ஆடியோபுக்"
@@ -839,6 +843,7 @@
             },
             "customFontSelected": "நீங்கள் ஒரு தனிப்பட்ட எழுத்துருவைத் தேர்ந்தெடுத்துள்ளீர்கள்",
             "customizeReader": "உரை வடிவமைப்பைத் தனிப்பயனாக்குங்கள்",
+            "defaultValue": "",
             "disabled": "முடக்கப்பட்டது",
             "display": "காட்சி",
             "disposition": {
@@ -854,6 +859,7 @@
             "lineSpacing": "வரி இடைவெளி",
             "margin": "விளிம்பு",
             "mathjax": "கணிதத்தை இயக்கவும்",
+            "mathjaxDescription": "",
             "noFootnotes": "பாப்அப் அடிக்குறிப்புகளை முடக்கு",
             "noRTLFlip": "வலது-இடது இடைமுகம் ஐ முடக்கு",
             "noRuby": "சப்பானிய ரூபியை மறைக்கவும்",
@@ -884,6 +890,16 @@
                 "title": "விருப்பத்தேர்வுகள்"
             },
             "preview": "முன்னோட்டம்",
+            "previewText": {
+                "highlight": {
+                    "after": "",
+                    "before": "",
+                    "sentence": "",
+                    "word": ""
+                },
+                "prefix": "",
+                "suffix": ""
+            },
             "reduceFontSize": "",
             "reduceMotion": "இயக்கத்தைக் குறைக்கவும்",
             "scrolled": "கீறப்பட்டது",
@@ -1206,11 +1222,56 @@
         "session": {
             "title": "அமர்வு சேமிப்பை இயக்கவும்"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "chooseFolder": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": "",
+                "title": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "info": "",
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "தோற்றம்",
             "general": "பொது",
             "keyboardShortcuts": "விசைப்பலகை குறுக்குவழிகள்",
-            "profiles": ""
+            "profiles": "",
+            "storage": ""
         },
         "theme": {
             "auto": "தானியங்கி",

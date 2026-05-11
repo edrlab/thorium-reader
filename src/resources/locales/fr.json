@@ -89,6 +89,7 @@
         "login": "",
         "logout": "",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Plus d'informations",
         "myBooks": "Mes livres",
         "noPublicationHelpL1": "Déposez les fichiers ici",
@@ -105,6 +106,8 @@
                 "password": "Mot de passe",
                 "register": "Créer un compte",
                 "retry": "Réessayer",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Nom d'utilisateur / Adresse courriel"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "État"
             }
         },
+        "openFolder": "",
         "publisher": "Éditeur",
         "readBook": "Lire",
         "released": "Publié le",
@@ -250,7 +254,11 @@
             "success": "L'ajout de {{- title}} est achevé."
         },
         "open": {
-            "error": "Le livre ne peut pas être ouvert : {{- err}}"
+            "error": "Le livre ne peut pas être ouvert : {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "updateFailed": ""
         },
         "wipeData": "Données d'authentification supprimées avec succès !"
     },
@@ -567,10 +575,6 @@
                 "compact": "Clips audio préenregistrés",
                 "descriptive": "Des clips audio préenregistrés sont intégrés au contenu"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "Aucune information sur les enregistrements audio",
-                "descriptive": "Il n'est pas possible de savoir si le livre contient des  enregistrements audio"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Audio préenregistré uniquement",
                 "descriptive": "Livre audio sans texte alternatif"
@@ -591,7 +595,7 @@
             "ways-of-reading-visual-adjustments-unmodifiable": {
                 "compact": "Mise en page fixe",
                 "descriptive": "L'aspect du texte et la mise en page ne peuvent pas être modifiés, l'expérience de lecture est proche d'une version imprimée, mais les systèmes de lecture peuvent toujours offrir des options de zoom"
-           }
+            }
         }
     },
     "publication": {
@@ -845,6 +849,7 @@
             },
             "customFontSelected": "Vous avez sélectionné une police personnelle",
             "customizeReader": "Personnaliser la mise en forme",
+            "defaultValue": "",
             "disabled": "Désactivé",
             "display": "Affichage",
             "disposition": {
@@ -860,6 +865,7 @@
             "lineSpacing": "Espacement des lignes",
             "margin": "Marge",
             "mathjax": "Activer MathJax",
+            "mathjaxDescription": "",
             "noFootnotes": "Désactiver la fenêtre pop-up des notes de bas de page",
             "noRTLFlip": "Désactiver l'interface droite-à-gauche",
             "noRuby": "Cacher les caractères Ruby Japonais",
@@ -890,6 +896,16 @@
                 "title": "Préférences"
             },
             "preview": "Aperçu",
+            "previewText": {
+                "highlight": {
+                    "after": "",
+                    "before": "",
+                    "sentence": "",
+                    "word": ""
+                },
+                "prefix": "",
+                "suffix": ""
+            },
             "reduceFontSize": "Réduire la taille du texte",
             "reduceMotion": "Réduire les animations visuelles",
             "scrolled": "Défilement vertical",
@@ -1212,11 +1228,56 @@
         "session": {
             "title": "Sauvegarder la session"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "chooseFolder": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": "",
+                "title": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "info": "",
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Apparence",
             "general": "Géneral",
             "keyboardShortcuts": "Raccourcis clavier",
-            "profiles": "Profils"
+            "profiles": "Profils",
+            "storage": ""
         },
         "theme": {
             "auto": "Automatique",

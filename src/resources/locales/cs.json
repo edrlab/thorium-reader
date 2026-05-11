@@ -89,6 +89,7 @@
         "login": "Přihlásit se",
         "logout": "Odhlásit se",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Podropnosti o publikaci",
         "myBooks": "Mé publikace",
         "noPublicationHelpL1": "Sem přetáhněte soubory",
@@ -105,6 +106,8 @@
                 "password": "Heslo",
                 "register": "Registrovat",
                 "retry": "Zkusit znovu",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Uživatelské jméno / e-mailová adresa"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "Stav"
             }
         },
+        "openFolder": "",
         "publisher": "Vydavatel",
         "readBook": "Číst",
         "released": "Publikováno",
@@ -255,7 +259,11 @@
             "success": "Import publikace „{{- title}}“ dokončen."
         },
         "open": {
-            "error": "Načítání publikace sehlalo: [{{- err}}]"
+            "error": "Načítání publikace sehlalo: [{{- err}}]",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "updateFailed": ""
         },
         "wipeData": "Přihlašovací údaje byly vymazány (přístupové tokeny a cookies)"
     },
@@ -572,10 +580,6 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "",
                 "descriptive": ""
@@ -851,6 +855,7 @@
             },
             "customFontSelected": "Zvolili jste osobní písmo",
             "customizeReader": "Přizpůsobit formátování textu",
+            "defaultValue": "",
             "disabled": "vypnuto",
             "display": "Zobrazení",
             "disposition": {
@@ -866,6 +871,7 @@
             "lineSpacing": "Řádkování",
             "margin": "Okraj",
             "mathjax": "",
+            "mathjaxDescription": "",
             "noFootnotes": "Vypnout poznámky pod čarou",
             "noRTLFlip": "",
             "noRuby": "Skrýt japonské znaky rubi",
@@ -896,6 +902,16 @@
                 "title": "Preference"
             },
             "preview": "Náhled",
+            "previewText": {
+                "highlight": {
+                    "after": "",
+                    "before": "",
+                    "sentence": "",
+                    "word": ""
+                },
+                "prefix": "",
+                "suffix": ""
+            },
             "reduceFontSize": "",
             "reduceMotion": "",
             "scrolled": "",
@@ -1218,11 +1234,56 @@
         "session": {
             "title": "Povolit ukládání relací"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "chooseFolder": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": "",
+                "title": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "info": "",
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Vzhled",
             "general": "Obecné",
             "keyboardShortcuts": "Klávesové zkratky",
-            "profiles": ""
+            "profiles": "",
+            "storage": ""
         },
         "theme": {
             "auto": "Automatický",

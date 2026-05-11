@@ -89,6 +89,7 @@
         "login": "",
         "logout": "",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Més información",
         "myBooks": "Els meus llibres",
         "noPublicationHelpL1": "Deposita els arxius aquí",
@@ -105,6 +106,8 @@
                 "password": "Contrasenya",
                 "register": "Registre",
                 "retry": "",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Usuari / Direcció de correu eletrònic"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "Estat"
             }
         },
+        "openFolder": "",
         "publisher": "Editor",
         "readBook": "Llegir",
         "released": "Publicat en",
@@ -250,7 +254,11 @@
             "success": "La importació de {{- title}} ha acabat."
         },
         "open": {
-            "error": "No es pot obrir la publicació: {{- err}}"
+            "error": "No es pot obrir la publicació: {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "updateFailed": ""
         },
         "wipeData": ""
     },
@@ -567,10 +575,6 @@
                 "compact": "",
                 "descriptive": ""
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "",
                 "descriptive": ""
@@ -845,6 +849,7 @@
             },
             "customFontSelected": "",
             "customizeReader": "Personalitza el format del text",
+            "defaultValue": "",
             "disabled": "desactivat",
             "display": "Visualització",
             "disposition": {
@@ -860,6 +865,7 @@
             "lineSpacing": "Interlineat",
             "margin": "Marge",
             "mathjax": "",
+            "mathjaxDescription": "",
             "noFootnotes": "Desactivar notes al peu",
             "noRTLFlip": "Desactiva la IU de dreta a esquerra",
             "noRuby": "Oculta el Ruby japonès",
@@ -890,6 +896,16 @@
                 "title": ""
             },
             "preview": "Previsualització",
+            "previewText": {
+                "highlight": {
+                    "after": "",
+                    "before": "",
+                    "sentence": "",
+                    "word": ""
+                },
+                "prefix": "",
+                "suffix": ""
+            },
             "reduceFontSize": "",
             "reduceMotion": "Disminuir moviment",
             "scrolled": "Desplaçable",
@@ -1212,11 +1228,56 @@
         "session": {
             "title": "Guardar sessió"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "chooseFolder": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": "",
+                "title": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "info": "",
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Aparença",
             "general": "General",
             "keyboardShortcuts": "Dreceres del teclat",
-            "profiles": ""
+            "profiles": "",
+            "storage": ""
         },
         "theme": {
             "auto": "Automàtic",

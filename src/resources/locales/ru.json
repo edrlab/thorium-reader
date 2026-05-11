@@ -89,6 +89,7 @@
         "login": "Войти",
         "logout": "Выйти",
         "missing": "",
+        "missingUnavailableDescription": "",
         "moreInfo": "Дополнительные сведения",
         "myBooks": "Мои книги",
         "noPublicationHelpL1": "Перетащите сюда файлы",
@@ -105,6 +106,8 @@
                 "password": "Пароль",
                 "register": "Регистрация",
                 "retry": "Попробовать ещё раз",
+                "unauthorized": "",
+                "unauthorizedUnsupportedType": "",
                 "username": "Имя пользователя / Адрес электронной почты"
             },
             "info": {
@@ -126,6 +129,7 @@
                 "state": "Cостояние"
             }
         },
+        "openFolder": "",
         "publisher": "Издатель",
         "readBook": "Читать",
         "released": "Дата издания",
@@ -255,7 +259,11 @@
             "success": "Импорт {{- title}} закончен."
         },
         "open": {
-            "error": "Книга не может быть открыта : {{- err}}"
+            "error": "Книга не может быть открыта : {{- err}}",
+            "folderNotFound": ""
+        },
+        "storage": {
+            "updateFailed": ""
         },
         "wipeData": "Регистрационные данные (токены доступа и cookie-файлы) были очищены!"
     },
@@ -572,10 +580,6 @@
                 "compact": "Предварительно записанные аудиофрагменты",
                 "descriptive": "Предварительно записанные аудиофрагменты встроены в содержание"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "Информация о предварительно записанном аудиоматериале отсутствует",
-                "descriptive": "Информация о предварительно записанном аудиоматериале отсутствует"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Только предварительно записанный аудиоматериал",
                 "descriptive": "Аудиокнига без текстовой альтернативы"
@@ -851,6 +855,7 @@
             },
             "customFontSelected": "Вы выбрали персональный шрифт",
             "customizeReader": "Настройка форматирования текста",
+            "defaultValue": "",
             "disabled": "отключено",
             "display": "Отображение",
             "disposition": {
@@ -866,6 +871,7 @@
             "lineSpacing": "Межстрочный интервал",
             "margin": "Отступ",
             "mathjax": "Включить MathJax",
+            "mathjaxDescription": "",
             "noFootnotes": "Отключить всплывающие примечания",
             "noRTLFlip": "Отключить интерфейс справа-налево",
             "noRuby": "Скрыть японские Ruby-аннотации",
@@ -896,6 +902,16 @@
                 "title": "Параметры"
             },
             "preview": "Предпросмотр",
+            "previewText": {
+                "highlight": {
+                    "after": "",
+                    "before": "",
+                    "sentence": "",
+                    "word": ""
+                },
+                "prefix": "",
+                "suffix": ""
+            },
             "reduceFontSize": "Уменьшить размер шрифта",
             "reduceMotion": "Уменьшить скорость перемещения",
             "scrolled": "Потоковый",
@@ -1218,11 +1234,56 @@
         "session": {
             "title": "Сохранение сеанса"
         },
+        "storage": {
+            "actions": {
+                "addDirectory": "",
+                "changeDirectory": "",
+                "chooseFolder": "",
+                "removeStorageDirectory": ""
+            },
+            "beta": {
+                "availability": "",
+                "integrity": "",
+                "migration": "",
+                "summary": "",
+                "warning": ""
+            },
+            "configuration": {
+                "chooseFolderDescription": "",
+                "configuredDescription": "",
+                "notConfiguredDescription": "",
+                "title": ""
+            },
+            "dialogs": {
+                "add": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "edit": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                },
+                "remove": {
+                    "confirm": "",
+                    "description": "",
+                    "title": ""
+                }
+            },
+            "info": "",
+            "locations": {
+                "defaultDescription": "",
+                "defaultInternal": "",
+                "title": ""
+            }
+        },
         "tabs": {
             "appearance": "Внешний вид",
             "general": "Общие",
             "keyboardShortcuts": "Горячие клавиши",
-            "profiles": "Профили"
+            "profiles": "Профили",
+            "storage": ""
         },
         "theme": {
             "auto": "Автоматическая",
