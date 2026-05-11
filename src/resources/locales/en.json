@@ -250,7 +250,7 @@
         },
         "open": {
             "error": "Loading publication failed: [{{- err}}]",
-            "folderNotFound": "The publication folder cannot be found. Re-import it, or configure the additional storage in Settings > Storage."
+            "folderNotFound": "The publication directory cannot be found. Re-import it, or configure the additional storage in Settings > Storage."
         },
         "storage": {
             "removed": "Publication directory removed.",
