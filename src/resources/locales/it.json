@@ -717,7 +717,7 @@
             "unmute": "riattiva audio"
         },
         "dock": {
-            "dockDefault": "",
+            "dockDefault": "Visualizza la finestra come pop-up",
             "dockLeft": "Visualizza la finestra a sinistra",
             "dockRight": "Visualizza la finestra a destra"
         },
