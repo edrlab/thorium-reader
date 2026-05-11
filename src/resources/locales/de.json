@@ -890,16 +890,6 @@
                 "title": "Einstellungen"
             },
             "preview": "Vorschau",
-            "previewText": {
-                "highlight": {
-                    "after": "",
-                    "before": "",
-                    "sentence": "",
-                    "word": ""
-                },
-                "prefix": "",
-                "suffix": ""
-            },
             "reduceFontSize": "",
             "reduceMotion": "Bewegung reduzieren",
             "scrolled": "Fortlaufend",
@@ -1259,7 +1249,6 @@
                     "title": ""
                 }
             },
-            "info": "",
             "locations": {
                 "defaultDescription": "",
                 "defaultInternal": "",

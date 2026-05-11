@@ -884,16 +884,6 @@
                 "title": "カスタマイズ"
             },
             "preview": "プレビュー",
-            "previewText": {
-                "highlight": {
-                    "after": "",
-                    "before": "",
-                    "sentence": "",
-                    "word": ""
-                },
-                "prefix": "",
-                "suffix": ""
-            },
             "reduceFontSize": "",
             "reduceMotion": "視差効果を減らす",
             "scrolled": "スクロール型",
@@ -1253,7 +1243,6 @@
                     "title": ""
                 }
             },
-            "info": "",
             "locations": {
                 "defaultDescription": "",
                 "defaultInternal": "",

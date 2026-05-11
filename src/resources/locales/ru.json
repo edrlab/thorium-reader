@@ -902,16 +902,6 @@
                 "title": "Параметры"
             },
             "preview": "Предпросмотр",
-            "previewText": {
-                "highlight": {
-                    "after": "",
-                    "before": "",
-                    "sentence": "",
-                    "word": ""
-                },
-                "prefix": "",
-                "suffix": ""
-            },
             "reduceFontSize": "Уменьшить размер шрифта",
             "reduceMotion": "Уменьшить скорость перемещения",
             "scrolled": "Потоковый",
@@ -1271,7 +1261,6 @@
                     "title": ""
                 }
             },
-            "info": "",
             "locations": {
                 "defaultDescription": "",
                 "defaultInternal": "",

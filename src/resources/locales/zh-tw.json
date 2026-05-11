@@ -884,16 +884,6 @@
                 "title": "偏好設定"
             },
             "preview": "預覽",
-            "previewText": {
-                "highlight": {
-                    "after": "",
-                    "before": "",
-                    "sentence": "",
-                    "word": ""
-                },
-                "prefix": "",
-                "suffix": ""
-            },
             "reduceFontSize": "",
             "reduceMotion": "減少動態效果",
             "scrolled": "捲動",
@@ -1253,7 +1243,6 @@
                     "title": ""
                 }
             },
-            "info": "",
             "locations": {
                 "defaultDescription": "",
                 "defaultInternal": "",

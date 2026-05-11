@@ -884,16 +884,6 @@
                 "title": "偏好设置"
             },
             "preview": "预览",
-            "previewText": {
-                "highlight": {
-                    "after": "",
-                    "before": "",
-                    "sentence": "",
-                    "word": ""
-                },
-                "prefix": "",
-                "suffix": ""
-            },
             "reduceFontSize": "",
             "reduceMotion": "减少动态效果",
             "scrolled": "滚屏",
@@ -1253,7 +1243,6 @@
                     "title": ""
                 }
             },
-            "info": "",
             "locations": {
                 "defaultDescription": "",
                 "defaultInternal": "",

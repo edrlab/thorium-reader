@@ -1882,16 +1882,6 @@ declare namespace typed_i18n {
       readonly "title": string
     },
     readonly "preview": string,
-    readonly "previewText": {
-      readonly "highlight": {
-        readonly "after": string,
-        readonly "before": string,
-        readonly "sentence": string,
-        readonly "word": string
-      },
-      readonly "prefix": string,
-      readonly "suffix": string
-    },
     readonly "reduceFontSize": string,
     readonly "reduceMotion": string,
     readonly "scrolled": string,
@@ -2301,16 +2291,6 @@ declare namespace typed_i18n {
     readonly "title": string
   },
   readonly "preview": string,
-  readonly "previewText": {
-    readonly "highlight": {
-      readonly "after": string,
-      readonly "before": string,
-      readonly "sentence": string,
-      readonly "word": string
-    },
-    readonly "prefix": string,
-    readonly "suffix": string
-  },
   readonly "reduceFontSize": string,
   readonly "reduceMotion": string,
   readonly "scrolled": string,
@@ -2417,28 +2397,6 @@ declare namespace typed_i18n {
   (_: "reader.settings.preset.saveDetails", __?: {}): string;
   (_: "reader.settings.preset.title", __?: {}): string;
   (_: "reader.settings.preview", __?: {}): string;
-  (_: "reader.settings.previewText", __?: {}): {
-  readonly "highlight": {
-    readonly "after": string,
-    readonly "before": string,
-    readonly "sentence": string,
-    readonly "word": string
-  },
-  readonly "prefix": string,
-  readonly "suffix": string
-};
-  (_: "reader.settings.previewText.highlight", __?: {}): {
-  readonly "after": string,
-  readonly "before": string,
-  readonly "sentence": string,
-  readonly "word": string
-};
-  (_: "reader.settings.previewText.highlight.after", __?: {}): string;
-  (_: "reader.settings.previewText.highlight.before", __?: {}): string;
-  (_: "reader.settings.previewText.highlight.sentence", __?: {}): string;
-  (_: "reader.settings.previewText.highlight.word", __?: {}): string;
-  (_: "reader.settings.previewText.prefix", __?: {}): string;
-  (_: "reader.settings.previewText.suffix", __?: {}): string;
   (_: "reader.settings.reduceFontSize", __?: {}): string;
   (_: "reader.settings.reduceMotion", __?: {}): string;
   (_: "reader.settings.scrolled", __?: {}): string;

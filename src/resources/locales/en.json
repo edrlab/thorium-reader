@@ -890,16 +890,6 @@
                 "title": "Preferences"
             },
             "preview": "Preview",
-            "previewText": {
-                "highlight": {
-                    "after": "Aenean laoreet justo vitae",
-                    "before": "fringilla metus.",
-                    "sentence": "Sed eu dignissim dui.",
-                    "word": "Curabitur"
-                },
-                "prefix": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nec purus sodales, rhoncus nisl ac,",
-                "suffix": "mauris fermentum, eget ultrices augue placerat. Proin massa est, gravida feugiat ipsum feugiat, dapibus porttitor felis."
-            },
             "reduceFontSize": "Reduce font size",
             "reduceMotion": "Reduce motion",
             "scrolled": "Scrollable",

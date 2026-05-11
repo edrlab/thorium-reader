@@ -914,16 +914,6 @@
                 "title": "التفضيلات"
             },
             "preview": "معاينة",
-            "previewText": {
-                "highlight": {
-                    "after": "",
-                    "before": "",
-                    "sentence": "",
-                    "word": ""
-                },
-                "prefix": "",
-                "suffix": ""
-            },
             "reduceFontSize": "",
             "reduceMotion": "تقليل الحركة",
             "scrolled": "قابل للتمرير",
@@ -1283,7 +1273,6 @@
                     "title": ""
                 }
             },
-            "info": "",
             "locations": {
                 "defaultDescription": "",
                 "defaultInternal": "",

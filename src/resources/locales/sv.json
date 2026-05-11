@@ -890,16 +890,6 @@
                 "title": "Förinställning"
             },
             "preview": "Förhandsvisning",
-            "previewText": {
-                "highlight": {
-                    "after": "",
-                    "before": "",
-                    "sentence": "",
-                    "word": ""
-                },
-                "prefix": "",
-                "suffix": ""
-            },
             "reduceFontSize": "Minska textstorlek",
             "reduceMotion": "Minska rörelser",
             "scrolled": "Rullningsbar",
@@ -1259,7 +1249,6 @@
                     "title": ""
                 }
             },
-            "info": "",
             "locations": {
                 "defaultDescription": "",
                 "defaultInternal": "",

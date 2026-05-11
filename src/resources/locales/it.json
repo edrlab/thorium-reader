@@ -896,16 +896,6 @@
                 "title": "Preferenze"
             },
             "preview": "Anteprima",
-            "previewText": {
-                "highlight": {
-                    "after": "",
-                    "before": "",
-                    "sentence": "",
-                    "word": ""
-                },
-                "prefix": "",
-                "suffix": ""
-            },
             "reduceFontSize": "Ridurre la dimensione del testo",
             "reduceMotion": "Riduci movimento",
             "scrolled": "Scrollabile",
@@ -1265,7 +1255,6 @@
                     "title": ""
                 }
             },
-            "info": "",
             "locations": {
                 "defaultDescription": "",
                 "defaultInternal": "",

@@ -890,16 +890,6 @@
                 "title": "Προτιμήσεις"
             },
             "preview": "Προεπισκόπηση",
-            "previewText": {
-                "highlight": {
-                    "after": "",
-                    "before": "",
-                    "sentence": "",
-                    "word": ""
-                },
-                "prefix": "",
-                "suffix": ""
-            },
             "reduceFontSize": "",
             "reduceMotion": "Μείωση κίνησης",
             "scrolled": "Μετακυλίσιμο",
@@ -1259,7 +1249,6 @@
                     "title": ""
                 }
             },
-            "info": "",
             "locations": {
                 "defaultDescription": "",
                 "defaultInternal": "",

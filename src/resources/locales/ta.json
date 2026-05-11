@@ -890,16 +890,6 @@
                 "title": "விருப்பத்தேர்வுகள்"
             },
             "preview": "முன்னோட்டம்",
-            "previewText": {
-                "highlight": {
-                    "after": "",
-                    "before": "",
-                    "sentence": "",
-                    "word": ""
-                },
-                "prefix": "",
-                "suffix": ""
-            },
             "reduceFontSize": "",
             "reduceMotion": "இயக்கத்தைக் குறைக்கவும்",
             "scrolled": "கீறப்பட்டது",
@@ -1259,7 +1249,6 @@
                     "title": ""
                 }
             },
-            "info": "",
             "locations": {
                 "defaultDescription": "",
                 "defaultInternal": "",

@@ -1152,19 +1152,19 @@ fontSize: "1.5em",
 {
 color: "silver",
 }
-}>{__("reader.settings.previewText.prefix")}</span><br/>
+}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nec purus sodales, rhoncus nisl ac,</span><br/>
 <div style={
 {
 border: "2px solid black",
 borderRadius: "8px",
 padding: "4px",
 }
-}><span>{__("reader.settings.previewText.highlight.before")}</span> <span style={styleSentence}>{__("reader.settings.previewText.highlight.sentence")} <span style={styleWord}>{__("reader.settings.previewText.highlight.word")}</span> venenatis sollicitudin ultrices. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</span> <span>{__("reader.settings.previewText.highlight.after")}</span><br/></div>
+}><span>fringilla metus.</span> <span style={styleSentence}>Sed eu dignissim dui. <span style={styleWord}>Curabitur</span> venenatis sollicitudin ultrices. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</span> <span>Aenean laoreet justo vitae</span><br/></div>
 <span style={
 {
 color: "silver",
 }
-}>{__("reader.settings.previewText.suffix")}</span>
+}>mauris fermentum, eget ultrices augue placerat. Proin massa est, gravida feugiat ipsum feugiat, dapibus porttitor felis.</span>
 </p>
 </div>
 )
@@ -1193,14 +1193,14 @@ ttsHighlightStyle_ === HighlightDrawTypeOpacityMask ?
 "silver" :
 undefined,
 }
-}>{`${__("reader.settings.previewText.prefix")} ${__("reader.settings.previewText.highlight.before")}`}</span> <span style={styleSentence}>{__("reader.settings.previewText.highlight.sentence")} <span style={styleWord}>{__("reader.settings.previewText.highlight.word")}</span> venenatis sollicitudin ultrices. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</span> <span style={
+}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nec purus sodales, rhoncus nisl ac, fringilla metus.</span> <span style={styleSentence}>Sed eu dignissim dui. <span style={styleWord}>Curabitur</span> venenatis sollicitudin ultrices. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</span> <span style={
 {
 color:
 ttsHighlightStyle_ === HighlightDrawTypeOpacityMask ?
 "silver" :
 undefined,
 }
-}>{`${__("reader.settings.previewText.highlight.after")} ${__("reader.settings.previewText.suffix")}`}</span>
+}>Aenean laoreet justo vitae mauris fermentum, eget ultrices augue placerat. Proin massa est, gravida feugiat ipsum feugiat, dapibus porttitor felis.</span>
 </p>
 </div>
 )
