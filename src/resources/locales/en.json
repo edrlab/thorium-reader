@@ -253,7 +253,9 @@
             "folderNotFound": "The publication folder cannot be found. Re-import it, or configure the additional storage in Settings > Storage."
         },
         "storage": {
-            "updateFailed": "Failed to update publication directory: {{- message}}"
+            "removed": "Publication directory removed.",
+            "updateFailed": "Failed to update publication directory: {{- message}}",
+            "updated": "Publication directory updated."
         },
         "wipeData": "Login data was cleared (access tokens and cookies)"
     },

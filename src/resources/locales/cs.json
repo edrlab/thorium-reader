@@ -263,7 +263,9 @@
             "folderNotFound": ""
         },
         "storage": {
-            "updateFailed": ""
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "Přihlašovací údaje byly vymazány (přístupové tokeny a cookies)"
     },

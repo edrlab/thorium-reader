@@ -258,7 +258,9 @@
             "folderNotFound": ""
         },
         "storage": {
-            "updateFailed": ""
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "Se han borrado los datos de inicio de sesión"
     },

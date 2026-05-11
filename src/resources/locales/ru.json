@@ -263,7 +263,9 @@
             "folderNotFound": ""
         },
         "storage": {
-            "updateFailed": ""
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "Регистрационные данные (токены доступа и cookie-файлы) были очищены!"
     },

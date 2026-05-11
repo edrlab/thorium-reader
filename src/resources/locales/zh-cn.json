@@ -248,7 +248,9 @@
             "folderNotFound": ""
         },
         "storage": {
-            "updateFailed": ""
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "登录数据已清空(包括访问令牌及本地身份文件)"
     },

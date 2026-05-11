@@ -253,7 +253,9 @@
             "folderNotFound": ""
         },
         "storage": {
-            "updateFailed": ""
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "Login data is verwijderd (toegang tot logintekens en cookies)"
     },

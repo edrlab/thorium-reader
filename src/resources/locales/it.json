@@ -258,7 +258,9 @@
             "folderNotFound": ""
         },
         "storage": {
-            "updateFailed": ""
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "I dati per il login sono stati cancellati (token d'accesso e cookies)"
     },

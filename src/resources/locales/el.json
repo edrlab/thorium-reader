@@ -253,7 +253,9 @@
             "folderNotFound": ""
         },
         "storage": {
-            "updateFailed": ""
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "Τα στοιχεία σύνδεσης διαγράφηκαν (διακριτικά πρόσβασης και cookies)"
     },

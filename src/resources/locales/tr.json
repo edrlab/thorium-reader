@@ -253,7 +253,9 @@
             "folderNotFound": ""
         },
         "storage": {
-            "updateFailed": ""
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "Giriş verileri başarıyla temizlendi (erişim dizgecikleri ve çerezler)"
     },

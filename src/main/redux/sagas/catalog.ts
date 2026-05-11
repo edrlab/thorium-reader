@@ -378,7 +378,9 @@ export function saga() {
                     }
                     yield* putTyped(toastActions.openRequest.build(
                         ToastType.Success,
-                        getTranslator().translate(nextUserDirectory ? "message.storage.updated" : "message.storage.removed"),
+                        nextUserDirectory
+                            ? getTranslator().translate("message.storage.updated")
+                            : getTranslator().translate("message.storage.removed"),
                     ));
                     yield* callTyped(getCatalogAndDispatchIt);
                 } catch (e) {

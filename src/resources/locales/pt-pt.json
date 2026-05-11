@@ -258,7 +258,9 @@
             "folderNotFound": ""
         },
         "storage": {
-            "updateFailed": ""
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "Os dados de autenticação foram limpos (tokens de acesso e cookies)"
     },

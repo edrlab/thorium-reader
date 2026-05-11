@@ -579,7 +579,11 @@ declare namespace typed_i18n {
     readonly "error": string,
     readonly "folderNotFound": string
   },
-  readonly "storage": { readonly "updateFailed": string },
+  readonly "storage": {
+    readonly "removed": string,
+    readonly "updateFailed": string,
+    readonly "updated": string
+  },
   readonly "wipeData": string
 };
   (_: "message.annotations", __?: {}): {
@@ -609,8 +613,14 @@ declare namespace typed_i18n {
   (_: "message.open", __?: {}): { readonly "error": string, readonly "folderNotFound": string };
   (_: "message.open.error", __?: {}): string;
   (_: "message.open.folderNotFound", __?: {}): string;
-  (_: "message.storage", __?: {}): { readonly "updateFailed": string };
+  (_: "message.storage", __?: {}): {
+  readonly "removed": string,
+  readonly "updateFailed": string,
+  readonly "updated": string
+};
+  (_: "message.storage.removed", __?: {}): string;
   (_: "message.storage.updateFailed", __?: {}): string;
+  (_: "message.storage.updated", __?: {}): string;
   (_: "message.wipeData", __?: {}): string;
   (_: "opds", __?: {}): {
   readonly "addForm": {

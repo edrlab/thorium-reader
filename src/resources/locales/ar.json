@@ -273,7 +273,9 @@
             "folderNotFound": ""
         },
         "storage": {
-            "updateFailed": ""
+            "removed": "",
+            "updateFailed": "",
+            "updated": ""
         },
         "wipeData": "تم مسح بيانات تسجيل الدخول (رموز الوصول وملفات تعريف الارتباط)"
     },
