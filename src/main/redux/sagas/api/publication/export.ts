@@ -32,7 +32,7 @@ export function* exportPublication(publicationView: PublicationView) {
 
     if (!res.canceled) {
         if (res.filePath) {
-            publicationStorage.copyPublicationToPath(publicationView, res.filePath);
+            yield* callTyped(() => publicationStorage.copyPublicationToPath(publicationView, res.filePath));
         }
     }
 }

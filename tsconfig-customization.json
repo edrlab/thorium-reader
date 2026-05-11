@@ -46,18 +46,18 @@
     "skipLibCheck": true,
     // NODENEXT does not work because of "typed-redux-saga/macro" in WebPack Babel config
     // "module": "esnext", // 99
-    // "module": "ES2020", // 6
+    // "module": "ES2023", // 6
     // "module": "preserve", // 200
     "module": "nodenext", // 199
     "moduleResolution": "nodenext", // 99
     // "moduleResolution": "node", // 100
     // "moduleResolution": "bundler", // 100
     // "lib": [
-    //   "es2020",
+    //   "ES2023",
     //   "dom",
     //   "dom.iterable"
     // ],
-    "target": "es2025",
+    "target": "ES2023",
     // "jsx": "react",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,

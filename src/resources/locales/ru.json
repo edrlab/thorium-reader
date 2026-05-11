@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Меню",
         "closeDialog": "Закрыть",
-        "importFile": "Импортировать книгу",
         "leftSlideButton": "Сдвиньте список влево",
         "mainContent": "основное содержимое",
         "rightSlideButton": "Сдвиньте список вправо",

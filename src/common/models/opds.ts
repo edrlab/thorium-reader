@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as crypto from "crypto";
-import { v4 as uuidv4 } from "uuid";
+import { uuidv4 } from "readium-desktop/utils/uuid";
 
 const salt = crypto.randomBytes(16).toString("hex");
 export const OPDS_AUTH_ENCRYPTION_KEY_BUFFER = crypto.pbkdf2Sync(uuidv4(), salt, 1000, 32, "sha256");

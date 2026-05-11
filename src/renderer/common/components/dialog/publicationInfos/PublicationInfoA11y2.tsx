@@ -72,7 +72,8 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
     
     // (@property="schema:accessModeSufficient" and contains(normalize-space(), "textual"))]. 
     // parsed as [["textual", "visual"], ["auditory", "visual"]] and mapped to ["textual,visual", "auditory,visual"]
-    const a11y_accessModeSufficient = a11y_accessModeSufficient_array_array.map((value) => Array.isArray(value) ? value.join(",") : value);
+    const a11y_accessModeSufficient = (Array.isArray(a11y_accessModeSufficient_array_array) ? a11y_accessModeSufficient_array_array : [])
+        .map((value) => Array.isArray(value) ? value.join(",") : value);
     const a11y_conformsTo = Array.isArray(a11y_conformsTo_) ? a11y_conformsTo_ : a11y_conformsTo_ ? [a11y_conformsTo_] : [];
     const a11y_certifierReport = Array.isArray(a11y_certifierReport_) ? a11y_certifierReport_ : a11y_certifierReport_ ? [a11y_certifierReport_] : [];
     const a11y_certifiedBy = Array.isArray(a11y_certifiedBy_) ? a11y_certifiedBy_ : a11y_certifiedBy_ ? [a11y_certifiedBy_] : [];
@@ -292,21 +293,19 @@ export const PublicationInfoA11y2: React.FC<IProps> = ({publicationViewMaybeOpds
                             {__("publ-a11y-display-guide.ways-of-reading.ways-of-reading-nonvisual-reading-alt-text.compact")}
                         </li>
                         : <></>}
-                    <li className="publicationInfoA11y2-icon" title={synchronised_pre_recorded_audio
-                        ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-synchronized.descriptive")
-                        : all_content_audio
-                            ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-only.descriptive")
-                            : audio_content
-                                ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-complementary.descriptive")
-                                : __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-no-metadata.descriptive")}>
-                        {synchronised_pre_recorded_audio
-                            ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-synchronized.compact")
+                    {(synchronised_pre_recorded_audio || all_content_audio || audio_content) ?
+                        <li className="publicationInfoA11y2-icon" title={synchronised_pre_recorded_audio
+                            ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-synchronized.descriptive")
                             : all_content_audio
-                                ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-only.compact")
-                                : audio_content
-                                    ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-complementary.compact")
-                                    : __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-no-metadata.compact")}
-                    </li>
+                                ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-only.descriptive")
+                                : __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-complementary.descriptive")}>
+                            {synchronised_pre_recorded_audio
+                                ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-synchronized.compact")
+                                : all_content_audio
+                                    ? __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-only.compact")
+                                    : __("publ-a11y-display-guide.ways-of-reading.ways-of-reading-prerecorded-audio-complementary.compact")}
+                        </li>
+                        : <></>}
                 </ul></>
             : <></>}
         {enableNavigation

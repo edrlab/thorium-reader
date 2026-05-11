@@ -45,7 +45,7 @@ jobs:
       security-events: none
       statuses: none
 #    if: "!contains(toJSON(github.event.commits.*.message), '[skip-ci]')"
-    if: "github.event_name == 'pull_request' || !contains(github.event.head_commit.message, 'skip ci')"
+    if: "github.event_name == 'pull_request' || !contains(github.event.head_commit.message, 'skip ci') && github.ref_name == 'develop' && github.repository_owner == 'edrlab'"
     runs-on: ${{ matrix.runson }}
     strategy:
       fail-fast: false
@@ -128,17 +128,20 @@ jobs:
 # "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x64"
 # "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64"
     #- run: exit 1
-    - run: echo 'RELEASE_TAG:' ${{ env.RELEASE_TAG }}
-    - run: 'echo "GITHUB_RUN_NUMBER: ${{ github.run_number }}"'
-    - run: 'echo "GITHUB_RUN_ID: ${{ github.run_id }}"'
-    - run: 'echo "GITHUB_SHA: ${{ github.sha }}"'
+#    - run: echo 'RELEASE_TAG:' ${{ env.RELEASE_TAG }}
+#    - run: 'echo "GITHUB_RUN_NUMBER: ${{ github.run_number }}"'
+#    - run: 'echo "GITHUB_RUN_ID: ${{ github.run_id }}"'
+#    - run: 'echo "GITHUB_SHA: ${{ github.sha }}"'
     - run: echo "${{ matrix.osarch }} // ${{ runner.arch }}"
     - name: System arch (non Windows)
       #if: ${{ matrix.osarch != 'windows-intel' && matrix.osarch != 'windows-arm' }}
       if: ${{ !startsWith(matrix.osarch, 'windows-') }}
       run: uname -m && arch
     - name: Checkout
-      uses: actions/checkout@v6
+# https://github.com/actions/checkout/commits/v6.0.2
+# https://github.com/actions/checkout/commits/de0fac2e4500dabe0009e67214ff5f5447ce83dd
+# https://github.com/actions/checkout/compare/v6.0.2...de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
       with:
         persist-credentials: false
     # - name: Git config global dump (pre)
@@ -163,13 +166,16 @@ jobs:
     #   run: >
     #     git config --global url."http://".insteadOf git://
     #   shell: bash
-    - name: Git config global dump (post)
-      run: 'git config --global --list || echo NO_GIT_GLOBAL_CONFIG || true'
-      shell: bash
-    - name: Git config local dump (post)
-      run: 'git config --list || echo NO_GIT_GLOBAL_CONFIG || true'
-      shell: bash
-    - uses: actions/setup-node@v6
+#    - name: Git config global dump (post)
+#      run: 'git config --global --list || echo NO_GIT_GLOBAL_CONFIG || true'
+#      shell: bash
+#    - name: Git config local dump (post)
+#      run: 'git config --list || echo NO_GIT_GLOBAL_CONFIG || true'
+#      shell: bash
+# https://github.com/actions/setup-node/commits/v6.4.0
+# https://github.com/actions/setup-node/commits/48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+# https://github.com/actions/setup-node/compare/v6.4.0...48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+    - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
       with:
         node-version: '24'
         #check-latest: true

@@ -53,6 +53,7 @@ import debounce from "debounce";
 import { INoteCreator } from "readium-desktop/common/redux/states/creator";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { ApiappHowDoesItWorkInfoBox } from "../dialog/ApiappAddForm";
+import SettingsRecovery from "./SettingsRecovery";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import { TextArea } from "react-aria-components";
 import { noteExportHtmlMustacheTemplate } from "readium-desktop/common/readium/annotation/htmlTemplate";
@@ -701,12 +702,13 @@ const StorageSettings: React.FC<{}> = () => {
     const [confirmEditOpen, setConfirmEditOpen] = React.useState(false);
     const [confirmDeleteOpen, setConfirmDeleteOpen] = React.useState(false);
 
-    const submitDirectory = React.useCallback((nextDirectory: string) => {
-        dispatch(catalogActions.setUserDirectory.build(nextDirectory));
+    const removeUserDirectory = React.useCallback(() => {
+        dispatch(catalogActions.setUserDirectory.build(""));
         setIsEditing(false);
     }, [dispatch]);
 
     const openFolderPicker = React.useCallback(() => {
+        // trigger the file picker on the last userDirectory if available
         dispatch(catalogActions.setUserDirectory.build(userDirectory));
         setIsEditing(false);
     }, [dispatch, userDirectory]);
@@ -747,7 +749,7 @@ const StorageSettings: React.FC<{}> = () => {
                 confirmLabel={__("settings.storage.dialogs.remove.confirm")}
                 onConfirm={() => {
                     setConfirmDeleteOpen(false);
-                    submitDirectory("");
+                    removeUserDirectory();
                 }}
             />
 
@@ -903,6 +905,11 @@ const StorageSettings: React.FC<{}> = () => {
                             </div>
                         ) : null}
                     </div>
+
+                    <SettingsRecovery
+                        defaultDirectory={defaultDirectory}
+                        userDirectory={userDirectory}
+                    />
                 </div>
             </section>
         </>

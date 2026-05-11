@@ -15,7 +15,7 @@ import { USER_DATA_FOLDER, FORCE_PROD_DB_IN_DEV } from "readium-desktop/common/c
 import { IPublicationCheckerState } from "readium-desktop/common/redux/states/publicationsChecker";
 import { publicationActions } from "readium-desktop/common/redux/actions";
 import { winActions } from "../../actions";
-import { tryCatch } from "readium-desktop/utils/tryCatch";
+import { appendFileWithRotation } from "readium-desktop/utils/log";
 
 // TODO: use app.getPath("logs"); instead
 const folderPath = path.join(
@@ -50,7 +50,11 @@ export function* publicationIntegrityChecker(): SagaGenerator<void> {
     const publicationDocuments = yield* callTyped(() => diMainGet("publication-repository").findAll());
     const publicationIdentifierDataBase = publicationDocuments.map(({ identifier }) => identifier);
  
-    const { good: approvedPublicationIdentifierDisk, bad: rejectedPublicationIdentifierDisk } = yield* callTyped(() => diMainGet("publication-storage").checkPublicationsIntegrity());
+    const {
+        good: approvedPublicationIdentifierDisk,
+        bad: rejectedPublicationIdentifierDisk,
+        issues,
+    } = yield* callTyped(() => diMainGet("publication-storage").checkPublicationsIntegrity(publicationDocuments));
     const publicationIdentifierDisk = [...approvedPublicationIdentifierDisk, ...rejectedPublicationIdentifierDisk];
     
     yield* delayTyped(1);
@@ -58,30 +62,28 @@ export function* publicationIntegrityChecker(): SagaGenerator<void> {
     const publicationIdentifierNotFoundOnDataBaseButFoundOnDisk: string[] = publicationIdentifierDisk.filter((id) => !publicationIdentifierDataBase.includes(id));
     const publicationIdentifierMatchedDiskDataBaseArray = publicationIdentifierDataBase.filter((id) => publicationIdentifierDisk.includes(id));
     const publicationIdentifierApprovedMatchedDiskDataBaseArray = publicationIdentifierDataBase.filter((id) => approvedPublicationIdentifierDisk.includes(id));
+    const recoverablePublicationIdentifierDisk = approvedPublicationIdentifierDisk.filter((id) => !publicationIdentifierDataBase.includes(id));
 
-    debug("==> Publication Id rejected in Disk:");
-    for (const id of rejectedPublicationIdentifierDisk) {
-        debug(`pubId: ${id}`);
-        try {
-            const filePath = yield* callTyped(() => diMainGet("publication-storage").findPublicationPath(id));
-            debug(`filePath: ${filePath}`);
-            debug("file in directory:");
-            const files = yield* callTyped(() => fs.promises.readdir(filePath));
-            for (const file of files) {
-                const stat = yield* callTyped(() => tryCatch(() => fs.promises.stat(path.join(filePath, file)), ""));
-                debug(`\t${file} size=${stat?.size} isFile=${stat?.isFile()}`);
-            }
-
-        } catch {
-            debug(`pubId: ${id} throw an error when reading the directory !`);
+    debug("==> publication storage integrity issues:");
+    for (const issue of issues) {
+        debug(`type: ${issue.type}`);
+        debug(`pubId: ${issue.identifier}`);
+        if (issue.directoryPath?.length) {
+            debug(`directoryPath: ${issue.directoryPath.join(" | ")}`);
         }
-
-        try {
-            const publicationDocument = yield* callTyped(() => diMainGet("publication-repository").findByPublicationIdentifier(id));
-            debug(`publicationDocument: ${JSON.stringify(publicationDocument, null, 4)}`);
-        } catch {
-            debug("Not found on DataBase");
+        if (issue.filePath) {
+            debug(`filePath: ${issue.filePath}`);
         }
+        if (issue.fileUrl) {
+            debug(`fileUrl: ${issue.fileUrl}`);
+        }
+        if (issue.hash) {
+            debug(`hash: ${issue.hash}`);
+        }
+        if (issue.matchingIdentifier) {
+            debug(`matchingIdentifier: ${issue.matchingIdentifier.join(" | ")}`);
+        }
+        debug(`message: ${issue.message}`);
         dumpLogs = true;
     }
     debug("--------");
@@ -95,30 +97,11 @@ export function* publicationIntegrityChecker(): SagaGenerator<void> {
     }
     debug("--------");
 
-    debug("==> publication identifier found on disk but NOT found on database:");
-    for (const id of publicationIdentifierNotFoundOnDataBaseButFoundOnDisk) {
-        debug(`pubId: ${id}`);
-        try {
-            const filePath = yield* callTyped(() => diMainGet("publication-storage").findPublicationPath(id));
-            debug(`filePath: ${filePath}`);
-            debug("file in directory:");
-            const files = yield* callTyped(() => fs.promises.readdir(filePath));
-            for (const file of files) {
-                const stat = yield* callTyped(() => tryCatch(() => fs.promises.stat(path.join(filePath, file)), ""));
-                debug(`\t${file} size=${stat?.size} isFile=${stat?.isFile()}`);
-            }
-
-        } catch {
-            debug(`pubId: ${id} throw an error when reading the directory !`);
-        }
-        dumpLogs = true;
-    }
-    debug("--------");
-
     debug(`${publicationIdentifierDisk.length} UUID directories were found on disk, of which ${approvedPublicationIdentifierDisk.length} contain an approved publication archive book.`);
     debug(`${publicationIdentifierDataBase.length} publication(s) found in database`);
     debug(`${publicationIdentifierNotFoundOnDiskButFoundOnDataBase.length} publication(s) found in database but not found on the disk`);
     debug(`${publicationIdentifierNotFoundOnDataBaseButFoundOnDisk.length} publication(s) found in disk but not found on the database`);
+    debug(`${recoverablePublicationIdentifierDisk.length} publication(s) found in disk, approved by the integrity checker, and recoverable because they are missing from the database`);
     debug(`${publicationIdentifierMatchedDiskDataBaseArray.length} publication(s) matched between the database and the disk`);
     debug(`${publicationIdentifierApprovedMatchedDiskDataBaseArray.length} publication(s) approved and matched between the database and the disk (this is the number of publications you can see in Thorium All Books...)`);
     if (publicationIdentifierNotFoundOnDiskButFoundOnDataBase.length || publicationIdentifierNotFoundOnDataBaseButFoundOnDisk.length) {
@@ -126,14 +109,6 @@ export function* publicationIntegrityChecker(): SagaGenerator<void> {
     }
     yield* delayTyped(1);
 
-    const publicationCheckerState: IPublicationCheckerState = {
-        publicationIdentifierDataBase,
-        // publicationIdentifierDisk = [...approvedPublicationIdentifierDisk, ...rejectedPublicationIdentifierDisk];
-        approvedPublicationIdentifierDisk, rejectedPublicationIdentifierDisk,
-        dump,
-    };
-
-    yield* delayTyped(1);
     dump += `Process: ${JSON.stringify({
         node_version: process.version,
         platform: process.platform,
@@ -144,10 +119,19 @@ export function* publicationIntegrityChecker(): SagaGenerator<void> {
         thoriumAppVersion: _APP_VERSION,
         thoriumPackName: _PACK_NAME,
         thoriumUserDataPath: USER_DATA_FOLDER,
-        thoriumPublicationPath: yield* callTyped(() => diMainGet("publication-directory").getDirectoryPath()),
+        thoriumPublicationPath: yield* callTyped(() => diMainGet("publication-storage").getDirectoryPath()),
     }, null, 4)}\n`;
+    yield* delayTyped(1);
+
+    const publicationCheckerState: IPublicationCheckerState = {
+        publicationIdentifierDataBase,
+        // publicationIdentifierDisk = [...approvedPublicationIdentifierDisk, ...rejectedPublicationIdentifierDisk];
+        approvedPublicationIdentifierDisk, rejectedPublicationIdentifierDisk,
+        dump,
+    };
+
     if (dumpLogs) {
-        yield* callTyped(() => fs.promises.appendFile(appLogs, dump));
+        yield* callTyped(() => appendFileWithRotation(appLogs, dump));
 
         yield* takeTyped(winActions.library.openSucess.ID);
         yield* delayTyped(1000); // 1s

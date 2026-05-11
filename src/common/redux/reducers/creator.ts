@@ -9,7 +9,7 @@ import { type Reducer } from "redux";
 
 import { creatorActions } from "../actions";
 import { INoteCreator } from "../states/creator";
-import { v4 as uuidv4 } from "uuid";
+import { uuidv4 } from "readium-desktop/utils/uuid";
 
 const username = "";
 // try {

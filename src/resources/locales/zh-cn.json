@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "菜单",
         "closeDialog": "关闭",
-        "importFile": "导入出版物",
         "leftSlideButton": "将列表划至左侧",
         "mainContent": "主要内容",
         "rightSlideButton": "将列表划至右侧",
@@ -155,7 +154,7 @@
             "splashscreen": {
                 "fallbackWelcomeScreen": "未提供欢自定义迎屏幕",
                 "state": "状态: {{- state}}",
-                "title": "提供并激活自定义配置文件"
+                "title": "准备并激活自定义配置文件"
             }
         },
         "deleteAnnotations": "您要删除笔记吗？",
@@ -584,7 +583,7 @@
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": "兼容 TTS 和屏幕阅读器"
+                "textual": "所有内容均可作为朗读演说或动态布莱叶盲文被读出"
             },
             "accessibilityFeature": {
                 "alternativeText": "包含替代文本",
@@ -779,7 +778,7 @@
             "printDisabled": "禁止打印",
             "screenNext": "向前浏览",
             "screenPrevious": "向后浏览",
-            "settingsTitle": "设置"
+            "settingsTitle": "阅读器设置"
         },
         "notes": {
             "colors": {
@@ -1236,11 +1235,11 @@
     },
     "wizard": {
         "buttons": {
-            "discover": "探索新变化",
+            "discover": "发现 Thorium 桌面版",
             "goToBooks": "查看我的出版物"
         },
         "description": {
-            "home": "Thorium 看起来不同了！让我们探索一下有什么新变化。",
+            "home": "Thorium 3.4 带来一系列用户体验改进并修复了一组问题。如果你之后决定回到旧版程序，强烈建议先用旧版程序备份电子书标注和书签，办法是将它们导出到外部文件。然后在装好旧版程序后把它们导回去。这是因为在 3.4 版本以略微不同的内部格式存储标注和书签。这解决了性能问题，但破坏了标注的向后兼容性。",
             "resources": ""
         },
         "dontShow": "不再显示",
@@ -1254,7 +1253,7 @@
         },
         "title": {
             "resources": "",
-            "welcome": "欢迎使用 Thorium 3"
+            "welcome": "欢迎使用 Thorium 3.4"
         }
     }
 }

@@ -162,7 +162,7 @@ export class LCP {
         }
     }
 
-    public async decrypt(encryptedContent: Buffer, linkHref: string, needsInflating: boolean):
+    public async decrypt(encryptedContent: Buffer /*, linkHref: string, needsInflating: boolean */):
         Promise<IDecryptedBuffer> {
 
         // debug("linkHref => needsInflating: " + linkHref + " => " + needsInflating);
@@ -183,7 +183,7 @@ export class LCP {
                 this._lcpContext,
                 encryptedContent,
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                (er: any, decryptedContent: any, inflated: boolean) => {
+                (er: any, decryptedContent: any, inflated: boolean | undefined) => {
                     if (er) {
                         debug("decrypt ERROR");
                         debug(er);
@@ -191,24 +191,24 @@ export class LCP {
                         reject(er);
                         return;
                     }
-                    let buff = decryptedContent;
-                    if (!inflated) {
-                        const padding = decryptedContent[decryptedContent.length - 1];
-                        // debug(padding);
-                        // const buff = Buffer.from(
-                        //     decryptedContent,
-                        //     0,
-                        //     decryptedContent.length - padding);
-                        buff = decryptedContent.slice(0, decryptedContent.length - padding);
-                    }
+                    const buff = decryptedContent;
+                    // if (!inflated) { // inflated is always undefined
+                    //     const padding = decryptedContent[decryptedContent.length - 1];
+                    //     // debug(padding);
+                    //     // const buff = Buffer.from(
+                    //     //     decryptedContent,
+                    //     //     0,
+                    //     //     decryptedContent.length - padding);
+                    //     buff = decryptedContent.slice(0, decryptedContent.length - padding);
+                    // }
                     resolve({
                         buffer: buff,
                         inflated: inflated ? true : false, // force bool (from potentially-undefined function parameter)
                     });
                 },
-                this.JsonSource,
-                linkHref,
-                needsInflating,
+                // this.JsonSource,
+                // linkHref,
+                // needsInflating,
             );
         });
     }

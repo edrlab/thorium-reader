@@ -26,7 +26,8 @@ export interface CustomCoverView {
 
 export interface PublicationView extends Identifiable {
 
-    type?: "missingOrDeleted";
+    // Post-check that the publication storage is valid for opening
+    isOpenable: boolean;
     isAudio?: boolean;
     isDivina?: boolean;
     isPDF?: boolean;
@@ -79,3 +80,7 @@ export interface PublicationView extends Identifiable {
 
     lastReadingLocation?: MiniLocatorExtended;
 }
+
+export const canOpenPublication = (
+    publicationView: Partial<Pick<PublicationView, "isOpenable">>,
+) => publicationView.isOpenable !== false;

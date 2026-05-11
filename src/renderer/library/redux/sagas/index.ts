@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import debug_ from "debug";
-import { winCommonActions } from "readium-desktop/common/redux/actions";
+import { catalogActions, publicationActions, winCommonActions } from "readium-desktop/common/redux/actions";
 import * as publicationInfoSyncTags from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
@@ -21,6 +21,9 @@ import * as opds from "./opds";
 import * as sameFileImport from "./sameFileImport";
 import * as winInit from "./win";
 import * as customization from "./customization";
+import { takeSpawnEvery } from "readium-desktop/common/redux/sagas/takeSpawnEvery";
+import { getStore } from "../../createStore";
+import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 
 // Logger
 const filename_ = "readium-desktop:renderer:library:saga:index";
@@ -51,7 +54,19 @@ export function* rootSaga() {
         load.saga(),
 
         customization.saga(),
+
+        takeSpawnEvery(
+            [
+                catalogActions.setUserDirectory.ID,
+                publicationActions.readingFinished.ID,
+            ],
+            () => {
+                // just to refresh allPublicationPage.tsx
+                const dispatch = getStore().dispatch;
+                apiDispatch(dispatch)()("publication/findAllRefresh")();
+            },
+        ),
     ]);
-    
+
     yield put(winCommonActions.initSuccess.build());
 }

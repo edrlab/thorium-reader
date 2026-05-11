@@ -11,7 +11,7 @@ import { keyboardActions, versionUpdateActions } from "readium-desktop/common/re
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
 import { all, call, put, take } from "redux-saga/effects";
-import { select as selectTyped, call as callTyped, spawn as spawnTyped} from "typed-redux-saga/macro";
+import { select as selectTyped, call as callTyped, spawn as spawnTyped, delay as delayTyped} from "typed-redux-saga/macro";
 import { RootState } from "../states";
 import { _APP_VERSION, _APP_NAME, _PACK_NAME } from "readium-desktop/preprocessor-directives";
 // import { THttpGetCallback } from "readium-desktop/common/utils/http";
@@ -83,6 +83,7 @@ export function* rootSaga() {
     // Integrity checker for publications between FS and DB
     yield* spawnTyped(function* () {
         try {
+            yield* delayTyped(1000 * 10); // wait 10 seconds before starting the checker
             yield* callTyped(publicationIntegrityChecker);
         } catch (e) {
             error(filename_, e);
