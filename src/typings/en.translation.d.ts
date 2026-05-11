@@ -1791,6 +1791,8 @@ declare namespace typed_i18n {
   readonly "notes": {
     readonly "colors": {
       readonly "cyan": string,
+      readonly "darkorange": string,
+      readonly "darkyellow": string,
       readonly "green": string,
       readonly "orange": string,
       readonly "purple": string,
@@ -2153,6 +2155,8 @@ declare namespace typed_i18n {
   (_: "reader.notes", __?: {}): {
   readonly "colors": {
     readonly "cyan": string,
+    readonly "darkorange": string,
+    readonly "darkyellow": string,
     readonly "green": string,
     readonly "orange": string,
     readonly "purple": string,
@@ -2162,6 +2166,8 @@ declare namespace typed_i18n {
 };
   (_: "reader.notes.colors", __?: {}): {
   readonly "cyan": string,
+  readonly "darkorange": string,
+  readonly "darkyellow": string,
   readonly "green": string,
   readonly "orange": string,
   readonly "purple": string,
@@ -2169,6 +2175,8 @@ declare namespace typed_i18n {
   readonly "yellow": string
 };
   (_: "reader.notes.colors.cyan", __?: {}): string;
+  (_: "reader.notes.colors.darkorange", __?: {}): string;
+  (_: "reader.notes.colors.darkyellow", __?: {}): string;
   (_: "reader.notes.colors.green", __?: {}): string;
   (_: "reader.notes.colors.orange", __?: {}): string;
   (_: "reader.notes.colors.purple", __?: {}): string;

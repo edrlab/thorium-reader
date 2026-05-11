@@ -796,6 +796,8 @@
         "notes": {
             "colors": {
                 "cyan": "Cyaan",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "Groen",
                 "orange": "Oranje",
                 "purple": "Paars",

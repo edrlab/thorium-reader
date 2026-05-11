@@ -801,6 +801,8 @@
         "notes": {
             "colors": {
                 "cyan": "Cyan",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "Vert",
                 "orange": "Orange",
                 "purple": "Violet",

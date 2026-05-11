@@ -796,6 +796,8 @@
         "notes": {
             "colors": {
                 "cyan": "Κυανό",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "Πράσινο",
                 "orange": "Πορτοκαλί",
                 "purple": "Μωβ",

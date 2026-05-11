@@ -66,6 +66,10 @@ import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-
 import { noteColorCodeToColorTranslatorKeySet } from "readium-desktop/common/redux/states/renderer/note";
 import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
 
+// WARNING: Do not remove these references; they are required by the i18n scanner/checker.
+// __("reader.notes.colors.darkyellow");
+// __("reader.notes.colors.darkorange");
+
 const noteColorCodeToColorTranslatorKeySet_ = {
     ["#000000"]: "publication.accessibility.accessibilityHazard.none" as TTranslatorKeyParameter,
     [rgbToHex(readerConfigInitialState.ttsHighlightColor)]: "reader.notes.colors.darkyellow" as TTranslatorKeyParameter,

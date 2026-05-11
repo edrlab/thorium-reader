@@ -806,6 +806,8 @@
         "notes": {
             "colors": {
                 "cyan": "Cyan",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "Zelena",
                 "orange": "Oranžna",
                 "purple": "Vijolična",

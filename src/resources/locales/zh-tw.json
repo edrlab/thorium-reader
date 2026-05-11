@@ -791,6 +791,8 @@
         "notes": {
             "colors": {
                 "cyan": "青色",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "綠色",
                 "orange": "橘色",
                 "purple": "紫色",

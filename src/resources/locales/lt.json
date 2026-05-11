@@ -806,6 +806,8 @@
         "notes": {
             "colors": {
                 "cyan": "Žydra",
+                "darkorange": "",
+                "darkyellow": "",
                 "green": "Žalia",
                 "orange": "Oranžinė",
                 "purple": "Purpurinė",
