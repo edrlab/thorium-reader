@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { v4 as uuidv4 } from "uuid";
+import { uuidv4 } from "readium-desktop/utils/uuid";
 import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import { ActionWithReaderPublicationIdentifierDestination } from "readium-desktop/common/models/sync";
 

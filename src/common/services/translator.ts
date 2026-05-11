@@ -24,6 +24,7 @@ import euCatalog from "readium-desktop/resources/locales/eu.json";
 import fiCatalog from "readium-desktop/resources/locales/fi.json";
 import frCatalog from "readium-desktop/resources/locales/fr.json";
 import glCatalog from "readium-desktop/resources/locales/gl.json";
+import heCatalog from "readium-desktop/resources/locales/he.json";
 import hrCatalog from "readium-desktop/resources/locales/hr.json";
 import itCatalog from "readium-desktop/resources/locales/it.json";
 import jaCatalog from "readium-desktop/resources/locales/ja.json";
@@ -169,6 +170,9 @@ i18nextInstance.init({
             "et": {
                 translation: etCatalog, // TODO
             },
+            "he": {
+                translation: heCatalog, // TODO
+            },
             "pl": {
                 translation: plCatalog, // TODO
             },
@@ -239,6 +243,7 @@ export const availableLanguages = {
     ...(__TH__IS_DEV__ || __TH__IS_CI__ ?
     {
         "et": "Eesti Keel (Estonian)",
+        "he": "עִבְרִית (Hebrew)",
         "pl": "Polski (Polish)",
     }
     :{}),

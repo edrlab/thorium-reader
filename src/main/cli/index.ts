@@ -26,6 +26,7 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import { isAcceptedExtension } from "readium-desktop/common/extension";
 import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
 import { PersistRootState } from "../redux/states";
+import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
 
 // Logger
 const debug = debug_("readium-desktop:cli:process");
@@ -295,7 +296,7 @@ const yargsInit = () =>
                     dump += "pathArgv not defined\n";
                 }
                 dump += "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$44\n";
-                fs.appendFileSync(appLogs, dump);
+                appendFileSyncWithRotation(appLogs, dump);
             },
         )
         .help()
@@ -372,7 +373,7 @@ export function commandLineMainEntry(
     }
 
     dump += "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$44\n";
-    fs.appendFileSync(appLogs, dump);
+    appendFileSyncWithRotation(appLogs, dump);
 }
 
 // arrow function to filter declared option in yargs

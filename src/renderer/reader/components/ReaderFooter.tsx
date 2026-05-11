@@ -39,7 +39,6 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import { publicationActions } from "readium-desktop/common/redux/actions";
 import { connect } from "react-redux";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
 const isFixedLayout = (link: Link, publication: R2Publication): boolean => {
@@ -731,12 +730,6 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 
 const finishReadingDebounce = debounce((dispatch: TDispatch, pubId: string) => {
     dispatch(publicationActions.readingFinished.build(pubId));
-
-    // just to refresh allPublicationPage.tsx
-    apiDispatch(dispatch)()("publication/readingFinishedRefresh")();
-
-    // close the reader from the main process after the readingFinished action is received
-    // setTimeout(() => dispatch(readerActions.closeRequest.build()), 1000);
 }, 500);
 
 const mapDispatchToProps = (dispatch: TDispatch) => {

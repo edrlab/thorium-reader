@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Meny",
         "closeDialog": "Stäng",
-        "importFile": "Importera bok",
         "leftSlideButton": "Gå till vänster",
         "mainContent": "huvudinnehåll",
         "rightSlideButton": "Gå till höger",
@@ -198,7 +197,7 @@
         "searchPlaceholder": "Sök",
         "searchTitle": "Sök",
         "settings": "Inställningar",
-        "settingsLabel": "",
+        "settingsLabel": "Appinställningar",
         "viewMode": "Visningsläge"
     },
     "library": {
@@ -760,8 +759,8 @@
             "speed": "Uppläsningshastighet",
             "stop": "Stoppa uppläsning",
             "title": "Uppläsning",
-            "useTTSHighlightsForMO": "",
-            "useTTSHighlightsForMODescription": ""
+            "useTTSHighlightsForMO": "Anpassad markering",
+            "useTTSHighlightsForMODescription": "Inaktivera originalets stilar"
         },
         "navigation": {
             "ZenModeExit": "Lämna zenläge",

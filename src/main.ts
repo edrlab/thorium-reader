@@ -22,6 +22,7 @@ import { appActions } from "./main/redux/actions";
 import { app } from "electron";
 import { _APP_NAME, _APP_VERSION, _PACK_NAME } from "readium-desktop/preprocessor-directives";
 import { FORCE_PROD_DB_IN_DEV, USER_DATA_FOLDER } from "readium-desktop/common/constant";
+import { appendFileSyncWithRotation } from "readium-desktop/utils/log";
 
 // isURL() excludes the file: and data: URL protocols, as well as http://localhost but not http://127.0.0.1 or http(s)://IP:PORT more generally (note that ftp: is accepted)
 // import isURL from "validator/lib/isURL";
@@ -136,4 +137,4 @@ dump += `Date: ${(new Date()).toISOString()}\n`;
 
 dump += `Process: ${processInfoStr}\n`;
 dump += "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$44\n";
-fs.appendFileSync(appLogs, dump);
+appendFileSyncWithRotation(appLogs, dump);

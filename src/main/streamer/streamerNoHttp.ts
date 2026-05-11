@@ -56,6 +56,7 @@ import { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import { zipLoadPromise } from "@r2-utils-js/_utils/zip/zipFactory";
 import { customizationWellKnownFolder } from "../customization/provisioning";
 import { SESSION_PARTITION_PDFJS, SESSION_PARTITION_PDFJSEXTRACT } from "readium-desktop/common/sessions";
+import { isUUIDv4 } from "readium-desktop/utils/uuid";
 
 // import { clearSessions } from "@r2-navigator-js/electron/main/sessions";
 import { clearSessions, initPermissions, initProtocols } from "readium-desktop/main/sessions";
@@ -909,7 +910,7 @@ const streamProtocolHandler = async (
         debug("streamProtocolHandler pathBase64Str", pathBase64DecodedOrIdentifier);
         if (
             (!pathBase64DecodedOrIdentifier.includes("/") && !pathBase64DecodedOrIdentifier.includes("\\")) // not a path on the filesystem
-            || /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(pathBase64DecodedOrIdentifier) // UUID v4 syntax ... though this is never reached because of the first predicate in the conditional if
+            || isUUIDv4(pathBase64DecodedOrIdentifier) // UUID v4 syntax ... though this is never reached because of the first predicate in the conditional if
             // || !fs.existsSync(pathBase64Str)
         ) {
             const pubStorage = diMainGet("publication-storage");

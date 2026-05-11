@@ -27,17 +27,11 @@ import { TIMEOUT_BROWSER_WINDOW_INITIALISATION, WINDOW_MIN_HEIGHT, WINDOW_MIN_WI
 import { URL_PROTOCOL_FILEX, URL_HOST_COMMON } from "readium-desktop/common/streamerProtocol";
 import { readerNewWindowBound } from "../../reader";
 import { winCommonActions } from "readium-desktop/common/redux/actions";
+import { assertUUIDv4 } from "readium-desktop/utils/uuid";
 
 // Logger
 const debug = debug_("readium-desktop:createReaderWindow");
 debug("_");
-
-const isUUIDv4 = (uuid: string) => /^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/.test(uuid);
-const assertUUIDv4 = (uuid: string) => {
-    if (!isUUIDv4(uuid)) {
-        throw new Error("not an uuidv4 identifier !");
-    }
-};
 
 const ENABLE_DEV_TOOLS = __TH__IS_DEV__ || __TH__IS_CI__;
 

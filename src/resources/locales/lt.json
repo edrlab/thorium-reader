@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Meniu",
         "closeDialog": "Užverti",
-        "importFile": "Importuoti leidinį",
         "leftSlideButton": "Paslinkti į kairę",
         "mainContent": "pagrindinis turinys",
         "rightSlideButton": "Paslinkti į dešinę",
@@ -131,7 +130,7 @@
         "readBook": "Skaityti",
         "released": "Išleidimo data",
         "removeFromFavorites": "Pašalinti iš mėgstamiausių",
-        "selectTableHeaders": "",
+        "selectTableHeaders": "Pasirinkite atvaizduojamus stulpelius",
         "sort": "Rikiuoti pagal",
         "tag": "Žymė",
         "tags": "Žymės",
@@ -208,7 +207,7 @@
         "searchPlaceholder": "Paieška",
         "searchTitle": "Ieškoti",
         "settings": "Nuostatos",
-        "settingsLabel": "",
+        "settingsLabel": "Programos nuostatos",
         "viewMode": "Peržiūros režimas"
     },
     "library": {
@@ -770,8 +769,8 @@
             "speed": "„Readaloud“ atkūrimo sparta",
             "stop": "Sustabdyti „Readaloud“",
             "title": "„Readaloud“",
-            "useTTSHighlightsForMO": "",
-            "useTTSHighlightsForMODescription": ""
+            "useTTSHighlightsForMO": "Tinkintas paryškinimas",
+            "useTTSHighlightsForMODescription": "Išjungti leidėjo stilius"
         },
         "navigation": {
             "ZenModeExit": "Išeiti iš Zen režimo",
@@ -798,7 +797,7 @@
             "printDisabled": "Spausdinti draudžiama",
             "screenNext": "Eiti pirmyn",
             "screenPrevious": "Eiti atgal",
-            "settingsTitle": "Nuostatos"
+            "settingsTitle": "Skaitytuvės nuostatos"
         },
         "notes": {
             "colors": {
@@ -859,7 +858,7 @@
             },
             "font": "Šriftas",
             "fontSize": "Šrifto dydis",
-            "increaseFontSize": "",
+            "increaseFontSize": "Padidinti šrifto dydį",
             "infoCustomFont": "Pasirinkite tinkintą operacinės sistemos šriftą įvedę jo pavadinimą",
             "justification": "Lygiavimas",
             "justify": "Lygiuoti abi puses",
@@ -897,7 +896,7 @@
                 "title": "Nuostatos"
             },
             "preview": "Peržiūrėti",
-            "reduceFontSize": "",
+            "reduceFontSize": "Sumažinti šrifto dydį",
             "reduceMotion": "Mažinti judesių kiekį",
             "scrolled": "Slenkantis",
             "spacing": "Išretinimas",

@@ -11,18 +11,13 @@ import * as path from "node:path";
 import debug_ from "debug";
 import { __ulimit_file } from "../di";
 import { IReaderStateReaderPersistence } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { rmrf } from "readium-desktop/utils/fs";
+import { getCanonicalUUIDv4FileNameFromFs, rmrf } from "readium-desktop/utils/fs";
+import { assertUUIDv4 } from "readium-desktop/utils/uuid";
 
 const debug = debug_("readium-desktop:main/storage/pub-data");
 
 const jsonStringify = (d: any) => (__TH__IS_DEV__ || __TH__IS_CI__) ? JSON.stringify(d, null, 4) : JSON.stringify(d);
 
-const isUUIDv4 = (uuid: string) => /^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/.test(uuid);
-const assertUUIDv4 = (uuid: string) => {
-    if (!isUUIDv4(uuid)) {
-        throw new Error("not an uuidv4 identifier !");
-    }
-};
 const timeout = (ms: number) => new Promise<never>((_, reject) => setTimeout(() => reject("TIMEOUT"), ms));
 
 export type TFileTypePubData = Extract<keyof IReaderStateReaderPersistence, "locator" | "config" | "disableRTLFlip" | "divina" | "allowCustomConfig" | "noteTotalCount" | "pdfConfig"> | "bound";
@@ -84,7 +79,7 @@ export class PublicationData {
 
     // prefer using readJsonObj instead
     // public getJsonObj(pubId: string, type: TFileTypePubData): object | undefined {
-    //     assertUUIDv4(pubId);
+    //     assertCanonicalUUIDv4(pubId);
     //     const file = this.filterFilesByType(type).find((a) => a.pubId === pubId);
     //     return file?.jsonObj;
     // }
@@ -384,8 +379,9 @@ export class PublicationData {
         for (const file of files) {
             try {
                 debug(`\t${file.name} isDirectory=${file.isDirectory()} isFile=${file.isFile()}`);
-                if (isUUIDv4(file.name) && file.isDirectory() && !pubIds.includes(file.name)) {
-                    pubIds.push(file.name);
+                const pubId = getCanonicalUUIDv4FileNameFromFs(file.name);
+                if (pubId && file.isDirectory() && !pubIds.includes(pubId)) {
+                    pubIds.push(pubId);
                 }
             } catch {
                 // ignore

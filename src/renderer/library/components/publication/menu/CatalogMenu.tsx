@@ -151,7 +151,7 @@ const CatalogMenu: React.FC<{ publicationView: PublicationView }> = (props) => {
                         dispatch(publicationActions.readingFinished.build(pubId));
 
                         // just to refresh allPublicationPage.tsx
-                        apiDispatch(dispatch)()("publication/readingFinishedRefresh")();
+                        apiDispatch(dispatch)()("publication/findAllRefresh")();
                     }}>
                     <SVG ariaHidden svg={DoubleCheckIcon} />
                     {__("publication.markAsRead")}

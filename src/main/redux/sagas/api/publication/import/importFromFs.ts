@@ -31,6 +31,7 @@ export function* importFromFsService(
     filePath: string,
     willBeImmediatelyFollowedByOpen: boolean,
     lcpHashedPassphrase?: string,
+    preservedIdentifier?: string,
 ): SagaGenerator<[publicationDoc: PublicationDocument, alreadyImported: boolean]> {
 
     debug("importFromFsService", filePath);
@@ -68,6 +69,13 @@ export function* importFromFsService(
 
     const publicationRepository = diMainGet("publication-repository");
 
+    const publicationDocumentWithPreservedIdentifier = preservedIdentifier
+        ? yield* callTyped(() => publicationRepository.findByPublicationIdentifier(preservedIdentifier))
+        : undefined;
+    if (publicationDocumentWithPreservedIdentifier) {
+        return [publicationDocumentWithPreservedIdentifier, true];
+    }
+
     const publicationDocumentInRepository = hash
         ? yield* callTyped(() => publicationRepository.findByHashId(hash))
         : undefined;
@@ -99,7 +107,7 @@ export function* importFromFsService(
         }
 
         publicationDocument = yield* callTyped(
-            () => importPublicationFromFS(publicationFilePath, willBeImmediatelyFollowedByOpen, hash, lcpHashedPassphrase));
+            () => importPublicationFromFS(publicationFilePath, willBeImmediatelyFollowedByOpen, hash, lcpHashedPassphrase, preservedIdentifier));
 
         if (cleanFct) {
             yield call(() => cleanFct());
