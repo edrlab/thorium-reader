@@ -690,6 +690,7 @@ const Profiles = () => {
 
 const StorageSettings: React.FC<{}> = () => {
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
+    const [__] = useTranslator();
     const isRTL = locale === "ar";
     const dispatch = useDispatch();
     const directoryState = useSelector((state: ILibraryRootState) => state.publication.directory);
@@ -721,9 +722,9 @@ const StorageSettings: React.FC<{}> = () => {
             <StorageConfirmDialog
                 open={confirmAddOpen}
                 onOpenChange={setConfirmAddOpen}
-                title="Enable external publication storage"
-                description="This feature is currently in beta. Do you want to continue and configure an external publication storage directory?"
-                confirmLabel="Continue"
+                title={__("settings.storage.dialog.enable.title")}
+                description={__("settings.storage.dialog.enable.description")}
+                confirmLabel={__("settings.storage.dialog.continue")}
                 onConfirm={() => {
                     setConfirmAddOpen(false);
                     setIsEditing(true);
@@ -732,9 +733,9 @@ const StorageSettings: React.FC<{}> = () => {
             <StorageConfirmDialog
                 open={confirmEditOpen}
                 onOpenChange={setConfirmEditOpen}
-                title="Edit external publication storage"
-                description="Changing the external publication storage directory requires manual care. Thorium will not migrate existing publications for you. Do you want to continue?"
-                confirmLabel="Edit directory"
+                title={__("settings.storage.dialog.update.title")}
+                description={__("settings.storage.dialog.update.description")}
+                confirmLabel={__("settings.storage.dialog.editDirectory")}
                 onConfirm={() => {
                     setConfirmEditOpen(false);
                     setIsEditing(true);
@@ -743,9 +744,9 @@ const StorageSettings: React.FC<{}> = () => {
             <StorageConfirmDialog
                 open={confirmDeleteOpen}
                 onOpenChange={setConfirmDeleteOpen}
-                title="Remove external publication storage"
-                description="Removing the configured external publication storage directory does not migrate publications back automatically. Do you want to remove this directory from Thorium configuration?"
-                confirmLabel="Remove directory"
+                title={__("settings.storage.dialog.remove.title")}
+                description={__("settings.storage.dialog.remove.description")}
+                confirmLabel={__("settings.storage.dialog.removeDirectory")}
                 onConfirm={() => {
                     setConfirmDeleteOpen(false);
                     removeUserDirectory();
@@ -753,27 +754,26 @@ const StorageSettings: React.FC<{}> = () => {
             />
             {/* <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}> */}
                 {/* <h4 dir={isRTL ? "rtl" : "ltr"}>Storage</h4> */}
-                <details className={stylesSettings.session_text}>
+                <details className={stylesSettings.session_text} style={{gap: "0"}}>
                     <summary dir={isRTL ? "rtl" : "ltr"}>
                         <div style={{ display: "flex", alignItems: "center", gap: "10px"}}>
                             <SVG ariaHidden svg={InfoIcon} />
-                            <p>This feature is currently in beta testing.</p>
+                            <p>{__("settings.storage.warning.title")}</p>
                         </div>
                     </summary>
                     <div dir={isRTL ? "rtl" : "ltr"} style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%" }}>
-                        <p>No migration will be performed by Thorium. If you change storage location, moving publications is entirely your responsibility.</p>
-                        <p>This feature only works with newer versions of Thorium. Publications added to the external storage folder will not appear in Thorium 3.4 or below.</p>
-                        <p>You are responsible for the integrity and availability of this directory. Be careful with deletion, remote access, slow devices or network paths, and filesystem permissions.</p>
-                        <p>Publications stored by Thorium in this directory are immutable application data and reflect Thorium&apos;s internal storage structure. Editing, renaming, moving, or deleting files inside it can break publication reading and may crash the reader for affected items.</p>
-                        <p>You can consider this directory a vault managed by Thorium.</p>
+                        <p>{__("settings.storage.warning.1")}</p>
+                        <p>{__("settings.storage.warning.2")}</p>
+                        <p>{__("settings.storage.warning.3")}</p>
+                        <p>{__("settings.storage.warning.4")}</p>
                     </div>
                 </details>
                 
                 <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}>
                         <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                            <p style={{ margin: 0, fontWeight: 600 }}>Locations</p>
+                            <p style={{ margin: 0, fontWeight: 600 }}>{__("settings.storage.locations")}</p>
                             <div className={stylesSettings.storage_location} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                                <p style={{ margin: 0 }}><strong>Default internal storage</strong></p>
+                                <p style={{ margin: 0 }}><strong>{__("settings.storage.systemStorage")}</strong></p>
                                 <button
                                     className={stylesButtons.button_transparency}
                                     style={{
@@ -796,7 +796,7 @@ const StorageSettings: React.FC<{}> = () => {
                             {userDirectory ?
 
                                 <div className={stylesSettings.storage_location} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                                    <p style={{ margin: 0 }}><strong>External storage</strong></p>
+                                    <p style={{ margin: 0 }}><strong>{__("settings.storage.additionalStorage")}</strong></p>
                                     <button
                                         className={stylesButtons.button_transparency}
                                         style={{
@@ -822,26 +822,26 @@ const StorageSettings: React.FC<{}> = () => {
 
                     <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}>
                         <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                            <p style={{ margin: 0, fontWeight: 600 }}>Configuration</p>
+                            <p style={{ margin: 0, fontWeight: 600 }}>{__("settings.storage.configuration")}</p>
                             {!userDirectory && !isEditing ? (
                                 <div className={stylesSettings.session_text} style={{ margin: 0, alignItems: "flex-start" }}>
                                     <SVG ariaHidden svg={InfoIcon} />
                                     <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                                        <p style={{ margin: 0, fontWeight: 600 }}>Not configured for the moment.</p>
+                                        {/* <p style={{ margin: 0, fontWeight: 600 }}>Not configured for the moment.</p> */}
                                         <p style={{ margin: 0 }}>
-                                            Configure an external storage directory to store new publications outside of Thorium&apos;s default internal location.
+                                            {__("settings.storage.directoryInfo")}
                                         </p>
                                     </div>
                                 </div>
                             ) : null}
                             {userDirectory && !isEditing ? (
                                 <p style={{ margin: 0 }}>
-                                    The external storage directory is configured and ready to use for newly stored publications.
+                                    {__("settings.storage.storageConfigured")}
                                 </p>
                             ) : null}
                             {isEditing ? (
                                 <p style={{ margin: 0 }}>
-                                    Choose the folder that Thorium should use as external publication storage.
+                                    {__("settings.storage.chooseDirectoryInfo")}
                                 </p>
                             ) : null}
                         </div>
@@ -851,7 +851,7 @@ const StorageSettings: React.FC<{}> = () => {
                                 className={stylesSettings.btn_primary}
                                 onClick={() => setConfirmAddOpen(true)}
                             >
-                                Add external storage directory
+                                {__("settings.storage.selectDirectory")}
                             </button>
                         ) : null}
 
@@ -861,13 +861,13 @@ const StorageSettings: React.FC<{}> = () => {
                                     className={stylesSettings.btn_primary}
                                     onClick={() => setConfirmEditOpen(true)}
                                 >
-                                    Change external storage directory
+                                    {__("settings.storage.updateDirectory")}
                                 </button>
                                 <button
                                     className={stylesButtons.button_secondary_blue}
                                     onClick={() => setConfirmDeleteOpen(true)}
                                 >
-                                    Remove external storage directory
+                                    {__("settings.storage.removeDirectory")}
                                 </button>
                             </div>
                         ) : null}
@@ -878,7 +878,7 @@ const StorageSettings: React.FC<{}> = () => {
                                     className={stylesSettings.btn_primary}
                                     onClick={openFolderPicker}
                                 >
-                                    Choose folder
+                                    {__("settings.storage.chooseDirectory")}
                                 </button>
                                 <button
                                     className={stylesButtons.button_transparency}
@@ -886,7 +886,7 @@ const StorageSettings: React.FC<{}> = () => {
                                         setIsEditing(false);
                                     }}
                                 >
-                                    Cancel
+                                    {__("settings.storage.cancel")}
                                 </button>
                             </div>
                         ) : null}
