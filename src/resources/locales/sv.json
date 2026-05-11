@@ -582,7 +582,11 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Information om möjlighet att justera utseende saknas",
                 "descriptive": "Information om möjlighet att justera utseende saknas"
-            }
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "Utseendet kan inte justeras",
+                "descriptive": "Text- och sidlayout kan inte justeras eftersom presentationen liknar en tryckt version, men läsprogram kan ha funktioner för att zooma in"
+       }
         }
     },
     "publication": {

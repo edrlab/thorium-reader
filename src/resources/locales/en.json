@@ -591,6 +591,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "No information about appearance modifiability is available",
                 "descriptive": "No information about appearance modifiability is available"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "Appearance cannot be modified",
+                "descriptive": "Text and page layout cannot be modified as the reading experience is close to a print version, but reading systems can still provide zooming options"
             }
         }
     },

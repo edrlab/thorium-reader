@@ -587,7 +587,11 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Aucune information sur les possibilités d'adaptation de l'affichage",
                 "descriptive": "Il n'est pas possible de savoir si l'apparence du texte et la mise en page peuvent être modifiées"
-            }
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "Mise en page fixe",
+                "descriptive": "L'aspect du texte et la mise en page ne peuvent pas être modifiés, l'expérience de lecture est proche d'une version imprimée, mais les systèmes de lecture peuvent toujours offrir des options de zoom"
+           }
         }
     },
     "publication": {

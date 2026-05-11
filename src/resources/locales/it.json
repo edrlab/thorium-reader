@@ -587,7 +587,11 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Non sono disponibili informazioni sulla possibilità di formattare il testo",
                 "descriptive": "Non sono disponibili informazioni sulla possibilità di formattare il testo"
-            }
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "Formattazione del testo non modificabile",
+                "descriptive": "La formattazione del testo e il layout della pagina non possono essere modificati in quanto l'esperienza di lettura si avvicina alla versione stampata, ma i sistemi di lettura possono comunque fornire opzioni di zoom"
+        }
         }
     },
     "publication": {

@@ -1005,6 +1005,10 @@ declare namespace typed_i18n {
     readonly "ways-of-reading-visual-adjustments-unknown": {
       readonly "compact": string,
       readonly "descriptive": string
+    },
+    readonly "ways-of-reading-visual-adjustments-unmodifiable": {
+      readonly "compact": string,
+      readonly "descriptive": string
     }
   }
 };
@@ -1462,6 +1466,10 @@ declare namespace typed_i18n {
   readonly "ways-of-reading-visual-adjustments-unknown": {
     readonly "compact": string,
     readonly "descriptive": string
+  },
+  readonly "ways-of-reading-visual-adjustments-unmodifiable": {
+    readonly "compact": string,
+    readonly "descriptive": string
   }
 };
   (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-nonvisual-reading-alt-text", __?: {}): { readonly "compact": string, readonly "descriptive": string };
@@ -1498,6 +1506,9 @@ declare namespace typed_i18n {
   (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-unknown", __?: {}): { readonly "compact": string, readonly "descriptive": string };
   (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-unknown.compact", __?: {}): string;
   (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-unknown.descriptive", __?: {}): string;
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-unmodifiable", __?: {}): { readonly "compact": string, readonly "descriptive": string };
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-unmodifiable.compact", __?: {}): string;
+  (_: "publ-a11y-display-guide.ways-of-reading.ways-of-reading-visual-adjustments-unmodifiable.descriptive", __?: {}): string;
   (_: "publication", __?: {}): {
   readonly "accessibility": {
     readonly "accessModeSufficient": { readonly "textual": string },

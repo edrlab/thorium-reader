@@ -587,6 +587,10 @@
             "ways-of-reading-visual-adjustments-unknown": {
                 "compact": "Sem informações disponíveis sobre a personalização da aparência",
                 "descriptive": "Sem informações disponíveis sobre personalização da aparência"
+            },
+            "ways-of-reading-visual-adjustments-unmodifiable": {
+                "compact": "",
+                "descriptive": ""
             }
         }
     },
