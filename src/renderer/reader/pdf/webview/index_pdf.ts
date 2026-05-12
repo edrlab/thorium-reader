@@ -116,6 +116,31 @@ function normalizeUnicode(str: string) {
     return str.replace(NormalizeRegex, (_, p1, p2) => p1 ? p1.normalize("NFKC") : NormalizationMap.get(p2));
 }
 
+// Input: PDF.js gives us the thumbnail <img> src from inside this webview.
+// Before: when that src is a blob: URL, it is scoped to this webview and the
+// parent renderer cannot reliably load it in the print dialog after IPC.
+// After: return a data: URL containing the image bytes, which is self-contained
+// and can be displayed by the parent renderer. Non-blob URLs are already
+// portable enough, so they are returned unchanged.
+async function imageSrcToPortableDataUrl(src: string) {
+    if (!src || !src.startsWith("blob:")) {
+        return src;
+    }
+
+    try {
+        const blob = await fetch(src).then((res) => res.blob());
+        return await new Promise<string>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onerror = () => reject(reader.error);
+            reader.onload = () => resolve(typeof reader.result === "string" ? reader.result : src);
+            reader.readAsDataURL(blob);
+        });
+    } catch (e) {
+        console.error("PDF thumbnail blob conversion failed", e);
+        return src;
+    }
+}
+
 function main() {
 
     const pdfjsEventBus = (window as any).PDFViewerApplication?.eventBus;
@@ -207,8 +232,10 @@ function main() {
         bus.subscribe("thumbnailRequest", (pageIndexZeroBased) => {
             pdfjsEventBus.dispatch("__thumbnailPageRequest", pageIndexZeroBased);
         })
-        pdfjsEventBus.on("thumbnailrendered", ({pageNumber, source: {image: {src}}}: any) => {
-            bus.dispatch("thumbnailRendered", pageNumber, src);
+        pdfjsEventBus.on("thumbnailrendered", async ({pageNumber, source}: any) => {
+            const src = source?.image?.src || "";
+            const portableSrc = await imageSrcToPortableDataUrl(src);
+            bus.dispatch("thumbnailRendered", pageNumber, portableSrc);
         })
     }
 
