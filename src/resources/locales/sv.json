@@ -111,7 +111,7 @@
                 "availableSince": "Sedan",
                 "availableState": {
                     "available": "Tillgänglig",
-                    "ready": "Redo",
+                    "ready": "Klar",
                     "reserved": "Reserverad",
                     "unavailable": "Otillgänglig",
                     "unknown": "Okänt"
