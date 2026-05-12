@@ -54,9 +54,13 @@ button {
   background-color: var(--color-brand-primary);
   color: var(--color-neutral-base);
   transition: 200ms linear;
-  display: inline-flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  line-height: 1.4;
 
   &:focus-within, &:focus {
     outline: var(--color-brand-primary) solid 1px !important;
@@ -164,9 +168,13 @@ button {
   min-width: 100px;
   background-color: var(--color-brand-secondary);
   color: var(--color-brand-primary);
-  display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  line-height: 1.4;
 
   &:hover {
     color: var(--color-brand-primary);
