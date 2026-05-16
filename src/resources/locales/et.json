@@ -348,8 +348,8 @@
                 "descriptive": "Puudutustundlikud kolmemõõtmelised objektid"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Kõnesünteesi vihjed on lisatud",
+                "descriptive": "Kõnesünteesi vihjed on lisatud"
             },
             "additional-accessibility-information-title": "Lisateave hõlbustuse kohta"
         },
@@ -360,55 +360,55 @@
             },
             "conformance-aa": {
                 "compact": "Käesolev väljaanne vastab kehtivatele hõlbustuse ja ligipääsetavuse standarditele",
-                "descriptive": ""
+                "descriptive": "Väljaanne sisaldab vastavusdeklaratsiooni, mille kohaselt vastab see EPUB-i hõlbustusstandardile ja WCAG 2. taseme AA-nõuetele"
             },
             "conformance-aaa": {
                 "compact": "Käesolev väljaanne ületab kehtivaid hõlbustuse ja ligipääsetavuse standardeid",
-                "descriptive": ""
+                "descriptive": "Väljaanne sisaldab vastavusdeklaratsiooni, mille kohaselt vastab see EPUB-i hõlbustusstandardile ja WCAG 2. taseme AAA-nõuetele"
             },
             "conformance-certifier": {
                 "compact": "Selle väljaande on sertifitseerinud "
             },
             "conformance-certifier-credentials": {
-                "compact": ""
+                "compact": "Sertifitseerija tunnus on "
             },
             "conformance-details-certifier-report": {
-                "compact": ""
+                "compact": "Lisateavet leiad sertifitseerija aruandest"
             },
             "conformance-details-claim": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Käesolev väljaanne väidab, et olemas on vastavus standardiga",
+                "descriptive": "Käesolev väljaanne väidab, et olemas on vastavus standardiga"
             },
             "conformance-details-epub-accessibility-1-0": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB-i hõlbustusstandardi versioon 1.0",
+                "descriptive": "EPUB-i hõlbustusstandardi versioon 1.0"
             },
             "conformance-details-epub-accessibility-1-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "EPUB-i hõlbustusstandardi versioon 1.1",
+                "descriptive": "EPUB-i hõlbustusstandardi versioon 1.1"
             },
             "conformance-details-level-a": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "A-tase",
+                "descriptive": "A-tase"
             },
             "conformance-details-level-aa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "AA-tase",
+                "descriptive": "AA-tase"
             },
             "conformance-details-level-aaa": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "AAA-tase",
+                "descriptive": "AAA-tase"
             },
             "conformance-details-wcag-2-0": {
-                "compact": ""
+                "compact": "WCAG 2.0"
             },
             "conformance-details-wcag-2-1": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.1",
+                "descriptive": "Veebisisu hõlbustuse juhised (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "WCAG 2.2",
+                "descriptive": "Veebisisu hõlbustuse juhised (WCAG) 2.2"
             },
             "conformance-no": {
                 "compact": "Teavet pole saadaval",
@@ -434,20 +434,20 @@
                 "descriptive": "Vilkuva sisu olek selles väljaandes pole teada"
             },
             "hazards-motion": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Simuleeritud liikumine",
+                "descriptive": "Väljaanne sisaldab liikumissimulatsioone, mis võivad põhjustada liikumistõbe"
             },
             "hazards-motion-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Simuleeritud liikumist pole",
+                "descriptive": "Selles väljaandes pole simuleeritud liikumist"
             },
             "hazards-motion-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Pole teada, kas väljaandes leidub simuleeritud liikumist",
+                "descriptive": "Pole teada, kas selles väljaandes leidub simuleeritud liikumist"
             },
             "hazards-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Teavet pole saadaval",
+                "descriptive": "Teavet pole saadaval"
             },
             "hazards-none": {
                 "compact": "",
@@ -477,8 +477,8 @@
                 "descriptive": ""
             },
             "navigation-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Teavet pole saadaval",
+                "descriptive": "Teavet pole saadaval"
             },
             "navigation-page-navigation": {
                 "compact": "",
@@ -533,7 +533,7 @@
                 "descriptive": ""
             },
             "rich-content-unknown": {
-                "compact": "",
+                "compact": "Teavet pole saadaval",
                 "descriptive": "Teavet pole saadaval"
             }
         },
@@ -603,14 +603,14 @@
                 "flashing": "Vilkumine",
                 "motionSimulation": "Simuleeritud liikumine",
                 "name": "Oht:",
-                "noFlashing": "",
-                "noMotionSimulation": "",
+                "noFlashing": "Vilkumist pole",
+                "noMotionSimulation": "Simuleeritud liikumist pole",
                 "noSound": "",
                 "none": "Puudub",
                 "sound": "Heli",
                 "unknown": "Pole teada"
             },
-            "certifierReport": "",
+            "certifierReport": "Sertifitseerija aruanne:",
             "conformsTo": "",
             "moreInformation": "Lisateave",
             "name": "Hõlbustus",
@@ -705,7 +705,7 @@
             }
         },
         "bookmarks": {
-            "index": ""
+            "index": "Järjehoidja {{- index}}"
         },
         "divina": {
             "mute": "summuta heli",
@@ -775,7 +775,7 @@
             "historyNext": "Hüppa dokumendis liikumise ajaloos edasi",
             "historyPrevious": "Hüppa dokumendis liikumise ajaloos tagasi",
             "infoTitle": "Teave",
-            "magnifyingGlassButton": "Otsi väljaannet",
+            "magnifyingGlassButton": "Otsi väljaandest",
             "openTableOfContentsTitle": "Rakenduses liikumine",
             "page": "Leht",
             "pdfscalemode": "Sobita leht laiusele",
@@ -1039,7 +1039,7 @@
                 },
                 "FocusSearch": {
                     "description": "",
-                    "name": ""
+                    "name": "Otsingukäsk"
                 },
                 "FocusToolbar": {
                     "description": "",
@@ -1134,24 +1134,24 @@
                     "name": ""
                 },
                 "Print": {
-                    "description": "",
-                    "name": ""
+                    "description": "Ava lugemisvaatest printimisvaade",
+                    "name": "Prindi"
                 },
                 "SearchNext": {
-                    "description": "",
-                    "name": ""
+                    "description": "Lugemisvaate otsingutööriistas saad minna järgmise otsingutulemuse juurde. Pane tähele, et vaikimisi klahvikombinatsiooni asemel on olemas ka alternatiivne klahvikombinatsioon",
+                    "name": "Järgmine otsingutulemus"
                 },
                 "SearchNextAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Lugemisvaate otsingutööriistas saad minna järgmise otsingutulemuse juurde. Pane tähele, et selle vaikimisi klahvikombinatsiooni asemel on olemas ka alternatiivne klahvikombinatsioon",
+                    "name": "Järgmine otsingutulemus (alternatiivne)"
                 },
                 "SearchPrevious": {
-                    "description": "",
-                    "name": ""
+                    "description": "Lugemisvaate otsingutööriistas saad minna eelmise otsingutulemuse juurde. Pane tähele, et vaikimisi klahvikombinatsiooni asemel on olemas ka alternatiivne klahvikombinatsioon",
+                    "name": "Eelmine otsingutulemus"
                 },
                 "SearchPreviousAlt": {
-                    "description": "",
-                    "name": ""
+                    "description": "Lugemisvaate otsingutööriistas saad minna eelmise otsingutulemuse juurde. Pane tähele, et selle vaikimisi klahvikombinatsiooni asemel on olemas ka alternatiivne klahvikombinatsioon",
+                    "name": "Eelmine otsingutulemus (alternatiivne)"
                 },
                 "SpeakReaderInfoWhereAmI": {
                     "description": "",
@@ -1163,17 +1163,17 @@
                 },
                 "ToggleReaderFullscreen": {
                     "description": "",
-                    "name": ""
+                    "name": "Lülita täisekraanivaade sisse/välja"
                 }
             },
-            "loadUserJson": "",
-            "noShortcutFound": "",
-            "resetDefaults": "",
-            "save": "",
-            "searchPlaceholder": ""
+            "loadUserJson": "Laadi kasutajafailist",
+            "noShortcutFound": "Selle sildi jaoks ei leidu kiirklahvi",
+            "resetDefaults": "Lähtesta (laadi vaikimisi väärtused)",
+            "save": "Salvesta",
+            "searchPlaceholder": "Kiirklahvi otsimiseks kirjuta midagi"
         },
         "language": {
-            "languageChoice": ""
+            "languageChoice": "Keel"
         },
         "library": {
             "enableAPIAPP": "",
@@ -1189,24 +1189,24 @@
         "profiles": {
             "info": "",
             "thorium": {
-                "description": "",
-                "title": ""
+                "description": "Thorium Vanilla profiili puhul on tegemist algse, EDRLab-i loodud profiiliga.",
+                "title": "Thorium vanilla"
             },
-            "version": ""
+            "version": "Versioon: {{- version}}"
         },
         "screenReaderActivate": {
-            "help": "",
-            "message": "",
-            "title": ""
+            "help": "Kui rakendus tuvastab abitehnoloogia olemasolu, toimib kasutajaliides ekraanilugejatega paremini",
+            "message": "Ekraanilugejate parem tugi",
+            "title": "Paranda ekraanilugeja kasutuskogemust"
         },
         "session": {
-            "title": ""
+            "title": "Lülita sessioonide salvestamine sisse"
         },
         "tabs": {
-            "appearance": "",
-            "general": "",
-            "keyboardShortcuts": "",
-            "profiles": ""
+            "appearance": "Välimus",
+            "general": "Üldseadistused",
+            "keyboardShortcuts": "Klaviatuuri kiirklahvid",
+            "profiles": "Profiilid"
         },
         "theme": {
             "auto": "Automaatne",
@@ -1241,25 +1241,25 @@
     },
     "wizard": {
         "buttons": {
-            "discover": "",
-            "goToBooks": ""
+            "discover": "Tutvu Thoriumi töölauarakendusega",
+            "goToBooks": "Suundu minu väljaannete juurde"
         },
         "description": {
-            "home": "",
-            "resources": ""
+            "home": "Thorium 3.4 toob kaasa mitmeid kasutajakogemuse parandusi ja lahendab rea probleeme. Kui otsustad hiljem minna tagasi rakenduse vanema versiooni juurde, soovitame tungivalt teha oma e-raamatute märkmetest ja järjehoidjatest varukoopia, eksportides need välisesse faili. Pärast vanema versiooni paigaldamist saad need uuesti importida. Seda seetõttu, et versioonis 3.4 salvestab rakendus märkmeid ja järjehoidjaid veidi teistsuguses sisemises vormingus. See lahendab jõudlusprobleemi, kuid rikub märkmete tagasiühilduvust varasemate versioonidega.",
+            "resources": "Võta meiega ühendust ja uuri rohkem Thoriumi kohta:"
         },
-        "dontShow": "",
+        "dontShow": "Ära näita enam uuesti",
         "resources": {
-            "discord": "",
-            "website": ""
+            "discord": "Discordi kanal: {{- url}}",
+            "website": "Veebisait: {{- url}}"
         },
         "tab": {
-            "home": "",
-            "resources": ""
+            "home": "Avaleht",
+            "resources": "Ressursid"
         },
         "title": {
-            "resources": "",
-            "welcome": ""
+            "resources": "Ressursid ja kogukond",
+            "welcome": "Tere tulemast, see on Thorium 3.4"
         }
     }
 }
