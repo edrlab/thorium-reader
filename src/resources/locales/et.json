@@ -312,8 +312,8 @@
                 "descriptive": "Braille-kiri"
             },
             "additional-accessibility-information-full-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Täismahus märkused Ruby-vormingus (Aasia keeled)",
+                "descriptive": "Täismahus märkused Ruby-vormingus (Aasia keeled)"
             },
             "additional-accessibility-information-high-contrast-between-foreground-and-background-audio": {
                 "compact": "Suur kontrast esiplaanil oleva ja taustahelide vahel",
@@ -332,26 +332,26 @@
                 "descriptive": "Lehevahetused on üle võetud originaaltrükisest"
             },
             "additional-accessibility-information-ruby-annotations": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Mõned märkused Ruby-vormingus (Aasia keeled)",
+                "descriptive": "Mõned märkused Ruby-vormingus (Aasia keeled)"
             },
             "additional-accessibility-information-sign-language": {
                 "compact": "Viipekeel",
                 "descriptive": "Viipekeel"
             },
             "additional-accessibility-information-tactile-graphics": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Puutegraafika on olemas",
+                "descriptive": "Pimedatele inimestele visuaalsete elementide kättesaadavuse hõlbustamiseks on lisatud reljeefgraafika (puutegraafika)"
             },
             "additional-accessibility-information-tactile-objects": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Puudutustundlikud kolmemõõtmelised objektid",
+                "descriptive": "Puudutustundlikud kolmemõõtmelised objektid"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
                 "compact": "",
                 "descriptive": ""
             },
-            "additional-accessibility-information-title": ""
+            "additional-accessibility-information-title": "Lisateave hõlbustuse kohta"
         },
         "conformance": {
             "conformance-a": {
@@ -359,11 +359,11 @@
                 "descriptive": "Väljaanne sisaldab vastavusdeklaratsiooni, mille kohaselt vastab see EPUB-i hõlbustuse ja juurdepääsetavuse standardile ning WCAG 2. taseme A-nõuetele"
             },
             "conformance-aa": {
-                "compact": "",
+                "compact": "Käesolev väljaanne vastab kehtivatele hõlbustuse ja ligipääsetavuse standarditele",
                 "descriptive": ""
             },
             "conformance-aaa": {
-                "compact": "",
+                "compact": "Käesolev väljaanne ületab kehtivaid hõlbustuse ja ligipääsetavuse standardeid",
                 "descriptive": ""
             },
             "conformance-certifier": {
@@ -411,27 +411,27 @@
                 "descriptive": ""
             },
             "conformance-no": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Teavet pole saadaval",
+                "descriptive": "Teavet pole saadaval"
             },
             "conformance-title": "Hõlbustusreeglite täitmine",
             "conformance-unknown-standard": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Selle väljaande vastavust kehtivatele hõlbustuse ja juurdepääsetavuse standarditele ei ole võimalik kindlaks teha",
+                "descriptive": "Selle väljaande vastavust kehtivatele hõlbustuse ja juurdepääsetavuse standarditele pole võimalik kindlaks teha"
             }
         },
         "hazards": {
             "hazards-flashing": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Vilkuv sisu",
+                "descriptive": "See väljaanne sisaldab vilkuvat sisu, mis võib põhjustada valgustundlikusest johtuvaid krampe"
             },
             "hazards-flashing-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Vilkuvat sisu pole",
+                "descriptive": "Selles väljaandes pole vilkuvat sisu"
             },
             "hazards-flashing-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Vilkuva sisu olek pole teada",
+                "descriptive": "Vilkuva sisu olek selles väljaandes pole teada"
             },
             "hazards-motion": {
                 "compact": "",
@@ -508,12 +508,12 @@
                 "descriptive": ""
             },
             "rich-content-accessible-math-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Matemaatika MathML-ina",
+                "descriptive": "Matemaatilised valemid hõlbustusele ja ligipääsetavusele vastavas vormingus (MathML)"
             },
             "rich-content-accessible-math-described": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Matemaatiliste valemite kohta on olemas tekstilised kirjeldused",
+                "descriptive": "Matemaatiliste valemite kohta on väljaandesse lisatud tekstilised kirjeldused"
             },
             "rich-content-closed-captions": {
                 "compact": "",
@@ -594,14 +594,14 @@
                 "alternativeText": "",
                 "displayTransformability": "",
                 "longDescription": "",
-                "printPageNumbers": "",
-                "readingOrder": "",
-                "synchronizedAudioText": "",
-                "tableOfContents": ""
+                "printPageNumbers": "Sisaldab lehekülgede loendit, mille abil saab minna trükiversiooni lehekülgedele",
+                "readingOrder": "Lugemise järjekord on olemas",
+                "synchronizedAudioText": "Tekst ja heli on sünkroonis",
+                "tableOfContents": "Sisukord on olemas"
             },
             "accessibilityHazard": {
                 "flashing": "Vilkumine",
-                "motionSimulation": "",
+                "motionSimulation": "Simuleeritud liikumine",
                 "name": "Oht:",
                 "noFlashing": "",
                 "noMotionSimulation": "",
@@ -768,12 +768,12 @@
             "currentPageTotal": "Praegune leht: {{- current}}/{{- total}}",
             "detachWindowTitle": "Näita raamatukogu / raamaturiiuli akent",
             "goTo": "Mine",
-            "goToError": "",
-            "goToPlaceHolder": "",
-            "goToTitle": "",
-            "history": "",
-            "historyNext": "",
-            "historyPrevious": "",
+            "goToError": "Lehevahetust pole olemas",
+            "goToPlaceHolder": "Sisesta lehe number",
+            "goToTitle": "Ava leht",
+            "history": "Dokumendis liikumise ajalugu",
+            "historyNext": "Hüppa dokumendis liikumise ajaloos edasi",
+            "historyPrevious": "Hüppa dokumendis liikumise ajaloos tagasi",
             "infoTitle": "Teave",
             "magnifyingGlassButton": "Otsi väljaannet",
             "openTableOfContentsTitle": "Rakenduses liikumine",
@@ -799,9 +799,9 @@
             "search": {
                 "founds_one": "{{- count}} vaste",
                 "founds_other": "{{- count}} vastet",
-                "input": "",
+                "input": "otsitav tekst",
                 "next": "Järgmine",
-                "notFound": "",
+                "notFound": "vasteid ei leidu",
                 "previous": "Eelmine",
                 "results": "Tulemused",
                 "submit": "Otsi"
@@ -809,12 +809,12 @@
             "searchTitle": "Otsi:"
         },
         "print": {
-            "descriptionLcpCount": "",
-            "descriptionLcpPrintable": "",
-            "howTo": "",
-            "lcpInfo": "",
-            "noPagesLcpLimitReached": "",
-            "noPrintablePages": "",
+            "descriptionLcpCount": "Lubatud lehtede arv: {{- count}}",
+            "descriptionLcpPrintable": "Varemprinditud lehti: {{- printable}} ({{- count}})",
+            "howTo": "Kuidas saan valida prinditavate lehtede vahemikku?",
+            "lcpInfo": "Selles väljaandes saad printida kuni {{- count}} lehekülge. Vali siit soovitud leheküljed.",
+            "noPagesLcpLimitReached": "LCP järgi lubatud ülempiir on käes",
+            "noPrintablePages": "Prinditavaid lehti pole",
             "pageHelpInfo": "Lehevalija süntaks:",
             "pageHelpInfo1": "",
             "pageHelpInfo2": "",
@@ -834,28 +834,28 @@
                 "two": "2 veergu"
             },
             "customFontSelected": "sa oled eelistanud kasutada isiklikku kirjatüüpi",
-            "customizeReader": "",
+            "customizeReader": "Kohenda teksti vormindust",
             "disabled": "pole kasutusel",
             "display": "Ekraanivaade",
             "disposition": {
                 "title": "Paigutus"
             },
             "font": "Kirjatüüp",
-            "fontSize": "",
+            "fontSize": "Kirjatüübi suurus",
             "increaseFontSize": "Suurenda teksti suurust",
-            "infoCustomFont": "",
+            "infoCustomFont": "Vali sulle sobilik operatsioonisüsteemis leiduv kirjatüüp alustades selle nime kirjutamist",
             "justification": "Joondumine",
             "justify": "Joonda rööpselt",
-            "letterSpacing": "",
-            "lineSpacing": "",
+            "letterSpacing": "Tähevahed",
+            "lineSpacing": "Reavahed",
             "margin": "Veeris",
-            "mathjax": "",
+            "mathjax": "Võta MathJax kasutusele",
             "noFootnotes": "",
             "noRTLFlip": "",
-            "noRuby": "",
+            "noRuby": "Peida jaapani „Ruby“ vormingus märkused",
             "noTemporaryNavTargetOutline": "",
             "paginated": "Jagatud lehtedeks",
-            "paraSpacing": "",
+            "paraSpacing": "Lõikude vahed",
             "pdfZoom": {
                 "name": {
                     "100pct": "100%",
@@ -864,15 +864,15 @@
                     "300pct": "300%",
                     "500pct": "500%",
                     "50pct": "50%",
-                    "fit": "",
-                    "width": ""
+                    "fit": "sobita lehele",
+                    "width": "lehe laius"
                 },
                 "title": "Suumimine"
             },
             "preset": {
                 "apply": "Rakenda",
-                "applyDetails": "",
-                "detail": "",
+                "applyDetails": "Kasuta oma eelistatud seadistust kogu väljaandes.",
+                "detail": "Salvesta, kasuta või lähtesta oma eelistatud seadistust.",
                 "reset": "Lähtesta",
                 "resetDetails": "",
                 "save": "Salvesta",
@@ -885,7 +885,7 @@
             "scrolled": "Keritav",
             "spacing": "",
             "spreadModeEven": "",
-            "text": "",
+            "text": "Tekst",
             "theme": {
                 "name": {
                     "Contrast1": "Kontrastne 1",
@@ -909,13 +909,13 @@
             "publicationNoToc": "Sisukord puudub"
         },
         "tts": {
-            "activate": "",
-            "language": "",
-            "next": "",
-            "options": "",
-            "pause": "",
-            "play": "",
-            "previous": "",
+            "activate": "Võta kõnesüntees (TTS) kasutusele",
+            "language": "Kõnesünteesi keel",
+            "next": "Järgmine kõnesünteesivalik",
+            "options": "Kõnesünteesi valikud",
+            "pause": "Peata kõnesüntees",
+            "play": "Kuula sisu kõnesünteesi abil",
+            "previous": "Eelmine kõnesünteesi valik",
             "sentenceDetect": "",
             "sentenceDetectDescription": "",
             "speed": "",
@@ -933,21 +933,21 @@
             "type": "Tüüp:"
         },
         "auth": {
-            "help": "",
-            "title": "",
-            "wipeData": ""
+            "help": "Järgnevaga kustutad kõik OPDS-i jaoks kasutatud kontod ja salasõnad.",
+            "title": "Ligipääs avalikele kataloogidele",
+            "wipeData": "Eemalda sisselogimise valikud"
         },
         "keyboard": {
             "advancedMenu": "",
             "cancel": "",
             "disclaimer": "",
-            "editUserJson": "",
-            "exportToHTML": "",
-            "keyboardShortcuts": "",
+            "editUserJson": "Muuda kasutaja faili…",
+            "exportToHTML": "Eksportdi HTML-failina",
+            "keyboardShortcuts": "Klaviatuuri kiirklahvid",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "",
-                    "name": ""
+                    "description": "Ava järjehoidja loomise vaade ja muuda tekstilist nimetust (märget), värvi ja silti",
+                    "name": "Lisa sildiga järjehoidja"
                 },
                 "AnnotationsCreate": {
                     "description": "",
