@@ -411,8 +411,8 @@
                 "descriptive": "Veebisisu hõlbustuse juhised (WCAG) 2.2"
             },
             "conformance-no": {
-                "compact": "Teavet pole saadaval",
-                "descriptive": "Teavet pole saadaval"
+                "compact": "Teave pole saadaval",
+                "descriptive": "Teave pole saadaval"
             },
             "conformance-title": "Hõlbustusreeglite täitmine",
             "conformance-unknown-standard": {
@@ -446,28 +446,28 @@
                 "descriptive": "Pole teada, kas selles väljaandes leidub simuleeritud liikumist"
             },
             "hazards-no-metadata": {
-                "compact": "Teavet pole saadaval",
-                "descriptive": "Teavet pole saadaval"
+                "compact": "Teave pole saadaval",
+                "descriptive": "Teave pole saadaval"
             },
             "hazards-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Ohte pole",
+                "descriptive": "Selles väljaandes ei leidu ohte"
             },
             "hazards-sound": {
                 "compact": "Helid",
                 "descriptive": ""
             },
             "hazards-sound-none": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Helisid pole",
+                "descriptive": "Selles väljaandes ei leidu helisid"
             },
             "hazards-sound-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Helide olemasolu pole teada",
+                "descriptive": "Helide olemasolu pole teada"
             },
             "hazards-title": "Ohud",
             "hazards-unknown": {
-                "compact": "",
+                "compact": "Ohtude olemasolu pole teada",
                 "descriptive": ""
             }
         },
@@ -477,8 +477,8 @@
                 "descriptive": ""
             },
             "navigation-no-metadata": {
-                "compact": "Teavet pole saadaval",
-                "descriptive": "Teavet pole saadaval"
+                "compact": "Teave pole saadaval",
+                "descriptive": "Teave pole saadaval"
             },
             "navigation-page-navigation": {
                 "compact": "",
@@ -490,22 +490,22 @@
             },
             "navigation-title": "Liikumine rakenduses",
             "navigation-toc": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Sisukord",
+                "descriptive": "Sisukord kõigi peatükkide juurde linkide kaudu"
             }
         },
         "rich-content": {
             "rich-content-accessible-chemistry-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Keemiavalemid LaTeX-is",
+                "descriptive": "Keemiavalemid loetavas ja hõlbustatud vormingus (LaTeX)"
             },
             "rich-content-accessible-chemistry-as-mathml": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Keemiavalemid MathML-is",
+                "descriptive": "Keemiavalemid loetavas ja hõlbustatud vormingus (MathML)"
             },
             "rich-content-accessible-math-as-latex": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Matemaatika LaTeX-is",
+                "descriptive": "Matemaatika valemid loetavas ja hõlbustatud vormingus (LaTeX)"
             },
             "rich-content-accessible-math-as-mathml": {
                 "compact": "Matemaatika MathML-ina",
@@ -533,8 +533,8 @@
                 "descriptive": ""
             },
             "rich-content-unknown": {
-                "compact": "Teavet pole saadaval",
-                "descriptive": "Teavet pole saadaval"
+                "compact": "Teave pole saadaval",
+                "descriptive": "Teave pole saadaval"
             }
         },
         "ways-of-reading": {
@@ -543,8 +543,8 @@
                 "descriptive": ""
             },
             "ways-of-reading-nonvisual-reading-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Puudub teave mittevisuaalsete lugemisvõimaluste kohta",
+                "descriptive": "Puudub teave mittevisuaalsete lugemisvõimaluste kohta"
             },
             "ways-of-reading-nonvisual-reading-none": {
                 "compact": "",
@@ -563,8 +563,8 @@
                 "descriptive": ""
             },
             "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Puudub teave eelsalvestatud helilise sisu kohta",
+                "descriptive": "Puudub teave eelsalvestatud helilise sisu kohta"
             },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "",
@@ -580,8 +580,8 @@
                 "descriptive": ""
             },
             "ways-of-reading-visual-adjustments-unknown": {
-                "compact": "",
-                "descriptive": ""
+                "compact": "Puudub teave välimuse muudetavuse kohta",
+                "descriptive": "Puudub teave välimuse muudetavuse kohta"
             }
         }
     },
@@ -939,7 +939,7 @@
         },
         "keyboard": {
             "advancedMenu": "",
-            "cancel": "",
+            "cancel": "Katkesta",
             "disclaimer": "",
             "editUserJson": "Muuda kasutaja faili…",
             "exportToHTML": "Eksportdi HTML-failina",
