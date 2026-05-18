@@ -1112,16 +1112,7 @@ export const ReadingAudio = ({ useMO, ttsState, ttsPause, ttsResume }: { useMO: 
 <div style={{flexBasis: "100%", height: 0}}></div>
 <details
 aria-hidden={true}
-open={false}
-style={
-{
-    width: 0,
-    flexBasis: "100%",
-    marginTop: 10,
-    border: "1px solid var(--color-gray-250)",
-    padding: 6,
-}
-}>
+open={false}>
 <summary style={
 {
 cursor: "pointer",
