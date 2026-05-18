@@ -92,9 +92,10 @@ $setting_color: var(--color-brand-primary);
         }
     }
 
-    h4 {
+    h3 {
         margin: 0;
         font-weight: 600;
+        font-size: 14px;
     }
 }
 
@@ -416,9 +417,10 @@ $setting_color: var(--color-brand-primary);
                     font-size: 14px;
                 }
 
-                h4 {
+                h3 {
                     margin: 0;
                     max-width: 120px;
+                    font-size: 14px;
                 }
             }
 

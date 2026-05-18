@@ -1614,7 +1614,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                             }
                                         </div>
                                         <div aria-hidden>
-                                            <h4>{__("reader.annotations.advancedMode")}</h4>
+                                            <h3>{__("reader.annotations.advancedMode")}</h3>
                                         </div>
                                     </label>
                                 </div>
@@ -1649,7 +1649,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                                 :
                                                 <></>
                                             } </div>
-                                        <h4 aria-hidden>{__("reader.annotations.quickAnnotations")}</h4></label>
+                                        <h3 aria-hidden>{__("reader.annotations.quickAnnotations")}</h3></label>
                                 </div>
                                 <div className={stylesAnnotations.annotations_checkbox}>
                                     <input type="checkbox" id="marginAnnotations" name="marginAnnotations" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "margin"} onChange={marginAnnotationsOnChange} />
@@ -1680,7 +1680,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                                 <></>
                                             }
                                         </div>
-                                        <h4 aria-hidden>{__("reader.annotations.toggleMarginMarks")}</h4></label>
+                                        <h3 aria-hidden>{__("reader.annotations.toggleMarginMarks")}</h3></label>
                                 </div>
                                 <div className={stylesAnnotations.annotations_checkbox}>
                                     <input type="checkbox" id="hideAnnotation" name="hideAnnotation" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "hide"} onChange={hideAnnotationOnChange} />
@@ -1711,7 +1711,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                                 <></>
                                             }
                                         </div>
-                                        <h4 aria-hidden>{__("reader.annotations.hide")}</h4></label>
+                                        <h3 aria-hidden>{__("reader.annotations.hide")}</h3></label>
                                 </div>
                                 <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-gray-50" }} />
                             </Popover.Content>
@@ -2338,7 +2338,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                                 <></>
                                             }
                                         </div>
-                                        <h4 aria-hidden>{__("reader.annotations.hide")}</h4></label>
+                                        <h3 aria-hidden>{__("reader.annotations.hide")}</h3></label>
                                 </div>
                                 <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-gray-50" }} />
                             </Popover.Content>
@@ -2934,7 +2934,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                 (!r2Publication.Spine || r2Publication.Spine.length === 0)
             }>
             <SVG ariaHidden svg={TocIcon} />
-            <p>{__("reader.marks.toc")}</p>
+            <h3>{__("reader.marks.toc")}</h3>
         </Tabs.Trigger>;
     const optionTocItem = {
         id: 0, value: "tab-toc", name: __("reader.marks.toc"), disabled:
@@ -2946,7 +2946,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const LandMarksTrigger =
         <Tabs.Trigger id="reader-menu-tab-landmark-trigger" value="tab-landmark" key={"tab-landmark"} data-value={"tab-landmark"} title={__("reader.marks.landmarks")} disabled={!r2Publication.Landmarks || r2Publication.Landmarks.length === 0}>
             <SVG ariaHidden svg={LandmarkIcon} />
-            <p>{__("reader.marks.landmarks")}</p>
+            <h3>{__("reader.marks.landmarks")}</h3>
         </Tabs.Trigger>;
     const optionLandmarkItem = {
         id: 1, value: "tab-landmark", name: __("reader.marks.landmarks"), disabled:
@@ -2958,7 +2958,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
         // <Tabs.Trigger value="tab-bookmark" key={"tab-bookmark"} data-value={"tab-bookmark"} title={__("reader.marks.bookmarks")} disabled={!bookmarks || bookmarks.length === 0}>
         <Tabs.Trigger id="reader-menu-tab-bookmark-trigger" value="tab-bookmark" key={"tab-bookmark"} data-value={"tab-bookmark"} title={__("reader.marks.bookmarks")}>
             <SVG ariaHidden svg={BookmarkIcon} />
-            <p>{__("reader.marks.bookmarks")}</p>
+            <h3>{__("reader.marks.bookmarks")}</h3>
         </Tabs.Trigger>;
     const optionBookmarkItem = {
         id: 2, value: "tab-bookmark", name: __("reader.marks.bookmarks"), disabled: false, // !bookmarks || bookmarks.length === 0,
@@ -2968,7 +2968,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const SearchTrigger =
         <Tabs.Trigger id="reader-menu-tab-search-trigger" value="tab-search" key={"tab-search"} data-value={"tab-search"} title={__("reader.marks.search")} disabled={/*!searchEnable ||*/ isPdf}>
             <SVG ariaHidden svg={SearchIcon} />
-            <p>{__("reader.marks.search")}</p>
+            <h3>{__("reader.marks.search")}</h3>
         </Tabs.Trigger>;
     const optionSearchItem = {
         id: 3, value: "tab-search", name: __("reader.marks.search"), disabled: /*!searchEnable ||*/ isPdf,
@@ -2985,7 +2985,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
             disabled={!(isFixedLayoutNoPageList || r2Publication.PageList || isDivina || isPdf) /* !r2Publication.Metadata.NumberOfPages */}>
 
             <SVG ariaHidden svg={TargetIcon} />
-            <p>{__("reader.marks.goTo")}</p>
+            <h3>{__("reader.marks.goTo")}</h3>
         </Tabs.Trigger>;
     const optionGoToPageItem = {
         id: 4, value: "tab-gotopage", name: __("reader.marks.goTo"), disabled: !(isFixedLayoutNoPageList || r2Publication.PageList || isDivina || isPdf), // !r2Publication.Metadata.NumberOfPages
@@ -2996,7 +2996,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const AnnotationTrigger =
         <Tabs.Trigger id="reader-menu-tab-annotation-trigger" value="tab-annotation" key={"tab-annotation"} data-value={"tab-annotation"} title={__("reader.marks.annotations")} >
             <SVG ariaHidden svg={AnnotationIcon} />
-            <p>{__("reader.marks.annotations")}</p>
+            <h3>{__("reader.marks.annotations")}</h3>
         </Tabs.Trigger>;
     const optionAnnotationItem = {
         id: 5, value: "tab-annotation", name: __("reader.marks.annotations"), disabled: false,// !bookmarks || bookmarks.length === 0,
