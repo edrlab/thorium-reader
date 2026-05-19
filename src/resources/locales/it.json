@@ -11,7 +11,7 @@
     "apiapp": {
         "documentation": "Documentazione di Thorium",
         "howItWorks": "Come funziona?",
-        "informations": "In alcuni paesi, ad esempio in Francia, molte biblioteche pubbliche forniscono un catalogo a lettura automatica (simile all'OPDS, ma non identico), che consente agli utenti che siano iscritti a una biblioteca francese di scaricare pubblicazioni digitali dal loro scaffale personale. L'integrazione di questa tecnologia in Thorium Reader consente di scaricare un ebook o un audiolibro direttamente in Thorium Reader per una lettura immediata. Come si collega l'account della biblioteca pubblica a Thorium Reader? È semplice. Inserite una città (\"Roma\") o una parte del nome della biblioteca nel campo di ricerca e premete il pulsante Cerca. Apparirà un elenco di biblioteche pubbliche corrispondenti alla ricerca. Selezionare una biblioteca e premere Aggiungi. Nell'elenco aggiornato dei cataloghi, selezionare questa biblioteca: viene visualizzato un modulo di autenticazione. Inserire il nome utente/indirizzo e-mail e la password e premere Login. Ora è possibile vedere il contenuto della propria libreria personale, da cui è possibile scaricare e leggere gli ebook e gli audiolibri precedentemente presi in prestito.",
+        "informations": "In alcuni paesi, ad esempio in Francia, molte biblioteche pubbliche forniscono un catalogo a lettura automatica (simile all'OPDS, ma non identico), che consente agli utenti che siano iscritti a una biblioteca francese di scaricare pubblicazioni digitali dal loro scaffale personale. L'integrazione di questa tecnologia in Thorium Reader consente di scaricare un ebook o un audiolibro direttamente in Thorium Reader per una lettura immediata.\nCome si collega l'account della biblioteca pubblica a Thorium Reader? È semplice. Inserite una città (\"Roma\") o una parte del nome della biblioteca nel campo di ricerca e premete il pulsante Cerca. Apparirà un elenco di biblioteche pubbliche corrispondenti alla ricerca. Selezionare una biblioteca e premere Aggiungi. Nell'elenco aggiornato dei cataloghi, selezionare questa biblioteca: viene visualizzato un modulo di autenticazione. Inserire il nome utente/indirizzo e-mail e la password e premere Login. Ora è possibile vedere il contenuto della propria libreria personale, da cui è possibile scaricare e leggere gli ebook e gli audiolibri precedentemente presi in prestito.",
         "noLibraryFound": "Nessuna biblioteca trovata ({{- name}})"
     },
     "app": {
@@ -284,7 +284,7 @@
             "error": "Impossibile accedere al feed OPDS",
             "noInternet": "Nessuna connessione internet",
             "noInternetMessage": "Controlla il cavo di connessione, il modem, il router o l connessione wifi",
-            "reject": "Si è verificato un errore inatteso durante l'elaborazione del feed OPDS.",
+            "reject": "Si è verificato un errore inatteso durante l'elaborazione del feed OPDS!",
             "timeout": "Si è verificato un timeout nella connessione, per favore riprova più tardi."
         },
         "next": "Prossimo",
@@ -593,7 +593,7 @@
     "publication": {
         "accessibility": {
             "accessModeSufficient": {
-                "textual": "Supporta TTS e lettori di schermo"
+                "textual": "Supporta la lettura ad alta voce e il braille"
             },
             "accessibilityFeature": {
                 "alternativeText": "Contiene testo alternativo",
@@ -646,7 +646,7 @@
         "lcpRightsPrint": "Pagine stampate",
         "lcpStart": "Inizio",
         "licenceLCP": "Licenza (LCP)",
-        "licenseCertificateDateInvalid": "Il certificato LCP è scaduto prima della data di licenza ({{- dateTime}})",
+        "licenseCertificateDateInvalid": "Il certificato LCP è scaduto prima della data di licenza ({{- dateTime}}).",
         "licenseOutOfDate": "La licenza è scaduta",
         "licenseSignatureInvalid": "La firma della licenza non è valida",
         "licensed": "Concesso in licenza",
@@ -898,14 +898,14 @@
                     "Contrast2": "Contrasto 2",
                     "Contrast3": "Contrasto 3",
                     "Contrast4": "Contrasto 4",
-                    "Neutral": "Neutrale",
+                    "Neutral": "Neutro",
                     "Night": "Notte",
                     "Paper": "Carta",
                     "Sepia": "Seppia"
                 },
                 "title": "Tema"
             },
-            "wordSpacing": "Spaziatura parole"
+            "wordSpacing": "Spaziatura delle parole"
         },
         "svg": {
             "left": "Sinistra",
@@ -916,13 +916,13 @@
         },
         "tts": {
             "activate": "Attiva Lettura ad alta voce",
-            "language": "Lingua sintesi vocale",
+            "language": "Lingua della sintesi vocale",
             "next": "Traccia successiva",
             "options": "Opzioni sintesi vocale",
             "pause": "Metti in pausa Lettura ad alta voce",
             "play": "Riproduci Lettura ad alta voce",
             "previous": "Traccia precedente",
-            "sentenceDetect": "Separa testo",
+            "sentenceDetect": "Separa il testo",
             "sentenceDetectDescription": "Suddividi i paragrafi lunghi in frasi.",
             "speed": "Velocità di riproduzione Lettura ad alta voce",
             "stop": "Interrompi Lettura ad alta voce",
@@ -932,7 +932,7 @@
     "settings": {
         "annotationCreator": {
             "creator": "Creatore",
-            "help": "Se specificato, questo nome verrà incluso nei metadati delle evidenziature esportate.",
+            "help": "Se specificato, questo nome verrà incluso nei metadati delle annotazioni esportate.",
             "name": "Nome",
             "organization": "Organizzazione",
             "person": "Persona",
@@ -941,10 +941,10 @@
         "auth": {
             "help": "Questa azione cancella tutte le credenziali di accesso all'OPDS.",
             "title": "Gestire l'accesso ai cataloghi",
-            "wipeData": "Elimina dati di autenticazione"
+            "wipeData": "Elimina i dati di autenticazione"
         },
         "keyboard": {
-            "advancedMenu": "Menu",
+            "advancedMenu": "Menu delle scorciatoie da tastiera",
             "cancel": "Annulla",
             "disclaimer": "Le impostazioni predefinite dell'applicazione sono state progettate in base alla posizione fisica dei tasti in una tastiera QWERTY",
             "editUserJson": "Modifica il file utente...",
@@ -952,19 +952,19 @@
             "keyboardShortcuts": "Scorciatoie da tastiera",
             "list": {
                 "AddBookmarkWithLabel": {
-                    "description": "Apre la finestra di dialogo per la creazione del segnalibro e modificare l'etichetta testuale (nota), il colore e il tag",
-                    "name": "Crea un segnalibro con etichetta"
+                    "description": "Apre la finestra di dialogo per la creazione del segnalibro e modifica l'etichetta testuale (nota), il colore e il tag",
+                    "name": "Crea un segnalibro con tag"
                 },
                 "AnnotationsCreate": {
-                    "description": "Apre la finestra di dialogo per la creazione di annotazioni per il testo selezionato e modificare la nota testuale, il colore e il tipo di evidenziazione e l'etichetta",
-                    "name": "Crea annotazione"
+                    "description": "Apre la finestra di dialogo per la creazione di annotazioni per il testo selezionato e modificare la nota testuale, il colore e il tipo di evidenziazione e il tag",
+                    "name": "Crea un'annotazione"
                 },
                 "AnnotationsCreateQuick": {
                     "description": "Crea rapidamente una nota per il testo selezionato, con l'ultimo colore e tipo di evidenziazione utilizzati (la nota e il tag saranno vuoti)",
                     "name": "Creare un'annotazione rapida"
                 },
                 "AnnotationsToggleMargin": {
-                    "description": "Alternare gli indicatori visivi delle note e dei segnalibri, nel margine del documento o nel testo",
+                    "description": "Alternare gli indicatori visivi delle note e dei segnalibri nel margine del documento o nel testo",
                     "name": "Attiva/disattiva l'annotazione a margine"
                 },
                 "AudioNext": {
@@ -972,7 +972,7 @@
                     "name": "Segmento audio successivo"
                 },
                 "AudioNextAlt": {
-                    "description": "Passa al segmento audio successivo nella narrazione (EPUB3 Media Overlays, sintesi vocale o audiolibro preregistrato). Questo salta qualsiasi struttura intermedia.",
+                    "description": "Passa al segmento audio successivo nella narrazione (EPUB3 Media Overlays, sintesi vocale o audiolibro preregistrato). Quest'azione salta qualsiasi struttura intermedia",
                     "name": "Segmento audio successivo (esci)"
                 },
                 "AudioPlayPause": {
@@ -984,11 +984,11 @@
                     "name": "Segmento audio precedente"
                 },
                 "AudioPreviousAlt": {
-                    "description": "Torna al segmento audio precedente nella narrazione (EPUB3 con Media Overlays, lettura ad alta voce con sintesi vocale o audiolibro preregistrato). Questo salta qualsiasi struttura saltabile",
+                    "description": "Torna al segmento audio precedente nella narrazione (EPUB3 con Media Overlays, lettura ad alta voce con sintesi vocale o audiolibro preregistrato). Quest'azione salta qualsiasi struttura intermedia",
                     "name": "Segmento audio precedente (esci)"
                 },
                 "AudioStop": {
-                    "description": "Interrompi l'audio corrente (EPUB3 con Media Overlays, lettura ad alta voce con sintesi vocale o audiolibro preregistrato)",
+                    "description": "Interrompi l'audio in riproduzione (EPUB3 con Media Overlays, lettura ad alta voce con sintesi vocale o audiolibro preregistrato)",
                     "name": "Interrompi audio"
                 },
                 "CloseReader": {
@@ -1008,7 +1008,7 @@
                     "name": "Reset zoom layout fisso"
                 },
                 "FocusMain": {
-                    "description": "Sposta il focus della tastiera sul punto di riferimento \"principale\" nell'interfaccia grafica utente. Nella finestra del lettore, questo sposta il focus sul contenuto della pubblicazione.",
+                    "description": "Sposta il focus della tastiera sul punto di riferimento \"principale\" nell'interfaccia grafica utente. Nella finestra del lettore, questo sposta il focus sul contenuto della pubblicazione",
                     "name": "Focus sul contenuto principale"
                 },
                 "FocusMainDeep": {
@@ -1016,7 +1016,7 @@
                     "name": "Focus intenso sul contenuto principale"
                 },
                 "FocusReaderGotoPage": {
-                    "description": "Sposta il focus della tastiera sulla sezione \"Vai alla pagina\" del pannello di navigazione della finestra del lettore",
+                    "description": "Sposta il focus della tastiera sulla sezione \"Vai alla pagina\" nel pannello di navigazione della finestra del lettore",
                     "name": "Focus su \"Vai alla pagina\""
                 },
                 "FocusReaderNavigation": {
@@ -1041,10 +1041,10 @@
                 },
                 "FocusReaderSettings": {
                     "description": "Sposta il focus della tastiera sul pannello delle impostazioni della finestra del lettore (preferenze di visualizzazione, ecc.)",
-                    "name": "Focus sulle impostazioni del lettore"
+                    "name": "Focus sulle Impostazioni del lettore"
                 },
                 "FocusSearch": {
-                    "description": "Sposta il focus della tastiera sul campo di ricerca testuale della finestra di lettura oppure, nella finestra della libreria, questa operazione effettua una ricerca nella biblioteca o nel feed OPDS attivo",
+                    "description": "Sposta il focus della tastiera sul campo di ricerca testuale della finestra di lettura oppure, nella finestra della libreria, quest'azione effettua una ricerca nella biblioteca o nel feed OPDS attivo",
                     "name": "Comando di ricerca"
                 },
                 "FocusToolbar": {
@@ -1060,7 +1060,7 @@
                     "name": "Vai al capitolo successivo (alternativa)"
                 },
                 "NavigateNextHistory": {
-                    "description": "Nella finestra di lettura, vai avanti di un passo nella cronologia di navigazione",
+                    "description": "Nella finestra di lettura, vai avanti di un intervallo nella cronologia di navigazione",
                     "name": "Vai all'elemento successivo della cronologia"
                 },
                 "NavigateNextLibraryPage": {
@@ -1076,7 +1076,7 @@
                     "name": "Vai alla pagina OPDS successiva"
                 },
                 "NavigateNextOPDSPageAlt": {
-                    "description": "Nella finestra della libreria per cataloghi / feed OPDS, va alla pagina successiva. Questa è una scorciatoia da tastiera alternativa a quella predefinita",
+                    "description": "Nella finestra della libreria per i cataloghi / feed OPDS, va alla pagina successiva. Questa è una scorciatoia da tastiera alternativa a quella predefinita",
                     "name": "Vai alla pagina OPDS successiva (alternativa)"
                 },
                 "NavigateNextPage": {
@@ -1096,7 +1096,7 @@
                     "name": "Vai al capitolo precedente (alternativa)"
                 },
                 "NavigatePreviousHistory": {
-                    "description": "Nella finestra di lettura, torna indietro di un passo nella cronologia di navigazione",
+                    "description": "Nella finestra di lettura, torna indietro di un intervallo nella cronologia di navigazione",
                     "name": "Vai alla cronologia precedente"
                 },
                 "NavigatePreviousLibraryPage": {
@@ -1136,7 +1136,7 @@
                     "name": "Visualizza le informazioni sulla pubblicazione"
                 },
                 "OpenReaderInfoWhereAmI": {
-                    "description": "Nella finestra del lettore, apre la finestra di dialogo che mostra le informazioni sulla pubblicazione e posiziona il cursore della tastiera sulla sezione che mostra il contesto della posizione di lettura corrente",
+                    "description": "Nella finestra di lettura, apre la finestra di dialogo che mostra le informazioni sulla pubblicazione e posiziona il cursore della tastiera sulla sezione che mostra il contesto della posizione di lettura attuale",
                     "name": "Visualizza le informazioni sulla pubblicazione, mostra posizione di lettura"
                 },
                 "Print": {
@@ -1145,7 +1145,7 @@
                 },
                 "SearchNext": {
                     "description": "Nello strumento di ricerca della finestra di lettura, vai al risultato successivo della ricerca. Esiste una scorciatoia da tastiera alternativa a quella predefinita",
-                    "name": "Risultato della ricerca successivo"
+                    "name": "Risultato successivo della ricerca"
                 },
                 "SearchNextAlt": {
                     "description": "Nello strumento di ricerca della finestra di lettura, passa al risultato di ricerca successivo. Questa è una scorciatoia da tastiera alternativa a quella predefinita",
@@ -1153,15 +1153,15 @@
                 },
                 "SearchPrevious": {
                     "description": "Nello strumento di ricerca della finestra di lettura, vai al risultato della ricerca precedente. Esiste una scorciatoia da tastiera alternativa a quella predefinita",
-                    "name": "Risultato della ricerca precedente"
+                    "name": "Risultato precedente della ricerca"
                 },
                 "SearchPreviousAlt": {
                     "description": "Nello strumento di ricerca della finestra di lettura, vai al risultato della ricerca precedente. Questa è una scorciatoia da tastiera alternativa a quella predefinita",
                     "name": "Risultato della ricerca precedente (alternativo)"
                 },
                 "SpeakReaderInfoWhereAmI": {
-                    "description": "Nella finestra di lettura, descrivere il contesto della posizione di lettura corrente, utilizzando un testo compatibile con gli screen reader",
-                    "name": "Descrivi il luogo di lettura (vocale)"
+                    "description": "Nella finestra di lettura, descrivere il contesto della posizione di lettura attuale, utilizzando un testo compatibile con gli screen reader",
+                    "name": "Descrivi la posizione di lettura (vocale)"
                 },
                 "ToggleBookmark": {
                     "description": "Aggiungi un nuovo segnalibro o rimuovi uno esistente, se è attualmente selezionato",
@@ -1172,7 +1172,7 @@
                     "name": "Attiva/disattiva schermo intero"
                 }
             },
-            "loadUserJson": "Carica da file utente",
+            "loadUserJson": "Carica il file",
             "noShortcutFound": "Nessuna scorciatoia trovata con questa etichetta",
             "resetDefaults": "Ripristina (carica predefiniti)",
             "save": "Salva",
@@ -1183,7 +1183,7 @@
         },
         "library": {
             "enableAPIAPP": "Attivare l'accesso al sistema bibliotecario francese (PNB)",
-            "title": "Aggiungere un account a una biblioteca francese"
+            "title": "Aggiungere l'account di una biblioteca"
         },
         "note": {
             "export": {
@@ -1217,7 +1217,7 @@
         "theme": {
             "auto": "Automatico",
             "dark": "Scuro",
-            "description": "Il tema dell'applicazione corrisponde al sistema operativo.",
+            "description": "Il tema dell'applicazione corrisponde a quello del sistema operativo.",
             "light": "Chiaro",
             "title": "Tema dell'applicazione"
         }
@@ -1234,11 +1234,11 @@
             "outlineWordOutline": "Contornato, parola contornata",
             "outlineWordSolidBackground": "Contornato, parola con sfondo pieno",
             "outlineWordUnderline": "Contornato, parola sottolineata",
-            "preview": "Anteprima dello stile di evidenziazione della sintesi vocale",
+            "preview": "Anteprima dello stile di evidenziatura della sintesi vocale",
             "solidBackgroundWordOutline": "Sfondo pieno, parola contornata",
             "solidBackgroundWordSolidBackground": "Sfondo pieno, sfondo della parola pieno",
             "solidBackgroundWordUnderline": "Sfondo pieno, parola sottolineata",
-            "style": "Stile di evidenziazione sintesi vocale",
+            "style": "Stile di evidenziatura della sintesi vocale",
             "underlineWordOutline": "Sottolineato, parola contornata",
             "underlineWordSolidBackground": "Sottolineato, parola con sfondo pieno",
             "underlineWordUnderline": "Sottolineato, parola sottolineata",
