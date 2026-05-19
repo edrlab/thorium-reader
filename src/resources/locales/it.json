@@ -750,16 +750,16 @@
             "disableContinuousPlay": "Disattiva la riproduzione continua",
             "disableContinuousPlayDescription": "Non riprodurre automaticamente l'elemento successivo, ma mettere in pausa subito dopo la fine della riproduzione dell'elemento corrente.",
             "ignoreAndUseTTS": "Ignora l'audio preregistrato, usa la sintesi vocale",
-            "ignoreAndUseTTSDescription": "Ignora gli EPUB Media Overlay, leggi invece con la sintesi vocale",
+            "ignoreAndUseTTSDescription": "Ignora gli EPUB Media Overlay, leggi con la sintesi vocale",
             "next": "Prossima lettura ad alta voce",
             "pause": "Metti in pausa la lettura ad alta voce",
-            "play": "Riproduci la lettura ad alta voce",
+            "play": "Riproduci con lettura ad alta voce",
             "previous": "Precedente lettura ad alta voce",
             "skip": "Ometti informazioni aggiuntive",
-            "skipDescription": "Salta/ignora i contenuti aggiuntivi come interruzioni di pagina, note a piè di pagina/note di chiusura, ecc.",
+            "skipDescription": "Ignora i contenuti aggiuntivi come interruzioni di pagina, note a piè di pagina/note di chiusura, ecc.",
             "speed": "Velocità di riproduzione per la lettura ad alta voce",
             "stop": "Interrompi la lettura ad alta voce",
-            "title": "lettura ad alta voce",
+            "title": "Lettura ad alta voce",
             "useTTSHighlightsForMO": "Evidenziatura personalizzata",
             "useTTSHighlightsForMODescription": "Disattivare lo stile dell'editore"
         },
@@ -785,7 +785,7 @@
             "page": "Pagina",
             "pdfscalemode": "Dimensioni della pagina o larghezza",
             "print": "Stampa",
-            "printDisabled": "Non è permesso stampare",
+            "printDisabled": "La stampa non è autorizzata",
             "screenNext": "Vai avanti",
             "screenPrevious": "Vai indietro",
             "settingsTitle": "Impostazioni di lettura"
@@ -802,9 +802,9 @@
         },
         "picker": {
             "search": {
-                "founds_many": "{{- count}} risultato/i",
-                "founds_one": "{{- count}} risultato/i",
-                "founds_other": "{{- count}} risultato/i",
+                "founds_many": "{{- count}} risultati",
+                "founds_one": "{{- count}} risultato",
+                "founds_other": "{{- count}} risultati",
                 "input": "testo da cercare",
                 "next": "Prossimo",
                 "notFound": "Nessun risultato",
@@ -839,12 +839,12 @@
                 "title": "Colonne",
                 "two": "2 cols"
             },
-            "customFontSelected": "Hai scelto una font personale",
+            "customFontSelected": "Hai scelto un font personale",
             "customizeReader": "Personalizza la formattazione del testo",
-            "disabled": "Disabilitato",
+            "disabled": "Disattivato",
             "display": "Visualizzazione",
             "disposition": {
-                "title": "Layout"
+                "title": "Impaginazione"
             },
             "font": "Font",
             "fontSize": "Dimensioni del font",
@@ -852,8 +852,8 @@
             "infoCustomFont": "Seleziona il carattere personalizzato dal sistema operativo digitandone il nome",
             "justification": "Allineamento",
             "justify": "Giustifica",
-            "letterSpacing": "Spaziatura lettere",
-            "lineSpacing": "Spaziatura linee",
+            "letterSpacing": "Spaziatura tra le lettere",
+            "lineSpacing": "Spaziatura tra le linee",
             "margin": "Margine",
             "mathjax": "Abilita MathJax",
             "noFootnotes": "Disattiva note a piè di pagina in elementi a comparsa",
@@ -861,7 +861,7 @@
             "noRuby": "Nascondi Ruby Giapponese",
             "noTemporaryNavTargetOutline": "Disattivare gli indicatori visivi di navigazione",
             "paginated": "Impaginato",
-            "paraSpacing": "Spaziatura paragrafo",
+            "paraSpacing": "Spaziatura dei paragrafi",
             "pdfZoom": {
                 "name": {
                     "100pct": "100%",
@@ -871,23 +871,23 @@
                     "500pct": "500%",
                     "50pct": "50%",
                     "fit": "adatta alla pagina",
-                    "width": "larghezza pagina"
+                    "width": "larghezza della pagina"
                 },
                 "title": "Zoom"
             },
             "preset": {
                 "apply": "Applica i parametri di lettura preferiti",
-                "applyDetails": "Applica i parametri di lettura preferiti al libro corrente.",
+                "applyDetails": "Applica i parametri di lettura preferiti al libro attuale.",
                 "detail": "Salva/Applica i parametri di lettura preferiti.",
-                "reset": "Reimposta i parametri di lettura preferiti.",
+                "reset": "Reimposta i parametri di lettura preferiti",
                 "resetDetails": "Ripristina i parametri di lettura preferiti ai valori predefiniti.",
                 "save": "Salva i parametri di lettura preferiti.",
-                "saveDetails": "Salva le modifiche apportate alla formattazione e alle scelte di visualizzazione del libro corrente. Queste impostazioni possono essere applicate ad altri libri, una volta aperti, facendo clic sul pulsante sottostante.",
+                "saveDetails": "Salva le modifiche apportate alla formattazione e alle scelte di visualizzazione del libro attuale. Queste impostazioni possono essere applicate ad altri libri, una volta aperti, facendo clic sul pulsante sottostante.",
                 "title": "Preferenze"
             },
             "preview": "Anteprima",
             "reduceFontSize": "Ridurre la dimensione del testo",
-            "reduceMotion": "Riduci movimento",
+            "reduceMotion": "Riduci il movimento",
             "scrolled": "Scrollabile",
             "spacing": "Spaziatura",
             "spreadModeEven": "",
