@@ -157,7 +157,7 @@
             "splashscreen": {
                 "fallbackWelcomeScreen": "Det finns ingen välkomstskärm",
                 "state": "Status: {{- state}}",
-                "title": "Tillhandahålla och aktivera anpassningsprofil"
+                "title": "Tilldelar och aktiverar anpassningsprofil"
             }
         },
         "deleteAnnotations": "Radera anteckningar?",
@@ -167,12 +167,12 @@
         "deleteBookmarksText_one": "Vill du radera {{- count}} bokmärke?",
         "deleteBookmarksText_other": "Vill du radera {{- count}} bokmärken?",
         "deleteFeed": "Vill du ta bort den här katalogen?",
-        "deletePublication": "Vill du ta bort den här publikationen?",
+        "deletePublication": "Vill du ta bort den här boken?",
         "deletePublicationWithNotes": "Varning: Det finns anteckningar och/eller bokmärken som också kommer att raderas! (Om du vill behålla dem så måste du exportera anteckningar och bokmärken innan du tar bort boken)",
         "import": "Vill du importera följande filer:",
-        "importError": "Det uppstod ett fel, kontrollera filtypen ({{acceptedExtension}})",
+        "importError": "Det uppstod ett fel, kontrollera filformatet ({{acceptedExtension}})",
         "renew": "Vill du förnya lånet?",
-        "return": "Vill du lämna tillbaka den här publikationen?",
+        "return": "Vill du lämna tillbaka den här boken?",
         "yes": "Ja"
     },
     "error": {
