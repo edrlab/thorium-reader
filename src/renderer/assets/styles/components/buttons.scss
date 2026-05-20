@@ -56,11 +56,6 @@ button {
   transition: 200ms linear;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  line-height: 1.4;
 
   &:focus-within, &:focus {
     outline: var(--color-brand-primary) solid 1px !important;
@@ -170,11 +165,6 @@ button {
   color: var(--color-brand-primary);
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  line-height: 1.4;
 
   &:hover {
     color: var(--color-brand-primary);
