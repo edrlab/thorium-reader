@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesSettings from "readium-desktop/renderer/assets/styles/components/settings.scss";
 
 import * as React from "react";
@@ -155,13 +154,11 @@ const SettingsRecovery = (props: {
                         label={isRecovering ? "Recovering..." : "Recover publications"}
                         />
                     ) : null}
-                    <button
-                        className={isRecoveryChecked ? stylesButtons.button_transparency : stylesSettings.btn_primary}
+                    <ThButtonSecondary
                         disabled={isRecoveryLoading || isRecovering}
                         onClick={checkRecoverablePublications}
-                    >
-                        <span>{isRecoveryChecked ? "Check again" : "Check for recoverable publications"}</span>
-                    </button>
+                    label={isRecoveryChecked ? "Check again" : "Check for recoverable publications"}
+                    />
                 </div>
             </section>
         </>
