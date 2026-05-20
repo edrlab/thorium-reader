@@ -37,6 +37,7 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import { lcpActions } from "readium-desktop/common/redux/actions";
 import classNames from "classnames";
 import { dialogActions } from "readium-desktop/common/redux/actions";
+import { ThButtonPrimary, ThButtonSecondary } from "readium-desktop/renderer/common/components/Buttons";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -179,12 +180,14 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                         </details>
                         <div className={stylesModals.modal_dialog_footer}>
                             <Dialog.Close asChild>
-                                <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
+                                <ThButtonSecondary label={__("dialog.cancel")} />
                             </Dialog.Close>
                             <Dialog.Close asChild>
-                                <button type="submit" className={stylesButtons.button_primary_blue} onClick={this.submit}>
-                                    <SVG ariaHidden svg={LockIcon} />
-                                    {__("library.lcp.open")}</button>
+                                <ThButtonPrimary type="submit"
+                                 onClick={this.submit}
+                                 svg={LockIcon}
+                                 label={__("library.lcp.open")}
+                                />
                             </Dialog.Close>
                         </div>
                     </form>

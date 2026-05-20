@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import * as stylesReaderHeader from "readium-desktop/renderer/assets/styles/components/readerHeader.scss";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 
 import * as React from "react";
 import { connect } from "react-redux";
@@ -28,6 +27,7 @@ import SearchFormPicker from "./SearchFormPicker";
 
 
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
+import { ThButtonSecondary } from "readium-desktop/renderer/common/components/Buttons";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -118,34 +118,20 @@ class SearchPicker extends React.Component<IProps, IState> {
                     (
                         <div className={stylesReaderHeader.searchActions}>
                             <span style={{ width: "1px", height: "30px", backgroundColor: "var(--color-gray-200)", margin: "auto 10px auto 20px" }}></span>
-                            <button
+                            <ThButtonSecondary
                                 disabled={notFound}
                                 onClick={() => {
                                     if (!this.props.isPdf) {
                                         this.props.showSearchResults();
                                     }
                                 }}
-                                aria-label={found}
-                                title={found}
-                                 style={{
+                                label={found}
+                                style={{
                                     width: "auto",
-                                //     padding: "4px",
-                                //     margin: "0",
                                     fontSize: "1em",
-                                //     // color: notFound ? "grey" : "black",
-                                //     fill: notFound ? "grey" : "black",
-                                //     background: "var(--color-brand-secondary)",
-                                //     border: "1px solid var(--color-brand-primary)",
-                                //     borderRadius: "6px",
-                                //     color: "var(--color-brand-primary)",
                                     textWrap: "nowrap",
                                  }}
-                                className={stylesButtons.button_nav_primary}
-                            >
-                                <span aria-live="polite">
-                                    {found}
-                                </span>
-                            </button>
+                                 />
                             <button
                                 disabled={notFound}
                                 onClick={previous}

@@ -164,6 +164,8 @@
     background-color: transparent;
     transition: 200ms linear;
     padding: 3px;
+    border-radius: 4px;
+    color: var(--color-brand-primary);
 
     &:hover{
         background-color: var(--color-brand-secondary);

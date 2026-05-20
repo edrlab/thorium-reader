@@ -19,6 +19,7 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 // import { DisplayType } from "readium-desktop/renderer/library/routing";
 import { ILibraryRootState } from "readium-desktop/common/redux/states/renderer/libraryRootState";
 import { useTranslator } from "readium-desktop/renderer/common/hooks/useTranslator";
+import { ThButtonPrimary } from "readium-desktop/renderer/common/components/Buttons";
 
 interface IBaseProps {
     tag: string | IOpdsTagView;
@@ -88,16 +89,14 @@ export const TagButton: React.FC<React.PropsWithChildren<IProps>> = (props) => {
                     <Popover.Portal>
                         <Popover.Content sideOffset={5} className={stylesTags.Popover_delete_tag}>
                             <Popover.Close asChild>
-                                <button
+                                <ThButtonPrimary
                                     onClick={
                                         // () => this.deleteTag(index)
                                         onClickDeleteCb(index)
                                     }
-                                    title={__("catalog.deleteTag")}
-                                >
-                                    <SVG ariaHidden={true} svg={TrashIcon} />
-                                    {__("catalog.delete")}
-                                </button>
+                                    label={__("catalog.deleteTag")}
+                                    svg={TrashIcon}
+                                />
                             </Popover.Close>
                             <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden />
                         </Popover.Content>

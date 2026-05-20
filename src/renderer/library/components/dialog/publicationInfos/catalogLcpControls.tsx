@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
 
 import * as React from "react";
@@ -17,7 +16,6 @@ import * as LoopIcon from "readium-desktop/renderer/assets/icons/loop.svg";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-import SVG from "readium-desktop/renderer/common/components/SVG";
 import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
@@ -32,6 +30,7 @@ import * as ReadBook from "readium-desktop/renderer/assets/icons/readBook-icon.s
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
 import * as DoubleCheckIcon from "readium-desktop/renderer/assets/icons/doubleCheck-icon.svg";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
+import { ThButtonPrimary, ThButtonSecondary } from "readium-desktop/renderer/common/components/Buttons";
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -84,60 +83,55 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
             <>
                 {(!lsdStatus ||
                     (lsdStatus === StatusEnum.Active || lsdStatus === StatusEnum.Ready)) ?
-                    <button
+                    <ThButtonPrimary
                         onClick={this.handleRead}
-                        className={stylesButtons.button_primary}
-                    >
-                        <SVG svg={ReadBook} ariaHidden />
-                        {__("catalog.readBook")}
-                    </button>
+                        svg={ReadBook}
+                        label={__("catalog.readBook")}
+                    />
                     : <></>
                 }
                 {this.props.isReading ?
-                <button disabled>
-                    <SVG ariaHidden svg={DoubleCheckIcon} />
-                    {__("publication.markAsRead")}
-                </button>
+                <ThButtonSecondary
+                    disabled
+                    svg={DoubleCheckIcon}
+                    label={__("publication.markAsRead")}
+                />
                 : <></>
                 }
                 {
                     // lsdStatus === StatusEnum.Expired &&
                     lsdRenewLink ?
                         <RenewLsdConfirm publicationView={this.props.publicationView} trigger={(
-                            <button
-                                className={stylesButtons.button_secondary}
-                            >
-                                <SVG svg={LoopIcon} ariaHidden />
-                                {__("publication.renewButton")}
-                            </button>
+                            <ThButtonSecondary
+                                svg={LoopIcon}
+                                label={__("publication.renewButton")}
+                            />
                         )} /> : <></>
                 }
                 {
                     lsdReturnLink ?
                         <ReturnLsdConfirm publicationView={this.props.publicationView} trigger={(
-                            <button
-                                className={stylesButtons.button_secondary}
-                            >
-                                <SVG svg={ArrowIcon} ariaHidden />
-                                {__("publication.returnButton")}
-                            </button>
+                            <ThButtonSecondary
+                                svg={ArrowIcon}
+                                label={__("publication.returnButton")}
+                            />
                         )} /> : <></>
                 }
                 <DeletePublicationConfirm
                     trigger={(
-                        <button className={stylesButtons.button_secondary}>
-                            <SVG svg={TrashIcon} ariaHidden />
-                            {__("catalog.deleteBook")}
-                        </button>
-
+                        <ThButtonSecondary
+                            svg={TrashIcon}
+                            label={__("catalog.deleteBook")}
+                        />
                     )}
                     publicationView={this.props.publicationView}
                 />
 
-                <button onClick={this.exportPublication} className={stylesButtons.button_secondary}>
-                    <SVG svg={SaveAsIcon} ariaHidden />
-                    {__("catalog.export")}
-                </button>
+                <ThButtonSecondary
+                    onClick={this.exportPublication}
+                    svg={SaveAsIcon}
+                    label={__("catalog.export")}
+                />
             </>
         );
     }
@@ -195,12 +189,15 @@ const RenewLsdConfirm = (props: { publicationView: PublicationView, trigger: Rea
                     </AlertDialog.Description>
                     <div style={{ display: "flex", gap: 25, justifyContent: "flex-end" }}>
                         <AlertDialog.Cancel asChild>
-                            <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
+                            <ThButtonSecondary label={__("dialog.cancel")} />
                         </AlertDialog.Cancel>
                         <AlertDialog.Action asChild>
-                            <button className={stylesButtons.button_primary_blue} onClick={renew} type="button">
-                                <SVG ariaHidden svg={LoopIcon} />
-                                {__("dialog.yes")}</button>
+                            <ThButtonPrimary
+                            onClick={renew}
+                            type="button"
+                            svg={LoopIcon}
+                            label={__("dialog.yes")}
+                            />
                         </AlertDialog.Action>
                     </div>
                 </AlertDialog.Content>
@@ -232,12 +229,15 @@ const ReturnLsdConfirm = (props: { publicationView: PublicationView, trigger: Re
                     </AlertDialog.Description>
                     <div style={{ display: "flex", gap: 25, justifyContent: "flex-end" }}>
                         <AlertDialog.Cancel asChild>
-                            <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
+                            <ThButtonSecondary label={__("dialog.cancel")} />
                         </AlertDialog.Cancel>
                         <AlertDialog.Action asChild>
-                            <button className={stylesButtons.button_primary_blue} onClick={renew} type="button">
-                                <SVG ariaHidden svg={ArrowIcon} />
-                                {__("dialog.yes")}</button>
+                            <ThButtonPrimary
+                            onClick={renew}
+                            type="button"
+                            svg={ArrowIcon}
+                            label={__("dialog.yes")}
+                            />
                         </AlertDialog.Action>
                     </div>
                 </AlertDialog.Content>

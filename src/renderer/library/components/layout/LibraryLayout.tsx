@@ -229,7 +229,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                     }}
                     style={{ width: "20px", height: "20px"}}
                     state = {{displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid}}
-                    className={stylesButtons.button_secondary_blue}
+                    className={stylesButtons.button_secondary}
                     onClick={(e) => {
                         if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                             e.preventDefault();
@@ -254,7 +254,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                     }}
                 >
                     <SVG svg={AvatarIcon} title={__("opds.shelf")} />
-                    <p>{__("opds.shelf")}</p>
+                    <span>{__("opds.shelf")}</span>
                 </Link>
             );
         }
@@ -292,7 +292,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                     }}
                     style={{ width: "20px", height: "20px" }}
                     state={{ displayType: (this.props.location.state && (this.props.location.state as IRouterLocationState).displayType) ? (this.props.location.state as IRouterLocationState).displayType : DisplayType.Grid }}
-                    className={stylesButtons.button_secondary_blue}
+                    className={stylesButtons.button_secondary}
                     onClick={(e) => {
                         if (e.metaKey || e.altKey || e.shiftKey || e.ctrlKey) {
                             e.preventDefault();
@@ -317,7 +317,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                     }}
                 >
                     <SVG svg={HomeIcon} title={__("header.homeTitle")} />
-                    <p>{__("header.homeTitle")}</p>
+                    <span>{__("header.homeTitle")}</span>
                 </Link>
             );
         }

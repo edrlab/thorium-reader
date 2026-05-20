@@ -27,6 +27,7 @@ import * as FollowLinkIcon from "readium-desktop/renderer/assets/icons/followLin
 import * as penIcon from "readium-desktop/renderer/assets/icons/pen-icon.svg";
 import * as linkIcon from "readium-desktop/renderer/assets/icons/link-icon.svg";
 import * as GlobeIcon from "readium-desktop/renderer/assets/icons/globe-icon-bold.svg";
+import { ThButtonPrimary, ThButtonSecondary } from "readium-desktop/renderer/common/components/Buttons";
 
 export const OpdsFeedHowDoesItWorksInfoBox = () => {
 
@@ -78,12 +79,10 @@ export const OpdsFeedAddFormDialog = () => {
 
     return <Dialog.Root>
         <Dialog.Trigger asChild>
-            <button
-                className={classNames(stylesButtons.button_nav_primary)}
-            >
-                <SVG ariaHidden={true} svg={GlobeIcon} />
-                <span>{__("opds.addMenu")}</span>
-            </button>
+            <ThButtonSecondary
+                svg={GlobeIcon}
+                label={__("opds.addMenu")}
+            />
         </Dialog.Trigger>
         <Dialog.Portal>
             <div className={stylesModals.modal_dialog_overlay}></div>
@@ -139,13 +138,16 @@ export const OpdsFeedAddFormDialog = () => {
                     </div>
                     <div className={stylesModals.modal_dialog_footer}>
                         <Dialog.Close asChild>
-                            <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
+                            <ThButtonSecondary label={__("dialog.cancel")} />
                         </Dialog.Close>
                         <Dialog.Close asChild>
-                            <button type="submit" disabled={!title || !url} className={stylesButtons.button_primary_blue} onClick={() => addAction()}>
-                                <SVG ariaHidden svg={AddIcon} />
-                                {__("opds.addForm.addButton")}
-                            </button>
+                            <ThButtonPrimary
+                            type="submit" 
+                            disabled={!title || !url}
+                            onClick={() => addAction()}
+                            svg={AddIcon}
+                            label={__("opds.addForm.addButton")}
+                            />
                         </Dialog.Close>
                     </div>
                 </form>

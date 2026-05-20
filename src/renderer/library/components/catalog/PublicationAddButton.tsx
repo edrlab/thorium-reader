@@ -5,18 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
-
 import * as React from "react";
 import { connect } from "react-redux";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/baseline-add-24px.svg";
-import SVG from "readium-desktop/renderer/common/components/SVG";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { Dispatch } from "redux";
 
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/common/components/hoc/translator";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
+import { ThButtonSecondary } from "readium-desktop/renderer/common/components/Buttons";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
@@ -41,14 +39,12 @@ export class PublicationAddButton extends React.Component<IProps, undefined> {
         const { __ } = this.props;
 
         return (
-            <button
+            <ThButtonSecondary
                 type="button"
-                className={stylesButtons.button_nav_primary}
                 onClick={this.importFile}
-            >
-                <SVG ariaHidden={true} svg={PlusIcon} title={__("header.importTitle")} />
-                <span>{__("header.importTitle")}</span>
-            </button>
+                svg={PlusIcon}
+                label={__("header.importTitle")}
+                />
         );
     }
 

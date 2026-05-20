@@ -12,12 +12,11 @@ import { useDispatch } from "readium-desktop/renderer/common/hooks/useDispatch";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import { useSelector } from "readium-desktop/renderer/common/hooks/useSelector";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
-import * as stylesButtons from "readium-desktop/renderer/assets/styles/components/buttons.scss";
 import * as stylesAlertModals from "readium-desktop/renderer/assets/styles/components/alert.modals.scss";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import SVG from "readium-desktop/renderer/common/components/SVG";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/Plus-bold.svg";
 import { convertMultiLangStringToString } from "readium-desktop/common/language-string";
+import { ThButtonPrimary, ThButtonSecondary } from "readium-desktop/renderer/common/components/Buttons";
 
 export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{ winId: string | undefined, publicationView: PublicationView }>> = (props) => {
 
@@ -83,21 +82,23 @@ export const ImportAnnotationsDialog: React.FC<React.PropsWithChildren<{ winId: 
                     </AlertDialog.Description>
                     <div className={stylesAlertModals.AlertDialogButtonContainer}>
                         <AlertDialog.Cancel asChild onClick={() => dispatch(annotationActions.importConfirmOrAbort.build("abort"))}>
-                            <button className={stylesButtons.button_secondary_blue}>{__("dialog.cancel")}</button>
+                            <ThButtonSecondary label={__("dialog.cancel")} />
                         </AlertDialog.Cancel>
                         <AlertDialog.Action asChild>
-                            <button className={stylesButtons.button_primary_blue} onClick={() => dispatch(annotationActions.importConfirmOrAbort.build("importAll"))}>
-                                <SVG ariaHidden svg={PlusIcon} />
-                                {__("dialog.annotations.importAll")}
-                            </button>
+                            <ThButtonPrimary
+                                onClick={() => dispatch(annotationActions.importConfirmOrAbort.build("importAll"))}
+                                label={__("dialog.annotations.importAll")}
+                                svg={PlusIcon}
+                            />
                         </AlertDialog.Action>
                         {
                             annotationsConflictListNewer.length || annotationsConflictListOlder.length
                                 ? <AlertDialog.Action asChild>
-                                    <button className={stylesButtons.button_primary_blue} onClick={() => dispatch(annotationActions.importConfirmOrAbort.build("importNoConflict"))}>
-                                        <SVG ariaHidden svg={PlusIcon} />
-                                        {__("dialog.annotations.importWithoutConflict")}
-                                    </button>
+                                    <ThButtonPrimary
+                                        onClick={() => dispatch(annotationActions.importConfirmOrAbort.build("importNoConflict"))}
+                                        label={__("dialog.annotations.importWithoutConflict")}
+                                        svg={PlusIcon}
+                                    />
                                 </AlertDialog.Action>
                                 : <></>
                         }

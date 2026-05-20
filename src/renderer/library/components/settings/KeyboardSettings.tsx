@@ -55,6 +55,7 @@ import { useTranslator } from "../../../common/hooks/useTranslator";
 import { useDispatch } from "../../../common/hooks/useDispatch";
 import os from "node:os";
 import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
+import { ThButtonPrimary, ThButtonSecondary } from "readium-desktop/renderer/common/components/Buttons";
 
 const _isMac = os.platform() === "darwin";
 const _isWindows = os.platform() === "win32";
@@ -116,7 +117,7 @@ export const AdvancedTrigger = () => {
                         title={
                             `${__("settings.keyboard.advancedMenu")}`
                         }
-                        className={classNames(stylesButtons.button_secondary_blue, stylesKeys.advanced_trigger)}
+                        className={stylesKeys.advanced_trigger}
                         svg={MenuIcon}
                     />
                 </button>
@@ -604,7 +605,7 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                 placeholder={__("settings.keyboard.searchPlaceholder")}
                                 style={{ width: "200px", borderRadius: "4px" }}
                             />
-                            <button onClick={exportHtml} className={stylesButtons.button_secondary_blue}>{__("settings.keyboard.exportToHTML")}</button>
+                            <ThButtonSecondary onClick={exportHtml} label={__("settings.keyboard.exportToHTML")} />
                         </div>
                         {filteredShortcuts.length ?
                             <ul className={stylesGlobal.p_0} ref={this.contentRef}>
@@ -664,9 +665,8 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                         <>
                                             {this.editifyKeyboardShortcut(id, this.state.editKeyboardShortcutData)}
                                                 <div className={stylesKeys.action_buttons_container}>
-                                                    <button
+                                                    <ThButtonSecondary
                                                         id={`keyCancelButt_${id}`}
-                                                        className={stylesButtons.button_secondary_blue}
                                                         onClick={(_ev) => {
                                                             const id_ = id;
                                                             this.onClickKeyboardShortcutEditCancel(id);
@@ -678,13 +678,9 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                                             }, 100);
                                                         }}
                                                         aria-label={`${__("settings.keyboard.cancel")} (${cname}) ${this.stringifyKeyboardShortcut(this.state.editKeyboardShortcutData)}`}
-                                                        // title={`${__("settings.keyboard.cancel")} (${id}) ${this.stringifyKeyboardShortcut(this.state.editKeyboardShortcutData)}`}
-                                                        >
-                                                        {hit ?
-                                                        __("settings.keyboard.cancel") : ""}
-                                                    </button>
-                                                    <button
-                                                        className={stylesButtons.button_primary_blue}
+                                                        label={hit ? __("settings.keyboard.cancel") : ""}
+                                                    />
+                                                    <ThButtonPrimary
                                                         onClick={(_ev) => {
                                                             const id_ = id;
                                                             this.onClickKeyboardShortcutSave(id);
@@ -694,12 +690,10 @@ class KeyboardSettings extends React.Component<IProps, IState> {
                                                                 el?.focus();
                                                             }, 100);
                                                         }}
-                                                        aria-label={`${__("settings.keyboard.save")} (${cname}) ${this.stringifyKeyboardShortcut(this.state.editKeyboardShortcutData)}`}
-                                                        // title={`${__("settings.keyboard.save")} (${id}) ${this.stringifyKeyboardShortcut(this.state.editKeyboardShortcutData)}`}
-                                                        >
-                                                            <SVG ariaHidden svg={SaveIcon} />
-                                                        {__("settings.keyboard.save")}
-                                                    </button>
+                                                        extendedLabel={`${__("settings.keyboard.save")} (${cname}) ${this.stringifyKeyboardShortcut(this.state.editKeyboardShortcutData)}`}
+                                                        svg={SaveIcon}
+                                                        label={__("settings.keyboard.save")}
+                                                        />
                                                 </div>
                                             </>
                                         }

@@ -35,6 +35,7 @@ import * as CheckIcon from "readium-desktop/renderer/assets/icons/singlecheck-ic
 import * as LinkIcon from "readium-desktop/renderer/assets/icons/link-icon.svg";
 import { shell } from "electron";
 import { ICommonRootState } from "readium-desktop/common/redux/states/commonRootState";
+import { ThButtonPrimary } from "readium-desktop/renderer/common/components/Buttons";
 
 
 const TabTitle = (props: React.PropsWithChildren<{ title: string }>) => {
@@ -148,9 +149,12 @@ export const WizardModal = () => {
                                         {__("wizard.buttons.goToBooks")}
                                     </Dialog.Close>
                                     <Tabs.List>
-                                        <Tabs.Trigger value="tab2" className={stylesButtons.button_primary_blue} onFocus={(e) => e.preventDefault()}>
-                                            <SVG ariaHidden svg={ArrowRightIcon} />
-                                            {__("wizard.buttons.discover")}
+                                        <Tabs.Trigger asChild value="tab2">
+                                            <ThButtonPrimary
+                                                svg={ArrowRightIcon}
+                                                label={__("wizard.buttons.discover")}
+                                                onFocus={(e) => e.preventDefault()}
+                                            />
                                         </Tabs.Trigger>
                                     </Tabs.List>
 
@@ -191,9 +195,11 @@ export const WizardModal = () => {
                                     </div>
                                 </div>
                                 <div className={stylesModals.guidedTour_buttons}>
-                                    <Dialog.Close className={stylesButtons.button_primary_blue}>
-                                        <SVG ariaHidden svg={ShelfIcon} />
-                                        {__("wizard.buttons.goToBooks")}
+                                    <Dialog.Close asChild>
+                                        <ThButtonPrimary
+                                            svg={ShelfIcon}
+                                            label={__("wizard.buttons.goToBooks")}
+                                        />
                                     </Dialog.Close>
                                 </div>
                             </div>

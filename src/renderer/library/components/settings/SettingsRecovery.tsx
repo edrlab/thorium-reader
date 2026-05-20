@@ -15,6 +15,7 @@ import classNames from "classnames";
 import * as InfoIcon from "readium-desktop/renderer/assets/icons/info-icon.svg";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { useApi } from "readium-desktop/renderer/common/hooks/useApi";
+import { ThButtonSecondary } from "readium-desktop/renderer/common/components/Buttons";
 
 const SettingsRecoveryConfirmDialog = (props: {
     open: boolean;
@@ -148,20 +149,18 @@ const SettingsRecovery = (props: {
 
                 <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                     {isRecoveryChecked && recoverablePublications.length ? (
-                        <button
-                            className={stylesSettings.btn_primary}
+                        <ThButtonSecondary
                             disabled={isRecoveryLoading || isRecovering}
                             onClick={() => setConfirmRecoveryOpen(true)}
-                        >
-                            {isRecovering ? "Recovering..." : "Recover publications"}
-                        </button>
+                        label={isRecovering ? "Recovering..." : "Recover publications"}
+                        />
                     ) : null}
                     <button
                         className={isRecoveryChecked ? stylesButtons.button_transparency : stylesSettings.btn_primary}
                         disabled={isRecoveryLoading || isRecovering}
                         onClick={checkRecoverablePublications}
                     >
-                        {isRecoveryChecked ? "Check again" : "Check for recoverable publications"}
+                        <span>{isRecoveryChecked ? "Check again" : "Check for recoverable publications"}</span>
                     </button>
                 </div>
             </section>

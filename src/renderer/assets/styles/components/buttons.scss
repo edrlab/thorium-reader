@@ -4,6 +4,47 @@
   display: none;
 }
 
+// ─── Shared Mixins ────────────────────────────────────────────────────────
+
+@mixin button-base {
+  height: 30px;
+  border-radius: 4px;
+  padding: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: 200ms linear;
+  max-width: 100%;
+  width: fit-content;
+
+  > span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+
+  &.disabled,
+  &[disabled] {
+    opacity: 0.5;
+    cursor: default;
+    pointer-events: none;
+  }
+}
+
+@mixin button-focus($color) {
+  &:focus-within,
+  &:focus {
+    outline: $color solid 1px !important;
+    outline-offset: 2px;
+    border-radius: 5px;
+    @content;
+  }
+}
+// ─── Global reset <button> ──────────────────────────────────────────────────
+
 button {
   padding: 0;
   background: none;
@@ -16,13 +57,23 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 5px;
+  max-width: 100%;
+  width: fit-content;
+
+  > span {
+    margin: 0 !important;
+    overflow: hidden;
+    white-space: nowrap !important;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
 
   &:hover {
     opacity: 1;
     background: transparent;
   }
 
-  &[type="submit"] svg {
+  &[type='submit'] svg {
     width: 13px;
   }
 
@@ -34,43 +85,20 @@ button {
   }
 }
 
-.button_outline_accessibility button {
-  width: auto;
-  height: 40px;
-  border-radius: 5px;
-}
+// ─── Primary & Secondary Buttons ──────────────────────────────────────────
 
-.button_primary_form_default {
-  border-width: 2px !important;
-  font-weight: bold !important;
-}
+.button_primary {
+  @include button-base;
 
-.button_primary_blue {
   border: 1px solid var(--color-brand-primary);
-  height: 30px;
-  border-radius: 4px;
-  padding: 5px;
   min-width: 100px;
   background-color: var(--color-brand-primary);
   color: var(--color-neutral-base);
-  transition: 200ms linear;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
 
-  &:focus-within, &:focus {
-    outline: var(--color-brand-primary) solid 1px !important;
-    outline-offset: 2px;
-    border-radius: 5px;
+  @include button-focus(var(--color-brand-primary)) {
     background-color: var(--color-brand-primary);
-    color: var(--color-neutral-base)!important;
-
-    svg {
-      fill: var(--color-neutral-base)!important;
-      color: var(--color-neutral-base)!important;
-    }
+    color: var(--color-neutral-base) !important;
   }
-
 
   svg {
     width: 14px;
@@ -78,99 +106,26 @@ button {
   }
 
   &:hover {
-    color: var(--color-brand-primary);
+    color: var(--color-brand-primary) !important;
     background-color: var(--color-brand-secondary);
 
     svg {
-      fill: var(--color-brand-primary)!important;
-      color: var(--color-brand-primary)!important;
+      fill: var(--color-brand-primary) !important;
+      color: var(--color-brand-primary) !important;
     }
   }
 }
 
-.button_primary {
-  @include mx.button_primary;
+.button_secondary {
+  @include button-base;
 
-  padding: 10px 15px;
-
-  &_small {
-    font: 14px Arial, sans-serif;
-    padding: 8px 15px;
-
-    & svg {
-      height: 14px;
-      width: 14px;
-      vertical-align: -2px;
-      margin-left: 5px;
-      fill: var(--color-text-primary);
-    }
-
-    &.button_icon {
-      height: 16px;
-      padding: 8px 20px;
-      background: var(--color-neutral-base);
-      overflow: visible;
-
-      & input {
-        overflow: hidden;
-        z-index: -1;
-        position: absolute;
-        top: -2px;
-        left: -2px;
-        width: calc(100% + 2px);
-        height: calc(100% + 2px);
-        appearance: none;
-        color: transparent;
-        background: transparent;
-        border-radius: 7px;
-        border: 1px solid transparent;
-      }
-
-      & svg {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 18px;
-        height: 18px;
-        margin: 0;
-        vertical-align: 0;
-      }
-    }
-  }
-
-  & svg {
-    vertical-align: -2px;
-    width: auto;
-    height: 14px;
-    transition: all 0.2s;
-    fill: var(--color-text-primary);
-  }
-
-  &.icon_end {
-    & svg {
-      margin-right: 0;
-      margin-left: 8px;
-    }
-  }
-}
-/* 4. .button_secondary */
-
-.button_secondary_blue {
   border: 1px solid var(--color-button-border);
-  height: 30px;
-  border-radius: 4px;
-  padding: 5px;
   min-width: 100px;
   background-color: var(--color-brand-secondary);
   color: var(--color-brand-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
 
-  &:hover {
-    color: var(--color-brand-primary);
-    background-color: var(--color-neutral-base)
+  @include button-focus(var(--color-brand-primary)) {
+    color: var(--color-brand-primary) !important;
   }
 
   svg {
@@ -178,55 +133,29 @@ button {
     height: 12px;
     fill: var(--color-brand-primary);
   }
-}
 
-.button_secondary {
-  padding: 10px 15px;
-  position: relative;
-  display: inline;
-  background-color: var(--color-brand-primary);
-  border: none;
-  border-radius: 5px;
-  text-align: center;
-  color: var(--color-brand-primary-inverse);
-  fill: var(--color-brand-primary-inverse);
-  text-decoration: none;
-  overflow: hidden;
-  cursor: pointer;
-  width: auto;
-  height: auto;
-  transition: all 0.2s;
-
-  & svg {
-    vertical-align: -2px;
-    fill: var(--color-brand-primary-inverse);
-    width: auto;
-    height: 14px;
-    transition: all 0.2s;
-  }
-
-  &[disabled],
-  &.disabled {
-    color: #fff;
-    background-color: var(--color-disabled);
+  &:hover {
+    color: var(--color-brand-primary);
+    background-color: var(--color-neutral-base);
   }
 }
 
-.button_transparency,
-.button_transparency_icon {
+// ─── Transparent Buttons ───────────────────────────────────────────────────
+
+%button-transparency-base {
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--color-text-primary);
-  transition: all 0.2s;
   border-radius: 5px;
   background: rgb(0 0 0 / 0%);
   font-size: 1rem;
   font-family: Arial, sans-serif;
   font-weight: 600;
   cursor: pointer;
+  transition: all 0.2s;
 
-  & svg {
+  svg {
     fill: var(--color-text-primary);
   }
 
@@ -236,11 +165,13 @@ button {
 }
 
 .button_transparency {
+  @extend %button-transparency-base;
+
   padding: 10px 15px;
   width: auto;
   height: auto;
 
-  & svg {
+  svg {
     width: 18px;
     vertical-align: -3px;
     color: var(--color-disabled);
@@ -249,12 +180,14 @@ button {
 
 .button_transparency_icon,
 .button_transparency_icon_inactive {
+  @extend %button-transparency-base;
+
   height: 30px;
   width: 30px;
   transition-duration: 0ms;
   fill: var(--color-brand-primary);
 
-  & svg {
+  svg {
     height: 20px;
     width: 20px;
     fill: var(--color-button-border);
@@ -270,10 +203,6 @@ button {
     transform: scale(0.8);
   }
 
-  &:hover {
-    background: rgb(0 0 0 / 10%);
-  }
-
   &:disabled {
     background-color: var(--color-gray-250);
   }
@@ -283,21 +212,12 @@ button {
   fill: #767676;
 }
 
-.button_link {
-  color: var(--color-tertiary);
-  text-decoration: underline;
-  text-underline-offset: 1px;
-  cursor: pointer;
-  display: inline-block;
-}
+// ─── Navigation Buttons ──────────────────────────────────────────────────
 
-.button_nav_primary {
-  border: 1px solid var(--color-button-border);
+%button-nav-base {
   height: 20px;
   border-radius: 4px;
   padding: 5px;
-  background-color: var(--color-brand-secondary);
-  color: var(--color-brand-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -305,34 +225,47 @@ button {
   width: fit-content;
   cursor: pointer;
   gap: 5px;
+  transition: 200ms;
+
+  svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  input {
+    display: none;
+  }
+}
+
+.button_nav_primary {
+  @extend %button-nav-base;
+
+  border: 1px solid var(--color-button-border);
+  background-color: var(--color-brand-secondary);
+  color: var(--color-brand-primary);
   box-sizing: content-box;
   position: relative;
-  transition: 200ms;
+
+  svg {
+    fill: var(--color-brand-primary);
+  }
 
   &:hover {
     background-color: var(--color-button-hover);
   }
 
-  &:focus-within, &:focus {
-    outline: var(--color-button-border) solid 1px !important;
-    outline-offset: 2px;
-    border-radius: 5px;
+  @include button-focus(var(--color-button-border)) {
     background-color: var(--color-brand-primary);
-    color: var(--color-neutral-base)!important;
+    color: var(--color-neutral-base) !important;
 
     svg {
-      fill: var(--color-neutral-base)!important;
-      color: var(--color-neutral-base)!important;
+      fill: var(--color-neutral-base) !important;
+      color: var(--color-neutral-base) !important;
     }
   }
 
-  svg {
-    width: 15px;
-    height: 15px;
-    fill: var(--color-brand-primary);
-  }
-
   input {
+    display: block;
     position: absolute;
     right: 5px;
     top: 2px;
@@ -345,49 +278,33 @@ button {
 }
 
 .button_nav_secondary {
+  @extend %button-nav-base;
+
   border: 1px solid transparent;
-  height: 20px;
-  border-radius: 4px;
-  padding: 5px;
   background-color: transparent;
   color: var(--color-text-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  width: fit-content;
-  cursor: pointer;
-  gap: 5px;
 
   svg {
-    width: 15px;
-    height: 15px;
     fill: var(--color-text-primary);
-  }
-
-  input {
-    display: none;
   }
 }
 
 .button_nav_tertiary {
-  border: 1px solid;
-  border-color: transparent;
+  @extend %button-nav-base;
+
+  border: 1px solid transparent;
   height: 15px;
-  border-radius: 4px;
-  padding: 5px;
   background-color: transparent;
   color: var(--color-brand-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  width: fit-content;
-  cursor: pointer;
-  gap: 5px;
   box-sizing: content-box;
   position: relative;
-  transition: 200ms;
+
+  svg {
+    fill: var(--color-brand-primary);
+    color: var(--color-brand-primary);
+    transform: rotate(0);
+    transition: 200ms;
+  }
 
   &:hover {
     border-color: var(--color-brand-primary);
@@ -405,20 +322,12 @@ button {
     height: inherit;
 
     &:hover svg {
-        transform: rotate(90deg);
-      }
+      transform: rotate(90deg);
     }
-
-  svg {
-    width: 15px;
-    height: 15px;
-    fill: var(--color-brand-primary);
-    color: var(--color-brand-primary);
-    transform: rotate(0);
-    transition: 200ms;
   }
 
   input {
+    display: block;
     position: absolute;
     right: 0;
     top: 0;
@@ -426,6 +335,27 @@ button {
     height: 100%;
     z-index: -10;
   }
+}
+
+// ─── Other Variants ───────────────────────────────────────────────────────
+
+.button_outline_accessibility button {
+  width: auto;
+  height: 40px;
+  border-radius: 5px;
+}
+
+.button_primary_form_default {
+  border-width: 2px !important;
+  font-weight: bold !important;
+}
+
+.button_link {
+  color: var(--color-tertiary);
+  text-decoration: underline;
+  text-underline-offset: 1px;
+  cursor: pointer;
+  display: inline-block;
 }
 
 .button_catalog_infos {
@@ -459,7 +389,6 @@ button {
   left: -2000px;
 
   &:focus {
-    left: unset;
     left: 0;
     width: fit-content;
     top: 0;
@@ -473,26 +402,28 @@ button {
   }
 }
 
+// ─── Button Lists ──────────────────────────────────────────────────────
+
 .buttons_list {
   list-style-type: none;
   padding: 0;
+  margin: 0;
   display: flex;
   flex-flow: wrap;
-  margin: 0;
   justify-content: left;
 
-  & li {
+  li {
     width: 50%;
   }
 
-  & .button_transparency {
+  .button_transparency {
     margin: 2px 0;
     text-decoration: none;
     width: calc(100% - 30px);
     display: flex;
     justify-content: space-between;
 
-    & span:last-child:not(:only-child) {
+    span:last-child:not(:only-child) {
       font-weight: 500;
       opacity: 0.8;
       font-size: 90%;
@@ -501,52 +432,42 @@ button {
 }
 
 .col_filter {
-  & .block_line {
+  .block_line {
     border: none;
     border-radius: 0;
     padding: 0;
   }
 
-  & .buttons_list {
+  .buttons_list {
     display: block;
 
-    & li {
+    li {
       width: auto;
     }
   }
 }
 
 @media (width >= 1200px) {
-  .buttons_list li {
-    width: 33%;
-  }
-
-  .col_filter .buttons_list li {
-    width: auto;
-  }
+  .buttons_list li { width: 33%; }
+  .col_filter .buttons_list li { width: auto; }
 }
 
 @media (width >= 1500px) {
-  .buttons_list li {
-    width: 25%;
-  }
-
-  .col_filter .buttons_list li {
-    width: auto;
-  }
+  .buttons_list li { width: 25%; }
+  .col_filter .buttons_list li { width: auto; }
 }
 
 .col_book_img {
-  & .button_primary,
-  & .button_transparency {
+  .button_primary,
+  .button_transparency {
     width: 100%;
   }
 
-  & .button_primary {
+  .button_primary {
     margin: 8px 0;
   }
 
-  & .button_transparency {
+  .button_transparency {
     margin: 2px 0;
   }
 }

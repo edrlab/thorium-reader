@@ -36,49 +36,49 @@
         }
     }
 
-    .button_primary {
-        border: 1px solid var(--color-brand-primary);
-        height: 25px;
-        border-radius: 4px;
-        padding: 4px;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: var(--color-brand-primary);
-        color: var(--color-neutral-base);
+    // .button_primary {
+    //     border: 1px solid var(--color-brand-primary);
+    //     height: 25px;
+    //     border-radius: 4px;
+    //     padding: 4px;
+    //     width: 100%;
+    //     display: flex;
+    //     align-items: center;
+    //     justify-content: center;
+    //     background-color: var(--color-brand-primary);
+    //     color: var(--color-neutral-base);
 
-        svg {
-            fill: var(--color-neutral-base);
-        }
+    //     svg {
+    //         fill: var(--color-neutral-base);
+    //     }
 
-        &:focus {
-            outline: var(--color-brand-primary) solid 2px !important;
-            outline-offset: 2px;
-        }
-    }
+    //     &:focus {
+    //         outline: var(--color-brand-primary) solid 2px !important;
+    //         outline-offset: 2px;
+    //     }
+    // }
 
-    .button_secondary, .button_transparency {
-        border: 1px solid var(--color-brand-primary);
-        height: 25px;
-        border-radius: 4px;
-        padding: 4px;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: var(--color-brand-secondary);
-        color: var(--color-brand-primary);
+    // .button_secondary, .button_transparency {
+    //     border: 1px solid var(--color-brand-primary);
+    //     height: 25px;
+    //     border-radius: 4px;
+    //     padding: 4px;
+    //     width: 100%;
+    //     display: flex;
+    //     align-items: center;
+    //     justify-content: center;
+    //     background-color: var(--color-brand-secondary);
+    //     color: var(--color-brand-primary);
 
-        svg {
-            fill: var(--color-brand-primary);
-        }
+    //     svg {
+    //         fill: var(--color-brand-primary);
+    //     }
 
-        &:hover {
-            background-color: var(--color-neutral-base);
-            color: var(--color-brand-primary);
-        }
-    }
+    //     &:hover {
+    //         background-color: var(--color-neutral-base);
+    //         color: var(--color-brand-primary);
+    //     }
+    // }
 }
 
 .publicationInfo_leftSide {
@@ -157,6 +157,7 @@
         button {
             flex: 1 0 25%;
             margin: 5px 0;
+            width: 100%;
         }
     }
 }

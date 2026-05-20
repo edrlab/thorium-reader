@@ -41,6 +41,7 @@ import moment from "moment";
 import { formatTime } from "readium-desktop/common/utils/time";
 import { IRendererCommonRootState } from "readium-desktop/common/redux/states/rendererCommonRootState";
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/common/components/hoc/translator";
+import { ThButtonSecondary } from "readium-desktop/renderer/common/components/Buttons";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -246,9 +247,7 @@ class PublicationCard extends React.Component<IProps> {
                                         </AlertDialog.Description>
                                         <div className={stylesAlertModals.AlertDialogButtonContainer}>
                                             <AlertDialog.Cancel asChild>
-                                                <button className={stylesButtons.button_secondary_blue} type="button">
-                                                    {__("dialog.cancel")}
-                                                </button>
+                                                <ThButtonSecondary type="button" label={__("dialog.cancel")} />
                                             </AlertDialog.Cancel>
                                         </div>
                                     </AlertDialog.Content>
@@ -278,7 +277,7 @@ class PublicationCard extends React.Component<IProps> {
                             </div>}
                         <div style={{ display: "flex", alignItems: "end", height: "50px", width: "100%", justifyContent: isOpds ? "flex-end" : "space-between" }}>
                             {isOpds ? <></>
-                                : <span className={stylesButtons.button_secondary_blue}>{pubFormat}</span>}
+                                : <span className={stylesButtons.button_secondary}>{pubFormat}</span>}
                                 {isOpds ? <></>
                             :
                             <Menu

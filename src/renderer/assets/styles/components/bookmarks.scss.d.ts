@@ -19,7 +19,7 @@ export declare const bookmarks_filter_trigger_button: string;
 export declare const bookmarks_sorting_container: string;
 export declare const bookmarks_tab: string;
 export declare const bookmarksTitle_form_container: string;
-export declare const button_primary_blue: string;
+export declare const button_primary: string;
 export declare const colorPicker: string;
 export declare const form_group: string;
 export declare const my_combobox_container: string;
