@@ -792,7 +792,7 @@ const StorageSettings: React.FC<{}> = () => {
 
                                 <div className={stylesSettings.storage_location} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                                     <p style={{ margin: 0 }}><strong>External storage</strong></p>
-                                    <button className={stylesButtons.button_nav_tertiary}
+                                    <button className={stylesButtons.button_nav_tertiary} title={userDirectory}
                                         onClick={() => dispatch(catalogActions.openUserDirectory.build())}
                                     >
                                         {userDirectory}
@@ -847,24 +847,6 @@ const StorageSettings: React.FC<{}> = () => {
                                 </button>
                             </div>
                         ) : null}
-                        {/* {isEditing ? (
-                            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
-                                <button
-                                    className={stylesSettings.btn_primary}
-                                    onClick={openFolderPicker}
-                                >
-                                    Choose folder
-                                </button>
-                                <button
-                                    className={stylesButtons.button_transparency}
-                                    onClick={() => {
-                                        setIsEditing(false);
-                                    }}
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        ) : null} */}
                     </section>
 
                     <SettingsRecovery
