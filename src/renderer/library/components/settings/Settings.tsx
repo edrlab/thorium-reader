@@ -739,6 +739,7 @@ const StorageSettings: React.FC<{}> = () => {
                 onConfirm={() => {
                     setConfirmEditOpen(false);
                     setIsEditing(true);
+                    openFolderPicker();
                 }}
             />
             <StorageConfirmDialog
