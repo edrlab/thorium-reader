@@ -34,8 +34,8 @@ interface IButtonProps {
     ref?: React.Ref<HTMLButtonElement>;
 }
 
-export const ThButton: React.FC<IButtonProps> =
-    ({ variant = "primary", type, extendedLabel, label, svg, svgClassname, onClick, onFocus, disabled, style, id, tabIndex, dir, ref }) => (
+export const ThButton = React.forwardRef<HTMLButtonElement, IButtonProps>(
+    ({ variant = "primary", type, extendedLabel, label, svg, svgClassname, onClick, onFocus, disabled, style, id, tabIndex, dir }, ref) => (
         <button
             ref={ref}
             id={id}
@@ -53,9 +53,13 @@ export const ThButton: React.FC<IButtonProps> =
             {svg && <SVG ariaHidden svg={svg} className={svgClassname} />}
             <span>{label}</span>
         </button>
-    );
+    ),
+);
 
 ThButton.displayName = "ThButton";
 
-export const ThButtonPrimary = (props: IButtonProps) => <ThButton {...props} variant="primary" />;
-export const ThButtonSecondary = (props: IButtonProps) => <ThButton {...props} variant="secondary" />;
+export const ThButtonPrimary = React.forwardRef<HTMLButtonElement, IButtonProps>((props, ref) => <ThButton {...props} ref={ref} variant="primary" />);
+ThButtonPrimary.displayName = "ThButtonPrimary";
+
+export const ThButtonSecondary = React.forwardRef<HTMLButtonElement, IButtonProps>((props, ref) => <ThButton {...props} ref={ref} variant="secondary" />);
+ThButtonSecondary.displayName = "ThButtonSecondary";
