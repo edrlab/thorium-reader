@@ -89,48 +89,20 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                 ? orderLinks(opdsPublicationView.openAccessLinks).map(
                     (ln, idx) =>
                         <div key={`openAccessControl-${idx}`} style={ln.properties && Object.keys(ln.properties).length ? boxStyle : {}}>
-                            {feedLinksList.length > 0 ?
-                            <ThButtonSecondary
+                            <ThButton
+                                variant={feedLinksList.length > 0 ? "secondary" : "primary"}
                                 onClick={() => {
 
                                     if (ln.type === ContentType.Html || ln.type === ContentType.Xhtml) {
-                                        this.props.link(
-                                            ln,
-                                            this.props.location,
-                                        );
+                                        this.props.link(ln, this.props.location);
                                     } else {
-
-                                        verifyImport(
-                                            ln,
-                                            opdsPublicationView,
-                                        );
+                                        verifyImport(ln, opdsPublicationView);
                                     }
                                 }}
                                 disabled={openAccessButtonIsDisabled(ln.url)}
                                 extendedLabel={ln.title || __("catalog.addBookToLib")}
                                 label={`${__("catalog.addBookToLib")}${typeStr(ln)}`}
                             />
-                            :
-                            <ThButtonPrimary
-                                onClick={() => {
-
-                                    if (ln.type === ContentType.Html || ln.type === ContentType.Xhtml) {
-                                        this.props.link(
-                                            ln,
-                                            this.props.location,
-                                        );
-                                    } else {
-
-                                        verifyImport(
-                                            ln,
-                                            opdsPublicationView,
-                                        );
-                                    }
-                                }}
-                                disabled={openAccessButtonIsDisabled(ln.url)}
-                                extendedLabel={ln.title || __("catalog.addBookToLib")}
-                                label={`${__("catalog.addBookToLib")}${typeStr(ln)}`}
-                            />}
                             {ln.localBookshelfPublicationId ? <ThButtonSecondary
                                 onClick={() => this.props.read(ln.localBookshelfPublicationId)}
                                 label={__("catalog.readBook")}
