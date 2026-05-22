@@ -172,7 +172,7 @@ const ConnectionSettings: React.FC<{}> = () => {
     const isRTL = locale === "ar";
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>
-            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.auth.title")}</h4>
+            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.auth.title")}</h3>
             <div className={stylesSettings.session_text}>
                 <SVG ariaHidden svg={InfoIcon} />
                 <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.auth.help")}</p>
@@ -249,7 +249,7 @@ const ScreenReaderSettings: React.FC<{}> = () => {
     };
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>
-            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.message")}</h4>
+            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.message")}</h3>
             <div className={stylesSettings.session_text} style={{ margin: "0" }}>
                 <SVG ariaHidden svg={InfoIcon} />
                 <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.help")}</p>
@@ -284,7 +284,7 @@ const ScreenReaderSettings: React.FC<{}> = () => {
                         }
                     </div>
                     <div aria-hidden>
-                        <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.title")}</h4>
+                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.title")}</h3>
                     </div>
                 </label>
             </div>
@@ -340,7 +340,7 @@ const SaveCreatorSettings: React.FC<{}> = () => {
 
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>
-            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.annotationCreator.creator")}</h4>
+            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.annotationCreator.creator")}</h3>
             <div className={stylesSettings.session_text} style={{ margin: "0" }}>
                 <SVG ariaHidden svg={InfoIcon} />
                 <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.annotationCreator.help")}</p>
@@ -396,7 +396,7 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
 
         <section className={stylesSettings.section} style={{ position: "relative" }}>
 
-            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.note.export.overrideHTMLTemplate")}</h4>
+            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.note.export.overrideHTMLTemplate")}</h3>
             <input type="checkbox" className={stylesGlobal.checkbox_custom_input} name="enableCheckbox" />
             <div dir={isRTL ? "rtl" : "ltr"} className={stylesAnnotations.annotations_checkbox}>
                 <input type="checkbox" id="enableCheckbox" className={stylesGlobal.checkbox_custom_input} name="enableCheckbox" checked={enableCheckbox} onChange={toggleEnableCheckbox} />
@@ -428,7 +428,7 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
                         }
                     </div>
                     <div aria-hidden>
-                        <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.note.export.enableCheckbox")}</h4>
+                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.note.export.enableCheckbox")}</h3>
                     </div>
                 </label>
             </div>
@@ -459,7 +459,7 @@ const ManageAccessToCatalogSettings = () => {
 
     return (
         <section className={stylesSettings.section} style={{ gap: "10px" }}>
-            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.library.title")}</h4>
+            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.library.title")}</h3>
             <div dir={isRTL ? "rtl" : "ltr"} className={stylesAnnotations.annotations_checkbox}>
                 <input type="checkbox" id="enableAPIAPP" className={stylesGlobal.checkbox_custom_input} name="enableAPIAPP" checked={enableAPIAPP} onChange={toggleEnableAPIAPP} />
                 <label htmlFor="enableAPIAPP" className={stylesGlobal.checkbox_custom_label}>
@@ -490,7 +490,7 @@ const ManageAccessToCatalogSettings = () => {
                         }
                     </div>
                     <div aria-hidden>
-                        <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.library.enableAPIAPP")}</h4>
+                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.library.enableAPIAPP")}</h3>
                     </div>
                 </label>
             </div>
@@ -773,7 +773,7 @@ const StorageSettings: React.FC<{}> = () => {
                 
                 <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}>
                         <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                            <h4>Locations</h4>
+                            <h3>Locations</h3>
                             <div className={stylesSettings.storage_location} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                                 <p style={{ margin: 0 }}><strong>Default internal storage</strong></p>
                                 <button
@@ -788,7 +788,7 @@ const StorageSettings: React.FC<{}> = () => {
 
                     <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}>
                         <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                            <h4>Configuration</h4>
+                            <h3>Configuration</h3>
                             {userDirectory ?
 
                                 <div className={stylesSettings.storage_location} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>

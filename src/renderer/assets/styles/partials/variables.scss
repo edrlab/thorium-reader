@@ -126,14 +126,14 @@ $color-palette: (
     --color-gray-900: $color-black-2,
     --color-gray-950: $color-grey-2,
 
-    // ===== STATE ===== //
+    /*  ===== STATE ===== //*/
     --color-disabled: #a7a9b3,
     --color-error-bg: #4f1d1d,
     --color-error-text: #F590A9,
     --color-success-bg: #121d19,
     --color-success-text: #303936,
 
-    // ===== COMPONENTS ===== //
+    /*  ===== COMPONENTS ===== //*/
     --color-app-name: $theme-appName-dark,
     --color-scrollbar-thumb: $theme-scrollbar_thumb_dark,
 

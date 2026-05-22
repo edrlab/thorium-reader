@@ -1887,7 +1887,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                             (dockedMode && isEpub) ? <SelectRefComponent /> : <></>
                         }
                     </>
-        );    
+        );
     };
 
     const ModalControlButtons = () => {
