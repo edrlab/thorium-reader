@@ -17,38 +17,22 @@ const variantStyles: Record<ButtonVariant, string> = {
     secondary: stylesButtons.button_secondary,
 };
 
-interface IButtonProps {
+type IButtonProps = Omit<React.ComponentPropsWithoutRef<"button">, "className" | "title" | "aria-label"> & {
     label: string;
     variant?: ButtonVariant;
-    id?: string;
-    tabIndex?: number;
-    type?: "button" | "reset" | "submit";
     svg?: ISVGProps;
     svgClassname?: string;
-    onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-    onFocus?: (e: React.FocusEvent<HTMLButtonElement>) => void;
-    disabled?: boolean;
     extendedLabel?: string;
-    style?: React.CSSProperties;
-    dir?: "rtl" | "ltr";
-    ref?: React.Ref<HTMLButtonElement>;
-}
+};
 
 export const ThButton = React.forwardRef<HTMLButtonElement, IButtonProps>(
-    ({ variant = "primary", type, extendedLabel, label, svg, svgClassname, onClick, onFocus, disabled, style, id, tabIndex, dir }, ref) => (
+    ({ variant = "primary", extendedLabel, label, svg, svgClassname, ...props }, ref) => (
         <button
+            {...props}
             ref={ref}
-            id={id}
-            type={type}
-            tabIndex={tabIndex}
-            dir={dir}
             title={extendedLabel || label}
             aria-label={extendedLabel || label}
             className={variantStyles[variant]}
-            onClick={onClick}
-            onFocus={onFocus}
-            disabled={disabled}
-            style={style}
         >
             {svg && <SVG ariaHidden svg={svg} className={svgClassname} />}
             <span>{label}</span>
