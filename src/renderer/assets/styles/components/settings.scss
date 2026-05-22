@@ -1035,6 +1035,7 @@ details {
     margin-bottom: 20px!important;
     width: calc(100% - 40px)!important;
     flex-direction: column;
+    gap: 0!important;
 
     summary {
         cursor: pointer;
@@ -1073,9 +1074,20 @@ details {
 }
 
 .storage_location {
-    border-left: 3px solid var(--color-brand-primary);
     padding-left: 5px;
     margin: 3px 0;
+
+    button {
+        justify-content: flex-start;
+        width: fit-content;
+        height: auto;
+        min-height: unset;
+        text-align: left;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: normal;
+        line-height: 1.4;
+    }
 }
 
 .CSS_END_components_settings {

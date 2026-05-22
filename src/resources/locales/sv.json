@@ -45,11 +45,11 @@
             "title": "{{- appName}}-programuppdatering."
         },
         "window": {
-            "showLibrary": "Visa bibliotek/bokhylla"
+            "showLibrary": "Visa bokhylla"
         }
     },
     "catalog": {
-        "AddToFavorites": "Lägg till favoriter",
+        "AddToFavorites": "Lägg till i favoriter",
         "about": {
             "title": "Om {{- appName}}"
         },
@@ -73,9 +73,9 @@
         },
         "delete": "Ta bort",
         "deleteBook": "Ta bort",
-        "deleteTag": "Ta bort taggen",
+        "deleteTag": "Ta bort tagg",
         "description": "Beskrivning",
-        "emptyTagList": "Du har inga böcker med taggar.",
+        "emptyTagList": "Inga böcker med tagg.",
         "entry": {
             "continueReading": "Fortsätt läsa",
             "lastAdditions": "Nyligen tillagt"
@@ -89,12 +89,12 @@
         "login": "Logga in",
         "logout": "Logga ut",
         "missing": "",
-        "moreInfo": "Information om publikationen",
+        "moreInfo": "Information om boken",
         "myBooks": "Mina böcker",
-        "noPublicationHelpL1": "Släpp en publikation här",
-        "noPublicationHelpL2": "eller använd \"{{- importTitle }}\"-knappen ovanför.",
+        "noPublicationHelpL1": "Dra och släpp filer här",
+        "noPublicationHelpL2": "eller använd \"{{- importTitle }}\" knappen ovan.",
         "noPublicationHelpL3": "LCP-skyddade filer stöds.",
-        "noPublicationHelpL4": "Filtyper som stöds:",
+        "noPublicationHelpL4": "Filformat som stöds:",
         "numberOfPages": "Antal sidor",
         "opds": {
             "auth": {
@@ -111,7 +111,7 @@
                 "availableSince": "Sedan",
                 "availableState": {
                     "available": "Tillgänglig",
-                    "ready": "Redo",
+                    "ready": "Klar",
                     "reserved": "Reserverad",
                     "unavailable": "Otillgänglig",
                     "unknown": "Okänt"
@@ -783,7 +783,7 @@
             "printDisabled": "Utskrift förbjuden",
             "screenNext": "Nästa sida",
             "screenPrevious": "Föregående sida",
-            "settingsTitle": "Inställningar"
+            "settingsTitle": "Läsarinställningar"
         },
         "notes": {
             "colors": {

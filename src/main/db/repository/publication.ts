@@ -18,10 +18,10 @@ import { publicationActions } from "readium-desktop/main/redux/actions";
 import { aboutFilteredDocs } from "readium-desktop/main/tools/filter";
 import { Unsubscribe } from "redux";
 
-import * as lunrde from "@lunr-languages/lunr.de.js";
-import * as lunrfr from "@lunr-languages/lunr.fr.js";
-import * as lunrmulti from "@lunr-languages/lunr.multi.js";
-import * as lunrstemmer from "@lunr-languages/lunr.stemmer.support.js";
+import lunrde from "lunr-languages/lunr.de";
+import lunrfr from "lunr-languages/lunr.fr";
+import lunrmulti from "lunr-languages/lunr.multi";
+import lunrstemmer from "lunr-languages/lunr.stemmer.support";
 import { convertMultiLangStringToLangString } from "readium-desktop/common/language-string";
 
 const debug = debug_("readium-desktop:main:db:repository:publication");

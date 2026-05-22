@@ -72,11 +72,10 @@
       "@r2-shared-js/*": ["./src/r2-xxx-js/r2-shared-js/*"],
       "@r2-streamer-js/*": ["./src/r2-xxx-js/r2-streamer-js/*"],
       "@r2-navigator-js/*": ["./src/r2-xxx-js/r2-navigator-js/*"],
-      "@r2-lcp-js/*": ["./src/r2-xxx-js/r2-lcp-js/*"],
-      "@lunr-languages/*": ["./node_modules/lunr-languages/*"],
-    },
+      "@r2-lcp-js/*": ["./src/r2-xxx-js/r2-lcp-js/*"]
+    }
   },
   "include": ["./src/**/*", "./test/**/*"],
   "exclude": ["./node_modules"],
-  "files": ["./typings.d.ts"],
+  "files": ["./typings.d.ts"]
 }

@@ -1,9 +1,5 @@
-name: CI
+name: CI pull requests, build + lint
 on:
-  push:
-    branches: [ develop ]
-    tags-ignore:
-      - '*'
   pull_request:
     branches: [ develop ]
 # https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token
@@ -13,7 +9,7 @@ permissions:
     artifact-metadata: none
     attestations: none
     checks: none
-    contents: none # <==========
+    contents: none
     deployments: none
     discussions: none
     id-token: none
@@ -26,13 +22,13 @@ permissions:
     security-events: none
     statuses: none
 jobs:
-  build:
+  ci:
     permissions:
       actions: none
       artifact-metadata: none
       attestations: none
       checks: none
-      contents: write # <==========
+      contents: none
       deployments: none
       discussions: none
       id-token: none
@@ -44,8 +40,12 @@ jobs:
       repository-projects: none
       security-events: none
       statuses: none
-#    if: "!contains(toJSON(github.event.commits.*.message), '[skip-ci]')"
-    if: "github.event_name == 'pull_request' || !contains(github.event.head_commit.message, 'skip ci') && github.ref_name == 'develop' && github.repository_owner == 'edrlab'"
+#   if: "!contains(toJSON(github.event.commits.*.message), '[skip-ci]')"
+#   if: ${{ github.ref == 'refs/heads/develop' }}
+#   if: "github.event_name == 'pull_request'"
+#        !contains(github.event.head_commit.message, 'skip ci') &&
+#        github.head_ref is PR branch
+    if: "github.base_ref == 'develop' && github.repository_owner == 'edrlab' && github.repository == 'edrlab/thorium-reader'"
     runs-on: ${{ matrix.runson }}
     strategy:
       fail-fast: false
@@ -56,10 +56,10 @@ jobs:
 # Thorium for Linux x64 and arm64 is built on GitHub Actions x64 runners
 # Thorium for Windows x64 and arm64 is built on GitHub Actions x64 runners
 # To ensure arm64, the trick is:
-#       npm ci --foreground-scripts --arch=arm64 --cpu=arm64
+#       npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --arch=arm64 --cpu=arm64
 #       Replace "x64" with "arm64" in `package.json` (and optionally the electron-builder `src/package.json`, if needed)
 # To ensure x64, the trick is:
-#       npm ci --foreground-scripts --arch=x64 --cpu=x64
+#       npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --arch=x64 --cpu=x64
 #       `package.json` already specifies "x64"
 # windows-latest is currently windows-2022, but becomes windows-2025 in September 2025 (windows-2022 remains supported for 3 years)
 #       https://github.com/actions/runner-images/blob/main/images/windows/Windows2022-Readme.md
@@ -101,24 +101,26 @@ jobs:
             runson: ubuntu-22.04 #ubuntu-latest is ubuntu-24.04
             packname: linux
             release_tag: latest-linux-arm
-    env:
-      RELEASE_TAG: ${{ matrix.release_tag }}
     steps:
-    # graceful fail?
-    - run: |-
+###########################
+    - name: Checking graceful shell command failure
+      run: |-
         pwdx || echo OK || true
       shell: cmd
       continue-on-error: true
+###########################
     - name: Microsoft Windows dumpbin to PATH
       if: startsWith(matrix.osarch, 'windows-')
       run: >
         $VS_ROOT = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC"; Get-ChildItem -Path $VS_ROOT -Force; $VS_VERSION = (Get-ChildItem -Path $VS_ROOT | Sort-Object Name -Descending | Select-Object -First 1).Name; $VS_BIN = "$VS_ROOT\$VS_VERSION\bin\Hostx64\x64"; echo $VS_BIN >> $env:GITHUB_PATH; echo $VS_BIN
       shell: powershell
+###########################
     - name: Microsoft Windows dumpbin check
       if: startsWith(matrix.osarch, 'windows-')
       run: >
         dir /A "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC" && dumpbin /headers "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\dumpbin.exe" | findstr /i machine
       shell: cmd
+###########################
 # - name: Microsoft Windows msbuild to PATH
 #   if: startsWith(matrix.osarch, 'windows-')
 #   uses: microsoft/setup-msbuild@v2
@@ -132,11 +134,14 @@ jobs:
 #    - run: 'echo "GITHUB_RUN_NUMBER: ${{ github.run_number }}"'
 #    - run: 'echo "GITHUB_RUN_ID: ${{ github.run_id }}"'
 #    - run: 'echo "GITHUB_SHA: ${{ github.sha }}"'
+###########################
     - run: echo "${{ matrix.osarch }} // ${{ runner.arch }}"
+###########################
     - name: System arch (non Windows)
       #if: ${{ matrix.osarch != 'windows-intel' && matrix.osarch != 'windows-arm' }}
       if: ${{ !startsWith(matrix.osarch, 'windows-') }}
       run: uname -m && arch
+###########################
     - name: Checkout
 # https://github.com/actions/checkout/commits/v6.0.2
 # https://github.com/actions/checkout/commits/de0fac2e4500dabe0009e67214ff5f5447ce83dd
@@ -172,47 +177,67 @@ jobs:
 #    - name: Git config local dump (post)
 #      run: 'git config --list || echo NO_GIT_GLOBAL_CONFIG || true'
 #      shell: bash
+###########################
 # https://github.com/actions/setup-node/commits/v6.4.0
 # https://github.com/actions/setup-node/commits/48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
 # https://github.com/actions/setup-node/compare/v6.4.0...48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
     - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
       with:
         node-version: '24'
+        cache: ''
+        package-manager-cache: false
         #check-latest: true
+###########################
     - run: node --version && npm --version
 # https://github.com/npm/cli/issues/9133
+###########################
     - run: npm --global install npm
+###########################
     - run: npm --version
+###########################
     - run: python --version || echo ok || true
+###########################
     - run: python3 --version || echo ok || true
+###########################
     - run: pip --version || echo ok || true
+###########################
     # PYTHON 3.12 distutils deprecation remediation:
     #- run: python3 -m pip install packaging || python -m pip install packaging
     - run: python3 -m pip install setuptools || python -m pip install setuptools
     # - run: npm --global install asar
+###########################
     - name: package patch 1
       run: node scripts/package-ci-patch.js package.json ${{ github.run_id }} && cat package.json | grep -i VERSION && cat package.json
       shell: bash
+###########################
     - name: package patch 2
       run: node scripts/package-ci-patch.js src/package.json ${{ github.run_id }} && cat src/package.json | grep -i VERSION && cat src/package.json
       shell: bash
-    - name: package lock patch
-      run: node scripts/package-lock-patch.js && cat package-lock.json | grep -i divina-player-js
-      shell: bash
+###########################
+# - name: package lock patch
+#   run: node scripts/package-lock-patch.js && cat package-lock.json | grep -i divina-player-js
+#   shell: bash
+###########################
     - run: git --no-pager diff
+###########################
     - run: npm cache clean --force
+###########################
     - run: npm cache verify
-    - run: cat package-lock.json | grep -i divina-player-js
+###########################
+# - run: cat package-lock.json | grep -i divina-player-js
+###########################
     - name: NPM install (arm64)
       #if: ${{ matrix.osarch == 'linux-arm' || matrix.osarch == 'windows-arm' || matrix.osarch == 'macos-arm' }}
       if: endsWith(matrix.osarch, '-arm')
-      run: npm ci --ignore-scripts --foreground-scripts --arch=arm64 --cpu=arm64 && cd node_modules/electron && npm run postinstall --arch=arm64 --cpu=arm64 && cd -
+      run: npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --arch=arm64 --cpu=arm64 && cd node_modules/electron && npm run postinstall --arch=arm64 --cpu=arm64 && cd -
       #export npm_config_arch=arm64 && export npm_config_cpu=arm64 &&
+###########################
     - name: NPM install (x64)
       #if: ${{ matrix.osarch == 'linux-intel' || matrix.osarch == 'windows-intel' || matrix.osarch == 'macos-intel' }}
       if: endsWith(matrix.osarch, '-intel')
-      run: npm ci --ignore-scripts --foreground-scripts --arch=x64 --cpu=x64 && cd node_modules/electron && npm run postinstall --arch=x64 --cpu=x64 && cd -
+      run: npm ci --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root --arch=x64 --cpu=x64 && cd node_modules/electron && npm run postinstall --arch=x64 --cpu=x64 && cd -
       #export npm_config_arch=x64 && export npm_config_cpu=x64 &&
+###########################
     - name: Electron version + arch (Windows)
       #if: ${{ matrix.osarch == 'windows-intel' || matrix.osarch == 'windows-arm' }}
       if: startsWith(matrix.osarch, 'windows-')
@@ -220,114 +245,28 @@ jobs:
         (dumpbin /headers "node_modules\electron\dist\electron.exe" | findstr /i machine) && (node_modules\\electron\\dist\\electron.exe --no-sandbox --version || echo INVALID_ARCH || true) && (node_modules\\electron\\dist\\electron.exe --no-sandbox --abi || echo INVALID_ARCH || true)
       shell: cmd
       continue-on-error: true
+###########################
     - name: Electron version + arch (Linux)
       #if: ${{ matrix.osarch == 'linux-intel' || matrix.osarch == 'linux-arm' }}
       if: startsWith(matrix.osarch, 'linux-')
       run: >
         (file node_modules/electron/dist/electron) && (node_modules/electron/dist/electron --no-sandbox --version || echo INVALID_ARCH || true) && (node_modules/electron/dist/electron --no-sandbox --abi || echo INVALID_ARCH || true)
+###########################
     - name: Electron version + arch (MacOS)
       #if: ${{ matrix.osarch == 'macos-intel' || matrix.osarch == 'macos-arm' }}
       if: startsWith(matrix.osarch, 'macos-')
       run: >
         (file node_modules/electron/dist/Electron.app/Contents/MacOS/Electron) && (node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --version || echo INVALID_ARCH || true) && (node_modules/electron/dist/Electron.app/Contents/MacOS/Electron --no-sandbox --abi || echo INVALID_ARCH || true)
+###########################
     - run: npm list -g node-gyp || echo ok || true
+###########################
     - run: npm list node-gyp || echo ok || true
+###########################
     - run: >
         node -e 'const path = require("path"); const fs = require("fs"); const filePath = path.join(process.cwd(), "package.json"); let fileStr = fs.readFileSync(filePath, { encoding: "utf8" }); fileStr = fileStr.replace(/"sign": true,/g, `"sign": false,`); fileStr = fileStr.replace(/"hardenedRuntime": true,/g, `"hardenedRuntime": false, "identity": null,`); fs.writeFileSync(filePath, fileStr, { encoding: "utf8" });'
       continue-on-error: true
+###########################
     - name: PR action (just build)
-      if: ${{ github.event_name == 'pull_request' }}
       run: npm run build:prod
       # && npm run test SEE https://github.com/edrlab/thorium-reader/issues/1697
-    - name: non-PR action (build and package) ARM
-      env:
-        USE_HARD_LINKS: 'false' # Electron Builder workaround
-      #if: ${{ github.event_name != 'pull_request' && (matrix.osarch == 'linux-arm' || matrix.osarch == 'windows-arm' || matrix.osarch == 'macos-arm') }}
-      if: ${{ github.event_name != 'pull_request' && endsWith(matrix.osarch, '-arm') }}
-      #run: sed 's/--x64/--arm64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json && npm run package:${{ matrix.packname }} && sed 's/--arm64/--x64/g' ./package.json > ./package.json.new && mv ./package.json.new ./package.json
-      run: >
-        node -e 'const path = require("path"); const fs = require("fs"); const filePath = path.join(process.cwd(), "package.json"); let fileStr = fs.readFileSync(filePath, { encoding: "utf8" }); fileStr = fileStr.replace(/--x64/g, "--arm64"); fs.writeFileSync(filePath, fileStr, { encoding: "utf8" });' && npm run package:${{ matrix.packname }}
-    - name: non-PR action (build and package) INTEL
-      env:
-          USE_HARD_LINKS: 'false' # Electron Builder workaround
-      #if: ${{ github.event_name != 'pull_request' && (matrix.osarch == 'linux-intel' || matrix.osarch == 'windows-intel' || matrix.osarch == 'macos-intel') }}
-      if: ${{ github.event_name != 'pull_request' && endsWith(matrix.osarch, '-intel') }}
-      run: >
-        node -e 'const path = require("path"); const fs = require("fs"); const filePath = path.join(process.cwd(), "package.json"); let fileStr = fs.readFileSync(filePath, { encoding: "utf8" }); fileStr = fileStr.replace(/--arm64/g, "--x64"); fs.writeFileSync(filePath, fileStr, { encoding: "utf8" });' && npm run package:${{ matrix.packname }}
-    #- run: ls -alsR release
-    #- run: npm install @octokit/rest
-    - name: GitHub Tagged Release Delete/ReCreate and Upload Build Artefacts
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      if: ${{ github.event_name != 'pull_request' }}
-      run: node scripts/release-github.mjs
-    # - name: Upload Artifact
-    #   if: ${{ github.event_name != 'pull_request' }}
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: Thorium
-    #     path: ./release/*.exe
-    # - name: Delete Release
-    #   if: ${{ github.event_name != 'pull_request' }}
-    #   uses: author/action-rollback@stable
-    #   with:
-    #     tag: $RELEASE_TAG
-    #     always_delete_tag: true
-    # - name: GitHub Release
-    #   if: ${{ github.event_name != 'pull_request' }}
-    #   id: create_release
-    #   uses: actions/create-release@v1
-    #   with:
-    #     tag_name: $RELEASE_TAG
-    #     release_name: '[$RELEASE_TAG] continuous test build (prerelease)'
-    #     body: 'GitHub Action build job: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID'
-    #     draft: false
-    #     prerelease: true
-    # - name: GitHub Release Assets
-    #   if: ${{ github.event_name != 'pull_request' }}
-    #   id: upload-release-asset
-    #   uses: actions/upload-release-asset@v1
-    #   with:
-    #     upload_url: ${{ steps.create_release.outputs.upload_url }}
-    #     asset_path: ./release/*.exe
-    #     asset_name: Thorium.exe
-    #     asset_content_type: application/octet-stream
-    # - name: GitHub Script Release And Assets
-    #   if: ${{ github.event_name != 'pull_request' }}
-    #   env:
-    #     - GH_RELEASE_ID: ${{ steps.create_release.outputs.id }}
-    #   uses: actions/github-script@v2
-    #   with:
-    #     github-token: ${{ secrets.GITHUB_TOKEN }}
-    #     script: |
-    #       console.log('process.versions', process.versions, process.env.GH_RELEASE_ID);
-
-    #       const fs = require('fs').promises;
-
-    #       const { repo: { owner, repo }, sha } = context;
-
-    #       /*
-    #       const release = await github.repos.createRelease({
-    #         name: `[${process.env.RELEASE_TAG}] continuous test build (prerelease)`,
-    #         body: `GitHub Action build job: ${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`,
-    #         owner,
-    #         repo,
-    #         tag_name: process.env.RELEASE_TAG,
-    #         draft: false,
-    #         prerelease: true,
-    #         target_commitish: sha
-    #       });
-    #       */
-
-    #       for (let file of await fs.readdir('release')) {
-    #         if (!file.endsWith('.exe') || !file.endsWith('.AppImage') || !file.endsWith('.msi') || !file.endsWith('.deb') || !file.endsWith('.dmg')) {
-    #           continue;
-    #         }
-    #         await github.repos.uploadReleaseAsset({
-    #           owner,
-    #           repo,
-    #           release_id: process.env.GH_RELEASE_ID, // release.data.id,
-    #           name: file,
-    #           data: await fs.readFile(`./release/${file}`)
-    #         });
-    #       }
+###########################

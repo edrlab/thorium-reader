@@ -435,7 +435,7 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
             {
                 enableCheckbox ? <>
                     <TextArea style={{ minWidth: "-webkit-fill-available", maxWidth: "-webkit-fill-available" }} name="htmlContent" wrap="hard" ref={textAreaRef} defaultValue={htmlContent} maxLength={MAX_LEN} onChange={(a) => updateHtmlContentDebounced(a.currentTarget.value)}></TextArea>
-                    <button dir={isRTL ? "rtl" : "ltr"} className={stylesSettings.btn_primary} onClick={resetHtmlContent}>{__("settings.note.export.applyDefaultTemplate")}</button>
+                    <button dir={isRTL ? "rtl" : "ltr"} className={stylesButtons.button_secondary_blue} onClick={resetHtmlContent}>{__("settings.note.export.applyDefaultTemplate")}</button>
                 </>
                     : <></>
             }
@@ -727,6 +727,7 @@ const StorageSettings: React.FC<{}> = () => {
                 onConfirm={() => {
                     setConfirmAddOpen(false);
                     setIsEditing(true);
+                    openFolderPicker();
                 }}
             />
             <StorageConfirmDialog
@@ -738,6 +739,7 @@ const StorageSettings: React.FC<{}> = () => {
                 onConfirm={() => {
                     setConfirmEditOpen(false);
                     setIsEditing(true);
+                    openFolderPicker();
                 }}
             />
             <StorageConfirmDialog
@@ -771,58 +773,33 @@ const StorageSettings: React.FC<{}> = () => {
                 
                 <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}>
                         <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                            <p style={{ margin: 0, fontWeight: 600 }}>Locations</p>
+                            <h4>Locations</h4>
                             <div className={stylesSettings.storage_location} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                                 <p style={{ margin: 0 }}><strong>Default internal storage</strong></p>
                                 <button
-                                    className={stylesButtons.button_transparency}
-                                    style={{
-                                        justifyContent: "flex-start",
-                                        width: "100%",
-                                        height: "auto",
-                                        minHeight: "unset",
-                                        textAlign: "left",
-                                        whiteSpace: "normal",
-                                        overflowWrap: "anywhere",
-                                        wordBreak: "break-word",
-                                        lineHeight: 1.4,
-                                        fontSize: "14px",
-                                    }}
+                                    className={stylesButtons.button_nav_tertiary}
                                     onClick={() => dispatch(catalogActions.openDefaultDirectory.build())}
                                 >
                                     {defaultDirectory}
                                 </button>
                             </div>
+                    </div>
+                    </section>
+
+                    <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                            <h4>Configuration</h4>
                             {userDirectory ?
 
                                 <div className={stylesSettings.storage_location} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                                     <p style={{ margin: 0 }}><strong>External storage</strong></p>
-                                    <button
-                                        className={stylesButtons.button_transparency}
-                                        style={{
-                                            justifyContent: "flex-start",
-                                            width: "100%",
-                                            height: "auto",
-                                            minHeight: "unset",
-                                            textAlign: "left",
-                                            whiteSpace: "normal",
-                                            overflowWrap: "anywhere",
-                                            wordBreak: "break-word",
-                                            lineHeight: 1.4,
-                                            fontSize: "14px",
-                                        }}
+                                    <button className={stylesButtons.button_nav_tertiary} title={userDirectory}
                                         onClick={() => dispatch(catalogActions.openUserDirectory.build())}
                                     >
                                         {userDirectory}
                                     </button>
                                 </div> : <></>
                             }
-                    </div>
-                    </section>
-
-                    <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}>
-                        <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                            <p style={{ margin: 0, fontWeight: 600 }}>Configuration</p>
                             {!userDirectory && !isEditing ? (
                                 <div className={stylesSettings.session_text} style={{ margin: 0, alignItems: "flex-start" }}>
                                     <SVG ariaHidden svg={InfoIcon} />
@@ -848,7 +825,7 @@ const StorageSettings: React.FC<{}> = () => {
 
                         {!userDirectory && !isEditing ? (
                             <button
-                                className={stylesSettings.btn_primary}
+                                className={stylesButtons.button_secondary_blue}
                                 onClick={() => setConfirmAddOpen(true)}
                             >
                                 Add external storage directory
@@ -858,7 +835,7 @@ const StorageSettings: React.FC<{}> = () => {
                         {userDirectory && !isEditing ? (
                             <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                                 <button
-                                    className={stylesSettings.btn_primary}
+                                    className={stylesButtons.button_secondary_blue}
                                     onClick={() => setConfirmEditOpen(true)}
                                 >
                                     Change external storage directory
@@ -868,25 +845,6 @@ const StorageSettings: React.FC<{}> = () => {
                                     onClick={() => setConfirmDeleteOpen(true)}
                                 >
                                     Remove external storage directory
-                                </button>
-                            </div>
-                        ) : null}
-
-                        {isEditing ? (
-                            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
-                                <button
-                                    className={stylesSettings.btn_primary}
-                                    onClick={openFolderPicker}
-                                >
-                                    Choose folder
-                                </button>
-                                <button
-                                    className={stylesButtons.button_transparency}
-                                    onClick={() => {
-                                        setIsEditing(false);
-                                    }}
-                                >
-                                    Cancel
                                 </button>
                             </div>
                         ) : null}

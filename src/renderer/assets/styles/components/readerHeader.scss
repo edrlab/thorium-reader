@@ -238,6 +238,14 @@
     /* gap: 20px; */
     color: var(--color-text-primary);
 
+    details {
+        width: 0 !important;
+        flex-basis: 100%;
+        margin-top: 10px;
+        border: 1px solid var(--color-gray-250);
+        padding: 6px;
+    }
+
     @media only screen and (width <= 980px) {
         max-height: 520px;
         overflow-y: auto;

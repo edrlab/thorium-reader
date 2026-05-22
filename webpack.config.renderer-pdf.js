@@ -1,7 +1,7 @@
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const StatoscopeWebpackPlugin = require('@statoscope/webpack-plugin').default;
 
-const TerserPlugin = require("terser-webpack-plugin");
+const TerserPlugin = require("minimizer-webpack-plugin");
 
 const path = require("path");
 const webpack = require("webpack");
@@ -222,7 +222,7 @@ if (nodeEnv !== "production") {
                 extractComments: false,
                 exclude: /MathJax/,
                 // parallel: 3,
-                terserOptions: {
+                minimizerOptions: {
                     // sourceMap: nodeEnv !== "production" ? true : false,
                     sourceMap: false,
                     compress: {defaults:false, dead_code:true, booleans: true, passes: 1},

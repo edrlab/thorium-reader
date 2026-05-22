@@ -9,7 +9,7 @@ cp package-lock.json package-lock-ORIGINAL.json
 
 mv node_modules/ node_modules_ORIGINAL/
 
-rm -f package-lock.json && npm install --ignore-scripts --foreground-scripts
+rm -f package-lock.json && npm install --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root
 
 npm audit
 npm outdated

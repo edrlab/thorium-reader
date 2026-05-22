@@ -4,7 +4,7 @@
 # https://app.unpkg.com/npm-scripts-lifecycle@1.0.0/files/package.json
 
 npm cache clear --force
-rm -rf node_modules/ && rm -f package-lock.json && sfw npm install --ignore-scripts --foreground-scripts && npm run build:prod
+rm -rf node_modules/ && rm -f package-lock.json && sfw npm install --ignore-scripts --foreground-scripts --min-release-age=3 --allow-git=root && npm run build:prod
 
 npm audit
 npm outdated
