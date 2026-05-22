@@ -13,6 +13,24 @@ export type IPdfPlayerScale = "page-fit" | "page-width" | number;
 export type IPdfPlayerView = "scrolled"; // | "paginated";
 export type IPdfPlayerColumn = "auto" | "1" | "2";
 
+export interface TPdfAnnotationRectTransport {
+    x1: number;
+    y1: number;
+    x2: number;
+    y2: number;
+}
+
+export interface TPdfAnnotationDraftTransport {
+    type: "pdf-text-highlight";
+    page: number;
+    rects: TPdfAnnotationRectTransport[];
+    quote?: string;
+}
+
+export interface TPdfAnnotationTransport extends TPdfAnnotationDraftTransport {
+    id: string;
+}
+
 export interface IPdfPlayerEvent {
     "pageNumber": (pageNumber: number) => any;
     "pageLabel": (pageLabel: string) => any;
@@ -49,6 +67,14 @@ export interface IPdfPlayerEvent {
     "print": (pageRange: number[]) => any;
     "thumbnailRequest": (pageIndexZeroBased: number) => any;
     "thumbnailRendered": (pageNumber: number, imgSrc: string) => any;
+    "annotations:sync": (payload: {
+        annotations: TPdfAnnotationTransport[];
+    }) => any;
+    "highlight:create-from-selection": () => any;
+    "annotations:ready": () => any;
+    "annotation:create-requested": (payload: {
+        draft: TPdfAnnotationDraftTransport;
+    }) => any;
 }
 
 export interface IEventBusPdfPlayer extends IEventBus {

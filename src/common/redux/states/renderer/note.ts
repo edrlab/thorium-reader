@@ -11,6 +11,7 @@ import { TTranslatorKeyParameter } from "readium-desktop/typings/en.translation-
 import { MiniLocatorExtended } from "../locatorInitialState";
 import { INoteCreator } from "../creator";
 import { IReadiumAnnotation, ISelector } from "readium-desktop/common/readium/annotation/annotationModel.type";
+import type { IPdfTextAnnotationTarget } from "./pdfAnnotation";
 
 // DO NOT REMOVE THIS COMMENT BLOCK (USED FOR TRANSLATOR KEYS DETECTION DURING CODE SCANNING)
 // __("reader.notes.colors.red")
@@ -84,6 +85,7 @@ export interface INoteState {
     uuid: string;
     index: number;
     locatorExtended?: MiniLocatorExtended | undefined;
+    pdfAnnotation?: IPdfTextAnnotationTarget;
     textualValue?: string;
     color: IColor;
     drawType: EDrawType;

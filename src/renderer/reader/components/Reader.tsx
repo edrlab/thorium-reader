@@ -84,8 +84,13 @@ import {
 } from "@r2-navigator-js/electron/renderer/index";
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
-import { IPdfPlayerScale, TToc } from "../pdf/common/pdfReader.type";
+import { IPdfPlayerScale, TPdfAnnotationDraftTransport, TPdfAnnotationTransport, TToc } from "../pdf/common/pdfReader.type";
 import { pdfMount } from "../pdf/driver";
+import {
+    filterPdfAnnotationNotes,
+    noteToPdfAnnotation,
+    pdfAnnotationDraftToNote,
+} from "readium-desktop/renderer/reader/pdf/pdfAnnotationConverters";
 import {
     readerLocalActionAnnotations,
     readerLocalActionLocatorHrefChanged,
@@ -111,7 +116,7 @@ import { translateContentFieldHelper } from "readium-desktop/common/services/tra
 import { getStore } from "../createStore";
 import { URL_PROTOCOL_THORIUMHTTPS, URL_HOST_COMMON, URL_PATH_PREFIX_PUB } from "readium-desktop/common/streamerProtocol";
 import { DockTypeName } from "readium-desktop/common/models/dock";
-import { TDrawView } from "readium-desktop/common/redux/states/renderer/note";
+import { INoteState, TDrawView } from "readium-desktop/common/redux/states/renderer/note";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { URL_PROTOCOL_FILEX } from "readium-desktop/common/streamerProtocol";
 
@@ -326,6 +331,8 @@ class Reader extends React.Component<IProps, IState> {
         this.onKeyboardFixedLayoutZoomOut = this.onKeyboardFixedLayoutZoomOut.bind(this);
 
         this.onPopState = this.onPopState.bind(this);
+        this.onPdfAnnotationsReady = this.onPdfAnnotationsReady.bind(this);
+        this.onPdfAnnotationCreateRequested = this.onPdfAnnotationCreateRequested.bind(this);
 
         this.fastLinkRef = React.createRef<HTMLAnchorElement>();
         this.refToolbar = React.createRef<HTMLAnchorElement>();
@@ -790,10 +797,14 @@ class Reader extends React.Component<IProps, IState> {
             console.log("SET PDF spreadmode to", this.props.pdfReaderConfig.spreadmode);
             this.setState({pdfPlayerSpreadMode: this.props.pdfReaderConfig.spreadmode});
         }
+        if (this.props.isPdf && oldProps.notes !== this.props.notes) {
+            this.syncPdfAnnotations();
+        }
     }
 
     public componentWillUnmount() {
         ipcRenderer.off("accessibility-support-changed", this.accessibilitySupportChanged);
+        this.unsubscribePdfAnnotationEvents();
 
         // if (this.mainElRef?.current) {
         //     this.resizeObserver.unobserve(this.mainElRef.current); // publication_viewport
@@ -802,6 +813,60 @@ class Reader extends React.Component<IProps, IState> {
         this.unregisterAllKeyboardListeners();
 
         window.removeEventListener("popstate", this.onPopState);
+    }
+
+    private subscribePdfAnnotationEvents() {
+        const pdfEventBus = createOrGetPdfEventBus();
+        pdfEventBus.subscribe("annotations:ready", this.onPdfAnnotationsReady);
+        pdfEventBus.subscribe("annotation:create-requested", this.onPdfAnnotationCreateRequested);
+    }
+
+    private unsubscribePdfAnnotationEvents() {
+        const pdfEventBus = createOrGetPdfEventBus();
+        pdfEventBus.remove(this.onPdfAnnotationsReady, "annotations:ready");
+        pdfEventBus.remove(this.onPdfAnnotationCreateRequested, "annotation:create-requested");
+    }
+
+    private onPdfAnnotationsReady() {
+        this.syncPdfAnnotations();
+    }
+
+    private onPdfAnnotationCreateRequested(payload: {
+        draft: TPdfAnnotationDraftTransport;
+    }) {
+        if (!payload?.draft) {
+            return;
+        }
+
+        const newNote = pdfAnnotationDraftToNote(payload.draft, {
+            color: this.props.readerConfig.annotation_defaultColor,
+            creator: this.props.creator,
+            index: this.props.noteTotalCount + 1,
+            created: Date.now(),
+        });
+
+        const action = this.props.addUpdatePdfAnnotationNote(this.props.pubId, newNote);
+        this.syncPdfAnnotations(action.payload.newNote);
+    }
+
+    private syncPdfAnnotations(extraNote?: INoteState) {
+        createOrGetPdfEventBus().dispatch("annotations:sync", {
+            annotations: this.buildPdfAnnotationTransportList(extraNote),
+        });
+    }
+
+    private buildPdfAnnotationTransportList(extraNote?: INoteState): TPdfAnnotationTransport[] {
+        const annotationsById = new Map<string, TPdfAnnotationTransport>();
+        const notes = extraNote ? [...this.props.notes, extraNote] : this.props.notes;
+
+        for (const note of filterPdfAnnotationNotes(notes)) {
+            const annotation = noteToPdfAnnotation(note);
+            if (annotation) {
+                annotationsById.set(annotation.id, annotation);
+            }
+        }
+
+        return Array.from(annotationsById.values());
     }
 
     private isFixedLayout(): boolean {
@@ -1551,7 +1616,7 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        this.props.triggerAnnotationBtn(true);
+        this.triggerAnnotation(true);
     };
 
     private onKeyboardQuickAnnotation = () => {
@@ -1562,8 +1627,13 @@ class Reader extends React.Component<IProps, IState> {
             return;
         }
 
+        if (this.props.isPdf) {
+            this.triggerAnnotation(true);
+            return;
+        }
+
         if (this.props.readerConfig.annotation_popoverNotOpenOnNoteTaking) {
-            this.props.triggerAnnotationBtn(true);
+            this.triggerAnnotation(true);
             return ;
         }
 
@@ -1574,12 +1644,21 @@ class Reader extends React.Component<IProps, IState> {
         console.log(`onKeyboardQuickAnnotation : popoverNotOpenOnNoteTaking=${annotation_popoverNotOpenOnNoteTaking}`);
         this.props.setConfig(newReaderConfig);
 
-        this.props.triggerAnnotationBtn(true);
+        this.triggerAnnotation(true);
 
         newReaderConfig = {};
         newReaderConfig.annotation_popoverNotOpenOnNoteTaking = annotation_popoverNotOpenOnNoteTaking;
         this.props.setConfig(newReaderConfig);
     };
+
+    private triggerAnnotation(fromKeyboard: boolean) {
+        if (this.props.isPdf) {
+            createOrGetPdfEventBus().dispatch("highlight:create-from-selection");
+            return;
+        }
+
+        this.props.triggerAnnotationBtn(fromKeyboard);
+    }
 
     private onKeyboardAudioStop = () => {
         if (!this.state.shortcutEnable) {
@@ -2252,6 +2331,8 @@ class Reader extends React.Component<IProps, IState> {
                 publicationViewport,
                 { page, scrollTop: position, zoom },
             );
+
+            this.subscribePdfAnnotationEvents();
 
             createOrGetPdfEventBus().subscribe("copy", (txt) => clipboardInterceptor({ txt, locator: undefined }));
             createOrGetPdfEventBus().subscribe("toc", (toc) => this.setState({ pdfPlayerToc: toc }));
@@ -3343,6 +3424,9 @@ const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
 
 
         pdfReaderConfig: state.reader.pdfConfig,
+        notes: state.reader.note,
+        creator: state.creator,
+        noteTotalCount: state.reader.noteTotalCount.state,
 
         // Reader Lock Demo
         // lock: state.reader.lock,
@@ -3452,6 +3536,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
         setPdfReaderConfig: (data: IReaderPdfConfig) => {
             dispatch(readerActions.pdfConfig.build(data));
+        },
+        addUpdatePdfAnnotationNote: (publicationIdentifier: string, newNote: Omit<INoteState, "uuid">) => {
+            return dispatch(readerActions.note.addUpdate.build(publicationIdentifier, newNote));
         },
     };
 };

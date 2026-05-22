@@ -885,30 +885,30 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
                         <BookmarkButton shortcutEnable={this.props.shortcutEnable} isOnSearch={this.props.isOnSearch} />
 
-                        <Popover.Root open={this.props.isAnnotationModeEnabled} onOpenChange={(open) => {
+                        <Popover.Root open={!this.props.isPdf && this.props.isAnnotationModeEnabled} onOpenChange={(open) => {
                             if (!open) {
                                 setTimeout(() => this.props.closeAnnotationEditionMode(this.props.isAnnotationModeEnabledFromKeyboard), 1); // trigger input onChange before the popover trigger
                             }
                         }}>
                             <Popover.Trigger asChild>
                                 <li
-                                    {...(this.props.isAnnotationModeEnabled &&
+                                    {...(!this.props.isPdf && this.props.isAnnotationModeEnabled &&
                                         { style: { backgroundColor: "var(--color-brand-primary)" } })}
                                 >
                                     <input
-                                        disabled={this.props.isPdf || this.props.isDivina || isAudioBook}
+                                        disabled={this.props.isDivina || isAudioBook}
                                         id="annotationButton"
                                         aria-label={__("reader.navigation.annotationTitle")}
                                         className={stylesReader.bookmarkButton}
                                         type="checkbox"
-                                        checked={this.props.isAnnotationModeEnabled}
+                                        checked={!this.props.isPdf && this.props.isAnnotationModeEnabled}
                                         onKeyUp={(e) => {
                                             if (e.key === "Enter") {
-                                                this.props.triggerAnnotationBtn(false);
+                                                this.triggerAnnotation(false);
                                             }
                                         }}
                                         onChange={() => {
-                                            this.props.triggerAnnotationBtn(false);
+                                            this.triggerAnnotation(false);
                                         }}
                                     />
                                     {
@@ -921,11 +921,11 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         id="annotationLabel"
                                         title={__("reader.navigation.annotationTitle")}
                                     >
-                                        <SVG ariaHidden svg={AnnotationsIcon} className={classNames(stylesReaderHeader.annotationsIcon, this.props.isAnnotationModeEnabled ? stylesReaderHeader.active_svg : "")} />
+                                        <SVG ariaHidden svg={AnnotationsIcon} className={classNames(stylesReaderHeader.annotationsIcon, !this.props.isPdf && this.props.isAnnotationModeEnabled ? stylesReaderHeader.active_svg : "")} />
                                     </label>
                                 </li>
                             </Popover.Trigger>
-                            <Popover.Portal>
+                            {!this.props.isPdf ? <Popover.Portal>
                                 <Popover.Content sideOffset={this.props.isOnSearch ? 50 : 18} align="end" style={{ zIndex: 101 }}
                                 // onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
                                 // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
@@ -945,7 +945,7 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     />
                                     <Popover.Arrow style={{ fill: "var(--color-gray-50" }} width={15} height={10} />
                                 </Popover.Content>
-                            </Popover.Portal>
+                            </Popover.Portal> : <></>}
                         </Popover.Root>
 
 
@@ -1284,6 +1284,15 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
     private setScaleMode = (mode: IPdfPlayerScale) => {
         this.setState({ pdfScaleMode: mode });
+    };
+
+    private triggerAnnotation = (fromKeyboard: boolean) => {
+        if (this.props.isPdf) {
+            createOrGetPdfEventBus().dispatch("highlight:create-from-selection");
+            return;
+        }
+
+        this.props.triggerAnnotationBtn(fromKeyboard);
     };
 
     private setVoices(voices: IVoices[]) {
