@@ -238,7 +238,13 @@ export async function importPublicationFromFS(
     debug(`publication document ID=${pubDocument.identifier} HASH=${pubDocument.hash}`);
 
     // Store publication on filesystem
-    debug("[START] Store publication on filesystem", filePath);
+    const sourceExtension = path.extname(filePath);
+    const storableExtension = publicationStorage.getStorablePublicationExtension(sourceExtension);
+    debug("[START] Store publication on filesystem", filePath, {
+        sourceExtension,
+        storableExtension,
+        isStorableExtension: publicationStorage.isStorablePublicationExtension(sourceExtension),
+    });
     const files = preservedIdentifier ?
         await publicationStorage.getStoredPublicationFiles(pubDocument.identifier) :
         await publicationStorage.storePublication(

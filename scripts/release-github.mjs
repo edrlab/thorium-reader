@@ -77,8 +77,8 @@ const SAFE_DEBUG = false;
 (async () => {
   // top-level ASYNC
 
-  const owner = "daisy";
-  const repo = "ace-gui";
+  const owner = "edrlab";
+  const repo = "thorium-reader";
   const tag = process.env.RELEASE_TAG;
 
   console.log("################################################");

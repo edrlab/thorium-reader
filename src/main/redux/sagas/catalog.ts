@@ -264,16 +264,16 @@ export function* getCatalog(): SagaGenerator<ILibraryRootState["publication"]> {
         },
     ];
     const publicationRepository = diMainGet("publication-repository");
-    const publicationDirectory = diMainGet("publication-directory");
-    yield* callTyped(() => publicationDirectory.ready());
+    const publicationStorage = diMainGet("publication-storage");
+    yield* callTyped(() => publicationStorage.ready());
     const allTags = yield* callTyped(() => publicationRepository.getAllTags());
 
     return {
         catalog: {entries},
         tag: allTags,
         directory: {
-            defaultDirectory: publicationDirectory.defaultDirectory,
-            userDirectory: publicationDirectory.userDirectory,
+            defaultDirectory: publicationStorage.defaultDirectory,
+            userDirectory: publicationStorage.userDirectory,
         },
     };
 }
@@ -331,9 +331,9 @@ export function saga() {
             catalogActions.setUserDirectory.ID,
             function* (action: catalogActions.setUserDirectory.TAction) {
 
-                const publicationDirectory = diMainGet("publication-directory");
+                const publicationStorage = diMainGet("publication-storage");
                 const { userDirectory } = action.payload;
-                const currentUserDirectory = publicationDirectory.userDirectory || "";
+                const currentUserDirectory = publicationStorage.userDirectory || "";
                 const sender = action.sender as EventPayload["sender"];
                 if (sender?.type !== SenderType.Renderer) {
                     debug("sender is not renderer !!!");
@@ -368,8 +368,8 @@ export function saga() {
                         }
                     }
 
-                    yield* callTyped(() => publicationDirectory.setUserDirectory(nextUserDirectory));
-                    
+                    yield* callTyped(() => publicationStorage.setUserDirectory(nextUserDirectory));
+
                     // Open the previous user directory so the user can find and move existing files if needed.
                     if (currentUserDirectory && nextUserDirectory !== currentUserDirectory) {
                         yield* callTyped(() => shell.openPath(currentUserDirectory));
@@ -393,19 +393,19 @@ export function saga() {
         takeSpawnLatest(
             catalogActions.openDefaultDirectory.ID,
             function* () {
-                const publicationDirectory = diMainGet("publication-directory");
-                yield* callTyped(() => shell.openPath(publicationDirectory.defaultDirectory));
+                const publicationStorage = diMainGet("publication-storage");
+                yield* callTyped(() => shell.openPath(publicationStorage.defaultDirectory));
             },
             (e) => error(filename_ + ":openDefaultDirectory", e),
         ),
         takeSpawnLatest(
             catalogActions.openUserDirectory.ID,
             function* () {
-                const publicationDirectory = diMainGet("publication-directory");
-                if (!publicationDirectory.userDirectory) {
+                const publicationStorage = diMainGet("publication-storage");
+                if (!publicationStorage.userDirectory) {
                     return;
                 }
-                yield* callTyped(() => shell.openPath(publicationDirectory.userDirectory));
+                yield* callTyped(() => shell.openPath(publicationStorage.userDirectory));
             },
             (e) => error(filename_ + ":openUserDirectory", e),
         ),

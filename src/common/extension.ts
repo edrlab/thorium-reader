@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
-import { ObjectKeys, ObjectValues } from "readium-desktop/utils/object-keys-values";
+import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 
 export const EXT_THORIUM = ".thorium";
 export const EXT_ANNOTATIONS = ".annotation";
@@ -36,32 +36,24 @@ export const acceptedExtensionObject = {
 
 export const acceptedExtensionArray = ObjectValues(acceptedExtensionObject);
 
+export const normalizeExtension = (ext: string) =>
+    (ext.startsWith(".") ? ext : `.${ext}`).toLowerCase();
+
+export const getExtensionWithoutDot = (ext: string) =>
+    normalizeExtension(ext).slice(1);
+
+const extensionMatches = (acceptedExt: string, ext: string) => {
+    if (!acceptedExt.startsWith(".")) {
+        return ext.toLowerCase().endsWith(acceptedExt.toLowerCase());
+    }
+    return normalizeExtension(ext).endsWith(normalizeExtension(acceptedExt));
+};
+
 export const acceptedExtension = (ext: string) =>
-    ObjectKeys(acceptedExtensionObject).reduce(
-        (pv, cv) =>
-            pv || isAcceptedExtension(cv, ext),
-            false,
-    );
+    acceptedExtensionArray.some((acceptedExt) => extensionMatches(acceptedExt, ext));
 
 export const isAcceptedExtension = (key: keyof typeof acceptedExtensionObject, ext: string) =>
-    (new RegExp(`${acceptedExtensionObject[key]
-        ? acceptedExtensionObject[key].replace(/\./g, "\\.")
-        : acceptedExtensionObject[key]}$`, "i")).test(ext);
-
-
-
-export const publicationExtensionStoredOnDisk = [
-    acceptedExtensionObject.epub,
-    acceptedExtensionObject.webpub,
-    acceptedExtensionObject.audiobook,
-    acceptedExtensionObject.audiobookLcp,
-    acceptedExtensionObject.audiobookLcpAlt,
-    acceptedExtensionObject.divina,
-    acceptedExtensionObject.pdfLcp,
-    acceptedExtensionObject.epub3,
-    acceptedExtensionObject.pnld,
-    acceptedExtensionObject.daisy,
-];
+    extensionMatches(acceptedExtensionObject[key], ext);
 
 export const publicationFileExtensionsForDialog = acceptedExtensionArray.map((extension) =>
     extension === acceptedExtensionObject.nccHtml ?

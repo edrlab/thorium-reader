@@ -102,13 +102,13 @@ function formatRanges(ranges: number[]) {
     return result.join(", ");
 }
 
-const pdfThumbnailRequestedArray: (boolean)[] = [];
 export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { pdfPageRange: [start: number, end: number], pdfThumbnailImageCacheArray: string[] }) => {
 
     const [getV, setV] = React.useState(pdfPageRange[1] ? `${pdfPageRange[0]}-${pdfPageRange[1]}` : "1");
     const [__] = useTranslator();
     const dispatch = useDispatch();
     const [infoOpen, setInfoOpen] = React.useState(false);
+    const pdfThumbnailRequestedSetRef = React.useRef<Set<number>>(new Set());
 
     const publicationIdentifier = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
 
@@ -233,9 +233,9 @@ export const PrintContainer = ({ pdfPageRange, pdfThumbnailImageCacheArray }: { 
                                     const pageIndexZeroBased = pageNumber - 1;
                                     const src = pdfThumbnailImageCacheArray[pageIndexZeroBased];
 
-                                    if (!src && !pdfThumbnailRequestedArray[pageIndexZeroBased]) {
+                                    if (!src && !pdfThumbnailRequestedSetRef.current.has(pageIndexZeroBased)) {
                                         createOrGetPdfEventBus().dispatch("thumbnailRequest", pageIndexZeroBased);
-                                        pdfThumbnailRequestedArray[pageIndexZeroBased] = true;
+                                        pdfThumbnailRequestedSetRef.current.add(pageIndexZeroBased);
                                     }
                                     return (
                                         <div

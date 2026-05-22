@@ -16,10 +16,10 @@ export function* openPublicationFolder(identifier?: string): SagaGenerator<void>
     let folderPath: string;
 
     if (!identifier) {
-        folderPath = yield* callTyped(() => diMainGet("publication-directory").getDirectoryPath());
+        folderPath = yield* callTyped(() => diMainGet("publication-storage").getDirectoryPath());
     } else {
         try {
-            folderPath = yield* callTyped(() => diMainGet("publication-storage").findPublicationPath(identifier));
+            folderPath = yield* callTyped(() => diMainGet("publication-storage").getPublicationPath(identifier));
         } catch {
             yield* putTyped(toastActions.openRequest.build(
                 ToastType.Error,

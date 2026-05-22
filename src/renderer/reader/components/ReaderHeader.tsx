@@ -792,15 +792,17 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                                     2
                                                                             }
                                                                             onSelectionChange={(ev) => {
-                                                                                const v = playbackRate.find((option) => option.id === ev).value;
-                                                                                if (useMO) {
-                                                                                    this.props.handleMediaOverlaysPlaybackRate(
-                                                                                        v.toString(),
-                                                                                    );
-                                                                                } else {
-                                                                                    this.props.handleTTSPlaybackRate(
-                                                                                        v.toString(),
-                                                                                    );
+                                                                                const v = playbackRate.find((option) => option.id === ev)?.value;
+                                                                                if (v !== undefined) {
+                                                                                    if (useMO) {
+                                                                                        this.props.handleMediaOverlaysPlaybackRate(
+                                                                                            v.toString(),
+                                                                                        );
+                                                                                    } else {
+                                                                                        this.props.handleTTSPlaybackRate(
+                                                                                            v.toString(),
+                                                                                        );
+                                                                                    }
                                                                                 }
                                                                             }}>
                                                                             {item => <ComboBoxItem>{item.name}</ComboBoxItem>}

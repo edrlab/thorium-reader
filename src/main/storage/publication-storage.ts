@@ -9,12 +9,11 @@ import { dialog } from "electron";
 import * as fs from "fs";
 import { injectable } from "inversify";
 import * as path from "path";
-import { acceptedExtensionObject, isAcceptedExtension, publicationExtensionStoredOnDisk } from "readium-desktop/common/extension";
+import { acceptedExtensionObject, getExtensionWithoutDot, isAcceptedExtension, normalizeExtension } from "readium-desktop/common/extension";
 import { File } from "readium-desktop/common/models/file";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { ContentType } from "readium-desktop/utils/contentType";
 import { getCanonicalUUIDv4FileNameFromFs, getFilePathNormalize, getFileSize, rmrf } from "readium-desktop/utils/fs";
-import { findMimeTypeWithExtension } from "readium-desktop/utils/mimeTypes";
+import { findExtWithMimeType, findMimeTypeWithExtension, mimeTypes } from "readium-desktop/utils/mimeTypes";
 
 import { PublicationParsePromise } from "@r2-shared-js/parser/publication-parser";
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
@@ -23,7 +22,7 @@ import debug_ from "debug";
 import { sanitizeForFilename } from "readium-desktop/common/safe-filename";
 import { URL_PROTOCOL_STORE } from "readium-desktop/common/streamerProtocol";
 import { IReaderStateReaderPersistence } from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { diMainGet } from "../di";
+import { userPublicationDirectoryConfigPath } from "../di";
 import { PublicationDocument } from "../db/document/publication";
 import { computeFileHash, extractCrc32OnZip } from "../tools/crc";
 import { assertUUIDv4 } from "readium-desktop/utils/uuid";
@@ -37,6 +36,21 @@ interface IPublicationStoragePathEntry {
     identifier: string;
     directoryPath: string;
 }
+
+interface IPublicationStorageLocationCacheEntry {
+    directoryPath?: string;
+    epubPath?: string;
+    publicationDirectoriesRevision: number;
+}
+
+interface IPublicationStorageDirectoryCacheSnapshot {
+    directories: string[];
+    revision: number;
+}
+
+type UserDirectoryConfig = {
+    directory: [string, ...string[]];
+};
 
 export type TPublicationStorageIntegrityIssueType =
     "duplicate-directory"
@@ -73,6 +87,25 @@ const toFilePathArray = (filePath: string | undefined): string[] | undefined => 
 
 const jsonStringify = (d: any) => (__TH__IS_DEV__ || __TH__IS_CI__) ? JSON.stringify(d, null, 4) : JSON.stringify(d);
 
+function isUserDirectoryConfig(value: unknown): value is UserDirectoryConfig {
+    if (!value || typeof value !== "object") {
+        return false;
+    }
+
+    const directory = (value as { directory?: unknown }).directory;
+    return Array.isArray(directory)
+        && typeof directory[0] === "string"
+        && directory[0].length > 0;
+}
+
+const getStoredPublicationFileMimeTypeFromExtension = (ext: string): string => {
+    const normalizedExt = normalizeExtension(ext);
+    if (normalizedExt === acceptedExtensionObject.daisy) {
+        return mimeTypes["zip"];
+    }
+    return findMimeTypeWithExtension(normalizedExt) || "";
+};
+
 // Store pubs in a repository on filesystem
 // Each file of publication is stored in a directory whose name is the
 // publication uuid
@@ -83,14 +116,189 @@ const jsonStringify = (d: any) => (__TH__IS_DEV__ || __TH__IS_CI__) ? JSON.strin
 // |- <publication 2 uuid>
 @injectable()
 export class PublicationStorage {
+    private readonly _defaultDirectory: string;
+    private _userDirectory?: string;
 
-    private assertAndGetFileName = (type: TFileTypePubStorage) => {
+    private readonly readyPromise: Promise<void>;
+
+    // Publication directory/archive lookup is repeated on hot paths such as
+    // streamer requests. The cache avoids expensive filesystem calls by storing,
+    // per identifier, the resolved publication directory and archive path.
+    //
+    // A publication may exist in the default directory, in the optional user
+    // directory, or move between them after storage settings change.
+    //
+    // Instead of comparing directory arrays (or strings) on every cache read,
+    // each cache entry is tagged with the current revision. Changing userDirectory
+    // increments that revision, so stale entries are detected and dropped during
+    // lookup. This turns string comparison into cheap numeric comparison.
+    //
+    // Import/remove operations invalidate the affected lookup cache entry
+    // immediately.
+    private publicationDirectoriesRevision = 0;
+    private publicationLocationCache = new Map<string, IPublicationStorageLocationCacheEntry>();
+    private getPublicationPathCallCountByIdentifier = new Map<string, number>();
+    private getPublicationEpubPathCallCountByIdentifier = new Map<string, number>();
+
+    public constructor(defaultDirectory: string) {
+        this._defaultDirectory = defaultDirectory;
+        // Best-effort async initialization: startup must keep working with the
+        // default directory even if the persisted user directory is missing or invalid.
+        this.readyPromise = this.readUserDirectory();
+    }
+
+    public get defaultDirectory(): string {
+        return this._defaultDirectory;
+    }
+
+    public get userDirectory(): string | undefined {
+        return this._userDirectory;
+    }
+
+    public getStorablePublicationExtension(ext: string): string {
+        const normalizedExt = normalizeExtension(ext);
+        switch (normalizedExt) {
+            case acceptedExtensionObject.audiobook:
+            case acceptedExtensionObject.audiobookLcp:
+            case acceptedExtensionObject.audiobookLcpAlt:
+            case acceptedExtensionObject.divina:
+            case acceptedExtensionObject.webpub:
+            case acceptedExtensionObject.pdfLcp:
+            case acceptedExtensionObject.daisy:
+                return normalizedExt;
+            default:
+                return acceptedExtensionObject.epub; // includes .epub3 and .pnld
+        }
+    }
+
+    public isStorablePublicationExtension(ext: string): boolean {
+        switch (normalizeExtension(ext)) {
+            case acceptedExtensionObject.epub:
+            case acceptedExtensionObject.audiobook:
+            case acceptedExtensionObject.audiobookLcp:
+            case acceptedExtensionObject.audiobookLcpAlt:
+            case acceptedExtensionObject.divina:
+            case acceptedExtensionObject.webpub:
+            case acceptedExtensionObject.pdfLcp:
+            case acceptedExtensionObject.daisy:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    // Storage directory configuration
+
+    public async ready(): Promise<void> {
+        await this.readyPromise;
+    }
+
+    public async setUserDirectory(directoryPath: string): Promise<void> {
+        await this.ready();
+
+        if (!directoryPath) {
+            this.setUserDirectoryPath(undefined);
+            await rmrf(userPublicationDirectoryConfigPath);
+            return;
+        }
+
+        const isDirectory = await this.isDirectory(directoryPath);
+        if (!isDirectory) {
+            return;
+        }
+        this.setUserDirectoryPath(directoryPath);
+        const jsonStr = JSON.stringify({ directory: [directoryPath] }, null, 4);
+        await fs.promises.writeFile(userPublicationDirectoryConfigPath, jsonStr, "utf-8");
+    }
+
+    public async getDirectoryPath(): Promise<string> {
+        await this.ready();
+
+        const userDirectory = this.userDirectory;
+
+        if (!userDirectory) {
+            return this.defaultDirectory;
+        }
+        const isDirectory = await this.isDirectory(userDirectory);
+        return isDirectory ? userDirectory : this.defaultDirectory;
+    }
+
+    public async getPublicationDirectories(): Promise<string[]> {
+        await this.ready();
+
+        return this.getPublicationDirectoriesFromCurrentState();
+    }
+
+    private getPublicationDirectoriesFromCurrentState(): string[] {
+        const directories = [
+            this.defaultDirectory,
+        ];
+        if (
+            this.userDirectory
+            && getFilePathNormalize(this.userDirectory) !== getFilePathNormalize(this.defaultDirectory)
+        ) {
+            directories.push(this.userDirectory);
+        }
+
+        return directories;
+    }
+
+    private getPublicationDirectoriesRevision(): number {
+        return this.publicationDirectoriesRevision;
+    }
+
+    // Load the persisted directory in the background and keep it only if it still exists.
+    private async readUserDirectory(): Promise<void> {
+        try {
+            const jsonStr = await fs.promises.readFile(userPublicationDirectoryConfigPath, "utf-8");
+            const json = JSON.parse(jsonStr) as unknown;
+            if (!isUserDirectoryConfig(json)) {
+                return;
+            }
+            const directoryPath = json.directory[0];
+            const isDirectory = await this.isDirectory(directoryPath);
+            if (!isDirectory) {
+                return;
+            }
+            this.setUserDirectoryPath(directoryPath);
+            debug("Set publication storage directory to", directoryPath);
+        } catch (e) {
+            debug(e);
+        }
+    }
+
+    private setUserDirectoryPath(directoryPath: string | undefined): void {
+        const currentDirectory = this.userDirectory ? getFilePathNormalize(this.userDirectory) : undefined;
+        const nextDirectory = directoryPath ? getFilePathNormalize(directoryPath) : undefined;
+        // Same normalized path can still update display/persisted casing without invalidating lookups.
+        if (currentDirectory !== nextDirectory) {
+            this.incrementPublicationDirectoriesRevision();
+        }
+        this._userDirectory = directoryPath;
+    }
+
+    private incrementPublicationDirectoriesRevision(): void {
+        this.publicationDirectoriesRevision++;
+    }
+
+    private async isDirectory(path_: string): Promise<boolean> {
+        try {
+            const stat = await fs.promises.stat(path_);
+            return stat.isDirectory();
+        } catch {
+            return false;
+        }
+    }
+
+    // Reader-state JSON files
+
+    private assertAndGetFileName(type: TFileTypePubStorage) {
         const fileName = type === "locator" ? "locator.json" : type === "config" ? "config.json" : type === "disableRTLFlip" ? "disableRTLFlip.json" : type === "divina" ? "divina.json" : type === "allowCustomConfig" ? "allowCustomConfig.json" : type === "noteTotalCount" ? "noteTotalCount.json" : type === "pdfConfig" ? "pdfConfig.json" : "";
         if (!fileName) {
             throw new Error("fileType not found");
         }
         return fileName;
-    };
+    }
 
     public async writeJsonObj(
         identifier: string,
@@ -101,7 +309,7 @@ export class PublicationStorage {
 
         const fileName = this.assertAndGetFileName(type);
 
-        const pubPath = await this.findPublicationPath(identifier);
+        const pubPath = await this.getPublicationPath(identifier);
         const filePath = path.join(pubPath, fileName);
 
         try {
@@ -138,7 +346,7 @@ export class PublicationStorage {
 
         const fileName = this.assertAndGetFileName(type);
 
-        const pubPath = await this.findPublicationPath(identifier);
+        const pubPath = await this.getPublicationPath(identifier);
         const filePath = path.join(pubPath, fileName);
 
         try {
@@ -156,6 +364,8 @@ export class PublicationStorage {
         return undefined;
     }
 
+    // Publication lifecycle
+
     /**
      * Store a publication in a repository
      *
@@ -170,10 +380,8 @@ export class PublicationStorage {
 
         assertUUIDv4(identifier);
 
-        const publicationDirectory = diMainGet("publication-directory");
-        await publicationDirectory.ready();
-        const directoryPath = await publicationDirectory.getDirectoryPath();
-        const defaultDirectoryPath = publicationDirectory.defaultDirectory;
+        const directoryPath = await this.getDirectoryPath();
+        const defaultDirectoryPath = this.defaultDirectory;
         // New imports should use the user directory when available.
         const publicationDirectoryPath = path.join(directoryPath, identifier);
         debug(`storePublication in directory ${publicationDirectoryPath}`);
@@ -208,6 +416,8 @@ export class PublicationStorage {
     ): Promise<File[]> {
         debug(`storePublication write into ${publicationDirectoryPath} for ${identifier}`);
 
+        this.invalidatePublicationLocationCache(identifier);
+
         try {
             await fs.promises.mkdir(publicationDirectoryPath);
         } catch (e: any) {
@@ -237,21 +447,24 @@ export class PublicationStorage {
             identifier, srcPath, publicationDirectoryPath);
         files.push(bookFile);
 
-        const coverFile = await this.storePublicationCover(
-            identifier, srcPath, publicationDirectoryPath);
-        if (coverFile) {
-            files.push(coverFile);
+        try {
+            const coverFile = await this.storePublicationCover(
+                identifier, srcPath, publicationDirectoryPath);
+            if (coverFile) {
+                files.push(coverFile);
+            }
+        } catch (e) {
+            debug(e);
         }
 
         return files;
     }
 
-    private __publicationEpubPathMap = new Map<string, string>();
     public async removePublication(identifier: string /*, preservePublicationOnFileSystem?: string*/) {
 
         assertUUIDv4(identifier);
 
-        this.__publicationEpubPathMap.delete(identifier);
+        this.invalidatePublicationLocationCache(identifier);
 
 
         // try {
@@ -282,70 +495,36 @@ export class PublicationStorage {
         //     debug(`removePublication error (ignore) ${identifier} ${p}`);
         // }
 
-        const publicationDirectory = diMainGet("publication-directory");
-        await publicationDirectory.ready();
-        const defaultPublicationDirectoryPath = path.join(publicationDirectory.defaultDirectory, identifier);
-        try {
-            const stat = await fs.promises.stat(defaultPublicationDirectoryPath);
-            if (stat.isDirectory()) {
-                await rmrf(defaultPublicationDirectoryPath);
-            }
-        } catch {
-            // ignore
-        }
+        await this.ready();
 
+        let removedAtLeastOne = false;
+        let accessError: Error | undefined;
 
-        // TODO: rm or unlink?
-        if (publicationDirectory.userDirectory) {
-            const userPublicationDirectoryPath = path.join(publicationDirectory.userDirectory, identifier);
+        // Safe cleanup: once the publication has been removed, failed publication access to another directory
+        for (const directoryPath of this.getPublicationDirectoriesFromCurrentState()) {
+            const publicationPath = path.join(directoryPath, identifier);
+
             try {
-                const stat = await fs.promises.stat(userPublicationDirectoryPath);
-                if (stat.isDirectory()) {
-                    await rmrf(userPublicationDirectoryPath);
+                await fs.promises.stat(publicationPath);
+            } catch (e: any) {
+                if (e?.code !== "ENOENT") {
+                    accessError = new Error(`Failed to access publication storage at ${publicationPath}: ${e?.message || e}`);
                 }
-            } catch {
-                // ignore
+                continue;
+            }
+
+            try {
+                await rmrf(publicationPath);
+                removedAtLeastOne = true;
+            } catch (e: any) {
+                throw new Error(`Failed to remove publication storage at ${publicationPath}: ${e?.message || e}`);
             }
         }
-    }
 
-    public async getPublicationEpubPath(identifier: string): Promise<string> {
-
-        assertUUIDv4(identifier);
-
-        // TODO: if map.get() is as expensive as map.has() then simply: const val = map.get(key); if (!!val) return val;
-        if (this.__publicationEpubPathMap.has(identifier)) {
-            return this.__publicationEpubPathMap.get(identifier);
+        if (!removedAtLeastOne && accessError) {
+            throw accessError;
         }
 
-        // path.join(this.rootPath, identifier);
-        const root = await this.findPublicationPath(identifier);
-
-        try {
-            const files = await fs.promises.readdir(root, {withFileTypes: true});
-            debug("getPublicationEpubPath: readdir", root);
-            for (const file of files) {
-                if (!file.isFile()) {
-                    continue;
-                }
-                debug(`${file.name} from ${file.parentPath}`);
-                const ext = path.extname(file.name);
-                if (publicationExtensionStoredOnDisk.includes(ext)) {
-                    const filePath = path.join(file.parentPath, file.name);
-                    const stats = await fs.promises.stat(filePath);
-                    if (stats.isFile() && stats.size > 10) {
-                        this.__publicationEpubPathMap.set(identifier, filePath);
-                        return filePath;
-                    }
-                    // await fs.promises.access(filePath, fs.constants.R_OK | fs.constants.W_OK);
-                }
-            }
-        } catch (err) {
-            debug("readdir error", err);
-        }
-
-        debug("Error GetPublicationEpubPath not found with", identifier, "Throw new Error");
-        throw new Error(`getPublicationEpubPath() FAIL ${identifier} (cannot find book.epub|audiobook|etc.)`);
     }
 
     public async getPublicationFilename(publicationView: PublicationView) {
@@ -360,82 +539,177 @@ export class PublicationStorage {
             throw new Error("no filePath !");
         }
         const publicationPath = await this.getPublicationEpubPath(publicationView.identifier);
-        fs.copyFile(publicationPath, filePath, async (err) => {
-            if (err) {
-                await dialog.showMessageBox({
-                    type: "error",
-                    message: err.message,
-                    title: err.name,
-                    buttons: ["OK"],
-                });
-            }
+        try {
+            await fs.promises.copyFile(publicationPath, filePath /*, constants.COPYFILE_EXCL */);
+        } catch (err: any) {
+
+            // TODO: Toast!? i18n!?
+            await dialog.showMessageBox({
+                type: "error",
+                message: err?.message,
+                title: err?.name,
+                buttons: ["OK"],
+            });
+        }
+    }
+
+    // Publication location lookup and cache
+
+    private getPublicationLocationCache(
+        identifier: string,
+        publicationDirectoriesRevision: number,
+    ): IPublicationStorageLocationCacheEntry | undefined {
+        const cached = this.publicationLocationCache.get(identifier);
+        if (!cached) {
+            return undefined;
+        }
+
+        if (cached.publicationDirectoriesRevision === publicationDirectoriesRevision) {
+            return cached;
+        }
+
+        this.invalidatePublicationLocationCache(identifier);
+        return undefined;
+    }
+
+    private setPublicationLocationCache(
+        identifier: string,
+        entry: Omit<IPublicationStorageLocationCacheEntry, "publicationDirectoriesRevision">,
+        publicationDirectoriesRevision = this.getPublicationDirectoriesRevision(),
+    ) {
+        const cached = this.getPublicationLocationCache(identifier, publicationDirectoriesRevision);
+        this.publicationLocationCache.set(identifier, {
+            ...cached,
+            ...entry,
+            publicationDirectoriesRevision,
         });
     }
 
-    public async findPublicationPath(identifier: string): Promise<string> {
+    private invalidatePublicationLocationCache(identifier: string) {
+        this.publicationLocationCache.delete(identifier);
+    }
+
+    private incrementCallCountByIdentifier(callCountByIdentifier: Map<string, number>, identifier: string): number {
+        const callCount = (callCountByIdentifier.get(identifier) || 0) + 1;
+        callCountByIdentifier.set(identifier, callCount);
+        return callCount;
+    }
+
+    public async getPublicationPath(identifier: string): Promise<string> {
 
         assertUUIDv4(identifier);
 
-        debug("FindPublicationPath", identifier);
+        const callCount = this.incrementCallCountByIdentifier(this.getPublicationPathCallCountByIdentifier, identifier);
 
-        const entries = await this.getPublicationPathEntries(identifier);
-        const firstEntry = entries[0];
-        if (firstEntry) {
-            if (this.__publicationEpubPathMap.has(identifier)) {
-                if (path.dirname(this.__publicationEpubPathMap.get(identifier)) !== firstEntry.directoryPath) {
-                    debug("publicationEpubPath cache invalidation for", identifier);
-                    this.__publicationEpubPathMap.delete(identifier);
+        const { directories, revision } = await this.getPublicationDirectoryCacheSnapshot();
+        const cached = this.getPublicationLocationCache(identifier, revision);
+        if (cached?.directoryPath) {
+            debug("getPublicationPath cache hit", { callCount, identifier, revision, directoryPath: cached.directoryPath });
+            return cached.directoryPath;
+        }
+
+        debug("getPublicationPath cache miss", { callCount, identifier, revision, directories });
+        const directoryPath = await this.getPublicationPathFromDirectories(identifier, directories, revision);
+        debug("getPublicationPath cache fill", { callCount, identifier, revision, directoryPath });
+        return directoryPath;
+    }
+
+    public async getPublicationEpubPath(identifier: string): Promise<string> {
+
+        assertUUIDv4(identifier);
+
+        const callCount = this.incrementCallCountByIdentifier(this.getPublicationEpubPathCallCountByIdentifier, identifier);
+
+        const { directories, revision } = await this.getPublicationDirectoryCacheSnapshot();
+        const cached = this.getPublicationLocationCache(identifier, revision);
+        if (cached?.epubPath && cached.directoryPath && path.dirname(cached.epubPath) === cached.directoryPath) {
+            debug("getPublicationEpubPath epub cache hit", callCount, identifier, revision, cached.directoryPath, cached.epubPath);
+            return cached.epubPath;
+        }
+
+        if (cached?.epubPath) {
+            debug("getPublicationEpubPath cache ignored", callCount, identifier, revision, cached.directoryPath, cached.epubPath);
+        }
+
+        let root: string;
+        if (cached?.directoryPath) {
+            debug("getPublicationEpubPath directory cache hit", callCount, identifier, revision, cached.directoryPath);
+            root = cached.directoryPath;
+        } else {
+            debug("getPublicationEpubPath cache miss", { callCount, identifier, revision, directories });
+            root = await this.getPublicationPathFromDirectories(identifier, directories, revision);
+        }
+
+        try {
+            const files = await fs.promises.readdir(root, {withFileTypes: true});
+            debug("getPublicationEpubPath: readdir", root);
+            for (const file of files) {
+                if (!file.isFile()) {
+                    continue;
+                }
+                debug(`${file.name} from ${file.parentPath}`);
+                const ext = path.extname(file.name);
+                if (this.isStorablePublicationExtension(ext)) {
+                    const filePath = path.join(file.parentPath, file.name);
+                    const stats = await fs.promises.stat(filePath);
+                    if (stats.isFile() && stats.size > 10) {
+                        this.setPublicationLocationCache(identifier, {
+                            directoryPath: root,
+                            epubPath: filePath,
+                        }, revision);
+                        debug("getPublicationEpubPath epub cache fill", callCount, identifier, revision, root, filePath);
+                        return filePath;
+                    }
+                    // await fs.promises.access(filePath, fs.constants.R_OK | fs.constants.W_OK);
                 }
             }
-            return firstEntry.directoryPath;
+        } catch (err) {
+            debug("readdir error", err);
         }
 
-        throw new Error("publication folder path not found");
+        debug("Error GetPublicationEpubPath not found with", identifier, "Throw new Error");
+        throw new Error(`getPublicationEpubPath() FAIL ${identifier} (cannot find book.epub|audiobook|etc.)`);
     }
 
-    private async getPublicationDirectories(): Promise<string[]> {
+    private async getPublicationPathFromDirectories(
+        identifier: string,
+        directories: string[],
+        publicationDirectoriesRevision: number,
+    ): Promise<string> {
 
-        const publicationDirectory = diMainGet("publication-directory");
-        await publicationDirectory.ready();
-
-        const directories = [
-            publicationDirectory.defaultDirectory,
-        ];
-        if (
-            publicationDirectory.userDirectory
-            && getFilePathNormalize(publicationDirectory.userDirectory) !== getFilePathNormalize(publicationDirectory.defaultDirectory)
-        ) {
-            directories.push(publicationDirectory.userDirectory);
-        }
-        return directories;
-    }
-
-    private async getPublicationPathEntries(identifier: string): Promise<IPublicationStoragePathEntry[]> {
-
-        assertUUIDv4(identifier);
-
-        const entries: IPublicationStoragePathEntry[] = [];
-        const directories = await this.getPublicationDirectories();
         for (const directoryPath of directories) {
             const publicationPath = path.join(directoryPath, identifier);
             try {
                 const stats = await fs.promises.stat(publicationPath);
                 if (stats.isDirectory()) {
-                    entries.push({
-                        identifier,
+                    this.setPublicationLocationCache(identifier, {
                         directoryPath: publicationPath,
-                    });
+                    }, publicationDirectoriesRevision);
+                    return publicationPath;
                 }
             } catch (e) {
                 debug(e);
             }
         }
-        return entries;
+
+        throw new Error("publication folder path not found");
+    }
+
+    private async getPublicationDirectoryCacheSnapshot(): Promise<IPublicationStorageDirectoryCacheSnapshot> {
+        await this.ready();
+        // Capture both values without an async delay so cache entries are tagged with
+        // the revision that actually matches the directory list they found.
+        const revision = this.getPublicationDirectoriesRevision();
+        const directories = this.getPublicationDirectoriesFromCurrentState();
+        return {
+            directories,
+            revision,
+        };
     }
 
     private async listPublicationIdPathEntries(): Promise<IPublicationStoragePathEntry[]> {
 
-        const directories = await this.getPublicationDirectories();
+        const { directories } = await this.getPublicationDirectoryCacheSnapshot();
         const entries: IPublicationStoragePathEntry[] = [];
         for (const directoryPath of directories) {
             let files: fs.Dirent[];
@@ -471,6 +745,8 @@ export class PublicationStorage {
         }
         return [...pubIdSet.values()];
     }
+
+    // Publication integrity and recovery
 
     private getFileNameFromDocumentFileUrl(identifier: string, fileUrl: string): string | undefined {
 
@@ -734,35 +1010,11 @@ export class PublicationStorage {
         return recoverablePublications;
     }
 
-    private getStoredPublicationContentType(ext: string): string {
-        const normalizedExt = ext.startsWith(".") ? ext : `.${ext}`;
-        if (normalizedExt === acceptedExtensionObject.audiobook) {
-            return ContentType.AudioBookPacked;
-        }
-        if (normalizedExt === acceptedExtensionObject.audiobookLcp || normalizedExt === acceptedExtensionObject.audiobookLcpAlt) {
-            return ContentType.AudioBookPackedLcp;
-        }
-        if (normalizedExt === acceptedExtensionObject.divina) {
-            return ContentType.DivinaPacked;
-        }
-        if (normalizedExt === acceptedExtensionObject.webpub) {
-            return ContentType.webpubPacked;
-        }
-        if (normalizedExt === acceptedExtensionObject.pdfLcp) {
-            return ContentType.lcppdf;
-        }
-        if (normalizedExt === acceptedExtensionObject.daisy) {
-            return ContentType.Zip;
-        }
-
-        return findMimeTypeWithExtension(normalizedExt) || ContentType.Epub;
-    }
-
     public async getStoredPublicationFiles(identifier: string): Promise<File[]> {
 
         assertUUIDv4(identifier);
 
-        const publicationDirectoryPath = await this.findPublicationPath(identifier);
+        const publicationDirectoryPath = await this.getPublicationPath(identifier);
         const files = await fs.promises.readdir(publicationDirectoryPath, { withFileTypes: true });
         const publicationFiles: File[] = [];
 
@@ -771,26 +1023,28 @@ export class PublicationStorage {
                 continue;
             }
 
-            const extWithDot = path.extname(file.name).toLowerCase();
+            const extWithDot = normalizeExtension(path.extname(file.name));
             if (
-                !publicationExtensionStoredOnDisk.includes(extWithDot)
+                !this.isStorablePublicationExtension(extWithDot)
                 && !file.name.toLowerCase().startsWith("cover.")
             ) {
                 continue;
             }
 
-            const ext = extWithDot.slice(1);
+            const ext = getExtensionWithoutDot(extWithDot);
             const filePath = path.join(publicationDirectoryPath, file.name);
             publicationFiles.push({
                 url: `${URL_PROTOCOL_STORE}://${identifier}/${file.name}`,
                 ext,
-                contentType: this.getStoredPublicationContentType(extWithDot),
+                contentType: getStoredPublicationFileMimeTypeFromExtension(extWithDot),
                 size: getFileSize(filePath),
             });
         }
 
         return publicationFiles;
     }
+
+    // Publication import helpers
 
     private async storePublicationBook(
         identifier: string,
@@ -799,75 +1053,27 @@ export class PublicationStorage {
     ): Promise<File> {
 
         const extension = path.extname(srcPath);
-        const isAudioBook = new RegExp(`\\${acceptedExtensionObject.audiobook}$`, "i").test(extension);
-        const isAudioBookLcp = new RegExp(`\\${acceptedExtensionObject.audiobookLcp}$`, "i").test(extension);
-        const isAudioBookLcpAlt = new RegExp(`\\${acceptedExtensionObject.audiobookLcpAlt}$`, "i").test(extension);
-        const isWebpub = new RegExp(`\\${acceptedExtensionObject.webpub}$`, "i").test(extension);
-        const isDivina = new RegExp(`\\${acceptedExtensionObject.divina}$`, "i").test(extension);
-        const isLcpPdf = new RegExp(`\\${acceptedExtensionObject.pdfLcp}$`, "i").test(extension);
-        const isDaisy = new RegExp(`\\${acceptedExtensionObject.daisy}$`, "i").test(extension);
+        const ext = getExtensionWithoutDot(this.getStorablePublicationExtension(extension));
 
-        const ext = isAudioBook
-            ? acceptedExtensionObject.audiobook
-            : (
-                isAudioBookLcp
-                    ? acceptedExtensionObject.audiobookLcp
-                    : (
-                        isAudioBookLcpAlt
-                            ? acceptedExtensionObject.audiobookLcpAlt
-                            : (
-                                isDivina
-                                    ? acceptedExtensionObject.divina
-                                    : (
-                                        isWebpub
-                                            ? acceptedExtensionObject.webpub
-                                            : (
-                                                isLcpPdf
-                                                    ? acceptedExtensionObject.pdfLcp
-                                                    : (
-                                                        isDaisy
-                                                            ? acceptedExtensionObject.daisy
-                                                            : acceptedExtensionObject.epub // includes .epub3 and .pnld
-                                                    )
-                                            )
-                                    )
-                            )
-                    )
-            );
-
-        const filename = `book${ext}`;
+        const filename = `book.${ext}`;
         const bookDstPath = path.join(
             dstPath,
             filename,
         );
 
-        return new Promise<File>((resolve, _reject) => {
-            const writeStream = fs.createWriteStream(bookDstPath);
-            const fileResolve = () => {
-                resolve({
-                    url: `${URL_PROTOCOL_STORE}://${identifier}/${filename}`,
-                    ext,
-                    contentType:
-                        isAudioBook
-                            ? ContentType.AudioBookPacked
-                            : (
-                                (isAudioBookLcp || isAudioBookLcpAlt)
-                                    ? ContentType.AudioBookPackedLcp
-                                    : isDivina
-                                        ? ContentType.DivinaPacked
-                                        : isWebpub
-                                            ? ContentType.webpubPacked
-                                            : isLcpPdf
-                                                ? ContentType.lcppdf
-                                                : ContentType.Epub
-                            ),
-                    size: getFileSize(bookDstPath),
-                });
-            };
-
-            writeStream.on("finish", fileResolve);
-            fs.createReadStream(srcPath).pipe(writeStream);
+        await fs.promises.copyFile(srcPath, bookDstPath);
+        const file: File = {
+            url: `${URL_PROTOCOL_STORE}://${identifier}/${filename}`,
+            ext,
+            contentType: getStoredPublicationFileMimeTypeFromExtension(ext),
+            size: getFileSize(bookDstPath),
+        };
+        this.setPublicationLocationCache(identifier, {
+            directoryPath: dstPath,
+            epubPath: bookDstPath,
         });
+
+        return file;
     }
 
     // Extract the image cover buffer then create a file on the publication folder
@@ -901,7 +1107,8 @@ export class PublicationStorage {
             return null;
         }
 
-        const coverType: string = coverLink.TypeLink;
+        const coverTypeExt = findExtWithMimeType(coverLink.TypeLink);
+        const coverType = findMimeTypeWithExtension(coverTypeExt);
         const zipStream = await zip.entryStreamPromise(coverLink.Href);
         const zipBuffer = await streamToBufferPromise(zipStream.stream);
 
@@ -909,21 +1116,23 @@ export class PublicationStorage {
         r2Publication.freeDestroy();
 
         // Remove start dot in extensoion
-        const coverExt = path.extname(coverLink.Href).slice(1);
-        const coverFilename = "cover." + coverExt;
+        const coverExt = getExtensionWithoutDot(path.extname(coverLink.Href));
+        const ext = coverTypeExt || coverExt;
+        const contentType = coverType || findMimeTypeWithExtension(coverExt);
+        const coverFilename = `cover.${ext}`;
         const coverDstPath = path.join(
             dstPath,
             coverFilename,
         );
 
         // Write cover to fs
-        fs.writeFileSync(coverDstPath, zipBuffer);
+        await fs.promises.writeFile(coverDstPath, zipBuffer);
 
         // Return cover file information
         return {
             url: `${URL_PROTOCOL_STORE}://${identifier}/${coverFilename}`,
-            ext: coverExt,
-            contentType: coverType,
+            ext,
+            contentType,
             size: getFileSize(coverDstPath),
         };
     }
