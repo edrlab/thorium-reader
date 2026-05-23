@@ -570,6 +570,7 @@ export class PdfAnnotationController {
         highlight.style.top = `${top}px`;
         highlight.style.width = `${width}px`;
         highlight.style.height = `${height}px`;
+        // TODO: Render PDF annotations with the note color and drawType instead of a fixed highlight style.
         highlight.style.backgroundColor = HIGHLIGHT_COLOR;
         highlight.style.opacity = HIGHLIGHT_OPACITY;
         highlight.style.pointerEvents = "none";

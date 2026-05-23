@@ -497,6 +497,7 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
     const pubId = useSelector((state: IReaderRootState) => state.reader.info.publicationIdentifier);
     // const noteTotalCount = useSelector((state: IReaderRootState) => state.reader.noteTotalCount.state);
     const save = React.useCallback((color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
+        // TODO: Preserve pdfAnnotation when editing PDF annotations so the note keeps its PDF target.
         dispatch(readerActions.note.addUpdate.build(
             pubId,
             {
@@ -531,6 +532,7 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
     }, [r2Publication, annotation]);
 
     // const bname = (annotation?.locatorExtended?.selectionInfo?.cleanText ? `${annotation.locatorExtended.selectionInfo.cleanText.slice(0, 20)}` : `${__("reader.navigation.annotationTitle")} ${index}`);
+    // TODO: Use pdfAnnotation.quote/page for PDF annotations that do not have a locatorExtended.
     const btext = (annotation.locatorExtended?.selectionInfo?.cleanText ? `${annotation.locatorExtended.selectionInfo.cleanText}` : `${__("reader.navigation.annotationTitle")} ${uuid}`);
 
     const bprogression = (percentRounded >= 0 ? `${percentRounded}% ` : "");
@@ -569,6 +571,7 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
                     onClick={(e) => {
                         e.preventDefault();
                         const closeNavAnnotation = !dockedMode && !(e.shiftKey && e.altKey);
+                        // TODO: Navigate PDF annotations by pdfAnnotation.page when locatorExtended is absent.
                         if (annotation.locatorExtended) {
                             goToLocator(annotation.locatorExtended.locator, closeNavAnnotation);
                         }
@@ -1121,6 +1124,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
 
     const [__] = useTranslator();
     const notes = useSelector((state: IReaderRootState) => state.reader.note);
+    // TODO: PDF annotations need valid export targets or exclusion from this EPUB annotation export flow.
     const annotationsListAll = React.useMemo(() => notes.filter(({ group }) => group === "annotation"), [notes]);
     const publicationView = useSelector((state: IReaderRootState) => state.reader.info.publicationView);
     const winId = useSelector((state: IReaderRootState) => state.win.identifier);
