@@ -192,7 +192,7 @@ const Theme = ({ dockedMode }: { dockedMode: boolean }) => {
 
     return (
         <section className={stylesSettings.section}>
-            <h4>{__("reader.settings.theme.title")}</h4>
+            <h3>{__("reader.settings.theme.title")}</h3>
             <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: dockedMode ? "10px" : "20px", marginTop: "5px", flexWrap: "wrap" }}
                 value={themeOptions.find((theme) => theme.id === defaultKey).value}
                 onValueChange={(option) => set({ theme: option as TTheme })}
@@ -262,7 +262,7 @@ export const FontSize = () => {
 
     return (
         <section>
-            <h4>{__("reader.settings.fontSize")} ({fontSize})</h4>
+            <h3>{__("reader.settings.fontSize")} ({fontSize})</h3>
             <div className={stylesSettings.size_range}>
                 <button 
                 onClick={() => {
@@ -400,7 +400,7 @@ export const FontFamily = () => {
                 }
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <h4>{__("reader.settings.preview")}:</h4>
+                <h3>{__("reader.settings.preview")}:</h3>
                 <span
                     aria-hidden
                     style={{
@@ -455,7 +455,7 @@ const Slider = ({ value, option, set }: { value: string, option: ITable, set: (a
     return (
         <section className={stylesSettings.section} key={option.title}>
             <div className={stylesSettings.spacing_heading}>
-                <h4>{option.title}</h4>
+                <h3>{option.title}</h3>
                 <p>
                     {currentSliderValue === "0" ? "auto" : currentSliderValue}
                 </p>
@@ -582,7 +582,7 @@ const ReadingDisplayLayout = ({ isFXL }: { isFXL: boolean }) => {
     const set = useSaveReaderConfigDebounced();
     return (
         <div className={stylesSettings.section}>
-            <h4>{__("reader.settings.disposition.title")}</h4>
+            <h3>{__("reader.settings.disposition.title")}</h3>
             <div className={stylesSettings.display_options}>
                 <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={(layout || isFXL) ? "page_option" : "scroll_option"}
                     onValueChange={(v) => set({ paged: v === "page_option" })}
@@ -617,7 +617,7 @@ const ReadingDisplayCol = ({ isPdf, spreadModeEven, pdfCol }: Pick<IBaseProps, "
     return (
         <section className={stylesSettings.section}>
             <div>
-                <h4>{__("reader.settings.column.title")}</h4>
+                <h3>{__("reader.settings.column.title")}</h3>
             </div>
             <div className={stylesSettings.display_options}>
                 <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={isPdf ? (pdfCol ? pdfCol : "1") : state}
@@ -691,7 +691,7 @@ const ReadingDisplayAlign = () => {
     return (
         <section className={stylesSettings.section}>
             <div>
-                <h4>{__("reader.settings.justification")}</h4>
+                <h3>{__("reader.settings.justification")}</h3>
             </div>
             <div className={stylesSettings.display_options}>
                 <RadioGroup.Root orientation="horizontal" style={{ display: "flex", gap: "10px" }} value={align}
@@ -1858,36 +1858,9 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
         );
     };
 
-    const TabHeader = () => {
-
+    const DockedHeader = () => {
         return (
-            dockedMode ? <></> :
-                <div key="modal-header" className={stylesSettings.close_button_div}>
-                    <TabTitle value={section} />
-                    <div>
-                        <button className={stylesButtons.button_transparency_icon} aria-label={__("reader.dock.dockLeft")} onClick={setDockingModeLeftSide}>
-                            <SVG ariaHidden={true} svg={DockLeftIcon} />
-                        </button>
-                        <button className={stylesButtons.button_transparency_icon} aria-label={__("reader.dock.dockRight")} onClick={setDockingModeRightSide}>
-                            <SVG ariaHidden={true} svg={DockRightIcon} />
-                        </button>
-                        <button className={stylesButtons.button_transparency_icon} disabled aria-label={__("reader.dock.dockDefault")} onClick={setDockingModeFull}>
-                            <SVG ariaHidden={true} svg={DockModalIcon} />
-                        </button>
-                        <Dialog.Close asChild>
-                            <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
-                                <SVG ariaHidden={true} svg={QuitIcon} />
-                            </button>
-                        </Dialog.Close>
-                    </div>
-                </div>
-        );
-    };
-    return (
-        <div style={{minHeight: "inherit"}}>
-            {
-                dockedMode ?
-                    <>
+            <>
                         <div key="docked-header" className={stylesPopoverDialog.docked_header}>
                             {
                                 (dockedMode && isEpub) ? <AllowCustomContainer /> : <SelectRefComponent />
@@ -1914,15 +1887,45 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                             (dockedMode && isEpub) ? <SelectRefComponent /> : <></>
                         }
                     </>
-                    : <></>
-            }
+        );
+    };
+
+    const ModalControlButtons = () => {
+
+        return (
+            dockedMode ? <></> :
+                <div key="modal-header" className={stylesSettings.close_button_div}>
+                    <div>
+                        <button className={stylesButtons.button_transparency_icon} aria-label={__("reader.dock.dockLeft")} onClick={setDockingModeLeftSide}>
+                            <SVG ariaHidden={true} svg={DockLeftIcon} />
+                        </button>
+                        <button className={stylesButtons.button_transparency_icon} aria-label={__("reader.dock.dockRight")} onClick={setDockingModeRightSide}>
+                            <SVG ariaHidden={true} svg={DockRightIcon} />
+                        </button>
+                        <button className={stylesButtons.button_transparency_icon} disabled aria-label={__("reader.dock.dockDefault")} onClick={setDockingModeFull}>
+                            <SVG ariaHidden={true} svg={DockModalIcon} />
+                        </button>
+                        <Dialog.Close asChild>
+                            <button data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
+                                <SVG ariaHidden={true} svg={QuitIcon} />
+                            </button>
+                        </Dialog.Close>
+                    </div>
+                </div>
+        );
+    };
+    return (
+        <div style={{minHeight: "inherit"}}>
+            { dockedMode ? <DockedHeader /> : <></>}
             <Tabs.Root value={section} defaultValue={section} onValueChange={dockedMode ? null : setSection} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
-                <TabHeader />
                 {
                     dockedMode ? <></> :
+                    <>
                         <Tabs.List id="reader-settings-nav" ref={tabModeRef} className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
                             {sections}
                         </Tabs.List>
+                        <TabTitle value={section} />
+                    </>
                 }
                 <div className={stylesSettings.settings_content}
                     style={{ marginTop: dockedMode && "0" }}>
@@ -1962,6 +1965,7 @@ export const ReaderSettings: React.FC<IBaseProps> = (props) => {
                         </section>
                     </Tabs.Content>
                 </div>
+                <ModalControlButtons />
             </Tabs.Root>
         </div>
     );

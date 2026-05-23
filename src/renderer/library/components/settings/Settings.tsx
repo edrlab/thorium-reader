@@ -172,7 +172,7 @@ const ConnectionSettings: React.FC<{}> = () => {
     const isRTL = locale === "ar";
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>
-            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.auth.title")}</h4>
+            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.auth.title")}</h3>
             <div className={stylesSettings.session_text}>
                 <SVG ariaHidden svg={InfoIcon} />
                 <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.auth.help")}</p>
@@ -249,7 +249,7 @@ const ScreenReaderSettings: React.FC<{}> = () => {
     };
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>
-            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.message")}</h4>
+            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.message")}</h3>
             <div className={stylesSettings.session_text} style={{ margin: "0" }}>
                 <SVG ariaHidden svg={InfoIcon} />
                 <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.help")}</p>
@@ -284,7 +284,7 @@ const ScreenReaderSettings: React.FC<{}> = () => {
                         }
                     </div>
                     <div aria-hidden>
-                        <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.title")}</h4>
+                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.screenReaderActivate.title")}</h3>
                     </div>
                 </label>
             </div>
@@ -340,7 +340,7 @@ const SaveCreatorSettings: React.FC<{}> = () => {
 
     return (
         <section className={stylesSettings.section} style={{ position: "relative" }}>
-            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.annotationCreator.creator")}</h4>
+            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.annotationCreator.creator")}</h3>
             <div className={stylesSettings.session_text} style={{ margin: "0" }}>
                 <SVG ariaHidden svg={InfoIcon} />
                 <p dir={isRTL ? "rtl" : "ltr"}>{__("settings.annotationCreator.help")}</p>
@@ -396,7 +396,7 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
 
         <section className={stylesSettings.section} style={{ position: "relative" }}>
 
-            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.note.export.overrideHTMLTemplate")}</h4>
+            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.note.export.overrideHTMLTemplate")}</h3>
             <input type="checkbox" className={stylesGlobal.checkbox_custom_input} name="enableCheckbox" />
             <div dir={isRTL ? "rtl" : "ltr"} className={stylesAnnotations.annotations_checkbox}>
                 <input type="checkbox" id="enableCheckbox" className={stylesGlobal.checkbox_custom_input} name="enableCheckbox" checked={enableCheckbox} onChange={toggleEnableCheckbox} />
@@ -428,7 +428,7 @@ const OverloadNoteExportToHtml: React.FC<{}> = () => {
                         }
                     </div>
                     <div aria-hidden>
-                        <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.note.export.enableCheckbox")}</h4>
+                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.note.export.enableCheckbox")}</h3>
                     </div>
                 </label>
             </div>
@@ -459,7 +459,7 @@ const ManageAccessToCatalogSettings = () => {
 
     return (
         <section className={stylesSettings.section} style={{ gap: "10px" }}>
-            <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.library.title")}</h4>
+            <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.library.title")}</h3>
             <div dir={isRTL ? "rtl" : "ltr"} className={stylesAnnotations.annotations_checkbox}>
                 <input type="checkbox" id="enableAPIAPP" className={stylesGlobal.checkbox_custom_input} name="enableAPIAPP" checked={enableAPIAPP} onChange={toggleEnableAPIAPP} />
                 <label htmlFor="enableAPIAPP" className={stylesGlobal.checkbox_custom_label}>
@@ -490,7 +490,7 @@ const ManageAccessToCatalogSettings = () => {
                         }
                     </div>
                     <div aria-hidden>
-                        <h4 dir={isRTL ? "rtl" : "ltr"}>{__("settings.library.enableAPIAPP")}</h4>
+                        <h3 dir={isRTL ? "rtl" : "ltr"}>{__("settings.library.enableAPIAPP")}</h3>
                     </div>
                 </label>
             </div>
@@ -773,7 +773,7 @@ const StorageSettings: React.FC<{}> = () => {
                 
                 <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}>
                         <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                            <h4>Locations</h4>
+                            <h3>Locations</h3>
                             <div className={stylesSettings.storage_location} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                                 <p style={{ margin: 0 }}><strong>Default internal storage</strong></p>
                                 <button
@@ -788,7 +788,7 @@ const StorageSettings: React.FC<{}> = () => {
 
                     <section className={stylesSettings.section} style={{ position: "relative", gap: "14px" }}>
                         <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                            <h4>Configuration</h4>
+                            <h3>Configuration</h3>
                             {userDirectory ?
 
                                 <div className={stylesSettings.storage_location} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
@@ -858,21 +858,13 @@ const StorageSettings: React.FC<{}> = () => {
     );
 };
 
-const TabHeader = (props: React.PropsWithChildren<{title: string, advancedTrigger: boolean}>) => {
+const ModalControlButton = () => {
     const [__] = useTranslator();
     // const locale = useSelector((state: IRendererCommonRootState) => state.i18n.locale);
     const locale = useSelector((state: ICommonRootState) => state.i18n.locale);
     const isRTL = locale === "ar";
     return (
         <div key="modal-header" className={stylesSettings.close_button_div} style={{justifyContent: isRTL ? "end" : undefined}}>
-            <TabTitle title={props.title}>
-            {props.children}
-            {
-                props.advancedTrigger ? 
-                <AdvancedTrigger/>
-                : <></>
-            }
-            </TabTitle>
             <Dialog.Close asChild>
                 <button dir={isRTL ? "rtl" : "ltr"} data-css-override="" className={stylesButtons.button_transparency_icon} aria-label={__("accessibility.closeDialog")}>
                     <SVG ariaHidden={true} svg={QuitIcon} />
@@ -907,11 +899,10 @@ export const Settings: React.FC<ISettingsProps> = () => {
                     // FALSE this to test sourcemaps:
                     true &&
                     <VisuallyHidden.Root>
-                        <Dialog.Title>{__("header.settings")}</Dialog.Title>
+                        <Dialog.Title asChild><h1>{__("header.settings")}</h1></Dialog.Title>
                     </VisuallyHidden.Root>
                 }
                 <Tabs.Root defaultValue="tab1" data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
-                    <TabHeader title={tabTitle} advancedTrigger={tabTitle === __("settings.tabs.keyboardShortcuts") ? true : false} />
                     <Tabs.List className={stylesSettings.settings_tabslist} data-orientation="vertical" aria-orientation="vertical">
                         <Tabs.Trigger value="tab1" onFocus={() => setTabTitle(__("settings.tabs.general"))}>
                             <SVG ariaHidden svg={CogIcon} />
@@ -934,7 +925,14 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             <h3 dir={isRTL ? "rtl" : "ltr"}>Storage</h3>
                         </Tabs.Trigger>
                     </Tabs.List>
-                    <div className={stylesSettings.settings_content}>
+                    <TabTitle title={tabTitle}>
+                        {
+                            tabTitle === __("settings.tabs.keyboardShortcuts") ?
+                                <AdvancedTrigger />
+                                : <></>
+                        }
+                    </TabTitle>
+                    <div className={stylesSettings.settings_content} style={{ marginTop: "70px" }}>
                         <Tabs.Content value="tab1" tabIndex={-1}>
                             <div className={stylesSettings.settings_tab}>
                                 <LanguageSettings />
@@ -967,6 +965,7 @@ export const Settings: React.FC<ISettingsProps> = () => {
                             </div>
                         </Tabs.Content>
                     </div>
+                    <ModalControlButton />
                 </Tabs.Root>
 
                 {/* <div className={stylesSettings.close_button_div}>

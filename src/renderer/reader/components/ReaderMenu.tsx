@@ -1614,7 +1614,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                             }
                                         </div>
                                         <div aria-hidden>
-                                            <h4>{__("reader.annotations.advancedMode")}</h4>
+                                            <h3>{__("reader.annotations.advancedMode")}</h3>
                                         </div>
                                     </label>
                                 </div>
@@ -1649,7 +1649,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                                 :
                                                 <></>
                                             } </div>
-                                        <h4 aria-hidden>{__("reader.annotations.quickAnnotations")}</h4></label>
+                                        <h3 aria-hidden>{__("reader.annotations.quickAnnotations")}</h3></label>
                                 </div>
                                 <div className={stylesAnnotations.annotations_checkbox}>
                                     <input type="checkbox" id="marginAnnotations" name="marginAnnotations" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "margin"} onChange={marginAnnotationsOnChange} />
@@ -1680,7 +1680,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                                 <></>
                                             }
                                         </div>
-                                        <h4 aria-hidden>{__("reader.annotations.toggleMarginMarks")}</h4></label>
+                                        <h3 aria-hidden>{__("reader.annotations.toggleMarginMarks")}</h3></label>
                                 </div>
                                 <div className={stylesAnnotations.annotations_checkbox}>
                                     <input type="checkbox" id="hideAnnotation" name="hideAnnotation" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "hide"} onChange={hideAnnotationOnChange} />
@@ -1711,7 +1711,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                                 <></>
                                             }
                                         </div>
-                                        <h4 aria-hidden>{__("reader.annotations.hide")}</h4></label>
+                                        <h3 aria-hidden>{__("reader.annotations.hide")}</h3></label>
                                 </div>
                                 <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-gray-50" }} />
                             </Popover.Content>
@@ -2338,7 +2338,7 @@ const BookmarkList: React.FC<{ popoverBoundary: HTMLDivElement, hideBookmarkOnCh
                                                 <></>
                                             }
                                         </div>
-                                        <h4 aria-hidden>{__("reader.annotations.hide")}</h4></label>
+                                        <h3 aria-hidden>{__("reader.annotations.hide")}</h3></label>
                                 </div>
                                 <Popover.Arrow className={stylesDropDown.PopoverArrow} aria-hidden style={{ fill: "var(--color-gray-50" }} />
                             </Popover.Content>
@@ -3039,11 +3039,10 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     const SelectRef = React.forwardRef<HTMLButtonElement, MySelectProps<{ id: number, value: string, name: string, disabled: boolean, svg: {} }>>((props, forwardedRef) => <Select refButEl={forwardedRef} {...props}></Select>);
     SelectRef.displayName = "Select";
 
-    const TabHeader = () => {
+    const ModalControlButtons = () => {
         return (
             dockedMode ? <></> :
                 <div key="modal-header" className={stylesSettings.close_button_div}>
-                    <TabTitle value={section} />
                     <div>
                         <button className={stylesButtons.button_transparency_icon} aria-label={__("reader.dock.dockLeft")} onClick={setDockingModeLeftSide}>
                             <SVG ariaHidden={true} svg={DockLeftIcon} />
@@ -3064,40 +3063,11 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
         );
     };
 
-    const advancedAnnotationsOnChange = () => {
-        setSerialAnnotatorMode(!serialAnnotator);
-    };
-    const quickAnnotationsOnChange = () => {
-        dispatch(readerActions.setConfig.build({ annotation_popoverNotOpenOnNoteTaking: !readerConfig.annotation_popoverNotOpenOnNoteTaking }));
-    };
-    const marginAnnotationsOnChange = () => {
-        const annotation_defaultDrawView = readerConfig.annotation_defaultDrawView === "margin" ? "annotation" : "margin";
-
-        console.log(`marginAnnotationsToggleSwitch : highlight=${annotation_defaultDrawView}`);
-        dispatch(readerActions.setConfig.build({ annotation_defaultDrawView }));
-
-        const href1 = currentLocation?.locator?.href;
-        const href2 = currentLocation?.secondWebViewHref;
-        dispatch(readerLocalActionLocatorHrefChanged.build(href1, href1, href2, href2));
-    };
-    const hideAnnotationOnChange = () => {
-        const annotation_defaultDrawView = readerConfig.annotation_defaultDrawView === "hide" ? "annotation" : "hide";
-
-        console.log(`hideAnnotationsToggleSwitch : highlight=${annotation_defaultDrawView}`);
-        dispatch(readerActions.setConfig.build({ annotation_defaultDrawView }));
-
-        const href1 = currentLocation?.locator?.href;
-        const href2 = currentLocation?.secondWebViewHref;
-        dispatch(readerLocalActionLocatorHrefChanged.build(href1, href1, href2, href2));
-    };
-
-    return (
-        <div style={{minHeight: "inherit"}}>
-            {
-                dockedMode ?
-                    <>
+    const DockedHeader = () => {
+        return (
+            <>
                         <div key="docked-header" className={stylesPopoverDialog.docked_header}>
-                                                    <SelectRef
+                            <SelectRef
                             items={options}
                             selectedKey={optionSelected}
                             svg={options.find(({ value }) => value === section)?.svg}
@@ -3158,19 +3128,68 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                             </div>
                         </div>
                     </>
-                    : <></>
-            }
+        );
+    };
+
+    const advancedAnnotationsOnChange = () => {
+        setSerialAnnotatorMode(!serialAnnotator);
+    };
+    const quickAnnotationsOnChange = () => {
+        dispatch(readerActions.setConfig.build({ annotation_popoverNotOpenOnNoteTaking: !readerConfig.annotation_popoverNotOpenOnNoteTaking }));
+    };
+    const marginAnnotationsOnChange = () => {
+        const annotation_defaultDrawView = readerConfig.annotation_defaultDrawView === "margin" ? "annotation" : "margin";
+
+        console.log(`marginAnnotationsToggleSwitch : highlight=${annotation_defaultDrawView}`);
+        dispatch(readerActions.setConfig.build({ annotation_defaultDrawView }));
+
+        const href1 = currentLocation?.locator?.href;
+        const href2 = currentLocation?.secondWebViewHref;
+        dispatch(readerLocalActionLocatorHrefChanged.build(href1, href1, href2, href2));
+    };
+    const hideAnnotationOnChange = () => {
+        const annotation_defaultDrawView = readerConfig.annotation_defaultDrawView === "hide" ? "annotation" : "hide";
+
+        console.log(`hideAnnotationsToggleSwitch : highlight=${annotation_defaultDrawView}`);
+        dispatch(readerActions.setConfig.build({ annotation_defaultDrawView }));
+
+        const href1 = currentLocation?.locator?.href;
+        const href2 = currentLocation?.secondWebViewHref;
+        dispatch(readerLocalActionLocatorHrefChanged.build(href1, href1, href2, href2));
+    };
+
+    return (
+        <div style={{minHeight: "inherit"}}>
+            <h1 style={{
+            position: "absolute",
+            width: "1px",
+            height: "1px",
+            padding: "0",
+            margin: "-1px",
+            overflow: "hidden",
+            clip: "rect(0, 0, 0, 0)",
+            whiteSpace: "nowrap",
+            borderWidth: "0",
+        }}>
+            {__("reader.navigation.openTableOfContentsTitle")}
+            </h1>
+            {dockedMode ? <DockedHeader /> : <></>}
             <Tabs.Root value={section} onValueChange={(value) => dockedMode ? null : setSection(value)} data-orientation="vertical" orientation="vertical" className={stylesSettings.settings_container}>
-                <TabHeader />
                 {
                     dockedMode ? <></> :
+                    <>
                         <Tabs.List ref={tabModeRef} className={stylesSettings.settings_tabslist} aria-orientation="vertical" data-orientation="vertical">
                             {sectionsArray}
                         </Tabs.List>
+                        <TabTitle value={section} />
+                    </>
                 }
                 <div className={stylesSettings.settings_content}
                     ref={popoverBoundary}
-                    style={{ marginTop: dockedMode && "0" }}>
+                    style={{ marginTop: dockedMode && "0" }}
+                    role="region"
+                    aria-live="polite"
+                    >
                     <Tabs.Content value="tab-toc" tabIndex={-1} id={"reader-menu-tab-toc"} className="R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE">
                         <div className={stylesSettings.settings_tab}>
                             {(isPdf && pdfToc?.length && renderLinkTree_(__("reader.marks.toc"), pdfToc, 1, undefined)) ||
@@ -3215,7 +3234,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                                 ? <ReaderMenuSearch
                                     focusMainAreaLandmarkAndCloseMenu={focusMainAreaLandmarkAndCloseMenu}
                                     dockedMode={dockedMode}
-                                ></ReaderMenuSearch>
+                                />
                                 : <></>}
                         </div>
                     </Tabs.Content>
@@ -3229,6 +3248,7 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
                         </div>
                     </Tabs.Content>
                 </div>
+                <ModalControlButtons />
             </Tabs.Root>
         </div>
     );

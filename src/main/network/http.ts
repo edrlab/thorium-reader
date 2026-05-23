@@ -50,6 +50,7 @@ const filename_ = "readium-desktop:main/http";
 const debug = debug_(filename_);
 
 const DEFAULT_HTTP_TIMEOUT = 30000;
+const DEFAULT_AUTO_SELECT_FAMILY_ATTEMPT_TIMEOUT = 5000;
 
 let authenticationToken: Record<string, IOpdsAuthenticationToken> = {};
 
@@ -247,15 +248,27 @@ async function httpFetchRawResponse(
     // https://github.com/node-fetch/node-fetch#custom-agent
     // httpAgent doesn't works // err: Protocol "http:" not supported. Expected "https:
     // https://github.com/edrlab/thorium-reader/issues/1323#issuecomment-911772951
-    const httpsAgent = new https.Agent({
-        timeout: options.timeout || DEFAULT_HTTP_TIMEOUT,
+    const requestTimeout = options.timeout || DEFAULT_HTTP_TIMEOUT;
+    const autoSelectFamilyAttemptTimeout = Math.min(
+        requestTimeout,
+        DEFAULT_AUTO_SELECT_FAMILY_ATTEMPT_TIMEOUT,
+    );
+
+    const httpAgentOptions: http.AgentOptions = {
+        timeout: requestTimeout,
+        autoSelectFamilyAttemptTimeout,
+    };
+
+    const httpsAgentOptions: https.AgentOptions = {
+        ...httpAgentOptions,
         rejectUnauthorized: !__TH__IS_DEV__,
-    });
-    const httpAgent = new http.Agent({
-        timeout: options.timeout || DEFAULT_HTTP_TIMEOUT,
-    });
+    };
+
+    const httpsAgent = new https.Agent(httpsAgentOptions);
+    const httpAgent = new http.Agent(httpAgentOptions);
 
     const proxyAgent = new ProxyAgent({
+        ...httpsAgentOptions,
         httpAgent: httpAgent,
         httpsAgent: httpsAgent,
         // getProxyForUrl: (url) => {
@@ -284,7 +297,7 @@ async function httpFetchRawResponse(
     //     });
     //     options.agent = httpsAgent;
     // }
-    options.timeout = options.timeout || DEFAULT_HTTP_TIMEOUT;
+    options.timeout = requestTimeout;
 
     options.maxRedirect = MAX_FOLLOW_REDIRECT;
 

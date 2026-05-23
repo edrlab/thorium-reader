@@ -92,9 +92,11 @@ $setting_color: var(--color-brand-primary);
         }
     }
 
+    h3,
     h4 {
         margin: 0;
         font-weight: 600;
+        font-size: 14px;
     }
 }
 
@@ -295,7 +297,7 @@ $setting_color: var(--color-brand-primary);
     justify-content: space-between;
     gap: 10px;
     background-color: transparent;
-    width: 63%;
+    // width: 63%;
     z-index: 10;
     padding: 0 0 10px 10px;
 
@@ -418,6 +420,7 @@ $setting_color: var(--color-brand-primary);
                         font-size: 14px;
                     }
 
+                    h3,
                     h4 {
                         margin: 0;
                         max-width: 120px;
@@ -435,6 +438,13 @@ $setting_color: var(--color-brand-primary);
                     padding: 5px 10px;
                     border-radius: 5px;
                     margin: 10px 0;
+
+                    h3,
+                    h4 {
+                        margin: 0;
+                        max-width: 120px;
+                        font-size: 14px;
+                    }
 
                     p {
                         margin: 5px 0;
@@ -458,6 +468,9 @@ $setting_color: var(--color-brand-primary);
         margin: 0 25px 20px;
         font-size: 16px;
         gap: 10px;
+        position: absolute;
+        top: 10px;
+        left: 33%;
 
         h2 {
             margin-top: 0;

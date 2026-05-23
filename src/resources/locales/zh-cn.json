@@ -1164,7 +1164,7 @@
             "noShortcutFound": "",
             "resetDefaults": "重置 (加载初始设置)",
             "save": "保存",
-            "searchPlaceholder": ""
+            "searchPlaceholder": "搜索快捷键"
         },
         "language": {
             "languageChoice": "选择语言"
@@ -1183,7 +1183,7 @@
         "profiles": {
             "info": "",
             "thorium": {
-                "description": "",
+                "description": "Thorium Vanilla 配置文件是原始版本，由 EDRLab 设计。",
                 "title": ""
             },
             "version": ""
@@ -1200,7 +1200,7 @@
             "appearance": "外观",
             "general": "常规",
             "keyboardShortcuts": "键盘快捷键",
-            "profiles": ""
+            "profiles": "配置文件"
         },
         "theme": {
             "auto": "自动",
