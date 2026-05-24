@@ -176,6 +176,7 @@ function createHarness(renderedPages: IRenderedPage[] = []) {
         pdfViewer: {
             pagesCount: pageViews.length,
             getPageView: (index: number) => pageViews[index],
+            scrollPageIntoView: jest.fn(),
         },
     };
     const controller = new PdfAnnotationController(
@@ -254,6 +255,7 @@ test("init subscribes to Thorium and PDF.js events only once", () => {
 
     expect(harness.thoriumBus.listenerCount("annotations:sync")).toBe(1);
     expect(harness.thoriumBus.listenerCount("highlight:create-from-selection")).toBe(1);
+    expect(harness.thoriumBus.listenerCount("viewer:go-to-annotation")).toBe(1);
     expect(harness.pdfJsEventBus.listenerCount("pagesinit")).toBe(1);
     expect(harness.pdfJsEventBus.listenerCount("documentloaded")).toBe(1);
     expect(harness.pdfJsEventBus.listenerCount("pagerendered")).toBe(1);
@@ -521,6 +523,7 @@ test("destroy removes subscriptions, clears overlays and state, and cancels sche
 
     expect(harness.thoriumBus.listenerCount("annotations:sync")).toBe(0);
     expect(harness.thoriumBus.listenerCount("highlight:create-from-selection")).toBe(0);
+    expect(harness.thoriumBus.listenerCount("viewer:go-to-annotation")).toBe(0);
     expect(harness.pdfJsEventBus.listenerCount("pagesinit")).toBe(0);
     expect(harness.pdfJsEventBus.listenerCount("documentloaded")).toBe(0);
     expect(harness.pdfJsEventBus.listenerCount("pagerendered")).toBe(0);
@@ -574,4 +577,73 @@ test("overlay rendering creates passive page layers and positioned highlights fo
 
     harness.pdfJsEventBus.emit("pagerendered", { pageNumber: 1 });
     expect(overlayLayers(first.pageElement)).toHaveLength(1);
+});
+
+test("viewer:go-to-annotation navigates by annotation id and flashes the rendered highlight", () => {
+    const page = createRenderedPage(1);
+    const harness = createHarness([page]);
+    harness.controller.init();
+    harness.thoriumBus.dispatch("annotations:sync", {
+        annotations: [
+            annotation("first", 1, [
+                { x1: 10, y1: 20, x2: 30, y2: 40 },
+            ]),
+        ],
+    });
+
+    harness.thoriumBus.dispatch("viewer:go-to-annotation", {
+        id: "first",
+        page: 99,
+        rect: { x1: 100, y1: 120, x2: 140, y2: 160 },
+    });
+
+    expect(harness.app.pdfViewer.scrollPageIntoView).toHaveBeenCalledWith({ pageNumber: 1 });
+    const [highlight] = highlights(page.pageElement);
+    expect(highlight.dataset.annotationId).toBe("first");
+    expect(highlight.dataset.navigationFlash).toBe("true");
+    expect(highlight.style.outline).toBe("2px solid rgba(37, 99, 235, 0.95)");
+});
+
+test("viewer:go-to-annotation falls back to payload page and rect when the id is absent from the snapshot", () => {
+    const page = createRenderedPage(2);
+    const harness = createHarness([page]);
+    harness.controller.init();
+
+    expect(() => harness.thoriumBus.dispatch("viewer:go-to-annotation", {
+        id: "missing",
+        page: 2,
+        rect: { x1: 10, y1: 20, x2: 30, y2: 40 },
+    })).not.toThrow();
+
+    expect(harness.app.pdfViewer.scrollPageIntoView).toHaveBeenCalledWith({ pageNumber: 2 });
+    expect(highlights(page.pageElement)).toHaveLength(0);
+});
+
+test("viewer:go-to-annotation rejects invalid navigation payloads before scrolling", () => {
+    const page = createRenderedPage(1);
+    const harness = createHarness([page]);
+    harness.controller.init();
+
+    harness.thoriumBus.dispatch("viewer:go-to-annotation", {
+        id: "bad-page",
+        page: 0,
+        rect: { x1: 10, y1: 20, x2: 30, y2: 40 },
+    });
+    harness.thoriumBus.dispatch("viewer:go-to-annotation", {
+        id: "bad-rect",
+        page: 1,
+        rect: { x1: 10, y1: 20, x2: Number.NaN, y2: 40 },
+    });
+
+    expect(harness.app.pdfViewer.scrollPageIntoView).not.toHaveBeenCalled();
+    expect(console.error).toHaveBeenCalledWith(
+        "[Thorium PDF annotations]",
+        "viewer:go-to-annotation ignored invalid payload",
+        expect.objectContaining({ id: "bad-page" }),
+    );
+    expect(console.error).toHaveBeenCalledWith(
+        "[Thorium PDF annotations]",
+        "viewer:go-to-annotation ignored invalid payload",
+        expect.objectContaining({ id: "bad-rect" }),
+    );
 });

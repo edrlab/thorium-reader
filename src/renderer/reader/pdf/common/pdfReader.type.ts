@@ -31,6 +31,12 @@ export interface TPdfAnnotationTransport extends TPdfAnnotationDraftTransport {
     id: string;
 }
 
+export interface TPdfAnnotationNavigationTarget {
+    id: string;
+    page: number;
+    rect: TPdfAnnotationRectTransport;
+}
+
 export interface IPdfPlayerEvent {
     "pageNumber": (pageNumber: number) => any;
     "pageLabel": (pageLabel: string) => any;
@@ -75,6 +81,7 @@ export interface IPdfPlayerEvent {
     "annotation:create-requested": (payload: {
         draft: TPdfAnnotationDraftTransport;
     }) => any;
+    "viewer:go-to-annotation": (payload: TPdfAnnotationNavigationTarget) => any;
 }
 
 export interface IEventBusPdfPlayer extends IEventBus {

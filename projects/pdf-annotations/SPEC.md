@@ -28,13 +28,16 @@ Included:
 - host-side canonical note creation through existing note persistence;
 - host-to-webview rendering through `annotations:sync`;
 - persisted annotation rehydration on PDF readiness;
-- overlay alignment after zoom and rotation changes.
+- overlay alignment after zoom and rotation changes;
+- annotation panel display of PDF quote and page metadata for persisted PDF notes;
+- read-only annotation panel navigation to PDF highlights through `viewer:go-to-annotation`;
+- hiding Readium annotation import/export controls in PDF readers until a PDF-specific exchange format exists;
+- preservation of `pdfAnnotation` when annotation panel helpers build future save payloads.
 
 Excluded:
 
-- annotation panel display and navigation;
 - overlay click selection/focus;
-- editing;
+- PDF annotation editing behavior;
 - deletion;
 - search;
 - print support;
@@ -76,7 +79,7 @@ First-slice PDF note shape:
 
 ## Event Contract
 
-The first slice extends `IPdfPlayerEvent` with four events.
+The PDF annotations project extends `IPdfPlayerEvent` with five annotation-specific events across slice 1 and slice 2.
 
 ```ts
 export interface TPdfAnnotationRectTransport {
@@ -97,6 +100,12 @@ export interface TPdfAnnotationTransport extends TPdfAnnotationDraftTransport {
     id: string;
 }
 
+export interface TPdfAnnotationNavigationTarget {
+    id: string;
+    page: number;
+    rect: TPdfAnnotationRectTransport;
+}
+
 export interface IPdfPlayerEvent {
     "annotations:sync": (payload: {
         annotations: TPdfAnnotationTransport[];
@@ -109,21 +118,26 @@ export interface IPdfPlayerEvent {
     "annotation:create-requested": (payload: {
         draft: TPdfAnnotationDraftTransport;
     }) => any;
+
+    "viewer:go-to-annotation": (payload: TPdfAnnotationNavigationTarget) => any;
 }
 ```
 
 Directions:
 
 - host to webview: `highlight:create-from-selection`;
+- host to webview: `annotations:sync`;
+- host to webview: `viewer:go-to-annotation`;
 - webview to host: `annotation:create-requested`;
-- webview to host: `annotations:ready`;
-- host to webview: `annotations:sync`.
+- webview to host: `annotations:ready`.
 
 Payload rules:
 
 - events carrying data use exactly one JSON-compatible object payload;
 - payloadless events are dispatched without arguments;
-- the webview never sends canonical ids, timestamps, creator metadata, document identity, color, or draw type in the first slice.
+- the webview never sends canonical ids, timestamps, creator metadata, document identity, color, or draw type in the first slice;
+- `viewer:go-to-annotation` carries the canonical annotation id plus page/rect fallback;
+- the webview resolves `viewer:go-to-annotation` by id first when the annotation exists in its current snapshot, then falls back to the payload page/rect.
 
 ## Data Mapping
 
@@ -304,11 +318,15 @@ Overlay behavior:
 - Zoom and rotation keep highlights aligned.
 - EPUB annotation creation keeps its existing behavior.
 - PDF copy, TOC, thumbnails, search, navigation, and preferences keep their existing behavior.
-- PDF annotation panel display, navigation, editing, deletion, export/import, and print support remain outside first-slice acceptance.
+- PDF annotations render in the annotation panel without requiring `locatorExtended`.
+- Clicking a PDF annotation card navigates to the page/rectangle target and flashes the rendered highlight.
+- PDF annotation cards remain read-only until editing and deletion have explicit contracts.
+- PDF reader annotation panels do not expose Readium annotation import/export controls.
+- PDF annotation editing, deletion, export/import, and print support remain outside slice 2 acceptance.
 
 ## Known Follow-Up Requirements
 
 - Transport color and draw type before enabling color/style editing.
-- Add a PDF-specific annotation panel path that does not require `locatorExtended`.
-- Preserve `pdfAnnotation` in every note mutation.
-- Add automated tests for converters, annotation synchronization, and geometry edge cases.
+- Add an explicit PDF editing contract before enabling comment, color, tag, or draw-type edits.
+- Add an explicit PDF deletion synchronization contract before enabling deletion from the panel.
+- Add automated browser/Electron checks for real PDF.js navigation positioning.

@@ -137,23 +137,25 @@ Use the checkboxes as delivery state:
 
 ### Annotation Panel Display
 
-- [ ] Add a PDF-specific annotation card path for notes with `pdfAnnotation`.
-- [ ] Display selected quote from `pdfAnnotation.quote`.
-- [ ] Display PDF page number.
-- [ ] Display note color.
-- [ ] Display creator and date metadata when available.
-- [ ] Avoid assuming `locatorExtended` exists for PDF annotations.
-- [ ] Sort PDF annotations predictably by page and rectangle position.
-- [ ] Keep PDF annotations read-only until editing is implemented.
+- [x] Add a PDF-specific annotation card path for notes with `pdfAnnotation`.
+- [x] Display selected quote from `pdfAnnotation.quote`.
+- [x] Display PDF page number.
+- [x] Display note color.
+- [x] Display creator and date metadata when available.
+- [x] Avoid assuming `locatorExtended` exists for PDF annotations.
+- [x] Sort PDF annotations predictably by page and rectangle position.
+- [x] Keep PDF annotations read-only until editing is implemented.
+- [x] Add unit coverage for PDF panel read-only action decisions and bulk delete exclusion.
+- [x] Hide Readium annotation import/export controls in PDF readers until a PDF-specific exchange format exists.
 
 ### Navigation
 
-- [ ] Add a host-to-webview navigation command such as `viewer:go-to-annotation`.
-- [ ] Define navigation payload by annotation id plus page/rect fallback.
-- [ ] Scroll the PDF viewer to the target page.
-- [ ] Align the target rectangle into view.
-- [ ] Optionally focus or flash the target highlight after navigation.
-- [ ] Add a regression test for panel-to-PDF navigation.
+- [x] Add a host-to-webview navigation command such as `viewer:go-to-annotation`.
+- [x] Define navigation payload by annotation id plus page/rect fallback.
+- [x] Scroll the PDF viewer to the target page.
+- [x] Align the target rectangle into view.
+- [x] Optionally focus or flash the target highlight after navigation.
+- [x] Add a regression test for panel-to-PDF navigation.
 
 ### Overlay Interaction
 
@@ -167,14 +169,14 @@ Use the checkboxes as delivery state:
 
 ### Editing
 
-- [ ] Preserve `pdfAnnotation` in every annotation edit path.
+- [x] Preserve `pdfAnnotation` in the reusable annotation panel save-payload helper before exposing PDF editing.
 - [ ] Enable editing comment text for PDF annotations.
 - [ ] Enable editing color for PDF annotations.
 - [ ] Enable editing tags for PDF annotations.
 - [ ] Sync edited color/style back to the PDF webview.
-- [ ] Add tests proving comment edits do not remove `pdfAnnotation`.
+- [x] Add tests proving future comment edit payloads do not remove `pdfAnnotation`.
 - [ ] Add tests proving color edits update the webview rendering.
-- [ ] Add tests proving tag edits do not remove `pdfAnnotation`.
+- [x] Add tests proving future tag edit payloads do not remove `pdfAnnotation`.
 
 ### Deletion
 

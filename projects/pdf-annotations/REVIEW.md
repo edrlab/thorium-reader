@@ -6,7 +6,7 @@ Review date: 2026-05-24
 
 Observed branch: `feat/pdf-annotations`
 
-This review covers the first PDF annotations slice: application-level PDF text highlights created from PDF.js selections, persisted as Thorium notes, and rendered back into the PDF webview as overlays.
+This review covers the first PDF annotations slice and the slice 2 read-only interaction path: application-level PDF text highlights created from PDF.js selections, persisted as Thorium notes, rendered back into the PDF webview as overlays, listed in the annotation panel, and navigated from the panel back to the PDF highlight.
 
 No Electron runtime test was performed during this review. The notes below are based on static reading of the branch and the project documentation.
 
@@ -22,6 +22,10 @@ No Electron runtime test was performed during this review. The notes below are b
 
 2026-05-24: Fixed Jest module resolution for the PDF annotation geometry unit tests. `annotationGeometry.test.ts` now runs through the repository Jest config and passes with 8 tests. A representative existing Jest test, `test/utils/iso8601.test.ts`, also passes after the mapper fix.
 
+2026-05-24: Fixed the R1 annotation panel `locatorExtended` assumption. Added `pdfAnnotationPanel.ts` helpers and unit tests for PDF quote/page display, PDF page/rectangle sorting, and edit-save payloads preserving `pdfAnnotation`. Result: 5 PDF annotation Jest suites passed, 61 tests passed. A full `tsc --noEmit --project tsconfig.jest.json` check was attempted again but remains blocked by existing repository-wide CommonJS/ESM diagnostics outside this PDF annotation slice.
+
+2026-05-24: Implemented the slice 2 read-only interaction path. PDF annotations are shown as read-only cards, panel clicks dispatch `viewer:go-to-annotation`, the webview scrolls to the target page/rect and flashes the rendered highlight, and the PDF panel hides Readium annotation import/export controls. Result: 5 PDF annotation Jest suites passed, 70 tests passed. A full `tsc --noEmit --project tsconfig.jest.json` check was attempted again but remains blocked by existing repository-wide CommonJS/ESM diagnostics outside this PDF annotation slice.
+
 ## Summary
 
 The first-slice architecture is sound:
@@ -32,7 +36,7 @@ The first-slice architecture is sound:
 - The webview sends drafts only; the host creates canonical notes.
 - `annotations:sync` gives the webview a replace-all snapshot, which keeps the first slice simple.
 
-The main follow-up risks are not in the basic creation loop. They sit around future annotation UI assumptions, missing color/style transport, PDF.js integration assumptions, and lack of automated geometry coverage.
+The main follow-up risks are not in the basic creation or read-only navigation loop. They sit around future editing/deletion contracts, missing color/style transport, PDF.js integration assumptions, and real Electron/PDF.js runtime coverage.
 
 ## Fixed Review Findings
 
@@ -72,6 +76,91 @@ Why this fix is in scope:
 - Clear port names make it explicit that Redux persistence and PDF webview sync are provided by `Reader.tsx`.
 - The change keeps `pdfAnnotationHost.ts` testable without importing Redux, the store, or the PDF event bus.
 
+### F4 - Annotation Panel PDF Target Branch
+
+Status: fixed in slice 1.
+
+`ReaderMenu.tsx` now uses a PDF-aware panel helper for annotation card text, page metadata, location sorting, and future edit-save payload construction. PDF annotation cards can render from `note.pdfAnnotation.quote` and `note.pdfAnnotation.page` when `locatorExtended` is absent, and save-payload helpers preserve the `pdfAnnotation` target instead of rebuilding an EPUB-only note.
+
+Why this fix is in scope:
+
+- The first slice creates persisted PDF notes, so the existing annotation panel must tolerate notes without EPUB locator data.
+- PDF annotation identity and target geometry live in `pdfAnnotation`; losing that field during a future panel save would orphan the note from the PDF overlay synchronization path.
+- The logic is extracted into `pdfAnnotationPanel.ts` so the PDF-vs-EPUB branching can be unit-tested without mounting the reader UI.
+
+Known residual limits:
+
+- PDF annotation cards are intentionally read-only until editing and deletion have their own preservation and synchronization contracts.
+- Edited color/style still do not affect the PDF overlay until R2 extends the transport contract.
+
+### F5 - Read-Only Panel Navigation
+
+Status: fixed in slice 2.
+
+`ReaderMenu.tsx` now builds a validated PDF navigation target from `note.uuid`, `note.pdfAnnotation.page`, and the first normalized rectangle. `Reader.tsx` dispatches that target as `viewer:go-to-annotation`, and `PdfAnnotationController` resolves the target by id with page/rect fallback, scrolls the PDF viewer, aligns the target rectangle, and briefly flashes matching overlays.
+
+Why this fix is in scope:
+
+- The first slice made PDF annotations persistent and visible; slice 2 needs a read-only way to return from the panel to the PDF evidence.
+- Using id plus page/rect keeps Thorium identity canonical while still allowing navigation if the webview has not rendered the matching id yet.
+- Keeping edit/delete controls hidden for PDF notes prevents panel actions from mutating or removing PDF targets before those contracts are designed.
+
+Known residual limits:
+
+- The flash is a visual locator, not an accessible selected state.
+- The navigation test uses JSDOM and fake PDF.js APIs; real scroll behavior still needs Electron/PDF.js runtime QA.
+- The fallback uses the first rectangle only, which is acceptable for one-page first-slice highlights but will need revision for multi-page or richer annotation targets.
+
+### F6 - PDF Panel Readium Import/Export Leak
+
+Status: fixed in slice 2.
+
+`ReaderMenu.tsx` now hides the Readium annotation import/export controls when the active reader is PDF. The decision is centralized through `canUseReadiumAnnotationImportExport()` in `pdfAnnotationPanel.ts`, with a unit test proving the PDF context is excluded while non-PDF readers keep the existing exchange path.
+
+Why this fix is in scope:
+
+- Slice 2 makes the PDF annotation panel visible, so it must not expose EPUB/Readium exchange actions for page/rectangle PDF targets.
+- The existing export converter expects locator/selector-oriented annotations and currently emits EPUB-oriented metadata.
+- Hiding the controls preserves the read-only PDF panel contract without designing the later PDF-specific export/import format prematurely.
+
+Known residual limits:
+
+- PDF annotation export/import remains a future slice.
+- This test proves the decision helper, not the full React toolbar rendering.
+
+### F7 - Panel Interaction Decision Coverage
+
+Status: fixed in slice 2.
+
+`ReaderMenu.tsx` now delegates annotation panel navigation, edit/delete availability, and bulk-delete filtering to pure helpers in `pdfAnnotationPanel.ts`. The unit tests cover PDF read-only action decisions, EPUB edit/delete preservation, bulk delete exclusion for PDF annotations, EPUB-vs-PDF navigation routing, and invalid PDF navigation rejection before panel dispatch.
+
+Why this fix is in scope:
+
+- Slice 2 behavior depends on panel clicks and read-only controls, not only on lower-level PDF geometry.
+- The existing test stack has no React Testing Library or Enzyme pattern, so pure decision helpers give deterministic coverage without pulling in Redux/Electron component mounting.
+- Using the helpers in `ReaderMenu.tsx` keeps the tested model connected to the panel implementation.
+
+Known residual limits:
+
+- These are still model-level tests, not full rendered DOM tests.
+- A future React component test should be added if the project introduces a standard React test harness.
+
+### F8 - Event Contract Documentation Drift
+
+Status: fixed in slice 2.
+
+`SPEC.md` now documents all five PDF annotation event-bus extensions: `annotations:sync`, `highlight:create-from-selection`, `annotations:ready`, `annotation:create-requested`, and `viewer:go-to-annotation`. The spec also includes `TPdfAnnotationNavigationTarget`, the host/webview event directions, and the id-first then page/rect fallback rule for panel navigation.
+
+Why this fix is in scope:
+
+- Slice 2 added a new event contract, so the implementation spec must not describe only the first-slice four-event surface.
+- The PDF event bus is the architectural boundary between `Reader.tsx` and the PDF.js webview.
+- Keeping the event contract complete prevents future agents from treating `viewer:go-to-annotation` as an undocumented local convention.
+
+Known residual limits:
+
+- The spec mirrors the current TypeScript types, but it does not replace runtime schema validation.
+
 ## Out-Of-Scope Review Findings
 
 ### OOS1 - Late `annotations:ready` After Controller Destruction
@@ -97,25 +186,6 @@ Revisit trigger:
 - Revisit when the project takes on lifecycle hardening, repeated PDF webview mount/unmount stress tests, or observed duplicate/late ready events in Thorium runtime QA.
 
 ## Major Risks
-
-### R1 - Annotation panel assumes `locatorExtended`
-
-Severity: high
-
-PDF notes have `pdfAnnotation`, but first-slice PDF notes intentionally do not have `locatorExtended`. Existing annotation panel code historically reads quote, progression, navigation target, and editing data from `locatorExtended`.
-
-Impact:
-
-- PDF notes may show poor labels.
-- Navigation cannot use the EPUB locator path.
-- Editing can accidentally rebuild a note without `pdfAnnotation`.
-
-Mitigation:
-
-- Add a PDF-specific UI branch for `note.pdfAnnotation`.
-- Display `pdfAnnotation.quote` and page metadata.
-- Preserve `pdfAnnotation` in every save path.
-- Add a regression test that editing a PDF note never drops its PDF target.
 
 ### R2 - Color and style are not transported
 
@@ -234,15 +304,15 @@ Mitigation:
 
 ## Evolution Gates
 
-Before read-only panel work:
+Read-only panel gate completed in slice 2:
 
 - PDF annotation cards must render from `pdfAnnotation`, not `locatorExtended`.
 - Sorting and labels must tolerate missing EPUB locators.
 
-Before navigation:
+Navigation gate completed in slice 2:
 
-- Add a webview command such as `viewer:go-to-annotation`.
-- Define whether navigation scrolls to page, rect, or annotation id.
+- Added `viewer:go-to-annotation`.
+- Navigation targets the annotation id first, then falls back to page/rect and aligns the first rectangle.
 
 Before editing:
 

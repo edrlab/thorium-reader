@@ -87,6 +87,24 @@ Current coverage:
 - Created-note sync snapshot behavior.
 - PDF-vs-EPUB annotation trigger routing.
 
+### Annotation Panel Helpers
+
+File:
+
+- `test/renderer/reader/pdf/pdfAnnotationPanel.test.ts`
+
+Current coverage:
+
+- PDF quote/page display without `locatorExtended`.
+- EPUB locator text precedence.
+- PDF page/rectangle sorting.
+- PDF and EPUB panel navigation decision models.
+- Invalid PDF navigation target rejection before panel dispatch.
+- PDF read-only action availability.
+- Bulk delete exclusion for PDF annotations.
+- Readium annotation import/export exclusion in PDF reader context.
+- Save payload preservation for `pdfAnnotation` and EPUB locator data.
+
 ### Webview Controller
 
 File:
@@ -322,43 +340,52 @@ Add before PDF color/style editing:
 
 Target modules:
 
+- `src/renderer/reader/pdf/pdfAnnotationPanel.ts`
 - future PDF-specific annotation card helpers/components.
 
 Add:
 
-- `P2 Later` PDF annotation cards read quote from `note.pdfAnnotation.quote`.
-- `P2 Later` PDF annotation cards display page number from `note.pdfAnnotation.page`.
-- `P2 Later` PDF annotation cards render without `locatorExtended`.
-- `P2 Later` PDF annotation sorting uses page number, vertical rect position, then horizontal rect position.
-- `P2 Later` PDF annotation cards display color, creator, and date metadata when available.
-- `P2 Later` EPUB annotation cards keep existing locator-based behavior.
+- `P2 Existing` PDF annotation cards read quote from `note.pdfAnnotation.quote`.
+- `P2 Existing` PDF annotation cards display page number from `note.pdfAnnotation.page`.
+- `P2 Existing` PDF annotation cards render without `locatorExtended`.
+- `P2 Existing` PDF annotation sorting uses page number, vertical rect position, then horizontal rect position.
+- `P2 Existing` PDF annotation navigation targets are built from id, page, and the normalized first rect.
+- `P2 Existing` invalid PDF annotation page or rect data is rejected before navigation dispatch.
+- `P2 Existing` PDF annotation panel action model keeps PDF cards non-editable and non-deletable.
+- `P2 Existing` bulk delete excludes PDF annotations from the deletion candidate list.
+- `P2 Existing` Readium annotation import/export controls are unavailable in PDF reader context.
+- `P2 Existing` PDF annotation cards display color, creator, and date metadata through existing panel metadata fields.
+- `P2 Existing` EPUB annotation cards keep existing locator-based behavior.
 
 ### Navigation
 
 Target modules:
 
-- future host-to-webview navigation helper.
+- `src/renderer/reader/pdf/pdfAnnotationPanel.ts`
+- `src/renderer/reader/pdf/webview/annotations.ts`
 
 Add:
 
-- `P2 Later` navigation payload can target annotation id.
-- `P2 Later` navigation payload includes page and rect fallback.
-- `P2 Later` missing annotation id falls back to page/rect when allowed.
-- `P2 Later` invalid page or rect is rejected before dispatch.
-- `P2 Later` panel-to-PDF navigation does not assume EPUB `locatorExtended`.
+- `P2 Existing` navigation payload can target annotation id.
+- `P2 Existing` navigation payload includes page and rect fallback.
+- `P2 Existing` missing annotation id falls back to page/rect when allowed.
+- `P2 Existing` invalid page or rect is rejected before dispatch.
+- `P2 Existing` panel-to-PDF navigation does not assume EPUB `locatorExtended`.
+- `P2 Existing` webview navigation scrolls to the target page and flashes the rendered highlight.
 
 ### Editing
 
 Target modules:
 
+- `src/renderer/reader/pdf/pdfAnnotationPanel.ts`
 - `ReaderMenu.tsx` save path or extracted annotation edit helper.
 
 Add:
 
-- `P2 Later` editing PDF comment preserves `pdfAnnotation`.
-- `P2 Later` editing PDF color preserves `pdfAnnotation`.
-- `P2 Later` editing PDF tags preserves `pdfAnnotation`.
-- `P2 Later` editing PDF draw type preserves `pdfAnnotation`.
+- `P2 Existing` future PDF comment edit payload preserves `pdfAnnotation`.
+- `P2 Existing` future PDF color edit payload preserves `pdfAnnotation`.
+- `P2 Existing` future PDF tag edit payload preserves `pdfAnnotation`.
+- `P2 Existing` future PDF draw-type edit payload preserves `pdfAnnotation`.
 - `P2 Later` editing EPUB annotations keeps the existing EPUB locator behavior.
 - `P2 Later` edited PDF note syncs updated color/style transport back to the webview.
 

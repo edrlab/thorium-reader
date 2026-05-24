@@ -8,6 +8,7 @@
 import type {
     IEventBusPdfPlayer,
     TPdfAnnotationDraftTransport,
+    TPdfAnnotationNavigationTarget,
     TPdfAnnotationRectTransport,
     TPdfAnnotationTransport,
 } from "../common/pdfReader.type";
@@ -107,6 +108,7 @@ export class PdfAnnotationController {
 
         this.bus.subscribe("annotations:sync", this.onAnnotationsSync);
         this.bus.subscribe("highlight:create-from-selection", this.onCreateFromSelection);
+        this.bus.subscribe("viewer:go-to-annotation", this.onGoToAnnotation);
         console.log(DEBUG_PREFIX, "subscribed to Thorium PDF annotation bus events");
 
         this.addPdfJsListener("pagesinit", this.onPdfReady);
@@ -134,6 +136,7 @@ export class PdfAnnotationController {
         console.log(DEBUG_PREFIX, "destroy");
         this.bus.remove(this.onAnnotationsSync, "annotations:sync");
         this.bus.remove(this.onCreateFromSelection, "highlight:create-from-selection");
+        this.bus.remove(this.onGoToAnnotation, "viewer:go-to-annotation");
         this.pdfJsListeners.forEach(({ key, fn }) => this.removePdfJsListener(key, fn));
         this.pdfJsListeners.length = 0;
 
@@ -205,6 +208,27 @@ export class PdfAnnotationController {
     };
 
     /**
+     * Navigates from Thorium's annotation panel to a rendered PDF target.
+     *
+     * The id is preferred because it points at the canonical host annotation.
+     * The page/rect fallback keeps navigation usable after a panel click even if
+     * the webview snapshot has not caught up yet or the target id is unknown.
+     */
+    private readonly onGoToAnnotation = (payload?: TPdfAnnotationNavigationTarget) => {
+        const target = this.resolveNavigationTarget(payload);
+        if (!target) {
+            console.error(DEBUG_PREFIX, "viewer:go-to-annotation ignored invalid payload", payload);
+            return;
+        }
+
+        console.log(DEBUG_PREFIX, "viewer:go-to-annotation", {
+            id: target.id,
+            page: target.page,
+        });
+        this.scrollToAnnotationTarget(target);
+    };
+
+    /**
      * Announces that geometry is available for initial synchronization.
      *
      * "annotations:ready" is sent once because it is a capability signal, not a
@@ -253,6 +277,153 @@ export class PdfAnnotationController {
         this.removeAllOverlayLayers();
         this.scheduleRenderAll();
     };
+
+    private resolveNavigationTarget(payload?: TPdfAnnotationNavigationTarget): TPdfAnnotationNavigationTarget | undefined {
+        if (!payload?.id || !Number.isInteger(payload.page) || payload.page < 1) {
+            return undefined;
+        }
+
+        const annotation = this.annotations.get(payload.id);
+        const page = annotation?.page ?? payload.page;
+        if (!Number.isInteger(page) || page < 1) {
+            return undefined;
+        }
+
+        const rect = this.normalizeNavigationRect(annotation?.rects[0] || payload.rect);
+        if (!rect) {
+            return undefined;
+        }
+
+        return {
+            id: payload.id,
+            page,
+            rect,
+        };
+    }
+
+    private normalizeNavigationRect(rect?: TPdfAnnotationRectTransport): TPdfAnnotationRectTransport | undefined {
+        if (!rect) {
+            return undefined;
+        }
+
+        const { x1, y1, x2, y2 } = rect;
+        if (![x1, y1, x2, y2].every(Number.isFinite)) {
+            return undefined;
+        }
+
+        const left = Math.min(x1, x2);
+        const right = Math.max(x1, x2);
+        const top = Math.min(y1, y2);
+        const bottom = Math.max(y1, y2);
+        if (left === right || top === bottom) {
+            return undefined;
+        }
+
+        return {
+            x1: left,
+            y1: top,
+            x2: right,
+            y2: bottom,
+        };
+    }
+
+    private scrollToAnnotationTarget(target: TPdfAnnotationNavigationTarget) {
+        const pdfViewer = this.getPdfViewerApplication()?.pdfViewer;
+        if (typeof pdfViewer?.scrollPageIntoView === "function") {
+            pdfViewer.scrollPageIntoView({ pageNumber: target.page });
+        }
+
+        const pageElement = this.getPageElement(target.page);
+        if (!pageElement) {
+            console.error(DEBUG_PREFIX, "viewer:go-to-annotation skipped: missing page element", {
+                id: target.id,
+                page: target.page,
+            });
+            return;
+        }
+
+        this.renderPage(target.page);
+
+        const marker = this.createNavigationMarker(target, pageElement);
+        if (marker) {
+            pageElement.append(marker);
+            this.scrollElementIntoView(marker);
+            marker.remove();
+        } else {
+            this.scrollElementIntoView(pageElement);
+        }
+
+        this.flashAnnotationHighlights(target.id);
+    }
+
+    private createNavigationMarker(target: TPdfAnnotationNavigationTarget, pageElement: HTMLElement) {
+        const pageView = this.getPageView(target.page);
+        const viewportRect = pageView?.viewport?.convertToViewportRectangle?.([
+            target.rect.x1,
+            target.rect.y1,
+            target.rect.x2,
+            target.rect.y2,
+        ]);
+        if (!Array.isArray(viewportRect) || viewportRect.length < 4) {
+            console.error(DEBUG_PREFIX, "viewer:go-to-annotation skipped rect alignment: missing viewport conversion", {
+                id: target.id,
+                page: target.page,
+            });
+            return undefined;
+        }
+
+        const left = Math.min(viewportRect[0], viewportRect[2]);
+        const top = Math.min(viewportRect[1], viewportRect[3]);
+        const width = Math.abs(viewportRect[0] - viewportRect[2]);
+        const height = Math.abs(viewportRect[1] - viewportRect[3]);
+        if (![left, top, width, height].every(Number.isFinite) || width < 0.5 || height < 0.5) {
+            return undefined;
+        }
+
+        const marker = document.createElement("span");
+        marker.style.position = "absolute";
+        marker.style.pointerEvents = "none";
+        marker.style.left = `${left}px`;
+        marker.style.top = `${top}px`;
+        marker.style.width = `${Math.max(width, 1)}px`;
+        marker.style.height = `${Math.max(height, 1)}px`;
+
+        if (window.getComputedStyle(pageElement).position === "static") {
+            pageElement.style.position = "relative";
+        }
+
+        return marker;
+    }
+
+    private scrollElementIntoView(element: HTMLElement) {
+        if (typeof element.scrollIntoView === "function") {
+            element.scrollIntoView({
+                block: "center",
+                inline: "center",
+            });
+        }
+    }
+
+    private flashAnnotationHighlights(annotationId: string) {
+        const highlights = Array.from(document.querySelectorAll<HTMLElement>(`.${ANNOTATION_HIGHLIGHT_CLASS}`))
+            .filter((highlight) => highlight.dataset.annotationId === annotationId);
+        if (!highlights.length) {
+            return;
+        }
+
+        for (const highlight of highlights) {
+            const previousOutline = highlight.style.outline;
+            const previousOutlineOffset = highlight.style.outlineOffset;
+            highlight.dataset.navigationFlash = "true";
+            highlight.style.outline = "2px solid rgba(37, 99, 235, 0.95)";
+            highlight.style.outlineOffset = "2px";
+            window.setTimeout(() => {
+                delete highlight.dataset.navigationFlash;
+                highlight.style.outline = previousOutline;
+                highlight.style.outlineOffset = previousOutlineOffset;
+            }, 900);
+        }
+    }
 
     /**
      * Selection algorithm:

@@ -85,6 +85,7 @@ import {
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
 import { IPdfPlayerScale, TToc } from "../pdf/common/pdfReader.type";
+import type { TPdfAnnotationNavigationTarget } from "../pdf/common/pdfReader.type";
 import { pdfMount } from "../pdf/driver";
 import {
     buildPdfAnnotationTransportList,
@@ -416,6 +417,7 @@ class Reader extends React.Component<IProps, IState> {
         this.handleReaderDetach = this.handleReaderDetach.bind(this);
         this.handleReadingLocationChange = this.handleReadingLocationChange.bind(this);
         this.goToLocator = this.goToLocator.bind(this);
+        this.goToPdfAnnotation = this.goToPdfAnnotation.bind(this);
         this.handleLinkClick = this.handleLinkClick.bind(this);
         this.handlePublicationInfo = this.handlePublicationInfo.bind(this);
 
@@ -916,6 +918,7 @@ class Reader extends React.Component<IProps, IState> {
             // doFocus: this.state.doFocus,
             handleLinkClick: this.handleLinkClick,
             goToLocator: this.goToLocator,
+            goToPdfAnnotation: this.goToPdfAnnotation,
             // toggleMenu: this.handleMenuButtonClick,
             focusMainAreaLandmarkAndCloseMenu: this.focusMainAreaLandmarkAndCloseMenu.bind(this),
             pdfToc: this.state.pdfPlayerToc,
@@ -2998,6 +3001,18 @@ class Reader extends React.Component<IProps, IState> {
             // this.focusMainArea();
         }
 
+    }
+
+    private goToPdfAnnotation(target: TPdfAnnotationNavigationTarget, closeNavPanel = true) {
+        if (closeNavPanel) {
+            this.focusMainAreaLandmarkAndCloseMenu(true);
+        }
+
+        if (!this.props.isPdf) {
+            return;
+        }
+
+        createOrGetPdfEventBus().dispatch("viewer:go-to-annotation", target);
     }
 
     private handleLinkClick(event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string, closeNavPanel = true, isFromOnPopState = false) {
