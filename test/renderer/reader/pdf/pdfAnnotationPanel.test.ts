@@ -67,16 +67,19 @@ test("Readium annotation import/export stays unavailable in the PDF annotation p
     expect(canUseReadiumAnnotationImportExport(false)).toBe(true);
 });
 
-test("annotation panel action model keeps PDF cards read-only and bulk delete excludes them", () => {
-    const pdfNote = createPdfAnnotationNote({ uuid: "pdf-readonly" });
+test("annotation panel action model allows editing and deleting PDF annotations", () => {
+    const pdfNote = createPdfAnnotationNote({ uuid: "pdf-editable" });
     const epubNote = createEpubAnnotationNote({ uuid: "epub-editable" });
 
     expect(isPdfAnnotationPanelNote(pdfNote)).toBe(true);
-    expect(canEditAnnotationInPanel(pdfNote)).toBe(false);
-    expect(canDeleteAnnotationInPanel(pdfNote)).toBe(false);
+    expect(canEditAnnotationInPanel(pdfNote)).toBe(true);
+    expect(canDeleteAnnotationInPanel(pdfNote)).toBe(true);
     expect(canEditAnnotationInPanel(epubNote)).toBe(true);
     expect(canDeleteAnnotationInPanel(epubNote)).toBe(true);
-    expect(filterDeletableAnnotationPanelNotes([pdfNote, epubNote]).map(({ uuid }) => uuid)).toEqual(["epub-editable"]);
+    expect(filterDeletableAnnotationPanelNotes([pdfNote, epubNote]).map(({ uuid }) => uuid)).toEqual([
+        "pdf-editable",
+        "epub-editable",
+    ]);
 });
 
 test("annotation panel navigation model routes EPUB locators and PDF targets", () => {

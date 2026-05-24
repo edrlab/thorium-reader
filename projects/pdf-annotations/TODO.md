@@ -127,11 +127,11 @@ Use the checkboxes as delivery state:
 
 ### Transport Contract
 
-- [ ] Add color to `TPdfAnnotationTransport`.
-- [ ] Add draw type/style to `TPdfAnnotationTransport`.
-- [ ] Decide whether opacity is transported, derived from draw type, or kept as a rendering constant.
-- [ ] Keep transport payloads JSON-compatible.
-- [ ] Add compatibility handling for older persisted notes during transport conversion.
+- [x] Add color to `TPdfAnnotationTransport`.
+- [x] Add draw type/style to `TPdfAnnotationTransport`.
+- [x] Decide whether opacity is transported, derived from draw type, or kept as a rendering constant.
+- [x] Keep transport payloads JSON-compatible.
+- [x] Add compatibility handling for missing or unsupported color/style data during rendering.
 
 ## Needed For Read-Only User Interactions
 
@@ -144,8 +144,8 @@ Use the checkboxes as delivery state:
 - [x] Display creator and date metadata when available.
 - [x] Avoid assuming `locatorExtended` exists for PDF annotations.
 - [x] Sort PDF annotations predictably by page and rectangle position.
-- [x] Keep PDF annotations read-only until editing is implemented.
-- [x] Add unit coverage for PDF panel read-only action decisions and bulk delete exclusion.
+- [x] Keep PDF annotations read-only during slice 2 until editing is implemented.
+- [x] Add unit coverage for PDF panel action decisions and bulk delete behavior.
 - [x] Hide Readium annotation import/export controls in PDF readers until a PDF-specific exchange format exists.
 
 ### Navigation
@@ -170,21 +170,21 @@ Use the checkboxes as delivery state:
 ### Editing
 
 - [x] Preserve `pdfAnnotation` in the reusable annotation panel save-payload helper before exposing PDF editing.
-- [ ] Enable editing comment text for PDF annotations.
-- [ ] Enable editing color for PDF annotations.
-- [ ] Enable editing tags for PDF annotations.
-- [ ] Sync edited color/style back to the PDF webview.
+- [x] Enable editing comment text for PDF annotations.
+- [x] Enable editing color for PDF annotations.
+- [x] Enable editing tags for PDF annotations.
+- [x] Sync edited color/style back to the PDF webview.
 - [x] Add tests proving future comment edit payloads do not remove `pdfAnnotation`.
-- [ ] Add tests proving color edits update the webview rendering.
+- [x] Add tests proving color edits update the webview rendering.
 - [x] Add tests proving future tag edit payloads do not remove `pdfAnnotation`.
 
 ### Deletion
 
-- [ ] Enable deletion of PDF annotations from the parent UI.
-- [ ] Ensure deleted PDF notes are removed from persistence.
-- [ ] Ensure deleted PDF annotations disappear from the PDF webview.
-- [ ] Decide whether deletion uses full `annotations:sync` or a narrower `annotations:delete` event.
-- [ ] Add regression tests for deleting one PDF annotation without removing unrelated PDF annotations.
+- [x] Enable deletion of PDF annotations from the parent UI.
+- [x] Ensure deleted PDF notes are removed from persistence.
+- [x] Ensure deleted PDF annotations disappear from the PDF webview.
+- [x] Decide whether deletion uses full `annotations:sync` or a narrower `annotations:delete` event.
+- [x] Add regression tests for deleting one PDF annotation without removing unrelated PDF annotations.
 
 ## Needed For Multi-Page Support
 

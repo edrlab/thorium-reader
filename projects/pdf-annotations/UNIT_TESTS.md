@@ -176,9 +176,11 @@ Add:
 - `P0 Existing` `filterPdfAnnotationNotes()` preserves input order.
 - `P0 Existing` `noteToPdfAnnotation()` maps `uuid` to transport `id`.
 - `P0 Existing` `noteToPdfAnnotation()` maps type, page, rects, and quote exactly.
+- `P0 Existing` `noteToPdfAnnotation()` maps note color and draw type to transport style.
+- `P0 Existing` `noteToPdfAnnotation()` falls back to `solid_background` for unsupported PDF draw types.
 - `P0 Existing` `noteToPdfAnnotation()` returns `undefined` for non-annotation notes.
 - `P0 Existing` `noteToPdfAnnotation()` returns `undefined` for annotation notes without `pdfAnnotation`.
-- `P0 Existing` `noteToPdfAnnotation()` deep-copies rects so later note mutation does not mutate transport output.
+- `P0 Existing` `noteToPdfAnnotation()` deep-copies rects and color so later note mutation does not mutate transport output.
 - `P0 Existing` `noteToPdfAnnotation()` preserves `quote: undefined` without inventing an empty string.
 - `P0 Existing` `pdfAnnotationDraftToNote()` maps type, page, rects, and quote to `note.pdfAnnotation`.
 - `P0 Existing` `pdfAnnotationDraftToNote()` sets first-slice defaults: `group: "annotation"`, `textualValue: ""`, `tags: []`, and `drawType: EDrawType.solid_background`.
@@ -215,6 +217,8 @@ Add:
 - `P0 Existing` transport list deduplicates by annotation id.
 - `P0 Existing` transport list gives `extraNote` precedence when it has the same id as an existing note.
 - `P0 Existing` transport list preserves deterministic order for existing notes.
+- `P0 Existing` transport list reflects edited color and draw type.
+- `P0 Existing` transport list excludes deleted PDF notes because absent notes are absent from the next snapshot.
 - `P0 Existing` create-request handling ignores missing payload or missing draft.
 - `P0 Existing` create-request handling passes default color, creator, next index, and current timestamp to `pdfAnnotationDraftToNote()`.
 - `P0 Existing` create-request handling dispatches one `addUpdatePdfAnnotationNote` action with the publication id.
@@ -284,7 +288,9 @@ Add:
 - `P0 Existing` highlight elements are skipped when converted viewport width or height is below `0.5`.
 - `P0 Existing` overlay layer is `aria-hidden`.
 - `P0 Existing` overlay layer and highlight elements keep `pointer-events: none`.
-- `P0 Existing` overlay rendering uses the fixed first-slice highlight style until color/style transport is implemented.
+- `P0 Existing` overlay rendering applies transported PDF colors and draw types.
+- `P0 Existing` overlay rendering falls back to default color and solid style for legacy snapshots.
+- `P0 Existing` snapshot replacement updates edited overlay style and removes deleted annotations.
 
 ## P1 Tests Needed For Stable Core Architecture
 
@@ -325,14 +331,14 @@ Target modules:
 - `pdfAnnotationConverters.ts`
 - future transport type helpers.
 
-Add before PDF color/style editing:
+Existing coverage:
 
-- `P1 Needed` note color maps to transport color.
-- `P1 Needed` transport color maps back to overlay style.
-- `P1 Needed` draw type maps to transport style.
-- `P1 Needed` unsupported draw types fall back to a documented render style.
-- `P1 Needed` opacity is either transported or derived consistently from draw type.
-- `P1 Needed` older persisted notes without color/style still render with defaults.
+- `P1 Existing` note color maps to transport color.
+- `P1 Existing` transport color maps back to overlay style.
+- `P1 Existing` draw type maps to transport style.
+- `P1 Existing` unsupported draw types fall back to a documented render style.
+- `P1 Existing` opacity is derived by webview draw-type rendering policy.
+- `P1 Existing` older runtime snapshots without color/style still render with defaults.
 
 ## P2 Tests For Future User-Facing Slices
 
@@ -351,8 +357,8 @@ Add:
 - `P2 Existing` PDF annotation sorting uses page number, vertical rect position, then horizontal rect position.
 - `P2 Existing` PDF annotation navigation targets are built from id, page, and the normalized first rect.
 - `P2 Existing` invalid PDF annotation page or rect data is rejected before navigation dispatch.
-- `P2 Existing` PDF annotation panel action model keeps PDF cards non-editable and non-deletable.
-- `P2 Existing` bulk delete excludes PDF annotations from the deletion candidate list.
+- `P2 Existing` PDF annotation panel action model allows PDF cards to be edited and deleted.
+- `P2 Existing` bulk delete includes PDF annotations in the deletion candidate list.
 - `P2 Existing` Readium annotation import/export controls are unavailable in PDF reader context.
 - `P2 Existing` PDF annotation cards display color, creator, and date metadata through existing panel metadata fields.
 - `P2 Existing` EPUB annotation cards keep existing locator-based behavior.

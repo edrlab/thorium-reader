@@ -106,7 +106,6 @@ import {
     getAnnotationPanelNavigation,
     getAnnotationSelectionText,
     getPdfAnnotationPageLabel,
-    isPdfAnnotationPanelNote,
 } from "readium-desktop/renderer/reader/pdf/pdfAnnotationPanel";
 
 import DOMPurify from "dompurify";
@@ -475,7 +474,6 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
     const dockedMode = dockingMode !== "full";
     const { annotation, isEdited, triggerEdition } = props;
     const { uuid, textualValue, tags: tagsStringArrayMaybeUndefined } = annotation;
-    const isPdfAnnotation = isPdfAnnotationPanelNote(annotation);
     const canEditAnnotation = canEditAnnotationInPanel(annotation);
     const canDeleteAnnotation = canDeleteAnnotationInPanel(annotation);
     const isEditing = isEdited && canEditAnnotation;

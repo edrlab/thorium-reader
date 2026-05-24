@@ -6,6 +6,8 @@
 // ==LICENSE-END
 
 import type { IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN, IEventPayload_R2_EVENT_WEBVIEW_KEYUP } from "@r2-navigator-js/electron/common/events";
+import type { IColor } from "@r2-navigator-js/electron/common/highlight";
+import type { TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 import type { IEventBus } from "./eventBus";
 
 // export type IPdfPlayerScale = "fit" | "width" | "50" | "100" | "150" | "200" | "300" | "500";
@@ -27,8 +29,12 @@ export interface TPdfAnnotationDraftTransport {
     quote?: string;
 }
 
+export type TPdfAnnotationDrawType = Exclude<TDrawType, "bookmark">;
+
 export interface TPdfAnnotationTransport extends TPdfAnnotationDraftTransport {
     id: string;
+    color: IColor;
+    drawType: TPdfAnnotationDrawType;
 }
 
 export interface TPdfAnnotationNavigationTarget {

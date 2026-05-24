@@ -190,7 +190,7 @@ Slice 2:
 
 Slice 3:
 
-- Edit comment, color, and tags on a PDF annotation.
+- Edit comment, color, draw type, and tags on a PDF annotation.
 - Confirm `pdfAnnotation` survives every save path.
 - Delete a PDF annotation and confirm the webview overlay disappears.
 
@@ -202,6 +202,6 @@ Slice 3:
 - First-slice selections are single-page only.
 - The webview emits drafts without canonical ids.
 - The host creates canonical notes and synchronizes official state back to the webview.
-- First-slice rendering is a fixed solid highlight.
+- First-slice rendering started as a fixed solid highlight; slice 3 transports color and PDF-supported draw type for webview overlay rendering.
 - PDF annotations are scoped to the active PDF context; multi-PDF publication support is not included.
-- Annotation panel, navigation, editing, deletion, search, export/import, and print support are later slices.
+- Annotation panel display/navigation, editing, and deletion are implemented slices; overlay selection/focus, search, export/import, and print support remain later slices.

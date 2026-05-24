@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 
 const harnessDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(harnessDir, "../../..");
-const port = Number(process.argv[2]) || 4173;
+const defaultPort = Number(process.argv[2]) || 4173;
 
 const mimeTypes = new Map([
     [".bcmap", "application/octet-stream"],
@@ -71,54 +71,112 @@ function parseRange(rangeHeader, fileSize) {
     };
 }
 
-const server = createServer(async (request, response) => {
-    const url = new URL(request.url || "/", `http://${request.headers.host || "localhost"}`);
-    const filePath = resolveRequestPath(url.pathname);
+export function createHarnessServer() {
+    return createServer(async (request, response) => {
+        const url = new URL(request.url || "/", `http://${request.headers.host || "localhost"}`);
+        const filePath = resolveRequestPath(url.pathname);
 
-    if (!filePath) {
-        response.writeHead(403);
-        response.end("Forbidden");
-        return;
-    }
+        if (!filePath) {
+            response.writeHead(403);
+            response.end("Forbidden");
+            return;
+        }
 
-    try {
-        await access(filePath, constants.R_OK);
-    } catch {
-        response.writeHead(404);
-        response.end("Not found");
-        return;
-    }
+        try {
+            await access(filePath, constants.R_OK);
+        } catch {
+            response.writeHead(404);
+            response.end("Not found");
+            return;
+        }
 
-    const stats = statSync(filePath);
-    if (!stats.isFile()) {
-        response.writeHead(404);
-        response.end("Not found");
-        return;
-    }
+        const stats = statSync(filePath);
+        if (!stats.isFile()) {
+            response.writeHead(404);
+            response.end("Not found");
+            return;
+        }
 
-    const contentType = mimeTypes.get(extname(filePath).toLowerCase()) || "application/octet-stream";
-    const range = parseRange(request.headers.range, stats.size);
+        const contentType = mimeTypes.get(extname(filePath).toLowerCase()) || "application/octet-stream";
+        const range = parseRange(request.headers.range, stats.size);
 
-    if (range) {
-        response.writeHead(206, {
+        if (range) {
+            response.writeHead(206, {
+                "Accept-Ranges": "bytes",
+                "Content-Length": range.end - range.start + 1,
+                "Content-Range": `bytes ${range.start}-${range.end}/${stats.size}`,
+                "Content-Type": contentType,
+            });
+            createReadStream(filePath, range).pipe(response);
+            return;
+        }
+
+        response.writeHead(200, {
             "Accept-Ranges": "bytes",
-            "Content-Length": range.end - range.start + 1,
-            "Content-Range": `bytes ${range.start}-${range.end}/${stats.size}`,
+            "Content-Length": stats.size,
             "Content-Type": contentType,
         });
-        createReadStream(filePath, range).pipe(response);
-        return;
-    }
-
-    response.writeHead(200, {
-        "Accept-Ranges": "bytes",
-        "Content-Length": stats.size,
-        "Content-Type": contentType,
+        createReadStream(filePath).pipe(response);
     });
-    createReadStream(filePath).pipe(response);
-});
+}
 
-server.listen(port, "127.0.0.1", () => {
-    console.log(`PDF annotation harness: http://127.0.0.1:${port}/projects/pdf-annotations/harness/standalone.html`);
-    console.log(`Serving repository root: ${repoRoot}`);
-});
+export function startHarnessServer(port = defaultPort) {
+    const server = createHarnessServer();
+
+    return new Promise((resolve, reject) => {
+        const onError = (error) => {
+            reject(error);
+        };
+        server.once("error", onError);
+        server.listen(port, "127.0.0.1", () => {
+            server.off("error", onError);
+            console.log(`PDF annotation harness: http://127.0.0.1:${port}/projects/pdf-annotations/harness/standalone.html`);
+            console.log(`Serving repository root: ${repoRoot}`);
+            resolve(server);
+        });
+    });
+}
+
+export function closeHarnessServer(server) {
+    return new Promise((resolve, reject) => {
+        server.close((error) => {
+            if (error) {
+                reject(error);
+                return;
+            }
+            resolve();
+        });
+    });
+}
+
+export function installHarnessServerShutdown(server) {
+    let closing = false;
+    const shutdown = async (signal) => {
+        if (closing) {
+            return;
+        }
+
+        closing = true;
+        console.log(`PDF annotation harness shutting down: ${signal}`);
+        try {
+            await closeHarnessServer(server);
+            process.exit(0);
+        } catch (error) {
+            console.error("PDF annotation harness shutdown failed", error);
+            process.exit(1);
+        }
+    };
+
+    process.once("SIGINT", () => {
+        void shutdown("SIGINT");
+    });
+    process.once("SIGTERM", () => {
+        void shutdown("SIGTERM");
+    });
+}
+
+const isDirectRun = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if (isDirectRun) {
+    const server = await startHarnessServer(defaultPort);
+    installHarnessServerShutdown(server);
+}

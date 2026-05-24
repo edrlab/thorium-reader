@@ -198,6 +198,7 @@ function annotation(
     rects = [
         { x1: 10, y1: 20, x2: 30, y2: 40 },
     ],
+    overrides: Partial<TPdfAnnotationTransport> = {},
 ): TPdfAnnotationTransport {
     return {
         id,
@@ -205,6 +206,13 @@ function annotation(
         page,
         rects,
         quote: `quote-${id}`,
+        color: {
+            red: 254,
+            green: 243,
+            blue: 189,
+        },
+        drawType: "solid_background",
+        ...overrides,
     };
 }
 
@@ -577,6 +585,122 @@ test("overlay rendering creates passive page layers and positioned highlights fo
 
     harness.pdfJsEventBus.emit("pagerendered", { pageNumber: 1 });
     expect(overlayLayers(first.pageElement)).toHaveLength(1);
+});
+
+test("overlay rendering applies transported PDF colors and draw types", () => {
+    const page = createRenderedPage(1);
+    const harness = createHarness([page]);
+    harness.controller.init();
+
+    harness.thoriumBus.dispatch("annotations:sync", {
+        annotations: [
+            annotation("solid", 1, [
+                { x1: 10, y1: 20, x2: 30, y2: 40 },
+            ], {
+                color: { red: 10, green: 20, blue: 30 },
+                drawType: "solid_background",
+            }),
+            annotation("underline", 1, [
+                { x1: 10, y1: 50, x2: 30, y2: 70 },
+            ], {
+                color: { red: 40, green: 50, blue: 60 },
+                drawType: "underline",
+            }),
+            annotation("strikethrough", 1, [
+                { x1: 10, y1: 80, x2: 30, y2: 100 },
+            ], {
+                color: { red: 70, green: 80, blue: 90 },
+                drawType: "strikethrough",
+            }),
+            annotation("outline", 1, [
+                { x1: 10, y1: 110, x2: 30, y2: 130 },
+            ], {
+                color: { red: 100, green: 110, blue: 120 },
+                drawType: "outline",
+            }),
+        ],
+    });
+
+    const byId = Object.fromEntries(highlights(page.pageElement).map((highlight) => [
+        highlight.dataset.annotationId,
+        highlight,
+    ]));
+
+    expect(byId.solid.dataset.drawType).toBe("solid_background");
+    expect(byId.solid.style.backgroundColor).toBe("rgb(10, 20, 30)");
+    expect(byId.solid.style.opacity).toBe("0.35");
+    expect(byId.solid.style.mixBlendMode).toBe("multiply");
+
+    expect(byId.underline.dataset.drawType).toBe("underline");
+    expect(byId.underline.style.backgroundColor).toBe("transparent");
+    expect(byId.underline.style.borderBottom).toBe("2px solid rgb(40, 50, 60)");
+
+    expect(byId.strikethrough.dataset.drawType).toBe("strikethrough");
+    expect(byId.strikethrough.style.backgroundColor).toBe("transparent");
+    expect(byId.strikethrough.style.borderTop).toBe("2px solid rgb(70, 80, 90)");
+    expect(byId.strikethrough.style.transform).toBe("translateY(50%)");
+
+    expect(byId.outline.dataset.drawType).toBe("outline");
+    expect(byId.outline.style.backgroundColor).toBe("transparent");
+    expect(byId.outline.style.border).toBe("2px solid rgb(100, 110, 120)");
+});
+
+test("overlay rendering falls back for legacy snapshots without color or draw type", () => {
+    const page = createRenderedPage(1);
+    const harness = createHarness([page]);
+    harness.controller.init();
+
+    harness.thoriumBus.dispatch("annotations:sync", {
+        annotations: [
+            annotation("legacy", 1, [
+                { x1: 10, y1: 20, x2: 30, y2: 40 },
+            ], {
+                color: undefined as unknown as TPdfAnnotationTransport["color"],
+                drawType: undefined as unknown as TPdfAnnotationTransport["drawType"],
+            }),
+        ],
+    });
+
+    const [highlight] = highlights(page.pageElement);
+    expect(highlight.dataset.drawType).toBe("solid_background");
+    expect(highlight.style.backgroundColor).toBe("rgb(254, 243, 189)");
+    expect(highlight.style.opacity).toBe("0.35");
+});
+
+test("annotations:sync updates edited overlay style and removes deleted annotations", () => {
+    const page = createRenderedPage(1);
+    const harness = createHarness([page]);
+    harness.controller.init();
+
+    harness.thoriumBus.dispatch("annotations:sync", {
+        annotations: [
+            annotation("edited", 1),
+            annotation("deleted", 1, [
+                { x1: 40, y1: 50, x2: 60, y2: 70 },
+            ]),
+        ],
+    });
+    expect(highlights(page.pageElement).map((highlight) => highlight.dataset.annotationId)).toEqual([
+        "edited",
+        "deleted",
+    ]);
+
+    harness.thoriumBus.dispatch("annotations:sync", {
+        annotations: [
+            annotation("edited", 1, [
+                { x1: 10, y1: 20, x2: 30, y2: 40 },
+            ], {
+                color: { red: 20, green: 120, blue: 220 },
+                drawType: "outline",
+            }),
+        ],
+    });
+
+    const [highlight] = highlights(page.pageElement);
+    expect(highlights(page.pageElement)).toHaveLength(1);
+    expect(highlight.dataset.annotationId).toBe("edited");
+    expect(highlight.dataset.drawType).toBe("outline");
+    expect(highlight.style.border).toBe("2px solid rgb(20, 120, 220)");
 });
 
 test("viewer:go-to-annotation navigates by annotation id and flashes the rendered highlight", () => {

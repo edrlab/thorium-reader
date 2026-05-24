@@ -17,12 +17,5 @@ export default defineConfig({
         browserName: "chromium",
         trace: "retain-on-failure",
     },
-    webServer: {
-        command: `node projects/pdf-annotations/harness/test-server.mjs ${port}`,
-        cwd: process.cwd(),
-        reuseExistingServer: !process.env.CI,
-        timeout: 120000,
-        url: `${baseURL}/projects/pdf-annotations/harness/standalone.html`,
-    },
     workers: 1,
 });

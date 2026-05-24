@@ -84,7 +84,35 @@ test("noteToPdfAnnotation maps note identity and PDF target fields to transport"
             { x1: 50, y1: 60, x2: 70, y2: 80 },
         ],
         quote: "selected text",
+        color: baseColor,
+        drawType: "solid_background",
     });
+});
+
+test("noteToPdfAnnotation transports edited note color and draw type", () => {
+    expect(noteToPdfAnnotation(createPdfAnnotationNote({
+        color: {
+            red: 90,
+            green: 91,
+            blue: 92,
+        },
+        drawType: EDrawType.underline,
+    }))).toEqual(expect.objectContaining({
+        color: {
+            red: 90,
+            green: 91,
+            blue: 92,
+        },
+        drawType: "underline",
+    }));
+});
+
+test("noteToPdfAnnotation falls back to solid PDF draw type for unsupported note styles", () => {
+    expect(noteToPdfAnnotation(createPdfAnnotationNote({
+        drawType: EDrawType.bookmark,
+    }))).toEqual(expect.objectContaining({
+        drawType: "solid_background",
+    }));
 });
 
 test("noteToPdfAnnotation rejects notes that are not renderable PDF annotations", () => {
@@ -115,6 +143,7 @@ test("noteToPdfAnnotation deep-copies rects and preserves an undefined quote", (
     }
 
     note.pdfAnnotation.rects[0].x1 = 999;
+    note.color.red = 999;
 
     expect(transport).toEqual({
         id: "note-1",
@@ -124,6 +153,12 @@ test("noteToPdfAnnotation deep-copies rects and preserves an undefined quote", (
             { x1: 1, y1: 2, x2: 3, y2: 4 },
         ],
         quote: undefined,
+        color: {
+            red: 12,
+            green: 34,
+            blue: 56,
+        },
+        drawType: "solid_background",
     });
 });
 

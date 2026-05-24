@@ -74,6 +74,8 @@ test("transport list filters, converts, and preserves deterministic note order",
                 { x1: 10, y1: 20, x2: 30, y2: 40 },
             ],
             quote: "quote-first",
+            color,
+            drawType: "solid_background",
         },
         {
             id: "second",
@@ -83,7 +85,34 @@ test("transport list filters, converts, and preserves deterministic note order",
                 { x1: 50, y1: 60, x2: 70, y2: 80 },
             ],
             quote: "second quote",
+            color,
+            drawType: "solid_background",
         },
+    ]);
+});
+
+test("transport list reflects edited color and draw type and excludes deleted notes absent from state", () => {
+    expect(buildPdfAnnotationTransportList([
+        createNote("kept", {
+            color: {
+                red: 80,
+                green: 90,
+                blue: 100,
+            },
+            drawType: EDrawType.outline,
+            tags: ["tag-after-edit"],
+            textualValue: "comment after edit",
+        }),
+    ])).toEqual([
+        expect.objectContaining({
+            id: "kept",
+            color: {
+                red: 80,
+                green: 90,
+                blue: 100,
+            },
+            drawType: "outline",
+        }),
     ]);
 });
 
@@ -119,6 +148,8 @@ test("transport list includes an extra note and lets it override an existing ann
                 { x1: 9, y1: 9, x2: 10, y2: 10 },
             ],
             quote: "new",
+            color,
+            drawType: "solid_background",
         },
         {
             id: "other",
@@ -128,6 +159,8 @@ test("transport list includes an extra note and lets it override an existing ann
                 { x1: 10, y1: 20, x2: 30, y2: 40 },
             ],
             quote: "quote-other",
+            color,
+            drawType: "solid_background",
         },
     ]);
 });

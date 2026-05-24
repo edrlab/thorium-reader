@@ -42,11 +42,11 @@ export function isPdfAnnotationPanelNote(annotation: INoteState): boolean {
 }
 
 export function canEditAnnotationInPanel(annotation: INoteState): boolean {
-    return !isPdfAnnotationPanelNote(annotation);
+    return annotation.group === "annotation";
 }
 
 export function canDeleteAnnotationInPanel(annotation: INoteState): boolean {
-    return !isPdfAnnotationPanelNote(annotation);
+    return annotation.group === "annotation";
 }
 
 export function filterDeletableAnnotationPanelNotes(annotations: INoteState[]): INoteState[] {

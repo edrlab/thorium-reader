@@ -14,8 +14,16 @@ interface IAnnotationDraft {
     quote?: string;
 }
 
+interface IColor {
+    red: number;
+    green: number;
+    blue: number;
+}
+
 interface IAnnotation extends IAnnotationDraft {
     id: string;
+    color: IColor;
+    drawType: "solid_background" | "underline" | "strikethrough" | "outline";
 }
 
 interface IPdfJsApplicationWindow extends Window {
@@ -31,8 +39,10 @@ interface IHarnessApi {
     annotations: () => IAnnotation[];
     clear: () => void;
     createHighlight: () => void;
+    deleteLatestAnnotation: () => void;
     destroy: () => void;
     goToAnnotation: (id?: string) => void;
+    styleLatestAnnotation: () => void;
     sync: () => void;
 }
 
@@ -40,6 +50,16 @@ const HARNESS_ID = "thorium-pdf-annotation-harness";
 const STYLE_ID = "thorium-pdf-annotation-harness-style";
 const STATUS_ID = "thorium-pdf-annotation-harness-status";
 const LOG_ID = "thorium-pdf-annotation-harness-log";
+const DEFAULT_COLOR: IColor = {
+    red: 254,
+    green: 243,
+    blue: 189,
+};
+const EDITED_COLOR: IColor = {
+    red: 37,
+    green: 99,
+    blue: 235,
+};
 
 const typedWindow = window as IPdfJsApplicationWindow;
 
@@ -198,6 +218,8 @@ function createPanel() {
         <div class="actions">
             <button id="thorium-pdf-annotation-create" type="button">Create highlight</button>
             <button class="secondary" id="thorium-pdf-annotation-go-to-latest" type="button">Go to latest</button>
+            <button class="secondary" id="thorium-pdf-annotation-style-latest" type="button">Style latest</button>
+            <button class="secondary" id="thorium-pdf-annotation-delete-latest" type="button">Delete latest</button>
             <button class="secondary" id="thorium-pdf-annotation-clear" type="button">Clear</button>
         </div>
         <div id="${STATUS_ID}">Starting</div>
@@ -210,10 +232,12 @@ function createPanel() {
     return {
         clearButton: document.getElementById("thorium-pdf-annotation-clear") as HTMLButtonElement,
         createButton: document.getElementById("thorium-pdf-annotation-create") as HTMLButtonElement,
+        deleteLatestButton: document.getElementById("thorium-pdf-annotation-delete-latest") as HTMLButtonElement,
         goToButton: document.getElementById("thorium-pdf-annotation-go-to-latest") as HTMLButtonElement,
         log: document.getElementById(LOG_ID) as HTMLPreElement,
         panel,
         status: document.getElementById(STATUS_ID) as HTMLDivElement,
+        styleLatestButton: document.getElementById("thorium-pdf-annotation-style-latest") as HTMLButtonElement,
         style,
     };
 }
@@ -228,12 +252,14 @@ async function init() {
     const annotations: IAnnotation[] = [];
     const controller = createPdfAnnotationController(bus as any, getApplication);
 
-    function updateGoToButton() {
+    function updateAnnotationActionButtons() {
+        panel.deleteLatestButton.disabled = !annotations.length;
         panel.goToButton.disabled = !annotations.length;
+        panel.styleLatestButton.disabled = !annotations.length;
     }
 
     function setStatus(message: string) {
-        updateGoToButton();
+        updateAnnotationActionButtons();
         panel.status.textContent = `${message} | annotations: ${annotations.length}`;
     }
 
@@ -257,6 +283,38 @@ async function init() {
     function clear() {
         annotations.splice(0, annotations.length);
         appendLog("clear annotations");
+        sync();
+    }
+
+    function styleLatestAnnotation() {
+        const annotation = annotations[annotations.length - 1];
+        if (!annotation) {
+            appendLog("style ignored: missing latest annotation");
+            setStatus("Style ignored");
+            return;
+        }
+
+        annotation.color = { ...EDITED_COLOR };
+        annotation.drawType = "outline";
+        appendLog("annotation styled", {
+            id: annotation.id,
+            color: annotation.color,
+            drawType: annotation.drawType,
+        });
+        sync();
+    }
+
+    function deleteLatestAnnotation() {
+        const annotation = annotations.pop();
+        if (!annotation) {
+            appendLog("delete ignored: missing latest annotation");
+            setStatus("Delete ignored");
+            return;
+        }
+
+        appendLog("annotation deleted", {
+            id: annotation.id,
+        });
         sync();
     }
 
@@ -305,6 +363,8 @@ async function init() {
         const annotation = {
             ...payload.draft,
             id: makeId(),
+            color: { ...DEFAULT_COLOR },
+            drawType: "solid_background" as const,
         };
         annotations.push(annotation);
         appendLog("annotation stored", {
@@ -319,23 +379,29 @@ async function init() {
 
     panel.createButton.addEventListener("click", createHighlight);
     panel.clearButton.addEventListener("click", clear);
+    panel.deleteLatestButton.addEventListener("click", deleteLatestAnnotation);
     panel.goToButton.addEventListener("click", goToLatestAnnotation);
-    updateGoToButton();
+    panel.styleLatestButton.addEventListener("click", styleLatestAnnotation);
+    updateAnnotationActionButtons();
 
     typedWindow.__thoriumPdfAnnotationHarness = {
         annotations: () => [...annotations],
         clear,
         createHighlight,
+        deleteLatestAnnotation,
         destroy: () => {
             controller.destroy();
             panel.createButton.removeEventListener("click", createHighlight);
             panel.clearButton.removeEventListener("click", clear);
+            panel.deleteLatestButton.removeEventListener("click", deleteLatestAnnotation);
             panel.goToButton.removeEventListener("click", goToLatestAnnotation);
+            panel.styleLatestButton.removeEventListener("click", styleLatestAnnotation);
             panel.panel.remove();
             panel.style.remove();
             delete typedWindow.__thoriumPdfAnnotationHarness;
         },
         goToAnnotation,
+        styleLatestAnnotation,
         sync,
     };
 

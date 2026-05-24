@@ -6,7 +6,7 @@ Review date: 2026-05-24
 
 Observed branch: `feat/pdf-annotations`
 
-This review covers the first PDF annotations slice and the slice 2 read-only interaction path: application-level PDF text highlights created from PDF.js selections, persisted as Thorium notes, rendered back into the PDF webview as overlays, listed in the annotation panel, and navigated from the panel back to the PDF highlight.
+This review covers the current PDF annotations slices: application-level PDF text highlights created from PDF.js selections, persisted as Thorium notes, rendered back into the PDF webview as overlays, listed in the annotation panel, navigated from the panel back to the PDF highlight, and edited or deleted from the panel.
 
 No Electron runtime test was performed during this review. The notes below are based on static reading of the branch and the project documentation.
 
@@ -25,6 +25,10 @@ No Electron runtime test was performed during this review. The notes below are b
 2026-05-24: Fixed the R1 annotation panel `locatorExtended` assumption. Added `pdfAnnotationPanel.ts` helpers and unit tests for PDF quote/page display, PDF page/rectangle sorting, and edit-save payloads preserving `pdfAnnotation`. Result: 5 PDF annotation Jest suites passed, 61 tests passed. A full `tsc --noEmit --project tsconfig.jest.json` check was attempted again but remains blocked by existing repository-wide CommonJS/ESM diagnostics outside this PDF annotation slice.
 
 2026-05-24: Implemented the slice 2 read-only interaction path. PDF annotations are shown as read-only cards, panel clicks dispatch `viewer:go-to-annotation`, the webview scrolls to the target page/rect and flashes the rendered highlight, and the PDF panel hides Readium annotation import/export controls. Result: 5 PDF annotation Jest suites passed, 70 tests passed. A full `tsc --noEmit --project tsconfig.jest.json` check was attempted again but remains blocked by existing repository-wide CommonJS/ESM diagnostics outside this PDF annotation slice.
+
+2026-05-24: Implemented the slice 3 editing and deletion path. PDF annotations now transport color and draw type, panel save payloads edit comment/color/style/tags while preserving `pdfAnnotation`, panel deletion uses the existing note removal path, and the webview redraws edited or deleted overlays from full `annotations:sync` snapshots. Result: 5 PDF annotation Jest suites passed, 76 tests passed. The standalone Playwright harness test reported `ok` for create/style/navigate/delete; the wrapper process timed out after the passing result while waiting on harness server shutdown, and no Node harness server remained afterward.
+
+2026-05-24: Fixed the standalone Playwright harness server lifecycle by exporting explicit start/close helpers from `serve.mjs` and owning the server from the Playwright test `beforeAll`/`afterAll` hooks instead of relying on implicit `webServer` teardown. Result: the create/style/navigate/delete harness test passed and the Playwright command exited cleanly.
 
 ## Summary
 
@@ -130,13 +134,13 @@ Known residual limits:
 
 ### F7 - Panel Interaction Decision Coverage
 
-Status: fixed in slice 2.
+Status: fixed in slice 2 and updated for slice 3.
 
-`ReaderMenu.tsx` now delegates annotation panel navigation, edit/delete availability, and bulk-delete filtering to pure helpers in `pdfAnnotationPanel.ts`. The unit tests cover PDF read-only action decisions, EPUB edit/delete preservation, bulk delete exclusion for PDF annotations, EPUB-vs-PDF navigation routing, and invalid PDF navigation rejection before panel dispatch.
+`ReaderMenu.tsx` now delegates annotation panel navigation, edit/delete availability, and bulk-delete filtering to pure helpers in `pdfAnnotationPanel.ts`. The unit tests cover PDF edit/delete action decisions, EPUB edit/delete preservation, bulk delete inclusion for PDF annotations, EPUB-vs-PDF navigation routing, and invalid PDF navigation rejection before panel dispatch.
 
 Why this fix is in scope:
 
-- Slice 2 behavior depends on panel clicks and read-only controls, not only on lower-level PDF geometry.
+- Slice 2 and slice 3 behavior depends on panel clicks and edit/delete controls, not only on lower-level PDF geometry.
 - The existing test stack has no React Testing Library or Enzyme pattern, so pure decision helpers give deterministic coverage without pulling in Redux/Electron component mounting.
 - Using the helpers in `ReaderMenu.tsx` keeps the tested model connected to the panel implementation.
 
@@ -187,22 +191,24 @@ Revisit trigger:
 
 ## Major Risks
 
-### R2 - Color and style are not transported
+### R2 - Color and style transport
+
+Status: fixed in slice 3 for application-owned PDF overlays.
 
 Severity: medium to high
 
-Thorium notes persist `color` and `drawType`, but first-slice `TPdfAnnotationTransport` sends only id, type, page, rects, and quote. The webview renders a fixed yellow highlight.
+Thorium notes persist `color` and `drawType`; slice 3 now sends them through `TPdfAnnotationTransport` and renders `solid_background`, `underline`, `strikethrough`, and `outline` in the PDF webview.
 
 Impact:
 
-- Future color edits can be saved but not reflected in the PDF view.
-- Underline, outline, or strikethrough support needs a contract change.
+- Color and style edits are reflected in application overlays after snapshot sync.
+- Native PDF annotation style, print rendering, and export/import style remain separate future contracts.
 
 Mitigation:
 
-- Extend transport with color and draw type before enabling editing.
-- Centralize note-to-transport conversion.
-- Define supported PDF annotation styles by slice.
+- Keep note-to-transport conversion centralized.
+- Keep unsupported draw types falling back to `solid_background`.
+- Revisit native PDF style, print, and export/import separately.
 
 ### R3 - PDF.js internal dependencies
 
@@ -314,15 +320,15 @@ Navigation gate completed in slice 2:
 - Added `viewer:go-to-annotation`.
 - Navigation targets the annotation id first, then falls back to page/rect and aligns the first rectangle.
 
-Before editing:
+Editing gate completed in slice 3:
 
 - Transport color/style to the webview.
 - Preserve `pdfAnnotation` in every note update path.
 - Add tests for comment/color/tag edits.
 
-Before deletion:
+Deletion gate completed in slice 3:
 
-- Decide between snapshot refresh and delete patch event.
+- Use full snapshot refresh instead of a delete patch event.
 - Ensure deleted overlays disappear after note state changes.
 
 Before multi-page selection:
@@ -356,5 +362,5 @@ First-slice checks:
 
 Follow-up checks:
 
-- PDF annotations do not appear in editable UI until save paths preserve `pdfAnnotation`.
+- PDF annotations remain editable only through save paths that preserve `pdfAnnotation`.
 - Color/style transport exists before color editing.

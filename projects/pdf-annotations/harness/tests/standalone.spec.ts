@@ -1,13 +1,38 @@
 import { expect, type Frame, type Page, test } from "@playwright/test";
 
+type THarnessServer = {
+    close: (callback?: (error?: Error) => void) => void;
+};
+
+let harnessServer: THarnessServer | undefined;
+let closeHarnessServer: ((server: THarnessServer) => Promise<void>) | undefined;
+
 declare global {
     interface Window {
         __thoriumPdfAnnotationHarness?: {
             annotations: () => unknown[];
+            deleteLatestAnnotation: () => void;
             goToAnnotation: (id?: string) => void;
+            styleLatestAnnotation: () => void;
         };
     }
 }
+
+test.beforeAll(async () => {
+    await import("../build.mjs");
+    const serverModule = await import("../serve.mjs") as {
+        closeHarnessServer: (server: THarnessServer) => Promise<void>;
+        startHarnessServer: (port?: number) => Promise<THarnessServer>;
+    };
+    closeHarnessServer = serverModule.closeHarnessServer;
+    harnessServer = await serverModule.startHarnessServer(Number(process.env.PDF_ANNOTATION_HARNESS_PORT) || 4173);
+});
+
+test.afterAll(async () => {
+    if (harnessServer && closeHarnessServer) {
+        await closeHarnessServer(harnessServer);
+    }
+});
 
 async function getPdfJsFrame(page: Page) {
     const frameElement = page.locator("#pdfjs-frame");
@@ -76,7 +101,7 @@ async function selectFirstVisibleTextRun(frame: Frame) {
     });
 }
 
-test("creates, navigates to, and clears a PDF highlight through the standalone harness", async ({ page }) => {
+test("creates, styles, navigates to, and deletes a PDF highlight through the standalone harness", async ({ page }) => {
     await page.goto("/projects/pdf-annotations/harness/standalone.html", {
         waitUntil: "domcontentloaded",
     });
@@ -102,12 +127,32 @@ test("creates, navigates to, and clears a PDF highlight through the standalone h
     expect(firstHighlightBox?.width || 0).toBeGreaterThan(0.5);
     expect(firstHighlightBox?.height || 0).toBeGreaterThan(0.5);
 
+    await expect(frame.locator("#thorium-pdf-annotation-style-latest")).toBeEnabled();
+    await frame.locator("#thorium-pdf-annotation-style-latest").click();
+
+    await expect.poll(async () => frame.locator(".thorium-pdf-annotation-highlight[data-draw-type=\"outline\"]").count()).toBeGreaterThan(0);
+    const styledHighlight = await highlights.first().evaluate((element) => {
+        const style = window.getComputedStyle(element);
+
+        return {
+            backgroundColor: style.backgroundColor,
+            borderColor: style.borderTopColor,
+            borderStyle: style.borderTopStyle,
+            borderWidth: style.borderTopWidth,
+        };
+    });
+    expect(styledHighlight.backgroundColor).toBe("rgba(0, 0, 0, 0)");
+    expect(styledHighlight.borderColor).toBe("rgb(37, 99, 235)");
+    expect(styledHighlight.borderStyle).toBe("solid");
+    expect(styledHighlight.borderWidth).toBe("2px");
+
     await expect(frame.locator("#thorium-pdf-annotation-go-to-latest")).toBeEnabled();
     await frame.locator("#thorium-pdf-annotation-go-to-latest").click();
 
     await expect.poll(async () => frame.locator(".thorium-pdf-annotation-highlight[data-navigation-flash=\"true\"]").count()).toBeGreaterThan(0);
 
-    await frame.locator("#thorium-pdf-annotation-clear").click();
+    await expect(frame.locator("#thorium-pdf-annotation-delete-latest")).toBeEnabled();
+    await frame.locator("#thorium-pdf-annotation-delete-latest").click();
 
     await expect.poll(async () => frame.evaluate(() => {
         return window.__thoriumPdfAnnotationHarness?.annotations().length ?? -1;

@@ -1,8 +1,8 @@
-# PDF Annotations First-Slice Specification
+# PDF Annotations Specification
 
 ## Purpose
 
-This document is the implementation contract for the first PDF annotations slice in Thorium.
+This document is the implementation contract for the current PDF annotations slices in Thorium.
 
 The first slice implements the smallest useful loop:
 
@@ -15,13 +15,13 @@ The first slice implements the smallest useful loop:
 7. The webview renders the official highlight overlay.
 8. When the PDF is reopened, the host re-synchronizes persisted PDF annotations.
 
-The host is the only source of truth for identity, persistence, timestamps, creator metadata, and default color. The webview is responsible only for selection capture, coordinate conversion, and overlay rendering.
+The host is the only source of truth for identity, persistence, timestamps, creator metadata, comments, tags, color, and draw type. The webview is responsible only for selection capture, coordinate conversion, navigation alignment, and overlay rendering.
 
 ## Scope
 
 Included:
 
-- solid text highlights;
+- PDF text highlight targets;
 - single-page selections;
 - multi-line selections on one page;
 - webview-to-host creation drafts;
@@ -30,15 +30,15 @@ Included:
 - persisted annotation rehydration on PDF readiness;
 - overlay alignment after zoom and rotation changes;
 - annotation panel display of PDF quote and page metadata for persisted PDF notes;
-- read-only annotation panel navigation to PDF highlights through `viewer:go-to-annotation`;
+- annotation panel navigation to PDF highlights through `viewer:go-to-annotation`;
+- annotation panel editing of PDF annotation comment, color, draw type, and tags;
+- annotation panel deletion of PDF annotations through normal Thorium note removal;
 - hiding Readium annotation import/export controls in PDF readers until a PDF-specific exchange format exists;
-- preservation of `pdfAnnotation` when annotation panel helpers build future save payloads.
+- preservation of `pdfAnnotation` when annotation panel helpers build save payloads.
 
 Excluded:
 
 - overlay click selection/focus;
-- PDF annotation editing behavior;
-- deletion;
 - search;
 - print support;
 - export/import changes;
@@ -79,7 +79,7 @@ First-slice PDF note shape:
 
 ## Event Contract
 
-The PDF annotations project extends `IPdfPlayerEvent` with five annotation-specific events across slice 1 and slice 2.
+The PDF annotations project extends `IPdfPlayerEvent` with five annotation-specific events across slices 1, 2, and 3.
 
 ```ts
 export interface TPdfAnnotationRectTransport {
@@ -96,8 +96,12 @@ export interface TPdfAnnotationDraftTransport {
     quote?: string;
 }
 
+export type TPdfAnnotationDrawType = Exclude<TDrawType, "bookmark">;
+
 export interface TPdfAnnotationTransport extends TPdfAnnotationDraftTransport {
     id: string;
+    color: IColor;
+    drawType: TPdfAnnotationDrawType;
 }
 
 export interface TPdfAnnotationNavigationTarget {
@@ -135,7 +139,9 @@ Payload rules:
 
 - events carrying data use exactly one JSON-compatible object payload;
 - payloadless events are dispatched without arguments;
-- the webview never sends canonical ids, timestamps, creator metadata, document identity, color, or draw type in the first slice;
+- the webview never sends canonical ids, timestamps, creator metadata, document identity, color, or draw type in creation drafts;
+- `annotations:sync` carries host-owned color and draw type for rendering;
+- PDF annotation draw type supports `solid_background`, `underline`, `strikethrough`, and `outline`; `bookmark` is not a PDF highlight style;
 - `viewer:go-to-annotation` carries the canonical annotation id plus page/rect fallback;
 - the webview resolves `viewer:go-to-annotation` by id first when the annotation exists in its current snapshot, then falls back to the payload page/rect.
 
@@ -159,9 +165,15 @@ Note to transport:
 - `note.pdfAnnotation.type` -> `annotation.type`;
 - `note.pdfAnnotation.page` -> `annotation.page`;
 - `note.pdfAnnotation.rects` -> `annotation.rects`;
-- `note.pdfAnnotation.quote` -> `annotation.quote`.
+- `note.pdfAnnotation.quote` -> `annotation.quote`;
+- `note.color` -> `annotation.color`;
+- `note.drawType` -> `annotation.drawType` as a PDF-supported draw type, falling back to `solid_background` for unsupported note styles.
 
-The first-slice transport intentionally omits color and draw type. The webview renders a fixed solid highlight until color/style editing is introduced.
+Transport compatibility:
+
+- older runtime snapshots without color render with default yellow `rgb(254, 243, 189)`;
+- older runtime snapshots without draw type render as `solid_background`;
+- no persisted note migration is needed because color and draw type already live on `INoteState`.
 
 ## Host Algorithm
 
@@ -208,6 +220,24 @@ dispatch annotations:sync({ annotations })
 ```
 
 The host sends snapshots, not optimistic partial updates. The webview replaces its render map on every `annotations:sync`.
+
+## Editing And Deletion
+
+PDF annotation editing uses the existing annotation panel edit form:
+
+- comment edits update `note.textualValue`;
+- color edits update `note.color`;
+- style edits update `note.drawType`;
+- tag edits update `note.tags`;
+- save payloads must preserve `note.pdfAnnotation` unchanged except for defensive cloning;
+- edited notes flow through the existing `readerActions.note.addUpdate` path.
+
+PDF annotation deletion uses the existing Thorium note removal path:
+
+- single-card deletion dispatches `readerActions.note.remove` for that note;
+- bulk deletion includes PDF annotations in the deletion candidate list;
+- `Reader.tsx` reacts to the changed note list and sends a fresh `annotations:sync` snapshot;
+- no `annotations:delete`, `annotations:upsert`, or native PDF mutation is introduced in this slice.
 
 ## Webview Initialization
 
@@ -304,9 +334,11 @@ Overlay behavior:
 
 - one passive overlay layer per rendered page;
 - `pointer-events: none`;
-- fixed highlight color `#FEF3BD`;
-- fixed opacity `0.35`;
-- `mix-blend-mode: multiply`;
+- host-owned annotation color when present, defaulting to `rgb(254, 243, 189)`;
+- `solid_background` uses background fill, opacity `0.35`, and `mix-blend-mode: multiply`;
+- `underline` uses an opaque lower border stroke;
+- `strikethrough` uses an opaque middle stroke;
+- `outline` uses an opaque border stroke;
 - annotation id stored in `data-annotation-id`.
 
 ## Acceptance Criteria
@@ -320,13 +352,13 @@ Overlay behavior:
 - PDF copy, TOC, thumbnails, search, navigation, and preferences keep their existing behavior.
 - PDF annotations render in the annotation panel without requiring `locatorExtended`.
 - Clicking a PDF annotation card navigates to the page/rectangle target and flashes the rendered highlight.
-- PDF annotation cards remain read-only until editing and deletion have explicit contracts.
+- PDF annotation cards can edit comment, color, draw type, and tags without losing `pdfAnnotation`.
+- Edited PDF annotation color and draw type update the webview overlay after snapshot sync.
+- Deleting a PDF annotation removes the Thorium note and removes the webview overlay after snapshot sync.
 - PDF reader annotation panels do not expose Readium annotation import/export controls.
-- PDF annotation editing, deletion, export/import, and print support remain outside slice 2 acceptance.
+- PDF annotation export/import and print support remain outside slice 3 acceptance.
 
 ## Known Follow-Up Requirements
 
-- Transport color and draw type before enabling color/style editing.
-- Add an explicit PDF editing contract before enabling comment, color, tag, or draw-type edits.
-- Add an explicit PDF deletion synchronization contract before enabling deletion from the panel.
 - Add automated browser/Electron checks for real PDF.js navigation positioning.
+- Add explicit overlay selection/focus behavior before making highlights pointer-interactive.

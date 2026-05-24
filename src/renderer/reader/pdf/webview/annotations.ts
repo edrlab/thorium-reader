@@ -5,8 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import type { IColor } from "@r2-navigator-js/electron/common/highlight";
+
 import type {
     IEventBusPdfPlayer,
+    TPdfAnnotationDrawType,
     TPdfAnnotationDraftTransport,
     TPdfAnnotationNavigationTarget,
     TPdfAnnotationRectTransport,
@@ -21,9 +24,40 @@ import {
 
 const ANNOTATION_LAYER_CLASS = "thorium-pdf-annotation-layer";
 const ANNOTATION_HIGHLIGHT_CLASS = "thorium-pdf-annotation-highlight";
-const HIGHLIGHT_COLOR = "#FEF3BD";
+const DEFAULT_HIGHLIGHT_COLOR: IColor = {
+    red: 254,
+    green: 243,
+    blue: 189,
+};
 const HIGHLIGHT_OPACITY = "0.35";
 const DEBUG_PREFIX = "[Thorium PDF annotations]";
+
+function normalizeRgbChannel(value: unknown, fallback: number) {
+    return typeof value === "number" && Number.isFinite(value)
+        ? Math.max(0, Math.min(255, Math.round(value)))
+        : fallback;
+}
+
+function colorToCss(color?: Partial<IColor>) {
+    const red = normalizeRgbChannel(color?.red, DEFAULT_HIGHLIGHT_COLOR.red);
+    const green = normalizeRgbChannel(color?.green, DEFAULT_HIGHLIGHT_COLOR.green);
+    const blue = normalizeRgbChannel(color?.blue, DEFAULT_HIGHLIGHT_COLOR.blue);
+
+    return `rgb(${red}, ${green}, ${blue})`;
+}
+
+function normalizePdfAnnotationDrawType(drawType?: string): TPdfAnnotationDrawType {
+    if (
+        drawType === "solid_background" ||
+        drawType === "underline" ||
+        drawType === "strikethrough" ||
+        drawType === "outline"
+    ) {
+        return drawType;
+    }
+
+    return "solid_background";
+}
 
 /**
  * PDF.js EventBus has changed shape across versions and builds. The controller
@@ -747,8 +781,11 @@ export class PdfAnnotationController {
 
     /**
      * Converts persisted PDF-space geometry to the current viewport rectangle
-     * and paints it as a simple translucent block. mix-blend-mode:multiply keeps
-     * dark glyphs readable while matching common PDF highlight behavior.
+     * and paints it with the host-owned annotation color and draw type.
+     *
+     * Opacity remains a webview rendering policy instead of persisted data:
+     * solid highlights use a translucent fill, while underline, strike-through,
+     * and outline are rendered as opaque strokes.
      */
     private createHighlightElement(
         annotation: TPdfAnnotationTransport,
@@ -783,13 +820,41 @@ export class PdfAnnotationController {
         highlight.style.top = `${top}px`;
         highlight.style.width = `${width}px`;
         highlight.style.height = `${height}px`;
-        // TODO: Render PDF annotations with the note color and drawType instead of a fixed highlight style.
-        highlight.style.backgroundColor = HIGHLIGHT_COLOR;
-        highlight.style.opacity = HIGHLIGHT_OPACITY;
         highlight.style.pointerEvents = "none";
-        highlight.style.mixBlendMode = "multiply";
+        this.applyHighlightStyle(highlight, annotation);
 
         return highlight;
+    }
+
+    private applyHighlightStyle(highlight: HTMLElement, annotation: TPdfAnnotationTransport) {
+        const color = colorToCss(annotation.color);
+        const drawType = normalizePdfAnnotationDrawType(annotation.drawType);
+
+        highlight.dataset.drawType = drawType;
+        highlight.style.boxSizing = "border-box";
+
+        if (drawType === "underline") {
+            highlight.style.backgroundColor = "transparent";
+            highlight.style.borderBottom = `2px solid ${color}`;
+            return;
+        }
+
+        if (drawType === "strikethrough") {
+            highlight.style.backgroundColor = "transparent";
+            highlight.style.borderTop = `2px solid ${color}`;
+            highlight.style.transform = "translateY(50%)";
+            return;
+        }
+
+        if (drawType === "outline") {
+            highlight.style.backgroundColor = "transparent";
+            highlight.style.border = `2px solid ${color}`;
+            return;
+        }
+
+        highlight.style.backgroundColor = color;
+        highlight.style.opacity = HIGHLIGHT_OPACITY;
+        highlight.style.mixBlendMode = "multiply";
     }
 
     /**

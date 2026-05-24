@@ -15,6 +15,7 @@ rotation, and full snapshot sync through a fake Thorium event bus.
 - Real browser selection geometry and PDF.js page viewport conversion.
 - In-memory fake annotation persistence through `annotations:sync`.
 - `viewer:go-to-annotation` navigation using annotation id plus page/rect fallback.
+- Snapshot-driven style updates and deletion for the latest fake annotation.
 
 ## What It Does Not Test
 
@@ -66,24 +67,28 @@ Then run the harness regression test:
 npm run test:pdf-annotations:harness
 ```
 
-The Playwright config builds the harness, starts the local server, opens
+The Playwright test setup builds the harness, starts a local server, opens
 `standalone.html`, waits for the PDF.js iframe and injected harness panel,
 creates a browser selection inside the real PDF.js text layer, clicks
 `Create highlight`, verifies that an annotation and overlay exist, clicks
-`Go to latest`, verifies the navigation flash, then clicks `Clear` and verifies
-that the overlay is removed.
+`Style latest`, verifies the outline/color update, clicks `Go to latest`,
+verifies the navigation flash, then clicks `Delete latest` and verifies that the
+overlay is removed. The test closes its own local server in teardown so the
+command can be used as an automated gate.
 
 ## Manual Test Flow
 
 1. Select text in the PDF.js viewer.
 2. Click `Create highlight` in the floating harness panel.
 3. Confirm that the highlight appears and the annotation count increases.
-4. Scroll away or change page/zoom if desired.
-5. Click `Go to latest`.
-6. Confirm that the viewer returns to the highlight and flashes it.
-7. Change zoom and rotation in PDF.js.
-8. Confirm that the highlight remains aligned with the selected text.
-9. Click `Clear` and confirm that the overlay disappears.
+4. Click `Style latest`.
+5. Confirm that the highlight changes to a blue outline.
+6. Scroll away or change page/zoom if desired.
+7. Click `Go to latest`.
+8. Confirm that the viewer returns to the highlight and flashes it.
+9. Change zoom and rotation in PDF.js.
+10. Confirm that the highlight remains aligned with the selected text.
+11. Click `Delete latest` or `Clear` and confirm that the overlay disappears.
 
 ## Architecture
 
@@ -95,12 +100,17 @@ runs in the PDF.js document, so `window.getSelection()`, `document`, and
 
 The injected module creates a small fake implementation of `IEventBusPdfPlayer`.
 When the controller dispatches `annotation:create-requested`, the fake host
-assigns an id, stores the annotation in memory, and sends a complete
-`annotations:sync` snapshot back to the controller.
+assigns an id, default color, and default draw type, stores the annotation in
+memory, and sends a complete `annotations:sync` snapshot back to the controller.
 
 The `Go to latest` control dispatches `viewer:go-to-annotation` with the stored
 annotation id, page, and first rectangle. This mirrors the slice 2 parent-panel
 navigation payload without requiring Thorium, Redux, or Electron.
+
+The `Style latest` and `Delete latest` controls mutate the fake in-memory host
+state and then send a new full `annotations:sync` snapshot. This mirrors the
+slice 3 decision to use snapshot refresh for edit/delete instead of adding
+patch events to the PDF event bus.
 
 ## Injection Behavior
 

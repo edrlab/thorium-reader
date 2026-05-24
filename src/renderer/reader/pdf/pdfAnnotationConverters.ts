@@ -5,12 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IColor } from "@r2-navigator-js/electron/common/highlight";
+import type { IColor } from "@r2-navigator-js/electron/common/highlight";
 
-import { INoteCreator } from "readium-desktop/common/redux/states/creator";
-import { EDrawType, INoteState } from "readium-desktop/common/redux/states/renderer/note";
-import {
+import type { INoteCreator } from "readium-desktop/common/redux/states/creator";
+import { EDrawType } from "readium-desktop/common/redux/states/renderer/note";
+import type { INoteState } from "readium-desktop/common/redux/states/renderer/note";
+import type {
     TPdfAnnotationDraftTransport,
+    TPdfAnnotationDrawType,
     TPdfAnnotationTransport,
 } from "readium-desktop/renderer/reader/pdf/common/pdfReader.type";
 
@@ -23,6 +25,20 @@ export interface IPdfAnnotationDraftToNoteContext {
 
 export function filterPdfAnnotationNotes(notes: INoteState[]) {
     return notes.filter((note) => note.group === "annotation" && !!note.pdfAnnotation);
+}
+
+function noteDrawTypeToPdfDrawType(drawType: EDrawType): TPdfAnnotationDrawType {
+    const value = EDrawType[drawType];
+    if (
+        value === "solid_background" ||
+        value === "underline" ||
+        value === "strikethrough" ||
+        value === "outline"
+    ) {
+        return value;
+    }
+
+    return "solid_background";
 }
 
 export function noteToPdfAnnotation(note: INoteState): TPdfAnnotationTransport | undefined {
@@ -41,6 +57,8 @@ export function noteToPdfAnnotation(note: INoteState): TPdfAnnotationTransport |
             y2: rect.y2,
         })),
         quote: note.pdfAnnotation.quote,
+        color: { ...note.color },
+        drawType: noteDrawTypeToPdfDrawType(note.drawType),
     };
 }
 
