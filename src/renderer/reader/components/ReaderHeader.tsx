@@ -69,6 +69,7 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import { PublicationInfoReaderWithRadix, PublicationInfoReaderWithRadixContent, PublicationInfoReaderWithRadixTrigger } from "./dialog/publicationInfos/PublicationInfo";
 import { ReaderSettings, ReadingAudio } from "./ReaderSettings";
 import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
+import { triggerPdfAnnotation } from "readium-desktop/renderer/reader/pdf/pdfAnnotationHost";
 import { MySelectProps, Select } from "readium-desktop/renderer/common/components/Select";
 import { ComboBox, ComboBoxItem } from "readium-desktop/renderer/common/components/ComboBox";
 import { readerLocalActionAnnotations, readerLocalActionToggleMenu, readerLocalActionToggleSettings } from "../redux/actions";
@@ -1290,12 +1291,12 @@ export class ReaderHeader extends React.Component<IProps, IState> {
     };
 
     private triggerAnnotation = (fromKeyboard: boolean) => {
-        if (this.props.isPdf) {
-            createOrGetPdfEventBus().dispatch("highlight:create-from-selection");
-            return;
-        }
-
-        this.props.triggerAnnotationBtn(fromKeyboard);
+        triggerPdfAnnotation(
+            this.props.isPdf,
+            fromKeyboard,
+            () => createOrGetPdfEventBus().dispatch("highlight:create-from-selection"),
+            this.props.triggerAnnotationBtn,
+        );
     };
 
     private setVoices(voices: IVoices[]) {

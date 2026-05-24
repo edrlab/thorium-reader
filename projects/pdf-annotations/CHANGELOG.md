@@ -1,0 +1,132 @@
+# PDF Annotations Changelog
+
+This changelog tracks project decisions, actions, scope changes, and documentation updates for PDF annotations.
+
+It is not a product release changelog. Product-facing release notes should be written separately when the feature ships.
+
+Use newest entries first. Prefer concrete dates and short bullets.
+
+Agent maintenance rule: any agent that changes project decisions, scope, actions, TODOs, or implementation-facing documentation must add a same-day entry here in the same turn.
+
+Decision enforcement: every project choice or scope decision must include the "why". A valid decision entry states the choice, the reason for it, the constraint or policy behind it, and any meaningful alternative that was rejected or deferred.
+
+Technical decision enforcement: every technical or algorithmic choice must be demonstrated and critiqued. A valid entry includes context, decision, demonstration, critique, alternatives, and a revisit trigger.
+
+Entry tags:
+
+- `Decision` - a durable project choice.
+- `Action` - a concrete change made in the repository or project docs.
+- `Scope` - something explicitly included or excluded.
+- `Follow-up` - work intentionally deferred.
+
+## 2026-05-24
+
+### Added
+
+- Action: Added `src/renderer/reader/pdf/pdfAnnotationHost.ts` to centralize PDF annotation snapshot construction, create-request handling, and PDF-vs-EPUB annotation trigger routing.
+- Action: Added `test/renderer/reader/pdf/pdfAnnotationConverters.test.ts` for P0 converter coverage.
+- Action: Added `test/renderer/reader/pdf/pdfAnnotationHost.test.ts` for P0 host orchestration coverage.
+- Action: Added `test/renderer/reader/pdf/webview/annotations.test.ts` for P0 webview controller and overlay coverage with fakes.
+- Action: Added `projects/pdf-annotations/UNIT_TESTS.md` to describe the unit-test strategy, priorities, required coverage, and proposed test files for PDF annotations.
+- Action: Added `@playwright/test` as a development dependency for browser regression coverage of the standalone PDF.js annotation harness.
+- Action: Added `test:pdf-annotations:harness:install` and `test:pdf-annotations:harness` npm scripts.
+- Action: Added `projects/pdf-annotations/harness/playwright.config.ts` for harness-specific Playwright execution.
+- Action: Added `projects/pdf-annotations/harness/test-server.mjs` to build the harness and start the local HTTP server for Playwright.
+- Action: Added `projects/pdf-annotations/harness/tests/standalone.spec.ts` as the first browser regression smoke test for PDF highlight creation and clearing.
+- Action: Added `projects/pdf-annotations/harness/standalone.html` as a standalone browser entry point that loads the packaged PDF.js viewer and injects the annotation harness.
+- Action: Added `projects/pdf-annotations/harness/standaloneAnnotationHarness.ts` to run the real `PdfAnnotationController` with a fake Thorium event bus and in-memory annotation snapshot store.
+- Action: Added `projects/pdf-annotations/harness/build.mjs` and `projects/pdf-annotations/harness/serve.mjs` so the harness can be built and served without global tooling.
+- Action: Added `projects/pdf-annotations/harness/.gitignore` so generated harness bundles and server logs remain local artifacts.
+- Action: Added `projects/pdf-annotations/harness/README.md` with run instructions, manual QA flow, scope, architecture, and critique.
+- Action: Added `src/renderer/reader/pdf/webview/annotationGeometry.ts` with pure PDF annotation geometry helpers that can be tested without PDF.js.
+- Action: Added `test/renderer/reader/pdf/webview/annotationGeometry.test.ts` with unit coverage for rect usability, page hit testing, clamping, PDF rect normalization, and fake viewport conversion.
+- Action: Added `CHANGELOG.md` to track project decisions, actions, scope changes, and documentation updates.
+- Action: Added `TODO.md` as the developer-centric task list for the full PDF annotations project.
+- Action: Linked `CHANGELOG.md` and `TODO.md` from `README.md`.
+
+### Changed
+
+- Action: Expanded `test/renderer/reader/pdf/webview/annotationGeometry.test.ts` to cover the remaining P0 geometry edge cases.
+- Action: Updated `Reader.tsx` and `ReaderHeader.tsx` to route PDF annotation creation through `triggerPdfAnnotation()`.
+- Action: Removed the direct PDF.js `PDFViewer` type import from `annotations.ts`; the controller already uses a narrow local application shape and runtime-injected fakes for unit tests.
+- Action: Updated `projects/pdf-annotations/UNIT_TESTS.md`, `TODO.md`, and `REVIEW.md` to record P0 unit-test implementation and validation.
+- Action: Linked `UNIT_TESTS.md` from `projects/pdf-annotations/README.md` and marked the documentation task complete in `TODO.md`.
+- Action: Updated `projects/pdf-annotations/harness/tsconfig.json` to extend the repository root TypeScript config and reuse the existing `readium-desktop/*` and `@r2-*/*` aliases instead of repeating `../../../src` path mappings.
+- Action: Added `projects/pdf-annotations/harness/tsconfig.esbuild.json` so esbuild 0.17 can bundle the harness without parsing the root `target: ES2023` setting.
+- Action: Fixed Jest module resolution so `test/renderer/reader/pdf/webview/annotationGeometry.test.ts` runs in the normal Jest runner.
+- Action: Added `tsconfig.jest.json` as the Jest-specific TypeScript transform config.
+- Action: Updated `scripts/jest_preprocessor.js` to create the local `ts-jest` transformer with `tsconfig.jest.json`.
+- Action: Removed `ignoreDeprecations: "6.0"` from the standalone harness TypeScript config by replacing `baseUrl` with explicit relative path mappings.
+- Action: Recorded successful Jest validation for `annotationGeometry.test.ts` and representative existing Jest coverage in `projects/pdf-annotations/REVIEW.md`.
+- Action: Recorded the successful local Playwright smoke-test validation in `projects/pdf-annotations/REVIEW.md`.
+- Action: Updated `projects/pdf-annotations/harness/README.md` with automated Playwright test instructions.
+- Action: Updated `projects/pdf-annotations/TODO.md` to mark standalone harness automation as started and defer zoom, rotation, and cross-page automation as follow-up.
+- Action: Recorded the project-owner manual validation that the standalone PDF.js annotation harness works, and marked the corresponding TODO item complete.
+- Action: Documented the standalone harness injection policy in `projects/pdf-annotations/harness/README.md`.
+- Action: Updated the project `README.md` and `TODO.md` to include the standalone PDF.js harness and its follow-up verification tasks.
+- Action: Marked PDF annotation transport imports in `annotations.ts` as type-only so browser harness bundling does not retain unnecessary Thorium type modules at runtime.
+- Action: Updated `PdfAnnotationController` to delegate rect filtering, page hit-testing, page-local clamping, and PDF rect normalization to `annotationGeometry.ts`.
+- Action: Added source-level design documentation for `renderPage` in `src/renderer/reader/pdf/webview/annotations.ts`, including rationale, independent testing strategy, critique, and refactor trigger.
+- Action: Added source-level design documentation for `selectionToDraft` in `src/renderer/reader/pdf/webview/annotations.ts`, including rationale, references, independent testing strategy, critique, and refactor trigger.
+- Action: Replaced `debugLog` and `debugWarn` helper functions in `src/renderer/reader/pdf/webview/annotations.ts` with direct `console.log(DEBUG_PREFIX, ...)` and `console.error(DEBUG_PREFIX, ...)` calls.
+- Action: Added an explicit technical decision rule requiring agents to demonstrate and critique technical or algorithmic choices before considering implementation-facing changes complete.
+- Action: Strengthened the agent maintenance rule so project decisions and scope choices must include their rationale, including the reason, constraint or policy, and relevant rejected or deferred alternatives.
+- Action: Added an explicit maintenance rule requiring agents to update this changelog when changing project decisions, scope, actions, TODOs, or implementation-facing documentation.
+- Action: Consolidated the project documentation into canonical project files:
+  - `PLAN.md`
+  - `SPEC.md`
+  - `REVIEW.md`
+  - `TODO.md`
+- Action: Removed the temporary feature requirements document because it did not match the desired project documentation model.
+- Action: Removed old long-form duplicate planning/spec/review documents after consolidation.
+
+### Decisions
+
+- Decision: Extract host-side PDF annotation orchestration into `pdfAnnotationHost.ts`. Why: the host behavior was embedded in `Reader.tsx`, which made snapshot construction, create-request handling, and PDF-vs-EPUB trigger routing hard to test without mounting the full reader. Demonstration: `Reader.tsx` now delegates snapshot creation and create-request side effects to the helper, `ReaderHeader.tsx` uses the same trigger helper, and `pdfAnnotationHost.test.ts` verifies filtering, conversion, deduplication, extra-note precedence, action dispatch payloads, sync snapshots, and PDF/EPUB routing. Critique: the helper introduces another module boundary and still relies on injected side-effect callbacks for Redux dispatch and event-bus sync; it does not test the full React component lifecycle. Alternatives rejected or deferred: testing private `Reader` methods directly would be brittle; mounting the connected reader would pull in unrelated Electron/Redux dependencies; leaving the logic inline would keep duplication between `Reader.tsx` and `ReaderHeader.tsx`. Revisit trigger: revisit if PDF annotation host behavior becomes tied to richer component state or if future slices introduce a dedicated PDF annotation service.
+- Decision: Use Jest with JSDOM-style fakes for P0 webview controller unit tests. Why: the controller must be tested without real PDF.js, Electron, Playwright, network, or browser startup while still exercising DOM selection, event subscriptions, overlay DOM mutation, and viewport conversion contracts. Demonstration: `annotations.test.ts` creates fake Thorium and PDF.js event buses, small page DOM fixtures, fake selections, fake viewport conversion functions, and controlled animation-frame callbacks; the tests cover invalid selections, valid draft dispatch, snapshot replacement, `annotations:ready`, page rendering, geometry redraw, teardown, and passive overlay styling. Critique: JSDOM cannot prove real browser selection geometry, PDF.js text-layer quirks, iframe injection, high-DPI rendering, or pixel alignment, so the standalone harness and manual/Playwright checks remain necessary. Alternatives rejected or deferred: using real PDF.js in unit tests would make them slower and integration-like; testing private controller methods would couple tests to implementation details; relying only on Playwright would be heavier and less precise for edge cases. Revisit trigger: revisit if PDF.js APIs change substantially, if overlay interaction becomes keyboard/pointer active, or if browser-specific geometry differences start causing bugs that JSDOM cannot model.
+- Decision: Track required PDF annotation unit tests in a dedicated `UNIT_TESTS.md` instead of only expanding `TODO.md`. Why: unit-test coverage spans multiple code ownership areas and needs rationale, boundaries, priorities, proposed file layout, and future-slice coverage, which would make the TODO list too noisy. Demonstration: `UNIT_TESTS.md` separates existing coverage, P0 first-slice tests, P1 architecture tests, P2 future-slice tests, excluded non-unit scopes, and definition of done. Critique: this creates another project document that must stay synchronized with implementation and TODO state; the maintenance rule and changelog entry mitigate that by making changes traceable. Alternatives rejected or deferred: keeping all unit-test detail in `TODO.md` would be easy to scan but too flat; embedding it in `SPEC.md` would mix implementation contract with verification planning. Revisit trigger: revisit if unit-test work becomes tracked in a formal test-management tool or if the document stops matching the actual test suite.
+- Decision: Reuse the root TypeScript path aliases in the standalone harness tsconfig instead of duplicating `../../../src` mappings locally. Why: the root `tsconfig.json` already defines the canonical source aliases, and duplicating those mappings in the harness creates drift risk whenever the source alias policy changes. Demonstration: `projects/pdf-annotations/harness/tsconfig.json` now extends `../../../tsconfig.json`, keeps only harness-specific compiler overrides, and the harness typecheck resolves `readium-desktop/renderer/reader/pdf/webview/annotations` through the inherited alias. The esbuild bundle keeps a small `tsconfig.esbuild.json` because the repository currently uses esbuild 0.17, which does not recognize the root `target: ES2023` setting while parsing extended configs. Critique: the harness now depends on the root compiler option surface for typechecking, and the bundle has a separate minimal esbuild config; this is acceptable because typechecking should follow project aliases, while esbuild still needs compatibility with its older tsconfig parser. Alternatives rejected or deferred: keeping local `../../../src` mappings was explicit but repetitive; reintroducing `baseUrl` would re-open TypeScript 6 deprecation warnings; upgrading esbuild is a broader dependency decision. Revisit trigger: revisit if the root config becomes unsuitable for browser harness typechecking, if source aliases are split into a dedicated shared tsconfig, or if esbuild is upgraded enough to parse the root target without a bundle-specific config.
+- Decision: Filter the TypeScript wildcard path alias out of Jest `moduleNameMapper` instead of mapping `"*": ["./*"]` into Jest. Why: `pathsToModuleNameMapper` turns the wildcard into `^(.*)$ -> <rootDir>/$1`, which captures npm dependencies such as `source-map` and makes Jest look for them in the repository root. Demonstration: before the change, `annotationGeometry.test.ts` failed with `Could not locate module source-map mapped as <rootDir>/$1`; after filtering the wildcard and keeping explicit aliases, `annotationGeometry.test.ts` passes with 8 tests and an existing `iso8601` Jest test also passes. Critique: root-relative bare imports are no longer implemented through a catch-all mapper; if a future test needs them, it should use explicit aliases or Jest `moduleDirectories` rather than overriding every module request. Alternatives rejected or deferred: keeping the catch-all was broken; manually mapping `source-map` would only fix one dependency while leaving the underlying resolver hazard; removing all path aliases would break explicit project aliases. Revisit trigger: revisit if the repo removes the wildcard from `tsconfig.json`, migrates away from `ts-jest`, or introduces a dedicated Jest resolver.
+- Decision: Use a dedicated `tsconfig.jest.json` for `ts-jest` with `module: "node16"` and `moduleResolution: "node16"` instead of adding `ignoreDeprecations: "6.0"` to the root TypeScript config. Why: Jest needs a CommonJS-compatible transform path, while TypeScript 6 treats the old `node10` module resolution fallback as a blocking deprecation diagnostic. Demonstration: the custom Jest preprocessor and the direct `ts-jest` transform now both point to `tsconfig.jest.json`; `tsc --project tsconfig.jest.json --showConfig` reports `module` and `moduleResolution` as `node16`; `annotationGeometry.test.ts` and `test/utils/iso8601.test.ts` both pass without `ignoreDeprecations` in the root `tsconfig.json`. Critique: this adds a Jest-specific TypeScript config, so future compiler option changes must consider both configs; however it is narrower and more honest than globally silencing TypeScript 6 deprecation diagnostics. Alternatives rejected or deferred: adding `ignoreDeprecations` to the root config would hide deprecation warnings project-wide; using `bundler` with a CommonJS Jest transform still fell back to the deprecated `node10` path in `ts-jest`; rewriting the test pipeline away from `ts-jest` is a larger migration. Revisit trigger: revisit if Jest moves to native ESM transforms, if the repo removes the custom preprocessor, or if TypeScript/Jest support makes the main `bundler` config usable directly in tests.
+- Decision: Automate the standalone PDF.js harness with `@playwright/test` and start with a single browser smoke test. Why: the risky behavior lives in real browser selection geometry, PDF.js text-layer DOM, iframe injection, and overlay rendering, which unit tests cannot fully demonstrate. Demonstration: the Playwright test builds and serves the harness, opens `standalone.html`, waits for the injected harness panel inside the PDF.js iframe, creates a real `Range` selection inside `.textLayer`, clicks `Create highlight`, asserts one in-memory annotation plus at least one non-zero overlay element, then clears and asserts the overlay is removed. Critique: this is still a smoke test, not a pixel-perfect geometry proof; it requires a Playwright Chromium browser installation and does not cover Electron webview, Thorium persistence, zoom/rotation alignment, or cross-page rejection yet. Alternatives rejected or deferred: keeping the harness manual only would miss regressions; mocking PDF.js would not prove real viewer geometry; starting with exhaustive visual assertions would be brittle before the first smoke path is stable. Revisit trigger: expand the Playwright suite when zoom, rotation, cross-page rejection, or navigation behavior becomes stable enough for deterministic browser assertions.
+- Decision: The PDF annotation harness auto-injects only from `projects/pdf-annotations/harness/standalone.html`; directly opening the packaged PDF.js `viewer.html` does not auto-inject the harness. Why: the project needs a standalone test bench without mutating packaged or vendor PDF.js files, and the injection must stay owned by the PDF annotations project rather than hidden inside upstream viewer assets. Demonstration: `standalone.html` loads `viewer.html` in a same-origin iframe and appends the bundled harness module to that iframe document on iframe load; the `Inject harness` button repeats that same action as a fallback, while `viewer.html` itself remains unchanged. Critique: developers must remember to enter through `standalone.html`, and direct `viewer.html` testing will not include Thorium annotation behavior. Alternatives rejected or deferred: patching `node_modules/pdf.js/build/gh-pages/web/viewer.html` or `vendor/pdf.js` would make the harness more invisible but would couple a local test tool to packaged/vendor code and risk accidental drift. Revisit trigger: reconsider only if the project introduces a generated, clearly isolated copy of the PDF.js viewer for harness use or if automated browser tests require a single self-contained viewer entry point.
+- Decision: Test the PDF annotation controller in a standalone browser harness by loading the packaged PDF.js viewer in a same-origin iframe and injecting a bundled harness module into the viewer document. Why: the controller reads `window.getSelection()`, `document`, and `window.PDFViewerApplication`, so it must execute inside the PDF.js browsing context to exercise real selection and viewport geometry without launching Thorium. Demonstration: `standalone.html` serves `viewer.html` from `node_modules/pdf.js/build/gh-pages/web`, injects `standaloneAnnotationHarness.js`, and the injected module creates `PdfAnnotationController` with a fake `IEventBusPdfPlayer`; when the controller emits `annotation:create-requested`, the fake host assigns an id, stores the draft, and sends a full `annotations:sync` snapshot back for rendering. Critique: the harness requires a build step and same-origin HTTP serving, and it does not validate Electron webview lifecycle, Redux persistence, IPC, or annotation panel integration. Alternatives rejected or deferred: patching `viewer.html` directly would modify packaged/vendor code; launching Thorium would make the test heavier and harder to isolate; mocking PDF.js would not demonstrate real browser/PDF.js geometry. Revisit trigger: replace or complement this manual harness when browser automation is added, when PDF.js removes or changes `window.PDFViewerApplication`, or when annotation creation depends on host state that the fake bus cannot represent.
+- Decision: Extract pure geometry helpers from the PDF annotation controller. Why: testing `selectionToDraft` and `renderPage` directly requires browser DOM and PDF.js-like objects, while the risky geometry rules can be tested independently when expressed as pure functions. Demonstration: `annotationGeometry.ts` accepts plain rects, page rects, borders, and a fake viewport with `convertToPdfPoint`; the added tests cover tiny-rect rejection, largest-intersection page selection, viewport clamping, normalization, and PDF conversion without loading PDF.js. Critique: the controller still owns DOM orchestration and overlay mutation, so end-to-end behavior still needs browser/webview QA; this refactor only isolates the geometry core. Alternative deferred: building a full browser harness around `PdfAnnotationController`, which is still useful later but heavier than the first step needed to make the algorithm independently testable.
+- Decision: Use direct console calls in the PDF annotation controller instead of local logging helper functions. Why: the implementation was requested to use `console.log` or error calls directly in code, and direct calls make the log level visible at each call site. Demonstration: informational paths call `console.log(DEBUG_PREFIX, ...)`, former warning/error paths call `console.error(DEBUG_PREFIX, ...)`, and the existing `DEBUG_PREFIX` preserves log origin. Critique: this repeats the prefix at every call site and makes future log gating more mechanical; if log volume becomes noisy, revisit with an explicit debug flag or project-wide logger that still keeps severity clear. Alternative rejected: keeping `debugLog`/`debugWarn` wrappers, which was more compact but hid the console level behind helper names.
+- Decision: Technical and algorithmic choices must be demonstrated and critiqued. Why: PDF annotation behavior depends on geometry conversion, persistence mapping, and cross-context event flow; terse implementation notes are not enough to preserve correctness across later slices. Demonstration required: future entries must explain why the chosen approach works through data flow, invariants, examples, complexity notes, or tests when relevant. Critique required: future entries must name tradeoffs, limits, risks, failure modes, rejected alternatives, and a revisit trigger. Alternative rejected: accepting unexplained technical choices in code or TODO notes, which would make future maintenance faster in the moment but weaker and more error-prone.
+- Decision: Changelog decision entries must include rationale. Why: PDF annotations already have explicit scope constraints, and future agents need the reasoning behind choices to avoid reintroducing rejected work or changing direction without context. Alternative deferred: recording terse decision labels without rationale, which is easier to write but weaker for project continuity.
+- Decision: PDF annotations are application-level Thorium annotations, not native PDF annotations written back into the PDF file.
+- Decision: Thorium remains the source of truth for annotation identity, metadata, timestamps, creator data, color policy, and persistence.
+- Decision: The PDF.js webview is responsible for selection capture, PDF coordinate conversion, and highlight overlay rendering.
+- Decision: All PDF annotation communication uses the existing Thorium `pdf-eventbus`.
+- Decision: The first slice uses full snapshot synchronization through `annotations:sync`.
+- Decision: First-slice PDF annotations are stored as Thorium notes with `INoteState.pdfAnnotation`.
+- Decision: First-slice selection support is limited to single-page selections.
+- Decision: First-slice rendering uses passive solid highlight overlays.
+
+### Scope Changes
+
+- Scope: PDF event bus lifecycle hardening is out of scope for the PDF annotations project.
+- Scope: Multi-PDF publication support is not allowed by project policy and is out of scope.
+- Scope: PDF annotations are scoped to the active PDF context.
+- Scope: Annotation panel display, navigation, editing, deletion, search, export/import, and print support remain later project slices.
+
+### Follow-Up
+
+- Follow-up: Add verification tasks for TypeScript, linting, renderer bundle build, and manual PDF annotation QA.
+- Follow-up: Add PDF-specific annotation panel rendering that does not rely on `locatorExtended`.
+- Follow-up: Add color/style transport before enabling PDF annotation editing.
+- Follow-up: Add export/import and print support as separate later phases.
+
+## 2026-05-23
+
+### Added
+
+- Action: Created `projects/pdf-annotations` as the project documentation home.
+- Action: Added a project `README.md`.
+- Action: Added `vendor/` to `.gitignore` so a local `vendor/pdf.js` reference checkout remains untracked.
+
+### Decisions
+
+- Decision: The local PDF.js source checkout belongs under `vendor/pdf.js`.
+- Decision: `vendor/pdf.js` is a reference checkout, not a tracked project artifact.

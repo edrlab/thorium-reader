@@ -84,13 +84,14 @@ import {
 } from "@r2-navigator-js/electron/renderer/index";
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
-import { IPdfPlayerScale, TPdfAnnotationDraftTransport, TPdfAnnotationTransport, TToc } from "../pdf/common/pdfReader.type";
+import { IPdfPlayerScale, TToc } from "../pdf/common/pdfReader.type";
 import { pdfMount } from "../pdf/driver";
 import {
-    filterPdfAnnotationNotes,
-    noteToPdfAnnotation,
-    pdfAnnotationDraftToNote,
-} from "readium-desktop/renderer/reader/pdf/pdfAnnotationConverters";
+    buildPdfAnnotationTransportList,
+    handlePdfAnnotationCreateRequested,
+    IPdfAnnotationCreateRequestPayload,
+    triggerPdfAnnotation,
+} from "readium-desktop/renderer/reader/pdf/pdfAnnotationHost";
 import {
     readerLocalActionAnnotations,
     readerLocalActionLocatorHrefChanged,
@@ -831,42 +832,27 @@ class Reader extends React.Component<IProps, IState> {
         this.syncPdfAnnotations();
     }
 
-    private onPdfAnnotationCreateRequested(payload: {
-        draft: TPdfAnnotationDraftTransport;
-    }) {
-        if (!payload?.draft) {
-            return;
-        }
-
-        const newNote = pdfAnnotationDraftToNote(payload.draft, {
+    private onPdfAnnotationCreateRequested(payload: IPdfAnnotationCreateRequestPayload) {
+        handlePdfAnnotationCreateRequested(payload, {
+            publicationIdentifier: this.props.pubId,
+            notes: this.props.notes,
             color: this.props.readerConfig.annotation_defaultColor,
             creator: this.props.creator,
-            index: this.props.noteTotalCount + 1,
+            noteTotalCount: this.props.noteTotalCount,
             created: Date.now(),
+            addUpdatePdfAnnotationNote: this.props.addUpdatePdfAnnotationNote,
+            dispatchAnnotationsSync: (annotations) => {
+                createOrGetPdfEventBus().dispatch("annotations:sync", {
+                    annotations,
+                });
+            },
         });
-
-        const action = this.props.addUpdatePdfAnnotationNote(this.props.pubId, newNote);
-        this.syncPdfAnnotations(action.payload.newNote);
     }
 
     private syncPdfAnnotations(extraNote?: INoteState) {
         createOrGetPdfEventBus().dispatch("annotations:sync", {
-            annotations: this.buildPdfAnnotationTransportList(extraNote),
+            annotations: buildPdfAnnotationTransportList(this.props.notes, extraNote),
         });
-    }
-
-    private buildPdfAnnotationTransportList(extraNote?: INoteState): TPdfAnnotationTransport[] {
-        const annotationsById = new Map<string, TPdfAnnotationTransport>();
-        const notes = extraNote ? [...this.props.notes, extraNote] : this.props.notes;
-
-        for (const note of filterPdfAnnotationNotes(notes)) {
-            const annotation = noteToPdfAnnotation(note);
-            if (annotation) {
-                annotationsById.set(annotation.id, annotation);
-            }
-        }
-
-        return Array.from(annotationsById.values());
     }
 
     private isFixedLayout(): boolean {
@@ -1653,12 +1639,12 @@ class Reader extends React.Component<IProps, IState> {
     };
 
     private triggerAnnotation(fromKeyboard: boolean) {
-        if (this.props.isPdf) {
-            createOrGetPdfEventBus().dispatch("highlight:create-from-selection");
-            return;
-        }
-
-        this.props.triggerAnnotationBtn(fromKeyboard);
+        triggerPdfAnnotation(
+            this.props.isPdf,
+            fromKeyboard,
+            () => createOrGetPdfEventBus().dispatch("highlight:create-from-selection"),
+            this.props.triggerAnnotationBtn,
+        );
     }
 
     private onKeyboardAudioStop = () => {

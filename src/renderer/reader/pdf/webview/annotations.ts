@@ -5,38 +5,24 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import {
+import type {
     IEventBusPdfPlayer,
     TPdfAnnotationDraftTransport,
     TPdfAnnotationRectTransport,
     TPdfAnnotationTransport,
 } from "../common/pdfReader.type";
-
-import type { PDFViewer } from "pdf.js/build/types/web/pdf_viewer";
+import {
+    clientRectToPageViewportRect,
+    findBestPageForRect,
+    isUsableSelectionRect,
+    pageViewportRectToPdfRect,
+} from "./annotationGeometry";
 
 const ANNOTATION_LAYER_CLASS = "thorium-pdf-annotation-layer";
 const ANNOTATION_HIGHLIGHT_CLASS = "thorium-pdf-annotation-highlight";
 const HIGHLIGHT_COLOR = "#FEF3BD";
 const HIGHLIGHT_OPACITY = "0.35";
 const DEBUG_PREFIX = "[Thorium PDF annotations]";
-
-function debugLog(message: string, data?: unknown) {
-    if (typeof data === "undefined") {
-        console.log(DEBUG_PREFIX, message);
-        return;
-    }
-
-    console.log(DEBUG_PREFIX, message, data);
-}
-
-function debugWarn(message: string, data?: unknown) {
-    if (typeof data === "undefined") {
-        console.warn(DEBUG_PREFIX, message);
-        return;
-    }
-
-    console.warn(DEBUG_PREFIX, message, data);
-}
 
 /**
  * PDF.js EventBus has changed shape across versions and builds. The controller
@@ -59,7 +45,7 @@ type TPdfJsEventBus = {
 interface IPdfViewerApplication {
     eventBus?: TPdfJsEventBus;
     pdfDocument?: any;
-    pdfViewer?: PDFViewer;
+    pdfViewer?: any;
 }
 
 /**
@@ -113,15 +99,15 @@ export class PdfAnnotationController {
      */
     public init() {
         if (this.initialized) {
-            debugLog("init skipped: controller already initialized");
+            console.log(DEBUG_PREFIX, "init skipped: controller already initialized");
             return;
         }
         this.initialized = true;
-        debugLog("init");
+        console.log(DEBUG_PREFIX, "init");
 
         this.bus.subscribe("annotations:sync", this.onAnnotationsSync);
         this.bus.subscribe("highlight:create-from-selection", this.onCreateFromSelection);
-        debugLog("subscribed to Thorium PDF annotation bus events");
+        console.log(DEBUG_PREFIX, "subscribed to Thorium PDF annotation bus events");
 
         this.addPdfJsListener("pagesinit", this.onPdfReady);
         this.addPdfJsListener("documentloaded", this.onPdfReady);
@@ -131,7 +117,7 @@ export class PdfAnnotationController {
 
         const pdfViewerApplication = this.getPdfViewerApplication();
         if (pdfViewerApplication?.pdfDocument && pdfViewerApplication.pdfViewer?.pagesCount) {
-            debugLog("PDF document already available at init", {
+            console.log(DEBUG_PREFIX, "PDF document already available at init", {
                 pagesCount: pdfViewerApplication.pdfViewer.pagesCount,
             });
             window.setTimeout(this.onPdfReady, 0);
@@ -145,7 +131,7 @@ export class PdfAnnotationController {
      * document reloads inside the same webview.
      */
     public destroy() {
-        debugLog("destroy");
+        console.log(DEBUG_PREFIX, "destroy");
         this.bus.remove(this.onAnnotationsSync, "annotations:sync");
         this.bus.remove(this.onCreateFromSelection, "highlight:create-from-selection");
         this.pdfJsListeners.forEach(({ key, fn }) => this.removePdfJsListener(key, fn));
@@ -172,7 +158,7 @@ export class PdfAnnotationController {
     private readonly onAnnotationsSync = (payload: {
         annotations: TPdfAnnotationTransport[];
     }) => {
-        debugLog("annotations:sync received", {
+        console.log(DEBUG_PREFIX, "annotations:sync received", {
             count: payload?.annotations?.length,
         });
 
@@ -181,7 +167,7 @@ export class PdfAnnotationController {
             if (annotation?.id) {
                 this.annotations.set(annotation.id, annotation);
             } else {
-                debugWarn("annotations:sync ignored annotation without id", annotation);
+                console.error(DEBUG_PREFIX, "annotations:sync ignored annotation without id", annotation);
             }
         }
 
@@ -195,14 +181,14 @@ export class PdfAnnotationController {
      * persistence result belong to the parent reader.
      */
     private readonly onCreateFromSelection = () => {
-        debugLog("highlight:create-from-selection received");
+        console.log(DEBUG_PREFIX, "highlight:create-from-selection received");
         const draft = this.selectionToDraft();
         if (!draft) {
-            debugLog("selection did not produce a PDF annotation draft");
+            console.log(DEBUG_PREFIX, "selection did not produce a PDF annotation draft");
             return;
         }
 
-        debugLog("dispatching annotation:create-requested", {
+        console.log(DEBUG_PREFIX, "dispatching annotation:create-requested", {
             page: draft.page,
             rectCount: draft.rects.length,
             quoteLength: draft.quote?.length || 0,
@@ -220,15 +206,15 @@ export class PdfAnnotationController {
      * and geometry changes schedule their own redraw.
      */
     private readonly onPdfReady = () => {
-        debugLog("PDF annotations controller ready signal candidate");
+        console.log(DEBUG_PREFIX, "PDF annotations controller ready signal candidate");
         this.renderAll();
         if (this.readySent) {
-            debugLog("annotations:ready skipped: already sent");
+            console.log(DEBUG_PREFIX, "annotations:ready skipped: already sent");
             return;
         }
 
         this.readySent = true;
-        debugLog("dispatching annotations:ready");
+        console.log(DEBUG_PREFIX, "dispatching annotations:ready");
         this.bus.dispatch("annotations:ready");
     };
 
@@ -242,12 +228,12 @@ export class PdfAnnotationController {
     }) => {
         const pageNumber = payload?.pageNumber;
         if (typeof pageNumber !== "number") {
-            debugLog("pagerendered without pageNumber: rendering all pages", payload);
+            console.log(DEBUG_PREFIX, "pagerendered without pageNumber: rendering all pages", payload);
             this.renderAll();
             return;
         }
 
-        debugLog("pagerendered: rendering page", { pageNumber });
+        console.log(DEBUG_PREFIX, "pagerendered: rendering page", { pageNumber });
         this.renderPage(pageNumber);
     };
 
@@ -257,7 +243,7 @@ export class PdfAnnotationController {
      * after PDF.js has had time to settle the new page geometry.
      */
     private readonly onGeometryChanging = () => {
-        debugLog("PDF geometry changing: clearing overlays and scheduling render");
+        console.log(DEBUG_PREFIX, "PDF geometry changing: clearing overlays and scheduling render");
         this.removeAllOverlayLayers();
         this.scheduleRenderAll();
     };
@@ -270,6 +256,45 @@ export class PdfAnnotationController {
      * 4. Reject multi-page selections.
      * 5. Convert page-local viewport pixels to PDF-space rectangles.
      *
+     * Design rationale:
+     * - Browser Selection / Range APIs are the source of truth for what the user
+     *   selected visually. Range.getClientRects() gives viewport-relative DOMRect
+     *   fragments for each selected line/glyph run.
+     * - PDF.js is the source of truth for PDF geometry. PageViewport converts
+     *   between rendered viewport coordinates and persisted PDF coordinates.
+     * - Thorium's first persisted target stores one page number, so accepting a
+     *   cross-page selection here would create ambiguous data. Later multi-page
+     *   support must introduce an explicit multi-target shape before this
+     *   rejection can be relaxed.
+     *
+     * References used by this algorithm:
+     * - DOM Selection API: window.getSelection(), Selection.rangeCount,
+     *   Selection.getRangeAt().
+     * - DOM Range geometry: Range.getClientRects().
+     * - DOM viewport geometry: Element.getBoundingClientRect().
+     * - PDF.js PageViewport geometry: convertToPdfPoint() and
+     *   convertToViewportRectangle().
+     *
+     * How to test without PDF.js:
+     * - Treat this method as orchestration and extract/mock its geometry inputs:
+     *   selection text, selection client rects, page DOM rects, page borders, and
+     *   a viewport object exposing width, height, and convertToPdfPoint().
+     * - A fake viewport is enough for unit tests, for example:
+     *   convertToPdfPoint: (x, y) => [x / scale, (height - y) / scale].
+     * - Test the pure cases independently: empty selection, tiny rect filtering,
+     *   no page intersection, multi-page rejection, page-local clamping, PDF rect
+     *   normalization, and successful draft creation.
+     *
+     * Critique:
+     * - The algorithm depends on browser layout rectangles, so selection geometry
+     *   can vary slightly across engines, zoom levels, fonts, and text-layer DOM.
+     * - Hit-testing by largest page intersection is robust for continuous scroll,
+     *   but it is still a heuristic around page borders and overlapping layout.
+     * - Direct DOM and PDFViewerApplication access keeps this orchestration hard
+     *   to unit test end-to-end. The pure geometry pieces live in
+     *   annotationGeometry.ts; if geometry bugs grow, keep pushing page filtering
+     *   and coordinate rules toward that module and leave this method as DOM glue.
+     *
      * The rejection policy is intentionally strict. A missing page, missing
      * viewport, or cross-page selection would otherwise create annotations whose
      * persistence shape is ambiguous and difficult to migrate later.
@@ -277,7 +302,7 @@ export class PdfAnnotationController {
     private selectionToDraft(): TPdfAnnotationDraftTransport | undefined {
         const selection = window.getSelection();
         if (!selection || selection.rangeCount === 0 || !selection.toString().trim()) {
-            debugLog("selection rejected: empty selection", {
+            console.log(DEBUG_PREFIX, "selection rejected: empty selection", {
                 hasSelection: !!selection,
                 rangeCount: selection?.rangeCount || 0,
             });
@@ -286,12 +311,12 @@ export class PdfAnnotationController {
 
         const clientRects = this.getSelectionClientRects(selection);
         if (!clientRects.length) {
-            debugLog("selection rejected: no usable client rects", {
+            console.log(DEBUG_PREFIX, "selection rejected: no usable client rects", {
                 quoteLength: selection.toString().length,
             });
             return undefined;
         }
-        debugLog("selection client rects collected", {
+        console.log(DEBUG_PREFIX, "selection client rects collected", {
             rectCount: clientRects.length,
             quoteLength: selection.toString().length,
         });
@@ -300,14 +325,14 @@ export class PdfAnnotationController {
         for (const rect of clientRects) {
             const pageHit = this.findPageForClientRect(rect);
             if (!pageHit) {
-                debugLog("selection rejected: rect does not intersect a PDF page", {
+                console.log(DEBUG_PREFIX, "selection rejected: rect does not intersect a PDF page", {
                     rect: this.describeRect(rect),
                 });
                 return undefined;
             }
             pageNumbers.add(pageHit.pageNumber);
             if (pageNumbers.size > 1) {
-                debugLog("selection rejected: selection spans multiple pages", {
+                console.log(DEBUG_PREFIX, "selection rejected: selection spans multiple pages", {
                     pages: Array.from(pageNumbers),
                 });
                 return undefined;
@@ -318,7 +343,7 @@ export class PdfAnnotationController {
         const pageElement = this.getPageElement(page);
         const pageView = this.getPageView(page);
         if (!pageElement || !pageView?.viewport) {
-            debugLog("selection rejected: missing page element or page viewport", {
+            console.log(DEBUG_PREFIX, "selection rejected: missing page element or page viewport", {
                 page,
                 hasPageElement: !!pageElement,
                 hasViewport: !!pageView?.viewport,
@@ -331,14 +356,14 @@ export class PdfAnnotationController {
             .filter((rect): rect is TPdfAnnotationRectTransport => !!rect);
 
         if (!rects.length) {
-            debugLog("selection rejected: no valid PDF rects after conversion", {
+            console.log(DEBUG_PREFIX, "selection rejected: no valid PDF rects after conversion", {
                 page,
                 clientRectCount: clientRects.length,
             });
             return undefined;
         }
 
-        debugLog("selection converted to PDF annotation draft", {
+        console.log(DEBUG_PREFIX, "selection converted to PDF annotation draft", {
             page,
             rectCount: rects.length,
         });
@@ -362,10 +387,10 @@ export class PdfAnnotationController {
             const rangeRects = range.getClientRects();
             for (let rectIndex = 0; rectIndex < rangeRects.length; rectIndex++) {
                 const rect = rangeRects.item(rectIndex);
-                if (rect && rect.width >= 1 && rect.height >= 1) {
+                if (rect && isUsableSelectionRect(rect)) {
                     rects.push(rect);
                 } else if (rect) {
-                    debugLog("selection rect ignored: too small", {
+                    console.log(DEBUG_PREFIX, "selection rect ignored: too small", {
                         rect: this.describeRect(rect),
                     });
                 }
@@ -383,28 +408,13 @@ export class PdfAnnotationController {
      */
     private findPageForClientRect(rect: DOMRect): IPageHit | undefined {
         const pageElements = Array.from(document.querySelectorAll<HTMLElement>(".page[data-page-number]"));
-        let bestHit: IPageHit | undefined;
-        let bestArea = 0;
+        const pages = pageElements.map((pageElement) => ({
+            pageElement,
+            pageNumber: Number(pageElement.dataset.pageNumber),
+            rect: pageElement.getBoundingClientRect(),
+        }));
 
-        for (const pageElement of pageElements) {
-            const pageRect = pageElement.getBoundingClientRect();
-            const intersectionWidth = Math.max(0, Math.min(rect.right, pageRect.right) - Math.max(rect.left, pageRect.left));
-            const intersectionHeight = Math.max(0, Math.min(rect.bottom, pageRect.bottom) - Math.max(rect.top, pageRect.top));
-            const area = intersectionWidth * intersectionHeight;
-
-            if (area > bestArea) {
-                const pageNumber = Number(pageElement.dataset.pageNumber);
-                if (Number.isFinite(pageNumber)) {
-                    bestArea = area;
-                    bestHit = {
-                        pageElement,
-                        pageNumber,
-                    };
-                }
-            }
-        }
-
-        return bestArea > 0 ? bestHit : undefined;
+        return findBestPageForRect(rect, pages);
     }
 
     /**
@@ -422,28 +432,18 @@ export class PdfAnnotationController {
         const viewportWidth = Number(viewport.width) || pageElement.clientWidth;
         const viewportHeight = Number(viewport.height) || pageElement.clientHeight;
 
-        const left = this.clamp(rect.left - pageRect.left - border.left, 0, viewportWidth);
-        const right = this.clamp(rect.right - pageRect.left - border.left, 0, viewportWidth);
-        const top = this.clamp(rect.top - pageRect.top - border.top, 0, viewportHeight);
-        const bottom = this.clamp(rect.bottom - pageRect.top - border.top, 0, viewportHeight);
-
-        if (right - left < 1 || bottom - top < 1) {
-            debugLog("client rect ignored after page-local clamping", {
+        const pageViewportRect = clientRectToPageViewportRect(rect, pageRect, border, {
+            width: viewportWidth,
+            height: viewportHeight,
+        });
+        if (!pageViewportRect) {
+            console.log(DEBUG_PREFIX, "client rect ignored after page-local clamping", {
                 rect: this.describeRect(rect),
-                pageLocalRect: { left, right, top, bottom },
             });
             return undefined;
         }
 
-        const [pdfX1, pdfY1] = viewport.convertToPdfPoint(left, top);
-        const [pdfX2, pdfY2] = viewport.convertToPdfPoint(right, bottom);
-
-        return {
-            x1: Math.min(pdfX1, pdfX2),
-            y1: Math.min(pdfY1, pdfY2),
-            x2: Math.max(pdfX1, pdfX2),
-            y2: Math.max(pdfY1, pdfY2),
-        };
+        return pageViewportRectToPdfRect(pageViewportRect, viewport);
     }
 
     /**
@@ -454,12 +454,12 @@ export class PdfAnnotationController {
     private renderAll() {
         this.removeAllOverlayLayers();
         if (!this.annotations.size) {
-            debugLog("renderAll skipped: no annotations");
+            console.log(DEBUG_PREFIX, "renderAll skipped: no annotations");
             return;
         }
 
         const pageElements = Array.from(document.querySelectorAll<HTMLElement>(".page[data-page-number]"));
-        debugLog("renderAll", {
+        console.log(DEBUG_PREFIX, "renderAll", {
             annotationCount: this.annotations.size,
             pageElementCount: pageElements.length,
         });
@@ -475,12 +475,48 @@ export class PdfAnnotationController {
      * Renders the annotations belonging to one PDF page. The overlay layer is
      * recreated for that page so a page render never accumulates stale children
      * from a previous viewport, zoom level, or annotation snapshot.
+     *
+     * Design rationale:
+     * - The host snapshot is canonical, but PDF.js owns the page DOM. Rendering
+     *   therefore happens only when both the page element and the PDF.js page
+     *   viewport are available.
+     * - PDF.js may recycle or re-render page DOM after zoom, rotation, or lazy
+     *   page rendering. Removing this controller's previous overlay before
+     *   appending a new one makes each page render idempotent.
+     * - Filtering annotations by page keeps the first slice simple and matches
+     *   the persisted first-slice target shape: one annotation target has one
+     *   1-based page number plus one or more PDF-space rectangles.
+     * - Overlay children are derived from persisted PDF coordinates with
+     *   createHighlightElement(), which lets PDF.js PageViewport handle current
+     *   scale and rotation when converting back to viewport coordinates.
+     *
+     * How to test without PDF.js:
+     * - Mock getPageElement() with an HTMLElement-like page container exposing
+     *   append(), children, and a classList on existing overlay nodes.
+     * - Mock getPageView() with a viewport exposing convertToViewportRectangle().
+     * - Seed this.annotations with page-matched and page-mismatched annotations.
+     * - Assert that a missing page element or viewport produces no DOM mutation.
+     * - Assert that an existing annotation overlay is removed before rendering.
+     * - Assert that only annotations for the requested page create highlight
+     *   children and that invalid/tiny viewport rectangles are skipped.
+     *
+     * Critique:
+     * - This intentionally rebuilds a page overlay instead of diffing children.
+     *   That is simpler and safer for the MVP, but less efficient if a page has
+     *   many annotations or if PDF.js emits frequent render events.
+     * - The layer is passive and aria-hidden, so it cannot support selection,
+     *   focus, or keyboard interaction until later slices redefine the overlay
+     *   interaction model.
+     * - The method still depends on PDF.js page DOM shape and viewport APIs. If
+     *   PDF.js integration changes or rendering needs richer interactions, keep
+     *   moving page filtering, layer reconciliation, and viewport conversion into
+     *   smaller tested helpers.
      */
     private renderPage(pageNumber: number) {
         const pageElement = this.getPageElement(pageNumber);
         const pageView = this.getPageView(pageNumber);
         if (!pageElement || !pageView?.viewport) {
-            debugLog("renderPage skipped: missing page element or viewport", {
+            console.log(DEBUG_PREFIX, "renderPage skipped: missing page element or viewport", {
                 pageNumber,
                 hasPageElement: !!pageElement,
                 hasViewport: !!pageView?.viewport,
@@ -493,13 +529,13 @@ export class PdfAnnotationController {
         const annotations = Array.from(this.annotations.values())
             .filter((annotation) => annotation.page === pageNumber);
         if (!annotations.length) {
-            // debugLog("renderPage skipped: no annotations for page", { pageNumber });
+            // console.log(DEBUG_PREFIX, "renderPage skipped: no annotations for page", { pageNumber });
             return;
         }
 
         const layer = this.createOverlayLayer();
         pageElement.append(layer);
-        debugLog("renderPage", {
+        console.log(DEBUG_PREFIX, "renderPage", {
             pageNumber,
             annotationCount: annotations.length,
             rectCount: annotations.reduce((count, annotation) => count + annotation.rects.length, 0),
@@ -554,7 +590,7 @@ export class PdfAnnotationController {
         const height = Math.abs(viewportRect[1] - viewportRect[3]);
 
         if (width < 0.5 || height < 0.5) {
-            debugLog("highlight skipped: viewport rectangle too small", {
+            console.log(DEBUG_PREFIX, "highlight skipped: viewport rectangle too small", {
                 annotationId: annotation.id,
                 rect,
                 viewportRect,
@@ -587,10 +623,10 @@ export class PdfAnnotationController {
     private scheduleRenderAll() {
         if (typeof this.renderAnimationFrame === "number") {
             window.cancelAnimationFrame(this.renderAnimationFrame);
-            debugLog("cancelled pending scheduled render");
+            console.log(DEBUG_PREFIX, "cancelled pending scheduled render");
         }
 
-        debugLog("scheduled renderAll after geometry change");
+        console.log(DEBUG_PREFIX, "scheduled renderAll after geometry change");
         this.renderAnimationFrame = window.requestAnimationFrame(() => {
             this.renderAnimationFrame = window.requestAnimationFrame(() => {
                 this.renderAnimationFrame = undefined;
@@ -607,7 +643,7 @@ export class PdfAnnotationController {
     private getPageView(pageNumber: number) {
         const pdfViewer = this.getPdfViewerApplication()?.pdfViewer;
         if (!pdfViewer) {
-            debugLog("getPageView failed: missing PDF viewer", { pageNumber });
+            console.log(DEBUG_PREFIX, "getPageView failed: missing PDF viewer", { pageNumber });
             return undefined;
         }
 
@@ -667,7 +703,7 @@ export class PdfAnnotationController {
     private addPdfJsListener(key: string, fn: (payload?: any) => void) {
         const eventBus = this.getPdfViewerApplication()?.eventBus;
         if (!eventBus) {
-            debugWarn("PDF.js listener not registered: missing event bus", { key });
+            console.error(DEBUG_PREFIX, "PDF.js listener not registered: missing event bus", { key });
             return;
         }
 
@@ -676,11 +712,11 @@ export class PdfAnnotationController {
         } else if (typeof eventBus._on === "function") {
             eventBus._on(key, fn);
         } else {
-            debugWarn("PDF.js listener not registered: no compatible on method", { key });
+            console.error(DEBUG_PREFIX, "PDF.js listener not registered: no compatible on method", { key });
             return;
         }
 
-        debugLog("PDF.js listener registered", { key });
+        console.log(DEBUG_PREFIX, "PDF.js listener registered", { key });
         this.pdfJsListeners.push({ key, fn });
     }
 
@@ -692,7 +728,7 @@ export class PdfAnnotationController {
     private removePdfJsListener(key: string, fn: (payload?: any) => void) {
         const eventBus = this.getPdfViewerApplication()?.eventBus;
         if (!eventBus) {
-            debugWarn("PDF.js listener not removed: missing event bus", { key });
+            console.error(DEBUG_PREFIX, "PDF.js listener not removed: missing event bus", { key });
             return;
         }
 
@@ -701,16 +737,8 @@ export class PdfAnnotationController {
         } else if (typeof eventBus._off === "function") {
             eventBus._off(key, fn);
         } else {
-            debugWarn("PDF.js listener not removed: no compatible off method", { key });
+            console.error(DEBUG_PREFIX, "PDF.js listener not removed: no compatible off method", { key });
         }
-    }
-
-    /**
-     * Keeps viewport-local coordinates inside the rendered page. This prevents
-     * slightly overflowing browser rects from becoming invalid PDF rectangles.
-     */
-    private clamp(value: number, min: number, max: number) {
-        return Math.min(max, Math.max(min, value));
     }
 
     /**
