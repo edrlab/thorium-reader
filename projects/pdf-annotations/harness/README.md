@@ -5,8 +5,8 @@ PDF.js viewer without launching Thorium.
 
 It is a developer test bench, not a product surface. It helps validate the
 browser/PDF.js part of the feature: selection capture, page hit-testing,
-PDF coordinate conversion, overlay rendering, zoom, rotation, and full snapshot
-sync through a fake Thorium event bus.
+PDF coordinate conversion, overlay rendering, panel-to-viewer navigation, zoom,
+rotation, and full snapshot sync through a fake Thorium event bus.
 
 ## What It Tests
 
@@ -14,13 +14,14 @@ sync through a fake Thorium event bus.
 - Real `PdfAnnotationController` from `src/renderer/reader/pdf/webview/annotations.ts`.
 - Real browser selection geometry and PDF.js page viewport conversion.
 - In-memory fake annotation persistence through `annotations:sync`.
+- `viewer:go-to-annotation` navigation using annotation id plus page/rect fallback.
 
 ## What It Does Not Test
 
 - Electron webview lifecycle.
 - Thorium parent/child IPC.
 - Redux note persistence.
-- Annotation panel behavior.
+- Thorium annotation panel rendering and Redux wiring.
 - Native PDF file mutation.
 
 ## Run
@@ -68,17 +69,21 @@ npm run test:pdf-annotations:harness
 The Playwright config builds the harness, starts the local server, opens
 `standalone.html`, waits for the PDF.js iframe and injected harness panel,
 creates a browser selection inside the real PDF.js text layer, clicks
-`Create highlight`, verifies that an annotation and overlay exist, then clicks
-`Clear` and verifies that the overlay is removed.
+`Create highlight`, verifies that an annotation and overlay exist, clicks
+`Go to latest`, verifies the navigation flash, then clicks `Clear` and verifies
+that the overlay is removed.
 
 ## Manual Test Flow
 
 1. Select text in the PDF.js viewer.
 2. Click `Create highlight` in the floating harness panel.
 3. Confirm that the highlight appears and the annotation count increases.
-4. Change zoom and rotation in PDF.js.
-5. Confirm that the highlight remains aligned with the selected text.
-6. Click `Clear` and confirm that the overlay disappears.
+4. Scroll away or change page/zoom if desired.
+5. Click `Go to latest`.
+6. Confirm that the viewer returns to the highlight and flashes it.
+7. Change zoom and rotation in PDF.js.
+8. Confirm that the highlight remains aligned with the selected text.
+9. Click `Clear` and confirm that the overlay disappears.
 
 ## Architecture
 
@@ -92,6 +97,10 @@ The injected module creates a small fake implementation of `IEventBusPdfPlayer`.
 When the controller dispatches `annotation:create-requested`, the fake host
 assigns an id, stores the annotation in memory, and sends a complete
 `annotations:sync` snapshot back to the controller.
+
+The `Go to latest` control dispatches `viewer:go-to-annotation` with the stored
+annotation id, page, and first rectangle. This mirrors the slice 2 parent-panel
+navigation payload without requiring Thorium, Redux, or Electron.
 
 ## Injection Behavior
 
@@ -113,7 +122,7 @@ automatic injection runs before the iframe document is reachable.
 This harness is useful because it exercises the controller with real PDF.js
 geometry while keeping Thorium out of the loop. The tradeoff is that it is still
 not a full integration test: it does not prove Electron webview behavior,
-Redux persistence, note conversion, or annotation panel synchronization.
+Redux persistence, note conversion, or Thorium annotation panel rendering.
 
 Revisit this harness when PDF annotations need automated browser regression
 coverage, when PDF.js changes its viewer globals, or when the controller starts

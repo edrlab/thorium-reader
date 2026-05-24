@@ -4,6 +4,7 @@ declare global {
     interface Window {
         __thoriumPdfAnnotationHarness?: {
             annotations: () => unknown[];
+            goToAnnotation: (id?: string) => void;
         };
     }
 }
@@ -75,7 +76,7 @@ async function selectFirstVisibleTextRun(frame: Frame) {
     });
 }
 
-test("creates and clears a PDF highlight through the standalone harness", async ({ page }) => {
+test("creates, navigates to, and clears a PDF highlight through the standalone harness", async ({ page }) => {
     await page.goto("/projects/pdf-annotations/harness/standalone.html", {
         waitUntil: "domcontentloaded",
     });
@@ -100,6 +101,11 @@ test("creates and clears a PDF highlight through the standalone harness", async 
     const firstHighlightBox = await highlights.first().boundingBox();
     expect(firstHighlightBox?.width || 0).toBeGreaterThan(0.5);
     expect(firstHighlightBox?.height || 0).toBeGreaterThan(0.5);
+
+    await expect(frame.locator("#thorium-pdf-annotation-go-to-latest")).toBeEnabled();
+    await frame.locator("#thorium-pdf-annotation-go-to-latest").click();
+
+    await expect.poll(async () => frame.locator(".thorium-pdf-annotation-highlight[data-navigation-flash=\"true\"]").count()).toBeGreaterThan(0);
 
     await frame.locator("#thorium-pdf-annotation-clear").click();
 
