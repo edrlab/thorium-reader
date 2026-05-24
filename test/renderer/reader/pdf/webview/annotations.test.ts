@@ -248,6 +248,57 @@ function latestDraftDispatch(thoriumBus: FakeThoriumBus) {
         .at(-1);
 }
 
+function latestSelectedDispatch(thoriumBus: FakeThoriumBus) {
+    return thoriumBus.dispatches
+        .filter((dispatch) => dispatch.key === "annotation:selected")
+        .at(-1);
+}
+
+function setHighlightClientRect(annotationId: string, clientRect: ReturnType<typeof rect>) {
+    const highlight = highlights().find((item) => item.dataset.annotationId === annotationId);
+    if (!highlight) {
+        throw new Error(`Expected rendered highlight for ${annotationId}`);
+    }
+
+    Object.defineProperty(highlight, "getBoundingClientRect", {
+        value: () => clientRect,
+        configurable: true,
+    });
+}
+
+function dispatchAnnotationClick(
+    x: number,
+    y: number,
+    options: {
+        button?: number;
+        pointerDownX?: number;
+        pointerDownY?: number;
+        shiftKey?: boolean;
+        altKey?: boolean;
+        ctrlKey?: boolean;
+        metaKey?: boolean;
+        target?: EventTarget;
+    } = {},
+) {
+    const target = options.target || document;
+    target.dispatchEvent(new window.MouseEvent("pointerdown", {
+        bubbles: true,
+        button: options.button ?? 0,
+        clientX: options.pointerDownX ?? x,
+        clientY: options.pointerDownY ?? y,
+    }));
+    target.dispatchEvent(new window.MouseEvent("click", {
+        bubbles: true,
+        button: options.button ?? 0,
+        clientX: x,
+        clientY: y,
+        shiftKey: !!options.shiftKey,
+        altKey: !!options.altKey,
+        ctrlKey: !!options.ctrlKey,
+        metaKey: !!options.metaKey,
+    }));
+}
+
 function runNextAnimationFrame() {
     const callback = rafCallbacks.shift();
     if (callback) {
@@ -524,6 +575,7 @@ test("destroy removes subscriptions, clears overlays and state, and cancels sche
         ],
     });
     harness.pdfJsEventBus.emit("rotationchanging");
+    const removeDocumentListenerSpy = jest.spyOn(document, "removeEventListener");
 
     harness.controller.destroy();
     runNextAnimationFrame();
@@ -537,6 +589,8 @@ test("destroy removes subscriptions, clears overlays and state, and cancels sche
     expect(harness.pdfJsEventBus.listenerCount("pagerendered")).toBe(0);
     expect(harness.pdfJsEventBus.listenerCount("scalechanging")).toBe(0);
     expect(harness.pdfJsEventBus.listenerCount("rotationchanging")).toBe(0);
+    expect(removeDocumentListenerSpy).toHaveBeenCalledWith("pointerdown", expect.any(Function), true);
+    expect(removeDocumentListenerSpy).toHaveBeenCalledWith("click", expect.any(Function), true);
     expect(overlayLayers()).toHaveLength(0);
 
     harness.controller.init();
@@ -585,6 +639,98 @@ test("overlay rendering creates passive page layers and positioned highlights fo
 
     harness.pdfJsEventBus.emit("pagerendered", { pageNumber: 1 });
     expect(overlayLayers(first.pageElement)).toHaveLength(1);
+});
+
+test("clicking inside a rendered highlight emits annotation:selected without enabling overlay pointer events", () => {
+    const page = createRenderedPage(1);
+    const harness = createHarness([page]);
+    harness.controller.init();
+    harness.thoriumBus.dispatch("annotations:sync", {
+        annotations: [
+            annotation("first", 1, [
+                { x1: 10, y1: 20, x2: 30, y2: 40 },
+            ]),
+        ],
+    });
+    setHighlightClientRect("first", rect(110, 120, 150, 160));
+
+    dispatchAnnotationClick(130, 140, {
+        shiftKey: true,
+        altKey: true,
+        target: page.pageElement,
+    });
+
+    expect(highlights()[0].style.pointerEvents).toBe("none");
+    expect(latestSelectedDispatch(harness.thoriumBus)?.args[0]).toEqual({
+        id: "first",
+        page: 1,
+        rectIndex: 0,
+        rect: { x1: 10, y1: 20, x2: 30, y2: 40 },
+        source: "overlay-click",
+        shiftKey: true,
+        altKey: true,
+        ctrlKey: false,
+        metaKey: false,
+    });
+});
+
+test("annotation:selected hit testing ignores clicks outside highlights and prefers the smallest overlap", () => {
+    const page = createRenderedPage(1);
+    const harness = createHarness([page]);
+    harness.controller.init();
+    harness.thoriumBus.dispatch("annotations:sync", {
+        annotations: [
+            annotation("large", 1, [
+                { x1: 10, y1: 20, x2: 80, y2: 90 },
+            ]),
+            annotation("small", 1, [
+                { x1: 30, y1: 40, x2: 50, y2: 60 },
+            ]),
+        ],
+    });
+    setHighlightClientRect("large", rect(100, 100, 200, 200));
+    setHighlightClientRect("small", rect(120, 120, 140, 140));
+
+    dispatchAnnotationClick(90, 90, { target: page.pageElement });
+    expect(latestSelectedDispatch(harness.thoriumBus)).toBeUndefined();
+
+    dispatchAnnotationClick(130, 130);
+    expect(latestSelectedDispatch(harness.thoriumBus)).toBeUndefined();
+
+    dispatchAnnotationClick(130, 130, { target: page.pageElement });
+    expect(latestSelectedDispatch(harness.thoriumBus)?.args[0]).toEqual(expect.objectContaining({
+        id: "small",
+        rectIndex: 0,
+    }));
+});
+
+test("annotation:selected ignores active text selection and drag-like pointer movement", () => {
+    const page = createRenderedPage(1);
+    const harness = createHarness([page]);
+    harness.controller.init();
+    harness.thoriumBus.dispatch("annotations:sync", {
+        annotations: [
+            annotation("first", 1),
+        ],
+    });
+    setHighlightClientRect("first", rect(110, 120, 150, 160));
+
+    setSelection("active text selection", []);
+    dispatchAnnotationClick(130, 140, { target: page.pageElement });
+    expect(latestSelectedDispatch(harness.thoriumBus)).toBeUndefined();
+
+    Object.defineProperty(window, "getSelection", {
+        value: () => ({
+            toString: () => "",
+        }),
+        configurable: true,
+    });
+    dispatchAnnotationClick(130, 140, {
+        pointerDownX: 100,
+        pointerDownY: 100,
+        target: page.pageElement,
+    });
+    expect(latestSelectedDispatch(harness.thoriumBus)).toBeUndefined();
 });
 
 test("overlay rendering applies transported PDF colors and draw types", () => {

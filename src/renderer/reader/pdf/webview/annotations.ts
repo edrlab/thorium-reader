@@ -13,6 +13,7 @@ import type {
     TPdfAnnotationDraftTransport,
     TPdfAnnotationNavigationTarget,
     TPdfAnnotationRectTransport,
+    TPdfAnnotationSelectionTarget,
     TPdfAnnotationTransport,
 } from "../common/pdfReader.type";
 import {
@@ -93,6 +94,21 @@ interface IPageHit {
     pageNumber: number;
 }
 
+interface IAnnotationPointerDown {
+    button: number;
+    x: number;
+    y: number;
+}
+
+interface IAnnotationClickCandidate {
+    annotation: TPdfAnnotationTransport;
+    area: number;
+    distanceFromCenter: number;
+    order: number;
+    rect: TPdfAnnotationRectTransport;
+    rectIndex: number;
+}
+
 export class PdfAnnotationController {
 
     /**
@@ -117,6 +133,7 @@ export class PdfAnnotationController {
     private initialized = false;
     private readySent = false;
     private renderAnimationFrame: number | undefined;
+    private annotationPointerDown: IAnnotationPointerDown | undefined;
 
     public constructor(
         private readonly bus: IEventBusPdfPlayer,
@@ -145,6 +162,9 @@ export class PdfAnnotationController {
         this.bus.subscribe("viewer:go-to-annotation", this.onGoToAnnotation);
         console.log(DEBUG_PREFIX, "subscribed to Thorium PDF annotation bus events");
 
+        document.addEventListener("pointerdown", this.onAnnotationPointerDown, true);
+        document.addEventListener("click", this.onAnnotationClick, true);
+
         this.addPdfJsListener("pagesinit", this.onPdfReady);
         this.addPdfJsListener("documentloaded", this.onPdfReady);
         this.addPdfJsListener("pagerendered", this.onPageRendered);
@@ -171,6 +191,8 @@ export class PdfAnnotationController {
         this.bus.remove(this.onAnnotationsSync, "annotations:sync");
         this.bus.remove(this.onCreateFromSelection, "highlight:create-from-selection");
         this.bus.remove(this.onGoToAnnotation, "viewer:go-to-annotation");
+        document.removeEventListener("pointerdown", this.onAnnotationPointerDown, true);
+        document.removeEventListener("click", this.onAnnotationClick, true);
         this.pdfJsListeners.forEach(({ key, fn }) => this.removePdfJsListener(key, fn));
         this.pdfJsListeners.length = 0;
 
@@ -181,6 +203,7 @@ export class PdfAnnotationController {
 
         this.removeAllOverlayLayers();
         this.annotations.clear();
+        this.annotationPointerDown = undefined;
         this.initialized = false;
         this.readySent = false;
     }
@@ -260,6 +283,55 @@ export class PdfAnnotationController {
             page: target.page,
         });
         this.scrollToAnnotationTarget(target);
+    };
+
+    private readonly onAnnotationPointerDown = (event: PointerEvent | MouseEvent) => {
+        this.annotationPointerDown = {
+            button: event.button,
+            x: event.clientX,
+            y: event.clientY,
+        };
+    };
+
+    /**
+     * Selects a rendered PDF annotation without making the overlay layer
+     * pointer-interactive.
+     *
+     * Why this algorithm:
+     * - PDF.js text selection lives below this controller's overlay. Changing
+     *   highlight elements to `pointer-events: auto` would make the highlight a
+     *   new hit target and can steal drag/selection behavior from the text
+     *   layer.
+     * - A document-level click listener can keep the overlay passive and still
+     *   compare the click point against rendered highlight rectangles. The
+     *   browser remains free to deliver the original event to PDF.js controls
+     *   and text spans because this handler does not prevent default or stop
+     *   propagation.
+     * - The click still has to originate from a PDF page element. This prevents
+     *   toolbar buttons, popovers, or test harness UI that visually overlap a
+     *   highlight from selecting an annotation by geometry alone.
+     *
+     * Critique:
+     * - This depends on visible DOM geometry, so unusual CSS transforms or
+     *   stale overlay DOM could affect hit testing. It is still preferable for
+     *   this slice because rendered geometry is exactly what the user sees.
+     * - Overlapping highlights are resolved locally by picking the smallest
+     *   matching rectangle, then the closest center, then the latest rendered
+     *   element. If richer stacking rules are needed later, extract this into a
+     *   dedicated policy helper and test those product rules directly.
+     */
+    private readonly onAnnotationClick = (event: MouseEvent) => {
+        const target = this.selectionTargetFromClick(event);
+        if (!target) {
+            return;
+        }
+
+        console.log(DEBUG_PREFIX, "annotation:selected", {
+            id: target.id,
+            page: target.page,
+            rectIndex: target.rectIndex,
+        });
+        this.bus.dispatch("annotation:selected", target);
     };
 
     /**
@@ -753,8 +825,8 @@ export class PdfAnnotationController {
         });
 
         for (const annotation of annotations) {
-            for (const rect of annotation.rects) {
-                const highlight = this.createHighlightElement(annotation, rect, pageView);
+            for (const [rectIndex, rect] of annotation.rects.entries()) {
+                const highlight = this.createHighlightElement(annotation, rect, rectIndex, pageView);
                 if (highlight) {
                     layer.append(highlight);
                 }
@@ -790,6 +862,7 @@ export class PdfAnnotationController {
     private createHighlightElement(
         annotation: TPdfAnnotationTransport,
         rect: TPdfAnnotationRectTransport,
+        rectIndex: number,
         pageView: any,
     ) {
         const viewportRect = pageView.viewport.convertToViewportRectangle([
@@ -815,6 +888,8 @@ export class PdfAnnotationController {
         const highlight = document.createElement("div");
         highlight.className = ANNOTATION_HIGHLIGHT_CLASS;
         highlight.dataset.annotationId = annotation.id;
+        highlight.dataset.annotationPage = String(annotation.page);
+        highlight.dataset.annotationRectIndex = String(rectIndex);
         highlight.style.position = "absolute";
         highlight.style.left = `${left}px`;
         highlight.style.top = `${top}px`;
@@ -855,6 +930,126 @@ export class PdfAnnotationController {
         highlight.style.backgroundColor = color;
         highlight.style.opacity = HIGHLIGHT_OPACITY;
         highlight.style.mixBlendMode = "multiply";
+    }
+
+    private selectionTargetFromClick(event: MouseEvent): TPdfAnnotationSelectionTarget | undefined {
+        if (event.button !== 0) {
+            return undefined;
+        }
+
+        if (this.annotationPointerDown?.button !== 0) {
+            return undefined;
+        }
+
+        if (this.annotationPointerDown) {
+            const movement = Math.hypot(
+                event.clientX - this.annotationPointerDown.x,
+                event.clientY - this.annotationPointerDown.y,
+            );
+            if (movement > 4) {
+                console.log(DEBUG_PREFIX, "annotation click ignored after pointer movement", { movement });
+                return undefined;
+            }
+        }
+
+        if (!this.clickOriginatesInPdfPage(event)) {
+            return undefined;
+        }
+
+        if (window.getSelection?.()?.toString().trim()) {
+            console.log(DEBUG_PREFIX, "annotation click ignored while text selection is active");
+            return undefined;
+        }
+
+        const candidate = this.findAnnotationClickCandidate(event.clientX, event.clientY);
+        if (!candidate) {
+            return undefined;
+        }
+
+        return {
+            id: candidate.annotation.id,
+            page: candidate.annotation.page,
+            rectIndex: candidate.rectIndex,
+            rect: { ...candidate.rect },
+            source: "overlay-click",
+            shiftKey: event.shiftKey,
+            altKey: event.altKey,
+            ctrlKey: event.ctrlKey,
+            metaKey: event.metaKey,
+        };
+    }
+
+    private findAnnotationClickCandidate(clientX: number, clientY: number): IAnnotationClickCandidate | undefined {
+        const highlights = Array.from(document.querySelectorAll<HTMLElement>(`.${ANNOTATION_HIGHLIGHT_CLASS}`));
+        let bestCandidate: IAnnotationClickCandidate | undefined;
+
+        highlights.forEach((highlight, order) => {
+            const annotationId = highlight.dataset.annotationId;
+            const annotation = annotationId ? this.annotations.get(annotationId) : undefined;
+            const rectIndex = Number(highlight.dataset.annotationRectIndex);
+            if (!annotation || !Number.isInteger(rectIndex) || rectIndex < 0) {
+                return;
+            }
+
+            const rect = annotation.rects[rectIndex];
+            if (!rect) {
+                return;
+            }
+
+            const bounds = highlight.getBoundingClientRect();
+            if (!this.pointIsInsideRect(clientX, clientY, bounds)) {
+                return;
+            }
+
+            const width = Math.max(0, bounds.width || bounds.right - bounds.left);
+            const height = Math.max(0, bounds.height || bounds.bottom - bounds.top);
+            const area = Math.max(1, width * height);
+            const distanceFromCenter = Math.hypot(
+                clientX - (bounds.left + (width / 2)),
+                clientY - (bounds.top + (height / 2)),
+            );
+            const candidate: IAnnotationClickCandidate = {
+                annotation,
+                area,
+                distanceFromCenter,
+                order,
+                rect,
+                rectIndex,
+            };
+
+            if (
+                !bestCandidate ||
+                candidate.area < bestCandidate.area ||
+                (candidate.area === bestCandidate.area && candidate.distanceFromCenter < bestCandidate.distanceFromCenter) ||
+                (
+                    candidate.area === bestCandidate.area &&
+                    candidate.distanceFromCenter === bestCandidate.distanceFromCenter &&
+                    candidate.order > bestCandidate.order
+                )
+            ) {
+                bestCandidate = candidate;
+            }
+        });
+
+        return bestCandidate;
+    }
+
+    private clickOriginatesInPdfPage(event: MouseEvent) {
+        const target = event.target;
+        if (target instanceof window.HTMLElement && target.closest(".page[data-page-number]")) {
+            return true;
+        }
+
+        const elementAtPoint = document.elementFromPoint?.(event.clientX, event.clientY);
+        return elementAtPoint instanceof window.HTMLElement && !!elementAtPoint.closest(".page[data-page-number]");
+    }
+
+    private pointIsInsideRect(clientX: number, clientY: number, rect: DOMRect) {
+        return [clientX, clientY, rect.left, rect.top, rect.right, rect.bottom].every(Number.isFinite) &&
+            clientX >= rect.left &&
+            clientX <= rect.right &&
+            clientY >= rect.top &&
+            clientY <= rect.bottom;
     }
 
     /**

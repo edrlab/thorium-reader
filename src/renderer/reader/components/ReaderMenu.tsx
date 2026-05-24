@@ -466,13 +466,13 @@ export const computeProgression = (spineItemLinks: Link[], locator: Locator) => 
     return percent;
 };
 
-const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void, setCreatorFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator" | "goToPdfAnnotation">> = (props) => {
+const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, isSelected: boolean, triggerEdition: (v: boolean) => void, setTagFilter: (v: string) => void, setCreatorFilter: (v: string) => void } & Pick<IReaderMenuProps, "goToLocator" | "goToPdfAnnotation">> = (props) => {
 
     const { goToLocator, goToPdfAnnotation, setTagFilter, setCreatorFilter } = props;
     const r2Publication = useSelector((state: IReaderRootState) => state.reader.info.r2Publication);
     const dockingMode = useReaderConfig("readerDockingMode");
     const dockedMode = dockingMode !== "full";
-    const { annotation, isEdited, triggerEdition } = props;
+    const { annotation, isEdited, isSelected, triggerEdition } = props;
     const { uuid, textualValue, tags: tagsStringArrayMaybeUndefined } = annotation;
     const canEditAnnotation = canEditAnnotationInPanel(annotation);
     const canDeleteAnnotation = canDeleteAnnotationInPanel(annotation);
@@ -544,6 +544,16 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
     const selectionText = getAnnotationSelectionText(annotation);
     const pdfPageLabel = getPdfAnnotationPageLabel(annotation, __("reader.navigation.page"));
     const annotationPanelNavigation = getAnnotationPanelNavigation(annotation);
+    const annotationButtonRef = React.useRef<HTMLButtonElement>();
+
+    React.useEffect(() => {
+        if (isSelected && !isEditing) {
+            window.setTimeout(() => {
+                annotationButtonRef.current?.scrollIntoView({ block: "nearest" });
+                annotationButtonRef.current?.focus();
+            }, 0);
+        }
+    }, [isSelected, isEditing]);
 
     const locationText = pdfPageLabel || (percentRounded >= 0 ? `${percentRounded}% ` : "");
     const locationLabel = pdfPageLabel ? __("reader.navigation.page") : __("publication.progression.title");
@@ -556,7 +566,13 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
 
     return (<li
         className={stylesAnnotations.annotations_line}
-        style={{ backgroundColor: dockedEditAnnotation ? "var(--color-gray-50" : "", borderLeft: dockedEditAnnotation ? "none" : `4px solid ${annotationColor}` }}
+        data-selected={isSelected ? "true" : undefined}
+        style={{
+            backgroundColor: dockedEditAnnotation ? "var(--color-gray-50" : "",
+            borderLeft: dockedEditAnnotation ? "none" : `4px solid ${annotationColor}`,
+            outline: isSelected && !isEditing ? "2px solid var(--color-brand-primary)" : undefined,
+            outlineOffset: isSelected && !isEditing ? "2px" : undefined,
+        }}
         onKeyDown={isEditing ? (e) => {
             if (e.key === "Escape") {
                 e.preventDefault();
@@ -576,8 +592,10 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, trig
             {isEditing ?
                 <></>
                 : <button className={classNames(stylesAnnotations.annotation_name, "R2_CSS_CLASS__FORCE_NO_FOCUS_OUTLINE")}
+                    ref={annotationButtonRef}
                     // title={bname}
                     aria-label={annotationPanelNavigation ? `${__("reader.goToContent")} (${btext})` : btext}
+                    aria-current={isSelected ? "true" : undefined}
                     style={{ borderLeft: dockedEditAnnotation && "2px solid var(--color-brand-primary)" }}
                     onClick={(e) => {
                         e.preventDefault();
@@ -1758,6 +1776,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                         goToLocator={goToLocator}
                         goToPdfAnnotation={goToPdfAnnotation}
                         isEdited={annotationItem.uuid === needToFocusOnID && annotationEdit}
+                        isSelected={annotationItem.uuid === needToFocusOnID}
                         triggerEdition={triggerEdition(annotationItem)}
                         setTagFilter={(v) => setTagArrayFilter(new Set([v]))}
                         setCreatorFilter={(v) => setCreatorArrayFilter(new Set([v]))}

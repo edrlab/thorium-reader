@@ -115,6 +115,7 @@ Use the checkboxes as delivery state:
 - [x] Add unit tests for host-side PDF annotation snapshot and create-request orchestration.
 - [x] Wire the PDF annotation geometry tests into normal Jest runs after the existing global Jest module mapper issue is fixed.
 - [x] Automate the standalone PDF.js harness with a browser regression smoke test.
+- [x] Extend standalone harness automation to cover click selection through `annotation:selected`.
 - [ ] Expand standalone harness automation to cover zoom, rotation, and cross-page selection rejection.
 - [ ] Add a regression test that a PDF annotation note keeps `pdfAnnotation` after creation.
 
@@ -159,10 +160,10 @@ Use the checkboxes as delivery state:
 
 ### Overlay Interaction
 
-- [ ] Decide whether PDF highlight overlays should become pointer-interactive.
-- [ ] If interactive, preserve text selection ergonomics.
-- [ ] Emit `annotation:selected` from the webview to the host when a PDF highlight is selected.
-- [ ] Reflect selected annotation state in the annotation panel.
+- [x] Decide whether PDF highlight overlays should become pointer-interactive: keep overlays passive and use document-level geometry hit-testing.
+- [x] Preserve text selection ergonomics by keeping highlight overlays at `pointer-events: none`.
+- [x] Emit `annotation:selected` from the webview to the host when a PDF highlight is selected.
+- [x] Reflect selected annotation state in the annotation panel.
 - [ ] Add keyboard-accessible focus behavior for selected PDF annotations.
 
 ## Needed For Editing And Deletion

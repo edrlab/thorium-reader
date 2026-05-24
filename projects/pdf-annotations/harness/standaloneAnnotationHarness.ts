@@ -42,6 +42,7 @@ interface IHarnessApi {
     deleteLatestAnnotation: () => void;
     destroy: () => void;
     goToAnnotation: (id?: string) => void;
+    selectedAnnotationId: () => string;
     styleLatestAnnotation: () => void;
     sync: () => void;
 }
@@ -250,6 +251,7 @@ async function init() {
     const panel = createPanel();
     const bus = new HarnessBus();
     const annotations: IAnnotation[] = [];
+    let selectedAnnotationId = "";
     const controller = createPdfAnnotationController(bus as any, getApplication);
 
     function updateAnnotationActionButtons() {
@@ -375,6 +377,24 @@ async function init() {
         sync();
     });
 
+    bus.subscribe("annotation:selected", (payload: {
+        id?: string;
+        page?: number;
+        rectIndex?: number;
+        source?: string;
+        shiftKey?: boolean;
+    }) => {
+        selectedAnnotationId = payload?.id || "";
+        appendLog("annotation:selected", {
+            id: payload?.id,
+            page: payload?.page,
+            rectIndex: payload?.rectIndex,
+            source: payload?.source,
+            shiftKey: payload?.shiftKey,
+        });
+        setStatus(selectedAnnotationId ? `Selected ${selectedAnnotationId}` : "Selection ignored");
+    });
+
     const goToLatestAnnotation = () => goToAnnotation();
 
     panel.createButton.addEventListener("click", createHighlight);
@@ -401,6 +421,7 @@ async function init() {
             delete typedWindow.__thoriumPdfAnnotationHarness;
         },
         goToAnnotation,
+        selectedAnnotationId: () => selectedAnnotationId,
         styleLatestAnnotation,
         sync,
     };

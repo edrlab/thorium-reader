@@ -89,26 +89,26 @@ Out of scope for slice 1:
 
 ## Slice 2 - Read-Only Interactions
 
-Target scope:
+Implemented scope:
 
 1. Show PDF annotations in the annotation panel.
 2. Display quote, page, color, creator, and date metadata.
 3. Add a PDF-specific display path that does not require `locatorExtended`.
-4. Implement parent-to-webview navigation with `viewer:go-to-annotation` or `viewer:go-to-page-and-rect`.
-5. Optionally emit `annotation:selected` from the webview when overlays become interactive.
-6. Keep annotations read-only in this slice.
+4. Implement parent-to-webview navigation with `viewer:go-to-annotation`.
+5. Keep annotations read-only in this slice.
 
 Key dependency: the panel must preserve `pdfAnnotation` on every note mutation before editing can be enabled.
 
 ## Slice 3 - Editing and Deletion
 
-Target scope:
+Implemented scope:
 
 1. Edit PDF annotation comments.
 2. Edit PDF annotation color.
-3. Preserve `pdfAnnotation` when saving comments, colors, tags, and metadata.
-4. Delete PDF annotations from the parent UI.
-5. Send updated canonical state back to the webview with either refreshed `annotations:sync` or narrower patch events.
+3. Edit PDF annotation draw type and tags.
+4. Preserve `pdfAnnotation` when saving comments, colors, tags, and metadata.
+5. Delete PDF annotations from the parent UI.
+6. Send updated canonical state back to the webview with refreshed `annotations:sync`.
 
 Potential patch events:
 
@@ -118,6 +118,22 @@ Potential patch events:
 ```
 
 Use a full snapshot until annotation counts or interaction latency justify patch semantics.
+
+## Slice 4 - Overlay Click Selection
+
+Implemented scope:
+
+1. Keep PDF highlight overlays passive with `pointer-events: none`.
+2. Hit-test document clicks against rendered highlight geometry.
+3. Emit `annotation:selected` from the webview to the host.
+4. Open and focus the matching Thorium annotation panel card.
+5. Use `Shift+click` to open the existing edit form for editable PDF annotations.
+
+Still out of scope:
+
+- keyboard focus directly on PDF highlight overlays;
+- new persistence events for selection state;
+- native PDF annotation interaction.
 
 ## Later Phases
 

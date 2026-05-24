@@ -6,7 +6,7 @@ Review date: 2026-05-24
 
 Observed branch: `feat/pdf-annotations`
 
-This review covers the current PDF annotations slices: application-level PDF text highlights created from PDF.js selections, persisted as Thorium notes, rendered back into the PDF webview as overlays, listed in the annotation panel, navigated from the panel back to the PDF highlight, and edited or deleted from the panel.
+This review covers the current PDF annotations slices: application-level PDF text highlights created from PDF.js selections, persisted as Thorium notes, rendered back into the PDF webview as overlays, listed in the annotation panel, navigated from the panel back to the PDF highlight, edited or deleted from the panel, and selected from a click on the rendered PDF highlight.
 
 No Electron runtime test was performed during this review. The notes below are based on static reading of the branch and the project documentation.
 
@@ -30,6 +30,10 @@ No Electron runtime test was performed during this review. The notes below are b
 
 2026-05-24: Fixed the standalone Playwright harness server lifecycle by exporting explicit start/close helpers from `serve.mjs` and owning the server from the Playwright test `beforeAll`/`afterAll` hooks instead of relying on implicit `webServer` teardown. Result: the create/style/navigate/delete harness test passed and the Playwright command exited cleanly.
 
+2026-05-24: Implemented the slice 4 overlay click selection path. PDF highlights remain passive with `pointer-events: none`; the webview hit-tests click geometry and emits `annotation:selected`, `Reader.tsx` opens/focuses the matching annotation panel card, and `Shift+click` enters the existing edit surface. Result: 5 PDF annotation Jest suites passed, 82 tests passed. The standalone Playwright harness also passed after clicking a rendered highlight and verifying `annotation:selected`.
+
+2026-05-24: Hardened the slice 4 review findings. Overlay click selection now requires the click target or point to originate from a PDF page element before geometry matching, and host panel routing validates `annotation:selected` source, rect index, rect shape, and modifier-state fields before opening the panel. Result: 5 PDF annotation Jest suites passed, 82 tests passed; standalone Playwright harness passed.
+
 ## Summary
 
 The first-slice architecture is sound:
@@ -37,10 +41,10 @@ The first-slice architecture is sound:
 - Thorium remains the source of truth for notes and persistence.
 - The PDF.js webview handles selection, coordinate conversion, and rendering.
 - Communication uses the existing `pdf-eventbus`.
-- The webview sends drafts only; the host creates canonical notes.
+- The webview sends drafts and selection events only; the host creates canonical notes and owns panel state.
 - `annotations:sync` gives the webview a replace-all snapshot, which keeps the first slice simple.
 
-The main follow-up risks are not in the basic creation or read-only navigation loop. They sit around future editing/deletion contracts, missing color/style transport, PDF.js integration assumptions, and real Electron/PDF.js runtime coverage.
+The main follow-up risks are not in the basic creation, navigation, editing, deletion, or overlay click loop. They sit around keyboard-accessible overlay focus, overlapping highlight policy, PDF.js integration assumptions, and real Electron/PDF.js runtime coverage.
 
 ## Fixed Review Findings
 
@@ -153,7 +157,7 @@ Known residual limits:
 
 Status: fixed in slice 2.
 
-`SPEC.md` now documents all five PDF annotation event-bus extensions: `annotations:sync`, `highlight:create-from-selection`, `annotations:ready`, `annotation:create-requested`, and `viewer:go-to-annotation`. The spec also includes `TPdfAnnotationNavigationTarget`, the host/webview event directions, and the id-first then page/rect fallback rule for panel navigation.
+`SPEC.md` now documents all six PDF annotation event-bus extensions: `annotations:sync`, `highlight:create-from-selection`, `annotations:ready`, `annotation:create-requested`, `viewer:go-to-annotation`, and `annotation:selected`. The spec also includes `TPdfAnnotationNavigationTarget`, `TPdfAnnotationSelectionTarget`, the host/webview event directions, and the id-first then page/rect fallback rule for panel navigation.
 
 Why this fix is in scope:
 
@@ -251,6 +255,18 @@ Mitigation:
 
 - Add a later `annotation:error` or parent-facing status event.
 - Map invalid selection reasons to localized UI feedback.
+
+### R6 - Overlay click selection is pointer-light, not keyboard-complete
+
+Severity: medium
+
+Slice 4 deliberately keeps PDF highlight DOM passive and uses document-level hit-testing for mouse/pointer clicks. This preserves text selection ergonomics but does not make the overlay itself focusable or keyboard-operable.
+
+Mitigation:
+
+- Keep panel focus as the accessible destination after a click.
+- Add explicit keyboard-accessible overlay focus behavior before treating PDF highlights as fully interactive controls.
+- Revisit overlap policy if users report ambiguous clicks on stacked highlights.
 
 ### R6 - Export/import remains PDF-specific work
 

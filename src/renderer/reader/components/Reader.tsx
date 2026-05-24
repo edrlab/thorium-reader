@@ -85,7 +85,7 @@ import {
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
 import { IPdfPlayerScale, TToc } from "../pdf/common/pdfReader.type";
-import type { TPdfAnnotationNavigationTarget } from "../pdf/common/pdfReader.type";
+import type { TPdfAnnotationNavigationTarget, TPdfAnnotationSelectionTarget } from "../pdf/common/pdfReader.type";
 import { pdfMount } from "../pdf/driver";
 import {
     buildPdfAnnotationTransportList,
@@ -93,6 +93,7 @@ import {
     IPdfAnnotationCreateRequestPayload,
     triggerPdfAnnotation,
 } from "readium-desktop/renderer/reader/pdf/pdfAnnotationHost";
+import { getPdfAnnotationSelectionMenuAction } from "readium-desktop/renderer/reader/pdf/pdfAnnotationPanel";
 import {
     readerLocalActionAnnotations,
     readerLocalActionLocatorHrefChanged,
@@ -335,6 +336,7 @@ class Reader extends React.Component<IProps, IState> {
         this.onPopState = this.onPopState.bind(this);
         this.onPdfAnnotationsReady = this.onPdfAnnotationsReady.bind(this);
         this.onPdfAnnotationCreateRequested = this.onPdfAnnotationCreateRequested.bind(this);
+        this.onPdfAnnotationSelected = this.onPdfAnnotationSelected.bind(this);
 
         this.fastLinkRef = React.createRef<HTMLAnchorElement>();
         this.refToolbar = React.createRef<HTMLAnchorElement>();
@@ -822,12 +824,14 @@ class Reader extends React.Component<IProps, IState> {
         const pdfEventBus = createOrGetPdfEventBus();
         pdfEventBus.subscribe("annotations:ready", this.onPdfAnnotationsReady);
         pdfEventBus.subscribe("annotation:create-requested", this.onPdfAnnotationCreateRequested);
+        pdfEventBus.subscribe("annotation:selected", this.onPdfAnnotationSelected);
     }
 
     private unsubscribePdfAnnotationEvents() {
         const pdfEventBus = createOrGetPdfEventBus();
         pdfEventBus.remove(this.onPdfAnnotationsReady, "annotations:ready");
         pdfEventBus.remove(this.onPdfAnnotationCreateRequested, "annotation:create-requested");
+        pdfEventBus.remove(this.onPdfAnnotationSelected, "annotation:selected");
     }
 
     private onPdfAnnotationsReady() {
@@ -853,6 +857,16 @@ class Reader extends React.Component<IProps, IState> {
                 },
             },
         });
+    }
+
+    private onPdfAnnotationSelected(payload: TPdfAnnotationSelectionTarget) {
+        const menuAction = getPdfAnnotationSelectionMenuAction(payload, this.props.notes);
+        if (!menuAction) {
+            console.error("[Thorium PDF annotations]", "annotation:selected ignored invalid payload", payload);
+            return;
+        }
+
+        this.props.toggleMenu(menuAction);
     }
 
     private syncPdfAnnotations(extraNote?: INoteState) {

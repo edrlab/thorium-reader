@@ -13,6 +13,7 @@ import type { INoteState, TDrawType } from "readium-desktop/common/redux/states/
 import type {
     TPdfAnnotationNavigationTarget,
     TPdfAnnotationRectTransport,
+    TPdfAnnotationSelectionTarget,
 } from "readium-desktop/renderer/reader/pdf/common/pdfReader.type";
 
 export interface IAnnotationPanelSaveChanges {
@@ -32,6 +33,14 @@ export type TAnnotationPanelNavigation =
         type: "pdf";
         target: TPdfAnnotationNavigationTarget;
     };
+
+export interface IPdfAnnotationSelectionMenuAction {
+    open: true;
+    section: "tab-annotation";
+    id: string;
+    focus: true;
+    edit: boolean;
+}
 
 export function canUseReadiumAnnotationImportExport(isPdf: boolean): boolean {
     return !isPdf;
@@ -162,6 +171,42 @@ export function getAnnotationPanelNavigation(annotation: INoteState): TAnnotatio
     }
 
     return undefined;
+}
+
+export function getPdfAnnotationSelectionMenuAction(
+    payload: Partial<TPdfAnnotationSelectionTarget> | undefined,
+    notes: INoteState[],
+): IPdfAnnotationSelectionMenuAction | undefined {
+    const hasModifierState = !!payload &&
+        typeof payload.shiftKey === "boolean" &&
+        typeof payload.altKey === "boolean" &&
+        typeof payload.ctrlKey === "boolean" &&
+        typeof payload.metaKey === "boolean";
+    if (
+        !payload?.id ||
+        payload.source !== "overlay-click" ||
+        !Number.isInteger(payload.page) ||
+        payload.page < 1 ||
+        !Number.isInteger(payload.rectIndex) ||
+        payload.rectIndex < 0 ||
+        !normalizePdfAnnotationNavigationRect(payload.rect) ||
+        !hasModifierState
+    ) {
+        return undefined;
+    }
+
+    const annotation = notes.find((note) => note.uuid === payload.id);
+    if (!annotation?.pdfAnnotation) {
+        return undefined;
+    }
+
+    return {
+        open: true,
+        section: "tab-annotation",
+        id: annotation.uuid,
+        focus: true,
+        edit: !!payload.shiftKey && canEditAnnotationInPanel(annotation),
+    };
 }
 
 export function buildAnnotationPanelSaveNote(

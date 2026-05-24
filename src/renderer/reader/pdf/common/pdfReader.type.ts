@@ -43,6 +43,18 @@ export interface TPdfAnnotationNavigationTarget {
     rect: TPdfAnnotationRectTransport;
 }
 
+export interface TPdfAnnotationSelectionTarget {
+    id: string;
+    page: number;
+    rectIndex: number;
+    rect: TPdfAnnotationRectTransport;
+    source: "overlay-click";
+    shiftKey: boolean;
+    altKey: boolean;
+    ctrlKey: boolean;
+    metaKey: boolean;
+}
+
 export interface IPdfPlayerEvent {
     "pageNumber": (pageNumber: number) => any;
     "pageLabel": (pageLabel: string) => any;
@@ -88,6 +100,7 @@ export interface IPdfPlayerEvent {
         draft: TPdfAnnotationDraftTransport;
     }) => any;
     "viewer:go-to-annotation": (payload: TPdfAnnotationNavigationTarget) => any;
+    "annotation:selected": (payload: TPdfAnnotationSelectionTarget) => any;
 }
 
 export interface IEventBusPdfPlayer extends IEventBus {

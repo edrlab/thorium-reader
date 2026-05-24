@@ -6,7 +6,8 @@ PDF.js viewer without launching Thorium.
 It is a developer test bench, not a product surface. It helps validate the
 browser/PDF.js part of the feature: selection capture, page hit-testing,
 PDF coordinate conversion, overlay rendering, panel-to-viewer navigation, zoom,
-rotation, and full snapshot sync through a fake Thorium event bus.
+rotation, click selection, and full snapshot sync through a fake Thorium event
+bus.
 
 ## What It Tests
 
@@ -15,6 +16,7 @@ rotation, and full snapshot sync through a fake Thorium event bus.
 - Real browser selection geometry and PDF.js page viewport conversion.
 - In-memory fake annotation persistence through `annotations:sync`.
 - `viewer:go-to-annotation` navigation using annotation id plus page/rect fallback.
+- `annotation:selected` dispatch from a real click on a rendered highlight.
 - Snapshot-driven style updates and deletion for the latest fake annotation.
 
 ## What It Does Not Test
@@ -72,9 +74,10 @@ The Playwright test setup builds the harness, starts a local server, opens
 creates a browser selection inside the real PDF.js text layer, clicks
 `Create highlight`, verifies that an annotation and overlay exist, clicks
 `Style latest`, verifies the outline/color update, clicks `Go to latest`,
-verifies the navigation flash, then clicks `Delete latest` and verifies that the
-overlay is removed. The test closes its own local server in teardown so the
-command can be used as an automated gate.
+verifies the navigation flash, clicks the rendered highlight to verify
+`annotation:selected`, then clicks `Delete latest` and verifies that the overlay
+is removed. The test closes its own local server in teardown so the command can
+be used as an automated gate.
 
 ## Manual Test Flow
 
@@ -86,9 +89,11 @@ command can be used as an automated gate.
 6. Scroll away or change page/zoom if desired.
 7. Click `Go to latest`.
 8. Confirm that the viewer returns to the highlight and flashes it.
-9. Change zoom and rotation in PDF.js.
-10. Confirm that the highlight remains aligned with the selected text.
-11. Click `Delete latest` or `Clear` and confirm that the overlay disappears.
+9. Click the highlight.
+10. Confirm that the harness log records `annotation:selected`.
+11. Change zoom and rotation in PDF.js.
+12. Confirm that the highlight remains aligned with the selected text.
+13. Click `Delete latest` or `Clear` and confirm that the overlay disappears.
 
 ## Architecture
 
@@ -111,6 +116,10 @@ The `Style latest` and `Delete latest` controls mutate the fake in-memory host
 state and then send a new full `annotations:sync` snapshot. This mirrors the
 slice 3 decision to use snapshot refresh for edit/delete instead of adding
 patch events to the PDF event bus.
+
+The harness also subscribes to `annotation:selected` and stores the last
+selected annotation id. This mirrors the slice 4 host contract without mounting
+Thorium's Redux-backed annotation panel.
 
 ## Injection Behavior
 

@@ -13,6 +13,7 @@ declare global {
             annotations: () => unknown[];
             deleteLatestAnnotation: () => void;
             goToAnnotation: (id?: string) => void;
+            selectedAnnotationId: () => string;
             styleLatestAnnotation: () => void;
         };
     }
@@ -150,6 +151,24 @@ test("creates, styles, navigates to, and deletes a PDF highlight through the sta
     await frame.locator("#thorium-pdf-annotation-go-to-latest").click();
 
     await expect.poll(async () => frame.locator(".thorium-pdf-annotation-highlight[data-navigation-flash=\"true\"]").count()).toBeGreaterThan(0);
+
+    await frame.evaluate(() => window.getSelection()?.removeAllRanges());
+    const clickHighlightBox = await highlights.first().boundingBox();
+    if (!clickHighlightBox) {
+        throw new Error("Rendered PDF annotation highlight did not have a bounding box");
+    }
+    await page.mouse.click(
+        clickHighlightBox.x + (clickHighlightBox.width / 2),
+        clickHighlightBox.y + (clickHighlightBox.height / 2),
+    );
+    await expect.poll(async () => frame.evaluate(() => {
+        const harness = window.__thoriumPdfAnnotationHarness;
+        const annotations = harness?.annotations() || [];
+        const latest = annotations[annotations.length - 1] as { id?: string } | undefined;
+
+        return !!latest?.id && harness?.selectedAnnotationId() === latest.id;
+    })).toBe(true);
+    await expect(frame.locator("#thorium-pdf-annotation-harness-log")).toContainText("annotation:selected");
 
     await expect(frame.locator("#thorium-pdf-annotation-delete-latest")).toBeEnabled();
     await frame.locator("#thorium-pdf-annotation-delete-latest").click();

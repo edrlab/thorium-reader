@@ -13,9 +13,10 @@ The first slice implements the smallest useful loop:
 5. The host creates a canonical Thorium note.
 6. The host sends the persisted annotation snapshot back to the webview.
 7. The webview renders the official highlight overlay.
-8. When the PDF is reopened, the host re-synchronizes persisted PDF annotations.
+8. A click on a rendered highlight selects the matching Thorium annotation in the panel.
+9. When the PDF is reopened, the host re-synchronizes persisted PDF annotations.
 
-The host is the only source of truth for identity, persistence, timestamps, creator metadata, comments, tags, color, and draw type. The webview is responsible only for selection capture, coordinate conversion, navigation alignment, and overlay rendering.
+The host is the only source of truth for identity, persistence, timestamps, creator metadata, comments, tags, color, draw type, and selected panel state. The webview is responsible only for selection capture, coordinate conversion, navigation alignment, overlay rendering, and passive highlight hit-testing.
 
 ## Scope
 
@@ -33,12 +34,13 @@ Included:
 - annotation panel navigation to PDF highlights through `viewer:go-to-annotation`;
 - annotation panel editing of PDF annotation comment, color, draw type, and tags;
 - annotation panel deletion of PDF annotations through normal Thorium note removal;
+- overlay click selection through `annotation:selected`;
 - hiding Readium annotation import/export controls in PDF readers until a PDF-specific exchange format exists;
 - preservation of `pdfAnnotation` when annotation panel helpers build save payloads.
 
 Excluded:
 
-- overlay click selection/focus;
+- keyboard focus directly on PDF highlight overlays;
 - search;
 - print support;
 - export/import changes;
@@ -79,7 +81,7 @@ First-slice PDF note shape:
 
 ## Event Contract
 
-The PDF annotations project extends `IPdfPlayerEvent` with five annotation-specific events across slices 1, 2, and 3.
+The PDF annotations project extends `IPdfPlayerEvent` with six annotation-specific events across slices 1 through 4.
 
 ```ts
 export interface TPdfAnnotationRectTransport {
@@ -110,6 +112,18 @@ export interface TPdfAnnotationNavigationTarget {
     rect: TPdfAnnotationRectTransport;
 }
 
+export interface TPdfAnnotationSelectionTarget {
+    id: string;
+    page: number;
+    rectIndex: number;
+    rect: TPdfAnnotationRectTransport;
+    source: "overlay-click";
+    shiftKey: boolean;
+    altKey: boolean;
+    ctrlKey: boolean;
+    metaKey: boolean;
+}
+
 export interface IPdfPlayerEvent {
     "annotations:sync": (payload: {
         annotations: TPdfAnnotationTransport[];
@@ -124,6 +138,8 @@ export interface IPdfPlayerEvent {
     }) => any;
 
     "viewer:go-to-annotation": (payload: TPdfAnnotationNavigationTarget) => any;
+
+    "annotation:selected": (payload: TPdfAnnotationSelectionTarget) => any;
 }
 ```
 
@@ -133,7 +149,8 @@ Directions:
 - host to webview: `annotations:sync`;
 - host to webview: `viewer:go-to-annotation`;
 - webview to host: `annotation:create-requested`;
-- webview to host: `annotations:ready`.
+- webview to host: `annotations:ready`;
+- webview to host: `annotation:selected`.
 
 Payload rules:
 
@@ -143,7 +160,9 @@ Payload rules:
 - `annotations:sync` carries host-owned color and draw type for rendering;
 - PDF annotation draw type supports `solid_background`, `underline`, `strikethrough`, and `outline`; `bookmark` is not a PDF highlight style;
 - `viewer:go-to-annotation` carries the canonical annotation id plus page/rect fallback;
-- the webview resolves `viewer:go-to-annotation` by id first when the annotation exists in its current snapshot, then falls back to the payload page/rect.
+- the webview resolves `viewer:go-to-annotation` by id first when the annotation exists in its current snapshot, then falls back to the payload page/rect;
+- `annotation:selected` carries the canonical annotation id, page, matching rectangle index, rectangle copy, source, and keyboard modifier state;
+- the host ignores `annotation:selected` when the payload is incomplete, the source is not `overlay-click`, the rectangle is invalid, the id is unknown, or the id is not a persisted PDF annotation.
 
 ## Data Mapping
 
@@ -250,13 +269,15 @@ The controller:
 
 1. subscribes to `annotations:sync`;
 2. subscribes to `highlight:create-from-selection`;
-3. listens to PDF.js geometry lifecycle events:
+3. subscribes to `viewer:go-to-annotation`;
+4. listens to document pointer/click events for passive overlay hit-testing;
+5. listens to PDF.js geometry lifecycle events:
    - `pagesinit`;
    - `documentloaded`;
    - `pagerendered`;
    - `scalechanging`;
    - `rotationchanging`;
-4. sends `annotations:ready` once PDF geometry is available.
+6. sends `annotations:ready` once PDF geometry is available.
 
 `destroy()` removes bus subscriptions, PDF.js listeners, scheduled renders, overlay DOM, and in-memory annotation state.
 
@@ -341,6 +362,34 @@ Overlay behavior:
 - `outline` uses an opaque border stroke;
 - annotation id stored in `data-annotation-id`.
 
+## Overlay Click Selection
+
+Rendered highlights remain passive DOM (`pointer-events: none`). The controller
+listens for document-level pointer/click events and hit-tests the click point
+against currently rendered highlight rectangles.
+
+Algorithm:
+
+```text
+record pointerdown button and coordinates
+on click:
+    reject non-primary clicks
+    reject drag-like movement
+    reject clicks whose DOM target/point is outside a PDF page element
+    reject when browser text selection is active
+    find rendered highlight rectangles containing the click point
+    choose the smallest matching rectangle, then nearest center, then latest rendered element
+    dispatch annotation:selected with id, page, rectIndex, rect, source, and modifiers
+```
+
+The host maps a valid `annotation:selected` payload to the existing reader menu
+state:
+
+- simple click opens/focuses the annotation card without editing;
+- `Shift+click` opens the same card in edit mode when panel editing is allowed;
+- invalid ids or non-PDF notes are logged and ignored;
+- no note mutation, PDF mutation, export/import, or extra patch event is created.
+
 ## Acceptance Criteria
 
 - A user can open a PDF, select text on one page, trigger annotation creation, and see the official persisted highlight rendered.
@@ -355,10 +404,12 @@ Overlay behavior:
 - PDF annotation cards can edit comment, color, draw type, and tags without losing `pdfAnnotation`.
 - Edited PDF annotation color and draw type update the webview overlay after snapshot sync.
 - Deleting a PDF annotation removes the Thorium note and removes the webview overlay after snapshot sync.
+- Clicking a rendered PDF highlight opens/focuses the matching annotation panel card without changing persistence.
+- Shift-clicking a rendered PDF highlight opens the matching PDF annotation in the panel edit form.
 - PDF reader annotation panels do not expose Readium annotation import/export controls.
-- PDF annotation export/import and print support remain outside slice 3 acceptance.
+- PDF annotation export/import and print support remain outside slice 4 acceptance.
 
 ## Known Follow-Up Requirements
 
 - Add automated browser/Electron checks for real PDF.js navigation positioning.
-- Add explicit overlay selection/focus behavior before making highlights pointer-interactive.
+- Add keyboard-accessible focus behavior directly on PDF highlight overlays.
