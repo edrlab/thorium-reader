@@ -7,7 +7,10 @@ import {
     handlePdfAnnotationCreateRequested,
     triggerPdfAnnotation,
 } from "readium-desktop/renderer/reader/pdf/pdfAnnotationHost";
-import type { IPdfAnnotationCreateRequestDependencies } from "readium-desktop/renderer/reader/pdf/pdfAnnotationHost";
+import type {
+    IPdfAnnotationCreateRequestHostAdapter,
+    IPdfAnnotationCreateRequestHostPorts,
+} from "readium-desktop/renderer/reader/pdf/pdfAnnotationHost";
 import type { TPdfAnnotationDraftTransport } from "readium-desktop/renderer/reader/pdf/common/pdfReader.type";
 
 const color = {
@@ -130,24 +133,28 @@ test("transport list includes an extra note and lets it override an existing ann
 });
 
 test("create-request handling ignores missing payload or missing draft", () => {
-    const addUpdatePdfAnnotationNote: IPdfAnnotationCreateRequestDependencies["addUpdatePdfAnnotationNote"] = jest.fn(() => {
-        throw new Error("addUpdatePdfAnnotationNote should not be called");
+    const persistNoteInRedux: IPdfAnnotationCreateRequestHostPorts["persistNoteInRedux"] = jest.fn(() => {
+        throw new Error("persistNoteInRedux should not be called");
     });
-    const dispatchAnnotationsSync: IPdfAnnotationCreateRequestDependencies["dispatchAnnotationsSync"] = jest.fn();
-    const dependencies: IPdfAnnotationCreateRequestDependencies = {
-        publicationIdentifier: "pub-id",
-        notes: [],
-        color,
-        noteTotalCount: 0,
-        created: 1234,
-        addUpdatePdfAnnotationNote,
-        dispatchAnnotationsSync,
+    const syncAnnotationsToPdfWebview: IPdfAnnotationCreateRequestHostPorts["syncAnnotationsToPdfWebview"] = jest.fn();
+    const host: IPdfAnnotationCreateRequestHostAdapter = {
+        state: {
+            publicationIdentifier: "pub-id",
+            notes: [],
+            color,
+            noteTotalCount: 0,
+            created: 1234,
+        },
+        ports: {
+            persistNoteInRedux,
+            syncAnnotationsToPdfWebview,
+        },
     };
 
-    expect(handlePdfAnnotationCreateRequested(undefined, dependencies)).toBeUndefined();
-    expect(handlePdfAnnotationCreateRequested({}, dependencies)).toBeUndefined();
-    expect(addUpdatePdfAnnotationNote).not.toHaveBeenCalled();
-    expect(dispatchAnnotationsSync).not.toHaveBeenCalled();
+    expect(handlePdfAnnotationCreateRequested(undefined, host)).toBeUndefined();
+    expect(handlePdfAnnotationCreateRequested({}, host)).toBeUndefined();
+    expect(persistNoteInRedux).not.toHaveBeenCalled();
+    expect(syncAnnotationsToPdfWebview).not.toHaveBeenCalled();
 });
 
 test("create-request handling creates one note action and syncs a snapshot including the created note", () => {
@@ -169,32 +176,37 @@ test("create-request handling creates one note action and syncs a snapshot inclu
         },
         created: 2222,
     });
-    const addUpdatePdfAnnotationNote: IPdfAnnotationCreateRequestDependencies["addUpdatePdfAnnotationNote"] = jest.fn((_publicationIdentifier, _newNote) => ({
+    const persistNoteInRedux: IPdfAnnotationCreateRequestHostPorts["persistNoteInRedux"] = jest.fn((_publicationIdentifier, _newNote) => ({
         payload: {
             newNote: createdNote,
         },
     }));
-    const dispatchAnnotationsSync: IPdfAnnotationCreateRequestDependencies["dispatchAnnotationsSync"] = jest.fn();
-    const result = handlePdfAnnotationCreateRequested({ draft }, {
-        publicationIdentifier: "pub-id",
-        notes: [
-            createNote("existing"),
-        ],
-        color,
-        creator: {
-            id: "creator-id",
-            urn: "urn:creator",
-            type: "Person",
-            name: "Creator",
+    const syncAnnotationsToPdfWebview: IPdfAnnotationCreateRequestHostPorts["syncAnnotationsToPdfWebview"] = jest.fn();
+    const host: IPdfAnnotationCreateRequestHostAdapter = {
+        state: {
+            publicationIdentifier: "pub-id",
+            notes: [
+                createNote("existing"),
+            ],
+            color,
+            creator: {
+                id: "creator-id",
+                urn: "urn:creator",
+                type: "Person",
+                name: "Creator",
+            },
+            noteTotalCount: 2,
+            created: 2222,
         },
-        noteTotalCount: 2,
-        created: 2222,
-        addUpdatePdfAnnotationNote,
-        dispatchAnnotationsSync,
-    });
+        ports: {
+            persistNoteInRedux,
+            syncAnnotationsToPdfWebview,
+        },
+    };
+    const result = handlePdfAnnotationCreateRequested({ draft }, host);
 
-    expect(addUpdatePdfAnnotationNote).toHaveBeenCalledTimes(1);
-    expect(addUpdatePdfAnnotationNote).toHaveBeenCalledWith("pub-id", {
+    expect(persistNoteInRedux).toHaveBeenCalledTimes(1);
+    expect(persistNoteInRedux).toHaveBeenCalledWith("pub-id", {
         index: 3,
         pdfAnnotation: {
             type: "pdf-text-highlight",
@@ -217,8 +229,8 @@ test("create-request handling creates one note action and syncs a snapshot inclu
         },
         group: "annotation",
     });
-    expect(dispatchAnnotationsSync).toHaveBeenCalledTimes(1);
-    expect(dispatchAnnotationsSync).toHaveBeenCalledWith([
+    expect(syncAnnotationsToPdfWebview).toHaveBeenCalledTimes(1);
+    expect(syncAnnotationsToPdfWebview).toHaveBeenCalledWith([
         expect.objectContaining({ id: "existing" }),
         expect.objectContaining({ id: "created" }),
     ]);

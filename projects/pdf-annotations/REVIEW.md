@@ -60,6 +60,18 @@ Why this fix is in scope:
 - Thorium remains the source of truth for `uuid`, identity, and canonical note metadata.
 - The sync path already uses the canonical created note; the fix makes the helper contract match that behavior.
 
+### F3 - Host Inversion-Of-Control Naming
+
+Status: fixed in slice 1.
+
+`pdfAnnotationHost.ts` now names its host boundary `IPdfAnnotationCreateRequestHostAdapter`, split into `state` and `ports`. `Reader.tsx` provides the current publication/note metadata as state, then adapts Redux and the PDF event bus into `persistNoteInRedux` and `syncAnnotationsToPdfWebview`, so the helper contract names the side-effect boundary rather than hiding it behind a generic `dependencies` object.
+
+Why this fix is in scope:
+
+- The host helper is the boundary between deterministic PDF annotation logic and Thorium host side effects.
+- Clear port names make it explicit that Redux persistence and PDF webview sync are provided by `Reader.tsx`.
+- The change keeps `pdfAnnotationHost.ts` testable without importing Redux, the store, or the PDF event bus.
+
 ## Out-Of-Scope Review Findings
 
 ### OOS1 - Late `annotations:ready` After Controller Destruction

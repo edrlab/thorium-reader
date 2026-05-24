@@ -151,6 +151,21 @@ The first-slice transport intentionally omits color and draw type. The webview r
 
 ## Host Algorithm
 
+`pdfAnnotationHost.ts` uses inversion of control for host side effects. It builds
+deterministic payloads, but it does not import Redux, the store, or the PDF
+event bus. `Reader.tsx` provides `IPdfAnnotationCreateRequestHostAdapter`, split
+into:
+
+- `state`: publication id, current notes, default annotation metadata, and
+  creation timestamp read from `Reader.tsx` props/runtime.
+- `ports`: host side-effect functions adapted by `Reader.tsx`.
+
+The current ports are:
+
+- `persistNoteInRedux` calls the existing Redux note add/update path.
+- `syncAnnotationsToPdfWebview` dispatches `annotations:sync` through the PDF
+  event bus.
+
 On `annotations:ready`:
 
 ```text

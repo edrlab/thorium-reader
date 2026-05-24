@@ -834,17 +834,21 @@ class Reader extends React.Component<IProps, IState> {
 
     private onPdfAnnotationCreateRequested(payload: IPdfAnnotationCreateRequestPayload) {
         handlePdfAnnotationCreateRequested(payload, {
-            publicationIdentifier: this.props.pubId,
-            notes: this.props.notes,
-            color: this.props.readerConfig.annotation_defaultColor,
-            creator: this.props.creator,
-            noteTotalCount: this.props.noteTotalCount,
-            created: Date.now(),
-            addUpdatePdfAnnotationNote: this.props.addUpdatePdfAnnotationNote,
-            dispatchAnnotationsSync: (annotations) => {
-                createOrGetPdfEventBus().dispatch("annotations:sync", {
-                    annotations,
-                });
+            state: {
+                publicationIdentifier: this.props.pubId,
+                notes: this.props.notes,
+                color: this.props.readerConfig.annotation_defaultColor,
+                creator: this.props.creator,
+                noteTotalCount: this.props.noteTotalCount,
+                created: Date.now(),
+            },
+            ports: {
+                persistNoteInRedux: this.props.addUpdatePdfAnnotationNote,
+                syncAnnotationsToPdfWebview: (annotations) => {
+                    createOrGetPdfEventBus().dispatch("annotations:sync", {
+                        annotations,
+                    });
+                },
             },
         });
     }

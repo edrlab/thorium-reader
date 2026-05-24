@@ -47,6 +47,7 @@ Use the checkboxes as delivery state:
 - [x] Convert persisted notes to PDF annotation transport objects.
 - [x] Convert webview drafts to canonical Thorium note payloads.
 - [x] Extract host-side PDF annotation snapshot, create-request, and trigger routing helpers for unit testing.
+- [x] Name the host helper inversion-of-control boundary as explicit ports supplied by `Reader.tsx`.
 - [x] Make host create-request helper return values distinguish pre-persistence note drafts from canonical created notes.
 - [x] Create PDF annotation notes through the existing note persistence path.
 - [x] Synchronize the official host annotation snapshot back to the PDF webview.

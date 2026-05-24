@@ -183,8 +183,11 @@ Pure helpers:
 
 - `buildPdfAnnotationTransportList(notes, extraNote?)`
 - `createPdfAnnotationNoteDraft(payload, context)`
-- `handlePdfAnnotationCreateRequested(payload, dependencies)`
+- `handlePdfAnnotationCreateRequested(payload, host)`
 - `triggerPdfAnnotation(isPdf, fromKeyboard, dispatchPdfHighlightCreateFromSelection, triggerEpubAnnotation)`
+- `IPdfAnnotationCreateRequestHostState`
+- `IPdfAnnotationCreateRequestHostPorts`
+- `IPdfAnnotationCreateRequestHostAdapter`
 
 Add:
 

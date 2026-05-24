@@ -30,10 +30,24 @@ export interface IPdfAnnotationCreateRequestContext {
     created: number;
 }
 
-export interface IPdfAnnotationCreateRequestDependencies extends IPdfAnnotationCreateRequestContext {
+export interface IPdfAnnotationCreateRequestHostState extends IPdfAnnotationCreateRequestContext {
     publicationIdentifier: string;
     notes: INoteState[];
-    addUpdatePdfAnnotationNote: (
+}
+
+/**
+ * Inversion-of-control boundary for the host side of PDF annotation creation.
+ *
+ * `pdfAnnotationHost` owns deterministic payload construction, but it does not
+ * import Redux, the store, or the PDF event bus. `Reader.tsx` provides current
+ * host state and adapts external systems into these ports:
+ *
+ * - `persistNoteInRedux` writes the draft through the existing note action.
+ * - `syncAnnotationsToPdfWebview` sends the canonical snapshot through the PDF
+ *   event bus.
+ */
+export interface IPdfAnnotationCreateRequestHostPorts {
+    persistNoteInRedux: (
         publicationIdentifier: string,
         newNote: Omit<INoteState, "uuid">,
     ) => {
@@ -41,7 +55,12 @@ export interface IPdfAnnotationCreateRequestDependencies extends IPdfAnnotationC
             newNote: INoteState;
         };
     };
-    dispatchAnnotationsSync: (annotations: TPdfAnnotationTransport[]) => void;
+    syncAnnotationsToPdfWebview: (annotations: TPdfAnnotationTransport[]) => void;
+}
+
+export interface IPdfAnnotationCreateRequestHostAdapter {
+    state: IPdfAnnotationCreateRequestHostState;
+    ports: IPdfAnnotationCreateRequestHostPorts;
 }
 
 export function buildPdfAnnotationTransportList(
@@ -79,24 +98,24 @@ export function createPdfAnnotationNoteDraft(
 
 export function handlePdfAnnotationCreateRequested(
     payload: IPdfAnnotationCreateRequestPayload | undefined,
-    dependencies: IPdfAnnotationCreateRequestDependencies,
+    host: IPdfAnnotationCreateRequestHostAdapter,
 ) {
-    const noteDraft = createPdfAnnotationNoteDraft(payload, dependencies);
+    const noteDraft = createPdfAnnotationNoteDraft(payload, host.state);
     if (!noteDraft) {
         return undefined;
     }
 
-    const action = dependencies.addUpdatePdfAnnotationNote(
-        dependencies.publicationIdentifier,
+    const action = host.ports.persistNoteInRedux(
+        host.state.publicationIdentifier,
         noteDraft,
     );
     const createdNote = action.payload.newNote;
     const annotations = buildPdfAnnotationTransportList(
-        dependencies.notes,
+        host.state.notes,
         createdNote,
     );
 
-    dependencies.dispatchAnnotationsSync(annotations);
+    host.ports.syncAnnotationsToPdfWebview(annotations);
 
     return {
         action,
