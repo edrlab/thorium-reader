@@ -81,18 +81,19 @@ export function handlePdfAnnotationCreateRequested(
     payload: IPdfAnnotationCreateRequestPayload | undefined,
     dependencies: IPdfAnnotationCreateRequestDependencies,
 ) {
-    const newNote = createPdfAnnotationNoteDraft(payload, dependencies);
-    if (!newNote) {
+    const noteDraft = createPdfAnnotationNoteDraft(payload, dependencies);
+    if (!noteDraft) {
         return undefined;
     }
 
     const action = dependencies.addUpdatePdfAnnotationNote(
         dependencies.publicationIdentifier,
-        newNote,
+        noteDraft,
     );
+    const createdNote = action.payload.newNote;
     const annotations = buildPdfAnnotationTransportList(
         dependencies.notes,
-        action.payload.newNote,
+        createdNote,
     );
 
     dependencies.dispatchAnnotationsSync(annotations);
@@ -100,7 +101,8 @@ export function handlePdfAnnotationCreateRequested(
     return {
         action,
         annotations,
-        newNote,
+        createdNote,
+        noteDraft,
     };
 }
 

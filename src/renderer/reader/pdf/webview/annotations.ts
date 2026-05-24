@@ -155,15 +155,21 @@ export class PdfAnnotationController {
      * than patch events and fits the MVP, where annotation counts are expected
      * to be small and correctness is more important than avoiding a full redraw.
      */
-    private readonly onAnnotationsSync = (payload: {
-        annotations: TPdfAnnotationTransport[];
+    private readonly onAnnotationsSync = (payload?: {
+        annotations?: TPdfAnnotationTransport[];
     }) => {
+        const annotations = payload?.annotations;
         console.log(DEBUG_PREFIX, "annotations:sync received", {
-            count: payload?.annotations?.length,
+            count: Array.isArray(annotations) ? annotations.length : undefined,
         });
 
+        if (!Array.isArray(annotations)) {
+            console.error(DEBUG_PREFIX, "annotations:sync ignored invalid payload", payload);
+            return;
+        }
+
         this.annotations.clear();
-        for (const annotation of payload.annotations) {
+        for (const annotation of annotations) {
             if (annotation?.id) {
                 this.annotations.set(annotation.id, annotation);
             } else {

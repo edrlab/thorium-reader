@@ -83,6 +83,7 @@ Current coverage:
 
 - Snapshot construction and deduplication.
 - Create-request payload handling.
+- Create-request return value distinguishes the pre-persistence note draft from the canonical created note.
 - Created-note sync snapshot behavior.
 - PDF-vs-EPUB annotation trigger routing.
 
@@ -96,6 +97,7 @@ Current coverage:
 
 - Thorium and PDF.js event subscriptions.
 - Snapshot replacement.
+- Invalid `annotations:sync` payload rejection without clearing the current snapshot.
 - Selection rejection and draft creation.
 - Ready, page-rendered, geometry-change, and destroy behavior.
 - Passive overlay rendering.
@@ -228,6 +230,7 @@ Add:
 - `P0 Existing` `init()` is idempotent when called twice.
 - `P0 Existing` `annotations:sync` replaces the local annotation snapshot rather than appending.
 - `P0 Existing` `annotations:sync` ignores annotations without ids.
+- `P0 Existing` `annotations:sync` ignores invalid payloads without clearing the current snapshot.
 - `P0 Existing` empty `annotations:sync` removes existing overlay layers.
 - `P0 Existing` `highlight:create-from-selection` does not dispatch a draft for an empty selection.
 - `P0 Existing` `highlight:create-from-selection` does not dispatch a draft when all selection rects are too small.

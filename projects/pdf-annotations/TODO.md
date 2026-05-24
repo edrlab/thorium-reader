@@ -47,6 +47,7 @@ Use the checkboxes as delivery state:
 - [x] Convert persisted notes to PDF annotation transport objects.
 - [x] Convert webview drafts to canonical Thorium note payloads.
 - [x] Extract host-side PDF annotation snapshot, create-request, and trigger routing helpers for unit testing.
+- [x] Make host create-request helper return values distinguish pre-persistence note drafts from canonical created notes.
 - [x] Create PDF annotation notes through the existing note persistence path.
 - [x] Synchronize the official host annotation snapshot back to the PDF webview.
 - [x] Re-sync PDF annotations when the note list changes for an active PDF reader.
@@ -104,7 +105,7 @@ Use the checkboxes as delivery state:
 ### First-Slice Hardening
 
 - [ ] Gate verbose PDF annotation debug logs behind an explicit debug flag.
-- [ ] Validate `annotations:sync` payload shape before rendering.
+- [x] Validate `annotations:sync` payload shape before rendering.
 - [ ] Validate draft rect/page values before creating a note.
 - [ ] Decide whether failed first-slice selections should remain silent or emit a typed internal diagnostic event.
 - [x] Add unit tests for `pdfAnnotationDraftToNote`.

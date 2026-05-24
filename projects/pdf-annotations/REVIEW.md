@@ -16,7 +16,7 @@ No Electron runtime test was performed during this review. The notes below are b
 
 ## Automated Validation
 
-2026-05-24: Implemented and ran the P0 PDF annotation unit-test set through the repository Jest config. Covered geometry edge cases, note/transport converters, extracted host orchestration helpers, PDF-vs-EPUB trigger routing, webview selection rejection and draft creation, snapshot sync, overlay rendering, geometry-change redraws, and teardown with fakes. Result: 4 PDF annotation test suites passed, 54 tests passed. A full `tsc --noEmit --project tsconfig.jest.json` check was attempted but remains blocked by existing repository-wide CommonJS/ESM diagnostics outside the P0 unit-test slice.
+2026-05-24: Implemented and ran the P0 PDF annotation unit-test set through the repository Jest config. Covered geometry edge cases, note/transport converters, extracted host orchestration helpers, PDF-vs-EPUB trigger routing, webview selection rejection and draft creation, snapshot sync, invalid sync payload rejection, overlay rendering, geometry-change redraws, and teardown with fakes. Result: 4 PDF annotation test suites passed, 55 tests passed. A full `tsc --noEmit --project tsconfig.jest.json` check was attempted but remains blocked by existing repository-wide CommonJS/ESM diagnostics outside the P0 unit-test slice.
 
 2026-05-24: Added and ran the Playwright standalone harness smoke test. The test builds and serves the harness, opens `standalone.html`, waits for the injected PDF.js harness panel, creates a real browser selection in the PDF.js text layer, creates a highlight, verifies an in-memory annotation and non-zero overlay, clears it, and verifies removal. Result: passed locally with Playwright Chromium.
 
@@ -33,6 +33,56 @@ The first-slice architecture is sound:
 - `annotations:sync` gives the webview a replace-all snapshot, which keeps the first slice simple.
 
 The main follow-up risks are not in the basic creation loop. They sit around future annotation UI assumptions, missing color/style transport, PDF.js integration assumptions, and lack of automated geometry coverage.
+
+## Fixed Review Findings
+
+### F1 - Invalid `annotations:sync` Payload Guard
+
+Status: fixed in slice 1.
+
+The webview controller now rejects missing or non-array `annotations:sync` payloads before clearing the current snapshot. Invalid payloads are logged with `console.error` and ignored, so existing overlays remain intact.
+
+Why this fix is in scope:
+
+- It protects the first-slice snapshot contract without introducing full P1 transport validation.
+- It prevents malformed runtime messages from clearing valid rendered annotations.
+- It is covered by a unit test using the existing fake Thorium bus and fake DOM setup.
+
+### F2 - Host Create-Request Return Shape
+
+Status: fixed in slice 1.
+
+`handlePdfAnnotationCreateRequested()` now returns `noteDraft` for the pre-persistence note payload and `createdNote` for the canonical note returned by `action.payload.newNote`.
+
+Why this fix is in scope:
+
+- The host helper is exported and covered by P0 unit tests, so its return shape should not mislead future callers.
+- Thorium remains the source of truth for `uuid`, identity, and canonical note metadata.
+- The sync path already uses the canonical created note; the fix makes the helper contract match that behavior.
+
+## Out-Of-Scope Review Findings
+
+### OOS1 - Late `annotations:ready` After Controller Destruction
+
+Scope status: out of scope for slice 1.
+
+Severity if addressed later: low to medium.
+
+`PdfAnnotationController.init()` can schedule `onPdfReady` with `window.setTimeout()` when the PDF document is already available. `destroy()` currently removes bus subscriptions, PDF.js listeners, scheduled animation-frame renders, overlays, and local state, but it does not track or cancel that zero-delay ready timeout.
+
+Why this is out of scope:
+
+- The first slice focuses on annotation creation, note persistence handoff, snapshot sync, and passive overlay rendering.
+- The P0 tests already cover the normal `annotations:ready` path and teardown of subscriptions, overlays, local state, and animation-frame renders.
+- Fixing late ready dispatch after destroy belongs to broader webview/controller lifecycle hardening, not to the first-slice annotation data path.
+
+Known residual risk:
+
+- A PDF webview destroyed immediately after initialization could still dispatch a late `annotations:ready`.
+
+Revisit trigger:
+
+- Revisit when the project takes on lifecycle hardening, repeated PDF webview mount/unmount stress tests, or observed duplicate/late ready events in Thorium runtime QA.
 
 ## Major Risks
 

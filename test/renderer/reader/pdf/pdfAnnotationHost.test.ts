@@ -222,6 +222,12 @@ test("create-request handling creates one note action and syncs a snapshot inclu
         expect.objectContaining({ id: "existing" }),
         expect.objectContaining({ id: "created" }),
     ]);
+    expect(result?.createdNote).toBe(createdNote);
+    expect(result?.noteDraft).toEqual(expect.objectContaining({
+        pdfAnnotation: createdNote.pdfAnnotation,
+        group: "annotation",
+    }));
+    expect(result?.noteDraft).not.toHaveProperty("uuid");
     expect(result?.action.payload.newNote).toBe(createdNote);
 });
 

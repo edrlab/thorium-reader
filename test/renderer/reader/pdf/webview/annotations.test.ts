@@ -292,6 +292,36 @@ test("annotations:sync replaces the snapshot, ignores missing ids, and empty syn
     expect(overlayLayers()).toEqual([]);
 });
 
+test("annotations:sync ignores invalid payloads without clearing the current snapshot", () => {
+    const page = createRenderedPage(1);
+    const harness = createHarness([page]);
+    harness.controller.init();
+    harness.thoriumBus.dispatch("annotations:sync", {
+        annotations: [
+            annotation("first", 1),
+        ],
+    });
+    expect(highlights().map((highlight) => highlight.dataset.annotationId)).toEqual(["first"]);
+
+    expect(() => harness.thoriumBus.dispatch("annotations:sync", undefined)).not.toThrow();
+    expect(highlights().map((highlight) => highlight.dataset.annotationId)).toEqual(["first"]);
+
+    expect(() => harness.thoriumBus.dispatch("annotations:sync", {
+        annotations: "not-an-array",
+    })).not.toThrow();
+    expect(highlights().map((highlight) => highlight.dataset.annotationId)).toEqual(["first"]);
+    expect(console.error).toHaveBeenCalledWith(
+        "[Thorium PDF annotations]",
+        "annotations:sync ignored invalid payload",
+        undefined,
+    );
+    expect(console.error).toHaveBeenCalledWith(
+        "[Thorium PDF annotations]",
+        "annotations:sync ignored invalid payload",
+        { annotations: "not-an-array" },
+    );
+});
+
 test("highlight:create-from-selection does not dispatch a draft for an empty selection", () => {
     const page = createRenderedPage(1);
     const harness = createHarness([page]);
