@@ -112,6 +112,9 @@ export interface IPdfPlayerEvent {
     "annotations:set-instant-mode": (payload: {
         enabled: boolean;
     }) => any;
+    "annotations:set-visibility": (payload: {
+        visible: boolean;
+    }) => any;
     "highlight:create-from-selection": () => any;
     "annotations:ready": () => any;
     "annotation:create-requested": (payload: {

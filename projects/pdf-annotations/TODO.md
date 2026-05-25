@@ -169,6 +169,10 @@ Use the checkboxes as delivery state:
 - [x] Show a clickable pointer cursor when hovering a hit-tested PDF highlight without enabling overlay pointer events.
 - [x] Emit `annotation:selected` from the webview to the host when a PDF highlight is selected.
 - [x] Reflect selected annotation state in the annotation panel.
+- [x] Connect the annotation panel `hide` checkbox to PDF overlay visibility.
+- [x] Hide PDF overlays without removing persisted Thorium notes or the webview annotation snapshot.
+- [x] Restore PDF overlays from the current snapshot when visibility is re-enabled.
+- [x] Prevent hidden PDF overlays from click selection and clickable cursor hints.
 - [ ] Add keyboard-accessible focus behavior for selected PDF annotations.
 
 ### Instant Annotation Mode

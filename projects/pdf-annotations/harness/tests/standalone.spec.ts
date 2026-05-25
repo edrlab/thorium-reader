@@ -21,6 +21,7 @@ declare global {
             }>;
             selectionEventCount: () => number;
             setInstantMode: (enabled: boolean) => void;
+            setVisible: (visible: boolean) => void;
             styleLatestAnnotation: () => void;
         };
     }
@@ -209,6 +210,22 @@ test("creates, styles, navigates to, and deletes a PDF highlight through the sta
     const selectionEventCountAfterClick = await frame.evaluate(() => {
         return window.__thoriumPdfAnnotationHarness?.selectionEventCount() || 0;
     });
+
+    await frame.locator("#thorium-pdf-annotation-visibility").click();
+    await expect(highlights).toHaveCount(0);
+    await expect(frame.locator("#thorium-pdf-annotation-harness-log")).toContainText("annotations:set-visibility");
+
+    await page.mouse.click(
+        firstClickHighlightBox.x + (firstClickHighlightBox.width / 2),
+        firstClickHighlightBox.y + (firstClickHighlightBox.height / 2),
+    );
+    await page.waitForTimeout(250);
+    await expect.poll(async () => frame.evaluate(() => {
+        return window.__thoriumPdfAnnotationHarness?.selectionEventCount() || 0;
+    })).toBe(selectionEventCountAfterClick);
+
+    await frame.locator("#thorium-pdf-annotation-visibility").click();
+    await waitForRenderedHighlight(frame);
 
     await setPdfZoom(frame, 1.25);
     await waitForRenderedHighlight(frame);

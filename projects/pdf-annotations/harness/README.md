@@ -5,9 +5,9 @@ PDF.js viewer without launching Thorium.
 
 It is a developer test bench, not a product surface. It helps validate the
 browser/PDF.js part of the feature: selection capture, page hit-testing,
-PDF coordinate conversion, overlay rendering, panel-to-viewer navigation, zoom,
-rotation, click selection, instant selection creation, and full snapshot sync
-through a fake Thorium event bus.
+PDF coordinate conversion, overlay rendering, hide/show visibility,
+panel-to-viewer navigation, zoom, rotation, click selection, instant selection
+creation, and full snapshot sync through a fake Thorium event bus.
 
 ## What It Tests
 
@@ -19,6 +19,7 @@ through a fake Thorium event bus.
 - `annotation:selected` dispatch from a real click on a rendered highlight.
 - `annotation:selection-error` dispatch for a controlled invalid selection.
 - `annotations:set-instant-mode` and automatic creation from a stable browser selection.
+- `annotations:set-visibility` hide/show behavior without deleting annotations.
 - Snapshot-driven style updates and deletion for the latest fake annotation.
 
 ## What It Does Not Test
@@ -76,15 +77,16 @@ The Playwright test setup builds the harness, starts a local server, opens
 first verifies that an empty selection emits `annotation:selection-error`
 without creating an annotation, then creates a browser selection inside the real
 PDF.js text layer. It clicks `Create highlight`, verifies that an annotation and
-overlay exist, changes zoom and rotation while checking the overlay remains
-non-zero, clicks the rendered highlight to verify `annotation:selected`, clicks
-`Style latest`, verifies the outline/color update, clicks `Go to latest`,
-verifies the navigation flash, then clicks `Delete latest` and verifies that the
-overlay is removed and clicking the old highlight location does not dispatch a
-new selection. It then enables `Instant mode`, creates a fresh browser
-selection, and verifies that the annotation is created without pressing `Create
-highlight`. The test closes its own local server in teardown so the command can
-be used as an automated gate.
+overlay exist, hides and restores overlays with the visibility control, changes
+zoom and rotation while checking the overlay remains non-zero, clicks the
+rendered highlight to verify `annotation:selected`, clicks `Style latest`,
+verifies the outline/color update, clicks `Go to latest`, verifies the
+navigation flash, then clicks `Delete latest` and verifies that the overlay is
+removed and clicking the old highlight location does not dispatch a new
+selection. It then enables `Instant mode`, creates a fresh browser selection,
+and verifies that the annotation is created without pressing `Create highlight`.
+The test closes its own local server in teardown so the command can be used as
+an automated gate.
 
 ## Manual Test Flow
 
@@ -93,16 +95,19 @@ be used as an automated gate.
 3. Confirm that the highlight appears and the annotation count increases.
 4. Click `Style latest`.
 5. Confirm that the highlight changes to a blue outline.
-6. Scroll away or change page/zoom if desired.
-7. Click `Go to latest`.
-8. Confirm that the viewer returns to the highlight and flashes it.
-9. Click the highlight.
-10. Confirm that the harness log records `annotation:selected`.
-11. Change zoom and rotation in PDF.js.
-12. Confirm that the highlight remains aligned with the selected text.
-13. Click `Delete latest` or `Clear` and confirm that the overlay disappears.
-14. Click `Instant off` so it becomes `Instant on`.
-15. Select text in the PDF.js viewer and confirm that a new annotation appears without pressing `Create highlight`.
+6. Click `Visible` so it becomes `Hidden`.
+7. Confirm that the overlay disappears while the annotation count stays unchanged.
+8. Click `Hidden` so it becomes `Visible`.
+9. Scroll away or change page/zoom if desired.
+10. Click `Go to latest`.
+11. Confirm that the viewer returns to the highlight and flashes it.
+12. Click the highlight.
+13. Confirm that the harness log records `annotation:selected`.
+14. Change zoom and rotation in PDF.js.
+15. Confirm that the highlight remains aligned with the selected text.
+16. Click `Delete latest` or `Clear` and confirm that the overlay disappears.
+17. Click `Instant off` so it becomes `Instant on`.
+18. Select text in the PDF.js viewer and confirm that a new annotation appears without pressing `Create highlight`.
 
 ## Architecture
 
@@ -133,6 +138,11 @@ Thorium's Redux-backed annotation panel.
 The `Instant on/off` control dispatches `annotations:set-instant-mode`. This
 mirrors the annotation panel `advancedMode` checkbox for PDF without mounting
 the real reader menu.
+
+The `Visible/Hidden` control dispatches `annotations:set-visibility`. This
+mirrors the annotation panel `hide` checkbox for PDF without mounting the real
+reader menu, and validates that visibility is display state rather than
+persistence state.
 
 ## Injection Behavior
 

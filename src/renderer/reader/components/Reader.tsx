@@ -817,6 +817,12 @@ class Reader extends React.Component<IProps, IState> {
         if (this.props.isPdf && oldProps.notes !== this.props.notes) {
             this.syncPdfAnnotations();
         }
+        if (
+            this.props.isPdf &&
+            oldProps.readerConfig.annotation_defaultDrawView !== this.props.readerConfig.annotation_defaultDrawView
+        ) {
+            this.syncPdfAnnotationVisibility();
+        }
     }
 
     public componentWillUnmount() {
@@ -851,6 +857,7 @@ class Reader extends React.Component<IProps, IState> {
     private onPdfAnnotationsReady() {
         this.syncPdfAnnotations();
         this.syncPdfAnnotationInstantMode();
+        this.syncPdfAnnotationVisibility();
     }
 
     private onPdfAnnotationCreateRequested(payload: IPdfAnnotationCreateRequestPayload) {
@@ -919,6 +926,12 @@ class Reader extends React.Component<IProps, IState> {
     private syncPdfAnnotationInstantMode() {
         createOrGetPdfEventBus().dispatch("annotations:set-instant-mode", {
             enabled: !!(window as any).__annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator,
+        });
+    }
+
+    private syncPdfAnnotationVisibility() {
+        createOrGetPdfEventBus().dispatch("annotations:set-visibility", {
+            visible: this.props.readerConfig.annotation_defaultDrawView !== "hide",
         });
     }
 

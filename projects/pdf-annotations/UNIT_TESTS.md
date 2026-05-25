@@ -275,6 +275,10 @@ Add:
 - `P0 Existing` instant mode dispatches `annotation:create-requested` with source `instant-selection`.
 - `P0 Existing` instant mode suppresses duplicate drafts for an unchanged selection.
 - `P0 Existing` instant mode emits `annotation:selection-error` with source `instant-selection` for invalid settled selections.
+- `P0 Existing` `annotations:set-visibility` removes rendered overlays when `visible` is false.
+- `P0 Existing` `annotations:set-visibility` keeps the current annotation snapshot while hidden.
+- `P0 Existing` `annotations:set-visibility` restores overlays from the latest snapshot when `visible` is true.
+- `P0 Existing` hidden overlays cannot dispatch `annotation:selected` and do not activate the clickable cursor hint.
 
 ### Webview Overlay Rendering
 
@@ -296,6 +300,7 @@ Add:
 - `P0 Existing` overlay rendering applies transported PDF colors and draw types.
 - `P0 Existing` overlay rendering falls back to default color and solid style for legacy snapshots.
 - `P0 Existing` snapshot replacement updates edited overlay style and removes deleted annotations.
+- `P0 Existing` overlay rendering stays disabled across page-render events while PDF annotation visibility is hidden.
 
 ## P1 Tests Needed For Stable Core Architecture
 

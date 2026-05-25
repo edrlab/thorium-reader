@@ -151,6 +151,10 @@ export interface IPdfPlayerEvent {
         enabled: boolean;
     }) => any;
 
+    "annotations:set-visibility": (payload: {
+        visible: boolean;
+    }) => any;
+
     "highlight:create-from-selection": () => any;
 
     "annotations:ready": () => any;
@@ -173,6 +177,7 @@ Directions:
 - host to webview: `highlight:create-from-selection`;
 - host to webview: `annotations:sync`;
 - host to webview: `annotations:set-instant-mode`;
+- host to webview: `annotations:set-visibility`;
 - host to webview: `viewer:go-to-annotation`;
 - webview to host: `annotation:create-requested`;
 - webview to host: `annotations:ready`;
@@ -192,6 +197,7 @@ Payload rules:
 - `annotation:selected` carries the canonical annotation id, page, matching rectangle index, rectangle copy, source, and keyboard modifier state;
 - the host ignores `annotation:selected` when the payload is incomplete, the source is not `overlay-click`, the rectangle is invalid, the id is unknown, or the id is not a persisted PDF annotation;
 - `annotations:set-instant-mode` carries a boolean `enabled` flag and only changes the webview selection observer; it does not persist reader configuration;
+- `annotations:set-visibility` carries a boolean `visible` flag derived from `readerConfig.annotation_defaultDrawView !== "hide"` and changes overlay visibility only; it does not remove notes or mutate annotation snapshots;
 - `annotation:selection-error` carries a typed reason for a failed webview selection capture. It is a diagnostic/user-feedback event, not a PDF lifecycle event and not a persistence command.
 
 ## Runtime Draft Validation
@@ -321,17 +327,18 @@ The controller:
 
 1. subscribes to `annotations:sync`;
 2. subscribes to `annotations:set-instant-mode`;
-3. subscribes to `highlight:create-from-selection`;
-4. subscribes to `viewer:go-to-annotation`;
-5. listens to document selection changes for optional instant annotation mode;
-6. listens to document pointer/click events for passive overlay hit-testing;
-7. listens to PDF.js geometry lifecycle events:
+3. subscribes to `annotations:set-visibility`;
+4. subscribes to `highlight:create-from-selection`;
+5. subscribes to `viewer:go-to-annotation`;
+6. listens to document selection changes for optional instant annotation mode;
+7. listens to document pointer/click events for passive overlay hit-testing;
+8. listens to PDF.js geometry lifecycle events:
    - `pagesinit`;
    - `documentloaded`;
    - `pagerendered`;
    - `scalechanging`;
    - `rotationchanging`;
-8. sends `annotations:ready` once PDF geometry is available.
+9. sends `annotations:ready` once PDF geometry is available.
 
 `destroy()` removes bus subscriptions, PDF.js listeners, scheduled renders, overlay DOM, and in-memory annotation state.
 
@@ -356,7 +363,7 @@ dispatch annotation:selection-error(missing-page) if the page element disappeare
 dispatch annotation:selection-error(missing-viewport) if the PDF.js viewport is unavailable
 convert each page-local rect to PDF coordinates
 dispatch annotation:selection-error(invalid-rects) if no valid converted rect remains
-dispatch annotation:create-requested({ draft })
+dispatch annotation:create-requested({ draft, source: "highlight:create-from-selection" })
 ```
 
 The multi-page rejection is intentional. The persisted first-slice target has one `page` field, so accepting cross-page selections would create ambiguous data.
@@ -382,6 +389,25 @@ Rules:
 - the host still owns persistence, color, draw type, and whether an editor opens after creation;
 - instant selection mode never opens the editor after persistence;
 - the existing `reader.annotations.quickAnnotations` checkbox applies the same no-editor policy to explicit PDF annotation creation. When quick creation is enabled, PDF creation stays silent after persistence, matching EPUB quick creation.
+
+## Visibility Mode
+
+The annotation panel option `reader.annotations.hide` maps to PDF overlay visibility when the active reader is PDF. Thorium already stores this preference as `readerConfig.annotation_defaultDrawView`; PDF uses the same value:
+
+```ts
+createOrGetPdfEventBus().dispatch("annotations:set-visibility", {
+    visible: readerConfig.annotation_defaultDrawView !== "hide",
+});
+```
+
+Rules:
+
+- hidden mode removes rendered PDF annotation overlays from the webview;
+- hidden mode keeps the host snapshot and persisted Thorium notes unchanged;
+- syncs received while hidden update the in-memory webview snapshot but do not render overlays until visibility is restored;
+- page render, zoom, and rotation events do not restore overlays while hidden;
+- panel navigation can still scroll to a PDF annotation target, but there is no visible highlight flash while overlays are hidden;
+- hidden overlays cannot be selected by click and do not show the clickable cursor hint.
 
 ## Coordinate Conversion
 
@@ -413,6 +439,7 @@ On `annotations:sync`:
 clear the local annotation map
 store every annotation by canonical id
 remove existing overlay layers
+stop when visibility is hidden
 render overlays for all currently rendered PDF pages
 ```
 
@@ -441,6 +468,7 @@ Overlay behavior:
 - `outline` uses an opaque border stroke;
 - annotation id stored in `data-annotation-id`;
 - hovering a hit-tested highlight applies a temporary document-level `cursor: pointer` rule, while the overlay and highlight elements still keep `pointer-events: none`.
+- when `annotations:set-visibility` is `visible: false`, overlay layers are removed and subsequent render events stay no-op until visibility is restored.
 
 ## Overlay Click Selection
 
@@ -506,11 +534,13 @@ Accessibility boundary for slice 5:
 - Hovering a rendered PDF highlight shows a clickable pointer cursor while preserving passive overlays.
 - Clicking a rendered PDF highlight opens/focuses the matching annotation panel card without changing persistence.
 - Shift-clicking a rendered PDF highlight opens the matching PDF annotation in the panel edit form.
+- The annotation panel hide checkbox hides and restores PDF webview overlays without deleting notes.
+- Hidden PDF overlays cannot be selected by click and do not show the clickable cursor hint.
 - Invalid PDF annotation creation drafts are rejected before note persistence.
 - Failed webview selection captures emit `annotation:selection-error` with a typed reason.
 - Selection and draft validation failures trigger a static error toast.
 - Verbose PDF annotation logs are disabled unless `window.__THORIUM_PDF_ANNOTATIONS_DEBUG` is enabled.
-- Standalone harness automation covers invalid selection rejection, zoom visibility, rotation visibility, click selection, deletion, and no selection after deletion.
+- Standalone harness automation covers invalid selection rejection, hide/show visibility, zoom visibility, rotation visibility, click selection, deletion, and no selection after deletion.
 - PDF reader annotation panels do not expose Readium annotation import/export controls.
 - PDF annotation export/import and print support remain outside slice 5 acceptance.
 

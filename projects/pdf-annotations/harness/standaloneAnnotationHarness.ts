@@ -52,6 +52,7 @@ interface IHarnessApi {
     selectionErrors: () => ISelectionError[];
     selectionEventCount: () => number;
     setInstantMode: (enabled: boolean) => void;
+    setVisible: (visible: boolean) => void;
     styleLatestAnnotation: () => void;
     sync: () => void;
 }
@@ -230,6 +231,7 @@ function createPanel() {
             <button class="secondary" id="thorium-pdf-annotation-style-latest" type="button">Style latest</button>
             <button class="secondary" id="thorium-pdf-annotation-delete-latest" type="button">Delete latest</button>
             <button class="secondary" id="thorium-pdf-annotation-instant-mode" type="button">Instant off</button>
+            <button class="secondary" id="thorium-pdf-annotation-visibility" type="button">Visible</button>
             <button class="secondary" id="thorium-pdf-annotation-clear" type="button">Clear</button>
         </div>
         <div id="${STATUS_ID}">Starting</div>
@@ -250,6 +252,7 @@ function createPanel() {
         status: document.getElementById(STATUS_ID) as HTMLDivElement,
         styleLatestButton: document.getElementById("thorium-pdf-annotation-style-latest") as HTMLButtonElement,
         style,
+        visibilityButton: document.getElementById("thorium-pdf-annotation-visibility") as HTMLButtonElement,
     };
 }
 
@@ -264,6 +267,7 @@ async function init() {
     let selectedAnnotationId = "";
     let selectedAnnotationEventCount = 0;
     let instantModeEnabled = false;
+    let annotationsVisible = true;
     const selectionErrors: ISelectionError[] = [];
     const controller = createPdfAnnotationController(bus as any, getApplication);
 
@@ -272,6 +276,7 @@ async function init() {
         panel.goToButton.disabled = !annotations.length;
         panel.styleLatestButton.disabled = !annotations.length;
         panel.instantModeButton.textContent = instantModeEnabled ? "Instant on" : "Instant off";
+        panel.visibilityButton.textContent = annotationsVisible ? "Visible" : "Hidden";
     }
 
     function setStatus(message: string) {
@@ -302,6 +307,13 @@ async function init() {
         appendLog("dispatch annotations:set-instant-mode", { enabled });
         bus.dispatch("annotations:set-instant-mode", { enabled });
         setStatus(enabled ? "Instant mode enabled" : "Instant mode disabled");
+    }
+
+    function setVisible(visible: boolean) {
+        annotationsVisible = visible;
+        appendLog("dispatch annotations:set-visibility", { visible });
+        bus.dispatch("annotations:set-visibility", { visible });
+        setStatus(visible ? "Annotations visible" : "Annotations hidden");
     }
 
     function clear() {
@@ -425,13 +437,16 @@ async function init() {
     });
 
     const goToLatestAnnotation = () => goToAnnotation();
+    const toggleInstantMode = () => setInstantMode(!instantModeEnabled);
+    const toggleVisibility = () => setVisible(!annotationsVisible);
 
     panel.createButton.addEventListener("click", createHighlight);
     panel.clearButton.addEventListener("click", clear);
     panel.deleteLatestButton.addEventListener("click", deleteLatestAnnotation);
     panel.goToButton.addEventListener("click", goToLatestAnnotation);
-    panel.instantModeButton.addEventListener("click", () => setInstantMode(!instantModeEnabled));
+    panel.instantModeButton.addEventListener("click", toggleInstantMode);
     panel.styleLatestButton.addEventListener("click", styleLatestAnnotation);
+    panel.visibilityButton.addEventListener("click", toggleVisibility);
     updateAnnotationActionButtons();
 
     typedWindow.__thoriumPdfAnnotationHarness = {
@@ -445,7 +460,9 @@ async function init() {
             panel.clearButton.removeEventListener("click", clear);
             panel.deleteLatestButton.removeEventListener("click", deleteLatestAnnotation);
             panel.goToButton.removeEventListener("click", goToLatestAnnotation);
+            panel.instantModeButton.removeEventListener("click", toggleInstantMode);
             panel.styleLatestButton.removeEventListener("click", styleLatestAnnotation);
+            panel.visibilityButton.removeEventListener("click", toggleVisibility);
             panel.panel.remove();
             panel.style.remove();
             delete typedWindow.__thoriumPdfAnnotationHarness;
@@ -456,6 +473,7 @@ async function init() {
         selectionErrors: () => [...selectionErrors],
         selectionEventCount: () => selectedAnnotationEventCount,
         setInstantMode,
+        setVisible,
         styleLatestAnnotation,
         sync,
     };

@@ -42,6 +42,8 @@ No Electron runtime test was performed during this review. The notes below are b
 
 2026-05-25: Implemented PDF instant annotation mode from the annotation panel checkbox. `ReaderMenu.tsx` now forwards the existing `advancedMode` state to the PDF webview, the controller debounces PDF.js `selectionchange`, reuses `selectionToDraft()`, deduplicates unchanged selections, and dispatches the existing host create-request flow with `source: "instant-selection"`. Instant PDF creation no longer opens the editor. PDF quick creation and the PDF quick-annotation keyboard shortcut also skip the created-note edit form. Result: 6 PDF annotation Jest suites passed, 96 tests passed; standalone Playwright harness passed with instant-mode coverage.
 
+2026-05-25: Connected the annotation panel hide checkbox to PDF overlay visibility. `Reader.tsx` now maps `annotation_defaultDrawView === "hide"` to `annotations:set-visibility`, and the PDF.js controller removes or restores overlay layers from the current snapshot without mutating persisted notes. Hidden overlays cannot be selected and do not show the clickable cursor hint. Result: targeted Jest and harness checks cover hide/show behavior.
+
 2026-05-25: Additional slice 5 checks were attempted without `npm run` because local `npm` is 10.9.4 while `package.json` requires npm `>=11.15.0` through `devEngines`. Direct checks passed for PDF sources with `eslint --no-ignore`, `Reader.tsx` lint, harness TypeScript lint, the standalone harness Playwright command, and `webpack --config webpack.config.renderer-pdf.js`. A repository-wide `tsc --noEmit --project tsconfig.jest.json` check still fails on existing CommonJS/ESM diagnostics in dependencies such as `inversify`, `node-fetch`, `debounce`, `pdf.js`, and other non-PDF files; after fixing the slice-local narrowing issue, the filtered TypeScript output no longer reports PDF annotation files.
 
 ## Summary
@@ -167,7 +169,7 @@ Known residual limits:
 
 Status: fixed in slice 2.
 
-`SPEC.md` now documents all eight PDF annotation event-bus extensions: `annotations:sync`, `annotations:set-instant-mode`, `highlight:create-from-selection`, `annotations:ready`, `annotation:create-requested`, `viewer:go-to-annotation`, `annotation:selected`, and `annotation:selection-error`. The spec also includes `TPdfAnnotationNavigationTarget`, `TPdfAnnotationSelectionTarget`, `TPdfAnnotationSelectionErrorPayload`, the host/webview event directions, and the id-first then page/rect fallback rule for panel navigation.
+`SPEC.md` now documents all nine PDF annotation event-bus extensions: `annotations:sync`, `annotations:set-instant-mode`, `annotations:set-visibility`, `highlight:create-from-selection`, `annotations:ready`, `annotation:create-requested`, `viewer:go-to-annotation`, `annotation:selected`, and `annotation:selection-error`. The spec also includes `TPdfAnnotationNavigationTarget`, `TPdfAnnotationSelectionTarget`, `TPdfAnnotationSelectionErrorPayload`, the host/webview event directions, and the id-first then page/rect fallback rule for panel navigation.
 
 Why this fix is in scope:
 

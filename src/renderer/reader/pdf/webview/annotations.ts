@@ -170,6 +170,7 @@ export class PdfAnnotationController {
     private instantAnnotationModeEnabled = false;
     private instantAnnotationTimer: number | undefined;
     private lastInstantAnnotationDraftSignature = "";
+    private annotationsVisible = true;
 
     public constructor(
         private readonly bus: IEventBusPdfPlayer,
@@ -195,6 +196,7 @@ export class PdfAnnotationController {
 
         this.bus.subscribe("annotations:sync", this.onAnnotationsSync);
         this.bus.subscribe("annotations:set-instant-mode", this.onSetInstantMode);
+        this.bus.subscribe("annotations:set-visibility", this.onSetVisibility);
         this.bus.subscribe("highlight:create-from-selection", this.onCreateFromSelection);
         this.bus.subscribe("viewer:go-to-annotation", this.onGoToAnnotation);
         debugLog("subscribed to Thorium PDF annotation bus events");
@@ -231,6 +233,7 @@ export class PdfAnnotationController {
         debugLog("destroy");
         this.bus.remove(this.onAnnotationsSync, "annotations:sync");
         this.bus.remove(this.onSetInstantMode, "annotations:set-instant-mode");
+        this.bus.remove(this.onSetVisibility, "annotations:set-visibility");
         this.bus.remove(this.onCreateFromSelection, "highlight:create-from-selection");
         this.bus.remove(this.onGoToAnnotation, "viewer:go-to-annotation");
         document.removeEventListener("selectionchange", this.onSelectionChange, true);
@@ -254,6 +257,7 @@ export class PdfAnnotationController {
         this.annotationPointerDown = undefined;
         this.instantAnnotationModeEnabled = false;
         this.lastInstantAnnotationDraftSignature = "";
+        this.annotationsVisible = true;
         this.initialized = false;
         this.readySent = false;
     }
@@ -306,6 +310,28 @@ export class PdfAnnotationController {
 
         debugLog("annotations:set-instant-mode", {
             enabled: payload.enabled,
+        });
+    };
+
+    private readonly onSetVisibility = (payload?: {
+        visible?: boolean;
+    }) => {
+        if (typeof payload?.visible !== "boolean") {
+            console.error(DEBUG_PREFIX, "annotations:set-visibility ignored invalid payload", payload);
+            return;
+        }
+
+        this.annotationsVisible = payload.visible;
+        this.setAnnotationHoverCursor(false);
+
+        if (payload.visible) {
+            this.renderAll();
+        } else {
+            this.removeAllOverlayLayers();
+        }
+
+        debugLog("annotations:set-visibility", {
+            visible: payload.visible,
         });
     };
 
@@ -900,6 +926,11 @@ export class PdfAnnotationController {
      */
     private renderAll() {
         this.removeAllOverlayLayers();
+        if (!this.annotationsVisible) {
+            debugLog("renderAll skipped: annotations hidden");
+            return;
+        }
+
         if (!this.annotations.size) {
             debugLog("renderAll skipped: no annotations");
             return;
@@ -960,6 +991,15 @@ export class PdfAnnotationController {
      *   smaller tested helpers.
      */
     private renderPage(pageNumber: number) {
+        if (!this.annotationsVisible) {
+            const pageElement = this.getPageElement(pageNumber);
+            if (pageElement) {
+                this.removeOverlayLayer(pageElement);
+            }
+            debugLog("renderPage skipped: annotations hidden", { pageNumber });
+            return;
+        }
+
         const pageElement = this.getPageElement(pageNumber);
         const pageView = this.getPageView(pageNumber);
         if (!pageElement || !pageView?.viewport) {
@@ -1097,6 +1137,10 @@ export class PdfAnnotationController {
     }
 
     private shouldShowClickableAnnotationCursor(event: PointerEvent | MouseEvent) {
+        if (!this.annotationsVisible) {
+            return false;
+        }
+
         if ("buttons" in event && event.buttons !== 0) {
             return false;
         }
@@ -1154,6 +1198,10 @@ html.${ANNOTATION_CLICKABLE_CURSOR_CLASS} .page * {
     }
 
     private selectionTargetFromClick(event: MouseEvent): TPdfAnnotationSelectionTarget | undefined {
+        if (!this.annotationsVisible) {
+            return undefined;
+        }
+
         if (event.button !== 0) {
             return undefined;
         }

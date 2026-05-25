@@ -346,6 +346,7 @@ test("init subscribes to Thorium and PDF.js events only once", () => {
 
     expect(harness.thoriumBus.listenerCount("annotations:sync")).toBe(1);
     expect(harness.thoriumBus.listenerCount("annotations:set-instant-mode")).toBe(1);
+    expect(harness.thoriumBus.listenerCount("annotations:set-visibility")).toBe(1);
     expect(harness.thoriumBus.listenerCount("highlight:create-from-selection")).toBe(1);
     expect(harness.thoriumBus.listenerCount("viewer:go-to-annotation")).toBe(1);
     expect(harness.thoriumBus.listenerCount("annotation:selection-error")).toBe(0);
@@ -688,6 +689,7 @@ test("destroy removes subscriptions, clears overlays and state, and cancels sche
 
     expect(harness.thoriumBus.listenerCount("annotations:sync")).toBe(0);
     expect(harness.thoriumBus.listenerCount("annotations:set-instant-mode")).toBe(0);
+    expect(harness.thoriumBus.listenerCount("annotations:set-visibility")).toBe(0);
     expect(harness.thoriumBus.listenerCount("highlight:create-from-selection")).toBe(0);
     expect(harness.thoriumBus.listenerCount("viewer:go-to-annotation")).toBe(0);
     expect(harness.thoriumBus.listenerCount("annotation:selection-error")).toBe(0);
@@ -751,6 +753,59 @@ test("overlay rendering creates passive page layers and positioned highlights fo
 
     harness.pdfJsEventBus.emit("pagerendered", { pageNumber: 1 });
     expect(overlayLayers(first.pageElement)).toHaveLength(1);
+});
+
+test("annotations:set-visibility hides and restores PDF overlays without dropping the snapshot", () => {
+    const page = createRenderedPage(1);
+    const harness = createHarness([page]);
+    harness.controller.init();
+    harness.thoriumBus.dispatch("annotations:sync", {
+        annotations: [
+            annotation("first", 1),
+        ],
+    });
+    expect(highlights(page.pageElement)).toHaveLength(1);
+
+    harness.thoriumBus.dispatch("annotations:set-visibility", {
+        visible: false,
+    });
+    expect(overlayLayers(page.pageElement)).toHaveLength(0);
+
+    harness.pdfJsEventBus.emit("pagerendered", { pageNumber: 1 });
+    expect(overlayLayers(page.pageElement)).toHaveLength(0);
+
+    harness.thoriumBus.dispatch("annotations:sync", {
+        annotations: [
+            annotation("second", 1),
+        ],
+    });
+    expect(overlayLayers(page.pageElement)).toHaveLength(0);
+
+    harness.thoriumBus.dispatch("annotations:set-visibility", {
+        visible: true,
+    });
+    expect(highlights(page.pageElement).map((highlight) => highlight.dataset.annotationId)).toEqual(["second"]);
+});
+
+test("hidden PDF overlays cannot be selected and do not show the clickable cursor", () => {
+    const page = createRenderedPage(1);
+    const harness = createHarness([page]);
+    harness.controller.init();
+    harness.thoriumBus.dispatch("annotations:sync", {
+        annotations: [
+            annotation("first", 1),
+        ],
+    });
+    setHighlightClientRect("first", rect(110, 120, 150, 160));
+
+    harness.thoriumBus.dispatch("annotations:set-visibility", {
+        visible: false,
+    });
+    dispatchAnnotationPointerMove(130, 140, { target: page.pageElement });
+    dispatchAnnotationClick(130, 140, { target: page.pageElement });
+
+    expect(document.documentElement.classList.contains(ANNOTATION_CLICKABLE_CURSOR_CLASS)).toBe(false);
+    expect(latestSelectedDispatch(harness.thoriumBus)).toBeUndefined();
 });
 
 test("instant mode creates a PDF draft after a stable text selection and avoids duplicate dispatches", () => {
