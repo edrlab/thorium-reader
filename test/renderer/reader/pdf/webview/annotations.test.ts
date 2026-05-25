@@ -1224,7 +1224,7 @@ test("viewer:go-to-annotation aligns a viewport marker before scrolling", () => 
         width: 600,
         height: 800,
         convertToPdfPoint: (x: number, y: number) => [x, y],
-        convertToViewportRectangle: jest.fn(() => [120, 140, 220, 180]),
+        convertToViewportRectangle: jest.fn((_rect: number[]) => [120, 140, 220, 180]),
     };
     const page = createRenderedPage(1, {
         viewport,

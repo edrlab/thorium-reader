@@ -140,6 +140,7 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { URL_PROTOCOL_FILEX } from "readium-desktop/common/streamerProtocol";
 
 const debug = debug_("readium-desktop:renderer:reader:components:Reader");
+const debugPdfAnnotationsHost = debug_("readium-desktop:renderer:reader:pdf:annotations:host");
 debug("_");
 
 const PDF_ANNOTATION_VALIDATION_ERROR_TOAST = "Unable to create PDF annotation from this selection.";
@@ -928,7 +929,7 @@ class Reader extends React.Component<IProps, IState> {
     private onPdfAnnotationSelected(payload: TPdfAnnotationSelectionTarget) {
         const menuAction = getPdfAnnotationSelectionMenuAction(payload, this.props.notes);
         if (!menuAction) {
-            console.error("[Thorium PDF annotations]", "annotation:selected ignored invalid payload", payload);
+            debugPdfAnnotationsHost("annotation:selected ignored invalid payload", payload);
             return;
         }
 
@@ -937,7 +938,7 @@ class Reader extends React.Component<IProps, IState> {
 
     private onPdfAnnotationSelectionError(payload: TPdfAnnotationSelectionErrorPayload) {
         this.skipNextPdfAnnotationEditor = false;
-        console.error("[Thorium PDF annotations]", "annotation:selection-error", payload);
+        debugPdfAnnotationsHost("annotation:selection-error", payload);
         this.props.toastError(PDF_ANNOTATION_VALIDATION_ERROR_TOAST);
     }
 

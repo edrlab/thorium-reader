@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import type { IColor } from "@r2-navigator-js/electron/common/highlight";
+import debug_ from "debug";
 
 import type { INoteCreator } from "readium-desktop/common/redux/states/creator";
 import type { INoteState } from "readium-desktop/common/redux/states/renderer/note";
@@ -23,7 +24,7 @@ import {
     validatePdfAnnotationDraft,
 } from "readium-desktop/renderer/reader/pdf/pdfAnnotationValidation";
 
-const DEBUG_PREFIX = "[Thorium PDF annotations]";
+const debugPdfAnnotationsHost = debug_("readium-desktop:renderer:reader:pdf:annotations:host");
 
 export interface IPdfAnnotationCreateRequestPayload {
     draft?: unknown;
@@ -96,7 +97,7 @@ export function createPdfAnnotationNoteDraft(
     context: IPdfAnnotationCreateRequestContext,
 ): Omit<INoteState, "uuid"> | undefined {
     if (payload?.draft && !isValidPdfAnnotationCreateSource(payload.source)) {
-        console.error(DEBUG_PREFIX, "annotation:create-requested ignored invalid source", {
+        debugPdfAnnotationsHost("annotation:create-requested ignored invalid source", {
             source: payload.source,
         });
         return undefined;
@@ -113,7 +114,7 @@ export function createPdfAnnotationNoteDraft(
     }
 
     if (isInvalidPdfAnnotationDraftValidation(validation) && validation.reason !== "missing-draft") {
-        console.error(DEBUG_PREFIX, "annotation:create-requested ignored invalid draft", {
+        debugPdfAnnotationsHost("annotation:create-requested ignored invalid draft", {
             reason: validation.reason,
             draft: payload?.draft,
         });

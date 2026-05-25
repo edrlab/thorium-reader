@@ -181,7 +181,6 @@ test("create-request handling rejects invalid runtime drafts before persistence"
         throw new Error("persistNoteInRedux should not be called");
     });
     const syncAnnotationsToPdfWebview: IPdfAnnotationCreateRequestHostPorts["syncAnnotationsToPdfWebview"] = jest.fn();
-    const consoleError = jest.spyOn(console, "error").mockImplementation(() => undefined);
     const host: IPdfAnnotationCreateRequestHostAdapter = {
         state: {
             publicationIdentifier: "pub-id",
@@ -212,14 +211,6 @@ test("create-request handling rejects invalid runtime drafts before persistence"
 
     expect(persistNoteInRedux).not.toHaveBeenCalled();
     expect(syncAnnotationsToPdfWebview).not.toHaveBeenCalled();
-    expect(consoleError).toHaveBeenCalledWith(
-        "[Thorium PDF annotations]",
-        "annotation:create-requested ignored invalid draft",
-        expect.objectContaining({
-            reason: "invalid-page",
-        }),
-    );
-    consoleError.mockRestore();
 });
 
 test("create-request handling rejects invalid runtime sources before persistence", () => {
@@ -227,7 +218,6 @@ test("create-request handling rejects invalid runtime sources before persistence
         throw new Error("persistNoteInRedux should not be called");
     });
     const syncAnnotationsToPdfWebview: IPdfAnnotationCreateRequestHostPorts["syncAnnotationsToPdfWebview"] = jest.fn();
-    const consoleError = jest.spyOn(console, "error").mockImplementation(() => undefined);
     const host: IPdfAnnotationCreateRequestHostAdapter = {
         state: {
             publicationIdentifier: "pub-id",
@@ -262,17 +252,6 @@ test("create-request handling rejects invalid runtime sources before persistence
 
     expect(persistNoteInRedux).not.toHaveBeenCalled();
     expect(syncAnnotationsToPdfWebview).not.toHaveBeenCalled();
-    expect(consoleError).toHaveBeenCalledWith(
-        "[Thorium PDF annotations]",
-        "annotation:create-requested ignored invalid source",
-        { source: "unknown-source" },
-    );
-    expect(consoleError).toHaveBeenCalledWith(
-        "[Thorium PDF annotations]",
-        "annotation:create-requested ignored invalid source",
-        { source: undefined },
-    );
-    consoleError.mockRestore();
 });
 
 test("create-request handling creates one note action and syncs a snapshot including the created note", () => {

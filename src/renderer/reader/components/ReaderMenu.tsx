@@ -19,6 +19,7 @@ import * as StylesCombobox from "readium-desktop/renderer/assets/styles/componen
 import * as stylesBookmarks from "readium-desktop/renderer/assets/styles/components/bookmarks.scss";
 import * as stylesMarkdown from "readium-desktop/renderer/assets/styles/github-markdown.scss";
 import classNames from "classnames";
+import debug_ from "debug";
 import * as React from "react";
 import FocusLock from "react-focus-lock";
 
@@ -120,6 +121,8 @@ import { convertMultiLangStringToString } from "readium-desktop/common/language-
 import { trimNormaliseWhitespaceAndCollapse } from "readium-desktop/common/string";
 
 (window as any).__shell_openExternal = (url: string) => url && /^https?:\/\//.test(url) ? shell.openExternal(url) : Promise.resolve(); // needed after markdown marked parsing for sanitizing the external anchor href
+
+const debugPdfAnnotationsPanel = debug_("readium-desktop:renderer:reader:pdf:annotations:panel");
 
 // console.log(window);
 
@@ -606,7 +609,7 @@ const AnnotationCard: React.FC<{ annotation: INoteState, isEdited: boolean, isSe
                         } else if (annotationPanelNavigation?.type === "pdf") {
                             goToPdfAnnotation(annotationPanelNavigation.target, closeNavAnnotation);
                         } else if (annotation.pdfAnnotation) {
-                            console.error("[Thorium PDF annotations]", "annotation panel navigation target invalid", {
+                            debugPdfAnnotationsPanel("annotation panel navigation target invalid", {
                                 uuid: annotation.uuid,
                                 pdfAnnotation: annotation.pdfAnnotation,
                             });

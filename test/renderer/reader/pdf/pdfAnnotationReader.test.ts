@@ -1,4 +1,4 @@
-import { expect, jest, test } from "@jest/globals";
+import { expect, test } from "@jest/globals";
 
 import {
     buildPdfAnnotationDraftEditorTransport,
@@ -114,7 +114,6 @@ test("PDF draft editor transport validates source and defensively copies the tar
 
 test("PDF draft editor transport rejects invalid runtime sources before opening the header editor", () => {
     const draft = createDraft();
-    const consoleError = jest.spyOn(console, "error").mockImplementation(() => undefined);
 
     expect(
         buildPdfAnnotationDraftEditorTransport(
@@ -129,13 +128,6 @@ test("PDF draft editor transport rejects invalid runtime sources before opening 
             },
         ),
     ).toBeUndefined();
-
-    expect(consoleError).toHaveBeenCalledWith(
-        "[Thorium PDF annotations]",
-        "annotation:create-requested ignored invalid source",
-        { source: "unknown-source" },
-    );
-    consoleError.mockRestore();
 });
 
 test("PDF visibility payload maps hide to overlay visibility only", () => {

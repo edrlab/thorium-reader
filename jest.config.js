@@ -79,6 +79,7 @@ module.exports = {
         "<rootDir>/img/",
         "<rootDir>/release/",
         "<rootDir>/scripts/",
+        "<rootDir>/projects/pdf-annotations/harness/",
         "<rootDir>/src/",
     ],
     setupFilesAfterEnv: ["<rootDir>/scripts/jest_setup.js"],
