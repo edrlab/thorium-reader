@@ -122,6 +122,23 @@ export function comparePdfAnnotationsByPagePosition(a: INoteState, b: INoteState
     return a.uuid.localeCompare(b.uuid);
 }
 
+export function compareAnnotationPanelProgression(
+    a: INoteState,
+    b: INoteState,
+    compareEpubProgression: (a: INoteState, b: INoteState) => number,
+): number {
+    const pdfComparison = comparePdfAnnotationsByPagePosition(a, b);
+    if (typeof pdfComparison === "number") {
+        return pdfComparison;
+    }
+
+    if (!a.locatorExtended || !b.locatorExtended) {
+        return 0;
+    }
+
+    return compareEpubProgression(a, b);
+}
+
 export function normalizePdfAnnotationNavigationRect(rect?: TPdfAnnotationRectTransport): TPdfAnnotationRectTransport | undefined {
     if (!rect) {
         return undefined;

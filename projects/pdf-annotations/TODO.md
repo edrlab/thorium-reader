@@ -121,6 +121,7 @@ Use the checkboxes as delivery state:
 - [x] Automate the standalone PDF.js harness with a browser regression smoke test.
 - [x] Extend standalone harness automation to cover click selection through `annotation:selected`.
 - [x] Expand standalone harness automation to cover zoom, rotation, controlled invalid selection rejection, and no selection after deletion.
+- [x] Split the standalone harness automation into independent Playwright scenarios for clearer failure diagnostics.
 - [ ] Add a true browser cross-page selection automation once the sample PDF and PDF.js text-layer geometry make it deterministic.
 - [ ] Add a regression test that a PDF annotation note keeps `pdfAnnotation` after creation.
 
@@ -130,6 +131,7 @@ Use the checkboxes as delivery state:
 
 - [ ] Version the PDF annotation persisted shape if migrations become necessary.
 - [x] Define validation rules for page numbers and rectangle bounds.
+- [x] Add Reader-facing tests for PDF create presentation and overlay visibility payload decisions.
 
 ### Transport Contract
 
@@ -150,6 +152,7 @@ Use the checkboxes as delivery state:
 - [x] Display creator and date metadata when available.
 - [x] Avoid assuming `locatorExtended` exists for PDF annotations.
 - [x] Sort PDF annotations by visual reading order: page, visual top, left, then id.
+- [x] Route annotation panel progression sorting through a tested PDF/EPUB comparator helper.
 - [x] Keep PDF annotations read-only during slice 2 until editing is implemented.
 - [x] Add unit coverage for PDF panel action decisions and bulk delete behavior.
 - [x] Hide Readium annotation import/export controls in PDF readers until a PDF-specific exchange format exists.
@@ -162,6 +165,7 @@ Use the checkboxes as delivery state:
 - [x] Align the target rectangle into view.
 - [x] Optionally focus or flash the target highlight after navigation.
 - [x] Add a regression test for panel-to-PDF navigation.
+- [x] Add regression tests for PDF navigation marker alignment and page-scroll fallback.
 
 ### Overlay Interaction
 

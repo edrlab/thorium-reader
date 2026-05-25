@@ -198,6 +198,7 @@ Current implementation surface:
 Extraction implemented for unit testing:
 
 - `src/renderer/reader/pdf/pdfAnnotationHost.ts`
+- `src/renderer/reader/pdf/pdfAnnotationReader.ts`
 
 Pure helpers:
 
@@ -205,6 +206,9 @@ Pure helpers:
 - `createPdfAnnotationNoteDraft(payload, context)`
 - `handlePdfAnnotationCreateRequested(payload, host)`
 - `triggerPdfAnnotation(isPdf, fromKeyboard, dispatchPdfHighlightCreateFromSelection, triggerEpubAnnotation)`
+- `getPdfAnnotationCreatePresentation(payload, options)`
+- `buildPdfAnnotationDraftEditorTransport(payload, context)`
+- `getPdfAnnotationVisibilityPayload(annotationDefaultDrawView)`
 - `IPdfAnnotationCreateRequestHostState`
 - `IPdfAnnotationCreateRequestHostPorts`
 - `IPdfAnnotationCreateRequestHostAdapter`
@@ -226,6 +230,10 @@ Add:
 - `P0 Existing` create-request handling emits a sync snapshot that includes the newly created note returned by the action.
 - `P0 Existing` annotation trigger dispatches `highlight:create-from-selection` when the active reader is PDF.
 - `P0 Existing` annotation trigger calls the existing EPUB annotation path when the active reader is not PDF.
+- `P0 Existing` Reader create presentation opens the header draft editor only for explicit non-quick PDF creation.
+- `P0 Existing` Reader create presentation keeps instant and quick PDF creation on the immediate persistence path.
+- `P0 Existing` Reader header draft transport validates source and defensively copies the PDF target.
+- `P0 Existing` Reader visibility payload maps `hide` to `visible: false` and keeps `annotation` / `margin` visible.
 
 Notes:
 
@@ -253,6 +261,7 @@ Add:
 
 - `P0 Existing` `init()` subscribes to `annotations:sync` and `highlight:create-from-selection`.
 - `P0 Existing` `init()` registers supported PDF.js event listeners when an event bus is present.
+- `P0 Existing` `init()` and `destroy()` support private PDF.js EventBus `_on` / `_off` methods.
 - `P0 Existing` `init()` is idempotent when called twice.
 - `P0 Existing` `annotations:sync` replaces the local annotation snapshot rather than appending.
 - `P0 Existing` `annotations:sync` ignores annotations without ids.
@@ -275,10 +284,12 @@ Add:
 - `P0 Existing` instant mode creates a draft after a stable PDF text selection.
 - `P0 Existing` instant mode dispatches `annotation:create-requested` with source `instant-selection`.
 - `P0 Existing` instant mode suppresses duplicate drafts for an unchanged selection.
+- `P0 Existing` invalid `annotations:set-instant-mode` payloads are logged and do not enable instant creation.
 - `P0 Existing` instant mode emits `annotation:selection-error` with source `instant-selection` for invalid settled selections.
 - `P0 Existing` `annotations:set-visibility` removes rendered overlays when `visible` is false.
 - `P0 Existing` `annotations:set-visibility` keeps the current annotation snapshot while hidden.
 - `P0 Existing` `annotations:set-visibility` restores overlays from the latest snapshot when `visible` is true.
+- `P0 Existing` invalid `annotations:set-visibility` payloads are logged and do not change current visibility.
 - `P0 Existing` hidden overlays cannot dispatch `annotation:selected` and do not activate the clickable cursor hint.
 
 ### Webview Overlay Rendering
@@ -373,6 +384,7 @@ Add:
 - `P2 Existing` PDF annotation cards display page number from `note.pdfAnnotation.page`.
 - `P2 Existing` PDF annotation cards render without `locatorExtended`.
 - `P2 Existing` PDF annotation sorting uses visual reading order: page number, visual top position, horizontal position, then id.
+- `P2 Existing` annotation panel progression comparator uses PDF visual order before EPUB progression fallback.
 - `P2 Existing` PDF annotation navigation targets are built from id, page, and the normalized first rect.
 - `P2 Existing` invalid PDF annotation page or rect data is rejected before navigation dispatch.
 - `P2 Existing` PDF annotation panel action model allows PDF cards to be edited and deleted.
@@ -396,6 +408,8 @@ Add:
 - `P2 Existing` invalid page or rect is rejected before dispatch.
 - `P2 Existing` panel-to-PDF navigation does not assume EPUB `locatorExtended`.
 - `P2 Existing` webview navigation scrolls to the target page and flashes the rendered highlight.
+- `P2 Existing` webview navigation aligns a temporary marker from `convertToViewportRectangle()` before scrolling.
+- `P2 Existing` webview navigation falls back to page scrolling when viewport rect alignment is unavailable.
 
 ### Editing
 

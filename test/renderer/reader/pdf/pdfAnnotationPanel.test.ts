@@ -1,4 +1,4 @@
-import { expect, test } from "@jest/globals";
+import { expect, jest, test } from "@jest/globals";
 
 import { EDrawType } from "readium-desktop/common/redux/states/renderer/note";
 import type { INoteState } from "readium-desktop/common/redux/states/renderer/note";
@@ -7,6 +7,7 @@ import {
     canDeleteAnnotationInPanel,
     canEditAnnotationInPanel,
     canUseReadiumAnnotationImportExport,
+    compareAnnotationPanelProgression,
     comparePdfAnnotationsByPagePosition,
     filterDeletableAnnotationPanelNotes,
     getAnnotationCardText,
@@ -33,9 +34,7 @@ function createPdfAnnotationNote(overrides: Partial<INoteState> = {}): INoteStat
         pdfAnnotation: {
             type: "pdf-text-highlight",
             page: 3,
-            rects: [
-                { x1: 10, y1: 20, x2: 30, y2: 40 },
-            ],
+            rects: [{ x1: 10, y1: 20, x2: 30, y2: 40 }],
             quote: "PDF quote",
         },
         textualValue: "comment",
@@ -91,9 +90,7 @@ test("annotation panel navigation model routes EPUB locators and PDF targets", (
         pdfAnnotation: {
             type: "pdf-text-highlight",
             page: 7,
-            rects: [
-                { x1: 40, y1: 50, x2: 10, y2: 20 },
-            ],
+            rects: [{ x1: 40, y1: 50, x2: 10, y2: 20 }],
         },
     });
 
@@ -112,31 +109,38 @@ test("annotation panel navigation model routes EPUB locators and PDF targets", (
 });
 
 test("annotation panel navigation model rejects invalid PDF targets before panel dispatch", () => {
-    expect(getAnnotationPanelNavigation(createPdfAnnotationNote({
-        pdfAnnotation: {
-            type: "pdf-text-highlight",
-            page: 3,
-            rects: [
-                { x1: 10, y1: 20, x2: 10, y2: 40 },
-            ],
-        },
-    }))).toBeUndefined();
+    expect(
+        getAnnotationPanelNavigation(
+            createPdfAnnotationNote({
+                pdfAnnotation: {
+                    type: "pdf-text-highlight",
+                    page: 3,
+                    rects: [{ x1: 10, y1: 20, x2: 10, y2: 40 }],
+                },
+            }),
+        ),
+    ).toBeUndefined();
 });
 
 test("PDF annotation selection menu action opens the annotation panel without editing by default", () => {
     const pdfNote = createPdfAnnotationNote({ uuid: "selected-pdf" });
 
-    expect(getPdfAnnotationSelectionMenuAction({
-        id: "selected-pdf",
-        page: 3,
-        rectIndex: 0,
-        rect: { x1: 10, y1: 20, x2: 30, y2: 40 },
-        source: "overlay-click",
-        shiftKey: false,
-        altKey: false,
-        ctrlKey: false,
-        metaKey: false,
-    }, [pdfNote])).toEqual({
+    expect(
+        getPdfAnnotationSelectionMenuAction(
+            {
+                id: "selected-pdf",
+                page: 3,
+                rectIndex: 0,
+                rect: { x1: 10, y1: 20, x2: 30, y2: 40 },
+                source: "overlay-click",
+                shiftKey: false,
+                altKey: false,
+                ctrlKey: false,
+                metaKey: false,
+            },
+            [pdfNote],
+        ),
+    ).toEqual({
         open: true,
         section: "tab-annotation",
         id: "selected-pdf",
@@ -148,20 +152,27 @@ test("PDF annotation selection menu action opens the annotation panel without ed
 test("PDF annotation selection menu action enables controlled editing with shift click", () => {
     const pdfNote = createPdfAnnotationNote({ uuid: "selected-pdf" });
 
-    expect(getPdfAnnotationSelectionMenuAction({
-        id: "selected-pdf",
-        page: 3,
-        rectIndex: 0,
-        rect: { x1: 10, y1: 20, x2: 30, y2: 40 },
-        source: "overlay-click",
-        shiftKey: true,
-        altKey: false,
-        ctrlKey: false,
-        metaKey: false,
-    }, [pdfNote])).toEqual(expect.objectContaining({
-        id: "selected-pdf",
-        edit: true,
-    }));
+    expect(
+        getPdfAnnotationSelectionMenuAction(
+            {
+                id: "selected-pdf",
+                page: 3,
+                rectIndex: 0,
+                rect: { x1: 10, y1: 20, x2: 30, y2: 40 },
+                source: "overlay-click",
+                shiftKey: true,
+                altKey: false,
+                ctrlKey: false,
+                metaKey: false,
+            },
+            [pdfNote],
+        ),
+    ).toEqual(
+        expect.objectContaining({
+            id: "selected-pdf",
+            edit: true,
+        }),
+    );
 });
 
 test("created PDF annotation menu action opens the annotation panel in edit mode", () => {
@@ -174,20 +185,30 @@ test("created PDF annotation menu action opens the annotation panel in edit mode
         focus: true,
         edit: true,
     });
-    expect(getCreatedPdfAnnotationEditMenuAction(createPdfAnnotationNote({
-        uuid: "",
-    }))).toBeUndefined();
-    expect(getCreatedPdfAnnotationEditMenuAction(createEpubAnnotationNote({
-        uuid: "created-epub",
-    }))).toBeUndefined();
+    expect(
+        getCreatedPdfAnnotationEditMenuAction(
+            createPdfAnnotationNote({
+                uuid: "",
+            }),
+        ),
+    ).toBeUndefined();
+    expect(
+        getCreatedPdfAnnotationEditMenuAction(
+            createEpubAnnotationNote({
+                uuid: "created-epub",
+            }),
+        ),
+    ).toBeUndefined();
 });
 
 test("created PDF annotation menu action is skipped when editor opening is disabled", () => {
     const pdfNote = createPdfAnnotationNote({ uuid: "created-pdf" });
 
-    expect(getCreatedPdfAnnotationEditMenuAction(pdfNote, {
-        skipEditor: true,
-    })).toBeUndefined();
+    expect(
+        getCreatedPdfAnnotationEditMenuAction(pdfNote, {
+            skipEditor: true,
+        }),
+    ).toBeUndefined();
 });
 
 test("PDF annotation selection menu action rejects invalid payloads and non-PDF notes", () => {
@@ -195,60 +216,95 @@ test("PDF annotation selection menu action rejects invalid payloads and non-PDF 
     const epubNote = createEpubAnnotationNote({ uuid: "selected-epub" });
 
     expect(getPdfAnnotationSelectionMenuAction(undefined, [pdfNote])).toBeUndefined();
-    expect(getPdfAnnotationSelectionMenuAction({
-        id: "",
-        page: 3,
-    }, [pdfNote])).toBeUndefined();
-    expect(getPdfAnnotationSelectionMenuAction({
-        id: "selected-pdf",
-        page: 0,
-    }, [pdfNote])).toBeUndefined();
-    expect(getPdfAnnotationSelectionMenuAction({
-        id: "missing",
-        page: 3,
-    }, [pdfNote])).toBeUndefined();
-    expect(getPdfAnnotationSelectionMenuAction({
-        id: "selected-epub",
-        page: 3,
-        rectIndex: 0,
-        rect: { x1: 10, y1: 20, x2: 30, y2: 40 },
-        source: "overlay-click",
-        shiftKey: true,
-        altKey: false,
-        ctrlKey: false,
-        metaKey: false,
-    }, [epubNote])).toBeUndefined();
-    expect(getPdfAnnotationSelectionMenuAction({
-        id: "selected-pdf",
-        page: 3,
-        rectIndex: 0,
-        rect: { x1: 10, y1: 20, x2: 30, y2: 40 },
-        shiftKey: false,
-        altKey: false,
-        ctrlKey: false,
-        metaKey: false,
-    }, [pdfNote])).toBeUndefined();
-    expect(getPdfAnnotationSelectionMenuAction({
-        id: "selected-pdf",
-        page: 3,
-        rectIndex: 0,
-        rect: { x1: 10, y1: 20, x2: 10, y2: 40 },
-        source: "overlay-click",
-        shiftKey: false,
-        altKey: false,
-        ctrlKey: false,
-        metaKey: false,
-    }, [pdfNote])).toBeUndefined();
-    expect(getPdfAnnotationSelectionMenuAction({
-        id: "selected-pdf",
-        page: 3,
-        rect: { x1: 10, y1: 20, x2: 30, y2: 40 },
-        source: "overlay-click",
-        shiftKey: false,
-        altKey: false,
-        ctrlKey: false,
-        metaKey: false,
-    }, [pdfNote])).toBeUndefined();
+    expect(
+        getPdfAnnotationSelectionMenuAction(
+            {
+                id: "",
+                page: 3,
+            },
+            [pdfNote],
+        ),
+    ).toBeUndefined();
+    expect(
+        getPdfAnnotationSelectionMenuAction(
+            {
+                id: "selected-pdf",
+                page: 0,
+            },
+            [pdfNote],
+        ),
+    ).toBeUndefined();
+    expect(
+        getPdfAnnotationSelectionMenuAction(
+            {
+                id: "missing",
+                page: 3,
+            },
+            [pdfNote],
+        ),
+    ).toBeUndefined();
+    expect(
+        getPdfAnnotationSelectionMenuAction(
+            {
+                id: "selected-epub",
+                page: 3,
+                rectIndex: 0,
+                rect: { x1: 10, y1: 20, x2: 30, y2: 40 },
+                source: "overlay-click",
+                shiftKey: true,
+                altKey: false,
+                ctrlKey: false,
+                metaKey: false,
+            },
+            [epubNote],
+        ),
+    ).toBeUndefined();
+    expect(
+        getPdfAnnotationSelectionMenuAction(
+            {
+                id: "selected-pdf",
+                page: 3,
+                rectIndex: 0,
+                rect: { x1: 10, y1: 20, x2: 30, y2: 40 },
+                shiftKey: false,
+                altKey: false,
+                ctrlKey: false,
+                metaKey: false,
+            },
+            [pdfNote],
+        ),
+    ).toBeUndefined();
+    expect(
+        getPdfAnnotationSelectionMenuAction(
+            {
+                id: "selected-pdf",
+                page: 3,
+                rectIndex: 0,
+                rect: { x1: 10, y1: 20, x2: 10, y2: 40 },
+                source: "overlay-click",
+                shiftKey: false,
+                altKey: false,
+                ctrlKey: false,
+                metaKey: false,
+            },
+            [pdfNote],
+        ),
+    ).toBeUndefined();
+    expect(
+        getPdfAnnotationSelectionMenuAction(
+            {
+                id: "selected-pdf",
+                page: 3,
+                rect: { x1: 10, y1: 20, x2: 30, y2: 40 },
+                source: "overlay-click",
+                shiftKey: false,
+                altKey: false,
+                ctrlKey: false,
+                metaKey: false,
+            },
+            [pdfNote],
+        ),
+    ).toBeUndefined();
 });
 
 test("annotation panel text falls back to pdfAnnotation quote without locatorExtended", () => {
@@ -280,9 +336,7 @@ test("PDF annotations sort by page, visual top-to-bottom position, horizontal po
         pdfAnnotation: {
             type: "pdf-text-highlight",
             page: 2,
-            rects: [
-                { x1: 1, y1: 1, x2: 2, y2: 2 },
-            ],
+            rects: [{ x1: 1, y1: 1, x2: 2, y2: 2 }],
             quote: "page two",
         },
     });
@@ -291,9 +345,7 @@ test("PDF annotations sort by page, visual top-to-bottom position, horizontal po
         pdfAnnotation: {
             type: "pdf-text-highlight",
             page: 1,
-            rects: [
-                { x1: 1, y1: 20, x2: 2, y2: 30 },
-            ],
+            rects: [{ x1: 1, y1: 20, x2: 2, y2: 30 }],
             quote: "lower",
         },
     });
@@ -302,9 +354,7 @@ test("PDF annotations sort by page, visual top-to-bottom position, horizontal po
         pdfAnnotation: {
             type: "pdf-text-highlight",
             page: 1,
-            rects: [
-                { x1: 10, y1: 80, x2: 11, y2: 90 },
-            ],
+            rects: [{ x1: 10, y1: 80, x2: 11, y2: 90 }],
             quote: "upper",
         },
     });
@@ -313,17 +363,69 @@ test("PDF annotations sort by page, visual top-to-bottom position, horizontal po
         pdfAnnotation: {
             type: "pdf-text-highlight",
             page: 1,
-            rects: [
-                { x1: 1, y1: 80, x2: 2, y2: 90 },
-            ],
+            rects: [{ x1: 1, y1: 80, x2: 2, y2: 90 }],
             quote: "left",
         },
     });
 
-    const sorted = [pageTwo, lowerOnPageOne, upperOnPageOne, leftOnSameLine]
-        .sort((a, b) => comparePdfAnnotationsByPagePosition(a, b) || 0);
+    const sorted = [pageTwo, lowerOnPageOne, upperOnPageOne, leftOnSameLine].sort(
+        (a, b) => comparePdfAnnotationsByPagePosition(a, b) || 0,
+    );
 
     expect(sorted.map(({ uuid }) => uuid)).toEqual(["left", "upper", "lower", "page-two"]);
+});
+
+test("annotation panel progression comparator uses PDF visual order before EPUB progression", () => {
+    const pdfLower = createPdfAnnotationNote({
+        uuid: "pdf-lower",
+        pdfAnnotation: {
+            type: "pdf-text-highlight",
+            page: 1,
+            rects: [{ x1: 1, y1: 20, x2: 2, y2: 30 }],
+        },
+    });
+    const pdfUpper = createPdfAnnotationNote({
+        uuid: "pdf-upper",
+        pdfAnnotation: {
+            type: "pdf-text-highlight",
+            page: 1,
+            rects: [{ x1: 1, y1: 80, x2: 2, y2: 90 }],
+        },
+    });
+    const epubEarly = createEpubAnnotationNote({
+        uuid: "epub-early",
+        locatorExtended: {
+            locator: {
+                href: "chapter.xhtml",
+                locations: {
+                    progression: 0.1,
+                },
+            },
+        } as INoteState["locatorExtended"],
+    });
+    const epubLate = createEpubAnnotationNote({
+        uuid: "epub-late",
+        locatorExtended: {
+            locator: {
+                href: "chapter.xhtml",
+                locations: {
+                    progression: 0.9,
+                },
+            },
+        } as INoteState["locatorExtended"],
+    });
+    const compareEpubProgression = jest.fn((left: INoteState, right: INoteState) => {
+        return (
+            (left.locatorExtended?.locator.locations?.progression || 0) -
+            (right.locatorExtended?.locator.locations?.progression || 0)
+        );
+    });
+
+    expect(compareAnnotationPanelProgression(pdfLower, pdfUpper, compareEpubProgression)).toBeGreaterThan(0);
+    expect(compareEpubProgression).not.toHaveBeenCalled();
+
+    expect(compareAnnotationPanelProgression(epubEarly, epubLate, compareEpubProgression)).toBeLessThan(0);
+    expect(compareEpubProgression).toHaveBeenCalledTimes(1);
 });
 
 test("PDF annotation navigation target includes id, page, and normalized first rect", () => {
@@ -332,9 +434,7 @@ test("PDF annotation navigation target includes id, page, and normalized first r
         pdfAnnotation: {
             type: "pdf-text-highlight",
             page: 4,
-            rects: [
-                { x1: 30, y1: 40, x2: 10, y2: 20 },
-            ],
+            rects: [{ x1: 30, y1: 40, x2: 10, y2: 20 }],
             quote: "navigable quote",
         },
     });
@@ -347,24 +447,28 @@ test("PDF annotation navigation target includes id, page, and normalized first r
 });
 
 test("PDF annotation navigation target rejects invalid page and rect values", () => {
-    expect(getPdfAnnotationNavigationTarget(createPdfAnnotationNote({
-        pdfAnnotation: {
-            type: "pdf-text-highlight",
-            page: 0,
-            rects: [
-                { x1: 10, y1: 20, x2: 30, y2: 40 },
-            ],
-        },
-    }))).toBeUndefined();
-    expect(getPdfAnnotationNavigationTarget(createPdfAnnotationNote({
-        pdfAnnotation: {
-            type: "pdf-text-highlight",
-            page: 1,
-            rects: [
-                { x1: 10, y1: 20, x2: Number.NaN, y2: 40 },
-            ],
-        },
-    }))).toBeUndefined();
+    expect(
+        getPdfAnnotationNavigationTarget(
+            createPdfAnnotationNote({
+                pdfAnnotation: {
+                    type: "pdf-text-highlight",
+                    page: 0,
+                    rects: [{ x1: 10, y1: 20, x2: 30, y2: 40 }],
+                },
+            }),
+        ),
+    ).toBeUndefined();
+    expect(
+        getPdfAnnotationNavigationTarget(
+            createPdfAnnotationNote({
+                pdfAnnotation: {
+                    type: "pdf-text-highlight",
+                    page: 1,
+                    rects: [{ x1: 10, y1: 20, x2: Number.NaN, y2: 40 }],
+                },
+            }),
+        ),
+    ).toBeUndefined();
     expect(normalizePdfAnnotationNavigationRect({ x1: 1, y1: 1, x2: 1, y2: 2 })).toBeUndefined();
 });
 
@@ -384,16 +488,18 @@ test("annotation panel save payload preserves and deep-copies pdfAnnotation", ()
         modified: 2000,
     });
 
-    expect(saved).toEqual(expect.objectContaining({
-        uuid: "pdf-note",
-        textualValue: "updated comment",
-        drawType: EDrawType.underline,
-        tags: ["updated-tag"],
-        modified: 2000,
-        created: 1000,
-        group: "annotation",
-        pdfAnnotation: source.pdfAnnotation,
-    }));
+    expect(saved).toEqual(
+        expect.objectContaining({
+            uuid: "pdf-note",
+            textualValue: "updated comment",
+            drawType: EDrawType.underline,
+            tags: ["updated-tag"],
+            modified: 2000,
+            created: 1000,
+            group: "annotation",
+            pdfAnnotation: source.pdfAnnotation,
+        }),
+    );
     expect(saved.pdfAnnotation).not.toBe(source.pdfAnnotation);
     expect(saved.pdfAnnotation?.rects[0]).not.toBe(source.pdfAnnotation?.rects[0]);
     expect(saved.color).not.toBe(changedColor);

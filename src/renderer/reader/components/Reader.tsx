@@ -94,7 +94,6 @@ import type {
 import { pdfMount } from "../pdf/driver";
 import {
     buildPdfAnnotationTransportList,
-    createPdfAnnotationNoteDraft,
     handlePdfAnnotationCreateRequested,
     IPdfAnnotationCreateRequestPayload,
     triggerPdfAnnotation,
@@ -105,6 +104,11 @@ import {
 import {
     getPdfAnnotationSelectionMenuAction,
 } from "readium-desktop/renderer/reader/pdf/pdfAnnotationPanel";
+import {
+    buildPdfAnnotationDraftEditorTransport,
+    getPdfAnnotationCreatePresentation,
+    getPdfAnnotationVisibilityPayload,
+} from "readium-desktop/renderer/reader/pdf/pdfAnnotationReader";
 import {
     readerLocalActionAnnotations,
     readerLocalActionLocatorHrefChanged,
@@ -870,19 +874,20 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private onPdfAnnotationCreateRequested(payload: IPdfAnnotationCreateRequestPayload) {
-        const skipEditor = payload?.source === "instant-selection" ||
-            this.props.readerConfig.annotation_popoverNotOpenOnNoteTaking ||
-            this.skipNextPdfAnnotationEditor;
+        const presentation = getPdfAnnotationCreatePresentation(payload, {
+            annotationPopoverNotOpenOnNoteTaking: this.props.readerConfig.annotation_popoverNotOpenOnNoteTaking,
+            skipNextEditor: this.skipNextPdfAnnotationEditor,
+        });
         this.skipNextPdfAnnotationEditor = false;
 
-        if (!skipEditor && payload?.source === "highlight:create-from-selection") {
-            const noteDraft = createPdfAnnotationNoteDraft(payload, {
+        if (presentation === "draft-editor") {
+            const pdfAnnotationDraft = buildPdfAnnotationDraftEditorTransport(payload, {
                 color: this.props.readerConfig.annotation_defaultColor,
                 creator: this.props.creator,
                 noteTotalCount: this.props.noteTotalCount,
                 created: Date.now(),
             });
-            if (!noteDraft?.pdfAnnotation) {
+            if (!pdfAnnotationDraft) {
                 if (payload?.draft) {
                     this.props.toastError(PDF_ANNOTATION_VALIDATION_ERROR_TOAST);
                 }
@@ -890,12 +895,7 @@ class Reader extends React.Component<IProps, IState> {
             }
 
             this.setState({
-                pdfAnnotationDraft: {
-                    type: noteDraft.pdfAnnotation.type,
-                    page: noteDraft.pdfAnnotation.page,
-                    rects: noteDraft.pdfAnnotation.rects.map((rect) => ({ ...rect })),
-                    quote: noteDraft.pdfAnnotation.quote,
-                },
+                pdfAnnotationDraft,
             });
             return;
         }
@@ -954,9 +954,10 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private syncPdfAnnotationVisibility() {
-        createOrGetPdfEventBus().dispatch("annotations:set-visibility", {
-            visible: this.props.readerConfig.annotation_defaultDrawView !== "hide",
-        });
+        createOrGetPdfEventBus().dispatch(
+            "annotations:set-visibility",
+            getPdfAnnotationVisibilityPayload(this.props.readerConfig.annotation_defaultDrawView),
+        );
     }
 
     private savePdfAnnotationDraft(color: IColor, comment: string, drawType: TDrawType, tags: string[]) {

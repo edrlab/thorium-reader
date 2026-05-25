@@ -96,11 +96,11 @@ import { BookmarkLocatorInfo } from "./BookmarkLocatorInfo";
 import { IColor } from "@r2-navigator-js/electron/common/highlight";
 import { EDrawType, INoteState, noteColorCodeToColorTranslatorKeySet, TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 import {
+    compareAnnotationPanelProgression,
     buildAnnotationPanelSaveNote,
     canDeleteAnnotationInPanel,
     canEditAnnotationInPanel,
     canUseReadiumAnnotationImportExport,
-    comparePdfAnnotationsByPagePosition,
     filterDeletableAnnotationPanelNotes,
     getAnnotationCardText,
     getAnnotationPanelNavigation,
@@ -1235,19 +1235,13 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
     if (sortType !== "all" && sortType.has("progression")) {
 
         annotationListFiltered.sort((a, b) => {
-            const pdfComparison = comparePdfAnnotationsByPagePosition(a, b);
-            if (typeof pdfComparison === "number") {
-                return pdfComparison;
-            }
-
-            if (!a.locatorExtended || !b.locatorExtended) {
-                return 0;
-            }
-            const { locatorExtended: { locator: la } } = a;
-            const { locatorExtended: { locator: lb } } = b;
-            const pcta = computeProgression(r2Publication.Spine, la);
-            const pctb = computeProgression(r2Publication.Spine, lb);
-            return pcta - pctb;
+            return compareAnnotationPanelProgression(a, b, (left, right) => {
+                const la = left.locatorExtended!.locator;
+                const lb = right.locatorExtended!.locator;
+                const pcta = computeProgression(r2Publication.Spine, la);
+                const pctb = computeProgression(r2Publication.Spine, lb);
+                return pcta - pctb;
+            });
         });
     } else if (sortType !== "all" && sortType.has("lastCreated")) {
         annotationListFiltered.sort(({ created: ca }, { created: cb }) => {

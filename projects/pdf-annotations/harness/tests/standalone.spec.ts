@@ -29,7 +29,7 @@ declare global {
 
 test.beforeAll(async () => {
     await import("../build.mjs");
-    const serverModule = await import("../serve.mjs") as {
+    const serverModule = (await import("../serve.mjs")) as {
         closeHarnessServer: (server: THarnessServer) => Promise<void>;
         startHarnessServer: (port?: number) => Promise<THarnessServer>;
     };
@@ -58,36 +58,47 @@ async function getPdfJsFrame(page: Page) {
 
 async function waitForHarness(frame: Frame) {
     await expect(frame.locator("#thorium-pdf-annotation-harness")).toBeVisible();
-    await expect.poll(async () => frame.evaluate(() => {
-        const status = document.querySelector("#thorium-pdf-annotation-harness-status")?.textContent || "";
+    await expect
+        .poll(async () =>
+            frame.evaluate(() => {
+                const status = document.querySelector("#thorium-pdf-annotation-harness-status")?.textContent || "";
 
-        return /Ready|Synced/.test(status);
-    })).toBe(true);
+                return /Ready|Synced/.test(status);
+            }),
+        )
+        .toBe(true);
 }
 
 async function waitForSelectableText(frame: Frame) {
-    await expect.poll(async () => frame.evaluate(() => {
-        return Array.from(document.querySelectorAll<HTMLElement>(".textLayer span"))
-            .some((span) => !!span.textContent?.trim() && span.getClientRects().length > 0);
-    }), {
-        timeout: 30000,
-    }).toBe(true);
+    await expect
+        .poll(
+            async () =>
+                frame.evaluate(() => {
+                    return Array.from(document.querySelectorAll<HTMLElement>(".textLayer span")).some(
+                        (span) => !!span.textContent?.trim() && span.getClientRects().length > 0,
+                    );
+                }),
+            {
+                timeout: 30000,
+            },
+        )
+        .toBe(true);
 }
 
 async function selectFirstVisibleTextRun(frame: Frame) {
     return frame.evaluate(() => {
-        const span = Array.from(document.querySelectorAll<HTMLElement>(".textLayer span"))
-            .find((candidate) => {
-                const text = candidate.textContent?.trim() || "";
+        const span = Array.from(document.querySelectorAll<HTMLElement>(".textLayer span")).find((candidate) => {
+            const text = candidate.textContent?.trim() || "";
 
-                return text.length >= 8 && candidate.getClientRects().length > 0;
-            });
+            return text.length >= 8 && candidate.getClientRects().length > 0;
+        });
         if (!span) {
             throw new Error("No selectable PDF text span was found");
         }
 
-        const textNode = Array.from(span.childNodes)
-            .find((node): node is Text => node.nodeType === Node.TEXT_NODE && !!node.textContent?.trim());
+        const textNode = Array.from(span.childNodes).find(
+            (node): node is Text => node.nodeType === Node.TEXT_NODE && !!node.textContent?.trim(),
+        );
         if (!textNode?.textContent) {
             throw new Error("Selectable PDF text span did not contain a text node");
         }
@@ -123,11 +134,14 @@ async function waitForRenderedHighlight(frame: Frame) {
 }
 
 async function waitForPdfViewerFrames(frame: Frame) {
-    await frame.evaluate(() => new Promise<void>((resolve) => {
-        window.requestAnimationFrame(() => {
-            window.requestAnimationFrame(() => resolve());
-        });
-    }));
+    await frame.evaluate(
+        () =>
+            new Promise<void>((resolve) => {
+                window.requestAnimationFrame(() => {
+                    window.requestAnimationFrame(() => resolve());
+                });
+            }),
+    );
 }
 
 async function setPdfZoom(frame: Frame, scale: number) {
@@ -155,7 +169,7 @@ async function rotatePdfClockwise(frame: Frame) {
     await waitForPdfViewerFrames(frame);
 }
 
-test("creates, styles, navigates to, and deletes a PDF highlight through the standalone harness", async ({ page }) => {
+async function openStandaloneHarness(page: Page) {
     await page.goto("/projects/pdf-annotations/harness/standalone.html", {
         waitUntil: "domcontentloaded",
     });
@@ -164,68 +178,99 @@ test("creates, styles, navigates to, and deletes a PDF highlight through the sta
     await waitForHarness(frame);
     await waitForSelectableText(frame);
 
-    await frame.evaluate(() => window.getSelection()?.removeAllRanges());
-    await frame.locator("#thorium-pdf-annotation-create").click();
-    await expect.poll(async () => frame.evaluate(() => {
-        return window.__thoriumPdfAnnotationHarness?.annotations().length ?? -1;
-    })).toBe(0);
-    await expect.poll(async () => frame.evaluate(() => {
-        const harness = window.__thoriumPdfAnnotationHarness;
-        const errors = harness?.selectionErrors() || [];
+    return frame;
+}
 
-        return errors[errors.length - 1]?.reason || "";
-    })).toBe("empty");
-    await expect(frame.locator("#thorium-pdf-annotation-harness-log")).toContainText("annotation:selection-error");
+async function annotationCount(frame: Frame) {
+    return frame.evaluate(() => window.__thoriumPdfAnnotationHarness?.annotations().length ?? -1);
+}
 
-    const selection = await selectFirstVisibleTextRun(frame);
-    expect(selection.quote.trim().length).toBeGreaterThan(0);
-    expect(selection.rectCount).toBeGreaterThan(0);
+async function selectionEventCount(frame: Frame) {
+    return frame.evaluate(() => window.__thoriumPdfAnnotationHarness?.selectionEventCount() || 0);
+}
 
-    await frame.locator("#thorium-pdf-annotation-create").click();
-
-    await expect.poll(async () => frame.evaluate(() => {
-        return window.__thoriumPdfAnnotationHarness?.annotations().length ?? -1;
-    })).toBe(1);
-
-    const highlights = frame.locator(".thorium-pdf-annotation-highlight");
-    await waitForRenderedHighlight(frame);
-
-    await frame.evaluate(() => window.getSelection()?.removeAllRanges());
-    const firstClickHighlightBox = await highlights.first().boundingBox();
-    if (!firstClickHighlightBox) {
-        throw new Error("Rendered PDF annotation highlight did not have a bounding box");
-    }
-    await page.mouse.click(
-        firstClickHighlightBox.x + (firstClickHighlightBox.width / 2),
-        firstClickHighlightBox.y + (firstClickHighlightBox.height / 2),
-    );
-    await expect.poll(async () => frame.evaluate(() => {
+async function latestAnnotationIsSelected(frame: Frame) {
+    return frame.evaluate(() => {
         const harness = window.__thoriumPdfAnnotationHarness;
         const annotations = harness?.annotations() || [];
         const latest = annotations[annotations.length - 1] as { id?: string } | undefined;
 
         return !!latest?.id && harness?.selectedAnnotationId() === latest.id;
-    })).toBe(true);
-    await expect(frame.locator("#thorium-pdf-annotation-harness-log")).toContainText("annotation:selected");
-    const selectionEventCountAfterClick = await frame.evaluate(() => {
-        return window.__thoriumPdfAnnotationHarness?.selectionEventCount() || 0;
     });
+}
+
+async function createHighlightFromSelection(frame: Frame) {
+    const selection = await selectFirstVisibleTextRun(frame);
+    expect(selection.quote.trim().length).toBeGreaterThan(0);
+    expect(selection.rectCount).toBeGreaterThan(0);
+
+    await frame.locator("#thorium-pdf-annotation-create").click();
+    await expect.poll(async () => annotationCount(frame)).toBe(1);
+
+    return waitForRenderedHighlight(frame);
+}
+
+async function clickHighlightCenter(
+    page: Page,
+    box: NonNullable<Awaited<ReturnType<typeof waitForRenderedHighlight>>>,
+) {
+    await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+}
+
+test("reports an invalid empty selection without creating an annotation", async ({ page }) => {
+    const frame = await openStandaloneHarness(page);
+
+    await frame.evaluate(() => window.getSelection()?.removeAllRanges());
+    await frame.locator("#thorium-pdf-annotation-create").click();
+
+    await expect.poll(async () => annotationCount(frame)).toBe(0);
+    await expect
+        .poll(async () =>
+            frame.evaluate(() => {
+                const harness = window.__thoriumPdfAnnotationHarness;
+                const errors = harness?.selectionErrors() || [];
+
+                return errors[errors.length - 1]?.reason || "";
+            }),
+        )
+        .toBe("empty");
+    await expect(frame.locator("#thorium-pdf-annotation-harness-log")).toContainText("annotation:selection-error");
+});
+
+test("creates an annotation and selects it by clicking the rendered highlight", async ({ page }) => {
+    const frame = await openStandaloneHarness(page);
+    const highlightBox = await createHighlightFromSelection(frame);
+
+    await frame.evaluate(() => window.getSelection()?.removeAllRanges());
+    await clickHighlightCenter(page, highlightBox!);
+
+    await expect.poll(async () => latestAnnotationIsSelected(frame)).toBe(true);
+    await expect(frame.locator("#thorium-pdf-annotation-harness-log")).toContainText("annotation:selected");
+    await expect(frame.locator(".thorium-pdf-annotation-highlight")).toHaveCount(1);
+});
+
+test("hides PDF overlays without allowing selection from the old highlight location", async ({ page }) => {
+    const frame = await openStandaloneHarness(page);
+    const highlightBox = await createHighlightFromSelection(frame);
+    const highlights = frame.locator(".thorium-pdf-annotation-highlight");
+    const selectionEventsBeforeHide = await selectionEventCount(frame);
 
     await frame.locator("#thorium-pdf-annotation-visibility").click();
     await expect(highlights).toHaveCount(0);
     await expect(frame.locator("#thorium-pdf-annotation-harness-log")).toContainText("annotations:set-visibility");
 
-    await page.mouse.click(
-        firstClickHighlightBox.x + (firstClickHighlightBox.width / 2),
-        firstClickHighlightBox.y + (firstClickHighlightBox.height / 2),
-    );
-    await page.waitForTimeout(250);
-    await expect.poll(async () => frame.evaluate(() => {
-        return window.__thoriumPdfAnnotationHarness?.selectionEventCount() || 0;
-    })).toBe(selectionEventCountAfterClick);
+    await clickHighlightCenter(page, highlightBox!);
+    await waitForPdfViewerFrames(frame);
+    expect(await selectionEventCount(frame)).toBe(selectionEventsBeforeHide);
 
     await frame.locator("#thorium-pdf-annotation-visibility").click();
     await waitForRenderedHighlight(frame);
+});
+
+test("keeps overlays visible after zoom and rotation, then styles and navigates to the highlight", async ({ page }) => {
+    const frame = await openStandaloneHarness(page);
+    await createHighlightFromSelection(frame);
+    const highlights = frame.locator(".thorium-pdf-annotation-highlight");
 
     await setPdfZoom(frame, 1.25);
     await waitForRenderedHighlight(frame);
@@ -236,7 +281,9 @@ test("creates, styles, navigates to, and deletes a PDF highlight through the sta
     await expect(frame.locator("#thorium-pdf-annotation-style-latest")).toBeEnabled();
     await frame.locator("#thorium-pdf-annotation-style-latest").click();
 
-    await expect.poll(async () => frame.locator(".thorium-pdf-annotation-highlight[data-draw-type=\"outline\"]").count()).toBeGreaterThan(0);
+    await expect
+        .poll(async () => frame.locator('.thorium-pdf-annotation-highlight[data-draw-type="outline"]').count())
+        .toBeGreaterThan(0);
     const styledHighlight = await highlights.first().evaluate((element) => {
         const style = window.getComputedStyle(element);
 
@@ -255,8 +302,15 @@ test("creates, styles, navigates to, and deletes a PDF highlight through the sta
     await expect(frame.locator("#thorium-pdf-annotation-go-to-latest")).toBeEnabled();
     await frame.locator("#thorium-pdf-annotation-go-to-latest").click();
 
-    await expect.poll(async () => frame.locator(".thorium-pdf-annotation-highlight[data-navigation-flash=\"true\"]").count()).toBeGreaterThan(0);
+    await expect
+        .poll(async () => frame.locator('.thorium-pdf-annotation-highlight[data-navigation-flash="true"]').count())
+        .toBeGreaterThan(0);
+});
 
+test("deletes the latest annotation and prevents selection from the removed highlight location", async ({ page }) => {
+    const frame = await openStandaloneHarness(page);
+    await createHighlightFromSelection(frame);
+    const highlights = frame.locator(".thorium-pdf-annotation-highlight");
     await frame.evaluate(() => window.getSelection()?.removeAllRanges());
     const deletedHighlightBox = await highlights.first().boundingBox();
     if (!deletedHighlightBox) {
@@ -266,26 +320,23 @@ test("creates, styles, navigates to, and deletes a PDF highlight through the sta
     await expect(frame.locator("#thorium-pdf-annotation-delete-latest")).toBeEnabled();
     await frame.locator("#thorium-pdf-annotation-delete-latest").click();
 
-    await expect.poll(async () => frame.evaluate(() => {
-        return window.__thoriumPdfAnnotationHarness?.annotations().length ?? -1;
-    })).toBe(0);
+    await expect.poll(async () => annotationCount(frame)).toBe(0);
     await expect(highlights).toHaveCount(0);
 
-    await page.mouse.click(
-        deletedHighlightBox.x + (deletedHighlightBox.width / 2),
-        deletedHighlightBox.y + (deletedHighlightBox.height / 2),
-    );
-    await page.waitForTimeout(250);
-    await expect.poll(async () => frame.evaluate(() => {
-        return window.__thoriumPdfAnnotationHarness?.selectionEventCount() || 0;
-    })).toBe(selectionEventCountAfterClick);
+    const selectionEventsBeforeDeletedClick = await selectionEventCount(frame);
+    await clickHighlightCenter(page, deletedHighlightBox);
+    await waitForPdfViewerFrames(frame);
+    expect(await selectionEventCount(frame)).toBe(selectionEventsBeforeDeletedClick);
+});
+
+test("creates a PDF annotation from instant mode after a stable selection", async ({ page }) => {
+    const frame = await openStandaloneHarness(page);
 
     await frame.evaluate(() => window.getSelection()?.removeAllRanges());
     await frame.locator("#thorium-pdf-annotation-instant-mode").click();
     const instantSelection = await selectFirstVisibleTextRun(frame);
     expect(instantSelection.quote.trim().length).toBeGreaterThan(0);
-    await expect.poll(async () => frame.evaluate(() => {
-        return window.__thoriumPdfAnnotationHarness?.annotations().length ?? -1;
-    })).toBe(1);
+
+    await expect.poll(async () => annotationCount(frame)).toBe(1);
     await expect(frame.locator("#thorium-pdf-annotation-harness-log")).toContainText("annotations:set-instant-mode");
 });
