@@ -6,19 +6,12 @@ This project tracks application-level PDF text highlights. Thorium remains the s
 
 ## Documents
 
-- [CHANGELOG.md](CHANGELOG.md) - project decisions, actions, and documentation changes.
 - [PLAN.md](PLAN.md) - product and engineering rollout plan.
 - [SPEC.md](SPEC.md) - first-slice implementation contract and algorithms.
 - [REVIEW.md](REVIEW.md) - static review notes, risks, and follow-up gates.
 - [TODO.md](TODO.md) - developer-centric task list from current branch to finished project.
 - [UNIT_TESTS.md](UNIT_TESTS.md) - unit-test strategy, required coverage, priorities, and proposed test files.
 - [harness/README.md](harness/README.md) - standalone PDF.js browser harness for manual annotation testing outside Thorium.
-
-## Maintenance Rule
-
-Agents updating this project must add a same-day entry to `CHANGELOG.md` whenever they change project decisions, scope, actions, TODOs, or implementation-facing documentation.
-
-Decision entries must include the "why": the reason for the choice, the constraint or policy behind it, and any meaningful alternative that was rejected or deferred.
 
 ## Technical Decision Rule
 
