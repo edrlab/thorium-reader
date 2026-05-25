@@ -263,6 +263,7 @@ Add:
 - `P0 Existing` `highlight:create-from-selection` rejects multi-page selections.
 - `P0 Existing` `highlight:create-from-selection` rejects when page element or viewport is missing.
 - `P0 Existing` `highlight:create-from-selection` dispatches `annotation:create-requested` with one-page PDF rects for a valid selection.
+- `P0 Existing` explicit selection creation dispatches `annotation:create-requested` with source `highlight:create-from-selection`.
 - `P0 Existing` valid selection draft preserves selected quote text.
 - `P0 Existing` valid selection draft contains no id, timestamp, creator, color, or draw type.
 - `P0 Existing` `annotations:ready` is dispatched once when PDF geometry is available.
@@ -270,6 +271,10 @@ Add:
 - `P0 Existing` `pagerendered` falls back to full render when payload has no page number.
 - `P0 Existing` scale or rotation changes remove stale overlays before scheduled redraw.
 - `P0 Existing` `destroy()` removes local bus subscriptions, clears overlay DOM, clears state, and cancels scheduled renders.
+- `P0 Existing` instant mode creates a draft after a stable PDF text selection.
+- `P0 Existing` instant mode dispatches `annotation:create-requested` with source `instant-selection`.
+- `P0 Existing` instant mode suppresses duplicate drafts for an unchanged selection.
+- `P0 Existing` instant mode emits `annotation:selection-error` with source `instant-selection` for invalid settled selections.
 
 ### Webview Overlay Rendering
 
@@ -300,15 +305,22 @@ Target module:
 
 - New helper module recommended, for example `src/renderer/reader/pdf/pdfAnnotationValidation.ts`.
 
-Add when validation helpers are introduced:
+Current draft validation coverage:
+
+- `P1 Existing` validate draft payload before note creation.
+- `P1 Existing` validate draft page numbers are 1-based integers.
+- `P1 Existing` validate draft rect arrays are non-empty.
+- `P1 Existing` validate draft rect coordinates are finite numbers.
+- `P1 Existing` validate draft rects are non-zero.
+- `P1 Existing` validation does not mutate accepted draft payloads.
+
+Still needed when transport validation is expanded:
 
 - `P1 Needed` validate `annotations:sync` accepts arrays of JSON-compatible annotation objects.
 - `P1 Needed` validate `annotations:sync` rejects missing ids.
 - `P1 Needed` validate `annotations:sync` rejects invalid page numbers.
 - `P1 Needed` validate `annotations:sync` rejects empty rect arrays.
 - `P1 Needed` validate rect coordinates are finite numbers.
-- `P1 Needed` validate draft payload before note creation.
-- `P1 Needed` validation does not mutate accepted payloads.
 
 ### Persisted Shape Compatibility
 
@@ -476,7 +488,7 @@ Use focused files that match implementation ownership:
 - `test/renderer/reader/pdf/webview/annotations.test.ts` - controller behavior with fake bus, fake DOM, and fake viewport.
 - `test/renderer/reader/components/pdfAnnotationTrigger.test.tsx` - PDF-vs-EPUB annotation trigger routing if not extracted.
 - `test/renderer/reader/components/pdfAnnotationPanel.test.tsx` - future panel display behavior.
-- `test/renderer/reader/pdf/pdfAnnotationValidation.test.ts` - future transport/draft validation helpers.
+- `test/renderer/reader/pdf/pdfAnnotationValidation.test.ts` - draft validation helpers and future transport validation helpers.
 - `test/renderer/reader/pdf/pdfAnnotationImportExport.test.ts` - future import/export helpers.
 
 ## Implementation Order
@@ -485,7 +497,7 @@ Use focused files that match implementation ownership:
 2. `Done` Extract and test host-side helper logic from `Reader.tsx`.
 3. `Done` Add webview controller tests with fake bus, fake DOM, and fake viewport.
 4. `Done` Expand geometry edge-case coverage.
-5. `Next` Add validation helper tests when payload validation is implemented.
+5. `Done` Add draft validation helper tests when payload validation is implemented.
 6. `Later` Add P2 tests alongside each future feature slice.
 
 ## Definition Of Done

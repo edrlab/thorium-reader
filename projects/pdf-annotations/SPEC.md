@@ -33,8 +33,13 @@ Included:
 - annotation panel display of PDF quote and page metadata for persisted PDF notes;
 - annotation panel navigation to PDF highlights through `viewer:go-to-annotation`;
 - annotation panel editing of PDF annotation comment, color, draw type, and tags;
+- opening the annotation panel edit form immediately after header-triggered PDF annotation creation;
 - annotation panel deletion of PDF annotations through normal Thorium note removal;
 - overlay click selection through `annotation:selected`;
+- instant PDF annotation creation from the annotation panel options checkbox;
+- runtime draft validation before note creation;
+- typed failed-selection diagnostics through `annotation:selection-error`;
+- static error toast feedback for PDF annotation validation failures;
 - hiding Readium annotation import/export controls in PDF readers until a PDF-specific exchange format exists;
 - preservation of `pdfAnnotation` when annotation panel helpers build save payloads.
 
@@ -44,7 +49,7 @@ Excluded:
 - search;
 - print support;
 - export/import changes;
-- failed-selection toast handling;
+- final localized failed-selection toast UX;
 - native PDF annotation writing.
 
 ## Persisted Model
@@ -81,7 +86,7 @@ First-slice PDF note shape:
 
 ## Event Contract
 
-The PDF annotations project extends `IPdfPlayerEvent` with six annotation-specific events across slices 1 through 4.
+The PDF annotations project extends `IPdfPlayerEvent` with eight annotation-specific events across slices 1 through 5.
 
 ```ts
 export interface TPdfAnnotationRectTransport {
@@ -124,9 +129,26 @@ export interface TPdfAnnotationSelectionTarget {
     metaKey: boolean;
 }
 
+export type TPdfAnnotationSelectionErrorReason =
+    | "empty"
+    | "no-usable-rects"
+    | "multi-page"
+    | "missing-page"
+    | "missing-viewport"
+    | "invalid-rects";
+
+export interface TPdfAnnotationSelectionErrorPayload {
+    source: "highlight:create-from-selection" | "instant-selection";
+    reason: TPdfAnnotationSelectionErrorReason;
+}
+
 export interface IPdfPlayerEvent {
     "annotations:sync": (payload: {
         annotations: TPdfAnnotationTransport[];
+    }) => any;
+
+    "annotations:set-instant-mode": (payload: {
+        enabled: boolean;
     }) => any;
 
     "highlight:create-from-selection": () => any;
@@ -135,11 +157,14 @@ export interface IPdfPlayerEvent {
 
     "annotation:create-requested": (payload: {
         draft: TPdfAnnotationDraftTransport;
+        source: "highlight:create-from-selection" | "instant-selection";
     }) => any;
 
     "viewer:go-to-annotation": (payload: TPdfAnnotationNavigationTarget) => any;
 
     "annotation:selected": (payload: TPdfAnnotationSelectionTarget) => any;
+
+    "annotation:selection-error": (payload: TPdfAnnotationSelectionErrorPayload) => any;
 }
 ```
 
@@ -147,22 +172,49 @@ Directions:
 
 - host to webview: `highlight:create-from-selection`;
 - host to webview: `annotations:sync`;
+- host to webview: `annotations:set-instant-mode`;
 - host to webview: `viewer:go-to-annotation`;
 - webview to host: `annotation:create-requested`;
 - webview to host: `annotations:ready`;
-- webview to host: `annotation:selected`.
+- webview to host: `annotation:selected`;
+- webview to host: `annotation:selection-error`.
 
 Payload rules:
 
 - events carrying data use exactly one JSON-compatible object payload;
 - payloadless events are dispatched without arguments;
 - the webview never sends canonical ids, timestamps, creator metadata, document identity, color, or draw type in creation drafts;
+- `annotation:create-requested.source` identifies whether the draft came from the explicit annotation trigger or instant selection mode;
 - `annotations:sync` carries host-owned color and draw type for rendering;
 - PDF annotation draw type supports `solid_background`, `underline`, `strikethrough`, and `outline`; `bookmark` is not a PDF highlight style;
 - `viewer:go-to-annotation` carries the canonical annotation id plus page/rect fallback;
 - the webview resolves `viewer:go-to-annotation` by id first when the annotation exists in its current snapshot, then falls back to the payload page/rect;
 - `annotation:selected` carries the canonical annotation id, page, matching rectangle index, rectangle copy, source, and keyboard modifier state;
-- the host ignores `annotation:selected` when the payload is incomplete, the source is not `overlay-click`, the rectangle is invalid, the id is unknown, or the id is not a persisted PDF annotation.
+- the host ignores `annotation:selected` when the payload is incomplete, the source is not `overlay-click`, the rectangle is invalid, the id is unknown, or the id is not a persisted PDF annotation;
+- `annotations:set-instant-mode` carries a boolean `enabled` flag and only changes the webview selection observer; it does not persist reader configuration;
+- `annotation:selection-error` carries a typed reason for a failed webview selection capture. It is a diagnostic/user-feedback event, not a PDF lifecycle event and not a persistence command.
+
+## Runtime Draft Validation
+
+`pdfAnnotationValidation.ts` defines the runtime rules for creation drafts before the host creates a Thorium note.
+
+A valid draft must:
+
+- be an object;
+- use `type: "pdf-text-highlight"`;
+- use a 1-based integer `page`;
+- include at least one rectangle;
+- include only finite rectangle coordinates;
+- include only non-zero rectangles, where `x1 !== x2` and `y1 !== y2`;
+- omit `quote` or provide it as a string.
+
+The helper returns a defensive copy of accepted rectangles. This prevents a caller from mutating the accepted draft after validation and before note conversion.
+
+Invalid host create requests are rejected before `readerActions.note.addUpdate`. Missing drafts are ignored as no-op bus noise; malformed drafts are logged with `console.error` because they represent runtime contract violations.
+
+When a malformed draft reaches the host, `Reader.tsx` also shows a static error toast: `Unable to create PDF annotation from this selection.`
+
+Normal PDF annotation traces are gated behind `window.__THORIUM_PDF_ANNOTATIONS_DEBUG`. Invalid payloads and integration failures still use `console.error` so QA can see real contract breaks without enabling verbose logs.
 
 ## Data Mapping
 
@@ -268,16 +320,18 @@ PDF annotation deletion uses the existing Thorium note removal path:
 The controller:
 
 1. subscribes to `annotations:sync`;
-2. subscribes to `highlight:create-from-selection`;
-3. subscribes to `viewer:go-to-annotation`;
-4. listens to document pointer/click events for passive overlay hit-testing;
-5. listens to PDF.js geometry lifecycle events:
+2. subscribes to `annotations:set-instant-mode`;
+3. subscribes to `highlight:create-from-selection`;
+4. subscribes to `viewer:go-to-annotation`;
+5. listens to document selection changes for optional instant annotation mode;
+6. listens to document pointer/click events for passive overlay hit-testing;
+7. listens to PDF.js geometry lifecycle events:
    - `pagesinit`;
    - `documentloaded`;
    - `pagerendered`;
    - `scalechanging`;
    - `rotationchanging`;
-6. sends `annotations:ready` once PDF geometry is available.
+8. sends `annotations:ready` once PDF geometry is available.
 
 `destroy()` removes bus subscriptions, PDF.js listeners, scheduled renders, overlay DOM, and in-memory annotation state.
 
@@ -289,20 +343,45 @@ Algorithm:
 
 ```text
 selection = window.getSelection()
-reject if selection is missing, empty, or has no ranges
+dispatch annotation:selection-error(empty) if selection is missing, empty, or has no ranges
 collect client rects from all ranges
 drop rects smaller than 1px by 1px
+dispatch annotation:selection-error(no-usable-rects) if no usable rect remains
 for each rect:
     find the PDF page with the largest intersection area
-    reject if no page is found
-    reject if more than one page is involved
+    dispatch annotation:selection-error(missing-page) if no page is found
+    dispatch annotation:selection-error(multi-page) if more than one page is involved
 get the PDF.js page view and viewport
+dispatch annotation:selection-error(missing-page) if the page element disappeared
+dispatch annotation:selection-error(missing-viewport) if the PDF.js viewport is unavailable
 convert each page-local rect to PDF coordinates
-reject if no valid converted rect remains
+dispatch annotation:selection-error(invalid-rects) if no valid converted rect remains
 dispatch annotation:create-requested({ draft })
 ```
 
 The multi-page rejection is intentional. The persisted first-slice target has one `page` field, so accepting cross-page selections would create ambiguous data.
+
+## Instant Annotation Mode
+
+The annotation panel option `reader.annotations.advancedMode` maps to PDF instant mode when the active reader is PDF. `ReaderMenu.tsx` keeps using the existing local serial-annotator state and sends it to the PDF webview with:
+
+```ts
+createOrGetPdfEventBus().dispatch("annotations:set-instant-mode", {
+    enabled: serialAnnotator,
+});
+```
+
+When enabled, the webview observes `selectionchange`, waits for a short stable-selection delay, converts the selection with the same `selectionToDraft()` algorithm used by the toolbar annotation action, and dispatches `annotation:create-requested` with the resulting draft and `source: "instant-selection"`.
+
+Rules:
+
+- disabled mode observes no creation side effects;
+- empty selections clear the duplicate guard and do not show a toast;
+- duplicate settled selections are ignored until the user changes or clears the selection;
+- invalid settled selections emit `annotation:selection-error` with source `instant-selection`;
+- the host still owns persistence, color, draw type, and whether an editor opens after creation;
+- instant selection mode never opens the editor after persistence;
+- the existing `reader.annotations.quickAnnotations` checkbox applies the same no-editor policy to explicit PDF annotation creation. When quick creation is enabled, PDF creation stays silent after persistence, matching EPUB quick creation.
 
 ## Coordinate Conversion
 
@@ -360,24 +439,30 @@ Overlay behavior:
 - `underline` uses an opaque lower border stroke;
 - `strikethrough` uses an opaque middle stroke;
 - `outline` uses an opaque border stroke;
-- annotation id stored in `data-annotation-id`.
+- annotation id stored in `data-annotation-id`;
+- hovering a hit-tested highlight applies a temporary document-level `cursor: pointer` rule, while the overlay and highlight elements still keep `pointer-events: none`.
 
 ## Overlay Click Selection
 
 Rendered highlights remain passive DOM (`pointer-events: none`). The controller
-listens for document-level pointer/click events and hit-tests the click point
+listens for document-level pointer/click events and hit-tests the pointer or click point
 against currently rendered highlight rectangles.
 
 Algorithm:
 
 ```text
 record pointerdown button and coordinates
+on pointermove:
+    reject drag-like movement or active browser text selection
+    if the pointer is over a rendered highlight inside a PDF page, show a pointer cursor
+    otherwise restore the normal PDF.js cursor
 on click:
     reject non-primary clicks
     reject drag-like movement
     reject clicks whose DOM target/point is outside a PDF page element
-    reject when browser text selection is active
     find rendered highlight rectangles containing the click point
+    reject simple click when browser text selection is active
+    allow Shift+click on a rendered highlight even if browser text selection remains active
     choose the smallest matching rectangle, then nearest center, then latest rendered element
     dispatch annotation:selected with id, page, rectIndex, rect, source, and modifiers
 ```
@@ -387,8 +472,19 @@ state:
 
 - simple click opens/focuses the annotation card without editing;
 - `Shift+click` opens the same card in edit mode when panel editing is allowed;
+- `Shift+click` remains available when a previous PDF.js text selection is still active, because it is the explicit edit gesture;
 - invalid ids or non-PDF notes are logged and ignored;
 - no note mutation, PDF mutation, export/import, or extra patch event is created.
+
+The clickable cursor is a UX hint only. It is implemented as a transient class on the root document so it can override PDF.js text-layer cursors at the hovered point without making the overlay DOM receive pointer events.
+
+When `annotation:selection-error` reaches the host, `Reader.tsx` shows the same static error toast: `Unable to create PDF annotation from this selection.`
+
+Accessibility boundary for slice 5:
+
+- overlay layers and highlight elements remain `aria-hidden` and are not focusable;
+- after pointer selection, focus moves to the annotation card in the panel through existing menu state;
+- direct keyboard focus on PDF overlays is a future slice because it would change the passive `pointer-events: none` interaction model.
 
 ## Acceptance Criteria
 
@@ -402,14 +498,24 @@ state:
 - PDF annotations render in the annotation panel without requiring `locatorExtended`.
 - Clicking a PDF annotation card navigates to the page/rectangle target and flashes the rendered highlight.
 - PDF annotation cards can edit comment, color, draw type, and tags without losing `pdfAnnotation`.
+- Header-triggered PDF annotation creation opens the created annotation in the panel edit form.
+- PDF instant mode creates a PDF annotation automatically after a stable PDF text selection without opening the editor.
+- PDF quick creation skips the created annotation edit form after explicit PDF annotation creation.
 - Edited PDF annotation color and draw type update the webview overlay after snapshot sync.
 - Deleting a PDF annotation removes the Thorium note and removes the webview overlay after snapshot sync.
+- Hovering a rendered PDF highlight shows a clickable pointer cursor while preserving passive overlays.
 - Clicking a rendered PDF highlight opens/focuses the matching annotation panel card without changing persistence.
 - Shift-clicking a rendered PDF highlight opens the matching PDF annotation in the panel edit form.
+- Invalid PDF annotation creation drafts are rejected before note persistence.
+- Failed webview selection captures emit `annotation:selection-error` with a typed reason.
+- Selection and draft validation failures trigger a static error toast.
+- Verbose PDF annotation logs are disabled unless `window.__THORIUM_PDF_ANNOTATIONS_DEBUG` is enabled.
+- Standalone harness automation covers invalid selection rejection, zoom visibility, rotation visibility, click selection, deletion, and no selection after deletion.
 - PDF reader annotation panels do not expose Readium annotation import/export controls.
-- PDF annotation export/import and print support remain outside slice 4 acceptance.
+- PDF annotation export/import and print support remain outside slice 5 acceptance.
 
 ## Known Follow-Up Requirements
 
 - Add automated browser/Electron checks for real PDF.js navigation positioning.
 - Add keyboard-accessible focus behavior directly on PDF highlight overlays.
+- Add a localized toast or status microcopy for `annotation:selection-error` reasons.

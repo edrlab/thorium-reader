@@ -29,6 +29,21 @@ export interface TPdfAnnotationDraftTransport {
     quote?: string;
 }
 
+export type TPdfAnnotationSelectionErrorReason =
+    | "empty"
+    | "no-usable-rects"
+    | "multi-page"
+    | "missing-page"
+    | "missing-viewport"
+    | "invalid-rects";
+
+export interface TPdfAnnotationSelectionErrorPayload {
+    source: "highlight:create-from-selection" | "instant-selection";
+    reason: TPdfAnnotationSelectionErrorReason;
+}
+
+export type TPdfAnnotationCreateSource = "highlight:create-from-selection" | "instant-selection";
+
 export type TPdfAnnotationDrawType = Exclude<TDrawType, "bookmark">;
 
 export interface TPdfAnnotationTransport extends TPdfAnnotationDraftTransport {
@@ -94,13 +109,18 @@ export interface IPdfPlayerEvent {
     "annotations:sync": (payload: {
         annotations: TPdfAnnotationTransport[];
     }) => any;
+    "annotations:set-instant-mode": (payload: {
+        enabled: boolean;
+    }) => any;
     "highlight:create-from-selection": () => any;
     "annotations:ready": () => any;
     "annotation:create-requested": (payload: {
         draft: TPdfAnnotationDraftTransport;
+        source: TPdfAnnotationCreateSource;
     }) => any;
     "viewer:go-to-annotation": (payload: TPdfAnnotationNavigationTarget) => any;
     "annotation:selected": (payload: TPdfAnnotationSelectionTarget) => any;
+    "annotation:selection-error": (payload: TPdfAnnotationSelectionErrorPayload) => any;
 }
 
 export interface IEventBusPdfPlayer extends IEventBus {

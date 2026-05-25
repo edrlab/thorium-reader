@@ -4,6 +4,9 @@ import { JSDOM } from "jsdom";
 import type { IEventBusPdfPlayer, TPdfAnnotationTransport } from "readium-desktop/renderer/reader/pdf/common/pdfReader.type";
 import { PdfAnnotationController } from "readium-desktop/renderer/reader/pdf/webview/annotations";
 
+const ANNOTATION_CLICKABLE_CURSOR_CLASS = "thorium-pdf-annotation-clickable-cursor";
+const ANNOTATION_CLICKABLE_CURSOR_STYLE_ID = "thorium-pdf-annotation-clickable-cursor-style";
+
 type THandler = (...args: any[]) => void;
 
 class FakeThoriumBus {
@@ -254,6 +257,12 @@ function latestSelectedDispatch(thoriumBus: FakeThoriumBus) {
         .at(-1);
 }
 
+function latestSelectionErrorDispatch(thoriumBus: FakeThoriumBus) {
+    return thoriumBus.dispatches
+        .filter((dispatch) => dispatch.key === "annotation:selection-error")
+        .at(-1);
+}
+
 function setHighlightClientRect(annotationId: string, clientRect: ReturnType<typeof rect>) {
     const highlight = highlights().find((item) => item.dataset.annotationId === annotationId);
     if (!highlight) {
@@ -299,6 +308,29 @@ function dispatchAnnotationClick(
     }));
 }
 
+function dispatchAnnotationPointerMove(
+    x: number,
+    y: number,
+    options: {
+        buttons?: number;
+        target?: EventTarget;
+    } = {},
+) {
+    const target = options.target || document;
+    target.dispatchEvent(new window.MouseEvent("pointermove", {
+        bubbles: true,
+        buttons: options.buttons ?? 0,
+        clientX: x,
+        clientY: y,
+    }));
+}
+
+function dispatchSelectionChange() {
+    document.dispatchEvent(new window.Event("selectionchange", {
+        bubbles: true,
+    }));
+}
+
 function runNextAnimationFrame() {
     const callback = rafCallbacks.shift();
     if (callback) {
@@ -313,13 +345,37 @@ test("init subscribes to Thorium and PDF.js events only once", () => {
     harness.controller.init();
 
     expect(harness.thoriumBus.listenerCount("annotations:sync")).toBe(1);
+    expect(harness.thoriumBus.listenerCount("annotations:set-instant-mode")).toBe(1);
     expect(harness.thoriumBus.listenerCount("highlight:create-from-selection")).toBe(1);
     expect(harness.thoriumBus.listenerCount("viewer:go-to-annotation")).toBe(1);
+    expect(harness.thoriumBus.listenerCount("annotation:selection-error")).toBe(0);
     expect(harness.pdfJsEventBus.listenerCount("pagesinit")).toBe(1);
     expect(harness.pdfJsEventBus.listenerCount("documentloaded")).toBe(1);
     expect(harness.pdfJsEventBus.listenerCount("pagerendered")).toBe(1);
     expect(harness.pdfJsEventBus.listenerCount("scalechanging")).toBe(1);
     expect(harness.pdfJsEventBus.listenerCount("rotationchanging")).toBe(1);
+});
+
+test("debug logs are disabled by default, opt-in through a flag, and errors stay visible", () => {
+    const harness = createHarness();
+
+    harness.controller.init();
+    expect(console.log).not.toHaveBeenCalled();
+
+    harness.thoriumBus.dispatch("annotations:sync", undefined);
+    expect(console.error).toHaveBeenCalledWith(
+        "[Thorium PDF annotations]",
+        "annotations:sync ignored invalid payload",
+        undefined,
+    );
+
+    harness.controller.destroy();
+    (window as any).__THORIUM_PDF_ANNOTATIONS_DEBUG = true;
+    harness.controller.init();
+    expect(console.log).toHaveBeenCalledWith(
+        "[Thorium PDF annotations]",
+        "init",
+    );
 });
 
 test("annotations:sync replaces the snapshot, ignores missing ids, and empty sync clears overlays", () => {
@@ -394,6 +450,10 @@ test("highlight:create-from-selection does not dispatch a draft for an empty sel
     harness.thoriumBus.dispatch("highlight:create-from-selection");
 
     expect(latestDraftDispatch(harness.thoriumBus)).toBeUndefined();
+    expect(latestSelectionErrorDispatch(harness.thoriumBus)?.args[0]).toEqual({
+        source: "highlight:create-from-selection",
+        reason: "empty",
+    });
 });
 
 test("highlight:create-from-selection rejects selections whose rects are too small", () => {
@@ -407,6 +467,10 @@ test("highlight:create-from-selection rejects selections whose rects are too sma
     harness.thoriumBus.dispatch("highlight:create-from-selection");
 
     expect(latestDraftDispatch(harness.thoriumBus)).toBeUndefined();
+    expect(latestSelectionErrorDispatch(harness.thoriumBus)?.args[0]).toEqual({
+        source: "highlight:create-from-selection",
+        reason: "no-usable-rects",
+    });
 });
 
 test("highlight:create-from-selection rejects a selection that does not intersect a PDF page", () => {
@@ -420,6 +484,10 @@ test("highlight:create-from-selection rejects a selection that does not intersec
     harness.thoriumBus.dispatch("highlight:create-from-selection");
 
     expect(latestDraftDispatch(harness.thoriumBus)).toBeUndefined();
+    expect(latestSelectionErrorDispatch(harness.thoriumBus)?.args[0]).toEqual({
+        source: "highlight:create-from-selection",
+        reason: "missing-page",
+    });
 });
 
 test("highlight:create-from-selection rejects multi-page selections", () => {
@@ -437,6 +505,10 @@ test("highlight:create-from-selection rejects multi-page selections", () => {
     harness.thoriumBus.dispatch("highlight:create-from-selection");
 
     expect(latestDraftDispatch(harness.thoriumBus)).toBeUndefined();
+    expect(latestSelectionErrorDispatch(harness.thoriumBus)?.args[0]).toEqual({
+        source: "highlight:create-from-selection",
+        reason: "multi-page",
+    });
 });
 
 test("highlight:create-from-selection rejects when the page element disappears before conversion", () => {
@@ -457,6 +529,10 @@ test("highlight:create-from-selection rejects when the page element disappears b
     harness.thoriumBus.dispatch("highlight:create-from-selection");
 
     expect(latestDraftDispatch(harness.thoriumBus)).toBeUndefined();
+    expect(latestSelectionErrorDispatch(harness.thoriumBus)?.args[0]).toEqual({
+        source: "highlight:create-from-selection",
+        reason: "missing-page",
+    });
 });
 
 test("highlight:create-from-selection rejects when the PDF.js viewport is missing", () => {
@@ -473,6 +549,34 @@ test("highlight:create-from-selection rejects when the PDF.js viewport is missin
     harness.thoriumBus.dispatch("highlight:create-from-selection");
 
     expect(latestDraftDispatch(harness.thoriumBus)).toBeUndefined();
+    expect(latestSelectionErrorDispatch(harness.thoriumBus)?.args[0]).toEqual({
+        source: "highlight:create-from-selection",
+        reason: "missing-viewport",
+    });
+});
+
+test("highlight:create-from-selection rejects when conversion leaves no valid PDF rects", () => {
+    const page = createRenderedPage(1, {
+        viewport: {
+            width: 10,
+            height: 10,
+            convertToPdfPoint: (x: number, y: number) => [x, y],
+            convertToViewportRectangle: ([x1, y1, x2, y2]: number[]) => [x1, y1, x2, y2],
+        },
+    });
+    const harness = createHarness([page]);
+    harness.controller.init();
+    setSelection("outside viewport but inside page", [
+        [rect(650, 700, 690, 720)],
+    ]);
+
+    harness.thoriumBus.dispatch("highlight:create-from-selection");
+
+    expect(latestDraftDispatch(harness.thoriumBus)).toBeUndefined();
+    expect(latestSelectionErrorDispatch(harness.thoriumBus)?.args[0]).toEqual({
+        source: "highlight:create-from-selection",
+        reason: "invalid-rects",
+    });
 });
 
 test("highlight:create-from-selection dispatches a one-page PDF draft for a valid selection", () => {
@@ -503,6 +607,7 @@ test("highlight:create-from-selection dispatches a one-page PDF draft for a vali
             ],
             quote: "selected quote",
         },
+        source: "highlight:create-from-selection",
     });
     expect(draftDispatch?.args[0].draft).not.toHaveProperty("id");
     expect(draftDispatch?.args[0].draft).not.toHaveProperty("created");
@@ -582,16 +687,23 @@ test("destroy removes subscriptions, clears overlays and state, and cancels sche
     runNextAnimationFrame();
 
     expect(harness.thoriumBus.listenerCount("annotations:sync")).toBe(0);
+    expect(harness.thoriumBus.listenerCount("annotations:set-instant-mode")).toBe(0);
     expect(harness.thoriumBus.listenerCount("highlight:create-from-selection")).toBe(0);
     expect(harness.thoriumBus.listenerCount("viewer:go-to-annotation")).toBe(0);
+    expect(harness.thoriumBus.listenerCount("annotation:selection-error")).toBe(0);
     expect(harness.pdfJsEventBus.listenerCount("pagesinit")).toBe(0);
     expect(harness.pdfJsEventBus.listenerCount("documentloaded")).toBe(0);
     expect(harness.pdfJsEventBus.listenerCount("pagerendered")).toBe(0);
     expect(harness.pdfJsEventBus.listenerCount("scalechanging")).toBe(0);
     expect(harness.pdfJsEventBus.listenerCount("rotationchanging")).toBe(0);
+    expect(removeDocumentListenerSpy).toHaveBeenCalledWith("selectionchange", expect.any(Function), true);
     expect(removeDocumentListenerSpy).toHaveBeenCalledWith("pointerdown", expect.any(Function), true);
+    expect(removeDocumentListenerSpy).toHaveBeenCalledWith("pointermove", expect.any(Function), true);
+    expect(removeDocumentListenerSpy).toHaveBeenCalledWith("pointerleave", expect.any(Function), true);
     expect(removeDocumentListenerSpy).toHaveBeenCalledWith("click", expect.any(Function), true);
     expect(overlayLayers()).toHaveLength(0);
+    expect(document.documentElement.classList.contains(ANNOTATION_CLICKABLE_CURSOR_CLASS)).toBe(false);
+    expect(document.getElementById(ANNOTATION_CLICKABLE_CURSOR_STYLE_ID)).toBeNull();
 
     harness.controller.init();
     harness.pdfJsEventBus.emit("pagerendered", { pageNumber: 1 });
@@ -639,6 +751,120 @@ test("overlay rendering creates passive page layers and positioned highlights fo
 
     harness.pdfJsEventBus.emit("pagerendered", { pageNumber: 1 });
     expect(overlayLayers(first.pageElement)).toHaveLength(1);
+});
+
+test("instant mode creates a PDF draft after a stable text selection and avoids duplicate dispatches", () => {
+    jest.useFakeTimers();
+    try {
+        const page = createRenderedPage(1, {
+            borderLeft: 10,
+            borderTop: 5,
+        });
+        const harness = createHarness([page]);
+        harness.controller.init();
+
+        setSelection("instant quote", [
+            [rect(150, 100, 250, 120)],
+        ]);
+        dispatchSelectionChange();
+        jest.advanceTimersByTime(300);
+        expect(latestDraftDispatch(harness.thoriumBus)).toBeUndefined();
+
+        harness.thoriumBus.dispatch("annotations:set-instant-mode", {
+            enabled: true,
+        });
+        dispatchSelectionChange();
+        jest.advanceTimersByTime(300);
+
+        expect(latestDraftDispatch(harness.thoriumBus)?.args[0]).toEqual({
+            draft: {
+                type: "pdf-text-highlight",
+                page: 1,
+                rects: [
+                    {
+                        x1: 20,
+                        y1: 367.5,
+                        x2: 70,
+                        y2: 377.5,
+                    },
+                ],
+                quote: "instant quote",
+            },
+            source: "instant-selection",
+        });
+
+        dispatchSelectionChange();
+        jest.advanceTimersByTime(300);
+        expect(harness.thoriumBus.dispatches.filter((dispatch) => dispatch.key === "annotation:create-requested")).toHaveLength(1);
+    } finally {
+        jest.useRealTimers();
+    }
+});
+
+test("instant mode reports invalid settled selections with an instant-selection source", () => {
+    jest.useFakeTimers();
+    try {
+        const first = createRenderedPage(1, { left: 100, top: 50 });
+        const second = createRenderedPage(2, { left: 100, top: 900 });
+        const harness = createHarness([first, second]);
+        harness.controller.init();
+        harness.thoriumBus.dispatch("annotations:set-instant-mode", {
+            enabled: true,
+        });
+        setSelection("two pages", [
+            [
+                rect(150, 100, 250, 120),
+                rect(150, 950, 250, 970),
+            ],
+        ]);
+
+        dispatchSelectionChange();
+        jest.advanceTimersByTime(300);
+
+        expect(latestDraftDispatch(harness.thoriumBus)).toBeUndefined();
+        expect(latestSelectionErrorDispatch(harness.thoriumBus)?.args[0]).toEqual({
+            source: "instant-selection",
+            reason: "multi-page",
+        });
+    } finally {
+        jest.useRealTimers();
+    }
+});
+
+test("hovering a rendered highlight shows a clickable cursor without enabling overlay pointer events", () => {
+    const page = createRenderedPage(1);
+    const harness = createHarness([page]);
+    harness.controller.init();
+    harness.thoriumBus.dispatch("annotations:sync", {
+        annotations: [
+            annotation("first", 1),
+        ],
+    });
+    setHighlightClientRect("first", rect(110, 120, 150, 160));
+
+    setSelection("active text selection", []);
+    dispatchAnnotationPointerMove(130, 140, { target: page.pageElement });
+    expect(document.documentElement.classList.contains(ANNOTATION_CLICKABLE_CURSOR_CLASS)).toBe(false);
+
+    Object.defineProperty(window, "getSelection", {
+        value: () => ({
+            toString: () => "",
+        }),
+        configurable: true,
+    });
+
+    dispatchAnnotationPointerMove(130, 140, { target: page.pageElement });
+    expect(document.documentElement.classList.contains(ANNOTATION_CLICKABLE_CURSOR_CLASS)).toBe(true);
+    expect(highlights()[0].style.pointerEvents).toBe("none");
+
+    dispatchAnnotationPointerMove(130, 140, {
+        buttons: 1,
+        target: page.pageElement,
+    });
+    expect(document.documentElement.classList.contains(ANNOTATION_CLICKABLE_CURSOR_CLASS)).toBe(false);
+
+    dispatchAnnotationPointerMove(90, 90, { target: page.pageElement });
+    expect(document.documentElement.classList.contains(ANNOTATION_CLICKABLE_CURSOR_CLASS)).toBe(false);
 });
 
 test("clicking inside a rendered highlight emits annotation:selected without enabling overlay pointer events", () => {
@@ -731,6 +957,30 @@ test("annotation:selected ignores active text selection and drag-like pointer mo
         target: page.pageElement,
     });
     expect(latestSelectedDispatch(harness.thoriumBus)).toBeUndefined();
+});
+
+test("annotation:selected keeps shift-click editing available when text selection remains active", () => {
+    const page = createRenderedPage(1);
+    const harness = createHarness([page]);
+    harness.controller.init();
+    harness.thoriumBus.dispatch("annotations:sync", {
+        annotations: [
+            annotation("first", 1),
+        ],
+    });
+    setHighlightClientRect("first", rect(110, 120, 150, 160));
+    setSelection("leftover text selection", []);
+
+    dispatchAnnotationClick(130, 140, {
+        shiftKey: true,
+        target: page.pageElement,
+    });
+
+    expect(latestSelectedDispatch(harness.thoriumBus)?.args[0]).toEqual(expect.objectContaining({
+        id: "first",
+        source: "overlay-click",
+        shiftKey: true,
+    }));
 });
 
 test("overlay rendering applies transported PDF colors and draw types", () => {

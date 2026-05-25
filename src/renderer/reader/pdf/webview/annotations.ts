@@ -13,6 +13,7 @@ import type {
     TPdfAnnotationDraftTransport,
     TPdfAnnotationNavigationTarget,
     TPdfAnnotationRectTransport,
+    TPdfAnnotationSelectionErrorReason,
     TPdfAnnotationSelectionTarget,
     TPdfAnnotationTransport,
 } from "../common/pdfReader.type";
@@ -22,9 +23,12 @@ import {
     isUsableSelectionRect,
     pageViewportRectToPdfRect,
 } from "./annotationGeometry";
+import { isValidPdfAnnotationRect } from "../pdfAnnotationValidation";
 
 const ANNOTATION_LAYER_CLASS = "thorium-pdf-annotation-layer";
 const ANNOTATION_HIGHLIGHT_CLASS = "thorium-pdf-annotation-highlight";
+const ANNOTATION_CLICKABLE_CURSOR_CLASS = "thorium-pdf-annotation-clickable-cursor";
+const ANNOTATION_CLICKABLE_CURSOR_STYLE_ID = "thorium-pdf-annotation-clickable-cursor-style";
 const DEFAULT_HIGHLIGHT_COLOR: IColor = {
     red: 254,
     green: 243,
@@ -32,6 +36,25 @@ const DEFAULT_HIGHLIGHT_COLOR: IColor = {
 };
 const HIGHLIGHT_OPACITY = "0.35";
 const DEBUG_PREFIX = "[Thorium PDF annotations]";
+const DEBUG_FLAG = "__THORIUM_PDF_ANNOTATIONS_DEBUG";
+const INSTANT_ANNOTATION_SELECTION_DELAY_MS = 250;
+
+function isDebugLoggingEnabled() {
+    return typeof window !== "undefined" && !!(window as any)[DEBUG_FLAG];
+}
+
+function debugLog(message: string, data?: unknown) {
+    if (!isDebugLoggingEnabled()) {
+        return;
+    }
+
+    if (typeof data === "undefined") {
+        console.log(DEBUG_PREFIX, message);
+        return;
+    }
+
+    console.log(DEBUG_PREFIX, message, data);
+}
 
 function normalizeRgbChannel(value: unknown, fallback: number) {
     return typeof value === "number" && Number.isFinite(value)
@@ -109,6 +132,16 @@ interface IAnnotationClickCandidate {
     rectIndex: number;
 }
 
+interface ISelectionToDraftSuccess {
+    draft: TPdfAnnotationDraftTransport;
+}
+
+interface ISelectionToDraftFailure {
+    reason: TPdfAnnotationSelectionErrorReason;
+}
+
+type TSelectionToDraftResult = ISelectionToDraftSuccess | ISelectionToDraftFailure;
+
 export class PdfAnnotationController {
 
     /**
@@ -134,6 +167,9 @@ export class PdfAnnotationController {
     private readySent = false;
     private renderAnimationFrame: number | undefined;
     private annotationPointerDown: IAnnotationPointerDown | undefined;
+    private instantAnnotationModeEnabled = false;
+    private instantAnnotationTimer: number | undefined;
+    private lastInstantAnnotationDraftSignature = "";
 
     public constructor(
         private readonly bus: IEventBusPdfPlayer,
@@ -151,18 +187,23 @@ export class PdfAnnotationController {
      */
     public init() {
         if (this.initialized) {
-            console.log(DEBUG_PREFIX, "init skipped: controller already initialized");
+            debugLog("init skipped: controller already initialized");
             return;
         }
         this.initialized = true;
-        console.log(DEBUG_PREFIX, "init");
+        debugLog("init");
 
         this.bus.subscribe("annotations:sync", this.onAnnotationsSync);
+        this.bus.subscribe("annotations:set-instant-mode", this.onSetInstantMode);
         this.bus.subscribe("highlight:create-from-selection", this.onCreateFromSelection);
         this.bus.subscribe("viewer:go-to-annotation", this.onGoToAnnotation);
-        console.log(DEBUG_PREFIX, "subscribed to Thorium PDF annotation bus events");
+        debugLog("subscribed to Thorium PDF annotation bus events");
 
+        this.ensureClickableCursorStyle();
+        document.addEventListener("selectionchange", this.onSelectionChange, true);
         document.addEventListener("pointerdown", this.onAnnotationPointerDown, true);
+        document.addEventListener("pointermove", this.onAnnotationPointerMove, true);
+        document.addEventListener("pointerleave", this.onAnnotationPointerLeave, true);
         document.addEventListener("click", this.onAnnotationClick, true);
 
         this.addPdfJsListener("pagesinit", this.onPdfReady);
@@ -173,7 +214,7 @@ export class PdfAnnotationController {
 
         const pdfViewerApplication = this.getPdfViewerApplication();
         if (pdfViewerApplication?.pdfDocument && pdfViewerApplication.pdfViewer?.pagesCount) {
-            console.log(DEBUG_PREFIX, "PDF document already available at init", {
+            debugLog("PDF document already available at init", {
                 pagesCount: pdfViewerApplication.pdfViewer.pagesCount,
             });
             window.setTimeout(this.onPdfReady, 0);
@@ -187,11 +228,15 @@ export class PdfAnnotationController {
      * document reloads inside the same webview.
      */
     public destroy() {
-        console.log(DEBUG_PREFIX, "destroy");
+        debugLog("destroy");
         this.bus.remove(this.onAnnotationsSync, "annotations:sync");
+        this.bus.remove(this.onSetInstantMode, "annotations:set-instant-mode");
         this.bus.remove(this.onCreateFromSelection, "highlight:create-from-selection");
         this.bus.remove(this.onGoToAnnotation, "viewer:go-to-annotation");
+        document.removeEventListener("selectionchange", this.onSelectionChange, true);
         document.removeEventListener("pointerdown", this.onAnnotationPointerDown, true);
+        document.removeEventListener("pointermove", this.onAnnotationPointerMove, true);
+        document.removeEventListener("pointerleave", this.onAnnotationPointerLeave, true);
         document.removeEventListener("click", this.onAnnotationClick, true);
         this.pdfJsListeners.forEach(({ key, fn }) => this.removePdfJsListener(key, fn));
         this.pdfJsListeners.length = 0;
@@ -200,10 +245,15 @@ export class PdfAnnotationController {
             window.cancelAnimationFrame(this.renderAnimationFrame);
             this.renderAnimationFrame = undefined;
         }
+        this.clearInstantAnnotationTimer();
 
         this.removeAllOverlayLayers();
+        this.setAnnotationHoverCursor(false);
+        this.removeClickableCursorStyle();
         this.annotations.clear();
         this.annotationPointerDown = undefined;
+        this.instantAnnotationModeEnabled = false;
+        this.lastInstantAnnotationDraftSignature = "";
         this.initialized = false;
         this.readySent = false;
     }
@@ -219,7 +269,7 @@ export class PdfAnnotationController {
         annotations?: TPdfAnnotationTransport[];
     }) => {
         const annotations = payload?.annotations;
-        console.log(DEBUG_PREFIX, "annotations:sync received", {
+        debugLog("annotations:sync received", {
             count: Array.isArray(annotations) ? annotations.length : undefined,
         });
 
@@ -240,6 +290,25 @@ export class PdfAnnotationController {
         this.renderAll();
     };
 
+    private readonly onSetInstantMode = (payload?: {
+        enabled?: boolean;
+    }) => {
+        if (typeof payload?.enabled !== "boolean") {
+            console.error(DEBUG_PREFIX, "annotations:set-instant-mode ignored invalid payload", payload);
+            return;
+        }
+
+        this.instantAnnotationModeEnabled = payload.enabled;
+        this.clearInstantAnnotationTimer();
+        if (!payload.enabled) {
+            this.lastInstantAnnotationDraftSignature = "";
+        }
+
+        debugLog("annotations:set-instant-mode", {
+            enabled: payload.enabled,
+        });
+    };
+
     /**
      * Converts the current PDF text selection into a draft and delegates all
      * note creation decisions to the host. This method intentionally does not
@@ -247,20 +316,84 @@ export class PdfAnnotationController {
      * persistence result belong to the parent reader.
      */
     private readonly onCreateFromSelection = () => {
-        console.log(DEBUG_PREFIX, "highlight:create-from-selection received");
-        const draft = this.selectionToDraft();
-        if (!draft) {
-            console.log(DEBUG_PREFIX, "selection did not produce a PDF annotation draft");
+        debugLog("highlight:create-from-selection received");
+        const result = this.selectionToDraft();
+        if ("reason" in result) {
+            this.dispatchSelectionError(result.reason, "highlight:create-from-selection");
             return;
         }
 
-        console.log(DEBUG_PREFIX, "dispatching annotation:create-requested", {
+        const { draft } = result;
+        debugLog("dispatching annotation:create-requested", {
             page: draft.page,
             rectCount: draft.rects.length,
             quoteLength: draft.quote?.length || 0,
         });
         this.bus.dispatch("annotation:create-requested", {
             draft,
+            source: "highlight:create-from-selection",
+        });
+    };
+
+    private dispatchSelectionError(
+        reason: TPdfAnnotationSelectionErrorReason,
+        source: "highlight:create-from-selection" | "instant-selection",
+    ) {
+        debugLog("dispatching annotation:selection-error", { reason, source });
+        this.bus.dispatch("annotation:selection-error", {
+            source,
+            reason,
+        });
+    }
+
+    private readonly onSelectionChange = () => {
+        if (!this.instantAnnotationModeEnabled) {
+            return;
+        }
+
+        if (!window.getSelection?.()?.toString().trim()) {
+            this.clearInstantAnnotationTimer();
+            this.lastInstantAnnotationDraftSignature = "";
+            return;
+        }
+
+        this.clearInstantAnnotationTimer();
+        this.instantAnnotationTimer = window.setTimeout(
+            this.createInstantAnnotationFromSelection,
+            INSTANT_ANNOTATION_SELECTION_DELAY_MS,
+        );
+    };
+
+    private readonly createInstantAnnotationFromSelection = () => {
+        this.instantAnnotationTimer = undefined;
+
+        if (!this.instantAnnotationModeEnabled) {
+            return;
+        }
+
+        const result = this.selectionToDraft();
+        if ("reason" in result) {
+            if (result.reason !== "empty") {
+                this.dispatchSelectionError(result.reason, "instant-selection");
+            }
+            return;
+        }
+
+        const signature = this.getDraftSignature(result.draft);
+        if (signature === this.lastInstantAnnotationDraftSignature) {
+            debugLog("instant annotation skipped: selection already dispatched");
+            return;
+        }
+
+        this.lastInstantAnnotationDraftSignature = signature;
+        debugLog("dispatching instant annotation:create-requested", {
+            page: result.draft.page,
+            rectCount: result.draft.rects.length,
+            quoteLength: result.draft.quote?.length || 0,
+        });
+        this.bus.dispatch("annotation:create-requested", {
+            draft: result.draft,
+            source: "instant-selection",
         });
     };
 
@@ -278,7 +411,7 @@ export class PdfAnnotationController {
             return;
         }
 
-        console.log(DEBUG_PREFIX, "viewer:go-to-annotation", {
+        debugLog("viewer:go-to-annotation", {
             id: target.id,
             page: target.page,
         });
@@ -291,6 +424,14 @@ export class PdfAnnotationController {
             x: event.clientX,
             y: event.clientY,
         };
+    };
+
+    private readonly onAnnotationPointerMove = (event: PointerEvent | MouseEvent) => {
+        this.setAnnotationHoverCursor(this.shouldShowClickableAnnotationCursor(event));
+    };
+
+    private readonly onAnnotationPointerLeave = () => {
+        this.setAnnotationHoverCursor(false);
     };
 
     /**
@@ -326,7 +467,7 @@ export class PdfAnnotationController {
             return;
         }
 
-        console.log(DEBUG_PREFIX, "annotation:selected", {
+        debugLog("annotation:selected", {
             id: target.id,
             page: target.page,
             rectIndex: target.rectIndex,
@@ -342,15 +483,15 @@ export class PdfAnnotationController {
      * and geometry changes schedule their own redraw.
      */
     private readonly onPdfReady = () => {
-        console.log(DEBUG_PREFIX, "PDF annotations controller ready signal candidate");
+        debugLog("PDF annotations controller ready signal candidate");
         this.renderAll();
         if (this.readySent) {
-            console.log(DEBUG_PREFIX, "annotations:ready skipped: already sent");
+            debugLog("annotations:ready skipped: already sent");
             return;
         }
 
         this.readySent = true;
-        console.log(DEBUG_PREFIX, "dispatching annotations:ready");
+        debugLog("dispatching annotations:ready");
         this.bus.dispatch("annotations:ready");
     };
 
@@ -364,12 +505,12 @@ export class PdfAnnotationController {
     }) => {
         const pageNumber = payload?.pageNumber;
         if (typeof pageNumber !== "number") {
-            console.log(DEBUG_PREFIX, "pagerendered without pageNumber: rendering all pages", payload);
+            debugLog("pagerendered without pageNumber: rendering all pages", payload);
             this.renderAll();
             return;
         }
 
-        console.log(DEBUG_PREFIX, "pagerendered: rendering page", { pageNumber });
+        debugLog("pagerendered: rendering page", { pageNumber });
         this.renderPage(pageNumber);
     };
 
@@ -379,8 +520,9 @@ export class PdfAnnotationController {
      * after PDF.js has had time to settle the new page geometry.
      */
     private readonly onGeometryChanging = () => {
-        console.log(DEBUG_PREFIX, "PDF geometry changing: clearing overlays and scheduling render");
+        debugLog("PDF geometry changing: clearing overlays and scheduling render");
         this.removeAllOverlayLayers();
+        this.setAnnotationHoverCursor(false);
         this.scheduleRenderAll();
     };
 
@@ -582,24 +724,28 @@ export class PdfAnnotationController {
      * viewport, or cross-page selection would otherwise create annotations whose
      * persistence shape is ambiguous and difficult to migrate later.
      */
-    private selectionToDraft(): TPdfAnnotationDraftTransport | undefined {
+    private selectionToDraft(): TSelectionToDraftResult {
         const selection = window.getSelection();
         if (!selection || selection.rangeCount === 0 || !selection.toString().trim()) {
-            console.log(DEBUG_PREFIX, "selection rejected: empty selection", {
+            debugLog("selection rejected: empty selection", {
                 hasSelection: !!selection,
                 rangeCount: selection?.rangeCount || 0,
             });
-            return undefined;
+            return {
+                reason: "empty",
+            };
         }
 
         const clientRects = this.getSelectionClientRects(selection);
         if (!clientRects.length) {
-            console.log(DEBUG_PREFIX, "selection rejected: no usable client rects", {
+            debugLog("selection rejected: no usable client rects", {
                 quoteLength: selection.toString().length,
             });
-            return undefined;
+            return {
+                reason: "no-usable-rects",
+            };
         }
-        console.log(DEBUG_PREFIX, "selection client rects collected", {
+        debugLog("selection client rects collected", {
             rectCount: clientRects.length,
             quoteLength: selection.toString().length,
         });
@@ -608,53 +754,71 @@ export class PdfAnnotationController {
         for (const rect of clientRects) {
             const pageHit = this.findPageForClientRect(rect);
             if (!pageHit) {
-                console.log(DEBUG_PREFIX, "selection rejected: rect does not intersect a PDF page", {
+                debugLog("selection rejected: rect does not intersect a PDF page", {
                     rect: this.describeRect(rect),
                 });
-                return undefined;
+                return {
+                    reason: "missing-page",
+                };
             }
             pageNumbers.add(pageHit.pageNumber);
             if (pageNumbers.size > 1) {
-                console.log(DEBUG_PREFIX, "selection rejected: selection spans multiple pages", {
+                debugLog("selection rejected: selection spans multiple pages", {
                     pages: Array.from(pageNumbers),
                 });
-                return undefined;
+                return {
+                    reason: "multi-page",
+                };
             }
         }
 
         const page = Array.from(pageNumbers)[0];
         const pageElement = this.getPageElement(page);
         const pageView = this.getPageView(page);
-        if (!pageElement || !pageView?.viewport) {
-            console.log(DEBUG_PREFIX, "selection rejected: missing page element or page viewport", {
+        if (!pageElement) {
+            debugLog("selection rejected: missing page element", {
                 page,
-                hasPageElement: !!pageElement,
+            });
+            return {
+                reason: "missing-page",
+            };
+        }
+
+        if (!pageView?.viewport) {
+            debugLog("selection rejected: missing page viewport", {
+                page,
                 hasViewport: !!pageView?.viewport,
             });
-            return undefined;
+            return {
+                reason: "missing-viewport",
+            };
         }
 
         const rects = clientRects
             .map((rect) => this.clientRectToPdfRect(rect, pageElement, pageView))
-            .filter((rect): rect is TPdfAnnotationRectTransport => !!rect);
+            .filter((rect): rect is TPdfAnnotationRectTransport => isValidPdfAnnotationRect(rect));
 
         if (!rects.length) {
-            console.log(DEBUG_PREFIX, "selection rejected: no valid PDF rects after conversion", {
+            debugLog("selection rejected: no valid PDF rects after conversion", {
                 page,
                 clientRectCount: clientRects.length,
             });
-            return undefined;
+            return {
+                reason: "invalid-rects",
+            };
         }
 
-        console.log(DEBUG_PREFIX, "selection converted to PDF annotation draft", {
+        debugLog("selection converted to PDF annotation draft", {
             page,
             rectCount: rects.length,
         });
         return {
-            type: "pdf-text-highlight",
-            page,
-            rects,
-            quote: selection.toString(),
+            draft: {
+                type: "pdf-text-highlight",
+                page,
+                rects,
+                quote: selection.toString(),
+            },
         };
     }
 
@@ -673,7 +837,7 @@ export class PdfAnnotationController {
                 if (rect && isUsableSelectionRect(rect)) {
                     rects.push(rect);
                 } else if (rect) {
-                    console.log(DEBUG_PREFIX, "selection rect ignored: too small", {
+                    debugLog("selection rect ignored: too small", {
                         rect: this.describeRect(rect),
                     });
                 }
@@ -720,7 +884,7 @@ export class PdfAnnotationController {
             height: viewportHeight,
         });
         if (!pageViewportRect) {
-            console.log(DEBUG_PREFIX, "client rect ignored after page-local clamping", {
+            debugLog("client rect ignored after page-local clamping", {
                 rect: this.describeRect(rect),
             });
             return undefined;
@@ -737,12 +901,12 @@ export class PdfAnnotationController {
     private renderAll() {
         this.removeAllOverlayLayers();
         if (!this.annotations.size) {
-            console.log(DEBUG_PREFIX, "renderAll skipped: no annotations");
+            debugLog("renderAll skipped: no annotations");
             return;
         }
 
         const pageElements = Array.from(document.querySelectorAll<HTMLElement>(".page[data-page-number]"));
-        console.log(DEBUG_PREFIX, "renderAll", {
+        debugLog("renderAll", {
             annotationCount: this.annotations.size,
             pageElementCount: pageElements.length,
         });
@@ -799,7 +963,7 @@ export class PdfAnnotationController {
         const pageElement = this.getPageElement(pageNumber);
         const pageView = this.getPageView(pageNumber);
         if (!pageElement || !pageView?.viewport) {
-            console.log(DEBUG_PREFIX, "renderPage skipped: missing page element or viewport", {
+            debugLog("renderPage skipped: missing page element or viewport", {
                 pageNumber,
                 hasPageElement: !!pageElement,
                 hasViewport: !!pageView?.viewport,
@@ -812,13 +976,13 @@ export class PdfAnnotationController {
         const annotations = Array.from(this.annotations.values())
             .filter((annotation) => annotation.page === pageNumber);
         if (!annotations.length) {
-            // console.log(DEBUG_PREFIX, "renderPage skipped: no annotations for page", { pageNumber });
+            // debugLog("renderPage skipped: no annotations for page", { pageNumber });
             return;
         }
 
         const layer = this.createOverlayLayer();
         pageElement.append(layer);
-        console.log(DEBUG_PREFIX, "renderPage", {
+        debugLog("renderPage", {
             pageNumber,
             annotationCount: annotations.length,
             rectCount: annotations.reduce((count, annotation) => count + annotation.rects.length, 0),
@@ -877,7 +1041,7 @@ export class PdfAnnotationController {
         const height = Math.abs(viewportRect[1] - viewportRect[3]);
 
         if (width < 0.5 || height < 0.5) {
-            console.log(DEBUG_PREFIX, "highlight skipped: viewport rectangle too small", {
+            debugLog("highlight skipped: viewport rectangle too small", {
                 annotationId: annotation.id,
                 rect,
                 viewportRect,
@@ -932,6 +1096,63 @@ export class PdfAnnotationController {
         highlight.style.mixBlendMode = "multiply";
     }
 
+    private shouldShowClickableAnnotationCursor(event: PointerEvent | MouseEvent) {
+        if ("buttons" in event && event.buttons !== 0) {
+            return false;
+        }
+
+        if (!this.clickOriginatesInPdfPage(event)) {
+            return false;
+        }
+
+        if (window.getSelection?.()?.toString().trim()) {
+            return false;
+        }
+
+        return !!this.findAnnotationClickCandidate(event.clientX, event.clientY);
+    }
+
+    private setAnnotationHoverCursor(active: boolean) {
+        document.documentElement.classList.toggle(ANNOTATION_CLICKABLE_CURSOR_CLASS, active);
+    }
+
+    private ensureClickableCursorStyle() {
+        if (document.getElementById(ANNOTATION_CLICKABLE_CURSOR_STYLE_ID)) {
+            return;
+        }
+
+        const style = document.createElement("style");
+        style.id = ANNOTATION_CLICKABLE_CURSOR_STYLE_ID;
+        style.textContent = `
+html.${ANNOTATION_CLICKABLE_CURSOR_CLASS},
+html.${ANNOTATION_CLICKABLE_CURSOR_CLASS} body,
+html.${ANNOTATION_CLICKABLE_CURSOR_CLASS} .page,
+html.${ANNOTATION_CLICKABLE_CURSOR_CLASS} .page * {
+    cursor: pointer !important;
+}
+`;
+        document.head.append(style);
+    }
+
+    private removeClickableCursorStyle() {
+        document.getElementById(ANNOTATION_CLICKABLE_CURSOR_STYLE_ID)?.remove();
+    }
+
+    private getDraftSignature(draft: TPdfAnnotationDraftTransport) {
+        return JSON.stringify({
+            page: draft.page,
+            rects: draft.rects,
+            quote: draft.quote || "",
+        });
+    }
+
+    private clearInstantAnnotationTimer() {
+        if (typeof this.instantAnnotationTimer === "number") {
+            window.clearTimeout(this.instantAnnotationTimer);
+            this.instantAnnotationTimer = undefined;
+        }
+    }
+
     private selectionTargetFromClick(event: MouseEvent): TPdfAnnotationSelectionTarget | undefined {
         if (event.button !== 0) {
             return undefined;
@@ -947,7 +1168,7 @@ export class PdfAnnotationController {
                 event.clientY - this.annotationPointerDown.y,
             );
             if (movement > 4) {
-                console.log(DEBUG_PREFIX, "annotation click ignored after pointer movement", { movement });
+                debugLog("annotation click ignored after pointer movement", { movement });
                 return undefined;
             }
         }
@@ -956,13 +1177,13 @@ export class PdfAnnotationController {
             return undefined;
         }
 
-        if (window.getSelection?.()?.toString().trim()) {
-            console.log(DEBUG_PREFIX, "annotation click ignored while text selection is active");
+        const candidate = this.findAnnotationClickCandidate(event.clientX, event.clientY);
+        if (!candidate) {
             return undefined;
         }
 
-        const candidate = this.findAnnotationClickCandidate(event.clientX, event.clientY);
-        if (!candidate) {
+        if (!event.shiftKey && window.getSelection?.()?.toString().trim()) {
+            debugLog("annotation click ignored while text selection is active");
             return undefined;
         }
 
@@ -1060,10 +1281,10 @@ export class PdfAnnotationController {
     private scheduleRenderAll() {
         if (typeof this.renderAnimationFrame === "number") {
             window.cancelAnimationFrame(this.renderAnimationFrame);
-            console.log(DEBUG_PREFIX, "cancelled pending scheduled render");
+            debugLog("cancelled pending scheduled render");
         }
 
-        console.log(DEBUG_PREFIX, "scheduled renderAll after geometry change");
+        debugLog("scheduled renderAll after geometry change");
         this.renderAnimationFrame = window.requestAnimationFrame(() => {
             this.renderAnimationFrame = window.requestAnimationFrame(() => {
                 this.renderAnimationFrame = undefined;
@@ -1080,7 +1301,7 @@ export class PdfAnnotationController {
     private getPageView(pageNumber: number) {
         const pdfViewer = this.getPdfViewerApplication()?.pdfViewer;
         if (!pdfViewer) {
-            console.log(DEBUG_PREFIX, "getPageView failed: missing PDF viewer", { pageNumber });
+            debugLog("getPageView failed: missing PDF viewer", { pageNumber });
             return undefined;
         }
 
@@ -1153,7 +1374,7 @@ export class PdfAnnotationController {
             return;
         }
 
-        console.log(DEBUG_PREFIX, "PDF.js listener registered", { key });
+        debugLog("PDF.js listener registered", { key });
         this.pdfJsListeners.push({ key, fn });
     }
 

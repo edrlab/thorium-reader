@@ -34,6 +34,16 @@ No Electron runtime test was performed during this review. The notes below are b
 
 2026-05-24: Hardened the slice 4 review findings. Overlay click selection now requires the click target or point to originate from a PDF page element before geometry matching, and host panel routing validates `annotation:selected` source, rect index, rect shape, and modifier-state fields before opening the panel. Result: 5 PDF annotation Jest suites passed, 82 tests passed; standalone Playwright harness passed.
 
+2026-05-25: Implemented slice 5 runtime stabilization. Draft validation now rejects invalid page, type, rect, and quote values before note persistence; failed selection capture emits `annotation:selection-error`; validation failures trigger a static error toast; successful header-triggered PDF annotation creation opens the created note in the annotation panel edit form; normal PDF annotation logs are gated behind `window.__THORIUM_PDF_ANNOTATIONS_DEBUG`; the harness covers controlled invalid selection, zoom visibility, rotation visibility, click selection, deletion, and no selection after deletion. Result: 6 PDF annotation Jest suites passed, 91 tests passed; standalone Playwright harness passed.
+
+2026-05-25: Added the UX-only clickable cursor hint for rendered PDF highlights. The webview now uses document-level pointermove hit-testing to apply a temporary pointer cursor over highlights while keeping overlay elements passive with `pointer-events: none`. Result: 6 PDF annotation Jest suites passed, 92 tests passed.
+
+2026-05-25: Fixed the `Shift+click` edit regression when PDF.js still exposes an active text selection. The webview now confirms a highlight hit before applying the active-selection guard, lets `Shift+click` dispatch `annotation:selected`, and still rejects simple clicks during active selection. Result: Jest PDF coverage added for this regression.
+
+2026-05-25: Implemented PDF instant annotation mode from the annotation panel checkbox. `ReaderMenu.tsx` now forwards the existing `advancedMode` state to the PDF webview, the controller debounces PDF.js `selectionchange`, reuses `selectionToDraft()`, deduplicates unchanged selections, and dispatches the existing host create-request flow with `source: "instant-selection"`. Instant PDF creation no longer opens the editor. PDF quick creation and the PDF quick-annotation keyboard shortcut also skip the created-note edit form. Result: 6 PDF annotation Jest suites passed, 96 tests passed; standalone Playwright harness passed with instant-mode coverage.
+
+2026-05-25: Additional slice 5 checks were attempted without `npm run` because local `npm` is 10.9.4 while `package.json` requires npm `>=11.15.0` through `devEngines`. Direct checks passed for PDF sources with `eslint --no-ignore`, `Reader.tsx` lint, harness TypeScript lint, the standalone harness Playwright command, and `webpack --config webpack.config.renderer-pdf.js`. A repository-wide `tsc --noEmit --project tsconfig.jest.json` check still fails on existing CommonJS/ESM diagnostics in dependencies such as `inversify`, `node-fetch`, `debounce`, `pdf.js`, and other non-PDF files; after fixing the slice-local narrowing issue, the filtered TypeScript output no longer reports PDF annotation files.
+
 ## Summary
 
 The first-slice architecture is sound:
@@ -41,10 +51,10 @@ The first-slice architecture is sound:
 - Thorium remains the source of truth for notes and persistence.
 - The PDF.js webview handles selection, coordinate conversion, and rendering.
 - Communication uses the existing `pdf-eventbus`.
-- The webview sends drafts and selection events only; the host creates canonical notes and owns panel state.
+- The webview sends drafts, selection events, and typed selection diagnostics only; the host validates drafts, creates canonical notes, and owns panel state.
 - `annotations:sync` gives the webview a replace-all snapshot, which keeps the first slice simple.
 
-The main follow-up risks are not in the basic creation, navigation, editing, deletion, or overlay click loop. They sit around keyboard-accessible overlay focus, overlapping highlight policy, PDF.js integration assumptions, and real Electron/PDF.js runtime coverage.
+The main follow-up risks are not in the basic creation, navigation, editing, deletion, overlay click loop, or runtime draft validation. They sit around keyboard-accessible overlay focus, overlapping highlight policy, PDF.js integration assumptions, true cross-page browser selection automation, localized selection-error microcopy, and real Electron/PDF.js runtime coverage.
 
 ## Fixed Review Findings
 
@@ -157,7 +167,7 @@ Known residual limits:
 
 Status: fixed in slice 2.
 
-`SPEC.md` now documents all six PDF annotation event-bus extensions: `annotations:sync`, `highlight:create-from-selection`, `annotations:ready`, `annotation:create-requested`, `viewer:go-to-annotation`, and `annotation:selected`. The spec also includes `TPdfAnnotationNavigationTarget`, `TPdfAnnotationSelectionTarget`, the host/webview event directions, and the id-first then page/rect fallback rule for panel navigation.
+`SPEC.md` now documents all eight PDF annotation event-bus extensions: `annotations:sync`, `annotations:set-instant-mode`, `highlight:create-from-selection`, `annotations:ready`, `annotation:create-requested`, `viewer:go-to-annotation`, `annotation:selected`, and `annotation:selection-error`. The spec also includes `TPdfAnnotationNavigationTarget`, `TPdfAnnotationSelectionTarget`, `TPdfAnnotationSelectionErrorPayload`, the host/webview event directions, and the id-first then page/rect fallback rule for panel navigation.
 
 Why this fix is in scope:
 
@@ -167,7 +177,24 @@ Why this fix is in scope:
 
 Known residual limits:
 
-- The spec mirrors the current TypeScript types, but it does not replace runtime schema validation.
+- The spec mirrors the current TypeScript types and draft validation helper, but it does not validate every `annotations:sync` transport field yet.
+
+### F9 - Runtime Draft Validation And Debug Log Gating
+
+Status: fixed in slice 5.
+
+`pdfAnnotationValidation.ts` now validates host creation drafts before persistence. The webview reuses the rectangle validation rule after coordinate conversion, validation failures trigger a static error toast from `Reader.tsx`, successful created PDF notes open in panel edit mode, and normal controller logs are hidden unless `window.__THORIUM_PDF_ANNOTATIONS_DEBUG` is enabled.
+
+Why this fix is in scope:
+
+- Runtime bus payloads can be malformed even when TypeScript types are correct at compile time.
+- Rejecting invalid drafts before `readerActions.note.addUpdate` keeps Thorium note state canonical.
+- Gating verbose logs reduces PDF annotation noise while preserving `console.error` for invalid payloads and integration failures.
+
+Known residual limits:
+
+- `annotations:sync` still has only a minimal payload guard plus per-annotation id guard; a full runtime transport schema remains a later hardening task.
+- The host shows a static validation error toast, but localized product microcopy remains a later UX task.
 
 ## Out-Of-Scope Review Findings
 
@@ -241,20 +268,23 @@ Mitigation:
 - Design a future `targets` shape before accepting cross-page selection.
 - Do not silently reinterpret multi-page selections as one-page notes.
 
-### R5 - Failed selection capture is silent
+### R5 - Failed selection capture feedback is incomplete
 
-Severity: medium
+Severity: low after slice 5
 
-Empty, invalid, or multi-page selections currently do nothing from the user's perspective.
+Status: reduced in slice 5.
+
+Empty, invalid, or multi-page selections no longer fail silently at the integration boundary. The webview emits `annotation:selection-error` with a typed reason, and the host logs it as a dedicated PDF annotation diagnostic while showing a static error toast.
 
 Impact:
 
-- Users may think the annotation action is broken.
+- Users get a visible generic error, but product copy still needs to map these reasons to localized toast or status text.
 
 Mitigation:
 
-- Add a later `annotation:error` or parent-facing status event.
-- Map invalid selection reasons to localized UI feedback.
+- Keep the typed reasons stable: `empty`, `no-usable-rects`, `multi-page`, `missing-page`, `missing-viewport`, and `invalid-rects`.
+- Map invalid selection reasons to localized UI feedback in a later UX slice.
+- Preserve the current diagnostic event as feedback plumbing, not as a lifecycle event bus.
 
 ### R6 - Overlay click selection is pointer-light, not keyboard-complete
 

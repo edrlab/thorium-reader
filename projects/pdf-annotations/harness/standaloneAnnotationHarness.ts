@@ -26,6 +26,11 @@ interface IAnnotation extends IAnnotationDraft {
     drawType: "solid_background" | "underline" | "strikethrough" | "outline";
 }
 
+interface ISelectionError {
+    reason?: string;
+    source?: string;
+}
+
 interface IPdfJsApplicationWindow extends Window {
     PDFViewerApplication?: {
         eventBus?: any;
@@ -43,6 +48,10 @@ interface IHarnessApi {
     destroy: () => void;
     goToAnnotation: (id?: string) => void;
     selectedAnnotationId: () => string;
+    selectionErrorCount: () => number;
+    selectionErrors: () => ISelectionError[];
+    selectionEventCount: () => number;
+    setInstantMode: (enabled: boolean) => void;
     styleLatestAnnotation: () => void;
     sync: () => void;
 }
@@ -65,7 +74,6 @@ const EDITED_COLOR: IColor = {
 const typedWindow = window as IPdfJsApplicationWindow;
 
 class HarnessBus {
-
     private readonly handlers = new Map<string, Set<TCallback>>();
 
     public subscribe(key: string, fn: TCallback) {
@@ -221,6 +229,7 @@ function createPanel() {
             <button class="secondary" id="thorium-pdf-annotation-go-to-latest" type="button">Go to latest</button>
             <button class="secondary" id="thorium-pdf-annotation-style-latest" type="button">Style latest</button>
             <button class="secondary" id="thorium-pdf-annotation-delete-latest" type="button">Delete latest</button>
+            <button class="secondary" id="thorium-pdf-annotation-instant-mode" type="button">Instant off</button>
             <button class="secondary" id="thorium-pdf-annotation-clear" type="button">Clear</button>
         </div>
         <div id="${STATUS_ID}">Starting</div>
@@ -235,6 +244,7 @@ function createPanel() {
         createButton: document.getElementById("thorium-pdf-annotation-create") as HTMLButtonElement,
         deleteLatestButton: document.getElementById("thorium-pdf-annotation-delete-latest") as HTMLButtonElement,
         goToButton: document.getElementById("thorium-pdf-annotation-go-to-latest") as HTMLButtonElement,
+        instantModeButton: document.getElementById("thorium-pdf-annotation-instant-mode") as HTMLButtonElement,
         log: document.getElementById(LOG_ID) as HTMLPreElement,
         panel,
         status: document.getElementById(STATUS_ID) as HTMLDivElement,
@@ -252,12 +262,16 @@ async function init() {
     const bus = new HarnessBus();
     const annotations: IAnnotation[] = [];
     let selectedAnnotationId = "";
+    let selectedAnnotationEventCount = 0;
+    let instantModeEnabled = false;
+    const selectionErrors: ISelectionError[] = [];
     const controller = createPdfAnnotationController(bus as any, getApplication);
 
     function updateAnnotationActionButtons() {
         panel.deleteLatestButton.disabled = !annotations.length;
         panel.goToButton.disabled = !annotations.length;
         panel.styleLatestButton.disabled = !annotations.length;
+        panel.instantModeButton.textContent = instantModeEnabled ? "Instant on" : "Instant off";
     }
 
     function setStatus(message: string) {
@@ -267,7 +281,8 @@ async function init() {
 
     function appendLog(message: string, data?: unknown) {
         const detail = typeof data === "undefined" ? "" : ` ${JSON.stringify(data)}`;
-        panel.log.textContent = `${new Date().toLocaleTimeString()} ${message}${detail}\n${panel.log.textContent}`.slice(0, 4000);
+        panel.log.textContent =
+            `${new Date().toLocaleTimeString()} ${message}${detail}\n${panel.log.textContent}`.slice(0, 4000);
     }
 
     function sync() {
@@ -280,6 +295,13 @@ async function init() {
     function createHighlight() {
         appendLog("dispatch highlight:create-from-selection");
         bus.dispatch("highlight:create-from-selection");
+    }
+
+    function setInstantMode(enabled: boolean) {
+        instantModeEnabled = enabled;
+        appendLog("dispatch annotations:set-instant-mode", { enabled });
+        bus.dispatch("annotations:set-instant-mode", { enabled });
+        setStatus(enabled ? "Instant mode enabled" : "Instant mode disabled");
     }
 
     function clear() {
@@ -321,9 +343,7 @@ async function init() {
     }
 
     function goToAnnotation(id?: string) {
-        const annotation = id
-            ? annotations.find((item) => item.id === id)
-            : annotations[annotations.length - 1];
+        const annotation = id ? annotations.find((item) => item.id === id) : annotations[annotations.length - 1];
         if (!annotation) {
             appendLog("go-to ignored: missing annotation", { id });
             setStatus("Go-to ignored");
@@ -354,9 +374,7 @@ async function init() {
         sync();
     });
 
-    bus.subscribe("annotation:create-requested", (payload: {
-        draft?: IAnnotationDraft;
-    }) => {
+    bus.subscribe("annotation:create-requested", (payload: { draft?: IAnnotationDraft; source?: string }) => {
         if (!payload?.draft) {
             appendLog("create request ignored: missing draft");
             return;
@@ -373,26 +391,37 @@ async function init() {
             id: annotation.id,
             page: annotation.page,
             rects: annotation.rects.length,
+            source: payload.source,
         });
         sync();
     });
 
-    bus.subscribe("annotation:selected", (payload: {
-        id?: string;
-        page?: number;
-        rectIndex?: number;
-        source?: string;
-        shiftKey?: boolean;
-    }) => {
-        selectedAnnotationId = payload?.id || "";
-        appendLog("annotation:selected", {
-            id: payload?.id,
-            page: payload?.page,
-            rectIndex: payload?.rectIndex,
+    bus.subscribe(
+        "annotation:selected",
+        (payload: { id?: string; page?: number; rectIndex?: number; source?: string; shiftKey?: boolean }) => {
+            selectedAnnotationId = payload?.id || "";
+            selectedAnnotationEventCount += 1;
+            appendLog("annotation:selected", {
+                id: payload?.id,
+                page: payload?.page,
+                rectIndex: payload?.rectIndex,
+                source: payload?.source,
+                shiftKey: payload?.shiftKey,
+            });
+            setStatus(selectedAnnotationId ? `Selected ${selectedAnnotationId}` : "Selection ignored");
+        },
+    );
+
+    bus.subscribe("annotation:selection-error", (payload: ISelectionError) => {
+        selectionErrors.push({
+            reason: payload?.reason,
             source: payload?.source,
-            shiftKey: payload?.shiftKey,
         });
-        setStatus(selectedAnnotationId ? `Selected ${selectedAnnotationId}` : "Selection ignored");
+        appendLog("annotation:selection-error", {
+            reason: payload?.reason,
+            source: payload?.source,
+        });
+        setStatus(payload?.reason ? `Selection error ${payload.reason}` : "Selection error");
     });
 
     const goToLatestAnnotation = () => goToAnnotation();
@@ -401,6 +430,7 @@ async function init() {
     panel.clearButton.addEventListener("click", clear);
     panel.deleteLatestButton.addEventListener("click", deleteLatestAnnotation);
     panel.goToButton.addEventListener("click", goToLatestAnnotation);
+    panel.instantModeButton.addEventListener("click", () => setInstantMode(!instantModeEnabled));
     panel.styleLatestButton.addEventListener("click", styleLatestAnnotation);
     updateAnnotationActionButtons();
 
@@ -422,6 +452,10 @@ async function init() {
         },
         goToAnnotation,
         selectedAnnotationId: () => selectedAnnotationId,
+        selectionErrorCount: () => selectionErrors.length,
+        selectionErrors: () => [...selectionErrors],
+        selectionEventCount: () => selectedAnnotationEventCount,
+        setInstantMode,
         styleLatestAnnotation,
         sync,
     };

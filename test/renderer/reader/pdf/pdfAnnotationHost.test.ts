@@ -190,6 +190,48 @@ test("create-request handling ignores missing payload or missing draft", () => {
     expect(syncAnnotationsToPdfWebview).not.toHaveBeenCalled();
 });
 
+test("create-request handling rejects invalid runtime drafts before persistence", () => {
+    const persistNoteInRedux: IPdfAnnotationCreateRequestHostPorts["persistNoteInRedux"] = jest.fn(() => {
+        throw new Error("persistNoteInRedux should not be called");
+    });
+    const syncAnnotationsToPdfWebview: IPdfAnnotationCreateRequestHostPorts["syncAnnotationsToPdfWebview"] = jest.fn();
+    const consoleError = jest.spyOn(console, "error").mockImplementation(() => undefined);
+    const host: IPdfAnnotationCreateRequestHostAdapter = {
+        state: {
+            publicationIdentifier: "pub-id",
+            notes: [],
+            color,
+            noteTotalCount: 0,
+            created: 1234,
+        },
+        ports: {
+            persistNoteInRedux,
+            syncAnnotationsToPdfWebview,
+        },
+    };
+
+    expect(handlePdfAnnotationCreateRequested({
+        draft: {
+            type: "pdf-text-highlight",
+            page: 0,
+            rects: [
+                { x1: 1, y1: 2, x2: 3, y2: 4 },
+            ],
+        },
+    }, host)).toBeUndefined();
+
+    expect(persistNoteInRedux).not.toHaveBeenCalled();
+    expect(syncAnnotationsToPdfWebview).not.toHaveBeenCalled();
+    expect(consoleError).toHaveBeenCalledWith(
+        "[Thorium PDF annotations]",
+        "annotation:create-requested ignored invalid draft",
+        expect.objectContaining({
+            reason: "invalid-page",
+        }),
+    );
+    consoleError.mockRestore();
+});
+
 test("create-request handling creates one note action and syncs a snapshot including the created note", () => {
     const createdNote = createNote("created", {
         index: 3,

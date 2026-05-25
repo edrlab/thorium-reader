@@ -85,7 +85,11 @@ import {
 import { Locator as R2Locator } from "@r2-navigator-js/electron/common/locator";
 
 import { IPdfPlayerScale, TToc } from "../pdf/common/pdfReader.type";
-import type { TPdfAnnotationNavigationTarget, TPdfAnnotationSelectionTarget } from "../pdf/common/pdfReader.type";
+import type {
+    TPdfAnnotationNavigationTarget,
+    TPdfAnnotationSelectionErrorPayload,
+    TPdfAnnotationSelectionTarget,
+} from "../pdf/common/pdfReader.type";
 import { pdfMount } from "../pdf/driver";
 import {
     buildPdfAnnotationTransportList,
@@ -93,7 +97,10 @@ import {
     IPdfAnnotationCreateRequestPayload,
     triggerPdfAnnotation,
 } from "readium-desktop/renderer/reader/pdf/pdfAnnotationHost";
-import { getPdfAnnotationSelectionMenuAction } from "readium-desktop/renderer/reader/pdf/pdfAnnotationPanel";
+import {
+    getCreatedPdfAnnotationEditMenuAction,
+    getPdfAnnotationSelectionMenuAction,
+} from "readium-desktop/renderer/reader/pdf/pdfAnnotationPanel";
 import {
     readerLocalActionAnnotations,
     readerLocalActionLocatorHrefChanged,
@@ -125,6 +132,8 @@ import { URL_PROTOCOL_FILEX } from "readium-desktop/common/streamerProtocol";
 
 const debug = debug_("readium-desktop:renderer:reader:components:Reader");
 debug("_");
+
+const PDF_ANNOTATION_VALIDATION_ERROR_TOAST = "Unable to create PDF annotation from this selection.";
 
 let _firstMediaOverlaysPlay = true;
 
@@ -291,6 +300,7 @@ class Reader extends React.Component<IProps, IState> {
     // private translator: Translator;
 
     private ttsOverlayEnableNeedsSync: boolean;
+    private skipNextPdfAnnotationEditor: boolean;
 
     // private resizeObserver: ResizeObserver;
     // private blackoutDebounced: () => void;
@@ -305,6 +315,7 @@ class Reader extends React.Component<IProps, IState> {
         this._ttsOrMoStateTimeout = undefined;
 
         this.ttsOverlayEnableNeedsSync = true;
+        this.skipNextPdfAnnotationEditor = false;
 
         this.accessibilitySupportChanged = this.accessibilitySupportChanged.bind(this);
         this.onKeyboardHistoryNavigationPrevious = this.onKeyboardHistoryNavigationPrevious.bind(this);
@@ -337,6 +348,7 @@ class Reader extends React.Component<IProps, IState> {
         this.onPdfAnnotationsReady = this.onPdfAnnotationsReady.bind(this);
         this.onPdfAnnotationCreateRequested = this.onPdfAnnotationCreateRequested.bind(this);
         this.onPdfAnnotationSelected = this.onPdfAnnotationSelected.bind(this);
+        this.onPdfAnnotationSelectionError = this.onPdfAnnotationSelectionError.bind(this);
 
         this.fastLinkRef = React.createRef<HTMLAnchorElement>();
         this.refToolbar = React.createRef<HTMLAnchorElement>();
@@ -825,6 +837,7 @@ class Reader extends React.Component<IProps, IState> {
         pdfEventBus.subscribe("annotations:ready", this.onPdfAnnotationsReady);
         pdfEventBus.subscribe("annotation:create-requested", this.onPdfAnnotationCreateRequested);
         pdfEventBus.subscribe("annotation:selected", this.onPdfAnnotationSelected);
+        pdfEventBus.subscribe("annotation:selection-error", this.onPdfAnnotationSelectionError);
     }
 
     private unsubscribePdfAnnotationEvents() {
@@ -832,14 +845,16 @@ class Reader extends React.Component<IProps, IState> {
         pdfEventBus.remove(this.onPdfAnnotationsReady, "annotations:ready");
         pdfEventBus.remove(this.onPdfAnnotationCreateRequested, "annotation:create-requested");
         pdfEventBus.remove(this.onPdfAnnotationSelected, "annotation:selected");
+        pdfEventBus.remove(this.onPdfAnnotationSelectionError, "annotation:selection-error");
     }
 
     private onPdfAnnotationsReady() {
         this.syncPdfAnnotations();
+        this.syncPdfAnnotationInstantMode();
     }
 
     private onPdfAnnotationCreateRequested(payload: IPdfAnnotationCreateRequestPayload) {
-        handlePdfAnnotationCreateRequested(payload, {
+        const result = handlePdfAnnotationCreateRequested(payload, {
             state: {
                 publicationIdentifier: this.props.pubId,
                 notes: this.props.notes,
@@ -857,6 +872,26 @@ class Reader extends React.Component<IProps, IState> {
                 },
             },
         });
+
+        if (!result && payload?.draft) {
+            this.skipNextPdfAnnotationEditor = false;
+            this.props.toastError(PDF_ANNOTATION_VALIDATION_ERROR_TOAST);
+            return;
+        }
+
+        const skipEditor = payload?.source === "instant-selection" ||
+            this.props.readerConfig.annotation_popoverNotOpenOnNoteTaking ||
+            this.skipNextPdfAnnotationEditor;
+        this.skipNextPdfAnnotationEditor = false;
+
+        const menuAction = result?.createdNote
+            ? getCreatedPdfAnnotationEditMenuAction(result.createdNote, {
+                skipEditor,
+            })
+            : undefined;
+        if (menuAction) {
+            this.props.toggleMenu(menuAction);
+        }
     }
 
     private onPdfAnnotationSelected(payload: TPdfAnnotationSelectionTarget) {
@@ -869,9 +904,21 @@ class Reader extends React.Component<IProps, IState> {
         this.props.toggleMenu(menuAction);
     }
 
+    private onPdfAnnotationSelectionError(payload: TPdfAnnotationSelectionErrorPayload) {
+        this.skipNextPdfAnnotationEditor = false;
+        console.error("[Thorium PDF annotations]", "annotation:selection-error", payload);
+        this.props.toastError(PDF_ANNOTATION_VALIDATION_ERROR_TOAST);
+    }
+
     private syncPdfAnnotations(extraNote?: INoteState) {
         createOrGetPdfEventBus().dispatch("annotations:sync", {
             annotations: buildPdfAnnotationTransportList(this.props.notes, extraNote),
+        });
+    }
+
+    private syncPdfAnnotationInstantMode() {
+        createOrGetPdfEventBus().dispatch("annotations:set-instant-mode", {
+            enabled: !!(window as any).__annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator,
         });
     }
 
@@ -1636,6 +1683,7 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         if (this.props.isPdf) {
+            this.skipNextPdfAnnotationEditor = true;
             this.triggerAnnotation(true);
             return;
         }

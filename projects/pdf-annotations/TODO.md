@@ -91,8 +91,9 @@ Use the checkboxes as delivery state:
 ### Verification
 
 - [ ] Run TypeScript checks for the touched renderer/common code.
-- [ ] Run lint checks for the touched files.
-- [ ] Build the PDF renderer bundle.
+- [ ] Unblock the existing repo-wide CommonJS/ESM TypeScript diagnostics so `tsc --noEmit --project tsconfig.jest.json` can be used as a clean gate.
+- [x] Run lint checks for the touched files.
+- [x] Build the PDF renderer bundle.
 - [ ] Manually test single-line PDF highlight creation.
 - [ ] Manually test multi-line same-page PDF highlight creation.
 - [ ] Manually test cross-page selection rejection.
@@ -105,10 +106,12 @@ Use the checkboxes as delivery state:
 
 ### First-Slice Hardening
 
-- [ ] Gate verbose PDF annotation debug logs behind an explicit debug flag.
+- [x] Gate verbose PDF annotation debug logs behind an explicit debug flag.
 - [x] Validate `annotations:sync` payload shape before rendering.
-- [ ] Validate draft rect/page values before creating a note.
-- [ ] Decide whether failed first-slice selections should remain silent or emit a typed internal diagnostic event.
+- [x] Validate draft rect/page values before creating a note.
+- [x] Emit a typed internal diagnostic event for failed first-slice selections.
+- [x] Trigger a static error toast when PDF annotation selection or draft validation fails.
+- [ ] Replace the static PDF annotation validation toast with localized product microcopy.
 - [x] Add unit tests for `pdfAnnotationDraftToNote`.
 - [x] Add unit tests for `noteToPdfAnnotation`.
 - [x] Add unit tests for `filterPdfAnnotationNotes`.
@@ -116,7 +119,8 @@ Use the checkboxes as delivery state:
 - [x] Wire the PDF annotation geometry tests into normal Jest runs after the existing global Jest module mapper issue is fixed.
 - [x] Automate the standalone PDF.js harness with a browser regression smoke test.
 - [x] Extend standalone harness automation to cover click selection through `annotation:selected`.
-- [ ] Expand standalone harness automation to cover zoom, rotation, and cross-page selection rejection.
+- [x] Expand standalone harness automation to cover zoom, rotation, controlled invalid selection rejection, and no selection after deletion.
+- [ ] Add a true browser cross-page selection automation once the sample PDF and PDF.js text-layer geometry make it deterministic.
 - [ ] Add a regression test that a PDF annotation note keeps `pdfAnnotation` after creation.
 
 ## Needed For A Stable Core Architecture
@@ -124,7 +128,7 @@ Use the checkboxes as delivery state:
 ### Data Model
 
 - [ ] Version the PDF annotation persisted shape if migrations become necessary.
-- [ ] Define validation rules for page numbers and rectangle bounds.
+- [x] Define validation rules for page numbers and rectangle bounds.
 
 ### Transport Contract
 
@@ -162,9 +166,21 @@ Use the checkboxes as delivery state:
 
 - [x] Decide whether PDF highlight overlays should become pointer-interactive: keep overlays passive and use document-level geometry hit-testing.
 - [x] Preserve text selection ergonomics by keeping highlight overlays at `pointer-events: none`.
+- [x] Show a clickable pointer cursor when hovering a hit-tested PDF highlight without enabling overlay pointer events.
 - [x] Emit `annotation:selected` from the webview to the host when a PDF highlight is selected.
 - [x] Reflect selected annotation state in the annotation panel.
 - [ ] Add keyboard-accessible focus behavior for selected PDF annotations.
+
+### Instant Annotation Mode
+
+- [x] Connect the annotation panel `advancedMode` checkbox to the PDF webview.
+- [x] Auto-create PDF annotations after a stable PDF text selection when instant mode is enabled.
+- [x] Reuse the existing `selectionToDraft()` conversion and host persistence path for instant PDF creation.
+- [x] Avoid duplicate instant PDF annotations for the same unchanged selection.
+- [x] Keep instant PDF creation silent after persistence without opening the editor.
+- [x] Keep `quickAnnotations` as the separate checkbox that skips the editor after explicit PDF creation.
+- [x] Keep the PDF quick-annotation keyboard shortcut silent after persistence.
+- [x] Add unit coverage for instant PDF selection creation and invalid instant-selection diagnostics.
 
 ## Needed For Editing And Deletion
 
@@ -174,6 +190,7 @@ Use the checkboxes as delivery state:
 - [x] Enable editing comment text for PDF annotations.
 - [x] Enable editing color for PDF annotations.
 - [x] Enable editing tags for PDF annotations.
+- [x] Open the annotation panel edit form after header-triggered PDF annotation creation.
 - [x] Sync edited color/style back to the PDF webview.
 - [x] Add tests proving future comment edit payloads do not remove `pdfAnnotation`.
 - [x] Add tests proving color edits update the webview rendering.

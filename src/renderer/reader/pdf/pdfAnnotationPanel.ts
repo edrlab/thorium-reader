@@ -209,6 +209,30 @@ export function getPdfAnnotationSelectionMenuAction(
     };
 }
 
+export function getCreatedPdfAnnotationEditMenuAction(
+    annotation: INoteState,
+    options: {
+        skipEditor?: boolean;
+    } = {},
+): IPdfAnnotationSelectionMenuAction | undefined {
+    if (
+        options.skipEditor ||
+        !annotation.uuid ||
+        !annotation.pdfAnnotation ||
+        !canEditAnnotationInPanel(annotation)
+    ) {
+        return undefined;
+    }
+
+    return {
+        open: true,
+        section: "tab-annotation",
+        id: annotation.uuid,
+        focus: true,
+        edit: true,
+    };
+}
+
 export function buildAnnotationPanelSaveNote(
     annotation: INoteState,
     changes: IAnnotationPanelSaveChanges,

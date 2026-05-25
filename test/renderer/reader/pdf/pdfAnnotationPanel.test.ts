@@ -12,6 +12,7 @@ import {
     getAnnotationCardText,
     getAnnotationPanelNavigation,
     getAnnotationSelectionText,
+    getCreatedPdfAnnotationEditMenuAction,
     getPdfAnnotationSelectionMenuAction,
     getPdfAnnotationNavigationTarget,
     getPdfAnnotationPageLabel,
@@ -161,6 +162,32 @@ test("PDF annotation selection menu action enables controlled editing with shift
         id: "selected-pdf",
         edit: true,
     }));
+});
+
+test("created PDF annotation menu action opens the annotation panel in edit mode", () => {
+    const pdfNote = createPdfAnnotationNote({ uuid: "created-pdf" });
+
+    expect(getCreatedPdfAnnotationEditMenuAction(pdfNote)).toEqual({
+        open: true,
+        section: "tab-annotation",
+        id: "created-pdf",
+        focus: true,
+        edit: true,
+    });
+    expect(getCreatedPdfAnnotationEditMenuAction(createPdfAnnotationNote({
+        uuid: "",
+    }))).toBeUndefined();
+    expect(getCreatedPdfAnnotationEditMenuAction(createEpubAnnotationNote({
+        uuid: "created-epub",
+    }))).toBeUndefined();
+});
+
+test("created PDF annotation menu action is skipped when editor opening is disabled", () => {
+    const pdfNote = createPdfAnnotationNote({ uuid: "created-pdf" });
+
+    expect(getCreatedPdfAnnotationEditMenuAction(pdfNote, {
+        skipEditor: true,
+    })).toBeUndefined();
 });
 
 test("PDF annotation selection menu action rejects invalid payloads and non-PDF notes", () => {

@@ -107,6 +107,7 @@ import {
     getAnnotationSelectionText,
     getPdfAnnotationPageLabel,
 } from "readium-desktop/renderer/reader/pdf/pdfAnnotationPanel";
+import { createOrGetPdfEventBus } from "readium-desktop/renderer/reader/pdf/driver";
 
 import DOMPurify from "dompurify";
 
@@ -1699,37 +1700,38 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                             } </div>
                                         <h3 aria-hidden>{__("reader.annotations.quickAnnotations")}</h3></label>
                                 </div>
-                                <div className={stylesAnnotations.annotations_checkbox}>
-                                    <input type="checkbox" id="marginAnnotations" name="marginAnnotations" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "margin"} onChange={marginAnnotationsOnChange} />
-                                    <label htmlFor="marginAnnotations" className={stylesGlobal.checkbox_custom_label}>
-                                        <div
-                                            tabIndex={0}
-                                            role="checkbox"
-                                            aria-checked={readerConfig.annotation_defaultDrawView === "margin"}
-                                            aria-label={__("reader.annotations.toggleMarginMarks")}
-                                            onKeyDown={(e) => {
-                                                // if (e.code === "Space") {
-                                                if (e.key === " ") {
-                                                    e.preventDefault(); // prevent scroll
+                                {!isPdf ?
+                                    <div className={stylesAnnotations.annotations_checkbox}>
+                                        <input type="checkbox" id="marginAnnotations" name="marginAnnotations" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "margin"} onChange={marginAnnotationsOnChange} />
+                                        <label htmlFor="marginAnnotations" className={stylesGlobal.checkbox_custom_label}>
+                                            <div
+                                                tabIndex={0}
+                                                role="checkbox"
+                                                aria-checked={readerConfig.annotation_defaultDrawView === "margin"}
+                                                aria-label={__("reader.annotations.toggleMarginMarks")}
+                                                onKeyDown={(e) => {
+                                                    // if (e.code === "Space") {
+                                                    if (e.key === " ") {
+                                                        e.preventDefault(); // prevent scroll
+                                                    }
+                                                }}
+                                                onKeyUp={(e) => {
+                                                    // if (e.code === "Space") {
+                                                    if (e.key === " ") {
+                                                        e.preventDefault();
+                                                        marginAnnotationsOnChange();
+                                                    }
+                                                }}
+                                                className={stylesGlobal.checkbox_custom}
+                                                style={{ border: readerConfig.annotation_defaultDrawView === "margin" ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "margin" ? "var(--color-brand-primary)" : "transparent" }}>
+                                                {readerConfig.annotation_defaultDrawView === "margin" ?
+                                                    <SVG ariaHidden svg={CheckIcon} />
+                                                    :
+                                                    <></>
                                                 }
-                                            }}
-                                            onKeyUp={(e) => {
-                                                // if (e.code === "Space") {
-                                                if (e.key === " ") {
-                                                    e.preventDefault();
-                                                    marginAnnotationsOnChange();
-                                                }
-                                            }}
-                                            className={stylesGlobal.checkbox_custom}
-                                            style={{ border: readerConfig.annotation_defaultDrawView === "margin" ? "2px solid transparent" : "2px solid var(--color-text-primary)", backgroundColor: readerConfig.annotation_defaultDrawView === "margin" ? "var(--color-brand-primary)" : "transparent" }}>
-                                            {readerConfig.annotation_defaultDrawView === "margin" ?
-                                                <SVG ariaHidden svg={CheckIcon} />
-                                                :
-                                                <></>
-                                            }
-                                        </div>
-                                        <h3 aria-hidden>{__("reader.annotations.toggleMarginMarks")}</h3></label>
-                                </div>
+                                            </div>
+                                            <h3 aria-hidden>{__("reader.annotations.toggleMarginMarks")}</h3></label>
+                                    </div> : <></>}
                                 <div className={stylesAnnotations.annotations_checkbox}>
                                     <input type="checkbox" id="hideAnnotation" name="hideAnnotation" className={stylesGlobal.checkbox_custom_input} checked={readerConfig.annotation_defaultDrawView === "hide"} onChange={hideAnnotationOnChange} />
                                     <label htmlFor="hideAnnotation" className={stylesGlobal.checkbox_custom_label}>
@@ -2913,7 +2915,12 @@ export const ReaderMenu: React.FC<IBaseProps> = (props) => {
     React.useEffect(() => {
         console.log("Reader MENU set serialAnnotator mode to ", serialAnnotator);
         (window as any).__annotation_noteAutomaticallyCreatedOnNoteTakingAKASerialAnnotator = serialAnnotator;
-    }, [serialAnnotator]);
+        if (isPdf) {
+            createOrGetPdfEventBus().dispatch("annotations:set-instant-mode", {
+                enabled: serialAnnotator,
+            });
+        }
+    }, [isPdf, serialAnnotator]);
 
     const dockedModeRef = React.useRef<HTMLButtonElement>();
     const tabModeRef = React.useRef<HTMLDivElement>();

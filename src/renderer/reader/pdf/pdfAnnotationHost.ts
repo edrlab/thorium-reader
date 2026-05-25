@@ -10,7 +10,7 @@ import type { IColor } from "@r2-navigator-js/electron/common/highlight";
 import type { INoteCreator } from "readium-desktop/common/redux/states/creator";
 import type { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import type {
-    TPdfAnnotationDraftTransport,
+    TPdfAnnotationCreateSource,
     TPdfAnnotationTransport,
 } from "readium-desktop/renderer/reader/pdf/common/pdfReader.type";
 import {
@@ -18,9 +18,16 @@ import {
     noteToPdfAnnotation,
     pdfAnnotationDraftToNote,
 } from "readium-desktop/renderer/reader/pdf/pdfAnnotationConverters";
+import {
+    isInvalidPdfAnnotationDraftValidation,
+    validatePdfAnnotationDraft,
+} from "readium-desktop/renderer/reader/pdf/pdfAnnotationValidation";
+
+const DEBUG_PREFIX = "[Thorium PDF annotations]";
 
 export interface IPdfAnnotationCreateRequestPayload {
-    draft?: TPdfAnnotationDraftTransport;
+    draft?: unknown;
+    source?: TPdfAnnotationCreateSource;
 }
 
 export interface IPdfAnnotationCreateRequestContext {
@@ -84,16 +91,23 @@ export function createPdfAnnotationNoteDraft(
     payload: IPdfAnnotationCreateRequestPayload | undefined,
     context: IPdfAnnotationCreateRequestContext,
 ): Omit<INoteState, "uuid"> | undefined {
-    if (!payload?.draft) {
-        return undefined;
+    const validation = validatePdfAnnotationDraft(payload?.draft);
+    if (validation.valid) {
+        return pdfAnnotationDraftToNote(validation.draft, {
+            color: context.color,
+            creator: context.creator,
+            index: context.noteTotalCount + 1,
+            created: context.created,
+        });
     }
 
-    return pdfAnnotationDraftToNote(payload.draft, {
-        color: context.color,
-        creator: context.creator,
-        index: context.noteTotalCount + 1,
-        created: context.created,
-    });
+    if (isInvalidPdfAnnotationDraftValidation(validation) && validation.reason !== "missing-draft") {
+        console.error(DEBUG_PREFIX, "annotation:create-requested ignored invalid draft", {
+            reason: validation.reason,
+            draft: payload?.draft,
+        });
+    }
+    return undefined;
 }
 
 export function handlePdfAnnotationCreateRequested(

@@ -14,6 +14,13 @@ declare global {
             deleteLatestAnnotation: () => void;
             goToAnnotation: (id?: string) => void;
             selectedAnnotationId: () => string;
+            selectionErrorCount: () => number;
+            selectionErrors: () => Array<{
+                reason?: string;
+                source?: string;
+            }>;
+            selectionEventCount: () => number;
+            setInstantMode: (enabled: boolean) => void;
             styleLatestAnnotation: () => void;
         };
     }
@@ -94,12 +101,57 @@ async function selectFirstVisibleTextRun(frame: Frame) {
         const selection = window.getSelection();
         selection?.removeAllRanges();
         selection?.addRange(range);
+        document.dispatchEvent(new Event("selectionchange"));
 
         return {
             quote: selection?.toString() || "",
             rectCount: range.getClientRects().length,
         };
     });
+}
+
+async function waitForRenderedHighlight(frame: Frame) {
+    const highlights = frame.locator(".thorium-pdf-annotation-highlight");
+    await expect.poll(async () => highlights.count()).toBeGreaterThan(0);
+
+    const box = await highlights.first().boundingBox();
+    expect(box?.width || 0).toBeGreaterThan(0.5);
+    expect(box?.height || 0).toBeGreaterThan(0.5);
+
+    return box;
+}
+
+async function waitForPdfViewerFrames(frame: Frame) {
+    await frame.evaluate(() => new Promise<void>((resolve) => {
+        window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(() => resolve());
+        });
+    }));
+}
+
+async function setPdfZoom(frame: Frame, scale: number) {
+    await frame.evaluate((nextScale) => {
+        const application = (window as any).PDFViewerApplication;
+        if (!application?.pdfViewer) {
+            throw new Error("PDFViewerApplication.pdfViewer was not available");
+        }
+
+        application.pdfViewer.currentScaleValue = String(nextScale);
+    }, scale);
+    await waitForPdfViewerFrames(frame);
+}
+
+async function rotatePdfClockwise(frame: Frame) {
+    await frame.evaluate(() => {
+        const application = (window as any).PDFViewerApplication;
+        if (!application?.pdfViewer) {
+            throw new Error("PDFViewerApplication.pdfViewer was not available");
+        }
+
+        const currentRotation = Number(application.pdfViewer.pagesRotation) || 0;
+        application.pdfViewer.pagesRotation = (currentRotation + 90) % 360;
+    });
+    await waitForPdfViewerFrames(frame);
 }
 
 test("creates, styles, navigates to, and deletes a PDF highlight through the standalone harness", async ({ page }) => {
@@ -110,6 +162,19 @@ test("creates, styles, navigates to, and deletes a PDF highlight through the sta
     const frame = await getPdfJsFrame(page);
     await waitForHarness(frame);
     await waitForSelectableText(frame);
+
+    await frame.evaluate(() => window.getSelection()?.removeAllRanges());
+    await frame.locator("#thorium-pdf-annotation-create").click();
+    await expect.poll(async () => frame.evaluate(() => {
+        return window.__thoriumPdfAnnotationHarness?.annotations().length ?? -1;
+    })).toBe(0);
+    await expect.poll(async () => frame.evaluate(() => {
+        const harness = window.__thoriumPdfAnnotationHarness;
+        const errors = harness?.selectionErrors() || [];
+
+        return errors[errors.length - 1]?.reason || "";
+    })).toBe("empty");
+    await expect(frame.locator("#thorium-pdf-annotation-harness-log")).toContainText("annotation:selection-error");
 
     const selection = await selectFirstVisibleTextRun(frame);
     expect(selection.quote.trim().length).toBeGreaterThan(0);
@@ -122,11 +187,34 @@ test("creates, styles, navigates to, and deletes a PDF highlight through the sta
     })).toBe(1);
 
     const highlights = frame.locator(".thorium-pdf-annotation-highlight");
-    await expect.poll(async () => highlights.count()).toBeGreaterThan(0);
+    await waitForRenderedHighlight(frame);
 
-    const firstHighlightBox = await highlights.first().boundingBox();
-    expect(firstHighlightBox?.width || 0).toBeGreaterThan(0.5);
-    expect(firstHighlightBox?.height || 0).toBeGreaterThan(0.5);
+    await frame.evaluate(() => window.getSelection()?.removeAllRanges());
+    const firstClickHighlightBox = await highlights.first().boundingBox();
+    if (!firstClickHighlightBox) {
+        throw new Error("Rendered PDF annotation highlight did not have a bounding box");
+    }
+    await page.mouse.click(
+        firstClickHighlightBox.x + (firstClickHighlightBox.width / 2),
+        firstClickHighlightBox.y + (firstClickHighlightBox.height / 2),
+    );
+    await expect.poll(async () => frame.evaluate(() => {
+        const harness = window.__thoriumPdfAnnotationHarness;
+        const annotations = harness?.annotations() || [];
+        const latest = annotations[annotations.length - 1] as { id?: string } | undefined;
+
+        return !!latest?.id && harness?.selectedAnnotationId() === latest.id;
+    })).toBe(true);
+    await expect(frame.locator("#thorium-pdf-annotation-harness-log")).toContainText("annotation:selected");
+    const selectionEventCountAfterClick = await frame.evaluate(() => {
+        return window.__thoriumPdfAnnotationHarness?.selectionEventCount() || 0;
+    });
+
+    await setPdfZoom(frame, 1.25);
+    await waitForRenderedHighlight(frame);
+
+    await rotatePdfClockwise(frame);
+    await waitForRenderedHighlight(frame);
 
     await expect(frame.locator("#thorium-pdf-annotation-style-latest")).toBeEnabled();
     await frame.locator("#thorium-pdf-annotation-style-latest").click();
@@ -153,22 +241,10 @@ test("creates, styles, navigates to, and deletes a PDF highlight through the sta
     await expect.poll(async () => frame.locator(".thorium-pdf-annotation-highlight[data-navigation-flash=\"true\"]").count()).toBeGreaterThan(0);
 
     await frame.evaluate(() => window.getSelection()?.removeAllRanges());
-    const clickHighlightBox = await highlights.first().boundingBox();
-    if (!clickHighlightBox) {
+    const deletedHighlightBox = await highlights.first().boundingBox();
+    if (!deletedHighlightBox) {
         throw new Error("Rendered PDF annotation highlight did not have a bounding box");
     }
-    await page.mouse.click(
-        clickHighlightBox.x + (clickHighlightBox.width / 2),
-        clickHighlightBox.y + (clickHighlightBox.height / 2),
-    );
-    await expect.poll(async () => frame.evaluate(() => {
-        const harness = window.__thoriumPdfAnnotationHarness;
-        const annotations = harness?.annotations() || [];
-        const latest = annotations[annotations.length - 1] as { id?: string } | undefined;
-
-        return !!latest?.id && harness?.selectedAnnotationId() === latest.id;
-    })).toBe(true);
-    await expect(frame.locator("#thorium-pdf-annotation-harness-log")).toContainText("annotation:selected");
 
     await expect(frame.locator("#thorium-pdf-annotation-delete-latest")).toBeEnabled();
     await frame.locator("#thorium-pdf-annotation-delete-latest").click();
@@ -177,4 +253,22 @@ test("creates, styles, navigates to, and deletes a PDF highlight through the sta
         return window.__thoriumPdfAnnotationHarness?.annotations().length ?? -1;
     })).toBe(0);
     await expect(highlights).toHaveCount(0);
+
+    await page.mouse.click(
+        deletedHighlightBox.x + (deletedHighlightBox.width / 2),
+        deletedHighlightBox.y + (deletedHighlightBox.height / 2),
+    );
+    await page.waitForTimeout(250);
+    await expect.poll(async () => frame.evaluate(() => {
+        return window.__thoriumPdfAnnotationHarness?.selectionEventCount() || 0;
+    })).toBe(selectionEventCountAfterClick);
+
+    await frame.evaluate(() => window.getSelection()?.removeAllRanges());
+    await frame.locator("#thorium-pdf-annotation-instant-mode").click();
+    const instantSelection = await selectFirstVisibleTextRun(frame);
+    expect(instantSelection.quote.trim().length).toBeGreaterThan(0);
+    await expect.poll(async () => frame.evaluate(() => {
+        return window.__thoriumPdfAnnotationHarness?.annotations().length ?? -1;
+    })).toBe(1);
+    await expect(frame.locator("#thorium-pdf-annotation-harness-log")).toContainText("annotations:set-instant-mode");
 });
