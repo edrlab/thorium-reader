@@ -224,14 +224,14 @@ Add:
 - `P0 Existing` transport list reflects edited color and draw type.
 - `P0 Existing` transport list excludes deleted PDF notes because absent notes are absent from the next snapshot.
 - `P0 Existing` create-request handling ignores missing payload or missing draft.
-- `P0 Existing` create-request handling rejects missing or unknown runtime source values before persistence and logs the invalid source.
+- `P0 Existing` create-request handling rejects missing or unknown runtime source values before persistence and reports the invalid source through host diagnostics.
 - `P0 Existing` create-request handling passes default color, creator, next index, and current timestamp to `pdfAnnotationDraftToNote()`.
 - `P0 Existing` create-request handling dispatches one `addUpdatePdfAnnotationNote` action with the publication id.
 - `P0 Existing` create-request handling emits a sync snapshot that includes the newly created note returned by the action.
 - `P0 Existing` annotation trigger dispatches `highlight:create-from-selection` when the active reader is PDF.
 - `P0 Existing` annotation trigger calls the existing EPUB annotation path when the active reader is not PDF.
-- `P0 Existing` Reader create presentation opens the header draft editor only for explicit non-quick PDF creation.
-- `P0 Existing` Reader create presentation keeps instant and quick PDF creation on the immediate persistence path.
+- `P0 Existing` Reader create presentation opens the header draft editor for non-quick explicit or instant PDF creation.
+- `P0 Existing` Reader create presentation keeps quick PDF creation on the immediate persistence path independently from instant mode.
 - `P0 Existing` Reader header draft transport validates source and defensively copies the PDF target.
 - `P0 Existing` Reader visibility payload maps `hide` to `visible: false` and keeps `annotation` / `margin` visible.
 

@@ -191,7 +191,7 @@ Payload rules:
 - the webview never sends canonical ids, timestamps, creator metadata, document identity, color, or draw type in creation drafts;
 - `annotation:create-requested.source` is required and must be either `highlight:create-from-selection` or `instant-selection`;
 - `annotation:create-requested.source` identifies whether the draft came from the explicit annotation trigger or instant selection mode;
-- the host rejects and logs `annotation:create-requested` payloads that contain a draft with a missing or unknown source before note persistence;
+- the host rejects and reports `annotation:create-requested` payloads that contain a draft with a missing or unknown source before note persistence;
 - `annotations:sync` carries host-owned color and draw type for rendering;
 - PDF annotation draw type supports `solid_background`, `underline`, `strikethrough`, and `outline`; `bookmark` is not a PDF highlight style;
 - `viewer:go-to-annotation` carries the canonical annotation id plus page/rect fallback;
@@ -218,11 +218,11 @@ A valid draft must:
 
 The helper returns a defensive copy of accepted rectangles. This prevents a caller from mutating the accepted draft after validation and before note conversion.
 
-Invalid host create requests are rejected before `readerActions.note.addUpdate`. Missing drafts are ignored as no-op bus noise. Payloads that contain a draft but omit `source`, use an unknown `source`, or carry a malformed draft are logged with `console.error` because they represent runtime contract violations.
+Invalid host create requests are rejected before `readerActions.note.addUpdate`. Missing drafts are ignored as no-op bus noise. Payloads that contain a draft but omit `source`, use an unknown `source`, or carry a malformed draft are reported through the explicit `readium-desktop:renderer:reader:pdf:annotations:host` debug namespace because they represent runtime contract diagnostics, not application failures.
 
 When a malformed draft reaches the host, `Reader.tsx` also shows a static error toast: `Unable to create PDF annotation from this selection.`
 
-Normal PDF annotation traces are gated behind `window.__THORIUM_PDF_ANNOTATIONS_DEBUG`. Invalid payloads and integration failures still use `console.error` so QA can see real contract breaks without enabling verbose logs.
+Normal webview PDF annotation traces are gated behind `window.__THORIUM_PDF_ANNOTATIONS_DEBUG`. Webview invalid payloads and integration failures still use `console.error`; host-side diagnostics use explicit `debug` namespaces to avoid noisy production console output.
 
 ## Data Mapping
 
@@ -327,8 +327,8 @@ Explicit PDF annotation creation from the header uses the existing header
 - saving the popover converts that draft into the canonical Thorium note and
   dispatches the normal note add/update action;
 - canceling the popover drops the draft without persisting a note;
-- instant mode and quick-annotation mode skip this editor and persist through
-  the host create-request path silently.
+- quick-annotation mode skips this editor and persists through the host
+  create-request path silently.
 
 ## Webview Initialization
 
@@ -401,8 +401,8 @@ Rules:
 - duplicate settled selections are ignored until the user changes or clears the selection;
 - invalid settled selections emit `annotation:selection-error` with source `instant-selection`;
 - the host still owns persistence, color, draw type, and whether an editor opens after creation;
-- instant selection mode never opens the editor after persistence;
-- the existing `reader.annotations.quickAnnotations` checkbox applies the same no-editor policy to explicit PDF annotation creation. When quick creation is enabled, PDF creation stays silent after persistence, matching EPUB quick creation.
+- instant selection mode only controls automatic creation after selection;
+- the existing `reader.annotations.quickAnnotations` checkbox independently controls whether the editor is skipped. When quick creation is disabled, explicit PDF creation and instant PDF creation open the same header editor before persistence; when quick creation is enabled, both flows persist silently, matching EPUB quick creation.
 
 ## Visibility Mode
 
@@ -559,9 +559,9 @@ Accessibility boundary for slice 5:
 - Clicking a PDF annotation card navigates to the page/rectangle target and flashes the rendered highlight.
 - PDF annotation cards can edit comment, color, draw type, and tags without losing `pdfAnnotation`.
 - Header-triggered explicit PDF annotation creation opens the header annotation edit popover before the note is persisted.
-- Missing or unknown PDF annotation creation sources are rejected and logged before note persistence.
-- PDF instant mode creates a PDF annotation automatically after a stable PDF text selection without opening the editor.
-- PDF quick creation skips the created annotation edit form after explicit PDF annotation creation.
+- Missing or unknown PDF annotation creation sources are rejected and reported before note persistence.
+- PDF instant mode triggers PDF annotation creation automatically after a stable PDF text selection.
+- PDF quick creation independently skips the header annotation edit popover for explicit and instant PDF annotation creation.
 - PDF annotations sort by visual reading order in the annotation panel progression sort: page, top, left, id.
 - Edited PDF annotation color and draw type update the webview overlay after snapshot sync.
 - Deleting a PDF annotation removes the Thorium note and removes the webview overlay after snapshot sync.

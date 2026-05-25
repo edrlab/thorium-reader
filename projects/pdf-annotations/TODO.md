@@ -109,7 +109,7 @@ Use the checkboxes as delivery state:
 - [x] Gate verbose PDF annotation debug logs behind an explicit debug flag.
 - [x] Validate `annotations:sync` payload shape before rendering.
 - [x] Validate draft rect/page values before creating a note.
-- [x] Reject missing or unknown `annotation:create-requested.source` values with `console.error` before creating a note.
+- [x] Reject missing or unknown `annotation:create-requested.source` values through explicit host debug diagnostics before creating a note.
 - [x] Emit a typed internal diagnostic event for failed first-slice selections.
 - [x] Trigger a static error toast when PDF annotation selection or draft validation fails.
 - [ ] Replace the static PDF annotation validation toast with localized product microcopy.
@@ -187,8 +187,8 @@ Use the checkboxes as delivery state:
 - [x] Auto-create PDF annotations after a stable PDF text selection when instant mode is enabled.
 - [x] Reuse the existing `selectionToDraft()` conversion and host persistence path for instant PDF creation.
 - [x] Avoid duplicate instant PDF annotations for the same unchanged selection.
-- [x] Keep instant PDF creation silent after persistence without opening the editor.
-- [x] Keep `quickAnnotations` as the separate checkbox that skips the editor after explicit PDF creation.
+- [x] Keep instant mode focused on automatic creation after selection, not on editor skipping.
+- [x] Keep `quickAnnotations` as the separate checkbox that skips the editor for explicit and instant PDF creation.
 - [x] Keep the PDF quick-annotation keyboard shortcut silent after persistence.
 - [x] Add unit coverage for instant PDF selection creation and invalid instant-selection diagnostics.
 

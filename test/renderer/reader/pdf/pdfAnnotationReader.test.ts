@@ -22,7 +22,7 @@ function createDraft(): TPdfAnnotationDraftTransport {
     };
 }
 
-test("PDF create presentation opens the draft editor only for explicit non-quick creation", () => {
+test("PDF create presentation opens the draft editor for non-quick explicit or instant creation", () => {
     expect(
         getPdfAnnotationCreatePresentation(
             {
@@ -47,6 +47,21 @@ test("PDF create presentation opens the draft editor only for explicit non-quick
                 skipNextEditor: false,
             },
         ),
+    ).toBe("draft-editor");
+});
+
+test("PDF create presentation keeps quick creation separate from instant mode", () => {
+    expect(
+        getPdfAnnotationCreatePresentation(
+            {
+                draft: createDraft(),
+                source: "instant-selection",
+            },
+            {
+                annotationPopoverNotOpenOnNoteTaking: true,
+                skipNextEditor: false,
+            },
+        ),
     ).toBe("persist-immediately");
 
     expect(
@@ -58,6 +73,19 @@ test("PDF create presentation opens the draft editor only for explicit non-quick
             {
                 annotationPopoverNotOpenOnNoteTaking: true,
                 skipNextEditor: false,
+            },
+        ),
+    ).toBe("persist-immediately");
+
+    expect(
+        getPdfAnnotationCreatePresentation(
+            {
+                draft: createDraft(),
+                source: "instant-selection",
+            },
+            {
+                annotationPopoverNotOpenOnNoteTaking: false,
+                skipNextEditor: true,
             },
         ),
     ).toBe("persist-immediately");
@@ -110,6 +138,20 @@ test("PDF draft editor transport validates source and defensively copies the tar
 
     draft.rects[0].x1 = 999;
     expect(result?.rects[0].x1).toBe(1);
+
+    expect(
+        buildPdfAnnotationDraftEditorTransport(
+            {
+                draft: createDraft(),
+                source: "instant-selection",
+            },
+            {
+                color,
+                noteTotalCount: 0,
+                created: 1234,
+            },
+        ),
+    ).toEqual(createDraft());
 });
 
 test("PDF draft editor transport rejects invalid runtime sources before opening the header editor", () => {

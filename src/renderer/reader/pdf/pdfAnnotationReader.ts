@@ -28,11 +28,12 @@ export function getPdfAnnotationCreatePresentation(
     payload: IPdfAnnotationCreateRequestPayload | undefined,
     options: IPdfAnnotationCreatePresentationOptions,
 ): TPdfAnnotationCreatePresentation {
-    const skipEditor = payload?.source === "instant-selection" ||
-        options.annotationPopoverNotOpenOnNoteTaking ||
+    const canOpenEditor = payload?.source === "highlight:create-from-selection" ||
+        payload?.source === "instant-selection";
+    const skipEditor = options.annotationPopoverNotOpenOnNoteTaking ||
         options.skipNextEditor;
 
-    return !skipEditor && payload?.source === "highlight:create-from-selection"
+    return canOpenEditor && !skipEditor
         ? "draft-editor"
         : "persist-immediately";
 }
