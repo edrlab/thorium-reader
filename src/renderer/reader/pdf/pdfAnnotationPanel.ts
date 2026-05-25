@@ -81,6 +81,20 @@ export function getPdfAnnotationPageLabel(annotation: INoteState, pageLabel: str
         : undefined;
 }
 
+function getPdfAnnotationVisualSortPosition(rect?: TPdfAnnotationRectTransport) {
+    if (!rect) {
+        return {
+            left: 0,
+            top: 0,
+        };
+    }
+
+    return {
+        left: Math.min(rect.x1, rect.x2),
+        top: Math.max(rect.y1, rect.y2),
+    };
+}
+
 export function comparePdfAnnotationsByPagePosition(a: INoteState, b: INoteState): number | undefined {
     if (!a.pdfAnnotation || !b.pdfAnnotation) {
         return undefined;
@@ -93,12 +107,14 @@ export function comparePdfAnnotationsByPagePosition(a: INoteState, b: INoteState
 
     const aRect = a.pdfAnnotation.rects[0];
     const bRect = b.pdfAnnotation.rects[0];
-    const yDiff = (aRect?.y1 ?? 0) - (bRect?.y1 ?? 0);
+    const aPosition = getPdfAnnotationVisualSortPosition(aRect);
+    const bPosition = getPdfAnnotationVisualSortPosition(bRect);
+    const yDiff = bPosition.top - aPosition.top;
     if (yDiff) {
         return yDiff;
     }
 
-    const xDiff = (aRect?.x1 ?? 0) - (bRect?.x1 ?? 0);
+    const xDiff = aPosition.left - bPosition.left;
     if (xDiff) {
         return xDiff;
     }

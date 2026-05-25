@@ -218,6 +218,7 @@ test("create-request handling rejects invalid runtime drafts before persistence"
                 { x1: 1, y1: 2, x2: 3, y2: 4 },
             ],
         },
+        source: "highlight:create-from-selection",
     }, host)).toBeUndefined();
 
     expect(persistNoteInRedux).not.toHaveBeenCalled();
@@ -228,6 +229,49 @@ test("create-request handling rejects invalid runtime drafts before persistence"
         expect.objectContaining({
             reason: "invalid-page",
         }),
+    );
+    consoleError.mockRestore();
+});
+
+test("create-request handling rejects invalid runtime sources before persistence", () => {
+    const persistNoteInRedux: IPdfAnnotationCreateRequestHostPorts["persistNoteInRedux"] = jest.fn(() => {
+        throw new Error("persistNoteInRedux should not be called");
+    });
+    const syncAnnotationsToPdfWebview: IPdfAnnotationCreateRequestHostPorts["syncAnnotationsToPdfWebview"] = jest.fn();
+    const consoleError = jest.spyOn(console, "error").mockImplementation(() => undefined);
+    const host: IPdfAnnotationCreateRequestHostAdapter = {
+        state: {
+            publicationIdentifier: "pub-id",
+            notes: [],
+            color,
+            noteTotalCount: 0,
+            created: 1234,
+        },
+        ports: {
+            persistNoteInRedux,
+            syncAnnotationsToPdfWebview,
+        },
+    };
+
+    expect(handlePdfAnnotationCreateRequested({
+        draft,
+        source: "unknown-source" as any,
+    }, host)).toBeUndefined();
+    expect(handlePdfAnnotationCreateRequested({
+        draft,
+    } as any, host)).toBeUndefined();
+
+    expect(persistNoteInRedux).not.toHaveBeenCalled();
+    expect(syncAnnotationsToPdfWebview).not.toHaveBeenCalled();
+    expect(consoleError).toHaveBeenCalledWith(
+        "[Thorium PDF annotations]",
+        "annotation:create-requested ignored invalid source",
+        { source: "unknown-source" },
+    );
+    expect(consoleError).toHaveBeenCalledWith(
+        "[Thorium PDF annotations]",
+        "annotation:create-requested ignored invalid source",
+        { source: undefined },
     );
     consoleError.mockRestore();
 });
@@ -278,7 +322,10 @@ test("create-request handling creates one note action and syncs a snapshot inclu
             syncAnnotationsToPdfWebview,
         },
     };
-    const result = handlePdfAnnotationCreateRequested({ draft }, host);
+    const result = handlePdfAnnotationCreateRequested({
+        draft,
+        source: "highlight:create-from-selection",
+    }, host);
 
     expect(persistNoteInRedux).toHaveBeenCalledTimes(1);
     expect(persistNoteInRedux).toHaveBeenCalledWith("pub-id", {

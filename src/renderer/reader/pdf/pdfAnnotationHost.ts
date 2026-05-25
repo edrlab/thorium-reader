@@ -87,10 +87,21 @@ export function buildPdfAnnotationTransportList(
     return Array.from(annotationsById.values());
 }
 
+function isValidPdfAnnotationCreateSource(source: unknown): source is TPdfAnnotationCreateSource {
+    return source === "highlight:create-from-selection" || source === "instant-selection";
+}
+
 export function createPdfAnnotationNoteDraft(
     payload: IPdfAnnotationCreateRequestPayload | undefined,
     context: IPdfAnnotationCreateRequestContext,
 ): Omit<INoteState, "uuid"> | undefined {
+    if (payload?.draft && !isValidPdfAnnotationCreateSource(payload.source)) {
+        console.error(DEBUG_PREFIX, "annotation:create-requested ignored invalid source", {
+            source: payload.source,
+        });
+        return undefined;
+    }
+
     const validation = validatePdfAnnotationDraft(payload?.draft);
     if (validation.valid) {
         return pdfAnnotationDraftToNote(validation.draft, {

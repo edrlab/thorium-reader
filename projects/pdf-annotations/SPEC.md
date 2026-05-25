@@ -32,8 +32,8 @@ Included:
 - overlay alignment after zoom and rotation changes;
 - annotation panel display of PDF quote and page metadata for persisted PDF notes;
 - annotation panel navigation to PDF highlights through `viewer:go-to-annotation`;
-- annotation panel editing of PDF annotation comment, color, draw type, and tags;
-- opening the annotation panel edit form immediately after header-triggered PDF annotation creation;
+- annotation panel editing of persisted PDF annotation comment, color, draw type, and tags;
+- opening the existing header annotation edit popover before persistence after explicit header-triggered PDF annotation creation;
 - annotation panel deletion of PDF annotations through normal Thorium note removal;
 - overlay click selection through `annotation:selected`;
 - instant PDF annotation creation from the annotation panel options checkbox;
@@ -86,7 +86,7 @@ First-slice PDF note shape:
 
 ## Event Contract
 
-The PDF annotations project extends `IPdfPlayerEvent` with eight annotation-specific events across slices 1 through 5.
+The PDF annotations project extends `IPdfPlayerEvent` with nine annotation-specific events across slices 1 through 5.
 
 ```ts
 export interface TPdfAnnotationRectTransport {
@@ -189,7 +189,9 @@ Payload rules:
 - events carrying data use exactly one JSON-compatible object payload;
 - payloadless events are dispatched without arguments;
 - the webview never sends canonical ids, timestamps, creator metadata, document identity, color, or draw type in creation drafts;
+- `annotation:create-requested.source` is required and must be either `highlight:create-from-selection` or `instant-selection`;
 - `annotation:create-requested.source` identifies whether the draft came from the explicit annotation trigger or instant selection mode;
+- the host rejects and logs `annotation:create-requested` payloads that contain a draft with a missing or unknown source before note persistence;
 - `annotations:sync` carries host-owned color and draw type for rendering;
 - PDF annotation draw type supports `solid_background`, `underline`, `strikethrough`, and `outline`; `bookmark` is not a PDF highlight style;
 - `viewer:go-to-annotation` carries the canonical annotation id plus page/rect fallback;
@@ -197,7 +199,7 @@ Payload rules:
 - `annotation:selected` carries the canonical annotation id, page, matching rectangle index, rectangle copy, source, and keyboard modifier state;
 - the host ignores `annotation:selected` when the payload is incomplete, the source is not `overlay-click`, the rectangle is invalid, the id is unknown, or the id is not a persisted PDF annotation;
 - `annotations:set-instant-mode` carries a boolean `enabled` flag and only changes the webview selection observer; it does not persist reader configuration;
-- `annotations:set-visibility` carries a boolean `visible` flag derived from `readerConfig.annotation_defaultDrawView !== "hide"` and changes overlay visibility only; it does not remove notes or mutate annotation snapshots;
+- `annotations:set-visibility` carries a boolean `visible` flag derived from `readerConfig.annotation_defaultDrawView !== "hide"` and changes overlay visibility only; it does not remove notes, mutate annotation snapshots, or filter annotation panel cards;
 - `annotation:selection-error` carries a typed reason for a failed webview selection capture. It is a diagnostic/user-feedback event, not a PDF lifecycle event and not a persistence command.
 
 ## Runtime Draft Validation
@@ -216,7 +218,7 @@ A valid draft must:
 
 The helper returns a defensive copy of accepted rectangles. This prevents a caller from mutating the accepted draft after validation and before note conversion.
 
-Invalid host create requests are rejected before `readerActions.note.addUpdate`. Missing drafts are ignored as no-op bus noise; malformed drafts are logged with `console.error` because they represent runtime contract violations.
+Invalid host create requests are rejected before `readerActions.note.addUpdate`. Missing drafts are ignored as no-op bus noise. Payloads that contain a draft but omit `source`, use an unknown `source`, or carry a malformed draft are logged with `console.error` because they represent runtime contract violations.
 
 When a malformed draft reaches the host, `Reader.tsx` also shows a static error toast: `Unable to create PDF annotation from this selection.`
 
@@ -280,6 +282,7 @@ dispatch annotations:sync({ annotations })
 On `annotation:create-requested`:
 
 ```text
+validate payload.source when a draft is present
 validate payload.draft
 convert draft to Omit<INoteState, "uuid">
 dispatch readerActions.note.addUpdate
@@ -315,6 +318,17 @@ PDF annotation deletion uses the existing Thorium note removal path:
 - bulk deletion includes PDF annotations in the deletion candidate list;
 - `Reader.tsx` reacts to the changed note list and sends a fresh `annotations:sync` snapshot;
 - no `annotations:delete`, `annotations:upsert`, or native PDF mutation is introduced in this slice.
+
+Explicit PDF annotation creation from the header uses the existing header
+`AnnotationEdit` popover before persistence:
+
+- `highlight:create-from-selection` creates a validated local `pdfAnnotationDraft`
+  in `Reader.tsx`;
+- saving the popover converts that draft into the canonical Thorium note and
+  dispatches the normal note add/update action;
+- canceling the popover drops the draft without persisting a note;
+- instant mode and quick-annotation mode skip this editor and persist through
+  the host create-request path silently.
 
 ## Webview Initialization
 
@@ -404,6 +418,7 @@ Rules:
 
 - hidden mode removes rendered PDF annotation overlays from the webview;
 - hidden mode keeps the host snapshot and persisted Thorium notes unchanged;
+- hidden mode does not filter annotation panel cards, because the panel remains the note management surface;
 - syncs received while hidden update the in-memory webview snapshot but do not render overlays until visibility is restored;
 - page render, zoom, and rotation events do not restore overlays while hidden;
 - panel navigation can still scroll to a PDF annotation target, but there is no visible highlight flash while overlays are hidden;
@@ -430,6 +445,23 @@ Stored rectangles are normalized:
 ```
 
 PDF-space coordinates allow highlights to survive zoom, scroll, rotation, and high-DPI rendering.
+
+## Panel Reading Order
+
+When the annotation panel sorts PDF annotations by progression, PDF targets use
+visual reading order:
+
+1. page number ascending;
+2. visual top position descending, using `max(y1, y2)` from the first PDF-space
+   rectangle because PDF.js viewport conversion stores higher PDF `y` values
+   nearer the visual top of an unrotated page;
+3. visual left position ascending, using `min(x1, x2)`;
+4. canonical annotation id as a stable tie breaker.
+
+The choice is deliberately based on visual position rather than raw `y1`
+ascending. Raw PDF-space vertical coordinates are not the same as screen
+reading order, so sorting by `y1` ascending can place lower highlights before
+upper highlights.
 
 ## Rendering
 
@@ -526,15 +558,17 @@ Accessibility boundary for slice 5:
 - PDF annotations render in the annotation panel without requiring `locatorExtended`.
 - Clicking a PDF annotation card navigates to the page/rectangle target and flashes the rendered highlight.
 - PDF annotation cards can edit comment, color, draw type, and tags without losing `pdfAnnotation`.
-- Header-triggered PDF annotation creation opens the created annotation in the panel edit form.
+- Header-triggered explicit PDF annotation creation opens the header annotation edit popover before the note is persisted.
+- Missing or unknown PDF annotation creation sources are rejected and logged before note persistence.
 - PDF instant mode creates a PDF annotation automatically after a stable PDF text selection without opening the editor.
 - PDF quick creation skips the created annotation edit form after explicit PDF annotation creation.
+- PDF annotations sort by visual reading order in the annotation panel progression sort: page, top, left, id.
 - Edited PDF annotation color and draw type update the webview overlay after snapshot sync.
 - Deleting a PDF annotation removes the Thorium note and removes the webview overlay after snapshot sync.
 - Hovering a rendered PDF highlight shows a clickable pointer cursor while preserving passive overlays.
 - Clicking a rendered PDF highlight opens/focuses the matching annotation panel card without changing persistence.
 - Shift-clicking a rendered PDF highlight opens the matching PDF annotation in the panel edit form.
-- The annotation panel hide checkbox hides and restores PDF webview overlays without deleting notes.
+- The annotation panel hide checkbox hides and restores PDF webview overlays without deleting notes or filtering panel cards.
 - Hidden PDF overlays cannot be selected by click and do not show the clickable cursor hint.
 - Invalid PDF annotation creation drafts are rejected before note persistence.
 - Failed webview selection captures emit `annotation:selection-error` with a typed reason.

@@ -274,7 +274,7 @@ test("PDF annotation page label uses pdfAnnotation page metadata", () => {
     expect(getPdfAnnotationPageLabel(createPdfAnnotationNote(), "Page")).toBe("Page 3");
 });
 
-test("PDF annotations sort by page, vertical position, horizontal position, then id", () => {
+test("PDF annotations sort by page, visual top-to-bottom position, horizontal position, then id", () => {
     const pageTwo = createPdfAnnotationNote({
         uuid: "page-two",
         pdfAnnotation: {
@@ -292,7 +292,7 @@ test("PDF annotations sort by page, vertical position, horizontal position, then
             type: "pdf-text-highlight",
             page: 1,
             rects: [
-                { x1: 1, y1: 20, x2: 2, y2: 21 },
+                { x1: 1, y1: 20, x2: 2, y2: 30 },
             ],
             quote: "lower",
         },
@@ -303,16 +303,27 @@ test("PDF annotations sort by page, vertical position, horizontal position, then
             type: "pdf-text-highlight",
             page: 1,
             rects: [
-                { x1: 10, y1: 5, x2: 11, y2: 6 },
+                { x1: 10, y1: 80, x2: 11, y2: 90 },
             ],
             quote: "upper",
         },
     });
+    const leftOnSameLine = createPdfAnnotationNote({
+        uuid: "left",
+        pdfAnnotation: {
+            type: "pdf-text-highlight",
+            page: 1,
+            rects: [
+                { x1: 1, y1: 80, x2: 2, y2: 90 },
+            ],
+            quote: "left",
+        },
+    });
 
-    const sorted = [pageTwo, lowerOnPageOne, upperOnPageOne]
+    const sorted = [pageTwo, lowerOnPageOne, upperOnPageOne, leftOnSameLine]
         .sort((a, b) => comparePdfAnnotationsByPagePosition(a, b) || 0);
 
-    expect(sorted.map(({ uuid }) => uuid)).toEqual(["upper", "lower", "page-two"]);
+    expect(sorted.map(({ uuid }) => uuid)).toEqual(["left", "upper", "lower", "page-two"]);
 });
 
 test("PDF annotation navigation target includes id, page, and normalized first rect", () => {

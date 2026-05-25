@@ -109,6 +109,7 @@ Use the checkboxes as delivery state:
 - [x] Gate verbose PDF annotation debug logs behind an explicit debug flag.
 - [x] Validate `annotations:sync` payload shape before rendering.
 - [x] Validate draft rect/page values before creating a note.
+- [x] Reject missing or unknown `annotation:create-requested.source` values with `console.error` before creating a note.
 - [x] Emit a typed internal diagnostic event for failed first-slice selections.
 - [x] Trigger a static error toast when PDF annotation selection or draft validation fails.
 - [ ] Replace the static PDF annotation validation toast with localized product microcopy.
@@ -148,7 +149,7 @@ Use the checkboxes as delivery state:
 - [x] Display note color.
 - [x] Display creator and date metadata when available.
 - [x] Avoid assuming `locatorExtended` exists for PDF annotations.
-- [x] Sort PDF annotations predictably by page and rectangle position.
+- [x] Sort PDF annotations by visual reading order: page, visual top, left, then id.
 - [x] Keep PDF annotations read-only during slice 2 until editing is implemented.
 - [x] Add unit coverage for PDF panel action decisions and bulk delete behavior.
 - [x] Hide Readium annotation import/export controls in PDF readers until a PDF-specific exchange format exists.
@@ -171,6 +172,7 @@ Use the checkboxes as delivery state:
 - [x] Reflect selected annotation state in the annotation panel.
 - [x] Connect the annotation panel `hide` checkbox to PDF overlay visibility.
 - [x] Hide PDF overlays without removing persisted Thorium notes or the webview annotation snapshot.
+- [x] Keep PDF hide as overlay-only visibility; do not filter annotation panel cards.
 - [x] Restore PDF overlays from the current snapshot when visibility is re-enabled.
 - [x] Prevent hidden PDF overlays from click selection and clickable cursor hints.
 - [ ] Add keyboard-accessible focus behavior for selected PDF annotations.
@@ -194,7 +196,7 @@ Use the checkboxes as delivery state:
 - [x] Enable editing comment text for PDF annotations.
 - [x] Enable editing color for PDF annotations.
 - [x] Enable editing tags for PDF annotations.
-- [x] Open the annotation panel edit form after header-triggered PDF annotation creation.
+- [x] Open the header annotation edit popover before persistence after explicit header-triggered PDF annotation creation.
 - [x] Sync edited color/style back to the PDF webview.
 - [x] Add tests proving future comment edit payloads do not remove `pdfAnnotation`.
 - [x] Add tests proving color edits update the webview rendering.

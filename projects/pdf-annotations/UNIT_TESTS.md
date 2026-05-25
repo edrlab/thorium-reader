@@ -220,6 +220,7 @@ Add:
 - `P0 Existing` transport list reflects edited color and draw type.
 - `P0 Existing` transport list excludes deleted PDF notes because absent notes are absent from the next snapshot.
 - `P0 Existing` create-request handling ignores missing payload or missing draft.
+- `P0 Existing` create-request handling rejects missing or unknown runtime source values before persistence and logs the invalid source.
 - `P0 Existing` create-request handling passes default color, creator, next index, and current timestamp to `pdfAnnotationDraftToNote()`.
 - `P0 Existing` create-request handling dispatches one `addUpdatePdfAnnotationNote` action with the publication id.
 - `P0 Existing` create-request handling emits a sync snapshot that includes the newly created note returned by the action.
@@ -371,7 +372,7 @@ Add:
 - `P2 Existing` PDF annotation cards read quote from `note.pdfAnnotation.quote`.
 - `P2 Existing` PDF annotation cards display page number from `note.pdfAnnotation.page`.
 - `P2 Existing` PDF annotation cards render without `locatorExtended`.
-- `P2 Existing` PDF annotation sorting uses page number, vertical rect position, then horizontal rect position.
+- `P2 Existing` PDF annotation sorting uses visual reading order: page number, visual top position, horizontal position, then id.
 - `P2 Existing` PDF annotation navigation targets are built from id, page, and the normalized first rect.
 - `P2 Existing` invalid PDF annotation page or rect data is rejected before navigation dispatch.
 - `P2 Existing` PDF annotation panel action model allows PDF cards to be edited and deleted.

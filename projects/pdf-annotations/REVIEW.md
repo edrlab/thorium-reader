@@ -34,7 +34,7 @@ No Electron runtime test was performed during this review. The notes below are b
 
 2026-05-24: Hardened the slice 4 review findings. Overlay click selection now requires the click target or point to originate from a PDF page element before geometry matching, and host panel routing validates `annotation:selected` source, rect index, rect shape, and modifier-state fields before opening the panel. Result: 5 PDF annotation Jest suites passed, 82 tests passed; standalone Playwright harness passed.
 
-2026-05-25: Implemented slice 5 runtime stabilization. Draft validation now rejects invalid page, type, rect, and quote values before note persistence; failed selection capture emits `annotation:selection-error`; validation failures trigger a static error toast; successful header-triggered PDF annotation creation opens the created note in the annotation panel edit form; normal PDF annotation logs are gated behind `window.__THORIUM_PDF_ANNOTATIONS_DEBUG`; the harness covers controlled invalid selection, zoom visibility, rotation visibility, click selection, deletion, and no selection after deletion. Result: 6 PDF annotation Jest suites passed, 91 tests passed; standalone Playwright harness passed.
+2026-05-25: Implemented slice 5 runtime stabilization. Draft validation now rejects invalid page, type, rect, and quote values before note persistence; failed selection capture emits `annotation:selection-error`; validation failures trigger a static error toast; explicit header-triggered PDF annotation creation opens the header annotation edit popover before persistence; normal PDF annotation logs are gated behind `window.__THORIUM_PDF_ANNOTATIONS_DEBUG`; the harness covers controlled invalid selection, zoom visibility, rotation visibility, click selection, deletion, and no selection after deletion. Result: 6 PDF annotation Jest suites passed, 91 tests passed; standalone Playwright harness passed.
 
 2026-05-25: Added the UX-only clickable cursor hint for rendered PDF highlights. The webview now uses document-level pointermove hit-testing to apply a temporary pointer cursor over highlights while keeping overlay elements passive with `pointer-events: none`. Result: 6 PDF annotation Jest suites passed, 92 tests passed.
 
@@ -43,6 +43,8 @@ No Electron runtime test was performed during this review. The notes below are b
 2026-05-25: Implemented PDF instant annotation mode from the annotation panel checkbox. `ReaderMenu.tsx` now forwards the existing `advancedMode` state to the PDF webview, the controller debounces PDF.js `selectionchange`, reuses `selectionToDraft()`, deduplicates unchanged selections, and dispatches the existing host create-request flow with `source: "instant-selection"`. Instant PDF creation no longer opens the editor. PDF quick creation and the PDF quick-annotation keyboard shortcut also skip the created-note edit form. Result: 6 PDF annotation Jest suites passed, 96 tests passed; standalone Playwright harness passed with instant-mode coverage.
 
 2026-05-25: Connected the annotation panel hide checkbox to PDF overlay visibility. `Reader.tsx` now maps `annotation_defaultDrawView === "hide"` to `annotations:set-visibility`, and the PDF.js controller removes or restores overlay layers from the current snapshot without mutating persisted notes. Hidden overlays cannot be selected and do not show the clickable cursor hint. Result: targeted Jest and harness checks cover hide/show behavior.
+
+2026-05-25: Applied the latest review decisions. Host creation now rejects `annotation:create-requested` payloads that carry a draft with missing or unknown `source`, logs the invalid source with `console.error`, and avoids persistence. The hide checkbox remains overlay-only and does not filter annotation panel cards. PDF annotation progression sort now follows visual reading order: page, visual top, left, then id. Result: 6 PDF annotation Jest suites passed, 99 tests passed; modified source files passed targeted ESLint; direct ESLint on the two touched Jest files still reports pre-existing Prettier formatting across those files.
 
 2026-05-25: Additional slice 5 checks were attempted without `npm run` because local `npm` is 10.9.4 while `package.json` requires npm `>=11.15.0` through `devEngines`. Direct checks passed for PDF sources with `eslint --no-ignore`, `Reader.tsx` lint, harness TypeScript lint, the standalone harness Playwright command, and `webpack --config webpack.config.renderer-pdf.js`. A repository-wide `tsc --noEmit --project tsconfig.jest.json` check still fails on existing CommonJS/ESM diagnostics in dependencies such as `inversify`, `node-fetch`, `debounce`, `pdf.js`, and other non-PDF files; after fixing the slice-local narrowing issue, the filtered TypeScript output no longer reports PDF annotation files.
 
@@ -185,11 +187,12 @@ Known residual limits:
 
 Status: fixed in slice 5.
 
-`pdfAnnotationValidation.ts` now validates host creation drafts before persistence. The webview reuses the rectangle validation rule after coordinate conversion, validation failures trigger a static error toast from `Reader.tsx`, successful created PDF notes open in panel edit mode, and normal controller logs are hidden unless `window.__THORIUM_PDF_ANNOTATIONS_DEBUG` is enabled.
+`pdfAnnotationValidation.ts` now validates host creation drafts before persistence. The host also rejects draft-bearing create requests with missing or unknown `source` values before persistence and logs them with `console.error`. The webview reuses the rectangle validation rule after coordinate conversion, validation failures trigger a static error toast from `Reader.tsx`, explicit header-triggered creation opens the header annotation edit popover before persistence, and normal controller logs are hidden unless `window.__THORIUM_PDF_ANNOTATIONS_DEBUG` is enabled.
 
 Why this fix is in scope:
 
 - Runtime bus payloads can be malformed even when TypeScript types are correct at compile time.
+- The `source` value controls whether creation is explicit or instant, so accepting an unknown source would make editor-opening behavior ambiguous.
 - Rejecting invalid drafts before `readerActions.note.addUpdate` keeps Thorium note state canonical.
 - Gating verbose logs reduces PDF annotation noise while preserving `console.error` for invalid payloads and integration failures.
 
