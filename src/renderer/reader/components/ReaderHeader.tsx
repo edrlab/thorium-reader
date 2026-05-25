@@ -55,7 +55,7 @@ import {
 } from "@r2-navigator-js/electron/renderer/index";
 import { MiniLocatorExtended } from "readium-desktop/common/redux/states/locatorInitialState";
 
-import { IPdfPlayerScale } from "../pdf/common/pdfReader.type";
+import { IPdfPlayerScale, TPdfAnnotationDraftTransport } from "../pdf/common/pdfReader.type";
 import HeaderSearch from "./header/HeaderSearch";
 import { IReaderMenuProps, IReaderSettingsProps } from "./options-values";
 import { ReaderMenu } from "./ReaderMenu";
@@ -169,6 +169,10 @@ interface IBaseProps extends TranslatorProps {
     setPdfPrintOpen: (value: boolean) => void;
 
     publicationView: PublicationView;
+
+    pdfAnnotationDraft?: TPdfAnnotationDraftTransport | undefined;
+    savePdfAnnotation?: (color: IColor, comment: string, drawType: TDrawType, tags: string[]) => void;
+    cancelPdfAnnotation?: () => void;
 }
 
 // IProps may typically extend:
@@ -516,6 +520,16 @@ export class ReaderHeader extends React.Component<IProps, IState> {
           );
 
         const isAudioBook = isAudiobookFn(this.props.r2Publication);
+        const annotationPopoverOpen = this.props.isPdf
+            ? !!this.props.pdfAnnotationDraft
+            : this.props.isAnnotationModeEnabled;
+        const closeAnnotationPopover = () => {
+            if (this.props.isPdf) {
+                this.props.cancelPdfAnnotation?.();
+            } else {
+                this.props.closeAnnotationEditionMode(this.props.isAnnotationModeEnabledFromKeyboard);
+            }
+        };
 
 
         const appOverlayElement = document.getElementById("app-overlay");
@@ -886,14 +900,14 @@ export class ReaderHeader extends React.Component<IProps, IState> {
 
                         <BookmarkButton shortcutEnable={this.props.shortcutEnable} isOnSearch={this.props.isOnSearch} />
 
-                        <Popover.Root open={!this.props.isPdf && this.props.isAnnotationModeEnabled} onOpenChange={(open) => {
+                        <Popover.Root open={annotationPopoverOpen} onOpenChange={(open) => {
                             if (!open) {
-                                setTimeout(() => this.props.closeAnnotationEditionMode(this.props.isAnnotationModeEnabledFromKeyboard), 1); // trigger input onChange before the popover trigger
+                                setTimeout(closeAnnotationPopover, 1); // trigger input onChange before the popover trigger
                             }
                         }}>
                             <Popover.Trigger asChild>
                                 <li
-                                    {...(!this.props.isPdf && this.props.isAnnotationModeEnabled &&
+                                    {...(annotationPopoverOpen &&
                                         { style: { backgroundColor: "var(--color-brand-primary)" } })}
                                 >
                                     <input
@@ -902,14 +916,22 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         aria-label={__("reader.navigation.annotationTitle")}
                                         className={stylesReader.bookmarkButton}
                                         type="checkbox"
-                                        checked={!this.props.isPdf && this.props.isAnnotationModeEnabled}
+                                        checked={annotationPopoverOpen}
                                         onKeyUp={(e) => {
                                             if (e.key === "Enter") {
-                                                this.triggerAnnotation(false);
+                                                if (annotationPopoverOpen) {
+                                                    closeAnnotationPopover();
+                                                } else {
+                                                    this.triggerAnnotation(false);
+                                                }
                                             }
                                         }}
                                         onChange={() => {
-                                            this.triggerAnnotation(false);
+                                            if (annotationPopoverOpen) {
+                                                closeAnnotationPopover();
+                                            } else {
+                                                this.triggerAnnotation(false);
+                                            }
                                         }}
                                     />
                                     {
@@ -922,31 +944,36 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                         id="annotationLabel"
                                         title={__("reader.navigation.annotationTitle")}
                                     >
-                                        <SVG ariaHidden svg={AnnotationsIcon} className={classNames(stylesReaderHeader.annotationsIcon, !this.props.isPdf && this.props.isAnnotationModeEnabled ? stylesReaderHeader.active_svg : "")} />
+                                        <SVG ariaHidden svg={AnnotationsIcon} className={classNames(stylesReaderHeader.annotationsIcon, annotationPopoverOpen ? stylesReaderHeader.active_svg : "")} />
                                     </label>
                                 </li>
                             </Popover.Trigger>
-                            {!this.props.isPdf ? <Popover.Portal>
+                            <Popover.Portal>
                                 <Popover.Content sideOffset={this.props.isOnSearch ? 50 : 18} align="end" style={{ zIndex: 101 }}
                                 // onPointerDownOutside={(e) => { e.preventDefault(); console.log("annotationPopover onPointerDownOutside"); }}
                                 // onInteractOutside={(e) => { e.preventDefault(); console.log("annotationPopover onInteractOutside"); }}
                                 >
                                     <AnnotationEdit
                                         save={(color: IColor, comment: string, drawType: TDrawType, tags: string[]) => {
-                                            this.props.saveAnnotation(this.props.isAnnotationModeEnabledFromKeyboard, color, comment, drawType, tags);
+                                            if (this.props.isPdf) {
+                                                this.props.savePdfAnnotation?.(color, comment, drawType, tags);
+                                            } else {
+                                                this.props.saveAnnotation(this.props.isAnnotationModeEnabledFromKeyboard, color, comment, drawType, tags);
+                                            }
                                         }}
-                                        cancel={() => this.props.closeAnnotationEditionMode(this.props.isAnnotationModeEnabledFromKeyboard)}
+                                        cancel={closeAnnotationPopover}
                                         dockedMode={isDockedMode}
                                         uuid=""
                                         color={this.props.readerConfig.annotation_defaultColor}
                                         drawType={this.props.readerConfig.annotation_defaultDrawType}
                                         tags={[]}
                                         comment=""
-                                        locatorExtended={this.props.annotationLocatorExtended}
+                                        locatorExtended={this.props.isPdf ? undefined : this.props.annotationLocatorExtended}
+                                        selectionText={this.props.isPdf ? this.props.pdfAnnotationDraft?.quote : undefined}
                                     />
                                     <Popover.Arrow style={{ fill: "var(--color-gray-50" }} width={15} height={10} />
                                 </Popover.Content>
-                            </Popover.Portal> : <></>}
+                            </Popover.Portal>
                         </Popover.Root>
 
 
