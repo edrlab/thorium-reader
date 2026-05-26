@@ -266,16 +266,20 @@ export async function convertSelectorTargetToLocatorExtended(target: IReadiumAnn
 
 // export type INoteStateWithICacheDocument = INoteState & { __cacheDocument?: ICacheDocument | undefined };
 
-export function convertAnnotationStateToReadiumAnnotation(note: INoteState): IReadiumAnnotation {
+export function convertAnnotationStateToReadiumAnnotation(note: INoteState): IReadiumAnnotation | undefined {
 
     const { uuid, color, locatorExtended, tags, drawType, textualValue, creator, created, modified, readiumAnnotation } = note;
     const highlight = (drawType === EDrawType.solid_background ? "solid" : EDrawType[drawType]) as IReadiumAnnotation["body"]["highlight"];
     const isABookmark = drawType === EDrawType.bookmark;
 
-    // TODO: map or filter PDF annotations before Readium annotation export.
-    // PDF annotations currently store their target in `note.pdfAnnotation`, not
-    // in `locatorExtended`. This exporter only knows how to serialize
-    // locator/selector-backed targets.
+    // PDF annotations currently store their target in `note.pdfAnnotation`.
+    // Do not serialize them as Readium annotations until there is an explicit
+    // PDF page/rectangle target mapping.
+    if (note.pdfAnnotation) {
+        debug("Skip PDF annotation during Readium annotation export", note.uuid);
+        return undefined;
+    }
+
     if (!locatorExtended) {
         debug("Convert A Note without any locator !!!", note.uuid);
     }
@@ -345,6 +349,12 @@ export function convertAnnotationStateArrayToReadiumAnnotationSet(locale: keyof 
                 }) : [],
             "dc:date": publicationView.publishedAt || "",
         },
-        items: notes.map((v) => convertAnnotationStateToReadiumAnnotation(v)),
+        items: notes.reduce<IReadiumAnnotation[]>((items, note) => {
+            const readiumAnnotation = convertAnnotationStateToReadiumAnnotation(note);
+            if (readiumAnnotation) {
+                items.push(readiumAnnotation);
+            }
+            return items;
+        }, []),
     };
 }
