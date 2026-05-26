@@ -66,7 +66,7 @@
         "customization": {
             "fallback": {
                 "description": "Nessuna descrizione del profilo",
-                "publications": "Descrizione del profilo",
+                "publications": "Pubblicazioni del profilo",
                 "screen": "Nessun titolo",
                 "title": "Titolo del profilo"
             }
@@ -91,7 +91,7 @@
         "missing": "",
         "moreInfo": "Maggiori informazioni",
         "myBooks": "I miei libri",
-        "noPublicationHelpL1": "Aggiungi qui una pubblicazione",
+        "noPublicationHelpL1": "Rilascia qui i file",
         "noPublicationHelpL2": "o utilizza il tasto \"{{- importTitle }}\" in alto a destra.",
         "noPublicationHelpL3": "I file protetti da LCP sono supportati.",
         "noPublicationHelpL4": "Estensioni supportate:",
@@ -111,15 +111,15 @@
                 "availableSince": "Da",
                 "availableState": {
                     "available": "Disponibile",
-                    "ready": "Pronto",
+                    "ready": "Disponibil",
                     "reserved": "Prenotato",
                     "unavailable": "Non disponibile",
                     "unknown": "Sconosciuto"
                 },
                 "availableUntil": "Fino al",
-                "copyAvalaible": "Numero di copie disponibili",
+                "copyAvalaible": "Disponibile",
                 "copyTotal": "Numero di copie",
-                "holdPosition": "La tua posizione di attesa",
+                "holdPosition": "La tua posizione",
                 "holdTotal": "Prenotato",
                 "numberOfItems": "Numero di risorse",
                 "priveValue": "Prezzo",
@@ -143,12 +143,12 @@
             "descList_many": "{{- count}} note di {{- creator}} saranno associate a {{- title}} {{- author}}",
             "descList_one": "{{- count}} nota di {{- creator}} sarà associata a {{- title}} {{- author}}",
             "descList_other": "{{- count}} note di {{- creator}} saranno associate a {{- title}} {{- author}}",
-            "descNewer_many": "{{- count}} nuove versioni di queste note sono già associate alla pubblicazione.",
-            "descNewer_one": "{{- count}} nuova versione di queste note è già associata alla pubblicazione.",
-            "descNewer_other": "{{- count}} nuove versioni di queste note sono già associate alla pubblicazione.",
-            "descOlder_many": "{{- count}} versioni precedenti di queste note sono già associate alla pubblicazione.",
-            "descOlder_one": "{{- count}} versione precedente di queste note è già associata alla pubblicazione.",
-            "descOlder_other": "{{- count}} versioni precedenti di queste note sono già associate alla pubblicazione.",
+            "descNewer_many": "{{- count}} nuove versioni di queste note sono già associate alla pubblicazione",
+            "descNewer_one": "{{- count}} nuova versione di queste note è già associata alla pubblicazione",
+            "descNewer_other": "{{- count}} nuove versioni di queste note sono già associate alla pubblicazione",
+            "descOlder_many": "{{- count}} versioni precedenti di queste note sono già associate alla pubblicazione",
+            "descOlder_one": "{{- count}} versione precedente di queste note è già associata alla pubblicazione",
+            "descOlder_other": "{{- count}} versioni precedenti di queste note sono già associate alla pubblicazione",
             "descTitle": "Titolo delle note: ",
             "importAll": "Importa tutte le note",
             "importWithoutConflict": "Importa solo le note senza conflitti",
@@ -216,9 +216,9 @@
             "hint": "Suggerimento:",
             "open": "Apri",
             "password": "Passphrase",
-            "sentence": "Questa pubblicazione ha bisogno di una passphrase LCP per essere aperta:",
+            "sentence": "Questa pubblicazione ha bisogno di una passphrase LCP per essere aperta",
             "showPassphrase": "Mostra la passphrase",
-            "urlHint": "Hai dimenticato la tua passphrase? Clicca qui per avere un aiuto",
+            "urlHint": "Hai dimenticato la tua passphrase? Clicca qui per avere un aiuto.",
             "whatIsLcp?": "Cos'è LCP?",
             "whatIsLcpInfoDetails": "LCP è l'acronimo di \"Licensed Content Protection\".",
             "whatIsLcpInfoDetailsLink": "Per saperne di più, clicca su questo link verso il sito web di EDRLab."
@@ -237,7 +237,7 @@
             "alreadyImported": "Tutte le note sono già state importate.",
             "emptyFile": "Nessuna nota disponibile nel file.",
             "errorParsing": "Errore durante l'analisi del file: ",
-            "noBelongTo": "Impossibile importare le note, almeno una nota non appartiene alla pubblicazione",
+            "noBelongTo": "Impossibile importare le note, almeno una nota non appartiene alla pubblicazione.",
             "nothing": "Non c'è nessuna nota pronta per essere importata; l'importazione sarà interrotta",
             "success": "Importazione completata."
         },
@@ -245,7 +245,7 @@
             "error": "Il download di {{- title}} è fallito: [{{- err}}]"
         },
         "import": {
-            "alreadyImport": "{{- title}} è già stato importato",
+            "alreadyImport": "{{- title}} è già stato importato.",
             "fail": "L'importazione di {{- path}} è fallita. {{- err}}",
             "success": "L'importazione di {{- title}} è terminata."
         },
@@ -285,7 +285,7 @@
             "noInternet": "Nessuna connessione internet",
             "noInternetMessage": "Controlla il cavo di connessione, il modem, il router o l connessione wifi",
             "reject": "Si è verificato un errore inatteso durante l'elaborazione del feed OPDS!",
-            "timeout": "Si è verificato un timeout nella connessione, per favore riprova più tardi."
+            "timeout": "Si è verificato un timeout nella connessione, per favore riprova più tardi"
         },
         "next": "Prossimo",
         "previous": "Precedente",
@@ -305,7 +305,7 @@
         },
         "additional-accessibility-information": {
             "additional-accessibility-information-aria": {
-                "compact": "Informazioni aggiuntive per le tecnologie ARIA",
+                "compact": "Informazioni aggiuntive per le tecnologie d'assistenza",
                 "descriptive": "Il contenuto è semanticamente arricchito con ruoli ARIA per ottimizzare l'organizzazione e facilitare la navigazione"
             },
             "additional-accessibility-information-audio-descriptions": {
@@ -479,7 +479,7 @@
         "navigation": {
             "navigation-index": {
                 "compact": "Indice",
-                "descriptive": "L’indice con link diretto a tutte le voci di riferimento"
+                "descriptive": "Indice con link diretto a tutte le voci di riferimento"
             },
             "navigation-no-metadata": {
                 "compact": "Nessuna informazione disponibile",
@@ -627,8 +627,8 @@
         },
         "author": "Autore",
         "cancelledLcp": "Questo libro non può essere letto perchè la licenza LCP è stata annullata.",
-        "certificateRevoked": "Il certificato è revocato.",
-        "certificateSignatureInvalid": "La firma del certificato non è valida.",
+        "certificateRevoked": "Certificato LCP revocato.",
+        "certificateSignatureInvalid": "La firma del certificato LCP non è valida.",
         "cover": {
             "img": "immagine di copertina"
         },
@@ -647,8 +647,8 @@
         "lcpStart": "Inizio",
         "licenceLCP": "Licenza (LCP)",
         "licenseCertificateDateInvalid": "Il certificato LCP è scaduto prima della data di licenza ({{- dateTime}}).",
-        "licenseOutOfDate": "La licenza è scaduta",
-        "licenseSignatureInvalid": "La firma della licenza non è valida",
+        "licenseOutOfDate": "La licenza LCP è scaduta.",
+        "licenseSignatureInvalid": "La firma della licenza LCP non è valida.",
         "licensed": "Concesso in licenza",
         "markAsRead": "Segna come letto",
         "notStarted": "Non iniziato",
@@ -660,8 +660,8 @@
         "remainingTime": "Prestito (tempo rimanente)",
         "renewButton": "Rinnova",
         "returnButton": "Restituisci",
-        "returnedLcp": "Questo libro non può essere letto perchè la licenza LCP è stata restituita",
-        "revokedLcp": "Questo libro non può essere letto perchè la licenza LCP è stata ritirata",
+        "returnedLcp": "Questa pubblicazione protetta da licenza LCP è stata restituita.",
+        "revokedLcp": "La licenza LCP di questa pubblicazione è stata ritirata.",
         "seeLess": "Visualizza di meno",
         "seeMore": "Visualizza di più",
         "timeLeft": "Tempo rimanente",
@@ -674,12 +674,12 @@
             "addNote": "Annotare",
             "advancedMode": "Modalità istantanea (creazione automatica dopo la selezione)",
             "annotationsExport": {
-                "description": "Assegnare un nome a questa lista di annotazioni",
+                "description": "Assegnare un nome a questa lista di annotazioni:",
                 "title": "Titolo"
             },
             "annotationsOptions": "Opzioni",
             "date": "Data di modifica",
-            "export": "Salva le note in",
+            "export": "Salva le note in...",
             "filter": {
                 "all": "Tutte",
                 "filterByColor": "Filtra per colore",
@@ -837,7 +837,7 @@
                 "auto": "Auto",
                 "one": "1 col",
                 "title": "Colonne",
-                "two": "2 cols"
+                "two": "2 colonne"
             },
             "customFontSelected": "Hai scelto un font personale",
             "customizeReader": "Personalizza la formattazione del testo",
