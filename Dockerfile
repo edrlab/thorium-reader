@@ -4,7 +4,7 @@
 
 # Focal Fossa
 # GLIBC 2.31
-FROM ubuntu:20.04
+FROM ubuntu:20.04@sha256:8feb4d8ca5354def3d8fce243717141ce31e2c428701f6682bd2fafe15388214
 # Note GitHub Actions: "The Ubuntu 20.04 runner image will be fully unsupported by April 1, 2025"
 
 # Bionic Beaver
