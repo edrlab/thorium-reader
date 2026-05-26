@@ -272,6 +272,10 @@ export function convertAnnotationStateToReadiumAnnotation(note: INoteState): IRe
     const highlight = (drawType === EDrawType.solid_background ? "solid" : EDrawType[drawType]) as IReadiumAnnotation["body"]["highlight"];
     const isABookmark = drawType === EDrawType.bookmark;
 
+    // TODO: map or filter PDF annotations before Readium annotation export.
+    // PDF annotations currently store their target in `note.pdfAnnotation`, not
+    // in `locatorExtended`. This exporter only knows how to serialize
+    // locator/selector-backed targets.
     if (!locatorExtended) {
         debug("Convert A Note without any locator !!!", note.uuid);
     }
