@@ -122,7 +122,7 @@ $setting_color: var(--color-brand-primary);
     button {
         height: 30px;
         transition: 200ms;
-        // width: 80%;
+        width: unset;
         display: flex;
         align-items: center;
         justify-content: left;
