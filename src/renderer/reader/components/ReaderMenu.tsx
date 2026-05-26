@@ -1323,7 +1323,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                              tabIndex={!selectTagOption.length ? -1 : 0}
                                             >
                                                 <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByTag")}</Label>
-                                                <div style={{ display: "flex", gap: "10px" }}>
+                                                <div style={{ display: "flex", gap: "10px", marginRight: "10px" }}>
                                                     <button
                                                         disabled={!selectTagOption.length}
                                                         style={{ width: "fit-content", minWidth: "unset" }}
@@ -1369,7 +1369,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                         <details open id="annotationListColorDetails">
                                             <summary className={stylesAnnotations.annotations_filter_tagGroup}>
                                                 <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByColor")}</Label>
-                                                <div style={{ display: "flex", gap: "10px" }}>
+                                                <div style={{ display: "flex", gap: "10px", marginRight: "10px" }}>
                                                     <button
                                                         style={{ width: "fit-content", minWidth: "unset" }}
                                                         className={colorArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
@@ -1409,7 +1409,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                         <details open id="annotationListDrawDetails">
                                             <summary className={stylesAnnotations.annotations_filter_tagGroup}>
                                                 <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByDrawtype")}</Label>
-                                                <div style={{ display: "flex", gap: "10px" }}>
+                                                <div style={{ display: "flex", gap: "10px", marginRight: "10px" }}>
                                                     <button
                                                         style={{ width: "fit-content", minWidth: "unset" }}
                                                         className={drawTypeArrayFilter === "all" ? stylesButtons.button_primary_blue : stylesButtons.button_secondary_blue}
@@ -1451,7 +1451,7 @@ const AnnotationList: React.FC<{ /*annotationUUIDFocused: string, resetAnnotatio
                                                 tabIndex={!selectCreatorOptions.length ? -1 : 0}
                                             >
                                                 <Label style={{ fontSize: "13px" }}>{__("reader.annotations.filter.filterByCreator")}</Label>
-                                                <div style={{ display: "flex", gap: "10px" }}>
+                                                <div style={{ display: "flex", gap: "10px", marginRight: "10px" }}>
                                                     <button
                                                         tabIndex={!selectCreatorOptions.length ? -1 : 0}
                                                         style={{ width: "fit-content", minWidth: "unset" }}
