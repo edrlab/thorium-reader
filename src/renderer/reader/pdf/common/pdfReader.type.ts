@@ -6,69 +6,33 @@
 // ==LICENSE-END
 
 import type { IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN, IEventPayload_R2_EVENT_WEBVIEW_KEYUP } from "@r2-navigator-js/electron/common/events";
-import type { IColor } from "@r2-navigator-js/electron/common/highlight";
-import type { TDrawType } from "readium-desktop/common/redux/states/renderer/note";
 import type { IEventBus } from "./eventBus";
+import type {
+    TPdfAnnotationCreateSource,
+    TPdfAnnotationDraftTransport,
+    TPdfAnnotationNavigationTarget,
+    TPdfAnnotationSelectionErrorPayload,
+    TPdfAnnotationSelectionTarget,
+    TPdfAnnotationTransport,
+} from "./pdfAnnotation.type";
+
+export type {
+    IColor,
+    TPdfAnnotationCreateSource,
+    TPdfAnnotationDraftTransport,
+    TPdfAnnotationDrawType,
+    TPdfAnnotationNavigationTarget,
+    TPdfAnnotationRectTransport,
+    TPdfAnnotationSelectionErrorPayload,
+    TPdfAnnotationSelectionErrorReason,
+    TPdfAnnotationSelectionTarget,
+    TPdfAnnotationTransport,
+} from "./pdfAnnotation.type";
 
 // export type IPdfPlayerScale = "fit" | "width" | "50" | "100" | "150" | "200" | "300" | "500";
 export type IPdfPlayerScale = "page-fit" | "page-width" | number;
 export type IPdfPlayerView = "scrolled"; // | "paginated";
 export type IPdfPlayerColumn = "auto" | "1" | "2";
-
-export interface TPdfAnnotationRectTransport {
-    x1: number;
-    y1: number;
-    x2: number;
-    y2: number;
-}
-
-export interface TPdfAnnotationDraftTransport {
-    type: "pdf-text-highlight";
-    page: number;
-    rects: TPdfAnnotationRectTransport[];
-    quote?: string;
-}
-
-export type TPdfAnnotationSelectionErrorReason =
-    | "empty"
-    | "no-usable-rects"
-    | "multi-page"
-    | "missing-page"
-    | "missing-viewport"
-    | "invalid-rects";
-
-export interface TPdfAnnotationSelectionErrorPayload {
-    source: "highlight:create-from-selection" | "instant-selection";
-    reason: TPdfAnnotationSelectionErrorReason;
-}
-
-export type TPdfAnnotationCreateSource = "highlight:create-from-selection" | "instant-selection";
-
-export type TPdfAnnotationDrawType = Exclude<TDrawType, "bookmark">;
-
-export interface TPdfAnnotationTransport extends TPdfAnnotationDraftTransport {
-    id: string;
-    color: IColor;
-    drawType: TPdfAnnotationDrawType;
-}
-
-export interface TPdfAnnotationNavigationTarget {
-    id: string;
-    page: number;
-    rect: TPdfAnnotationRectTransport;
-}
-
-export interface TPdfAnnotationSelectionTarget {
-    id: string;
-    page: number;
-    rectIndex: number;
-    rect: TPdfAnnotationRectTransport;
-    source: "overlay-click";
-    shiftKey: boolean;
-    altKey: boolean;
-    ctrlKey: boolean;
-    metaKey: boolean;
-}
 
 export interface IPdfPlayerEvent {
     "pageNumber": (pageNumber: number) => any;

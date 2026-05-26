@@ -5,15 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import type { IColor } from "@r2-navigator-js/electron/common/highlight";
 import debug_ from "debug";
 
 import type { INoteCreator } from "readium-desktop/common/redux/states/creator";
 import type { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import type {
+    IColor,
     TPdfAnnotationCreateSource,
     TPdfAnnotationTransport,
-} from "readium-desktop/renderer/reader/pdf/common/pdfReader.type";
+} from "readium-desktop/renderer/reader/pdf/common/pdfAnnotation.type";
 import {
     filterPdfAnnotationNotes,
     noteToPdfAnnotation,
@@ -22,7 +22,7 @@ import {
 import {
     isInvalidPdfAnnotationDraftValidation,
     validatePdfAnnotationDraft,
-} from "readium-desktop/renderer/reader/pdf/pdfAnnotationValidation";
+} from "readium-desktop/renderer/reader/pdf/common/pdfAnnotationValidation";
 
 const debugPdfAnnotationsHost = debug_("readium-desktop:renderer:reader:pdf:annotations:host");
 

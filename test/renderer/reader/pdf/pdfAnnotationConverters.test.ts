@@ -7,7 +7,7 @@ import {
     noteToPdfAnnotation,
     pdfAnnotationDraftToNote,
 } from "readium-desktop/renderer/reader/pdf/pdfAnnotationConverters";
-import type { TPdfAnnotationDraftTransport } from "readium-desktop/renderer/reader/pdf/common/pdfReader.type";
+import type { TPdfAnnotationDraftTransport } from "readium-desktop/renderer/reader/pdf/common/pdfAnnotation.type";
 
 const baseColor = {
     red: 12,

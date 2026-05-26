@@ -5,10 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import type { IColor } from "@r2-navigator-js/electron/common/highlight";
-
+import type { IEventBusPdfPlayer } from "../common/pdfReader.type";
 import type {
-    IEventBusPdfPlayer,
+    IColor,
     TPdfAnnotationDrawType,
     TPdfAnnotationDraftTransport,
     TPdfAnnotationNavigationTarget,
@@ -16,14 +15,14 @@ import type {
     TPdfAnnotationSelectionErrorReason,
     TPdfAnnotationSelectionTarget,
     TPdfAnnotationTransport,
-} from "../common/pdfReader.type";
+} from "../common/pdfAnnotation.type";
 import {
     clientRectToPageViewportRect,
     findBestPageForRect,
     isUsableSelectionRect,
     pageViewportRectToPdfRect,
 } from "./annotationGeometry";
-import { isValidPdfAnnotationRect } from "../pdfAnnotationValidation";
+import { isValidPdfAnnotationRect } from "../common/pdfAnnotationValidation";
 
 const ANNOTATION_LAYER_CLASS = "thorium-pdf-annotation-layer";
 const ANNOTATION_HIGHLIGHT_CLASS = "thorium-pdf-annotation-highlight";

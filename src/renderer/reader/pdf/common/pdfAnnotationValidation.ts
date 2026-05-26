@@ -8,7 +8,7 @@
 import type {
     TPdfAnnotationDraftTransport,
     TPdfAnnotationRectTransport,
-} from "readium-desktop/renderer/reader/pdf/common/pdfReader.type";
+} from "./pdfAnnotation.type";
 
 export type TPdfAnnotationDraftValidationReason =
     | "missing-draft"

@@ -5,16 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import type { IColor } from "@r2-navigator-js/electron/common/highlight";
-
 import type { INoteCreator } from "readium-desktop/common/redux/states/creator";
 import { EDrawType } from "readium-desktop/common/redux/states/renderer/note";
 import type { INoteState } from "readium-desktop/common/redux/states/renderer/note";
 import type {
+    IColor,
     TPdfAnnotationDraftTransport,
     TPdfAnnotationDrawType,
     TPdfAnnotationTransport,
-} from "readium-desktop/renderer/reader/pdf/common/pdfReader.type";
+} from "readium-desktop/renderer/reader/pdf/common/pdfAnnotation.type";
 
 export interface IPdfAnnotationDraftToNoteContext {
     color: IColor;

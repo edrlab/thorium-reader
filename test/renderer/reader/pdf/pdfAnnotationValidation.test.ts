@@ -3,7 +3,7 @@ import { expect, test } from "@jest/globals";
 import {
     isValidPdfAnnotationRect,
     validatePdfAnnotationDraft,
-} from "readium-desktop/renderer/reader/pdf/pdfAnnotationValidation";
+} from "readium-desktop/renderer/reader/pdf/common/pdfAnnotationValidation";
 
 const validRect = {
     x1: 1,

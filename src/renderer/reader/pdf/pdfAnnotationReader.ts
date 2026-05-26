@@ -8,7 +8,7 @@
 import type { TDrawView } from "readium-desktop/common/redux/states/renderer/note";
 import type {
     TPdfAnnotationDraftTransport,
-} from "readium-desktop/renderer/reader/pdf/common/pdfReader.type";
+} from "readium-desktop/renderer/reader/pdf/common/pdfAnnotation.type";
 import {
     createPdfAnnotationNoteDraft,
 } from "readium-desktop/renderer/reader/pdf/pdfAnnotationHost";

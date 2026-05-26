@@ -3,8 +3,8 @@ import { JSDOM } from "jsdom";
 
 import type {
     IEventBusPdfPlayer,
-    TPdfAnnotationTransport,
 } from "readium-desktop/renderer/reader/pdf/common/pdfReader.type";
+import type { TPdfAnnotationTransport } from "readium-desktop/renderer/reader/pdf/common/pdfAnnotation.type";
 import { PdfAnnotationController } from "readium-desktop/renderer/reader/pdf/webview/annotations";
 
 const ANNOTATION_CLICKABLE_CURSOR_CLASS = "thorium-pdf-annotation-clickable-cursor";

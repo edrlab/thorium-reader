@@ -5,7 +5,7 @@ import {
     getPdfAnnotationCreatePresentation,
     getPdfAnnotationVisibilityPayload,
 } from "readium-desktop/renderer/reader/pdf/pdfAnnotationReader";
-import type { TPdfAnnotationDraftTransport } from "readium-desktop/renderer/reader/pdf/common/pdfReader.type";
+import type { TPdfAnnotationDraftTransport } from "readium-desktop/renderer/reader/pdf/common/pdfAnnotation.type";
 
 const color = {
     red: 10,

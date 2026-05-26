@@ -11,7 +11,7 @@ import type {
     IPdfAnnotationCreateRequestHostAdapter,
     IPdfAnnotationCreateRequestHostPorts,
 } from "readium-desktop/renderer/reader/pdf/pdfAnnotationHost";
-import type { TPdfAnnotationDraftTransport } from "readium-desktop/renderer/reader/pdf/common/pdfReader.type";
+import type { TPdfAnnotationDraftTransport } from "readium-desktop/renderer/reader/pdf/common/pdfAnnotation.type";
 
 const color = {
     red: 10,
