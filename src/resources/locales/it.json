@@ -158,7 +158,7 @@
         "cancel": "Annulla",
         "customization": {
             "splashscreen": {
-                "fallbackWelcomeScreen": "Nessuna pagina di benvenuto prevista",
+                "fallbackWelcomeScreen": "Nessuna pagina di benvenuto fornita",
                 "state": "Stato: {{- state}}",
                 "title": "Personalizzazione del profilo fornita e attivata"
             }
@@ -287,7 +287,7 @@
             "reject": "Si è verificato un errore inatteso durante l'elaborazione del feed OPDS!",
             "timeout": "Si è verificato un timeout nella connessione, per favore riprova più tardi"
         },
-        "next": "Prossimo",
+        "next": "Successivo",
         "previous": "Precedente",
         "resumeBrowsing": "Riprendi la navigazione",
         "shelf": "Scaffale",
