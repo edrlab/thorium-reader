@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menü",
         "closeDialog": "Schließen",
-        "importFile": "Importieren einer EPUB-Datei",
         "leftSlideButton": "Scrolle nach links",
         "mainContent": "Hauptinhalt",
         "rightSlideButton": "Scrolle nach rechts",
@@ -560,10 +559,6 @@
                 "descriptive": ""
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
-            },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
                 "compact": "",
                 "descriptive": ""
             },

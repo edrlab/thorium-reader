@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menu nagusia",
         "closeDialog": "Itxi",
-        "importFile": "Inportatu argitalpena",
         "leftSlideButton": "Mugitu zerrenda ezkerrera",
         "mainContent": "Eduki nagusia",
         "rightSlideButton": "Mugitu zerrenda eskuinera",
@@ -560,10 +559,6 @@
                 "descriptive": ""
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
-            },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
                 "compact": "",
                 "descriptive": ""
             },

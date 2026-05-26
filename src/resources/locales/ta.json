@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "பட்டியல்",
         "closeDialog": "மூடு",
-        "importFile": "இறக்குமதி வெளியீடு",
         "leftSlideButton": "இடதுபுறத்தில் ச்லைடு",
         "mainContent": "முக்கிய உள்ளடக்கம்",
         "rightSlideButton": "வலதுபுறம் சரிய",
@@ -562,10 +561,6 @@
             "ways-of-reading-prerecorded-audio-complementary": {
                 "compact": "முன்பதிவு செய்யப்பட்ட ஆடியோ கிளிப்புகள்",
                 "descriptive": "முன்பதிவு செய்யப்பட்ட ஆடியோ கிளிப்புகள் உள்ளடக்கத்தில் உட்பொதிக்கப்பட்டுள்ளன"
-            },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "முன்கூட்டியே பதிவுசெய்யப்பட்ட ஆடியோ பற்றிய தகவல்கள் எதுவும் கிடைக்கவில்லை",
-                "descriptive": "முன்கூட்டியே பதிவுசெய்யப்பட்ட ஆடியோ பற்றிய தகவல்கள் எதுவும் கிடைக்கவில்லை"
             },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "முன்பதிவு செய்யப்பட்ட ஆடியோ மட்டுமே",

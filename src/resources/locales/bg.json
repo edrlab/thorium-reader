@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Меню",
         "closeDialog": "Затвори",
-        "importFile": "Добави книга",
         "leftSlideButton": "Плъзни списъка наляво",
         "mainContent": "главно съдържание",
         "rightSlideButton": "Плъзни списъка надясно",
@@ -560,10 +559,6 @@
                 "descriptive": ""
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
-            },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
                 "compact": "",
                 "descriptive": ""
             },

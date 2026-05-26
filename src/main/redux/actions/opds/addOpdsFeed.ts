@@ -8,7 +8,7 @@
 import { OpdsFeed } from "readium-desktop/common/models/opds";
 import { Action } from "readium-desktop/common/models/redux";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
-import { v4 as uuidv4 } from "uuid";
+import { uuidv4 } from "readium-desktop/utils/uuid";
 
 export const ID = "OPDSFEED_ADD";
 

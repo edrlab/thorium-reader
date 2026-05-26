@@ -799,15 +799,17 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                                                     2
                                                                             }
                                                                             onSelectionChange={(ev) => {
-                                                                                const v = playbackRate.find((option) => option.id === ev).value;
-                                                                                if (useMO) {
-                                                                                    this.props.handleMediaOverlaysPlaybackRate(
-                                                                                        v.toString(),
-                                                                                    );
-                                                                                } else {
-                                                                                    this.props.handleTTSPlaybackRate(
-                                                                                        v.toString(),
-                                                                                    );
+                                                                                const v = playbackRate.find((option) => option.id === ev)?.value;
+                                                                                if (v !== undefined) {
+                                                                                    if (useMO) {
+                                                                                        this.props.handleMediaOverlaysPlaybackRate(
+                                                                                            v.toString(),
+                                                                                        );
+                                                                                    } else {
+                                                                                        this.props.handleTTSPlaybackRate(
+                                                                                            v.toString(),
+                                                                                        );
+                                                                                    }
                                                                                 }
                                                                             }}>
                                                                             {item => <ComboBoxItem>{item.name}</ComboBoxItem>}
@@ -994,6 +996,13 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     </button>
                                 </Dialog.Trigger>
                                 <Dialog.Portal container={appOverlayElement}>
+                                                <VisuallyHidden.Root>
+                                                    <Dialog.Title asChild>
+                                                        <h1>
+                                                            {__("reader.navigation.openTableOfContentsTitle")}
+                                                        </h1>
+                                                    </Dialog.Title>
+                                                </VisuallyHidden.Root>
                                     {
                                         isDockedMode ?
                                             <div
@@ -1051,9 +1060,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                                 }}
                                                 aria-describedby={undefined}
                                             >
-                                                <VisuallyHidden.Root>
-                                                    <Dialog.Title>{__("reader.navigation.openTableOfContentsTitle")}</Dialog.Title>
-                                                </VisuallyHidden.Root>
                                                 <ReaderMenu
                                                     {...this.props.readerMenuProps}
                                                     handleLinkClick={(event, url, closeNavPanel) => {
@@ -1110,7 +1116,9 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                     </button>
                                 </Dialog.Trigger>
                                 <Dialog.Portal container={appOverlayElement}>
-
+                                            <VisuallyHidden.Root>
+                                                <Dialog.Title asChild><h1>{__("reader.navigation.settingsTitle")}</h1></Dialog.Title>
+                                            </VisuallyHidden.Root>
                                     {isDockedMode ?
                                         <div
                                             className={containerClassName}
@@ -1145,9 +1153,6 @@ export class ReaderHeader extends React.Component<IProps, IState> {
                                             }}
                                             aria-describedby={undefined}
                                         >
-                                            <VisuallyHidden.Root>
-                                                <Dialog.Title>{__("reader.navigation.settingsTitle")}</Dialog.Title>
-                                            </VisuallyHidden.Root>
                                             {/* TODO remove readerSettingsHeaderProps */}
                                             <ReaderSettings
                                                 // {...readerSettingsHeaderProps}

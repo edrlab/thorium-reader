@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Izbornik",
         "closeDialog": "Zatvori",
-        "importFile": "Uvoz građe",
         "leftSlideButton": "Povuci popis ulijevo",
         "mainContent": "glavni sadržaj",
         "rightSlideButton": "Povuci popis udesno",
@@ -565,10 +564,6 @@
                 "descriptive": ""
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
-            },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
                 "compact": "",
                 "descriptive": ""
             },

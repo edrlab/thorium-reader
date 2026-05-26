@@ -6,9 +6,8 @@
 // ==LICENSE-END==
 
 import { diMainGet } from "readium-desktop/main/di";
-import { publicationActions } from "readium-desktop/main/redux/actions";
 // eslint-disable-next-line local-rules/typed-redux-saga-use-typed-effects
-import { call, delay, put } from "redux-saga/effects";
+import { call, delay } from "redux-saga/effects";
 import { SagaGenerator, call as callTyped } from "typed-redux-saga";
 import debug_ from "debug";
 import { RequesetToCloseAllReadersWithTheSamePubId } from "../../reader";
@@ -20,26 +19,20 @@ export function* deletePublication(publicationIdentifier: string/*, preservePubl
     // yield put(readerActions.closeRequest.build(publicationIdentifier));
     yield* callTyped(RequesetToCloseAllReadersWithTheSamePubId, publicationIdentifier);
 
-    // dispatch action to update publication/lastReadingQueue reducer
-    yield put(publicationActions.deletePublication.build(publicationIdentifier));
-
     // delete publication from reader registry
     // yield put(winActions.registry.unregisterReaderPublication.build(identifier));
 
     // allow extra completion time to ensure the filesystem ZIP streams are closed
     yield delay(300);
 
-    const publicationRepository = diMainGet("publication-repository");
-    // Remove from database
-    yield call(() => publicationRepository.delete(publicationIdentifier));
+    const publicationStorage = diMainGet("publication-storage");
+    // Remove publication files before deleting the persisted publication record.
+    // If this throws, the API layer reports the error and the database remains unchanged.
+    yield call(() => publicationStorage.removePublication(publicationIdentifier /*, preservePublicationOnFileSystem*/));
 
-    try {
-        const publicationStorage = diMainGet("publication-storage");
-        // Remove from storage
-        yield call(() => publicationStorage.removePublication(publicationIdentifier /*, preservePublicationOnFileSystem*/));
-    } catch (e) {
-        debug(`${e}`);
-    }
+    const publicationRepository = diMainGet("publication-repository");
+    // Remove from database only after successful publication storage deletion.
+    yield call(() => publicationRepository.delete(publicationIdentifier));
 
     try {
         const publicationData = diMainGet("publication-data");

@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menú",
         "closeDialog": "Cerrar",
-        "importFile": "Añadir un libro",
         "leftSlideButton": "Desplazar lista a la izquierda",
         "mainContent": "Contenido principal",
         "rightSlideButton": "Desplazar lista a la derecha",
@@ -203,7 +202,7 @@
         "searchPlaceholder": "Buscar",
         "searchTitle": "Iniciar búsqueda",
         "settings": "Opciones de configuración",
-        "settingsLabel": "",
+        "settingsLabel": "Ajustes de la aplicación",
         "viewMode": "Modo de vista"
     },
     "library": {
@@ -410,11 +409,11 @@
             },
             "conformance-details-wcag-2-1": {
                 "compact": "WCAG 2.1",
-                "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.1"
+                "descriptive": "Pautas de Accesibilidad al Contenido Web (WCAG) 2.1"
             },
             "conformance-details-wcag-2-2": {
                 "compact": "WCAG 2.2",
-                "descriptive": "Web Content Accessibility Guidelines (WCAG) 2.2"
+                "descriptive": "Pautas de Accesibilidad al Contenido Web (WCAG) 2.2"
             },
             "conformance-no": {
                 "compact": "No hay información disponible",
@@ -567,10 +566,6 @@
             "ways-of-reading-prerecorded-audio-complementary": {
                 "compact": "Clips de audio pregrabados",
                 "descriptive": "En el contenido se integran clips de audio pregrabados"
-            },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "No hay información disponible sobre audio pregrabado",
-                "descriptive": "No hay información disponible sobre audio pregrabado"
             },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Solo audio pregrabado",
@@ -789,7 +784,7 @@
             "printDisabled": "No se permite imprimir",
             "screenNext": "Adelante",
             "screenPrevious": "Atrás",
-            "settingsTitle": "Ajustes"
+            "settingsTitle": "Ajustes de lectura"
         },
         "notes": {
             "colors": {

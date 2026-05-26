@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menu",
         "closeDialog": "Zavřít",
-        "importFile": "Nahrát publikaci",
         "leftSlideButton": "Posunout doleva",
         "mainContent": "hlavní obsah",
         "rightSlideButton": "Posunout doprava",
@@ -570,10 +569,6 @@
                 "descriptive": ""
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
-            },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
                 "compact": "",
                 "descriptive": ""
             },

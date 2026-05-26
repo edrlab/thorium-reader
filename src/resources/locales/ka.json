@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "მენიუ",
         "closeDialog": "დახურვა",
-        "importFile": "პუბლიკაციის შემოტანა",
         "leftSlideButton": "სიის მარცხნივ ჩაწევა",
         "mainContent": "ძირითადი შიგთავსი",
         "rightSlideButton": "სიის მარჯვნივ ჩაწევა",
@@ -560,10 +559,6 @@
                 "descriptive": ""
             },
             "ways-of-reading-prerecorded-audio-complementary": {
-                "compact": "",
-                "descriptive": ""
-            },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
                 "compact": "",
                 "descriptive": ""
             },

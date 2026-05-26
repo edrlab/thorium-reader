@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menu",
         "closeDialog": "Fermer",
-        "importFile": "Ajouter un livre",
         "leftSlideButton": "Faire défiler vers la gauche",
         "mainContent": "Contenu principal",
         "rightSlideButton": "Faire défiler vers la droite",
@@ -567,10 +566,6 @@
             "ways-of-reading-prerecorded-audio-complementary": {
                 "compact": "Clips audio préenregistrés",
                 "descriptive": "Des clips audio préenregistrés sont intégrés au contenu"
-            },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "Aucune information sur les enregistrements audio",
-                "descriptive": "Il n'est pas possible de savoir si le livre contient des  enregistrements audio"
             },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Audio préenregistré uniquement",

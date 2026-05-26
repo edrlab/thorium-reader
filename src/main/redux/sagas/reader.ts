@@ -23,7 +23,6 @@ import { RootState } from "readium-desktop/main/redux/states";
 import { all, call, put, take } from "redux-saga/effects";
 import { call as callTyped, select as selectTyped, put as putTyped, SagaGenerator } from "typed-redux-saga/macro";
 import { types } from "util";
-import { v4 as uuidv4 } from "uuid";
 
 import {
     ERROR_MESSAGE_ON_USERKEYCHECKREQUEST, ERROR_MESSAGE_ENCRYPTED_NO_LICENSE, streamerOpenPublicationAndReturnManifestUrl,
@@ -31,18 +30,12 @@ import {
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { getTranslator } from "readium-desktop/common/services/translator";
 import { createReaderWindow } from "./win/browserWindow/createReaderWindow";
+import { assertUUIDv4, uuidv4 } from "readium-desktop/utils/uuid";
 
 // Logger
 const filename_ = "readium-desktop:main:saga:reader";
 const debug = debug_(filename_);
 debug("_");
-
-const isUUIDv4 = (uuid: string) => /^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/.test(uuid);
-const assertUUIDv4 = (uuid: string) => {
-    if (!isUUIDv4(uuid)) {
-        throw new Error("not an uuidv4 identifier !");
-    }
-};
 
 function* readerFullscreenRequest(action: readerActions.fullScreenRequest.TAction) {
 

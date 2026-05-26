@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "メニュー",
         "closeDialog": "閉じる",
-        "importFile": "本を追加",
         "leftSlideButton": "左にスライド",
         "mainContent": "メインコンテンツ",
         "rightSlideButton": "右にスライド",
@@ -557,10 +556,6 @@
             "ways-of-reading-prerecorded-audio-complementary": {
                 "compact": "録音済みの音声クリップ",
                 "descriptive": "録音済みの音声クリップがコンテンツに埋め込まれています"
-            },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "録音済みの音声についての情報はありません",
-                "descriptive": "録音済みの音声についての情報はありません"
             },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "録音済み音声のみ",

@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "قائمة",
         "closeDialog": "إغلاق",
-        "importFile": "استيراد منشور",
         "leftSlideButton": "سحب إلى اليسار",
         "mainContent": "المحتوى الرئيسي",
         "rightSlideButton": "سحب إلى اليمين",
@@ -582,10 +581,6 @@
             "ways-of-reading-prerecorded-audio-complementary": {
                 "compact": "مقاطع الصوت المسجّلة مسبقًا",
                 "descriptive": "مقاطع الصوت المسجّلة مسبقًا مدمجة في المحتوى"
-            },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "لا توجد معلومات عن الصوت المسجّل مسبقًا",
-                "descriptive": "لا توجد معلومات عن الصوت المسجّل مسبقًا"
             },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "الصوت المسجّل مسبقًا فقط",

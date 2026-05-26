@@ -54,7 +54,6 @@ button {
   background-color: var(--color-brand-primary);
   color: var(--color-neutral-base);
   transition: 200ms linear;
-  display: inline-flex;
   align-items: center;
   justify-content: center;
 
@@ -164,7 +163,6 @@ button {
   min-width: 100px;
   background-color: var(--color-brand-secondary);
   color: var(--color-brand-primary);
-  display: flex;
   align-items: center;
   justify-content: center;
 

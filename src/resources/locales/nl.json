@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menu",
         "closeDialog": "Sluiten",
-        "importFile": "Importeer een publicatie",
         "leftSlideButton": "Schuif lijst naar links",
         "mainContent": "hoofd inhoud",
         "rightSlideButton": "Schuif lijst naar rechts",
@@ -562,10 +561,6 @@
             "ways-of-reading-prerecorded-audio-complementary": {
                 "compact": "Vooraf opgenomen audio fragmenten",
                 "descriptive": "Vooraf opgenomen audio fragmenten zijn opgenomen in de inhoud"
-            },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "Geen informatie over vooraf opgenomen audio beschikbaar",
-                "descriptive": "Geen informatie over vooraf opgenomen audio beschikbaar"
             },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Alleen vooraf opgenomen audio",

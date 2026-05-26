@@ -3,7 +3,6 @@ declare namespace typed_i18n {
   (_: "accessibility", __?: {}): {
   readonly "bookMenu": string,
   readonly "closeDialog": string,
-  readonly "importFile": string,
   readonly "leftSlideButton": string,
   readonly "mainContent": string,
   readonly "rightSlideButton": string,
@@ -12,7 +11,6 @@ declare namespace typed_i18n {
 };
   (_: "accessibility.bookMenu", __?: {}): string;
   (_: "accessibility.closeDialog", __?: {}): string;
-  (_: "accessibility.importFile", __?: {}): string;
   (_: "accessibility.leftSlideButton", __?: {}): string;
   (_: "accessibility.mainContent", __?: {}): string;
   (_: "accessibility.rightSlideButton", __?: {}): string;

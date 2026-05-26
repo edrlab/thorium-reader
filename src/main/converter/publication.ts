@@ -48,7 +48,7 @@ const getPublicationStorageState = async (identifier: string): Promise<{
 }> => {
     let publicationDirectory = "";
     try {
-        publicationDirectory = await diMainGet("publication-storage").findPublicationPath(identifier);
+        publicationDirectory = await diMainGet("publication-storage").getPublicationPath(identifier);
     } catch {
         debug("publication not found on disk");
     }
@@ -76,7 +76,7 @@ export class PublicationViewConverter {
 
     public async updateLcpCache(publicationDocument: PublicationDocumentWithoutTimestampable, r2LCP: LCP) {
 
-        const pubFolder = await this.publicationStorage.findPublicationPath(
+        const pubFolder = await this.publicationStorage.getPublicationPath(
             publicationDocument.identifier,
         );
 
@@ -95,7 +95,7 @@ export class PublicationViewConverter {
     public async updatePublicationCache(publicationDocument: PublicationDocumentWithoutTimestampable, r2Publication: R2Publication) {
         _pubCache[publicationDocument.identifier] = {};
 
-        const pubFolder = await this.publicationStorage.findPublicationPath(
+        const pubFolder = await this.publicationStorage.getPublicationPath(
             publicationDocument.identifier,
         );
 
@@ -117,7 +117,7 @@ export class PublicationViewConverter {
         publicationDocument: PublicationDocument,
     ): Promise<R2Publication> {
 
-        const pubFolder = await this.publicationStorage.findPublicationPath(
+        const pubFolder = await this.publicationStorage.getPublicationPath(
             publicationDocument.identifier,
         );
 

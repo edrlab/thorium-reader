@@ -30,7 +30,7 @@ import {
 import { diMainGet } from "readium-desktop/main/di";
 import { createTempDir } from "readium-desktop/main/fs/path";
 import { extractFileFromZipToBuffer } from "readium-desktop/main/zip/extract";
-import { v4 as uuidv4 } from "uuid";
+import { uuidv4 } from "readium-desktop/utils/uuid";
 
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
@@ -49,6 +49,7 @@ export async function importPublicationFromFS(
     willBeImmediatelyFollowedByOpen: boolean,
     hash?: string,
     lcpHashedPassphrase?: string,
+    preservedIdentifier?: string,
 ): Promise<PublicationDocument> {
 
     debug("importPublicationFromFS", filePath);
@@ -203,7 +204,7 @@ export async function importPublicationFromFS(
     const locale = store.getState().i18n.locale;
 
     const pubDocument: PublicationDocumentWithoutTimestampable = {
-        identifier: uuidv4(),
+        identifier: preservedIdentifier || uuidv4(),
         // resources: {
         //     // Legacy Base64 data blobs
 
@@ -237,10 +238,18 @@ export async function importPublicationFromFS(
     debug(`publication document ID=${pubDocument.identifier} HASH=${pubDocument.hash}`);
 
     // Store publication on filesystem
-    debug("[START] Store publication on filesystem", filePath);
-    const files = await publicationStorage.storePublication(
-        pubDocument.identifier, filePath,
-    );
+    const sourceExtension = path.extname(filePath);
+    const storableExtension = publicationStorage.getStorablePublicationExtension(sourceExtension);
+    debug("[START] Store publication on filesystem", filePath, {
+        sourceExtension,
+        storableExtension,
+        isStorableExtension: publicationStorage.isStorablePublicationExtension(sourceExtension),
+    });
+    const files = preservedIdentifier ?
+        await publicationStorage.getStoredPublicationFiles(pubDocument.identifier) :
+        await publicationStorage.storePublication(
+            pubDocument.identifier, filePath,
+        );
     debug("[END] Store publication on filesystem - END", filePath);
 
     // Add extracted files to document

@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Меню",
         "closeDialog": "Закрыть",
-        "importFile": "Импортировать книгу",
         "leftSlideButton": "Сдвиньте список влево",
         "mainContent": "основное содержимое",
         "rightSlideButton": "Сдвиньте список вправо",
@@ -208,7 +207,7 @@
         "searchPlaceholder": "Поиск",
         "searchTitle": "Начать поиск",
         "settings": "Настройки",
-        "settingsLabel": "",
+        "settingsLabel": "Настройки приложения",
         "viewMode": "Режим просмотра"
     },
     "library": {
@@ -573,10 +572,6 @@
                 "compact": "Предварительно записанные аудиофрагменты",
                 "descriptive": "Предварительно записанные аудиофрагменты встроены в содержание"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "Информация о предварительно записанном аудиоматериале отсутствует",
-                "descriptive": "Информация о предварительно записанном аудиоматериале отсутствует"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Только предварительно записанный аудиоматериал",
                 "descriptive": "Аудиокнига без текстовой альтернативы"
@@ -794,7 +789,7 @@
             "printDisabled": "Печать запрещена",
             "screenNext": "Вперёд",
             "screenPrevious": "Вернуться",
-            "settingsTitle": "Настройки"
+            "settingsTitle": "Настройки ридера"
         },
         "notes": {
             "colors": {

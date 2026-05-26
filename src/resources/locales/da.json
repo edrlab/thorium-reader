@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menu",
         "closeDialog": "Luk",
-        "importFile": "Importér en bog",
         "leftSlideButton": "Flyt listen til venstre",
         "mainContent": "hovedindhold",
         "rightSlideButton": "Flyt listen til højre",
@@ -50,7 +49,7 @@
         }
     },
     "catalog": {
-        "AddToFavorites": "",
+        "AddToFavorites": "Føj til favoritter",
         "about": {
             "title": "Om {{- appName}}"
         },
@@ -130,8 +129,8 @@
         "publisher": "Udgiver",
         "readBook": "Læs bog",
         "released": "Udgivelsesdato",
-        "removeFromFavorites": "",
-        "selectTableHeaders": "",
+        "removeFromFavorites": "Fjern fra favoritter",
+        "selectTableHeaders": "Vælg kolonner der skal vises",
         "sort": "Sortér efter",
         "tag": "Tag",
         "tags": "Tags",
@@ -141,12 +140,12 @@
         "annotations": {
             "descAuthor": "af {{- author}}",
             "descCreator": "lavet af",
-            "descList_one": "{{- count}} note(r) fra {{- creator}} vil blive associeret med {{- title}} {{- author}}",
-            "descList_other": "{{- count}} note(r) fra {{- creator}} vil blive associeret med {{- title}} {{- author}}",
-            "descNewer_one": "{{- count}} nyere version af disse noter er allerede associeret med denne bog",
-            "descNewer_other": "{{- count}} nyere version af disse noter er allerede associeret med denne bog",
-            "descOlder_one": "{{- count}} ældre version af disse noter er allerede associeret med denne bog",
-            "descOlder_other": "{{- count}} ældre version af disse noter er allerede associeret med denne bog",
+            "descList_one": "{{- count}} note fra {{- creator}} vil blive knyttet til {{- title}} {{- author}}",
+            "descList_other": "{{- count}} noter fra {{- creator}} vil blive knyttet til {{- title}} {{- author}}",
+            "descNewer_one": "Konflikt: {{- count}} note knyttet til bogen er nyere",
+            "descNewer_other": "Konflikt: {{- count}} noter knyttet til bogen er nyere",
+            "descOlder_one": "Konflikt: {{- count}} note knyttet til bogen er ældre",
+            "descOlder_other": "Konflikt: {{- count}} noter knyttet til bogen er ældre",
             "descTitle": "Navn på notesamling: ",
             "importAll": "Importér alle noter",
             "importWithoutConflict": "Importér noter uden sammenfald",
@@ -162,11 +161,11 @@
             }
         },
         "deleteAnnotations": "Slet alle noter?",
-        "deleteAnnotationsText_one": "Vil du slette {{- count}} note(r)?",
-        "deleteAnnotationsText_other": "Vil du slette {{- count}} note(r)?",
+        "deleteAnnotationsText_one": "Vil du slette {{- count}} note?",
+        "deleteAnnotationsText_other": "Vil du slette {{- count}} noter?",
         "deleteBookmarks": "Slet bogmærker?",
-        "deleteBookmarksText_one": "Er du sikker på at du vil slette {{- count}} bogmærke(r)?",
-        "deleteBookmarksText_other": "Er du sikker på at du vil slette {{- count}} bogmærke(r)?",
+        "deleteBookmarksText_one": "Er du sikker på at du vil slette {{- count}} bogmærke?",
+        "deleteBookmarksText_other": "Er du sikker på at du vil slette {{- count}} bogmærker?",
         "deleteFeed": "Er du sikker på at du vil slette dette katalog?",
         "deletePublication": "Er du sikker på at du vil fjerne bogen?",
         "deletePublicationWithNotes": "Advarsel: denne bog har noter og/eller bogmærker, som også vil blive slettet! (hvis du vil beholde dem, så eksporter dem venligst inden du sletter bogen)",
@@ -198,34 +197,34 @@
         "searchPlaceholder": "Søg",
         "searchTitle": "Søg",
         "settings": "Indstillinger",
-        "settingsLabel": "",
+        "settingsLabel": "Programindstillinger",
         "viewMode": "Visningstilstand"
     },
     "library": {
         "filter": {
-            "addFilters": "",
-            "filterBy": "",
-            "selectOption": ""
+            "addFilters": "Tilføj filtre",
+            "filterBy": "Filtrer efter",
+            "selectOption": "Vælg et element"
         },
         "lcp": {
-            "hidePassphrase": "",
+            "hidePassphrase": "Skjul nøgleord",
             "hint": "Hint til nøgleord:",
             "open": "Åben",
             "password": "Nøgleord",
             "sentence": "Denne bog kræver et LCP-nøgleord for at åbnes",
-            "showPassphrase": "",
+            "showPassphrase": "Vis nøgleord",
             "urlHint": "Har du glemt dit nøgleord? Få hjælp her.",
             "whatIsLcp?": "Hvad er LCP?",
             "whatIsLcpInfoDetails": "LCP står for 'Licensed Content Protection'.",
             "whatIsLcpInfoDetailsLink": "For at læse mere, følg dette link til EDRLab websitet."
         },
         "sorting": {
-            "addSorting": "",
-            "author": "",
-            "language": "",
-            "readingState": "",
-            "sortBy": "",
-            "title": ""
+            "addSorting": "Tilføj sortering",
+            "author": "Forfatter",
+            "language": "Sprog",
+            "readingState": "Læsestatus",
+            "sortBy": "Sorter efter ",
+            "title": "Titel"
         }
     },
     "message": {
@@ -248,7 +247,7 @@
         "open": {
             "error": "Bogen kan ikke åbnes: {{- err}}"
         },
-        "wipeData": ""
+        "wipeData": "Login data blev slettet (adgangsnøgler og cookies)"
     },
     "opds": {
         "addForm": {
@@ -349,8 +348,8 @@
                 "descriptive": "Taktile 3D objekter"
             },
             "additional-accessibility-information-text-to-speech-hinting": {
-                "compact": "Indeholder hints til tekst-til-tale (TTS)",
-                "descriptive": "Indeholder hints til tekst-til-tale (TTS)"
+                "compact": "Indeholder hjælp til udtale",
+                "descriptive": "Indeholder hjælp til udtale for tekst-til-tale (TTS)"
             },
             "additional-accessibility-information-title": "Yderligere tilgængelighedsinformation"
         },
@@ -563,10 +562,6 @@
                 "compact": "Forudindspillede lydklip",
                 "descriptive": "Bogen har indhold med forudindspillede lydklip i"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "Ingen information omkring forudindspillede lydklip",
-                "descriptive": "Ingen information omkring forudindspillede lydklip"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Indeholder kun lyd",
                 "descriptive": "Lydbog uden et tekstalternativ"
@@ -685,8 +680,8 @@
                 "filterOptions": "Filtreringsvalg",
                 "none": "Ingen"
             },
-            "hide": "Skjul",
-            "highlight": "Fremhævning",
+            "hide": "Vis ikke",
+            "highlight": "Overstregning",
             "noSelectionToast": "Intet markeret",
             "note": "{{- color}} Note",
             "quickAnnotations": "Hurtig-oprettelse (spring redigering over)",
@@ -713,9 +708,9 @@
             "unmute": "slå lyd til"
         },
         "dock": {
-            "dockDefault": "",
-            "dockLeft": "",
-            "dockRight": ""
+            "dockDefault": "Vis panelet som en popup dialog",
+            "dockLeft": "Fastgør panelet til venstre",
+            "dockRight": "Fastgør panelet til højre"
         },
         "fxl": {
             "fit": "Tilpas"
@@ -756,8 +751,8 @@
             "speed": "Oplæsningshastighed",
             "stop": "Stop oplæsning",
             "title": "Oplæsning",
-            "useTTSHighlightsForMO": "",
-            "useTTSHighlightsForMODescription": ""
+            "useTTSHighlightsForMO": "Brugerdefineret overstregning",
+            "useTTSHighlightsForMODescription": "Slå bogens indbyggede formatering fra"
         },
         "navigation": {
             "ZenModeExit": "Forlad fokuseret læsetilstand",
@@ -774,7 +769,7 @@
             "goToTitle": "Gå til side",
             "history": "Navigationshistorik",
             "historyNext": "Hop frem",
-            "historyPrevious": "Hop tilbage",
+            "historyPrevious": "Hop tilbage i navigationshistorikken",
             "infoTitle": "Information",
             "magnifyingGlassButton": "Søg i bogen",
             "openTableOfContentsTitle": "Indholdsfortegnelse",
@@ -784,7 +779,7 @@
             "printDisabled": "Print ikke tilladt",
             "screenNext": "Gå frem",
             "screenPrevious": "Gå tilbage",
-            "settingsTitle": "Indstillinger"
+            "settingsTitle": "Læserindstillinger"
         },
         "notes": {
             "colors": {
@@ -798,8 +793,8 @@
         },
         "picker": {
             "search": {
-                "founds_one": "{{- count}} resultat(er)",
-                "founds_other": "{{- count}} resultat(er)",
+                "founds_one": "{{- count}} resultat",
+                "founds_other": "{{- count}} resultater",
                 "input": "søgetekst",
                 "next": "Næste",
                 "notFound": "ingen resultater",
@@ -843,7 +838,7 @@
             },
             "font": "Skrifttype",
             "fontSize": "Skriftstørrelse",
-            "increaseFontSize": "",
+            "increaseFontSize": "Forstør skriftstørrelsen",
             "infoCustomFont": "Vælg en anden skrifttype fra operativsystemet ved at skrive dens navn",
             "justification": "Tekstjustering",
             "justify": "Lige margener",
@@ -881,7 +876,7 @@
                 "title": "Læsetema"
             },
             "preview": "Forhåndsvisning",
-            "reduceFontSize": "",
+            "reduceFontSize": "Formindsk skriftstørrelsen",
             "reduceMotion": "Reducér bevægelser",
             "scrolled": "Scrollbart",
             "spacing": "Mellemrum",
@@ -911,7 +906,7 @@
         },
         "tts": {
             "activate": "Aktiver syntetisk tale",
-            "language": "Sprog",
+            "language": "Sprog for tekst-til-tale (TTS)",
             "next": "Næste",
             "options": "Indstillinger for syntetisk tale",
             "pause": "Pause",
@@ -919,7 +914,7 @@
             "previous": "Forrige",
             "sentenceDetect": "Opdel oplæsning i sætninger",
             "sentenceDetectDescription": "Bryd lange afsnit op i sætninger.",
-            "speed": "Afspilningshastighed",
+            "speed": "Oplæsningshastighed (TTS)",
             "stop": "Stop syntetisk tale",
             "voice": "Syntetisk stemme"
         }
@@ -943,7 +938,7 @@
             "cancel": "Annullér",
             "disclaimer": "Standard tastaturgenveje er designet ud fra et QWERTY tastaturlayout",
             "editUserJson": "Rediger brugerfilen...",
-            "exportToHTML": "",
+            "exportToHTML": "Eksporter til HTML",
             "keyboardShortcuts": "Tastaturgenveje",
             "list": {
                 "AddBookmarkWithLabel": {
@@ -1207,7 +1202,7 @@
             "appearance": "Udseende",
             "general": "Generelt",
             "keyboardShortcuts": "Tastaturgenveje",
-            "profiles": ""
+            "profiles": "Profiler"
         },
         "theme": {
             "auto": "Automatisk",
@@ -1242,25 +1237,25 @@
     },
     "wizard": {
         "buttons": {
-            "discover": "Læs hvad der er nyt",
+            "discover": "Gå på opdagelse i Thorium Desktop",
             "goToBooks": "Gå til dine bøger"
         },
         "description": {
-            "home": "Thorium ser anderledes ud! Lad os se nærmere på hvad der er ændret...",
-            "resources": ""
+            "home": "Thorium 3.4 bringer en række forbedringer af brugeroplevelsen og retter en række problemer. Hvis du senere beslutter dig for at vende tilbage til en ældre version af applikationen, anbefales det kraftigt, at du sikkerhedskopierer dine e-bogsannotationer og bogmærker ved at eksportere dem til en ekstern fil. Du importerer dem derefter tilbage til den ældre version, når den er installeret. Dette skyldes, at applikationen gemmer noter og bogmærker i et lidt anderledes internt format i version 3.4. Dette løser et ydeevneproblem, men afbryder bagudkompatibiliteten for noter.",
+            "resources": "Få kontakt med os og lær mere om Thorium:"
         },
         "dontShow": "Vis ikke igen",
         "resources": {
-            "discord": "",
-            "website": ""
+            "discord": "Discord: {{- url}}",
+            "website": "Website: {{- url}}"
         },
         "tab": {
             "home": "Hjem",
-            "resources": ""
+            "resources": "Ressourcer"
         },
         "title": {
-            "resources": "",
-            "welcome": "Velkommen til Thorium 3"
+            "resources": "Ressourcer & Fællesskab",
+            "welcome": "Velkommen til Thorium 3.4"
         }
     }
 }

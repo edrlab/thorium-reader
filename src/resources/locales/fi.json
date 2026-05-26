@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Valikko",
         "closeDialog": "Sulje",
-        "importFile": "Tuo julkaisu",
         "leftSlideButton": "Siirry listalla vasemmalle",
         "mainContent": "Pääsisältö",
         "rightSlideButton": "Siirry listalla oikealle",
@@ -198,7 +197,7 @@
         "searchPlaceholder": "Hae",
         "searchTitle": "Hae",
         "settings": "Asetukset",
-        "settingsLabel": "",
+        "settingsLabel": "Sovelluksen asetukset",
         "viewMode": "Näkymätila"
     },
     "library": {
@@ -563,10 +562,6 @@
                 "compact": "Sisältää äänitteitä",
                 "descriptive": "Sisällössä on äänitettyjä osuuksia"
             },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "Ei tietoa äänitteistä",
-                "descriptive": "Ei tietoa äänitteistä"
-            },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Sisältää vain ääntä",
                 "descriptive": "Äänikirja, jossa ei ole tekstiä"
@@ -784,7 +779,7 @@
             "printDisabled": "Tulostus kielletty",
             "screenNext": "Siirry eteenpäin",
             "screenPrevious": "Siirry taaksepäin",
-            "settingsTitle": "Asetukset"
+            "settingsTitle": "Lukuasetukset"
         },
         "notes": {
             "colors": {

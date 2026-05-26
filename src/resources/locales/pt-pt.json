@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Menu",
         "closeDialog": "Fechar",
-        "importFile": "Importar documento",
         "leftSlideButton": "Deslizar para a esquerda",
         "mainContent": "Conteúdo principal",
         "rightSlideButton": "Deslizar para a direita",
@@ -567,10 +566,6 @@
             "ways-of-reading-prerecorded-audio-complementary": {
                 "compact": "Clipes de áudio pré-gravados",
                 "descriptive": "Clipes de áudio pré-gravados estão integrados no conteúdo"
-            },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "Sem informações disponíveis sobre áudio pré-gravado",
-                "descriptive": "Sem informações disponíveis sobre áudio pré-gravado"
             },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Apenas áudio pré-gravado",

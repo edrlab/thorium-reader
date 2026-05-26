@@ -2,7 +2,6 @@
     "accessibility": {
         "bookMenu": "Μενού",
         "closeDialog": "Κλείσιμο",
-        "importFile": "Εισαγωγή βιβλίου",
         "leftSlideButton": "Μετακίνηση προς τα αριστερά",
         "mainContent": "κυρίως περιεχόμενο",
         "rightSlideButton": "Μετακίνηση προς τα δεξιά",
@@ -562,10 +561,6 @@
             "ways-of-reading-prerecorded-audio-complementary": {
                 "compact": "Προηχογραφημένα ηχητικά αποσπάσματα",
                 "descriptive": "Προηχογραφημένα ηχητικά αποσπάσματα είναι ενσωματωμένα στο περιεχόμενο"
-            },
-            "ways-of-reading-prerecorded-audio-no-metadata": {
-                "compact": "Δεν υπάρχουν διαθέσιμες πληροφορίες σχετικά με τον προηχογραφημένο ηχητικό περιεχόμενο",
-                "descriptive": "Δεν υπάρχουν διαθέσιμες πληροφορίες σχετικά με τον προηχογραφημένο ηχητικό περιεχόμενο"
             },
             "ways-of-reading-prerecorded-audio-only": {
                 "compact": "Μόνο προηχογραφημένος ήχος",
